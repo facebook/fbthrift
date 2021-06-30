@@ -185,7 +185,18 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
                     _exceptionWriter = _create_{{function:javaName}}_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) {{field:key}});
                 }
                 {{/function:exceptions}}
-
+                {{#function:exceptions?}}
+                else {
+                {{/function:exceptions?}}
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing {{function:javaName}}: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("{{function:javaName}}", _tApplicationException, _chain, _payload.getMessageSeqId());
+                {{#function:exceptions?}}
+                }
+                {{/function:exceptions?}}
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,

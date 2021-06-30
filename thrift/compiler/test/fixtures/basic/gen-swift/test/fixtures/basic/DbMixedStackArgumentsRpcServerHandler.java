@@ -125,7 +125,12 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing getDataByKey0: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getDataByKey0", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
@@ -217,7 +222,12 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing getDataByKey1: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getDataByKey1", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,

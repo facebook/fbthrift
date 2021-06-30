@@ -120,7 +120,12 @@ public class RaiserRpcServerHandler
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing doBland: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("doBland", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
@@ -235,7 +240,14 @@ public class RaiserRpcServerHandler
                 if (_t instanceof test.fixtures.exceptions.Serious) {
                     _exceptionWriter = _create_doRaise_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 3);
                 }
-
+                else {
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing doRaise: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("doRaise", _tApplicationException, _chain, _payload.getMessageSeqId());
+                }
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
@@ -316,7 +328,12 @@ oprot.writeString(_iter0);
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing get200: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("get200", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
@@ -433,7 +450,14 @@ oprot.writeString(_iter0);
                 if (_t instanceof test.fixtures.exceptions.Serious) {
                     _exceptionWriter = _create_get500_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 3);
                 }
-
+                else {
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing get500: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("get500", _tApplicationException, _chain, _payload.getMessageSeqId());
+                }
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,

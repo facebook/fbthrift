@@ -161,7 +161,12 @@ public class NestedContainersRpcServerHandler
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing mapList: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("mapList", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
@@ -277,7 +282,12 @@ public class NestedContainersRpcServerHandler
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing mapSet: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("mapSet", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
@@ -396,7 +406,12 @@ _r.add(_value1);
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing listMap: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("listMap", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
@@ -511,7 +526,12 @@ _r.add(_value1);
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing listSet: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("listSet", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
@@ -673,7 +693,12 @@ _r.add(_value1);
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing turtles: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("turtles", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,

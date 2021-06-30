@@ -108,7 +108,12 @@ public class MyServiceRpcServerHandler
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
 
-
+                // exception is not of user declared type
+                String _errorMessage = String.format("Internal error processing foo: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
+                org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
+                _tApplicationException.initCause(_t);
+                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("foo", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
                         _payload,
