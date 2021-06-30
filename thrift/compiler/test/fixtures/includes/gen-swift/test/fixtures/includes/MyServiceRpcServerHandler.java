@@ -40,14 +40,14 @@ public class MyServiceRpcServerHandler
     this._eventHandlers = _eventHandlers;
 
     _methodMap.put("query", this);
-    _queryReaders = _createqueryReaders();
+    _queryReaders = _create_query_request_readers();
 
     _methodMap.put("hasArgDocs", this);
-    _hasArgDocsReaders = _createhasArgDocsReaders();
+    _hasArgDocsReaders = _create_hasArgDocs_request_readers();
 
   }
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _createqueryReaders() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_query_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
@@ -74,7 +74,7 @@ public class MyServiceRpcServerHandler
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _createqueryWriter(
+  private static com.facebook.thrift.payload.Writer _create_query_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -100,6 +100,7 @@ public class MyServiceRpcServerHandler
     };
   }
 
+
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _doquery(
     MyService.Reactive _delegate,
@@ -122,16 +123,17 @@ public class MyServiceRpcServerHandler
             .query(s, i)
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _createqueryWriter(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_query_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
@@ -146,7 +148,7 @@ public class MyServiceRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _createhasArgDocsReaders() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_hasArgDocs_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     
@@ -173,7 +175,7 @@ public class MyServiceRpcServerHandler
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _createhasArgDocsWriter(
+  private static com.facebook.thrift.payload.Writer _create_hasArgDocs_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -199,6 +201,7 @@ public class MyServiceRpcServerHandler
     };
   }
 
+
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dohasArgDocs(
     MyService.Reactive _delegate,
@@ -221,16 +224,17 @@ public class MyServiceRpcServerHandler
             .hasArgDocs(s, i)
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _createhasArgDocsWriter(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_hasArgDocs_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(

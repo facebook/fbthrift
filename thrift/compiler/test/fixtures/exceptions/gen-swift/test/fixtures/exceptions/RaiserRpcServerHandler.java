@@ -42,27 +42,27 @@ public class RaiserRpcServerHandler
     this._eventHandlers = _eventHandlers;
 
     _methodMap.put("doBland", this);
-    _doBlandReaders = _createdoBlandReaders();
+    _doBlandReaders = _create_doBland_request_readers();
 
     _methodMap.put("doRaise", this);
-    _doRaiseReaders = _createdoRaiseReaders();
+    _doRaiseReaders = _create_doRaise_request_readers();
 
     _methodMap.put("get200", this);
-    _get200Readers = _createget200Readers();
+    _get200Readers = _create_get200_request_readers();
 
     _methodMap.put("get500", this);
-    _get500Readers = _createget500Readers();
+    _get500Readers = _create_get500_request_readers();
 
   }
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _createdoBlandReaders() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_doBland_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _createdoBlandWriter(
+  private static com.facebook.thrift.payload.Writer _create_doBland_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -88,6 +88,7 @@ public class RaiserRpcServerHandler
     };
   }
 
+
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dodoBland(
     Raiser.Reactive _delegate,
@@ -108,16 +109,17 @@ public class RaiserRpcServerHandler
             .doBland()
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _createdoBlandWriter(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_doBland_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
@@ -132,14 +134,14 @@ public class RaiserRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _createdoRaiseReaders() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_doRaise_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _createdoRaiseWriter(
+  private static com.facebook.thrift.payload.Writer _create_doRaise_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -159,6 +161,34 @@ public class RaiserRpcServerHandler
         oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
+  private static com.facebook.thrift.payload.Writer _create_doRaise_exception_writer(
+      final Throwable _t,
+      final com.facebook.swift.service.ContextChain _chain,
+      final int _seqId,
+      final short _fieldId) {
+      return oprot -> {
+      try {
+        _chain.declaredUserException(_t);
+        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("doRaise", TMessageType.REPLY, _seqId));
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
+
+        oprot.writeFieldBegin(
+            new TField("responseField", TType.STRUCT, _fieldId));
+        com.facebook.thrift.payload.ThriftSerializable _iter0 = (com.facebook.thrift.payload.ThriftSerializable)_t;
+        _iter0.write0(oprot);
+
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        oprot.writeMessageEnd();
+
+        _chain.postWriteException(_t);
       } catch (Throwable _e) {
         throw reactor.core.Exceptions.propagate(_e);
       }
@@ -185,16 +215,26 @@ public class RaiserRpcServerHandler
             .doRaise()
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _createdoRaiseWriter(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_doRaise_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
+                if (_t instanceof test.fixtures.exceptions.Banal) {
+                    _exceptionWriter = _create_doRaise_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 1);
+                }
+                if (_t instanceof test.fixtures.exceptions.Fiery) {
+                    _exceptionWriter = _create_doRaise_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 2);
+                }
+                if (_t instanceof test.fixtures.exceptions.Serious) {
+                    _exceptionWriter = _create_doRaise_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 3);
+                }
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
@@ -209,14 +249,14 @@ public class RaiserRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _createget200Readers() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_get200_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _createget200Writer(
+  private static com.facebook.thrift.payload.Writer _create_get200_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -244,6 +284,7 @@ oprot.writeString(_iter0);
     };
   }
 
+
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _doget200(
     Raiser.Reactive _delegate,
@@ -264,16 +305,17 @@ oprot.writeString(_iter0);
             .get200()
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _createget200Writer(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_get200_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
@@ -288,14 +330,14 @@ oprot.writeString(_iter0);
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _createget500Readers() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_get500_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _createget500Writer(
+  private static com.facebook.thrift.payload.Writer _create_get500_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -323,6 +365,34 @@ oprot.writeString(_iter0);
     };
   }
 
+  private static com.facebook.thrift.payload.Writer _create_get500_exception_writer(
+      final Throwable _t,
+      final com.facebook.swift.service.ContextChain _chain,
+      final int _seqId,
+      final short _fieldId) {
+      return oprot -> {
+      try {
+        _chain.declaredUserException(_t);
+        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("get500", TMessageType.REPLY, _seqId));
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
+
+        oprot.writeFieldBegin(
+            new TField("responseField", TType.STRUCT, _fieldId));
+        com.facebook.thrift.payload.ThriftSerializable _iter0 = (com.facebook.thrift.payload.ThriftSerializable)_t;
+        _iter0.write0(oprot);
+
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        oprot.writeMessageEnd();
+
+        _chain.postWriteException(_t);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _doget500(
     Raiser.Reactive _delegate,
@@ -343,16 +413,26 @@ oprot.writeString(_iter0);
             .get500()
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _createget500Writer(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_get500_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
+                if (_t instanceof test.fixtures.exceptions.Fiery) {
+                    _exceptionWriter = _create_get500_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 1);
+                }
+                if (_t instanceof test.fixtures.exceptions.Banal) {
+                    _exceptionWriter = _create_get500_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 2);
+                }
+                if (_t instanceof test.fixtures.exceptions.Serious) {
+                    _exceptionWriter = _create_get500_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 3);
+                }
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(

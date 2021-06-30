@@ -54,13 +54,13 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
 
     {{#service:supportedFunctions}}
     _methodMap.put("{{function:javaName}}", this);
-    _{{function:javaName}}Readers = _create{{function:javaName}}Readers();
+    _{{function:javaName}}Readers = _create_{{function:javaName}}_request_readers();
 
     {{/service:supportedFunctions}}
   }
 
   {{#service:supportedFunctions}}
-  private static java.util.List<com.facebook.thrift.payload.Reader> _create{{function:javaName}}Readers() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_{{function:javaName}}_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
     {{#function:args}}
@@ -82,7 +82,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _create{{function:javaName}}Writer(
+  private static com.facebook.thrift.payload.Writer _create_{{function:javaName}}_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -116,6 +116,36 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
     };
   }
 
+  {{#function:exceptions?}}
+  private static com.facebook.thrift.payload.Writer _create_{{function:javaName}}_exception_writer(
+      final Throwable _t,
+      final com.facebook.swift.service.ContextChain _chain,
+      final int _seqId,
+      final short _fieldId) {
+      return oprot -> {
+      try {
+        _chain.declaredUserException(_t);
+        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("{{function:javaName}}", TMessageType.REPLY, _seqId));
+        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
+
+        oprot.writeFieldBegin(
+            new TField("responseField", TType.STRUCT, _fieldId));
+        com.facebook.thrift.payload.ThriftSerializable _iter0 = (com.facebook.thrift.payload.ThriftSerializable)_t;
+        _iter0.write0(oprot);
+
+        oprot.writeFieldEnd();
+        oprot.writeFieldStop();
+        oprot.writeStructEnd();
+        oprot.writeMessageEnd();
+
+        _chain.postWriteException(_t);
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    };
+  }
+  {{/function:exceptions?}}
+
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _do{{function:javaName}}(
     {{service:javaCapitalName}}.Reactive _delegate,
@@ -139,16 +169,22 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
             .{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}})
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _create{{function:javaName}}Writer(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_{{function:javaName}}_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
+                {{#function:exceptions}}
+                if (_t instanceof {{#field:type}}{{> Type}}{{/field:type}}) {
+                    _exceptionWriter = _create_{{function:javaName}}_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) {{field:key}});
+                }
+                {{/function:exceptions}}
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(

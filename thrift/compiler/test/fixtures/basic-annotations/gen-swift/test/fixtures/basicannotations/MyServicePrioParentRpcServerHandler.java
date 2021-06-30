@@ -40,21 +40,21 @@ public class MyServicePrioParentRpcServerHandler
     this._eventHandlers = _eventHandlers;
 
     _methodMap.put("ping", this);
-    _pingReaders = _createpingReaders();
+    _pingReaders = _create_ping_request_readers();
 
     _methodMap.put("pong", this);
-    _pongReaders = _createpongReaders();
+    _pongReaders = _create_pong_request_readers();
 
   }
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _createpingReaders() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_ping_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _createpingWriter(
+  private static com.facebook.thrift.payload.Writer _create_ping_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -80,6 +80,7 @@ public class MyServicePrioParentRpcServerHandler
     };
   }
 
+
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _doping(
     MyServicePrioParent.Reactive _delegate,
@@ -100,16 +101,17 @@ public class MyServicePrioParentRpcServerHandler
             .ping()
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _createpingWriter(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_ping_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
@@ -124,14 +126,14 @@ public class MyServicePrioParentRpcServerHandler
 
           return _internalResponse;
   }
-  private static java.util.List<com.facebook.thrift.payload.Reader> _createpongReaders() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_pong_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _createpongWriter(
+  private static com.facebook.thrift.payload.Writer _create_pong_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -157,6 +159,7 @@ public class MyServicePrioParentRpcServerHandler
     };
   }
 
+
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dopong(
     MyServicePrioParent.Reactive _delegate,
@@ -177,16 +180,17 @@ public class MyServicePrioParentRpcServerHandler
             .pong()
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _createpongWriter(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_pong_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(

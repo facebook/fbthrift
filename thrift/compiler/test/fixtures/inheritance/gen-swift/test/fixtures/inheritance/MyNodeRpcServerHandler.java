@@ -39,18 +39,18 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
     this._eventHandlers = _eventHandlers;
 
     _methodMap.put("doMid", this);
-    _doMidReaders = _createdoMidReaders();
+    _doMidReaders = _create_doMid_request_readers();
 
   }
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _createdoMidReaders() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_doMid_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _createdoMidWriter(
+  private static com.facebook.thrift.payload.Writer _create_doMid_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -76,6 +76,7 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
     };
   }
 
+
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dodoMid(
     MyNode.Reactive _delegate,
@@ -96,16 +97,17 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
             .doMid()
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _createdoMidWriter(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_doMid_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(

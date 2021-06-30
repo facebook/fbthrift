@@ -39,18 +39,18 @@ public class MyRootRpcServerHandler
     this._eventHandlers = _eventHandlers;
 
     _methodMap.put("doRoot", this);
-    _doRootReaders = _createdoRootReaders();
+    _doRootReaders = _create_doRoot_request_readers();
 
   }
 
-  private static java.util.List<com.facebook.thrift.payload.Reader> _createdoRootReaders() {
+  private static java.util.List<com.facebook.thrift.payload.Reader> _create_doRoot_request_readers() {
     java.util.List<com.facebook.thrift.payload.Reader> _readerList = new java.util.ArrayList<>();
 
 
     return _readerList;
   }
 
-  private static com.facebook.thrift.payload.Writer _createdoRootWriter(
+  private static com.facebook.thrift.payload.Writer _create_doRoot_response_writer(
       final Object _r,
       final com.facebook.swift.service.ContextChain _chain,
       final int _seqId) {
@@ -76,6 +76,7 @@ public class MyRootRpcServerHandler
     };
   }
 
+
   private static reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload>
     _dodoRoot(
     MyRoot.Reactive _delegate,
@@ -96,16 +97,17 @@ public class MyRootRpcServerHandler
             .doRoot()
             .map(_response -> {
               _chain.preWrite(_response);
-                com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
-                        _payload,
-                        _createdoRootWriter(_response, _chain, _payload.getMessageSeqId()));
+              com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  _payload,
+                  _create_doRoot_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
                 return _serverResponsePayload;
             })
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
+
 
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
                     com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
