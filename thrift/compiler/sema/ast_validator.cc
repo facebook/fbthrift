@@ -366,6 +366,27 @@ void validate_structured_annotation_type_uniqueness(
   }
 }
 
+void validate_field_id_with_lazy_struct(
+    diagnostic_context& ctx, const t_struct& s) {
+  bool hasLazyField = false;
+  for (const auto& field : s.fields()) {
+    hasLazyField = hasLazyField || cpp2::is_lazy(&field);
+  }
+
+  if (!hasLazyField) {
+    return;
+  }
+
+  // We can't use field id = 0 if struct has lazy field
+  for (const auto& field : s.fields()) {
+    if (field.get_key() == 0) {
+      ctx.failure(s, [&](auto& o) {
+        o << "field-id 0 is reserved but is used in field `" + s.get_name() +
+                "`";
+      });
+    }
+  }
+}
 } // namespace
 
 ast_validator standard_validator() {
@@ -391,6 +412,7 @@ ast_validator standard_validator() {
   validator.add_definition_visitor(
       &validate_structured_annotation_type_uniqueness);
   validator.add_definition_visitor(&validate_annotation_scopes);
+  validator.add_struct_visitor(&validate_field_id_with_lazy_struct);
   return validator;
 }
 

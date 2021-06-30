@@ -769,6 +769,30 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(err, expected_error)
 
+    def test_zero_as_field_id(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo {
+                    0: i32 field
+                    1: list<i32> other (cpp.experimental.lazy)
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:2] Negative field key (0) differs from "
+            "what would be auto-assigned by thrift (-1).\n"
+            "[WARNING:foo.thrift:2] Negative field key (0) differs from "
+            "what would be auto-assigned by thrift (-1).\n"
+            "[FAILURE:foo.thrift:1] field-id 0 is reserved but is used in "
+            "field `Foo`\n",
+        )
+
     def test_unordered_minimize_padding(self):
         write_file(
             "foo.thrift",
