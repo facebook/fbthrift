@@ -157,6 +157,16 @@ public class NestedContainersRpcServerHandler
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  _chain.preWrite(null);
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    _payload,
+                    _create_mapList_response_writer(null, _chain, _payload.getMessageSeqId()));
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
@@ -278,6 +288,16 @@ public class NestedContainersRpcServerHandler
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  _chain.preWrite(null);
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    _payload,
+                    _create_mapSet_response_writer(null, _chain, _payload.getMessageSeqId()));
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
@@ -402,6 +422,16 @@ _r.add(_value1);
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  _chain.preWrite(null);
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    _payload,
+                    _create_listMap_response_writer(null, _chain, _payload.getMessageSeqId()));
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
@@ -522,6 +552,16 @@ _r.add(_value1);
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  _chain.preWrite(null);
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    _payload,
+                    _create_listSet_response_writer(null, _chain, _payload.getMessageSeqId()));
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
@@ -689,6 +729,16 @@ _r.add(_value1);
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  _chain.preWrite(null);
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    _payload,
+                    _create_turtles_response_writer(null, _chain, _payload.getMessageSeqId()));
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;

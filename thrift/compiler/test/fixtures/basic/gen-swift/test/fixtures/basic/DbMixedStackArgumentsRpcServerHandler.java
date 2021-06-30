@@ -121,6 +121,16 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method getDataByKey0 returned null");
+                  com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getDataByKey0", _tApplicationException, _chain, _payload.getMessageSeqId());
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
@@ -218,6 +228,16 @@ oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter0));
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method getDataByKey1 returned null");
+                  com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getDataByKey1", _tApplicationException, _chain, _payload.getMessageSeqId());
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;

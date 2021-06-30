@@ -116,6 +116,16 @@ public class RaiserRpcServerHandler
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  _chain.preWrite(null);
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    _payload,
+                    _create_doBland_response_writer(null, _chain, _payload.getMessageSeqId()));
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
@@ -227,6 +237,16 @@ public class RaiserRpcServerHandler
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  _chain.preWrite(null);
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    _payload,
+                    _create_doRaise_response_writer(null, _chain, _payload.getMessageSeqId()));
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
@@ -324,6 +344,16 @@ oprot.writeString(_iter0);
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method get200 returned null");
+                  com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("get200", _tApplicationException, _chain, _payload.getMessageSeqId());
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
@@ -437,6 +467,16 @@ oprot.writeString(_iter0);
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method get500 returned null");
+                  com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("get500", _tApplicationException, _chain, _payload.getMessageSeqId());
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;

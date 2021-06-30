@@ -176,6 +176,24 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
 
                 return _serverResponsePayload;
             })
+            .switchIfEmpty(
+              reactor.core.publisher.Mono.fromSupplier(
+                () -> {
+                  {{^function:voidType}}
+                  org.apache.thrift.TApplicationException _tApplicationException =
+                    new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method {{function:javaName}} returned null");
+                  com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("{{function:javaName}}", _tApplicationException, _chain, _payload.getMessageSeqId());
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                  {{/function:voidType}}
+                  {{#function:voidType}}
+                  _chain.preWrite(null);
+                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    _payload,
+                    _create_{{function:javaName}}_response_writer(null, _chain, _payload.getMessageSeqId()));
+                  {{/function:voidType}}
+                }
+              )
+            )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
                 com.facebook.thrift.payload.Writer _exceptionWriter = null;
