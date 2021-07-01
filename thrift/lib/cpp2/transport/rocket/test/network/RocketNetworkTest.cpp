@@ -306,31 +306,30 @@ TEST_F(RocketNetworkTest, RequestResponseDeadServer) {
 }
 
 TEST_F(RocketNetworkTest, ServerShutdown) {
-  this->withClient([server =
-                        std::move(server_)](RocketTestClient& client) mutable {
-    constexpr folly::StringPiece kMetadata{"metadata"};
-    constexpr folly::StringPiece kData{"data_echo:"};
+  this->withClient(
+      [server = std::move(server_)](RocketTestClient& client) mutable {
+        constexpr folly::StringPiece kMetadata{"metadata"};
+        constexpr folly::StringPiece kData{"data_echo:"};
 
-    auto reply = client.sendRequestResponseSync(
-        Payload::makeFromMetadataAndData(kMetadata, kData));
+        auto reply = client.sendRequestResponseSync(
+            Payload::makeFromMetadataAndData(kMetadata, kData));
 
-    EXPECT_TRUE(reply.hasValue());
-    EXPECT_TRUE(reply->hasNonemptyMetadata());
+        EXPECT_TRUE(reply.hasValue());
+        EXPECT_TRUE(reply->hasNonemptyMetadata());
 
-    server.reset();
+        server.reset();
 
-    auto tew =
-        folly::via(&client.getEventBase(), [&] {
-          return std::make_optional(client.getRawClient().getLastError());
-        }).get();
-    auto tex = tew->get_exception<transport::TTransportException>();
-    ASSERT_NE(nullptr, tex);
-    EXPECT_EQ(
-        TTransportException::TTransportExceptionType::NOT_OPEN, tex->getType());
-    EXPECT_EQ(
-        "Server shutdown [CONNECTION_DRAIN_COMPLETE]",
-        std::string(tex->what()));
-  });
+        auto tew =
+            folly::via(&client.getEventBase(), [&] {
+              return std::make_optional(client.getRawClient().getLastError());
+            }).get();
+        auto tex = tew->get_exception<transport::TTransportException>();
+        ASSERT_NE(nullptr, tex);
+        EXPECT_EQ(
+            TTransportException::TTransportExceptionType::END_OF_FILE,
+            tex->getType());
+        EXPECT_EQ("Connection closed by server", std::string(tex->what()));
+      });
 }
 
 TEST_F(RocketNetworkTest, RocketClientEventBaseDestruction) {

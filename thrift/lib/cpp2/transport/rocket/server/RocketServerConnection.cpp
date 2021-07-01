@@ -133,20 +133,22 @@ void RocketServerConnection::closeIfNeeded() {
 
     socketDrainer_.activate();
 
-    // for version 7+, send custom error code via metadata push
-    if (getVersion() >= 7) {
-      std::optional<DrainCompleteCode> code;
-      if (drainingErrorCode_ == ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT) {
-        code = DrainCompleteCode::EXCEEDED_INGRESS_MEM_LIMIT;
+    if (drainingErrorCode_) {
+      // for version 7+, send custom error code via metadata push
+      if (getVersion() >= 7) {
+        std::optional<DrainCompleteCode> code;
+        if (*drainingErrorCode_ == ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT) {
+          code = DrainCompleteCode::EXCEEDED_INGRESS_MEM_LIMIT;
+        }
+        ServerPushMetadata serverMeta;
+        serverMeta.drainCompletePush_ref()
+            .ensure()
+            .drainCompleteCode_ref()
+            .from_optional(code);
+        sendMetadataPush(packCompact(std::move(serverMeta)));
+      } else {
+        sendError(StreamId{0}, RocketException(*drainingErrorCode_));
       }
-      ServerPushMetadata serverMeta;
-      serverMeta.drainCompletePush_ref()
-          .ensure()
-          .drainCompleteCode_ref()
-          .from_optional(code);
-      sendMetadataPush(packCompact(std::move(serverMeta)));
-    } else {
-      sendError(StreamId{0}, RocketException(drainingErrorCode_));
     }
 
     state_ = ConnectionState::CLOSING;
@@ -659,7 +661,7 @@ void RocketServerConnection::notifyPendingShutdown() {
   }
 
   state_ = ConnectionState::DRAINING;
-  drainingErrorCode_ = ErrorCode::CONNECTION_DRAIN_COMPLETE;
+  sendError(StreamId{0}, RocketException(ErrorCode::CONNECTION_CLOSE));
   closeIfNeeded();
 }
 

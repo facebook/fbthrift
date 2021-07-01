@@ -306,7 +306,7 @@ class RocketServerConnection final
     CLOSED,
   };
   ConnectionState state_{ConnectionState::ALIVE};
-  ErrorCode drainingErrorCode_;
+  std::optional<ErrorCode> drainingErrorCode_;
 
   using ClientCallbackUniquePtr = std::variant<
       std::unique_ptr<RocketStreamClientCallback>,

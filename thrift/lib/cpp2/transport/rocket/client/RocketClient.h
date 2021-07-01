@@ -174,6 +174,12 @@ class RocketClient : public virtual folly::DelayedDestruction,
   }
 
   void notifyIfDetachable() {
+    if (clientState_.connState == ConnectionState::CLOSING && !requests_ &&
+        streams_.empty()) {
+      close(transport::TTransportException(
+          transport::TTransportException::END_OF_FILE,
+          "Connection closed by server"));
+    }
     if (!onDetachable_ || !isDetachable()) {
       return;
     }
@@ -222,9 +228,12 @@ class RocketClient : public virtual folly::DelayedDestruction,
 
  private:
   enum class ConnectionState : uint8_t {
-    CONNECTED,
-    CLOSED,
-    ERROR,
+    CONNECTED, // New requests are allowed
+    CLOSING, // New requests are not allowed, there are active requests or close
+             // callback is scheduled.
+    CLOSED, // New requests are not allowed, there are no active requests.
+    ERROR, // New requests are not allowed, error is stored in error_, close
+           // callback is scheduled.
   };
 
   struct ClientState {

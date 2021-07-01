@@ -431,6 +431,22 @@ void RocketClient::handleError(RocketException&& rex) {
   };
   folly::exception_wrapper ew;
   switch (rex.getErrorCode()) {
+    case ErrorCode::CONNECTION_CLOSE: {
+      if (clientState_.connState != ConnectionState::CONNECTED) {
+        return;
+      }
+
+      clientState_.connState = ConnectionState::CLOSING;
+
+      writeLoopCallback_.cancelLoopCallback();
+      queue_.failAllScheduledWrites(transport::TTransportException(
+          transport::TTransportException::NOT_OPEN,
+          "Connection closed by server"));
+
+      notifyIfDetachable();
+
+      return;
+    }
     case ErrorCode::INVALID_SETUP: {
       ew = transport::TTransportException(
           transport::TTransportException::NOT_OPEN,
@@ -1099,7 +1115,8 @@ void RocketClient::closeNow(transport::TTransportException ex) noexcept {
 void RocketClient::close(folly::exception_wrapper ew) noexcept {
   DestructorGuard dg(this);
 
-  if (clientState_.connState != ConnectionState::CONNECTED) {
+  if (clientState_.connState != ConnectionState::CONNECTED &&
+      clientState_.connState != ConnectionState::CLOSING) {
     return;
   }
 
