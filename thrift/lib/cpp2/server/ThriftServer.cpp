@@ -371,6 +371,14 @@ void ThriftServer::setup() {
       // the kernel.)
       ServerBootstrap::getSockets()[0]->getAddress(&addresses_.at(0));
 
+      // THRIFT_PORT_OUT should be set with value of length 5. After thrift
+      // server setup the env var will contain the port.
+      if (auto portOutput = getenv("THRIFT_PORT_OUT")) {
+        if (strlen(portOutput) == 5) {
+          snprintf(portOutput, 6, "%05d", addresses_.at(0).getPort());
+        }
+      }
+
       // we enable zerocopy for the server socket if the
       // zeroCopyEnableFunc_ is valid
       bool useZeroCopy = !!zeroCopyEnableFunc_;
