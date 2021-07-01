@@ -59,6 +59,9 @@ class ScopedServerInterfaceThread {
       uint16_t port = 0,
       ServerConfigCb configCb = {});
 
+  explicit ScopedServerInterfaceThread(
+      std::shared_ptr<AsyncProcessorFactory> apf, ServerConfigCb configCb);
+
   explicit ScopedServerInterfaceThread(std::shared_ptr<BaseThriftServer> ts);
 
   BaseThriftServer& getThriftServer() const;

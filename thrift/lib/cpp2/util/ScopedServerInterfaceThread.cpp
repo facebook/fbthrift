@@ -67,6 +67,10 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
           move(apf), SocketAddress(host, port), move(configCb)) {}
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
+    shared_ptr<AsyncProcessorFactory> apf, ServerConfigCb configCb)
+    : ScopedServerInterfaceThread(move(apf), "::1", 0, move(configCb)) {}
+
+ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<BaseThriftServer> bts) {
   ts_ = bts;
   sst_.start(ts_);
