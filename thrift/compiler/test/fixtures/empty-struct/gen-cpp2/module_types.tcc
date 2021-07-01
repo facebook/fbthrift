@@ -80,27 +80,33 @@ _loop:
 
 template <class Protocol_>
 uint32_t Empty::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Empty");
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t Empty::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Empty");
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t Empty::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Empty");
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void Empty::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

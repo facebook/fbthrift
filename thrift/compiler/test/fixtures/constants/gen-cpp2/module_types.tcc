@@ -237,6 +237,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t Internship::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Internship");
   {
@@ -247,20 +248,22 @@ uint32_t Internship::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("title", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->title);
   }
-  if (this->employer_ref().has_value()) {
+  if (this->__isset.employer) {
     xfer += prot_->serializedFieldSize("employer", apache::thrift::protocol::T_I32, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Company>::serializedSize<false>(*prot_, this->employer);
   }
-  if (this->compensation_ref().has_value()) {
+  if (this->__isset.compensation) {
     xfer += prot_->serializedFieldSize("compensation", apache::thrift::protocol::T_DOUBLE, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->compensation);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t Internship::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Internship");
   {
@@ -271,20 +274,22 @@ uint32_t Internship::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("title", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->title);
   }
-  if (this->employer_ref().has_value()) {
+  if (this->__isset.employer) {
     xfer += prot_->serializedFieldSize("employer", apache::thrift::protocol::T_I32, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Company>::serializedSize<false>(*prot_, this->employer);
   }
-  if (this->compensation_ref().has_value()) {
+  if (this->__isset.compensation) {
     xfer += prot_->serializedFieldSize("compensation", apache::thrift::protocol::T_DOUBLE, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->compensation);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t Internship::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Internship");
   bool previousFieldHasValue = true;
@@ -302,7 +307,7 @@ uint32_t Internship::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::write(*prot_, this->title);
     xfer += prot_->writeFieldEnd();
   }
-  if (this->employer_ref().has_value()) {
+  if (this->__isset.employer) {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 3, kPrevFieldId>(*prot_, "employer", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -311,7 +316,7 @@ uint32_t Internship::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->compensation_ref().has_value()) {
+  if (this->__isset.compensation) {
     constexpr int16_t kPrevFieldId = 3;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_DOUBLE, 4, kPrevFieldId>(*prot_, "compensation", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -323,6 +328,7 @@ uint32_t Internship::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void Internship::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -424,6 +430,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t Range::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Range");
   {
@@ -436,10 +443,12 @@ uint32_t Range::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t Range::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Range");
   {
@@ -452,10 +461,12 @@ uint32_t Range::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t Range::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Range");
   bool previousFieldHasValue = true;
@@ -476,6 +487,7 @@ uint32_t Range::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void Range::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -583,6 +595,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t struct1::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct1");
   {
@@ -595,10 +608,12 @@ uint32_t struct1::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t struct1::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct1");
   {
@@ -611,10 +626,12 @@ uint32_t struct1::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t struct1::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct1");
   bool previousFieldHasValue = true;
@@ -635,6 +652,7 @@ uint32_t struct1::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void struct1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -795,6 +813,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t struct2::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct2");
   {
@@ -815,10 +834,12 @@ uint32_t struct2::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t struct2::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct2");
   {
@@ -839,10 +860,12 @@ uint32_t struct2::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t struct2::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct2");
   bool previousFieldHasValue = true;
@@ -877,6 +900,7 @@ uint32_t struct2::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void struct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1010,6 +1034,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t struct3::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct3");
   {
@@ -1026,10 +1051,12 @@ uint32_t struct3::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t struct3::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct3");
   {
@@ -1046,10 +1073,12 @@ uint32_t struct3::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t struct3::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct3");
   bool previousFieldHasValue = true;
@@ -1077,6 +1106,7 @@ uint32_t struct3::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void struct3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1208,46 +1238,51 @@ _skip:
 
 template <class Protocol_>
 uint32_t struct4::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct4");
   {
     xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->a);
   }
-  if (this->b_ref().has_value()) {
+  if (this->__isset.b) {
     xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_DOUBLE, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->b);
   }
-  if (this->c_ref().has_value()) {
+  if (this->__isset.c) {
     xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_BYTE, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int8_t>::serializedSize<false>(*prot_, this->c);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t struct4::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("struct4");
   {
     xfer += prot_->serializedFieldSize("a", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->a);
   }
-  if (this->b_ref().has_value()) {
+  if (this->__isset.b) {
     xfer += prot_->serializedFieldSize("b", apache::thrift::protocol::T_DOUBLE, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::serializedSize<false>(*prot_, this->b);
   }
-  if (this->c_ref().has_value()) {
+  if (this->__isset.c) {
     xfer += prot_->serializedFieldSize("c", apache::thrift::protocol::T_BYTE, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int8_t>::serializedSize<false>(*prot_, this->c);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t struct4::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("struct4");
   bool previousFieldHasValue = true;
@@ -1258,7 +1293,7 @@ uint32_t struct4::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->a);
     xfer += prot_->writeFieldEnd();
   }
-  if (this->b_ref().has_value()) {
+  if (this->__isset.b) {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_DOUBLE, 2, kPrevFieldId>(*prot_, "b", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -1267,7 +1302,7 @@ uint32_t struct4::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->c_ref().has_value()) {
+  if (this->__isset.c) {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_BYTE, 3, kPrevFieldId>(*prot_, "c", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -1279,6 +1314,7 @@ uint32_t struct4::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void struct4::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

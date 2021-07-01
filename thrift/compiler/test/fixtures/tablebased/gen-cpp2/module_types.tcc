@@ -33,21 +33,22 @@ void TrivialTypesStruct::readNoXfer(Protocol_* iprot) {
 
 template <class Protocol_>
 uint32_t TrivialTypesStruct::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TrivialTypesStruct");
-  if (this->fieldA_ref().has_value()) {
+  if (this->__isset.fieldA) {
     xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->fieldA);
   }
-  if (this->fieldB_ref().has_value()) {
+  if (this->__isset.fieldB) {
     xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldB);
   }
-  if (this->fieldC_ref().has_value()) {
+  if (this->__isset.fieldC) {
     xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_STRING, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<false>(*prot_, this->fieldC);
   }
-  if (this->fieldD_ref().has_value()) {
+  if (this->__isset.fieldD) {
     xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_STRING, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::test::fixtures::tablebased::IOBufPtr>::serializedSize<false>(*prot_, this->fieldD);
   }
@@ -57,25 +58,27 @@ uint32_t TrivialTypesStruct::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t TrivialTypesStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TrivialTypesStruct");
-  if (this->fieldA_ref().has_value()) {
+  if (this->__isset.fieldA) {
     xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->fieldA);
   }
-  if (this->fieldB_ref().has_value()) {
+  if (this->__isset.fieldB) {
     xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldB);
   }
-  if (this->fieldC_ref().has_value()) {
+  if (this->__isset.fieldC) {
     xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_STRING, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<true>(*prot_, this->fieldC);
   }
-  if (this->fieldD_ref().has_value()) {
+  if (this->__isset.fieldD) {
     xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_STRING, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::test::fixtures::tablebased::IOBufPtr>::serializedSize<true>(*prot_, this->fieldD);
   }
@@ -85,6 +88,7 @@ uint32_t TrivialTypesStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
@@ -126,6 +130,7 @@ void ContainerStruct::readNoXfer(Protocol_* iprot) {
 
 template <class Protocol_>
 uint32_t ContainerStruct::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ContainerStruct");
   {
@@ -162,10 +167,12 @@ uint32_t ContainerStruct::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t ContainerStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("ContainerStruct");
   {
@@ -202,6 +209,7 @@ uint32_t ContainerStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>

@@ -16,6 +16,7 @@
 
 %>template <class Protocol_>
 uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("<%struct:name%>");
 <%#struct:fields%>
@@ -23,10 +24,12 @@ uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
 <%/struct:fields%>
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("<%struct:name%>");
 <%#struct:fields%>
@@ -34,11 +37,13 @@ uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
 <%/struct:fields%>
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 <%^program:tablebased?%>
 template <class Protocol_>
 uint32_t <%struct:name%>::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("<%struct:name%>");
 <%#struct:indexing?%>
@@ -56,6 +61,7 @@ uint32_t <%struct:name%>::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 <%/program:tablebased?%>
 <%#program:tablebased?%>

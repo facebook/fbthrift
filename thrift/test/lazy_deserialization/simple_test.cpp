@@ -102,6 +102,11 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyFoo, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyFoo, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyFoo, field4);
 
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, OptionalLazyFoo, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, OptionalLazyFoo, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, OptionalLazyFoo, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, OptionalLazyFoo, field4);
+
 TYPED_TEST(Serialization, CheckDataMember) {
   auto foo = gen<LazyFoo>();
   auto s = TypeParam::template serialize<std::string>(foo);
@@ -312,12 +317,12 @@ TEST(Serialization, SerializeWithDifferentProtocolSimple) {
   EXPECT_EQ(foo1, gen<LazyFoo>());
 }
 
-template <class Serializer1, class Serializer2>
+template <class Serializer1, class Serializer2, class LazyStruct>
 void serializationWithDifferentProtocol() {
-  auto foo = Serializer1::template deserialize<LazyFoo>(
-      Serializer1::template serialize<std::string>(gen<LazyFoo>()));
+  auto foo = Serializer1::template deserialize<LazyStruct>(
+      Serializer1::template serialize<std::string>(gen<LazyStruct>()));
 
-  auto foo1 = Serializer1::template deserialize<LazyFoo>(
+  auto foo1 = Serializer1::template deserialize<LazyStruct>(
       Serializer1::template serialize<std::string>(foo));
 
   // Serialize with same protocol, lazy fields won't be deserialized
@@ -326,9 +331,9 @@ void serializationWithDifferentProtocol() {
   EXPECT_TRUE(get_field3(foo).empty());
   EXPECT_TRUE(get_field4(foo).empty());
 
-  EXPECT_EQ(foo1, gen<LazyFoo>());
+  EXPECT_EQ(foo1, gen<LazyStruct>());
 
-  auto foo2 = Serializer2::template deserialize<LazyFoo>(
+  auto foo2 = Serializer2::template deserialize<LazyStruct>(
       Serializer2::template serialize<std::string>(foo));
 
   // Serialize with different protocol, all fields are deserialized
@@ -337,12 +342,26 @@ void serializationWithDifferentProtocol() {
   EXPECT_FALSE(get_field3(foo).empty());
   EXPECT_FALSE(get_field4(foo).empty());
 
-  EXPECT_EQ(foo2, gen<LazyFoo>());
+  EXPECT_EQ(foo2, gen<LazyStruct>());
 }
 
 TEST(Serialization, SerializationWithDifferentProtocol) {
-  serializationWithDifferentProtocol<CompactSerializer, BinarySerializer>();
-  serializationWithDifferentProtocol<BinarySerializer, CompactSerializer>();
+  serializationWithDifferentProtocol<
+      CompactSerializer,
+      BinarySerializer,
+      LazyFoo>();
+  serializationWithDifferentProtocol<
+      BinarySerializer,
+      CompactSerializer,
+      LazyFoo>();
+  serializationWithDifferentProtocol<
+      CompactSerializer,
+      BinarySerializer,
+      OptionalLazyFoo>();
+  serializationWithDifferentProtocol<
+      BinarySerializer,
+      CompactSerializer,
+      OptionalLazyFoo>();
 }
 
 } // namespace apache::thrift::test

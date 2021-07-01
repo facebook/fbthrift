@@ -15,12 +15,15 @@
   limitations under the License.
 
   // If an optional field is set.
+%><%#field:optional?%><%!
 %><%#field:cpp_ref?%><%!
 // For references, check if the field is not null.
 %><% > field/member%><%!
 %><%/field:cpp_ref?%><%!
 %><%^field:cpp_ref?%><%!
-// For other values go through the field_ref interface.
-%>this-><%field:cpp_name%>_ref().has_value()<%!
+// For other values, check __isset status. We don't use field access API
+// since if field is lazy field, we don't want to deserialize it
+%>this->__isset.<%field:cpp_name%><%!
 %><%/field:cpp_ref?%><%!
+%><%/field:optional?%><%!
 %>

@@ -178,6 +178,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t structured_annotation_inline::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_inline");
   {
@@ -190,10 +191,12 @@ uint32_t structured_annotation_inline::serializedSize(Protocol_ const* prot_) co
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t structured_annotation_inline::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_inline");
   {
@@ -206,10 +209,12 @@ uint32_t structured_annotation_inline::serializedSizeZC(Protocol_ const* prot_) 
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t structured_annotation_inline::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_inline");
   bool previousFieldHasValue = true;
@@ -230,6 +235,7 @@ uint32_t structured_annotation_inline::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void structured_annotation_inline::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -313,6 +319,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t structured_annotation_with_default::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_with_default");
   {
@@ -321,10 +328,12 @@ uint32_t structured_annotation_with_default::serializedSize(Protocol_ const* pro
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t structured_annotation_with_default::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_with_default");
   {
@@ -333,10 +342,12 @@ uint32_t structured_annotation_with_default::serializedSizeZC(Protocol_ const* p
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t structured_annotation_with_default::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_with_default");
   bool previousFieldHasValue = true;
@@ -350,6 +361,7 @@ uint32_t structured_annotation_with_default::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void structured_annotation_with_default::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -433,6 +445,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t structured_annotation_forward::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_forward");
   {
@@ -441,10 +454,12 @@ uint32_t structured_annotation_forward::serializedSize(Protocol_ const* prot_) c
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t structured_annotation_forward::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_forward");
   {
@@ -453,10 +468,12 @@ uint32_t structured_annotation_forward::serializedSizeZC(Protocol_ const* prot_)
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t structured_annotation_forward::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_forward");
   bool previousFieldHasValue = true;
@@ -470,6 +487,7 @@ uint32_t structured_annotation_forward::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void structured_annotation_forward::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -605,6 +623,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t structured_annotation_recursive::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_recursive");
   {
@@ -621,10 +640,12 @@ uint32_t structured_annotation_recursive::serializedSize(Protocol_ const* prot_)
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t structured_annotation_recursive::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_recursive");
   {
@@ -641,10 +662,12 @@ uint32_t structured_annotation_recursive::serializedSizeZC(Protocol_ const* prot
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t structured_annotation_recursive::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_recursive");
   bool previousFieldHasValue = true;
@@ -672,6 +695,7 @@ uint32_t structured_annotation_recursive::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void structured_annotation_recursive::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -781,6 +805,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t structured_annotation_nested::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_nested");
   {
@@ -793,10 +818,12 @@ uint32_t structured_annotation_nested::serializedSize(Protocol_ const* prot_) co
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t structured_annotation_nested::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("structured_annotation_nested");
   {
@@ -809,10 +836,12 @@ uint32_t structured_annotation_nested::serializedSizeZC(Protocol_ const* prot_) 
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t structured_annotation_nested::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("structured_annotation_nested");
   bool previousFieldHasValue = true;
@@ -833,6 +862,7 @@ uint32_t structured_annotation_nested::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void structured_annotation_nested::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -988,6 +1018,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   {
@@ -1008,10 +1039,12 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyStruct");
   {
@@ -1032,10 +1065,12 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t MyStruct::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyStruct");
   bool previousFieldHasValue = true;
@@ -1070,6 +1105,7 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1153,6 +1189,7 @@ _skip:
 
 template <class Protocol_>
 uint32_t MyException::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyException");
   {
@@ -1161,10 +1198,12 @@ uint32_t MyException::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t MyException::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("MyException");
   {
@@ -1173,10 +1212,12 @@ uint32_t MyException::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t MyException::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("MyException");
   bool previousFieldHasValue = true;
@@ -1190,6 +1231,7 @@ uint32_t MyException::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void MyException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

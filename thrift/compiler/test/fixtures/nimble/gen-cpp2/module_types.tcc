@@ -167,17 +167,18 @@ _skip:
 
 template <class Protocol_>
 uint32_t BasicTypes::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("BasicTypes");
   {
     xfer += prot_->serializedFieldSize("first", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->first);
   }
-  if (this->second_ref().has_value()) {
+  if (this->__isset.second) {
     xfer += prot_->serializedFieldSize("second", apache::thrift::protocol::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->second);
   }
-  if (this->third_ref().has_value()) {
+  if (this->__isset.third) {
     xfer += prot_->serializedFieldSize("third", apache::thrift::protocol::T_I64, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->third);
   }
@@ -187,21 +188,23 @@ uint32_t BasicTypes::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t BasicTypes::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("BasicTypes");
   {
     xfer += prot_->serializedFieldSize("first", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->first);
   }
-  if (this->second_ref().has_value()) {
+  if (this->__isset.second) {
     xfer += prot_->serializedFieldSize("second", apache::thrift::protocol::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->second);
   }
-  if (this->third_ref().has_value()) {
+  if (this->__isset.third) {
     xfer += prot_->serializedFieldSize("third", apache::thrift::protocol::T_I64, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::serializedSize<false>(*prot_, this->third);
   }
@@ -211,10 +214,12 @@ uint32_t BasicTypes::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t BasicTypes::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("BasicTypes");
   bool previousFieldHasValue = true;
@@ -225,7 +230,7 @@ uint32_t BasicTypes::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->first);
     xfer += prot_->writeFieldEnd();
   }
-  if (this->second_ref().has_value()) {
+  if (this->__isset.second) {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 2, kPrevFieldId>(*prot_, "second", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -234,7 +239,7 @@ uint32_t BasicTypes::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (this->third_ref().has_value()) {
+  if (this->__isset.third) {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I64, 3, kPrevFieldId>(*prot_, "third", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -253,6 +258,7 @@ uint32_t BasicTypes::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void BasicTypes::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
