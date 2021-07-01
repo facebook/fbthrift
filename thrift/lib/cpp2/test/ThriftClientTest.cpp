@@ -22,6 +22,7 @@
 #include <folly/portability/GTest.h>
 #include <folly/synchronization/test/Barrier.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -130,6 +131,7 @@ TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
   //  Handler has medium 100ms delay.
   auto handler = make_shared<DelayHandler>(handlerDelay);
   ScopedServerInterfaceThread runner(handler);
+  runner.getThriftServer().setUseClientTimeout(false);
 
   EventBase eb;
   auto channel = folly::to_shared_ptr(HeaderClientChannel::newChannel(
