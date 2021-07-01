@@ -1139,7 +1139,7 @@ Field:
         "FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional");
       if ($2.auto_assigned) {
         driver.warning([&](auto& o) {
-          o << "No field key specified for " << $5 << ", resulting protocol may"
+          o << "No field id specified for " << $5 << ", resulting protocol may"
             << " have conflicts or not be backwards compatible!";
         });
         if (driver.params.strict >= 192) {
@@ -1163,7 +1163,7 @@ FieldIdentifier:
         if (driver.params.allow_neg_field_keys) {
           /*
            * allow_neg_field_keys exists to allow users to add explicitly
-           * specified key values to old .thrift files without breaking
+           * specified id values to old .thrift files without breaking
            * protocol compatibility.
            */
           if ($1 != y_field_val) {
@@ -1172,20 +1172,20 @@ FieldIdentifier:
              * thrift would have auto-assigned.
              */
             driver.warning([&](auto& o) {
-              o << "Negative field key (" << $1 << ") differs from what would "
+              o << "Nonpositive field id (" << $1 << ") differs from what would "
                 << "be auto-assigned by thrift (" << y_field_val << ").";
             });
           }
           /*
            * Leave $1 as-is, and update y_field_val to be one less than $1.
-           * The FieldList parsing will catch any duplicate key values.
+           * The FieldList parsing will catch any duplicate id values.
            */
           y_field_val = $1 - 1;
           $$.value = $1;
           $$.auto_assigned = false;
         } else {
           driver.warning([&](auto& o) {
-            o << "Nonpositive value (" << $1 << ") not allowed as a field key.";
+            o << "Nonpositive value (" << $1 << ") not allowed as a field id.";
           });
           $$.value = y_field_val--;
           $$.auto_assigned = true;

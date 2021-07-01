@@ -93,42 +93,30 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] No field key specified for f1, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:3] Nonpositive value (-2) not allowed as a field key.\n"
-            + "[WARNING:foo.thrift:3] No field key specified for f2, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:4] Nonpositive value (-16384) not allowed as a field key.\n"
-            + "[WARNING:foo.thrift:4] No field key specified for f3, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:5] Nonpositive value (-16385) not allowed as a field key.\n"
-            + "[WARNING:foo.thrift:5] No field key specified for f4, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:8] Nonpositive value (-16384) not allowed as a field key.\n"
-            + "[WARNING:foo.thrift:8] No field key specified for f5, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:9] No field key specified for f6, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:2] No field key specified for f1, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:3] Nonpositive value (-2) not allowed as a field key.\n"
-            + "[WARNING:foo.thrift:3] No field key specified for f2, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:4] Nonpositive value (-16384) not allowed as a field key.\n"
-            + "[WARNING:foo.thrift:4] No field key specified for f3, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:5] Nonpositive value (-16385) not allowed as a field key.\n"
-            + "[WARNING:foo.thrift:5] No field key specified for f4, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:8] Nonpositive value (-16384) not allowed as a field key.\n"
-            + "[WARNING:foo.thrift:8] No field key specified for f5, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:9] No field key specified for f6, resulting protocol may have conflicts or not be backwards compatible!\n",
+            "[WARNING:foo.thrift:2] No field id specified for f1, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:3] Nonpositive value (-2) not allowed as a field id.\n"
+            "[WARNING:foo.thrift:3] No field id specified for f2, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:4] Nonpositive value (-16384) not allowed as a field id.\n"
+            "[WARNING:foo.thrift:4] No field id specified for f3, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:5] Nonpositive value (-16385) not allowed as a field id.\n"
+            "[WARNING:foo.thrift:5] No field id specified for f4, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:8] Nonpositive value (-16384) not allowed as a field id.\n"
+            "[WARNING:foo.thrift:8] No field id specified for f5, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:9] No field id specified for f6, resulting protocol may have conflicts or not be backwards compatible!\n"
+            * 2,
         )
         self.assertEqual(ret, 0)
 
         ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] No field key specified for f1, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:4] Negative field key (-16384) differs from what would be auto-assigned by thrift (-3).\n"
-            + "[WARNING:foo.thrift:8] Negative field key (-16384) differs from what would be auto-assigned by thrift (-1).\n"
-            + "[WARNING:foo.thrift:9] No field key specified for f6, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:2] No field key specified for f1, resulting protocol may have conflicts or not be backwards compatible!\n"
-            + "[WARNING:foo.thrift:4] Negative field key (-16384) differs from what would be auto-assigned by thrift (-3).\n"
-            + "[WARNING:foo.thrift:8] Negative field key (-16384) differs from what would be auto-assigned by thrift (-1).\n"
-            + "[WARNING:foo.thrift:9] No field key specified for f6, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:2] No field id specified for f1, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[WARNING:foo.thrift:4] Nonpositive field id (-16384) differs from what would be auto-assigned by thrift (-3).\n"
+            "[WARNING:foo.thrift:8] Nonpositive field id (-16384) differs from what would be auto-assigned by thrift (-1).\n"
+            "[WARNING:foo.thrift:9] No field id specified for f6, resulting protocol may have conflicts or not be backwards compatible!\n"
+            * 2
             + "[FAILURE:foo.thrift:5] Too many fields in `Foo1`\n"
-            + "[FAILURE:foo.thrift:9] Too many fields in `Foo2`\n",
+            "[FAILURE:foo.thrift:9] Too many fields in `Foo2`\n",
         )
         self.assertEqual(ret, 1)
 
@@ -149,7 +137,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "terminate called after throwing an instance of 'std::runtime_error'\n"
-            + "  what():  Oneway methods must have void return type: bar\n",
+            "  what():  Oneway methods must have void return type: bar\n",
         )
         self.assertEqual(ret, -6)
 
@@ -172,7 +160,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(
             err,
             "terminate called after throwing an instance of 'std::runtime_error'\n"
-            + "  what():  Oneway methods can't throw exceptions: baz\n",
+            "  what():  Oneway methods can't throw exceptions: baz\n",
         )
         self.assertEqual(ret, -6)
 
@@ -683,7 +671,7 @@ class CompilerFailureTest(unittest.TestCase):
             # TODO(afuller): Fix t_scope to not include the locally defined Foo as
             # `foo.Foo`, which override the included foo.Foo definition.
             "[FAILURE:foo.thrift:7] Structured annotation `Foo` is already defined for `Annotated`.\n"
-            + "[FAILURE:foo.thrift:8] Structured annotation `Foo` is already defined for `Annotated`.\n",
+            "[FAILURE:foo.thrift:8] Structured annotation `Foo` is already defined for `Annotated`.\n",
         )
 
     def test_structured_annotations_type_resolved(self):
@@ -759,7 +747,7 @@ class CompilerFailureTest(unittest.TestCase):
         write_file("foo.thrift", "\n".join(lines))
 
         expected_error = [
-            f"[WARNING:foo.thrift:{i+3}] No field key specified for field_{i}, "
+            f"[WARNING:foo.thrift:{i+3}] No field id specified for field_{i}, "
             "resulting protocol may have conflicts or not be backwards compatible!"
             for i in range(id_count)
         ] * 2 + [f"[FAILURE:foo.thrift:{id_count + 1}] Too many fields in `Foo`"]
@@ -775,23 +763,29 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 struct Foo {
-                    0: i32 field
-                    1: list<i32> other (cpp.experimental.lazy)
+                    0: i32 field;
+                    1: list<i32> other (cpp.experimental.lazy);
                 }
                 """
             ),
         )
-        ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
-        self.assertEqual(ret, 1)
+        ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] Negative field key (0) differs from "
-            "what would be auto-assigned by thrift (-1).\n"
-            "[WARNING:foo.thrift:2] Negative field key (0) differs from "
-            "what would be auto-assigned by thrift (-1).\n"
-            "[FAILURE:foo.thrift:1] field-id 0 is reserved but is used in "
-            "field `Foo`\n",
+            "[WARNING:foo.thrift:2] Nonpositive value (0) not allowed as a field id.\n"
+            "[WARNING:foo.thrift:2] No field id specified for field, resulting protocol may have conflicts or not be backwards compatible!\n"
+            * 2,
         )
+        self.assertEqual(ret, 0)
+
+        ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n"
+            * 2
+            + "[FAILURE:foo.thrift:1] field-id 0 is reserved but is used in field `Foo`\n",
+        )
+        self.assertEqual(ret, 1)
 
     def test_unordered_minimize_padding(self):
         write_file(
@@ -815,8 +809,8 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 "[FAILURE:foo.thrift] cpp.minimize_padding requires struct "
-                + "definitions to be topologically sorted. Move definition of "
-                + "`B` before its use in field `field`.\n"
+                "definitions to be topologically sorted. Move definition of "
+                "`B` before its use in field `field`.\n"
             ),
         )
 
@@ -843,9 +837,9 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             textwrap.dedent(
                 "[FAILURE:foo.thrift:2] Integral field `field` can not be"
-                + " marked as lazy, since doing so won't bring any benefit.\n"
+                " marked as lazy, since doing so won't bring any benefit.\n"
                 "[FAILURE:foo.thrift:6] Floating point field `field` can not be"
-                + " marked as lazy, since doing so won't bring any benefit.\n"
+                " marked as lazy, since doing so won't bring any benefit.\n"
             ),
         )
 
