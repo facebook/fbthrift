@@ -41,16 +41,10 @@ file.
 {{constant:name}} = {{#constant:value}}{{value:integer_value}}{{/constant:value}}
 {{/type:i64?}}
 {{#type:double?}}
-{{constant:name}} = {{#constant:value}}{{!
-}}{{#value:integer?}}{{value:integer_value}}.0{{/value:integer?}}{{!
-}}{{#value:double?}}{{value:double_value}}{{/value:double?}}{{!
-}}{{/constant:value}}
+{{constant:name}} = {{#constant:value}}float({{value:double_value}}){{/constant:value}}
 {{/type:double?}}
 {{#type:float?}}
-{{constant:name}} = {{#constant:value}}{{!
-}}{{#value:integer?}}{{value:integer_value}}.0{{/value:integer?}}{{!
-}}{{#value:double?}}{{value:double_value}}{{/value:double?}}{{!
-}}{{/constant:value}}
+{{constant:name}} = {{#constant:value}}float({{value:double_value}}){{/constant:value}}
 {{/type:float?}}
 {{#type:string?}}
 {{constant:name}} = c{{constant:name}}().decode('UTF-8')

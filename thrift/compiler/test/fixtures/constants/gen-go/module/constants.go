@@ -24,7 +24,7 @@ const Name = "Mark Zuckerberg"
 const MultiLineString = "This\nis a\nmulti line string.\n"
 var States []map[string]int32
 const X = 1
-const Y = 1000000
+const Y = 1e+06
 const Z = 1e+09
 const ZeroDoubleValue = 0
 const LongDoubleValue = 2.59961e-05

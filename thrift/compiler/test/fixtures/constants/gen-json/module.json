@@ -34,7 +34,7 @@
     },
     "y" : {
       "lineno" : 31,
-      "value" : 1000000,
+      "value" : 1e+06,
       "type_enum" : "DOUBLE",
       "spec_args" : null
     },

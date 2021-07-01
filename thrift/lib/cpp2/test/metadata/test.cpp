@@ -190,6 +190,15 @@ TEST_F(ServiceMetadataTest, SimpleStructsTest) {
   EXPECT_EQ(
       s2.fields_ref()[2].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
+  EXPECT_EQ(s2.fields_ref()[2].structured_annotations_ref()->size(), 1);
+  EXPECT_EQ(
+      s2.fields_ref()[2]
+          .structured_annotations_ref()
+          ->at(0)
+          .fields_ref()
+          ->at("val")
+          .cv_bool_ref(),
+      true);
 }
 
 TEST_F(ServiceMetadataTest, StructUnionTest) {

@@ -38,7 +38,7 @@ multi line string.
 
     public static final double X = (double)1;
 
-    public static final double Y = 1000000.0;
+    public static final double Y = (double)1000000;
 
     public static final double Z = (double)1000000000;
 

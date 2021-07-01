@@ -63,7 +63,7 @@ void mutator::mutate(t_program* const program) {
 static void fill_mutators(mutator_list& ms) {
   ms.add<field_type_to_const_value>();
   ms.add<const_type_to_const_value>();
-
+  ms.add<structured_annotation_type_to_const_value>();
   // add more mutators here ...
 }
 
@@ -75,7 +75,7 @@ static const t_type* resolve_type(const t_type* type) {
 }
 
 static void match_type_with_const_value(
-    t_node* node,
+    const t_node* node,
     t_program* program,
     const t_type* long_type,
     t_const_value* value) {
@@ -148,6 +148,15 @@ static void match_type_with_const_value(
   if (type->is_base_type() && value->is_enum()) {
     value->set_enum_value(nullptr);
   }
+
+  if (type->is_bool() && value->get_type() == t_const_value::CV_INTEGER) {
+    value->set_bool(value->get_integer());
+  }
+
+  if ((type->is_double() || type->is_float()) &&
+      value->get_type() == t_const_value::CV_INTEGER) {
+    value->set_double(value->get_integer());
+  }
 }
 
 /**
@@ -176,6 +185,21 @@ bool const_type_to_const_value::visit(t_const* const tconst) {
   if (tconst->get_type() && tconst->get_value()) {
     match_type_with_const_value(
         tconst, program_, tconst->get_type(), tconst->get_value());
+  }
+  return true;
+}
+
+bool structured_annotation_type_to_const_value::visit(
+    t_program* const program) {
+  program_ = program;
+  return true;
+}
+bool structured_annotation_type_to_const_value::visit(t_named* const tnamed) {
+  for (auto& annot : tnamed->structured_annotations()) {
+    if (annot->get_type() && annot->get_value()) {
+      match_type_with_const_value(
+          annot, program_, annot->get_type(), annot->get_value());
+    }
   }
   return true;
 }

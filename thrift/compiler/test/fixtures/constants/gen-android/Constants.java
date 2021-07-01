@@ -42,7 +42,7 @@ multi line string.
 
   public static final Double x = 1;
 
-  public static final Double y = (double)1000000;
+  public static final Double y = 1e+06;
 
   public static final Double z = 1e+09;
 
