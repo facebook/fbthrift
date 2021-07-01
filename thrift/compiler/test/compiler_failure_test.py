@@ -95,12 +95,11 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[WARNING:foo.thrift:2] No field id specified for f1, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:3] Nonpositive value (-2) not allowed as a field id.\n"
-            "[WARNING:foo.thrift:3] No field id specified for f2, resulting protocol may have conflicts or not be backwards compatible!\n"
-            "[WARNING:foo.thrift:4] Nonpositive value (-16384) not allowed as a field id.\n"
+            "[WARNING:foo.thrift:4] Nonpositive field id (-16384) differs from what is auto-assigned by thrift. The id must positive or -3.\n"
             "[WARNING:foo.thrift:4] No field id specified for f3, resulting protocol may have conflicts or not be backwards compatible!\n"
-            "[WARNING:foo.thrift:5] Nonpositive value (-16385) not allowed as a field id.\n"
+            "[WARNING:foo.thrift:5] Nonpositive field id (-16385) differs from what is auto-assigned by thrift. The id must positive or -4.\n"
             "[WARNING:foo.thrift:5] No field id specified for f4, resulting protocol may have conflicts or not be backwards compatible!\n"
-            "[WARNING:foo.thrift:8] Nonpositive value (-16384) not allowed as a field id.\n"
+            "[WARNING:foo.thrift:8] Nonpositive field id (-16384) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
             "[WARNING:foo.thrift:8] No field id specified for f5, resulting protocol may have conflicts or not be backwards compatible!\n"
             "[WARNING:foo.thrift:9] No field id specified for f6, resulting protocol may have conflicts or not be backwards compatible!\n"
             * 2,
@@ -772,7 +771,7 @@ class CompilerFailureTest(unittest.TestCase):
         ret, out, err = self.run_thrift("foo.thrift")
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:2] Nonpositive value (0) not allowed as a field id.\n"
+            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
             "[WARNING:foo.thrift:2] No field id specified for field, resulting protocol may have conflicts or not be backwards compatible!\n"
             * 2,
         )

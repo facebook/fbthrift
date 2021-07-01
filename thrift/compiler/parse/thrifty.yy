@@ -1159,40 +1159,44 @@ Field:
 FieldIdentifier:
   tok_int_constant ":"
     {
+      $$.value = $1;
+      $$.auto_assigned = false;
       if ($1 <= 0) {
         if (driver.params.allow_neg_field_keys) {
           /*
-           * allow_neg_field_keys exists to allow users to add explicitly
-           * specified id values to old .thrift files without breaking
-           * protocol compatibility.
-           */
+            * allow_neg_field_keys exists to allow users to add explicitly
+            * specified id values to old .thrift files without breaking
+            * protocol compatibility.
+            */
           if ($1 != y_field_val) {
             /*
-             * warn if the user-specified negative value isn't what
-             * thrift would have auto-assigned.
-             */
+              * warn if the user-specified negative value isn't what
+              * thrift would have auto-assigned.
+              */
             driver.warning([&](auto& o) {
               o << "Nonpositive field id (" << $1 << ") differs from what would "
                 << "be auto-assigned by thrift (" << y_field_val << ").";
             });
           }
-          /*
-           * Leave $1 as-is, and update y_field_val to be one less than $1.
-           * The FieldList parsing will catch any duplicate id values.
-           */
-          y_field_val = $1 - 1;
-          $$.value = $1;
-          $$.auto_assigned = false;
-        } else {
+        } else if ($1 == y_field_val) {
           driver.warning([&](auto& o) {
             o << "Nonpositive value (" << $1 << ") not allowed as a field id.";
           });
-          $$.value = y_field_val--;
+        } else {
+          // TODO(afuller): Make ignoring the user provided value a failure.
+          driver.warning([&](auto& o) {
+            o << "Nonpositive field id (" << $1 << ") differs from what is auto-"
+            "assigned by thrift. The id must positive or " << y_field_val << ".";
+          });
+          // Ignore user provided value.
+          $$.value = y_field_val;
           $$.auto_assigned = true;
         }
-      } else {
-        $$.value = $1;
-        $$.auto_assigned = false;
+        /*
+          * Update y_field_val to be one less than $$.value.
+          * The FieldList parsing will catch any duplicate id values.
+          */
+        y_field_val = $$.value - 1;
       }
     }
 |
