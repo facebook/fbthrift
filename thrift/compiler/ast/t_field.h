@@ -160,16 +160,6 @@ class t_field final : public t_named {
 
 using t_field_list = node_list<t_field>;
 
-/**
- * A simple struct for the parser to use to store a field ID, and whether or
- * not it was specified by the user or automatically chosen.
- */
-// TODO(afuller): Move to parse_driver.h
-struct t_field_id {
-  int64_t value;
-  bool auto_assigned;
-};
-
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
