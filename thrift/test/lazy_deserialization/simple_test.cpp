@@ -293,10 +293,16 @@ TYPED_TEST(LazyDeserialization, ReserializeSameStruct) {
   EXPECT_EQ(foo1.field4_ref(), foo2.field4_ref());
 }
 
-template <class Serializer1, class Serializer2>
-void deserializationWithDifferentProtocol() {
-  auto foo = Serializer1::template deserialize<LazyFoo>(
-      Serializer1::template serialize<std::string>(gen<LazyFoo>()));
+TYPED_TEST(LazyDeserialization, DeserializationWithDifferentProtocol) {
+  using Serializer = typename TypeParam::Serializer;
+  using LazyStruct = typename TypeParam::LazyStruct;
+  using Serializer2 = std::conditional_t<
+      std::is_same_v<Serializer, CompactSerializer>,
+      BinarySerializer,
+      CompactSerializer>;
+
+  auto foo = this->template deserialize<LazyStruct>(
+      this->serialize(this->genLazyStruct()));
 
   EXPECT_FALSE(get_field1(foo).empty());
   EXPECT_FALSE(get_field2(foo).empty());
@@ -304,8 +310,8 @@ void deserializationWithDifferentProtocol() {
   EXPECT_TRUE(get_field4(foo).empty());
 
   // Deserialize with same protocol, all fields are untouched
-  Serializer1::deserialize(
-      Serializer1::template serialize<std::string>(OptionalFoo{}), foo);
+  Serializer::deserialize(
+      Serializer::template serialize<std::string>(Empty{}), foo);
 
   EXPECT_FALSE(get_field1(foo).empty());
   EXPECT_FALSE(get_field2(foo).empty());
@@ -314,17 +320,14 @@ void deserializationWithDifferentProtocol() {
 
   // Deserialize with different protocol, all fields are deserialized
   Serializer2::deserialize(
-      Serializer2::template serialize<std::string>(OptionalFoo{}), foo);
+      Serializer2::template serialize<std::string>(Empty{}), foo);
 
   EXPECT_FALSE(get_field1(foo).empty());
   EXPECT_FALSE(get_field2(foo).empty());
   EXPECT_FALSE(get_field3(foo).empty());
   EXPECT_FALSE(get_field4(foo).empty());
-}
 
-TEST(Serialization, DeserializationWithDifferentProtocol) {
-  deserializationWithDifferentProtocol<CompactSerializer, BinarySerializer>();
-  deserializationWithDifferentProtocol<BinarySerializer, CompactSerializer>();
+  EXPECT_EQ(foo, this->genLazyStruct());
 }
 
 TEST(Serialization, SerializeWithDifferentProtocolSimple) {
@@ -337,13 +340,19 @@ TEST(Serialization, SerializeWithDifferentProtocolSimple) {
   EXPECT_EQ(foo1, gen<LazyFoo>());
 }
 
-template <class Serializer1, class Serializer2, class LazyStruct>
-void serializationWithDifferentProtocol() {
-  auto foo = Serializer1::template deserialize<LazyStruct>(
-      Serializer1::template serialize<std::string>(gen<LazyStruct>()));
+TYPED_TEST(LazyDeserialization, SerializationWithDifferentProtocol) {
+  using Serializer = typename TypeParam::Serializer;
+  using LazyStruct = typename TypeParam::LazyStruct;
+  using Serializer2 = std::conditional_t<
+      std::is_same_v<Serializer, CompactSerializer>,
+      BinarySerializer,
+      CompactSerializer>;
 
-  auto foo1 = Serializer1::template deserialize<LazyStruct>(
-      Serializer1::template serialize<std::string>(foo));
+  auto foo = Serializer::template deserialize<LazyStruct>(
+      Serializer::template serialize<std::string>(gen<LazyStruct>()));
+
+  auto foo1 = Serializer::template deserialize<LazyStruct>(
+      Serializer::template serialize<std::string>(foo));
 
   // Serialize with same protocol, lazy fields won't be deserialized
   EXPECT_FALSE(get_field1(foo).empty());
@@ -363,25 +372,6 @@ void serializationWithDifferentProtocol() {
   EXPECT_FALSE(get_field4(foo).empty());
 
   EXPECT_EQ(foo2, gen<LazyStruct>());
-}
-
-TEST(Serialization, SerializationWithDifferentProtocol) {
-  serializationWithDifferentProtocol<
-      CompactSerializer,
-      BinarySerializer,
-      LazyFoo>();
-  serializationWithDifferentProtocol<
-      BinarySerializer,
-      CompactSerializer,
-      LazyFoo>();
-  serializationWithDifferentProtocol<
-      CompactSerializer,
-      BinarySerializer,
-      OptionalLazyFoo>();
-  serializationWithDifferentProtocol<
-      BinarySerializer,
-      CompactSerializer,
-      OptionalLazyFoo>();
 }
 
 } // namespace apache::thrift::test
