@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/container/Foreach.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/lazy_deserialization/MemberAccessor.h>
@@ -372,6 +373,53 @@ TYPED_TEST(LazyDeserialization, SerializationWithDifferentProtocol) {
   EXPECT_FALSE(get_field4(foo).empty());
 
   EXPECT_EQ(foo2, gen<LazyStruct>());
+}
+
+constexpr int kThreadCount = 100;
+TYPED_TEST(LazyDeserialization, MulthtreadAccess) {
+  using LazyStruct = typename TypeParam::LazyStruct;
+
+  auto bar = this->genLazyStruct();
+  auto readonlyAccesses = std::make_tuple(
+      [&bar](auto& foo) {
+        EXPECT_EQ(foo.field1_ref(), bar.field1_ref());
+        EXPECT_EQ(foo.field2_ref(), bar.field2_ref());
+        EXPECT_EQ(foo.field3_ref(), bar.field3_ref());
+        EXPECT_EQ(foo.field4_ref(), bar.field4_ref());
+      },
+      [&bar](auto& foo) { EXPECT_EQ(foo, bar); },
+      [](auto& foo) { LazyStruct baz{foo}; },
+      [](auto& foo) {
+        LazyStruct baz;
+        baz = foo;
+      },
+      [](auto& foo) { LazyStruct baz{std::move(std::as_const(foo))}; },
+      [](auto& foo) {
+        LazyStruct baz;
+        baz = std::move(std::as_const(foo));
+      });
+
+  folly::for_each(readonlyAccesses, [&](auto func) {
+    for (int n = 0; n < 2; n++) {
+      const bool castToConst = (n == 0);
+      auto foo = this->template deserialize<LazyStruct>(
+          this->serialize(this->genLazyStruct()));
+      std::array<std::thread, kThreadCount> threads;
+      for (auto& i : threads) {
+        i = std::thread([&] {
+          if (castToConst) {
+            func(std::as_const(foo));
+          } else {
+            func(foo);
+          }
+        });
+      }
+      for (auto& i : threads) {
+        i.join();
+      }
+      EXPECT_EQ(foo, bar);
+    }
+  });
 }
 
 } // namespace apache::thrift::test
