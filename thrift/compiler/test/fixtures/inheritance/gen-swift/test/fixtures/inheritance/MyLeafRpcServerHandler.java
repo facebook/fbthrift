@@ -61,10 +61,6 @@ public class MyLeafRpcServerHandler  extends test.fixtures.inheritance.MyNodeRpc
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();

@@ -104,10 +104,8 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
         oprot.writeListEnd();
         }
         oprot.writeMapEnd();
-
-
-
         oprot.writeFieldEnd();
+
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();

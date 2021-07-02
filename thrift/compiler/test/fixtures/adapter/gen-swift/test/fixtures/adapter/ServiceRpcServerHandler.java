@@ -83,10 +83,8 @@ public class ServiceRpcServerHandler
         int _iter0 = (int)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.I32_FIELD);
 oprot.writeI32(_iter0);
-
-
-
         oprot.writeFieldEnd();
+
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();

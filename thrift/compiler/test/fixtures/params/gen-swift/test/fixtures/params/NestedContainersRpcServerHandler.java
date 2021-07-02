@@ -113,10 +113,6 @@ public class NestedContainersRpcServerHandler
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -244,10 +240,6 @@ public class NestedContainersRpcServerHandler
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -378,10 +370,6 @@ _r.add(_value1);
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -508,10 +496,6 @@ _r.add(_value1);
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -685,10 +669,6 @@ _r.add(_value1);
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();

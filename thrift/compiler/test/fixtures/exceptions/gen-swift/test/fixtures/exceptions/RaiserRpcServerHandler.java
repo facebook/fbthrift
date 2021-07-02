@@ -73,10 +73,6 @@ public class RaiserRpcServerHandler
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -167,10 +163,6 @@ public class RaiserRpcServerHandler
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -301,10 +293,8 @@ public class RaiserRpcServerHandler
         String _iter0 = (String)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.STRING_FIELD);
 oprot.writeString(_iter0);
-
-
-
         oprot.writeFieldEnd();
+
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -397,10 +387,8 @@ oprot.writeString(_iter0);
         String _iter0 = (String)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.STRING_FIELD);
 oprot.writeString(_iter0);
-
-
-
         oprot.writeFieldEnd();
+
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();

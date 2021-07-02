@@ -96,15 +96,10 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
         {{#function:return_type}}
         {{> Type}} _iter0 = ({{> Type}})_r;
         {{function:nestedDepth++}}{{> WriteResponseType}}{{function:nestedDepth--}}
+        oprot.writeFieldEnd();
         {{/function:return_type}}
         {{/function:voidType}}
 
-        {{#function:voidType}}
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-        {{/function:voidType}}
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();

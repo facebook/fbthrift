@@ -89,10 +89,6 @@ public class MyServiceRpcServerHandler
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -185,10 +181,8 @@ public class MyServiceRpcServerHandler
         String _iter0 = (String)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.STRING_FIELD);
 oprot.writeString(_iter0);
-
-
-
         oprot.writeFieldEnd();
+
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -289,10 +283,6 @@ oprot.writeString(_iter0);
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -404,10 +394,6 @@ oprot.writeString(_iter0);
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -512,10 +498,8 @@ oprot.writeString(_iter0);
         boolean _iter0 = (boolean)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.BOOL_FIELD);
 oprot.writeBool(_iter0);
-
-
-
         oprot.writeFieldEnd();
+
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -619,10 +603,8 @@ oprot.writeBool(_iter0);
         String _iter0 = (String)_r;
         oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.STRING_FIELD);
 oprot.writeString(_iter0);
-
-
-
         oprot.writeFieldEnd();
+
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -724,10 +706,6 @@ oprot.writeString(_iter0);
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
@@ -839,10 +817,6 @@ oprot.writeString(_iter0);
 
         
 
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.VOID_FIELD);
-
-
-        oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
         oprot.writeMessageEnd();
