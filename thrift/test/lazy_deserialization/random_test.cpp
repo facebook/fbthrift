@@ -27,9 +27,6 @@ constexpr int kListMaxSize = 10;
 
 namespace apache::thrift::test {
 
-using FieldType = std::vector<int32_t>;
-using FieldRefType = optional_field_ref<FieldType&>;
-
 std::mt19937 rng;
 
 std::vector<int32_t> randomField() {
@@ -45,39 +42,35 @@ std::string randomSerializedStruct() {
   return Serializer::template serialize<std::string>(s);
 }
 
-auto create(const std::vector<int32_t>& field4) {
-  std::pair<OptionalFoo, OptionalLazyFoo> ret;
-  ret.first.field4_ref() = field4;
-  ret.second.field4_ref() = field4;
-  return ret;
-}
+template <class Struct, class LazyStruct>
+void randomTestWithSeed(int seed) {
+  rng.seed(seed);
+  Struct foo;
+  LazyStruct lazyFoo;
 
-class RandomTestWithSeed : public testing::TestWithParam<int> {};
-TEST_P(RandomTestWithSeed, test) {
-  rng.seed(GetParam());
-  OptionalFoo foo;
-  OptionalLazyFoo lazyFoo;
+  constexpr bool kIsOptional = std::is_same_v<Struct, OptionalFoo>;
+
+  auto create = [](const std::vector<int32_t>& field4) {
+    std::pair<Struct, LazyStruct> ret;
+    ret.first.field4_ref() = field4;
+    ret.second.field4_ref() = field4;
+    return ret;
+  };
+
   for (int i = 0; i < kIterationCount; i++) {
     auto arg = randomField();
     std::vector<std::function<void()>> methods = {
-        [&] { EXPECT_EQ(bool(foo.field4_ref()), bool(lazyFoo.field4_ref())); },
         [&] {
           EXPECT_EQ(
               foo.field4_ref().has_value(), lazyFoo.field4_ref().has_value());
         },
         [&] {
           EXPECT_EQ(
-              foo.field4_ref().value_or(arg),
-              lazyFoo.field4_ref().value_or(arg));
-        },
-        [&] {
-          EXPECT_EQ(
               foo.field4_ref().emplace(arg), lazyFoo.field4_ref().emplace(arg));
         },
         [&] { foo.field4_ref() = arg, lazyFoo.field4_ref() = arg; },
-        [&] { foo.field4_ref().reset(), lazyFoo.field4_ref().reset(); },
         [&] {
-          if (foo.field4_ref()) {
+          if (foo.field4_ref().has_value() || !kIsOptional) {
             EXPECT_EQ(foo.field4_ref().value(), lazyFoo.field4_ref().value());
           } else {
             EXPECT_THROW(foo.field4_ref().value(), bad_field_access);
@@ -85,7 +78,7 @@ TEST_P(RandomTestWithSeed, test) {
           }
         },
         [&] {
-          if (foo.field4_ref()) {
+          if (foo.field4_ref().has_value() || !kIsOptional) {
             EXPECT_EQ(*foo.field4_ref(), *lazyFoo.field4_ref());
           } else {
             EXPECT_THROW(*foo.field4_ref(), bad_field_access);
@@ -150,42 +143,58 @@ TEST_P(RandomTestWithSeed, test) {
           EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
         },
         [&] {
-          OptionalFoo foo2 = foo;
-          OptionalLazyFoo lazyFoo2 = lazyFoo;
+          auto foo2 = foo;
+          auto lazyFoo2 = lazyFoo;
           EXPECT_EQ(foo, foo2);
           EXPECT_EQ(lazyFoo, lazyFoo2);
           EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
           EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
         },
         [&] {
-          OptionalFoo foo2 = std::move(foo);
-          OptionalLazyFoo lazyFoo2 = std::move(lazyFoo);
+          auto foo2 = std::move(foo);
+          auto lazyFoo2 = std::move(lazyFoo);
           EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
           EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
         },
     };
 
+    if constexpr (kIsOptional) {
+      methods.push_back([&] {
+        EXPECT_EQ(bool(foo.field4_ref()), bool(lazyFoo.field4_ref()));
+      });
+      methods.push_back([&] {
+        EXPECT_EQ(
+            foo.field4_ref().value_or(arg), lazyFoo.field4_ref().value_or(arg));
+      });
+      methods.push_back([&] {
+        foo.field4_ref().reset();
+        lazyFoo.field4_ref().reset();
+        EXPECT_FALSE(foo.field4_ref().has_value());
+        EXPECT_FALSE(lazyFoo.field4_ref().has_value());
+      });
+    }
+
     auto addSerializationMethods = [&](auto ser) {
       using Serializer = decltype(ser);
       methods.push_back([&] {
-        auto s = randomSerializedStruct<Serializer, OptionalFoo>();
+        auto s = randomSerializedStruct<Serializer, Struct>();
         Serializer::deserialize(s, foo);
         Serializer::deserialize(s, lazyFoo);
       });
       methods.push_back([&] {
-        auto s = randomSerializedStruct<Serializer, OptionalLazyFoo>();
+        auto s = randomSerializedStruct<Serializer, LazyStruct>();
         Serializer::deserialize(s, foo);
         Serializer::deserialize(s, lazyFoo);
       });
       methods.push_back([&] {
-        auto s = randomSerializedStruct<Serializer, OptionalFoo>();
-        foo = Serializer::template deserialize<OptionalFoo>(s);
-        lazyFoo = Serializer::template deserialize<OptionalLazyFoo>(s);
+        auto s = randomSerializedStruct<Serializer, Struct>();
+        foo = Serializer::template deserialize<Struct>(s);
+        lazyFoo = Serializer::template deserialize<LazyStruct>(s);
       });
       methods.push_back([&] {
-        auto s = randomSerializedStruct<Serializer, OptionalLazyFoo>();
-        foo = Serializer::template deserialize<OptionalFoo>(s);
-        lazyFoo = Serializer::template deserialize<OptionalLazyFoo>(s);
+        auto s = randomSerializedStruct<Serializer, LazyStruct>();
+        foo = Serializer::template deserialize<Struct>(s);
+        lazyFoo = Serializer::template deserialize<LazyStruct>(s);
       });
     };
 
@@ -195,6 +204,12 @@ TEST_P(RandomTestWithSeed, test) {
     // Choose a random method and call it
     methods[rng() % methods.size()]();
   }
+}
+
+class RandomTestWithSeed : public testing::TestWithParam<int> {};
+TEST_P(RandomTestWithSeed, test) {
+  randomTestWithSeed<Foo, LazyFoo>(GetParam());
+  randomTestWithSeed<OptionalFoo, OptionalLazyFoo>(GetParam());
 }
 
 INSTANTIATE_TEST_CASE_P(
