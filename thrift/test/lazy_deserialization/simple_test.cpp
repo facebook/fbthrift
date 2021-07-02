@@ -17,24 +17,15 @@
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/lazy_deserialization/MemberAccessor.h>
+#include <thrift/test/lazy_deserialization/common.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_types.h>
 
 namespace apache::thrift::test {
 
-template <class Struct>
-Struct gen() {
-  Struct obj;
-  obj.field1_ref().emplace(10, 1);
-  obj.field2_ref().emplace(20, 2);
-  obj.field3_ref().emplace(30, 3);
-  obj.field4_ref().emplace(40, 4);
-  return obj;
-}
-
-TEST(Serialization, Copyable) {
-  auto base = gen<LazyFoo>();
+TYPED_TEST(LazyDeserialization, Copyable) {
+  auto base = this->genLazyStruct();
   auto bar = base; // copy constructor
-  LazyFoo baz;
+  typename TypeParam::LazyStruct baz;
   baz = base; // copy assignment
 
   EXPECT_EQ(bar.field1_ref(), baz.field1_ref());
@@ -42,7 +33,7 @@ TEST(Serialization, Copyable) {
   EXPECT_EQ(bar.field3_ref(), baz.field3_ref());
   EXPECT_EQ(bar.field4_ref(), baz.field4_ref());
 
-  auto foo = gen<Foo>();
+  auto foo = this->genStruct();
 
   EXPECT_EQ(foo.field1_ref(), bar.field1_ref());
   EXPECT_EQ(foo.field2_ref(), bar.field2_ref());
@@ -50,18 +41,18 @@ TEST(Serialization, Copyable) {
   EXPECT_EQ(foo.field4_ref(), bar.field4_ref());
 }
 
-TEST(Serialization, Moveable) {
-  auto temp = gen<LazyFoo>();
+TYPED_TEST(LazyDeserialization, Moveable) {
+  auto temp = this->genLazyStruct();
   auto bar = std::move(temp); // move constructor
-  LazyFoo baz;
-  baz = gen<LazyFoo>(); // move assignment
+  typename TypeParam::LazyStruct baz;
+  baz = this->genLazyStruct(); // move assignment
 
   EXPECT_EQ(bar.field1_ref(), baz.field1_ref());
   EXPECT_EQ(bar.field2_ref(), baz.field2_ref());
   EXPECT_EQ(bar.field3_ref(), baz.field3_ref());
   EXPECT_EQ(bar.field4_ref(), baz.field4_ref());
 
-  auto foo = gen<Foo>();
+  auto foo = this->genStruct();
 
   EXPECT_EQ(foo.field1_ref(), bar.field1_ref());
   EXPECT_EQ(foo.field2_ref(), bar.field2_ref());
@@ -75,10 +66,12 @@ class Serialization : public testing::Test {};
 using Serializers = ::testing::Types<CompactSerializer, BinarySerializer>;
 TYPED_TEST_SUITE(Serialization, Serializers);
 
-TYPED_TEST(Serialization, FooToLazyFoo) {
-  auto foo = gen<Foo>();
-  auto s = TypeParam::template serialize<std::string>(foo);
-  auto lazyFoo = TypeParam::template deserialize<LazyFoo>(s);
+TYPED_TEST(LazyDeserialization, FooToLazyFoo) {
+  using LazyStruct = typename TypeParam::LazyStruct;
+
+  auto foo = this->genStruct();
+  auto s = this->serialize(foo);
+  auto lazyFoo = this->template deserialize<LazyStruct>(s);
 
   EXPECT_EQ(foo.field1_ref(), lazyFoo.field1_ref());
   EXPECT_EQ(foo.field2_ref(), lazyFoo.field2_ref());
@@ -86,10 +79,12 @@ TYPED_TEST(Serialization, FooToLazyFoo) {
   EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
 }
 
-TYPED_TEST(Serialization, LazyFooToFoo) {
-  auto lazyFoo = gen<LazyFoo>();
-  auto s = TypeParam::template serialize<std::string>(lazyFoo);
-  auto foo = TypeParam::template deserialize<Foo>(s);
+TYPED_TEST(LazyDeserialization, LazyFooToFoo) {
+  using Struct = typename TypeParam::Struct;
+
+  auto lazyFoo = this->genLazyStruct();
+  auto s = this->serialize(lazyFoo);
+  auto foo = this->template deserialize<Struct>(s);
 
   EXPECT_EQ(foo.field1_ref(), lazyFoo.field1_ref());
   EXPECT_EQ(foo.field2_ref(), lazyFoo.field2_ref());
@@ -107,10 +102,12 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, OptionalLazyFoo, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, OptionalLazyFoo, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, OptionalLazyFoo, field4);
 
-TYPED_TEST(Serialization, CheckDataMember) {
-  auto foo = gen<LazyFoo>();
-  auto s = TypeParam::template serialize<std::string>(foo);
-  auto lazyFoo = TypeParam::template deserialize<LazyFoo>(s);
+TYPED_TEST(LazyDeserialization, CheckDataMember) {
+  using LazyStruct = typename TypeParam::LazyStruct;
+
+  auto foo = this->genLazyStruct();
+  auto s = this->serialize(foo);
+  auto lazyFoo = this->template deserialize<LazyStruct>(s);
 
   EXPECT_EQ(get_field1(lazyFoo), foo.field1_ref());
   EXPECT_EQ(get_field2(lazyFoo), foo.field2_ref());
@@ -150,11 +147,13 @@ TYPED_TEST(Serialization, CppRef) {
   }
 }
 
-TYPED_TEST(Serialization, Comparison) {
+TYPED_TEST(LazyDeserialization, Comparison) {
+  using LazyStruct = typename TypeParam::LazyStruct;
+
   {
-    auto foo1 = gen<LazyFoo>();
-    auto s = TypeParam::template serialize<std::string>(foo1);
-    auto foo2 = TypeParam::template deserialize<LazyFoo>(s);
+    auto foo1 = this->genLazyStruct();
+    auto s = this->serialize(foo1);
+    auto foo2 = this->template deserialize<LazyStruct>(s);
 
     EXPECT_FALSE(get_field1(foo1).empty());
     EXPECT_FALSE(get_field2(foo1).empty());
@@ -175,9 +174,9 @@ TYPED_TEST(Serialization, Comparison) {
   }
 
   {
-    auto foo1 = gen<LazyFoo>();
-    auto s = TypeParam::template serialize<std::string>(foo1);
-    auto foo2 = TypeParam::template deserialize<LazyFoo>(s);
+    auto foo1 = this->genLazyStruct();
+    auto s = this->serialize(foo1);
+    auto foo2 = this->template deserialize<LazyStruct>(s);
 
     foo1.field4_ref()->clear();
 
@@ -185,22 +184,39 @@ TYPED_TEST(Serialization, Comparison) {
   }
 }
 
-TYPED_TEST(Serialization, Evolution) {
-  LazyFoo foo;
-  TypeParam::deserialize(
-      TypeParam::template serialize<std::string>(gen<LazyFoo>()), foo);
-  TypeParam::deserialize(
-      TypeParam::template serialize<std::string>(Foo()), foo);
-  EXPECT_TRUE(foo.field1_ref()->empty());
-  EXPECT_TRUE(foo.field2_ref()->empty());
-  EXPECT_TRUE(foo.field3_ref()->empty());
-  EXPECT_TRUE(foo.field4_ref()->empty());
+// This is testing if writer turned off lazy deserialization, but reader's
+// lazyFoo has lazy field that's not deserialized, whether deserialization
+// overwrites the field (i.e. whether we clear IOBuf and isDeserialized
+// boolean).
+TYPED_TEST(LazyDeserialization, Evolution) {
+  using Struct = typename TypeParam::Struct;
+  using LazyStruct = typename TypeParam::LazyStruct;
+
+  Struct foo;
+  foo.field1_ref().emplace();
+  foo.field2_ref().emplace();
+  foo.field3_ref().emplace();
+  foo.field4_ref().emplace();
+
+  // We need first deserialization since even though `this->genLazyStruct()`
+  // returns lazy struct, all lazy fields are already deserialized.
+  LazyStruct lazyFoo;
+  this->deserialize(this->serialize(this->genLazyStruct()), lazyFoo);
+  this->deserialize(this->serialize(foo), lazyFoo);
+
+  EXPECT_TRUE(lazyFoo.field1_ref()->empty());
+  EXPECT_TRUE(lazyFoo.field2_ref()->empty());
+  EXPECT_TRUE(lazyFoo.field3_ref()->empty());
+  EXPECT_TRUE(lazyFoo.field4_ref()->empty());
 }
 
-TYPED_TEST(Serialization, OptionalField) {
-  auto s = TypeParam::template serialize<std::string>(gen<Foo>());
-  auto foo = TypeParam::template deserialize<OptionalFoo>(s);
-  auto lazyFoo = TypeParam::template deserialize<OptionalLazyFoo>(s);
+TYPED_TEST(LazyDeserialization, OptionalField) {
+  using Struct = typename TypeParam::Struct;
+  using LazyStruct = typename TypeParam::LazyStruct;
+
+  auto s = this->serialize(this->genStruct());
+  auto foo = this->template deserialize<Struct>(s);
+  auto lazyFoo = this->template deserialize<LazyStruct>(s);
 
   EXPECT_EQ(foo.field1_ref(), lazyFoo.field1_ref());
   EXPECT_EQ(foo.field2_ref(), lazyFoo.field2_ref());
@@ -208,11 +224,12 @@ TYPED_TEST(Serialization, OptionalField) {
   EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
 }
 
-TYPED_TEST(Serialization, ReserializeLazyField) {
-  auto foo1 = TypeParam::template deserialize<LazyFoo>(
-      TypeParam::template serialize<std::string>(gen<LazyFoo>()));
-  auto foo2 = TypeParam::template deserialize<LazyFoo>(
-      TypeParam::template serialize<std::string>(foo1));
+TYPED_TEST(LazyDeserialization, ReserializeLazyField) {
+  using LazyStruct = typename TypeParam::LazyStruct;
+
+  auto foo1 = this->template deserialize<LazyStruct>(
+      this->serialize(this->genLazyStruct()));
+  auto foo2 = this->template deserialize<LazyStruct>(this->serialize(foo1));
 
   EXPECT_EQ(foo1.field1_ref(), foo2.field1_ref());
   EXPECT_EQ(foo1.field2_ref(), foo2.field2_ref());
@@ -220,9 +237,11 @@ TYPED_TEST(Serialization, ReserializeLazyField) {
   EXPECT_EQ(foo1.field4_ref(), foo2.field4_ref());
 }
 
-TYPED_TEST(Serialization, SupportedToUnsupportedProtocol) {
-  auto foo1 = TypeParam::template deserialize<LazyFoo>(
-      TypeParam::template serialize<std::string>(gen<LazyFoo>()));
+TYPED_TEST(LazyDeserialization, SupportedToUnsupportedProtocol) {
+  using LazyStruct = typename TypeParam::LazyStruct;
+
+  auto foo1 = this->template deserialize<LazyStruct>(
+      this->serialize(this->genLazyStruct()));
 
   EXPECT_FALSE(get_field1(foo1).empty());
   EXPECT_FALSE(get_field2(foo1).empty());
@@ -232,14 +251,14 @@ TYPED_TEST(Serialization, SupportedToUnsupportedProtocol) {
   // Simple JSON doesn't support lazy deserialization
   // All fields will be deserialized
   SimpleJSONSerializer::deserialize(
-      SimpleJSONSerializer::serialize<std::string>(OptionalFoo{}), foo1);
+      SimpleJSONSerializer::serialize<std::string>(Empty{}), foo1);
 
   EXPECT_FALSE(get_field1(foo1).empty());
   EXPECT_FALSE(get_field2(foo1).empty());
   EXPECT_FALSE(get_field3(foo1).empty());
   EXPECT_FALSE(get_field4(foo1).empty());
 
-  auto foo2 = gen<LazyFoo>();
+  auto foo2 = this->genLazyStruct();
 
   EXPECT_EQ(foo1.field1_ref(), foo2.field1_ref());
   EXPECT_EQ(foo1.field2_ref(), foo2.field2_ref());
@@ -247,9 +266,11 @@ TYPED_TEST(Serialization, SupportedToUnsupportedProtocol) {
   EXPECT_EQ(foo1.field4_ref(), foo2.field4_ref());
 }
 
-TYPED_TEST(Serialization, ReserializeSameStruct) {
-  auto foo1 = TypeParam::template deserialize<LazyFoo>(
-      TypeParam::template serialize<std::string>(gen<LazyFoo>()));
+TYPED_TEST(LazyDeserialization, ReserializeSameStruct) {
+  using LazyStruct = typename TypeParam::LazyStruct;
+
+  auto foo1 = this->template deserialize<LazyStruct>(
+      this->serialize(this->genLazyStruct()));
 
   EXPECT_FALSE(get_field1(foo1).empty());
   EXPECT_FALSE(get_field2(foo1).empty());
@@ -257,15 +278,14 @@ TYPED_TEST(Serialization, ReserializeSameStruct) {
   EXPECT_TRUE(get_field4(foo1).empty());
 
   // Lazy fields remain undeserialized
-  TypeParam::deserialize(
-      TypeParam::template serialize<std::string>(OptionalFoo{}), foo1);
+  this->deserialize(this->serialize(OptionalFoo{}), foo1);
 
   EXPECT_FALSE(get_field1(foo1).empty());
   EXPECT_FALSE(get_field2(foo1).empty());
   EXPECT_TRUE(get_field3(foo1).empty());
   EXPECT_TRUE(get_field4(foo1).empty());
 
-  auto foo2 = gen<LazyFoo>();
+  auto foo2 = this->genLazyStruct();
 
   EXPECT_EQ(foo1.field1_ref(), foo2.field1_ref());
   EXPECT_EQ(foo1.field2_ref(), foo2.field2_ref());

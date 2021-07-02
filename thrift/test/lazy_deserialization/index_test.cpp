@@ -15,15 +15,14 @@
  */
 
 #include <folly/portability/GTest.h>
-#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/protocol/detail/index.h>
 #include <thrift/lib/cpp2/reflection/testing.h>
 #include <thrift/test/lazy_deserialization/MemberAccessor.h>
+#include <thrift/test/lazy_deserialization/common.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_constants.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_fatal_all.h>
 
 namespace apache::thrift::test {
-
 // Represent the field header and actual field data in serialized data
 struct FieldToken {
   std::string header, value;
@@ -90,19 +89,9 @@ std::string genFieldHeader(TType type, int16_t id, Serializer<Reader, Writer>) {
   return output.moveAsValue().moveToFbString().toStdString();
 }
 
-template <class Struct>
-Struct gen() {
-  Struct obj;
-  obj.field1_ref().emplace(100, 1);
-  obj.field2_ref().emplace(200, 2);
-  obj.field3_ref().emplace(300, 3);
-  obj.field4_ref().emplace(400, 4);
-  return obj;
-}
-
-template <class Serializer>
-IndexedFoo genIndexedFoo(Serializer ser) {
-  auto obj = gen<IndexedFoo>();
+template <class IndexedStruct, class Serializer>
+IndexedStruct genIndexedStruct(Serializer ser) {
+  auto obj = gen<IndexedStruct>();
   auto tokens = tokenize(obj, ser);
   obj.serialized_data_size_ref() =
       tokens[1].size() + tokens[2].size() + tokens[3].size() + tokens[4].size();
@@ -123,23 +112,26 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyFoo, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyFoo, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyFoo, field4);
 
-template <typename T>
-class Index : public testing::Test {};
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, OptionalLazyFoo, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, OptionalLazyFoo, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, OptionalLazyFoo, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, OptionalLazyFoo, field4);
 
-using Serializers = ::testing::Types<CompactSerializer, BinarySerializer>;
-TYPED_TEST_SUITE(Index, Serializers);
+TYPED_TEST(LazyDeserialization, IndexedFooToLazyFoo) {
+  using Serializer = typename TypeParam::Serializer;
+  using LazyStruct = typename TypeParam::LazyStruct;
+  using IndexedStruct = typename TypeParam::IndexedStruct;
 
-TYPED_TEST(Index, IndexedFooToLazyFoo) {
-  auto indexedFoo = genIndexedFoo(TypeParam{});
-  auto tokens = tokenize(indexedFoo, TypeParam{});
+  auto indexedFoo = genIndexedStruct<IndexedStruct>(Serializer{});
+  auto tokens = tokenize(indexedFoo, Serializer{});
 
   // Replace header with internal field ids
   tokens.begin()->header = genFieldHeader(
-      detail::kSizeField.type, detail::kSizeField.id, TypeParam{});
+      detail::kSizeField.type, detail::kSizeField.id, Serializer{});
   tokens.rbegin()->header = genFieldHeader(
-      detail::kIndexField.type, detail::kIndexField.id, TypeParam{});
+      detail::kIndexField.type, detail::kIndexField.id, Serializer{});
 
-  auto lazyFoo = TypeParam::template deserialize<LazyFoo>(merge(tokens));
+  auto lazyFoo = this->template deserialize<LazyStruct>(merge(tokens));
 
   // field3 and field4 are lazy fields, their deserialization are deferred
   EXPECT_EQ(get_field1(lazyFoo), indexedFoo.field1_ref());
@@ -158,22 +150,25 @@ TYPED_TEST(Index, IndexedFooToLazyFoo) {
   EXPECT_EQ(get_field4(lazyFoo), indexedFoo.field4_ref());
 }
 
-TYPED_TEST(Index, LazyFooToIndexedFoo) {
-  auto lazyFoo = gen<LazyFoo>();
-  auto tokens = tokenize(lazyFoo, TypeParam{});
+TYPED_TEST(LazyDeserialization, LazyFooToIndexedFoo) {
+  using Serializer = typename TypeParam::Serializer;
+  using IndexedStruct = typename TypeParam::IndexedStruct;
+
+  auto lazyFoo = this->genLazyStruct();
+  auto tokens = tokenize(lazyFoo, Serializer{});
 
   tokens.begin()->header = genFieldHeader(
-      detail::kSizeField.type, simple_constants::kSizeId(), TypeParam{});
+      detail::kSizeField.type, simple_constants::kSizeId(), Serializer{});
   tokens.rbegin()->header = genFieldHeader(
-      detail::kIndexField.type, simple_constants::kIndexId(), TypeParam{});
+      detail::kIndexField.type, simple_constants::kIndexId(), Serializer{});
 
-  auto indexedFoo = TypeParam::template deserialize<IndexedFoo>(merge(tokens));
+  auto indexedFoo = this->template deserialize<IndexedStruct>(merge(tokens));
 
   EXPECT_EQ(lazyFoo.field1_ref(), indexedFoo.field1_ref());
   EXPECT_EQ(lazyFoo.field2_ref(), indexedFoo.field2_ref());
   EXPECT_EQ(lazyFoo.field3_ref(), indexedFoo.field3_ref());
   EXPECT_EQ(lazyFoo.field4_ref(), indexedFoo.field4_ref());
 
-  EXPECT_THRIFT_EQ(indexedFoo, genIndexedFoo(TypeParam{}));
+  EXPECT_THRIFT_EQ(indexedFoo, genIndexedStruct<IndexedStruct>(Serializer{}));
 }
 } // namespace apache::thrift::test

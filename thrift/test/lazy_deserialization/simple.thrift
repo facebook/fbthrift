@@ -69,5 +69,19 @@ struct IndexedFoo {
   101: map<i16, i64> field_id_to_size;
 }
 
+struct OptionalIndexedFoo {
+  100: double serialized_data_size;
+
+  1: optional list<double> field1;
+  2: optional list<i32> field2;
+  3: optional list<double> field3;
+  4: optional list<i32> field4;
+
+  101: map<i16, i64> field_id_to_size;
+}
+
+struct Empty {
+}
+
 const i32 kSizeId = 100;
 const i32 kIndexId = 101;
