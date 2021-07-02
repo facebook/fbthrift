@@ -307,7 +307,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   Metadata metadata_;
 
-  ServerAttributeDynamic<int64_t> ingressMemoryLimit_{0};
+  ServerAttributeDynamic<size_t> ingressMemoryLimit_{0};
   ServerAttributeDynamic<size_t> minPayloadSizeToEnforceIngressMemoryLimit_{
       512 * 1024};
 
@@ -1158,15 +1158,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * will be closed
    */
   void setIngressMemoryLimit(
-      int64_t ingressMemoryLimit,
+      size_t ingressMemoryLimit,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
     ingressMemoryLimit_.set(ingressMemoryLimit, source);
   }
 
-  int64_t getIngressMemoryLimit() const { return ingressMemoryLimit_.get(); }
+  size_t getIngressMemoryLimit() const { return ingressMemoryLimit_.get(); }
 
-  folly::observer::Observer<int64_t> getIngressMemoryLimitObserver() {
+  folly::observer::Observer<size_t> getIngressMemoryLimitObserver() {
     return ingressMemoryLimit_.getObserver();
   }
 

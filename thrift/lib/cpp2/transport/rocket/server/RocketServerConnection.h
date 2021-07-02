@@ -38,6 +38,7 @@
 #include <wangle/acceptor/ManagedConnection.h>
 
 #include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/server/MemoryTracker.h>
 #include <thrift/lib/cpp2/transport/core/ManagedConnectionIf.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
@@ -62,54 +63,15 @@ class RocketServerConnection final
   using UniquePtr = std::
       unique_ptr<RocketServerConnection, folly::DelayedDestruction::Destructor>;
 
-  class IngressMemoryLimitStateRef {
-   public:
-    IngressMemoryLimitStateRef(
-        int64_t& ingressMemoryUsage,
-        folly::observer::AtomicObserver<int64_t>& ingressMemoryLimitObserver,
-        folly::observer::AtomicObserver<size_t>&
-            minPayloadSizeToEnforceIngressMemoryLimitObserver)
-        : memoryUsage_(ingressMemoryUsage),
-          memoryLimitObserver_(ingressMemoryLimitObserver),
-          minPayloadSizeObserver_(
-              minPayloadSizeToEnforceIngressMemoryLimitObserver) {}
-
-    bool incMemoryUsage(uint32_t memSize) {
-      uint64_t ingressMemoryLimit = *memoryLimitObserver_;
-      size_t minPayloadSizeToEnforceIngressMemoryLimit =
-          *minPayloadSizeObserver_;
-      uint64_t newSize = memoryUsage_ + memSize;
-      if (ingressMemoryLimit && newSize >= ingressMemoryLimit &&
-          memSize >= minPayloadSizeToEnforceIngressMemoryLimit) {
-        return false;
-      } else {
-        memoryUsage_ = newSize;
-        return true;
-      }
-    }
-
-    void decMemoryUsage(uint32_t memSize) {
-      DCHECK_GE(memoryUsage_, memSize) << memoryUsage_ << " < " << memSize;
-      memoryUsage_ -= memSize;
-    }
-
-   private:
-    int64_t& memoryUsage_;
-    folly::observer::AtomicObserver<int64_t>& memoryLimitObserver_;
-    folly::observer::AtomicObserver<size_t>& minPayloadSizeObserver_;
-  };
-
   RocketServerConnection(
       folly::AsyncTransport::UniquePtr socket,
       std::unique_ptr<RocketServerHandler> frameHandler,
       std::chrono::milliseconds streamStarvationTimeout,
-      std::chrono::milliseconds writeBatchingInterval =
-          std::chrono::milliseconds::zero(),
-      size_t writeBatchingSize = 0,
-      folly::Optional<IngressMemoryLimitStateRef> ingressMemoryLimitStateRef =
-          folly::none,
-      size_t egressBufferBackpressureThreshold = 0,
-      double egressBufferBackpressureRecoveryFactor = 0.0);
+      std::chrono::milliseconds writeBatchingInterval,
+      size_t writeBatchingSize,
+      MemoryTracker& ingressMemoryTracker,
+      size_t egressBufferBackpressureThreshold,
+      double egressBufferBackpressureRecoveryFactor);
 
   void send(
       std::unique_ptr<folly::IOBuf> data,
@@ -222,8 +184,8 @@ class RocketServerConnection final
   }
 
   bool incMemoryUsage(uint32_t memSize) {
-    if (ingressMemoryLimitStateRef_ &&
-        !ingressMemoryLimitStateRef_->incMemoryUsage(memSize)) {
+    if (!ingressMemoryTracker_.increment(memSize)) {
+      ingressMemoryTracker_.decrement(memSize);
       state_ = ConnectionState::DRAINING;
       drainingErrorCode_ = ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT;
       socket_->setReadCB(nullptr);
@@ -235,9 +197,7 @@ class RocketServerConnection final
   }
 
   void decMemoryUsage(uint32_t memSize) {
-    if (ingressMemoryLimitStateRef_) {
-      ingressMemoryLimitStateRef_->decMemoryUsage(memSize);
-    }
+    ingressMemoryTracker_.decrement(memSize);
   }
 
   int32_t getVersion() const { return frameHandler_->getVersion(); }
@@ -433,7 +393,7 @@ class RocketServerConnection final
   size_t activePausedHandlers_{0};
   folly::Function<void(ReadPausableHandle)> onWriteQuiescence_;
 
-  folly::Optional<IngressMemoryLimitStateRef> ingressMemoryLimitStateRef_;
+  MemoryTracker& ingressMemoryTracker_;
 
   ~RocketServerConnection();
 

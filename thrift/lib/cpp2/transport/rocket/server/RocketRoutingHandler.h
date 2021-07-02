@@ -51,9 +51,6 @@ class RocketRoutingHandler : public TransportRoutingHandler {
  private:
   std::atomic<bool> listening_{true};
   std::vector<std::unique_ptr<rocket::SetupFrameHandler>> setupFrameHandlers_;
-  folly::observer::AtomicObserver<int64_t> ingressMemoryLimitObserver_;
-  folly::observer::AtomicObserver<size_t>
-      minPayloadSizeToEnforceIngressMemoryLimitObserver_;
 };
 } // namespace thrift
 } // namespace apache

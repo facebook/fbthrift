@@ -33,6 +33,7 @@
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp2/security/FizzPeeker.h>
 #include <thrift/lib/cpp2/server/IOWorkerContext.h>
+#include <thrift/lib/cpp2/server/MemoryTracker.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
@@ -237,7 +238,7 @@ class Cpp2Worker : public IOWorkerContext,
   }
 
   void construct(
-      ThriftServer*,
+      ThriftServer* server,
       const std::shared_ptr<HeaderServerChannel>& serverChannel,
       folly::EventBase* eventBase,
       std::shared_ptr<const fizz::server::FizzServerContext> fizzContext) {
@@ -261,6 +262,18 @@ class Cpp2Worker : public IOWorkerContext,
         eventBase->setObserver(observer);
       });
     }
+
+    // We distribute the memory limit averaged out over all IO workers. This
+    // avoids the need to synchronize memory usage counts with other IO threads.
+    // folly::AsyncServerSocket hands out connections to IO workers in a
+    // round-robin manner so we should expect a roughly uniform distribution of
+    // payload sizes.
+    ingressMemoryTracker_ = std::make_unique<MemoryTracker>(
+        folly::observer::makeObserver([server]() -> size_t {
+          return **server->getIngressMemoryLimitObserver() /
+              server->getNumIOWorkerThreads();
+        }),
+        server->getMinPayloadSizeToEnforceIngressMemoryLimitObserver());
   }
 
   void onNewConnection(
@@ -295,7 +308,7 @@ class Cpp2Worker : public IOWorkerContext,
     return &fizzPeeker_;
   }
 
-  int64_t& getIngressMemoryUsageRef() { return ingressMemoryUsage_; }
+  MemoryTracker& getIngressMemoryTracker() { return *ingressMemoryTracker_; }
 
  private:
   /// The mother ship.
@@ -340,7 +353,7 @@ class Cpp2Worker : public IOWorkerContext,
   RequestsRegistry* requestsRegistry_;
   std::atomic<bool> stopping_{false};
   folly::Baton<> stopBaton_;
-  int64_t ingressMemoryUsage_{0};
+  std::unique_ptr<MemoryTracker> ingressMemoryTracker_;
 
   void initRequestsRegistry();
 

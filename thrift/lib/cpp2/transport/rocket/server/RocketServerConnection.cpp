@@ -61,7 +61,7 @@ RocketServerConnection::RocketServerConnection(
     std::chrono::milliseconds streamStarvationTimeout,
     std::chrono::milliseconds writeBatchingInterval,
     size_t writeBatchingSize,
-    folly::Optional<IngressMemoryLimitStateRef> ingressMemoryLimitStateRef,
+    MemoryTracker& ingressMemoryTracker,
     size_t egressBufferBackpressureThreshold,
     double egressBufferRecoveryFactor)
     : evb_(*socket->getEventBase()),
@@ -76,7 +76,7 @@ RocketServerConnection::RocketServerConnection(
           egressBufferBackpressureThreshold * egressBufferRecoveryFactor),
       writeBatcher_(*this, writeBatchingInterval, writeBatchingSize),
       socketDrainer_(*this),
-      ingressMemoryLimitStateRef_(std::move(ingressMemoryLimitStateRef)) {
+      ingressMemoryTracker_(ingressMemoryTracker) {
   CHECK(socket_);
   CHECK(frameHandler_);
   socket_->setReadCB(&parser_);

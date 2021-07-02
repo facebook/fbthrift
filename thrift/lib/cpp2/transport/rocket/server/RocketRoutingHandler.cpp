@@ -54,14 +54,7 @@ REGISTER_SERVER_EXTENSION_DEFAULT(createRocketProfilingSetupFrameHandler)
 
 } // namespace
 
-RocketRoutingHandler::RocketRoutingHandler(ThriftServer& server)
-    : ingressMemoryLimitObserver_(
-          folly::observer::makeObserver([&server]() -> int64_t {
-            return **server.getIngressMemoryLimitObserver() /
-                server.getNumIOWorkerThreads();
-          })),
-      minPayloadSizeToEnforceIngressMemoryLimitObserver_(
-          server.getMinPayloadSizeToEnforceIngressMemoryLimitObserver()) {
+RocketRoutingHandler::RocketRoutingHandler(ThriftServer& server) {
   auto addSetupFramehandler = [&](auto&& handlerFactory) {
     if (auto handler = handlerFactory(server)) {
       setupFrameHandlers_.push_back(std::move(handler));
@@ -132,11 +125,6 @@ void RocketRoutingHandler::handleConnection(
 
   auto* const sockPtr = sock.get();
   auto* const server = worker->getServer();
-  auto memLimitParams =
-      rocket::RocketServerConnection::IngressMemoryLimitStateRef(
-          worker->getIngressMemoryUsageRef(),
-          ingressMemoryLimitObserver_,
-          minPayloadSizeToEnforceIngressMemoryLimitObserver_);
   auto* const connection = new rocket::RocketServerConnection(
       std::move(sock),
       std::make_unique<rocket::ThriftRocketServerHandler>(
@@ -144,7 +132,7 @@ void RocketRoutingHandler::handleConnection(
       server->getStreamExpireTime(),
       server->getWriteBatchingInterval(),
       server->getWriteBatchingSize(),
-      std::move(memLimitParams),
+      worker->getIngressMemoryTracker(),
       server->getEgressBufferBackpressureThreshold(),
       server->getEgressBufferRecoveryFactor());
   onConnection(*connection);

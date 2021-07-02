@@ -121,11 +121,20 @@ void testServerOneInput(const uint8_t* Data, size_t Size) {
   auto worker = apache::thrift::Cpp2Worker::create(&server, nullptr, &evb);
   std::vector<std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>> v;
   folly::SocketAddress address;
+  MemoryTracker memoryTracker;
+
   auto connection = new apache::thrift::rocket::RocketServerConnection(
       std::move(sock),
       std::make_unique<apache::thrift::rocket::ThriftRocketServerHandler>(
           worker, address, sockPtr, v),
-      std::chrono::milliseconds::zero());
+      std::chrono::seconds(60), // (streamStarvationTimeout)
+      std::chrono::milliseconds::zero(), // (writeBatchingInterval)
+      0, // (writeBatchingSize)
+      memoryTracker, // (ingress)
+      0, // (egressBufferBackpressureThreshold)
+      0 // (egressBufferBackpressureRecoveryFactor)
+  );
+
   folly::DelayedDestruction::DestructorGuard dg(connection);
   apache::thrift::rocket::Parser<apache::thrift::rocket::RocketServerConnection>
       p(*connection);
