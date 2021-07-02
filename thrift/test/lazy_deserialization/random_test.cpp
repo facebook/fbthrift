@@ -196,6 +196,12 @@ void randomTestWithSeed(int seed) {
         foo = Serializer::template deserialize<Struct>(s);
         lazyFoo = Serializer::template deserialize<LazyStruct>(s);
       });
+      methods.push_back([&] {
+        foo = Serializer::template deserialize<Struct>(
+            Serializer::template serialize<std::string>(foo));
+        lazyFoo = Serializer::template deserialize<LazyStruct>(
+            Serializer::template serialize<std::string>(lazyFoo));
+      });
     };
 
     addSerializationMethods(CompactSerializer{});
