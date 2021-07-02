@@ -65,6 +65,18 @@ std::string enumNameSafe(EnumType value) {
   return name ? name : folly::to<std::string>(static_cast<int32_t>(value));
 }
 
+/*
+ * Same as enumName but throw an exception if the given value is not found in
+ * enum
+ */
+template <typename EnumType>
+const char* enumNameOrThrow(EnumType value) {
+  if (const char* name = enumName(value)) {
+    return name;
+  }
+  throw std::out_of_range("value not found in enum");
+}
+
 } // namespace util
 } // namespace thrift
 } // namespace apache

@@ -41,3 +41,21 @@ TEST(EnumUtilsTest, ShortEnumNameSafe) {
   EXPECT_EQ(enumNameSafe((MyEnum)42), "42");
   EXPECT_EQ(enumNameSafe((MyEnum)-1), "-1");
 }
+
+TEST(EnumUtilsTest, ShortEnumNameOrThrow) {
+  EXPECT_STREQ(enumNameOrThrow((MyEnum)0), "UNKNOWN");
+  EXPECT_STREQ(enumNameOrThrow((MyEnum)1), "VALUE");
+  EXPECT_STREQ(enumNameOrThrow((MyEnum)2), "FOO");
+  EXPECT_STREQ(enumNameOrThrow((MyEnum)3), "BAR");
+  try {
+    enumNameOrThrow((MyEnum)42);
+  } catch (std::out_of_range const& err) {
+    EXPECT_EQ(err.what(), std::string("value not found in enum"));
+  }
+
+  try {
+    enumNameOrThrow((MyEnum)-1);
+  } catch (std::out_of_range const& err) {
+    EXPECT_EQ(err.what(), std::string("value not found in enum"));
+  }
+}
