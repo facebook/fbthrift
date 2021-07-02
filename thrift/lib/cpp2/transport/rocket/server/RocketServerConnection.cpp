@@ -62,6 +62,7 @@ RocketServerConnection::RocketServerConnection(
     std::chrono::milliseconds writeBatchingInterval,
     size_t writeBatchingSize,
     MemoryTracker& ingressMemoryTracker,
+    MemoryTracker& egressMemoryTracker,
     size_t egressBufferBackpressureThreshold,
     double egressBufferRecoveryFactor)
     : evb_(*socket->getEventBase()),
@@ -71,17 +72,18 @@ RocketServerConnection::RocketServerConnection(
                   : nullptr),
       frameHandler_(std::move(frameHandler)),
       streamStarvationTimeout_(streamStarvationTimeout),
-      egressBufferMaxSize_(egressBufferBackpressureThreshold),
+      egressBufferBackpressureThreshold_(egressBufferBackpressureThreshold),
       egressBufferRecoverySize_(
           egressBufferBackpressureThreshold * egressBufferRecoveryFactor),
       writeBatcher_(*this, writeBatchingInterval, writeBatchingSize),
       socketDrainer_(*this),
-      ingressMemoryTracker_(ingressMemoryTracker) {
+      ingressMemoryTracker_(ingressMemoryTracker),
+      egressMemoryTracker_(egressMemoryTracker) {
   CHECK(socket_);
   CHECK(frameHandler_);
   socket_->setReadCB(&parser_);
   if (rawSocket_) {
-    rawSocket_->setBufferCallback(egressBufferMaxSize_ ? this : nullptr);
+    rawSocket_->setBufferCallback(this);
   }
 }
 
@@ -105,6 +107,14 @@ RocketSinkClientCallback& RocketServerConnection::createSinkClientCallback(
   return callbackRef;
 }
 
+void RocketServerConnection::flushWrites(
+    std::unique_ptr<folly::IOBuf> writes, WriteBatchContext&& context) {
+  DestructorGuard dg(this);
+  DVLOG(10) << fmt::format("write: {} B", writes->computeChainDataLength());
+  inflightWritesQueue_.push_back(std::move(context));
+  socket_->writeChain(this, std::move(writes));
+}
+
 void RocketServerConnection::send(
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::MessageChannel::SendCallbackPtr cb) {
@@ -123,7 +133,16 @@ RocketServerConnection::~RocketServerConnection() {
   DCHECK(inflightSinkFinalResponses_ == 0);
   DCHECK(writeBatcher_.empty());
   DCHECK(activePausedHandlers_ == 0);
+  if (rawSocket_) {
+    rawSocket_->setBufferCallback(nullptr);
+  }
   socket_.reset();
+  // reclaim any memory in use by pending writes
+  if (egressBufferSize_) {
+    egressMemoryTracker_.decrement(egressBufferSize_);
+    DVLOG(10) << "buffered: 0 (-" << egressBufferSize_ << ") B";
+    egressBufferSize_ = 0;
+  }
 }
 
 void RocketServerConnection::closeIfNeeded() {
@@ -680,6 +699,7 @@ void RocketServerConnection::closeWhenIdle() {
 }
 
 void RocketServerConnection::writeSuccess() noexcept {
+  DestructorGuard dg(this);
   DCHECK(!inflightWritesQueue_.empty());
   auto& context = inflightWritesQueue_.front();
   for (auto processingCompleteCount = context.requestCompleteCount;
@@ -715,7 +735,6 @@ void RocketServerConnection::writeErr(
   }
 
   auto ew = folly::make_exception_wrapper<transport::TTransportException>(ex);
-
   for (auto& cb : context.sendCallbacks) {
     cb.release()->messageSendError(folly::copy(ew));
   }
@@ -725,15 +744,43 @@ void RocketServerConnection::writeErr(
 }
 
 void RocketServerConnection::onEgressBuffered() {
-  auto buffered = rawSocket_->getAppBytesBuffered();
-  if (UNLIKELY(buffered > egressBufferMaxSize_ && !streamsPaused_)) {
+  const auto buffered = rawSocket_->getAppBytesBuffered();
+  const auto oldBuffered = egressBufferSize_;
+  egressBufferSize_ = buffered;
+  // track egress memory consumption, drop connection if necessary
+  if (buffered < oldBuffered) {
+    const auto delta = oldBuffered - buffered;
+    egressMemoryTracker_.decrement(delta);
+    DVLOG(10) << fmt::format("buffered: {} (-{}) B", buffered, delta);
+  } else {
+    const auto delta = buffered - oldBuffered;
+    const auto exceeds = !egressMemoryTracker_.increment(delta);
+    DVLOG(10) << fmt::format("buffered: {} (+{}) B", buffered, delta);
+    if (exceeds && rawSocket_->good()) {
+      DestructorGuard dg(this);
+      FB_LOG_EVERY_MS(ERROR, 1000) << fmt::format(
+          "Dropping connection: exceeded egress memory limit ({})",
+          getPeerAddress().describe());
+      rawSocket_->closeNow(); // triggers writeErr() events now
+      return;
+    }
+  }
+  // pause streams if buffer size reached backpressure threshold
+  if (!egressBufferBackpressureThreshold_) {
+    return;
+  } else if (buffered > egressBufferBackpressureThreshold_ && !streamsPaused_) {
     pauseStreams();
-  } else if (UNLIKELY(streamsPaused_ && buffered < egressBufferRecoverySize_)) {
+  } else if (streamsPaused_ && buffered < egressBufferRecoverySize_) {
     resumeStreams();
   }
 }
 
 void RocketServerConnection::onEgressBufferCleared() {
+  if (egressBufferSize_) {
+    egressMemoryTracker_.decrement(egressBufferSize_);
+    DVLOG(10) << "buffered: 0 (-" << egressBufferSize_ << ") B";
+    egressBufferSize_ = 0;
+  }
   if (UNLIKELY(streamsPaused_)) {
     resumeStreams();
   }

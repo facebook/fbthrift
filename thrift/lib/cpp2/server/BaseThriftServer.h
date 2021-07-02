@@ -308,6 +308,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   Metadata metadata_;
 
   ServerAttributeDynamic<size_t> ingressMemoryLimit_{0};
+  ServerAttributeDynamic<size_t> egressMemoryLimit_{0};
   ServerAttributeDynamic<size_t> minPayloadSizeToEnforceIngressMemoryLimit_{
       512 * 1024};
 
@@ -1168,6 +1169,25 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   folly::observer::Observer<size_t> getIngressMemoryLimitObserver() {
     return ingressMemoryLimit_.getObserver();
+  }
+
+  /**
+   * Limit the amount of memory available for inflight responses, meaning
+   * responses that are queued on the server pending delivery to clients. This
+   * limit, divided by the number of IO threads, determines the effective egress
+   * limit of a connection. Once the per-connection limit is reached, a
+   * connection is dropped immediately and all outstanding responses are
+   * discarded.
+   */
+  void setEgressMemoryLimit(
+      size_t max, AttributeSource source = AttributeSource::OVERRIDE) {
+    egressMemoryLimit_.set(max, source);
+  }
+
+  size_t getEgressMemoryLimit() const { return egressMemoryLimit_.get(); }
+
+  folly::observer::Observer<size_t> getEgressMemoryLimitObserver() {
+    return egressMemoryLimit_.getObserver();
   }
 
   /**

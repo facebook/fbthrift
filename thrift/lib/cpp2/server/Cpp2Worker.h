@@ -274,6 +274,11 @@ class Cpp2Worker : public IOWorkerContext,
               server->getNumIOWorkerThreads();
         }),
         server->getMinPayloadSizeToEnforceIngressMemoryLimitObserver());
+    egressMemoryTracker_ = std::make_unique<MemoryTracker>(
+        folly::observer::makeObserver([server]() -> size_t {
+          return **server->getEgressMemoryLimitObserver() /
+              server->getNumIOWorkerThreads();
+        }));
   }
 
   void onNewConnection(
@@ -309,6 +314,7 @@ class Cpp2Worker : public IOWorkerContext,
   }
 
   MemoryTracker& getIngressMemoryTracker() { return *ingressMemoryTracker_; }
+  MemoryTracker& getEgressMemoryTracker() { return *egressMemoryTracker_; }
 
  private:
   /// The mother ship.
@@ -354,6 +360,7 @@ class Cpp2Worker : public IOWorkerContext,
   std::atomic<bool> stopping_{false};
   folly::Baton<> stopBaton_;
   std::unique_ptr<MemoryTracker> ingressMemoryTracker_;
+  std::unique_ptr<MemoryTracker> egressMemoryTracker_;
 
   void initRequestsRegistry();
 

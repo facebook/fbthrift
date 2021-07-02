@@ -43,6 +43,7 @@
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/test/TestSSLServer.h>
+#include <folly/synchronization/test/Barrier.h>
 #include <folly/system/ThreadName.h>
 #include <wangle/acceptor/ServerSocketConfig.h>
 
@@ -625,6 +626,127 @@ TEST(ThriftServer, LatencyHeader_LoggingDisabled) {
   client->sync_voidResponse(rpcOptions);
   validateLatencyHeaders(
       rpcOptions.getReadHeaders(), LatencyHeaderStatus::NOT_EXPECTED);
+}
+
+//
+// Test enforcement of egress memory limit -- setEgressMemoryLimit()
+//
+// Client issues a series of large requests but does not read their responses.
+// The server should queue outgoing responses until the egress limit is reached,
+// then drop the client connection along with all undelivered responses.
+//
+TEST(ThriftServer, EnforceEgressMemoryLimit) {
+  class TestServiceHandler : public TestServiceSvIf {
+   public:
+    // only used to configure the server-side connection socket
+    int echoInt(int) override {
+      shrinkSocketWriteBuffer();
+      return 0;
+    }
+
+    void echoRequest(
+        std::string& _return, std::unique_ptr<std::string> req) override {
+      _return = *std::move(req);
+      barrier.wait();
+    }
+
+    folly::test::Barrier barrier{2};
+
+   private:
+    void shrinkSocketWriteBuffer() {
+      auto const_transport =
+          getRequestContext()->getConnectionContext()->getTransport();
+      auto transport = const_cast<folly::AsyncTransport*>(const_transport);
+      auto sock = transport->getUnderlyingTransport<folly::AsyncSocket>();
+      sock->setSendBufSize(0); // (smallest possible size)
+    }
+  };
+
+  // Allocate server
+  auto handler = std::make_shared<TestServiceHandler>();
+  auto runner = std::make_shared<ScopedServerInterfaceThread>(handler);
+  auto& server = runner->getThriftServer();
+  auto const kChunkSize = 1ul << 20; // (1 MiB)
+  server.setEgressMemoryLimit(kChunkSize * 4); // (4 MiB)
+  server.setWriteBatchingInterval(std::chrono::milliseconds::zero());
+
+  // Allocate client
+  folly::EventBase evb;
+  auto clientSocket = folly::AsyncSocket::newSocket(&evb, runner->getAddress());
+  auto clientSocketPtr = clientSocket.get();
+  clientSocketPtr->setRecvBufSize(0); // set recv buffer as small as possible
+  auto clientChannel = RocketClientChannel::newChannel(std::move(clientSocket));
+  auto clientChannelPtr = clientChannel.get();
+  TestServiceAsyncClient client(std::move(clientChannel));
+
+  // Dummy request which triggers some server-side socket configuration
+  client.sync_echoInt(42);
+
+  // This is used to flush the client write queue
+  apache::thrift::rocket::RocketClient::FlushList flushList;
+  clientChannelPtr->setFlushList(&flushList);
+  auto flushClientWrites = [&]() {
+    auto cbs = std::move(flushList);
+    while (!cbs.empty()) {
+      auto* callback = &cbs.front();
+      cbs.pop_front();
+      callback->runLoopCallback();
+    }
+  };
+
+  // Tests whether the client socket is still writable. We avoid reading from
+  // the socket because we don't want to flush the server queue.
+  auto isClientChannelGood = [&](std::chrono::seconds timeout) -> bool {
+    const auto expires = std::chrono::steady_clock::now() + timeout;
+    while (clientChannelPtr->good() &&
+           std::chrono::steady_clock::now() < expires) {
+      client.semifuture_noResponse(0); // (write-only)
+      flushClientWrites();
+      /* sleep override */ std::this_thread::sleep_for(std::chrono::seconds(1));
+    }
+    return clientChannelPtr->good();
+  };
+
+  std::vector<folly::SemiFuture<std::string>> fv;
+
+  // Reach the egress buffer limit. Notice that the server will report a bit
+  // less memory than expected because a small portion of the response data will
+  // be buffered in the kernel.
+  for (size_t b = 0; b < server.getEgressMemoryLimit(); b += kChunkSize) {
+    std::string data(kChunkSize, 'a');
+    fv.emplace_back(client.semifuture_echoRequest(std::move(data)));
+    flushClientWrites();
+    handler->barrier.wait();
+  }
+
+  // The client socket should still be open
+  ASSERT_TRUE(isClientChannelGood(std::chrono::seconds(5)));
+
+  // The next response should put us over the egress limit
+  std::string data(kChunkSize, 'a');
+  fv.emplace_back(client.semifuture_echoRequest(std::move(data)));
+  flushClientWrites();
+  handler->barrier.wait();
+
+  // Wait for the connection to drop
+  ASSERT_FALSE(isClientChannelGood(std::chrono::seconds(20)));
+
+  // Start reading again
+  clientChannelPtr->setFlushList(nullptr);
+  clientSocketPtr->setRecvBufSize(65535);
+  auto t = std::thread([&] { evb.loopForever(); });
+  SCOPE_EXIT {
+    evb.terminateLoopSoon();
+    t.join();
+  };
+
+  // All responses should have exceptions.
+  auto all = folly::collectAll(std::move(fv));
+  all.wait();
+  ASSERT_TRUE(all.hasValue());
+  for (auto const& rsp : std::move(all).get()) {
+    EXPECT_TRUE(rsp.hasException());
+  }
 }
 
 namespace {

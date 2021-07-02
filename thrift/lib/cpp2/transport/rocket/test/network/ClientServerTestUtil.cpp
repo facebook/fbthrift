@@ -325,6 +325,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
         std::chrono::milliseconds::zero(), // (writeBatchingInterval)
         0, // (writeBatchingSize)
         memoryTracker_, // (ingress)
+        memoryTracker_, // (egress)
         0, // (egressBufferBackpressureThreshold)
         0 // (egressBufferBackpressureRecoveryFactor)
     );

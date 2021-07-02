@@ -133,6 +133,7 @@ void RocketRoutingHandler::handleConnection(
       server->getWriteBatchingInterval(),
       server->getWriteBatchingSize(),
       worker->getIngressMemoryTracker(),
+      worker->getEgressMemoryTracker(),
       server->getEgressBufferBackpressureThreshold(),
       server->getEgressBufferRecoveryFactor());
   onConnection(*connection);

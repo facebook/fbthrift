@@ -70,6 +70,7 @@ class RocketServerConnection final
       std::chrono::milliseconds writeBatchingInterval,
       size_t writeBatchingSize,
       MemoryTracker& ingressMemoryTracker,
+      MemoryTracker& egressMemoryTracker,
       size_t egressBufferBackpressureThreshold,
       double egressBufferBackpressureRecoveryFactor);
 
@@ -256,6 +257,9 @@ class RocketServerConnection final
   // only bumps when sink is in waiting for final response state,
   // (onSinkComplete get called)
   size_t inflightSinkFinalResponses_{0};
+  // Write buffer size (aka egress size). Represents the amount of data that has
+  // not yet been delivered to the client.
+  size_t egressBufferSize_{0};
 
   enum class ConnectionState : uint8_t {
     ALIVE,
@@ -275,7 +279,7 @@ class RocketServerConnection final
       std::variant<RocketStreamClientCallback*, RocketSinkClientCallback*>;
   folly::F14FastMap<StreamId, ClientCallbackUniquePtr> streams_;
   const std::chrono::milliseconds streamStarvationTimeout_;
-  const size_t egressBufferMaxSize_;
+  const size_t egressBufferBackpressureThreshold_;
   const size_t egressBufferRecoverySize_;
   bool streamsPaused_{false};
 
@@ -394,15 +398,13 @@ class RocketServerConnection final
   folly::Function<void(ReadPausableHandle)> onWriteQuiescence_;
 
   MemoryTracker& ingressMemoryTracker_;
+  MemoryTracker& egressMemoryTracker_;
 
   ~RocketServerConnection();
 
   void closeIfNeeded();
   void flushWrites(
-      std::unique_ptr<folly::IOBuf> writes, WriteBatchContext&& context) {
-    inflightWritesQueue_.push_back(std::move(context));
-    socket_->writeChain(this, std::move(writes));
-  }
+      std::unique_ptr<folly::IOBuf> writes, WriteBatchContext&& context);
 
   void timeoutExpired() noexcept final;
   void describe(std::ostream&) const final {}
