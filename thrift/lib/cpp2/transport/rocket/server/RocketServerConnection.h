@@ -66,6 +66,7 @@ class RocketServerConnection final
   RocketServerConnection(
       folly::AsyncTransport::UniquePtr socket,
       std::unique_ptr<RocketServerHandler> frameHandler,
+      std::chrono::milliseconds socketWriteTimeout,
       std::chrono::milliseconds streamStarvationTimeout,
       std::chrono::milliseconds writeBatchingInterval,
       size_t writeBatchingSize,

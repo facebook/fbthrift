@@ -129,6 +129,7 @@ void RocketRoutingHandler::handleConnection(
       std::move(sock),
       std::make_unique<rocket::ThriftRocketServerHandler>(
           worker, *address, sockPtr, setupFrameHandlers_),
+      server->getSocketWriteTimeout(),
       server->getStreamExpireTime(),
       server->getWriteBatchingInterval(),
       server->getWriteBatchingSize(),

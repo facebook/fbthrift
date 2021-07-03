@@ -171,6 +171,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   static constexpr std::chrono::milliseconds DEFAULT_QUEUE_TIMEOUT =
       std::chrono::milliseconds(0);
 
+  static constexpr std::chrono::milliseconds DEFAULT_SOCKET_WRITE_TIMEOUT =
+      std::chrono::milliseconds(60000);
+
   static constexpr std::chrono::seconds DEFAULT_WORKERS_JOIN_TIMEOUT =
       std::chrono::seconds(30);
 
@@ -233,6 +236,15 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
               -> std::chrono::nanoseconds {
             return std::chrono::milliseconds(**timeoutMs);
           })};
+
+  /**
+   * How long a socket with outbound data will tolerate read inactivity from a
+   * client. Clients must read data from their end of the connection before this
+   * period expires or the server will drop the connection. The amount of data
+   * read is irrelevant. Zero indicates no timeout.
+   */
+  ServerAttributeDynamic<std::chrono::milliseconds> socketWriteTimeout_{
+      DEFAULT_SOCKET_WRITE_TIMEOUT};
 
   /**
    * The number of incoming connections the TCP stack will buffer up while
@@ -931,6 +943,22 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       AttributeSource source = AttributeSource::OVERRIDE,
       DynamicAttributeTag = DynamicAttributeTag{}) {
     socketQueueTimeout_.set(timeout, source);
+  }
+
+  /**
+   * How long a socket with outbound data will tolerate read inactivity from a
+   * client. Clients must read data from their end of the connection before this
+   * period expires or the server will drop the connection. The amount of data
+   * read by the client is irrelevant. Zero disables the timeout.
+   */
+  void setSocketWriteTimeout(
+      std::chrono::milliseconds timeout,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    socketWriteTimeout_.set(timeout, source);
+  }
+
+  std::chrono::milliseconds getSocketWriteTimeout() {
+    return socketWriteTimeout_.get();
   }
 
   /**

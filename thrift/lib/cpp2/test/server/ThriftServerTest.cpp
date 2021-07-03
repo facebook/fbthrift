@@ -749,6 +749,81 @@ TEST(ThriftServer, EnforceEgressMemoryLimit) {
   }
 }
 
+TEST(ThriftServer, SocketWriteTimeout) {
+  class TestServiceHandler : public TestServiceSvIf {
+   public:
+    void echoRequest(
+        std::string& _return, std::unique_ptr<std::string>) override {
+      _return = std::string(kResponseSize, 'x'); // big response
+      barrier.wait();
+    }
+
+    folly::test::Barrier barrier{2};
+
+   private:
+    const size_t kResponseSize = 10ul << 20;
+  };
+
+  const std::chrono::seconds kSocketWriteTimeout{5};
+
+  // Server
+  auto handler = std::make_shared<TestServiceHandler>();
+  auto runner = std::make_shared<ScopedServerInterfaceThread>(handler);
+  auto& server = runner->getThriftServer();
+  server.setSocketWriteTimeout(kSocketWriteTimeout);
+  server.setWriteBatchingInterval(std::chrono::milliseconds::zero());
+
+  // Client
+  folly::EventBase evb;
+  auto clientSocket = folly::AsyncSocket::newSocket(&evb, runner->getAddress());
+  auto clientChannel = RocketClientChannel::newChannel(std::move(clientSocket));
+  auto clientChannelPtr = clientChannel.get();
+  TestServiceAsyncClient client(std::move(clientChannel));
+
+  // Establish connection
+  client.sync_noResponse(42);
+
+  // This is used to flush the client write queue
+  apache::thrift::rocket::RocketClient::FlushList flushList;
+  clientChannelPtr->setFlushList(&flushList);
+  auto flushClientWrites = [&]() {
+    auto cbs = std::move(flushList);
+    while (!cbs.empty()) {
+      auto* callback = &cbs.front();
+      cbs.pop_front();
+      callback->runLoopCallback();
+    }
+  };
+
+  // Issue a series of requests without reading responses. We need enough
+  // data to fill both the write buffer on the server and the read buffer on the
+  // client, so that the server will be forced to queue the responses.
+  std::vector<folly::SemiFuture<std::string>> fv;
+  for (auto i = 0; i < 10; i++) {
+    fv.emplace_back(client.semifuture_echoRequest("ignored"));
+    flushClientWrites();
+    handler->barrier.wait();
+  }
+
+  // Trigger write timeout on the server
+  /* sleep override */ std::this_thread::sleep_for(kSocketWriteTimeout * 2);
+
+  // Start reading responses
+  auto t = std::thread([&] { evb.loopForever(); });
+  SCOPE_EXIT {
+    evb.terminateLoopSoon();
+    t.join();
+  };
+
+  // All responses should have failed
+  auto all = folly::collectAll(std::move(fv));
+  all.wait();
+  ASSERT_TRUE(all.hasValue());
+  for (auto const& rsp : std::move(all).get()) {
+    EXPECT_TRUE(rsp.hasException());
+  }
+}
+
 namespace {
 enum class TransportType { Header, Rocket };
 enum class Compression { Enabled, Disabled };

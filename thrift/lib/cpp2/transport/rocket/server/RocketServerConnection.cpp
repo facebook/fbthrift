@@ -58,6 +58,7 @@ constexpr std::chrono::seconds RocketServerConnection::SocketDrainer::kTimeout;
 RocketServerConnection::RocketServerConnection(
     folly::AsyncTransport::UniquePtr socket,
     std::unique_ptr<RocketServerHandler> frameHandler,
+    std::chrono::milliseconds socketWriteTimeout,
     std::chrono::milliseconds streamStarvationTimeout,
     std::chrono::milliseconds writeBatchingInterval,
     size_t writeBatchingSize,
@@ -84,6 +85,7 @@ RocketServerConnection::RocketServerConnection(
   socket_->setReadCB(&parser_);
   if (rawSocket_) {
     rawSocket_->setBufferCallback(this);
+    rawSocket_->setSendTimeout(socketWriteTimeout.count());
   }
 }
 
@@ -725,6 +727,9 @@ void RocketServerConnection::writeSuccess() noexcept {
 
 void RocketServerConnection::writeErr(
     size_t /* bytesWritten */, const folly::AsyncSocketException& ex) noexcept {
+  FB_LOG_EVERY_MS(ERROR, 1000) << fmt::format(
+      "write error: {} ({})", ex.what(), getPeerAddress().describe());
+
   DestructorGuard dg(this);
   DCHECK(!inflightWritesQueue_.empty());
   auto& context = inflightWritesQueue_.front();
