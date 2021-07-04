@@ -871,6 +871,20 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
   folly::SemiFuture<ServerSnapshot> getServerSnapshot(
       const SnapshotOptions& options);
+
+  /**
+   * If shutdown does not complete within the configured worker join timeout,
+   * then we schedule a task to dump the server's state to disk for
+   * investigation.
+   *
+   * The implementor of the dumping logic should provide the the task as well
+   * as an appropriate timeout -- we do not want to indefinitely block shutdown
+   * in case the task deadlocks.
+   */
+  struct DumpSnapshotOnLongShutdownResult {
+    folly::SemiFuture<folly::Unit> task;
+    std::chrono::milliseconds timeout;
+  };
 };
 
 template <typename AcceptorClass, typename SharedSSLContextManagerClass>

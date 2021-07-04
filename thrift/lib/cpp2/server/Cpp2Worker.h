@@ -301,7 +301,7 @@ class Cpp2Worker : public IOWorkerContext,
   void requestStop();
 
   // returns false if timed out due to deadline
-  bool waitForStop(std::chrono::system_clock::time_point deadline);
+  bool waitForStop(std::chrono::steady_clock::time_point deadline);
 
   virtual wangle::AcceptorHandshakeHelper::UniquePtr createSSLHelper(
       const std::vector<uint8_t>& bytes,

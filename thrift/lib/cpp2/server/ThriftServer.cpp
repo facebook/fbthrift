@@ -26,6 +26,7 @@
 #include <folly/Conv.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
+#include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/IOThreadPoolDeadlockDetectorObserver.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/portability/Sockets.h>
@@ -34,6 +35,7 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
@@ -44,6 +46,8 @@
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <wangle/acceptor/FizzConfigUtil.h>
 #include <wangle/acceptor/SharedSSLContextManager.h>
+
+using namespace std::literals::chrono_literals;
 
 DEFINE_bool(
     thrift_abort_if_exceeds_shutdown_deadline,
@@ -61,6 +65,12 @@ DEFINE_string(
 THRIFT_FLAG_DEFINE_bool(server_alpn_prefer_rocket, true);
 THRIFT_FLAG_DEFINE_bool(server_enable_stoptls, false);
 THRIFT_FLAG_DEFINE_bool(ssl_policy_default_required, false);
+
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    apache::thrift::ThriftServer::DumpSnapshotOnLongShutdownResult,
+    dumpSnapshotOnLongShutdown) {
+  return {folly::makeSemiFuture(folly::unit), 0ms};
+}
 
 namespace {
 
@@ -614,10 +624,27 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
     }
   }
 
-  auto deadline = std::chrono::system_clock::now() + getWorkersJoinTimeout();
+  auto joinDeadline =
+      std::chrono::steady_clock::now() + getWorkersJoinTimeout();
+
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
-      if (!worker->waitForStop(deadline)) {
+      if (!worker->waitForStop(joinDeadline)) {
+        // Before we crash, let's dump a snapshot of the server.
+        folly::CPUThreadPoolExecutor dumpSnapshotExecutor{1};
+        // The IO threads may be deadlocked in which case we won't be able to
+        // dump snapshots. It still shouldn't block shutdown indefinitely.
+        auto dumpSnapshotResult =
+            THRIFT_PLUGGABLE_FUNC(dumpSnapshotOnLongShutdown)();
+        try {
+          std::move(dumpSnapshotResult.task)
+              .via(folly::getKeepAliveToken(dumpSnapshotExecutor))
+              .get(dumpSnapshotResult.timeout);
+        } catch (...) {
+          LOG(ERROR) << "Failed to dump server snapshot on long shutdown: "
+                     << folly::exceptionStr(std::current_exception());
+        }
+
         auto msgTemplate =
             "Could not drain active requests within allotted deadline. "
             "Deadline value: {} secs. {} because undefined behavior is possible. "

@@ -824,6 +824,82 @@ TEST(ThriftServer, SocketWriteTimeout) {
   }
 }
 
+namespace long_shutdown {
+namespace {
+
+class BlockingTestInterface : public TestServiceSvIf {
+ public:
+  explicit BlockingTestInterface(folly::Baton<>& baton) : baton_(baton) {}
+
+ private:
+  void noResponse(int64_t) override {
+    baton_.post();
+    // Locks up the server and prevents clean shutdown
+    /* sleep override */ std::this_thread::sleep_for(
+        std::chrono::seconds::max());
+  }
+
+  folly::Baton<>& baton_;
+};
+
+// Delay on snapshot dumping thread to simulate work being done
+std::chrono::milliseconds actualDumpSnapshotDelay = 0ms;
+// The advertised max delay for the returned task
+std::chrono::milliseconds requestedDumpSnapshotDelay = 0ms;
+
+// Dummy exit code to signal that we did manage to finish the (fake) snapshot
+constexpr int kExitCode = 156;
+
+THRIFT_PLUGGABLE_FUNC_SET(
+    apache::thrift::ThriftServer::DumpSnapshotOnLongShutdownResult,
+    dumpSnapshotOnLongShutdown) {
+  return {
+      folly::futures::sleep(actualDumpSnapshotDelay).defer([](auto&&) {
+        std::quick_exit(kExitCode);
+      }),
+      requestedDumpSnapshotDelay};
+}
+
+} // namespace
+} // namespace long_shutdown
+
+TEST(ThriftServerDeathTest, LongShutdown_DumpSnapshot) {
+  EXPECT_EXIT(
+      ({
+        folly::Baton<> ready;
+        ScopedServerInterfaceThread runner(
+            std::make_shared<long_shutdown::BlockingTestInterface>(ready),
+            [](ThriftServer& server) { server.setWorkersJoinTimeout(1s); });
+
+        long_shutdown::requestedDumpSnapshotDelay = 1s;
+        long_shutdown::actualDumpSnapshotDelay = 0ms;
+
+        auto client = runner.newClient<TestServiceAsyncClient>();
+        client->semifuture_noResponse(0).get();
+        ready.wait();
+      }),
+      testing::ExitedWithCode(long_shutdown::kExitCode),
+      "");
+}
+
+TEST(ThriftServerDeathTest, LongShutdown_DumpSnapshotTimeout) {
+  EXPECT_DEATH(
+      ({
+        folly::Baton<> ready;
+        ScopedServerInterfaceThread runner(
+            std::make_shared<long_shutdown::BlockingTestInterface>(ready),
+            [](ThriftServer& server) { server.setWorkersJoinTimeout(1s); });
+
+        long_shutdown::requestedDumpSnapshotDelay = 500ms;
+        long_shutdown::actualDumpSnapshotDelay = 60s;
+
+        auto client = runner.newClient<TestServiceAsyncClient>();
+        client->semifuture_noResponse(0).get();
+        ready.wait();
+      }),
+      "Could not drain active requests within allotted deadline");
+}
+
 namespace {
 enum class TransportType { Header, Rocket };
 enum class Compression { Enabled, Disabled };
