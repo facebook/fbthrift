@@ -763,7 +763,7 @@ class CompilerFailureTest(unittest.TestCase):
                 """\
                 struct Foo {
                     0: i32 field;
-                    1: list<i32> other (cpp.experimental.lazy);
+                    1: list<i32> other;
                 }
                 """
             ),
@@ -782,9 +782,28 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n"
             * 2
-            + "[FAILURE:foo.thrift:1] field-id 0 is reserved but is used in field `Foo`\n",
+            + "[FAILURE:foo.thrift:2] Zero value (0) not allowed as a field id for `field`\n"
         )
         self.assertEqual(ret, 1)
+
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo {
+                    0: i32 field (cpp.deprecated_allow_zero_as_field_id);
+                    1: list<i32> other;
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n"
+            * 2
+        )
+        self.assertEqual(ret, 0)
 
     def test_unordered_minimize_padding(self):
         write_file(
