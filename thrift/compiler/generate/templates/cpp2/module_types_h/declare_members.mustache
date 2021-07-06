@@ -27,7 +27,13 @@
 <%/struct:private_isset?%>
 <%#struct:isset_fields?%>
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
+<%#struct:private_isset?%>
   struct __isset {
+<%/struct:private_isset?%>
+<%^struct:private_isset?%>
+  class __isset {
+    friend class <%struct:name%>;
+<%/struct:private_isset?%>
 <%#struct:isset_fields%>
     bool <%field:cpp_name%>;
 <%/struct:isset_fields%>

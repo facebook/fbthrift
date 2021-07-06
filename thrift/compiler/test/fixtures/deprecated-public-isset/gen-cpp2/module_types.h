@@ -100,7 +100,8 @@ class Foo final  {
 
  public:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
-  struct __isset {
+  class __isset {
+    friend class Foo;
     bool field1;
     bool field2;
   } __isset = {};
