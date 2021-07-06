@@ -103,6 +103,16 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, OptionalLazyFoo, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, OptionalLazyFoo, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, OptionalLazyFoo, field4);
 
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, TerseLazyFoo, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, TerseLazyFoo, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, TerseLazyFoo, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, TerseLazyFoo, field4);
+
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, TerseOptionalLazyFoo, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, TerseOptionalLazyFoo, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, TerseOptionalLazyFoo, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, TerseOptionalLazyFoo, field4);
+
 TYPED_TEST(LazyDeserialization, CheckDataMember) {
   using LazyStruct = typename TypeParam::LazyStruct;
 
@@ -185,11 +195,12 @@ TYPED_TEST(LazyDeserialization, Comparison) {
   }
 }
 
-// This is testing if writer turned off lazy deserialization, but reader's
-// lazyFoo has lazy field that's not deserialized, whether deserialization
-// overwrites the field (i.e. whether we clear IOBuf and isDeserialized
-// boolean).
-TYPED_TEST(LazyDeserialization, Evolution) {
+// The intention of this unit-test is testing if serialized data doesn't have
+// index, we want to ensure it can be still deserialized to struct with lazy
+// field with behavior that identical to non-lazy field. i.e. deserialization
+// should overwrite fields and clear IOBuf. This can happen during schema
+// evolution when user turned off lazy deserialization only on writer side.
+TYPED_TEST(LazyDeserialization, DeserializeLazyStructWithoutIndex) {
   using Struct = typename TypeParam::Struct;
   using LazyStruct = typename TypeParam::LazyStruct;
 
@@ -201,6 +212,27 @@ TYPED_TEST(LazyDeserialization, Evolution) {
 
   // We need first deserialization since even though `this->genLazyStruct()`
   // returns lazy struct, all lazy fields are already deserialized.
+  LazyStruct lazyFoo;
+  this->deserialize(this->serialize(this->genLazyStruct()), lazyFoo);
+  this->deserialize(this->serialize(foo), lazyFoo);
+
+  if (std::is_same_v<Struct, TerseFoo>) {
+    // If struct enabled terse writes, we won't serialize fields that has
+    // default value, thus we won't change lazyFoo after deserialization
+    EXPECT_EQ(lazyFoo, this->genLazyStruct());
+  } else {
+    EXPECT_TRUE(lazyFoo.field1_ref()->empty());
+    EXPECT_TRUE(lazyFoo.field2_ref()->empty());
+    EXPECT_TRUE(lazyFoo.field3_ref()->empty());
+    EXPECT_TRUE(lazyFoo.field4_ref()->empty());
+  }
+}
+
+TYPED_TEST(
+    LazyDeserialization, DeserializeLazyStructWithoutIndexOrTerseWrites) {
+  using LazyStruct = typename TypeParam::LazyStruct;
+
+  Foo foo;
   LazyStruct lazyFoo;
   this->deserialize(this->serialize(this->genLazyStruct()), lazyFoo);
   this->deserialize(this->serialize(foo), lazyFoo);

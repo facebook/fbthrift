@@ -17,6 +17,7 @@
 #pragma once
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_types.h>
+#include <thrift/test/lazy_deserialization/gen-cpp2/terse_writes_types.h>
 
 namespace apache::thrift::test {
 
@@ -47,6 +48,20 @@ struct Structs<OptionalFoo> {
   using IndexedStruct = OptionalIndexedFoo;
 };
 
+template <>
+struct Structs<TerseFoo> {
+  using Struct = TerseFoo;
+  using LazyStruct = TerseLazyFoo;
+  using IndexedStruct = IndexedFoo;
+};
+
+template <>
+struct Structs<TerseOptionalFoo> {
+  using Struct = TerseOptionalFoo;
+  using LazyStruct = TerseOptionalLazyFoo;
+  using IndexedStruct = OptionalIndexedFoo;
+};
+
 template <class Serializer_, class Struct>
 struct TypeParam : Structs<Struct> {
   using Serializer = Serializer_;
@@ -55,8 +70,12 @@ struct TypeParam : Structs<Struct> {
 using TypeParams = ::testing::Types<
     TypeParam<CompactSerializer, Foo>,
     TypeParam<CompactSerializer, OptionalFoo>,
+    TypeParam<CompactSerializer, TerseFoo>,
+    TypeParam<CompactSerializer, TerseOptionalFoo>,
     TypeParam<BinarySerializer, Foo>,
-    TypeParam<BinarySerializer, OptionalFoo>>;
+    TypeParam<BinarySerializer, OptionalFoo>,
+    TypeParam<BinarySerializer, TerseFoo>,
+    TypeParam<BinarySerializer, TerseOptionalFoo>>;
 
 template <typename T>
 struct LazyDeserialization : testing::Test {

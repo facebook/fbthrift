@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_types.h>
+#include <thrift/test/lazy_deserialization/gen-cpp2/terse_writes_types.h>
 
 constexpr int kIterationCount = folly::kIsDebug ? 50'000 : 500'000;
 constexpr int kListMaxSize = 10;
@@ -216,6 +217,8 @@ class RandomTestWithSeed : public testing::TestWithParam<int> {};
 TEST_P(RandomTestWithSeed, test) {
   randomTestWithSeed<Foo, LazyFoo>(GetParam());
   randomTestWithSeed<OptionalFoo, OptionalLazyFoo>(GetParam());
+  randomTestWithSeed<TerseFoo, TerseLazyFoo>(GetParam());
+  randomTestWithSeed<TerseOptionalFoo, TerseOptionalLazyFoo>(GetParam());
 }
 
 INSTANTIATE_TEST_CASE_P(

@@ -21,6 +21,7 @@
 #include <thrift/test/lazy_deserialization/common.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_constants.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_fatal_all.h>
+#include <thrift/test/lazy_deserialization/gen-cpp2/terse_writes_fatal_all.h>
 
 namespace apache::thrift::test {
 // Represent the field header and actual field data in serialized data
@@ -116,6 +117,16 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, OptionalLazyFoo, field1);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, OptionalLazyFoo, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, OptionalLazyFoo, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, OptionalLazyFoo, field4);
+
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, TerseLazyFoo, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, TerseLazyFoo, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, TerseLazyFoo, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, TerseLazyFoo, field4);
+
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, TerseOptionalLazyFoo, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, TerseOptionalLazyFoo, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, TerseOptionalLazyFoo, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, TerseOptionalLazyFoo, field4);
 
 TYPED_TEST(LazyDeserialization, IndexedFooToLazyFoo) {
   using Serializer = typename TypeParam::Serializer;

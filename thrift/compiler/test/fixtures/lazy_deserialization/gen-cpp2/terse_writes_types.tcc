@@ -536,11 +536,11 @@ uint32_t TerseLazyFoo::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_LIST, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->field2);
   }
-  if (!this->field3.empty()) {
+  if (!__fbthrift_isDeserialized_.field3 || !this->field3.empty()) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->field3);
   }
-  if (!this->field4.empty()) {
+  if (!__fbthrift_isDeserialized_.field4 || !this->field4.empty()) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_LIST, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->field4);
   }
@@ -562,11 +562,11 @@ uint32_t TerseLazyFoo::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_LIST, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->field2);
   }
-  if (!this->field3.empty()) {
+  if (!__fbthrift_isDeserialized_.field3 || !this->field3.empty()) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->field3);
   }
-  if (!this->field4.empty()) {
+  if (!__fbthrift_isDeserialized_.field4 || !this->field4.empty()) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_LIST, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->field4);
   }
@@ -604,7 +604,7 @@ uint32_t TerseLazyFoo::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!this->field3.empty()) {
+  if (!__fbthrift_isDeserialized_.field3 || !this->field3.empty()) {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 3, kPrevFieldId>(*prot_, "field3", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -623,7 +623,7 @@ uint32_t TerseLazyFoo::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!this->field4.empty()) {
+  if (!__fbthrift_isDeserialized_.field4 || !this->field4.empty()) {
     constexpr int16_t kPrevFieldId = 3;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 4, kPrevFieldId>(*prot_, "field4", previousFieldHasValue);
     previousFieldHasValue = true;
