@@ -123,20 +123,26 @@ void RocketRoutingHandler::handleConnection(
     return;
   }
 
-  auto* const sockPtr = sock.get();
   auto* const server = worker->getServer();
+
+  rocket::RocketServerConnection::Config cfg;
+  cfg.socketWriteTimeout = server->getSocketWriteTimeout();
+  cfg.streamStarvationTimeout = server->getStreamExpireTime();
+  cfg.writeBatchingInterval = server->getWriteBatchingInterval();
+  cfg.writeBatchingSize = server->getWriteBatchingSize();
+  cfg.egressBufferBackpressureThreshold =
+      server->getEgressBufferBackpressureThreshold();
+  cfg.egressBufferBackpressureRecoveryFactor =
+      server->getEgressBufferRecoveryFactor();
+
+  auto* const sockPtr = sock.get();
   auto* const connection = new rocket::RocketServerConnection(
       std::move(sock),
       std::make_unique<rocket::ThriftRocketServerHandler>(
           worker, *address, sockPtr, setupFrameHandlers_),
-      server->getSocketWriteTimeout(),
-      server->getStreamExpireTime(),
-      server->getWriteBatchingInterval(),
-      server->getWriteBatchingSize(),
       worker->getIngressMemoryTracker(),
       worker->getEgressMemoryTracker(),
-      server->getEgressBufferBackpressureThreshold(),
-      server->getEgressBufferRecoveryFactor());
+      cfg);
   onConnection(*connection);
   connectionManager->addConnection(connection);
 

@@ -127,14 +127,8 @@ void testServerOneInput(const uint8_t* Data, size_t Size) {
       std::move(sock),
       std::make_unique<apache::thrift::rocket::ThriftRocketServerHandler>(
           worker, address, sockPtr, v),
-      std::chrono::milliseconds::zero(), // (socketWriteTimeout)
-      std::chrono::seconds(60), // (streamStarvationTimeout)
-      std::chrono::milliseconds::zero(), // (writeBatchingInterval)
-      0, // (writeBatchingSize)
       memoryTracker, // (ingress)
-      memoryTracker, // (egress)
-      0, // (egressBufferBackpressureThreshold)
-      0 // (egressBufferBackpressureRecoveryFactor)
+      memoryTracker // (egress)
   );
 
   folly::DelayedDestruction::DestructorGuard dg(connection);

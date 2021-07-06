@@ -63,17 +63,25 @@ class RocketServerConnection final
   using UniquePtr = std::
       unique_ptr<RocketServerConnection, folly::DelayedDestruction::Destructor>;
 
+  // (configuration parameters mostly inherited from the server)
+  struct Config {
+    Config() {}
+    std::chrono::milliseconds socketWriteTimeout{
+        std::chrono::milliseconds::zero()};
+    std::chrono::milliseconds streamStarvationTimeout{std::chrono::seconds{60}};
+    std::chrono::milliseconds writeBatchingInterval{
+        std::chrono::milliseconds::zero()};
+    size_t writeBatchingSize{0};
+    size_t egressBufferBackpressureThreshold{0};
+    double egressBufferBackpressureRecoveryFactor{0.0};
+  };
+
   RocketServerConnection(
       folly::AsyncTransport::UniquePtr socket,
       std::unique_ptr<RocketServerHandler> frameHandler,
-      std::chrono::milliseconds socketWriteTimeout,
-      std::chrono::milliseconds streamStarvationTimeout,
-      std::chrono::milliseconds writeBatchingInterval,
-      size_t writeBatchingSize,
       MemoryTracker& ingressMemoryTracker,
       MemoryTracker& egressMemoryTracker,
-      size_t egressBufferBackpressureThreshold,
-      double egressBufferBackpressureRecoveryFactor);
+      const Config& cfg = {});
 
   void send(
       std::unique_ptr<folly::IOBuf> data,

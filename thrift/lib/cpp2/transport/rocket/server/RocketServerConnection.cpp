@@ -58,25 +58,21 @@ constexpr std::chrono::seconds RocketServerConnection::SocketDrainer::kTimeout;
 RocketServerConnection::RocketServerConnection(
     folly::AsyncTransport::UniquePtr socket,
     std::unique_ptr<RocketServerHandler> frameHandler,
-    std::chrono::milliseconds socketWriteTimeout,
-    std::chrono::milliseconds streamStarvationTimeout,
-    std::chrono::milliseconds writeBatchingInterval,
-    size_t writeBatchingSize,
     MemoryTracker& ingressMemoryTracker,
     MemoryTracker& egressMemoryTracker,
-    size_t egressBufferBackpressureThreshold,
-    double egressBufferRecoveryFactor)
+    const Config& cfg)
     : evb_(*socket->getEventBase()),
       socket_(std::move(socket)),
       rawSocket_(
           socket_ ? socket_->getUnderlyingTransport<folly::AsyncSocket>()
                   : nullptr),
       frameHandler_(std::move(frameHandler)),
-      streamStarvationTimeout_(streamStarvationTimeout),
-      egressBufferBackpressureThreshold_(egressBufferBackpressureThreshold),
+      streamStarvationTimeout_(cfg.streamStarvationTimeout),
+      egressBufferBackpressureThreshold_(cfg.egressBufferBackpressureThreshold),
       egressBufferRecoverySize_(
-          egressBufferBackpressureThreshold * egressBufferRecoveryFactor),
-      writeBatcher_(*this, writeBatchingInterval, writeBatchingSize),
+          cfg.egressBufferBackpressureThreshold *
+          cfg.egressBufferBackpressureRecoveryFactor),
+      writeBatcher_(*this, cfg.writeBatchingInterval, cfg.writeBatchingSize),
       socketDrainer_(*this),
       ingressMemoryTracker_(ingressMemoryTracker),
       egressMemoryTracker_(egressMemoryTracker) {
@@ -85,7 +81,7 @@ RocketServerConnection::RocketServerConnection(
   socket_->setReadCB(&parser_);
   if (rawSocket_) {
     rawSocket_->setBufferCallback(this);
-    rawSocket_->setSendTimeout(socketWriteTimeout.count());
+    rawSocket_->setSendTimeout(cfg.socketWriteTimeout.count());
   }
 }
 
