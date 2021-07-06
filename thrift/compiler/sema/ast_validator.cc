@@ -50,6 +50,15 @@ const t_structured* get_mixin_type(const t_field& field) {
   return nullptr;
 }
 
+bool has_lazy_field(const t_structured& node) {
+  for (const auto& field : node.fields()) {
+    if (cpp2::is_lazy(&field)) {
+      return true;
+    }
+  }
+  return false;
+}
+
 // Reports an existing name was redefined within the given parent node.
 void report_redef_failure(
     diagnostic_context& ctx,
@@ -376,6 +385,20 @@ void validate_field_id_is_nonzero(
     });
   }
 }
+
+void validate_compatibility_with_lazy_field(
+    diagnostic_context& ctx, const t_structured& node) {
+  if (!has_lazy_field(node)) {
+    return;
+  }
+
+  if (node.has_annotation("cpp.methods")) {
+    ctx.failure(node, [&](auto& o) {
+      o << "cpp.methods is incompatible with lazy deserialization in struct `"
+        << node.get_name() << "`";
+    });
+  }
+}
 } // namespace
 
 ast_validator standard_validator() {
@@ -402,6 +425,8 @@ ast_validator standard_validator() {
       &validate_structured_annotation_type_uniqueness);
   validator.add_definition_visitor(&validate_annotation_scopes);
   validator.add_field_visitor(&validate_field_id_is_nonzero);
+  validator.add_structured_definition_visitor(
+      &validate_compatibility_with_lazy_field);
   return validator;
 }
 

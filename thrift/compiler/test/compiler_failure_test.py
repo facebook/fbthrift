@@ -1054,3 +1054,22 @@ class CompilerFailureTest(unittest.TestCase):
                 """
             ),
         )
+
+    def test_lazy_struct_compatibility(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo {
+                  1: list<i32> field (cpp.experimental.lazy)
+                } (cpp.methods = "")
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent("[FAILURE:foo.thrift:1] cpp.methods is incompatible with lazy deserialization in struct `Foo`\n"),
+        )
