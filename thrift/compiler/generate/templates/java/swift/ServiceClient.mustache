@@ -186,13 +186,37 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
       RpcOptions _rpcOptions){{!
         Exceptions
       }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+        try {
+          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
+          return FutureUtil.get(executeWrapperWithOptions({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}}));
+        } catch (Throwable t) {
+          if (t instanceof org.apache.thrift.TException) {
+            throw (org.apache.thrift.TException) t;
+          }
+          {{#function:exceptions}}
+          if (t instanceof {{#field:type}}{{> BoxedType}}{{/field:type}}) {
+            throw ({{#field:type}}{{> BoxedType}}{{/field:type}}) t;
+          }
+          {{/function:exceptions}}
+          throw new org.apache.thrift.TException(t);
+        }
       }
 
       {{/service:supportedFunctions}}
       @java.lang.Override
       public void close() {
         activeInteractions.remove(interactionId);
+      }
+
+      private RpcOptions updateRpcOptions(RpcOptions _rpcOptions) {
+        RpcOptions.Builder builder = new RpcOptions.Builder(_rpcOptions);
+        if (activeInteractions.contains(interactionId)) {
+          builder.setInteractionId(interactionId);
+        } else {
+          builder.setCreateInteractionId(interactionId).setInteractionId(0L);
+          activeInteractions.add(interactionId);
+        }
+        return builder.build();
       }
     }
 

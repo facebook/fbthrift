@@ -153,7 +153,15 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
       public ResponseWrapper<Integer> frobnicateWrapper(
       RpcOptions _rpcOptions) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+        try {
+          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
+          return FutureUtil.get(executeWrapperWithOptions(frobnicateMethodHandler, frobnicateExceptions, rpcOptions));
+        } catch (Throwable t) {
+          if (t instanceof org.apache.thrift.TException) {
+            throw (org.apache.thrift.TException) t;
+          }
+          throw new org.apache.thrift.TException(t);
+        }
       }
 
 
@@ -168,12 +176,31 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
       public ResponseWrapper<Void> pingWrapper(
       RpcOptions _rpcOptions) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+        try {
+          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
+          return FutureUtil.get(executeWrapperWithOptions(pingMethodHandler, pingExceptions, rpcOptions));
+        } catch (Throwable t) {
+          if (t instanceof org.apache.thrift.TException) {
+            throw (org.apache.thrift.TException) t;
+          }
+          throw new org.apache.thrift.TException(t);
+        }
       }
 
       @java.lang.Override
       public void close() {
         activeInteractions.remove(interactionId);
+      }
+
+      private RpcOptions updateRpcOptions(RpcOptions _rpcOptions) {
+        RpcOptions.Builder builder = new RpcOptions.Builder(_rpcOptions);
+        if (activeInteractions.contains(interactionId)) {
+          builder.setInteractionId(interactionId);
+        } else {
+          builder.setCreateInteractionId(interactionId).setInteractionId(0L);
+          activeInteractions.add(interactionId);
+        }
+        return builder.build();
       }
     }
 
@@ -201,7 +228,15 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
       public ResponseWrapper<Integer> frobnicateWrapper(
       RpcOptions _rpcOptions) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+        try {
+          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
+          return FutureUtil.get(executeWrapperWithOptions(frobnicateMethodHandler, frobnicateExceptions, rpcOptions));
+        } catch (Throwable t) {
+          if (t instanceof org.apache.thrift.TException) {
+            throw (org.apache.thrift.TException) t;
+          }
+          throw new org.apache.thrift.TException(t);
+        }
       }
 
 
@@ -216,12 +251,31 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
       public ResponseWrapper<Void> pingWrapper(
       RpcOptions _rpcOptions) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+        try {
+          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
+          return FutureUtil.get(executeWrapperWithOptions(pingMethodHandler, pingExceptions, rpcOptions));
+        } catch (Throwable t) {
+          if (t instanceof org.apache.thrift.TException) {
+            throw (org.apache.thrift.TException) t;
+          }
+          throw new org.apache.thrift.TException(t);
+        }
       }
 
       @java.lang.Override
       public void close() {
         activeInteractions.remove(interactionId);
+      }
+
+      private RpcOptions updateRpcOptions(RpcOptions _rpcOptions) {
+        RpcOptions.Builder builder = new RpcOptions.Builder(_rpcOptions);
+        if (activeInteractions.contains(interactionId)) {
+          builder.setInteractionId(interactionId);
+        } else {
+          builder.setCreateInteractionId(interactionId).setInteractionId(0L);
+          activeInteractions.add(interactionId);
+        }
+        return builder.build();
       }
     }
 
@@ -249,12 +303,31 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
       public ResponseWrapper<Void> frobnicateWrapper(
       RpcOptions _rpcOptions) throws org.apache.thrift.TException {
-        throw new UnsupportedOperationException();
+        try {
+          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
+          return FutureUtil.get(executeWrapperWithOptions(frobnicateMethodHandler, frobnicateExceptions, rpcOptions));
+        } catch (Throwable t) {
+          if (t instanceof org.apache.thrift.TException) {
+            throw (org.apache.thrift.TException) t;
+          }
+          throw new org.apache.thrift.TException(t);
+        }
       }
 
       @java.lang.Override
       public void close() {
         activeInteractions.remove(interactionId);
+      }
+
+      private RpcOptions updateRpcOptions(RpcOptions _rpcOptions) {
+        RpcOptions.Builder builder = new RpcOptions.Builder(_rpcOptions);
+        if (activeInteractions.contains(interactionId)) {
+          builder.setInteractionId(interactionId);
+        } else {
+          builder.setCreateInteractionId(interactionId).setInteractionId(0L);
+          activeInteractions.add(interactionId);
+        }
+        return builder.build();
       }
     }
 
