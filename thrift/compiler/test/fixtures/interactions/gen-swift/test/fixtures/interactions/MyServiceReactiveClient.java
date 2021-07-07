@@ -13,7 +13,9 @@ import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
 import org.apache.thrift.protocol.*;
+import org.apache.thrift.ClientPushMetadata;
 import org.apache.thrift.InteractionCreate;
+import org.apache.thrift.InteractionTerminate;
 import com.facebook.thrift.client.ResponseWrapper;
 import com.facebook.thrift.client.RpcOptions;
 
@@ -351,6 +353,13 @@ public class MyServiceReactiveClient
     @java.lang.Override
     public void dispose() {
       _activeInteractions.remove(interactionId);
+      _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
+        .flatMap(_rpc -> {
+          InteractionTerminate term = new InteractionTerminate.Builder().setInteractionId(interactionId).build();
+          ClientPushMetadata metadata = ClientPushMetadata.fromInteractionTerminate(term);
+          return _rpc.metadataPush(metadata, com.facebook.thrift.client.RpcOptions.EMPTY);
+        }).subscribe();
     }
   }
 
@@ -584,6 +593,13 @@ public class MyServiceReactiveClient
     @java.lang.Override
     public void dispose() {
       _activeInteractions.remove(interactionId);
+      _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
+        .flatMap(_rpc -> {
+          InteractionTerminate term = new InteractionTerminate.Builder().setInteractionId(interactionId).build();
+          ClientPushMetadata metadata = ClientPushMetadata.fromInteractionTerminate(term);
+          return _rpc.metadataPush(metadata, com.facebook.thrift.client.RpcOptions.EMPTY);
+        }).subscribe();
     }
   }
 
@@ -672,6 +688,13 @@ public class MyServiceReactiveClient
     @java.lang.Override
     public void dispose() {
       _activeInteractions.remove(interactionId);
+      _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
+        .flatMap(_rpc -> {
+          InteractionTerminate term = new InteractionTerminate.Builder().setInteractionId(interactionId).build();
+          ClientPushMetadata metadata = ClientPushMetadata.fromInteractionTerminate(term);
+          return _rpc.metadataPush(metadata, com.facebook.thrift.client.RpcOptions.EMPTY);
+        }).subscribe();
     }
   }
 
