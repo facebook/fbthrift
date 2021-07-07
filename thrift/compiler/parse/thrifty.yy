@@ -225,81 +225,81 @@ class t_container_type;
  * - t_refs are already owned.
  */
 
-%type<t_ref<t_base_type>>       BaseType
-%type<t_container*>             ContainerType
-%type<t_container*>             MapType
-%type<t_container*>             SetType
-%type<t_container*>             ListType
+%type<t_ref<t_base_type>>          BaseType
+%type<t_container*>                ContainerType
+%type<t_container*>                MapType
+%type<t_container*>                SetType
+%type<t_container*>                ListType
 
-%type<std::string>              Identifier
-%type<t_def_attrs*>             DefinitionAttrs
-%type<t_ref<t_node>>            Definition
+%type<std::string>                 Identifier
+%type<t_def_attrs*>                DefinitionAttrs
+%type<t_ref<t_node>>               Definition
 
-%type<t_typedef*>               Typedef
+%type<t_typedef*>                  Typedef
 
-%type<t_annotation*>            TypeAnnotation
-%type<t_annotations*>           TypeAnnotations
-%type<t_annotations*>           TypeAnnotationList
-%type<t_annotations*>           FunctionAnnotations
+%type<t_annotation*>               TypeAnnotation
+%type<t_annotations*>              TypeAnnotations
+%type<t_annotations*>              TypeAnnotationList
+%type<t_annotations*>              FunctionAnnotations
 
-%type<t_const*>                 StructuredAnnotation
-%type<t_struct_annotations*>    StructuredAnnotations
-%type<t_struct_annotations*>    NonEmptyStructuredAnnotationList
+%type<t_const*>                    StructuredAnnotation
+%type<t_struct_annotations*>       StructuredAnnotations
+%type<t_struct_annotations*>       NonEmptyStructuredAnnotationList
 
-%type<t_field*>                 Field
-%type<boost::optional<int64_t>> FieldIdentifier
-%type<t_field_qualifier>        FieldQualifier
-%type<t_type_ref>               FieldType
-%type<t_stream_response*>       ResponseAndStreamReturnType
-%type<t_sink*>                  ResponseAndSinkReturnType
-%type<t_stream_response*>       StreamReturnType
-%type<t_sink*>                  SinkReturnType
-%type<t_typethrowspair>         SinkFieldType
-%type<t_const_value*>           FieldValue
-%type<t_field_list*>            FieldList
+%type<t_field*>                    Field
+%type<boost::optional<t_field_id>> FieldIdentifier
+%type<t_field_qualifier>           FieldQualifier
+%type<t_type_ref>                  FieldType
+%type<t_stream_response*>          ResponseAndStreamReturnType
+%type<t_sink*>                     ResponseAndSinkReturnType
+%type<t_stream_response*>          StreamReturnType
+%type<t_sink*>                     SinkReturnType
+%type<t_typethrowspair>            SinkFieldType
+%type<t_const_value*>              FieldValue
+%type<t_field_list*>               FieldList
 
-%type<t_enum*>                  Enum
-%type<t_enum_value_list*>       EnumValueList
-%type<t_enum_value*>            EnumValueDef
-%type<t_enum_value*>            EnumValue
+%type<t_enum*>                     Enum
+%type<t_enum_value_list*>          EnumValueList
+%type<t_enum_value*>               EnumValueDef
+%type<t_enum_value*>               EnumValue
 
-%type<t_const*>                 Const
-%type<t_const_value*>           ConstValue
-%type<t_const_value*>           ConstList
-%type<t_const_value*>           ConstListContents
-%type<t_const_value*>           ConstMap
-%type<t_const_value*>           ConstMapContents
-%type<t_const_value*>           ConstStruct
-%type<t_type_ref>               ConstStructType
-%type<t_const_value*>           ConstStructContents
+%type<t_const*>                    Const
+%type<t_const_value*>              ConstValue
+%type<t_const_value*>              ConstList
+%type<t_const_value*>              ConstListContents
+%type<t_const_value*>              ConstMap
+%type<t_const_value*>              ConstMapContents
+%type<t_const_value*>              ConstStruct
+%type<t_type_ref>                  ConstStructType
+%type<t_const_value*>              ConstStructContents
 
-%type<t_struct*>                Struct
-%type<t_union*>                 Union
+%type<t_struct*>                   Struct
+%type<t_union*>                    Union
 
-%type<t_error_kind>             ErrorKind
-%type<t_error_blame>            ErrorBlame
-%type<t_error_safety>           ErrorSafety
-%type<t_exception*>             Exception
+%type<t_error_kind>                ErrorKind
+%type<t_error_blame>               ErrorBlame
+%type<t_error_safety>              ErrorSafety
+%type<t_exception*>                Exception
 
-%type<t_service*>               Service
-%type<t_interaction*>           Interaction
+%type<t_service*>                  Service
+%type<t_interaction*>              Interaction
 
-%type<t_function*>              Function
-%type<t_type_ref>               FunctionType
-%type<t_function_list*>         FunctionList
+%type<t_function*>                 Function
+%type<t_type_ref>                  FunctionType
+%type<t_function_list*>            FunctionList
 
-%type<t_paramlist*>             ParamList
-%type<t_paramlist*>             EmptyParamList
-%type<t_field*>                 Param
+%type<t_paramlist*>                ParamList
+%type<t_paramlist*>                EmptyParamList
+%type<t_field*>                    Param
 
-%type<t_throws*>                MaybeThrows
-%type<t_ref<t_service>>         Extends
-%type<t_function_qualifier>     FunctionQualifier
+%type<t_throws*>                   MaybeThrows
+%type<t_ref<t_service>>            Extends
+%type<t_function_qualifier>        FunctionQualifier
 
-%type<t_doc>                    CaptureDocText
-%type<std::string>              IntOrLiteral
+%type<t_doc>                       CaptureDocText
+%type<std::string>                 IntOrLiteral
 
-%type<bool>                     CommaOrSemicolonOptional
+%type<bool>                        CommaOrSemicolonOptional
 
 %%
 
@@ -1201,7 +1201,7 @@ Field:
 FieldIdentifier:
   tok_int_constant ":"
     {
-      $$ = $1;
+      $$ = driver.as_field_id($1);
     }
 |
     {

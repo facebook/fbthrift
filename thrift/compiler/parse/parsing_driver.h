@@ -417,6 +417,8 @@ class parsing_driver {
   t_ref<t_exception> add_def(std::unique_ptr<t_exception> node);
   t_ref<t_enum> add_def(std::unique_ptr<t_enum> node);
 
+  t_field_id as_field_id(int64_t int_const);
+
  private:
   class deleter {
    public:

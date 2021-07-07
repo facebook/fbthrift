@@ -17,6 +17,7 @@
 #include <thrift/compiler/parse/parsing_driver.h>
 
 #include <cstdarg>
+#include <limits>
 #include <memory>
 
 #include <boost/filesystem.hpp>
@@ -863,6 +864,20 @@ t_ref<t_enum> parsing_driver::add_def(std::unique_ptr<t_enum> node) {
   }
   return result;
 }
+
+t_field_id parsing_driver::as_field_id(int64_t int_const) {
+  using limits = std::numeric_limits<t_field_id>;
+  if (int_const < limits::min() || int_const > limits::max()) {
+    // Not representable as a field id.
+    failure([&](auto& o) {
+      o << "Integer constant (" << int_const
+        << ") outside the range of field ids ([" << limits::min() << ", "
+        << limits::max() << "]).";
+    });
+  }
+  return int_const;
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

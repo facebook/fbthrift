@@ -72,7 +72,66 @@ class CompilerFailureTest(unittest.TestCase):
         err = err.replace("{}/".format(self.tmp), "")
         return p.returncode, out, err
 
-    def test_negative_ids(self):
+    def test_zero_as_field_id(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo {
+                    0: i32 field;
+                    1: list<i32> other;
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            "[WARNING:foo.thrift:2] No field id specified for field, resulting protocol may have conflicts or not be backwards compatible!\n"
+            * 2,
+        )
+        self.assertEqual(ret, 0)
+
+        ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n"
+            * 2
+            + "[FAILURE:foo.thrift:2] Zero value (0) not allowed as a field id for `field`\n",
+        )
+        self.assertEqual(ret, 1)
+
+    def test_zero_as_field_id_allowed(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo {
+                    0: i32 field (cpp.deprecated_allow_zero_as_field_id);
+                    1: list<i32> other;
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            "[WARNING:foo.thrift:2] No field id specified for field, resulting protocol may have conflicts or not be backwards compatible!\n"
+            * 2,
+        )
+        self.assertEqual(ret, 0)
+
+        ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n"
+            * 2,
+        )
+        self.assertEqual(ret, 0)
+
+    def test_negative_field_ids(self):
         write_file(
             "foo.thrift",
             textwrap.dedent(
@@ -116,6 +175,48 @@ class CompilerFailureTest(unittest.TestCase):
             * 2
             + "[FAILURE:foo.thrift:5] Too many fields in `Foo1`\n"
             "[FAILURE:foo.thrift:9] Too many fields in `Foo2`\n",
+        )
+        self.assertEqual(ret, 1)
+
+    def test_out_of_range_field_ids(self):
+        write_file(
+            "overflow.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo {
+                    -32768: i32 f1;
+                    32767: i32 f2;
+                    32768: i32 f3;
+                }
+                """
+            ),
+        )
+        write_file(
+            "underflow.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo {
+                    -32768: i32 f4;
+                    32767: i32 f5;
+                    -32769: i32 f6;
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("overflow.thrift")
+        self.assertEqual(
+            err,
+            "[WARNING:overflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            "[WARNING:overflow.thrift:2] No field id specified for f1, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[FAILURE:overflow.thrift:4] Integer constant (32768) outside the range of field ids ([-32768, 32767]).\n",
+        )
+        self.assertEqual(ret, 1)
+        ret, out, err = self.run_thrift("underflow.thrift")
+        self.assertEqual(
+            err,
+            "[WARNING:underflow.thrift:2] Nonpositive field id (-32768) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
+            "[WARNING:underflow.thrift:2] No field id specified for f4, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[FAILURE:underflow.thrift:4] Integer constant (-32769) outside the range of field ids ([-32768, 32767]).\n",
         )
         self.assertEqual(ret, 1)
 
@@ -756,55 +857,6 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(err, expected_error)
 
-    def test_zero_as_field_id(self):
-        write_file(
-            "foo.thrift",
-            textwrap.dedent(
-                """\
-                struct Foo {
-                    0: i32 field;
-                    1: list<i32> other;
-                }
-                """
-            ),
-        )
-        ret, out, err = self.run_thrift("foo.thrift")
-        self.assertEqual(
-            err,
-            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what is auto-assigned by thrift. The id must positive or -1.\n"
-            "[WARNING:foo.thrift:2] No field id specified for field, resulting protocol may have conflicts or not be backwards compatible!\n"
-            * 2,
-        )
-        self.assertEqual(ret, 0)
-
-        ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
-        self.assertEqual(
-            err,
-            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n"
-            * 2
-            + "[FAILURE:foo.thrift:2] Zero value (0) not allowed as a field id for `field`\n"
-        )
-        self.assertEqual(ret, 1)
-
-        write_file(
-            "foo.thrift",
-            textwrap.dedent(
-                """\
-                struct Foo {
-                    0: i32 field (cpp.deprecated_allow_zero_as_field_id);
-                    1: list<i32> other;
-                }
-                """
-            ),
-        )
-        ret, out, err = self.run_thrift("--allow-neg-keys", "foo.thrift")
-        self.assertEqual(
-            err,
-            "[WARNING:foo.thrift:2] Nonpositive field id (0) differs from what would be auto-assigned by thrift (-1).\n"
-            * 2
-        )
-        self.assertEqual(ret, 0)
-
     def test_unordered_minimize_padding(self):
         write_file(
             "foo.thrift",
@@ -1071,5 +1123,7 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 1)
         self.assertEqual(
             err,
-            textwrap.dedent("[FAILURE:foo.thrift:1] cpp.methods is incompatible with lazy deserialization in struct `Foo`\n"),
+            textwrap.dedent(
+                "[FAILURE:foo.thrift:1] cpp.methods is incompatible with lazy deserialization in struct `Foo`\n"
+            ),
         )
