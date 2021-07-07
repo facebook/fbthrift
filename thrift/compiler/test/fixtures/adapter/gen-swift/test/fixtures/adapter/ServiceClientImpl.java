@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class ServiceClientImpl extends AbstractThriftClient implements Service {
 
-
     // Method Handlers
     private ThriftMethodHandler funcMethodHandler;
 

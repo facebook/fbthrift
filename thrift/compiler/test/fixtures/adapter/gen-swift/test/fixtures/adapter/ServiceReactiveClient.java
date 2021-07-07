@@ -9,7 +9,9 @@ package test.fixtures.adapter;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 
 public class ServiceReactiveClient 
   implements Service.Reactive {
@@ -118,6 +120,7 @@ public class ServiceReactiveClient
   public reactor.core.publisher.Mono<Integer> func(final String arg1, final test.fixtures.adapter.Foo arg2) {
     return func(arg1, arg2,  com.facebook.thrift.client.RpcOptions.EMPTY);
   }
+
 
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {

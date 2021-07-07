@@ -7,6 +7,7 @@
 
 package test.fixtures.exceptions;
 
+import com.facebook.thrift.client.*;
 import java.util.*;
 
 public class RaiserBlockingReactiveWrapper 

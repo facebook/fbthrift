@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class RaiserClientImpl extends AbstractThriftClient implements Raiser {
 
-
     // Method Handlers
     private ThriftMethodHandler doBlandMethodHandler;
     private ThriftMethodHandler doRaiseMethodHandler;

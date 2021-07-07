@@ -19,6 +19,7 @@
 
 package {{service:javaPackage}};
 
+import com.facebook.thrift.client.*;
 import java.util.*;
 
 public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}AsyncReactiveWrapper{{/service:extends}}
@@ -56,4 +57,32 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#service:extends}
     }
 
     {{/service:sinkFunctions}}
+    {{#service:interactions}}
+    public class {{service:name}}Impl implements {{service:name}} {
+        {{#service:supportedFunctions}}
+        public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
+        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+            throw new UnsupportedOperationException("Interactions are not yet supported on AsyncReactiveWrapper Interfaces!");
+        }
+
+        public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException("Interactions are not yet supported on AsyncReactiveWrapper Interfaces!");
+        }
+
+        public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException("Interactions are not yet supported on AsyncReactiveWrapper Interfaces!");
+        }
+
+        {{/service:supportedFunctions}}
+        @java.lang.Override
+        public void dispose() {}
+    }
+
+    public {{service:name}} create{{service:name}}() {
+        return new {{service:name}}Impl();
+    }
+    {{^last?}}
+
+    {{/last?}}
+    {{/service:interactions}}
 }

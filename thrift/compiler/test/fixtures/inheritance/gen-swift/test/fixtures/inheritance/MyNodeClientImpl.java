@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class MyNodeClientImpl extends test.fixtures.inheritance.MyRootClientImpl implements MyNode {
 
-
     // Method Handlers
     private ThriftMethodHandler doMidMethodHandler;
 

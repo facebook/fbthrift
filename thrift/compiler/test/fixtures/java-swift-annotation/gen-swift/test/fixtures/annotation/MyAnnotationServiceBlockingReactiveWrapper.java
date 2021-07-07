@@ -7,6 +7,7 @@
 
 package test.fixtures.annotation;
 
+import com.facebook.thrift.client.*;
 import java.util.*;
 
 public class MyAnnotationServiceBlockingReactiveWrapper 

@@ -9,7 +9,9 @@ package test.fixtures.sink;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 
 public class SinkServiceReactiveClient 
   implements SinkService.Reactive {
@@ -696,6 +698,7 @@ public class SinkServiceReactiveClient
   public reactor.core.publisher.Mono<test.fixtures.sink.FinalResponse> methodFast( org.reactivestreams.Publisher<test.fixtures.sink.SinkPayload> payloads) {
       return methodFast( payloads, com.facebook.thrift.client.RpcOptions.EMPTY);
   }
+
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {
       Map<String, String> headers = new HashMap<>();

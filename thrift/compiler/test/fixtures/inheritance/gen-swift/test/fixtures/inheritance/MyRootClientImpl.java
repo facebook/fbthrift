@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class MyRootClientImpl extends AbstractThriftClient implements MyRoot {
 
-
     // Method Handlers
     private ThriftMethodHandler doRootMethodHandler;
 

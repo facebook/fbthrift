@@ -76,5 +76,13 @@ public class {{service:javaCapitalName}}ReactiveBlockingWrapper {{#service:exten
   }
   {{/service:supportedFunctions}}
 
+  {{#service:interactions}}
+  public {{service:name}} create{{service:name}}() {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveBlockingWrapper Interfaces!");
+  }
+  {{^last?}}
+
+  {{/last?}}
+  {{/service:interactions}}
 }
 {{/service:disableReactive?}}

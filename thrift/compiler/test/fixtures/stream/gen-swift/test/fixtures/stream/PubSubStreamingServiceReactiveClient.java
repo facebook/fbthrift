@@ -9,7 +9,9 @@ package test.fixtures.stream;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 
 public class PubSubStreamingServiceReactiveClient 
   implements PubSubStreamingService.Reactive {
@@ -487,6 +489,7 @@ public class PubSubStreamingServiceReactiveClient
   public reactor.core.publisher.Flux<Integer> returnstreamFast(final int i32From, final int i32To) {
     return returnstreamFast(i32From, i32To,  com.facebook.thrift.client.RpcOptions.EMPTY);
   }
+
 
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {

@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class MyAnnotationServiceClientImpl extends AbstractThriftClient implements MyAnnotationService {
 
-
     // Method Handlers
     private ThriftMethodHandler pingMethodHandler;
 

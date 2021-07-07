@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class LegacyServiceClientImpl extends AbstractThriftClient implements LegacyService {
 
-
     // Method Handlers
     private ThriftMethodHandler getPointsMethodHandler;
 

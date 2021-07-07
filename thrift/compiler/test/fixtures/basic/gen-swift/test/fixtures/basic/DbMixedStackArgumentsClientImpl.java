@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class DbMixedStackArgumentsClientImpl extends AbstractThriftClient implements DbMixedStackArguments {
 
-
     // Method Handlers
     private ThriftMethodHandler getDataByKey0MethodHandler;
     private ThriftMethodHandler getDataByKey1MethodHandler;

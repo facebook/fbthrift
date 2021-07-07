@@ -9,7 +9,9 @@ package test.fixtures.basic;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 
 public class MyServiceReactiveClient 
   implements MyService.Reactive {
@@ -579,6 +581,7 @@ public class MyServiceReactiveClient
   public reactor.core.publisher.Mono<Void> lobDataById(final long id, final String data) {
     return lobDataById(id, data,  com.facebook.thrift.client.RpcOptions.EMPTY);
   }
+
 
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {

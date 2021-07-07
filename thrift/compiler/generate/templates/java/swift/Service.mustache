@@ -59,21 +59,30 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
         {{/last?}}
         {{/service:supportedFunctions}}
         {{#service:interactions}}
-        public class {{service:name}} implements java.io.Closeable {
+        @com.facebook.swift.service.ThriftInteraction("{{service:name}}")
+        public interface {{service:name}} extends java.io.Closeable {
             {{#service:supportedFunctions}}
+            @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
+                oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
+                exception = { {{/first?}}
+                    @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
+                }{{/last?}}{{/function:exceptions}})
+            ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}} {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}});
+
             ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
-            final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
-                throw new UnsupportedOperationException();
-            }
+                @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+                RpcOptions rpcOptions);
+
+            ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
+                @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+                RpcOptions rpcOptions);
             {{/service:supportedFunctions}}
 
             @java.lang.Override
-            public void close() {}
+            void close();
         }
 
-        default public {{service:name}} create{{service:name}}() {
-            return new {{service:name}}();
-        }
+        public {{service:name}} create{{service:name}}();
         {{^last?}}
 
         {{/last?}}
@@ -153,42 +162,61 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
 
         {{/service:sinkFunctions}}
         {{#service:interactions}}
-        public class {{service:name}} implements reactor.core.Disposable {
+        @com.facebook.swift.service.ThriftInteraction("{{service:name}}")
+        public interface {{service:name}} extends reactor.core.Disposable {
             {{#service:supportedFunctions}}
-            ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
-            final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
-                throw new UnsupportedOperationException();
-            }
+            @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
+                oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
+                exception = { {{/first?}}
+                    @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
+                }{{/last?}}{{/function:exceptions}})
+            reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}} final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}});
+
+            reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions);
+
+            reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions);
+
             {{/service:supportedFunctions}}
-
             @java.lang.Override
-            public void dispose() {}
+            void dispose();
         }
 
-        default public {{service:name}} create{{service:name}}() {
-            return new {{service:name}}();
-        }
+        public {{service:name}} create{{service:name}}();
         {{^last?}}
 
         {{/last?}}
         {{/service:interactions}}
     }
     {{#service:interactions}}
-    public class {{service:name}} implements java.io.Closeable {
+    @com.facebook.swift.service.ThriftInteraction("{{service:name}}")
+    public interface {{service:name}} extends java.io.Closeable {
         {{#service:supportedFunctions}}
+        @ThriftMethod(value = "{{function:name}}"{{#function:oneway?}},
+                      oneway = true{{/function:oneway?}}{{#function:exceptions}}{{#first?}},
+                      exception = { {{/first?}}
+                          @ThriftException(type={{#field:type}}{{> Type}}{{/field:type}}.class, id={{field:key}}){{^last?}},{{/last?}}{{#last?}}
+                      }{{/last?}}{{/function:exceptions}})
         {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
-        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-            throw new UnsupportedOperationException();
-        }
+        @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException;
+
+        {{#function:return_type}}{{> Type}}{{/function:return_type}} {{function:javaName}}({{#function:args}}
+            @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+            RpcOptions rpcOptions){{!
+            Exceptions
+            }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException;
+
+        ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}Wrapper({{#function:args}}
+            @com.facebook.swift.codec.ThriftField(value={{field:key}}, {{#field:negativeId?}}isLegacyId=true, {{/field:negativeId?}}name="{{field:name}}", requiredness={{> Requiredness}}) final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+            RpcOptions rpcOptions){{!
+            Exceptions
+            }} throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException;
         {{/service:supportedFunctions}}
 
         @java.lang.Override
-        public void close() {}
+        void close();
     }
 
-    default public {{service:name}} create{{service:name}}() {
-        return new {{service:name}}();
-    }
+    {{service:name}} create{{service:name}}();
     {{^last?}}
 
     {{/last?}}

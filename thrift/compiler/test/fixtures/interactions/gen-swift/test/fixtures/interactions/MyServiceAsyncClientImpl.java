@@ -94,4 +94,118 @@ public class MyServiceAsyncClientImpl extends AbstractThriftClient implements My
           throw new RuntimeTException(t.getMessage(), t);
         }
     }
+
+    public class MyInteractionImpl implements MyInteraction {
+      @java.lang.Override
+      public ListenableFuture<Integer> frobnicate() {
+          return frobnicate(RpcOptions.EMPTY);
+      }
+
+      @java.lang.Override
+      public ListenableFuture<Integer> frobnicate(
+          RpcOptions rpcOptions) {
+          return FutureUtil.transform(frobnicateWrapper(rpcOptions));
+      }
+
+      @java.lang.Override
+      public ListenableFuture<ResponseWrapper<Integer>> frobnicateWrapper(
+          RpcOptions rpcOptions) {
+          throw new UnsupportedOperationException();
+      }
+
+      @java.lang.Override
+      public ListenableFuture<Void> ping() {
+          return ping(RpcOptions.EMPTY);
+      }
+
+      @java.lang.Override
+      public ListenableFuture<Void> ping(
+          RpcOptions rpcOptions) {
+          return FutureUtil.transform(pingWrapper(rpcOptions));
+      }
+
+      @java.lang.Override
+      public ListenableFuture<ResponseWrapper<Void>> pingWrapper(
+          RpcOptions rpcOptions) {
+          throw new UnsupportedOperationException();
+      }
+
+      @java.lang.Override
+      public void close() {}
+    }
+
+    public MyInteraction createMyInteraction() {
+        return new MyInteractionImpl();
+    }
+
+
+    public class MyInteractionFastImpl implements MyInteractionFast {
+      @java.lang.Override
+      public ListenableFuture<Integer> frobnicate() {
+          return frobnicate(RpcOptions.EMPTY);
+      }
+
+      @java.lang.Override
+      public ListenableFuture<Integer> frobnicate(
+          RpcOptions rpcOptions) {
+          return FutureUtil.transform(frobnicateWrapper(rpcOptions));
+      }
+
+      @java.lang.Override
+      public ListenableFuture<ResponseWrapper<Integer>> frobnicateWrapper(
+          RpcOptions rpcOptions) {
+          throw new UnsupportedOperationException();
+      }
+
+      @java.lang.Override
+      public ListenableFuture<Void> ping() {
+          return ping(RpcOptions.EMPTY);
+      }
+
+      @java.lang.Override
+      public ListenableFuture<Void> ping(
+          RpcOptions rpcOptions) {
+          return FutureUtil.transform(pingWrapper(rpcOptions));
+      }
+
+      @java.lang.Override
+      public ListenableFuture<ResponseWrapper<Void>> pingWrapper(
+          RpcOptions rpcOptions) {
+          throw new UnsupportedOperationException();
+      }
+
+      @java.lang.Override
+      public void close() {}
+    }
+
+    public MyInteractionFast createMyInteractionFast() {
+        return new MyInteractionFastImpl();
+    }
+
+
+    public class SerialInteractionImpl implements SerialInteraction {
+      @java.lang.Override
+      public ListenableFuture<Void> frobnicate() {
+          return frobnicate(RpcOptions.EMPTY);
+      }
+
+      @java.lang.Override
+      public ListenableFuture<Void> frobnicate(
+          RpcOptions rpcOptions) {
+          return FutureUtil.transform(frobnicateWrapper(rpcOptions));
+      }
+
+      @java.lang.Override
+      public ListenableFuture<ResponseWrapper<Void>> frobnicateWrapper(
+          RpcOptions rpcOptions) {
+          throw new UnsupportedOperationException();
+      }
+
+      @java.lang.Override
+      public void close() {}
+    }
+
+    public SerialInteraction createSerialInteraction() {
+        return new SerialInteractionImpl();
+    }
 }

@@ -22,12 +22,32 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class MyServiceClientImpl extends AbstractThriftClient implements MyService {
 
-
     // Method Handlers
     private ThriftMethodHandler fooMethodHandler;
+    // Interaction Handlers
+    private ThriftMethodHandler frobnicateMethodHandler;
+    private ThriftMethodHandler pingMethodHandler;
+    // Interaction Handlers
+    private ThriftMethodHandler frobnicateMethodHandler;
+    private ThriftMethodHandler pingMethodHandler;
+    // Interaction Handlers
+    private ThriftMethodHandler frobnicateMethodHandler;
 
     // Method Exceptions
     private static final Class[] fooExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    // Interaction Exceptions
+    private static final Class[] frobnicateExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] pingExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    // Interaction Exceptions
+    private static final Class[] frobnicateExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] pingExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    // Interaction Exceptions
+    private static final Class[] frobnicateExceptions = new Class[] {
         org.apache.thrift.TException.class};
 
     public MyServiceClientImpl(
@@ -46,6 +66,14 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
       // Set method handlers
       fooMethodHandler = methodHandlerMap.get("foo");
+      // Set interaction handlers
+      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
+      pingMethodHandler = methodHandlerMap.get("ping");
+      // Set interaction handlers
+      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
+      pingMethodHandler = methodHandlerMap.get("ping");
+      // Set interaction handlers
+      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
     }
 
     public MyServiceClientImpl(
@@ -66,6 +94,14 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
       // Set method handlers
       fooMethodHandler = methodHandlerMap.get("foo");
+      // Set interaction handlers
+      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
+      pingMethodHandler = methodHandlerMap.get("ping");
+      // Set interaction handlers
+      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
+      pingMethodHandler = methodHandlerMap.get("ping");
+      // Set interaction handlers
+      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
     }
 
     @java.lang.Override
@@ -96,5 +132,127 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
         }
         throw new org.apache.thrift.TException(t);
       }
+    }
+
+    public class MyInteractionImpl implements MyInteraction {
+      private final long interactionId;
+
+      MyInteractionImpl(long interactionId) {
+        this.interactionId = interactionId;
+      }
+
+
+      public int frobnicate() throws org.apache.thrift.TException {
+        return frobnicateWrapper(RpcOptions.EMPTY).getData();
+      }
+
+      public int frobnicate(
+      RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        return frobnicateWrapper(rpcOptions).getData();
+      }
+
+      public ResponseWrapper<Integer> frobnicateWrapper(
+      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+      }
+
+
+      public void ping() throws org.apache.thrift.TException {
+        pingWrapper(RpcOptions.EMPTY).getData();
+      }
+
+      public void ping(
+      RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        pingWrapper(rpcOptions).getData();
+      }
+
+      public ResponseWrapper<Void> pingWrapper(
+      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+      }
+
+      @java.lang.Override
+      public void close() {}
+    }
+
+    public MyInteraction createMyInteraction() {
+        return new MyInteractionImpl(0L);
+    }
+
+
+    public class MyInteractionFastImpl implements MyInteractionFast {
+      private final long interactionId;
+
+      MyInteractionFastImpl(long interactionId) {
+        this.interactionId = interactionId;
+      }
+
+
+      public int frobnicate() throws org.apache.thrift.TException {
+        return frobnicateWrapper(RpcOptions.EMPTY).getData();
+      }
+
+      public int frobnicate(
+      RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        return frobnicateWrapper(rpcOptions).getData();
+      }
+
+      public ResponseWrapper<Integer> frobnicateWrapper(
+      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+      }
+
+
+      public void ping() throws org.apache.thrift.TException {
+        pingWrapper(RpcOptions.EMPTY).getData();
+      }
+
+      public void ping(
+      RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        pingWrapper(rpcOptions).getData();
+      }
+
+      public ResponseWrapper<Void> pingWrapper(
+      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+      }
+
+      @java.lang.Override
+      public void close() {}
+    }
+
+    public MyInteractionFast createMyInteractionFast() {
+        return new MyInteractionFastImpl(0L);
+    }
+
+
+    public class SerialInteractionImpl implements SerialInteraction {
+      private final long interactionId;
+
+      SerialInteractionImpl(long interactionId) {
+        this.interactionId = interactionId;
+      }
+
+
+      public void frobnicate() throws org.apache.thrift.TException {
+        frobnicateWrapper(RpcOptions.EMPTY).getData();
+      }
+
+      public void frobnicate(
+      RpcOptions rpcOptions) throws org.apache.thrift.TException {
+        frobnicateWrapper(rpcOptions).getData();
+      }
+
+      public ResponseWrapper<Void> frobnicateWrapper(
+      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
+        throw new UnsupportedOperationException();
+      }
+
+      @java.lang.Override
+      public void close() {}
+    }
+
+    public SerialInteraction createSerialInteraction() {
+        return new SerialInteractionImpl(0L);
     }
 }

@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class MyServicePrioChildClientImpl extends test.fixtures.basicannotations.MyServicePrioParentClientImpl implements MyServicePrioChild {
 
-
     // Method Handlers
     private ThriftMethodHandler pangMethodHandler;
 

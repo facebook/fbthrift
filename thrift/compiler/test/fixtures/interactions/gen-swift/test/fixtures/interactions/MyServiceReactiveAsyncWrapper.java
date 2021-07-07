@@ -44,4 +44,115 @@ public class MyServiceReactiveAsyncWrapper
     return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.fooWrapper( rpcOptions));
   }
 
+  public class MyInteractionImpl implements MyInteraction {
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<Integer> frobnicate() {
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<Integer> frobnicate(
+      com.facebook.thrift.client.RpcOptions rpcOptions) {
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Integer>> frobnicateWrapper(
+      com.facebook.thrift.client.RpcOptions rpcOptions) {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<Void> ping() {
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<Void> ping(
+      com.facebook.thrift.client.RpcOptions rpcOptions) {
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> pingWrapper(
+      com.facebook.thrift.client.RpcOptions rpcOptions) {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public void close() {}
+  }
+
+  public MyInteraction createMyInteraction() {
+      return new MyInteractionImpl();
+  }
+
+  public class MyInteractionFastImpl implements MyInteractionFast {
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<Integer> frobnicate() {
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<Integer> frobnicate(
+      com.facebook.thrift.client.RpcOptions rpcOptions) {
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Integer>> frobnicateWrapper(
+      com.facebook.thrift.client.RpcOptions rpcOptions) {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<Void> ping() {
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<Void> ping(
+      com.facebook.thrift.client.RpcOptions rpcOptions) {
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> pingWrapper(
+      com.facebook.thrift.client.RpcOptions rpcOptions) {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public void close() {}
+  }
+
+  public MyInteractionFast createMyInteractionFast() {
+      return new MyInteractionFastImpl();
+  }
+
+  public class SerialInteractionImpl implements SerialInteraction {
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<Void> frobnicate() {
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<Void> frobnicate(
+      com.facebook.thrift.client.RpcOptions rpcOptions) {
+        throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Void>> frobnicateWrapper(
+      com.facebook.thrift.client.RpcOptions rpcOptions) {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveAsyncWrapper Interfaces!");
+    }
+
+    @java.lang.Override
+    public void close() {}
+  }
+
+  public SerialInteraction createSerialInteraction() {
+      return new SerialInteractionImpl();
+  }
 }

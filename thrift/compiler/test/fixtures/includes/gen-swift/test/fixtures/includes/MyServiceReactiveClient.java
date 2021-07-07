@@ -9,7 +9,9 @@ package test.fixtures.includes;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 
 public class MyServiceReactiveClient 
   implements MyService.Reactive {
@@ -194,6 +196,7 @@ public class MyServiceReactiveClient
   public reactor.core.publisher.Mono<Void> hasArgDocs(final test.fixtures.includes.MyStruct s, final test.fixtures.includes.includes.Included i) {
     return hasArgDocs(s, i,  com.facebook.thrift.client.RpcOptions.EMPTY);
   }
+
 
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {

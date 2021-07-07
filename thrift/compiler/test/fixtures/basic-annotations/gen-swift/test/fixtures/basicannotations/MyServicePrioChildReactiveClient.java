@@ -9,7 +9,9 @@ package test.fixtures.basicannotations;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 
 public class MyServicePrioChildReactiveClient  extends test.fixtures.basicannotations.MyServicePrioParentReactiveClient
   implements MyServicePrioChild.Reactive {
@@ -97,6 +99,7 @@ public class MyServicePrioChildReactiveClient  extends test.fixtures.basicannota
   public reactor.core.publisher.Mono<Void> pang() {
     return pang( com.facebook.thrift.client.RpcOptions.EMPTY);
   }
+
 
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {

@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class NestedContainersClientImpl extends AbstractThriftClient implements NestedContainers {
 
-
     // Method Handlers
     private ThriftMethodHandler mapListMethodHandler;
     private ThriftMethodHandler mapSetMethodHandler;

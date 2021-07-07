@@ -21,7 +21,9 @@ package {{service:javaPackage}};
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 {{#service:disableReactive?}}// Generation of this class is disabled using (java.swift.disable_reactive){{/service:disableReactive?}}{{^service:disableReactive?}}
 public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}ReactiveClient{{/service:extends}}
   implements {{service:javaCapitalName}}.Reactive {
@@ -494,6 +496,38 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   }
 
   {{/service:sinkFunctions}}
+  {{#service:interactions}}
+  public class {{service:name}}Impl implements {{service:name}} {
+    {{#service:supportedFunctions}}
+    @java.lang.Override
+    public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
+    final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions)  {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions)  {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+    }
+
+    {{/service:supportedFunctions}}
+    @java.lang.Override
+    public void dispose() {}
+  }
+
+  public {{service:name}} create{{service:name}}() {
+      return new {{service:name}}Impl();
+  }
+  {{^last?}}
+
+  {{/last?}}
+  {{/service:interactions}}
+
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {
       Map<String, String> headers = new HashMap<>();
       if (rpcOptions.getRequestHeaders() != null && !rpcOptions.getRequestHeaders().isEmpty()) {

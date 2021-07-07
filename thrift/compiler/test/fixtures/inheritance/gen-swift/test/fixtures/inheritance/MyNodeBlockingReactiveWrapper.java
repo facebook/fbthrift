@@ -7,6 +7,7 @@
 
 package test.fixtures.inheritance;
 
+import com.facebook.thrift.client.*;
 import java.util.*;
 
 public class MyNodeBlockingReactiveWrapper  extends test.fixtures.inheritance.MyRootBlockingReactiveWrapper

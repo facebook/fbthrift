@@ -9,7 +9,9 @@ package test.fixtures.basic;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 
 public class DbMixedStackArgumentsReactiveClient 
   implements DbMixedStackArguments.Reactive {
@@ -176,6 +178,7 @@ public class DbMixedStackArgumentsReactiveClient
   public reactor.core.publisher.Mono<byte[]> getDataByKey1(final String key) {
     return getDataByKey1(key,  com.facebook.thrift.client.RpcOptions.EMPTY);
   }
+
 
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {

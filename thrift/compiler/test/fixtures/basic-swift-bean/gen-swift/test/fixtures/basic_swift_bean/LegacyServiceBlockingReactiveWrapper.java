@@ -7,6 +7,7 @@
 
 package test.fixtures.basic_swift_bean;
 
+import com.facebook.thrift.client.*;
 import java.util.*;
 
 public class LegacyServiceBlockingReactiveWrapper 

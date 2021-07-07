@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class PubSubStreamingServiceClientImpl extends AbstractThriftClient implements PubSubStreamingService {
 
-
     // Method Handlers
 
     // Method Exceptions

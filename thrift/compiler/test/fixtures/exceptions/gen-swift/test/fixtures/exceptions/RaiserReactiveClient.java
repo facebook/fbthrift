@@ -9,7 +9,9 @@ package test.fixtures.exceptions;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 
 public class RaiserReactiveClient 
   implements Raiser.Reactive {
@@ -336,6 +338,7 @@ public class RaiserReactiveClient
   public reactor.core.publisher.Mono<String> get500() {
     return get500( com.facebook.thrift.client.RpcOptions.EMPTY);
   }
+
 
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {

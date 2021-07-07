@@ -7,6 +7,7 @@
 
 package test.fixtures.adapter;
 
+import com.facebook.thrift.client.*;
 import java.util.*;
 
 public class ServiceBlockingReactiveWrapper 

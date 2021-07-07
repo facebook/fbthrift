@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class SinkServiceClientImpl extends AbstractThriftClient implements SinkService {
 
-
     // Method Handlers
 
     // Method Exceptions

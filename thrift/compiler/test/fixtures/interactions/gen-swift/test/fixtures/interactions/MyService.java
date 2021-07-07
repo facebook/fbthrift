@@ -34,50 +34,74 @@ public interface MyService extends java.io.Closeable {
             RpcOptions rpcOptions) {
             throw new UnsupportedOperationException();
         }
-        public class MyInteraction implements java.io.Closeable {
-            ListenableFuture<Integer> frobnicate() {
-                throw new UnsupportedOperationException();
-            }
-            ListenableFuture<Void> ping() {
-                throw new UnsupportedOperationException();
-            }
+        @com.facebook.swift.service.ThriftInteraction("MyInteraction")
+        public interface MyInteraction extends java.io.Closeable {
+            @ThriftMethod(value = "frobnicate")
+            ListenableFuture<Integer> frobnicate();
+
+            ListenableFuture<Integer> frobnicate(
+                RpcOptions rpcOptions);
+
+            ListenableFuture<ResponseWrapper<Integer>> frobnicateWrapper(
+                RpcOptions rpcOptions);
+            @ThriftMethod(value = "ping",
+                oneway = true)
+            ListenableFuture<Void> ping();
+
+            ListenableFuture<Void> ping(
+                RpcOptions rpcOptions);
+
+            ListenableFuture<ResponseWrapper<Void>> pingWrapper(
+                RpcOptions rpcOptions);
 
             @java.lang.Override
-            public void close() {}
+            void close();
         }
 
-        default public MyInteraction createMyInteraction() {
-            return new MyInteraction();
-        }
+        public MyInteraction createMyInteraction();
 
-        public class MyInteractionFast implements java.io.Closeable {
-            ListenableFuture<Integer> frobnicate() {
-                throw new UnsupportedOperationException();
-            }
-            ListenableFuture<Void> ping() {
-                throw new UnsupportedOperationException();
-            }
+        @com.facebook.swift.service.ThriftInteraction("MyInteractionFast")
+        public interface MyInteractionFast extends java.io.Closeable {
+            @ThriftMethod(value = "frobnicate")
+            ListenableFuture<Integer> frobnicate();
+
+            ListenableFuture<Integer> frobnicate(
+                RpcOptions rpcOptions);
+
+            ListenableFuture<ResponseWrapper<Integer>> frobnicateWrapper(
+                RpcOptions rpcOptions);
+            @ThriftMethod(value = "ping",
+                oneway = true)
+            ListenableFuture<Void> ping();
+
+            ListenableFuture<Void> ping(
+                RpcOptions rpcOptions);
+
+            ListenableFuture<ResponseWrapper<Void>> pingWrapper(
+                RpcOptions rpcOptions);
 
             @java.lang.Override
-            public void close() {}
+            void close();
         }
 
-        default public MyInteractionFast createMyInteractionFast() {
-            return new MyInteractionFast();
-        }
+        public MyInteractionFast createMyInteractionFast();
 
-        public class SerialInteraction implements java.io.Closeable {
-            ListenableFuture<Void> frobnicate() {
-                throw new UnsupportedOperationException();
-            }
+        @com.facebook.swift.service.ThriftInteraction("SerialInteraction")
+        public interface SerialInteraction extends java.io.Closeable {
+            @ThriftMethod(value = "frobnicate")
+            ListenableFuture<Void> frobnicate();
+
+            ListenableFuture<Void> frobnicate(
+                RpcOptions rpcOptions);
+
+            ListenableFuture<ResponseWrapper<Void>> frobnicateWrapper(
+                RpcOptions rpcOptions);
 
             @java.lang.Override
-            public void close() {}
+            void close();
         }
 
-        default public SerialInteraction createSerialInteraction() {
-            return new SerialInteraction();
-        }
+        public SerialInteraction createSerialInteraction();
     }
     @java.lang.Override void close();
 
@@ -107,93 +131,133 @@ public interface MyService extends java.io.Closeable {
             throw new UnsupportedOperationException();
         }
 
-        public class MyInteraction implements reactor.core.Disposable {
-            ListenableFuture<Integer> frobnicate() {
-                throw new UnsupportedOperationException();
-            }
-            ListenableFuture<Void> ping() {
-                throw new UnsupportedOperationException();
-            }
+        @com.facebook.swift.service.ThriftInteraction("MyInteraction")
+        public interface MyInteraction extends reactor.core.Disposable {
+            @ThriftMethod(value = "frobnicate")
+            reactor.core.publisher.Mono<Integer> frobnicate();
+
+            reactor.core.publisher.Mono<Integer> frobnicate(RpcOptions rpcOptions);
+
+            reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWrapper(RpcOptions rpcOptions);
+
+            @ThriftMethod(value = "ping",
+                oneway = true)
+            reactor.core.publisher.Mono<Void> ping();
+
+            reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions);
+
+            reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions);
 
             @java.lang.Override
-            public void dispose() {}
+            void dispose();
         }
 
-        default public MyInteraction createMyInteraction() {
-            return new MyInteraction();
-        }
+        public MyInteraction createMyInteraction();
 
-        public class MyInteractionFast implements reactor.core.Disposable {
-            ListenableFuture<Integer> frobnicate() {
-                throw new UnsupportedOperationException();
-            }
-            ListenableFuture<Void> ping() {
-                throw new UnsupportedOperationException();
-            }
+        @com.facebook.swift.service.ThriftInteraction("MyInteractionFast")
+        public interface MyInteractionFast extends reactor.core.Disposable {
+            @ThriftMethod(value = "frobnicate")
+            reactor.core.publisher.Mono<Integer> frobnicate();
+
+            reactor.core.publisher.Mono<Integer> frobnicate(RpcOptions rpcOptions);
+
+            reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWrapper(RpcOptions rpcOptions);
+
+            @ThriftMethod(value = "ping",
+                oneway = true)
+            reactor.core.publisher.Mono<Void> ping();
+
+            reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions);
+
+            reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions);
 
             @java.lang.Override
-            public void dispose() {}
+            void dispose();
         }
 
-        default public MyInteractionFast createMyInteractionFast() {
-            return new MyInteractionFast();
-        }
+        public MyInteractionFast createMyInteractionFast();
 
-        public class SerialInteraction implements reactor.core.Disposable {
-            ListenableFuture<Void> frobnicate() {
-                throw new UnsupportedOperationException();
-            }
+        @com.facebook.swift.service.ThriftInteraction("SerialInteraction")
+        public interface SerialInteraction extends reactor.core.Disposable {
+            @ThriftMethod(value = "frobnicate")
+            reactor.core.publisher.Mono<Void> frobnicate();
+
+            reactor.core.publisher.Mono<Void> frobnicate(RpcOptions rpcOptions);
+
+            reactor.core.publisher.Mono<ResponseWrapper<Void>> frobnicateWrapper(RpcOptions rpcOptions);
 
             @java.lang.Override
-            public void dispose() {}
+            void dispose();
         }
 
-        default public SerialInteraction createSerialInteraction() {
-            return new SerialInteraction();
-        }
+        public SerialInteraction createSerialInteraction();
     }
-    public class MyInteraction implements java.io.Closeable {
-        int frobnicate() throws org.apache.thrift.TException {
-            throw new UnsupportedOperationException();
-        }
-        void ping() throws org.apache.thrift.TException {
-            throw new UnsupportedOperationException();
-        }
+    @com.facebook.swift.service.ThriftInteraction("MyInteraction")
+    public interface MyInteraction extends java.io.Closeable {
+        @ThriftMethod(value = "frobnicate")
+        int frobnicate() throws org.apache.thrift.TException;
+
+        int frobnicate(
+            RpcOptions rpcOptions) throws org.apache.thrift.TException;
+
+        ResponseWrapper<Integer> frobnicateWrapper(
+            RpcOptions rpcOptions) throws org.apache.thrift.TException;
+        @ThriftMethod(value = "ping",
+                      oneway = true)
+        void ping() throws org.apache.thrift.TException;
+
+        void ping(
+            RpcOptions rpcOptions) throws org.apache.thrift.TException;
+
+        ResponseWrapper<Void> pingWrapper(
+            RpcOptions rpcOptions) throws org.apache.thrift.TException;
 
         @java.lang.Override
-        public void close() {}
+        void close();
     }
 
-    default public MyInteraction createMyInteraction() {
-        return new MyInteraction();
-    }
+    MyInteraction createMyInteraction();
 
-    public class MyInteractionFast implements java.io.Closeable {
-        int frobnicate() throws org.apache.thrift.TException {
-            throw new UnsupportedOperationException();
-        }
-        void ping() throws org.apache.thrift.TException {
-            throw new UnsupportedOperationException();
-        }
+    @com.facebook.swift.service.ThriftInteraction("MyInteractionFast")
+    public interface MyInteractionFast extends java.io.Closeable {
+        @ThriftMethod(value = "frobnicate")
+        int frobnicate() throws org.apache.thrift.TException;
+
+        int frobnicate(
+            RpcOptions rpcOptions) throws org.apache.thrift.TException;
+
+        ResponseWrapper<Integer> frobnicateWrapper(
+            RpcOptions rpcOptions) throws org.apache.thrift.TException;
+        @ThriftMethod(value = "ping",
+                      oneway = true)
+        void ping() throws org.apache.thrift.TException;
+
+        void ping(
+            RpcOptions rpcOptions) throws org.apache.thrift.TException;
+
+        ResponseWrapper<Void> pingWrapper(
+            RpcOptions rpcOptions) throws org.apache.thrift.TException;
 
         @java.lang.Override
-        public void close() {}
+        void close();
     }
 
-    default public MyInteractionFast createMyInteractionFast() {
-        return new MyInteractionFast();
-    }
+    MyInteractionFast createMyInteractionFast();
 
-    public class SerialInteraction implements java.io.Closeable {
-        void frobnicate() throws org.apache.thrift.TException {
-            throw new UnsupportedOperationException();
-        }
+    @com.facebook.swift.service.ThriftInteraction("SerialInteraction")
+    public interface SerialInteraction extends java.io.Closeable {
+        @ThriftMethod(value = "frobnicate")
+        void frobnicate() throws org.apache.thrift.TException;
+
+        void frobnicate(
+            RpcOptions rpcOptions) throws org.apache.thrift.TException;
+
+        ResponseWrapper<Void> frobnicateWrapper(
+            RpcOptions rpcOptions) throws org.apache.thrift.TException;
 
         @java.lang.Override
-        public void close() {}
+        void close();
     }
 
-    default public SerialInteraction createSerialInteraction() {
-        return new SerialInteraction();
-    }
+    SerialInteraction createSerialInteraction();
 }

@@ -7,6 +7,7 @@
 
 package test.fixtures.basic;
 
+import com.facebook.thrift.client.*;
 import java.util.*;
 
 public class DbMixedStackArgumentsAsyncReactiveWrapper 

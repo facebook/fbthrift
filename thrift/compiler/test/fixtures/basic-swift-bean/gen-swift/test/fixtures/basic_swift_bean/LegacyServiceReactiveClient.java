@@ -9,7 +9,9 @@ package test.fixtures.basic_swift_bean;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 
 public class LegacyServiceReactiveClient 
   implements LegacyService.Reactive {
@@ -148,6 +150,7 @@ public class LegacyServiceReactiveClient
   public reactor.core.publisher.Mono<Map<String, List<Integer>>> getPoints(final Set<String> key, final long legacyStuff) {
     return getPoints(key, legacyStuff,  com.facebook.thrift.client.RpcOptions.EMPTY);
   }
+
 
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {

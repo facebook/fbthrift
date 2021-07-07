@@ -9,7 +9,9 @@ package test.fixtures.inheritance;
 
 import java.util.*;
 import org.apache.thrift.protocol.*;
+import com.facebook.thrift.client.*;
 import com.facebook.thrift.client.ResponseWrapper;
+
 
 public class MyNodeReactiveClient  extends test.fixtures.inheritance.MyRootReactiveClient
   implements MyNode.Reactive {
@@ -97,6 +99,7 @@ public class MyNodeReactiveClient  extends test.fixtures.inheritance.MyRootReact
   public reactor.core.publisher.Mono<Void> doMid() {
     return doMid( com.facebook.thrift.client.RpcOptions.EMPTY);
   }
+
 
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {

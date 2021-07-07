@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class MyLeafClientImpl extends test.fixtures.inheritance.MyNodeClientImpl implements MyLeaf {
 
-
     // Method Handlers
     private ThriftMethodHandler doLeafMethodHandler;
 

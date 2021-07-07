@@ -44,4 +44,15 @@ public class MyServiceReactiveBlockingWrapper
       return _delegate.fooWrapper(rpcOptions).block();
   }
 
+  public MyInteraction createMyInteraction() {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveBlockingWrapper Interfaces!");
+  }
+
+  public MyInteractionFast createMyInteractionFast() {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveBlockingWrapper Interfaces!");
+  }
+
+  public SerialInteraction createSerialInteraction() {
+      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveBlockingWrapper Interfaces!");
+  }
 }

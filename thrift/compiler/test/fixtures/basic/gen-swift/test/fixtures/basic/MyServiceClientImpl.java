@@ -22,7 +22,6 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class MyServiceClientImpl extends AbstractThriftClient implements MyService {
 
-
     // Method Handlers
     private ThriftMethodHandler pingMethodHandler;
     private ThriftMethodHandler getRandomDataMethodHandler;
