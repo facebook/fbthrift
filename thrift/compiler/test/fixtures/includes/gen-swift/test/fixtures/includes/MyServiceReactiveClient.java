@@ -7,6 +7,8 @@
 
 package test.fixtures.includes;
 
+import static com.facebook.swift.service.SwiftConstants.STICKY_HASH_KEY;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;

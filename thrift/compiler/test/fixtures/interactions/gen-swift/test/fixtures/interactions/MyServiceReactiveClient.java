@@ -7,6 +7,8 @@
 
 package test.fixtures.interactions;
 
+import static com.facebook.swift.service.SwiftConstants.STICKY_HASH_KEY;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -163,6 +165,7 @@ public class MyServiceReactiveClient
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWrapper(RpcOptions rpcOptions)  {
       return _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMap(_rpc -> {
           String interactionName = "MyInteraction.frobnicate";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -231,6 +234,7 @@ public class MyServiceReactiveClient
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions)  {
       return _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMap(_rpc -> {
           String interactionName = "MyInteraction.ping";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -320,6 +324,7 @@ public class MyServiceReactiveClient
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWrapper(RpcOptions rpcOptions)  {
       return _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMap(_rpc -> {
           String interactionName = "MyInteractionFast.frobnicate";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -388,6 +393,7 @@ public class MyServiceReactiveClient
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions)  {
       return _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMap(_rpc -> {
           String interactionName = "MyInteractionFast.ping";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -475,6 +481,7 @@ public class MyServiceReactiveClient
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<Void>> frobnicateWrapper(RpcOptions rpcOptions)  {
       return _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMap(_rpc -> {
           String interactionName = "SerialInteraction.frobnicate";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()

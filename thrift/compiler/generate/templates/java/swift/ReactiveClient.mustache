@@ -19,6 +19,8 @@
 
 package {{service:javaPackage}};
 
+import static com.facebook.swift.service.SwiftConstants.STICKY_HASH_KEY;
+
 import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.atomic.AtomicLong;
@@ -622,6 +624,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions)  {
       return _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
         .flatMap(_rpc -> {
           String interactionName = "{{service:name}}.{{function:javaName}}";
           org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
