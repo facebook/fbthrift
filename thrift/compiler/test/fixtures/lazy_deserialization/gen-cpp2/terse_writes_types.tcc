@@ -371,6 +371,7 @@ _readField_field2:
   }
 _readField_field3:
   __fbthrift_has_lazy_field_field3 = true;
+  __fbthrift_read_field_field3();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           3,
@@ -402,6 +403,7 @@ _readField_field3:
   }
 _readField_field4:
   __fbthrift_has_lazy_field_field4 = true;
+  __fbthrift_read_field_field4();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           4,
@@ -982,6 +984,7 @@ _readField_field2:
   }
 _readField_field3:
   __fbthrift_has_lazy_field_field3 = true;
+  __fbthrift_read_field_field3();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           3,
@@ -1013,6 +1016,7 @@ _readField_field3:
   }
 _readField_field4:
   __fbthrift_has_lazy_field_field4 = true;
+  __fbthrift_read_field_field4();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           4,

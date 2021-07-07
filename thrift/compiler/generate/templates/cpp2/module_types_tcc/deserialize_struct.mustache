@@ -45,6 +45,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 _readField_<%field:cpp_name%>:
 <%#field:lazy?%>
   __fbthrift_has_lazy_field_<%field:cpp_name%> = true;
+  __fbthrift_read_field_<%field:cpp_name%>();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           <%field:key%>,
