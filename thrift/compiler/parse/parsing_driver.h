@@ -29,6 +29,7 @@
 #include <thrift/compiler/ast/node_list.h>
 #include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_exception.h>
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_interaction.h>
 #include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_node.h>
@@ -418,6 +419,9 @@ class parsing_driver {
   t_ref<t_enum> add_def(std::unique_ptr<t_enum> node);
 
   t_field_id as_field_id(int64_t int_const);
+  t_field_id next_field_id() const { return next_field_id_; }
+  t_field_id allocate_field_id(const std::string& name);
+  void reserve_field_id(t_field_id id);
 
  private:
   class deleter {
@@ -460,6 +464,14 @@ class parsing_driver {
   std::vector<deleter> deleters_;
   std::stack<std::pair<LineType, int>> lineno_stack_;
   diagnostic_context& ctx_;
+
+  /**
+   * This variable is used for automatic numbering of field indices etc.
+   * when parsing the members of a struct. Field values are automatically
+   * assigned starting from -1 and working their way down.
+   **/
+  // TODO(afuller): Move auto field ids to a post parse phase.
+  int next_field_id_ = 0; // Zero indicates not in field context.
 
   // Populate the attributes on the given node.
   static void set_attributes(

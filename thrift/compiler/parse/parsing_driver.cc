@@ -587,6 +587,18 @@ void parsing_driver::set_attributes(
 }
 
 void parsing_driver::start_node(LineType lineType) {
+  switch (lineType) {
+    case LineType::Function:
+    case LineType::Struct:
+    case LineType::Union:
+    case LineType::Exception:
+      // Should always be true because structs/functions can't be nested.
+      assert(next_field_id_ == 0);
+      next_field_id_ = -1;
+      break;
+    default:
+      break;
+  }
   lineno_stack_.emplace(lineType, scanner->get_lineno());
 }
 
@@ -614,6 +626,18 @@ void parsing_driver::finish_node(
     std::unique_ptr<t_annotations> annotations) {
   node->set_lineno(pop_node(lineType));
   set_attributes(node, std::move(attrs), std::move(annotations));
+  switch (lineType) {
+    case LineType::Function:
+    case LineType::Struct:
+    case LineType::Union:
+    case LineType::Exception:
+      // Should always be true because structs/functions can't be nested.
+      assert(next_field_id_ < 0);
+      next_field_id_ = 0;
+      break;
+    default:
+      break;
+  }
 }
 
 void parsing_driver::finish_node(
@@ -876,6 +900,32 @@ t_field_id parsing_driver::as_field_id(int64_t int_const) {
     });
   }
   return int_const;
+}
+
+t_field_id parsing_driver::allocate_field_id(const std::string& name) {
+  warning([&](auto& o) {
+    o << "No field id specified for " << name << ", resulting protocol may"
+      << " have conflicts or not be backwards compatible!";
+  });
+  if (params.strict >= 192) {
+    failure("Implicit field keys are deprecated and not allowed with -strict");
+  }
+  if (next_field_id_ < t_field::min_id) {
+    failure(
+        "Cannot allocate an id for `" + name +
+        "`. Automatic field ids are exhausted.");
+  }
+  return next_field_id_--;
+}
+
+void parsing_driver::reserve_field_id(t_field_id id) {
+  if (id < 0) {
+    /*
+     * Update next field id to be one less than the value.
+     * The FieldList parsing will catch any duplicate id values.
+     */
+    next_field_id_ = id - 1;
+  }
 }
 
 } // namespace compiler

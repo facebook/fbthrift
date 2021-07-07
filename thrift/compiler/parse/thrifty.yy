@@ -59,24 +59,6 @@ namespace thrift {
 namespace compiler {
 namespace {
 
-/**
- * This global variable is used for automatic numbering of field indices etc.
- * when parsing the members of a struct. Field values are automatically
- * assigned starting from -1 and working their way down.
- */
- // TODO(afuller): Move auto field ids to a post parse phase.
-int y_field_val = -1;
-int allocate_field_id(parsing_driver& driver, const std::string& name) {
-  driver.warning([&](auto& o) {
-    o << "No field id specified for " << name << ", resulting protocol may"
-      << " have conflicts or not be backwards compatible!";
-  });
-  if (driver.params.strict >= 192) {
-    driver.failure("Implicit field keys are deprecated and not allowed with -strict");
-  }
-  return y_field_val--;
-}
-
 int g_arglist = 0;
 
 // Assume ownership of a pointer.
@@ -819,7 +801,6 @@ Struct:
         "{ FieldList } TypeAnnotations");
       $$ = new t_struct(driver.program, std::move($3));
       driver.finish_node($$, LineType::Struct, own($1), own($6), own($8));
-      y_field_val = -1;
     }
 
 Union:
@@ -833,7 +814,6 @@ Union:
         "{ FieldList } TypeAnnotations");
       $$ = new t_union(driver.program, std::move($3));
       driver.finish_node($$, LineType::Union, own($1), own($6), own($8));
-      y_field_val = -1;
     }
 
 Exception:
@@ -885,8 +865,6 @@ Exception:
           });
         }
       }
-
-      y_field_val = -1;
     }
 
 ErrorSafety:
@@ -1046,7 +1024,6 @@ Function:
 
       driver.finish_node(func.get(), LineType::Function, own($1), own($10));
       $$ = func.release();
-      y_field_val = -1;
     }
   | tok_performs FieldType ";"
     {
@@ -1150,7 +1127,7 @@ Field:
         "FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional");
       if ($2 == boost::none) {
         // Auto assign an id.
-        $2 = allocate_field_id(driver, $5);
+        $2 = driver.allocate_field_id($5);
       } else if (*$2 <= 0) {
         // TODO(afuller): Move this validation to ast_validator.
         if (driver.params.allow_neg_field_keys) {
@@ -1159,17 +1136,17 @@ Field:
             * specified id values to old .thrift files without breaking
             * protocol compatibility.
             */
-          if (*$2 != y_field_val) {
+          if (*$2 != driver.next_field_id()) {
             /*
               * warn if the user-specified negative value isn't what
               * thrift would have auto-assigned.
               */
             driver.warning([&](auto& o) {
               o << "Nonpositive field id (" << *$2 << ") differs from what would "
-                << "be auto-assigned by thrift (" << y_field_val << ").";
+                << "be auto-assigned by thrift (" << driver.next_field_id() << ").";
             });
           }
-        } else if (*$2 == y_field_val) {
+        } else if (*$2 == driver.next_field_id()) {
           driver.warning([&](auto& o) {
             o << "Nonpositive value (" << *$2 << ") not allowed as a field id.";
           });
@@ -1177,16 +1154,12 @@ Field:
           // TODO(afuller): Make ignoring the user provided value a failure.
           driver.warning([&](auto& o) {
             o << "Nonpositive field id (" << *$2 << ") differs from what is auto-"
-             "assigned by thrift. The id must positive or " << y_field_val << ".";
+             "assigned by thrift. The id must positive or " << driver.next_field_id() << ".";
           });
           // Ignore user provided value and auto assign an id.
-          $2 = allocate_field_id(driver, $5);
+          $2 = driver.allocate_field_id($5);
         }
-        /*
-         * Update y_field_val to be one less than the value.
-         * The FieldList parsing will catch any duplicate id values.
-         */
-        y_field_val = *$2 - 1;
+         driver.reserve_field_id(*$2);
       }
 
       $$ = new t_field(std::move($4), std::move($5), *$2);
