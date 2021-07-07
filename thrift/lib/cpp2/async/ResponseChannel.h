@@ -115,11 +115,19 @@ class ResponseChannelRequest {
     throw std::logic_error("unimplemented");
   }
 
-  FOLLY_NODISCARD virtual bool sendStreamReply(
-      ResponsePayload,
-      StreamServerCallbackPtr,
-      folly::Optional<uint32_t> = folly::none) {
-    throw std::logic_error("unimplemented");
+  FOLLY_NODISCARD static bool sendStreamReply(
+      ResponseChannelRequest::UniquePtr request,
+      folly::EventBase* eb,
+      ResponsePayload&& payload,
+      StreamServerCallbackPtr callback,
+      folly::Optional<uint32_t> crc32 = folly::none) {
+    // Destroying request can call onStreamCancel inline, which would be a
+    // contract violation if we did it inline and returned true.
+    SCOPE_EXIT {
+      eb->runInEventBaseThread([request = std::move(request)] {});
+    };
+    return request->sendStreamReply(
+        std::move(payload), std::move(callback), crc32);
   }
 
 #if FOLLY_HAS_COROUTINES
@@ -130,11 +138,17 @@ class ResponseChannelRequest {
     throw std::logic_error("unimplemented");
   }
 
-  FOLLY_NODISCARD virtual bool sendSinkReply(
-      ResponsePayload&&,
-      SinkServerCallbackPtr,
-      folly::Optional<uint32_t> = folly::none) {
-    throw std::logic_error("unimplemented");
+  FOLLY_NODISCARD static bool sendSinkReply(
+      ResponseChannelRequest::UniquePtr request,
+      folly::EventBase* eb,
+      ResponsePayload&& payload,
+      SinkServerCallbackPtr callback,
+      folly::Optional<uint32_t> crc32 = folly::none) {
+    SCOPE_EXIT {
+      eb->runInEventBaseThread([request = std::move(request)] {});
+    };
+    return request->sendSinkReply(
+        std::move(payload), std::move(callback), crc32);
   }
 #endif
 
@@ -168,6 +182,19 @@ class ResponseChannelRequest {
     return request->tryStartProcessing();
   }
   virtual bool tryStartProcessing() = 0;
+
+  FOLLY_NODISCARD virtual bool sendStreamReply(
+      ResponsePayload&&,
+      StreamServerCallbackPtr,
+      folly::Optional<uint32_t> = folly::none) {
+    throw std::logic_error("unimplemented");
+  }
+  FOLLY_NODISCARD virtual bool sendSinkReply(
+      ResponsePayload&&,
+      SinkServerCallbackPtr,
+      folly::Optional<uint32_t> = folly::none) {
+    throw std::logic_error("unimplemented");
+  }
 
   bool startedProcessing_{false};
 };

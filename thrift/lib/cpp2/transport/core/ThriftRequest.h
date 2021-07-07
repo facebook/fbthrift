@@ -176,7 +176,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
       folly::Optional<uint32_t> crc32c) override final;
 
   bool sendStreamReply(
-      ResponsePayload response,
+      ResponsePayload&& response,
       StreamServerCallbackPtr stream,
       folly::Optional<uint32_t> crc32c) override final {
     if (tryCancel()) {

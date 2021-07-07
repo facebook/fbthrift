@@ -609,6 +609,10 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::detail::ServerStreamFactory&& stream) noexcept {
+  if (!stream) {
+    sendSerializedError(std::move(metadata), std::move(data));
+    return;
+  }
   if (auto error = processFirstResponse(
           metadata, data, getProtoId(), version_, getCompressionConfig())) {
     error.handle(

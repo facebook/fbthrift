@@ -261,12 +261,12 @@ void <%service:parent_service_name%>AsyncProcessor::throw_wrapped_<%#service:int
   <%#function:returns_stream?%>
   auto response = serializeLegacyResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result.fields);
   response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
-  std::ignore = req->sendStreamReply(std::move(response.buffer), apache::thrift::StreamServerCallbackPtr(nullptr));
+  req->sendStreamReply(std::move(response.buffer), apache::thrift::detail::ServerStreamFactory{nullptr});
   <%/function:returns_stream?%>
   <%#function:returns_sink?%>
   auto response = serializeLegacyResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result.fields);
   response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
-  std::ignore = req->sendSinkReply(std::move(response.buffer), apache::thrift::SinkServerCallbackPtr{});
+  req->sendSinkReply(std::move(response.buffer), apache::thrift::detail::SinkConsumerImpl{});
   <%/function:returns_sink?%>
 <%/function:exceptions?%>
 }

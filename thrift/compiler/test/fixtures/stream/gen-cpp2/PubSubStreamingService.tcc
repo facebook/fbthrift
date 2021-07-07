@@ -253,7 +253,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_boththrows(apache::thri
   ProtocolOut_ prot;
   auto response = serializeLegacyResponse("boththrows", &prot, protoSeqId, ctx, result.fields);
   response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
-  std::ignore = req->sendStreamReply(std::move(response.buffer), apache::thrift::StreamServerCallbackPtr(nullptr));
+  req->sendStreamReply(std::move(response.buffer), apache::thrift::detail::ServerStreamFactory{nullptr});
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -341,7 +341,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreamthrows
   ProtocolOut_ prot;
   auto response = serializeLegacyResponse("responseandstreamthrows", &prot, protoSeqId, ctx, result.fields);
   response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
-  std::ignore = req->sendStreamReply(std::move(response.buffer), apache::thrift::StreamServerCallbackPtr(nullptr));
+  req->sendStreamReply(std::move(response.buffer), apache::thrift::detail::ServerStreamFactory{nullptr});
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

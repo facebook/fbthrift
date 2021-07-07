@@ -38,6 +38,8 @@ struct ServerStreamFactory {
     fn_(std::move(payload), cb, eb, std::move(interaction_));
   }
 
+  explicit operator bool() { return !!fn_; }
+
  private:
   folly::Function<void(
       FirstResponsePayload&&,

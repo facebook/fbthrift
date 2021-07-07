@@ -89,21 +89,21 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
         helper_w<ProtocolWriter>::write_exn(
             func, &oprot, protoSeqId, nullptr, x),
         ctx->getHeader()->getWriteTransforms());
-    eb->runInEventBaseThread(
-        [payload = move(payload), request = move(req)]() mutable {
-          if (request->isStream()) {
-            std::ignore = request->sendStreamReply(
-                std::move(payload), StreamServerCallbackPtr(nullptr));
-          } else if (request->isSink()) {
+    eb->runInEventBaseThread([payload = move(payload),
+                              request = move(req)]() mutable {
+      if (request->isStream()) {
+        request->sendStreamReply(
+            std::move(payload), detail::ServerStreamFactory{nullptr});
+      } else if (request->isSink()) {
 #if FOLLY_HAS_COROUTINES
-            std::ignore = request->sendSinkReply(std::move(payload), nullptr);
+        request->sendSinkReply(std::move(payload), detail::SinkConsumerImpl{});
 #else
-            DCHECK(false);
+        DCHECK(false);
 #endif
-          } else {
-            request->sendReply(std::move(payload));
-          }
-        });
+      } else {
+        request->sendReply(std::move(payload));
+      }
+    });
   } else {
     LOG(ERROR) << msg << " in oneway function " << func;
   }
