@@ -191,11 +191,13 @@ public class {{service:javaCapitalName}}ClientImpl extends {{^service:extends}}A
 
       {{/service:supportedFunctions}}
       @java.lang.Override
-      public void close() {}
+      public void close() {
+        activeInteractions.remove(interactionId);
+      }
     }
 
     public {{service:name}} create{{service:name}}() {
-        return new {{service:name}}Impl(0L);
+        return new {{service:name}}Impl(interactionCounter.incrementAndGet());
     }
     {{^last?}}
 

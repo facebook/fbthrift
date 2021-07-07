@@ -172,11 +172,13 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
 
       @java.lang.Override
-      public void close() {}
+      public void close() {
+        activeInteractions.remove(interactionId);
+      }
     }
 
     public MyInteraction createMyInteraction() {
-        return new MyInteractionImpl(0L);
+        return new MyInteractionImpl(interactionCounter.incrementAndGet());
     }
 
 
@@ -218,11 +220,13 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
 
       @java.lang.Override
-      public void close() {}
+      public void close() {
+        activeInteractions.remove(interactionId);
+      }
     }
 
     public MyInteractionFast createMyInteractionFast() {
-        return new MyInteractionFastImpl(0L);
+        return new MyInteractionFastImpl(interactionCounter.incrementAndGet());
     }
 
 
@@ -249,10 +253,12 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
 
       @java.lang.Override
-      public void close() {}
+      public void close() {
+        activeInteractions.remove(interactionId);
+      }
     }
 
     public SerialInteraction createSerialInteraction() {
-        return new SerialInteractionImpl(0L);
+        return new SerialInteractionImpl(interactionCounter.incrementAndGet());
     }
 }
