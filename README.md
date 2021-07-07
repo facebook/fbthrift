@@ -21,6 +21,7 @@ Table of Contents (ToC):
   * [Build](#build)
   * [Thrift Files](#thrift-files)
 * [C++ Static Reflection](#c-static-reflection)
+* [C++ Server Metrics](#c-server-metrics)
 
 
 ## About Thrift
@@ -65,18 +66,18 @@ Please install the following dependencies before building Facebook Thrift:
 [CMake](https://cmake.org),
 [Flex](https://www.gnu.org/software/flex),
 [OpenSSLv1.0.2g](https://www.openssl.org),
-[PThreads](https://computing.llnl.gov/tutorials/pthreads),
+[PThreads](https://computing.llnl.gov/tutorials/pthreads), and
 [Zlib](https://zlib.net)
 
 **External**:
 [{fmt}](https://github.com/fmtlib/fmt),
-[GFlags](https://github.com/gflags/gflags),
-[GLog](https://github.com/google/glog),
+[GFlags](https://github.com/gflags/gflags), and
+[GLog](https://github.com/google/glog)
 
 **Facebook**:
 [Fizz](https://github.com/facebookincubator/fizz),
 [Folly](https://github.com/facebook/folly),
-[Wangle](https://github.com/facebook/wangle),
+[Wangle](https://github.com/facebook/wangle), and
 [Zstd](https://github.com/facebook/zstd)
 
 ### Build

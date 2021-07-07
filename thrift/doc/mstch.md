@@ -7,7 +7,7 @@
   * [Writing the driver](#writing-the-driver)
   * [Partial Templates](#partial-templates)
   * [Context types](#context-types)
-  * [Context structure](#template-context-structure)
+  * [Context structure](#context-structure)
   * [Extending Context Maps](#extending-context-maps)
 * [Using the new generator](#using-the-new-generator)
 
