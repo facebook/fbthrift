@@ -148,6 +148,16 @@ public interface MyService extends java.io.Closeable {
 
             reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions);
 
+            reactor.core.publisher.Flux<Boolean> truthify();
+
+            default reactor.core.publisher.Flux<Boolean> truthify(RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
+            default reactor.core.publisher.Flux<ResponseWrapper<Boolean>> truthifyWrapper(RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
             @java.lang.Override
             void dispose();
         }
@@ -170,6 +180,16 @@ public interface MyService extends java.io.Closeable {
             reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions);
 
             reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions);
+
+            reactor.core.publisher.Flux<Boolean> truthify();
+
+            default reactor.core.publisher.Flux<Boolean> truthify(RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
+            default reactor.core.publisher.Flux<ResponseWrapper<Boolean>> truthifyWrapper(RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
 
             @java.lang.Override
             void dispose();

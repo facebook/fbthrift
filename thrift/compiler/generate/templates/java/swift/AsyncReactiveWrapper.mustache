@@ -80,6 +80,13 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#service:extends}
         }
 
         {{/service:supportedFunctions}}
+        {{#service:streamingFunctions}}
+        @java.lang.Override
+        public reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+            throw new UnsupportedOperationException();
+        }
+
+        {{/service:streamingFunctions}}
         @java.lang.Override
         public void dispose() {
             _delegateInteraction.close();

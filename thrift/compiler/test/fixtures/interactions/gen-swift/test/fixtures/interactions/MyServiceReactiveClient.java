@@ -30,8 +30,12 @@ public class MyServiceReactiveClient
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _foo_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_STREAM_EXCEPTION_READERS = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
@@ -270,6 +274,80 @@ public class MyServiceReactiveClient
         });
     }
 
+    private com.facebook.thrift.payload.Writer _createtruthifyWriter() {
+      return oprot -> {
+        try {
+
+        } catch (Throwable _e) {
+          throw reactor.core.Exceptions.propagate(_e);
+        }
+      };
+    }
+
+    private final com.facebook.thrift.payload.Reader _truthify_READER =
+      oprot -> {
+                try {
+                  boolean _r = oprot.readBool();
+                  return _r;
+
+
+                } catch (Throwable _e) {
+                  throw reactor.core.Exceptions.propagate(_e);
+                }
+              };
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<Boolean>> truthifyWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
+        .flatMapMany(_rpc -> {
+          String interactionName = "MyInteraction.truthify";
+          org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
+                  .setName(interactionName)
+                  .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
+                  .setOtherMetadata(getHeaders(rpcOptions))
+                  .setProtocol(_protocolId);
+
+          if (_activeInteractions.contains(interactionId)) {
+            _metadataBuilder.setInteractionId(interactionId);
+          } else {
+            _metadataBuilder.setInteractionCreate(
+              new InteractionCreate.Builder()
+                  .setInteractionId(interactionId)
+                  .setInteractionName("MyInteraction")
+                  .build());
+            _metadataBuilder.setInteractionId(0L);
+            _activeInteractions.add(interactionId);
+          }
+
+
+          com.facebook.thrift.payload.ClientRequestPayload<Boolean> _crp =
+              com.facebook.thrift.payload.ClientRequestPayload.create(
+                  _createtruthifyWriter(),
+                  _truthify_READER,
+                  _truthify_EXCEPTION_READERS,
+                  _truthify_STREAM_EXCEPTION_READERS,
+                  _metadataBuilder.build(),
+                  java.util.Collections.emptyMap());
+
+          return _rpc
+              .singleRequestStreamingResponse(_crp, rpcOptions)
+              .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
+              .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
+              .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Boolean>)_p.getData()).getData(), _p.getHeaders()));
+        });
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Boolean> truthify( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+        return truthifyWrapper( rpcOptions).map(_p -> _p.getData());
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Boolean> truthify() {
+      return truthify( com.facebook.thrift.client.RpcOptions.EMPTY);
+    }
+
     @java.lang.Override
     public void dispose() {
       _activeInteractions.remove(interactionId);
@@ -427,6 +505,80 @@ public class MyServiceReactiveClient
           return _rpc
               .singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap()));
         });
+    }
+
+    private com.facebook.thrift.payload.Writer _createtruthifyWriter() {
+      return oprot -> {
+        try {
+
+        } catch (Throwable _e) {
+          throw reactor.core.Exceptions.propagate(_e);
+        }
+      };
+    }
+
+    private final com.facebook.thrift.payload.Reader _truthify_READER =
+      oprot -> {
+                try {
+                  boolean _r = oprot.readBool();
+                  return _r;
+
+
+                } catch (Throwable _e) {
+                  throw reactor.core.Exceptions.propagate(_e);
+                }
+              };
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<com.facebook.thrift.client.ResponseWrapper<Boolean>> truthifyWrapper( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+      return _rpcClient
+        .subscriberContext(ctx -> ctx.put(STICKY_HASH_KEY, interactionId))
+        .flatMapMany(_rpc -> {
+          String interactionName = "MyInteractionFast.truthify";
+          org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
+                  .setName(interactionName)
+                  .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_STREAMING_RESPONSE)
+                  .setOtherMetadata(getHeaders(rpcOptions))
+                  .setProtocol(_protocolId);
+
+          if (_activeInteractions.contains(interactionId)) {
+            _metadataBuilder.setInteractionId(interactionId);
+          } else {
+            _metadataBuilder.setInteractionCreate(
+              new InteractionCreate.Builder()
+                  .setInteractionId(interactionId)
+                  .setInteractionName("MyInteractionFast")
+                  .build());
+            _metadataBuilder.setInteractionId(0L);
+            _activeInteractions.add(interactionId);
+          }
+
+
+          com.facebook.thrift.payload.ClientRequestPayload<Boolean> _crp =
+              com.facebook.thrift.payload.ClientRequestPayload.create(
+                  _createtruthifyWriter(),
+                  _truthify_READER,
+                  _truthify_EXCEPTION_READERS,
+                  _truthify_STREAM_EXCEPTION_READERS,
+                  _metadataBuilder.build(),
+                  java.util.Collections.emptyMap());
+
+          return _rpc
+              .singleRequestStreamingResponse(_crp, rpcOptions)
+              .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
+              .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
+              .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Boolean>)_p.getData()).getData(), _p.getHeaders()));
+        });
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Boolean> truthify( final com.facebook.thrift.client.RpcOptions rpcOptions) {
+        return truthifyWrapper( rpcOptions).map(_p -> _p.getData());
+    }
+
+    @java.lang.Override
+    public reactor.core.publisher.Flux<Boolean> truthify() {
+      return truthify( com.facebook.thrift.client.RpcOptions.EMPTY);
     }
 
     @java.lang.Override

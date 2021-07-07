@@ -177,6 +177,18 @@ public interface {{service:javaCapitalName}} extends java.io.Closeable{{#service
             reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions);
 
             {{/service:supportedFunctions}}
+            {{#service:streamingFunctions}}
+            reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+
+            default reactor.core.publisher.Flux<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
+            default reactor.core.publisher.Flux<ResponseWrapper<{{#function:return_type}}{{> StreamReturnType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
+                throw new UnsupportedOperationException();
+            }
+
+            {{/service:streamingFunctions}}
             @java.lang.Override
             void dispose();
         }

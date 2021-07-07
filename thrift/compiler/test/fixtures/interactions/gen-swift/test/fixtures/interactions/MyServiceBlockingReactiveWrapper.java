@@ -85,6 +85,11 @@ public class MyServiceBlockingReactiveWrapper
         }
 
         @java.lang.Override
+        public reactor.core.publisher.Flux<Boolean> truthify() {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
         public void dispose() {}
     }
 
@@ -138,6 +143,11 @@ public class MyServiceBlockingReactiveWrapper
 
         @java.lang.Override
         public reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions) {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
+        public reactor.core.publisher.Flux<Boolean> truthify() {
             throw new UnsupportedOperationException();
         }
 

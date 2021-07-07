@@ -61,6 +61,11 @@ public class MyServiceAsyncReactiveWrapper
         }
 
         @java.lang.Override
+        public reactor.core.publisher.Flux<Boolean> truthify() {
+            throw new UnsupportedOperationException();
+        }
+
+        @java.lang.Override
         public void dispose() {
             _delegateInteraction.close();
         }
@@ -99,6 +104,11 @@ public class MyServiceAsyncReactiveWrapper
 
         public reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions) {
             return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.pingWrapper( rpcOptions));
+        }
+
+        @java.lang.Override
+        public reactor.core.publisher.Flux<Boolean> truthify() {
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
