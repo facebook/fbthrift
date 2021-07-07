@@ -8,9 +8,12 @@
 package test.fixtures.stream;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import org.apache.thrift.protocol.*;
-import com.facebook.thrift.client.*;
+import org.apache.thrift.InteractionCreate;
 import com.facebook.thrift.client.ResponseWrapper;
+import com.facebook.thrift.client.RpcOptions;
 
 
 public class PubSubStreamingServiceReactiveClient 
@@ -19,6 +22,8 @@ public class PubSubStreamingServiceReactiveClient
   private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
   private final Map<String, String> _headers;
   private final Map<String, String> _persistentHeaders;
+  private final AtomicLong _interactionCounter;
+  private final Set<Long> _activeInteractions;
 
   private static final TField _returnstream_I32_FROM_FIELD_DESC = new TField("i32_from", TType.I32, (short)1);
   private static final TField _returnstream_I32_TO_FIELD_DESC = new TField("i32_to", TType.I32, (short)2);
@@ -102,14 +107,22 @@ public class PubSubStreamingServiceReactiveClient
     this._rpcClient = _rpcClient;
     this._headers = java.util.Collections.emptyMap();
     this._persistentHeaders = java.util.Collections.emptyMap();
+    this._interactionCounter = new AtomicLong(0);
+    this._activeInteractions = ConcurrentHashMap.newKeySet();
   }
 
   public PubSubStreamingServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(_protocolId, _rpcClient, _headers, _persistentHeaders, new AtomicLong(), ConcurrentHashMap.newKeySet());
+  }
+
+  public PubSubStreamingServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders, AtomicLong interactionCounter, Set<Long> activeInteractions) {
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headers = _headers;
     this._persistentHeaders = _persistentHeaders;
+    this._interactionCounter = interactionCounter;
+    this._activeInteractions = activeInteractions;
   }
 
   @java.lang.Override

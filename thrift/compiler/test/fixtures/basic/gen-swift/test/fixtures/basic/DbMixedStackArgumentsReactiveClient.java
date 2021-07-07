@@ -8,9 +8,12 @@
 package test.fixtures.basic;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import org.apache.thrift.protocol.*;
-import com.facebook.thrift.client.*;
+import org.apache.thrift.InteractionCreate;
 import com.facebook.thrift.client.ResponseWrapper;
+import com.facebook.thrift.client.RpcOptions;
 
 
 public class DbMixedStackArgumentsReactiveClient 
@@ -19,6 +22,8 @@ public class DbMixedStackArgumentsReactiveClient
   private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
   private final Map<String, String> _headers;
   private final Map<String, String> _persistentHeaders;
+  private final AtomicLong _interactionCounter;
+  private final Set<Long> _activeInteractions;
 
   private static final TField _getDataByKey0_KEY_FIELD_DESC = new TField("key", TType.STRING, (short)1);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _getDataByKey0_EXCEPTION_READERS = java.util.Collections.emptyMap();
@@ -34,14 +39,22 @@ public class DbMixedStackArgumentsReactiveClient
     this._rpcClient = _rpcClient;
     this._headers = java.util.Collections.emptyMap();
     this._persistentHeaders = java.util.Collections.emptyMap();
+    this._interactionCounter = new AtomicLong(0);
+    this._activeInteractions = ConcurrentHashMap.newKeySet();
   }
 
   public DbMixedStackArgumentsReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(_protocolId, _rpcClient, _headers, _persistentHeaders, new AtomicLong(), ConcurrentHashMap.newKeySet());
+  }
+
+  public DbMixedStackArgumentsReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders, AtomicLong interactionCounter, Set<Long> activeInteractions) {
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headers = _headers;
     this._persistentHeaders = _persistentHeaders;
+    this._interactionCounter = interactionCounter;
+    this._activeInteractions = activeInteractions;
   }
 
   @java.lang.Override

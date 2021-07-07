@@ -76,23 +76,45 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
     {{/service:sinkFunctions}}
     {{#service:interactions}}
     public class {{service:name}}Impl implements {{service:name}} {
+        private {{service:parent}}.{{service:name}} _delegateInteraction;
+
+        {{service:name}}Impl({{service:parent}}.{{service:name}} delegateInteraction) {
+            this._delegateInteraction = delegateInteraction;
+        }
+
         {{#service:supportedFunctions}}
         @java.lang.Override
-        public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
-        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+        public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+            {{#function:voidType}}
+            return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+                    try {
+                        _delegateInteraction.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+                    } catch (Throwable _e) {
+                        throw reactor.core.Exceptions.propagate(_e);
+                    }
+                }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            {{/function:voidType}}
+            {{^function:voidType}}
+            return reactor.core.publisher.Mono.fromSupplier(() -> {
+                    try {
+                        return _delegateInteraction.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}});
+                    } catch (Throwable _e) {
+                        throw reactor.core.Exceptions.propagate(_e);
+                    }
+                }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
+            {{/function:voidType}}
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
         final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
         final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         {{/service:supportedFunctions}}
@@ -101,7 +123,7 @@ public class {{service:javaCapitalName}}BlockingReactiveWrapper {{#service:exten
     }
 
     public {{service:name}} create{{service:name}}() {
-        return new {{service:name}}Impl();
+        return new {{service:name}}Impl(_delegate.create{{service:name}}());
     }
     {{^last?}}
 

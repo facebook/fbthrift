@@ -20,9 +20,12 @@
 package {{service:javaPackage}};
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import org.apache.thrift.protocol.*;
-import com.facebook.thrift.client.*;
+import org.apache.thrift.InteractionCreate;
 import com.facebook.thrift.client.ResponseWrapper;
+import com.facebook.thrift.client.RpcOptions;
 
 {{#service:disableReactive?}}// Generation of this class is disabled using (java.swift.disable_reactive){{/service:disableReactive?}}{{^service:disableReactive?}}
 public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} extends {{service:javaPackage}}.{{service:javaCapitalName}}ReactiveClient{{/service:extends}}
@@ -31,6 +34,8 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
   private final Map<String, String> _headers;
   private final Map<String, String> _persistentHeaders;
+  private final AtomicLong _interactionCounter;
+  private final Set<Long> _activeInteractions;
 
   {{#service:supportedFunctions}}
   {{#function:args}}
@@ -130,6 +135,29 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
 
   {{/function:sink_final_response_exceptions}}
   {{/service:sinkFunctions}}
+  {{#service:interactions}}
+  {{#service:supportedFunctions}}
+  {{#function:args}}
+  private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
+  {{/function:args}}
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
+  {{#function:exceptions}}
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
+  oprot -> {
+            try {
+              {{#field:type}}
+              {{> ReadReturnType }}
+
+              return _r;
+              {{/field:type}}
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
+  {{/function:exceptions}}
+  {{/service:supportedFunctions}}
+  {{/service:interactions}}
 
   static {
     {{#service:supportedFunctions}}{{#function:exceptions}}
@@ -153,14 +181,22 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     this._rpcClient = _rpcClient;
     this._headers = java.util.Collections.emptyMap();
     this._persistentHeaders = java.util.Collections.emptyMap();
+    this._interactionCounter = new AtomicLong(0);
+    this._activeInteractions = ConcurrentHashMap.newKeySet();
   }
 
   public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(_protocolId, _rpcClient, _headers, _persistentHeaders, new AtomicLong(), ConcurrentHashMap.newKeySet());
+  }
+
+  public {{service:javaCapitalName}}ReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders, AtomicLong interactionCounter, Set<Long> activeInteractions) {
     {{#service:extends}}super(_protocolId, _rpcClient);{{/service:extends}}
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headers = _headers;
     this._persistentHeaders = _persistentHeaders;
+    this._interactionCounter = interactionCounter;
+    this._activeInteractions = activeInteractions;
   }
 
   @java.lang.Override
@@ -498,30 +534,139 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   {{/service:sinkFunctions}}
   {{#service:interactions}}
   public class {{service:name}}Impl implements {{service:name}} {
+    private final long interactionId;
+
+    {{service:name}}Impl(long interactionId) {
+      this.interactionId = interactionId;
+    }
+
     {{#service:supportedFunctions}}
-    @java.lang.Override
+    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
+    {{#function:exceptions}}
+    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
+    oprot -> {
+              try {
+                {{#field:type}}
+                {{> ReadReturnType }}
+
+                return _r;
+                {{/field:type}}
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
+    {{/function:exceptions}}
+    {{/service:supportedFunctions}}
+
+    {{#service:supportedFunctions}}
+    private com.facebook.thrift.payload.Writer _create{{function:javaName}}Writer({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}) {
+      return oprot -> {
+        try {
+          {{#function:args}}
+          {{#field:type}}
+          {
+            oprot.writeFieldBegin(_{{function:javaName}}_{{field:javaTFieldName}});
+
+            {{> FieldType}} _iter0 = {{field:javaName}};
+
+            {{#field:type}}
+            {{field:nestedDepth++}}{{> WriteRequestType}}{{field:nestedDepth--}}
+            {{/field:type}}
+            oprot.writeFieldEnd();
+          }
+          {{/field:type}}
+
+          {{/function:args}}
+
+        } catch (Throwable _e) {
+          throw reactor.core.Exceptions.propagate(_e);
+        }
+      };
+    }
+
+    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_READER =
+      oprot -> {
+                try {
+                  {{^function:voidType}}
+                  {{#function:return_type}}
+                  {{> ReadReturnType }}
+
+                  return _r;
+                  {{/function:return_type}}
+                  {{/function:voidType}}
+
+                  {{#function:voidType}}
+                  return null;
+                  {{/function:voidType}}
+
+                } catch (Throwable _e) {
+                  throw reactor.core.Exceptions.propagate(_e);
+                }
+              };
+
     public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
     final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}} com.facebook.thrift.client.RpcOptions.EMPTY){{#function:oneway?}}.then(){{/function:oneway?}}{{!
+        }}{{^function:oneway?}}{{^function:voidType}}.map(_p -> _p.getData()){{/function:voidType}}{{/function:oneway?}}{{!
+        }}{{^function:oneway?}}{{#function:voidType}}.then(){{/function:voidType}}{{/function:oneway?}};
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}} rpcOptions){{#function:oneway?}}.then(){{/function:oneway?}}{{!
+        }}{{^function:oneway?}}{{^function:voidType}}.map(_p -> _p.getData()){{/function:voidType}}{{/function:oneway?}}{{!
+        }}{{^function:oneway?}}{{#function:voidType}}.then(){{/function:voidType}}{{/function:oneway?}};
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}, {{/function:args}}RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return _rpcClient
+        .flatMap(_rpc -> {
+          String interactionName = "{{service:name}}.{{function:javaName}}";
+          org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
+                  .setName(interactionName)
+                  .setKind(org.apache.thrift.RpcKind.{{#function:oneway?}}SINGLE_REQUEST_NO_RESPONSE{{/function:oneway?}}{{^function:oneway?}}SINGLE_REQUEST_SINGLE_RESPONSE{{/function:oneway?}})
+                  .setOtherMetadata(getHeaders(rpcOptions))
+                  .setProtocol(_protocolId);
+
+          if (_activeInteractions.contains(interactionId)) {
+            _metadataBuilder.setInteractionId(interactionId);
+          } else {
+            _metadataBuilder.setInteractionCreate(
+              new InteractionCreate.Builder()
+                  .setInteractionId(interactionId)
+                  .setInteractionName("{{service:name}}")
+                  .build());
+            _metadataBuilder.setInteractionId(0L);
+            _activeInteractions.add(interactionId);
+          }
+
+          org.apache.thrift.RequestRpcMetadata _metadata = _metadataBuilder.build();
+
+          com.facebook.thrift.payload.ClientRequestPayload<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> _crp =
+              com.facebook.thrift.payload.ClientRequestPayload.create(
+                  _create{{function:javaName}}Writer({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}),
+                  _{{function:javaName}}_READER,
+                  _{{function:javaName}}_EXCEPTION_READERS,
+                  _metadata,
+                  java.util.Collections.emptyMap());
+
+          return _rpc
+              {{#function:oneway?}}.singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap())){{/function:oneway?}}{{!
+              }}{{^function:oneway?}}.singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());}){{/function:oneway?}};
+        });
     }
 
     {{/service:supportedFunctions}}
     @java.lang.Override
-    public void dispose() {}
+    public void dispose() {
+      _activeInteractions.remove(interactionId);
+    }
   }
 
   public {{service:name}} create{{service:name}}() {
-      return new {{service:name}}Impl();
+      return new {{service:name}}Impl(_interactionCounter.incrementAndGet());
   }
   {{^last?}}
 

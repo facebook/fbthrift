@@ -8,9 +8,12 @@
 package test.fixtures.interactions;
 
 import java.util.*;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.atomic.AtomicLong;
 import org.apache.thrift.protocol.*;
-import com.facebook.thrift.client.*;
+import org.apache.thrift.InteractionCreate;
 import com.facebook.thrift.client.ResponseWrapper;
+import com.facebook.thrift.client.RpcOptions;
 
 
 public class MyServiceReactiveClient 
@@ -19,8 +22,15 @@ public class MyServiceReactiveClient
   private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
   private final Map<String, String> _headers;
   private final Map<String, String> _persistentHeaders;
+  private final AtomicLong _interactionCounter;
+  private final Set<Long> _activeInteractions;
 
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _foo_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
   }
@@ -31,14 +41,22 @@ public class MyServiceReactiveClient
     this._rpcClient = _rpcClient;
     this._headers = java.util.Collections.emptyMap();
     this._persistentHeaders = java.util.Collections.emptyMap();
+    this._interactionCounter = new AtomicLong(0);
+    this._activeInteractions = ConcurrentHashMap.newKeySet();
   }
 
   public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders) {
+    this(_protocolId, _rpcClient, _headers, _persistentHeaders, new AtomicLong(), ConcurrentHashMap.newKeySet());
+  }
+
+  public MyServiceReactiveClient(org.apache.thrift.ProtocolId _protocolId, reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient, Map<String, String> _headers, Map<String, String> _persistentHeaders, AtomicLong interactionCounter, Set<Long> activeInteractions) {
     
     this._protocolId = _protocolId;
     this._rpcClient = _rpcClient;
     this._headers = _headers;
     this._persistentHeaders = _persistentHeaders;
+    this._interactionCounter = interactionCounter;
+    this._activeInteractions = activeInteractions;
   }
 
   @java.lang.Override
@@ -102,105 +120,404 @@ public class MyServiceReactiveClient
 
 
   public class MyInteractionImpl implements MyInteraction {
-    @java.lang.Override
+    private final long interactionId;
+
+    MyInteractionImpl(long interactionId) {
+      this.interactionId = interactionId;
+    }
+
+    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
+
+    private com.facebook.thrift.payload.Writer _createfrobnicateWriter() {
+      return oprot -> {
+        try {
+
+        } catch (Throwable _e) {
+          throw reactor.core.Exceptions.propagate(_e);
+        }
+      };
+    }
+
+    private final com.facebook.thrift.payload.Reader _frobnicate_READER =
+      oprot -> {
+                try {
+                  int _r = oprot.readI32();
+                  return _r;
+
+
+                } catch (Throwable _e) {
+                  throw reactor.core.Exceptions.propagate(_e);
+                }
+              };
+
     public reactor.core.publisher.Mono<Integer> frobnicate() throws org.apache.thrift.TException {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return frobnicateWrapper( com.facebook.thrift.client.RpcOptions.EMPTY).map(_p -> _p.getData());
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Integer> frobnicate(RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return frobnicateWrapper( rpcOptions).map(_p -> _p.getData());
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWrapper(RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return _rpcClient
+        .flatMap(_rpc -> {
+          String interactionName = "MyInteraction.frobnicate";
+          org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
+                  .setName(interactionName)
+                  .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
+                  .setOtherMetadata(getHeaders(rpcOptions))
+                  .setProtocol(_protocolId);
+
+          if (_activeInteractions.contains(interactionId)) {
+            _metadataBuilder.setInteractionId(interactionId);
+          } else {
+            _metadataBuilder.setInteractionCreate(
+              new InteractionCreate.Builder()
+                  .setInteractionId(interactionId)
+                  .setInteractionName("MyInteraction")
+                  .build());
+            _metadataBuilder.setInteractionId(0L);
+            _activeInteractions.add(interactionId);
+          }
+
+          org.apache.thrift.RequestRpcMetadata _metadata = _metadataBuilder.build();
+
+          com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
+              com.facebook.thrift.payload.ClientRequestPayload.create(
+                  _createfrobnicateWriter(),
+                  _frobnicate_READER,
+                  _frobnicate_EXCEPTION_READERS,
+                  _metadata,
+                  java.util.Collections.emptyMap());
+
+          return _rpc
+              .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());});
+        });
     }
 
-    @java.lang.Override
+    private com.facebook.thrift.payload.Writer _createpingWriter() {
+      return oprot -> {
+        try {
+
+        } catch (Throwable _e) {
+          throw reactor.core.Exceptions.propagate(_e);
+        }
+      };
+    }
+
+    private final com.facebook.thrift.payload.Reader _ping_READER =
+      oprot -> {
+                try {
+
+                  return null;
+
+                } catch (Throwable _e) {
+                  throw reactor.core.Exceptions.propagate(_e);
+                }
+              };
+
     public reactor.core.publisher.Mono<Void> ping() throws org.apache.thrift.TException {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return pingWrapper( com.facebook.thrift.client.RpcOptions.EMPTY).then();
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return pingWrapper( rpcOptions).then();
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return _rpcClient
+        .flatMap(_rpc -> {
+          String interactionName = "MyInteraction.ping";
+          org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
+                  .setName(interactionName)
+                  .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_NO_RESPONSE)
+                  .setOtherMetadata(getHeaders(rpcOptions))
+                  .setProtocol(_protocolId);
+
+          if (_activeInteractions.contains(interactionId)) {
+            _metadataBuilder.setInteractionId(interactionId);
+          } else {
+            _metadataBuilder.setInteractionCreate(
+              new InteractionCreate.Builder()
+                  .setInteractionId(interactionId)
+                  .setInteractionName("MyInteraction")
+                  .build());
+            _metadataBuilder.setInteractionId(0L);
+            _activeInteractions.add(interactionId);
+          }
+
+          org.apache.thrift.RequestRpcMetadata _metadata = _metadataBuilder.build();
+
+          com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
+              com.facebook.thrift.payload.ClientRequestPayload.create(
+                  _createpingWriter(),
+                  _ping_READER,
+                  _ping_EXCEPTION_READERS,
+                  _metadata,
+                  java.util.Collections.emptyMap());
+
+          return _rpc
+              .singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap()));
+        });
     }
 
     @java.lang.Override
-    public void dispose() {}
+    public void dispose() {
+      _activeInteractions.remove(interactionId);
+    }
   }
 
   public MyInteraction createMyInteraction() {
-      return new MyInteractionImpl();
+      return new MyInteractionImpl(_interactionCounter.incrementAndGet());
   }
 
   public class MyInteractionFastImpl implements MyInteractionFast {
-    @java.lang.Override
+    private final long interactionId;
+
+    MyInteractionFastImpl(long interactionId) {
+      this.interactionId = interactionId;
+    }
+
+    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
+
+    private com.facebook.thrift.payload.Writer _createfrobnicateWriter() {
+      return oprot -> {
+        try {
+
+        } catch (Throwable _e) {
+          throw reactor.core.Exceptions.propagate(_e);
+        }
+      };
+    }
+
+    private final com.facebook.thrift.payload.Reader _frobnicate_READER =
+      oprot -> {
+                try {
+                  int _r = oprot.readI32();
+                  return _r;
+
+
+                } catch (Throwable _e) {
+                  throw reactor.core.Exceptions.propagate(_e);
+                }
+              };
+
     public reactor.core.publisher.Mono<Integer> frobnicate() throws org.apache.thrift.TException {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return frobnicateWrapper( com.facebook.thrift.client.RpcOptions.EMPTY).map(_p -> _p.getData());
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Integer> frobnicate(RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return frobnicateWrapper( rpcOptions).map(_p -> _p.getData());
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWrapper(RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return _rpcClient
+        .flatMap(_rpc -> {
+          String interactionName = "MyInteractionFast.frobnicate";
+          org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
+                  .setName(interactionName)
+                  .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
+                  .setOtherMetadata(getHeaders(rpcOptions))
+                  .setProtocol(_protocolId);
+
+          if (_activeInteractions.contains(interactionId)) {
+            _metadataBuilder.setInteractionId(interactionId);
+          } else {
+            _metadataBuilder.setInteractionCreate(
+              new InteractionCreate.Builder()
+                  .setInteractionId(interactionId)
+                  .setInteractionName("MyInteractionFast")
+                  .build());
+            _metadataBuilder.setInteractionId(0L);
+            _activeInteractions.add(interactionId);
+          }
+
+          org.apache.thrift.RequestRpcMetadata _metadata = _metadataBuilder.build();
+
+          com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
+              com.facebook.thrift.payload.ClientRequestPayload.create(
+                  _createfrobnicateWriter(),
+                  _frobnicate_READER,
+                  _frobnicate_EXCEPTION_READERS,
+                  _metadata,
+                  java.util.Collections.emptyMap());
+
+          return _rpc
+              .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());});
+        });
     }
 
-    @java.lang.Override
+    private com.facebook.thrift.payload.Writer _createpingWriter() {
+      return oprot -> {
+        try {
+
+        } catch (Throwable _e) {
+          throw reactor.core.Exceptions.propagate(_e);
+        }
+      };
+    }
+
+    private final com.facebook.thrift.payload.Reader _ping_READER =
+      oprot -> {
+                try {
+
+                  return null;
+
+                } catch (Throwable _e) {
+                  throw reactor.core.Exceptions.propagate(_e);
+                }
+              };
+
     public reactor.core.publisher.Mono<Void> ping() throws org.apache.thrift.TException {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return pingWrapper( com.facebook.thrift.client.RpcOptions.EMPTY).then();
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return pingWrapper( rpcOptions).then();
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return _rpcClient
+        .flatMap(_rpc -> {
+          String interactionName = "MyInteractionFast.ping";
+          org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
+                  .setName(interactionName)
+                  .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_NO_RESPONSE)
+                  .setOtherMetadata(getHeaders(rpcOptions))
+                  .setProtocol(_protocolId);
+
+          if (_activeInteractions.contains(interactionId)) {
+            _metadataBuilder.setInteractionId(interactionId);
+          } else {
+            _metadataBuilder.setInteractionCreate(
+              new InteractionCreate.Builder()
+                  .setInteractionId(interactionId)
+                  .setInteractionName("MyInteractionFast")
+                  .build());
+            _metadataBuilder.setInteractionId(0L);
+            _activeInteractions.add(interactionId);
+          }
+
+          org.apache.thrift.RequestRpcMetadata _metadata = _metadataBuilder.build();
+
+          com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
+              com.facebook.thrift.payload.ClientRequestPayload.create(
+                  _createpingWriter(),
+                  _ping_READER,
+                  _ping_EXCEPTION_READERS,
+                  _metadata,
+                  java.util.Collections.emptyMap());
+
+          return _rpc
+              .singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap()));
+        });
     }
 
     @java.lang.Override
-    public void dispose() {}
+    public void dispose() {
+      _activeInteractions.remove(interactionId);
+    }
   }
 
   public MyInteractionFast createMyInteractionFast() {
-      return new MyInteractionFastImpl();
+      return new MyInteractionFastImpl(_interactionCounter.incrementAndGet());
   }
 
   public class SerialInteractionImpl implements SerialInteraction {
-    @java.lang.Override
+    private final long interactionId;
+
+    SerialInteractionImpl(long interactionId) {
+      this.interactionId = interactionId;
+    }
+
+    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
+
+    private com.facebook.thrift.payload.Writer _createfrobnicateWriter() {
+      return oprot -> {
+        try {
+
+        } catch (Throwable _e) {
+          throw reactor.core.Exceptions.propagate(_e);
+        }
+      };
+    }
+
+    private final com.facebook.thrift.payload.Reader _frobnicate_READER =
+      oprot -> {
+                try {
+
+                  return null;
+
+                } catch (Throwable _e) {
+                  throw reactor.core.Exceptions.propagate(_e);
+                }
+              };
+
     public reactor.core.publisher.Mono<Void> frobnicate() throws org.apache.thrift.TException {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return frobnicateWrapper( com.facebook.thrift.client.RpcOptions.EMPTY).then();
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<Void> frobnicate(RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return frobnicateWrapper( rpcOptions).then();
     }
 
     @java.lang.Override
     public reactor.core.publisher.Mono<ResponseWrapper<Void>> frobnicateWrapper(RpcOptions rpcOptions)  {
-      throw new UnsupportedOperationException("Interactions are not yet supported on ReactiveClients!");
+      return _rpcClient
+        .flatMap(_rpc -> {
+          String interactionName = "SerialInteraction.frobnicate";
+          org.apache.thrift.RequestRpcMetadata.Builder _metadataBuilder = new org.apache.thrift.RequestRpcMetadata.Builder()
+                  .setName(interactionName)
+                  .setKind(org.apache.thrift.RpcKind.SINGLE_REQUEST_SINGLE_RESPONSE)
+                  .setOtherMetadata(getHeaders(rpcOptions))
+                  .setProtocol(_protocolId);
+
+          if (_activeInteractions.contains(interactionId)) {
+            _metadataBuilder.setInteractionId(interactionId);
+          } else {
+            _metadataBuilder.setInteractionCreate(
+              new InteractionCreate.Builder()
+                  .setInteractionId(interactionId)
+                  .setInteractionName("SerialInteraction")
+                  .build());
+            _metadataBuilder.setInteractionId(0L);
+            _activeInteractions.add(interactionId);
+          }
+
+          org.apache.thrift.RequestRpcMetadata _metadata = _metadataBuilder.build();
+
+          com.facebook.thrift.payload.ClientRequestPayload<Void> _crp =
+              com.facebook.thrift.payload.ClientRequestPayload.create(
+                  _createfrobnicateWriter(),
+                  _frobnicate_READER,
+                  _frobnicate_EXCEPTION_READERS,
+                  _metadata,
+                  java.util.Collections.emptyMap());
+
+          return _rpc
+              .singleRequestSingleResponse(_crp, rpcOptions).doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());});
+        });
     }
 
     @java.lang.Override
-    public void dispose() {}
+    public void dispose() {
+      _activeInteractions.remove(interactionId);
+    }
   }
 
   public SerialInteraction createSerialInteraction() {
-      return new SerialInteractionImpl();
+      return new SerialInteractionImpl(_interactionCounter.incrementAndGet());
   }
 
   private Map<String, String> getHeaders(com.facebook.thrift.client.RpcOptions rpcOptions) {

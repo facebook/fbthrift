@@ -1110,6 +1110,7 @@ class mstch_service : public mstch_base {
             {"service:streams?", &mstch_service::has_streams},
             {"service:sinks?", &mstch_service::has_sinks},
             {"service:annotations", &mstch_service::annotations},
+            {"service:parent", &mstch_service::parent},
             {"service:interaction?", &mstch_service::is_interaction},
             {"service:interactions", &mstch_service::interactions},
             {"service:interactions?", &mstch_service::has_interactions},
@@ -1127,6 +1128,10 @@ class mstch_service : public mstch_base {
   mstch::node functions();
   mstch::node extends();
   mstch::node annotations() { return mstch_base::annotations(service_); }
+
+  mstch::node parent() {
+    return cache_->parsed_options_["parent_service_name"];
+  }
 
   mstch::node has_streams() {
     auto& funcs = service_->get_functions();

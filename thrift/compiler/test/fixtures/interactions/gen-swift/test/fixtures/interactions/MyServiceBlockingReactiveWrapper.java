@@ -36,34 +36,52 @@ public class MyServiceBlockingReactiveWrapper
     }
 
     public class MyInteractionImpl implements MyInteraction {
+        private MyService.MyInteraction _delegateInteraction;
+
+        MyInteractionImpl(MyService.MyInteraction delegateInteraction) {
+            this._delegateInteraction = delegateInteraction;
+        }
+
         @java.lang.Override
-        public reactor.core.publisher.Mono<Integer> frobnicate() throws org.apache.thrift.TException {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+        public reactor.core.publisher.Mono<Integer> frobnicate() {
+            return reactor.core.publisher.Mono.fromSupplier(() -> {
+                    try {
+                        return _delegateInteraction.frobnicate();
+                    } catch (Throwable _e) {
+                        throw reactor.core.Exceptions.propagate(_e);
+                    }
+                }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<Integer> frobnicate(RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWrapper(RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
-        public reactor.core.publisher.Mono<Void> ping() throws org.apache.thrift.TException {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+        public reactor.core.publisher.Mono<Void> ping() {
+            return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+                    try {
+                        _delegateInteraction.ping();
+                    } catch (Throwable _e) {
+                        throw reactor.core.Exceptions.propagate(_e);
+                    }
+                }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
@@ -71,38 +89,56 @@ public class MyServiceBlockingReactiveWrapper
     }
 
     public MyInteraction createMyInteraction() {
-        return new MyInteractionImpl();
+        return new MyInteractionImpl(_delegate.createMyInteraction());
     }
 
     public class MyInteractionFastImpl implements MyInteractionFast {
+        private MyService.MyInteractionFast _delegateInteraction;
+
+        MyInteractionFastImpl(MyService.MyInteractionFast delegateInteraction) {
+            this._delegateInteraction = delegateInteraction;
+        }
+
         @java.lang.Override
-        public reactor.core.publisher.Mono<Integer> frobnicate() throws org.apache.thrift.TException {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+        public reactor.core.publisher.Mono<Integer> frobnicate() {
+            return reactor.core.publisher.Mono.fromSupplier(() -> {
+                    try {
+                        return _delegateInteraction.frobnicate();
+                    } catch (Throwable _e) {
+                        throw reactor.core.Exceptions.propagate(_e);
+                    }
+                }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<Integer> frobnicate(RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<ResponseWrapper<Integer>> frobnicateWrapper(RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
-        public reactor.core.publisher.Mono<Void> ping() throws org.apache.thrift.TException {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+        public reactor.core.publisher.Mono<Void> ping() {
+            return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+                    try {
+                        _delegateInteraction.ping();
+                    } catch (Throwable _e) {
+                        throw reactor.core.Exceptions.propagate(_e);
+                    }
+                }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<Void> ping(RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<ResponseWrapper<Void>> pingWrapper(RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
@@ -110,23 +146,35 @@ public class MyServiceBlockingReactiveWrapper
     }
 
     public MyInteractionFast createMyInteractionFast() {
-        return new MyInteractionFastImpl();
+        return new MyInteractionFastImpl(_delegate.createMyInteractionFast());
     }
 
     public class SerialInteractionImpl implements SerialInteraction {
+        private MyService.SerialInteraction _delegateInteraction;
+
+        SerialInteractionImpl(MyService.SerialInteraction delegateInteraction) {
+            this._delegateInteraction = delegateInteraction;
+        }
+
         @java.lang.Override
-        public reactor.core.publisher.Mono<Void> frobnicate() throws org.apache.thrift.TException {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+        public reactor.core.publisher.Mono<Void> frobnicate() {
+            return reactor.core.publisher.Mono.<Void>fromRunnable(() -> {
+                    try {
+                        _delegateInteraction.frobnicate();
+                    } catch (Throwable _e) {
+                        throw reactor.core.Exceptions.propagate(_e);
+                    }
+                }).subscribeOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<Void> frobnicate(RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
         public reactor.core.publisher.Mono<ResponseWrapper<Void>> frobnicateWrapper(RpcOptions rpcOptions) {
-            throw new UnsupportedOperationException("Interactions are not yet supported on BlockingReactiveWrapper Interfaces!");
+            throw new UnsupportedOperationException();
         }
 
         @java.lang.Override
@@ -134,6 +182,6 @@ public class MyServiceBlockingReactiveWrapper
     }
 
     public SerialInteraction createSerialInteraction() {
-        return new SerialInteractionImpl();
+        return new SerialInteractionImpl(_delegate.createSerialInteraction());
     }
 }
