@@ -29,22 +29,30 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     @ThriftConstructor
     public MyMapping(
         @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE) final com.foo.FastLongStringMap lsMap,
-        @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE) final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap
+        @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE) final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap,
+        @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE) final Map<String, byte[]> binaryMap,
+        @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE) final Map<String, byte[]> regularBinary
     ) {
         this.lsMap = lsMap;
         this.ioMap = ioMap;
+        this.binaryMap = binaryMap;
+        this.regularBinary = regularBinary;
     }
     
     @ThriftConstructor
     protected MyMapping() {
       this.lsMap = null;
       this.ioMap = null;
+      this.binaryMap = null;
+      this.regularBinary = null;
     }
     
     public static class Builder {
     
         private com.foo.FastLongStringMap lsMap = null;
         private com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap = null;
+        private Map<String, byte[]> binaryMap = null;
+        private Map<String, byte[]> regularBinary = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
         public Builder setLsMap(com.foo.FastLongStringMap lsMap) {
@@ -62,17 +70,37 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     
         public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
     
+            @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE)
+        public Builder setBinaryMap(Map<String, byte[]> binaryMap) {
+            this.binaryMap = binaryMap;
+            return this;
+        }
+    
+        public Map<String, byte[]> getBinaryMap() { return binaryMap; }
+    
+            @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)
+        public Builder setRegularBinary(Map<String, byte[]> regularBinary) {
+            this.regularBinary = regularBinary;
+            return this;
+        }
+    
+        public Map<String, byte[]> getRegularBinary() { return regularBinary; }
+    
         public Builder() { }
         public Builder(MyMapping other) {
             this.lsMap = other.lsMap;
             this.ioMap = other.ioMap;
+            this.binaryMap = other.binaryMap;
+            this.regularBinary = other.regularBinary;
         }
     
         @ThriftConstructor
         public MyMapping build() {
             MyMapping result = new MyMapping (
                 this.lsMap,
-                this.ioMap
+                this.ioMap,
+                this.binaryMap,
+                this.regularBinary
             );
             return result;
         }
@@ -87,11 +115,21 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
         private final com.foo.FastIntObjectMap<com.foo.FastIntLongMap> ioMap;
     public static final int _IOMAP = 2;
     private static final TField IO_MAP_FIELD_DESC = new TField("ioMap", TType.MAP, (short)2);
+        private final Map<String, byte[]> binaryMap;
+    public static final int _BINARYMAP = 3;
+    private static final TField BINARY_MAP_FIELD_DESC = new TField("binaryMap", TType.MAP, (short)3);
+        private final Map<String, byte[]> regularBinary;
+    public static final int _REGULARBINARY = 4;
+    private static final TField REGULAR_BINARY_FIELD_DESC = new TField("regularBinary", TType.MAP, (short)4);
     static {
       NAMES_TO_IDS.put("lsMap", 1);
       FIELD_METADATA.put(1, LS_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("ioMap", 2);
       FIELD_METADATA.put(2, IO_MAP_FIELD_DESC);
+      NAMES_TO_IDS.put("binaryMap", 3);
+      FIELD_METADATA.put(3, BINARY_MAP_FIELD_DESC);
+      NAMES_TO_IDS.put("regularBinary", 4);
+      FIELD_METADATA.put(4, REGULAR_BINARY_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="lsMap", requiredness=Requiredness.NONE)
@@ -101,11 +139,21 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     @com.facebook.swift.codec.ThriftField(value=2, name="ioMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntObjectMap<com.foo.FastIntLongMap> getIoMap() { return ioMap; }
     
+    
+    @com.facebook.swift.codec.ThriftField(value=3, name="binaryMap", requiredness=Requiredness.NONE)
+    public Map<String, byte[]> getBinaryMap() { return binaryMap; }
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=4, name="regularBinary", requiredness=Requiredness.NONE)
+    public Map<String, byte[]> getRegularBinary() { return regularBinary; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
         helper.add("lsMap", lsMap);
         helper.add("ioMap", ioMap);
+        helper.add("binaryMap", binaryMap);
+        helper.add("regularBinary", regularBinary);
         return helper.toString();
     }
     
@@ -123,6 +171,8 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
         return
             Objects.equals(lsMap, other.lsMap) &&
             Objects.equals(ioMap, other.ioMap) &&
+            Objects.equals(binaryMap, other.binaryMap) &&
+            Objects.equals(regularBinary, other.regularBinary) &&
             true;
     }
     
@@ -130,7 +180,9 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
     public int hashCode() {
         return Arrays.deepHashCode(new Object[] {
             lsMap,
-            ioMap
+            ioMap,
+            binaryMap,
+            regularBinary
         });
     }
     
@@ -203,6 +255,44 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _BINARYMAP:
+          if (__field.type == TType.MAP) {
+            Map<String, byte[]> binaryMap;
+            {
+            TMap _map = oprot.readMapBegin();
+            binaryMap = new HashMap<String, byte[]>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                
+                String _key1 = oprot.readString();
+                byte[] _value1 = oprot.readBinary().array();
+                binaryMap.put(_key1, _value1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setBinaryMap(binaryMap);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _REGULARBINARY:
+          if (__field.type == TType.MAP) {
+            Map<String, byte[]> regularBinary;
+            {
+            TMap _map = oprot.readMapBegin();
+            regularBinary = new HashMap<String, byte[]>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                
+                String _key1 = oprot.readString();
+                byte[] _value1 = oprot.readBinary().array();
+                regularBinary.put(_key1, _value1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setRegularBinary(regularBinary);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -239,6 +329,28 @@ public final class MyMapping implements com.facebook.thrift.payload.ThriftSerial
           oprot.writeI64(_iter2.getValue());
         }
         oprot.writeMapEnd();
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.binaryMap != null) {
+        oprot.writeFieldBegin(BINARY_MAP_FIELD_DESC);
+        Map<String, byte[]> _iter0 = this.binaryMap;
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _iter0.size()));
+        for (Map.Entry<String, byte[]> _iter1 : _iter0.entrySet()) {
+          oprot.writeString(_iter1.getKey());
+          oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter1.getValue()));
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.regularBinary != null) {
+        oprot.writeFieldBegin(REGULAR_BINARY_FIELD_DESC);
+        Map<String, byte[]> _iter0 = this.regularBinary;
+        oprot.writeMapBegin(new TMap(TType.STRING, TType.STRING, _iter0.size()));
+        for (Map.Entry<String, byte[]> _iter1 : _iter0.entrySet()) {
+          oprot.writeString(_iter1.getKey());
+          oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter1.getValue()));
         }
         oprot.writeMapEnd();
         oprot.writeFieldEnd();

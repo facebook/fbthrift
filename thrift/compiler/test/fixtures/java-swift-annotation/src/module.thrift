@@ -39,6 +39,8 @@ struct MyMapping {
   2: map<i32, FMap> (
     java.swift.type = "com.foo.FastIntObjectMap<com.foo.FastIntLongMap>",
   ) ioMap;
+  3: map<string, string (java.swift.binary_string)> binaryMap;
+  4: map<string, binary> regularBinary;
 }
 
 service MyAnnotationService {

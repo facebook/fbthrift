@@ -866,6 +866,7 @@ class mstch_swift_type : public mstch_type {
             {"type:isMapKey?", &mstch_swift_type::get_map_key_flag},
             {"type:setIsMapValue", &mstch_swift_type::set_is_map_value},
             {"type:isMapValue?", &mstch_swift_type::get_map_value_flag},
+            {"type:isBinaryString?", &mstch_swift_type::is_binary_string},
             {"type:setIsNotMap", &mstch_swift_type::set_is_not_map},
         });
   }
@@ -899,6 +900,9 @@ class mstch_swift_type : public mstch_type {
   }
   mstch::node java_type() {
     return type_->get_true_type()->get_annotation("java.swift.type");
+  }
+  mstch::node is_binary_string() {
+    return type_->get_true_type()->get_annotation("java.swift.binary_string");
   }
 };
 

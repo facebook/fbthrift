@@ -88,9 +88,14 @@
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
-}}{{#field:isNested?}}oprot.writeString(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});
+}}{{#field:isNested?}}{{!
+  }}{{#type:isBinaryString?}}oprot.writeBinary(java.nio.ByteBuffer.wrap(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}}));{{/type:isBinaryString?}}{{!
+  }}{{^type:isBinaryString?}}oprot.writeString(_iter{{field:nestedDepth}}{{#type:isMapKey?}}.getKey(){{/type:isMapKey?}}{{#type:isMapValue?}}.getValue(){{/type:isMapValue?}});{{/type:isBinaryString?}}
 {{/field:isNested?}}{{!
-}}{{^field:isNested?}}oprot.writeString({{^struct:isUnion?}}this.{{/struct:isUnion?}}{{field:javaName}});{{/field:isNested?}}{{!
+}}{{^field:isNested?}}{{!
+  }}{{#type:isBinaryString?}}oprot.writeBinary({{^type:javaType}}java.nio.ByteBuffer.wrap{{/type:javaType}}({{^struct:isUnion?}}this.{{/struct:isUnion?}}{{field:javaName}}));{{/type:isBinaryString?}}{{!
+  }}{{^type:isBinaryString?}}oprot.writeString({{^struct:isUnion?}}this.{{/struct:isUnion?}}{{field:javaName}});{{/type:isBinaryString?}}{{!
+}}{{/field:isNested?}}{{!
 }}{{/type:string?}}{{!
 
 }}{{#type:bool?}}{{!

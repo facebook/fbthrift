@@ -42,8 +42,14 @@
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
-}}{{#field:isNested?}}oprot.readString(){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{> FieldType}} {{field:javaName}} = oprot.readString();{{/field:isNested?}}{{!
+}}{{#field:isNested?}}{{!
+  }}{{#type:isBinaryString?}}oprot.readBinary().array(){{/type:isBinaryString?}}{{!
+  }}{{^type:isBinaryString?}}oprot.readString(){{/type:isBinaryString?}}{{!
+}}{{/field:isNested?}}{{!
+}}{{^field:isNested?}}{{> FieldType}} {{field:javaName}} = {{!
+  }}{{#type:isBinaryString?}}oprot.readBinary();{{/type:isBinaryString?}}{{!
+  }}{{^type:isBinaryString?}}oprot.readString();{{/type:isBinaryString?}}{{!
+}}{{/field:isNested?}}{{!
 }}{{/type:string?}}{{!
 
 }}{{#type:bool?}}{{!
