@@ -572,11 +572,6 @@ EnumValue:
   Identifier "=" tok_int_constant
     {
       driver.debug("EnumValue -> Identifier = tok_int_constant");
-      if ($3 < 0 && !driver.params.allow_neg_enum_vals) {
-        driver.warning([&](auto& o) {
-          o << "Negative value supplied for enum " << $1 << ".";
-        });
-      }
       if ($3 < INT32_MIN || $3 > INT32_MAX) {
         // Note: this used to be just a warning.  However, since thrift always
         // treats enums as i32 values, I'm changing it to a fatal error.

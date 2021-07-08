@@ -39,6 +39,11 @@ struct diagnostic_params {
   bool info = false;
   int warn_level = 1;
 
+  /**
+   * Whether or not negative enum values.
+   */
+  bool allow_neg_enum_vals = false;
+
   bool should_report(diagnostic_level level) const {
     switch (level) {
       case diagnostic_level::warning:

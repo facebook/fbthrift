@@ -155,11 +155,6 @@ struct parsing_params {
   bool allow_neg_field_keys = false;
 
   /**
-   * Whether or not negative enum values.
-   */
-  bool allow_neg_enum_vals = false;
-
-  /**
    * Whether or not 64-bit constants will generate a warning.
    *
    * Some languages don't support 64-bit constants, but many do, so we can

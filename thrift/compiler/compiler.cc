@@ -201,7 +201,7 @@ std::string parseArgs(
     } else if (flag == "allow-neg-keys") {
       pparams.allow_neg_field_keys = true;
     } else if (flag == "allow-neg-enum-vals") {
-      pparams.allow_neg_enum_vals = true;
+      dparams.allow_neg_enum_vals = true;
     } else if (flag == "allow-64bit-consts") {
       pparams.allow_64bit_consts = true;
     } else if (flag == "record-genfiles") {

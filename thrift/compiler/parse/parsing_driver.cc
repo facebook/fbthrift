@@ -133,7 +133,6 @@ void parsing_driver::parse_file() {
 
     // This must be after the previous circular include check, since the emitted
     // error message above is supposed to reference the parent file name.
-    params.allow_neg_enum_vals = true;
     params.allow_neg_field_keys = true;
     ctx_.start_program(program = included_program);
     parse_file();

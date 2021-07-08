@@ -348,12 +348,15 @@ void validate_enum_value_uniqueness(
   }
 }
 
-void validate_enum_value_explicit(
-    diagnostic_context& ctx, const t_enum_value& node) {
+void validate_enum_value(diagnostic_context& ctx, const t_enum_value& node) {
   if (!node.has_value()) {
     ctx.failure(node, [&](auto& o) {
       o << "The enum value, `" << node.name()
         << "`, must have an explicitly assigned value.";
+    });
+  } else if (node.get_value() < 0 && !ctx.params().allow_neg_enum_vals) {
+    ctx.warning(node, [&](auto& o) {
+      o << "Negative value supplied for enum value `" << node.name() << "`.";
     });
   }
 }
@@ -409,24 +412,24 @@ ast_validator standard_validator() {
   validator.add_throws_visitor(&validate_throws_exceptions);
 
   validator.add_structured_definition_visitor(&validate_field_names_uniqueness);
+  validator.add_structured_definition_visitor(
+      &validate_compatibility_with_lazy_field);
   validator.add_union_visitor(&validate_union_field_attributes);
   validator.add_struct_visitor(&validate_struct_except_field_attributes);
   validator.add_exception_visitor(&validate_struct_except_field_attributes);
   validator.add_field_visitor(&validate_mixin_field_attributes);
   validator.add_field_visitor(&validate_boxed_field_attributes);
+  validator.add_field_visitor(&validate_field_id_is_nonzero);
 
   validator.add_struct_visitor(&validate_struct_optional_refs);
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
   validator.add_enum_visitor(&validate_enum_value_uniqueness);
-  validator.add_enum_value_visitor(&validate_enum_value_explicit);
+  validator.add_enum_value_visitor(&validate_enum_value);
 
   validator.add_definition_visitor(
       &validate_structured_annotation_type_uniqueness);
   validator.add_definition_visitor(&validate_annotation_scopes);
-  validator.add_field_visitor(&validate_field_id_is_nonzero);
-  validator.add_structured_definition_visitor(
-      &validate_compatibility_with_lazy_field);
   return validator;
 }
 

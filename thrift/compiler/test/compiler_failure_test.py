@@ -72,6 +72,28 @@ class CompilerFailureTest(unittest.TestCase):
         err = err.replace("{}/".format(self.tmp), "")
         return p.returncode, out, err
 
+    def test_neg_enum_value(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                enum Foo {
+                    Bar = -1;
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(
+            err,
+            "[WARNING:foo.thrift:2] Negative value supplied for enum value `Bar`.\n",
+        )
+        self.assertEqual(ret, 0)
+
+        ret, out, err = self.run_thrift("--allow-neg-enum-vals", "foo.thrift")
+        self.assertEqual(err, "")
+        self.assertEqual(ret, 0)
+
     def test_zero_as_field_id(self):
         write_file(
             "foo.thrift",
