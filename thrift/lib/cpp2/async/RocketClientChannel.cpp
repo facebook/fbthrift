@@ -275,12 +275,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
               payload = handler.handleException(
                   TApplicationException(exceptionWhatRef.value_or("")));
               break;
-            case PayloadExceptionMetadata::DEPRECATED_proxiedException:
-              (*otherMetadataRef)["servicerouter:sr_error"] =
-                  protocol::base64Encode(payload->coalesce());
-              payload = handler.handleException(
-                  TApplicationException(exceptionWhatRef.value_or("")));
-              break;
             default:
               switch (metaType) {
                 case PayloadExceptionMetadata::DEPRECATED_appClientException:

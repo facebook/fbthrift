@@ -221,6 +221,9 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         exceptionMetadataBase.what_utf8_ref() = ex.getMessage();
 
         auto otherMetadataRef = metadata.otherMetadata_ref();
+        DCHECK(
+            !otherMetadataRef ||
+            !folly::get_ptr(*otherMetadataRef, "servicerouter:sr_error"));
         if (auto proxyErrorPtr = otherMetadataRef
                 ? folly::get_ptr(
                       *otherMetadataRef, "servicerouter:sr_internal_error")
@@ -233,20 +236,6 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
           payload = protocol::base64Decode(*proxyErrorPtr);
 
           otherMetadataRef->erase("servicerouter:sr_internal_error");
-          otherMetadataRef->erase("ex");
-        } else if (
-            auto proxiedErrorPtr = otherMetadataRef
-                ? folly::get_ptr(*otherMetadataRef, "servicerouter:sr_error")
-                : nullptr) {
-          exceptionMetadataBase.name_utf8_ref() = "ProxiedException";
-          PayloadExceptionMetadata exceptionMetadata;
-          exceptionMetadata.set_DEPRECATED_proxiedException(
-              PayloadProxiedExceptionMetadata());
-          exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
-
-          payload = protocol::base64Decode(*proxiedErrorPtr);
-
-          otherMetadataRef->erase("servicerouter:sr_error");
           otherMetadataRef->erase("ex");
         } else {
           DCHECK_GE(version, 3);
