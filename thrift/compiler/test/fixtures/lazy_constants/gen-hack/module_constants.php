@@ -55,7 +55,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * Original thrift constant:-
    * double y
    */
-  const float y = 1e+06;
+  const float y = 1000000.0;
 
   /**
    * Original thrift constant:-

@@ -77,37 +77,6 @@ class const_type_to_const_value : virtual public mutator {
   t_program* program_;
 };
 
-/**
- *  This matches the type of structured annotations to their const values
- */
-class structured_annotation_type_to_const_value : virtual public mutator {
- public:
-  using mutator::visit;
-
-  bool visit(t_program* program) override;
-  bool visit(t_named* tnamed);
-  // TODO(ffrancet): replace all of these with a single t_named visitor
-  // if this is ever switched from using visitor to ast_visitor
-  bool visit(t_service* service) override {
-    return visit(static_cast<t_named*>(service));
-  }
-  bool visit(t_enum* tenum) override {
-    return visit(static_cast<t_named*>(tenum));
-  }
-  bool visit(t_struct* tstruct) override {
-    return visit(static_cast<t_named*>(tstruct));
-  }
-  bool visit(t_field* tfield) override {
-    return visit(static_cast<t_named*>(tfield));
-  }
-  bool visit(t_const* tconst) override {
-    return visit(static_cast<t_named*>(tconst));
-  }
-
- private:
-  t_program* program_;
-};
-
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

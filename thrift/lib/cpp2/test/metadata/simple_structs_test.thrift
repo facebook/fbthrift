@@ -33,10 +33,6 @@ struct Country {
   10: double population;
 }
 
-struct BoolStruct {
-  1: bool val;
-}
-
 @Nat{data = "struct"}
 struct City {
   @Map{value = {0: "0", 1: "1"}}
@@ -46,7 +42,6 @@ struct City {
     next = NatTypedef{data = "1", next = NatTypedef{data = "0"}},
   }
   2: string country;
-  @BoolStruct{val = 1}
   3: double population;
 }
 
