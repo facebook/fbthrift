@@ -723,13 +723,6 @@ void RocketServerConnection::writeSuccess() noexcept {
 
 void RocketServerConnection::writeErr(
     size_t /* bytesWritten */, const folly::AsyncSocketException& ex) noexcept {
-  // common case: socket closed
-  if (ex.getErrno() !=
-      folly::AsyncSocketException::AsyncSocketExceptionType::INVALID_STATE) {
-    FB_LOG_EVERY_MS(ERROR, 5000) << fmt::format(
-        "write error: {} ({})", ex.what(), getPeerAddress().describe());
-  }
-
   DestructorGuard dg(this);
   DCHECK(!inflightWritesQueue_.empty());
   auto& context = inflightWritesQueue_.front();
