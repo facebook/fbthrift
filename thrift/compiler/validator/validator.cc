@@ -71,7 +71,6 @@ void validator::set_ref_diagnostics(diagnostics_t& diagnostics) {
 
 static void fill_validators(validator_list& vs) {
   vs.add<struct_names_uniqueness_validator>();
-  vs.add<reserved_field_id_validator>();
 }
 
 bool struct_names_uniqueness_validator::visit(t_program* p) {
@@ -133,18 +132,6 @@ bool interactions_validator::visit(t_service* s) {
           "Service `" + s->name() +
               "` has multiple methods for creating interaction `" +
               ret->name() + "`.");
-    }
-  }
-  return true;
-}
-
-bool reserved_field_id_validator::visit(t_struct* s) {
-  for (const auto& field : s->fields()) {
-    if (field.id() < t_field::min_id) {
-      add_error(
-          field.lineno(),
-          "Reserved field id (" + std::to_string(field.id()) +
-              ") cannot be used for `" + field.name() + "`");
     }
   }
   return true;
