@@ -1125,44 +1125,48 @@ Field:
     {
       driver.debug("Field => DefinitionAttrs FieldIdentifier FieldQualifier "
         "FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional");
+      int id;
       if ($2 == boost::none) {
         // Auto assign an id.
-        $2 = driver.allocate_field_id($5);
-      } else if (*$2 <= 0) {
-        // TODO(afuller): Move this validation to ast_validator.
-        if (driver.params.allow_neg_field_keys) {
-          /*
-            * allow_neg_field_keys exists to allow users to add explicitly
-            * specified id values to old .thrift files without breaking
-            * protocol compatibility.
-            */
-          if (*$2 != driver.next_field_id()) {
+        id = driver.allocate_field_id($5);
+      } else {
+        id = *$2;
+        if (id <= 0) {
+          // TODO(afuller): Move this validation to ast_validator.
+          if (driver.params.allow_neg_field_keys) {
             /*
-              * warn if the user-specified negative value isn't what
-              * thrift would have auto-assigned.
+              * allow_neg_field_keys exists to allow users to add explicitly
+              * specified id values to old .thrift files without breaking
+              * protocol compatibility.
               */
+            if (id != driver.next_field_id()) {
+              /*
+                * warn if the user-specified negative value isn't what
+                * thrift would have auto-assigned.
+                */
+              driver.warning([&](auto& o) {
+                o << "Nonpositive field id (" << id << ") differs from what would "
+                  << "be auto-assigned by thrift (" << driver.next_field_id() << ").";
+              });
+            }
+          } else if (id == driver.next_field_id()) {
             driver.warning([&](auto& o) {
-              o << "Nonpositive field id (" << *$2 << ") differs from what would "
-                << "be auto-assigned by thrift (" << driver.next_field_id() << ").";
+              o << "Nonpositive value (" << id << ") not allowed as a field id.";
             });
+          } else {
+            // TODO(afuller): Make ignoring the user provided value a failure.
+            driver.warning([&](auto& o) {
+              o << "Nonpositive field id (" << id<< ") differs from what is auto-"
+                  "assigned by thrift. The id must positive or " << driver.next_field_id() << ".";
+            });
+            // Ignore user provided value and auto assign an id.
+            id = driver.allocate_field_id($5);
+            $2 = boost::none;
           }
-        } else if (*$2 == driver.next_field_id()) {
-          driver.warning([&](auto& o) {
-            o << "Nonpositive value (" << *$2 << ") not allowed as a field id.";
-          });
-        } else {
-          // TODO(afuller): Make ignoring the user provided value a failure.
-          driver.warning([&](auto& o) {
-            o << "Nonpositive field id (" << *$2 << ") differs from what is auto-"
-             "assigned by thrift. The id must positive or " << driver.next_field_id() << ".";
-          });
-          // Ignore user provided value and auto assign an id.
-          $2 = driver.allocate_field_id($5);
+          driver.reserve_field_id(id);
         }
-         driver.reserve_field_id(*$2);
       }
-
-      $$ = new t_field(std::move($4), std::move($5), *$2);
+      $$ = new t_field(std::move($4), std::move($5), id, $2 != boost::none);
       $$->set_qualifier($3);
       if ($7 != nullptr) {
         driver.validate_field_value($$, $7);
