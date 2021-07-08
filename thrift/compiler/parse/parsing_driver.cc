@@ -902,10 +902,6 @@ t_field_id parsing_driver::as_field_id(int64_t int_const) {
 }
 
 t_field_id parsing_driver::allocate_field_id(const std::string& name) {
-  warning([&](auto& o) {
-    o << "No field id specified for " << name << ", resulting protocol may"
-      << " have conflicts or not be backwards compatible!";
-  });
   if (params.strict >= 192) {
     failure("Implicit field keys are deprecated and not allowed with -strict");
   }
