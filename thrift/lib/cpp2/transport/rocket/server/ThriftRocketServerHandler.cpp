@@ -52,7 +52,7 @@
 
 namespace {
 const int64_t kRocketServerMaxVersion = 8;
-const int64_t kRocketServerMinVersion = 5;
+const int64_t kRocketServerMinVersion = 6;
 } // namespace
 
 THRIFT_FLAG_DEFINE_bool(rocket_server_legacy_protocol_key, true);

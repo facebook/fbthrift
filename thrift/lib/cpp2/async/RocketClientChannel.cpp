@@ -57,8 +57,7 @@
 
 namespace {
 const int64_t kRocketClientMaxVersion = 8;
-// request buffering needs setup response from server, available from version 5
-const int64_t kRocketClientMinVersion = 5;
+const int64_t kRocketClientMinVersion = 6;
 } // namespace
 
 THRIFT_FLAG_DEFINE_bool(rocket_client_new_protocol_key, true);
@@ -705,8 +704,7 @@ void RocketClientChannel::sendRequestStream(
       static_cast<ProtocolId>(header->getProtocolId()),
       methodMetadata.name_managed(),
       timeout_,
-      *header,
-      getServerVersion());
+      *header);
 
   std::chrono::milliseconds firstResponseTimeout;
   if (!preSendValidation(
@@ -747,8 +745,7 @@ void RocketClientChannel::sendRequestSink(
       static_cast<ProtocolId>(header->getProtocolId()),
       methodMetadata.name_managed(),
       timeout_,
-      *header,
-      getServerVersion());
+      *header);
 
   std::chrono::milliseconds firstResponseTimeout;
   if (!preSendValidation(
@@ -790,8 +787,7 @@ void RocketClientChannel::sendThriftRequest(
       static_cast<ProtocolId>(header->getProtocolId()),
       std::move(methodName),
       timeout_,
-      *header,
-      getServerVersion());
+      *header);
   header.reset();
 
   std::chrono::milliseconds timeout;

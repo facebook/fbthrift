@@ -37,8 +37,7 @@ RequestRpcMetadata makeRequestRpcMetadata(
     ProtocolId protocolId,
     ManagedStringView&& methodName,
     std::chrono::milliseconds defaultChannelTimeout,
-    transport::THeader& header,
-    int32_t version) {
+    transport::THeader& header) {
   RequestRpcMetadata metadata;
   metadata.protocol_ref() = protocolId;
   metadata.kind_ref() = kind;
@@ -73,23 +72,11 @@ RequestRpcMetadata makeRequestRpcMetadata(
     }
   }
 
-  auto clientId = header.clientId();
-  auto serviceTraceMeta = header.serviceTraceMeta();
-  if (version < 6) {
-    if (clientId.has_value()) {
-      writeHeaders[transport::THeader::kClientId] = std::move(*clientId);
-    }
-    if (serviceTraceMeta.has_value()) {
-      writeHeaders[transport::THeader::kServiceTraceMeta] =
-          std::move(*serviceTraceMeta);
-    }
-  } else {
-    if (clientId.has_value()) {
-      metadata.clientId_ref() = std::move(*clientId);
-    }
-    if (serviceTraceMeta.has_value()) {
-      metadata.serviceTraceMeta_ref() = std::move(*serviceTraceMeta);
-    }
+  if (auto clientId = header.clientId()) {
+    metadata.clientId_ref() = std::move(*clientId);
+  }
+  if (auto serviceTraceMeta = header.serviceTraceMeta()) {
+    metadata.serviceTraceMeta_ref() = std::move(*serviceTraceMeta);
   }
 
   auto loadIt = writeHeaders.find(transport::THeader::QUERY_LOAD_HEADER);
