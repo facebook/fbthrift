@@ -61,9 +61,7 @@ class CoreTestFixture : public testing::Test {
   static int32_t deserializeSumTwoNumbers(folly::IOBuf* buf);
 
   static RequestRpcMetadata makeMetadata(
-      std::string name,
-      int32_t seqId = 0,
-      RpcKind kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
+      std::string name, RpcKind kind = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE);
 
   // Deserialize the exception if possible, return false otherwise.
   static bool deserializeException(

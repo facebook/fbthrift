@@ -143,12 +143,7 @@ struct RequestRpcMetadata {
   // The kind of RPC.  It is assigned in generated client code and
   // passed all the way to the ThriftProcessor object on the server.
   3: optional RpcKind kind;
-  // A sequence id to disambiguate multiple RPCs that take place on
-  // the same channel object (so only used by channels that support
-  // multiple RPCs).  Assigned by the channel on the client side and
-  // passed all the way to the ThriftProcessor object on the server.
-  // Then returned back in the ResponseRpcMetadata.
-  4: optional i32 seqId;
+  // 4: Deprecated
   // The amount of time that a client should wait for a response from
   // the server.  This value is passed to the server so it can choose
   // to time out also.  May be passed in the call to the generated
@@ -251,11 +246,7 @@ struct ProxiedPayloadMetadata {
 struct ResponseRpcMetadata {
   // The protocol using which the RPC payload has been serialized.
   1: optional ProtocolId protocol;
-  // The same sequence id that was passed to the server from the
-  // client in RequestRpcMetadata.  This is returned to the client so
-  // the channel can match the response to the correct request.  See
-  // additional comments in RequestRpcMetadata above.
-  2: optional i32 seqId;
+  // 2: Deprecated
   // A string to string map that can be populated by the server
   // handler and further populated by plugins on the server side
   // before it is finally sent back to the client.

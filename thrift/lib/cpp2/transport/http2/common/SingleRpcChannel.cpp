@@ -306,7 +306,6 @@ void SingleRpcChannel::onThriftRequest() noexcept {
     sendThriftResponse(std::move(responseMetadata), std::move(payload));
     receivedThriftRPC_ = true;
   }
-  metadata.seqId_ref() = 0;
   const folly::AsyncTransport* transport = httpTransaction_
       ? httpTransaction_->getTransport().getUnderlyingTransport()
       : nullptr;

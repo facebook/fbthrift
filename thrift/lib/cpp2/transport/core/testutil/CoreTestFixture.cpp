@@ -74,7 +74,6 @@ void CoreTestFixture::serializeSumTwoNumbers(
     metadata->name_ref() = "sumTwoNumbers";
   }
   metadata->kind_ref() = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-  metadata->seqId_ref() = 0;
 }
 
 int32_t CoreTestFixture::deserializeSumTwoNumbers(folly::IOBuf* buf) {
@@ -93,11 +92,10 @@ int32_t CoreTestFixture::deserializeSumTwoNumbers(folly::IOBuf* buf) {
 }
 
 RequestRpcMetadata CoreTestFixture::makeMetadata(
-    std::string name, int32_t seqId, RpcKind kind) {
+    std::string name, RpcKind kind) {
   RequestRpcMetadata metadata;
   metadata.protocol_ref() = ProtocolId::COMPACT;
   metadata.name_ref() = std::move(name);
-  metadata.seqId_ref() = seqId;
   metadata.kind_ref() = kind;
   return metadata;
 }

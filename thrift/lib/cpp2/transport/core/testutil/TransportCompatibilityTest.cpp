@@ -1030,7 +1030,6 @@ void TransportCompatibilityTest::TestBadPayload() {
       metadata.clientTimeoutMs_ref() = 10000;
       metadata.kind_ref() = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
       metadata.name_ref() = "name";
-      metadata.seqId_ref() = 0;
       metadata.protocol_ref() = ProtocolId::BINARY;
 
       // Put a bad payload!

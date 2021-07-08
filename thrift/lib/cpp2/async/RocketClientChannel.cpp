@@ -889,7 +889,6 @@ bool RocketClientChannel::preSendValidation(
     const RpcOptions& rpcOptions,
     CallbackPtr& cb,
     std::chrono::milliseconds& firstResponseTimeout) {
-  metadata.seqId_ref().reset();
   DCHECK(metadata.kind_ref().has_value());
 
   if (clientDestroyed_) {
