@@ -137,14 +137,16 @@ void randomTestWithSeed(int seed) {
           foo = std::move(foo2);
           lazyFoo = std::move(lazyFoo2);
           EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
-          EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
         },
         [&] {
           auto [foo2, lazyFoo2] = create(arg);
           foo2 = std::move(foo);
           lazyFoo2 = std::move(lazyFoo);
-          EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
           EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
+
+          // Put `foo` and `lazyFoo` back to original state
+          foo = std::move(foo2);
+          lazyFoo = std::move(lazyFoo2);
         },
         [&] {
           auto foo2 = foo;
@@ -157,8 +159,11 @@ void randomTestWithSeed(int seed) {
         [&] {
           auto foo2 = std::move(foo);
           auto lazyFoo2 = std::move(lazyFoo);
-          EXPECT_EQ(foo.field4_ref(), lazyFoo.field4_ref());
           EXPECT_EQ(foo2.field4_ref(), lazyFoo2.field4_ref());
+
+          // Put `foo` and `lazyFoo` back to original state
+          foo = std::move(foo2);
+          lazyFoo = std::move(lazyFoo2);
         },
     };
 
