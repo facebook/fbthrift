@@ -434,7 +434,6 @@ ast_validator standard_validator() {
   validator.add_field_visitor(&validate_field_id);
   validator.add_field_visitor(&validate_mixin_field_attributes);
   validator.add_field_visitor(&validate_boxed_field_attributes);
-  validator.add_field_visitor(&validate_field_id_is_nonzero);
 
   validator.add_struct_visitor(&validate_struct_optional_refs);
 
