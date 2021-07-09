@@ -209,24 +209,8 @@ class THeader {
     return folly::to_narrow(transforms.size());
   }
 
-  void setTransform(uint16_t transId) {
-    for (auto& trans : writeTrans_) {
-      if (trans == transId) {
-        return;
-      }
-    }
-    writeTrans_.push_back(transId);
-  }
-
-  void setReadTransform(uint16_t transId) {
-    for (auto& trans : readTrans_) {
-      if (trans == transId) {
-        return;
-      }
-    }
-    readTrans_.push_back(transId);
-  }
-
+  void setTransform(uint16_t transId);
+  void setReadTransform(uint16_t transId);
   void setTransforms(const std::vector<uint16_t>& trans) {
     writeTrans_ = trans;
   }
@@ -243,34 +227,18 @@ class THeader {
       const char* key, size_t keyLength, const char* value, size_t valueLength);
   void setHeaders(StringToStringMap&&);
   void clearHeaders();
-  bool isWriteHeadersEmpty() { return writeHeaders_.empty(); }
-
-  StringToStringMap& mutableWriteHeaders() { return writeHeaders_; }
-  StringToStringMap releaseWriteHeaders() { return std::move(writeHeaders_); }
-
-  StringToStringMap extractAllWriteHeaders() {
-    auto headers = std::move(writeHeaders_);
-    if (extraWriteHeaders_ != nullptr) {
-      headers.insert(extraWriteHeaders_->begin(), extraWriteHeaders_->end());
-    }
-    return headers;
-  }
-
-  const StringToStringMap& getWriteHeaders() const { return writeHeaders_; }
+  bool isWriteHeadersEmpty();
+  StringToStringMap& mutableWriteHeaders();
+  StringToStringMap releaseWriteHeaders();
+  StringToStringMap extractAllWriteHeaders();
+  const StringToStringMap& getWriteHeaders() const;
 
   // these work with read headers
   void setReadHeaders(StringToStringMap&&);
-  void setReadHeader(const std::string& key, std::string&& value) {
-    readHeaders_[key] = std::move(value);
-  }
+  void setReadHeader(const std::string& key, std::string&& value);
   void eraseReadHeader(const std::string& key);
-  const StringToStringMap& getHeaders() const { return readHeaders_; }
-
-  StringToStringMap releaseHeaders() {
-    StringToStringMap headers;
-    readHeaders_.swap(headers);
-    return headers;
-  }
+  const StringToStringMap& getHeaders() const;
+  StringToStringMap releaseHeaders();
 
   void setExtraWriteHeaders(StringToStringMap* extraWriteHeaders) {
     extraWriteHeaders_ = extraWriteHeaders;

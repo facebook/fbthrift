@@ -620,6 +620,24 @@ unique_ptr<IOBuf> THeader::transform(
   return buf;
 }
 
+void THeader::setTransform(uint16_t transId) {
+  for (auto& trans : writeTrans_) {
+    if (trans == transId) {
+      return;
+    }
+  }
+  writeTrans_.push_back(transId);
+}
+
+void THeader::setReadTransform(uint16_t transId) {
+  for (auto& trans : readTrans_) {
+    if (trans == transId) {
+      return;
+    }
+  }
+  readTrans_.push_back(transId);
+}
+
 void THeader::copyMetadataFrom(const THeader& src) {
   setProtocolId(src.protoId_);
   setTransforms(src.writeTrans_);
@@ -723,6 +741,42 @@ size_t THeader::getMaxWriteHeadersSize(
 
 void THeader::clearHeaders() {
   writeHeaders_.clear();
+}
+
+bool THeader::isWriteHeadersEmpty() {
+  return writeHeaders_.empty();
+}
+
+THeader::StringToStringMap& THeader::mutableWriteHeaders() {
+  return writeHeaders_;
+}
+THeader::StringToStringMap THeader::releaseWriteHeaders() {
+  return std::move(writeHeaders_);
+}
+
+THeader::StringToStringMap THeader::extractAllWriteHeaders() {
+  auto headers = std::move(writeHeaders_);
+  if (extraWriteHeaders_ != nullptr) {
+    headers.insert(extraWriteHeaders_->begin(), extraWriteHeaders_->end());
+  }
+  return headers;
+}
+
+const THeader::StringToStringMap& THeader::getWriteHeaders() const {
+  return writeHeaders_;
+}
+
+void THeader::setReadHeader(const std::string& key, std::string&& value) {
+  readHeaders_[key] = std::move(value);
+}
+const THeader::StringToStringMap& THeader::getHeaders() const {
+  return readHeaders_;
+}
+
+THeader::StringToStringMap THeader::releaseHeaders() {
+  THeader::StringToStringMap headers;
+  readHeaders_.swap(headers);
+  return headers;
 }
 
 string THeader::getPeerIdentity() {
