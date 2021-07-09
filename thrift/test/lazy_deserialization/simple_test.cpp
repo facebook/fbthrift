@@ -373,6 +373,24 @@ TEST(Serialization, SerializeWithDifferentProtocolSimple) {
   EXPECT_EQ(foo1, gen<LazyFoo>());
 }
 
+TYPED_TEST(LazyDeserialization, SerializationWithSameProtocol) {
+  using Serializer = typename TypeParam::Serializer;
+  using LazyStruct = typename TypeParam::LazyStruct;
+
+  auto foo = Serializer::template deserialize<LazyStruct>(
+      Serializer::template serialize<std::string>(gen<LazyStruct>()));
+
+  auto foo1 = Serializer::template deserialize<LazyStruct>(
+      Serializer::template serialize<std::string>(foo));
+
+  EXPECT_FALSE(get_field1(foo).empty());
+  EXPECT_FALSE(get_field2(foo).empty());
+  EXPECT_FALSE(get_field3(foo).empty());
+  EXPECT_FALSE(get_field4(foo).empty());
+
+  EXPECT_EQ(foo1, gen<LazyStruct>());
+}
+
 TYPED_TEST(LazyDeserialization, SerializationWithDifferentProtocol) {
   using Serializer = typename TypeParam::Serializer;
   using LazyStruct = typename TypeParam::LazyStruct;
@@ -384,27 +402,15 @@ TYPED_TEST(LazyDeserialization, SerializationWithDifferentProtocol) {
   auto foo = Serializer::template deserialize<LazyStruct>(
       Serializer::template serialize<std::string>(gen<LazyStruct>()));
 
-  auto foo1 = Serializer::template deserialize<LazyStruct>(
-      Serializer::template serialize<std::string>(foo));
-
-  // Serialize with same protocol, lazy fields won't be deserialized
-  EXPECT_FALSE(get_field1(foo).empty());
-  EXPECT_FALSE(get_field2(foo).empty());
-  EXPECT_TRUE(get_field3(foo).empty());
-  EXPECT_TRUE(get_field4(foo).empty());
-
-  EXPECT_EQ(foo1, gen<LazyStruct>());
-
-  auto foo2 = Serializer2::template deserialize<LazyStruct>(
+  auto foo1 = Serializer2::template deserialize<LazyStruct>(
       Serializer2::template serialize<std::string>(foo));
 
-  // Serialize with different protocol, all fields are deserialized
   EXPECT_FALSE(get_field1(foo).empty());
   EXPECT_FALSE(get_field2(foo).empty());
   EXPECT_FALSE(get_field3(foo).empty());
   EXPECT_FALSE(get_field4(foo).empty());
 
-  EXPECT_EQ(foo2, gen<LazyStruct>());
+  EXPECT_EQ(foo1, gen<LazyStruct>());
 }
 
 constexpr int kThreadCount = 100;

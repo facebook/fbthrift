@@ -43,4 +43,22 @@ TEST(NestedStruct, Test) {
   CompactSerializer::deserialize(s, outer);
   EXPECT_EQ(outer.foo_ref()->field_ref(), 42);
 }
+
+TEST(NestedStruct, Reserialize) {
+  Outer outer1, outer2;
+  outer1.foo_ref().ensure();
+  outer2.foo_ref()->field_ref() = 42;
+
+  // Now `outer2` is in a state that the inner field has value `42`
+  // Meanwhile it also has `IOBuf` that contains empty structure.
+  CompactSerializer::deserialize(
+      CompactSerializer::serialize<std::string>(outer1), outer2);
+
+  // When we re-serialize outer2, we should deserialize `IOBuf`
+  // first, then re-serialize the field
+  auto outer3 = CompactSerializer::deserialize<Outer>(
+      CompactSerializer::serialize<std::string>(outer2));
+
+  EXPECT_EQ(outer3.foo_ref()->field_ref(), 42);
+}
 } // namespace apache::thrift::test
