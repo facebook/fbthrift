@@ -125,8 +125,8 @@ class RpcOptions {
   std::string shardId_;
 
   // For sending and receiving headers.
-  transport::THeader::StringToStringMap writeHeaders_;
-  transport::THeader::StringToStringMap readHeaders_;
+  std::optional<transport::THeader::StringToStringMap> writeHeaders_;
+  std::optional<transport::THeader::StringToStringMap> readHeaders_;
 
   // Custom data about the request for logging and analysis.
   std::string loggingContext_;

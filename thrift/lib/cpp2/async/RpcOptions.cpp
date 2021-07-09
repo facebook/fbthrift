@@ -20,6 +20,13 @@
 
 namespace apache {
 namespace thrift {
+namespace {
+const transport::THeader::StringToStringMap& kEmptyMap() {
+  static const transport::THeader::StringToStringMap& map =
+      *(new transport::THeader::StringToStringMap);
+  return map;
+}
+} // namespace
 
 RpcOptions& RpcOptions::setTimeout(std::chrono::milliseconds timeout) {
   timeout_ = timeout;
@@ -147,23 +154,24 @@ void RpcOptions::setReadHeaders(
 
 const transport::THeader::StringToStringMap& RpcOptions::getReadHeaders()
     const {
-  return readHeaders_;
+  return readHeaders_ ? *readHeaders_ : kEmptyMap();
 }
 
 void RpcOptions::setWriteHeader(
     const std::string& key, const std::string& value) {
-  writeHeaders_[key] = value;
+  if (!writeHeaders_) {
+    writeHeaders_.emplace();
+  }
+  (*writeHeaders_)[key] = value;
 }
 
 const transport::THeader::StringToStringMap& RpcOptions::getWriteHeaders()
     const {
-  return writeHeaders_;
+  return writeHeaders_ ? *writeHeaders_ : kEmptyMap();
 }
 
 transport::THeader::StringToStringMap RpcOptions::releaseWriteHeaders() {
-  transport::THeader::StringToStringMap headers;
-  writeHeaders_.swap(headers);
-  return headers;
+  return std::exchange(writeHeaders_, std::nullopt).value_or(kEmptyMap());
 }
 
 RpcOptions& RpcOptions::setEnablePageAlignment(bool enablePageAlignment) {
