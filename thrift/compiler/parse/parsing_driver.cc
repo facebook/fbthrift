@@ -72,7 +72,11 @@ std::unique_ptr<t_program_bundle> parsing_driver::parse() {
     return result;
   }
 
-  parser_ = std::make_unique<yy::parser>(*this, scanner->get_scanner());
+  YYSTYPE yylval{};
+  YYLTYPE yylloc{};
+
+  parser_ = std::make_unique<yy::parser>(
+      *this, scanner->get_scanner(), &yylval, &yylloc);
 
   try {
     parse_file();

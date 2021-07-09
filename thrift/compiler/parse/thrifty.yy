@@ -90,6 +90,8 @@ class t_container_type;
 
 }
 
+%defines
+%locations
 %define api.token.constructor
 %define api.value.type variant
 %define api.namespace {apache::thrift::compiler::yy}
@@ -97,6 +99,8 @@ class t_container_type;
 %param
     {apache::thrift::compiler::parsing_driver& driver}
     {apache::thrift::compiler::yyscan_t raw_scanner}
+    {YYSTYPE * yylval_param}
+    {YYLTYPE * yylloc_param}
 
 /**
  * Strings identifier
@@ -1546,6 +1550,9 @@ IntOrLiteral:
 /**
  * Method that will be called by the generated parser upon errors.
  */
-void apache::thrift::compiler::yy::parser::error(std::string const& message) {
+void apache::thrift::compiler::yy::parser::error(const location_type&, std::string const& message) {
+  /*
+   * TODO(urielrivas): Pass the location as argument to yyerror.
+   */
   driver.yyerror(message);
 }

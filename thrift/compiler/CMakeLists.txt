@@ -24,6 +24,7 @@ if(WIN32)
 endif(WIN32)
 set(BISON_FLAGS "--skeleton=lalr1.cc")
 BISON_TARGET(ThriftParser parse/thrifty.yy ${COMPILER_DIR}/thrifty.cc
+  DEFINES_FILE ${COMPILER_DIR}/location.hh
   DEFINES_FILE ${COMPILER_DIR}/thrifty.hh
   COMPILE_FLAGS "${BISON_FLAGS}")
 FLEX_TARGET(ThriftScanner parse/thriftl.ll ${COMPILER_DIR}/thriftl.cc
@@ -70,6 +71,7 @@ add_library(
 target_compile_definitions(
  compiler_base
  PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
+ PUBLIC -DLOCATION_HH="${COMPILER_DIR}/location.hh"
 )
 if (NOT MSVC)
   target_compile_options(

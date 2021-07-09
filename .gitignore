@@ -42,6 +42,8 @@ gen-cpp
 gen-cpp2
 /thrift/.python-local/
 
+/thrift/compiler/location.hh
+/thrift/compiler/position.hh
 /thrift/compiler/thrifty.hh
 /thrift/compiler/thrift1
 /thrift/compiler/thriftl.cc
