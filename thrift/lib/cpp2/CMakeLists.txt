@@ -153,6 +153,7 @@ add_library(
   async/ResponseChannel.cpp
   async/RetryingRequestChannel.cpp
   async/RocketClientChannel.cpp
+  async/RpcOptions.cpp
   async/RpcTypes.cpp
   async/ServerGeneratorStream.cpp
   async/ServerSinkBridge.cpp
