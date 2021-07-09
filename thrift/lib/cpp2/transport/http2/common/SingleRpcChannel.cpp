@@ -391,7 +391,6 @@ void SingleRpcChannel::extractHeaderInfo(
 void SingleRpcChannel::sendThriftErrorResponse(
     const string& message, ProtocolId protoId, const string& name) noexcept {
   ResponseRpcMetadata responseMetadata;
-  responseMetadata.protocol_ref() = protoId;
   // Not setting the "ex" header since these errors do not fit into any
   // of the existing error categories.
   TApplicationException tae(message);

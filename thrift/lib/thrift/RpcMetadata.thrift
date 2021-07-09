@@ -244,8 +244,7 @@ struct ProxiedPayloadMetadata {
 // as a return value to the application code that initiated the RPC on
 // the client side.
 struct ResponseRpcMetadata {
-  // The protocol using which the RPC payload has been serialized.
-  1: optional ProtocolId protocol;
+  // 1: Deprecated
   // 2: Deprecated
   // A string to string map that can be populated by the server
   // handler and further populated by plugins on the server side
