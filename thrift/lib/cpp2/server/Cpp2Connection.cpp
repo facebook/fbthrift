@@ -219,6 +219,12 @@ void Cpp2Connection::disconnect(const char* comment) noexcept {
   }
 }
 
+void Cpp2Connection::setServerHeaders(transport::THeader& header) {
+  if (getWorker()->isStopping()) {
+    header.setHeader("connection", "goaway");
+  }
+}
+
 void Cpp2Connection::setServerHeaders(
     transport::THeader::StringToStringMap& writeHeaders) {
   if (getWorker()->isStopping()) {
@@ -228,13 +234,12 @@ void Cpp2Connection::setServerHeaders(
 
 void Cpp2Connection::setServerHeaders(
     HeaderServerChannel::HeaderRequest& request) {
-  auto& writeHeaders = request.getHeader()->mutableWriteHeaders();
-  setServerHeaders(writeHeaders);
+  setServerHeaders(*request.getHeader());
   const auto& readHeaders = request.getHeader()->getHeaders();
-  auto ptr = folly::get_ptr(readHeaders, THeader::QUERY_LOAD_HEADER);
-  if (ptr) {
+  if (auto ptr = folly::get_ptr(readHeaders, THeader::QUERY_LOAD_HEADER)) {
     auto load = getWorker()->getServer()->getLoad(*ptr);
-    writeHeaders[THeader::QUERY_LOAD_HEADER] = folly::to<std::string>(load);
+    request.getHeader()->setHeader(
+        THeader::QUERY_LOAD_HEADER, folly::to<std::string>(load));
   }
 }
 

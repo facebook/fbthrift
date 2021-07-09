@@ -273,7 +273,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
 
   void setServerHeaders(transport::THeader::StringToStringMap& writeHeaders);
   void setServerHeaders(HeaderServerChannel::HeaderRequest& request);
-
+  void setServerHeaders(transport::THeader& header);
   friend class Cpp2Request;
 
   std::shared_ptr<Cpp2Connection> this_;
