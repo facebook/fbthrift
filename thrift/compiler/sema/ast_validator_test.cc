@@ -85,10 +85,6 @@ class StdAstValidatorTest : public ::testing::Test {
     return {diagnostic_level::failure, msg, "/path/to/file.thrift", lineno};
   }
 
-  diagnostic warning(int lineno, const std::string& msg) {
-    return {diagnostic_level::warning, msg, "/path/to/file.thrift", lineno};
-  }
-
   t_program program_{"/path/to/file.thrift"};
 };
 
@@ -323,27 +319,6 @@ TEST_F(StdAstValidatorTest, UnionFieldAttributes) {
               "Unions cannot contain qualified fields. Remove `optional` qualifier from field `op`."),
           // Fields with cpp.mixing have errors.
           failure(5, "Union `Union` cannot contain mixin field `mixin`.")));
-}
-
-TEST_F(StdAstValidatorTest, FieldId) {
-  auto tstruct = std::make_unique<t_struct>(&program_, "Struct");
-  tstruct->append(
-      std::make_unique<t_field>(t_base_type::t_i64(), "explicit_id", 1));
-  tstruct->append(
-      std::make_unique<t_field>(t_base_type::t_i64(), "zero_id", 0));
-  tstruct->append(
-      std::make_unique<t_field>(t_base_type::t_i64(), "neg_id", -1));
-  tstruct->append(std::make_unique<t_field>(
-      t_base_type::t_i64(), "implicit_id", -2, false));
-
-  program_.add_struct(std::move(tstruct));
-  EXPECT_THAT(
-      validate(),
-      UnorderedElementsAre(
-          failure(-1, "Zero value (0) not allowed as a field id for `zero_id`"),
-          warning(
-              -1,
-              "No field id specified for `implicit_id`, resulting protocol may have conflicts or not be backwards compatible!")));
 }
 
 TEST_F(StdAstValidatorTest, MixinFieldType) {

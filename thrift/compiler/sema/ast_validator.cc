@@ -378,19 +378,12 @@ void validate_structured_annotation_type_uniqueness(
   }
 }
 
-void validate_field_id(diagnostic_context& ctx, const t_field& node) {
-  if (!node.has_explicit_id()) {
-    ctx.warning(node, [&](auto& o) {
-      o << "No field id specified for `" << node.name()
-        << "`, resulting protocol may"
-        << " have conflicts or not be backwards compatible!";
-    });
-  }
-
-  if (node.id() == 0 &&
-      !node.has_annotation("cpp.deprecated_allow_zero_as_field_id")) {
-    ctx.failure(node, [&](auto& o) {
-      o << "Zero value (0) not allowed as a field id for `" << node.get_name()
+void validate_field_id_is_nonzero(
+    diagnostic_context& ctx, const t_field& field) {
+  if (field.get_key() == 0 &&
+      !field.has_annotation("cpp.deprecated_allow_zero_as_field_id")) {
+    ctx.failure(field, [&](auto& o) {
+      o << "Zero value (0) not allowed as a field id for `" << field.get_name()
         << "`";
     });
   }
@@ -424,7 +417,6 @@ ast_validator standard_validator() {
   validator.add_union_visitor(&validate_union_field_attributes);
   validator.add_struct_visitor(&validate_struct_except_field_attributes);
   validator.add_exception_visitor(&validate_struct_except_field_attributes);
-  validator.add_field_visitor(&validate_field_id);
   validator.add_field_visitor(&validate_mixin_field_attributes);
   validator.add_field_visitor(&validate_boxed_field_attributes);
 

@@ -1120,7 +1120,7 @@ Field:
     {
       driver.debug("Field => DefinitionAttrs FieldIdentifier FieldQualifier "
         "FieldType Identifier FieldValue TypeAnnotations CommaOrSemicolonOptional");
-      t_field_id id;
+      int id;
       if ($2 == boost::none) {
         // Auto assign an id.
         id = driver.allocate_field_id($5);
