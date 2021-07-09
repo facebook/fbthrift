@@ -394,6 +394,13 @@ void validate_field_id(diagnostic_context& ctx, const t_field& node) {
         << "`";
     });
   }
+
+  if (node.id() < t_field::min_id) {
+    ctx.failure(node, [&](auto& o) {
+      o << "Reserved field id (" << node.id() << ") cannot be used for `"
+        << node.name() << "`.";
+    });
+  }
 }
 
 void validate_compatibility_with_lazy_field(

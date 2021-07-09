@@ -185,8 +185,8 @@ class CompilerFailureTest(unittest.TestCase):
             err,
             "[WARNING:foo.thrift:4] Nonpositive field id (-16384) differs from what would be auto-assigned by thrift (-3).\n"
             * 2
-            + "[FAILURE:foo.thrift:5] Reserved field id (-16385) cannot be used for `f4`\n"
-            "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n",
+            + "[WARNING:foo.thrift:2] No field id specified for `f1`, resulting protocol may have conflicts or not be backwards compatible!\n"
+            "[FAILURE:foo.thrift:5] Reserved field id (-16385) cannot be used for `f4`.\n",
         )
         self.assertEqual(ret, 1)
 
