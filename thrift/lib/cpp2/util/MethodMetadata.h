@@ -26,8 +26,25 @@
 
 namespace apache::thrift {
 
+enum class FunctionQualifier {
+  Unspecified,
+  OneWay,
+  Idempotent,
+  ReadOnly,
+};
+
 inline std::string_view qualifierToString(FunctionQualifier fq) {
-  return apache::thrift::util::enumName(fq);
+  switch (fq) {
+    case FunctionQualifier::Unspecified:
+      return "Unspecified";
+    case FunctionQualifier::OneWay:
+      return "OneWay";
+    case FunctionQualifier::Idempotent:
+      return "Idempotent";
+    case FunctionQualifier::ReadOnly:
+      return "ReadOnly";
+  }
+  folly::assume_unreachable();
 }
 
 /*
