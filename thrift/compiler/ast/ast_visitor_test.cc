@@ -290,5 +290,78 @@ TYPED_TEST(AstVisitorTest, Typedef) {
   this->program_.add_typedef(std::move(ttypedef));
 }
 
+class MockObserver {
+ public:
+  MOCK_METHOD(void, begin_visit, (const t_node&));
+  MOCK_METHOD(void, end_visit, (const t_node&));
+};
+
+TEST(ObserverTest, OrderOfCalls) {
+  static_assert(ast_detail::is_observer<MockObserver&>::value, "");
+  using test_ast_visitor =
+      basic_ast_visitor<false, MockObserver&, int, MockObserver&>;
+
+  t_program program("path/to/program.thrift");
+  auto* tunion = new t_union(&program, "Union");
+  auto* field = new t_field(&t_base_type::t_i32(), "union_field", 1);
+  tunion->append(std::unique_ptr<t_field>(field));
+  program.add_struct(std::unique_ptr<t_union>(tunion));
+
+  MockObserver m1, m2;
+  {
+    ::testing::InSequence ins;
+    EXPECT_CALL(m1, begin_visit(::testing::Ref(program)));
+    EXPECT_CALL(m2, begin_visit(::testing::Ref(program)));
+    EXPECT_CALL(m1, begin_visit(::testing::Ref(*tunion)));
+    EXPECT_CALL(m2, begin_visit(::testing::Ref(*tunion)));
+    EXPECT_CALL(m1, begin_visit(::testing::Ref(*field)));
+    EXPECT_CALL(m2, begin_visit(::testing::Ref(*field)));
+
+    // End is called in reverse order.
+    EXPECT_CALL(m2, end_visit(::testing::Ref(*field)));
+    EXPECT_CALL(m1, end_visit(::testing::Ref(*field)));
+    EXPECT_CALL(m2, end_visit(::testing::Ref(*tunion)));
+    EXPECT_CALL(m1, end_visit(::testing::Ref(*tunion)));
+    EXPECT_CALL(m2, end_visit(::testing::Ref(program)));
+    EXPECT_CALL(m1, end_visit(::testing::Ref(program)));
+  }
+  test_ast_visitor visitor;
+  visitor(m1, 1, m2, program);
+}
+
+TEST(ObserverTest, VisitContext) {
+  static_assert(ast_detail::is_observer<visit_context&>::value, "");
+  using ctx_ast_visitor = basic_ast_visitor<false, visit_context&>;
+
+  t_program program("path/to/program.thrift");
+  auto* tunion = new t_union(&program, "Union");
+  auto* field = new t_field(&t_base_type::t_i32(), "union_field", 1);
+  tunion->append(std::unique_ptr<t_field>(field));
+  program.add_struct(std::unique_ptr<t_union>(tunion));
+
+  int calls = 0;
+  ctx_ast_visitor visitor;
+  visitor.add_program_visitor([&](visit_context& ctx, t_program& node) {
+    EXPECT_EQ(&node, &program);
+    EXPECT_EQ(ctx.parent(), nullptr);
+    ++calls;
+  });
+  visitor.add_union_visitor([&](visit_context& ctx, t_union& node) {
+    EXPECT_EQ(&node, tunion);
+    EXPECT_EQ(ctx.parent(), &program);
+    ++calls;
+  });
+  visitor.add_field_visitor([&](visit_context& ctx, t_field& node) {
+    EXPECT_EQ(&node, field);
+    EXPECT_EQ(ctx.parent(), tunion);
+    ++calls;
+  });
+
+  visit_context ctx;
+  EXPECT_EQ(ctx.parent(), nullptr);
+  visitor(ctx, program);
+  EXPECT_EQ(calls, 3);
+}
+
 } // namespace
 } // namespace apache::thrift::compiler

@@ -224,19 +224,6 @@ void validate_field_names_uniqueness(
   }
 }
 
-void validate_struct_except_field_attributes(
-    diagnostic_context& ctx, const t_structured& node) {
-  for (const auto& field : node.fields()) {
-    if (gen::cpp::find_ref_type(field) == gen::cpp::reference_type::boxed &&
-        field.qualifier() != t_field_qualifier::optional) {
-      ctx.failure(field, [&](auto& o) {
-        o << "The `cpp.box` annotation can only be used with optional fields. Make sure `"
-          << field.name() << "` is optional.";
-      });
-    }
-  }
-}
-
 // Checks the attributes of fields in a union.
 void validate_union_field_attributes(
     diagnostic_context& ctx, const t_union& node) {
@@ -249,37 +236,37 @@ void validate_union_field_attributes(
           << "` qualifier from field `" << field.name() << "`.";
       });
     }
-    if (cpp2::is_mixin(field)) {
-      ctx.failure(field, [&](auto& o) {
-        o << "Union `" << node.name() << "` cannot contain mixin field `"
-          << field.name() << "`.";
-      });
-    }
-    if (gen::cpp::find_ref_type(field) == gen::cpp::reference_type::boxed) {
-      // TODO(afuller): Support cpp.box on union fields.
-      ctx.failure(field, [&](auto& o) {
-        o << "Unions cannot contain fields with the `cpp.box` annotation. Remove the annotation from `"
-          << field.name() << "`.";
-      });
-    }
   }
 }
 
 void validate_boxed_field_attributes(
-    diagnostic_context& ctx, const t_field& field) {
-  if (gen::cpp::find_ref_type(field) != gen::cpp::reference_type::boxed) {
+    diagnostic_context& ctx, const t_field& node) {
+  if (gen::cpp::find_ref_type(node) != gen::cpp::reference_type::boxed) {
     return;
   }
 
-  if (field.has_annotation({
+  if (const auto* parent = dynamic_cast<const t_union*>(ctx.parent())) {
+    // TODO(afuller): Support cpp.box on union fields.
+    ctx.failure([&](auto& o) {
+      o << "Unions cannot contain fields with the `cpp.box` annotation. Remove the annotation from `"
+        << node.name() << "`.";
+    });
+  } else if (node.qualifier() != t_field_qualifier::optional) {
+    ctx.failure([&](auto& o) {
+      o << "The `cpp.box` annotation can only be used with optional fields. Make sure `"
+        << node.name() << "` is optional.";
+    });
+  }
+
+  if (node.has_annotation({
           "cpp.ref",
           "cpp2.ref",
           "cpp.ref_type",
           "cpp2.ref_type",
       })) {
-    ctx.failure(field, [&](auto& o) {
+    ctx.failure([&](auto& o) {
       o << "The `cpp.box` annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `"
-        << field.name() << "`.";
+        << node.name() << "`.";
     });
   }
 }
@@ -293,38 +280,45 @@ void validate_mixin_field_attributes(
 
   auto* ttype = node.type()->get_true_type();
   if (typeid(*ttype) != typeid(t_struct) && typeid(*ttype) != typeid(t_union)) {
-    ctx.failure(node, [&](auto& o) {
+    ctx.failure([&](auto& o) {
       o << "Mixin field `" << node.name()
         << "` type must be a struct or union. Found `" << ttype->get_name()
         << "`.";
     });
   }
 
-  if (node.qualifier() == t_field_qualifier::optional) {
+  if (const auto* parent = dynamic_cast<const t_union*>(ctx.parent())) {
+    ctx.failure([&](auto& o) {
+      o << "Union `" << parent->name() << "` cannot contain mixin field `"
+        << node.name() << "`.";
+    });
+  } else if (node.qualifier() == t_field_qualifier::optional) {
     // Nothing technically stops us from marking optional field mixin.
     // However, this will bring surprising behavior. e.g. `foo.bar_ref()`
     // might throw `bad_field_access` if `bar` is inside optional mixin
     // field.
-    ctx.failure(node, [&](auto& o) {
+    ctx.failure([&](auto& o) {
       o << "Mixin field `" << node.name() << "` cannot be optional.";
     });
   }
 }
 
 /*
- * Validates whether all fields in a t_struct which have annotations
- * cpp.ref or cpp2.ref are also optional.
+ * Validates whether all fields which have annotations cpp.ref or cpp2.ref are
+ * also optional.
  */
-void validate_struct_optional_refs(
-    diagnostic_context& ctx, const t_struct& node) {
-  for (const auto& field : node.fields()) {
-    if (cpp2::has_ref_annotation(field) &&
-        field.qualifier() != t_field_qualifier::optional) {
-      ctx.warning(field, [&](auto& o) {
-        o << "`cpp.ref` field `" << field.name()
-          << "` must be optional if it is recursive.";
-      });
-    }
+void validate_ref_field_attributes(
+    diagnostic_context& ctx, const t_field& node) {
+  if (!cpp2::has_ref_annotation(node)) {
+    return;
+  }
+
+  if (node.qualifier() != t_field_qualifier::optional &&
+      dynamic_cast<const t_union*>(ctx.parent()) == nullptr) {
+    ctx.warning([&](auto& o) {
+      o << "`cpp.ref` field `" << node.name()
+        << "` must be optional if it is recursive.";
+    });
   }
 }
 
@@ -350,12 +344,12 @@ void validate_enum_value_uniqueness(
 
 void validate_enum_value(diagnostic_context& ctx, const t_enum_value& node) {
   if (!node.has_value()) {
-    ctx.failure(node, [&](auto& o) {
+    ctx.failure([&](auto& o) {
       o << "The enum value, `" << node.name()
         << "`, must have an explicitly assigned value.";
     });
   } else if (node.get_value() < 0 && !ctx.params().allow_neg_enum_vals) {
-    ctx.warning(node, [&](auto& o) {
+    ctx.warning([&](auto& o) {
       o << "Negative value supplied for enum value `" << node.name() << "`.";
     });
   }
@@ -380,7 +374,7 @@ void validate_structured_annotation_type_uniqueness(
 
 void validate_field_id(diagnostic_context& ctx, const t_field& node) {
   if (!node.has_explicit_id()) {
-    ctx.warning(node, [&](auto& o) {
+    ctx.warning([&](auto& o) {
       o << "No field id specified for `" << node.name()
         << "`, resulting protocol may"
         << " have conflicts or not be backwards compatible!";
@@ -389,14 +383,14 @@ void validate_field_id(diagnostic_context& ctx, const t_field& node) {
 
   if (node.id() == 0 &&
       !node.has_annotation("cpp.deprecated_allow_zero_as_field_id")) {
-    ctx.failure(node, [&](auto& o) {
+    ctx.failure([&](auto& o) {
       o << "Zero value (0) not allowed as a field id for `" << node.get_name()
         << "`";
     });
   }
 
   if (node.id() < t_field::min_id) {
-    ctx.failure(node, [&](auto& o) {
+    ctx.failure([&](auto& o) {
       o << "Reserved field id (" << node.id() << ") cannot be used for `"
         << node.name() << "`.";
     });
@@ -410,7 +404,7 @@ void validate_compatibility_with_lazy_field(
   }
 
   if (node.has_annotation("cpp.methods")) {
-    ctx.failure(node, [&](auto& o) {
+    ctx.failure([&](auto& o) {
       o << "cpp.methods is incompatible with lazy deserialization in struct `"
         << node.get_name() << "`";
     });
@@ -429,13 +423,10 @@ ast_validator standard_validator() {
   validator.add_structured_definition_visitor(
       &validate_compatibility_with_lazy_field);
   validator.add_union_visitor(&validate_union_field_attributes);
-  validator.add_struct_visitor(&validate_struct_except_field_attributes);
-  validator.add_exception_visitor(&validate_struct_except_field_attributes);
   validator.add_field_visitor(&validate_field_id);
   validator.add_field_visitor(&validate_mixin_field_attributes);
   validator.add_field_visitor(&validate_boxed_field_attributes);
-
-  validator.add_struct_visitor(&validate_struct_optional_refs);
+  validator.add_field_visitor(&validate_ref_field_attributes);
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
   validator.add_enum_visitor(&validate_enum_value_uniqueness);

@@ -26,6 +26,7 @@
 #include <typeindex>
 #include <utility>
 
+#include <thrift/compiler/ast/ast_visitor.h>
 #include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/sema/diagnostic.h>
@@ -126,7 +127,7 @@ class node_metadata_cache {
 };
 
 // A context aware reporter for diagnostic results.
-class diagnostic_context {
+class diagnostic_context : public visit_context {
  public:
   explicit diagnostic_context(
       std::function<void(diagnostic)> report_cb, diagnostic_params params = {})
@@ -193,15 +194,31 @@ class diagnostic_context {
       typename With,
       typename = decltype(std::declval<With&>()(std::declval<std::ostream&>()))>
   void report(
-      diagnostic_level level, int lineno, std::string token, With with) {
+      diagnostic_level level, int lineno, std::string token, With&& with) {
+    if (!params_.should_report(level)) {
+      return;
+    }
+
     std::ostringstream o;
     with(static_cast<std::ostream&>(o));
-    report(level, lineno, token, o.str());
+    report_cb_({
+        level,
+        o.str(),
+        program()->path(),
+        lineno,
+        std::move(token),
+    });
   }
 
-  template <typename... Args>
-  void report(diagnostic_level level, const t_node& node, Args&&... args) {
-    report(level, node.lineno(), {}, std::forward<Args>(args)...);
+  template <typename With>
+  void report(diagnostic_level level, const t_node& node, With&& with) {
+    report(level, node.lineno(), {}, std::forward<With>(with));
+  }
+
+  template <typename With>
+  void report(diagnostic_level level, With&& with) {
+    assert(current() != nullptr);
+    report(level, current()->lineno(), {}, std::forward<With>(with));
   }
 
   template <typename... Args>
