@@ -15,11 +15,11 @@
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-cdef extern from "thrift/compiler/sema/diagnostic.h" namespace "apache::thrift::compiler":
+cdef extern from "thrift/compiler/ast/diagnostic.h" namespace "apache::thrift::compiler":
     cdef cppclass diagnostic_level:
         pass
 
-cdef extern from "thrift/compiler/sema/diagnostic.h" namespace "apache::thrift::compiler":
+cdef extern from "thrift/compiler/ast/diagnostic.h" namespace "apache::thrift::compiler":
     cdef cppclass diagnostic:
         diagnostic_level level()
         string file()

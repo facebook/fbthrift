@@ -19,7 +19,7 @@
 #include <string>
 #include <vector>
 
-#include <thrift/compiler/sema/diagnostic.h>
+#include <thrift/compiler/ast/diagnostic.h>
 
 namespace apache {
 namespace thrift {

@@ -14,15 +14,15 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/sema/diagnostic_context.h>
+#include <thrift/compiler/ast/diagnostic_context.h>
 
 #include <memory>
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_type.h>
-#include <thrift/compiler/sema/diagnostic.h>
 
 namespace apache::thrift::compiler {
 namespace {

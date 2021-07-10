@@ -35,6 +35,7 @@ ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 add_library(
   compiler_ast
 
+  ast/diagnostic.cc
   ast/t_base_type.cc
   ast/t_enum.cc
   ast/t_function.cc
@@ -61,7 +62,6 @@ add_library(
   util.cc
 
   parse/parsing_driver.cc
-  sema/diagnostic.cc
   sema/ast_validator.cc
   sema/scope_validator.cc
 

@@ -26,6 +26,7 @@
 
 #include <boost/optional.hpp>
 
+#include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/node_list.h>
 #include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_exception.h>
@@ -38,7 +39,6 @@
 #include <thrift/compiler/ast/t_scope.h>
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/parse/yy_scanner.h>
-#include <thrift/compiler/sema/diagnostic_context.h>
 
 /**
  * Note macro expansion because this is different between OSS and internal

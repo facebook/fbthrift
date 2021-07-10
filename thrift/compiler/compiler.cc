@@ -37,13 +37,13 @@
 #include <boost/algorithm/string/split.hpp>
 #include <boost/filesystem.hpp>
 
+#include <thrift/compiler/ast/diagnostic.h>
+#include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 #include <thrift/compiler/platform.h>
 #include <thrift/compiler/sema/ast_validator.h>
-#include <thrift/compiler/sema/diagnostic.h>
-#include <thrift/compiler/sema/diagnostic_context.h>
 #include <thrift/compiler/validator/validator.h>
 
 namespace apache {

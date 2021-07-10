@@ -27,9 +27,9 @@
 #include <utility>
 
 #include <thrift/compiler/ast/ast_visitor.h>
+#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/t_node.h>
 #include <thrift/compiler/ast/t_program.h>
-#include <thrift/compiler/sema/diagnostic.h>
 
 namespace apache {
 namespace thrift {

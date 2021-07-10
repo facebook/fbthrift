@@ -16,9 +16,9 @@
 
 #pragma once
 
+#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/visitor.h>
 #include <thrift/compiler/parse/parsing_driver.h>
-#include <thrift/compiler/sema/diagnostic.h>
 
 namespace apache {
 namespace thrift {

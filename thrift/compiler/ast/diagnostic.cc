@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/sema/diagnostic.h>
+#include <thrift/compiler/ast/diagnostic.h>
 
 #include <sstream>
 #include <string>

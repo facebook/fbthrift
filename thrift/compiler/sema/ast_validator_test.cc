@@ -20,6 +20,8 @@
 
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
+#include <thrift/compiler/ast/diagnostic.h>
+#include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_enum.h>
 #include <thrift/compiler/ast/t_enum_value.h>
@@ -32,8 +34,6 @@
 #include <thrift/compiler/ast/t_service.h>
 #include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/ast/t_typedef.h>
-#include <thrift/compiler/sema/diagnostic.h>
-#include <thrift/compiler/sema/diagnostic_context.h>
 
 namespace apache::thrift::compiler {
 namespace {
