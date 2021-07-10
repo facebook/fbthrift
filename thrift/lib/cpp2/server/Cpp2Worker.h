@@ -188,10 +188,10 @@ class Cpp2Worker : public IOWorkerContext,
      * This returns a valid metadata object per the contract established by
      * AsyncProcessorFactory::createMethodMetadata.
      *
-     * This returns nullptr iff no valid metadata exists. That means that an
-     * unknown method error should be sent.
+     * This returns MetadataNotFound iff no valid metadata exists. That means
+     * that an unknown method error should be sent.
      *
-     * This returns std::nullopt iff the service does not support the
+     * This returns MetadataNotImplemented iff the service does not support the
      * createMethodMetadata() API.
      */
     FindMethodResult findMethod(std::string_view methodName) const;
