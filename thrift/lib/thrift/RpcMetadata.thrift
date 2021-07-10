@@ -14,6 +14,11 @@
  * limitations under the License.
  */
 
+/*
+ * This file contains structs that are meant to be used in the Thrift transport
+ * wire protocol. Keywords used in this file conform to the meanings in RFC 2119.
+ */
+
 namespace cpp2 apache.thrift
 namespace java.swift org.apache.thrift
 namespace java javadeprecated.org.apache.thrift
@@ -54,16 +59,12 @@ enum RpcPriority {
   N_PRIORITIES = 5,
 }
 
-// Represent the bit position of the compression algorithm that is negotiated
-// in TLS handshake
 enum CompressionAlgorithm {
   NONE = 0,
   ZLIB = 1,
   ZSTD = 2,
 }
 
-// re-definition of the same enums from
-// thrift/compiler/ast/t_exception.h
 enum ErrorKind {
   UNSPECIFIED = 0,
   TRANSIENT = 1,
@@ -100,9 +101,11 @@ union CodecConfig {
   2: ZstdCompressionCodecConfig zstdConfig;
 }
 
-// Represent the compression config user set
 struct CompressionConfig {
+  // Defines which codec SHOULD be used for compression and configuration
+  // specific to that codec. SHOULD be set.
   1: optional CodecConfig codecConfig;
+  // Defines the minimum payload size that SHOULD trigger compression.
   2: optional i64 compressionSizeLimit;
 }
 
@@ -122,62 +125,65 @@ typedef string (
 ) ManagedStringViewField
 
 struct InteractionCreate {
-  // Must be > 0
+  // Client chosen interaction id. Interaction id MAY be reused after the
+  // interaction previously using that id was terminated. MUST be unique per
+  // connection. MUST be > 0.
   1: i64 interactionId;
   2: ManagedStringViewField interactionName;
 }
 struct InteractionTerminate {
+  // Interaction id of an interaction previously created on the same
+  // connection.
   1: i64 interactionId;
 }
 
-// RPC metadata sent from the client to the server.  The lifetime of
-// objects of this type starts at the call to the generated client
-// code, and ends at the generated server code.
 struct RequestRpcMetadata {
-  // The protocol using which the RPC payload has been serialized.
+  // The protocol using which the request payload has been serialized. MUST be
+  // set.
+  // TODO: this should be extended to support unset protocol field (e.g. unset
+  // could mean compact).
   1: optional ProtocolId protocol;
-  // The name of the RPC function.  It is assigned in generated client
-  // code and passed all the way to the ThriftProcessor object on the
-  // server.
+  // The name of the RPC function. MUST be set.
   2: optional ManagedStringViewField name;
-  // The kind of RPC.  It is assigned in generated client code and
-  // passed all the way to the ThriftProcessor object on the server.
+  // The kind of RPC. MUST be set.
+  // TODO: this should be extended to support unset kind field (e.g. RPC kind
+  // could be derived from the underlying transport message type).
   3: optional RpcKind kind;
   // 4: Deprecated
-  // The amount of time that a client should wait for a response from
-  // the server.  This value is passed to the server so it can choose
-  // to time out also.  May be passed in the call to the generated
-  // client code to override the default client timeout.
+  // The amount of time that a client will wait for a response from
+  // the server. MAY be set.
   5: optional i32 clientTimeoutMs;
-  // The maximum amount of time that a request should wait at the
-  // server before it is handled.  May be passed in the call to the
-  // generated client code to override the default server queue time
-  // out.  This value is used only by the server.
+  // The maximum amount of time that a request SHOULD wait at the
+  // server before it is handled. MAY be set.
   6: optional i32 queueTimeoutMs;
-  // May be passed in the call to the generated client code to
-  // override the default priority of this RPC on the server side.
-  // This value is used only by the server.
+  // Overrides the default priority of this RPC. MAY be set.
   7: optional RpcPriority priority;
-  // A string to string map that can be populated in the call to the
-  // generated client code and further populated by plugins on the
-  // client side before it is finally sent over to the server.
-  // Any frequently used key-value pair in this map should be replaced
-  // by a field in this struct.
+  // Arbitrary metadata that MAY be used by application or Thrift extensions.
+  // MAY be set.
   8: optional map<string, string> otherMetadata;
   // 9: Deprecated
   // 10: Deprecated
-  // The CRC32C of the RPC message.
+  // The CRC32C of the uncompressed request payload. MAY be set. SHOULD be
+  // validated if set.
   11: optional i32 (cpp.type = "std::uint32_t") crc32c;
   // 12: Deprecated
+  // The name of the load metric that should be queried as part of this
+  // request. MAY be set. If set, load field SHOULD be set in response
+  // metadata.
   13: optional string loadMetric;
-  // The CompressionAlgorithm used to compress requests (if any)
+  // The compression algorithm that was used to compress request payload. MUST
+  // be set iff request payload is compressed.
   14: optional CompressionAlgorithm compression;
-  // Requested compression policy for responses
+  // Requested compression policy for the response. MAY be set.
   15: optional CompressionConfig compressionConfig;
-  // Enables TILES
-  // Use interactionCreate for new interactions and this for existing
+  // Id of an existing interaction which this RPC belongs to. MUST NOT be set
+  // if interactionCreate is set. One of interactionId and interactionCreate
+  // MUST be set iff requested method belongs to an interaction.
   16: optional i64 interactionId;
-  // Id must be unique per connection
+  // Information needed to create a new interaction which this RPC will be
+  // assigned to. MUST NOT be set if interactionId is set. One of interactionId
+  // and interactionCreate MUST be set iff requested method belongs to an
+  // interaction.
   17: optional InteractionCreate interactionCreate;
   18: optional string clientId;
   19: optional string serviceTraceMeta;
@@ -209,12 +215,14 @@ struct PayloadAppServerExceptionMetadata {
 }
 
 struct PayloadAppUnknownExceptionMetdata {
-  // We only use the blame field for now
   1: optional ErrorClassification errorClassification;
 }
 
 union PayloadExceptionMetadata {
+  // If set response payload MUST contain serialized declared exception.
   1: PayloadDeclaredExceptionMetadata declaredException;
+  // If set response payload SHOULD contain exception serialized in a format
+  // defined by a proxy.
   2: PayloadProxyExceptionMetadata proxyException;
   // 3: Deprecated
   // Deprecated:
@@ -222,16 +230,21 @@ union PayloadExceptionMetadata {
   4: PayloadAppClientExceptionMetadata DEPRECATED_appClientException;
   // replaced by PayloadAppUnknownExceptionMetdata
   5: PayloadAppServerExceptionMetadata DEPRECATED_appServerException;
+  // If set response payload SHOULD be empty.
+  // Supported in Rocket protocol version 8+
   6: PayloadAppUnknownExceptionMetdata appUnknownException;
 }
 
 struct PayloadExceptionMetadataBase {
   1: optional string name_utf8;
   2: optional string what_utf8;
+  // MAY be set. If not set SHOULD be treated as empty
+  // PayloadAppUnknownExceptionMetdata.
   3: optional PayloadExceptionMetadata metadata;
 }
 
 union PayloadMetadata {
+  // If set response payload MUST contain serialized response.
   1: PayloadResponseMetadata responseMetadata;
   2: PayloadExceptionMetadataBase exceptionMetadata;
 }
@@ -239,30 +252,28 @@ union PayloadMetadata {
 struct ProxiedPayloadMetadata {
 }
 
-// RPC metadata sent from the server to the client.  The lifetime of
-// objects of this type starts at the generated server code and ends
-// as a return value to the application code that initiated the RPC on
-// the client side.
 struct ResponseRpcMetadata {
   // 1: Deprecated
   // 2: Deprecated
-  // A string to string map that can be populated by the server
-  // handler and further populated by plugins on the server side
-  // before it is finally sent back to the client.
-  // Any frequently used key-value pair in this map should be replaced
-  // by a field in this struct.
+  // Arbitrary metadata that MAY be used by application or Thrift extensions.
+  // MAY be set.
   3: optional map<string, string> otherMetadata;
-  // Server load. Returned to client if loadMetric was set in RequestRpcMetadata
+  // Server load. SHOULD be set iff loadMetric was set in RequestRpcMetadata
   4: optional i64 load;
-  // The CRC32C of the RPC response.
+  // The CRC32C of the uncompressed response payload. MAY be set. SHOULD be
+  // validated if set.
   5: optional i32 (cpp.type = "std::uint32_t") crc32c;
-  // The CompressionAlgorithm used to compress responses (if any)
+  // The compression algorithm that was used to compress response payload. MUST
+  // be set iff response payload is compressed. SHOULD match the algorithm set
+  // in compressionConfig in RequestRpcMetadata
   6: optional CompressionAlgorithm compression;
-  // Additional metadata for the response payload
+  // Metadata describing the type of response payload. MUST be set.
   7: optional PayloadMetadata payloadMetadata;
-  // Additional metadata for the response payload (if proxied)
+  // Metadata describing proxied requests. SHOULD be set iff request is
+  // proxied.
   8: optional ProxiedPayloadMetadata proxiedPayloadMetadata;
-  // Sent on stream first response so java client can associate headers push.
+  // SHOULD be set for streaming RPCs. MUST match the stream id used by the
+  // underlying transport (e.g. RSocket).
   9: optional i32 streamId;
 }
 
@@ -323,14 +334,15 @@ struct StreamRpcError {
 }
 
 struct StreamPayloadMetadata {
-  // The CompressionAlgorithm used to compress responses (if any)
+  // The compression algorithm that was used to compress stream payload. MUST
+  // be set iff stream payload is compressed. SHOULD match the algorithm set
+  // in compressionConfig in RequestRpcMetadata
   1: optional CompressionAlgorithm compression;
-  // A string to string map that can be populated by the server
-  // handler and further populated by plugins on the server side
-  // before it is finally sent back to the client.
-  // Any frequently used key-value pair in this map should be replaced
-  // by a field in this struct.
+  // Arbitrary metadata that MAY be used by application or Thrift extensions.
+  // MAY be set.
   2: optional map<string, string> otherMetadata;
+  // Metadata describing the type of stream payload. MUST be set for protocol
+  // version 8+.
   3: optional PayloadMetadata payloadMetadata;
 }
 
@@ -357,25 +369,36 @@ struct RequestSetupMetadata {
   1: optional map<string, binary> (
     cpp.template = "apache::thrift::MetadataOpaqueMap",
   ) opaque;
-  // Indicates client wants to use admin interface
+  // Indicates interface kind that MUST be used by this connection. If not set
+  // or if server doesn't support requested interface kind, USER interface kind
+  // SHOULD be used. MAY be set.
   2: optional InterfaceKind interfaceKind;
-  // Min Rocket protocol version supported by the client
+  // Minimum Rocket protocol version supported by the client. If server only
+  // supports Rocket protocol version lower than minVersion connection MUST be
+  // rejected. SHOULD be set.
   3: optional i32 minVersion;
-  // Max Rocket protocol version supported by the client
+  // Maximum Rocket protocol version supported by the client. If server only
+  // supports Rocket protocol version higher than maxVersion connection MUST be
+  // rejected. SHOULD be set.
   4: optional i32 maxVersion;
-  // The DSCP and SO_MARK values that the server should apply to its end of
-  // the connection
+  // The DSCP and SO_MARK values that the server SHOULD apply to its end of
+  // the connection. MAY be set.
   5: optional i32 dscpToReflect;
   6: optional i32 markToReflect;
   9: optional ClientMetadata clientMetadata;
 }
 
 struct SetupResponse {
-  // the version that server picked
+  // The Rocket protocol version that server picked. SHOULD be set. MUST be a
+  // value between minVersion and maxVersion. If not set client SHOULD assume
+  // that any Rocket protocol version between minVersion and maxVersion MAY be
+  // used by the server.
   1: optional i32 version;
 }
 
 struct StreamHeadersPush {
+  // MUST be set. MUST match stream id of a live stream created over the same
+  // connection.
   1: optional i32 streamId;
   2: optional HeadersPayloadContent headersPayloadContent;
 }
@@ -389,26 +412,33 @@ struct DrainCompletePush {
 }
 
 union ServerPushMetadata {
+  // First non-error message from the server MUST be SetupResponse.
   1: SetupResponse setupResponse;
+  // Supported in Rocket protocol version 7+
   2: StreamHeadersPush streamHeadersPush;
+  // If set means that server finished processing all the requests that it
+  // ever started processing and sent all the responses for those requests.
+  // Server MUST not start processing any new requests after sending this.
+  // Supported in Rocket protocol version 7+
   3: DrainCompletePush drainCompletePush;
 }
 
 union ClientPushMetadata {
+  // Supported in Rocket protocol version 7+
   1: InteractionTerminate interactionTerminate;
+  // Supported in Rocket protocol version 7+
   2: StreamHeadersPush streamHeadersPush;
 }
 
 struct HeadersPayloadContent {
-  // A string to string map that can be populated by the server
-  // handler and further populated by plugins on the server side
-  // before it is finally sent back to the client.
-  // Any frequently used key-value pair in this map should be replaced
-  // by a field in this struct.
+  // Arbitrary metadata that MAY be used by application or Thrift extensions.
+  // MAY be set.
   1: optional map<string, string> otherMetadata;
 }
 
 struct HeadersPayloadMetadata {
-  // The CompressionAlgorithm used to compress responses (if any)
+  // The compression algorithm that was used to compress headers payload. MUST
+  // be set iff headers payload is compressed. SHOULD match the algorithm set
+  // in compressionConfig in RequestRpcMetadata
   1: optional CompressionAlgorithm compression;
 }
