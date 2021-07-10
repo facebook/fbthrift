@@ -379,7 +379,7 @@ Cpp2Worker::PerServiceMetadata::findMethod(std::string_view methodName) const {
 
   return folly::variant_match(
       methods_,
-      [](std::monostate) -> FindMethodResult {
+      [](AsyncProcessorFactory::MetadataNotImplemented) -> FindMethodResult {
         return MetadataNotImplemented{};
       },
       [&](const AsyncProcessorFactory::MethodMetadataMap& map)

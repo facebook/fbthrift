@@ -133,8 +133,15 @@ class AsyncProcessorFactory {
    */
   struct WildcardMethodMetadata final : public MethodMetadata {};
 
-  using CreateMethodMetadataResult = std::
-      variant<std::monostate, MethodMetadataMap, WildcardMethodMetadataMap>;
+  /**
+   * The API is not implemented (legacy).
+   */
+  using MetadataNotImplemented = std::monostate;
+
+  using CreateMethodMetadataResult = std::variant<
+      MetadataNotImplemented,
+      MethodMetadataMap,
+      WildcardMethodMetadataMap>;
   /**
    * This function enumerates the list of methods supported by the
    * AsyncProcessor returned by getProcessor(), if possible. The return value
