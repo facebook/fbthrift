@@ -426,7 +426,7 @@ union ClientPushMetadata {
 struct HeadersPayloadContent {
   // Arbitrary metadata that MAY be used by application or Thrift extensions.
   // MAY be set.
-  1: optional map<string, string> otherMetadata;
+  1: optional map<string, string (java.swift.binary_string)> otherMetadata;
 }
 
 struct HeadersPayloadMetadata {
