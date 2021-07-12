@@ -310,25 +310,25 @@
     },
     "empty_int_list" : {
       "lineno" : 229,
-      "value" : {  },
+      "value" : [  ],
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "I32", "spec_args" : null} 
     },
     "empty_string_list" : {
       "lineno" : 230,
-      "value" : {  },
+      "value" : [  ],
       "type_enum" : "LIST",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
     },
     "empty_int_set" : {
       "lineno" : 231,
-      "value" : {  },
+      "value" : [  ],
       "type_enum" : "SET",
       "spec_args" : { "type_enum" : "I32", "spec_args" : null} 
     },
     "empty_string_set" : {
       "lineno" : 232,
-      "value" : {  },
+      "value" : [  ],
       "type_enum" : "SET",
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
     },

@@ -393,8 +393,69 @@ class CompilerFailureTest(unittest.TestCase):
         self.assertEqual(ret, 0)
         self.assertEqual(
             err,
-            "[WARNING:foo.thrift:9] type error: const `color` was declared as enum `Color` with "
+            "[WARNING:foo.thrift:8] type error: const `color` was declared as enum `Color` with "
             "a value not of that enum.\n",
+        )
+
+    def test_const_wrong_type(self):
+        # tests initializing const with value of wrong type
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                const i32 wrongInt = "stringVal"
+                const set<string> wrongSet = {1: 2}
+                const map<i32, i32> wrongMap = [1,32,3];
+                const map<i32, i32> wierdMap = [];
+                const set<i32> wierdSet = {};
+                const list<i32> wierdList = {};
+                const list<string> badValList = [1]
+                const set<string> badValSet = [2]
+                const map<string, i32> badValMap = {1: "str"}
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:1] type error: const `wrongInt` was declared as i32.\n"
+            "[WARNING:foo.thrift:2] type error: const `wrongSet` was declared as set. This will become an error in future versions of thrift.\n"
+            "[WARNING:foo.thrift:3] type error: const `wrongMap` was declared as map. This will become an error in future versions of thrift.\n"
+            "[WARNING:foo.thrift:4] type error: map `wierdMap` initialized with empty list.\n"
+            "[WARNING:foo.thrift:5] type error: set `wierdSet` initialized with empty map.\n"
+            "[WARNING:foo.thrift:6] type error: list `wierdList` initialized with empty map.\n"
+            "[FAILURE:foo.thrift:7] type error: const `badValList<elem>` was declared as string.\n"
+            "[FAILURE:foo.thrift:8] type error: const `badValSet<elem>` was declared as string.\n"
+            "[FAILURE:foo.thrift:9] type error: const `badValMap<key>` was declared as string.\n"
+            "[FAILURE:foo.thrift:9] type error: const `badValMap<val>` was declared as i32.\n"
+        )
+
+    def test_struct_fields_wrong_type(self):
+        # tests initializing structured annotation value of wrong type
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Annot {
+                    1: i32 val
+                    2: list<string> otherVal
+                }
+
+                @Annot{val="hi", otherVal=5}
+                struct BadFields {
+                    1: i32 badInt = "str"
+                }
+                """
+            ),
+        )
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:6] type error: const `.val` was declared as i32.\n"
+            "[WARNING:foo.thrift:6] type error: const `.otherVal` was declared as list. This will become an error in future versions of thrift.\n"
+            "[FAILURE:foo.thrift:8] type error: const `badInt` was declared as i32.\n"
         )
 
     def test_duplicate_method_name(self):

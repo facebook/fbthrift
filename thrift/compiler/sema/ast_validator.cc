@@ -35,6 +35,7 @@
 #include <thrift/compiler/ast/t_union.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
 #include <thrift/compiler/lib/cpp2/util.h>
+#include <thrift/compiler/sema/const_checker.h>
 #include <thrift/compiler/sema/scope_validator.h>
 
 namespace apache {
@@ -355,7 +356,18 @@ void validate_enum_value(diagnostic_context& ctx, const t_enum_value& node) {
   }
 }
 
-void validate_structured_annotation_type_uniqueness(
+void validate_const_type(diagnostic_context& ctx, const t_const& c) {
+  check_const_rec(ctx, c, &c.type().deref(), c.value());
+}
+
+void validate_field_default_value(
+    diagnostic_context& ctx, const t_field& field) {
+  if (field.get_default_value() != nullptr) {
+    check_const_rec(ctx, field, &field.type().deref(), field.default_value());
+  }
+}
+
+void validate_structured_annotation(
     diagnostic_context& ctx, const t_named& node) {
   std::unordered_map<const t_type*, const t_const*> seen;
   for (const auto* annot : node.structured_annotations()) {
@@ -369,6 +381,7 @@ void validate_structured_annotation_type_uniqueness(
           *annot,
           *result.first->second);
     }
+    validate_const_type(ctx, *annot);
   }
 }
 
@@ -427,14 +440,15 @@ ast_validator standard_validator() {
   validator.add_field_visitor(&validate_mixin_field_attributes);
   validator.add_field_visitor(&validate_boxed_field_attributes);
   validator.add_field_visitor(&validate_ref_field_attributes);
+  validator.add_field_visitor(&validate_field_default_value);
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
   validator.add_enum_visitor(&validate_enum_value_uniqueness);
   validator.add_enum_value_visitor(&validate_enum_value);
 
-  validator.add_definition_visitor(
-      &validate_structured_annotation_type_uniqueness);
+  validator.add_definition_visitor(&validate_structured_annotation);
   validator.add_definition_visitor(&validate_annotation_scopes);
+  validator.add_const_visitor(&validate_const_type);
   return validator;
 }
 

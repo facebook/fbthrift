@@ -326,25 +326,9 @@ class parsing_driver {
   std::string include_file(const std::string& filename);
 
   /**
-   * You know, when I started working on Thrift I really thought it wasn't going
-   * to become a programming language because it was just a generator and it
-   * wouldn't need runtime type information and all that jazz. But then we
-   * decided to add constants, and all of a sudden that means runtime type
-   * validation and inference, except the "runtime" is the code generator
-   * runtime. Shit. I've been had.
-   */
-  void validate_const_rec(
-      std::string name, const t_type* type, t_const_value* value);
-
-  /**
    * Check the type of the parsed const information against its declared type
    */
   void validate_const_type(t_const* c);
-
-  /**
-   * Check the type of a default value assigned to a field.
-   */
-  void validate_field_value(t_field* field, t_const_value* cv);
 
   /**
    * Check that the constant name does not refer to an ambiguous enum.

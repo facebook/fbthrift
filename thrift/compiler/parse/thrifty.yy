@@ -1168,7 +1168,6 @@ Field:
       $$ = new t_field(std::move($4), std::move($5), id, $2 != boost::none);
       $$->set_qualifier($3);
       if ($7 != nullptr) {
-        driver.validate_field_value($$, $7);
         $$->set_default_value(own($7));
       }
       driver.finish_node($$, LineType::Field, own($1), own($8));
