@@ -198,6 +198,13 @@ class MetadataTests(unittest.TestCase):
         self.assertIsNotNone(parent)
         self.assertEqual(parent.name, "testing.TestingService")
 
+
+        streamFunc, *rest = serv2.functions
+        self.assertEqual(
+            streamFunc.return_type.as_stream().elemType.as_primitive(),
+            ThriftPrimitiveType.THRIFT_I32_TYPE,
+        )
+
     def test_metadata_structured_annotations(self) -> None:
         annotations = gen_metadata(TestingService).structuredAnnotations
         self.assertEqual(len(annotations), 1)

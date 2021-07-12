@@ -339,4 +339,5 @@ service TestingService {
 } (fun_times = "yes",single_quote = "'",double_quotes = '"""',py3.pass_context,)
 
 service TestingServiceChild extends TestingService {
+  stream<i32> stream_func();
 }

@@ -122,13 +122,13 @@ class ThriftTypedefProxy(ThriftTypeProxy):
 class ThriftSinkProxy(ThriftTypeProxy):
     thriftType: ThriftSinkType
     elemType: ThriftTypeProxy
-    initialResponseType: ThriftTypeProxy
+    initialResponseType: Optional[ThriftTypeProxy]
+    finalResponseType: Optional[ThriftTypeProxy]
 
 class ThriftStreamProxy(ThriftTypeProxy):
     thriftType: ThriftStreamType
     elemType: ThriftTypeProxy
-    finalResponseType: ThriftTypeProxy
-    initialResponseType: ThriftTypeProxy
+    initialResponseType: Optional[ThriftTypeProxy]
 
 class ThriftFieldProxy(Protocol):
     id: int

@@ -215,25 +215,28 @@ cdef class ThriftTypedefProxy(ThriftTypeProxy):
 cdef class ThriftSinkProxy(ThriftTypeProxy):
     cdef readonly ThriftTypeProxy elemType
     cdef readonly ThriftTypeProxy initialResponseType
+    cdef readonly ThriftTypeProxy finalResponseType
 
     def __init__(self, ThriftSinkType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.SINK
         self.elemType = ThriftTypeProxy.create(self.thriftType.elemType, self.thriftMeta)
-        self.initialResponseType = ThriftTypeProxy.create(self.thriftType.initialResponseType, self.thriftMeta)
+        if self.thriftType.initialResponseType is not None:
+            self.initialResponseType = ThriftTypeProxy.create(self.thriftType.initialResponseType, self.thriftMeta)
+        if self.thriftType.finalResponseType is not None:
+            self.finalResponseType = ThriftTypeProxy.create(self.thriftType.finalResponseType, self.thriftMeta)
 
 
 cdef class ThriftStreamProxy(ThriftTypeProxy):
     cdef readonly ThriftTypeProxy elemType
-    cdef readonly ThriftTypeProxy finalResponseType
     cdef readonly ThriftTypeProxy initialResponseType
 
     def __init__(self, ThriftStreamType thriftType not None, ThriftMetadata thriftMeta not None):
         super().__init__(thriftType, thriftMeta)
         self.kind = ThriftKind.STREAM
         self.elemType = ThriftTypeProxy.create(self.thriftType.elemType, self.thriftMeta)
-        self.finalResponseType = ThriftTypeProxy.create(self.thriftType.finalResponseType, self.thriftMeta)
-        self.initialResponseType = ThriftTypeProxy.create(self.thriftType.initialResponseType, self.thriftMeta)
+        if self.thriftType.initialResponseType is not None:
+            self.initialResponseType = ThriftTypeProxy.create(self.thriftType.initialResponseType, self.thriftMeta)
 
 
 cdef class ThriftFieldProxy:
