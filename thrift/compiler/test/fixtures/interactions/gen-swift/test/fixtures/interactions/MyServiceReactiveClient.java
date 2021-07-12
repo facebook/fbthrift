@@ -272,7 +272,7 @@ public class MyServiceReactiveClient
                   java.util.Collections.emptyMap());
 
           return _rpc
-              .singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap()));
+              .singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap(), java.util.Collections.emptyMap()));
         });
     }
 
@@ -336,7 +336,7 @@ public class MyServiceReactiveClient
               .singleRequestStreamingResponse(_crp, rpcOptions)
               .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
               .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-              .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Boolean>)_p.getData()).getData(), _p.getHeaders()));
+              .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Boolean>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
         });
     }
 
@@ -512,7 +512,7 @@ public class MyServiceReactiveClient
                   java.util.Collections.emptyMap());
 
           return _rpc
-              .singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap()));
+              .singleRequestNoResponse(_crp, rpcOptions).thenReturn(ResponseWrapper.create(null, java.util.Collections.emptyMap(), java.util.Collections.emptyMap()));
         });
     }
 
@@ -576,7 +576,7 @@ public class MyServiceReactiveClient
               .singleRequestStreamingResponse(_crp, rpcOptions)
               .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
               .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-              .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Boolean>)_p.getData()).getData(), _p.getHeaders()));
+              .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Boolean>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
         });
     }
 

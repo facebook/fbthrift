@@ -196,7 +196,7 @@ public class PubSubStreamingServiceReactiveClient
                 .singleRequestStreamingResponse(_crp, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       });
   }
 
@@ -265,7 +265,7 @@ public class PubSubStreamingServiceReactiveClient
                 .singleRequestStreamingResponse(_crp, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       });
   }
 
@@ -334,7 +334,7 @@ public class PubSubStreamingServiceReactiveClient
                 .singleRequestStreamingResponse(_crp, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       });
   }
 
@@ -415,7 +415,7 @@ public class PubSubStreamingServiceReactiveClient
             return _rpc
                 .singleRequestStreamingResponse(_crp, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Integer,Integer>)_p.getData()), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Integer,Integer>)_p.getData()), _p.getHeaders(), _p.getBinaryHeaders()));
       });
   }
 
@@ -493,7 +493,7 @@ public class PubSubStreamingServiceReactiveClient
                 .singleRequestStreamingResponse(_crp, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, Integer>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       });
   }
 

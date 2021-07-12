@@ -185,7 +185,7 @@ public class SinkServiceReactiveClient
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       }).single();
   }
 
@@ -282,7 +282,7 @@ public class SinkServiceReactiveClient
                 .streamingRequestStreamingResponse(_sink, rpcOptions)
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>)_p.getData()), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<test.fixtures.sink.InitialResponse,test.fixtures.sink.FinalResponse>)_p.getData()), _p.getHeaders(), _p.getBinaryHeaders()));
       });
   }
 
@@ -366,7 +366,7 @@ public class SinkServiceReactiveClient
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       }).single();
   }
 
@@ -450,7 +450,7 @@ public class SinkServiceReactiveClient
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       }).single();
   }
 
@@ -534,7 +534,7 @@ public class SinkServiceReactiveClient
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       }).single();
   }
 
@@ -618,7 +618,7 @@ public class SinkServiceReactiveClient
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       }).single();
   }
 
@@ -702,7 +702,7 @@ public class SinkServiceReactiveClient
                 .doOnNext(_p -> {if(_p.getException() != null) throw reactor.core.Exceptions.propagate(_p.getException());})
                 .limitRequest(2)
                 .filter((_p) -> ((com.facebook.thrift.model.StreamResponse)_p.getData()).isSetData())
-                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders()));
+                .map(_p -> ResponseWrapper.create(((com.facebook.thrift.model.StreamResponse<Void, test.fixtures.sink.FinalResponse>)_p.getData()).getData(), _p.getHeaders(), _p.getBinaryHeaders()));
       }).single();
   }
 
