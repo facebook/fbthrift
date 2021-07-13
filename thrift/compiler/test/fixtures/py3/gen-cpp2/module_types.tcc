@@ -222,7 +222,7 @@ void OptionalRefStruct::readNoXfer(Protocol_* iprot) {
   }
 _readField_optional_blob:
   {
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::IOBufPtr>::readWithContext(*iprot, this->optional_blob, _readState);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, std::unique_ptr<folly::IOBuf>>::readWithContext(*iprot, this->optional_blob, _readState);
     
   }
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -278,7 +278,7 @@ uint32_t OptionalRefStruct::serializedSize(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("OptionalRefStruct");
   if (this->__isset.optional_blob) {
     xfer += prot_->serializedFieldSize("optional_blob", apache::thrift::protocol::T_STRING, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::IOBufPtr>::serializedSize<false>(*prot_, this->optional_blob);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, std::unique_ptr<folly::IOBuf>>::serializedSize<false>(*prot_, this->optional_blob);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -292,7 +292,7 @@ uint32_t OptionalRefStruct::serializedSizeZC(Protocol_ const* prot_) const {
   xfer += prot_->serializedStructSize("OptionalRefStruct");
   if (this->__isset.optional_blob) {
     xfer += prot_->serializedFieldSize("optional_blob", apache::thrift::protocol::T_STRING, 1);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::IOBufPtr>::serializedSize<true>(*prot_, this->optional_blob);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, std::unique_ptr<folly::IOBuf>>::serializedSize<true>(*prot_, this->optional_blob);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -309,7 +309,7 @@ uint32_t OptionalRefStruct::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, kPrevFieldId>(*prot_, "optional_blob", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::IOBufPtr>::write(*prot_, this->optional_blob);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, std::unique_ptr<folly::IOBuf>>::write(*prot_, this->optional_blob);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -881,7 +881,7 @@ _readField_cdef:
   }
 _readField_bytes_with_cpp_type:
   {
-    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::foo_bar>::readWithContext(*iprot, this->bytes_with_cpp_type, _readState);
+    ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, foo::Bar>::readWithContext(*iprot, this->bytes_with_cpp_type, _readState);
     
   }
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1033,7 +1033,7 @@ uint32_t ComplexStruct::serializedSize(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("bytes_with_cpp_type", apache::thrift::protocol::T_STRING, 9);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::foo_bar>::serializedSize<false>(*prot_, this->bytes_with_cpp_type);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, foo::Bar>::serializedSize<false>(*prot_, this->bytes_with_cpp_type);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -1079,7 +1079,7 @@ uint32_t ComplexStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   {
     xfer += prot_->serializedFieldSize("bytes_with_cpp_type", apache::thrift::protocol::T_STRING, 9);
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::foo_bar>::serializedSize<true>(*prot_, this->bytes_with_cpp_type);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, foo::Bar>::serializedSize<true>(*prot_, this->bytes_with_cpp_type);
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
@@ -1152,7 +1152,7 @@ uint32_t ComplexStruct::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 8;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 9, kPrevFieldId>(*prot_, "bytes_with_cpp_type", previousFieldHasValue);
     previousFieldHasValue = true;
-    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::foo_bar>::write(*prot_, this->bytes_with_cpp_type);
+    xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, foo::Bar>::write(*prot_, this->bytes_with_cpp_type);
     xfer += prot_->writeFieldEnd();
   }
   xfer += prot_->writeFieldStop();
@@ -1192,7 +1192,7 @@ void BinaryUnion::readNoXfer(Protocol_* iprot) {
       {
         if (_readState.isCompatibleWithType(iprot, apache::thrift::protocol::T_STRING)) {
           this->set_iobuf_val();
-          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::IOBuf>::readWithContext(*iprot, value_.iobuf_val, _readState);
+          ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, folly::IOBuf>::readWithContext(*iprot, value_.iobuf_val, _readState);
           
         } else {
           _readState.skip(iprot);
@@ -1222,7 +1222,7 @@ uint32_t BinaryUnion::serializedSize(Protocol_ const* prot_) const {
     case BinaryUnion::Type::iobuf_val:
     {
       xfer += prot_->serializedFieldSize("iobuf_val", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::IOBuf>::serializedSize<false>(*prot_, value_.iobuf_val);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, folly::IOBuf>::serializedSize<false>(*prot_, value_.iobuf_val);
       break;
     }
     case BinaryUnion::Type::__EMPTY__:;
@@ -1239,7 +1239,7 @@ uint32_t BinaryUnion::serializedSizeZC(Protocol_ const* prot_) const {
     case BinaryUnion::Type::iobuf_val:
     {
       xfer += prot_->serializedFieldSize("iobuf_val", apache::thrift::protocol::T_STRING, 1);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::IOBuf>::serializedSize<true>(*prot_, value_.iobuf_val);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, folly::IOBuf>::serializedSize<true>(*prot_, value_.iobuf_val);
       break;
     }
     case BinaryUnion::Type::__EMPTY__:;
@@ -1257,7 +1257,7 @@ uint32_t BinaryUnion::write(Protocol_* prot_) const {
     {
       constexpr int16_t kPrevFieldId = 0;
       xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 1, kPrevFieldId>(*prot_, "iobuf_val", false);
-      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::IOBuf>::write(*prot_, value_.iobuf_val);
+      xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, folly::IOBuf>::write(*prot_, value_.iobuf_val);
       xfer += prot_->writeFieldEnd();
       break;
     }
