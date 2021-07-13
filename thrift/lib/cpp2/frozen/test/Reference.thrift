@@ -26,6 +26,7 @@ struct SimpleRef {
   2: Person c2u (cpp2.ref_type = "unique");
   3: Person c1r (cpp.ref = "true");
   4: Person c2r (cpp2.ref = "true");
+  9: Person c2sc (cpp2.ref_type = "shared_const");
   5: optional Person c2s_opt (cpp2.ref_type = "shared");
   6: optional Person c2u_opt (cpp2.ref_type = "unique");
   7: optional Person c1r_opt (cpp.ref = "true");

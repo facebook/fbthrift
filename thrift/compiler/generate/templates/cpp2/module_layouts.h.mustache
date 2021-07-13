@@ -31,11 +31,11 @@ namespace apache { namespace thrift { namespace frozen {
 <%^struct:union?%>
 FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %><%#struct:fields%>
-  FROZEN_FIELD<% > common/field_suffix%>(<%field:cpp_name%>, <%field:key%>, <%#field:type%><%type:cpp_type%><%/field:type%>)<%!
+  FROZEN_FIELD<% > common/field_suffix%>(<%field:cpp_name%>, <%field:key%>, <%#field:type%><%field:cpp_storage_type%><%/field:type%>)<%!
 %><%/struct:fields%>
   FROZEN_VIEW(<%!
 %><%#struct:fields%>
-    FROZEN_VIEW_FIELD<% > common/field_suffix%>(<%field:cpp_name%>, <%#field:type%><%type:cpp_type%><%/field:type%>)<%!
+    FROZEN_VIEW_FIELD<% > common/field_suffix%>(<%field:cpp_name%>, <%#field:type%><%field:cpp_storage_type%><%/field:type%>)<%!
 %><%/struct:fields%>)
   FROZEN_SAVE_INLINE(<%!
 %><%#struct:fields%>
@@ -52,7 +52,7 @@ FROZEN_TYPE(<% > common/namespace_cpp2%><%struct:name%>,<%!
 %>
   FROZEN_FIELD(type_, 0, <% > common/namespace_cpp2%><%struct:name%>::Type)<%!
 %><%#struct:fields%>
-  FROZEN_FIELD<% > common/frozen2_union_field_suffix%>(<%field:cpp_name%>, <%field:key%>, <%#field:type%><%type:cpp_type%><%/field:type%>)<%!
+  FROZEN_FIELD<% > common/frozen2_union_field_suffix%>(<%field:cpp_name%>, <%field:key%>, <%#field:type%><%field:cpp_storage_type%><%/field:type%>)<%!
 %><%/struct:fields%>
 <% > module_layouts_h/frozen_view_union%>
   FROZEN_SAVE_INLINE(<%!

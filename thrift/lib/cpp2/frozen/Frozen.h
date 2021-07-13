@@ -468,7 +468,7 @@ class ViewBase {
     return position_.start && !layout_->empty();
   }
 
-  ViewPosition getPosition() { return position_; }
+  ViewPosition getPosition() const { return position_; }
 
   /**
    * thaw this object back into its original, mutable representation.
@@ -729,7 +729,7 @@ class LayoutRoot : public FieldCycleHolder {
       LayoutPosition self,
       FieldPosition fieldPos,
       Field<folly::Optional<T>, Layout>& field,
-      apache::thrift::optional_field_ref<const T&> ref) {
+      optional_field_ref<const T&> ref) {
     return layoutField(
         self, fieldPos, field, ref ? folly::make_optional(*ref) : folly::none);
   }
@@ -850,7 +850,7 @@ class FreezeRoot {
   void freezeOptionalField(
       FreezePosition self,
       const Field<folly::Optional<T>, Layout>& field,
-      apache::thrift::optional_field_ref<const T&> ref) {
+      optional_field_ref<const T&> ref) {
     freezeField(self, field, ref ? folly::make_optional(*ref) : folly::none);
   }
 
@@ -1035,13 +1035,22 @@ template <class T>
 void thawField(
     ViewPosition self,
     const Field<folly::Optional<T>>& f,
-    apache::thrift::optional_field_ref<T&> out) {
+    optional_field_ref<T&> ref) {
   folly::Optional<T> opt;
   f.layout.thaw(self(f.pos), opt);
   if (opt) {
-    out = opt.value();
+    ref = opt.value();
   } else {
-    out.reset();
+    ref.reset();
+  }
+}
+
+template <class T>
+void thawField(ViewPosition self, const Field<T>& f, field_ref<T&> ref) {
+  if (f.layout.empty()) {
+    unset_unsafe(ref);
+  } else {
+    f.layout.thaw(self(f.pos), ref.ensure());
   }
 }
 
