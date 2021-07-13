@@ -225,10 +225,10 @@ class THeader {
   void setHeader(const std::string& key, std::string&& value);
   void setHeader(
       const char* key, size_t keyLength, const char* value, size_t valueLength);
-  void eraseHeader(const std::string& key);
   void setHeaders(StringToStringMap&&);
   void clearHeaders();
   bool isWriteHeadersEmpty();
+  StringToStringMap& mutableWriteHeaders();
   StringToStringMap releaseWriteHeaders();
   StringToStringMap extractAllWriteHeaders();
   const StringToStringMap& getWriteHeaders() const;
@@ -410,8 +410,8 @@ class THeader {
   std::vector<uint16_t> writeTrans_;
 
   // Map to use for headers
-  std::optional<StringToStringMap> readHeaders_;
-  std::optional<StringToStringMap> writeHeaders_;
+  StringToStringMap readHeaders_;
+  StringToStringMap writeHeaders_;
 
   // Won't be cleared when flushing
   StringToStringMap* extraWriteHeaders_{nullptr};
@@ -461,8 +461,6 @@ class THeader {
 
  private:
   std::optional<std::string> extractHeader(std::string_view key);
-  StringToStringMap& ensureReadHeaders();
-  StringToStringMap& ensureWriteHeaders();
 };
 
 } // namespace transport

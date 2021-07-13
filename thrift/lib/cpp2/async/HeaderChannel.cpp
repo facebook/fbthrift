@@ -60,9 +60,8 @@ void HeaderChannel::addRpcOptionHeaders(
 
 void HeaderChannel::preprocessHeader(
     apache::thrift::transport::THeader* header) {
-  for (const auto& it : persistentWriteHeaders_) {
-    header->setHeader(it.first, it.second);
-  }
+  header->mutableWriteHeaders().insert(
+      persistentWriteHeaders_.begin(), persistentWriteHeaders_.end());
 
   if (compressionConfig_ && !header->getDesiredCompressionConfig()) {
     header->setDesiredCompressionConfig(*compressionConfig_);
