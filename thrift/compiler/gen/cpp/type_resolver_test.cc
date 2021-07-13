@@ -170,7 +170,7 @@ TEST_F(TypeResolverTest, TypeDefs_Adapter) {
   // Type defs can refer to adatped types.
   t_typedef ttypedef1(&program_, "MyHash", ui64);
   // It does not affect the type name.
-  EXPECT_EQ(get_standard_type_name(ttypedef1), "uint64_t");
+  EXPECT_EQ(get_standard_type_name(ttypedef1), "::path::to::MyHash");
   EXPECT_EQ(get_type_name(ttypedef1), "::path::to::MyHash");
   // It is the refered to type that has the adapter.
   EXPECT_EQ(
@@ -180,7 +180,7 @@ TEST_F(TypeResolverTest, TypeDefs_Adapter) {
   // Type defs can also be adapted.
   t_typedef ttypedef2(ttypedef1);
   ttypedef2.set_annotation("cpp.adapter", "TypeDefAdapter");
-  EXPECT_EQ(get_standard_type_name(ttypedef2), "uint64_t");
+  EXPECT_EQ(get_standard_type_name(ttypedef2), "::path::to::MyHash");
   EXPECT_EQ(
       get_type_name(ttypedef2),
       "::apache::thrift::adapt_detail::adapted_t<TypeDefAdapter, ::path::to::MyHash>");
@@ -350,14 +350,10 @@ TEST_F(TypeResolverTest, Typedef_cpptemplate) {
   // TODO(afuller): Consider making the template annotation propagate through
   // the typedef.
   EXPECT_EQ(get_type_name(iumap), "::path::to::iumap");
-  EXPECT_EQ(
-      get_standard_type_name(iumap),
-      "::std::map<::std::int32_t, ::std::string>");
+  EXPECT_EQ(get_standard_type_name(iumap), "::path::to::iumap");
 
   EXPECT_EQ(get_type_name(tiumap), "::path::to::tiumap");
-  EXPECT_EQ(
-      get_standard_type_name(tiumap),
-      "::std::map<::std::int32_t, ::std::string>");
+  EXPECT_EQ(get_standard_type_name(tiumap), "::path::to::tiumap");
 }
 
 TEST_F(TypeResolverTest, Typedef_cpptype) {
@@ -384,9 +380,7 @@ TEST_F(TypeResolverTest, Typedef_cpptype) {
       "std::unorderd_map<::std::int32_t, ::std::string>");
 
   EXPECT_EQ(get_type_name(tiumap), "::path::to::tiumap");
-  EXPECT_EQ(
-      get_standard_type_name(tiumap),
-      "std::unorderd_map<::std::int32_t, ::std::string>");
+  EXPECT_EQ(get_standard_type_name(tiumap), "::path::to::tiumap");
 }
 
 TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
@@ -416,7 +410,11 @@ TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
       &program_, "AdaptedTypeTypeDef", adapated_type);
   EXPECT_EQ(
       get_type_name(adapted_type_typedef), "::path::to::AdaptedTypeTypeDef");
-  EXPECT_EQ(get_standard_type_name(adapted_type_typedef), "folly::IOBuf");
+  // TODO(afuller): The standard type cannot include the adapter, but
+  // referincing the typedef includes it. This should just be folly::IOBuf.
+  EXPECT_EQ(
+      get_standard_type_name(adapted_type_typedef),
+      "::path::to::AdaptedTypeTypeDef");
 
   // Use the alias for the adapted type for field 1.
   // 1: AdaptedTypeTypeDef field1
@@ -435,7 +433,11 @@ TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
   EXPECT_EQ(
       get_type_name(adapted_typedef),
       "::apache::thrift::adapt_detail::adapted_t<MyAdapter2, ::path::to::AdaptedTypeDef>");
-  EXPECT_EQ(get_standard_type_name(adapted_typedef), "folly::IOBuf");
+  // Unlike adapted_type_typedef above, the typedef does not include the
+  // adapter, so using it as the standard name is OK; though, folly::IOBuf would
+  // be a better result.
+  EXPECT_EQ(
+      get_standard_type_name(adapted_typedef), "::path::to::AdaptedTypeDef");
 
   // 2: AdaptedTypeDef field2
   t_field field2(adapted_typedef, "field2", 2);

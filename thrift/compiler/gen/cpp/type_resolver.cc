@@ -107,35 +107,11 @@ const std::string& type_resolver::default_type(t_base_type::type btype) {
 }
 
 std::string type_resolver::gen_type(const t_type* node) {
-  std::string name;
-  // Find the base name.
-  if (const auto* type = find_type(node)) {
-    // Use the override.
-    name = *type;
-  } else {
-    // Use the unmodified name.
-    name = gen_raw_type_name(node, &type_resolver::get_type_name);
-  }
-
-  // Adapt the base name.
+  std::string type = gen_type_impl(node, &type_resolver::get_type_name);
   if (const auto* adapter = find_adapter(node)) {
-    name = gen_adapted_type(*adapter, std::move(name));
+    return gen_adapted_type(*adapter, std::move(type));
   }
-  return name;
-}
-
-std::string type_resolver::gen_standard_type(const t_type* node) {
-  if (const auto* type = find_type(node)) {
-    // Return the override.
-    return *type;
-  }
-
-  if (const auto* ttypedef = dynamic_cast<const t_typedef*>(node)) {
-    // Traverse the typedef.
-    return get_standard_type_name(ttypedef->get_type());
-  }
-
-  return gen_raw_type_name(node, &type_resolver::get_standard_type_name);
+  return type;
 }
 
 std::string type_resolver::gen_storage_type(
@@ -157,8 +133,13 @@ std::string type_resolver::gen_storage_type(
   }
 }
 
-std::string type_resolver::gen_raw_type_name(
+std::string type_resolver::gen_type_impl(
     const t_type* node, type_resolve_fn resolve_fn) {
+  if (const auto* type = find_type(node)) {
+    // Return the override.
+    return *type;
+  }
+
   // Base types have fixed type mappings.
   if (const auto* tbase_type = dynamic_cast<const t_base_type*>(node)) {
     return default_type(tbase_type->base_type());

@@ -90,11 +90,13 @@ class type_resolver {
 
   // Generatating functions.
   std::string gen_type(const t_type* node);
-  std::string gen_standard_type(const t_type* node);
+  std::string gen_standard_type(const t_type* node) {
+    return gen_type_impl(node, &type_resolver::get_standard_type_name);
+  }
   std::string gen_storage_type(
       const std::pair<const t_type*, reference_type>& ref_type);
 
-  std::string gen_raw_type_name(const t_type* node, type_resolve_fn resolve_fn);
+  std::string gen_type_impl(const t_type* node, type_resolve_fn resolve_fn);
   std::string gen_container_type(
       const t_container* node, type_resolve_fn resolve_fn);
   std::string gen_sink_type(const t_sink* node, type_resolve_fn resolve_fn);
