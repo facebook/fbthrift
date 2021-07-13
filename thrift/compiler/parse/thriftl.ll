@@ -38,8 +38,6 @@
 
 #include "thrift/compiler/parse/parsing_driver.h"
 
-using parsing_driver = apache::thrift::compiler::parsing_driver;
-
 /**
  * Note macro expansion because this is different between OSS and internal
  * build, sigh.
@@ -48,13 +46,21 @@ using parsing_driver = apache::thrift::compiler::parsing_driver;
 
 YY_DECL;
 
-static void integer_overflow(parsing_driver& driver, char* text) {
+namespace {
+
+using apache::thrift::compiler::parsing_driver;
+
+void integer_overflow(parsing_driver& driver, const char* text) {
   driver.failure([&](auto& o) { o << "This integer is too big: " << text << "\n"; });
 }
 
-static void unexpected_token(parsing_driver& driver, char* text) {
+void unexpected_token(parsing_driver& driver, const char* text) {
   driver.failure([&](auto& o) { o << "Unexpected token in input: " << text << "\n"; });
 }
+
+#define YY_USER_ACTION driver.compute_location(*yylloc, yytext);
+
+} // namespace
 
 %}
 

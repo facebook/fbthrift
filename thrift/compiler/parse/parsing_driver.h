@@ -52,7 +52,7 @@
 
 namespace {
 
-/** ~U.
+/**
  * YYLTYPE evaluates to a class named 'location', which has:
  *   position begin;
  *   position end;
@@ -388,6 +388,45 @@ class parsing_driver {
       std::unique_ptr<t_def_attrs> attrs,
       std::unique_ptr<t_function_list> functions,
       std::unique_ptr<t_annotations> annotations);
+
+  bool is_white_space(const char& c) {
+    return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+  }
+
+  void compute_location(YYLTYPE& yylloc, const char* text) {
+    /* Only computing locations during second pass. */
+    if (mode != parsing_mode::PROGRAM) {
+      return;
+    }
+
+    int i = 0;
+
+    /* Updating current begin to previous end. */
+    yylloc.begin = yylloc.end;
+
+    /* Getting rid of useless whitespaces on begin position. */
+    for (; is_white_space(text[i]); i++) {
+      if (text[i] == '\n') {
+        yylloc.begin.line++;
+        yylloc.begin.column = 1;
+      } else {
+        yylloc.begin.column++;
+      }
+    }
+
+    /* Avoid scanning whitespaces twice. */
+    yylloc.end = yylloc.begin;
+
+    /* Updating current end position. */
+    for (; text[i] != '\0'; i++) {
+      if (text[i] == '\n') {
+        yylloc.end.line++;
+        yylloc.end.column = 1;
+      } else {
+        yylloc.end.column++;
+      }
+    }
+  }
 
   // Populate the annotation on the given node.
   static void set_annotations(
