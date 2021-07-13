@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -120,8 +119,7 @@ class InitialResponse:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class FinalResponse:
   """
@@ -208,8 +206,7 @@ class FinalResponse:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class SinkPayload:
   """
@@ -296,8 +293,7 @@ class SinkPayload:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class CompatibleWithKeywordSink:
   """
@@ -384,8 +380,7 @@ class CompatibleWithKeywordSink:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class InitialException(TException):
   """
@@ -479,8 +474,7 @@ class InitialException(TException):
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class SinkException1(TException):
   """
@@ -574,8 +568,7 @@ class SinkException1(TException):
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class SinkException2(TException):
   """
@@ -669,8 +662,7 @@ class SinkException2(TException):
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(InitialResponse)
 InitialResponse.thrift_spec = (

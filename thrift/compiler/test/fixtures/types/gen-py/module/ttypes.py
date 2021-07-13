@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -171,8 +170,7 @@ class decorated_struct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class ContainerStruct:
   """
@@ -212,7 +210,7 @@ class ContainerStruct:
           self.fieldA = []
           (_etype3, _size0) = iprot.readListBegin()
           if _size0 >= 0:
-            for _i4 in six.moves.range(_size0):
+            for _i4 in range(_size0):
               _elem5 = iprot.readI32()
               self.fieldA.append(_elem5)
           else: 
@@ -227,7 +225,7 @@ class ContainerStruct:
           self.fieldB = []
           (_etype10, _size7) = iprot.readListBegin()
           if _size7 >= 0:
-            for _i11 in six.moves.range(_size7):
+            for _i11 in range(_size7):
               _elem12 = iprot.readI32()
               self.fieldB.append(_elem12)
           else: 
@@ -242,7 +240,7 @@ class ContainerStruct:
           self.fieldC = []
           (_etype17, _size14) = iprot.readListBegin()
           if _size14 >= 0:
-            for _i18 in six.moves.range(_size14):
+            for _i18 in range(_size14):
               _elem19 = iprot.readI32()
               self.fieldC.append(_elem19)
           else: 
@@ -257,7 +255,7 @@ class ContainerStruct:
           self.fieldD = []
           (_etype24, _size21) = iprot.readListBegin()
           if _size21 >= 0:
-            for _i25 in six.moves.range(_size21):
+            for _i25 in range(_size21):
               _elem26 = iprot.readI32()
               self.fieldD.append(_elem26)
           else: 
@@ -272,7 +270,7 @@ class ContainerStruct:
           self.fieldE = []
           (_etype31, _size28) = iprot.readListBegin()
           if _size28 >= 0:
-            for _i32 in six.moves.range(_size28):
+            for _i32 in range(_size28):
               _elem33 = iprot.readI32()
               self.fieldE.append(_elem33)
           else: 
@@ -287,7 +285,7 @@ class ContainerStruct:
           self.fieldF = set()
           (_etype38, _size35) = iprot.readSetBegin()
           if _size35 >= 0:
-            for _i39 in six.moves.range(_size35):
+            for _i39 in range(_size35):
               _elem40 = iprot.readI32()
               self.fieldF.add(_elem40)
           else: 
@@ -302,7 +300,7 @@ class ContainerStruct:
           self.fieldG = {}
           (_ktype43, _vtype44, _size42 ) = iprot.readMapBegin() 
           if _size42 >= 0:
-            for _i46 in six.moves.range(_size42):
+            for _i46 in range(_size42):
               _key47 = iprot.readI32()
               _val48 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               self.fieldG[_key47] = _val48
@@ -319,7 +317,7 @@ class ContainerStruct:
           self.fieldH = {}
           (_ktype52, _vtype53, _size51 ) = iprot.readMapBegin() 
           if _size51 >= 0:
-            for _i55 in six.moves.range(_size51):
+            for _i55 in range(_size51):
               _key56 = iprot.readI32()
               _val57 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               self.fieldH[_key56] = _val57
@@ -452,8 +450,7 @@ class ContainerStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class CppTypeStruct:
   """
@@ -486,7 +483,7 @@ class CppTypeStruct:
           self.fieldA = []
           (_etype73, _size70) = iprot.readListBegin()
           if _size70 >= 0:
-            for _i74 in six.moves.range(_size70):
+            for _i74 in range(_size70):
               _elem75 = iprot.readI32()
               self.fieldA.append(_elem75)
           else: 
@@ -538,8 +535,7 @@ class CppTypeStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class VirtualStruct:
   """
@@ -611,8 +607,7 @@ class VirtualStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class MyStructWithForwardRefEnum:
   """
@@ -698,8 +693,7 @@ class MyStructWithForwardRefEnum:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class TrivialNumeric:
   """
@@ -785,8 +779,7 @@ class TrivialNumeric:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class TrivialNestedWithDefault:
   """
@@ -873,8 +866,7 @@ class TrivialNestedWithDefault:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class ComplexString:
   """
@@ -913,7 +905,7 @@ class ComplexString:
           self.b = {}
           (_ktype79, _vtype80, _size78 ) = iprot.readMapBegin() 
           if _size78 >= 0:
-            for _i82 in six.moves.range(_size78):
+            for _i82 in range(_size78):
               _key83 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               _val84 = iprot.readI32()
               self.b[_key83] = _val84
@@ -976,8 +968,7 @@ class ComplexString:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class ComplexNestedWithDefault:
   """
@@ -1064,8 +1055,7 @@ class ComplexNestedWithDefault:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class MinPadding:
   """
@@ -1193,8 +1183,7 @@ class MinPadding:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class MyStruct:
   """
@@ -1309,8 +1298,7 @@ class MyStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class MyDataItem:
 
@@ -1364,8 +1352,7 @@ class MyDataItem:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class Renaming:
   """
@@ -1437,8 +1424,7 @@ class Renaming:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class AnnotatedTypes:
   """
@@ -1477,11 +1463,11 @@ class AnnotatedTypes:
           self.list_field = []
           (_etype92, _size89) = iprot.readListBegin()
           if _size89 >= 0:
-            for _i93 in six.moves.range(_size89):
+            for _i93 in range(_size89):
               _elem94 = {}
               (_ktype96, _vtype97, _size95 ) = iprot.readMapBegin() 
               if _size95 >= 0:
-                for _i99 in six.moves.range(_size95):
+                for _i99 in range(_size95):
                   _key100 = iprot.readI32()
                   _val101 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
                   _elem94[_key100] = _val101
@@ -1497,7 +1483,7 @@ class AnnotatedTypes:
               _elem104 = {}
               (_ktype106, _vtype107, _size105 ) = iprot.readMapBegin() 
               if _size105 >= 0:
-                for _i109 in six.moves.range(_size105):
+                for _i109 in range(_size105):
                   _key110 = iprot.readI32()
                   _val111 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
                   _elem104[_key110] = _val111
@@ -1565,8 +1551,7 @@ class AnnotatedTypes:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class ForwardUsageRoot:
   """
@@ -1654,8 +1639,7 @@ class ForwardUsageRoot:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class ForwardUsageStruct:
   """
@@ -1728,8 +1712,7 @@ class ForwardUsageStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class ForwardUsageByRef:
   """
@@ -1802,8 +1785,7 @@ class ForwardUsageByRef:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class NoexceptMoveEmpty:
 
@@ -1857,8 +1839,7 @@ class NoexceptMoveEmpty:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class NoexceptMoveSimpleStruct:
   """
@@ -1930,8 +1911,7 @@ class NoexceptMoveSimpleStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class NoexceptMoveComplexStruct:
   """
@@ -2007,7 +1987,7 @@ class NoexceptMoveComplexStruct:
           self.MyBinaryListField4 = []
           (_etype120, _size117) = iprot.readListBegin()
           if _size117 >= 0:
-            for _i121 in six.moves.range(_size117):
+            for _i121 in range(_size117):
               _elem122 = iprot.readString()
               self.MyBinaryListField4.append(_elem122)
           else: 
@@ -2022,7 +2002,7 @@ class NoexceptMoveComplexStruct:
           self.MyMapEnumAndInt = {}
           (_ktype125, _vtype126, _size124 ) = iprot.readMapBegin() 
           if _size124 >= 0:
-            for _i128 in six.moves.range(_size124):
+            for _i128 in range(_size124):
               _key129 = iprot.readI32()
               _val130 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               self.MyMapEnumAndInt[_key129] = _val130
@@ -2144,8 +2124,7 @@ class NoexceptMoveComplexStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class NoExceptMoveUnion(object):
   """
@@ -2296,7 +2275,7 @@ class AllocatorAware:
           self.aa_list = []
           (_etype139, _size136) = iprot.readListBegin()
           if _size136 >= 0:
-            for _i140 in six.moves.range(_size136):
+            for _i140 in range(_size136):
               _elem141 = iprot.readI32()
               self.aa_list.append(_elem141)
           else: 
@@ -2311,7 +2290,7 @@ class AllocatorAware:
           self.aa_set = set()
           (_etype146, _size143) = iprot.readSetBegin()
           if _size143 >= 0:
-            for _i147 in six.moves.range(_size143):
+            for _i147 in range(_size143):
               _elem148 = iprot.readI32()
               self.aa_set.add(_elem148)
           else: 
@@ -2326,7 +2305,7 @@ class AllocatorAware:
           self.aa_map = {}
           (_ktype151, _vtype152, _size150 ) = iprot.readMapBegin() 
           if _size150 >= 0:
-            for _i154 in six.moves.range(_size150):
+            for _i154 in range(_size150):
               _key155 = iprot.readI32()
               _val156 = iprot.readI32()
               self.aa_map[_key155] = _val156
@@ -2429,8 +2408,7 @@ class AllocatorAware:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class AllocatorAware2:
   """
@@ -2502,8 +2480,7 @@ class AllocatorAware2:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class TypedefStruct:
   """
@@ -2603,8 +2580,7 @@ class TypedefStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class StructWithDoubleUnderscores:
   """
@@ -2676,8 +2652,7 @@ class StructWithDoubleUnderscores:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 TBinary = UnimplementedTypedef()
 IntTypedef = UnimplementedTypedef()

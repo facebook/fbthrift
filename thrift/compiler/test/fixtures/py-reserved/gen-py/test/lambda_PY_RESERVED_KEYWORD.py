@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -155,8 +154,7 @@ class global_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(global_args)
 global_args.thrift_spec = (
@@ -266,8 +264,7 @@ class global_PY_RESERVED_KEYWORD_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(global_PY_RESERVED_KEYWORD_result)
 global_PY_RESERVED_KEYWORD_result.thrift_spec = (
@@ -356,8 +353,7 @@ class import_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(import_args)
 import_args.thrift_spec = (
@@ -455,8 +451,7 @@ class import_PY_RESERVED_KEYWORD_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(import_PY_RESERVED_KEYWORD_result)
 import_PY_RESERVED_KEYWORD_result.thrift_spec = (

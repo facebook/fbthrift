@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -107,7 +106,7 @@ class bounce_map_args:
           self.m = {}
           (_ktype164, _vtype165, _size163 ) = iprot.readMapBegin() 
           if _size163 >= 0:
-            for _i167 in six.moves.range(_size163):
+            for _i167 in range(_size163):
               _key168 = iprot.readI32()
               _val169 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               self.m[_key168] = _val169
@@ -162,8 +161,7 @@ class bounce_map_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(bounce_map_args)
 bounce_map_args.thrift_spec = (
@@ -219,7 +217,7 @@ class bounce_map_result:
           self.success = {}
           (_ktype175, _vtype176, _size174 ) = iprot.readMapBegin() 
           if _size174 >= 0:
-            for _i178 in six.moves.range(_size174):
+            for _i178 in range(_size174):
               _key179 = iprot.readI32()
               _val180 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               self.success[_key179] = _val180
@@ -274,8 +272,7 @@ class bounce_map_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(bounce_map_result)
 bounce_map_result.thrift_spec = (
@@ -330,7 +327,7 @@ class binary_keyed_map_args:
           self.r = []
           (_etype188, _size185) = iprot.readListBegin()
           if _size185 >= 0:
-            for _i189 in six.moves.range(_size185):
+            for _i189 in range(_size185):
               _elem190 = iprot.readI64()
               self.r.append(_elem190)
           else: 
@@ -382,8 +379,7 @@ class binary_keyed_map_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(binary_keyed_map_args)
 binary_keyed_map_args.thrift_spec = (
@@ -439,7 +435,7 @@ class binary_keyed_map_result:
           self.success = {}
           (_ktype194, _vtype195, _size193 ) = iprot.readMapBegin() 
           if _size193 >= 0:
-            for _i197 in six.moves.range(_size193):
+            for _i197 in range(_size193):
               _key198 = iprot.readString()
               _val199 = iprot.readI64()
               self.success[_key198] = _val199
@@ -494,8 +490,7 @@ class binary_keyed_map_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(binary_keyed_map_result)
 binary_keyed_map_result.thrift_spec = (

@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef

@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -215,8 +214,7 @@ class ping_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(ping_args)
 ping_args.thrift_spec = (
@@ -292,8 +290,7 @@ class ping_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(ping_result)
 ping_result.thrift_spec = (
@@ -369,8 +366,7 @@ class getRandomData_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(getRandomData_args)
 getRandomData_args.thrift_spec = (
@@ -466,8 +462,7 @@ class getRandomData_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(getRandomData_result)
 getRandomData_result.thrift_spec = (
@@ -576,8 +571,7 @@ class sink_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(sink_args)
 sink_args.thrift_spec = (
@@ -667,8 +661,7 @@ class sink_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(sink_result)
 sink_result.thrift_spec = (
@@ -780,8 +773,7 @@ class putDataById_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(putDataById_args)
 putDataById_args.thrift_spec = (
@@ -874,8 +866,7 @@ class putDataById_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(putDataById_result)
 putDataById_result.thrift_spec = (
@@ -971,8 +962,7 @@ class hasDataById_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(hasDataById_args)
 hasDataById_args.thrift_spec = (
@@ -1082,8 +1072,7 @@ class hasDataById_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(hasDataById_result)
 hasDataById_result.thrift_spec = (
@@ -1192,8 +1181,7 @@ class getDataById_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(getDataById_args)
 getDataById_args.thrift_spec = (
@@ -1303,8 +1291,7 @@ class getDataById_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(getDataById_result)
 getDataById_result.thrift_spec = (
@@ -1413,8 +1400,7 @@ class deleteDataById_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(deleteDataById_args)
 deleteDataById_args.thrift_spec = (
@@ -1504,8 +1490,7 @@ class deleteDataById_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(deleteDataById_result)
 deleteDataById_result.thrift_spec = (
@@ -1617,8 +1602,7 @@ class lobDataById_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(lobDataById_args)
 lobDataById_args.thrift_spec = (

@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -191,8 +190,7 @@ class Internship:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class Range:
   """
@@ -278,8 +276,7 @@ class Range:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class struct1:
   """
@@ -365,8 +362,7 @@ class struct1:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class struct2:
   """
@@ -418,7 +414,7 @@ class struct2:
           self.d = []
           (_etype3, _size0) = iprot.readListBegin()
           if _size0 >= 0:
-            for _i4 in six.moves.range(_size0):
+            for _i4 in range(_size0):
               _elem5 = iprot.readI32()
               self.d.append(_elem5)
           else: 
@@ -494,8 +490,7 @@ class struct2:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class struct3:
   """
@@ -596,8 +591,7 @@ class struct3:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class struct4:
   """
@@ -697,8 +691,7 @@ class struct4:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class union1(object):
   """

@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -89,7 +88,7 @@ class Foo:
           self.setField = set()
           (_etype3, _size0) = iprot.readSetBegin()
           if _size0 >= 0:
-            for _i4 in six.moves.range(_size0):
+            for _i4 in range(_size0):
               _elem5 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               self.setField.add(_elem5)
           else: 
@@ -104,7 +103,7 @@ class Foo:
           self.optionalSetField = set()
           (_etype10, _size7) = iprot.readSetBegin()
           if _size7 >= 0:
-            for _i11 in six.moves.range(_size7):
+            for _i11 in range(_size7):
               _elem12 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               self.optionalSetField.add(_elem12)
           else: 
@@ -119,12 +118,12 @@ class Foo:
           self.mapField = {}
           (_ktype15, _vtype16, _size14 ) = iprot.readMapBegin() 
           if _size14 >= 0:
-            for _i18 in six.moves.range(_size14):
+            for _i18 in range(_size14):
               _key19 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               _val20 = []
               (_etype24, _size21) = iprot.readListBegin()
               if _size21 >= 0:
-                for _i25 in six.moves.range(_size21):
+                for _i25 in range(_size21):
                   _elem26 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
                   _val20.append(_elem26)
               else: 
@@ -139,7 +138,7 @@ class Foo:
               _val29 = []
               (_etype33, _size30) = iprot.readListBegin()
               if _size30 >= 0:
-                for _i34 in six.moves.range(_size30):
+                for _i34 in range(_size30):
                   _elem35 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
                   _val29.append(_elem35)
               else: 
@@ -156,12 +155,12 @@ class Foo:
           self.optionalMapField = {}
           (_ktype38, _vtype39, _size37 ) = iprot.readMapBegin() 
           if _size37 >= 0:
-            for _i41 in six.moves.range(_size37):
+            for _i41 in range(_size37):
               _key42 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               _val43 = []
               (_etype47, _size44) = iprot.readListBegin()
               if _size44 >= 0:
-                for _i48 in six.moves.range(_size44):
+                for _i48 in range(_size44):
                   _elem49 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
                   _val43.append(_elem49)
               else: 
@@ -176,7 +175,7 @@ class Foo:
               _val52 = []
               (_etype56, _size53) = iprot.readListBegin()
               if _size53 >= 0:
-                for _i57 in six.moves.range(_size53):
+                for _i57 in range(_size53):
                   _elem58 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
                   _val52.append(_elem58)
               else: 
@@ -344,8 +343,7 @@ class Foo:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class Bar:
   """
@@ -395,7 +393,7 @@ class Bar:
           self.structListField = []
           (_etype83, _size80) = iprot.readListBegin()
           if _size80 >= 0:
-            for _i84 in six.moves.range(_size80):
+            for _i84 in range(_size80):
               _elem85 = Foo()
               _elem85.read(iprot)
               _elem85 = my.Adapter1.from_thrift(_elem85)
@@ -414,7 +412,7 @@ class Bar:
           self.optionalStructListField = []
           (_etype90, _size87) = iprot.readListBegin()
           if _size87 >= 0:
-            for _i91 in six.moves.range(_size87):
+            for _i91 in range(_size87):
               _elem92 = Foo()
               _elem92.read(iprot)
               _elem92 = my.Adapter1.from_thrift(_elem92)
@@ -532,8 +530,7 @@ class Bar:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 SetWithAdapter = UnimplementedTypedef()
 ListWithElemAdapter = UnimplementedTypedef()

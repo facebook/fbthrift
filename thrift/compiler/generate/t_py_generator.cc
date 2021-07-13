@@ -928,7 +928,6 @@ string t_py_generator::py_par_warning(string service_tool_name) {
 string t_py_generator::py_imports() {
   string imports = "from __future__ import absolute_import\n";
 
-  imports += "import six\n";
   imports += "import sys\n";
   imports += "from thrift.util.Recursive import fix_spec\n";
   imports += "from thrift.Thrift import TType, TMessageType, TPriority";
@@ -1816,10 +1815,7 @@ void t_py_generator::generate_py_struct_definition(
   indent_up();
   out << indent() << "# Override the __hash__ function for Python3 - t10434117"
       << endl;
-  out << indent() << "if not six.PY2:" << endl;
-  indent_up();
   out << indent() << "__hash__ = object.__hash__" << endl;
-  indent_down();
   out << endl;
 
   indent_down();
@@ -3035,7 +3031,7 @@ void t_py_generator::generate_deserialize_container(
   // For loop iterates over elements
   string i = tmp("_i");
   indent(out) << "if " << size << " >= 0:" << endl
-              << indent() << "  for " << i << " in six.moves.range(" << size
+              << indent() << "  for " << i << " in range(" << size
               << "):" << endl;
 
   indent_up();

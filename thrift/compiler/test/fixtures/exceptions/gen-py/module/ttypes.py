@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -111,8 +110,7 @@ class Fiery(TException):
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class Serious(TException):
   """
@@ -194,8 +192,7 @@ class Serious(TException):
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class ComplexFieldNames(TException):
   """
@@ -291,8 +288,7 @@ class ComplexFieldNames(TException):
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class CustomFieldNames(TException):
   """
@@ -388,8 +384,7 @@ class CustomFieldNames(TException):
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class ExceptionWithPrimitiveField(TException):
   """
@@ -485,8 +480,7 @@ class ExceptionWithPrimitiveField(TException):
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class Banal(TException):
 
@@ -547,8 +541,7 @@ class Banal(TException):
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(Fiery)
 Fiery.thrift_spec = (

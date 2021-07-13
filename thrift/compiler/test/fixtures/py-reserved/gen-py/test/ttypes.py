@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -96,7 +95,7 @@ class def_PY_RESERVED_KEYWORD:
           self.else_PY_RESERVED_KEYWORD = []
           (_etype3, _size0) = iprot.readListBegin()
           if _size0 >= 0:
-            for _i4 in six.moves.range(_size0):
+            for _i4 in range(_size0):
               _elem5 = iprot.readI32()
               self.else_PY_RESERVED_KEYWORD.append(_elem5)
           else: 
@@ -303,8 +302,7 @@ class def_PY_RESERVED_KEYWORD:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(def_PY_RESERVED_KEYWORD)
 def_PY_RESERVED_KEYWORD.thrift_spec = (
