@@ -527,7 +527,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("{{function:javaName}}")
-                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setKind(org.apache.thrift.RpcKind.SINK)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();

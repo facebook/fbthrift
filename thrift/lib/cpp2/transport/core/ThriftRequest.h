@@ -131,8 +131,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
   RpcKind kind() const { return kind_; }
 
   bool isOneway() const final {
-    return kind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
-        kind_ == RpcKind::STREAMING_REQUEST_NO_RESPONSE;
+    return kind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   }
 
   protocol::PROTOCOL_TYPES getProtoId() const {
@@ -601,11 +600,9 @@ class ThriftRequest final : public ThriftRequestCore {
       std::unique_ptr<folly::IOBuf> exbuf) noexcept override {
     switch (kind_) {
       case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-      case RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE:
         sendThriftResponse(std::move(metadata), std::move(exbuf), nullptr);
         break;
       case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-      case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
         sendStreamThriftResponse(
             std::move(metadata),
             std::move(exbuf),

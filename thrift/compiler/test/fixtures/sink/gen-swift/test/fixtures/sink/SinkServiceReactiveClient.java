@@ -156,7 +156,7 @@ public class SinkServiceReactiveClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("method")
-                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setKind(org.apache.thrift.RpcKind.SINK)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
@@ -252,7 +252,7 @@ public class SinkServiceReactiveClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodAndReponse")
-                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setKind(org.apache.thrift.RpcKind.SINK)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
@@ -337,7 +337,7 @@ public class SinkServiceReactiveClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodThrow")
-                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setKind(org.apache.thrift.RpcKind.SINK)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
@@ -421,7 +421,7 @@ public class SinkServiceReactiveClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodSinkThrow")
-                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setKind(org.apache.thrift.RpcKind.SINK)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
@@ -505,7 +505,7 @@ public class SinkServiceReactiveClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodFinalThrow")
-                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setKind(org.apache.thrift.RpcKind.SINK)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
@@ -589,7 +589,7 @@ public class SinkServiceReactiveClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodBothThrow")
-                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setKind(org.apache.thrift.RpcKind.SINK)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
@@ -673,7 +673,7 @@ public class SinkServiceReactiveClient
       .flatMapMany(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
                 .setName("methodFast")
-                .setKind(org.apache.thrift.RpcKind.STREAMING_REQUEST_STREAMING_RESPONSE)
+                .setKind(org.apache.thrift.RpcKind.SINK)
                 .setOtherMetadata(getHeaders(rpcOptions))
                 .setProtocol(_protocolId)
                 .build();
