@@ -198,7 +198,6 @@ class MetadataTests(unittest.TestCase):
         self.assertIsNotNone(parent)
         self.assertEqual(parent.name, "testing.TestingService")
 
-
         streamFunc, *rest = serv2.functions
         self.assertEqual(
             streamFunc.return_type.as_stream().elemType.as_primitive(),
