@@ -141,8 +141,8 @@ func ProcessContext(ctx context.Context, processor ProcessorContext, iprot, opro
 		}
 	}
 
-	// if there was an error before we could find the Processor function, attempt to skip the protocol
-	// message and return an error
+	// if there was an error before we could find the Processor function, attempt to skip the
+	// rest of the invalid message but keep the connection open.
 	if err != nil {
 		if e2 := iprot.Skip(STRUCT); e2 != nil {
 			return false, e2
