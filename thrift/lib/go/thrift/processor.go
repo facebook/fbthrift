@@ -155,7 +155,7 @@ func ProcessContext(ctx context.Context, processor ProcessorContext, iprot, opro
 				return false, e2
 			}
 		}
-		return true, err
+		return true, nil
 	}
 
 	if pfunc == nil {
