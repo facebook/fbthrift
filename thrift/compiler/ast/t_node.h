@@ -26,6 +26,7 @@
 #include <vector>
 
 #include <thrift/compiler/ast/alias_span.h>
+#include <thrift/compiler/ast/source_range.h>
 
 namespace apache {
 namespace thrift {
@@ -40,6 +41,11 @@ namespace compiler {
 class t_node {
  public:
   virtual ~t_node() = default;
+
+  const source_range& src_range() const { return source_range_; }
+  void set_src_range(const source_range& source_range) {
+    source_range_ = source_range;
+  }
 
   const std::string& doc() const { return doc_; }
   bool has_doc() const { return has_doc_; }
@@ -125,7 +131,13 @@ class t_node {
  private:
   std::string doc_;
   bool has_doc_{false};
+
+  /*
+   * TODO(urielrivas): Remove this lineno_, it will no longer be needed after
+   * source_range.
+   */
   int lineno_{-1};
+  source_range source_range_;
 
   std::map<std::string, std::string> annotations_;
   // TODO(afuller): Looks like only this is only used by t_json_generator.
