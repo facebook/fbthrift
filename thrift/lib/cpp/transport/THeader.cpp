@@ -458,7 +458,7 @@ static void readInfoHeaders(
 unique_ptr<IOBuf> THeader::readHeaderFormat(
     unique_ptr<IOBuf> buf, StringToStringMap& persistentReadHeaders) {
   readTrans_.clear(); // Clear out any previous transforms.
-  readHeaders_.clear(); // Clear out any previous headers.
+  readHeaders_.reset(); // Clear out any previous headers.
 
   // magic(4), seqId(2), flags(2), headerSize(2)
   const uint8_t commonHeaderSize = 10;
@@ -502,7 +502,7 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(
     }
     switch (infoId) {
       case infoIdType::KEYVALUE:
-        readInfoHeaders(c, readHeaders_);
+        readInfoHeaders(c, ensureReadHeaders());
         break;
       case infoIdType::PKEYVALUE:
         readInfoHeaders(c, persistentReadHeaders);
@@ -512,7 +512,7 @@ unique_ptr<IOBuf> THeader::readHeaderFormat(
 
   // if persistent headers are not empty, merge together.
   if (!persistentReadHeaders.empty()) {
-    readHeaders_.insert(
+    ensureReadHeaders().insert(
         persistentReadHeaders.begin(), persistentReadHeaders.end());
   }
 
@@ -719,7 +719,9 @@ void THeader::setReadHeaders(THeader::StringToStringMap&& headers) {
 }
 
 void THeader::eraseReadHeader(const std::string& key) {
-  readHeaders_.erase(key);
+  if (readHeaders_) {
+    readHeaders_->erase(key);
+  }
 }
 
 static size_t getInfoHeaderSize(const THeader::StringToStringMap& headers) {
@@ -750,6 +752,12 @@ void THeader::clearHeaders() {
   writeHeaders_.reset();
 }
 
+THeader::StringToStringMap& THeader::ensureReadHeaders() {
+  if (!readHeaders_) {
+    readHeaders_.emplace();
+  }
+  return *readHeaders_;
+}
 THeader::StringToStringMap& THeader::ensureWriteHeaders() {
   if (!writeHeaders_) {
     writeHeaders_.emplace();
@@ -764,6 +772,7 @@ bool THeader::isWriteHeadersEmpty() {
 THeader::StringToStringMap& THeader::mutableWriteHeaders() {
   return ensureWriteHeaders();
 }
+
 THeader::StringToStringMap THeader::releaseWriteHeaders() {
   return writeHeaders_ ? *std::exchange(writeHeaders_, std::nullopt)
                        : kEmptyMap();
@@ -782,22 +791,25 @@ const THeader::StringToStringMap& THeader::getWriteHeaders() const {
 }
 
 void THeader::setReadHeader(const std::string& key, std::string&& value) {
-  readHeaders_[key] = std::move(value);
+  ensureReadHeaders()[key] = std::move(value);
 }
+
 const THeader::StringToStringMap& THeader::getHeaders() const {
-  return readHeaders_;
+  return readHeaders_ ? *readHeaders_ : kEmptyMap();
 }
 
 THeader::StringToStringMap THeader::releaseHeaders() {
-  THeader::StringToStringMap headers;
-  readHeaders_.swap(headers);
-  return headers;
+  return readHeaders_ ? *std::exchange(readHeaders_, std::nullopt)
+                      : kEmptyMap();
 }
 
 string THeader::getPeerIdentity() {
-  if (readHeaders_.find(IDENTITY_HEADER) != readHeaders_.end()) {
-    if (readHeaders_[ID_VERSION_HEADER] == ID_VERSION) {
-      return readHeaders_[IDENTITY_HEADER];
+  if (!readHeaders_) {
+    return "";
+  }
+  if (readHeaders_->find(IDENTITY_HEADER) != readHeaders_->end()) {
+    if ((*readHeaders_)[ID_VERSION_HEADER] == ID_VERSION) {
+      return (*readHeaders_)[IDENTITY_HEADER];
     }
   }
   return "";
@@ -1090,11 +1102,14 @@ std::optional<ClientMetadata> THeader::extractClientMetadata() {
 }
 
 std::optional<std::string> THeader::extractHeader(std::string_view key) {
+  if (!readHeaders_) {
+    return std::nullopt;
+  }
   std::optional<std::string> res;
-  auto itr = readHeaders_.find(std::string{key});
-  if (itr != readHeaders_.end()) {
+  auto itr = readHeaders_->find(std::string{key});
+  if (itr != readHeaders_->end()) {
     res = std::move(itr->second);
-    readHeaders_.erase(itr);
+    readHeaders_->erase(itr);
   }
   return res;
 }

@@ -410,7 +410,7 @@ class THeader {
   std::vector<uint16_t> writeTrans_;
 
   // Map to use for headers
-  StringToStringMap readHeaders_;
+  std::optional<StringToStringMap> readHeaders_;
   std::optional<StringToStringMap> writeHeaders_;
 
   // Won't be cleared when flushing
@@ -461,6 +461,7 @@ class THeader {
 
  private:
   std::optional<std::string> extractHeader(std::string_view key);
+  StringToStringMap& ensureReadHeaders();
   StringToStringMap& ensureWriteHeaders();
 };
 
