@@ -188,18 +188,21 @@ apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsync
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto [ctx, header] = returnstreamCtx(&rpcOptions);
+  auto ctxAndHeader = returnstreamCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
-  returnstreamImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_i32_from, p_i32_to);
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      returnstreamImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_i32_from, p_i32_to);
+    });
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
@@ -350,18 +353,21 @@ apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsync
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto [ctx, header] = streamthrowsCtx(&rpcOptions);
+  auto ctxAndHeader = streamthrowsCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
-  streamthrowsImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_foo);
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      streamthrowsImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_foo);
+    });
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
@@ -512,18 +518,21 @@ apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsync
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto [ctx, header] = boththrowsCtx(&rpcOptions);
+  auto ctxAndHeader = boththrowsCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
-  boththrowsImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_foo);
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      boththrowsImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_foo);
+    });
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
@@ -674,18 +683,21 @@ apache::thrift::ResponseAndClientBufferedStream<::std::int32_t,::std::int32_t> P
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto [ctx, header] = responseandstreamthrowsCtx(&rpcOptions);
+  auto ctxAndHeader = responseandstreamthrowsCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
-  responseandstreamthrowsImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_foo);
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      responseandstreamthrowsImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_foo);
+    });
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
@@ -836,18 +848,21 @@ apache::thrift::ClientBufferedStream<::std::int32_t> PubSubStreamingServiceAsync
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto [ctx, header] = returnstreamFastCtx(&rpcOptions);
+  auto ctxAndHeader = returnstreamFastCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::createStreamClientCallback(
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
-  returnstreamFastImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_i32_from, p_i32_to);
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      returnstreamFastImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_i32_from, p_i32_to);
+    });
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());

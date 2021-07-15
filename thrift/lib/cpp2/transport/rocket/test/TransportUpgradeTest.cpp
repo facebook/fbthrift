@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/fibers/FiberManagerMap.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/portability/GMock.h>
@@ -307,6 +308,31 @@ TEST_F(TransportUpgradeTest, RawClientRocketUpgradeTimeout) {
   futures.push_back(std::move(sf));
 
   folly::collectAllUnsafe(std::move(futures)).getVia(&evb);
+}
+
+TEST_F(TransportUpgradeTest, Fibers) {
+  // enable raw client transport upgrade from header to rocket
+  THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
+  THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, true);
+
+  folly::EventBase evb;
+  auto& fm = folly::fibers::getFiberManager(evb);
+  EXPECT_EQ(
+      42, fm.addTaskFuture([&] {
+              folly::EventBase evb2;
+              auto socket = folly::AsyncSocket::newSocket(&evb2, "::1", port_);
+              auto channel = RocketClientChannel::newChannel(std::move(socket));
+              TransportUpgradeAsyncClient client(std::move(channel));
+              return client.sync_addTwoNumbers(41, 1);
+            }).getVia(&evb));
+  EXPECT_EQ(
+      42, fm.addTaskFuture([&] {
+              folly::EventBase evb2;
+              auto socket = folly::AsyncSocket::newSocket(&evb2, "::1", port_);
+              auto channel = HeaderClientChannel::newChannel(std::move(socket));
+              TransportUpgradeAsyncClient client(std::move(channel));
+              return client.sync_addTwoNumbers(40, 2);
+            }).getVia(&evb));
 }
 
 } // namespace thrift

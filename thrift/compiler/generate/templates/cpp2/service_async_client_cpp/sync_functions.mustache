@@ -43,7 +43,7 @@ void <% > service_common/client_class_name%>::sync_<%function:cpp_name%>(apache:
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
 <%/function:oneway?%>
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto [ctx, header] = <%function:cpp_name%>Ctx(&rpcOptions);
+  auto ctxAndHeader = <%function:cpp_name%>Ctx(&rpcOptions);
 <%^function:returns_stream?%>
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
 <%/function:returns_stream?%><%#function:returns_stream?%>
@@ -51,15 +51,18 @@ void <% > service_common/client_class_name%>::sync_<%function:cpp_name%>(apache:
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
 <%/function:returns_stream?%>
-  <%function:cpp_name%>Impl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      <%function:cpp_name%>Impl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
+    });
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
 <%^function:oneway?%>
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
@@ -87,7 +90,7 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
 <% > service_common/client_class_name%>::sync_complete_<%function:cpp_name%>(
     apache::thrift::RpcOptions& rpcOptions<%function:comma%> <% > service_common/function_param_list_const%>) {
   apache::thrift::ClientReceiveState returnState;
-  auto [ctx, header] = <%function:cpp_name%>Ctx(&rpcOptions);
+  auto ctxAndHeader = <%function:cpp_name%>Ctx(&rpcOptions);
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
@@ -98,11 +101,13 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
     apache::thrift::RequestClientCallback::Ptr(&callback),
     rpcOptions.getBufferOptions());
 <%/function:returns_stream?%>
-  <%function:cpp_name%>Impl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
-
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      <%function:cpp_name%>Impl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
+    });
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
 
   folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>> tryResponse;
   if (auto* header = returnState.header()) {

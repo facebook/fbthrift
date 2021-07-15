@@ -186,19 +186,27 @@ class ClientSyncCallback : public RequestClientCallback {
  public:
   explicit ClientSyncCallback(ClientReceiveState* rs) : rs_(rs) {}
 
-  void waitUntilDone(folly::EventBase* evb) {
-    if (evb) {
-      if (!evb->inRunningEventBaseThread() || !folly::fibers::onFiber()) {
+  template <typename F>
+  void waitUntilDone(folly::EventBase* evb, F&& sendF) {
+    if (evb &&
+        (!evb->inRunningEventBaseThread() || !folly::fibers::onFiber())) {
+      folly::fibers::runInMainContext([&] {
+        sendF();
         while (!doneBaton_.ready()) {
           evb->drive();
         }
+      });
+    } else {
+      sendF();
+      // Check if it's ready to avoid unnecessarily preempting a fiber.
+      if (!doneBaton_.ready()) {
+        doneBaton_.wait();
       }
     }
+  }
 
-    // Check if it's ready to avoid unnecessarily preempting a fiber.
-    if (!doneBaton_.ready()) {
-      doneBaton_.wait();
-    }
+  void waitUntilDone(folly::EventBase* evb) {
+    waitUntilDone(evb, [] {});
   }
 
   // This approach avoids an inner coroutine frame

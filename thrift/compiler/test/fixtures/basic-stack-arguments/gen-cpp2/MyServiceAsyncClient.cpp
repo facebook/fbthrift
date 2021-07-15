@@ -152,16 +152,19 @@ bool MyServiceAsyncClient::sync_hasDataById(apache::thrift::RpcOptions& rpcOptio
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto [ctx, header] = hasDataByIdCtx(&rpcOptions);
+  auto ctxAndHeader = hasDataByIdCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  hasDataByIdImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_id);
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      hasDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id);
+    });
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
@@ -176,16 +179,18 @@ folly::Try<apache::thrift::RpcResponseComplete<bool>>
 MyServiceAsyncClient::sync_complete_hasDataById(
     apache::thrift::RpcOptions& rpcOptions,  ::std::int64_t p_id) {
   apache::thrift::ClientReceiveState returnState;
-  auto [ctx, header] = hasDataByIdCtx(&rpcOptions);
+  auto ctxAndHeader = hasDataByIdCtx(&rpcOptions);
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  hasDataByIdImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_id);
-
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      hasDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id);
+    });
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
 
   folly::Try<apache::thrift::RpcResponseComplete<bool>> tryResponse;
   if (auto* header = returnState.header()) {
@@ -374,16 +379,19 @@ void MyServiceAsyncClient::sync_getDataById(apache::thrift::RpcOptions& rpcOptio
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto [ctx, header] = getDataByIdCtx(&rpcOptions);
+  auto ctxAndHeader = getDataByIdCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  getDataByIdImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_id);
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      getDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id);
+    });
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
@@ -398,16 +406,18 @@ folly::Try<apache::thrift::RpcResponseComplete<::std::string>>
 MyServiceAsyncClient::sync_complete_getDataById(
     apache::thrift::RpcOptions& rpcOptions,  ::std::int64_t p_id) {
   apache::thrift::ClientReceiveState returnState;
-  auto [ctx, header] = getDataByIdCtx(&rpcOptions);
+  auto ctxAndHeader = getDataByIdCtx(&rpcOptions);
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  getDataByIdImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_id);
-
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      getDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id);
+    });
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
 
   folly::Try<apache::thrift::RpcResponseComplete<::std::string>> tryResponse;
   if (auto* header = returnState.header()) {
@@ -594,16 +604,19 @@ void MyServiceAsyncClient::sync_putDataById(apache::thrift::RpcOptions& rpcOptio
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto [ctx, header] = putDataByIdCtx(&rpcOptions);
+  auto ctxAndHeader = putDataByIdCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  putDataByIdImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_id, p_data);
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      putDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id, p_data);
+    });
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
   }
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
   SCOPE_EXIT {
     if (returnState.header() && !returnState.header()->getHeaders().empty()) {
       rpcOptions.setReadHeaders(returnState.header()->releaseHeaders());
@@ -618,16 +631,18 @@ folly::Try<apache::thrift::RpcResponseComplete<void>>
 MyServiceAsyncClient::sync_complete_putDataById(
     apache::thrift::RpcOptions& rpcOptions,  ::std::int64_t p_id, const ::std::string& p_data) {
   apache::thrift::ClientReceiveState returnState;
-  auto [ctx, header] = putDataByIdCtx(&rpcOptions);
+  auto ctxAndHeader = putDataByIdCtx(&rpcOptions);
   apache::thrift::ClientSyncCallback<false> callback(&returnState);
   const auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto* const evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  putDataByIdImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_id, p_data);
-
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      putDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id, p_data);
+    });
   returnState.resetProtocolId(protocolId);
-  returnState.resetCtx(std::move(ctx));
+  returnState.resetCtx(std::move(ctxAndHeader.first));
 
   folly::Try<apache::thrift::RpcResponseComplete<void>> tryResponse;
   if (auto* header = returnState.header()) {
@@ -814,10 +829,13 @@ void MyServiceAsyncClient::sync_lobDataById(apache::thrift::RpcOptions& rpcOptio
   apache::thrift::ClientReceiveState returnState;
   apache::thrift::ClientSyncCallback<true> callback(&returnState);
   auto evb = apache::thrift::GeneratedAsyncClient::getChannel()->getEventBase();
-  auto [ctx, header] = lobDataByIdCtx(&rpcOptions);
+  auto ctxAndHeader = lobDataByIdCtx(&rpcOptions);
   auto wrappedCallback = apache::thrift::RequestClientCallback::Ptr(&callback);
-  lobDataByIdImpl(rpcOptions, std::move(header), ctx.get(), std::move(wrappedCallback), p_id, p_data);
-  callback.waitUntilDone(evb);
+  callback.waitUntilDone(
+    evb,
+    [&] {
+      lobDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id, p_data);
+    });
 
   if (returnState.isException()) {
     returnState.exception().throw_exception();
