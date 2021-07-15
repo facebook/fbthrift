@@ -19,9 +19,20 @@ namespace cpp2 apache.thrift.test
 cpp_include "thrift/test/AdapterTest.h"
 
 typedef i64 DurationMs (
-  cpp.adapter = "apache::thrift::test::AdaptTestMsAdapter",
+  cpp.adapter = "::apache::thrift::test::AdaptTestMsAdapter",
 )
+
+typedef binary (
+  cpp.type = "::folly::IOBuf",
+  cpp.adapter = "::apache::thrift::test::CustomProtocolAdapter",
+) CustomProtocolType
 
 struct AdaptTestStruct {
   1: DurationMs delay;
+  2: CustomProtocolType custom;
+}
+
+union AdaptTestUnion {
+  1: DurationMs delay;
+  2: CustomProtocolType custom;
 }

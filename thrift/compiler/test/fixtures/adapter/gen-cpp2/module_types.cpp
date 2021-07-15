@@ -137,7 +137,7 @@ bool Foo::operator==(const Foo& rhs) const {
   if (!(lhs.optionalMapField_ref() == rhs.optionalMapField_ref())) {
     return false;
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binaryField, rhs.binaryField)) {
+  if (!(lhs.binaryField_ref() == rhs.binaryField_ref())) {
     return false;
   }
   return true;
@@ -168,8 +168,8 @@ bool Foo::operator<(const Foo& rhs) const {
   if (!(lhs.optionalMapField_ref() == rhs.optionalMapField_ref())) {
     return lhs.optionalMapField_ref() < rhs.optionalMapField_ref();
   }
-  if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binaryField, rhs.binaryField)) {
-    return apache::thrift::StringTraits<std::string>::isLess(lhs.binaryField, rhs.binaryField);
+  if (!(lhs.binaryField_ref() == rhs.binaryField_ref())) {
+    return lhs.binaryField_ref() < rhs.binaryField_ref();
   }
   return false;
 }
@@ -313,9 +313,7 @@ bool Baz::operator==(const Baz& rhs) const {
     case Type::mapField:
       return value_.mapField == rhs.value_.mapField;
     case Type::binaryField:
-      return apache::thrift::StringTraits<std::string>::isEqual(
-          value_.binaryField,
-          rhs.value_.binaryField);
+      return value_.binaryField == rhs.value_.binaryField;
     default:
       return true;
   }
@@ -336,8 +334,7 @@ bool Baz::operator<(const Baz& rhs) const {
     case Type::mapField:
       return lhs.value_.mapField < rhs.value_.mapField;
     case Type::binaryField:
-    return !apache::thrift::StringTraits<std::string>::isEqual(value_.binaryField, rhs.value_.binaryField) &&
-      apache::thrift::StringTraits<std::string>::isLess(value_.binaryField, rhs.value_.binaryField);
+      return lhs.value_.binaryField < rhs.value_.binaryField;
     default:
       return false;
   }

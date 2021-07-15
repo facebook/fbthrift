@@ -400,6 +400,7 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_type", &mstch_cpp2_type::cpp_type},
             {"type:cpp_standard_type", &mstch_cpp2_type::cpp_standard_type},
             {"type:cpp_adapter", &mstch_cpp2_type::cpp_adapter},
+            {"type:raw_binary?", &mstch_cpp2_type::raw_binary},
             {"type:resolved_cpp_type", &mstch_cpp2_type::resolved_cpp_type},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
             {"type:cpp_template", &mstch_cpp2_type::cpp_template},
@@ -490,10 +491,15 @@ class mstch_cpp2_type : public mstch_type {
     return context_->resolver().get_standard_type_name(type_);
   }
   mstch::node cpp_adapter() {
-    if (const auto& adapter = gen::cpp::type_resolver::find_adapter(type_)) {
+    if (const auto* adapter =
+            gen::cpp::type_resolver::find_first_adapter(type_)) {
       return *adapter;
     }
     return {};
+  }
+  mstch::node raw_binary() {
+    return resolved_type_->is_binary() &&
+        gen::cpp::type_resolver::find_first_adapter(type_) == nullptr;
   }
   mstch::node resolved_cpp_type() { return cpp2::get_type(resolved_type_); }
   mstch::node is_string_or_binary() {

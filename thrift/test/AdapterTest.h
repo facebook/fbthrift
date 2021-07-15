@@ -17,7 +17,10 @@
 #pragma once
 
 #include <chrono>
+#include <stdexcept>
 #include <string>
+
+#include <folly/io/IOBuf.h>
 
 namespace apache::thrift::test {
 
@@ -32,8 +35,17 @@ struct AdaptTestMsAdapter {
 };
 
 struct Num {
-  int64_t val;
+  int64_t val = 13;
+
+ private:
+  friend bool operator==(const Num& lhs, const Num& rhs) {
+    return lhs.val == rhs.val;
+  }
+  friend bool operator<(const Num& lhs, const Num& rhs) {
+    return lhs.val < rhs.val;
+  }
 };
+
 struct String {
   std::string val;
 };
@@ -44,6 +56,19 @@ struct OverloadedAdatper {
 
   static int64_t toThrift(const Num& num) { return num.val; }
   static const std::string& toThrift(const String& str) { return str.val; }
+};
+
+struct CustomProtocolAdapter {
+  static Num fromThrift(const folly::IOBuf& data) {
+    if (data.length() < sizeof(int64_t)) {
+      throw std::invalid_argument("parse error");
+    }
+    return {*reinterpret_cast<const int64_t*>(data.data())};
+  }
+
+  static folly::IOBuf toThrift(const Num& num) {
+    return folly::IOBuf::wrapBufferAsValue(&num.val, sizeof(int64_t));
+  }
 };
 
 } // namespace apache::thrift::test

@@ -22,7 +22,7 @@
   %>lhs.<%field:cpp_name%> == nullptr || (rhs.<%field:cpp_name%> != nullptr && *lhs.<%field:cpp_name%> < *rhs.<%field:cpp_name%>)<%
 %><%/field:cpp_ref?%><%
 %><%^field:cpp_ref?%><%
-  %><%#type:binary?%><%
+  %><%#type:raw_binary?%><%
     // Not all standard binary types define less operators, so we forward the check to StringTraits.
     // TODO(afuller): Move this to a shared helper function in the runtime.
     %><%#field:optional?%><%
@@ -31,9 +31,9 @@
     %><%/field:optional?%><%
     %>apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isLess(<% > types/apply_indirection_pre%>lhs.<%field:cpp_name%><% > types/apply_indirection_post%>, <% > types/apply_indirection_pre%>rhs.<%field:cpp_name%><% > types/apply_indirection_post%>)<%
     %><%#field:optional?%>)<%/field:optional?%><%
-  %><%/type:binary?%><%
-  %><%^type:binary?%><%
+  %><%/type:raw_binary?%><%
+  %><%^type:raw_binary?%><%
     // Just use the field_ref impl.
     %>lhs.<%field:cpp_name%>_ref() < rhs.<%field:cpp_name%>_ref()<%
-  %><%/type:binary?%><%
+  %><%/type:raw_binary?%><%
 %><%/field:cpp_ref?%>

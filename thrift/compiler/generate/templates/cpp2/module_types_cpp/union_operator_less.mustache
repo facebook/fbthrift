@@ -26,13 +26,13 @@ bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
 <%#struct:fields%>
     case Type::<%field:cpp_name%>:
 <%#field:type%>
-<%#type:binary?%>
+<%#type:raw_binary?%>
     return !apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEqual(<% > types/apply_indirection_pre%>value_.<%field:cpp_name%><% > types/apply_indirection_post%>, <% > types/apply_indirection_pre%>rhs.value_.<%field:cpp_name%><% > types/apply_indirection_post%>) &&
       apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isLess(<% > types/apply_indirection_pre%>value_.<%field:cpp_name%><% > types/apply_indirection_post%>, <% > types/apply_indirection_pre%>rhs.value_.<%field:cpp_name%><% > types/apply_indirection_post%>);
-<%/type:binary?%>
-<%^type:binary?%>
+<%/type:raw_binary?%>
+<%^type:raw_binary?%>
       return lhs.value_.<%field:cpp_name%> < rhs.value_.<%field:cpp_name%>;
-<%/type:binary?%>
+<%/type:raw_binary?%>
 <%/field:type%>
 <%/struct:fields%>
     default:
