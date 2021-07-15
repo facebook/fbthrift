@@ -29,80 +29,100 @@ class boxed_value_ptr {
  public:
   using element_type = T;
 
-  FOLLY_ERASE boxed_value_ptr() noexcept = default;
+  FOLLY_ERASE constexpr boxed_value_ptr() noexcept = default;
+  FOLLY_ERASE constexpr boxed_value_ptr(const boxed_value_ptr& other)
+      : ptr_(other.copy()) {}
+  FOLLY_ERASE constexpr boxed_value_ptr(boxed_value_ptr&& other) noexcept =
+      default;
+  FOLLY_ERASE constexpr boxed_value_ptr(std::nullptr_t) : ptr_(nullptr) {}
 
-  template <typename... Args, typename = decltype(T(std::declval<Args>()...))>
-  FOLLY_ERASE boxed_value_ptr(Args&&... args)
-      : value_(std::make_unique<T>(static_cast<Args&&>(args)...)) {}
-
-  FOLLY_ERASE boxed_value_ptr(const boxed_value_ptr<T>& other)
-      : value_(other.value_ ? std::make_unique<T>(*other.value_) : nullptr) {}
-
+  FOLLY_ERASE constexpr T& operator*() const noexcept { return *ptr_; }
+  FOLLY_ERASE constexpr T* operator->() const noexcept { return ptr_.get(); }
+  FOLLY_ERASE constexpr explicit operator bool() const noexcept {
+    return bool(ptr_);
+  }
+  FOLLY_ERASE constexpr boxed_value_ptr& operator=(
+      boxed_value_ptr&& other) noexcept = default;
   FOLLY_ERASE
-  boxed_value_ptr<T>& operator=(const boxed_value_ptr<T>& other) {
-    if (other.value_) {
-      *this = *other.value_;
-    } else {
-      reset();
-    }
-
-    return *this;
+  constexpr boxed_value_ptr& operator=(const boxed_value_ptr& other) {
+    return (ptr_ = other.copy(), *this);
+  }
+  FOLLY_ERASE constexpr boxed_value_ptr& operator=(std::nullptr_t) noexcept {
+    return (ptr_ = nullptr, *this);
   }
 
+  FOLLY_ERASE constexpr void reset(T* p = nullptr) noexcept { ptr_.reset(p); }
+
+ private:
+  friend void swap(boxed_value_ptr& lhs, boxed_value_ptr& rhs) noexcept {
+    using std::swap;
+    swap(lhs.ptr_, rhs.ptr_);
+  }
+
+  friend constexpr bool operator==(
+      const boxed_value_ptr& lhs, const boxed_value_ptr& rhs) noexcept {
+    return lhs.ptr_ == rhs.ptr_;
+  }
+  friend constexpr bool operator==(
+      std::nullptr_t, const boxed_value_ptr& rhs) noexcept {
+    return nullptr == rhs.ptr_;
+  }
+  friend constexpr bool operator==(
+      const boxed_value_ptr& lhs, std::nullptr_t) noexcept {
+    return lhs.ptr_ == nullptr;
+  }
+  friend constexpr bool operator!=(
+      const boxed_value_ptr& lhs, const boxed_value_ptr& rhs) noexcept {
+    return !(lhs == rhs);
+  }
+  friend constexpr bool operator!=(
+      const boxed_value_ptr& lhs, std::nullptr_t) noexcept {
+    return lhs.ptr_ != nullptr;
+  }
+  friend constexpr bool operator!=(
+      std::nullptr_t, const boxed_value_ptr& rhs) noexcept {
+    return nullptr != rhs.ptr_;
+  }
+
+  std::unique_ptr<T> ptr_;
+
+  std::unique_ptr<T> copy() const {
+    return ptr_ == nullptr ? nullptr : std::make_unique<T>(*ptr_);
+  }
+
+ public:
+  // TODO(afuller): This implicitly inplace implicit constructor
+  // should be removed as it lets T intercept any constructor call, which is
+  // extremely bug prone.
+  template <typename... Args, typename = decltype(T(std::declval<Args>()...))>
+  FOLLY_ERASE boxed_value_ptr(Args&&... args)
+      : ptr_(std::make_unique<T>(std::forward<Args>(args)...)) {}
+
+  // TODO(afuller): This implicit creation and value assignment should be
+  // removed as it lets T intercept assignment, which is extremely bug prone.
   template <typename U>
   FOLLY_ERASE
       std::enable_if_t<std::is_assignable<T&, U&&>::value, boxed_value_ptr&>
       operator=(U&& value) {
-    if (!value_) {
-      value_ = std::make_unique<T>();
+    if (ptr_ == nullptr) {
+      ptr_ = std::make_unique<T>();
     }
 
-    *value_ = static_cast<U&&>(value);
+    *ptr_ = std::forward<U>(value);
     return *this;
   }
 
-  FOLLY_ERASE boxed_value_ptr(boxed_value_ptr<T>&& other) = default;
-  FOLLY_ERASE boxed_value_ptr<T>& operator=(boxed_value_ptr<T>&& other) =
-      default;
-
+  // TODO(afuller): This is not a typical smart pointer feature, and
+  // likely should only exist on value-semantic types like std::optional.
   template <typename... Args>
   FOLLY_ERASE T& emplace(Args&&... args) {
-    if (value_) {
-      *value_ = T(static_cast<Args&&>(args)...);
+    if (ptr_) {
+      *ptr_ = T(std::forward<Args>(args)...);
     } else {
-      value_ = std::make_unique<T>(static_cast<Args&&>(args)...);
+      ptr_ = std::make_unique<T>(std::forward<Args>(args)...);
     }
-
-    return *value_;
+    return *ptr_;
   }
-
-  FOLLY_ERASE void reset() noexcept { value_ = nullptr; }
-
-  FOLLY_ERASE T& operator*() const noexcept { return *value_; }
-
-  FOLLY_ERASE T* operator->() const noexcept { return &*value_; }
-
-  FOLLY_ERASE explicit operator bool() const noexcept {
-    return value_ != nullptr;
-  }
-
- private:
-  friend void swap(boxed_value_ptr<T>& lhs, boxed_value_ptr<T>& rhs) noexcept {
-    using std::swap;
-    swap(lhs.value_, rhs.value_);
-  }
-
-  friend bool operator==(
-      const boxed_value_ptr<T>& lhs, const boxed_value_ptr<T>& rhs) noexcept {
-    return lhs.value_ == rhs.value_;
-  }
-
-  friend bool operator!=(
-      const boxed_value_ptr<T>& lhs, const boxed_value_ptr<T>& rhs) noexcept {
-    return !(lhs == rhs);
-  }
-
-  std::unique_ptr<T> value_;
 };
 
 } // namespace detail
