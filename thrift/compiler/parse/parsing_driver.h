@@ -66,7 +66,6 @@ using YYSTYPE = int;
 
 /**
  * Provide the custom fbthrift_compiler_parse_lex signature to flex.
- * TODO: Move this definition to the .yy file.
  */
 #define YY_DECL                                         \
   apache::thrift::compiler::yy::parser::symbol_type     \
@@ -105,7 +104,7 @@ enum class LineType {
 // Parsing only representations.
 using t_struct_annotations = node_list<t_const>;
 struct t_annotations {
-  std::map<std::string, std::string> strings;
+  std::map<std::string, annotation_value> strings;
   std::map<std::string, std::shared_ptr<const t_const>> objects;
   int last_lineno;
 };

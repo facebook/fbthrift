@@ -1467,12 +1467,12 @@ TypeAnnotation:
   Identifier "=" IntOrLiteral
     {
       driver.debug("TypeAnnotation -> Identifier = IntOrLiteral");
-      $$ = new t_annotation{$1, $3};
+      $$ = new t_annotation{$1, {driver.get_source_range(@$), $3}};
     }
   | Identifier
     {
       driver.debug("TypeAnnotation -> Identifier");
-      $$ = new t_annotation{$1, "1"};
+      $$ = new t_annotation{$1, {driver.get_source_range(@$), "1"}};
     }
 
 StructuredAnnotations:
@@ -1529,7 +1529,7 @@ FunctionAnnotations:
       if (priority == $$->strings.end()) {
         break;
       }
-      const std::string& prio = priority->second;
+      const std::string& prio = priority->second.value;
       const std::string prio_list[] = {"HIGH_IMPORTANT", "HIGH", "IMPORTANT",
                                        "NORMAL", "BEST_EFFORT"};
       const auto end = prio_list + sizeof(prio_list)/sizeof(prio_list[0]);

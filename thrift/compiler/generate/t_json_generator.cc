@@ -77,7 +77,8 @@ class t_json_generator : public t_concat_generator {
   std::ofstream f_out_;
 
  private:
-  void print_annotations(const std::map<std::string, std::string>& annotations);
+  void print_annotations(
+      const std::map<std::string, annotation_value>& annotations);
   void print_structured_annotations(
       const std::vector<const t_const*>& annotations);
   void print_node_annotations(
@@ -419,11 +420,11 @@ void t_json_generator::print_lineno(int lineno) {
 }
 
 void t_json_generator::print_annotations(
-    const std::map<std::string, std::string>& annotations) {
+    const std::map<std::string, annotation_value>& annotations) {
   indent(f_out_) << "\"annotations\" : {";
   indent_up();
   bool first = true;
-  std::map<std::string, std::string>::const_iterator iter;
+  std::map<std::string, annotation_value>::const_iterator iter;
   for (iter = annotations.begin(); iter != annotations.end(); ++iter) {
     if (!first) {
       f_out_ << ",";
@@ -431,7 +432,7 @@ void t_json_generator::print_annotations(
     f_out_ << endl;
     first = false;
     indent(f_out_) << "\"" << iter->first << "\" : ";
-    json_quote_ascii(f_out_, iter->second);
+    json_quote_ascii(f_out_, iter->second.value);
   }
   f_out_ << endl;
   indent_down();

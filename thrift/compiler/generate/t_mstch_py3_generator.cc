@@ -1033,11 +1033,11 @@ class mstch_py3_annotation : public mstch_annotation {
         });
   }
 
-  mstch::node hasValue() { return !val_.empty(); }
+  mstch::node hasValue() { return !val_.value.empty(); }
 
   mstch::node pyQuotedKey() { return to_python_string_literal(key_); }
 
-  mstch::node pyQuotedValue() { return to_python_string_literal(val_); }
+  mstch::node pyQuotedValue() { return to_python_string_literal(val_.value); }
 
  protected:
   std::string to_python_string_literal(std::string val) const {

@@ -341,7 +341,7 @@ mstch::map t_mstch_generator::dump(
 mstch::map t_mstch_generator::dump(const annotation& pair) {
   mstch::map result{
       {"key", pair.first},
-      {"value", pair.second},
+      {"value", pair.second.value},
   };
   mstch::map extension = extend_annotation(pair);
   extension.insert(result.begin(), result.end());

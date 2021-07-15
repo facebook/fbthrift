@@ -26,7 +26,7 @@ const std::string* t_node::get_annotation_or_null(alias_span name) const {
   for (const auto& alias : name) {
     auto itr = annotations_.find(alias);
     if (itr != annotations_.end()) {
-      return &itr->second;
+      return &itr->second.value;
     }
   }
   return nullptr;

@@ -872,7 +872,7 @@ class mstch_annotation : public mstch_base {
  public:
   mstch_annotation(
       const std::string& key,
-      const std::string& val,
+      const annotation_value& val,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
@@ -889,11 +889,11 @@ class mstch_annotation : public mstch_base {
         });
   }
   mstch::node key() { return key_; }
-  mstch::node value() { return val_; }
+  mstch::node value() { return val_.value; }
 
  protected:
   const std::string key_;
-  const std::string val_;
+  const annotation_value val_;
   int32_t index_;
 };
 

@@ -105,7 +105,7 @@ bool same_types(const t_type* a, const t_type* b) {
 }
 
 std::vector<t_annotation> get_fatal_annotations(
-    std::map<std::string, std::string> annotations) {
+    std::map<std::string, annotation_value> annotations) {
   std::vector<t_annotation> fatal_annotations;
   for (const auto& iter : annotations) {
     if (is_annotation_blacklisted_in_fatal(iter.first)) {
@@ -1209,7 +1209,7 @@ class mstch_cpp2_annotation : public mstch_annotation {
  public:
   mstch_cpp2_annotation(
       const std::string& key,
-      const std::string& val,
+      annotation_value val,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
@@ -1223,7 +1223,7 @@ class mstch_cpp2_annotation : public mstch_annotation {
         });
   }
   mstch::node safe_key() { return get_fatal_string_short_id(key_); }
-  mstch::node fatal_string() { return render_fatal_string(val_); }
+  mstch::node fatal_string() { return render_fatal_string(val_.value); }
 };
 
 class mstch_cpp2_const : public mstch_const {

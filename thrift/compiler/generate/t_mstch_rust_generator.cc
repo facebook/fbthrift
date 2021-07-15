@@ -1401,11 +1401,11 @@ class mstch_rust_annotation : public mstch_annotation {
             {"annotation:rust_value", &mstch_rust_annotation::rust_value},
         });
   }
-  mstch::node rust_has_value() { return !val_.empty(); }
+  mstch::node rust_has_value() { return !val_.value.empty(); }
   mstch::node rust_name() {
     return boost::algorithm::replace_all_copy(key_, ".", "_");
   }
-  mstch::node rust_value() { return quote(val_); }
+  mstch::node rust_value() { return quote(val_.value); }
 };
 
 class program_rust_generator : public program_generator {
