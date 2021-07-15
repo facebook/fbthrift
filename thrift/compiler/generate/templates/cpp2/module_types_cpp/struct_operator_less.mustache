@@ -47,7 +47,7 @@ bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
   }
 <%/type:binary?%>
 <%^type:binary?%>
-  if (lhs.<%field:cpp_name%>_ref() != rhs.<%field:cpp_name%>_ref()) {
+  if (<% > field/neq%>) {
     return lhs.<%field:cpp_name%>_ref() < rhs.<%field:cpp_name%>_ref();
   }
 <%/type:binary?%>
@@ -59,8 +59,8 @@ bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
   }
 <%/type:binary?%>
 <%^type:binary?%>
-  if (!(lhs.<%field:cpp_name%> == rhs.<%field:cpp_name%>)) {
-    return lhs.<%field:cpp_name%> < rhs.<%field:cpp_name%>;
+  if (<% > field/neq%>) {
+    return lhs.<%field:cpp_name%>_ref() < rhs.<%field:cpp_name%>_ref();
   }
 <%/type:binary?%>
 <%/field:optional?%>

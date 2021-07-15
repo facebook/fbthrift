@@ -108,10 +108,10 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
     return false;
   }
   return true;
@@ -121,11 +121,11 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
-    return lhs.MyStringField < rhs.MyStringField;
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
+    return lhs.MyStringField_ref() < rhs.MyStringField_ref();
   }
   return false;
 }

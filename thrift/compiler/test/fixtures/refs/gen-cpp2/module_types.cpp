@@ -291,53 +291,23 @@ bool MyField::operator==(const MyField& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.opt_value != !!rhs.opt_value) {
+  if ((lhs.opt_value == nullptr) != (rhs.opt_value == nullptr) || (lhs.opt_value != nullptr && lhs.opt_value != rhs.opt_value && !(*lhs.opt_value == *rhs.opt_value))) {
     return false;
   }
-  if (!!lhs.opt_value) {
-    if (lhs.opt_value != rhs.opt_value && !(*lhs.opt_value == *rhs.opt_value)) {
-      return false;
-    }
-  }
-  if (!!lhs.value != !!rhs.value) {
+  if ((lhs.value == nullptr) != (rhs.value == nullptr) || (lhs.value != nullptr && lhs.value != rhs.value && !(*lhs.value == *rhs.value))) {
     return false;
   }
-  if (!!lhs.value) {
-    if (lhs.value != rhs.value && !(*lhs.value == *rhs.value)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_value != !!rhs.req_value) {
+  if ((lhs.req_value == nullptr) != (rhs.req_value == nullptr) || (lhs.req_value != nullptr && lhs.req_value != rhs.req_value && !(*lhs.req_value == *rhs.req_value))) {
     return false;
   }
-  if (!!lhs.req_value) {
-    if (lhs.req_value != rhs.req_value && !(*lhs.req_value == *rhs.req_value)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_enum_value != !!rhs.opt_enum_value) {
+  if ((lhs.opt_enum_value == nullptr) != (rhs.opt_enum_value == nullptr) || (lhs.opt_enum_value != nullptr && lhs.opt_enum_value != rhs.opt_enum_value && !(*lhs.opt_enum_value == *rhs.opt_enum_value))) {
     return false;
   }
-  if (!!lhs.opt_enum_value) {
-    if (lhs.opt_enum_value != rhs.opt_enum_value && !(*lhs.opt_enum_value == *rhs.opt_enum_value)) {
-      return false;
-    }
-  }
-  if (!!lhs.enum_value != !!rhs.enum_value) {
+  if ((lhs.enum_value == nullptr) != (rhs.enum_value == nullptr) || (lhs.enum_value != nullptr && lhs.enum_value != rhs.enum_value && !(*lhs.enum_value == *rhs.enum_value))) {
     return false;
   }
-  if (!!lhs.enum_value) {
-    if (lhs.enum_value != rhs.enum_value && !(*lhs.enum_value == *rhs.enum_value)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_enum_value != !!rhs.req_enum_value) {
+  if ((lhs.req_enum_value == nullptr) != (rhs.req_enum_value == nullptr) || (lhs.req_enum_value != nullptr && lhs.req_enum_value != rhs.req_enum_value && !(*lhs.req_enum_value == *rhs.req_enum_value))) {
     return false;
-  }
-  if (!!lhs.req_enum_value) {
-    if (lhs.req_enum_value != rhs.req_enum_value && !(*lhs.req_enum_value == *rhs.req_enum_value)) {
-      return false;
-    }
   }
   return true;
 }
@@ -492,29 +462,14 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.opt_ref != !!rhs.opt_ref) {
+  if ((lhs.opt_ref == nullptr) != (rhs.opt_ref == nullptr) || (lhs.opt_ref != nullptr && lhs.opt_ref != rhs.opt_ref && !(*lhs.opt_ref == *rhs.opt_ref))) {
     return false;
   }
-  if (!!lhs.opt_ref) {
-    if (lhs.opt_ref != rhs.opt_ref && !(*lhs.opt_ref == *rhs.opt_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.ref != !!rhs.ref) {
+  if ((lhs.ref == nullptr) != (rhs.ref == nullptr) || (lhs.ref != nullptr && lhs.ref != rhs.ref && !(*lhs.ref == *rhs.ref))) {
     return false;
   }
-  if (!!lhs.ref) {
-    if (lhs.ref != rhs.ref && !(*lhs.ref == *rhs.ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_ref != !!rhs.req_ref) {
+  if ((lhs.req_ref == nullptr) != (rhs.req_ref == nullptr) || (lhs.req_ref != nullptr && lhs.req_ref != rhs.req_ref && !(*lhs.req_ref == *rhs.req_ref))) {
     return false;
-  }
-  if (!!lhs.req_ref) {
-    if (lhs.req_ref != rhs.req_ref && !(*lhs.req_ref == *rhs.req_ref)) {
-      return false;
-    }
   }
   return true;
 }
@@ -686,23 +641,13 @@ bool StructWithUnion::operator==(const StructWithUnion& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.u != !!rhs.u) {
+  if ((lhs.u == nullptr) != (rhs.u == nullptr) || (lhs.u != nullptr && lhs.u != rhs.u && !(*lhs.u == *rhs.u))) {
     return false;
   }
-  if (!!lhs.u) {
-    if (lhs.u != rhs.u && !(*lhs.u == *rhs.u)) {
-      return false;
-    }
-  }
-  if (!!lhs.aDouble != !!rhs.aDouble) {
+  if ((lhs.aDouble == nullptr) != (rhs.aDouble == nullptr) || (lhs.aDouble != nullptr && lhs.aDouble != rhs.aDouble && !(*lhs.aDouble == *rhs.aDouble))) {
     return false;
   }
-  if (!!lhs.aDouble) {
-    if (lhs.aDouble != rhs.aDouble && !(*lhs.aDouble == *rhs.aDouble)) {
-      return false;
-    }
-  }
-  if (!(lhs.f == rhs.f)) {
+  if (!(lhs.f_ref() == rhs.f_ref())) {
     return false;
   }
   return true;
@@ -728,8 +673,8 @@ bool StructWithUnion::operator<(const StructWithUnion& rhs) const {
       return *lhs.aDouble < *rhs.aDouble;
     }
   }
-  if (!(lhs.f == rhs.f)) {
-    return lhs.f < rhs.f;
+  if (!(lhs.f_ref() == rhs.f_ref())) {
+    return lhs.f_ref() < rhs.f_ref();
   }
   return false;
 }
@@ -848,7 +793,7 @@ bool RecursiveStruct::operator==(const RecursiveStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.mes_ref() != rhs.mes_ref()) {
+  if (!(lhs.mes_ref() == rhs.mes_ref())) {
     return false;
   }
   return true;
@@ -858,7 +803,7 @@ bool RecursiveStruct::operator<(const RecursiveStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.mes_ref() != rhs.mes_ref()) {
+  if (!(lhs.mes_ref() == rhs.mes_ref())) {
     return lhs.mes_ref() < rhs.mes_ref();
   }
   return false;
@@ -995,53 +940,23 @@ bool StructWithContainers::operator==(const StructWithContainers& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.list_ref != !!rhs.list_ref) {
+  if ((lhs.list_ref == nullptr) != (rhs.list_ref == nullptr) || (lhs.list_ref != nullptr && lhs.list_ref != rhs.list_ref && !(*lhs.list_ref == *rhs.list_ref))) {
     return false;
   }
-  if (!!lhs.list_ref) {
-    if (lhs.list_ref != rhs.list_ref && !(*lhs.list_ref == *rhs.list_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.set_ref != !!rhs.set_ref) {
+  if ((lhs.set_ref == nullptr) != (rhs.set_ref == nullptr) || (lhs.set_ref != nullptr && lhs.set_ref != rhs.set_ref && !(*lhs.set_ref == *rhs.set_ref))) {
     return false;
   }
-  if (!!lhs.set_ref) {
-    if (lhs.set_ref != rhs.set_ref && !(*lhs.set_ref == *rhs.set_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.map_ref != !!rhs.map_ref) {
+  if ((lhs.map_ref == nullptr) != (rhs.map_ref == nullptr) || (lhs.map_ref != nullptr && lhs.map_ref != rhs.map_ref && !(*lhs.map_ref == *rhs.map_ref))) {
     return false;
   }
-  if (!!lhs.map_ref) {
-    if (lhs.map_ref != rhs.map_ref && !(*lhs.map_ref == *rhs.map_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.list_ref_unique != !!rhs.list_ref_unique) {
+  if ((lhs.list_ref_unique == nullptr) != (rhs.list_ref_unique == nullptr) || (lhs.list_ref_unique != nullptr && lhs.list_ref_unique != rhs.list_ref_unique && !(*lhs.list_ref_unique == *rhs.list_ref_unique))) {
     return false;
   }
-  if (!!lhs.list_ref_unique) {
-    if (lhs.list_ref_unique != rhs.list_ref_unique && !(*lhs.list_ref_unique == *rhs.list_ref_unique)) {
-      return false;
-    }
-  }
-  if (!!lhs.set_ref_shared != !!rhs.set_ref_shared) {
+  if ((lhs.set_ref_shared == nullptr) != (rhs.set_ref_shared == nullptr) || (lhs.set_ref_shared != nullptr && lhs.set_ref_shared != rhs.set_ref_shared && !(*lhs.set_ref_shared == *rhs.set_ref_shared))) {
     return false;
   }
-  if (!!lhs.set_ref_shared) {
-    if (lhs.set_ref_shared != rhs.set_ref_shared && !(*lhs.set_ref_shared == *rhs.set_ref_shared)) {
-      return false;
-    }
-  }
-  if (!!lhs.list_ref_shared_const != !!rhs.list_ref_shared_const) {
+  if ((lhs.list_ref_shared_const == nullptr) != (rhs.list_ref_shared_const == nullptr) || (lhs.list_ref_shared_const != nullptr && lhs.list_ref_shared_const != rhs.list_ref_shared_const && !(*lhs.list_ref_shared_const == *rhs.list_ref_shared_const))) {
     return false;
-  }
-  if (!!lhs.list_ref_shared_const) {
-    if (lhs.list_ref_shared_const != rhs.list_ref_shared_const && !(*lhs.list_ref_shared_const == *rhs.list_ref_shared_const)) {
-      return false;
-    }
   }
   return true;
 }
@@ -1185,29 +1100,14 @@ bool StructWithSharedConst::operator==(const StructWithSharedConst& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.opt_shared_const != !!rhs.opt_shared_const) {
+  if ((lhs.opt_shared_const == nullptr) != (rhs.opt_shared_const == nullptr) || (lhs.opt_shared_const != nullptr && lhs.opt_shared_const != rhs.opt_shared_const && !(*lhs.opt_shared_const == *rhs.opt_shared_const))) {
     return false;
   }
-  if (!!lhs.opt_shared_const) {
-    if (lhs.opt_shared_const != rhs.opt_shared_const && !(*lhs.opt_shared_const == *rhs.opt_shared_const)) {
-      return false;
-    }
-  }
-  if (!!lhs.shared_const != !!rhs.shared_const) {
+  if ((lhs.shared_const == nullptr) != (rhs.shared_const == nullptr) || (lhs.shared_const != nullptr && lhs.shared_const != rhs.shared_const && !(*lhs.shared_const == *rhs.shared_const))) {
     return false;
   }
-  if (!!lhs.shared_const) {
-    if (lhs.shared_const != rhs.shared_const && !(*lhs.shared_const == *rhs.shared_const)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_shared_const != !!rhs.req_shared_const) {
+  if ((lhs.req_shared_const == nullptr) != (rhs.req_shared_const == nullptr) || (lhs.req_shared_const != nullptr && lhs.req_shared_const != rhs.req_shared_const && !(*lhs.req_shared_const == *rhs.req_shared_const))) {
     return false;
-  }
-  if (!!lhs.req_shared_const) {
-    if (lhs.req_shared_const != rhs.req_shared_const && !(*lhs.req_shared_const == *rhs.req_shared_const)) {
-      return false;
-    }
   }
   return true;
 }
@@ -1434,29 +1334,14 @@ bool StructWithRef::operator==(const StructWithRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.def_field != !!rhs.def_field) {
+  if ((lhs.def_field == nullptr) != (rhs.def_field == nullptr) || (lhs.def_field != nullptr && lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field))) {
     return false;
   }
-  if (!!lhs.def_field) {
-    if (lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_field != !!rhs.opt_field) {
+  if ((lhs.opt_field == nullptr) != (rhs.opt_field == nullptr) || (lhs.opt_field != nullptr && lhs.opt_field != rhs.opt_field && !(*lhs.opt_field == *rhs.opt_field))) {
     return false;
   }
-  if (!!lhs.opt_field) {
-    if (lhs.opt_field != rhs.opt_field && !(*lhs.opt_field == *rhs.opt_field)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_field != !!rhs.req_field) {
+  if ((lhs.req_field == nullptr) != (rhs.req_field == nullptr) || (lhs.req_field != nullptr && lhs.req_field != rhs.req_field && !(*lhs.req_field == *rhs.req_field))) {
     return false;
-  }
-  if (!!lhs.req_field) {
-    if (lhs.req_field != rhs.req_field && !(*lhs.req_field == *rhs.req_field)) {
-      return false;
-    }
   }
   return true;
 }
@@ -1617,29 +1502,14 @@ bool StructWithRefTypeUnique::operator==(const StructWithRefTypeUnique& rhs) con
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.def_field != !!rhs.def_field) {
+  if ((lhs.def_field == nullptr) != (rhs.def_field == nullptr) || (lhs.def_field != nullptr && lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field))) {
     return false;
   }
-  if (!!lhs.def_field) {
-    if (lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_field != !!rhs.opt_field) {
+  if ((lhs.opt_field == nullptr) != (rhs.opt_field == nullptr) || (lhs.opt_field != nullptr && lhs.opt_field != rhs.opt_field && !(*lhs.opt_field == *rhs.opt_field))) {
     return false;
   }
-  if (!!lhs.opt_field) {
-    if (lhs.opt_field != rhs.opt_field && !(*lhs.opt_field == *rhs.opt_field)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_field != !!rhs.req_field) {
+  if ((lhs.req_field == nullptr) != (rhs.req_field == nullptr) || (lhs.req_field != nullptr && lhs.req_field != rhs.req_field && !(*lhs.req_field == *rhs.req_field))) {
     return false;
-  }
-  if (!!lhs.req_field) {
-    if (lhs.req_field != rhs.req_field && !(*lhs.req_field == *rhs.req_field)) {
-      return false;
-    }
   }
   return true;
 }
@@ -1789,29 +1659,14 @@ bool StructWithRefTypeShared::operator==(const StructWithRefTypeShared& rhs) con
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.def_field != !!rhs.def_field) {
+  if ((lhs.def_field == nullptr) != (rhs.def_field == nullptr) || (lhs.def_field != nullptr && lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field))) {
     return false;
   }
-  if (!!lhs.def_field) {
-    if (lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_field != !!rhs.opt_field) {
+  if ((lhs.opt_field == nullptr) != (rhs.opt_field == nullptr) || (lhs.opt_field != nullptr && lhs.opt_field != rhs.opt_field && !(*lhs.opt_field == *rhs.opt_field))) {
     return false;
   }
-  if (!!lhs.opt_field) {
-    if (lhs.opt_field != rhs.opt_field && !(*lhs.opt_field == *rhs.opt_field)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_field != !!rhs.req_field) {
+  if ((lhs.req_field == nullptr) != (rhs.req_field == nullptr) || (lhs.req_field != nullptr && lhs.req_field != rhs.req_field && !(*lhs.req_field == *rhs.req_field))) {
     return false;
-  }
-  if (!!lhs.req_field) {
-    if (lhs.req_field != rhs.req_field && !(*lhs.req_field == *rhs.req_field)) {
-      return false;
-    }
   }
   return true;
 }
@@ -1961,29 +1816,14 @@ bool StructWithRefTypeSharedConst::operator==(const StructWithRefTypeSharedConst
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.def_field != !!rhs.def_field) {
+  if ((lhs.def_field == nullptr) != (rhs.def_field == nullptr) || (lhs.def_field != nullptr && lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field))) {
     return false;
   }
-  if (!!lhs.def_field) {
-    if (lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_field != !!rhs.opt_field) {
+  if ((lhs.opt_field == nullptr) != (rhs.opt_field == nullptr) || (lhs.opt_field != nullptr && lhs.opt_field != rhs.opt_field && !(*lhs.opt_field == *rhs.opt_field))) {
     return false;
   }
-  if (!!lhs.opt_field) {
-    if (lhs.opt_field != rhs.opt_field && !(*lhs.opt_field == *rhs.opt_field)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_field != !!rhs.req_field) {
+  if ((lhs.req_field == nullptr) != (rhs.req_field == nullptr) || (lhs.req_field != nullptr && lhs.req_field != rhs.req_field && !(*lhs.req_field == *rhs.req_field))) {
     return false;
-  }
-  if (!!lhs.req_field) {
-    if (lhs.req_field != rhs.req_field && !(*lhs.req_field == *rhs.req_field)) {
-      return false;
-    }
   }
   return true;
 }
@@ -2134,13 +1974,8 @@ bool StructWithRefAndAnnotCppNoexceptMoveCtor::operator==(const StructWithRefAnd
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.def_field != !!rhs.def_field) {
+  if ((lhs.def_field == nullptr) != (rhs.def_field == nullptr) || (lhs.def_field != nullptr && lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field))) {
     return false;
-  }
-  if (!!lhs.def_field) {
-    if (lhs.def_field != rhs.def_field && !(*lhs.def_field == *rhs.def_field)) {
-      return false;
-    }
   }
   return true;
 }

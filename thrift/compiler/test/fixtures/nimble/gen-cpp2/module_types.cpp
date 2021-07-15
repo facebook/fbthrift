@@ -63,16 +63,16 @@ bool BasicTypes::operator==(const BasicTypes& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.first == rhs.first)) {
+  if (!(lhs.first_ref() == rhs.first_ref())) {
     return false;
   }
-  if (lhs.second_ref() != rhs.second_ref()) {
+  if (!(lhs.second_ref() == rhs.second_ref())) {
     return false;
   }
-  if (lhs.third_ref() != rhs.third_ref()) {
+  if (!(lhs.third_ref() == rhs.third_ref())) {
     return false;
   }
-  if (!(lhs.isTrue == rhs.isTrue)) {
+  if (!(lhs.isTrue_ref() == rhs.isTrue_ref())) {
     return false;
   }
   return true;
@@ -82,17 +82,17 @@ bool BasicTypes::operator<(const BasicTypes& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.first == rhs.first)) {
-    return lhs.first < rhs.first;
+  if (!(lhs.first_ref() == rhs.first_ref())) {
+    return lhs.first_ref() < rhs.first_ref();
   }
-  if (lhs.second_ref() != rhs.second_ref()) {
+  if (!(lhs.second_ref() == rhs.second_ref())) {
     return lhs.second_ref() < rhs.second_ref();
   }
-  if (lhs.third_ref() != rhs.third_ref()) {
+  if (!(lhs.third_ref() == rhs.third_ref())) {
     return lhs.third_ref() < rhs.third_ref();
   }
-  if (!(lhs.isTrue == rhs.isTrue)) {
-    return lhs.isTrue < rhs.isTrue;
+  if (!(lhs.isTrue_ref() == rhs.isTrue_ref())) {
+    return lhs.isTrue_ref() < rhs.isTrue_ref();
   }
   return false;
 }

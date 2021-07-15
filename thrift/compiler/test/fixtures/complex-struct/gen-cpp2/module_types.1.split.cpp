@@ -75,10 +75,10 @@ bool MyStructMapFloatThrowExp::operator==(const MyStructMapFloatThrowExp& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongField == rhs.myLongField)) {
+  if (!(lhs.myLongField_ref() == rhs.myLongField_ref())) {
     return false;
   }
-  if (!(lhs.mapListOfFloats == rhs.mapListOfFloats)) {
+  if (!(lhs.mapListOfFloats_ref() == rhs.mapListOfFloats_ref())) {
     return false;
   }
   return true;
@@ -88,11 +88,11 @@ bool MyStructMapFloatThrowExp::operator<(const MyStructMapFloatThrowExp& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongField == rhs.myLongField)) {
-    return lhs.myLongField < rhs.myLongField;
+  if (!(lhs.myLongField_ref() == rhs.myLongField_ref())) {
+    return lhs.myLongField_ref() < rhs.myLongField_ref();
   }
-  if (!(lhs.mapListOfFloats == rhs.mapListOfFloats)) {
-    return lhs.mapListOfFloats < rhs.mapListOfFloats;
+  if (!(lhs.mapListOfFloats_ref() == rhs.mapListOfFloats_ref())) {
+    return lhs.mapListOfFloats_ref() < rhs.mapListOfFloats_ref();
   }
   return false;
 }
@@ -338,16 +338,16 @@ bool defaultStruct::operator==(const defaultStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongDFset == rhs.myLongDFset)) {
+  if (!(lhs.myLongDFset_ref() == rhs.myLongDFset_ref())) {
     return false;
   }
-  if (!(lhs.myLongDF == rhs.myLongDF)) {
+  if (!(lhs.myLongDF_ref() == rhs.myLongDF_ref())) {
     return false;
   }
-  if (!(lhs.portDFset == rhs.portDFset)) {
+  if (!(lhs.portDFset_ref() == rhs.portDFset_ref())) {
     return false;
   }
-  if (!(lhs.portNum == rhs.portNum)) {
+  if (!(lhs.portNum_ref() == rhs.portNum_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinaryDFset, rhs.myBinaryDFset)) {
@@ -356,52 +356,52 @@ bool defaultStruct::operator==(const defaultStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinary, rhs.myBinary)) {
     return false;
   }
-  if (!(lhs.myByteDFSet == rhs.myByteDFSet)) {
+  if (!(lhs.myByteDFSet_ref() == rhs.myByteDFSet_ref())) {
     return false;
   }
-  if (!(lhs.myByte == rhs.myByte)) {
+  if (!(lhs.myByte_ref() == rhs.myByte_ref())) {
     return false;
   }
-  if (!(lhs.myDoubleDFset == rhs.myDoubleDFset)) {
+  if (!(lhs.myDoubleDFset_ref() == rhs.myDoubleDFset_ref())) {
     return false;
   }
-  if (!(lhs.myDoubleDFZero == rhs.myDoubleDFZero)) {
+  if (!(lhs.myDoubleDFZero_ref() == rhs.myDoubleDFZero_ref())) {
     return false;
   }
-  if (!(lhs.myDouble == rhs.myDouble)) {
+  if (!(lhs.myDouble_ref() == rhs.myDouble_ref())) {
     return false;
   }
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
-  if (!(lhs.myList == rhs.myList)) {
+  if (!(lhs.myList_ref() == rhs.myList_ref())) {
     return false;
   }
-  if (!(lhs.mySet == rhs.mySet)) {
+  if (!(lhs.mySet_ref() == rhs.mySet_ref())) {
     return false;
   }
-  if (!(lhs.simpleStruct == rhs.simpleStruct)) {
+  if (!(lhs.simpleStruct_ref() == rhs.simpleStruct_ref())) {
     return false;
   }
-  if (!(lhs.listStructDFset == rhs.listStructDFset)) {
+  if (!(lhs.listStructDFset_ref() == rhs.listStructDFset_ref())) {
     return false;
   }
-  if (!(lhs.myUnion == rhs.myUnion)) {
+  if (!(lhs.myUnion_ref() == rhs.myUnion_ref())) {
     return false;
   }
-  if (!(lhs.listUnionDFset == rhs.listUnionDFset)) {
+  if (!(lhs.listUnionDFset_ref() == rhs.listUnionDFset_ref())) {
     return false;
   }
-  if (!(lhs.mapNestlistStructDfSet == rhs.mapNestlistStructDfSet)) {
+  if (!(lhs.mapNestlistStructDfSet_ref() == rhs.mapNestlistStructDfSet_ref())) {
     return false;
   }
-  if (!(lhs.mapJavaTypeDFset == rhs.mapJavaTypeDFset)) {
+  if (!(lhs.mapJavaTypeDFset_ref() == rhs.mapJavaTypeDFset_ref())) {
     return false;
   }
-  if (!(lhs.emptyMap == rhs.emptyMap)) {
+  if (!(lhs.emptyMap_ref() == rhs.emptyMap_ref())) {
     return false;
   }
-  if (!(lhs.enumMapDFset == rhs.enumMapDFset)) {
+  if (!(lhs.enumMapDFset_ref() == rhs.enumMapDFset_ref())) {
     return false;
   }
   return true;
@@ -411,17 +411,17 @@ bool defaultStruct::operator<(const defaultStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongDFset == rhs.myLongDFset)) {
-    return lhs.myLongDFset < rhs.myLongDFset;
+  if (!(lhs.myLongDFset_ref() == rhs.myLongDFset_ref())) {
+    return lhs.myLongDFset_ref() < rhs.myLongDFset_ref();
   }
-  if (!(lhs.myLongDF == rhs.myLongDF)) {
-    return lhs.myLongDF < rhs.myLongDF;
+  if (!(lhs.myLongDF_ref() == rhs.myLongDF_ref())) {
+    return lhs.myLongDF_ref() < rhs.myLongDF_ref();
   }
-  if (!(lhs.portDFset == rhs.portDFset)) {
-    return lhs.portDFset < rhs.portDFset;
+  if (!(lhs.portDFset_ref() == rhs.portDFset_ref())) {
+    return lhs.portDFset_ref() < rhs.portDFset_ref();
   }
-  if (!(lhs.portNum == rhs.portNum)) {
-    return lhs.portNum < rhs.portNum;
+  if (!(lhs.portNum_ref() == rhs.portNum_ref())) {
+    return lhs.portNum_ref() < rhs.portNum_ref();
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinaryDFset, rhs.myBinaryDFset)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.myBinaryDFset, rhs.myBinaryDFset);
@@ -429,53 +429,53 @@ bool defaultStruct::operator<(const defaultStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinary, rhs.myBinary)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.myBinary, rhs.myBinary);
   }
-  if (!(lhs.myByteDFSet == rhs.myByteDFSet)) {
-    return lhs.myByteDFSet < rhs.myByteDFSet;
+  if (!(lhs.myByteDFSet_ref() == rhs.myByteDFSet_ref())) {
+    return lhs.myByteDFSet_ref() < rhs.myByteDFSet_ref();
   }
-  if (!(lhs.myByte == rhs.myByte)) {
-    return lhs.myByte < rhs.myByte;
+  if (!(lhs.myByte_ref() == rhs.myByte_ref())) {
+    return lhs.myByte_ref() < rhs.myByte_ref();
   }
-  if (!(lhs.myDoubleDFset == rhs.myDoubleDFset)) {
-    return lhs.myDoubleDFset < rhs.myDoubleDFset;
+  if (!(lhs.myDoubleDFset_ref() == rhs.myDoubleDFset_ref())) {
+    return lhs.myDoubleDFset_ref() < rhs.myDoubleDFset_ref();
   }
-  if (!(lhs.myDoubleDFZero == rhs.myDoubleDFZero)) {
-    return lhs.myDoubleDFZero < rhs.myDoubleDFZero;
+  if (!(lhs.myDoubleDFZero_ref() == rhs.myDoubleDFZero_ref())) {
+    return lhs.myDoubleDFZero_ref() < rhs.myDoubleDFZero_ref();
   }
-  if (!(lhs.myDouble == rhs.myDouble)) {
-    return lhs.myDouble < rhs.myDouble;
+  if (!(lhs.myDouble_ref() == rhs.myDouble_ref())) {
+    return lhs.myDouble_ref() < rhs.myDouble_ref();
   }
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
-  if (!(lhs.myList == rhs.myList)) {
-    return lhs.myList < rhs.myList;
+  if (!(lhs.myList_ref() == rhs.myList_ref())) {
+    return lhs.myList_ref() < rhs.myList_ref();
   }
-  if (!(lhs.mySet == rhs.mySet)) {
-    return lhs.mySet < rhs.mySet;
+  if (!(lhs.mySet_ref() == rhs.mySet_ref())) {
+    return lhs.mySet_ref() < rhs.mySet_ref();
   }
-  if (!(lhs.simpleStruct == rhs.simpleStruct)) {
-    return lhs.simpleStruct < rhs.simpleStruct;
+  if (!(lhs.simpleStruct_ref() == rhs.simpleStruct_ref())) {
+    return lhs.simpleStruct_ref() < rhs.simpleStruct_ref();
   }
-  if (!(lhs.listStructDFset == rhs.listStructDFset)) {
-    return lhs.listStructDFset < rhs.listStructDFset;
+  if (!(lhs.listStructDFset_ref() == rhs.listStructDFset_ref())) {
+    return lhs.listStructDFset_ref() < rhs.listStructDFset_ref();
   }
-  if (!(lhs.myUnion == rhs.myUnion)) {
-    return lhs.myUnion < rhs.myUnion;
+  if (!(lhs.myUnion_ref() == rhs.myUnion_ref())) {
+    return lhs.myUnion_ref() < rhs.myUnion_ref();
   }
-  if (!(lhs.listUnionDFset == rhs.listUnionDFset)) {
-    return lhs.listUnionDFset < rhs.listUnionDFset;
+  if (!(lhs.listUnionDFset_ref() == rhs.listUnionDFset_ref())) {
+    return lhs.listUnionDFset_ref() < rhs.listUnionDFset_ref();
   }
-  if (!(lhs.mapNestlistStructDfSet == rhs.mapNestlistStructDfSet)) {
-    return lhs.mapNestlistStructDfSet < rhs.mapNestlistStructDfSet;
+  if (!(lhs.mapNestlistStructDfSet_ref() == rhs.mapNestlistStructDfSet_ref())) {
+    return lhs.mapNestlistStructDfSet_ref() < rhs.mapNestlistStructDfSet_ref();
   }
-  if (!(lhs.mapJavaTypeDFset == rhs.mapJavaTypeDFset)) {
-    return lhs.mapJavaTypeDFset < rhs.mapJavaTypeDFset;
+  if (!(lhs.mapJavaTypeDFset_ref() == rhs.mapJavaTypeDFset_ref())) {
+    return lhs.mapJavaTypeDFset_ref() < rhs.mapJavaTypeDFset_ref();
   }
-  if (!(lhs.emptyMap == rhs.emptyMap)) {
-    return lhs.emptyMap < rhs.emptyMap;
+  if (!(lhs.emptyMap_ref() == rhs.emptyMap_ref())) {
+    return lhs.emptyMap_ref() < rhs.emptyMap_ref();
   }
-  if (!(lhs.enumMapDFset == rhs.enumMapDFset)) {
-    return lhs.enumMapDFset < rhs.enumMapDFset;
+  if (!(lhs.enumMapDFset_ref() == rhs.enumMapDFset_ref())) {
+    return lhs.enumMapDFset_ref() < rhs.enumMapDFset_ref();
   }
   return false;
 }
@@ -906,13 +906,13 @@ bool TypeRemapped::operator==(const TypeRemapped& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.lsMap == rhs.lsMap)) {
+  if (!(lhs.lsMap_ref() == rhs.lsMap_ref())) {
     return false;
   }
-  if (!(lhs.ioMap == rhs.ioMap)) {
+  if (!(lhs.ioMap_ref() == rhs.ioMap_ref())) {
     return false;
   }
-  if (!(lhs.BigInteger == rhs.BigInteger)) {
+  if (!(lhs.BigInteger_ref() == rhs.BigInteger_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binaryTestBuffer, rhs.binaryTestBuffer)) {
@@ -925,14 +925,14 @@ bool TypeRemapped::operator<(const TypeRemapped& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.lsMap == rhs.lsMap)) {
-    return lhs.lsMap < rhs.lsMap;
+  if (!(lhs.lsMap_ref() == rhs.lsMap_ref())) {
+    return lhs.lsMap_ref() < rhs.lsMap_ref();
   }
-  if (!(lhs.ioMap == rhs.ioMap)) {
-    return lhs.ioMap < rhs.ioMap;
+  if (!(lhs.ioMap_ref() == rhs.ioMap_ref())) {
+    return lhs.ioMap_ref() < rhs.ioMap_ref();
   }
-  if (!(lhs.BigInteger == rhs.BigInteger)) {
-    return lhs.BigInteger < rhs.BigInteger;
+  if (!(lhs.BigInteger_ref() == rhs.BigInteger_ref())) {
+    return lhs.BigInteger_ref() < rhs.BigInteger_ref();
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binaryTestBuffer, rhs.binaryTestBuffer)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.binaryTestBuffer, rhs.binaryTestBuffer);
@@ -1053,10 +1053,10 @@ bool optXcep::operator==(const optXcep& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.message_ref() != rhs.message_ref()) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
-  if (lhs.errorCode_ref() != rhs.errorCode_ref()) {
+  if (!(lhs.errorCode_ref() == rhs.errorCode_ref())) {
     return false;
   }
   return true;
@@ -1066,10 +1066,10 @@ bool optXcep::operator<(const optXcep& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.message_ref() != rhs.message_ref()) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return lhs.message_ref() < rhs.message_ref();
   }
-  if (lhs.errorCode_ref() != rhs.errorCode_ref()) {
+  if (!(lhs.errorCode_ref() == rhs.errorCode_ref())) {
     return lhs.errorCode_ref() < rhs.errorCode_ref();
   }
   return false;

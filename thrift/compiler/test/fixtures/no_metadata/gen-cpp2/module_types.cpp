@@ -183,16 +183,16 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
     return false;
   }
-  if (!(lhs.MyDataField == rhs.MyDataField)) {
+  if (!(lhs.MyDataField_ref() == rhs.MyDataField_ref())) {
     return false;
   }
-  if (!(lhs.myEnum == rhs.myEnum)) {
+  if (!(lhs.myEnum_ref() == rhs.myEnum_ref())) {
     return false;
   }
   return true;
@@ -202,17 +202,17 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
-    return lhs.MyStringField < rhs.MyStringField;
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
+    return lhs.MyStringField_ref() < rhs.MyStringField_ref();
   }
-  if (!(lhs.MyDataField == rhs.MyDataField)) {
-    return lhs.MyDataField < rhs.MyDataField;
+  if (!(lhs.MyDataField_ref() == rhs.MyDataField_ref())) {
+    return lhs.MyDataField_ref() < rhs.MyDataField_ref();
   }
-  if (!(lhs.myEnum == rhs.myEnum)) {
-    return lhs.myEnum < rhs.myEnum;
+  if (!(lhs.myEnum_ref() == rhs.myEnum_ref())) {
+    return lhs.myEnum_ref() < rhs.myEnum_ref();
   }
   return false;
 }

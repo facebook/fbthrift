@@ -183,16 +183,16 @@ bool Internship::operator==(const Internship& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.weeks == rhs.weeks)) {
+  if (!(lhs.weeks_ref() == rhs.weeks_ref())) {
     return false;
   }
-  if (!(lhs.title == rhs.title)) {
+  if (!(lhs.title_ref() == rhs.title_ref())) {
     return false;
   }
-  if (lhs.employer_ref() != rhs.employer_ref()) {
+  if (!(lhs.employer_ref() == rhs.employer_ref())) {
     return false;
   }
-  if (lhs.compensation_ref() != rhs.compensation_ref()) {
+  if (!(lhs.compensation_ref() == rhs.compensation_ref())) {
     return false;
   }
   return true;
@@ -202,16 +202,16 @@ bool Internship::operator<(const Internship& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.weeks == rhs.weeks)) {
-    return lhs.weeks < rhs.weeks;
+  if (!(lhs.weeks_ref() == rhs.weeks_ref())) {
+    return lhs.weeks_ref() < rhs.weeks_ref();
   }
-  if (!(lhs.title == rhs.title)) {
-    return lhs.title < rhs.title;
+  if (!(lhs.title_ref() == rhs.title_ref())) {
+    return lhs.title_ref() < rhs.title_ref();
   }
-  if (lhs.employer_ref() != rhs.employer_ref()) {
+  if (!(lhs.employer_ref() == rhs.employer_ref())) {
     return lhs.employer_ref() < rhs.employer_ref();
   }
-  if (lhs.compensation_ref() != rhs.compensation_ref()) {
+  if (!(lhs.compensation_ref() == rhs.compensation_ref())) {
     return lhs.compensation_ref() < rhs.compensation_ref();
   }
   return false;
@@ -282,10 +282,10 @@ bool Range::operator==(const Range& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.min == rhs.min)) {
+  if (!(lhs.min_ref() == rhs.min_ref())) {
     return false;
   }
-  if (!(lhs.max == rhs.max)) {
+  if (!(lhs.max_ref() == rhs.max_ref())) {
     return false;
   }
   return true;
@@ -295,11 +295,11 @@ bool Range::operator<(const Range& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.min == rhs.min)) {
-    return lhs.min < rhs.min;
+  if (!(lhs.min_ref() == rhs.min_ref())) {
+    return lhs.min_ref() < rhs.min_ref();
   }
-  if (!(lhs.max == rhs.max)) {
-    return lhs.max < rhs.max;
+  if (!(lhs.max_ref() == rhs.max_ref())) {
+    return lhs.max_ref() < rhs.max_ref();
   }
   return false;
 }
@@ -387,10 +387,10 @@ bool struct1::operator==(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
   return true;
@@ -400,11 +400,11 @@ bool struct1::operator<(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
   return false;
 }
@@ -505,16 +505,16 @@ bool struct2::operator==(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
-  if (!(lhs.d == rhs.d)) {
+  if (!(lhs.d_ref() == rhs.d_ref())) {
     return false;
   }
   return true;
@@ -524,17 +524,17 @@ bool struct2::operator<(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
-  if (!(lhs.d == rhs.d)) {
-    return lhs.d < rhs.d;
+  if (!(lhs.d_ref() == rhs.d_ref())) {
+    return lhs.d_ref() < rhs.d_ref();
   }
   return false;
 }
@@ -660,13 +660,13 @@ bool struct3::operator==(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
   return true;
@@ -676,14 +676,14 @@ bool struct3::operator<(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
   return false;
 }
@@ -800,13 +800,13 @@ bool struct4::operator==(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (lhs.b_ref() != rhs.b_ref()) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (lhs.c_ref() != rhs.c_ref()) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
   return true;
@@ -816,13 +816,13 @@ bool struct4::operator<(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (lhs.b_ref() != rhs.b_ref()) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return lhs.b_ref() < rhs.b_ref();
   }
-  if (lhs.c_ref() != rhs.c_ref()) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return lhs.c_ref() < rhs.c_ref();
   }
   return false;

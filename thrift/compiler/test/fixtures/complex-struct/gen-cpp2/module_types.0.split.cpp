@@ -118,16 +118,16 @@ bool MyStructFloatFieldThrowExp::operator==(const MyStructFloatFieldThrowExp& rh
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongField == rhs.myLongField)) {
+  if (!(lhs.myLongField_ref() == rhs.myLongField_ref())) {
     return false;
   }
-  if (!(lhs.MyByteField == rhs.MyByteField)) {
+  if (!(lhs.MyByteField_ref() == rhs.MyByteField_ref())) {
     return false;
   }
-  if (!(lhs.myStringField == rhs.myStringField)) {
+  if (!(lhs.myStringField_ref() == rhs.myStringField_ref())) {
     return false;
   }
-  if (!(lhs.myFloatField == rhs.myFloatField)) {
+  if (!(lhs.myFloatField_ref() == rhs.myFloatField_ref())) {
     return false;
   }
   return true;
@@ -137,17 +137,17 @@ bool MyStructFloatFieldThrowExp::operator<(const MyStructFloatFieldThrowExp& rhs
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongField == rhs.myLongField)) {
-    return lhs.myLongField < rhs.myLongField;
+  if (!(lhs.myLongField_ref() == rhs.myLongField_ref())) {
+    return lhs.myLongField_ref() < rhs.myLongField_ref();
   }
-  if (!(lhs.MyByteField == rhs.MyByteField)) {
-    return lhs.MyByteField < rhs.MyByteField;
+  if (!(lhs.MyByteField_ref() == rhs.MyByteField_ref())) {
+    return lhs.MyByteField_ref() < rhs.MyByteField_ref();
   }
-  if (!(lhs.myStringField == rhs.myStringField)) {
-    return lhs.myStringField < rhs.myStringField;
+  if (!(lhs.myStringField_ref() == rhs.myStringField_ref())) {
+    return lhs.myStringField_ref() < rhs.myStringField_ref();
   }
-  if (!(lhs.myFloatField == rhs.myFloatField)) {
-    return lhs.myFloatField < rhs.myFloatField;
+  if (!(lhs.myFloatField_ref() == rhs.myFloatField_ref())) {
+    return lhs.myFloatField_ref() < rhs.myFloatField_ref();
   }
   return false;
 }
@@ -240,10 +240,10 @@ bool SimpleStruct::operator==(const SimpleStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.age == rhs.age)) {
+  if (!(lhs.age_ref() == rhs.age_ref())) {
     return false;
   }
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
   return true;
@@ -253,11 +253,11 @@ bool SimpleStruct::operator<(const SimpleStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.age == rhs.age)) {
-    return lhs.age < rhs.age;
+  if (!(lhs.age_ref() == rhs.age_ref())) {
+    return lhs.age_ref() < rhs.age_ref();
   }
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
   return false;
 }
@@ -502,58 +502,58 @@ bool ComplexNestedStruct::operator==(const ComplexNestedStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.setOfSetOfInt == rhs.setOfSetOfInt)) {
+  if (!(lhs.setOfSetOfInt_ref() == rhs.setOfSetOfInt_ref())) {
     return false;
   }
-  if (!(lhs.listofListOfListOfListOfEnum == rhs.listofListOfListOfListOfEnum)) {
+  if (!(lhs.listofListOfListOfListOfEnum_ref() == rhs.listofListOfListOfListOfEnum_ref())) {
     return false;
   }
-  if (!(lhs.listOfListOfMyStruct == rhs.listOfListOfMyStruct)) {
+  if (!(lhs.listOfListOfMyStruct_ref() == rhs.listOfListOfMyStruct_ref())) {
     return false;
   }
-  if (!(lhs.setOfListOfListOfLong == rhs.setOfListOfListOfLong)) {
+  if (!(lhs.setOfListOfListOfLong_ref() == rhs.setOfListOfListOfLong_ref())) {
     return false;
   }
-  if (!(lhs.setOfSetOfsetOfLong == rhs.setOfSetOfsetOfLong)) {
+  if (!(lhs.setOfSetOfsetOfLong_ref() == rhs.setOfSetOfsetOfLong_ref())) {
     return false;
   }
-  if (!(lhs.mapStructListOfListOfLong == rhs.mapStructListOfListOfLong)) {
+  if (!(lhs.mapStructListOfListOfLong_ref() == rhs.mapStructListOfListOfLong_ref())) {
     return false;
   }
-  if (!(lhs.mKeyStructValInt == rhs.mKeyStructValInt)) {
+  if (!(lhs.mKeyStructValInt_ref() == rhs.mKeyStructValInt_ref())) {
     return false;
   }
-  if (!(lhs.listOfMapKeyIntValInt == rhs.listOfMapKeyIntValInt)) {
+  if (!(lhs.listOfMapKeyIntValInt_ref() == rhs.listOfMapKeyIntValInt_ref())) {
     return false;
   }
-  if (!(lhs.listOfMapKeyStrValList == rhs.listOfMapKeyStrValList)) {
+  if (!(lhs.listOfMapKeyStrValList_ref() == rhs.listOfMapKeyStrValList_ref())) {
     return false;
   }
-  if (!(lhs.mapKeySetValLong == rhs.mapKeySetValLong)) {
+  if (!(lhs.mapKeySetValLong_ref() == rhs.mapKeySetValLong_ref())) {
     return false;
   }
-  if (!(lhs.mapKeyListValLong == rhs.mapKeyListValLong)) {
+  if (!(lhs.mapKeyListValLong_ref() == rhs.mapKeyListValLong_ref())) {
     return false;
   }
-  if (!(lhs.mapKeyMapValMap == rhs.mapKeyMapValMap)) {
+  if (!(lhs.mapKeyMapValMap_ref() == rhs.mapKeyMapValMap_ref())) {
     return false;
   }
-  if (!(lhs.mapKeySetValMap == rhs.mapKeySetValMap)) {
+  if (!(lhs.mapKeySetValMap_ref() == rhs.mapKeySetValMap_ref())) {
     return false;
   }
-  if (!(lhs.NestedMaps == rhs.NestedMaps)) {
+  if (!(lhs.NestedMaps_ref() == rhs.NestedMaps_ref())) {
     return false;
   }
-  if (!(lhs.mapKeyIntValList == rhs.mapKeyIntValList)) {
+  if (!(lhs.mapKeyIntValList_ref() == rhs.mapKeyIntValList_ref())) {
     return false;
   }
-  if (!(lhs.mapKeyIntValSet == rhs.mapKeyIntValSet)) {
+  if (!(lhs.mapKeyIntValSet_ref() == rhs.mapKeyIntValSet_ref())) {
     return false;
   }
-  if (!(lhs.mapKeySetValInt == rhs.mapKeySetValInt)) {
+  if (!(lhs.mapKeySetValInt_ref() == rhs.mapKeySetValInt_ref())) {
     return false;
   }
-  if (!(lhs.mapKeyListValSet == rhs.mapKeyListValSet)) {
+  if (!(lhs.mapKeyListValSet_ref() == rhs.mapKeyListValSet_ref())) {
     return false;
   }
   return true;
@@ -563,59 +563,59 @@ bool ComplexNestedStruct::operator<(const ComplexNestedStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.setOfSetOfInt == rhs.setOfSetOfInt)) {
-    return lhs.setOfSetOfInt < rhs.setOfSetOfInt;
+  if (!(lhs.setOfSetOfInt_ref() == rhs.setOfSetOfInt_ref())) {
+    return lhs.setOfSetOfInt_ref() < rhs.setOfSetOfInt_ref();
   }
-  if (!(lhs.listofListOfListOfListOfEnum == rhs.listofListOfListOfListOfEnum)) {
-    return lhs.listofListOfListOfListOfEnum < rhs.listofListOfListOfListOfEnum;
+  if (!(lhs.listofListOfListOfListOfEnum_ref() == rhs.listofListOfListOfListOfEnum_ref())) {
+    return lhs.listofListOfListOfListOfEnum_ref() < rhs.listofListOfListOfListOfEnum_ref();
   }
-  if (!(lhs.listOfListOfMyStruct == rhs.listOfListOfMyStruct)) {
-    return lhs.listOfListOfMyStruct < rhs.listOfListOfMyStruct;
+  if (!(lhs.listOfListOfMyStruct_ref() == rhs.listOfListOfMyStruct_ref())) {
+    return lhs.listOfListOfMyStruct_ref() < rhs.listOfListOfMyStruct_ref();
   }
-  if (!(lhs.setOfListOfListOfLong == rhs.setOfListOfListOfLong)) {
-    return lhs.setOfListOfListOfLong < rhs.setOfListOfListOfLong;
+  if (!(lhs.setOfListOfListOfLong_ref() == rhs.setOfListOfListOfLong_ref())) {
+    return lhs.setOfListOfListOfLong_ref() < rhs.setOfListOfListOfLong_ref();
   }
-  if (!(lhs.setOfSetOfsetOfLong == rhs.setOfSetOfsetOfLong)) {
-    return lhs.setOfSetOfsetOfLong < rhs.setOfSetOfsetOfLong;
+  if (!(lhs.setOfSetOfsetOfLong_ref() == rhs.setOfSetOfsetOfLong_ref())) {
+    return lhs.setOfSetOfsetOfLong_ref() < rhs.setOfSetOfsetOfLong_ref();
   }
-  if (!(lhs.mapStructListOfListOfLong == rhs.mapStructListOfListOfLong)) {
-    return lhs.mapStructListOfListOfLong < rhs.mapStructListOfListOfLong;
+  if (!(lhs.mapStructListOfListOfLong_ref() == rhs.mapStructListOfListOfLong_ref())) {
+    return lhs.mapStructListOfListOfLong_ref() < rhs.mapStructListOfListOfLong_ref();
   }
-  if (!(lhs.mKeyStructValInt == rhs.mKeyStructValInt)) {
-    return lhs.mKeyStructValInt < rhs.mKeyStructValInt;
+  if (!(lhs.mKeyStructValInt_ref() == rhs.mKeyStructValInt_ref())) {
+    return lhs.mKeyStructValInt_ref() < rhs.mKeyStructValInt_ref();
   }
-  if (!(lhs.listOfMapKeyIntValInt == rhs.listOfMapKeyIntValInt)) {
-    return lhs.listOfMapKeyIntValInt < rhs.listOfMapKeyIntValInt;
+  if (!(lhs.listOfMapKeyIntValInt_ref() == rhs.listOfMapKeyIntValInt_ref())) {
+    return lhs.listOfMapKeyIntValInt_ref() < rhs.listOfMapKeyIntValInt_ref();
   }
-  if (!(lhs.listOfMapKeyStrValList == rhs.listOfMapKeyStrValList)) {
-    return lhs.listOfMapKeyStrValList < rhs.listOfMapKeyStrValList;
+  if (!(lhs.listOfMapKeyStrValList_ref() == rhs.listOfMapKeyStrValList_ref())) {
+    return lhs.listOfMapKeyStrValList_ref() < rhs.listOfMapKeyStrValList_ref();
   }
-  if (!(lhs.mapKeySetValLong == rhs.mapKeySetValLong)) {
-    return lhs.mapKeySetValLong < rhs.mapKeySetValLong;
+  if (!(lhs.mapKeySetValLong_ref() == rhs.mapKeySetValLong_ref())) {
+    return lhs.mapKeySetValLong_ref() < rhs.mapKeySetValLong_ref();
   }
-  if (!(lhs.mapKeyListValLong == rhs.mapKeyListValLong)) {
-    return lhs.mapKeyListValLong < rhs.mapKeyListValLong;
+  if (!(lhs.mapKeyListValLong_ref() == rhs.mapKeyListValLong_ref())) {
+    return lhs.mapKeyListValLong_ref() < rhs.mapKeyListValLong_ref();
   }
-  if (!(lhs.mapKeyMapValMap == rhs.mapKeyMapValMap)) {
-    return lhs.mapKeyMapValMap < rhs.mapKeyMapValMap;
+  if (!(lhs.mapKeyMapValMap_ref() == rhs.mapKeyMapValMap_ref())) {
+    return lhs.mapKeyMapValMap_ref() < rhs.mapKeyMapValMap_ref();
   }
-  if (!(lhs.mapKeySetValMap == rhs.mapKeySetValMap)) {
-    return lhs.mapKeySetValMap < rhs.mapKeySetValMap;
+  if (!(lhs.mapKeySetValMap_ref() == rhs.mapKeySetValMap_ref())) {
+    return lhs.mapKeySetValMap_ref() < rhs.mapKeySetValMap_ref();
   }
-  if (!(lhs.NestedMaps == rhs.NestedMaps)) {
-    return lhs.NestedMaps < rhs.NestedMaps;
+  if (!(lhs.NestedMaps_ref() == rhs.NestedMaps_ref())) {
+    return lhs.NestedMaps_ref() < rhs.NestedMaps_ref();
   }
-  if (!(lhs.mapKeyIntValList == rhs.mapKeyIntValList)) {
-    return lhs.mapKeyIntValList < rhs.mapKeyIntValList;
+  if (!(lhs.mapKeyIntValList_ref() == rhs.mapKeyIntValList_ref())) {
+    return lhs.mapKeyIntValList_ref() < rhs.mapKeyIntValList_ref();
   }
-  if (!(lhs.mapKeyIntValSet == rhs.mapKeyIntValSet)) {
-    return lhs.mapKeyIntValSet < rhs.mapKeyIntValSet;
+  if (!(lhs.mapKeyIntValSet_ref() == rhs.mapKeyIntValSet_ref())) {
+    return lhs.mapKeyIntValSet_ref() < rhs.mapKeyIntValSet_ref();
   }
-  if (!(lhs.mapKeySetValInt == rhs.mapKeySetValInt)) {
-    return lhs.mapKeySetValInt < rhs.mapKeySetValInt;
+  if (!(lhs.mapKeySetValInt_ref() == rhs.mapKeySetValInt_ref())) {
+    return lhs.mapKeySetValInt_ref() < rhs.mapKeySetValInt_ref();
   }
-  if (!(lhs.mapKeyListValSet == rhs.mapKeyListValSet)) {
-    return lhs.mapKeyListValSet < rhs.mapKeyListValSet;
+  if (!(lhs.mapKeyListValSet_ref() == rhs.mapKeyListValSet_ref())) {
+    return lhs.mapKeyListValSet_ref() < rhs.mapKeyListValSet_ref();
   }
   return false;
 }
@@ -928,10 +928,10 @@ bool reqXcep::operator==(const reqXcep& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
-  if (!(lhs.errorCode == rhs.errorCode)) {
+  if (!(lhs.errorCode_ref() == rhs.errorCode_ref())) {
     return false;
   }
   return true;
@@ -941,11 +941,11 @@ bool reqXcep::operator<(const reqXcep& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
-    return lhs.message < rhs.message;
+  if (!(lhs.message_ref() == rhs.message_ref())) {
+    return lhs.message_ref() < rhs.message_ref();
   }
-  if (!(lhs.errorCode == rhs.errorCode)) {
-    return lhs.errorCode < rhs.errorCode;
+  if (!(lhs.errorCode_ref() == rhs.errorCode_ref())) {
+    return lhs.errorCode_ref() < rhs.errorCode_ref();
   }
   return false;
 }

@@ -70,7 +70,7 @@ bool Mixin1::operator==(const Mixin1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field1 == rhs.field1)) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
   return true;
@@ -80,8 +80,8 @@ bool Mixin1::operator<(const Mixin1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field1 == rhs.field1)) {
-    return lhs.field1 < rhs.field1;
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
+    return lhs.field1_ref() < rhs.field1_ref();
   }
   return false;
 }
@@ -171,10 +171,10 @@ bool Mixin2::operator==(const Mixin2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.m1 == rhs.m1)) {
+  if (!(lhs.m1_ref() == rhs.m1_ref())) {
     return false;
   }
-  if (lhs.field2_ref() != rhs.field2_ref()) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
   return true;
@@ -184,10 +184,10 @@ bool Mixin2::operator<(const Mixin2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.m1 == rhs.m1)) {
-    return lhs.m1 < rhs.m1;
+  if (!(lhs.m1_ref() == rhs.m1_ref())) {
+    return lhs.m1_ref() < rhs.m1_ref();
   }
-  if (lhs.field2_ref() != rhs.field2_ref()) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return lhs.field2_ref() < rhs.field2_ref();
   }
   return false;
@@ -294,7 +294,7 @@ bool Mixin3Base::operator==(const Mixin3Base& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
   return true;
@@ -304,8 +304,8 @@ bool Mixin3Base::operator<(const Mixin3Base& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
   return false;
 }
@@ -400,13 +400,13 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field4 == rhs.field4)) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
-  if (!(lhs.m2 == rhs.m2)) {
+  if (!(lhs.m2_ref() == rhs.m2_ref())) {
     return false;
   }
-  if (!(lhs.m3 == rhs.m3)) {
+  if (!(lhs.m3_ref() == rhs.m3_ref())) {
     return false;
   }
   return true;
@@ -416,14 +416,14 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field4 == rhs.field4)) {
-    return lhs.field4 < rhs.field4;
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
+    return lhs.field4_ref() < rhs.field4_ref();
   }
-  if (!(lhs.m2 == rhs.m2)) {
-    return lhs.m2 < rhs.m2;
+  if (!(lhs.m2_ref() == rhs.m2_ref())) {
+    return lhs.m2_ref() < rhs.m2_ref();
   }
-  if (!(lhs.m3 == rhs.m3)) {
-    return lhs.m3 < rhs.m3;
+  if (!(lhs.m3_ref() == rhs.m3_ref())) {
+    return lhs.m3_ref() < rhs.m3_ref();
   }
   return false;
 }

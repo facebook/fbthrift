@@ -111,25 +111,25 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.intField == rhs.intField)) {
+  if (!(lhs.intField_ref() == rhs.intField_ref())) {
     return false;
   }
-  if (lhs.optionalIntField_ref() != rhs.optionalIntField_ref()) {
+  if (!(lhs.optionalIntField_ref() == rhs.optionalIntField_ref())) {
     return false;
   }
-  if (!(lhs.intFieldWithDefault == rhs.intFieldWithDefault)) {
+  if (!(lhs.intFieldWithDefault_ref() == rhs.intFieldWithDefault_ref())) {
     return false;
   }
-  if (!(lhs.setField == rhs.setField)) {
+  if (!(lhs.setField_ref() == rhs.setField_ref())) {
     return false;
   }
-  if (lhs.optionalSetField_ref() != rhs.optionalSetField_ref()) {
+  if (!(lhs.optionalSetField_ref() == rhs.optionalSetField_ref())) {
     return false;
   }
-  if (!(lhs.mapField == rhs.mapField)) {
+  if (!(lhs.mapField_ref() == rhs.mapField_ref())) {
     return false;
   }
-  if (lhs.optionalMapField_ref() != rhs.optionalMapField_ref()) {
+  if (!(lhs.optionalMapField_ref() == rhs.optionalMapField_ref())) {
     return false;
   }
   return true;
@@ -139,25 +139,25 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.intField == rhs.intField)) {
-    return lhs.intField < rhs.intField;
+  if (!(lhs.intField_ref() == rhs.intField_ref())) {
+    return lhs.intField_ref() < rhs.intField_ref();
   }
-  if (lhs.optionalIntField_ref() != rhs.optionalIntField_ref()) {
+  if (!(lhs.optionalIntField_ref() == rhs.optionalIntField_ref())) {
     return lhs.optionalIntField_ref() < rhs.optionalIntField_ref();
   }
-  if (!(lhs.intFieldWithDefault == rhs.intFieldWithDefault)) {
-    return lhs.intFieldWithDefault < rhs.intFieldWithDefault;
+  if (!(lhs.intFieldWithDefault_ref() == rhs.intFieldWithDefault_ref())) {
+    return lhs.intFieldWithDefault_ref() < rhs.intFieldWithDefault_ref();
   }
-  if (!(lhs.setField == rhs.setField)) {
-    return lhs.setField < rhs.setField;
+  if (!(lhs.setField_ref() == rhs.setField_ref())) {
+    return lhs.setField_ref() < rhs.setField_ref();
   }
-  if (lhs.optionalSetField_ref() != rhs.optionalSetField_ref()) {
+  if (!(lhs.optionalSetField_ref() == rhs.optionalSetField_ref())) {
     return lhs.optionalSetField_ref() < rhs.optionalSetField_ref();
   }
-  if (!(lhs.mapField == rhs.mapField)) {
-    return lhs.mapField < rhs.mapField;
+  if (!(lhs.mapField_ref() == rhs.mapField_ref())) {
+    return lhs.mapField_ref() < rhs.mapField_ref();
   }
-  if (lhs.optionalMapField_ref() != rhs.optionalMapField_ref()) {
+  if (!(lhs.optionalMapField_ref() == rhs.optionalMapField_ref())) {
     return lhs.optionalMapField_ref() < rhs.optionalMapField_ref();
   }
   return false;
@@ -296,16 +296,16 @@ bool Bar::operator==(const Bar& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.structField == rhs.structField)) {
+  if (!(lhs.structField_ref() == rhs.structField_ref())) {
     return false;
   }
-  if (lhs.optionalStructField_ref() != rhs.optionalStructField_ref()) {
+  if (!(lhs.optionalStructField_ref() == rhs.optionalStructField_ref())) {
     return false;
   }
-  if (!(lhs.structListField == rhs.structListField)) {
+  if (!(lhs.structListField_ref() == rhs.structListField_ref())) {
     return false;
   }
-  if (lhs.optionalStructListField_ref() != rhs.optionalStructListField_ref()) {
+  if (!(lhs.optionalStructListField_ref() == rhs.optionalStructListField_ref())) {
     return false;
   }
   return true;
@@ -315,16 +315,16 @@ bool Bar::operator<(const Bar& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.structField == rhs.structField)) {
-    return lhs.structField < rhs.structField;
+  if (!(lhs.structField_ref() == rhs.structField_ref())) {
+    return lhs.structField_ref() < rhs.structField_ref();
   }
-  if (lhs.optionalStructField_ref() != rhs.optionalStructField_ref()) {
+  if (!(lhs.optionalStructField_ref() == rhs.optionalStructField_ref())) {
     return lhs.optionalStructField_ref() < rhs.optionalStructField_ref();
   }
-  if (!(lhs.structListField == rhs.structListField)) {
-    return lhs.structListField < rhs.structListField;
+  if (!(lhs.structListField_ref() == rhs.structListField_ref())) {
+    return lhs.structListField_ref() < rhs.structListField_ref();
   }
-  if (lhs.optionalStructListField_ref() != rhs.optionalStructListField_ref()) {
+  if (!(lhs.optionalStructListField_ref() == rhs.optionalStructListField_ref())) {
     return lhs.optionalStructListField_ref() < rhs.optionalStructListField_ref();
   }
   return false;

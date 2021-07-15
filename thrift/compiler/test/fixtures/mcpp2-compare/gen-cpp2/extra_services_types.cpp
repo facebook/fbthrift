@@ -152,43 +152,43 @@ bool containerStruct2::operator==(const containerStruct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldA == rhs.req_fieldA)) {
+  if (!(lhs.req_fieldA_ref() == rhs.req_fieldA_ref())) {
     return false;
   }
-  if (lhs.opt_fieldA_ref() != rhs.opt_fieldA_ref()) {
+  if (!(lhs.opt_fieldA_ref() == rhs.opt_fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldB == rhs.req_fieldB)) {
+  if (!(lhs.req_fieldB_ref() == rhs.req_fieldB_ref())) {
     return false;
   }
-  if (lhs.opt_fieldB_ref() != rhs.opt_fieldB_ref()) {
+  if (!(lhs.opt_fieldB_ref() == rhs.opt_fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldC == rhs.req_fieldC)) {
+  if (!(lhs.req_fieldC_ref() == rhs.req_fieldC_ref())) {
     return false;
   }
-  if (lhs.opt_fieldC_ref() != rhs.opt_fieldC_ref()) {
+  if (!(lhs.opt_fieldC_ref() == rhs.opt_fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldE == rhs.req_fieldE)) {
+  if (!(lhs.req_fieldE_ref() == rhs.req_fieldE_ref())) {
     return false;
   }
-  if (lhs.opt_fieldE_ref() != rhs.opt_fieldE_ref()) {
+  if (!(lhs.opt_fieldE_ref() == rhs.opt_fieldE_ref())) {
     return false;
   }
   return true;
@@ -198,43 +198,43 @@ bool containerStruct2::operator<(const containerStruct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
-    return lhs.fieldA < rhs.fieldA;
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
+    return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
-  if (!(lhs.req_fieldA == rhs.req_fieldA)) {
-    return lhs.req_fieldA < rhs.req_fieldA;
+  if (!(lhs.req_fieldA_ref() == rhs.req_fieldA_ref())) {
+    return lhs.req_fieldA_ref() < rhs.req_fieldA_ref();
   }
-  if (lhs.opt_fieldA_ref() != rhs.opt_fieldA_ref()) {
+  if (!(lhs.opt_fieldA_ref() == rhs.opt_fieldA_ref())) {
     return lhs.opt_fieldA_ref() < rhs.opt_fieldA_ref();
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
-    return lhs.fieldB < rhs.fieldB;
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
+    return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
-  if (!(lhs.req_fieldB == rhs.req_fieldB)) {
-    return lhs.req_fieldB < rhs.req_fieldB;
+  if (!(lhs.req_fieldB_ref() == rhs.req_fieldB_ref())) {
+    return lhs.req_fieldB_ref() < rhs.req_fieldB_ref();
   }
-  if (lhs.opt_fieldB_ref() != rhs.opt_fieldB_ref()) {
+  if (!(lhs.opt_fieldB_ref() == rhs.opt_fieldB_ref())) {
     return lhs.opt_fieldB_ref() < rhs.opt_fieldB_ref();
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
-    return lhs.fieldC < rhs.fieldC;
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
+    return lhs.fieldC_ref() < rhs.fieldC_ref();
   }
-  if (!(lhs.req_fieldC == rhs.req_fieldC)) {
-    return lhs.req_fieldC < rhs.req_fieldC;
+  if (!(lhs.req_fieldC_ref() == rhs.req_fieldC_ref())) {
+    return lhs.req_fieldC_ref() < rhs.req_fieldC_ref();
   }
-  if (lhs.opt_fieldC_ref() != rhs.opt_fieldC_ref()) {
+  if (!(lhs.opt_fieldC_ref() == rhs.opt_fieldC_ref())) {
     return lhs.opt_fieldC_ref() < rhs.opt_fieldC_ref();
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
-    return lhs.fieldD < rhs.fieldD;
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
+    return lhs.fieldD_ref() < rhs.fieldD_ref();
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
-    return lhs.fieldE < rhs.fieldE;
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
+    return lhs.fieldE_ref() < rhs.fieldE_ref();
   }
-  if (!(lhs.req_fieldE == rhs.req_fieldE)) {
-    return lhs.req_fieldE < rhs.req_fieldE;
+  if (!(lhs.req_fieldE_ref() == rhs.req_fieldE_ref())) {
+    return lhs.req_fieldE_ref() < rhs.req_fieldE_ref();
   }
-  if (lhs.opt_fieldE_ref() != rhs.opt_fieldE_ref()) {
+  if (!(lhs.opt_fieldE_ref() == rhs.opt_fieldE_ref())) {
     return lhs.opt_fieldE_ref() < rhs.opt_fieldE_ref();
   }
   return false;

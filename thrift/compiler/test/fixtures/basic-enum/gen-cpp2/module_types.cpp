@@ -157,10 +157,10 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myEnum == rhs.myEnum)) {
+  if (!(lhs.myEnum_ref() == rhs.myEnum_ref())) {
     return false;
   }
-  if (!(lhs.myBigEnum == rhs.myBigEnum)) {
+  if (!(lhs.myBigEnum_ref() == rhs.myBigEnum_ref())) {
     return false;
   }
   return true;
@@ -170,11 +170,11 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myEnum == rhs.myEnum)) {
-    return lhs.myEnum < rhs.myEnum;
+  if (!(lhs.myEnum_ref() == rhs.myEnum_ref())) {
+    return lhs.myEnum_ref() < rhs.myEnum_ref();
   }
-  if (!(lhs.myBigEnum == rhs.myBigEnum)) {
-    return lhs.myBigEnum < rhs.myBigEnum;
+  if (!(lhs.myBigEnum_ref() == rhs.myBigEnum_ref())) {
+    return lhs.myBigEnum_ref() < rhs.myBigEnum_ref();
   }
   return false;
 }

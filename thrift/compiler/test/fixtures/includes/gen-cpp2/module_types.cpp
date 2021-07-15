@@ -80,13 +80,13 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIncludedField == rhs.MyIncludedField)) {
+  if (!(lhs.MyIncludedField_ref() == rhs.MyIncludedField_ref())) {
     return false;
   }
-  if (!(lhs.MyOtherIncludedField == rhs.MyOtherIncludedField)) {
+  if (!(lhs.MyOtherIncludedField_ref() == rhs.MyOtherIncludedField_ref())) {
     return false;
   }
-  if (!(lhs.MyIncludedInt == rhs.MyIncludedInt)) {
+  if (!(lhs.MyIncludedInt_ref() == rhs.MyIncludedInt_ref())) {
     return false;
   }
   return true;
@@ -96,14 +96,14 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIncludedField == rhs.MyIncludedField)) {
-    return lhs.MyIncludedField < rhs.MyIncludedField;
+  if (!(lhs.MyIncludedField_ref() == rhs.MyIncludedField_ref())) {
+    return lhs.MyIncludedField_ref() < rhs.MyIncludedField_ref();
   }
-  if (!(lhs.MyOtherIncludedField == rhs.MyOtherIncludedField)) {
-    return lhs.MyOtherIncludedField < rhs.MyOtherIncludedField;
+  if (!(lhs.MyOtherIncludedField_ref() == rhs.MyOtherIncludedField_ref())) {
+    return lhs.MyOtherIncludedField_ref() < rhs.MyOtherIncludedField_ref();
   }
-  if (!(lhs.MyIncludedInt == rhs.MyIncludedInt)) {
-    return lhs.MyIncludedInt < rhs.MyIncludedInt;
+  if (!(lhs.MyIncludedInt_ref() == rhs.MyIncludedInt_ref())) {
+    return lhs.MyIncludedInt_ref() < rhs.MyIncludedInt_ref();
   }
   return false;
 }

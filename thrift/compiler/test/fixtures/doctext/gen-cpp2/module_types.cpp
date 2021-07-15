@@ -88,7 +88,7 @@ bool A::operator==(const A& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.useless_field == rhs.useless_field)) {
+  if (!(lhs.useless_field_ref() == rhs.useless_field_ref())) {
     return false;
   }
   return true;
@@ -98,8 +98,8 @@ bool A::operator<(const A& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.useless_field == rhs.useless_field)) {
-    return lhs.useless_field < rhs.useless_field;
+  if (!(lhs.useless_field_ref() == rhs.useless_field_ref())) {
+    return lhs.useless_field_ref() < rhs.useless_field_ref();
   }
   return false;
 }
@@ -302,7 +302,7 @@ bool Bang::operator==(const Bang& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
   return true;
@@ -312,8 +312,8 @@ bool Bang::operator<(const Bang& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
-    return lhs.message < rhs.message;
+  if (!(lhs.message_ref() == rhs.message_ref())) {
+    return lhs.message_ref() < rhs.message_ref();
   }
   return false;
 }

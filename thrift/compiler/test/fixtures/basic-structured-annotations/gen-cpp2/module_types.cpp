@@ -108,10 +108,10 @@ bool structured_annotation_inline::operator==(const structured_annotation_inline
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.count == rhs.count)) {
+  if (!(lhs.count_ref() == rhs.count_ref())) {
     return false;
   }
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
   return true;
@@ -121,11 +121,11 @@ bool structured_annotation_inline::operator<(const structured_annotation_inline&
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.count == rhs.count)) {
-    return lhs.count < rhs.count;
+  if (!(lhs.count_ref() == rhs.count_ref())) {
+    return lhs.count_ref() < rhs.count_ref();
   }
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
   return false;
 }
@@ -211,7 +211,7 @@ bool structured_annotation_with_default::operator==(const structured_annotation_
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
   return true;
@@ -221,8 +221,8 @@ bool structured_annotation_with_default::operator<(const structured_annotation_w
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
   return false;
 }
@@ -292,7 +292,7 @@ bool structured_annotation_forward::operator==(const structured_annotation_forwa
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.count == rhs.count)) {
+  if (!(lhs.count_ref() == rhs.count_ref())) {
     return false;
   }
   return true;
@@ -302,8 +302,8 @@ bool structured_annotation_forward::operator<(const structured_annotation_forwar
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.count == rhs.count)) {
-    return lhs.count < rhs.count;
+  if (!(lhs.count_ref() == rhs.count_ref())) {
+    return lhs.count_ref() < rhs.count_ref();
   }
   return false;
 }
@@ -398,13 +398,13 @@ bool structured_annotation_recursive::operator==(const structured_annotation_rec
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
-  if (!(lhs.recurse == rhs.recurse)) {
+  if (!(lhs.recurse_ref() == rhs.recurse_ref())) {
     return false;
   }
-  if (!(lhs.forward == rhs.forward)) {
+  if (!(lhs.forward_ref() == rhs.forward_ref())) {
     return false;
   }
   return true;
@@ -414,14 +414,14 @@ bool structured_annotation_recursive::operator<(const structured_annotation_recu
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
-  if (!(lhs.recurse == rhs.recurse)) {
-    return lhs.recurse < rhs.recurse;
+  if (!(lhs.recurse_ref() == rhs.recurse_ref())) {
+    return lhs.recurse_ref() < rhs.recurse_ref();
   }
-  if (!(lhs.forward == rhs.forward)) {
-    return lhs.forward < rhs.forward;
+  if (!(lhs.forward_ref() == rhs.forward_ref())) {
+    return lhs.forward_ref() < rhs.forward_ref();
   }
   return false;
 }
@@ -553,10 +553,10 @@ bool structured_annotation_nested::operator==(const structured_annotation_nested
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
-  if (!(lhs.nest == rhs.nest)) {
+  if (!(lhs.nest_ref() == rhs.nest_ref())) {
     return false;
   }
   return true;
@@ -566,11 +566,11 @@ bool structured_annotation_nested::operator<(const structured_annotation_nested&
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
-  if (!(lhs.nest == rhs.nest)) {
-    return lhs.nest < rhs.nest;
+  if (!(lhs.nest_ref() == rhs.nest_ref())) {
+    return lhs.nest_ref() < rhs.nest_ref();
   }
   return false;
 }
@@ -691,16 +691,16 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.annotated_field == rhs.annotated_field)) {
+  if (!(lhs.annotated_field_ref() == rhs.annotated_field_ref())) {
     return false;
   }
-  if (!(lhs.annotated_type == rhs.annotated_type)) {
+  if (!(lhs.annotated_type_ref() == rhs.annotated_type_ref())) {
     return false;
   }
-  if (!(lhs.annotated_recursive == rhs.annotated_recursive)) {
+  if (!(lhs.annotated_recursive_ref() == rhs.annotated_recursive_ref())) {
     return false;
   }
-  if (!(lhs.annotated_nested == rhs.annotated_nested)) {
+  if (!(lhs.annotated_nested_ref() == rhs.annotated_nested_ref())) {
     return false;
   }
   return true;
@@ -710,17 +710,17 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.annotated_field == rhs.annotated_field)) {
-    return lhs.annotated_field < rhs.annotated_field;
+  if (!(lhs.annotated_field_ref() == rhs.annotated_field_ref())) {
+    return lhs.annotated_field_ref() < rhs.annotated_field_ref();
   }
-  if (!(lhs.annotated_type == rhs.annotated_type)) {
-    return lhs.annotated_type < rhs.annotated_type;
+  if (!(lhs.annotated_type_ref() == rhs.annotated_type_ref())) {
+    return lhs.annotated_type_ref() < rhs.annotated_type_ref();
   }
-  if (!(lhs.annotated_recursive == rhs.annotated_recursive)) {
-    return lhs.annotated_recursive < rhs.annotated_recursive;
+  if (!(lhs.annotated_recursive_ref() == rhs.annotated_recursive_ref())) {
+    return lhs.annotated_recursive_ref() < rhs.annotated_recursive_ref();
   }
-  if (!(lhs.annotated_nested == rhs.annotated_nested)) {
-    return lhs.annotated_nested < rhs.annotated_nested;
+  if (!(lhs.annotated_nested_ref() == rhs.annotated_nested_ref())) {
+    return lhs.annotated_nested_ref() < rhs.annotated_nested_ref();
   }
   return false;
 }
@@ -816,7 +816,7 @@ bool MyException::operator==(const MyException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.context == rhs.context)) {
+  if (!(lhs.context_ref() == rhs.context_ref())) {
     return false;
   }
   return true;
@@ -826,8 +826,8 @@ bool MyException::operator<(const MyException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.context == rhs.context)) {
-    return lhs.context < rhs.context;
+  if (!(lhs.context_ref() == rhs.context_ref())) {
+    return lhs.context_ref() < rhs.context_ref();
   }
   return false;
 }

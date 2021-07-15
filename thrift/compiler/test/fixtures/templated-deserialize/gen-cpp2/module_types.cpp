@@ -91,10 +91,10 @@ bool SmallStruct::operator==(const SmallStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.small_A == rhs.small_A)) {
+  if (!(lhs.small_A_ref() == rhs.small_A_ref())) {
     return false;
   }
-  if (!(lhs.small_B == rhs.small_B)) {
+  if (!(lhs.small_B_ref() == rhs.small_B_ref())) {
     return false;
   }
   return true;
@@ -104,11 +104,11 @@ bool SmallStruct::operator<(const SmallStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.small_A == rhs.small_A)) {
-    return lhs.small_A < rhs.small_A;
+  if (!(lhs.small_A_ref() == rhs.small_A_ref())) {
+    return lhs.small_A_ref() < rhs.small_A_ref();
   }
-  if (!(lhs.small_B == rhs.small_B)) {
-    return lhs.small_B < rhs.small_B;
+  if (!(lhs.small_B_ref() == rhs.small_B_ref())) {
+    return lhs.small_B_ref() < rhs.small_B_ref();
   }
   return false;
 }
@@ -404,96 +404,71 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
     return false;
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
     return false;
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
     return false;
   }
-  if (!(lhs.fieldI == rhs.fieldI)) {
+  if (!(lhs.fieldI_ref() == rhs.fieldI_ref())) {
     return false;
   }
-  if (!(lhs.fieldJ == rhs.fieldJ)) {
+  if (!(lhs.fieldJ_ref() == rhs.fieldJ_ref())) {
     return false;
   }
-  if (!(lhs.fieldK == rhs.fieldK)) {
+  if (!(lhs.fieldK_ref() == rhs.fieldK_ref())) {
     return false;
   }
-  if (!(lhs.fieldL == rhs.fieldL)) {
+  if (!(lhs.fieldL_ref() == rhs.fieldL_ref())) {
     return false;
   }
-  if (!(lhs.fieldM == rhs.fieldM)) {
+  if (!(lhs.fieldM_ref() == rhs.fieldM_ref())) {
     return false;
   }
-  if (!(lhs.fieldN == rhs.fieldN)) {
+  if (!(lhs.fieldN_ref() == rhs.fieldN_ref())) {
     return false;
   }
-  if (!(lhs.fieldO == rhs.fieldO)) {
+  if (!(lhs.fieldO_ref() == rhs.fieldO_ref())) {
     return false;
   }
-  if (!(lhs.fieldP == rhs.fieldP)) {
+  if (!(lhs.fieldP_ref() == rhs.fieldP_ref())) {
     return false;
   }
-  if (!(lhs.fieldQ == rhs.fieldQ)) {
+  if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
     return false;
   }
-  if (!!lhs.fieldR != !!rhs.fieldR) {
+  if ((lhs.fieldR == nullptr) != (rhs.fieldR == nullptr) || (lhs.fieldR != nullptr && lhs.fieldR != rhs.fieldR && !(*lhs.fieldR == *rhs.fieldR))) {
     return false;
   }
-  if (!!lhs.fieldR) {
-    if (lhs.fieldR != rhs.fieldR && !(*lhs.fieldR == *rhs.fieldR)) {
-      return false;
-    }
-  }
-  if (!!lhs.fieldS != !!rhs.fieldS) {
+  if ((lhs.fieldS == nullptr) != (rhs.fieldS == nullptr) || (lhs.fieldS != nullptr && lhs.fieldS != rhs.fieldS && !(*lhs.fieldS == *rhs.fieldS))) {
     return false;
   }
-  if (!!lhs.fieldS) {
-    if (lhs.fieldS != rhs.fieldS && !(*lhs.fieldS == *rhs.fieldS)) {
-      return false;
-    }
-  }
-  if (!!lhs.fieldT != !!rhs.fieldT) {
+  if ((lhs.fieldT == nullptr) != (rhs.fieldT == nullptr) || (lhs.fieldT != nullptr && lhs.fieldT != rhs.fieldT && !(*lhs.fieldT == *rhs.fieldT))) {
     return false;
   }
-  if (!!lhs.fieldT) {
-    if (lhs.fieldT != rhs.fieldT && !(*lhs.fieldT == *rhs.fieldT)) {
-      return false;
-    }
-  }
-  if (!!lhs.fieldU != !!rhs.fieldU) {
+  if ((lhs.fieldU == nullptr) != (rhs.fieldU == nullptr) || (lhs.fieldU != nullptr && lhs.fieldU != rhs.fieldU && !(*lhs.fieldU == *rhs.fieldU))) {
     return false;
   }
-  if (!!lhs.fieldU) {
-    if (lhs.fieldU != rhs.fieldU && !(*lhs.fieldU == *rhs.fieldU)) {
-      return false;
-    }
-  }
-  if (!!lhs.fieldX != !!rhs.fieldX) {
+  if ((lhs.fieldX == nullptr) != (rhs.fieldX == nullptr) || (lhs.fieldX != nullptr && lhs.fieldX != rhs.fieldX && !(*lhs.fieldX == *rhs.fieldX))) {
     return false;
-  }
-  if (!!lhs.fieldX) {
-    if (lhs.fieldX != rhs.fieldX && !(*lhs.fieldX == *rhs.fieldX)) {
-      return false;
-    }
   }
   return true;
 }
@@ -502,56 +477,56 @@ bool containerStruct::operator<(const containerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
-    return lhs.fieldA < rhs.fieldA;
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
+    return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
-    return lhs.fieldB < rhs.fieldB;
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
+    return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
-    return lhs.fieldC < rhs.fieldC;
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
+    return lhs.fieldC_ref() < rhs.fieldC_ref();
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
-    return lhs.fieldD < rhs.fieldD;
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
+    return lhs.fieldD_ref() < rhs.fieldD_ref();
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
-    return lhs.fieldE < rhs.fieldE;
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
+    return lhs.fieldE_ref() < rhs.fieldE_ref();
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
-    return lhs.fieldF < rhs.fieldF;
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
+    return lhs.fieldF_ref() < rhs.fieldF_ref();
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
-    return lhs.fieldG < rhs.fieldG;
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
+    return lhs.fieldG_ref() < rhs.fieldG_ref();
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
-    return lhs.fieldH < rhs.fieldH;
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
+    return lhs.fieldH_ref() < rhs.fieldH_ref();
   }
-  if (!(lhs.fieldI == rhs.fieldI)) {
-    return lhs.fieldI < rhs.fieldI;
+  if (!(lhs.fieldI_ref() == rhs.fieldI_ref())) {
+    return lhs.fieldI_ref() < rhs.fieldI_ref();
   }
-  if (!(lhs.fieldJ == rhs.fieldJ)) {
-    return lhs.fieldJ < rhs.fieldJ;
+  if (!(lhs.fieldJ_ref() == rhs.fieldJ_ref())) {
+    return lhs.fieldJ_ref() < rhs.fieldJ_ref();
   }
-  if (!(lhs.fieldK == rhs.fieldK)) {
-    return lhs.fieldK < rhs.fieldK;
+  if (!(lhs.fieldK_ref() == rhs.fieldK_ref())) {
+    return lhs.fieldK_ref() < rhs.fieldK_ref();
   }
-  if (!(lhs.fieldL == rhs.fieldL)) {
-    return lhs.fieldL < rhs.fieldL;
+  if (!(lhs.fieldL_ref() == rhs.fieldL_ref())) {
+    return lhs.fieldL_ref() < rhs.fieldL_ref();
   }
-  if (!(lhs.fieldM == rhs.fieldM)) {
-    return lhs.fieldM < rhs.fieldM;
+  if (!(lhs.fieldM_ref() == rhs.fieldM_ref())) {
+    return lhs.fieldM_ref() < rhs.fieldM_ref();
   }
-  if (!(lhs.fieldN == rhs.fieldN)) {
-    return lhs.fieldN < rhs.fieldN;
+  if (!(lhs.fieldN_ref() == rhs.fieldN_ref())) {
+    return lhs.fieldN_ref() < rhs.fieldN_ref();
   }
-  if (!(lhs.fieldO == rhs.fieldO)) {
-    return lhs.fieldO < rhs.fieldO;
+  if (!(lhs.fieldO_ref() == rhs.fieldO_ref())) {
+    return lhs.fieldO_ref() < rhs.fieldO_ref();
   }
-  if (!(lhs.fieldP == rhs.fieldP)) {
-    return lhs.fieldP < rhs.fieldP;
+  if (!(lhs.fieldP_ref() == rhs.fieldP_ref())) {
+    return lhs.fieldP_ref() < rhs.fieldP_ref();
   }
-  if (!(lhs.fieldQ == rhs.fieldQ)) {
-    return lhs.fieldQ < rhs.fieldQ;
+  if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
+    return lhs.fieldQ_ref() < rhs.fieldQ_ref();
   }
   if (!!lhs.fieldR != !!rhs.fieldR) {
     return !!lhs.fieldR < !!rhs.fieldR;

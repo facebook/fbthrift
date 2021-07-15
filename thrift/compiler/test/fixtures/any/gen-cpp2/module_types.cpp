@@ -95,7 +95,7 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myString == rhs.myString)) {
+  if (!(lhs.myString_ref() == rhs.myString_ref())) {
     return false;
   }
   return true;
@@ -105,8 +105,8 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myString == rhs.myString)) {
-    return lhs.myString < rhs.myString;
+  if (!(lhs.myString_ref() == rhs.myString_ref())) {
+    return lhs.myString_ref() < rhs.myString_ref();
   }
   return false;
 }
@@ -310,7 +310,7 @@ bool MyException::operator==(const MyException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myString == rhs.myString)) {
+  if (!(lhs.myString_ref() == rhs.myString_ref())) {
     return false;
   }
   return true;
@@ -320,8 +320,8 @@ bool MyException::operator<(const MyException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myString == rhs.myString)) {
-    return lhs.myString < rhs.myString;
+  if (!(lhs.myString_ref() == rhs.myString_ref())) {
+    return lhs.myString_ref() < rhs.myString_ref();
   }
   return false;
 }

@@ -103,7 +103,7 @@ bool MyStructNestedAnnotation::operator==(const MyStructNestedAnnotation& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
   return true;
@@ -113,8 +113,8 @@ bool MyStructNestedAnnotation::operator<(const MyStructNestedAnnotation& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
   return false;
 }
@@ -233,22 +233,22 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.majorVer == rhs.majorVer)) {
+  if (!(lhs.majorVer_ref() == rhs.majorVer_ref())) {
     return false;
   }
-  if (!(lhs.package == rhs.package)) {
+  if (!(lhs.package_ref() == rhs.package_ref())) {
     return false;
   }
-  if (!(lhs.annotation_with_quote == rhs.annotation_with_quote)) {
+  if (!(lhs.annotation_with_quote_ref() == rhs.annotation_with_quote_ref())) {
     return false;
   }
-  if (!(lhs.class_ == rhs.class_)) {
+  if (!(lhs.class__ref() == rhs.class__ref())) {
     return false;
   }
-  if (!(lhs.annotation_with_trailing_comma == rhs.annotation_with_trailing_comma)) {
+  if (!(lhs.annotation_with_trailing_comma_ref() == rhs.annotation_with_trailing_comma_ref())) {
     return false;
   }
-  if (!(lhs.empty_annotations == rhs.empty_annotations)) {
+  if (!(lhs.empty_annotations_ref() == rhs.empty_annotations_ref())) {
     return false;
   }
   return true;
@@ -258,23 +258,23 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.majorVer == rhs.majorVer)) {
-    return lhs.majorVer < rhs.majorVer;
+  if (!(lhs.majorVer_ref() == rhs.majorVer_ref())) {
+    return lhs.majorVer_ref() < rhs.majorVer_ref();
   }
-  if (!(lhs.package == rhs.package)) {
-    return lhs.package < rhs.package;
+  if (!(lhs.package_ref() == rhs.package_ref())) {
+    return lhs.package_ref() < rhs.package_ref();
   }
-  if (!(lhs.annotation_with_quote == rhs.annotation_with_quote)) {
-    return lhs.annotation_with_quote < rhs.annotation_with_quote;
+  if (!(lhs.annotation_with_quote_ref() == rhs.annotation_with_quote_ref())) {
+    return lhs.annotation_with_quote_ref() < rhs.annotation_with_quote_ref();
   }
-  if (!(lhs.class_ == rhs.class_)) {
-    return lhs.class_ < rhs.class_;
+  if (!(lhs.class__ref() == rhs.class__ref())) {
+    return lhs.class__ref() < rhs.class__ref();
   }
-  if (!(lhs.annotation_with_trailing_comma == rhs.annotation_with_trailing_comma)) {
-    return lhs.annotation_with_trailing_comma < rhs.annotation_with_trailing_comma;
+  if (!(lhs.annotation_with_trailing_comma_ref() == rhs.annotation_with_trailing_comma_ref())) {
+    return lhs.annotation_with_trailing_comma_ref() < rhs.annotation_with_trailing_comma_ref();
   }
-  if (!(lhs.empty_annotations == rhs.empty_annotations)) {
-    return lhs.empty_annotations < rhs.empty_annotations;
+  if (!(lhs.empty_annotations_ref() == rhs.empty_annotations_ref())) {
+    return lhs.empty_annotations_ref() < rhs.empty_annotations_ref();
   }
   return false;
 }
@@ -369,10 +369,10 @@ bool SecretStruct::operator==(const SecretStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.id == rhs.id)) {
+  if (!(lhs.id_ref() == rhs.id_ref())) {
     return false;
   }
-  if (!(lhs.password == rhs.password)) {
+  if (!(lhs.password_ref() == rhs.password_ref())) {
     return false;
   }
   return true;
@@ -382,11 +382,11 @@ bool SecretStruct::operator<(const SecretStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.id == rhs.id)) {
-    return lhs.id < rhs.id;
+  if (!(lhs.id_ref() == rhs.id_ref())) {
+    return lhs.id_ref() < rhs.id_ref();
   }
-  if (!(lhs.password == rhs.password)) {
-    return lhs.password < rhs.password;
+  if (!(lhs.password_ref() == rhs.password_ref())) {
+    return lhs.password_ref() < rhs.password_ref();
   }
   return false;
 }

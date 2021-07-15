@@ -579,10 +579,10 @@ bool structA::operator==(const structA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
   return true;
@@ -592,11 +592,11 @@ bool structA::operator<(const structA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
   return false;
 }
@@ -813,10 +813,10 @@ bool structB::operator==(const structB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
-  if (!(lhs.d == rhs.d)) {
+  if (!(lhs.d_ref() == rhs.d_ref())) {
     return false;
   }
   return true;
@@ -826,11 +826,11 @@ bool structB::operator<(const structB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
-  if (!(lhs.d == rhs.d)) {
-    return lhs.d < rhs.d;
+  if (!(lhs.d_ref() == rhs.d_ref())) {
+    return lhs.d_ref() < rhs.d_ref();
   }
   return false;
 }
@@ -1074,94 +1074,94 @@ bool structC::operator==(const structC& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
-  if (!(lhs.d == rhs.d)) {
+  if (!(lhs.d_ref() == rhs.d_ref())) {
     return false;
   }
-  if (!(lhs.e == rhs.e)) {
+  if (!(lhs.e_ref() == rhs.e_ref())) {
     return false;
   }
-  if (!(lhs.f == rhs.f)) {
+  if (!(lhs.f_ref() == rhs.f_ref())) {
     return false;
   }
-  if (!(lhs.g == rhs.g)) {
+  if (!(lhs.g_ref() == rhs.g_ref())) {
     return false;
   }
-  if (!(lhs.h == rhs.h)) {
+  if (!(lhs.h_ref() == rhs.h_ref())) {
     return false;
   }
-  if (!(lhs.i == rhs.i)) {
+  if (!(lhs.i_ref() == rhs.i_ref())) {
     return false;
   }
-  if (!(lhs.j == rhs.j)) {
+  if (!(lhs.j_ref() == rhs.j_ref())) {
     return false;
   }
-  if (!(lhs.j1 == rhs.j1)) {
+  if (!(lhs.j1_ref() == rhs.j1_ref())) {
     return false;
   }
-  if (!(lhs.j2 == rhs.j2)) {
+  if (!(lhs.j2_ref() == rhs.j2_ref())) {
     return false;
   }
-  if (!(lhs.j3 == rhs.j3)) {
+  if (!(lhs.j3_ref() == rhs.j3_ref())) {
     return false;
   }
-  if (!(lhs.k == rhs.k)) {
+  if (!(lhs.k_ref() == rhs.k_ref())) {
     return false;
   }
-  if (!(lhs.k1 == rhs.k1)) {
+  if (!(lhs.k1_ref() == rhs.k1_ref())) {
     return false;
   }
-  if (!(lhs.k2 == rhs.k2)) {
+  if (!(lhs.k2_ref() == rhs.k2_ref())) {
     return false;
   }
-  if (!(lhs.k3 == rhs.k3)) {
+  if (!(lhs.k3_ref() == rhs.k3_ref())) {
     return false;
   }
-  if (!(lhs.l == rhs.l)) {
+  if (!(lhs.l_ref() == rhs.l_ref())) {
     return false;
   }
-  if (!(lhs.l1 == rhs.l1)) {
+  if (!(lhs.l1_ref() == rhs.l1_ref())) {
     return false;
   }
-  if (!(lhs.l2 == rhs.l2)) {
+  if (!(lhs.l2_ref() == rhs.l2_ref())) {
     return false;
   }
-  if (!(lhs.l3 == rhs.l3)) {
+  if (!(lhs.l3_ref() == rhs.l3_ref())) {
     return false;
   }
-  if (!(lhs.m1 == rhs.m1)) {
+  if (!(lhs.m1_ref() == rhs.m1_ref())) {
     return false;
   }
-  if (!(lhs.m2 == rhs.m2)) {
+  if (!(lhs.m2_ref() == rhs.m2_ref())) {
     return false;
   }
-  if (!(lhs.m3 == rhs.m3)) {
+  if (!(lhs.m3_ref() == rhs.m3_ref())) {
     return false;
   }
-  if (!(lhs.n1 == rhs.n1)) {
+  if (!(lhs.n1_ref() == rhs.n1_ref())) {
     return false;
   }
-  if (!(lhs.n2 == rhs.n2)) {
+  if (!(lhs.n2_ref() == rhs.n2_ref())) {
     return false;
   }
-  if (!(lhs.n3 == rhs.n3)) {
+  if (!(lhs.n3_ref() == rhs.n3_ref())) {
     return false;
   }
-  if (!(lhs.o1 == rhs.o1)) {
+  if (!(lhs.o1_ref() == rhs.o1_ref())) {
     return false;
   }
-  if (!(lhs.o2 == rhs.o2)) {
+  if (!(lhs.o2_ref() == rhs.o2_ref())) {
     return false;
   }
-  if (!(lhs.o3 == rhs.o3)) {
+  if (!(lhs.o3_ref() == rhs.o3_ref())) {
     return false;
   }
   return true;
@@ -1171,95 +1171,95 @@ bool structC::operator<(const structC& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
-  if (!(lhs.d == rhs.d)) {
-    return lhs.d < rhs.d;
+  if (!(lhs.d_ref() == rhs.d_ref())) {
+    return lhs.d_ref() < rhs.d_ref();
   }
-  if (!(lhs.e == rhs.e)) {
-    return lhs.e < rhs.e;
+  if (!(lhs.e_ref() == rhs.e_ref())) {
+    return lhs.e_ref() < rhs.e_ref();
   }
-  if (!(lhs.f == rhs.f)) {
-    return lhs.f < rhs.f;
+  if (!(lhs.f_ref() == rhs.f_ref())) {
+    return lhs.f_ref() < rhs.f_ref();
   }
-  if (!(lhs.g == rhs.g)) {
-    return lhs.g < rhs.g;
+  if (!(lhs.g_ref() == rhs.g_ref())) {
+    return lhs.g_ref() < rhs.g_ref();
   }
-  if (!(lhs.h == rhs.h)) {
-    return lhs.h < rhs.h;
+  if (!(lhs.h_ref() == rhs.h_ref())) {
+    return lhs.h_ref() < rhs.h_ref();
   }
-  if (!(lhs.i == rhs.i)) {
-    return lhs.i < rhs.i;
+  if (!(lhs.i_ref() == rhs.i_ref())) {
+    return lhs.i_ref() < rhs.i_ref();
   }
-  if (!(lhs.j == rhs.j)) {
-    return lhs.j < rhs.j;
+  if (!(lhs.j_ref() == rhs.j_ref())) {
+    return lhs.j_ref() < rhs.j_ref();
   }
-  if (!(lhs.j1 == rhs.j1)) {
-    return lhs.j1 < rhs.j1;
+  if (!(lhs.j1_ref() == rhs.j1_ref())) {
+    return lhs.j1_ref() < rhs.j1_ref();
   }
-  if (!(lhs.j2 == rhs.j2)) {
-    return lhs.j2 < rhs.j2;
+  if (!(lhs.j2_ref() == rhs.j2_ref())) {
+    return lhs.j2_ref() < rhs.j2_ref();
   }
-  if (!(lhs.j3 == rhs.j3)) {
-    return lhs.j3 < rhs.j3;
+  if (!(lhs.j3_ref() == rhs.j3_ref())) {
+    return lhs.j3_ref() < rhs.j3_ref();
   }
-  if (!(lhs.k == rhs.k)) {
-    return lhs.k < rhs.k;
+  if (!(lhs.k_ref() == rhs.k_ref())) {
+    return lhs.k_ref() < rhs.k_ref();
   }
-  if (!(lhs.k1 == rhs.k1)) {
-    return lhs.k1 < rhs.k1;
+  if (!(lhs.k1_ref() == rhs.k1_ref())) {
+    return lhs.k1_ref() < rhs.k1_ref();
   }
-  if (!(lhs.k2 == rhs.k2)) {
-    return lhs.k2 < rhs.k2;
+  if (!(lhs.k2_ref() == rhs.k2_ref())) {
+    return lhs.k2_ref() < rhs.k2_ref();
   }
-  if (!(lhs.k3 == rhs.k3)) {
-    return lhs.k3 < rhs.k3;
+  if (!(lhs.k3_ref() == rhs.k3_ref())) {
+    return lhs.k3_ref() < rhs.k3_ref();
   }
-  if (!(lhs.l == rhs.l)) {
-    return lhs.l < rhs.l;
+  if (!(lhs.l_ref() == rhs.l_ref())) {
+    return lhs.l_ref() < rhs.l_ref();
   }
-  if (!(lhs.l1 == rhs.l1)) {
-    return lhs.l1 < rhs.l1;
+  if (!(lhs.l1_ref() == rhs.l1_ref())) {
+    return lhs.l1_ref() < rhs.l1_ref();
   }
-  if (!(lhs.l2 == rhs.l2)) {
-    return lhs.l2 < rhs.l2;
+  if (!(lhs.l2_ref() == rhs.l2_ref())) {
+    return lhs.l2_ref() < rhs.l2_ref();
   }
-  if (!(lhs.l3 == rhs.l3)) {
-    return lhs.l3 < rhs.l3;
+  if (!(lhs.l3_ref() == rhs.l3_ref())) {
+    return lhs.l3_ref() < rhs.l3_ref();
   }
-  if (!(lhs.m1 == rhs.m1)) {
-    return lhs.m1 < rhs.m1;
+  if (!(lhs.m1_ref() == rhs.m1_ref())) {
+    return lhs.m1_ref() < rhs.m1_ref();
   }
-  if (!(lhs.m2 == rhs.m2)) {
-    return lhs.m2 < rhs.m2;
+  if (!(lhs.m2_ref() == rhs.m2_ref())) {
+    return lhs.m2_ref() < rhs.m2_ref();
   }
-  if (!(lhs.m3 == rhs.m3)) {
-    return lhs.m3 < rhs.m3;
+  if (!(lhs.m3_ref() == rhs.m3_ref())) {
+    return lhs.m3_ref() < rhs.m3_ref();
   }
-  if (!(lhs.n1 == rhs.n1)) {
-    return lhs.n1 < rhs.n1;
+  if (!(lhs.n1_ref() == rhs.n1_ref())) {
+    return lhs.n1_ref() < rhs.n1_ref();
   }
-  if (!(lhs.n2 == rhs.n2)) {
-    return lhs.n2 < rhs.n2;
+  if (!(lhs.n2_ref() == rhs.n2_ref())) {
+    return lhs.n2_ref() < rhs.n2_ref();
   }
-  if (!(lhs.n3 == rhs.n3)) {
-    return lhs.n3 < rhs.n3;
+  if (!(lhs.n3_ref() == rhs.n3_ref())) {
+    return lhs.n3_ref() < rhs.n3_ref();
   }
-  if (!(lhs.o1 == rhs.o1)) {
-    return lhs.o1 < rhs.o1;
+  if (!(lhs.o1_ref() == rhs.o1_ref())) {
+    return lhs.o1_ref() < rhs.o1_ref();
   }
-  if (!(lhs.o2 == rhs.o2)) {
-    return lhs.o2 < rhs.o2;
+  if (!(lhs.o2_ref() == rhs.o2_ref())) {
+    return lhs.o2_ref() < rhs.o2_ref();
   }
-  if (!(lhs.o3 == rhs.o3)) {
-    return lhs.o3 < rhs.o3;
+  if (!(lhs.o3_ref() == rhs.o3_ref())) {
+    return lhs.o3_ref() < rhs.o3_ref();
   }
   return false;
 }
@@ -1731,22 +1731,22 @@ bool struct1::operator==(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return false;
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (!(lhs.field2 == rhs.field2)) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
-  if (lhs.field4_ref() != rhs.field4_ref()) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
-  if (!(lhs.field5 == rhs.field5)) {
+  if (!(lhs.field5_ref() == rhs.field5_ref())) {
     return false;
   }
   return true;
@@ -1756,23 +1756,23 @@ bool struct1::operator<(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
-    return lhs.field0 < rhs.field0;
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
+    return lhs.field0_ref() < rhs.field0_ref();
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (!(lhs.field2 == rhs.field2)) {
-    return lhs.field2 < rhs.field2;
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
+    return lhs.field2_ref() < rhs.field2_ref();
   }
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
-  if (lhs.field4_ref() != rhs.field4_ref()) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return lhs.field4_ref() < rhs.field4_ref();
   }
-  if (!(lhs.field5 == rhs.field5)) {
-    return lhs.field5 < rhs.field5;
+  if (!(lhs.field5_ref() == rhs.field5_ref())) {
+    return lhs.field5_ref() < rhs.field5_ref();
   }
   return false;
 }
@@ -1943,25 +1943,25 @@ bool struct2::operator==(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
     return false;
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
     return false;
   }
   return true;
@@ -1971,26 +1971,26 @@ bool struct2::operator<(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
-    return lhs.fieldA < rhs.fieldA;
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
+    return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
-    return lhs.fieldB < rhs.fieldB;
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
+    return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
-    return lhs.fieldC < rhs.fieldC;
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
+    return lhs.fieldC_ref() < rhs.fieldC_ref();
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
-    return lhs.fieldD < rhs.fieldD;
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
+    return lhs.fieldD_ref() < rhs.fieldD_ref();
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
-    return lhs.fieldE < rhs.fieldE;
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
+    return lhs.fieldE_ref() < rhs.fieldE_ref();
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
-    return lhs.fieldF < rhs.fieldF;
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
+    return lhs.fieldF_ref() < rhs.fieldF_ref();
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
-    return lhs.fieldG < rhs.fieldG;
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
+    return lhs.fieldG_ref() < rhs.fieldG_ref();
   }
   return false;
 }
@@ -2237,58 +2237,58 @@ bool struct3::operator==(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
     return false;
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
     return false;
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
     return false;
   }
-  if (!(lhs.fieldI == rhs.fieldI)) {
+  if (!(lhs.fieldI_ref() == rhs.fieldI_ref())) {
     return false;
   }
-  if (!(lhs.fieldJ == rhs.fieldJ)) {
+  if (!(lhs.fieldJ_ref() == rhs.fieldJ_ref())) {
     return false;
   }
-  if (!(lhs.fieldK == rhs.fieldK)) {
+  if (!(lhs.fieldK_ref() == rhs.fieldK_ref())) {
     return false;
   }
-  if (!(lhs.fieldL == rhs.fieldL)) {
+  if (!(lhs.fieldL_ref() == rhs.fieldL_ref())) {
     return false;
   }
-  if (!(lhs.fieldM == rhs.fieldM)) {
+  if (!(lhs.fieldM_ref() == rhs.fieldM_ref())) {
     return false;
   }
-  if (!(lhs.fieldN == rhs.fieldN)) {
+  if (!(lhs.fieldN_ref() == rhs.fieldN_ref())) {
     return false;
   }
-  if (!(lhs.fieldO == rhs.fieldO)) {
+  if (!(lhs.fieldO_ref() == rhs.fieldO_ref())) {
     return false;
   }
-  if (!(lhs.fieldP == rhs.fieldP)) {
+  if (!(lhs.fieldP_ref() == rhs.fieldP_ref())) {
     return false;
   }
-  if (!(lhs.fieldQ == rhs.fieldQ)) {
+  if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
     return false;
   }
-  if (!(lhs.fieldR == rhs.fieldR)) {
+  if (!(lhs.fieldR_ref() == rhs.fieldR_ref())) {
     return false;
   }
   return true;
@@ -2298,59 +2298,59 @@ bool struct3::operator<(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
-    return lhs.fieldA < rhs.fieldA;
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
+    return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
-    return lhs.fieldB < rhs.fieldB;
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
+    return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
-    return lhs.fieldC < rhs.fieldC;
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
+    return lhs.fieldC_ref() < rhs.fieldC_ref();
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
-    return lhs.fieldD < rhs.fieldD;
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
+    return lhs.fieldD_ref() < rhs.fieldD_ref();
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
-    return lhs.fieldE < rhs.fieldE;
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
+    return lhs.fieldE_ref() < rhs.fieldE_ref();
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
-    return lhs.fieldF < rhs.fieldF;
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
+    return lhs.fieldF_ref() < rhs.fieldF_ref();
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
-    return lhs.fieldG < rhs.fieldG;
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
+    return lhs.fieldG_ref() < rhs.fieldG_ref();
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
-    return lhs.fieldH < rhs.fieldH;
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
+    return lhs.fieldH_ref() < rhs.fieldH_ref();
   }
-  if (!(lhs.fieldI == rhs.fieldI)) {
-    return lhs.fieldI < rhs.fieldI;
+  if (!(lhs.fieldI_ref() == rhs.fieldI_ref())) {
+    return lhs.fieldI_ref() < rhs.fieldI_ref();
   }
-  if (!(lhs.fieldJ == rhs.fieldJ)) {
-    return lhs.fieldJ < rhs.fieldJ;
+  if (!(lhs.fieldJ_ref() == rhs.fieldJ_ref())) {
+    return lhs.fieldJ_ref() < rhs.fieldJ_ref();
   }
-  if (!(lhs.fieldK == rhs.fieldK)) {
-    return lhs.fieldK < rhs.fieldK;
+  if (!(lhs.fieldK_ref() == rhs.fieldK_ref())) {
+    return lhs.fieldK_ref() < rhs.fieldK_ref();
   }
-  if (!(lhs.fieldL == rhs.fieldL)) {
-    return lhs.fieldL < rhs.fieldL;
+  if (!(lhs.fieldL_ref() == rhs.fieldL_ref())) {
+    return lhs.fieldL_ref() < rhs.fieldL_ref();
   }
-  if (!(lhs.fieldM == rhs.fieldM)) {
-    return lhs.fieldM < rhs.fieldM;
+  if (!(lhs.fieldM_ref() == rhs.fieldM_ref())) {
+    return lhs.fieldM_ref() < rhs.fieldM_ref();
   }
-  if (!(lhs.fieldN == rhs.fieldN)) {
-    return lhs.fieldN < rhs.fieldN;
+  if (!(lhs.fieldN_ref() == rhs.fieldN_ref())) {
+    return lhs.fieldN_ref() < rhs.fieldN_ref();
   }
-  if (!(lhs.fieldO == rhs.fieldO)) {
-    return lhs.fieldO < rhs.fieldO;
+  if (!(lhs.fieldO_ref() == rhs.fieldO_ref())) {
+    return lhs.fieldO_ref() < rhs.fieldO_ref();
   }
-  if (!(lhs.fieldP == rhs.fieldP)) {
-    return lhs.fieldP < rhs.fieldP;
+  if (!(lhs.fieldP_ref() == rhs.fieldP_ref())) {
+    return lhs.fieldP_ref() < rhs.fieldP_ref();
   }
-  if (!(lhs.fieldQ == rhs.fieldQ)) {
-    return lhs.fieldQ < rhs.fieldQ;
+  if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
+    return lhs.fieldQ_ref() < rhs.fieldQ_ref();
   }
-  if (!(lhs.fieldR == rhs.fieldR)) {
-    return lhs.fieldR < rhs.fieldR;
+  if (!(lhs.fieldR_ref() == rhs.fieldR_ref())) {
+    return lhs.fieldR_ref() < rhs.fieldR_ref();
   }
   return false;
 }
@@ -2689,22 +2689,17 @@ bool struct4::operator==(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return false;
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (!(lhs.field2 == rhs.field2)) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if (!!lhs.field3 != !!rhs.field3) {
+  if ((lhs.field3 == nullptr) != (rhs.field3 == nullptr) || (lhs.field3 != nullptr && lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3))) {
     return false;
-  }
-  if (!!lhs.field3) {
-    if (lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3)) {
-      return false;
-    }
   }
   return true;
 }
@@ -2713,14 +2708,14 @@ bool struct4::operator<(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
-    return lhs.field0 < rhs.field0;
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
+    return lhs.field0_ref() < rhs.field0_ref();
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (!(lhs.field2 == rhs.field2)) {
-    return lhs.field2 < rhs.field2;
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
+    return lhs.field2_ref() < rhs.field2_ref();
   }
   if (!!lhs.field3 != !!rhs.field3) {
     return !!lhs.field3 < !!rhs.field3;
@@ -2857,19 +2852,19 @@ bool struct5::operator==(const struct5& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return false;
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (!(lhs.field2 == rhs.field2)) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
-  if (!(lhs.field4 == rhs.field4)) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
   return true;
@@ -2879,20 +2874,20 @@ bool struct5::operator<(const struct5& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
-    return lhs.field0 < rhs.field0;
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
+    return lhs.field0_ref() < rhs.field0_ref();
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (!(lhs.field2 == rhs.field2)) {
-    return lhs.field2 < rhs.field2;
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
+    return lhs.field2_ref() < rhs.field2_ref();
   }
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
-  if (!(lhs.field4 == rhs.field4)) {
-    return lhs.field4 < rhs.field4;
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
+    return lhs.field4_ref() < rhs.field4_ref();
   }
   return false;
 }
@@ -3108,13 +3103,13 @@ bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
-  if (!(lhs.i_a == rhs.i_a)) {
+  if (!(lhs.i_a_ref() == rhs.i_a_ref())) {
     return false;
   }
   return true;
@@ -3124,14 +3119,14 @@ bool dep_A_struct::operator<(const dep_A_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
-  if (!(lhs.i_a == rhs.i_a)) {
-    return lhs.i_a < rhs.i_a;
+  if (!(lhs.i_a_ref() == rhs.i_a_ref())) {
+    return lhs.i_a_ref() < rhs.i_a_ref();
   }
   return false;
 }
@@ -3249,13 +3244,13 @@ bool dep_B_struct::operator==(const dep_B_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
-  if (!(lhs.i_a == rhs.i_a)) {
+  if (!(lhs.i_a_ref() == rhs.i_a_ref())) {
     return false;
   }
   return true;
@@ -3265,14 +3260,14 @@ bool dep_B_struct::operator<(const dep_B_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
-  if (!(lhs.i_a == rhs.i_a)) {
-    return lhs.i_a < rhs.i_a;
+  if (!(lhs.i_a_ref() == rhs.i_a_ref())) {
+    return lhs.i_a_ref() < rhs.i_a_ref();
   }
   return false;
 }
@@ -3384,7 +3379,7 @@ bool annotated::operator==(const annotated& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
   return true;
@@ -3394,8 +3389,8 @@ bool annotated::operator<(const annotated& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
   return false;
 }
@@ -3838,88 +3833,88 @@ bool struct_with_special_names::operator==(const struct_with_special_names& rhs)
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.get == rhs.get)) {
+  if (!(lhs.get_ref() == rhs.get_ref())) {
     return false;
   }
-  if (!(lhs.getter == rhs.getter)) {
+  if (!(lhs.getter_ref() == rhs.getter_ref())) {
     return false;
   }
-  if (!(lhs.lists == rhs.lists)) {
+  if (!(lhs.lists_ref() == rhs.lists_ref())) {
     return false;
   }
-  if (!(lhs.maps == rhs.maps)) {
+  if (!(lhs.maps_ref() == rhs.maps_ref())) {
     return false;
   }
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
-  if (!(lhs.name_to_value == rhs.name_to_value)) {
+  if (!(lhs.name_to_value_ref() == rhs.name_to_value_ref())) {
     return false;
   }
-  if (!(lhs.names == rhs.names)) {
+  if (!(lhs.names_ref() == rhs.names_ref())) {
     return false;
   }
-  if (!(lhs.prefix_tree == rhs.prefix_tree)) {
+  if (!(lhs.prefix_tree_ref() == rhs.prefix_tree_ref())) {
     return false;
   }
-  if (!(lhs.sets == rhs.sets)) {
+  if (!(lhs.sets_ref() == rhs.sets_ref())) {
     return false;
   }
-  if (!(lhs.setter == rhs.setter)) {
+  if (!(lhs.setter_ref() == rhs.setter_ref())) {
     return false;
   }
-  if (!(lhs.str == rhs.str)) {
+  if (!(lhs.str_ref() == rhs.str_ref())) {
     return false;
   }
-  if (!(lhs.strings == rhs.strings)) {
+  if (!(lhs.strings_ref() == rhs.strings_ref())) {
     return false;
   }
-  if (!(lhs.type == rhs.type)) {
+  if (!(lhs.type_ref() == rhs.type_ref())) {
     return false;
   }
-  if (!(lhs.value == rhs.value)) {
+  if (!(lhs.value_ref() == rhs.value_ref())) {
     return false;
   }
-  if (!(lhs.value_to_name == rhs.value_to_name)) {
+  if (!(lhs.value_to_name_ref() == rhs.value_to_name_ref())) {
     return false;
   }
-  if (!(lhs.values == rhs.values)) {
+  if (!(lhs.values_ref() == rhs.values_ref())) {
     return false;
   }
-  if (!(lhs.id == rhs.id)) {
+  if (!(lhs.id_ref() == rhs.id_ref())) {
     return false;
   }
-  if (!(lhs.ids == rhs.ids)) {
+  if (!(lhs.ids_ref() == rhs.ids_ref())) {
     return false;
   }
-  if (!(lhs.descriptor == rhs.descriptor)) {
+  if (!(lhs.descriptor_ref() == rhs.descriptor_ref())) {
     return false;
   }
-  if (!(lhs.descriptors == rhs.descriptors)) {
+  if (!(lhs.descriptors_ref() == rhs.descriptors_ref())) {
     return false;
   }
-  if (!(lhs.key == rhs.key)) {
+  if (!(lhs.key_ref() == rhs.key_ref())) {
     return false;
   }
-  if (!(lhs.keys == rhs.keys)) {
+  if (!(lhs.keys_ref() == rhs.keys_ref())) {
     return false;
   }
-  if (!(lhs.annotation == rhs.annotation)) {
+  if (!(lhs.annotation_ref() == rhs.annotation_ref())) {
     return false;
   }
-  if (!(lhs.annotations == rhs.annotations)) {
+  if (!(lhs.annotations_ref() == rhs.annotations_ref())) {
     return false;
   }
-  if (!(lhs.member == rhs.member)) {
+  if (!(lhs.member_ref() == rhs.member_ref())) {
     return false;
   }
-  if (!(lhs.members == rhs.members)) {
+  if (!(lhs.members_ref() == rhs.members_ref())) {
     return false;
   }
-  if (!(lhs.field == rhs.field)) {
+  if (!(lhs.field_ref() == rhs.field_ref())) {
     return false;
   }
-  if (!(lhs.fields == rhs.fields)) {
+  if (!(lhs.fields_ref() == rhs.fields_ref())) {
     return false;
   }
   return true;
@@ -3929,89 +3924,89 @@ bool struct_with_special_names::operator<(const struct_with_special_names& rhs) 
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.get == rhs.get)) {
-    return lhs.get < rhs.get;
+  if (!(lhs.get_ref() == rhs.get_ref())) {
+    return lhs.get_ref() < rhs.get_ref();
   }
-  if (!(lhs.getter == rhs.getter)) {
-    return lhs.getter < rhs.getter;
+  if (!(lhs.getter_ref() == rhs.getter_ref())) {
+    return lhs.getter_ref() < rhs.getter_ref();
   }
-  if (!(lhs.lists == rhs.lists)) {
-    return lhs.lists < rhs.lists;
+  if (!(lhs.lists_ref() == rhs.lists_ref())) {
+    return lhs.lists_ref() < rhs.lists_ref();
   }
-  if (!(lhs.maps == rhs.maps)) {
-    return lhs.maps < rhs.maps;
+  if (!(lhs.maps_ref() == rhs.maps_ref())) {
+    return lhs.maps_ref() < rhs.maps_ref();
   }
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
-  if (!(lhs.name_to_value == rhs.name_to_value)) {
-    return lhs.name_to_value < rhs.name_to_value;
+  if (!(lhs.name_to_value_ref() == rhs.name_to_value_ref())) {
+    return lhs.name_to_value_ref() < rhs.name_to_value_ref();
   }
-  if (!(lhs.names == rhs.names)) {
-    return lhs.names < rhs.names;
+  if (!(lhs.names_ref() == rhs.names_ref())) {
+    return lhs.names_ref() < rhs.names_ref();
   }
-  if (!(lhs.prefix_tree == rhs.prefix_tree)) {
-    return lhs.prefix_tree < rhs.prefix_tree;
+  if (!(lhs.prefix_tree_ref() == rhs.prefix_tree_ref())) {
+    return lhs.prefix_tree_ref() < rhs.prefix_tree_ref();
   }
-  if (!(lhs.sets == rhs.sets)) {
-    return lhs.sets < rhs.sets;
+  if (!(lhs.sets_ref() == rhs.sets_ref())) {
+    return lhs.sets_ref() < rhs.sets_ref();
   }
-  if (!(lhs.setter == rhs.setter)) {
-    return lhs.setter < rhs.setter;
+  if (!(lhs.setter_ref() == rhs.setter_ref())) {
+    return lhs.setter_ref() < rhs.setter_ref();
   }
-  if (!(lhs.str == rhs.str)) {
-    return lhs.str < rhs.str;
+  if (!(lhs.str_ref() == rhs.str_ref())) {
+    return lhs.str_ref() < rhs.str_ref();
   }
-  if (!(lhs.strings == rhs.strings)) {
-    return lhs.strings < rhs.strings;
+  if (!(lhs.strings_ref() == rhs.strings_ref())) {
+    return lhs.strings_ref() < rhs.strings_ref();
   }
-  if (!(lhs.type == rhs.type)) {
-    return lhs.type < rhs.type;
+  if (!(lhs.type_ref() == rhs.type_ref())) {
+    return lhs.type_ref() < rhs.type_ref();
   }
-  if (!(lhs.value == rhs.value)) {
-    return lhs.value < rhs.value;
+  if (!(lhs.value_ref() == rhs.value_ref())) {
+    return lhs.value_ref() < rhs.value_ref();
   }
-  if (!(lhs.value_to_name == rhs.value_to_name)) {
-    return lhs.value_to_name < rhs.value_to_name;
+  if (!(lhs.value_to_name_ref() == rhs.value_to_name_ref())) {
+    return lhs.value_to_name_ref() < rhs.value_to_name_ref();
   }
-  if (!(lhs.values == rhs.values)) {
-    return lhs.values < rhs.values;
+  if (!(lhs.values_ref() == rhs.values_ref())) {
+    return lhs.values_ref() < rhs.values_ref();
   }
-  if (!(lhs.id == rhs.id)) {
-    return lhs.id < rhs.id;
+  if (!(lhs.id_ref() == rhs.id_ref())) {
+    return lhs.id_ref() < rhs.id_ref();
   }
-  if (!(lhs.ids == rhs.ids)) {
-    return lhs.ids < rhs.ids;
+  if (!(lhs.ids_ref() == rhs.ids_ref())) {
+    return lhs.ids_ref() < rhs.ids_ref();
   }
-  if (!(lhs.descriptor == rhs.descriptor)) {
-    return lhs.descriptor < rhs.descriptor;
+  if (!(lhs.descriptor_ref() == rhs.descriptor_ref())) {
+    return lhs.descriptor_ref() < rhs.descriptor_ref();
   }
-  if (!(lhs.descriptors == rhs.descriptors)) {
-    return lhs.descriptors < rhs.descriptors;
+  if (!(lhs.descriptors_ref() == rhs.descriptors_ref())) {
+    return lhs.descriptors_ref() < rhs.descriptors_ref();
   }
-  if (!(lhs.key == rhs.key)) {
-    return lhs.key < rhs.key;
+  if (!(lhs.key_ref() == rhs.key_ref())) {
+    return lhs.key_ref() < rhs.key_ref();
   }
-  if (!(lhs.keys == rhs.keys)) {
-    return lhs.keys < rhs.keys;
+  if (!(lhs.keys_ref() == rhs.keys_ref())) {
+    return lhs.keys_ref() < rhs.keys_ref();
   }
-  if (!(lhs.annotation == rhs.annotation)) {
-    return lhs.annotation < rhs.annotation;
+  if (!(lhs.annotation_ref() == rhs.annotation_ref())) {
+    return lhs.annotation_ref() < rhs.annotation_ref();
   }
-  if (!(lhs.annotations == rhs.annotations)) {
-    return lhs.annotations < rhs.annotations;
+  if (!(lhs.annotations_ref() == rhs.annotations_ref())) {
+    return lhs.annotations_ref() < rhs.annotations_ref();
   }
-  if (!(lhs.member == rhs.member)) {
-    return lhs.member < rhs.member;
+  if (!(lhs.member_ref() == rhs.member_ref())) {
+    return lhs.member_ref() < rhs.member_ref();
   }
-  if (!(lhs.members == rhs.members)) {
-    return lhs.members < rhs.members;
+  if (!(lhs.members_ref() == rhs.members_ref())) {
+    return lhs.members_ref() < rhs.members_ref();
   }
-  if (!(lhs.field == rhs.field)) {
-    return lhs.field < rhs.field;
+  if (!(lhs.field_ref() == rhs.field_ref())) {
+    return lhs.field_ref() < rhs.field_ref();
   }
-  if (!(lhs.fields == rhs.fields)) {
-    return lhs.fields < rhs.fields;
+  if (!(lhs.fields_ref() == rhs.fields_ref())) {
+    return lhs.fields_ref() < rhs.fields_ref();
   }
   return false;
 }
@@ -4155,19 +4150,19 @@ bool struct_with_indirections::operator==(const struct_with_indirections& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.real == rhs.real)) {
+  if (!(lhs.real_ref() == rhs.real_ref())) {
     return false;
   }
-  if (!(lhs.fake == rhs.fake)) {
+  if (!(lhs.fake_ref() == rhs.fake_ref())) {
     return false;
   }
-  if (!(lhs.number == rhs.number)) {
+  if (!(lhs.number_ref() == rhs.number_ref())) {
     return false;
   }
-  if (!(lhs.result == rhs.result)) {
+  if (!(lhs.result_ref() == rhs.result_ref())) {
     return false;
   }
-  if (!(lhs.phrase == rhs.phrase)) {
+  if (!(lhs.phrase_ref() == rhs.phrase_ref())) {
     return false;
   }
   return true;
@@ -4177,20 +4172,20 @@ bool struct_with_indirections::operator<(const struct_with_indirections& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.real == rhs.real)) {
-    return lhs.real < rhs.real;
+  if (!(lhs.real_ref() == rhs.real_ref())) {
+    return lhs.real_ref() < rhs.real_ref();
   }
-  if (!(lhs.fake == rhs.fake)) {
-    return lhs.fake < rhs.fake;
+  if (!(lhs.fake_ref() == rhs.fake_ref())) {
+    return lhs.fake_ref() < rhs.fake_ref();
   }
-  if (!(lhs.number == rhs.number)) {
-    return lhs.number < rhs.number;
+  if (!(lhs.number_ref() == rhs.number_ref())) {
+    return lhs.number_ref() < rhs.number_ref();
   }
-  if (!(lhs.result == rhs.result)) {
-    return lhs.result < rhs.result;
+  if (!(lhs.result_ref() == rhs.result_ref())) {
+    return lhs.result_ref() < rhs.result_ref();
   }
-  if (!(lhs.phrase == rhs.phrase)) {
-    return lhs.phrase < rhs.phrase;
+  if (!(lhs.phrase_ref() == rhs.phrase_ref())) {
+    return lhs.phrase_ref() < rhs.phrase_ref();
   }
   return false;
 }

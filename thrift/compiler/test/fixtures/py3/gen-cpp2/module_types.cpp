@@ -145,7 +145,7 @@ bool SimpleException::operator==(const SimpleException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.err_code == rhs.err_code)) {
+  if (!(lhs.err_code_ref() == rhs.err_code_ref())) {
     return false;
   }
   return true;
@@ -155,8 +155,8 @@ bool SimpleException::operator<(const SimpleException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.err_code == rhs.err_code)) {
-    return lhs.err_code < rhs.err_code;
+  if (!(lhs.err_code_ref() == rhs.err_code_ref())) {
+    return lhs.err_code_ref() < rhs.err_code_ref();
   }
   return false;
 }
@@ -251,13 +251,8 @@ bool OptionalRefStruct::operator==(const OptionalRefStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.optional_blob_ref().has_value() != rhs.optional_blob_ref().has_value()) {
+  if (lhs.optional_blob_ref().has_value() != rhs.optional_blob_ref().has_value() || (lhs.optional_blob_ref().has_value() && !apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.optional_blob, rhs.optional_blob))) {
     return false;
-  }
-  if (lhs.optional_blob_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.optional_blob, rhs.optional_blob)) {
-      return false;
-    }
   }
   return true;
 }
@@ -392,28 +387,28 @@ bool SimpleStruct::operator==(const SimpleStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.is_on == rhs.is_on)) {
+  if (!(lhs.is_on_ref() == rhs.is_on_ref())) {
     return false;
   }
-  if (!(lhs.tiny_int == rhs.tiny_int)) {
+  if (!(lhs.tiny_int_ref() == rhs.tiny_int_ref())) {
     return false;
   }
-  if (!(lhs.small_int == rhs.small_int)) {
+  if (!(lhs.small_int_ref() == rhs.small_int_ref())) {
     return false;
   }
-  if (!(lhs.nice_sized_int == rhs.nice_sized_int)) {
+  if (!(lhs.nice_sized_int_ref() == rhs.nice_sized_int_ref())) {
     return false;
   }
-  if (!(lhs.big_int == rhs.big_int)) {
+  if (!(lhs.big_int_ref() == rhs.big_int_ref())) {
     return false;
   }
-  if (!(lhs.real == rhs.real)) {
+  if (!(lhs.real_ref() == rhs.real_ref())) {
     return false;
   }
-  if (!(lhs.smaller_real == rhs.smaller_real)) {
+  if (!(lhs.smaller_real_ref() == rhs.smaller_real_ref())) {
     return false;
   }
-  if (!(lhs.hidden_field == rhs.hidden_field)) {
+  if (!(lhs.hidden_field_ref() == rhs.hidden_field_ref())) {
     return false;
   }
   return true;
@@ -423,29 +418,29 @@ bool SimpleStruct::operator<(const SimpleStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.is_on == rhs.is_on)) {
-    return lhs.is_on < rhs.is_on;
+  if (!(lhs.is_on_ref() == rhs.is_on_ref())) {
+    return lhs.is_on_ref() < rhs.is_on_ref();
   }
-  if (!(lhs.tiny_int == rhs.tiny_int)) {
-    return lhs.tiny_int < rhs.tiny_int;
+  if (!(lhs.tiny_int_ref() == rhs.tiny_int_ref())) {
+    return lhs.tiny_int_ref() < rhs.tiny_int_ref();
   }
-  if (!(lhs.small_int == rhs.small_int)) {
-    return lhs.small_int < rhs.small_int;
+  if (!(lhs.small_int_ref() == rhs.small_int_ref())) {
+    return lhs.small_int_ref() < rhs.small_int_ref();
   }
-  if (!(lhs.nice_sized_int == rhs.nice_sized_int)) {
-    return lhs.nice_sized_int < rhs.nice_sized_int;
+  if (!(lhs.nice_sized_int_ref() == rhs.nice_sized_int_ref())) {
+    return lhs.nice_sized_int_ref() < rhs.nice_sized_int_ref();
   }
-  if (!(lhs.big_int == rhs.big_int)) {
-    return lhs.big_int < rhs.big_int;
+  if (!(lhs.big_int_ref() == rhs.big_int_ref())) {
+    return lhs.big_int_ref() < rhs.big_int_ref();
   }
-  if (!(lhs.real == rhs.real)) {
-    return lhs.real < rhs.real;
+  if (!(lhs.real_ref() == rhs.real_ref())) {
+    return lhs.real_ref() < rhs.real_ref();
   }
-  if (!(lhs.smaller_real == rhs.smaller_real)) {
-    return lhs.smaller_real < rhs.smaller_real;
+  if (!(lhs.smaller_real_ref() == rhs.smaller_real_ref())) {
+    return lhs.smaller_real_ref() < rhs.smaller_real_ref();
   }
-  if (!(lhs.hidden_field == rhs.hidden_field)) {
-    return lhs.hidden_field < rhs.hidden_field;
+  if (!(lhs.hidden_field_ref() == rhs.hidden_field_ref())) {
+    return lhs.hidden_field_ref() < rhs.hidden_field_ref();
   }
   return false;
 }
@@ -587,28 +582,28 @@ bool ComplexStruct::operator==(const ComplexStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.structOne == rhs.structOne)) {
+  if (!(lhs.structOne_ref() == rhs.structOne_ref())) {
     return false;
   }
-  if (!(lhs.structTwo == rhs.structTwo)) {
+  if (!(lhs.structTwo_ref() == rhs.structTwo_ref())) {
     return false;
   }
-  if (!(lhs.an_integer == rhs.an_integer)) {
+  if (!(lhs.an_integer_ref() == rhs.an_integer_ref())) {
     return false;
   }
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
-  if (!(lhs.an_enum == rhs.an_enum)) {
+  if (!(lhs.an_enum_ref() == rhs.an_enum_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.some_bytes, rhs.some_bytes)) {
     return false;
   }
-  if (!(lhs.from == rhs.from)) {
+  if (!(lhs.from_ref() == rhs.from_ref())) {
     return false;
   }
-  if (!(lhs.cdef == rhs.cdef)) {
+  if (!(lhs.cdef_ref() == rhs.cdef_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<foo::Bar>::isEqual(lhs.bytes_with_cpp_type, rhs.bytes_with_cpp_type)) {
@@ -621,29 +616,29 @@ bool ComplexStruct::operator<(const ComplexStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.structOne == rhs.structOne)) {
-    return lhs.structOne < rhs.structOne;
+  if (!(lhs.structOne_ref() == rhs.structOne_ref())) {
+    return lhs.structOne_ref() < rhs.structOne_ref();
   }
-  if (!(lhs.structTwo == rhs.structTwo)) {
-    return lhs.structTwo < rhs.structTwo;
+  if (!(lhs.structTwo_ref() == rhs.structTwo_ref())) {
+    return lhs.structTwo_ref() < rhs.structTwo_ref();
   }
-  if (!(lhs.an_integer == rhs.an_integer)) {
-    return lhs.an_integer < rhs.an_integer;
+  if (!(lhs.an_integer_ref() == rhs.an_integer_ref())) {
+    return lhs.an_integer_ref() < rhs.an_integer_ref();
   }
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
-  if (!(lhs.an_enum == rhs.an_enum)) {
-    return lhs.an_enum < rhs.an_enum;
+  if (!(lhs.an_enum_ref() == rhs.an_enum_ref())) {
+    return lhs.an_enum_ref() < rhs.an_enum_ref();
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.some_bytes, rhs.some_bytes)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.some_bytes, rhs.some_bytes);
   }
-  if (!(lhs.from == rhs.from)) {
-    return lhs.from < rhs.from;
+  if (!(lhs.from_ref() == rhs.from_ref())) {
+    return lhs.from_ref() < rhs.from_ref();
   }
-  if (!(lhs.cdef == rhs.cdef)) {
-    return lhs.cdef < rhs.cdef;
+  if (!(lhs.cdef_ref() == rhs.cdef_ref())) {
+    return lhs.cdef_ref() < rhs.cdef_ref();
   }
   if (!apache::thrift::StringTraits<foo::Bar>::isEqual(lhs.bytes_with_cpp_type, rhs.bytes_with_cpp_type)) {
     return apache::thrift::StringTraits<foo::Bar>::isLess(lhs.bytes_with_cpp_type, rhs.bytes_with_cpp_type);

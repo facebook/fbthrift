@@ -70,7 +70,7 @@ bool InitialResponse::operator==(const InitialResponse& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.content == rhs.content)) {
+  if (!(lhs.content_ref() == rhs.content_ref())) {
     return false;
   }
   return true;
@@ -80,8 +80,8 @@ bool InitialResponse::operator<(const InitialResponse& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.content == rhs.content)) {
-    return lhs.content < rhs.content;
+  if (!(lhs.content_ref() == rhs.content_ref())) {
+    return lhs.content_ref() < rhs.content_ref();
   }
   return false;
 }
@@ -166,7 +166,7 @@ bool FinalResponse::operator==(const FinalResponse& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.content == rhs.content)) {
+  if (!(lhs.content_ref() == rhs.content_ref())) {
     return false;
   }
   return true;
@@ -176,8 +176,8 @@ bool FinalResponse::operator<(const FinalResponse& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.content == rhs.content)) {
-    return lhs.content < rhs.content;
+  if (!(lhs.content_ref() == rhs.content_ref())) {
+    return lhs.content_ref() < rhs.content_ref();
   }
   return false;
 }
@@ -262,7 +262,7 @@ bool SinkPayload::operator==(const SinkPayload& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.content == rhs.content)) {
+  if (!(lhs.content_ref() == rhs.content_ref())) {
     return false;
   }
   return true;
@@ -272,8 +272,8 @@ bool SinkPayload::operator<(const SinkPayload& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.content == rhs.content)) {
-    return lhs.content < rhs.content;
+  if (!(lhs.content_ref() == rhs.content_ref())) {
+    return lhs.content_ref() < rhs.content_ref();
   }
   return false;
 }
@@ -358,7 +358,7 @@ bool CompatibleWithKeywordSink::operator==(const CompatibleWithKeywordSink& rhs)
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.sink == rhs.sink)) {
+  if (!(lhs.sink_ref() == rhs.sink_ref())) {
     return false;
   }
   return true;
@@ -368,8 +368,8 @@ bool CompatibleWithKeywordSink::operator<(const CompatibleWithKeywordSink& rhs) 
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.sink == rhs.sink)) {
-    return lhs.sink < rhs.sink;
+  if (!(lhs.sink_ref() == rhs.sink_ref())) {
+    return lhs.sink_ref() < rhs.sink_ref();
   }
   return false;
 }
@@ -462,7 +462,7 @@ bool InitialException::operator==(const InitialException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.reason == rhs.reason)) {
+  if (!(lhs.reason_ref() == rhs.reason_ref())) {
     return false;
   }
   return true;
@@ -472,8 +472,8 @@ bool InitialException::operator<(const InitialException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.reason == rhs.reason)) {
-    return lhs.reason < rhs.reason;
+  if (!(lhs.reason_ref() == rhs.reason_ref())) {
+    return lhs.reason_ref() < rhs.reason_ref();
   }
   return false;
 }
@@ -566,7 +566,7 @@ bool SinkException1::operator==(const SinkException1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.reason == rhs.reason)) {
+  if (!(lhs.reason_ref() == rhs.reason_ref())) {
     return false;
   }
   return true;
@@ -576,8 +576,8 @@ bool SinkException1::operator<(const SinkException1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.reason == rhs.reason)) {
-    return lhs.reason < rhs.reason;
+  if (!(lhs.reason_ref() == rhs.reason_ref())) {
+    return lhs.reason_ref() < rhs.reason_ref();
   }
   return false;
 }
@@ -671,7 +671,7 @@ bool SinkException2::operator==(const SinkException2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.reason == rhs.reason)) {
+  if (!(lhs.reason_ref() == rhs.reason_ref())) {
     return false;
   }
   return true;
@@ -681,8 +681,8 @@ bool SinkException2::operator<(const SinkException2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.reason == rhs.reason)) {
-    return lhs.reason < rhs.reason;
+  if (!(lhs.reason_ref() == rhs.reason_ref())) {
+    return lhs.reason_ref() < rhs.reason_ref();
   }
   return false;
 }

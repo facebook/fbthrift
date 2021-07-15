@@ -76,7 +76,7 @@ bool Fiery::operator==(const Fiery& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
   return true;
@@ -86,8 +86,8 @@ bool Fiery::operator<(const Fiery& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
-    return lhs.message < rhs.message;
+  if (!(lhs.message_ref() == rhs.message_ref())) {
+    return lhs.message_ref() < rhs.message_ref();
   }
   return false;
 }
@@ -181,7 +181,7 @@ bool Serious::operator==(const Serious& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.sonnet_ref() != rhs.sonnet_ref()) {
+  if (!(lhs.sonnet_ref() == rhs.sonnet_ref())) {
     return false;
   }
   return true;
@@ -191,7 +191,7 @@ bool Serious::operator<(const Serious& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.sonnet_ref() != rhs.sonnet_ref()) {
+  if (!(lhs.sonnet_ref() == rhs.sonnet_ref())) {
     return lhs.sonnet_ref() < rhs.sonnet_ref();
   }
   return false;
@@ -294,10 +294,10 @@ bool ComplexFieldNames::operator==(const ComplexFieldNames& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.error_message == rhs.error_message)) {
+  if (!(lhs.error_message_ref() == rhs.error_message_ref())) {
     return false;
   }
-  if (!(lhs.internal_error_message == rhs.internal_error_message)) {
+  if (!(lhs.internal_error_message_ref() == rhs.internal_error_message_ref())) {
     return false;
   }
   return true;
@@ -307,11 +307,11 @@ bool ComplexFieldNames::operator<(const ComplexFieldNames& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.error_message == rhs.error_message)) {
-    return lhs.error_message < rhs.error_message;
+  if (!(lhs.error_message_ref() == rhs.error_message_ref())) {
+    return lhs.error_message_ref() < rhs.error_message_ref();
   }
-  if (!(lhs.internal_error_message == rhs.internal_error_message)) {
-    return lhs.internal_error_message < rhs.internal_error_message;
+  if (!(lhs.internal_error_message_ref() == rhs.internal_error_message_ref())) {
+    return lhs.internal_error_message_ref() < rhs.internal_error_message_ref();
   }
   return false;
 }
@@ -414,10 +414,10 @@ bool CustomFieldNames::operator==(const CustomFieldNames& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.error_message == rhs.error_message)) {
+  if (!(lhs.error_message_ref() == rhs.error_message_ref())) {
     return false;
   }
-  if (!(lhs.internal_error_message == rhs.internal_error_message)) {
+  if (!(lhs.internal_error_message_ref() == rhs.internal_error_message_ref())) {
     return false;
   }
   return true;
@@ -427,11 +427,11 @@ bool CustomFieldNames::operator<(const CustomFieldNames& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.error_message == rhs.error_message)) {
-    return lhs.error_message < rhs.error_message;
+  if (!(lhs.error_message_ref() == rhs.error_message_ref())) {
+    return lhs.error_message_ref() < rhs.error_message_ref();
   }
-  if (!(lhs.internal_error_message == rhs.internal_error_message)) {
-    return lhs.internal_error_message < rhs.internal_error_message;
+  if (!(lhs.internal_error_message_ref() == rhs.internal_error_message_ref())) {
+    return lhs.internal_error_message_ref() < rhs.internal_error_message_ref();
   }
   return false;
 }
@@ -535,10 +535,10 @@ bool ExceptionWithPrimitiveField::operator==(const ExceptionWithPrimitiveField& 
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
-  if (!(lhs.error_code == rhs.error_code)) {
+  if (!(lhs.error_code_ref() == rhs.error_code_ref())) {
     return false;
   }
   return true;
@@ -548,11 +548,11 @@ bool ExceptionWithPrimitiveField::operator<(const ExceptionWithPrimitiveField& r
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
-    return lhs.message < rhs.message;
+  if (!(lhs.message_ref() == rhs.message_ref())) {
+    return lhs.message_ref() < rhs.message_ref();
   }
-  if (!(lhs.error_code == rhs.error_code)) {
-    return lhs.error_code < rhs.error_code;
+  if (!(lhs.error_code_ref() == rhs.error_code_ref())) {
+    return lhs.error_code_ref() < rhs.error_code_ref();
   }
   return false;
 }

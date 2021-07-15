@@ -200,29 +200,19 @@ bool TrivialTypesStruct::operator==(const TrivialTypesStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.fieldA_ref() != rhs.fieldA_ref()) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (lhs.fieldB_ref() != rhs.fieldB_ref()) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value()) {
+  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value() || (lhs.fieldC_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.fieldC, rhs.fieldC))) {
     return false;
   }
-  if (lhs.fieldC_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.fieldC, rhs.fieldC)) {
-      return false;
-    }
-  }
-  if (lhs.fieldD_ref().has_value() != rhs.fieldD_ref().has_value()) {
+  if (lhs.fieldD_ref().has_value() != rhs.fieldD_ref().has_value() || (lhs.fieldD_ref().has_value() && !apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.fieldD, rhs.fieldD))) {
     return false;
   }
-  if (lhs.fieldD_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.fieldD, rhs.fieldD)) {
-      return false;
-    }
-  }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
   return true;
@@ -232,10 +222,10 @@ bool TrivialTypesStruct::operator<(const TrivialTypesStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.fieldA_ref() != rhs.fieldA_ref()) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
-  if (lhs.fieldB_ref() != rhs.fieldB_ref()) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
   if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value()) {
@@ -254,8 +244,8 @@ bool TrivialTypesStruct::operator<(const TrivialTypesStruct& rhs) const {
       return apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isLess(lhs.fieldD, rhs.fieldD);
     }
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
-    return lhs.fieldE < rhs.fieldE;
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
+    return lhs.fieldE_ref() < rhs.fieldE_ref();
   }
   return false;
 }
@@ -416,28 +406,28 @@ bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
     return false;
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
     return false;
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
     return false;
   }
   return true;

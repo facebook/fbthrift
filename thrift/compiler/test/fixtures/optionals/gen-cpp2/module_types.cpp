@@ -97,16 +97,16 @@ bool Color::operator==(const Color& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.red == rhs.red)) {
+  if (!(lhs.red_ref() == rhs.red_ref())) {
     return false;
   }
-  if (!(lhs.green == rhs.green)) {
+  if (!(lhs.green_ref() == rhs.green_ref())) {
     return false;
   }
-  if (!(lhs.blue == rhs.blue)) {
+  if (!(lhs.blue_ref() == rhs.blue_ref())) {
     return false;
   }
-  if (!(lhs.alpha == rhs.alpha)) {
+  if (!(lhs.alpha_ref() == rhs.alpha_ref())) {
     return false;
   }
   return true;
@@ -116,17 +116,17 @@ bool Color::operator<(const Color& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.red == rhs.red)) {
-    return lhs.red < rhs.red;
+  if (!(lhs.red_ref() == rhs.red_ref())) {
+    return lhs.red_ref() < rhs.red_ref();
   }
-  if (!(lhs.green == rhs.green)) {
-    return lhs.green < rhs.green;
+  if (!(lhs.green_ref() == rhs.green_ref())) {
+    return lhs.green_ref() < rhs.green_ref();
   }
-  if (!(lhs.blue == rhs.blue)) {
-    return lhs.blue < rhs.blue;
+  if (!(lhs.blue_ref() == rhs.blue_ref())) {
+    return lhs.blue_ref() < rhs.blue_ref();
   }
-  if (!(lhs.alpha == rhs.alpha)) {
-    return lhs.alpha < rhs.alpha;
+  if (!(lhs.alpha_ref() == rhs.alpha_ref())) {
+    return lhs.alpha_ref() < rhs.alpha_ref();
   }
   return false;
 }
@@ -243,19 +243,19 @@ bool Vehicle::operator==(const Vehicle& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.color == rhs.color)) {
+  if (!(lhs.color_ref() == rhs.color_ref())) {
     return false;
   }
-  if (lhs.licensePlate_ref() != rhs.licensePlate_ref()) {
+  if (!(lhs.licensePlate_ref() == rhs.licensePlate_ref())) {
     return false;
   }
-  if (lhs.description_ref() != rhs.description_ref()) {
+  if (!(lhs.description_ref() == rhs.description_ref())) {
     return false;
   }
-  if (lhs.name_ref() != rhs.name_ref()) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
-  if (lhs.hasAC_ref() != rhs.hasAC_ref()) {
+  if (!(lhs.hasAC_ref() == rhs.hasAC_ref())) {
     return false;
   }
   return true;
@@ -265,19 +265,19 @@ bool Vehicle::operator<(const Vehicle& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.color == rhs.color)) {
-    return lhs.color < rhs.color;
+  if (!(lhs.color_ref() == rhs.color_ref())) {
+    return lhs.color_ref() < rhs.color_ref();
   }
-  if (lhs.licensePlate_ref() != rhs.licensePlate_ref()) {
+  if (!(lhs.licensePlate_ref() == rhs.licensePlate_ref())) {
     return lhs.licensePlate_ref() < rhs.licensePlate_ref();
   }
-  if (lhs.description_ref() != rhs.description_ref()) {
+  if (!(lhs.description_ref() == rhs.description_ref())) {
     return lhs.description_ref() < rhs.description_ref();
   }
-  if (lhs.name_ref() != rhs.name_ref()) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return lhs.name_ref() < rhs.name_ref();
   }
-  if (lhs.hasAC_ref() != rhs.hasAC_ref()) {
+  if (!(lhs.hasAC_ref() == rhs.hasAC_ref())) {
     return lhs.hasAC_ref() < rhs.hasAC_ref();
   }
   return false;
@@ -444,34 +444,34 @@ bool Person::operator==(const Person& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.id == rhs.id)) {
+  if (!(lhs.id_ref() == rhs.id_ref())) {
     return false;
   }
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
-  if (lhs.age_ref() != rhs.age_ref()) {
+  if (!(lhs.age_ref() == rhs.age_ref())) {
     return false;
   }
-  if (lhs.address_ref() != rhs.address_ref()) {
+  if (!(lhs.address_ref() == rhs.address_ref())) {
     return false;
   }
-  if (lhs.favoriteColor_ref() != rhs.favoriteColor_ref()) {
+  if (!(lhs.favoriteColor_ref() == rhs.favoriteColor_ref())) {
     return false;
   }
-  if (lhs.friends_ref() != rhs.friends_ref()) {
+  if (!(lhs.friends_ref() == rhs.friends_ref())) {
     return false;
   }
-  if (lhs.bestFriend_ref() != rhs.bestFriend_ref()) {
+  if (!(lhs.bestFriend_ref() == rhs.bestFriend_ref())) {
     return false;
   }
-  if (lhs.petNames_ref() != rhs.petNames_ref()) {
+  if (!(lhs.petNames_ref() == rhs.petNames_ref())) {
     return false;
   }
-  if (lhs.afraidOfAnimal_ref() != rhs.afraidOfAnimal_ref()) {
+  if (!(lhs.afraidOfAnimal_ref() == rhs.afraidOfAnimal_ref())) {
     return false;
   }
-  if (lhs.vehicles_ref() != rhs.vehicles_ref()) {
+  if (!(lhs.vehicles_ref() == rhs.vehicles_ref())) {
     return false;
   }
   return true;
@@ -481,34 +481,34 @@ bool Person::operator<(const Person& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.id == rhs.id)) {
-    return lhs.id < rhs.id;
+  if (!(lhs.id_ref() == rhs.id_ref())) {
+    return lhs.id_ref() < rhs.id_ref();
   }
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
-  if (lhs.age_ref() != rhs.age_ref()) {
+  if (!(lhs.age_ref() == rhs.age_ref())) {
     return lhs.age_ref() < rhs.age_ref();
   }
-  if (lhs.address_ref() != rhs.address_ref()) {
+  if (!(lhs.address_ref() == rhs.address_ref())) {
     return lhs.address_ref() < rhs.address_ref();
   }
-  if (lhs.favoriteColor_ref() != rhs.favoriteColor_ref()) {
+  if (!(lhs.favoriteColor_ref() == rhs.favoriteColor_ref())) {
     return lhs.favoriteColor_ref() < rhs.favoriteColor_ref();
   }
-  if (lhs.friends_ref() != rhs.friends_ref()) {
+  if (!(lhs.friends_ref() == rhs.friends_ref())) {
     return lhs.friends_ref() < rhs.friends_ref();
   }
-  if (lhs.bestFriend_ref() != rhs.bestFriend_ref()) {
+  if (!(lhs.bestFriend_ref() == rhs.bestFriend_ref())) {
     return lhs.bestFriend_ref() < rhs.bestFriend_ref();
   }
-  if (lhs.petNames_ref() != rhs.petNames_ref()) {
+  if (!(lhs.petNames_ref() == rhs.petNames_ref())) {
     return lhs.petNames_ref() < rhs.petNames_ref();
   }
-  if (lhs.afraidOfAnimal_ref() != rhs.afraidOfAnimal_ref()) {
+  if (!(lhs.afraidOfAnimal_ref() == rhs.afraidOfAnimal_ref())) {
     return lhs.afraidOfAnimal_ref() < rhs.afraidOfAnimal_ref();
   }
-  if (lhs.vehicles_ref() != rhs.vehicles_ref()) {
+  if (!(lhs.vehicles_ref() == rhs.vehicles_ref())) {
     return lhs.vehicles_ref() < rhs.vehicles_ref();
   }
   return false;

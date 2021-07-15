@@ -85,16 +85,16 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field1 == rhs.field1)) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (!(lhs.field2 == rhs.field2)) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
-  if (!(lhs.field4 == rhs.field4)) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
   return true;
@@ -104,17 +104,17 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field1 == rhs.field1)) {
-    return lhs.field1 < rhs.field1;
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
+    return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (!(lhs.field2 == rhs.field2)) {
-    return lhs.field2 < rhs.field2;
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
+    return lhs.field2_ref() < rhs.field2_ref();
   }
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
-  if (!(lhs.field4 == rhs.field4)) {
-    return lhs.field4 < rhs.field4;
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
+    return lhs.field4_ref() < rhs.field4_ref();
   }
   return false;
 }
@@ -344,20 +344,20 @@ bool LazyFoo::operator==(const LazyFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field1 == rhs.field1)) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (!(lhs.field2 == rhs.field2)) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
   lhs.field3_ref();
   rhs.field3_ref();
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
   lhs.field4_ref();
   rhs.field4_ref();
-  if (!(lhs.field4 == rhs.field4)) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
   return true;
@@ -367,21 +367,21 @@ bool LazyFoo::operator<(const LazyFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field1 == rhs.field1)) {
-    return lhs.field1 < rhs.field1;
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
+    return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (!(lhs.field2 == rhs.field2)) {
-    return lhs.field2 < rhs.field2;
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
+    return lhs.field2_ref() < rhs.field2_ref();
   }
   lhs.field3_ref();
   rhs.field3_ref();
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
   lhs.field4_ref();
   rhs.field4_ref();
-  if (!(lhs.field4 == rhs.field4)) {
-    return lhs.field4 < rhs.field4;
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
+    return lhs.field4_ref() < rhs.field4_ref();
   }
   return false;
 }
@@ -500,16 +500,16 @@ bool OptionalFoo::operator==(const OptionalFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (lhs.field2_ref() != rhs.field2_ref()) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if (lhs.field3_ref() != rhs.field3_ref()) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
-  if (lhs.field4_ref() != rhs.field4_ref()) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
   return true;
@@ -519,16 +519,16 @@ bool OptionalFoo::operator<(const OptionalFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (lhs.field2_ref() != rhs.field2_ref()) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return lhs.field2_ref() < rhs.field2_ref();
   }
-  if (lhs.field3_ref() != rhs.field3_ref()) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return lhs.field3_ref() < rhs.field3_ref();
   }
-  if (lhs.field4_ref() != rhs.field4_ref()) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return lhs.field4_ref() < rhs.field4_ref();
   }
   return false;
@@ -759,20 +759,20 @@ bool OptionalLazyFoo::operator==(const OptionalLazyFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (lhs.field2_ref() != rhs.field2_ref()) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
   lhs.field3_ref();
   rhs.field3_ref();
-  if (lhs.field3_ref() != rhs.field3_ref()) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
   lhs.field4_ref();
   rhs.field4_ref();
-  if (lhs.field4_ref() != rhs.field4_ref()) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
   return true;
@@ -782,20 +782,20 @@ bool OptionalLazyFoo::operator<(const OptionalLazyFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (lhs.field2_ref() != rhs.field2_ref()) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return lhs.field2_ref() < rhs.field2_ref();
   }
   lhs.field3_ref();
   rhs.field3_ref();
-  if (lhs.field3_ref() != rhs.field3_ref()) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return lhs.field3_ref() < rhs.field3_ref();
   }
   lhs.field4_ref();
   rhs.field4_ref();
-  if (lhs.field4_ref() != rhs.field4_ref()) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return lhs.field4_ref() < rhs.field4_ref();
   }
   return false;
@@ -1019,33 +1019,18 @@ bool LazyCppRef::operator==(const LazyCppRef& rhs) const {
   (void)lhs;
   lhs.field1_ref();
   rhs.field1_ref();
-  if (!!lhs.field1 != !!rhs.field1) {
+  if ((lhs.field1 == nullptr) != (rhs.field1 == nullptr) || (lhs.field1 != nullptr && lhs.field1 != rhs.field1 && !(*lhs.field1 == *rhs.field1))) {
     return false;
-  }
-  if (!!lhs.field1) {
-    if (lhs.field1 != rhs.field1 && !(*lhs.field1 == *rhs.field1)) {
-      return false;
-    }
   }
   lhs.field2_ref();
   rhs.field2_ref();
-  if (!!lhs.field2 != !!rhs.field2) {
+  if ((lhs.field2 == nullptr) != (rhs.field2 == nullptr) || (lhs.field2 != nullptr && lhs.field2 != rhs.field2 && !(*lhs.field2 == *rhs.field2))) {
     return false;
-  }
-  if (!!lhs.field2) {
-    if (lhs.field2 != rhs.field2 && !(*lhs.field2 == *rhs.field2)) {
-      return false;
-    }
   }
   lhs.field3_ref();
   rhs.field3_ref();
-  if (!!lhs.field3 != !!rhs.field3) {
+  if ((lhs.field3 == nullptr) != (rhs.field3 == nullptr) || (lhs.field3 != nullptr && lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3))) {
     return false;
-  }
-  if (!!lhs.field3) {
-    if (lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3)) {
-      return false;
-    }
   }
   return true;
 }
@@ -1200,22 +1185,22 @@ bool IndexedFoo::operator==(const IndexedFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.serialized_data_size == rhs.serialized_data_size)) {
+  if (!(lhs.serialized_data_size_ref() == rhs.serialized_data_size_ref())) {
     return false;
   }
-  if (!(lhs.field1 == rhs.field1)) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (!(lhs.field2 == rhs.field2)) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
-  if (!(lhs.field4 == rhs.field4)) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
-  if (!(lhs.field_id_to_size == rhs.field_id_to_size)) {
+  if (!(lhs.field_id_to_size_ref() == rhs.field_id_to_size_ref())) {
     return false;
   }
   return true;
@@ -1225,23 +1210,23 @@ bool IndexedFoo::operator<(const IndexedFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.serialized_data_size == rhs.serialized_data_size)) {
-    return lhs.serialized_data_size < rhs.serialized_data_size;
+  if (!(lhs.serialized_data_size_ref() == rhs.serialized_data_size_ref())) {
+    return lhs.serialized_data_size_ref() < rhs.serialized_data_size_ref();
   }
-  if (!(lhs.field1 == rhs.field1)) {
-    return lhs.field1 < rhs.field1;
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
+    return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (!(lhs.field2 == rhs.field2)) {
-    return lhs.field2 < rhs.field2;
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
+    return lhs.field2_ref() < rhs.field2_ref();
   }
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
-  if (!(lhs.field4 == rhs.field4)) {
-    return lhs.field4 < rhs.field4;
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
+    return lhs.field4_ref() < rhs.field4_ref();
   }
-  if (!(lhs.field_id_to_size == rhs.field_id_to_size)) {
-    return lhs.field_id_to_size < rhs.field_id_to_size;
+  if (!(lhs.field_id_to_size_ref() == rhs.field_id_to_size_ref())) {
+    return lhs.field_id_to_size_ref() < rhs.field_id_to_size_ref();
   }
   return false;
 }
@@ -1405,22 +1390,22 @@ bool OptionalIndexedFoo::operator==(const OptionalIndexedFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.serialized_data_size == rhs.serialized_data_size)) {
+  if (!(lhs.serialized_data_size_ref() == rhs.serialized_data_size_ref())) {
     return false;
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (lhs.field2_ref() != rhs.field2_ref()) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if (lhs.field3_ref() != rhs.field3_ref()) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
-  if (lhs.field4_ref() != rhs.field4_ref()) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
-  if (!(lhs.field_id_to_size == rhs.field_id_to_size)) {
+  if (!(lhs.field_id_to_size_ref() == rhs.field_id_to_size_ref())) {
     return false;
   }
   return true;
@@ -1430,23 +1415,23 @@ bool OptionalIndexedFoo::operator<(const OptionalIndexedFoo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.serialized_data_size == rhs.serialized_data_size)) {
-    return lhs.serialized_data_size < rhs.serialized_data_size;
+  if (!(lhs.serialized_data_size_ref() == rhs.serialized_data_size_ref())) {
+    return lhs.serialized_data_size_ref() < rhs.serialized_data_size_ref();
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (lhs.field2_ref() != rhs.field2_ref()) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return lhs.field2_ref() < rhs.field2_ref();
   }
-  if (lhs.field3_ref() != rhs.field3_ref()) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return lhs.field3_ref() < rhs.field3_ref();
   }
-  if (lhs.field4_ref() != rhs.field4_ref()) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return lhs.field4_ref() < rhs.field4_ref();
   }
-  if (!(lhs.field_id_to_size == rhs.field_id_to_size)) {
-    return lhs.field_id_to_size < rhs.field_id_to_size;
+  if (!(lhs.field_id_to_size_ref() == rhs.field_id_to_size_ref())) {
+    return lhs.field_id_to_size_ref() < rhs.field_id_to_size_ref();
   }
   return false;
 }

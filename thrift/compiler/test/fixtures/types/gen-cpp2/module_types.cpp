@@ -202,7 +202,7 @@ bool decorated_struct::operator==(const decorated_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field == rhs.field)) {
+  if (!(lhs.field_ref() == rhs.field_ref())) {
     return false;
   }
   return true;
@@ -212,8 +212,8 @@ bool decorated_struct::operator<(const decorated_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field == rhs.field)) {
-    return lhs.field < rhs.field;
+  if (!(lhs.field_ref() == rhs.field_ref())) {
+    return lhs.field_ref() < rhs.field_ref();
   }
   return false;
 }
@@ -341,28 +341,28 @@ bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
     return false;
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
     return false;
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
     return false;
   }
   return true;
@@ -519,7 +519,7 @@ bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
   return true;
@@ -529,8 +529,8 @@ bool CppTypeStruct::operator<(const CppTypeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
-    return lhs.fieldA < rhs.fieldA;
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
+    return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
   return false;
 }
@@ -623,7 +623,7 @@ bool VirtualStruct::operator==(const VirtualStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
   return true;
@@ -633,8 +633,8 @@ bool VirtualStruct::operator<(const VirtualStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
   return false;
 }
@@ -724,10 +724,10 @@ bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rh
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
   return true;
@@ -737,11 +737,11 @@ bool MyStructWithForwardRefEnum::operator<(const MyStructWithForwardRefEnum& rhs
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
   return false;
 }
@@ -815,10 +815,10 @@ bool TrivialNumeric::operator==(const TrivialNumeric& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
   return true;
@@ -828,11 +828,11 @@ bool TrivialNumeric::operator<(const TrivialNumeric& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
   return false;
 }
@@ -906,10 +906,10 @@ bool TrivialNestedWithDefault::operator==(const TrivialNestedWithDefault& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.z == rhs.z)) {
+  if (!(lhs.z_ref() == rhs.z_ref())) {
     return false;
   }
-  if (!(lhs.n == rhs.n)) {
+  if (!(lhs.n_ref() == rhs.n_ref())) {
     return false;
   }
   return true;
@@ -919,11 +919,11 @@ bool TrivialNestedWithDefault::operator<(const TrivialNestedWithDefault& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.z == rhs.z)) {
-    return lhs.z < rhs.z;
+  if (!(lhs.z_ref() == rhs.z_ref())) {
+    return lhs.z_ref() < rhs.z_ref();
   }
-  if (!(lhs.n == rhs.n)) {
-    return lhs.n < rhs.n;
+  if (!(lhs.n_ref() == rhs.n_ref())) {
+    return lhs.n_ref() < rhs.n_ref();
   }
   return false;
 }
@@ -1034,10 +1034,10 @@ bool ComplexString::operator==(const ComplexString& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
   return true;
@@ -1047,11 +1047,11 @@ bool ComplexString::operator<(const ComplexString& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
   return false;
 }
@@ -1150,10 +1150,10 @@ bool ComplexNestedWithDefault::operator==(const ComplexNestedWithDefault& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.z == rhs.z)) {
+  if (!(lhs.z_ref() == rhs.z_ref())) {
     return false;
   }
-  if (!(lhs.n == rhs.n)) {
+  if (!(lhs.n_ref() == rhs.n_ref())) {
     return false;
   }
   return true;
@@ -1163,11 +1163,11 @@ bool ComplexNestedWithDefault::operator<(const ComplexNestedWithDefault& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.z == rhs.z)) {
-    return lhs.z < rhs.z;
+  if (!(lhs.z_ref() == rhs.z_ref())) {
+    return lhs.z_ref() < rhs.z_ref();
   }
-  if (!(lhs.n == rhs.n)) {
-    return lhs.n < rhs.n;
+  if (!(lhs.n_ref() == rhs.n_ref())) {
+    return lhs.n_ref() < rhs.n_ref();
   }
   return false;
 }
@@ -1283,19 +1283,19 @@ bool MinPadding::operator==(const MinPadding& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.small == rhs.small)) {
+  if (!(lhs.small_ref() == rhs.small_ref())) {
     return false;
   }
-  if (!(lhs.big == rhs.big)) {
+  if (!(lhs.big_ref() == rhs.big_ref())) {
     return false;
   }
-  if (!(lhs.medium == rhs.medium)) {
+  if (!(lhs.medium_ref() == rhs.medium_ref())) {
     return false;
   }
-  if (!(lhs.biggish == rhs.biggish)) {
+  if (!(lhs.biggish_ref() == rhs.biggish_ref())) {
     return false;
   }
-  if (!(lhs.tiny == rhs.tiny)) {
+  if (!(lhs.tiny_ref() == rhs.tiny_ref())) {
     return false;
   }
   return true;
@@ -1305,20 +1305,20 @@ bool MinPadding::operator<(const MinPadding& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.small == rhs.small)) {
-    return lhs.small < rhs.small;
+  if (!(lhs.small_ref() == rhs.small_ref())) {
+    return lhs.small_ref() < rhs.small_ref();
   }
-  if (!(lhs.big == rhs.big)) {
-    return lhs.big < rhs.big;
+  if (!(lhs.big_ref() == rhs.big_ref())) {
+    return lhs.big_ref() < rhs.big_ref();
   }
-  if (!(lhs.medium == rhs.medium)) {
-    return lhs.medium < rhs.medium;
+  if (!(lhs.medium_ref() == rhs.medium_ref())) {
+    return lhs.medium_ref() < rhs.medium_ref();
   }
-  if (!(lhs.biggish == rhs.biggish)) {
-    return lhs.biggish < rhs.biggish;
+  if (!(lhs.biggish_ref() == rhs.biggish_ref())) {
+    return lhs.biggish_ref() < rhs.biggish_ref();
   }
-  if (!(lhs.tiny == rhs.tiny)) {
-    return lhs.tiny < rhs.tiny;
+  if (!(lhs.tiny_ref() == rhs.tiny_ref())) {
+    return lhs.tiny_ref() < rhs.tiny_ref();
   }
   return false;
 }
@@ -1558,7 +1558,7 @@ bool Renaming::operator==(const Renaming& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.bar == rhs.bar)) {
+  if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return false;
   }
   return true;
@@ -1568,8 +1568,8 @@ bool Renaming::operator<(const Renaming& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.bar == rhs.bar)) {
-    return lhs.bar < rhs.bar;
+  if (!(lhs.bar_ref() == rhs.bar_ref())) {
+    return lhs.bar_ref() < rhs.bar_ref();
   }
   return false;
 }
@@ -1662,7 +1662,7 @@ bool AnnotatedTypes::operator==(const AnnotatedTypes& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binary_field, rhs.binary_field)) {
     return false;
   }
-  if (!(lhs.list_field == rhs.list_field)) {
+  if (!(lhs.list_field_ref() == rhs.list_field_ref())) {
     return false;
   }
   return true;
@@ -1757,7 +1757,7 @@ bool ForwardUsageStruct::operator==(const ForwardUsageStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref() != rhs.foo_ref()) {
+  if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return false;
   }
   return true;
@@ -1767,7 +1767,7 @@ bool ForwardUsageStruct::operator<(const ForwardUsageStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref() != rhs.foo_ref()) {
+  if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return lhs.foo_ref() < rhs.foo_ref();
   }
   return false;
@@ -1888,16 +1888,11 @@ bool ForwardUsageRoot::operator==(const ForwardUsageRoot& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.ForwardUsageStruct_ref() != rhs.ForwardUsageStruct_ref()) {
+  if (!(lhs.ForwardUsageStruct_ref() == rhs.ForwardUsageStruct_ref())) {
     return false;
   }
-  if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
+  if ((lhs.ForwardUsageByRef == nullptr) != (rhs.ForwardUsageByRef == nullptr) || (lhs.ForwardUsageByRef != nullptr && lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef))) {
     return false;
-  }
-  if (!!lhs.ForwardUsageByRef) {
-    if (lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef)) {
-      return false;
-    }
   }
   return true;
 }
@@ -1906,7 +1901,7 @@ bool ForwardUsageRoot::operator<(const ForwardUsageRoot& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.ForwardUsageStruct_ref() != rhs.ForwardUsageStruct_ref()) {
+  if (!(lhs.ForwardUsageStruct_ref() == rhs.ForwardUsageStruct_ref())) {
     return lhs.ForwardUsageStruct_ref() < rhs.ForwardUsageStruct_ref();
   }
   if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
@@ -2033,7 +2028,7 @@ bool ForwardUsageByRef::operator==(const ForwardUsageByRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref() != rhs.foo_ref()) {
+  if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return false;
   }
   return true;
@@ -2043,7 +2038,7 @@ bool ForwardUsageByRef::operator<(const ForwardUsageByRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref() != rhs.foo_ref()) {
+  if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return lhs.foo_ref() < rhs.foo_ref();
   }
   return false;
@@ -2200,7 +2195,7 @@ bool NoexceptMoveSimpleStruct::operator==(const NoexceptMoveSimpleStruct& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.boolField == rhs.boolField)) {
+  if (!(lhs.boolField_ref() == rhs.boolField_ref())) {
     return false;
   }
   return true;
@@ -2210,8 +2205,8 @@ bool NoexceptMoveSimpleStruct::operator<(const NoexceptMoveSimpleStruct& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.boolField == rhs.boolField)) {
-    return lhs.boolField < rhs.boolField;
+  if (!(lhs.boolField_ref() == rhs.boolField_ref())) {
+    return lhs.boolField_ref() < rhs.boolField_ref();
   }
   return false;
 }
@@ -2348,36 +2343,31 @@ bool NoexceptMoveComplexStruct::operator==(const NoexceptMoveComplexStruct& rhs)
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
+  if (!(lhs.MyBoolField_ref() == rhs.MyBoolField_ref())) {
     return false;
   }
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
     return false;
   }
-  if (!(lhs.MyStringField2 == rhs.MyStringField2)) {
+  if (!(lhs.MyStringField2_ref() == rhs.MyStringField2_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField, rhs.MyBinaryField)) {
     return false;
   }
-  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value()) {
+  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2))) {
     return false;
-  }
-  if (lhs.MyBinaryField2_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2)) {
-      return false;
-    }
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
     return false;
   }
-  if (!(lhs.MyBinaryListField4 == rhs.MyBinaryListField4)) {
+  if (!(lhs.MyBinaryListField4_ref() == rhs.MyBinaryListField4_ref())) {
     return false;
   }
-  if (!(lhs.MyMapEnumAndInt == rhs.MyMapEnumAndInt)) {
+  if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
     return false;
   }
   return true;
@@ -2387,17 +2377,17 @@ bool NoexceptMoveComplexStruct::operator<(const NoexceptMoveComplexStruct& rhs) 
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
-    return lhs.MyBoolField < rhs.MyBoolField;
+  if (!(lhs.MyBoolField_ref() == rhs.MyBoolField_ref())) {
+    return lhs.MyBoolField_ref() < rhs.MyBoolField_ref();
   }
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
-    return lhs.MyStringField < rhs.MyStringField;
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
+    return lhs.MyStringField_ref() < rhs.MyStringField_ref();
   }
-  if (!(lhs.MyStringField2 == rhs.MyStringField2)) {
-    return lhs.MyStringField2 < rhs.MyStringField2;
+  if (!(lhs.MyStringField2_ref() == rhs.MyStringField2_ref())) {
+    return lhs.MyStringField2_ref() < rhs.MyStringField2_ref();
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField, rhs.MyBinaryField)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField, rhs.MyBinaryField);
@@ -2413,11 +2403,11 @@ bool NoexceptMoveComplexStruct::operator<(const NoexceptMoveComplexStruct& rhs) 
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField3, rhs.MyBinaryField3);
   }
-  if (!(lhs.MyBinaryListField4 == rhs.MyBinaryListField4)) {
-    return lhs.MyBinaryListField4 < rhs.MyBinaryListField4;
+  if (!(lhs.MyBinaryListField4_ref() == rhs.MyBinaryListField4_ref())) {
+    return lhs.MyBinaryListField4_ref() < rhs.MyBinaryListField4_ref();
   }
-  if (!(lhs.MyMapEnumAndInt == rhs.MyMapEnumAndInt)) {
-    return lhs.MyMapEnumAndInt < rhs.MyMapEnumAndInt;
+  if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
+    return lhs.MyMapEnumAndInt_ref() < rhs.MyMapEnumAndInt_ref();
   }
   return false;
 }
@@ -2665,19 +2655,19 @@ bool AllocatorAware::operator==(const AllocatorAware& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.aa_list == rhs.aa_list)) {
+  if (!(lhs.aa_list_ref() == rhs.aa_list_ref())) {
     return false;
   }
-  if (!(lhs.aa_set == rhs.aa_set)) {
+  if (!(lhs.aa_set_ref() == rhs.aa_set_ref())) {
     return false;
   }
-  if (!(lhs.aa_map == rhs.aa_map)) {
+  if (!(lhs.aa_map_ref() == rhs.aa_map_ref())) {
     return false;
   }
-  if (!(lhs.aa_string == rhs.aa_string)) {
+  if (!(lhs.aa_string_ref() == rhs.aa_string_ref())) {
     return false;
   }
-  if (!(lhs.not_a_container == rhs.not_a_container)) {
+  if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
     return false;
   }
   return true;
@@ -2687,20 +2677,20 @@ bool AllocatorAware::operator<(const AllocatorAware& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.aa_list == rhs.aa_list)) {
-    return lhs.aa_list < rhs.aa_list;
+  if (!(lhs.aa_list_ref() == rhs.aa_list_ref())) {
+    return lhs.aa_list_ref() < rhs.aa_list_ref();
   }
-  if (!(lhs.aa_set == rhs.aa_set)) {
-    return lhs.aa_set < rhs.aa_set;
+  if (!(lhs.aa_set_ref() == rhs.aa_set_ref())) {
+    return lhs.aa_set_ref() < rhs.aa_set_ref();
   }
-  if (!(lhs.aa_map == rhs.aa_map)) {
-    return lhs.aa_map < rhs.aa_map;
+  if (!(lhs.aa_map_ref() == rhs.aa_map_ref())) {
+    return lhs.aa_map_ref() < rhs.aa_map_ref();
   }
-  if (!(lhs.aa_string == rhs.aa_string)) {
-    return lhs.aa_string < rhs.aa_string;
+  if (!(lhs.aa_string_ref() == rhs.aa_string_ref())) {
+    return lhs.aa_string_ref() < rhs.aa_string_ref();
   }
-  if (!(lhs.not_a_container == rhs.not_a_container)) {
-    return lhs.not_a_container < rhs.not_a_container;
+  if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
+    return lhs.not_a_container_ref() < rhs.not_a_container_ref();
   }
   return false;
 }
@@ -2813,7 +2803,7 @@ bool AllocatorAware2::operator==(const AllocatorAware2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.not_a_container == rhs.not_a_container)) {
+  if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
     return false;
   }
   return true;
@@ -2823,8 +2813,8 @@ bool AllocatorAware2::operator<(const AllocatorAware2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.not_a_container == rhs.not_a_container)) {
-    return lhs.not_a_container < rhs.not_a_container;
+  if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
+    return lhs.not_a_container_ref() < rhs.not_a_container_ref();
   }
   return false;
 }
@@ -2919,13 +2909,13 @@ bool TypedefStruct::operator==(const TypedefStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.i32_field == rhs.i32_field)) {
+  if (!(lhs.i32_field_ref() == rhs.i32_field_ref())) {
     return false;
   }
-  if (!(lhs.IntTypedef_field == rhs.IntTypedef_field)) {
+  if (!(lhs.IntTypedef_field_ref() == rhs.IntTypedef_field_ref())) {
     return false;
   }
-  if (!(lhs.UintTypedef_field == rhs.UintTypedef_field)) {
+  if (!(lhs.UintTypedef_field_ref() == rhs.UintTypedef_field_ref())) {
     return false;
   }
   return true;
@@ -2935,14 +2925,14 @@ bool TypedefStruct::operator<(const TypedefStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.i32_field == rhs.i32_field)) {
-    return lhs.i32_field < rhs.i32_field;
+  if (!(lhs.i32_field_ref() == rhs.i32_field_ref())) {
+    return lhs.i32_field_ref() < rhs.i32_field_ref();
   }
-  if (!(lhs.IntTypedef_field == rhs.IntTypedef_field)) {
-    return lhs.IntTypedef_field < rhs.IntTypedef_field;
+  if (!(lhs.IntTypedef_field_ref() == rhs.IntTypedef_field_ref())) {
+    return lhs.IntTypedef_field_ref() < rhs.IntTypedef_field_ref();
   }
-  if (!(lhs.UintTypedef_field == rhs.UintTypedef_field)) {
-    return lhs.UintTypedef_field < rhs.UintTypedef_field;
+  if (!(lhs.UintTypedef_field_ref() == rhs.UintTypedef_field_ref())) {
+    return lhs.UintTypedef_field_ref() < rhs.UintTypedef_field_ref();
   }
   return false;
 }
@@ -3014,7 +3004,7 @@ bool StructWithDoubleUnderscores::operator==(const StructWithDoubleUnderscores& 
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.__field == rhs.__field)) {
+  if (!(lhs.__field_ref() == rhs.__field_ref())) {
     return false;
   }
   return true;
@@ -3024,8 +3014,8 @@ bool StructWithDoubleUnderscores::operator<(const StructWithDoubleUnderscores& r
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.__field == rhs.__field)) {
-    return lhs.__field < rhs.__field;
+  if (!(lhs.__field_ref() == rhs.__field_ref())) {
+    return lhs.__field_ref() < rhs.__field_ref();
   }
   return false;
 }

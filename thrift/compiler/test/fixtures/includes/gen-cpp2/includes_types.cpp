@@ -58,10 +58,10 @@ bool Included::operator==(const Included& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
-  if (!(lhs.MyTransitiveField == rhs.MyTransitiveField)) {
+  if (!(lhs.MyTransitiveField_ref() == rhs.MyTransitiveField_ref())) {
     return false;
   }
   return true;
@@ -71,11 +71,11 @@ bool Included::operator<(const Included& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
-  if (!(lhs.MyTransitiveField == rhs.MyTransitiveField)) {
-    return lhs.MyTransitiveField < rhs.MyTransitiveField;
+  if (!(lhs.MyTransitiveField_ref() == rhs.MyTransitiveField_ref())) {
+    return lhs.MyTransitiveField_ref() < rhs.MyTransitiveField_ref();
   }
   return false;
 }

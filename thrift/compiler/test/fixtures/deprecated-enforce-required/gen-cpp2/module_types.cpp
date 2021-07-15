@@ -50,7 +50,7 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.bar == rhs.bar)) {
+  if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return false;
   }
   return true;
@@ -60,8 +60,8 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.bar == rhs.bar)) {
-    return lhs.bar < rhs.bar;
+  if (!(lhs.bar_ref() == rhs.bar_ref())) {
+    return lhs.bar_ref() < rhs.bar_ref();
   }
   return false;
 }

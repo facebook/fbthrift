@@ -75,10 +75,10 @@ bool IncludedA::operator==(const IncludedA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.i32Field == rhs.i32Field)) {
+  if (!(lhs.i32Field_ref() == rhs.i32Field_ref())) {
     return false;
   }
-  if (!(lhs.strField == rhs.strField)) {
+  if (!(lhs.strField_ref() == rhs.strField_ref())) {
     return false;
   }
   return true;
@@ -88,11 +88,11 @@ bool IncludedA::operator<(const IncludedA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.i32Field == rhs.i32Field)) {
-    return lhs.i32Field < rhs.i32Field;
+  if (!(lhs.i32Field_ref() == rhs.i32Field_ref())) {
+    return lhs.i32Field_ref() < rhs.i32Field_ref();
   }
-  if (!(lhs.strField == rhs.strField)) {
-    return lhs.strField < rhs.strField;
+  if (!(lhs.strField_ref() == rhs.strField_ref())) {
+    return lhs.strField_ref() < rhs.strField_ref();
   }
   return false;
 }

@@ -211,25 +211,25 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
     return false;
   }
-  if (!(lhs.MyDataField == rhs.MyDataField)) {
+  if (!(lhs.MyDataField_ref() == rhs.MyDataField_ref())) {
     return false;
   }
-  if (!(lhs.myEnum == rhs.myEnum)) {
+  if (!(lhs.myEnum_ref() == rhs.myEnum_ref())) {
     return false;
   }
-  if (!(lhs.oneway == rhs.oneway)) {
+  if (!(lhs.oneway_ref() == rhs.oneway_ref())) {
     return false;
   }
-  if (!(lhs.readonly == rhs.readonly)) {
+  if (!(lhs.readonly_ref() == rhs.readonly_ref())) {
     return false;
   }
-  if (!(lhs.idempotent == rhs.idempotent)) {
+  if (!(lhs.idempotent_ref() == rhs.idempotent_ref())) {
     return false;
   }
   return true;
@@ -239,26 +239,26 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
-    return lhs.MyStringField < rhs.MyStringField;
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
+    return lhs.MyStringField_ref() < rhs.MyStringField_ref();
   }
-  if (!(lhs.MyDataField == rhs.MyDataField)) {
-    return lhs.MyDataField < rhs.MyDataField;
+  if (!(lhs.MyDataField_ref() == rhs.MyDataField_ref())) {
+    return lhs.MyDataField_ref() < rhs.MyDataField_ref();
   }
-  if (!(lhs.myEnum == rhs.myEnum)) {
-    return lhs.myEnum < rhs.myEnum;
+  if (!(lhs.myEnum_ref() == rhs.myEnum_ref())) {
+    return lhs.myEnum_ref() < rhs.myEnum_ref();
   }
-  if (!(lhs.oneway == rhs.oneway)) {
-    return lhs.oneway < rhs.oneway;
+  if (!(lhs.oneway_ref() == rhs.oneway_ref())) {
+    return lhs.oneway_ref() < rhs.oneway_ref();
   }
-  if (!(lhs.readonly == rhs.readonly)) {
-    return lhs.readonly < rhs.readonly;
+  if (!(lhs.readonly_ref() == rhs.readonly_ref())) {
+    return lhs.readonly_ref() < rhs.readonly_ref();
   }
-  if (!(lhs.idempotent == rhs.idempotent)) {
-    return lhs.idempotent < rhs.idempotent;
+  if (!(lhs.idempotent_ref() == rhs.idempotent_ref())) {
+    return lhs.idempotent_ref() < rhs.idempotent_ref();
   }
   return false;
 }

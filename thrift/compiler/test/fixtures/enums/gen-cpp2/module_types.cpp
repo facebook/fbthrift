@@ -118,16 +118,16 @@ bool SomeStruct::operator==(const SomeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.reasonable == rhs.reasonable)) {
+  if (!(lhs.reasonable_ref() == rhs.reasonable_ref())) {
     return false;
   }
-  if (!(lhs.fine == rhs.fine)) {
+  if (!(lhs.fine_ref() == rhs.fine_ref())) {
     return false;
   }
-  if (!(lhs.questionable == rhs.questionable)) {
+  if (!(lhs.questionable_ref() == rhs.questionable_ref())) {
     return false;
   }
-  if (!(lhs.tags == rhs.tags)) {
+  if (!(lhs.tags_ref() == rhs.tags_ref())) {
     return false;
   }
   return true;
@@ -137,17 +137,17 @@ bool SomeStruct::operator<(const SomeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.reasonable == rhs.reasonable)) {
-    return lhs.reasonable < rhs.reasonable;
+  if (!(lhs.reasonable_ref() == rhs.reasonable_ref())) {
+    return lhs.reasonable_ref() < rhs.reasonable_ref();
   }
-  if (!(lhs.fine == rhs.fine)) {
-    return lhs.fine < rhs.fine;
+  if (!(lhs.fine_ref() == rhs.fine_ref())) {
+    return lhs.fine_ref() < rhs.fine_ref();
   }
-  if (!(lhs.questionable == rhs.questionable)) {
-    return lhs.questionable < rhs.questionable;
+  if (!(lhs.questionable_ref() == rhs.questionable_ref())) {
+    return lhs.questionable_ref() < rhs.questionable_ref();
   }
-  if (!(lhs.tags == rhs.tags)) {
-    return lhs.tags < rhs.tags;
+  if (!(lhs.tags_ref() == rhs.tags_ref())) {
+    return lhs.tags_ref() < rhs.tags_ref();
   }
   return false;
 }

@@ -55,7 +55,7 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.OtherStructField == rhs.OtherStructField)) {
+  if (!(lhs.OtherStructField_ref() == rhs.OtherStructField_ref())) {
     return false;
   }
   return true;
@@ -65,8 +65,8 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.OtherStructField == rhs.OtherStructField)) {
-    return lhs.OtherStructField < rhs.OtherStructField;
+  if (!(lhs.OtherStructField_ref() == rhs.OtherStructField_ref())) {
+    return lhs.OtherStructField_ref() < rhs.OtherStructField_ref();
   }
   return false;
 }

@@ -441,13 +441,13 @@ bool Val::operator==(const Val& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.strVal == rhs.strVal)) {
+  if (!(lhs.strVal_ref() == rhs.strVal_ref())) {
     return false;
   }
-  if (!(lhs.intVal == rhs.intVal)) {
+  if (!(lhs.intVal_ref() == rhs.intVal_ref())) {
     return false;
   }
-  if (!(lhs.typedefValue == rhs.typedefValue)) {
+  if (!(lhs.typedefValue_ref() == rhs.typedefValue_ref())) {
     return false;
   }
   return true;
@@ -457,14 +457,14 @@ bool Val::operator<(const Val& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.strVal == rhs.strVal)) {
-    return lhs.strVal < rhs.strVal;
+  if (!(lhs.strVal_ref() == rhs.strVal_ref())) {
+    return lhs.strVal_ref() < rhs.strVal_ref();
   }
-  if (!(lhs.intVal == rhs.intVal)) {
-    return lhs.intVal < rhs.intVal;
+  if (!(lhs.intVal_ref() == rhs.intVal_ref())) {
+    return lhs.intVal_ref() < rhs.intVal_ref();
   }
-  if (!(lhs.typedefValue == rhs.typedefValue)) {
-    return lhs.typedefValue < rhs.typedefValue;
+  if (!(lhs.typedefValue_ref() == rhs.typedefValue_ref())) {
+    return lhs.typedefValue_ref() < rhs.typedefValue_ref();
   }
   return false;
 }
@@ -788,7 +788,7 @@ bool NonCopyableStruct::operator==(const NonCopyableStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.num == rhs.num)) {
+  if (!(lhs.num_ref() == rhs.num_ref())) {
     return false;
   }
   return true;
@@ -798,8 +798,8 @@ bool NonCopyableStruct::operator<(const NonCopyableStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.num == rhs.num)) {
-    return lhs.num < rhs.num;
+  if (!(lhs.num_ref() == rhs.num_ref())) {
+    return lhs.num_ref() < rhs.num_ref();
   }
   return false;
 }
