@@ -96,7 +96,7 @@ class EvbStreamCallback final : public StreamClientCallback,
     serverEvb_ = folly::Executor::getKeepAliveToken(serverEvb);
     setServerCallback(serverCallback);
 
-    eventBaseRunHelper(evb_, [&, fr = std::move(firstResponse)]() mutable {
+    eventBaseRunHelper(evb_, [this, fr = std::move(firstResponse)]() mutable {
       DCHECK(clientCallback_);
       std::ignore =
           clientCallback_->onFirstResponse(std::move(fr), evb_.get(), this);
@@ -106,7 +106,7 @@ class EvbStreamCallback final : public StreamClientCallback,
 
   // Terminating callback. Clean up the client callback stored.
   void onFirstResponseError(folly::exception_wrapper ew) noexcept override {
-    eventBaseRunHelper(evb_, [&, ewr = std::move(ew)]() mutable {
+    eventBaseRunHelper(evb_, [this, ewr = std::move(ew)]() mutable {
       DCHECK(clientCallback_);
       clientCallback_->onFirstResponseError(std::move(ewr));
       setClientCallback(nullptr);
@@ -114,7 +114,7 @@ class EvbStreamCallback final : public StreamClientCallback,
   }
 
   bool onStreamNext(StreamPayload&& payload) noexcept override {
-    eventBaseRunHelper(evb_, [&, pl = std::move(payload)]() mutable {
+    eventBaseRunHelper(evb_, [this, pl = std::move(payload)]() mutable {
       if (clientCallback_) {
         std::ignore = clientCallback_->onStreamNext(std::move(pl));
       }
@@ -124,7 +124,7 @@ class EvbStreamCallback final : public StreamClientCallback,
 
   // Terminating callback. Clean up the client and server callbacks stored.
   void onStreamError(folly::exception_wrapper ew) noexcept override {
-    eventBaseRunHelper(evb_, [&, ewr = std::move(ew)]() mutable {
+    eventBaseRunHelper(evb_, [this, ewr = std::move(ew)]() mutable {
       if (clientCallback_) {
         clientCallback_->onStreamError(std::move(ewr));
         setClientCallback(nullptr);
@@ -135,7 +135,7 @@ class EvbStreamCallback final : public StreamClientCallback,
 
   // Terminating callback. Clean up the client and server callbacks stored.
   void onStreamComplete() noexcept override {
-    eventBaseRunHelper(evb_, [&]() mutable {
+    eventBaseRunHelper(evb_, [this]() mutable {
       if (clientCallback_) {
         clientCallback_->onStreamComplete();
         setClientCallback(nullptr);
@@ -154,7 +154,7 @@ class EvbStreamCallback final : public StreamClientCallback,
   // StreamServerCallback
   // Terminating callback. Clean up the client and server callbacks stored.
   void onStreamCancel() noexcept override {
-    eventBaseRunHelper(serverEvb_, [&]() mutable {
+    eventBaseRunHelper(serverEvb_, [this]() mutable {
       if (serverCallback_) {
         serverCallback_->onStreamCancel();
         setServerCallback(nullptr);
@@ -164,7 +164,7 @@ class EvbStreamCallback final : public StreamClientCallback,
   }
 
   bool onStreamRequestN(uint64_t num) noexcept override {
-    eventBaseRunHelper(serverEvb_, [&, num]() mutable {
+    eventBaseRunHelper(serverEvb_, [this, num]() mutable {
       if (serverCallback_) {
         std::ignore = serverCallback_->onStreamRequestN(num);
       }
@@ -188,7 +188,7 @@ class EvbStreamCallback final : public StreamClientCallback,
     incRef();
     // cannot call folly::makeGuard inside the lambda captures below, because it
     // triggers a GCC 8 bug (https://fburl.com/e0kv48hu)
-    auto guard = folly::makeGuard([&] { decRef(); });
+    auto guard = folly::makeGuard([this] { decRef(); });
     runEvb->runInEventBaseThread(
         [f = std::forward<F>(fn), g = std::move(guard)]() mutable { f(); });
   }
