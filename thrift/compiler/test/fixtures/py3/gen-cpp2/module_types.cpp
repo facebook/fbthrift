@@ -261,13 +261,8 @@ bool OptionalRefStruct::operator<(const OptionalRefStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.optional_blob_ref().has_value() != rhs.optional_blob_ref().has_value()) {
-    return lhs.optional_blob_ref().has_value() < rhs.optional_blob_ref().has_value();
-  }
-  if (lhs.optional_blob_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.optional_blob, rhs.optional_blob)) {
-      return apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isLess(lhs.optional_blob, rhs.optional_blob);
-    }
+  if (lhs.optional_blob_ref().has_value() != rhs.optional_blob_ref().has_value() || (lhs.optional_blob_ref().has_value() && !apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.optional_blob, rhs.optional_blob))) {
+    return !lhs.optional_blob_ref().has_value() || (rhs.optional_blob_ref().has_value() && apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isLess(lhs.optional_blob, rhs.optional_blob));
   }
   return false;
 }

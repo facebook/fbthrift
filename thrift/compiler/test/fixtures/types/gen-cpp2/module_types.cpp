@@ -1904,13 +1904,8 @@ bool ForwardUsageRoot::operator<(const ForwardUsageRoot& rhs) const {
   if (!(lhs.ForwardUsageStruct_ref() == rhs.ForwardUsageStruct_ref())) {
     return lhs.ForwardUsageStruct_ref() < rhs.ForwardUsageStruct_ref();
   }
-  if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
-    return !!lhs.ForwardUsageByRef < !!rhs.ForwardUsageByRef;
-  }
-  if (!!lhs.ForwardUsageByRef) {
-    if (lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef)) {
-      return *lhs.ForwardUsageByRef < *rhs.ForwardUsageByRef;
-    }
+  if ((lhs.ForwardUsageByRef == nullptr) != (rhs.ForwardUsageByRef == nullptr) || (lhs.ForwardUsageByRef != nullptr && lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef))) {
+    return lhs.ForwardUsageByRef == nullptr || (rhs.ForwardUsageByRef != nullptr && *lhs.ForwardUsageByRef < *rhs.ForwardUsageByRef);
   }
   return false;
 }
@@ -2392,13 +2387,8 @@ bool NoexceptMoveComplexStruct::operator<(const NoexceptMoveComplexStruct& rhs) 
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField, rhs.MyBinaryField)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField, rhs.MyBinaryField);
   }
-  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value()) {
-    return lhs.MyBinaryField2_ref().has_value() < rhs.MyBinaryField2_ref().has_value();
-  }
-  if (lhs.MyBinaryField2_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2)) {
-      return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField2, rhs.MyBinaryField2);
-    }
+  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2))) {
+    return !lhs.MyBinaryField2_ref().has_value() || (rhs.MyBinaryField2_ref().has_value() && apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField2, rhs.MyBinaryField2));
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField3, rhs.MyBinaryField3);

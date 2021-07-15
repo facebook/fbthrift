@@ -528,45 +528,20 @@ bool containerStruct::operator<(const containerStruct& rhs) const {
   if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
     return lhs.fieldQ_ref() < rhs.fieldQ_ref();
   }
-  if (!!lhs.fieldR != !!rhs.fieldR) {
-    return !!lhs.fieldR < !!rhs.fieldR;
+  if ((lhs.fieldR == nullptr) != (rhs.fieldR == nullptr) || (lhs.fieldR != nullptr && lhs.fieldR != rhs.fieldR && !(*lhs.fieldR == *rhs.fieldR))) {
+    return lhs.fieldR == nullptr || (rhs.fieldR != nullptr && *lhs.fieldR < *rhs.fieldR);
   }
-  if (!!lhs.fieldR) {
-    if (lhs.fieldR != rhs.fieldR && !(*lhs.fieldR == *rhs.fieldR)) {
-      return *lhs.fieldR < *rhs.fieldR;
-    }
+  if ((lhs.fieldS == nullptr) != (rhs.fieldS == nullptr) || (lhs.fieldS != nullptr && lhs.fieldS != rhs.fieldS && !(*lhs.fieldS == *rhs.fieldS))) {
+    return lhs.fieldS == nullptr || (rhs.fieldS != nullptr && *lhs.fieldS < *rhs.fieldS);
   }
-  if (!!lhs.fieldS != !!rhs.fieldS) {
-    return !!lhs.fieldS < !!rhs.fieldS;
+  if ((lhs.fieldT == nullptr) != (rhs.fieldT == nullptr) || (lhs.fieldT != nullptr && lhs.fieldT != rhs.fieldT && !(*lhs.fieldT == *rhs.fieldT))) {
+    return lhs.fieldT == nullptr || (rhs.fieldT != nullptr && *lhs.fieldT < *rhs.fieldT);
   }
-  if (!!lhs.fieldS) {
-    if (lhs.fieldS != rhs.fieldS && !(*lhs.fieldS == *rhs.fieldS)) {
-      return *lhs.fieldS < *rhs.fieldS;
-    }
+  if ((lhs.fieldU == nullptr) != (rhs.fieldU == nullptr) || (lhs.fieldU != nullptr && lhs.fieldU != rhs.fieldU && !(*lhs.fieldU == *rhs.fieldU))) {
+    return lhs.fieldU == nullptr || (rhs.fieldU != nullptr && *lhs.fieldU < *rhs.fieldU);
   }
-  if (!!lhs.fieldT != !!rhs.fieldT) {
-    return !!lhs.fieldT < !!rhs.fieldT;
-  }
-  if (!!lhs.fieldT) {
-    if (lhs.fieldT != rhs.fieldT && !(*lhs.fieldT == *rhs.fieldT)) {
-      return *lhs.fieldT < *rhs.fieldT;
-    }
-  }
-  if (!!lhs.fieldU != !!rhs.fieldU) {
-    return !!lhs.fieldU < !!rhs.fieldU;
-  }
-  if (!!lhs.fieldU) {
-    if (lhs.fieldU != rhs.fieldU && !(*lhs.fieldU == *rhs.fieldU)) {
-      return *lhs.fieldU < *rhs.fieldU;
-    }
-  }
-  if (!!lhs.fieldX != !!rhs.fieldX) {
-    return !!lhs.fieldX < !!rhs.fieldX;
-  }
-  if (!!lhs.fieldX) {
-    if (lhs.fieldX != rhs.fieldX && !(*lhs.fieldX == *rhs.fieldX)) {
-      return *lhs.fieldX < *rhs.fieldX;
-    }
+  if ((lhs.fieldX == nullptr) != (rhs.fieldX == nullptr) || (lhs.fieldX != nullptr && lhs.fieldX != rhs.fieldX && !(*lhs.fieldX == *rhs.fieldX))) {
+    return lhs.fieldX == nullptr || (rhs.fieldX != nullptr && *lhs.fieldX < *rhs.fieldX);
   }
   return false;
 }

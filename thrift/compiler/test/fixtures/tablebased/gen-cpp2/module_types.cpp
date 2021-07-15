@@ -228,21 +228,11 @@ bool TrivialTypesStruct::operator<(const TrivialTypesStruct& rhs) const {
   if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
-  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value()) {
-    return lhs.fieldC_ref().has_value() < rhs.fieldC_ref().has_value();
+  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value() || (lhs.fieldC_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.fieldC, rhs.fieldC))) {
+    return !lhs.fieldC_ref().has_value() || (rhs.fieldC_ref().has_value() && apache::thrift::StringTraits<std::string>::isLess(lhs.fieldC, rhs.fieldC));
   }
-  if (lhs.fieldC_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.fieldC, rhs.fieldC)) {
-      return apache::thrift::StringTraits<std::string>::isLess(lhs.fieldC, rhs.fieldC);
-    }
-  }
-  if (lhs.fieldD_ref().has_value() != rhs.fieldD_ref().has_value()) {
-    return lhs.fieldD_ref().has_value() < rhs.fieldD_ref().has_value();
-  }
-  if (lhs.fieldD_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.fieldD, rhs.fieldD)) {
-      return apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isLess(lhs.fieldD, rhs.fieldD);
-    }
+  if (lhs.fieldD_ref().has_value() != rhs.fieldD_ref().has_value() || (lhs.fieldD_ref().has_value() && !apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.fieldD, rhs.fieldD))) {
+    return !lhs.fieldD_ref().has_value() || (rhs.fieldD_ref().has_value() && apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isLess(lhs.fieldD, rhs.fieldD));
   }
   if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return lhs.fieldE_ref() < rhs.fieldE_ref();

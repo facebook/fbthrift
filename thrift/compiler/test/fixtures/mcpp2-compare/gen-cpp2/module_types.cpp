@@ -534,13 +534,8 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField, rhs.MyBinaryField)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField, rhs.MyBinaryField);
   }
-  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value()) {
-    return lhs.MyBinaryField2_ref().has_value() < rhs.MyBinaryField2_ref().has_value();
-  }
-  if (lhs.MyBinaryField2_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2)) {
-      return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField2, rhs.MyBinaryField2);
-    }
+  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2))) {
+    return !lhs.MyBinaryField2_ref().has_value() || (rhs.MyBinaryField2_ref().has_value() && apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField2, rhs.MyBinaryField2));
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField3, rhs.MyBinaryField3);
@@ -2729,13 +2724,8 @@ bool MyIncludedStruct::operator<(const MyIncludedStruct& rhs) const {
   if (!(lhs.MyIncludedStruct_ref() == rhs.MyIncludedStruct_ref())) {
     return lhs.MyIncludedStruct_ref() < rhs.MyIncludedStruct_ref();
   }
-  if (!!lhs.ARefField != !!rhs.ARefField) {
-    return !!lhs.ARefField < !!rhs.ARefField;
-  }
-  if (!!lhs.ARefField) {
-    if (lhs.ARefField != rhs.ARefField && !(*lhs.ARefField == *rhs.ARefField)) {
-      return *lhs.ARefField < *rhs.ARefField;
-    }
+  if ((lhs.ARefField == nullptr) != (rhs.ARefField == nullptr) || (lhs.ARefField != nullptr && lhs.ARefField != rhs.ARefField && !(*lhs.ARefField == *rhs.ARefField))) {
+    return lhs.ARefField == nullptr || (rhs.ARefField != nullptr && *lhs.ARefField < *rhs.ARefField);
   }
   if (!(lhs.ARequiredField_ref() == rhs.ARequiredField_ref())) {
     return lhs.ARequiredField_ref() < rhs.ARequiredField_ref();

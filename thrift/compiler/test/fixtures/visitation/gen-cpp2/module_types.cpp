@@ -2717,13 +2717,8 @@ bool struct4::operator<(const struct4& rhs) const {
   if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return lhs.field2_ref() < rhs.field2_ref();
   }
-  if (!!lhs.field3 != !!rhs.field3) {
-    return !!lhs.field3 < !!rhs.field3;
-  }
-  if (!!lhs.field3) {
-    if (lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3)) {
-      return *lhs.field3 < *rhs.field3;
-    }
+  if ((lhs.field3 == nullptr) != (rhs.field3 == nullptr) || (lhs.field3 != nullptr && lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3))) {
+    return lhs.field3 == nullptr || (rhs.field3 != nullptr && *lhs.field3 < *rhs.field3);
   }
   return false;
 }

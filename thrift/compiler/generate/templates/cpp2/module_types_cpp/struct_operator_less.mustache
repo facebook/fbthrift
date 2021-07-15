@@ -24,47 +24,9 @@ bool <%struct:name%>::operator<(const <%struct:name%>& rhs) const {
   lhs.<%field:cpp_name%>_ref();
   rhs.<%field:cpp_name%>_ref();
 <%/field:lazy?%>
-<%#field:cpp_ref?%>
-  if (!!lhs.<%field:cpp_name%> != !!rhs.<%field:cpp_name%>) {
-    return !!lhs.<%field:cpp_name%> < !!rhs.<%field:cpp_name%>;
-  }
-  if (!!lhs.<%field:cpp_name%>) {
-    if (lhs.<%field:cpp_name%> != rhs.<%field:cpp_name%> && !(*lhs.<%field:cpp_name%> == *rhs.<%field:cpp_name%>)) {
-      return *lhs.<%field:cpp_name%> < *rhs.<%field:cpp_name%>;
-    }
-  }
-<%/field:cpp_ref?%>
-<%^field:cpp_ref?%>
-<%#field:optional?%>
-<%#type:binary?%>
-  if (lhs.<%field:cpp_name%>_ref().has_value() != rhs.<%field:cpp_name%>_ref().has_value()) {
-    return lhs.<%field:cpp_name%>_ref().has_value() < rhs.<%field:cpp_name%>_ref().has_value();
-  }
-  if (lhs.<%field:cpp_name%>_ref().has_value()) {
-    if (!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEqual(<% > types/apply_indirection_pre%>lhs.<%field:cpp_name%><% > types/apply_indirection_post%>, <% > types/apply_indirection_pre%>rhs.<%field:cpp_name%><% > types/apply_indirection_post%>)) {
-      return apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isLess(<% > types/apply_indirection_pre%>lhs.<%field:cpp_name%><% > types/apply_indirection_post%>, <% > types/apply_indirection_pre%>rhs.<%field:cpp_name%><% > types/apply_indirection_post%>);
-    }
-  }
-<%/type:binary?%>
-<%^type:binary?%>
   if (<% > field/neq%>) {
-    return lhs.<%field:cpp_name%>_ref() < rhs.<%field:cpp_name%>_ref();
+    return <% > field/neq_less %>;
   }
-<%/type:binary?%>
-<%/field:optional?%>
-<%^field:optional?%>
-<%#type:binary?%>
-  if (!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEqual(<% > types/apply_indirection_pre%>lhs.<%field:cpp_name%><% > types/apply_indirection_post%>, <% > types/apply_indirection_pre%>rhs.<%field:cpp_name%><% > types/apply_indirection_post%>)) {
-    return apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isLess(<% > types/apply_indirection_pre%>lhs.<%field:cpp_name%><% > types/apply_indirection_post%>, <% > types/apply_indirection_pre%>rhs.<%field:cpp_name%><% > types/apply_indirection_post%>);
-  }
-<%/type:binary?%>
-<%^type:binary?%>
-  if (<% > field/neq%>) {
-    return lhs.<%field:cpp_name%>_ref() < rhs.<%field:cpp_name%>_ref();
-  }
-<%/type:binary?%>
-<%/field:optional?%>
-<%/field:cpp_ref?%>
 <%/field:type%><%/struct:fields%>
   return false;
 }
