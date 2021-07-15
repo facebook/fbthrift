@@ -449,17 +449,15 @@ int parsing_driver::pop_node(LineType lineType) {
   return lineno;
 }
 
-void parsing_driver::finish_node(
-    t_node* node,
-    LineType lineType,
-    std::unique_ptr<t_annotations> annotations) {
-  node->set_lineno(pop_node(lineType));
-  set_annotations(node, std::move(annotations));
+source_range parsing_driver::get_source_range(const YYLTYPE& loc) {
+  return source_range(
+      loc.begin.line, loc.begin.column, loc.end.line, loc.end.column, *program);
 }
 
 void parsing_driver::finish_node(
     t_named* node,
     LineType lineType,
+    const YYLTYPE& loc,
     std::unique_ptr<t_def_attrs> attrs,
     std::unique_ptr<t_annotations> annotations) {
   node->set_lineno(pop_node(lineType));
@@ -476,28 +474,31 @@ void parsing_driver::finish_node(
     default:
       break;
   }
+  node->set_src_range(get_source_range(loc));
 }
 
 void parsing_driver::finish_node(
     t_structured* node,
     LineType lineType,
+    const YYLTYPE& loc,
     std::unique_ptr<t_def_attrs> attrs,
     std::unique_ptr<t_field_list> fields,
     std::unique_ptr<t_annotations> annotations) {
   append_fields(*node, std::move(*fields));
-  finish_node(node, lineType, std::move(attrs), std::move(annotations));
+  finish_node(node, lineType, loc, std::move(attrs), std::move(annotations));
 }
 
 void parsing_driver::finish_node(
     t_interface* node,
     LineType lineType,
+    const YYLTYPE& loc,
     std::unique_ptr<t_def_attrs> attrs,
     std::unique_ptr<t_function_list> functions,
     std::unique_ptr<t_annotations> annotations) {
   if (functions != nullptr) {
     node->set_functions(std::move(*functions));
   }
-  finish_node(node, lineType, std::move(attrs), std::move(annotations));
+  finish_node(node, lineType, loc, std::move(attrs), std::move(annotations));
 }
 
 std::unique_ptr<t_const> parsing_driver::new_struct_annotation(

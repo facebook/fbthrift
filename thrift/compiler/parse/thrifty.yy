@@ -446,6 +446,7 @@ DefinitionAttrs:
       driver.debug("DefinitionAttrs -> CaptureDocText StructuredAnnotations");
       if ($1 || $2 != nullptr) {
         $$ = new t_def_attrs{std::move($1), own($2)};
+        driver.avoid_last_token_loc(!$1, @$, @2);
       } else {
         $$ = nullptr;
       }
@@ -513,7 +514,9 @@ Typedef:
       driver.debug("TypeDef => DefinitionAttrs tok_typedef FieldType "
           "Identifier TypeAnnotations");
       $$ = new t_typedef(driver.program, std::move($4), std::move($3));
-      driver.finish_node($$, LineType::Typedef, own($1), own($6));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.finish_node(
+          $$, LineType::Typedef, @$, own($1), own($6));
     }
 
 CommaOrSemicolon:
@@ -543,7 +546,9 @@ Enum:
       $$ = new t_enum(driver.program, std::move($3));
       auto values = own($6);
       $$->set_values(std::move(*values));
-      driver.finish_node($$, LineType::Enum, own($1), own($8));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.finish_node(
+          $$, LineType::Enum, @$, own($1), own($8));
     }
 
 EnumValueList:
@@ -568,7 +573,9 @@ EnumValueDef:
     {
       driver.debug("EnumValueDef => DefinitionAttrs EnumValue "
         "TypeAnnotations CommaOrSemicolonOptional");
-      driver.finish_node($2, LineType::EnumValue, own($1), own($4));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.finish_node(
+          $2, LineType::EnumValue, @$, own($1), own($4));
       $$ = $2;
     }
 
@@ -608,7 +615,9 @@ Const:
       driver.debug("DefinitionAttrs Const => tok_const FieldType Identifier = ConstValue");
       if (driver.mode == parsing_mode::PROGRAM) {
         $$ = new t_const(driver.program, std::move($3), std::move($4), own($7));
-        driver.finish_node($$, LineType::Const, own($1), own($8));
+        driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+        driver.finish_node(
+            $$, LineType::Const, @$, own($1), own($8));
       } else {
         // TODO(afuller): Looks like a bug where driver.finish_node is never called in this case.
         delete $1;
@@ -799,7 +808,9 @@ Struct:
       driver.debug("Struct => DefinitionAttrs tok_struct Identifier "
         "{ FieldList } TypeAnnotations");
       $$ = new t_struct(driver.program, std::move($3));
-      driver.finish_node($$, LineType::Struct, own($1), own($6), own($8));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.finish_node(
+          $$, LineType::Struct, @$, own($1), own($6), own($8));
     }
 
 Union:
@@ -812,7 +823,9 @@ Union:
       driver.debug("Union => DefinitionAttrs tok_union Identifier "
         "{ FieldList } TypeAnnotations");
       $$ = new t_union(driver.program, std::move($3));
-      driver.finish_node($$, LineType::Union, own($1), own($6), own($8));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.finish_node(
+          $$, LineType::Union, @$, own($1), own($6), own($8));
     }
 
 Exception:
@@ -829,7 +842,9 @@ Exception:
       $$->set_safety($2);
       $$->set_kind($3);
       $$->set_blame($4);
-      driver.finish_node($$, LineType::Exception, own($1), own($9), own($11));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.finish_node(
+          $$, LineType::Exception, @$, own($1), own($9), own($11));
 
       const char* annotations[] = {"message", "code"};
       for (auto& annotation: annotations) {
@@ -929,7 +944,9 @@ Service:
         "Identifier Extends { FlagArgs FunctionList UnflagArgs } "
         "FunctionAnnotations");
       $$ = new t_service(driver.program, std::move($3), $5);
-      driver.finish_node($$, LineType::Service, own($1), own($8), own($11));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.finish_node(
+          $$, LineType::Service, @$, own($1), own($8), own($11));
     }
 
 FlagArgs:
@@ -973,7 +990,9 @@ Interaction:
     {
       driver.debug("Interaction -> tok_interaction Identifier { FunctionList }");
       $$ = new t_interaction(driver.program, std::move($3));
-      driver.finish_node($$, LineType::Interaction, own($1), own($7), own($10));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.finish_node(
+          $$, LineType::Interaction, @$, own($1), own($7), own($10));
 
       // TODO(afuller): Move this to a post parse phase.
       for (auto* func : $$->get_functions()) {
@@ -1021,7 +1040,10 @@ Function:
       auto func = std::make_unique<t_function>(std::move($3), std::move($4), own($7), $2);
       func->set_exceptions(own($9));
 
-      driver.finish_node(func.get(), LineType::Function, own($1), own($10));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.avoid_next_token_loc($10 == nullptr, @$, @9);
+      driver.finish_node(
+          func.get(), LineType::Function, @$, own($1), own($10));
       $$ = func.release();
     }
   | tok_performs FieldType ";"
@@ -1170,7 +1192,9 @@ Field:
       if ($7 != nullptr) {
         $$->set_default_value(own($7));
       }
-      driver.finish_node($$, LineType::Field, own($1), own($8));
+      driver.avoid_last_token_loc($1 == nullptr, @$, @2);
+      driver.finish_node(
+          $$, LineType::Field, @$, own($1), own($8));
     }
 
 FieldIdentifier:
