@@ -49,6 +49,13 @@ using std::vector;
 namespace apache {
 namespace thrift {
 namespace transport {
+namespace {
+const THeader::StringToStringMap& kEmptyMap() {
+  static const THeader::StringToStringMap& map =
+      *(new transport::THeader::StringToStringMap);
+  return map;
+}
+} // namespace
 
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::util;
@@ -690,16 +697,16 @@ static void flushInfoHeaders(
 }
 
 void THeader::setHeader(const std::string& key, const std::string& value) {
-  writeHeaders_[key] = value;
+  ensureWriteHeaders()[key] = value;
 }
 
 void THeader::setHeader(const std::string& key, std::string&& value) {
-  writeHeaders_[key] = std::move(value);
+  ensureWriteHeaders()[key] = std::move(value);
 }
 
 void THeader::setHeader(
     const char* key, size_t keyLength, const char* value, size_t valueLength) {
-  writeHeaders_.emplace(std::make_pair(
+  ensureWriteHeaders().emplace(std::make_pair(
       std::string(key, keyLength), std::string(value, valueLength)));
 }
 
@@ -732,7 +739,7 @@ size_t THeader::getMaxWriteHeadersSize(
     const StringToStringMap& persistentWriteHeaders) const {
   size_t maxWriteHeadersSize = 0;
   maxWriteHeadersSize += getInfoHeaderSize(persistentWriteHeaders);
-  maxWriteHeadersSize += getInfoHeaderSize(writeHeaders_);
+  maxWriteHeadersSize += writeHeaders_ ? getInfoHeaderSize(*writeHeaders_) : 0;
   if (extraWriteHeaders_) {
     maxWriteHeadersSize += getInfoHeaderSize(*extraWriteHeaders_);
   }
@@ -740,22 +747,30 @@ size_t THeader::getMaxWriteHeadersSize(
 }
 
 void THeader::clearHeaders() {
-  writeHeaders_.clear();
+  writeHeaders_.reset();
+}
+
+THeader::StringToStringMap& THeader::ensureWriteHeaders() {
+  if (!writeHeaders_) {
+    writeHeaders_.emplace();
+  }
+  return *writeHeaders_;
 }
 
 bool THeader::isWriteHeadersEmpty() {
-  return writeHeaders_.empty();
+  return !writeHeaders_ || writeHeaders_->empty();
 }
 
 THeader::StringToStringMap& THeader::mutableWriteHeaders() {
-  return writeHeaders_;
+  return ensureWriteHeaders();
 }
 THeader::StringToStringMap THeader::releaseWriteHeaders() {
-  return std::move(writeHeaders_);
+  return writeHeaders_ ? *std::exchange(writeHeaders_, std::nullopt)
+                       : kEmptyMap();
 }
 
 THeader::StringToStringMap THeader::extractAllWriteHeaders() {
-  auto headers = std::move(writeHeaders_);
+  auto headers = releaseWriteHeaders();
   if (extraWriteHeaders_ != nullptr) {
     headers.insert(extraWriteHeaders_->begin(), extraWriteHeaders_->end());
   }
@@ -763,7 +778,7 @@ THeader::StringToStringMap THeader::extractAllWriteHeaders() {
 }
 
 const THeader::StringToStringMap& THeader::getWriteHeaders() const {
-  return writeHeaders_;
+  return writeHeaders_ ? *writeHeaders_ : kEmptyMap();
 }
 
 void THeader::setReadHeader(const std::string& key, std::string&& value) {
@@ -821,8 +836,9 @@ unique_ptr<IOBuf> THeader::addHeader(
   // Add in special flags
   // All flags must be added before any calls to getMaxWriteHeadersSize
   if (identity_.length() > 0) {
-    writeHeaders_[IDENTITY_HEADER] = identity_;
-    writeHeaders_[ID_VERSION_HEADER] = ID_VERSION;
+    ensureWriteHeaders();
+    (*writeHeaders_)[IDENTITY_HEADER] = identity_;
+    (*writeHeaders_)[ID_VERSION_HEADER] = ID_VERSION;
   }
 
   if (clientType_ == THRIFT_HEADER_CLIENT_TYPE) {
@@ -876,7 +892,9 @@ unique_ptr<IOBuf> THeader::addHeader(
     flushInfoHeaders(pkt, persistentWriteHeaders, infoIdType::PKEYVALUE);
 
     // write non-persistent kv-headers
-    flushInfoHeaders(pkt, writeHeaders_, infoIdType::KEYVALUE);
+    if (writeHeaders_) {
+      flushInfoHeaders(pkt, *writeHeaders_, infoIdType::KEYVALUE);
+    }
     if (extraWriteHeaders_) {
       flushInfoHeaders(pkt, *extraWriteHeaders_, infoIdType::KEYVALUE, false);
     }
@@ -943,9 +961,9 @@ unique_ptr<IOBuf> THeader::addHeader(
     buf = httpClientParser_->constructHeader(
         std::move(buf),
         persistentWriteHeaders,
-        writeHeaders_,
+        writeHeaders_ ? *writeHeaders_ : kEmptyMap(),
         extraWriteHeaders_);
-    writeHeaders_.clear();
+    writeHeaders_.reset();
   } else {
     throw TTransportException(
         TTransportException::BAD_ARGS, "Unknown client type");
@@ -1057,7 +1075,7 @@ const folly::StringPiece THeader::getStringTransform(
 }
 
 void THeader::setClientMetadata(const ClientMetadata& clientMetadata) {
-  writeHeaders_[std::string{CLIENT_METADATA_HEADER}] =
+  ensureWriteHeaders()[std::string{CLIENT_METADATA_HEADER}] =
       apache::thrift::SimpleJSONSerializer::serialize<std::string>(
           clientMetadata);
 }

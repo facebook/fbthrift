@@ -411,7 +411,7 @@ class THeader {
 
   // Map to use for headers
   StringToStringMap readHeaders_;
-  StringToStringMap writeHeaders_;
+  std::optional<StringToStringMap> writeHeaders_;
 
   // Won't be cleared when flushing
   StringToStringMap* extraWriteHeaders_{nullptr};
@@ -461,6 +461,7 @@ class THeader {
 
  private:
   std::optional<std::string> extractHeader(std::string_view key);
+  StringToStringMap& ensureWriteHeaders();
 };
 
 } // namespace transport
