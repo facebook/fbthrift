@@ -107,11 +107,43 @@ const std::string& type_resolver::default_type(t_base_type::type btype) {
 }
 
 std::string type_resolver::gen_type(const t_type* node) {
-  std::string type = gen_type_impl(node, &type_resolver::get_type_name);
-  if (const auto* adapter = find_adapter(node)) {
-    return gen_adapted_type(*adapter, std::move(type));
+  std::string name;
+  // Find the base name.
+  if (const auto* type = find_type(node)) {
+    // Use the override.
+    name = *type;
+  } else {
+    // Use the unmodified name.
+    name = gen_raw_type_name(node, &type_resolver::get_type_name);
   }
-  return type;
+
+  // Adapt the base name.
+  if (const auto* adapter = find_adapter(node)) {
+    name = gen_adapted_type(*adapter, std::move(name));
+  }
+  return name;
+}
+
+std::string type_resolver::gen_standard_type(const t_type* node) {
+  if (const auto* type = find_type(node)) {
+    // Return the override.
+    return *type;
+  }
+
+  if (const auto* ttypedef = dynamic_cast<const t_typedef*>(node)) {
+    // Traverse the typedef.
+    // TODO(afuller): Always traverse the adapter. There are some cpp.type and
+    // cpp.template annotations that rely on the namespacing of the typedef to
+    // avoid namespacing issues with the annotation itself. To avoid breaking
+    // these cases we are only traversing the typedef when the presences of an
+    // adapter requires we do so. However, we should update all annotations to
+    // using fully qualified names, then always traverse here.
+    if (find_first_adapter(node) != nullptr) {
+      return get_standard_type_name(ttypedef->get_type());
+    }
+  }
+
+  return gen_raw_type_name(node, &type_resolver::get_standard_type_name);
 }
 
 std::string type_resolver::gen_storage_type(
@@ -133,13 +165,8 @@ std::string type_resolver::gen_storage_type(
   }
 }
 
-std::string type_resolver::gen_type_impl(
+std::string type_resolver::gen_raw_type_name(
     const t_type* node, type_resolve_fn resolve_fn) {
-  if (const auto* type = find_type(node)) {
-    // Return the override.
-    return *type;
-  }
-
   // Base types have fixed type mappings.
   if (const auto* tbase_type = dynamic_cast<const t_base_type*>(node)) {
     return default_type(tbase_type->base_type());
