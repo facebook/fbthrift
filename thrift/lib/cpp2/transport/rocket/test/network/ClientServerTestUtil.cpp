@@ -543,10 +543,8 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         nullptr /* evb */,
         serverCallback.get());
     folly::coro::co_invoke(
-        [serverCallback =
-             std::move(serverCallback)]() mutable -> folly::coro::Task<void> {
-          co_return co_await serverCallback->start();
-        })
+        &apache::thrift::detail::ServerSinkBridge::start,
+        std::move(serverCallback))
         .scheduleOn(threadManagerThread_.getEventBase())
         .start();
   }

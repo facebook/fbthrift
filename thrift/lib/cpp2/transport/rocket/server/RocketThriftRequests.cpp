@@ -742,10 +742,8 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
       serverCallback.get());
 
   folly::coro::co_invoke(
-      [serverCallback =
-           std::move(serverCallback)]() -> folly::coro::Task<void> {
-        co_return co_await serverCallback->start();
-      })
+      &apache::thrift::detail::ServerSinkBridge::start,
+      std::move(serverCallback))
       .scheduleOn(executor)
       .start();
 }
