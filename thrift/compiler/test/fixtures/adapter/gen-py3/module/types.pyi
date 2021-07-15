@@ -28,6 +28,7 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
         optionalSetField: bool
         mapField: bool
         optionalMapField: bool
+        binaryField: bool
         pass
 
     intField: Final[int] = ...
@@ -44,6 +45,8 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
 
     optionalMapField: Final[_typing.Optional[_typing.Mapping[str, _typing.Sequence[str]]]] = ...
 
+    binaryField: Final[bytes] = ...
+
     def __init__(
         self, *,
         intField: _typing.Optional[int]=None,
@@ -52,7 +55,8 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
         setField: _typing.Optional[_typing.AbstractSet[str]]=None,
         optionalSetField: _typing.Optional[_typing.AbstractSet[str]]=None,
         mapField: _typing.Optional[_typing.Mapping[str, _typing.Sequence[str]]]=None,
-        optionalMapField: _typing.Optional[_typing.Mapping[str, _typing.Sequence[str]]]=None
+        optionalMapField: _typing.Optional[_typing.Mapping[str, _typing.Sequence[str]]]=None,
+        binaryField: _typing.Optional[bytes]=None
     ) -> None: ...
 
     def __call__(
@@ -63,7 +67,8 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
         setField: _typing.Union[_typing.AbstractSet[str], __NotSet, None]=NOTSET,
         optionalSetField: _typing.Union[_typing.AbstractSet[str], __NotSet, None]=NOTSET,
         mapField: _typing.Union[_typing.Mapping[str, _typing.Sequence[str]], __NotSet, None]=NOTSET,
-        optionalMapField: _typing.Union[_typing.Mapping[str, _typing.Sequence[str]], __NotSet, None]=NOTSET
+        optionalMapField: _typing.Union[_typing.Mapping[str, _typing.Sequence[str]], __NotSet, None]=NOTSET,
+        binaryField: _typing.Union[bytes, __NotSet, None]=NOTSET
     ) -> Foo: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Foo'], bytes]]: ...
@@ -74,12 +79,59 @@ class Foo(thrift.py3.types.Struct, _typing.Hashable):
     def __ge__(self, other: 'Foo') -> bool: ...
 
 
+class Baz(thrift.py3.types.Union, _typing.Hashable):
+    class __fbthrift_IsSet:
+        intField: bool
+        setField: bool
+        mapField: bool
+        binaryField: bool
+        pass
+
+    intField: Final[int] = ...
+
+    setField: Final[_typing.AbstractSet[str]] = ...
+
+    mapField: Final[_typing.Mapping[str, _typing.Sequence[str]]] = ...
+
+    binaryField: Final[bytes] = ...
+
+    def __init__(
+        self, *,
+        intField: _typing.Optional[int]=None,
+        setField: _typing.Optional[_typing.AbstractSet[str]]=None,
+        mapField: _typing.Optional[_typing.Mapping[str, _typing.Sequence[str]]]=None,
+        binaryField: _typing.Optional[bytes]=None
+    ) -> None: ...
+
+    def __hash__(self) -> int: ...
+    def __lt__(self, other: 'Baz') -> bool: ...
+    def __gt__(self, other: 'Baz') -> bool: ...
+    def __le__(self, other: 'Baz') -> bool: ...
+    def __ge__(self, other: 'Baz') -> bool: ...
+
+    class Type(thrift.py3.types.Enum):
+        EMPTY: Baz.Type = ...
+        intField: Baz.Type = ...
+        setField: Baz.Type = ...
+        mapField: Baz.Type = ...
+        binaryField: Baz.Type = ...
+
+    @staticmethod
+    def fromValue(value: _typing.Union[None, int, _typing.AbstractSet[str], _typing.Mapping[str, _typing.Sequence[str]], bytes]) -> Baz: ...
+    @__property__
+    def value(self) -> _typing.Union[None, int, _typing.AbstractSet[str], _typing.Mapping[str, _typing.Sequence[str]], bytes]: ...
+    @__property__
+    def type(self) -> "Baz.Type": ...
+
+
 class Bar(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         structField: bool
         optionalStructField: bool
         structListField: bool
         optionalStructListField: bool
+        unionField: bool
+        optionalUnionField: bool
         pass
 
     structField: Final['Foo'] = ...
@@ -90,12 +142,18 @@ class Bar(thrift.py3.types.Struct, _typing.Hashable):
 
     optionalStructListField: Final[_typing.Optional[_typing.Sequence['Foo']]] = ...
 
+    unionField: Final['Baz'] = ...
+
+    optionalUnionField: Final[_typing.Optional['Baz']] = ...
+
     def __init__(
         self, *,
         structField: _typing.Optional['Foo']=None,
         optionalStructField: _typing.Optional['Foo']=None,
         structListField: _typing.Optional[_typing.Sequence['Foo']]=None,
-        optionalStructListField: _typing.Optional[_typing.Sequence['Foo']]=None
+        optionalStructListField: _typing.Optional[_typing.Sequence['Foo']]=None,
+        unionField: _typing.Optional['Baz']=None,
+        optionalUnionField: _typing.Optional['Baz']=None
     ) -> None: ...
 
     def __call__(
@@ -103,7 +161,9 @@ class Bar(thrift.py3.types.Struct, _typing.Hashable):
         structField: _typing.Union['Foo', __NotSet, None]=NOTSET,
         optionalStructField: _typing.Union['Foo', __NotSet, None]=NOTSET,
         structListField: _typing.Union[_typing.Sequence['Foo'], __NotSet, None]=NOTSET,
-        optionalStructListField: _typing.Union[_typing.Sequence['Foo'], __NotSet, None]=NOTSET
+        optionalStructListField: _typing.Union[_typing.Sequence['Foo'], __NotSet, None]=NOTSET,
+        unionField: _typing.Union['Baz', __NotSet, None]=NOTSET,
+        optionalUnionField: _typing.Union['Baz', __NotSet, None]=NOTSET
     ) -> Bar: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Bar'], bytes]]: ...
@@ -177,3 +237,4 @@ class List__Foo(_typing.Sequence['Foo'], _typing.Hashable):
 SetWithAdapter = Set__string
 ListWithElemAdapter = List__string
 StructWithAdapter = Bar
+UnionWithAdapter = Baz

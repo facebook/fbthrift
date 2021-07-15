@@ -21,6 +21,14 @@ cdef class Foo_Builder(thrift.py3.builder.StructBuilder):
     cdef public set optionalSetField
     cdef public dict mapField
     cdef public dict optionalMapField
+    cdef public bytes binaryField
+
+
+cdef class Baz_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pint intField
+    cdef public set setField
+    cdef public dict mapField
+    cdef public bytes binaryField
 
 
 cdef class Bar_Builder(thrift.py3.builder.StructBuilder):
@@ -28,5 +36,7 @@ cdef class Bar_Builder(thrift.py3.builder.StructBuilder):
     cdef public object optionalStructField
     cdef public list structListField
     cdef public list optionalStructListField
+    cdef public object unionField
+    cdef public object optionalUnionField
 
 

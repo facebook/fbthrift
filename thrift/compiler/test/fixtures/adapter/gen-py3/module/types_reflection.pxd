@@ -16,6 +16,8 @@ from thrift.py3.reflection cimport (
 
 cdef __StructSpec get_reflection__Foo()
 
+cdef __StructSpec get_reflection__Baz()
+
 cdef __StructSpec get_reflection__Bar()
 
 cdef __SetSpec get_reflection__Set__string()

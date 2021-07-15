@@ -12,7 +12,20 @@
 namespace apache {
 namespace thrift {
 
-const std::array<folly::StringPiece, 7> TStructDataStorage<::cpp2::Foo>::fields_names = {{
+const std::array<::cpp2::Baz::Type, 4> TEnumDataStorage<::cpp2::Baz::Type>::values = {{
+  type::intField,
+  type::setField,
+  type::mapField,
+  type::binaryField,
+}};
+const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::Baz::Type>::names = {{
+  "intField",
+  "setField",
+  "mapField",
+  "binaryField",
+}};
+
+const std::array<folly::StringPiece, 8> TStructDataStorage<::cpp2::Foo>::fields_names = {{
   "intField",
   "optionalIntField",
   "intFieldWithDefault",
@@ -20,8 +33,9 @@ const std::array<folly::StringPiece, 7> TStructDataStorage<::cpp2::Foo>::fields_
   "optionalSetField",
   "mapField",
   "optionalMapField",
+  "binaryField",
 }};
-const std::array<int16_t, 7> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
+const std::array<int16_t, 8> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
   1,
   2,
   3,
@@ -29,8 +43,9 @@ const std::array<int16_t, 7> TStructDataStorage<::cpp2::Foo>::fields_ids = {{
   5,
   6,
   7,
+  8,
 }};
-const std::array<protocol::TType, 7> TStructDataStorage<::cpp2::Foo>::fields_types = {{
+const std::array<protocol::TType, 8> TStructDataStorage<::cpp2::Foo>::fields_types = {{
   TType::T_I32,
   TType::T_I32,
   TType::T_I32,
@@ -38,25 +53,51 @@ const std::array<protocol::TType, 7> TStructDataStorage<::cpp2::Foo>::fields_typ
   TType::T_SET,
   TType::T_MAP,
   TType::T_MAP,
+  TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::Bar>::fields_names = {{
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::Baz>::fields_names = {{
+  "intField",
+  "setField",
+  "mapField",
+  "binaryField",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::Baz>::fields_ids = {{
+  1,
+  4,
+  6,
+  8,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::Baz>::fields_types = {{
+  TType::T_I32,
+  TType::T_SET,
+  TType::T_MAP,
+  TType::T_STRING,
+}};
+
+const std::array<folly::StringPiece, 6> TStructDataStorage<::cpp2::Bar>::fields_names = {{
   "structField",
   "optionalStructField",
   "structListField",
   "optionalStructListField",
+  "unionField",
+  "optionalUnionField",
 }};
-const std::array<int16_t, 4> TStructDataStorage<::cpp2::Bar>::fields_ids = {{
+const std::array<int16_t, 6> TStructDataStorage<::cpp2::Bar>::fields_ids = {{
   1,
   2,
   3,
   4,
+  5,
+  6,
 }};
-const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::Bar>::fields_types = {{
+const std::array<protocol::TType, 6> TStructDataStorage<::cpp2::Bar>::fields_types = {{
   TType::T_STRUCT,
   TType::T_STRUCT,
   TType::T_LIST,
   TType::T_LIST,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
 }};
 
 } // namespace thrift

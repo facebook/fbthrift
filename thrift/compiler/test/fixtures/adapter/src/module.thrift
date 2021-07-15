@@ -73,6 +73,37 @@ struct Foo {
     cpp.adapter = 'my::Adapter3',
     py.adapter = 'my.Adapter3',
   ) optionalMapField;
+  8: binary (
+    hack.adapter = '\Adapter1',
+    cpp.adapter = 'my::Adapter1',
+    py.adapter = 'my.Adapter1',
+  ) binaryField;
+}
+
+union Baz {
+  1: i32 (
+    hack.adapter = '\Adapter1',
+    cpp.adapter = 'my::Adapter1',
+    py.adapter = 'my.Adapter1',
+  ) intField;
+  4: SetWithAdapter setField;
+  6: map<
+    string,
+    ListWithElemAdapter (
+      hack.adapter = '\Adapter2',
+      cpp.adapter = 'my::Adapter2',
+      py.adapter = 'my.Adapter2',
+    )
+  > (
+    hack.adapter = '\Adapter3',
+    cpp.adapter = 'my::Adapter3',
+    py.adapter = 'my.Adapter3',
+  ) mapField;
+  8: binary (
+    hack.adapter = '\Adapter1',
+    cpp.adapter = 'my::Adapter1',
+    py.adapter = 'my.Adapter1',
+  ) binaryField;
 }
 
 struct Bar {
@@ -100,6 +131,16 @@ struct Bar {
       py.adapter = 'my.Adapter1',
     )
   > optionalStructListField;
+  5: Baz (
+    hack.adapter = '\Adapter1',
+    cpp.adapter = 'my::Adapter1',
+    py.adapter = 'my.Adapter1',
+  ) unionField;
+  6: optional Baz (
+    hack.adapter = '\Adapter1',
+    cpp.adapter = 'my::Adapter1',
+    py.adapter = 'my.Adapter1',
+  ) optionalUnionField;
 }
 
 typedef Bar (
@@ -107,6 +148,12 @@ typedef Bar (
   cpp.adapter = 'my::Adapter2',
   py.adapter = 'my.Adapter2',
 ) StructWithAdapter
+
+typedef Baz (
+  hack.adapter = '\Adapter2',
+  cpp.adapter = 'my::Adapter2',
+  py.adapter = 'my.Adapter2',
+) UnionWithAdapter
 
 service Service {
   i32 (

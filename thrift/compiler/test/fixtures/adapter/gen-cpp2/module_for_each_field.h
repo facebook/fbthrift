@@ -24,6 +24,18 @@ struct ForEachField<::cpp2::Foo> {
     f(4, static_cast<T&&>(t).optionalSetField_ref()...);
     f(5, static_cast<T&&>(t).mapField_ref()...);
     f(6, static_cast<T&&>(t).optionalMapField_ref()...);
+    f(7, static_cast<T&&>(t).binaryField_ref()...);
+  }
+};
+
+template <>
+struct ForEachField<::cpp2::Baz> {
+  template <typename F, typename... T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
+    f(0, static_cast<T&&>(t).intField_ref()...);
+    f(1, static_cast<T&&>(t).setField_ref()...);
+    f(2, static_cast<T&&>(t).mapField_ref()...);
+    f(3, static_cast<T&&>(t).binaryField_ref()...);
   }
 };
 
@@ -35,6 +47,8 @@ struct ForEachField<::cpp2::Bar> {
     f(1, static_cast<T&&>(t).optionalStructField_ref()...);
     f(2, static_cast<T&&>(t).structListField_ref()...);
     f(3, static_cast<T&&>(t).optionalStructListField_ref()...);
+    f(4, static_cast<T&&>(t).unionField_ref()...);
+    f(5, static_cast<T&&>(t).optionalUnionField_ref()...);
   }
 };
 } // namespace detail

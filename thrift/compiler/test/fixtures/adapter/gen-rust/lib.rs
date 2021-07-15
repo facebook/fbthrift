@@ -18,6 +18,8 @@ pub mod types {
 
     pub type StructWithAdapter = crate::types::Bar;
 
+    pub type UnionWithAdapter = crate::types::Baz;
+
     #[derive(Clone, Debug, PartialEq)]
     pub struct Foo {
         pub intField: ::std::primitive::i32,
@@ -27,6 +29,16 @@ pub mod types {
         pub optionalSetField: ::std::option::Option<crate::types::SetWithAdapter>,
         pub mapField: ::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>,
         pub optionalMapField: ::std::option::Option<::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>>,
+        pub binaryField: ::std::vec::Vec<::std::primitive::u8>,
+    }
+
+    #[derive(Clone, Debug, PartialEq)]
+    pub enum Baz {
+        intField(::std::primitive::i32),
+        setField(crate::types::SetWithAdapter),
+        mapField(::std::collections::BTreeMap<::std::string::String, crate::types::ListWithElemAdapter>),
+        binaryField(::std::vec::Vec<::std::primitive::u8>),
+        UnknownField(::std::primitive::i32),
     }
 
     #[derive(Clone, Debug, PartialEq)]
@@ -35,7 +47,10 @@ pub mod types {
         pub optionalStructField: ::std::option::Option<crate::types::Foo>,
         pub structListField: ::std::vec::Vec<crate::types::Foo>,
         pub optionalStructListField: ::std::option::Option<::std::vec::Vec<crate::types::Foo>>,
+        pub unionField: crate::types::Baz,
+        pub optionalUnionField: ::std::option::Option<crate::types::Baz>,
     }
+
 
 
 
@@ -50,6 +65,7 @@ pub mod types {
                 optionalSetField: ::std::option::Option::None,
                 mapField: ::std::default::Default::default(),
                 optionalMapField: ::std::option::Option::None,
+                binaryField: ::std::default::Default::default(),
             }
         }
     }
@@ -94,6 +110,9 @@ pub mod types {
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
+            p.write_field_begin("binaryField", ::fbthrift::TType::String, 8);
+            ::fbthrift::Serialize::write(&self.binaryField, p);
+            p.write_field_end();
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -105,6 +124,7 @@ pub mod types {
     {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("binaryField", ::fbthrift::TType::String, 8),
                 ::fbthrift::Field::new("intField", ::fbthrift::TType::I32, 1),
                 ::fbthrift::Field::new("intFieldWithDefault", ::fbthrift::TType::I32, 3),
                 ::fbthrift::Field::new("mapField", ::fbthrift::TType::Map, 6),
@@ -120,6 +140,7 @@ pub mod types {
             let mut field_optionalSetField = ::std::option::Option::None;
             let mut field_mapField = ::std::option::Option::None;
             let mut field_optionalMapField = ::std::option::Option::None;
+            let mut field_binaryField = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -132,6 +153,7 @@ pub mod types {
                     (::fbthrift::TType::Set, 5) => field_optionalSetField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Map, 6) => field_mapField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Map, 7) => field_optionalMapField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 8) => field_binaryField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -145,10 +167,108 @@ pub mod types {
                 optionalSetField: field_optionalSetField,
                 mapField: field_mapField.unwrap_or_default(),
                 optionalMapField: field_optionalMapField,
+                binaryField: field_binaryField.unwrap_or_default(),
             })
         }
     }
 
+
+
+    impl ::std::default::Default for Baz {
+        fn default() -> Self {
+            Self::UnknownField(-1)
+        }
+    }
+
+    impl ::fbthrift::GetTType for Baz {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for Baz
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("Baz");
+            match self {
+                Baz::intField(inner) => {
+                    p.write_field_begin("intField", ::fbthrift::TType::I32, 1);
+                    ::fbthrift::Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                Baz::setField(inner) => {
+                    p.write_field_begin("setField", ::fbthrift::TType::Set, 4);
+                    ::fbthrift::Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                Baz::mapField(inner) => {
+                    p.write_field_begin("mapField", ::fbthrift::TType::Map, 6);
+                    ::fbthrift::Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                Baz::binaryField(inner) => {
+                    p.write_field_begin("binaryField", ::fbthrift::TType::String, 8);
+                    ::fbthrift::Serialize::write(inner, p);
+                    p.write_field_end();
+                }
+                Baz::UnknownField(_) => {}
+            }
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for Baz
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("binaryField", ::fbthrift::TType::String, 8),
+                ::fbthrift::Field::new("intField", ::fbthrift::TType::I32, 1),
+                ::fbthrift::Field::new("mapField", ::fbthrift::TType::Map, 6),
+                ::fbthrift::Field::new("setField", ::fbthrift::TType::Set, 4),
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            let mut once = false;
+            let mut alt = ::std::option::Option::None;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32, once) {
+                    (::fbthrift::TType::Stop, _, _) => break,
+                    (::fbthrift::TType::I32, 1, false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(Baz::intField(::fbthrift::Deserialize::read(p)?));
+                    }
+                    (::fbthrift::TType::Set, 4, false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(Baz::setField(::fbthrift::Deserialize::read(p)?));
+                    }
+                    (::fbthrift::TType::Map, 6, false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(Baz::mapField(::fbthrift::Deserialize::read(p)?));
+                    }
+                    (::fbthrift::TType::String, 8, false) => {
+                        once = true;
+                        alt = ::std::option::Option::Some(Baz::binaryField(::fbthrift::Deserialize::read(p)?));
+                    }
+                    (fty, _, false) => p.skip(fty)?,
+                    (badty, badid, true) => return ::std::result::Result::Err(::std::convert::From::from(::fbthrift::ApplicationException::new(
+                        ::fbthrift::ApplicationExceptionErrorCode::ProtocolError,
+                        format!(
+                            "unwanted extra union {} field ty {:?} id {}",
+                            "Baz",
+                            badty,
+                            badid,
+                        ),
+                    ))),
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(alt.unwrap_or_default())
+        }
+    }
 
     impl ::std::default::Default for self::Bar {
         fn default() -> Self {
@@ -157,6 +277,8 @@ pub mod types {
                 optionalStructField: ::std::option::Option::None,
                 structListField: ::std::default::Default::default(),
                 optionalStructListField: ::std::option::Option::None,
+                unionField: ::std::default::Default::default(),
+                optionalUnionField: ::std::option::Option::None,
             }
         }
     }
@@ -190,6 +312,14 @@ pub mod types {
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
+            p.write_field_begin("unionField", ::fbthrift::TType::Struct, 5);
+            ::fbthrift::Serialize::write(&self.unionField, p);
+            p.write_field_end();
+            if let ::std::option::Option::Some(some) = &self.optionalUnionField {
+                p.write_field_begin("optionalUnionField", ::fbthrift::TType::Struct, 6);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -203,13 +333,17 @@ pub mod types {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("optionalStructField", ::fbthrift::TType::Struct, 2),
                 ::fbthrift::Field::new("optionalStructListField", ::fbthrift::TType::List, 4),
+                ::fbthrift::Field::new("optionalUnionField", ::fbthrift::TType::Struct, 6),
                 ::fbthrift::Field::new("structField", ::fbthrift::TType::Struct, 1),
                 ::fbthrift::Field::new("structListField", ::fbthrift::TType::List, 3),
+                ::fbthrift::Field::new("unionField", ::fbthrift::TType::Struct, 5),
             ];
             let mut field_structField = ::std::option::Option::None;
             let mut field_optionalStructField = ::std::option::Option::None;
             let mut field_structListField = ::std::option::Option::None;
             let mut field_optionalStructListField = ::std::option::Option::None;
+            let mut field_unionField = ::std::option::Option::None;
+            let mut field_optionalUnionField = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -219,6 +353,8 @@ pub mod types {
                     (::fbthrift::TType::Struct, 2) => field_optionalStructField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::List, 3) => field_structListField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::List, 4) => field_optionalStructListField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 5) => field_unionField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 6) => field_optionalUnionField = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -229,6 +365,8 @@ pub mod types {
                 optionalStructField: field_optionalStructField,
                 structListField: field_structListField.unwrap_or_default(),
                 optionalStructListField: field_optionalStructListField,
+                unionField: field_unionField.unwrap_or_default(),
+                optionalUnionField: field_optionalUnionField,
             })
         }
     }

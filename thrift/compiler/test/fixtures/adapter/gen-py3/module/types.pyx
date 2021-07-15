@@ -58,6 +58,40 @@ cimport module.types_reflection as _types_reflection
 
 
 
+cdef __UnionTypeEnumData __Baz_union_type_enum_data  = __UnionTypeEnumData.create(
+    __createEnumDataForUnionType[cBaz](),
+    __BazType,
+)
+
+
+@__cython.internal
+@__cython.auto_pickle(False)
+cdef class __Baz_Union_TypeMeta(thrift.py3.types.EnumMeta):
+    def _fbthrift_get_by_value(cls, int value):
+        return __Baz_union_type_enum_data.get_by_value(value)
+
+    def _fbthrift_get_all_names(cls):
+        return __Baz_union_type_enum_data.get_all_names()
+
+    def __len__(cls):
+        return __Baz_union_type_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __Baz_union_type_enum_data.get_by_name(name)
+
+
+@__cython.final
+@__cython.auto_pickle(False)
+cdef class __BazType(thrift.py3.types.CompiledEnum):
+    cdef get_by_name(self, str name):
+        return __Baz_union_type_enum_data.get_by_name(name)
+
+
+__SetMetaClass(<PyTypeObject*> __BazType, <PyTypeObject*> __Baz_Union_TypeMeta)
+
+
 @__cython.auto_pickle(False)
 cdef class Foo(thrift.py3.types.Struct):
     def __init__(Foo self, **kwargs):
@@ -87,6 +121,7 @@ cdef class Foo(thrift.py3.types.Struct):
           "optionalSetField": deref(self._cpp_obj).optionalSetField_ref().has_value(),
           "mapField": deref(self._cpp_obj).mapField_ref().has_value(),
           "optionalMapField": deref(self._cpp_obj).optionalMapField_ref().has_value(),
+          "binaryField": deref(self._cpp_obj).binaryField_ref().has_value(),
         })
 
     @staticmethod
@@ -144,6 +179,11 @@ cdef class Foo(thrift.py3.types.Struct):
             self.__fbthrift_cached_optionalMapField = Map__string_List__string.create(__reference_shared_ptr(deref(self._cpp_obj).optionalMapField_ref().ref_unchecked(), self._cpp_obj))
         return self.__fbthrift_cached_optionalMapField
 
+    @property
+    def binaryField(self):
+
+        return deref(self._cpp_obj).binaryField_ref().value()
+
 
     def __hash__(Foo self):
         return  super().__hash__()
@@ -180,7 +220,7 @@ cdef class Foo(thrift.py3.types.Struct):
         return __get_field_name_by_index[cFoo](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 7
+        self._fbthrift_struct_size = 8
 
     cdef _fbthrift_iobuf.IOBuf _serialize(Foo self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -193,6 +233,185 @@ cdef class Foo(thrift.py3.types.Struct):
         self._cpp_obj = make_shared[cFoo]()
         with nogil:
             needed = serializer.cdeserialize[cFoo](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+
+
+@__cython.auto_pickle(False)
+cdef class Baz(thrift.py3.types.Union):
+    Type = __BazType
+
+    def __init__(
+        self, *,
+        intField=None,
+        setField=None,
+        mapField=None,
+        bytes binaryField=None
+    ):
+        if intField is not None:
+            if not isinstance(intField, int):
+                raise TypeError(f'intField is not a { int !r}.')
+            intField = <cint32_t> intField
+
+        self._cpp_obj = __to_shared_ptr(cmove(Baz._make_instance(
+          NULL,
+          intField,
+          setField,
+          mapField,
+          binaryField,
+        )))
+        self._load_cache()
+
+    @staticmethod
+    def fromValue(value):
+        if value is None:
+            return Baz()
+        if isinstance(value, int):
+            if not isinstance(value, pbool):
+                try:
+                    <cint32_t> value
+                    return Baz(intField=value)
+                except OverflowError:
+                    pass
+        if isinstance(value, Set__string):
+            return Baz(setField=value)
+        if isinstance(value, Map__string_List__string):
+            return Baz(mapField=value)
+        if isinstance(value, bytes):
+            return Baz(binaryField=value)
+        raise ValueError(f"Unable to derive correct union field for value: {value}")
+
+    @staticmethod
+    cdef unique_ptr[cBaz] _make_instance(
+        cBaz* base_instance,
+        object intField,
+        object setField,
+        object mapField,
+        bytes binaryField
+    ) except *:
+        cdef unique_ptr[cBaz] c_inst = make_unique[cBaz]()
+        cdef bint any_set = False
+        if intField is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_intField(intField)
+            any_set = True
+        if setField is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_setField(<cset[string]>deref(Set__string(setField)._cpp_obj))
+            any_set = True
+        if mapField is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_mapField(<cmap[string,vector[string]]>deref(Map__string_List__string(mapField)._cpp_obj))
+            any_set = True
+        if binaryField is not None:
+            if any_set:
+                raise TypeError("At most one field may be set when initializing a union")
+            deref(c_inst).set_binaryField(binaryField)
+            any_set = True
+        # in C++ you don't have to call move(), but this doesn't translate
+        # into a C++ return statement, so you do here
+        return cmove(c_inst)
+
+    @staticmethod
+    cdef create(shared_ptr[cBaz] cpp_obj):
+        __fbthrift_inst = <Baz>Baz.__new__(Baz)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        __fbthrift_inst._load_cache()
+        return __fbthrift_inst
+
+    @property
+    def intField(self):
+        if self.type.value != 1:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not intField')
+        return self.value
+
+    @property
+    def setField(self):
+        if self.type.value != 4:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not setField')
+        return self.value
+
+    @property
+    def mapField(self):
+        if self.type.value != 6:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not mapField')
+        return self.value
+
+    @property
+    def binaryField(self):
+        if self.type.value != 8:
+            raise TypeError(f'Union contains a value of type {self.type.name}, not binaryField')
+        return self.value
+
+
+    def __hash__(Baz self):
+        return  super().__hash__()
+
+    cdef _load_cache(Baz self):
+        self.type = Baz.Type(<int>(deref(self._cpp_obj).getType()))
+        cdef int type = self.type.value
+        if type == 0:    # Empty
+            self.value = None
+        elif type == 1:
+            self.value = deref(self._cpp_obj).get_intField()
+        elif type == 4:
+            self.value = Set__string.create(make_shared[cset[string]](deref(self._cpp_obj).get_setField()))
+        elif type == 6:
+            self.value = Map__string_List__string.create(make_shared[cmap[string,vector[string]]](deref(self._cpp_obj).get_mapField()))
+        elif type == 8:
+            self.value = deref(self._cpp_obj).get_binaryField()
+
+    def __copy__(Baz self):
+        cdef shared_ptr[cBaz] cpp_obj = make_shared[cBaz](
+            deref(self._cpp_obj)
+        )
+        return Baz.create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cBaz](
+            self._cpp_obj,
+            (<Baz>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__Baz()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cBaz].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.Baz"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cBaz](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 4
+
+    cdef _fbthrift_iobuf.IOBuf _serialize(Baz self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cBaz](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _deserialize(Baz self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cBaz]()
+        with nogil:
+            needed = serializer.cdeserialize[cBaz](buf, self._cpp_obj.get(), proto)
+        # force a cache reload since the underlying data's changed
+        self._load_cache()
         return needed
 
 
@@ -222,6 +441,8 @@ cdef class Bar(thrift.py3.types.Struct):
           "optionalStructField": deref(self._cpp_obj).optionalStructField_ref().has_value(),
           "structListField": deref(self._cpp_obj).structListField_ref().has_value(),
           "optionalStructListField": deref(self._cpp_obj).optionalStructListField_ref().has_value(),
+          "unionField": deref(self._cpp_obj).unionField_ref().has_value(),
+          "optionalUnionField": deref(self._cpp_obj).optionalUnionField_ref().has_value(),
         })
 
     @staticmethod
@@ -262,6 +483,22 @@ cdef class Bar(thrift.py3.types.Struct):
             self.__fbthrift_cached_optionalStructListField = List__Foo.create(__reference_shared_ptr(deref(self._cpp_obj).optionalStructListField_ref().ref_unchecked(), self._cpp_obj))
         return self.__fbthrift_cached_optionalStructListField
 
+    @property
+    def unionField(self):
+
+        if self.__fbthrift_cached_unionField is None:
+            self.__fbthrift_cached_unionField = Baz.create(__reference_shared_ptr(deref(self._cpp_obj).unionField_ref().ref(), self._cpp_obj))
+        return self.__fbthrift_cached_unionField
+
+    @property
+    def optionalUnionField(self):
+        if not deref(self._cpp_obj).optionalUnionField_ref().has_value():
+            return None
+
+        if self.__fbthrift_cached_optionalUnionField is None:
+            self.__fbthrift_cached_optionalUnionField = Baz.create(__reference_shared_ptr(deref(self._cpp_obj).optionalUnionField_ref().ref_unchecked(), self._cpp_obj))
+        return self.__fbthrift_cached_optionalUnionField
+
 
     def __hash__(Bar self):
         return  super().__hash__()
@@ -298,7 +535,7 @@ cdef class Bar(thrift.py3.types.Struct):
         return __get_field_name_by_index[cBar](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 4
+        self._fbthrift_struct_size = 6
 
     cdef _fbthrift_iobuf.IOBuf _serialize(Bar self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
@@ -652,3 +889,4 @@ Sequence.register(List__Foo)
 SetWithAdapter = Set__string
 ListWithElemAdapter = List__string
 StructWithAdapter = Bar
+UnionWithAdapter = Baz

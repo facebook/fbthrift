@@ -18,6 +18,16 @@ namespace thrift {
 namespace py3 {
 
 
+template<>
+const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
+    ::cpp2::Baz::Type>::namesmap() {
+  static const folly::Indestructible<NamesMap> pairs {
+    {
+    }
+  };
+  return *pairs;
+}
+
 
 template<>
 void reset_field<::cpp2::Foo>(
@@ -44,6 +54,9 @@ void reset_field<::cpp2::Foo>(
     case 6:
       obj.optionalMapField_ref().copy_from(default_inst<::cpp2::Foo>().optionalMapField_ref());
       return;
+    case 7:
+      obj.binaryField_ref().copy_from(default_inst<::cpp2::Foo>().binaryField_ref());
+      return;
   }
 }
 
@@ -63,12 +76,28 @@ void reset_field<::cpp2::Bar>(
     case 3:
       obj.optionalStructListField_ref().copy_from(default_inst<::cpp2::Bar>().optionalStructListField_ref());
       return;
+    case 4:
+      obj.unionField_ref().copy_from(default_inst<::cpp2::Bar>().unionField_ref());
+      return;
+    case 5:
+      obj.optionalUnionField_ref().copy_from(default_inst<::cpp2::Bar>().optionalUnionField_ref());
+      return;
   }
 }
 
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::Foo>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::Baz>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

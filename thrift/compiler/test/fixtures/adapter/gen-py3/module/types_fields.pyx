@@ -32,6 +32,7 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"optionalSetField")] = __Foo_FieldsSetter._set_field_4
         __fbthrift_inst._setters[__cstring_view(<const char*>"mapField")] = __Foo_FieldsSetter._set_field_5
         __fbthrift_inst._setters[__cstring_view(<const char*>"optionalMapField")] = __Foo_FieldsSetter._set_field_6
+        __fbthrift_inst._setters[__cstring_view(<const char*>"binaryField")] = __Foo_FieldsSetter._set_field_7
         return __fbthrift_inst
 
     cdef void set_field(__Foo_FieldsSetter self, const char* name, object value) except *:
@@ -99,6 +100,15 @@ cdef class __Foo_FieldsSetter(__StructFieldsSetter):
             return
         deref(self._struct_cpp_obj).optionalMapField_ref().assign(deref(_module_types.Map__string_List__string(_fbthrift_value)._cpp_obj))
 
+    cdef void _set_field_7(self, _fbthrift_value) except *:
+        # for field binaryField
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cFoo](deref(self._struct_cpp_obj), 7)
+            return
+        if not isinstance(_fbthrift_value, bytes):
+            raise TypeError(f'binaryField is not a { bytes !r}.')
+        deref(self._struct_cpp_obj).binaryField_ref().assign(cmove(bytes_to_string(_fbthrift_value)))
+
 
 @__cython.auto_pickle(False)
 cdef class __Bar_FieldsSetter(__StructFieldsSetter):
@@ -111,6 +121,8 @@ cdef class __Bar_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"optionalStructField")] = __Bar_FieldsSetter._set_field_1
         __fbthrift_inst._setters[__cstring_view(<const char*>"structListField")] = __Bar_FieldsSetter._set_field_2
         __fbthrift_inst._setters[__cstring_view(<const char*>"optionalStructListField")] = __Bar_FieldsSetter._set_field_3
+        __fbthrift_inst._setters[__cstring_view(<const char*>"unionField")] = __Bar_FieldsSetter._set_field_4
+        __fbthrift_inst._setters[__cstring_view(<const char*>"optionalUnionField")] = __Bar_FieldsSetter._set_field_5
         return __fbthrift_inst
 
     cdef void set_field(__Bar_FieldsSetter self, const char* name, object value) except *:
@@ -151,4 +163,22 @@ cdef class __Bar_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cBar](deref(self._struct_cpp_obj), 3)
             return
         deref(self._struct_cpp_obj).optionalStructListField_ref().assign(deref(_module_types.List__Foo(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_4(self, _fbthrift_value) except *:
+        # for field unionField
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cBar](deref(self._struct_cpp_obj), 4)
+            return
+        if not isinstance(_fbthrift_value, _module_types.Baz):
+            raise TypeError(f'unionField is not a { _module_types.Baz !r}.')
+        deref(self._struct_cpp_obj).unionField_ref().assign(deref((<_module_types.Baz?> _fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_5(self, _fbthrift_value) except *:
+        # for field optionalUnionField
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cBar](deref(self._struct_cpp_obj), 5)
+            return
+        if not isinstance(_fbthrift_value, _module_types.Baz):
+            raise TypeError(f'optionalUnionField is not a { _module_types.Baz !r}.')
+        deref(self._struct_cpp_obj).optionalUnionField_ref().assign(deref((<_module_types.Baz?> _fbthrift_value)._cpp_obj))
 

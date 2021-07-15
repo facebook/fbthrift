@@ -74,6 +74,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cset[string]] optionalSetField_ref()
         __field_ref[cmap[string,vector[string]]] mapField_ref()
         __optional_field_ref[cmap[string,vector[string]]] optionalMapField_ref()
+        __field_ref[string] binaryField_ref()
         cint32_t intField
         cint32_t optionalIntField
         cint32_t intFieldWithDefault
@@ -81,6 +82,33 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cset[string] optionalSetField
         cmap[string,vector[string]] mapField
         cmap[string,vector[string]] optionalMapField
+        string binaryField
+
+    cdef enum cBaz__type "::cpp2::Baz::Type":
+        cBaz__type___EMPTY__ "::cpp2::Baz::Type::__EMPTY__",
+        cBaz__type_intField "::cpp2::Baz::Type::intField",
+        cBaz__type_setField "::cpp2::Baz::Type::setField",
+        cBaz__type_mapField "::cpp2::Baz::Type::mapField",
+        cBaz__type_binaryField "::cpp2::Baz::Type::binaryField",
+
+    cdef cppclass cBaz "::cpp2::Baz":
+        cBaz() except +
+        cBaz(const cBaz&) except +
+        bint operator==(cBaz&)
+        bint operator!=(cBaz&)
+        bint operator<(cBaz&)
+        bint operator>(cBaz&)
+        bint operator<=(cBaz&)
+        bint operator>=(cBaz&)
+        cBaz__type getType() const
+        const cint32_t& get_intField() const
+        cint32_t& set_intField(const cint32_t&)
+        const cset[string]& get_setField() const
+        cset[string]& set_setField(const cset[string]&)
+        const cmap[string,vector[string]]& get_mapField() const
+        cmap[string,vector[string]]& set_mapField(const cmap[string,vector[string]]&)
+        const string& get_binaryField() const
+        string& set_binaryField(const string&)
 
 
     cdef cppclass cBar "::cpp2::Bar":
@@ -96,10 +124,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __optional_field_ref[cFoo] optionalStructField_ref()
         __field_ref[vector[cFoo]] structListField_ref()
         __optional_field_ref[vector[cFoo]] optionalStructListField_ref()
+        __field_ref[cBaz] unionField_ref()
+        __optional_field_ref[cBaz] optionalUnionField_ref()
         cFoo structField
         cFoo optionalStructField
         vector[cFoo] structListField
         vector[cFoo] optionalStructListField
+        cBaz unionField
+        cBaz optionalUnionField
 
 
 
@@ -115,6 +147,30 @@ cdef class Foo(thrift.py3.types.Struct):
     @staticmethod
     cdef create(shared_ptr[cFoo])
 
+cdef class __BazType(thrift.py3.types.CompiledEnum):
+    pass
+
+
+
+
+cdef class Baz(thrift.py3.types.Union):
+    cdef shared_ptr[cBaz] _cpp_obj
+    cdef readonly __BazType type
+    cdef readonly object value
+    cdef _load_cache(Baz self)
+
+    @staticmethod
+    cdef unique_ptr[cBaz] _make_instance(
+        cBaz* base_instance,
+        object intField,
+        object setField,
+        object mapField,
+        bytes binaryField
+    ) except *
+
+    @staticmethod
+    cdef create(shared_ptr[cBaz])
+
 
 
 cdef class Bar(thrift.py3.types.Struct):
@@ -124,6 +180,8 @@ cdef class Bar(thrift.py3.types.Struct):
     cdef Foo __fbthrift_cached_optionalStructField
     cdef List__Foo __fbthrift_cached_structListField
     cdef List__Foo __fbthrift_cached_optionalStructListField
+    cdef Baz __fbthrift_cached_unionField
+    cdef Baz __fbthrift_cached_optionalUnionField
 
     @staticmethod
     cdef create(shared_ptr[cBar])

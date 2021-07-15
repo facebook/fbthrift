@@ -123,19 +123,19 @@ func main() {
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg13 := flag.Arg(2)
-    mbTrans14 := thrift.NewMemoryBufferLen(len(arg13))
-    defer mbTrans14.Close()
-    _, err15 := mbTrans14.WriteString(arg13)
-    if err15 != nil {
+    arg17 := flag.Arg(2)
+    mbTrans18 := thrift.NewMemoryBufferLen(len(arg17))
+    defer mbTrans18.Close()
+    _, err19 := mbTrans18.WriteString(arg17)
+    if err19 != nil {
       Usage()
       return
     }
-    factory16 := thrift.NewSimpleJSONProtocolFactory()
-    jsProt17 := factory16.GetProtocol(mbTrans14)
+    factory20 := thrift.NewSimpleJSONProtocolFactory()
+    jsProt21 := factory20.GetProtocol(mbTrans18)
     argvalue1 := module.NewFoo()
-    err18 := argvalue1.Read(jsProt17)
-    if err18 != nil {
+    err22 := argvalue1.Read(jsProt21)
+    if err22 != nil {
       Usage()
       return
     }

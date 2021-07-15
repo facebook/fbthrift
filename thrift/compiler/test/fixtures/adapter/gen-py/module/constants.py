@@ -19,5 +19,5 @@ if sys.version_info[0] >= 3:
 import my
 
 
-from .ttypes import UTF8STRINGS, Foo, Bar, SetWithAdapter, ListWithElemAdapter, StructWithAdapter
+from .ttypes import UTF8STRINGS, Foo, Baz, Bar, SetWithAdapter, ListWithElemAdapter, StructWithAdapter, UnionWithAdapter
 

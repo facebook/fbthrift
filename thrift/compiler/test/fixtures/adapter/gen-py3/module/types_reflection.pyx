@@ -119,6 +119,74 @@ cdef __StructSpec get_reflection__Foo():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec.create(
+            id=8,
+            name="binaryField",
+            type=bytes,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__Baz():
+    cdef __StructSpec spec = __StructSpec.create(
+        name="Baz",
+        kind=__StructType.UNION,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=1,
+            name="intField",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=4,
+            name="setField",
+            type=_module_types.Set__string,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=6,
+            name="mapField",
+            type=_module_types.Map__string_List__string,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=8,
+            name="binaryField",
+            type=bytes,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__Bar():
     cdef _module_types.Bar defaults = _module_types.Bar.create(
@@ -173,6 +241,30 @@ cdef __StructSpec get_reflection__Bar():
             id=4,
             name="optionalStructListField",
             type=_module_types.List__Foo,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=5,
+            name="unionField",
+            type=_module_types.Baz,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=6,
+            name="optionalUnionField",
+            type=_module_types.Baz,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.OPTIONAL,
             default=None,

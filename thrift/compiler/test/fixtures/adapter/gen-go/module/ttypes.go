@@ -35,6 +35,12 @@ func StructWithAdapterPtr(v StructWithAdapter) *StructWithAdapter { return &v }
 
 func NewStructWithAdapter() StructWithAdapter { return NewBar() }
 
+type UnionWithAdapter = *Baz
+
+func UnionWithAdapterPtr(v UnionWithAdapter) *UnionWithAdapter { return &v }
+
+func NewUnionWithAdapter() UnionWithAdapter { return NewBaz() }
+
 // Attributes:
 //  - IntField
 //  - OptionalIntField
@@ -43,6 +49,7 @@ func NewStructWithAdapter() StructWithAdapter { return NewBar() }
 //  - OptionalSetField
 //  - MapField
 //  - OptionalMapField
+//  - BinaryField
 type Foo struct {
   IntField int32 `thrift:"intField,1" db:"intField" json:"intField"`
   OptionalIntField *int32 `thrift:"optionalIntField,2,optional" db:"optionalIntField" json:"optionalIntField,omitempty"`
@@ -51,6 +58,7 @@ type Foo struct {
   OptionalSetField SetWithAdapter `thrift:"optionalSetField,5,optional" db:"optionalSetField" json:"optionalSetField,omitempty"`
   MapField map[string]ListWithElemAdapter `thrift:"mapField,6" db:"mapField" json:"mapField"`
   OptionalMapField map[string]ListWithElemAdapter `thrift:"optionalMapField,7,optional" db:"optionalMapField" json:"optionalMapField,omitempty"`
+  BinaryField []byte `thrift:"binaryField,8" db:"binaryField" json:"binaryField"`
 }
 
 func NewFoo() *Foo {
@@ -92,6 +100,10 @@ var Foo_OptionalMapField_DEFAULT map[string]ListWithElemAdapter
 func (p *Foo) GetOptionalMapField() map[string]ListWithElemAdapter {
   return p.OptionalMapField
 }
+
+func (p *Foo) GetBinaryField() []byte {
+  return p.BinaryField
+}
 func (p *Foo) IsSetOptionalIntField() bool {
   return p != nil && p.OptionalIntField != nil
 }
@@ -123,6 +135,7 @@ func (p FooBuilder) Emit() *Foo{
     OptionalSetField: p.obj.OptionalSetField,
     MapField: p.obj.MapField,
     OptionalMapField: p.obj.OptionalMapField,
+    BinaryField: p.obj.BinaryField,
   }
 }
 
@@ -161,6 +174,11 @@ func (f *FooBuilder) OptionalMapField(optionalMapField map[string]ListWithElemAd
   return f
 }
 
+func (f *FooBuilder) BinaryField(binaryField []byte) *FooBuilder {
+  f.obj.BinaryField = binaryField
+  return f
+}
+
 func (f *Foo) SetIntField(intField int32) *Foo {
   f.IntField = intField
   return f
@@ -193,6 +211,11 @@ func (f *Foo) SetMapField(mapField map[string]ListWithElemAdapter) *Foo {
 
 func (f *Foo) SetOptionalMapField(optionalMapField map[string]ListWithElemAdapter) *Foo {
   f.OptionalMapField = optionalMapField
+  return f
+}
+
+func (f *Foo) SetBinaryField(binaryField []byte) *Foo {
+  f.BinaryField = binaryField
   return f
 }
 
@@ -235,6 +258,10 @@ func (p *Foo) Read(iprot thrift.Protocol) error {
       }
     case 7:
       if err := p.ReadField7(iprot); err != nil {
+        return err
+      }
+    case 8:
+      if err := p.ReadField8(iprot); err != nil {
         return err
       }
     default:
@@ -403,6 +430,15 @@ func (p *Foo)  ReadField7(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Foo)  ReadField8(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBinary(); err != nil {
+    return thrift.PrependError("error reading field 8: ", err)
+  } else {
+    p.BinaryField = v
+  }
+  return nil
+}
+
 func (p *Foo) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Foo"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -413,6 +449,7 @@ func (p *Foo) Write(oprot thrift.Protocol) error {
   if err := p.writeField5(oprot); err != nil { return err }
   if err := p.writeField6(oprot); err != nil { return err }
   if err := p.writeField7(oprot); err != nil { return err }
+  if err := p.writeField8(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -562,6 +599,16 @@ func (p *Foo) writeField7(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Foo) writeField8(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("binaryField", thrift.STRING, 8); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:binaryField: ", p), err) }
+  if err := oprot.WriteBinary(p.BinaryField); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.binaryField (8) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 8:binaryField: ", p), err) }
+  return err
+}
+
 func (p *Foo) String() string {
   if p == nil {
     return "<nil>"
@@ -579,7 +626,381 @@ func (p *Foo) String() string {
   optionalSetFieldVal := fmt.Sprintf("%v", p.OptionalSetField)
   mapFieldVal := fmt.Sprintf("%v", p.MapField)
   optionalMapFieldVal := fmt.Sprintf("%v", p.OptionalMapField)
-  return fmt.Sprintf("Foo({IntField:%s OptionalIntField:%s IntFieldWithDefault:%s SetField:%s OptionalSetField:%s MapField:%s OptionalMapField:%s})", intFieldVal, optionalIntFieldVal, intFieldWithDefaultVal, setFieldVal, optionalSetFieldVal, mapFieldVal, optionalMapFieldVal)
+  binaryFieldVal := fmt.Sprintf("%v", p.BinaryField)
+  return fmt.Sprintf("Foo({IntField:%s OptionalIntField:%s IntFieldWithDefault:%s SetField:%s OptionalSetField:%s MapField:%s OptionalMapField:%s BinaryField:%s})", intFieldVal, optionalIntFieldVal, intFieldWithDefaultVal, setFieldVal, optionalSetFieldVal, mapFieldVal, optionalMapFieldVal, binaryFieldVal)
+}
+
+// Attributes:
+//  - IntField
+//  - SetField
+//  - MapField
+//  - BinaryField
+type Baz struct {
+  IntField *int32 `thrift:"intField,1,optional" db:"intField" json:"intField,omitempty"`
+  // unused fields # 2 to 3
+  SetField SetWithAdapter `thrift:"setField,4,optional" db:"setField" json:"setField,omitempty"`
+  // unused field # 5
+  MapField map[string]ListWithElemAdapter `thrift:"mapField,6,optional" db:"mapField" json:"mapField,omitempty"`
+  // unused field # 7
+  BinaryField []byte `thrift:"binaryField,8,optional" db:"binaryField" json:"binaryField,omitempty"`
+}
+
+func NewBaz() *Baz {
+  return &Baz{}
+}
+
+var Baz_IntField_DEFAULT int32
+func (p *Baz) GetIntField() int32 {
+  if !p.IsSetIntField() {
+    return Baz_IntField_DEFAULT
+  }
+return *p.IntField
+}
+var Baz_SetField_DEFAULT SetWithAdapter
+
+func (p *Baz) GetSetField() SetWithAdapter {
+  return p.SetField
+}
+var Baz_MapField_DEFAULT map[string]ListWithElemAdapter
+
+func (p *Baz) GetMapField() map[string]ListWithElemAdapter {
+  return p.MapField
+}
+var Baz_BinaryField_DEFAULT []byte
+
+func (p *Baz) GetBinaryField() []byte {
+  return p.BinaryField
+}
+func (p *Baz) CountSetFieldsBaz() int {
+  count := 0
+  if (p.IsSetIntField()) {
+    count++
+  }
+  if (p.IsSetSetField()) {
+    count++
+  }
+  if (p.IsSetMapField()) {
+    count++
+  }
+  if (p.IsSetBinaryField()) {
+    count++
+  }
+  return count
+
+}
+
+func (p *Baz) IsSetIntField() bool {
+  return p != nil && p.IntField != nil
+}
+
+func (p *Baz) IsSetSetField() bool {
+  return p != nil && p.SetField != nil
+}
+
+func (p *Baz) IsSetMapField() bool {
+  return p != nil && p.MapField != nil
+}
+
+func (p *Baz) IsSetBinaryField() bool {
+  return p != nil && p.BinaryField != nil
+}
+
+type BazBuilder struct {
+  obj *Baz
+}
+
+func NewBazBuilder() *BazBuilder{
+  return &BazBuilder{
+    obj: NewBaz(),
+  }
+}
+
+func (p BazBuilder) Emit() *Baz{
+  return &Baz{
+    IntField: p.obj.IntField,
+    SetField: p.obj.SetField,
+    MapField: p.obj.MapField,
+    BinaryField: p.obj.BinaryField,
+  }
+}
+
+func (b *BazBuilder) IntField(intField *int32) *BazBuilder {
+  b.obj.IntField = intField
+  return b
+}
+
+func (b *BazBuilder) SetField(setField SetWithAdapter) *BazBuilder {
+  b.obj.SetField = setField
+  return b
+}
+
+func (b *BazBuilder) MapField(mapField map[string]ListWithElemAdapter) *BazBuilder {
+  b.obj.MapField = mapField
+  return b
+}
+
+func (b *BazBuilder) BinaryField(binaryField []byte) *BazBuilder {
+  b.obj.BinaryField = binaryField
+  return b
+}
+
+func (b *Baz) SetIntField(intField *int32) *Baz {
+  b.IntField = intField
+  return b
+}
+
+func (b *Baz) SetSetField(setField SetWithAdapter) *Baz {
+  b.SetField = setField
+  return b
+}
+
+func (b *Baz) SetMapField(mapField map[string]ListWithElemAdapter) *Baz {
+  b.MapField = mapField
+  return b
+}
+
+func (b *Baz) SetBinaryField(binaryField []byte) *Baz {
+  b.BinaryField = binaryField
+  return b
+}
+
+func (p *Baz) Read(iprot thrift.Protocol) error {
+  if _, err := iprot.ReadStructBegin(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
+  }
+
+
+  for {
+    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
+    if err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
+    }
+    if fieldTypeId == thrift.STOP { break; }
+    switch fieldId {
+    case 1:
+      if err := p.ReadField1(iprot); err != nil {
+        return err
+      }
+    case 4:
+      if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 6:
+      if err := p.ReadField6(iprot); err != nil {
+        return err
+      }
+    case 8:
+      if err := p.ReadField8(iprot); err != nil {
+        return err
+      }
+    default:
+      if err := iprot.Skip(fieldTypeId); err != nil {
+        return err
+      }
+    }
+    if err := iprot.ReadFieldEnd(); err != nil {
+      return err
+    }
+  }
+  if err := iprot.ReadStructEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
+  }
+  return nil
+}
+
+func (p *Baz)  ReadField1(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadI32(); err != nil {
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.IntField = &v
+  }
+  return nil
+}
+
+func (p *Baz)  ReadField4(iprot thrift.Protocol) error {
+  _, size, err := iprot.ReadSetBegin()
+  if err != nil {
+    return thrift.PrependError("error reading set begin: ", err)
+  }
+  tSet := make(SetWithAdapter, 0, size)
+  p.SetField =  tSet
+  for i := 0; i < size; i ++ {
+    var _elem8 string
+    if v, err := iprot.ReadString(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem8 = v
+    }
+    p.SetField = append(p.SetField, _elem8)
+  }
+  if err := iprot.ReadSetEnd(); err != nil {
+    return thrift.PrependError("error reading set end: ", err)
+  }
+  return nil
+}
+
+func (p *Baz)  ReadField6(iprot thrift.Protocol) error {
+  _, _, size, err := iprot.ReadMapBegin()
+  if err != nil {
+    return thrift.PrependError("error reading map begin: ", err)
+  }
+  tMap := make(map[string]ListWithElemAdapter, size)
+  p.MapField =  tMap
+  for i := 0; i < size; i ++ {
+    var _key9 string
+    if v, err := iprot.ReadString(); err != nil {
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key9 = v
+    }
+    _, size, err := iprot.ReadListBegin()
+    if err != nil {
+      return thrift.PrependError("error reading list begin: ", err)
+    }
+    tSlice := make(ListWithElemAdapter, 0, size)
+    _val10 :=  tSlice
+    for i := 0; i < size; i ++ {
+      var _elem11 string
+      if v, err := iprot.ReadString(); err != nil {
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _elem11 = v
+      }
+      _val10 = append(_val10, _elem11)
+    }
+    if err := iprot.ReadListEnd(); err != nil {
+      return thrift.PrependError("error reading list end: ", err)
+    }
+    p.MapField[_key9] = _val10
+  }
+  if err := iprot.ReadMapEnd(); err != nil {
+    return thrift.PrependError("error reading map end: ", err)
+  }
+  return nil
+}
+
+func (p *Baz)  ReadField8(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBinary(); err != nil {
+    return thrift.PrependError("error reading field 8: ", err)
+  } else {
+    p.BinaryField = v
+  }
+  return nil
+}
+
+func (p *Baz) Write(oprot thrift.Protocol) error {
+  if c := p.CountSetFieldsBaz(); c > 1 {
+    return fmt.Errorf("%T write union: no more than one field must be set (%d set).", p, c)
+  }
+  if err := oprot.WriteStructBegin("Baz"); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
+  if err := p.writeField1(oprot); err != nil { return err }
+  if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField6(oprot); err != nil { return err }
+  if err := p.writeField8(oprot); err != nil { return err }
+  if err := oprot.WriteFieldStop(); err != nil {
+    return thrift.PrependError("write field stop error: ", err) }
+  if err := oprot.WriteStructEnd(); err != nil {
+    return thrift.PrependError("write struct stop error: ", err) }
+  return nil
+}
+
+func (p *Baz) writeField1(oprot thrift.Protocol) (err error) {
+  if p.IsSetIntField() {
+    if err := oprot.WriteFieldBegin("intField", thrift.I32, 1); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:intField: ", p), err) }
+    if err := oprot.WriteI32(int32(*p.IntField)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.intField (1) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 1:intField: ", p), err) }
+  }
+  return err
+}
+
+func (p *Baz) writeField4(oprot thrift.Protocol) (err error) {
+  if p.IsSetSetField() {
+    if err := oprot.WriteFieldBegin("setField", thrift.SET, 4); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:setField: ", p), err) }
+    if err := oprot.WriteSetBegin(thrift.STRING, len(p.SetField)); err != nil {
+      return thrift.PrependError("error writing set begin: ", err)
+    }
+    set := make(map[string]bool, len(p.SetField))
+    for _, v := range p.SetField {
+      if ok := set[v]; ok {
+        return thrift.PrependError("", fmt.Errorf("%T error writing set field: slice is not unique", v))
+      }
+      set[v] = true
+    }
+    for _, v := range p.SetField {
+      if err := oprot.WriteString(string(v)); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+    }
+    if err := oprot.WriteSetEnd(); err != nil {
+      return thrift.PrependError("error writing set end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 4:setField: ", p), err) }
+  }
+  return err
+}
+
+func (p *Baz) writeField6(oprot thrift.Protocol) (err error) {
+  if p.IsSetMapField() {
+    if err := oprot.WriteFieldBegin("mapField", thrift.MAP, 6); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:mapField: ", p), err) }
+    if err := oprot.WriteMapBegin(thrift.STRING, thrift.LIST, len(p.MapField)); err != nil {
+      return thrift.PrependError("error writing map begin: ", err)
+    }
+    for k, v := range p.MapField {
+      if err := oprot.WriteString(string(k)); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+      if err := oprot.WriteListBegin(thrift.STRING, len(v)); err != nil {
+        return thrift.PrependError("error writing list begin: ", err)
+      }
+      for _, v := range v {
+        if err := oprot.WriteString(string(v)); err != nil {
+        return thrift.PrependError(fmt.Sprintf("%T. (0) field write error: ", p), err) }
+      }
+      if err := oprot.WriteListEnd(); err != nil {
+        return thrift.PrependError("error writing list end: ", err)
+      }
+    }
+    if err := oprot.WriteMapEnd(); err != nil {
+      return thrift.PrependError("error writing map end: ", err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 6:mapField: ", p), err) }
+  }
+  return err
+}
+
+func (p *Baz) writeField8(oprot thrift.Protocol) (err error) {
+  if p.IsSetBinaryField() {
+    if err := oprot.WriteFieldBegin("binaryField", thrift.STRING, 8); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 8:binaryField: ", p), err) }
+    if err := oprot.WriteBinary(p.BinaryField); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.binaryField (8) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 8:binaryField: ", p), err) }
+  }
+  return err
+}
+
+func (p *Baz) String() string {
+  if p == nil {
+    return "<nil>"
+  }
+
+  var intFieldVal string
+  if p.IntField == nil {
+    intFieldVal = "<nil>"
+  } else {
+    intFieldVal = fmt.Sprintf("%v", *p.IntField)
+  }
+  setFieldVal := fmt.Sprintf("%v", p.SetField)
+  mapFieldVal := fmt.Sprintf("%v", p.MapField)
+  binaryFieldVal := fmt.Sprintf("%v", p.BinaryField)
+  return fmt.Sprintf("Baz({IntField:%s SetField:%s MapField:%s BinaryField:%s})", intFieldVal, setFieldVal, mapFieldVal, binaryFieldVal)
 }
 
 // Attributes:
@@ -587,11 +1008,15 @@ func (p *Foo) String() string {
 //  - OptionalStructField
 //  - StructListField
 //  - OptionalStructListField
+//  - UnionField
+//  - OptionalUnionField
 type Bar struct {
   StructField *Foo `thrift:"structField,1" db:"structField" json:"structField"`
   OptionalStructField *Foo `thrift:"optionalStructField,2,optional" db:"optionalStructField" json:"optionalStructField,omitempty"`
   StructListField []*Foo `thrift:"structListField,3" db:"structListField" json:"structListField"`
   OptionalStructListField []*Foo `thrift:"optionalStructListField,4,optional" db:"optionalStructListField" json:"optionalStructListField,omitempty"`
+  UnionField *Baz `thrift:"unionField,5" db:"unionField" json:"unionField"`
+  OptionalUnionField *Baz `thrift:"optionalUnionField,6,optional" db:"optionalUnionField" json:"optionalUnionField,omitempty"`
 }
 
 func NewBar() *Bar {
@@ -623,6 +1048,20 @@ var Bar_OptionalStructListField_DEFAULT []*Foo
 func (p *Bar) GetOptionalStructListField() []*Foo {
   return p.OptionalStructListField
 }
+var Bar_UnionField_DEFAULT *Baz
+func (p *Bar) GetUnionField() *Baz {
+  if !p.IsSetUnionField() {
+    return Bar_UnionField_DEFAULT
+  }
+return p.UnionField
+}
+var Bar_OptionalUnionField_DEFAULT *Baz
+func (p *Bar) GetOptionalUnionField() *Baz {
+  if !p.IsSetOptionalUnionField() {
+    return Bar_OptionalUnionField_DEFAULT
+  }
+return p.OptionalUnionField
+}
 func (p *Bar) IsSetStructField() bool {
   return p != nil && p.StructField != nil
 }
@@ -633,6 +1072,14 @@ func (p *Bar) IsSetOptionalStructField() bool {
 
 func (p *Bar) IsSetOptionalStructListField() bool {
   return p != nil && p.OptionalStructListField != nil
+}
+
+func (p *Bar) IsSetUnionField() bool {
+  return p != nil && p.UnionField != nil
+}
+
+func (p *Bar) IsSetOptionalUnionField() bool {
+  return p != nil && p.OptionalUnionField != nil
 }
 
 type BarBuilder struct {
@@ -651,6 +1098,8 @@ func (p BarBuilder) Emit() *Bar{
     OptionalStructField: p.obj.OptionalStructField,
     StructListField: p.obj.StructListField,
     OptionalStructListField: p.obj.OptionalStructListField,
+    UnionField: p.obj.UnionField,
+    OptionalUnionField: p.obj.OptionalUnionField,
   }
 }
 
@@ -674,6 +1123,16 @@ func (b *BarBuilder) OptionalStructListField(optionalStructListField []*Foo) *Ba
   return b
 }
 
+func (b *BarBuilder) UnionField(unionField *Baz) *BarBuilder {
+  b.obj.UnionField = unionField
+  return b
+}
+
+func (b *BarBuilder) OptionalUnionField(optionalUnionField *Baz) *BarBuilder {
+  b.obj.OptionalUnionField = optionalUnionField
+  return b
+}
+
 func (b *Bar) SetStructField(structField *Foo) *Bar {
   b.StructField = structField
   return b
@@ -691,6 +1150,16 @@ func (b *Bar) SetStructListField(structListField []*Foo) *Bar {
 
 func (b *Bar) SetOptionalStructListField(optionalStructListField []*Foo) *Bar {
   b.OptionalStructListField = optionalStructListField
+  return b
+}
+
+func (b *Bar) SetUnionField(unionField *Baz) *Bar {
+  b.UnionField = unionField
+  return b
+}
+
+func (b *Bar) SetOptionalUnionField(optionalUnionField *Baz) *Bar {
+  b.OptionalUnionField = optionalUnionField
   return b
 }
 
@@ -721,6 +1190,14 @@ func (p *Bar) Read(iprot thrift.Protocol) error {
       }
     case 4:
       if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
+        return err
+      }
+    case 6:
+      if err := p.ReadField6(iprot); err != nil {
         return err
       }
     default:
@@ -762,11 +1239,11 @@ func (p *Bar)  ReadField3(iprot thrift.Protocol) error {
   tSlice := make([]*Foo, 0, size)
   p.StructListField =  tSlice
   for i := 0; i < size; i ++ {
-    _elem8 := NewFoo()
-    if err := _elem8.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem8), err)
+    _elem12 := NewFoo()
+    if err := _elem12.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem12), err)
     }
-    p.StructListField = append(p.StructListField, _elem8)
+    p.StructListField = append(p.StructListField, _elem12)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
@@ -782,14 +1259,30 @@ func (p *Bar)  ReadField4(iprot thrift.Protocol) error {
   tSlice := make([]*Foo, 0, size)
   p.OptionalStructListField =  tSlice
   for i := 0; i < size; i ++ {
-    _elem9 := NewFoo()
-    if err := _elem9.Read(iprot); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem9), err)
+    _elem13 := NewFoo()
+    if err := _elem13.Read(iprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", _elem13), err)
     }
-    p.OptionalStructListField = append(p.OptionalStructListField, _elem9)
+    p.OptionalStructListField = append(p.OptionalStructListField, _elem13)
   }
   if err := iprot.ReadListEnd(); err != nil {
     return thrift.PrependError("error reading list end: ", err)
+  }
+  return nil
+}
+
+func (p *Bar)  ReadField5(iprot thrift.Protocol) error {
+  p.UnionField = NewBaz()
+  if err := p.UnionField.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.UnionField), err)
+  }
+  return nil
+}
+
+func (p *Bar)  ReadField6(iprot thrift.Protocol) error {
+  p.OptionalUnionField = NewBaz()
+  if err := p.OptionalUnionField.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.OptionalUnionField), err)
   }
   return nil
 }
@@ -801,6 +1294,8 @@ func (p *Bar) Write(oprot thrift.Protocol) error {
   if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField3(oprot); err != nil { return err }
   if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
+  if err := p.writeField6(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -872,6 +1367,30 @@ func (p *Bar) writeField4(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Bar) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("unionField", thrift.STRUCT, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:unionField: ", p), err) }
+  if err := p.UnionField.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.UnionField), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:unionField: ", p), err) }
+  return err
+}
+
+func (p *Bar) writeField6(oprot thrift.Protocol) (err error) {
+  if p.IsSetOptionalUnionField() {
+    if err := oprot.WriteFieldBegin("optionalUnionField", thrift.STRUCT, 6); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:optionalUnionField: ", p), err) }
+    if err := p.OptionalUnionField.Write(oprot); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.OptionalUnionField), err)
+    }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 6:optionalUnionField: ", p), err) }
+  }
+  return err
+}
+
 func (p *Bar) String() string {
   if p == nil {
     return "<nil>"
@@ -891,6 +1410,18 @@ func (p *Bar) String() string {
   }
   structListFieldVal := fmt.Sprintf("%v", p.StructListField)
   optionalStructListFieldVal := fmt.Sprintf("%v", p.OptionalStructListField)
-  return fmt.Sprintf("Bar({StructField:%s OptionalStructField:%s StructListField:%s OptionalStructListField:%s})", structFieldVal, optionalStructFieldVal, structListFieldVal, optionalStructListFieldVal)
+  var unionFieldVal string
+  if p.UnionField == nil {
+    unionFieldVal = "<nil>"
+  } else {
+    unionFieldVal = fmt.Sprintf("%v", p.UnionField)
+  }
+  var optionalUnionFieldVal string
+  if p.OptionalUnionField == nil {
+    optionalUnionFieldVal = "<nil>"
+  } else {
+    optionalUnionFieldVal = fmt.Sprintf("%v", p.OptionalUnionField)
+  }
+  return fmt.Sprintf("Bar({StructField:%s OptionalStructField:%s StructListField:%s OptionalStructListField:%s UnionField:%s OptionalUnionField:%s})", structFieldVal, optionalStructFieldVal, structListFieldVal, optionalStructListFieldVal, unionFieldVal, optionalUnionFieldVal)
 }
 

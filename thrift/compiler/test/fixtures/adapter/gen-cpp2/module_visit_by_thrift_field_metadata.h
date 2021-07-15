@@ -32,8 +32,29 @@ struct VisitByThriftId<::cpp2::Foo> {
       return f(5, static_cast<T&&>(t).mapField_ref());
     case 7:
       return f(6, static_cast<T&&>(t).optionalMapField_ref());
+    case 8:
+      return f(7, static_cast<T&&>(t).binaryField_ref());
     default:
       throwInvalidThriftId(id, "::cpp2::Foo");
+    }
+  }
+};
+
+template <>
+struct VisitByThriftId<::cpp2::Baz> {
+  template <typename F, typename T>
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (id) {
+    case 1:
+      return f(0, static_cast<T&&>(t).intField_ref());
+    case 4:
+      return f(1, static_cast<T&&>(t).setField_ref());
+    case 6:
+      return f(2, static_cast<T&&>(t).mapField_ref());
+    case 8:
+      return f(3, static_cast<T&&>(t).binaryField_ref());
+    default:
+      throwInvalidThriftId(id, "::cpp2::Baz");
     }
   }
 };
@@ -51,6 +72,10 @@ struct VisitByThriftId<::cpp2::Bar> {
       return f(2, static_cast<T&&>(t).structListField_ref());
     case 4:
       return f(3, static_cast<T&&>(t).optionalStructListField_ref());
+    case 5:
+      return f(4, static_cast<T&&>(t).unionField_ref());
+    case 6:
+      return f(5, static_cast<T&&>(t).optionalUnionField_ref());
     default:
       throwInvalidThriftId(id, "::cpp2::Bar");
     }

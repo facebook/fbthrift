@@ -91,6 +91,11 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'format' => 'collection',
     ),
+    8 => shape(
+      'var' => 'binaryField',
+      'adapter' => \Adapter1::class,
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'intField' => 1,
@@ -100,6 +105,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     'optionalSetField' => 5,
     'mapField' => 6,
     'optionalMapField' => 7,
+    'binaryField' => 8,
   ];
 
   const type TConstructorShape = shape(
@@ -110,6 +116,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     ?'optionalSetField' => ?\Adapter2::THackType,
     ?'mapField' => ?\Adapter3::THackType,
     ?'optionalMapField' => ?\Adapter3::THackType,
+    ?'binaryField' => ?\Adapter1::THackType,
   );
 
   const type TShape = shape(
@@ -120,8 +127,9 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     ?'optionalSetField' => ?\Adapter2::THackType,
     'mapField' => \Adapter3::THackType,
     ?'optionalMapField' => ?\Adapter3::THackType,
+    'binaryField' => \Adapter1::THackType,
   );
-  const int STRUCTURAL_ID = 7770438056954663463;
+  const int STRUCTURAL_ID = 3693521661416523209;
   /**
    * Original thrift field:-
    * 1: i32 intField
@@ -157,8 +165,13 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
    * 7: map<string, list<string>> optionalMapField
    */
   public ?\Adapter3::THackType $optionalMapField;
+  /**
+   * Original thrift field:-
+   * 8: binary binaryField
+   */
+  public \Adapter1::THackType $binaryField;
 
-  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null  )[] {
+  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter1::THackType $optionalIntField = null, ?\Adapter1::THackType $intFieldWithDefault = null, ?\Adapter2::THackType $setField = null, ?\Adapter2::THackType $optionalSetField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter3::THackType $optionalMapField = null, ?\Adapter1::THackType $binaryField = null  )[] {
     $this->intField = $intField ?? \Adapter1::fromThrift(0);
     $this->optionalIntField = $optionalIntField;
     $this->intFieldWithDefault = $intFieldWithDefault ?? \Adapter1::fromThrift(13);
@@ -166,6 +179,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
     $this->optionalSetField = $optionalSetField;
     $this->mapField = $mapField ?? \Adapter3::fromThrift(Map {});
     $this->optionalMapField = $optionalMapField;
+    $this->binaryField = $binaryField ?? \Adapter1::fromThrift('');
   }
 
   public static function withDefaultValues()[]: this {
@@ -181,6 +195,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'optionalSetField'),
       Shapes::idx($shape, 'mapField'),
       Shapes::idx($shape, 'optionalMapField'),
+      Shapes::idx($shape, 'binaryField'),
     );
   }
 
@@ -385,6 +400,17 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
               "is_optional" => true,
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 8,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                )
+              ),
+              "name" => "binaryField",
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -412,6 +438,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'optionalMapField') === null ? null : ((new Map($shape['optionalMapField']))->map(
         $val1 ==> (new Vector($val1)),
       )),
+      $shape['binaryField'],
     );
   }
 
@@ -431,6 +458,7 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
         ($_val0) ==> vec($_val0),
       )
         |> $$ === null ? null : dict($$),
+      'binaryField' => $this->binaryField,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -518,6 +546,475 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       }
       $this->optionalMapField = $_container31;
     }    
+    if (idx($parsed, 'binaryField') !== null) {
+      $this->binaryField = /* HH_FIXME[4110] */ $parsed['binaryField'];
+    }    
+  }
+
+  private static function __hackAdapterTypeChecks()[]: void {
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, int>();
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, string>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, Set<string>>();
+    \ThriftUtil::requireSameType<\Adapter2::TThriftType, Vector<\Adapter1::THackType>>();
+    \ThriftUtil::requireSameType<\Adapter3::TThriftType, Map<string, \Adapter2::THackType>>();
+  }
+
+}
+
+enum BazEnum: int {
+  _EMPTY_ = 0;
+  intField = 1;
+  setField = 4;
+  mapField = 6;
+  binaryField = 8;
+}
+
+/**
+ * Original thrift struct:-
+ * Baz
+ */
+class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStruct {
+  use \ThriftUnionSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'intField',
+      'union' => true,
+      'adapter' => \Adapter1::class,
+      'type' => \TType::I32,
+    ),
+    4 => shape(
+      'var' => 'setField',
+      'union' => true,
+      'adapter' => \Adapter2::class,
+      'type' => \TType::SET,
+      'etype' => \TType::STRING,
+      'elem' => shape(
+        'type' => \TType::STRING,
+      ),
+      'format' => 'collection',
+    ),
+    6 => shape(
+      'var' => 'mapField',
+      'union' => true,
+      'adapter' => \Adapter3::class,
+      'type' => \TType::MAP,
+      'ktype' => \TType::STRING,
+      'vtype' => \TType::LST,
+      'key' => shape(
+        'type' => \TType::STRING,
+      ),
+      'val' => shape(
+        'adapter' => \Adapter2::class,
+        'type' => \TType::LST,
+        'etype' => \TType::STRING,
+        'elem' => shape(
+          'adapter' => \Adapter1::class,
+          'type' => \TType::STRING,
+        ),
+        'format' => 'collection',
+      ),
+      'format' => 'collection',
+    ),
+    8 => shape(
+      'var' => 'binaryField',
+      'union' => true,
+      'adapter' => \Adapter1::class,
+      'type' => \TType::STRING,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'intField' => 1,
+    'setField' => 4,
+    'mapField' => 6,
+    'binaryField' => 8,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'intField' => ?\Adapter1::THackType,
+    ?'setField' => ?\Adapter2::THackType,
+    ?'mapField' => ?\Adapter3::THackType,
+    ?'binaryField' => ?\Adapter1::THackType,
+  );
+
+  const type TShape = shape(
+    ?'intField' => ?\Adapter1::THackType,
+    ?'setField' => ?\Adapter2::THackType,
+    ?'mapField' => ?\Adapter3::THackType,
+    ?'binaryField' => ?\Adapter1::THackType,
+  );
+  const int STRUCTURAL_ID = 2036191889248458060;
+  /**
+   * Original thrift field:-
+   * 1: i32 intField
+   */
+  public ?\Adapter1::THackType $intField;
+  /**
+   * Original thrift field:-
+   * 4: set<string> setField
+   */
+  public ?\Adapter2::THackType $setField;
+  /**
+   * Original thrift field:-
+   * 6: map<string, list<string>> mapField
+   */
+  public ?\Adapter3::THackType $mapField;
+  /**
+   * Original thrift field:-
+   * 8: binary binaryField
+   */
+  public ?\Adapter1::THackType $binaryField;
+  protected BazEnum $_type = BazEnum::_EMPTY_;
+
+  public function __construct(?\Adapter1::THackType $intField = null, ?\Adapter2::THackType $setField = null, ?\Adapter3::THackType $mapField = null, ?\Adapter1::THackType $binaryField = null  )[] {
+    $this->_type = BazEnum::_EMPTY_;
+    if ($intField !== null) {
+      $this->intField = $intField;
+      $this->_type = BazEnum::intField;
+    }
+    if ($setField !== null) {
+      $this->setField = $setField;
+      $this->_type = BazEnum::setField;
+    }
+    if ($mapField !== null) {
+      $this->mapField = $mapField;
+      $this->_type = BazEnum::mapField;
+    }
+    if ($binaryField !== null) {
+      $this->binaryField = $binaryField;
+      $this->_type = BazEnum::binaryField;
+    }
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'intField'),
+      Shapes::idx($shape, 'setField'),
+      Shapes::idx($shape, 'mapField'),
+      Shapes::idx($shape, 'binaryField'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Baz';
+  }
+
+  public function getType()[]: BazEnum {
+    return $this->_type;
+  }
+
+  public function reset()[write_props]: void {
+    switch ($this->_type) {
+      case BazEnum::intField:
+        $this->intField = null;
+        break;
+      case BazEnum::setField:
+        $this->setField = null;
+        break;
+      case BazEnum::mapField:
+        $this->mapField = null;
+        break;
+      case BazEnum::binaryField:
+        $this->binaryField = null;
+        break;
+      case BazEnum::_EMPTY_:
+        break;
+    }
+    $this->_type = BazEnum::_EMPTY_;
+}
+
+  public function set_intField(\Adapter1::THackType $intField)[write_props]: this {
+    return $this->setx_intField($intField);
+   }
+
+  public function setx_intField(\Adapter1::THackType $intField)[write_props]: this {
+    $this->reset();
+    $this->_type = BazEnum::intField;
+    $this->intField = $intField;
+    return $this;
+  }
+
+  public function get_intField()[]: \Adapter1::THackType {
+    return $this->getx_intField();
+  }
+
+  public function getx_intField()[]: \Adapter1::THackType {
+    invariant(
+      $this->_type === BazEnum::intField,
+      'get_intField called on an instance of Baz whose current type is %s',
+      (string)$this->_type,
+    );
+    return $this->intField as nonnull;
+  }
+
+  public function set_setField(\Adapter2::THackType $setField)[write_props]: this {
+    return $this->setx_setField($setField);
+   }
+
+  public function setx_setField(\Adapter2::THackType $setField)[write_props]: this {
+    $this->reset();
+    $this->_type = BazEnum::setField;
+    $this->setField = $setField;
+    return $this;
+  }
+
+  public function get_setField()[]: \Adapter2::THackType {
+    return $this->getx_setField();
+  }
+
+  public function getx_setField()[]: \Adapter2::THackType {
+    invariant(
+      $this->_type === BazEnum::setField,
+      'get_setField called on an instance of Baz whose current type is %s',
+      (string)$this->_type,
+    );
+    return $this->setField as nonnull;
+  }
+
+  public function set_mapField(\Adapter3::THackType $mapField)[write_props]: this {
+    return $this->setx_mapField($mapField);
+   }
+
+  public function setx_mapField(\Adapter3::THackType $mapField)[write_props]: this {
+    $this->reset();
+    $this->_type = BazEnum::mapField;
+    $this->mapField = $mapField;
+    return $this;
+  }
+
+  public function get_mapField()[]: \Adapter3::THackType {
+    return $this->getx_mapField();
+  }
+
+  public function getx_mapField()[]: \Adapter3::THackType {
+    invariant(
+      $this->_type === BazEnum::mapField,
+      'get_mapField called on an instance of Baz whose current type is %s',
+      (string)$this->_type,
+    );
+    return $this->mapField as nonnull;
+  }
+
+  public function set_binaryField(\Adapter1::THackType $binaryField)[write_props]: this {
+    return $this->setx_binaryField($binaryField);
+   }
+
+  public function setx_binaryField(\Adapter1::THackType $binaryField)[write_props]: this {
+    $this->reset();
+    $this->_type = BazEnum::binaryField;
+    $this->binaryField = $binaryField;
+    return $this;
+  }
+
+  public function get_binaryField()[]: \Adapter1::THackType {
+    return $this->getx_binaryField();
+  }
+
+  public function getx_binaryField()[]: \Adapter1::THackType {
+    invariant(
+      $this->_type === BazEnum::binaryField,
+      'get_binaryField called on an instance of Baz whose current type is %s',
+      (string)$this->_type,
+    );
+    return $this->binaryField as nonnull;
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Baz",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "intField",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.SetWithAdapter",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_set" => tmeta_ThriftSetType::fromShape(
+                            shape(
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "setField",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 6,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                            shape(
+                              "name" => "module.ListWithElemAdapter",
+                              "underlyingType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                                    shape(
+                                      "name" => "module.ListWithElemAdapter",
+                                      "underlyingType" => tmeta_ThriftType::fromShape(
+                                        shape(
+                                          "t_list" => tmeta_ThriftListType::fromShape(
+                                            shape(
+                                              "valueType" => tmeta_ThriftType::fromShape(
+                                                shape(
+                                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                                )
+                                              ),
+                                            )
+                                          ),
+                                        )
+                                      ),
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "mapField",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 8,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                )
+              ),
+              "name" => "binaryField",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'intField'),
+      Shapes::idx($shape, 'setField') === null ? null : (new Set(Keyset\keys($shape['setField']))),
+      Shapes::idx($shape, 'mapField') === null ? null : ((new Map($shape['mapField']))->map(
+        $val0 ==> (new Vector($val0)),
+      )),
+      Shapes::idx($shape, 'binaryField'),
+    );
+  }
+
+  public function __toShape()[]: self::TShape {
+    return shape(
+      'intField' => $this->intField,
+      'setField' => $this->setField
+        |> $$ === null ? null : ThriftUtil::toDArray(Dict\fill_keys($$->toValuesArray(), true), static::class),
+      'mapField' => $this->mapField?->map(
+        ($_val0) ==> vec($_val0),
+      )
+        |> $$ === null ? null : dict($$),
+      'binaryField' => $this->binaryField,
+    );
+  }
+  public function readFromJson(string $jsonText): void {
+    $this->_type = BazEnum::_EMPTY_;
+    $parsed = json_decode($jsonText, true);
+
+    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
+      throw new \TProtocolException("Cannot parse the given json string.");
+    }
+
+    if (idx($parsed, 'intField') !== null) {
+      $_tmp0 = (int)/* HH_FIXME[4110] */ $parsed['intField'];
+      if ($_tmp0 > 0x7fffffff) {
+        throw new \TProtocolException("number exceeds limit in field");
+      } else {
+        $this->intField = (int)$_tmp0;
+      }
+      $this->_type = BazEnum::intField;
+    }    
+    if (idx($parsed, 'setField') !== null) {
+      $_json4 = /* HH_FIXME[4110] */ $parsed['setField'];
+      $_container5 = Set {};
+      foreach(/* HH_FIXME[4110] */ $_json4 as $_key2 => $_value3) {
+        $_elem6 = '';
+        $_elem6 = $_value3;
+        $_container5->add($_elem6);
+      }
+      $this->setField = $_container5;
+      $this->_type = BazEnum::setField;
+    }    
+    if (idx($parsed, 'mapField') !== null) {
+      $_json10 = /* HH_FIXME[4110] */ $parsed['mapField'];
+      $_container11 = Map {};
+      foreach(/* HH_FIXME[4110] */ $_json10 as $_key8 => $_value9) {
+        $_value12 = Vector {};
+        $_json16 = $_value9;
+        $_container17 = Vector {};
+        foreach(/* HH_FIXME[4110] */ $_json16 as $_key14 => $_value15) {
+          $_elem18 = '';
+          $_elem18 = $_value15;
+          $_container17 []= $_elem18;
+        }
+        $_value12 = $_container17;
+        $_container11[$_key8] = $_value12;
+      }
+      $this->mapField = $_container11;
+      $this->_type = BazEnum::mapField;
+    }    
+    if (idx($parsed, 'binaryField') !== null) {
+      $this->binaryField = /* HH_FIXME[4110] */ $parsed['binaryField'];
+      $this->_type = BazEnum::binaryField;
+    }    
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
@@ -572,12 +1069,26 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
       ),
       'format' => 'collection',
     ),
+    5 => shape(
+      'var' => 'unionField',
+      'adapter' => \Adapter1::class,
+      'type' => \TType::STRUCT,
+      'class' => Baz::class,
+    ),
+    6 => shape(
+      'var' => 'optionalUnionField',
+      'adapter' => \Adapter1::class,
+      'type' => \TType::STRUCT,
+      'class' => Baz::class,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'structField' => 1,
     'optionalStructField' => 2,
     'structListField' => 3,
     'optionalStructListField' => 4,
+    'unionField' => 5,
+    'optionalUnionField' => 6,
   ];
 
   const type TConstructorShape = shape(
@@ -585,6 +1096,8 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
     ?'optionalStructField' => ?\Adapter1::THackType,
     ?'structListField' => ?Vector<\Adapter1::THackType>,
     ?'optionalStructListField' => ?Vector<\Adapter1::THackType>,
+    ?'unionField' => ?\Adapter1::THackType,
+    ?'optionalUnionField' => ?\Adapter1::THackType,
   );
 
   const type TShape = shape(
@@ -592,8 +1105,10 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
     ?'optionalStructField' => ?\Adapter1::THackType,
     'structListField' => vec<\Adapter1::THackType>,
     ?'optionalStructListField' => ?vec<\Adapter1::THackType>,
+    ?'unionField' => ?\Adapter1::THackType,
+    ?'optionalUnionField' => ?\Adapter1::THackType,
   );
-  const int STRUCTURAL_ID = 71551725779511518;
+  const int STRUCTURAL_ID = 7572690377543394081;
   /**
    * Original thrift field:-
    * 1: struct module.Foo structField
@@ -614,12 +1129,24 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
    * 4: list<struct module.Foo> optionalStructListField
    */
   public ?Vector<\Adapter1::THackType> $optionalStructListField;
+  /**
+   * Original thrift field:-
+   * 5: struct module.Baz unionField
+   */
+  public ?\Adapter1::THackType $unionField;
+  /**
+   * Original thrift field:-
+   * 6: struct module.Baz optionalUnionField
+   */
+  public ?\Adapter1::THackType $optionalUnionField;
 
-  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<\Adapter1::THackType> $structListField = null, ?Vector<\Adapter1::THackType> $optionalStructListField = null  )[] {
+  public function __construct(?\Adapter1::THackType $structField = null, ?\Adapter1::THackType $optionalStructField = null, ?Vector<\Adapter1::THackType> $structListField = null, ?Vector<\Adapter1::THackType> $optionalStructListField = null, ?\Adapter1::THackType $unionField = null, ?\Adapter1::THackType $optionalUnionField = null  )[] {
     $this->structField = $structField;
     $this->optionalStructField = $optionalStructField;
     $this->structListField = $structListField ?? Vector {};
     $this->optionalStructListField = $optionalStructListField;
+    $this->unionField = $unionField;
+    $this->optionalUnionField = $optionalUnionField;
   }
 
   public static function withDefaultValues()[]: this {
@@ -632,6 +1159,8 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'optionalStructField'),
       Shapes::idx($shape, 'structListField'),
       Shapes::idx($shape, 'optionalStructListField'),
+      Shapes::idx($shape, 'unionField'),
+      Shapes::idx($shape, 'optionalUnionField'),
     );
   }
 
@@ -758,6 +1287,55 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
               "is_optional" => true,
             )
           ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.Baz",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.Baz",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "unionField",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 6,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.Baz",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.Baz",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optionalUnionField",
+              "is_optional" => true,
+            )
+          ),
         ],
         "is_union" => false,
       )
@@ -782,6 +1360,8 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
       Shapes::idx($shape, 'optionalStructListField') === null ? null : ((new Vector($shape['optionalStructListField']))->map(
         $val1 ==> Foo::__fromShape($val1),
       )),
+      Shapes::idx($shape, 'unionField') === null ? null : (Baz::__fromShape($shape['unionField'])),
+      Shapes::idx($shape, 'optionalUnionField') === null ? null : (Baz::__fromShape($shape['optionalUnionField'])),
     );
   }
 
@@ -797,6 +1377,8 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
         ($_val0) ==> $_val0->__toShape(),
       )
         |> $$ === null ? null : vec($$),
+      'unionField' => $this->unionField?->__toShape(),
+      'optionalUnionField' => $this->optionalUnionField?->__toShape(),
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -844,9 +1426,22 @@ class Bar implements \IThriftStruct, \IThriftShapishStruct {
       }
       $this->optionalStructListField = $_container16;
     }    
+    if (idx($parsed, 'unionField') !== null) {
+      $_tmp20 = json_encode(/* HH_FIXME[4110] */ $parsed['unionField']);
+      $_tmp21 = Baz::withDefaultValues();
+      $_tmp21->readFromJson($_tmp20);
+      $this->unionField = $_tmp21;
+    }    
+    if (idx($parsed, 'optionalUnionField') !== null) {
+      $_tmp22 = json_encode(/* HH_FIXME[4110] */ $parsed['optionalUnionField']);
+      $_tmp23 = Baz::withDefaultValues();
+      $_tmp23->readFromJson($_tmp22);
+      $this->optionalUnionField = $_tmp23;
+    }    
   }
 
   private static function __hackAdapterTypeChecks()[]: void {
+    \ThriftUtil::requireSameType<\Adapter1::TThriftType, Baz>();
     \ThriftUtil::requireSameType<\Adapter1::TThriftType, Foo>();
   }
 

@@ -34,7 +34,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         @com.facebook.swift.codec.ThriftField(value=4, name="setField", requiredness=Requiredness.NONE) final Set<String> setField,
         @com.facebook.swift.codec.ThriftField(value=5, name="optionalSetField", requiredness=Requiredness.OPTIONAL) final Set<String> optionalSetField,
         @com.facebook.swift.codec.ThriftField(value=6, name="mapField", requiredness=Requiredness.NONE) final Map<String, List<String>> mapField,
-        @com.facebook.swift.codec.ThriftField(value=7, name="optionalMapField", requiredness=Requiredness.OPTIONAL) final Map<String, List<String>> optionalMapField
+        @com.facebook.swift.codec.ThriftField(value=7, name="optionalMapField", requiredness=Requiredness.OPTIONAL) final Map<String, List<String>> optionalMapField,
+        @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE) final byte[] binaryField
     ) {
         this.intField = intField;
         this.optionalIntField = optionalIntField;
@@ -43,6 +44,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         this.optionalSetField = optionalSetField;
         this.mapField = mapField;
         this.optionalMapField = optionalMapField;
+        this.binaryField = binaryField;
     }
     
     @ThriftConstructor
@@ -54,6 +56,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       this.optionalSetField = null;
       this.mapField = null;
       this.optionalMapField = null;
+      this.binaryField = null;
     }
     
     public static class Builder {
@@ -65,6 +68,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         private Set<String> optionalSetField = null;
         private Map<String, List<String>> mapField = null;
         private Map<String, List<String>> optionalMapField = null;
+        private byte[] binaryField = null;
     
         @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(int intField) {
@@ -122,6 +126,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     
         public Map<String, List<String>> getOptionalMapField() { return optionalMapField; }
     
+            @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE)
+        public Builder setBinaryField(byte[] binaryField) {
+            this.binaryField = binaryField;
+            return this;
+        }
+    
+        public byte[] getBinaryField() { return binaryField; }
+    
         public Builder() { }
         public Builder(Foo other) {
             this.intField = other.intField;
@@ -131,6 +143,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             this.optionalSetField = other.optionalSetField;
             this.mapField = other.mapField;
             this.optionalMapField = other.optionalMapField;
+            this.binaryField = other.binaryField;
         }
     
         @ThriftConstructor
@@ -142,7 +155,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
                 this.setField,
                 this.optionalSetField,
                 this.mapField,
-                this.optionalMapField
+                this.optionalMapField,
+                this.binaryField
             );
             return result;
         }
@@ -172,6 +186,9 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         private final Map<String, List<String>> optionalMapField;
     public static final int _OPTIONALMAPFIELD = 7;
     private static final TField OPTIONAL_MAP_FIELD_FIELD_DESC = new TField("optionalMapField", TType.MAP, (short)7);
+        private final byte[] binaryField;
+    public static final int _BINARYFIELD = 8;
+    private static final TField BINARY_FIELD_FIELD_DESC = new TField("binaryField", TType.STRING, (short)8);
     static {
       NAMES_TO_IDS.put("intField", 1);
       FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
@@ -187,6 +204,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
       FIELD_METADATA.put(6, MAP_FIELD_FIELD_DESC);
       NAMES_TO_IDS.put("optionalMapField", 7);
       FIELD_METADATA.put(7, OPTIONAL_MAP_FIELD_FIELD_DESC);
+      NAMES_TO_IDS.put("binaryField", 8);
+      FIELD_METADATA.put(8, BINARY_FIELD_FIELD_DESC);
     }
     
     @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
@@ -216,6 +235,10 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
     @com.facebook.swift.codec.ThriftField(value=7, name="optionalMapField", requiredness=Requiredness.OPTIONAL)
     public Map<String, List<String>> getOptionalMapField() { return optionalMapField; }
     
+    
+    @com.facebook.swift.codec.ThriftField(value=8, name="binaryField", requiredness=Requiredness.NONE)
+    public byte[] getBinaryField() { return binaryField; }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -226,6 +249,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         helper.add("optionalSetField", optionalSetField);
         helper.add("mapField", mapField);
         helper.add("optionalMapField", optionalMapField);
+        helper.add("binaryField", binaryField);
         return helper.toString();
     }
     
@@ -248,6 +272,7 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             Objects.equals(optionalSetField, other.optionalSetField) &&
             Objects.equals(mapField, other.mapField) &&
             Objects.equals(optionalMapField, other.optionalMapField) &&
+            Arrays.equals(binaryField, other.binaryField) &&
             true;
     }
     
@@ -260,7 +285,8 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             setField,
             optionalSetField,
             mapField,
-            optionalMapField
+            optionalMapField,
+            binaryField
         });
     }
     
@@ -403,6 +429,14 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _BINARYFIELD:
+          if (__field.type == TType.STRING) {
+            byte[] binaryField = oprot.readBinary().array();
+            builder.setBinaryField(binaryField);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -476,6 +510,11 @@ public final class Foo implements com.facebook.thrift.payload.ThriftSerializable
         oprot.writeListEnd();
         }
         oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.binaryField != null) {
+        oprot.writeFieldBegin(BINARY_FIELD_FIELD_DESC);
+        oprot.writeBinary(java.nio.ByteBuffer.wrap(this.binaryField));
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

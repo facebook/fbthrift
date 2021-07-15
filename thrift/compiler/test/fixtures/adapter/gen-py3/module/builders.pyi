@@ -22,6 +22,16 @@ class Foo_Builder(thrift.py3.builder.StructBuilder):
     optionalSetField: _typing.Optional[set]
     mapField: _typing.Optional[dict]
     optionalMapField: _typing.Optional[dict]
+    binaryField: _typing.Optional[bytes]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class Baz_Builder(thrift.py3.builder.StructBuilder):
+    intField: _typing.Optional[int]
+    setField: _typing.Optional[set]
+    mapField: _typing.Optional[dict]
+    binaryField: _typing.Optional[bytes]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
@@ -31,6 +41,8 @@ class Bar_Builder(thrift.py3.builder.StructBuilder):
     optionalStructField: _typing.Any
     structListField: _typing.Optional[list]
     optionalStructListField: _typing.Optional[list]
+    unionField: _typing.Any
+    optionalUnionField: _typing.Any
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

@@ -13,9 +13,14 @@
       "spec_args" : { "type_enum" : "STRING", "spec_args" : null} 
     },
     "StructWithAdapter" : {
-      "lineno" : 109,
+      "lineno" : 150,
       "type_enum" : "TYPEDEF",
       "spec_args" : "Bar"
+    },
+    "UnionWithAdapter" : {
+      "lineno" : 156,
+      "type_enum" : "TYPEDEF",
+      "spec_args" : "Baz"
     }
   },
   "structs" : {
@@ -59,12 +64,45 @@
           "type_enum" : "MAP",
           "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "TYPEDEF", "spec_args" : "ListWithElemAdapter"} } ,
           "required" : false
+        },
+        "binaryField" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true
+        }
+      },
+      "annotation_last_lineno" : -1
+    },
+    "Baz" : {
+      "lineno" : 83,
+      "is_exception" : false,
+      "is_union" : true,
+      "fields" : {
+        "intField" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : true
+        },
+        "setField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "SetWithAdapter",
+          "required" : true
+        },
+        "mapField" : {
+          "type_enum" : "MAP",
+          "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "TYPEDEF", "spec_args" : "ListWithElemAdapter"} } ,
+          "required" : true
+        },
+        "binaryField" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true
         }
       },
       "annotation_last_lineno" : -1
     },
     "Bar" : {
-      "lineno" : 78,
+      "lineno" : 109,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -87,6 +125,16 @@
           "type_enum" : "LIST",
           "spec_args" : { "type_enum" : "TYPEDEF", "spec_args" : "Foo"} ,
           "required" : false
+        },
+        "unionField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "Baz",
+          "required" : true
+        },
+        "optionalUnionField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "Baz",
+          "required" : false
         }
       },
       "annotation_last_lineno" : -1
@@ -94,7 +142,7 @@
   },
   "services" : {
     "Service" : {
-      "lineno" : 111,
+      "lineno" : 158,
       "functions" : {
         "Service.func" : {
           "return_type" : {
