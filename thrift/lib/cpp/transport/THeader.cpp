@@ -92,8 +92,6 @@ THeader::THeader(int options)
       flags_(0),
       allowBigFrames_(options & ALLOW_BIG_FRAMES) {}
 
-THeader::~THeader() {}
-
 int8_t THeader::getProtocolVersion() const {
   return protoVersion_;
 }
