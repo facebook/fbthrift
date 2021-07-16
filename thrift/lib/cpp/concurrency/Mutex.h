@@ -33,15 +33,15 @@ class PthreadMutex;
  *
  * @version $Id:$
  */
-class Mutex {
+class Mutex final {
  public:
   Mutex();
 
-  virtual ~Mutex() {}
-  virtual void lock() const;
-  virtual bool trylock() const;
-  virtual bool timedlock(std::chrono::milliseconds milliseconds) const;
-  virtual void unlock() const;
+  ~Mutex() {}
+  void lock() const;
+  bool trylock() const;
+  bool timedlock(std::chrono::milliseconds milliseconds) const;
+  void unlock() const;
 
   /**
    * Determine if the mutex is locked.
@@ -54,7 +54,7 @@ class Mutex {
    * TODO: This method currently always returns false for recursive mutexes.
    * Avoid calling this method on recursive mutexes.
    */
-  virtual bool isLocked() const;
+  bool isLocked() const;
 
   void* getUnderlyingImpl() const;
 
