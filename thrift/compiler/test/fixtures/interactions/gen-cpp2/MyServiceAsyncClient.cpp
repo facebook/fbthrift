@@ -222,7 +222,7 @@ folly::exception_wrapper MyServiceAsyncClient::recv_instance_wrapped_foo(::apach
 
 
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_frobnicate_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> MyService_MyInteraction_frobnicate_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::CustomException>> MyService_MyInteraction_frobnicate_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_ping_pargs;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_truthify_pargs;
 typedef apache::thrift::ThriftPResultStream<

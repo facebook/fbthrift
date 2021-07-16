@@ -13,6 +13,7 @@ namespace cpp2 {
 ::apache::thrift::metadata::ThriftMetadata module_getThriftModuleMetadata() {
   ::apache::thrift::metadata::ThriftMetadata metadata;
   ::apache::thrift::metadata::ThriftServiceContext serviceContext;
+  ::apache::thrift::detail::md::ExceptionMetadata<CustomException>::gen(metadata);
   ::apache::thrift::detail::md::ServiceMetadata<MyServiceSvIf>::gen(metadata, serviceContext);
   ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
   return metadata;

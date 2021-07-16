@@ -42,3 +42,14 @@ from folly.optional cimport cOptional as __cOptional
 cimport test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
 
 
+
+ctypedef void (*__CustomException_FieldsSetterFunc)(__CustomException_FieldsSetter, object) except *
+
+cdef class __CustomException_FieldsSetter(__StructFieldsSetter):
+    cdef _test_fixtures_interactions_module_types.cCustomException* _struct_cpp_obj
+    cdef cumap[__cstring_view, __CustomException_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __CustomException_FieldsSetter create(_test_fixtures_interactions_module_types.cCustomException* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+

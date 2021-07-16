@@ -19,7 +19,51 @@ using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
 using ThriftFunctionGenerator = void (*)(ThriftMetadata&, ThriftService&);
 
 
+const ::apache::thrift::metadata::ThriftStruct&
+StructMetadata<::cpp2::CustomException>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.structs_ref()->emplace("module.CustomException", ::apache::thrift::metadata::ThriftStruct{});
+  if (!res.second) {
+    return res.first->second;
+  }
+  ::apache::thrift::metadata::ThriftStruct& module_CustomException = res.first->second;
+  module_CustomException.name_ref() = "module.CustomException";
+  module_CustomException.is_union_ref() = false;
+  static const EncodedThriftField
+  module_CustomException_fields[] = {
+    std::make_tuple(1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+  };
+  for (const auto& f : module_CustomException_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
+    module_CustomException.fields_ref()->push_back(std::move(field));
+  }
+  return res.first->second;
+}
 
+void ExceptionMetadata<::cpp2::CustomException>::gen(ThriftMetadata& metadata) {
+  auto res = metadata.exceptions_ref()->emplace("module.CustomException", ::apache::thrift::metadata::ThriftException{});
+  if (!res.second) {
+    return;
+  }
+  ::apache::thrift::metadata::ThriftException& module_CustomException = res.first->second;
+  module_CustomException.name_ref() = "module.CustomException";
+  static const EncodedThriftField
+  module_CustomException_fields[] = {
+    std::make_tuple(1, "message", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+  };
+  for (const auto& f : module_CustomException_fields) {
+    ::apache::thrift::metadata::ThriftField field;
+    field.id_ref() = std::get<0>(f);
+    field.name_ref() = std::get<1>(f);
+    field.is_optional_ref() = std::get<2>(f);
+    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    module_CustomException.fields_ref()->push_back(std::move(field));
+  }
+}
 void ServiceMetadata<::cpp2::MyServiceSvIf>::gen_foo(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;

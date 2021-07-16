@@ -23,3 +23,28 @@ from thrift.py3.types cimport (
 )
 
 
+cdef __StructSpec get_reflection__CustomException():
+    cdef _test_fixtures_interactions_module_types.CustomException defaults = _test_fixtures_interactions_module_types.CustomException.create(
+        constant_shared_ptr[_test_fixtures_interactions_module_types.cCustomException](
+            default_inst[_test_fixtures_interactions_module_types.cCustomException]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="CustomException",
+        kind=__StructType.EXCEPTION,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=1,
+            name="message",
+            type=str,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec

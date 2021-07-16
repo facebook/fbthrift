@@ -30,7 +30,17 @@ public class MyServiceReactiveClient
   private final Set<Long> _activeInteractions;
 
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _foo_EXCEPTION_READERS = java.util.Collections.emptyMap();
-  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS_INT = new HashMap<>();
+  private static final com.facebook.thrift.payload.Reader _frobnicate_EXCEPTION_READER_INT0 =
+  oprot -> {
+            try {
+              test.fixtures.interactions.CustomException _r = test.fixtures.interactions.CustomException.read0(oprot);
+              return _r;
+            } catch (Throwable _e) {
+              throw reactor.core.Exceptions.propagate(_e);
+            }
+          };
+
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _truthify_STREAM_EXCEPTION_READERS_INT = java.util.Collections.emptyMap();
@@ -134,7 +144,17 @@ public class MyServiceReactiveClient
       this.interactionId = interactionId;
     }
 
-    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = java.util.Collections.emptyMap();
+    private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _frobnicate_EXCEPTION_READERS = new HashMap<>();
+    private final com.facebook.thrift.payload.Reader _frobnicate_EXCEPTION_READER_INT0 =
+    oprot -> {
+              try {
+                test.fixtures.interactions.CustomException _r = test.fixtures.interactions.CustomException.read0(oprot);
+                return _r;
+              } catch (Throwable _e) {
+                throw reactor.core.Exceptions.propagate(_e);
+              }
+            };
+
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _ping_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
     private com.facebook.thrift.payload.Writer _createfrobnicateWriter() {

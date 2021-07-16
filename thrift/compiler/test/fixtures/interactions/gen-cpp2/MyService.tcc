@@ -69,7 +69,7 @@ void MyServiceAsyncProcessor::throw_wrapped_foo(apache::thrift::ResponseChannelR
 
 
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_frobnicate_pargs;
-typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>> MyService_MyInteraction_frobnicate_presult;
+typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::std::int32_t*>, apache::thrift::FieldData<1, ::apache::thrift::type_class::structure, ::cpp2::CustomException>> MyService_MyInteraction_frobnicate_presult;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_ping_pargs;
 typedef apache::thrift::ThriftPresult<false> MyService_MyInteraction_truthify_pargs;
 typedef apache::thrift::ThriftPResultStream<
@@ -132,12 +132,27 @@ void MyServiceAsyncProcessor::throw_wrapped_MyInteraction_frobnicate(apache::thr
   if (!ew) {
     return;
   }
+  MyService_MyInteraction_frobnicate_presult result;
+  if (ew.with_exception([&]( ::cpp2::CustomException& e) {
+    if (ctx) {
+      ctx->userExceptionWrapped(true, ew);
+    }
+    ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::CustomException>(*reqCtx);
+    result.get<1>().ref() = e;
+    result.setIsSet(1, true);
+  }
+  )) {} else
   {
     (void)protoSeqId;
     apache::thrift::detail::ap::process_throw_wrapped_handler_error<ProtocolOut_>(
         ew, std::move(req), reqCtx, ctx, "MyInteraction.frobnicate");
     return;
   }
+  ProtocolOut_ prot;
+  auto response = serializeLegacyResponse("MyInteraction.frobnicate", &prot, protoSeqId, ctx, result);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  return req->sendReply(std::move(response.buffer));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>

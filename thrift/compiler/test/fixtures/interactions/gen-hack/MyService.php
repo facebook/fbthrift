@@ -299,7 +299,8 @@ class MyService_MyInteraction extends \ThriftClientBase {
   /**
    * Original thrift definition:-
    * i32
-   *   frobnicate();
+   *   frobnicate()
+   *   throws (1: CustomException ex);
    */
   public async function frobnicate(\RpcOptions $rpc_options): Awaitable<int> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
@@ -417,6 +418,11 @@ class MyService_MyInteraction extends \ThriftClientBase {
       $success = $result->success;
       $this->eventHandler_->postRecv('MyInteraction.frobnicate', $expectedsequenceid, $success);
       return $success;
+    }
+    if ($result->ex !== null) {
+      $x = $result->ex;
+      $this->eventHandler_->recvException('MyInteraction.frobnicate', $expectedsequenceid, $x);
+      throw $x;
     }
     $x = new \TApplicationException("frobnicate failed: unknown result", \TApplicationException::MISSING_RESULT);
     $this->eventHandler_->recvError('MyInteraction.frobnicate', $expectedsequenceid, $x);
@@ -972,19 +978,27 @@ class MyService_MyInteraction_frobnicate_result implements \IThriftStruct {
       'var' => 'success',
       'type' => \TType::I32,
     ),
+    1 => shape(
+      'var' => 'ex',
+      'type' => \TType::STRUCT,
+      'class' => CustomException::class,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'success' => 0,
+    'ex' => 1,
   ];
 
   const type TConstructorShape = shape(
     ?'success' => ?int,
+    ?'ex' => ?CustomException,
   );
 
-  const int STRUCTURAL_ID = 3865318819874171525;
+  const int STRUCTURAL_ID = 7122595353333880010;
   public ?int $success;
+  public ?CustomException $ex;
 
-  public function __construct(?int $success = null  )[] {
+  public function __construct(?int $success = null, ?CustomException $ex = null  )[] {
   }
 
   public static function withDefaultValues()[]: this {
@@ -994,6 +1008,7 @@ class MyService_MyInteraction_frobnicate_result implements \IThriftStruct {
   public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
+      Shapes::idx($shape, 'ex'),
     );
   }
 
@@ -1015,6 +1030,21 @@ class MyService_MyInteraction_frobnicate_result implements \IThriftStruct {
                 )
               ),
               "name" => "success",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.CustomException",
+                    )
+                  ),
+                )
+              ),
+              "name" => "ex",
             )
           ),
         ],

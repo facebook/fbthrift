@@ -36,7 +36,10 @@ public interface MyService extends java.io.Closeable {
         }
         @com.facebook.swift.service.ThriftInteraction("MyInteraction")
         public interface MyInteraction extends java.io.Closeable {
-            @ThriftMethod(value = "frobnicate")
+            @ThriftMethod(value = "frobnicate",
+                exception = { 
+                    @ThriftException(type=test.fixtures.interactions.CustomException.class, id=1)
+                })
             ListenableFuture<Integer> frobnicate();
 
             ListenableFuture<Integer> frobnicate(
@@ -133,7 +136,10 @@ public interface MyService extends java.io.Closeable {
 
         @com.facebook.swift.service.ThriftInteraction("MyInteraction")
         public interface MyInteraction extends reactor.core.Disposable {
-            @ThriftMethod(value = "frobnicate")
+            @ThriftMethod(value = "frobnicate",
+                exception = { 
+                    @ThriftException(type=test.fixtures.interactions.CustomException.class, id=1)
+                })
             reactor.core.publisher.Mono<Integer> frobnicate();
 
             reactor.core.publisher.Mono<Integer> frobnicate(RpcOptions rpcOptions);
@@ -214,14 +220,17 @@ public interface MyService extends java.io.Closeable {
     }
     @com.facebook.swift.service.ThriftInteraction("MyInteraction")
     public interface MyInteraction extends java.io.Closeable {
-        @ThriftMethod(value = "frobnicate")
-        int frobnicate() throws org.apache.thrift.TException;
+        @ThriftMethod(value = "frobnicate",
+                      exception = { 
+                          @ThriftException(type=test.fixtures.interactions.CustomException.class, id=1)
+                      })
+        int frobnicate() throws test.fixtures.interactions.CustomException, org.apache.thrift.TException;
 
         int frobnicate(
-            RpcOptions rpcOptions) throws org.apache.thrift.TException;
+            RpcOptions rpcOptions) throws test.fixtures.interactions.CustomException, org.apache.thrift.TException;
 
         ResponseWrapper<Integer> frobnicateWrapper(
-            RpcOptions rpcOptions) throws org.apache.thrift.TException;
+            RpcOptions rpcOptions) throws test.fixtures.interactions.CustomException, org.apache.thrift.TException;
         @ThriftMethod(value = "ping",
                       oneway = true)
         void ping() throws org.apache.thrift.TException;

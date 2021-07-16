@@ -79,7 +79,14 @@ cdef void MyService_MyInteraction_frobnicate_callback(
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
-    if result.hasException():
+    if result.hasException[_test_fixtures_interactions_module_types.cCustomException]():
+        try:
+            exc = _test_fixtures_interactions_module_types.CustomException.create(try_make_shared_exception[_test_fixtures_interactions_module_types.cCustomException](result.exception()))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+        else:
+            pyfuture.set_exception(exc)
+    elif result.hasException():
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:

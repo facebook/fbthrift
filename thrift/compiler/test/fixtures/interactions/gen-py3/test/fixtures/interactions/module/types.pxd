@@ -55,6 +55,37 @@ cdef extern from "src/gen-py3/module/types.h":
 
 
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
+
+    cdef cppclass cCustomException "::cpp2::CustomException"(cTException):
+        cCustomException() except +
+        cCustomException(const cCustomException&) except +
+        bint operator==(cCustomException&)
+        bint operator!=(cCustomException&)
+        bint operator<(cCustomException&)
+        bint operator>(cCustomException&)
+        bint operator<=(cCustomException&)
+        bint operator>=(cCustomException&)
+        __field_ref[string] message_ref()
+        string message
+
+
+
+
+cdef class CustomException(thrift.py3.exceptions.GeneratedError):
+    cdef shared_ptr[cCustomException] _cpp_obj
+    cdef _fbthrift_types_fields.__CustomException_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef create(shared_ptr[cCustomException])
 
 
 

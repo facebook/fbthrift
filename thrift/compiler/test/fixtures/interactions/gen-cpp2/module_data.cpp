@@ -12,5 +12,15 @@
 namespace apache {
 namespace thrift {
 
+const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::CustomException>::fields_names = {{
+  "message",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::cpp2::CustomException>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::CustomException>::fields_types = {{
+  TType::T_STRING,
+}};
+
 } // namespace thrift
 } // namespace apache

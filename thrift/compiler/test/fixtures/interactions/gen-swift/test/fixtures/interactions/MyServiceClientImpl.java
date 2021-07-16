@@ -38,7 +38,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
         org.apache.thrift.TException.class};
     // Interaction Exceptions
     private static final Class[] frobnicateIExceptions = new Class[] {
-        org.apache.thrift.TException.class};
+        test.fixtures.interactions.CustomException.class, org.apache.thrift.TException.class};
     private static final Class[] pingIExceptions = new Class[] {
         org.apache.thrift.TException.class};
     // Interaction Exceptions
@@ -142,23 +142,26 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
 
 
-      public int frobnicate() throws org.apache.thrift.TException {
+      public int frobnicate() throws test.fixtures.interactions.CustomException, org.apache.thrift.TException {
         return frobnicateWrapper(RpcOptions.EMPTY).getData();
       }
 
       public int frobnicate(
-      RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      RpcOptions rpcOptions) throws test.fixtures.interactions.CustomException, org.apache.thrift.TException {
         return frobnicateWrapper(rpcOptions).getData();
       }
 
       public ResponseWrapper<Integer> frobnicateWrapper(
-      RpcOptions _rpcOptions) throws org.apache.thrift.TException {
+      RpcOptions _rpcOptions) throws test.fixtures.interactions.CustomException, org.apache.thrift.TException {
         try {
           RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
           return FutureUtil.get(executeWrapperWithOptions(frobnicateIMethodHandler, frobnicateIExceptions, rpcOptions));
         } catch (Throwable t) {
           if (t instanceof org.apache.thrift.TException) {
             throw (org.apache.thrift.TException) t;
+          }
+          if (t instanceof test.fixtures.interactions.CustomException) {
+            throw (test.fixtures.interactions.CustomException) t;
           }
           throw new org.apache.thrift.TException(t);
         }

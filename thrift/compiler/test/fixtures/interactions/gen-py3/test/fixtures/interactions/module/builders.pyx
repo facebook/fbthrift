@@ -4,3 +4,9 @@
 # DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
 #  @generated
 #
+cdef class CustomException_Builder(thrift.py3.builder.StructBuilder):
+    _struct_type = _test_fixtures_interactions_module_types.CustomException
+
+    def __iter__(self):
+        yield "message", self.message
+

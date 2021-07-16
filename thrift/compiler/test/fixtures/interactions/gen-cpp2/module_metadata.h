@@ -19,6 +19,16 @@ namespace detail {
 namespace md {
 
 template <>
+class StructMetadata<::cpp2::CustomException> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::CustomException> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
 class ServiceMetadata<::cpp2::MyServiceSvIf> {
  public:
   static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
