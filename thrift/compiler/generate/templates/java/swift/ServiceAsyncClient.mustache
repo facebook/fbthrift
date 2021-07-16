@@ -42,7 +42,7 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
     {{#service:interactions}}
     // Interaction Handlers
     {{#service:supportedFunctions}}
-    private ThriftMethodHandler {{function:javaName}}MethodHandler;
+    private ThriftMethodHandler {{function:javaName}}IMethodHandler;
     {{/service:supportedFunctions}}
     {{/service:interactions}}
 
@@ -54,7 +54,7 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
     {{#service:interactions}}
     // Interaction Exceptions
     {{#service:supportedFunctions}}
-    private static final Class[] {{function:javaName}}Exceptions = new Class[] {
+    private static final Class[] {{function:javaName}}IExceptions = new Class[] {
         {{#function:exceptions}}{{#field:type}}{{> BoxedType}}.class{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException.class};
     {{/service:supportedFunctions}}
     {{/service:interactions}}
@@ -80,7 +80,7 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
       {{#service:interactions}}
       // Set interaction handlers
       {{#service:supportedFunctions}}
-      {{function:javaName}}MethodHandler = methodHandlerMap.get("{{function:javaName}}");
+      {{function:javaName}}IMethodHandler = methodHandlerMap.get("{{function:javaName}}");
       {{/service:supportedFunctions}}
       {{/service:interactions}}
     }
@@ -108,7 +108,7 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
       {{#service:interactions}}
       // Set interaction handlers
       {{#service:supportedFunctions}}
-      {{function:javaName}}MethodHandler = methodHandlerMap.get("{{function:javaName}}");
+      {{function:javaName}}IMethodHandler = methodHandlerMap.get("{{function:javaName}}");
       {{/service:supportedFunctions}}
       {{/service:interactions}}
     }
@@ -173,7 +173,7 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
         RpcOptions _rpcOptions) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
         try {
           RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return executeWrapperWithOptions({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
+          return executeWrapperWithOptions({{function:javaName}}IMethodHandler, {{function:javaName}}IExceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
         } catch (Throwable t) {
           if (t instanceof org.apache.thrift.TException) {
             throw (org.apache.thrift.TException) t;

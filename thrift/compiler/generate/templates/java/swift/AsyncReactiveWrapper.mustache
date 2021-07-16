@@ -67,7 +67,7 @@ public class {{service:javaCapitalName}}AsyncReactiveWrapper {{#service:extends}
 
         {{#service:supportedFunctions}}
         public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
-        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
             return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.{{function:javaName}}({{#function:args}}{{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}));
         }
 

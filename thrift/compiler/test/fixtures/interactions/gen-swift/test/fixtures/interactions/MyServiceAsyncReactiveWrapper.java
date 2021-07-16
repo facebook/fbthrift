@@ -36,7 +36,7 @@ public class MyServiceAsyncReactiveWrapper
             this._delegateInteraction = delegateInteraction;
         }
 
-        public reactor.core.publisher.Mono<Integer> frobnicate() throws org.apache.thrift.TException {
+        public reactor.core.publisher.Mono<Integer> frobnicate() {
             return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicate());
         }
 
@@ -48,7 +48,7 @@ public class MyServiceAsyncReactiveWrapper
             return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicateWrapper( rpcOptions));
         }
 
-        public reactor.core.publisher.Mono<Void> ping() throws org.apache.thrift.TException {
+        public reactor.core.publisher.Mono<Void> ping() {
             return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.ping());
         }
 
@@ -82,7 +82,7 @@ public class MyServiceAsyncReactiveWrapper
             this._delegateInteraction = delegateInteraction;
         }
 
-        public reactor.core.publisher.Mono<Integer> frobnicate() throws org.apache.thrift.TException {
+        public reactor.core.publisher.Mono<Integer> frobnicate() {
             return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicate());
         }
 
@@ -94,7 +94,7 @@ public class MyServiceAsyncReactiveWrapper
             return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicateWrapper( rpcOptions));
         }
 
-        public reactor.core.publisher.Mono<Void> ping() throws org.apache.thrift.TException {
+        public reactor.core.publisher.Mono<Void> ping() {
             return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.ping());
         }
 
@@ -128,7 +128,7 @@ public class MyServiceAsyncReactiveWrapper
             this._delegateInteraction = delegateInteraction;
         }
 
-        public reactor.core.publisher.Mono<Void> frobnicate() throws org.apache.thrift.TException {
+        public reactor.core.publisher.Mono<Void> frobnicate() {
             return com.facebook.thrift.util.FutureUtil.toMono(_delegateInteraction.frobnicate());
         }
 

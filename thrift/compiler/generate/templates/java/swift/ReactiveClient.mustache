@@ -142,11 +142,11 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   {{#service:interactions}}
   {{#service:supportedFunctions}}
   {{#function:args}}
-  private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
+  private static final TField _{{function:javaName}}_{{field:javaTFieldName}}_INT = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
   {{/function:args}}
-  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS_INT = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
   {{#function:exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER_INT{{field:index}} =
   oprot -> {
             try {
               {{#field:type}}
@@ -163,12 +163,12 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
   {{/service:supportedFunctions}}
   {{#service:streamingFunctions}}
   {{#function:args}}
-  private static final TField _{{function:javaName}}_{{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
+  private static final TField _{{function:javaName}}_{{field:javaTFieldName}}_INT = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
   {{/function:args}}
-  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
-  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_STREAM_EXCEPTION_READERS = {{#function:stream_exceptions?}}new HashMap<>();{{/function:stream_exceptions?}}{{^function:stream_exceptions?}}java.util.Collections.emptyMap();{{/function:stream_exceptions?}}
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS_INT = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
+  private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_STREAM_EXCEPTION_READERS_INT = {{#function:stream_exceptions?}}new HashMap<>();{{/function:stream_exceptions?}}{{^function:stream_exceptions?}}java.util.Collections.emptyMap();{{/function:stream_exceptions?}}
   {{#function:exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER_INT{{field:index}} =
   oprot -> {
             try {
               {{#field:type}}
@@ -183,7 +183,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
 
   {{/function:exceptions}}
   {{#function:stream_exceptions}}
-  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_STREAM_EXCEPTION_READER{{field:index}} =
+  private static final com.facebook.thrift.payload.Reader _{{function:javaName}}_STREAM_EXCEPTION_READER_INT{{field:index}} =
   oprot -> {
             try {
               {{#field:type}}
@@ -584,7 +584,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
     {{#service:supportedFunctions}}
     private final java.util.Map<Short, com.facebook.thrift.payload.Reader> _{{function:javaName}}_EXCEPTION_READERS = {{#function:exceptions?}}new HashMap<>();{{/function:exceptions?}}{{^function:exceptions?}}java.util.Collections.emptyMap();{{/function:exceptions?}}
     {{#function:exceptions}}
-    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER{{field:index}} =
+    private final com.facebook.thrift.payload.Reader _{{function:javaName}}_EXCEPTION_READER_INT{{field:index}} =
     oprot -> {
               try {
                 {{#field:type}}
@@ -607,7 +607,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
           {{#function:args}}
           {{#field:type}}
           {
-            oprot.writeFieldBegin(_{{function:javaName}}_{{field:javaTFieldName}});
+            oprot.writeFieldBegin(_{{function:javaName}}_{{field:javaTFieldName}}_INT);
 
             {{> FieldType}} _iter0 = {{field:javaName}};
 
@@ -647,7 +647,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
               };
 
     public reactor.core.publisher.Mono<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
-    final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+    final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
       return {{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}} com.facebook.thrift.client.RpcOptions.EMPTY){{#function:oneway?}}.then(){{/function:oneway?}}{{!
         }}{{^function:oneway?}}{{^function:voidType}}.map(_p -> _p.getData()){{/function:voidType}}{{/function:oneway?}}{{!
         }}{{^function:oneway?}}{{#function:voidType}}.then(){{/function:voidType}}{{/function:oneway?}};
@@ -690,7 +690,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
               com.facebook.thrift.payload.ClientRequestPayload.create(
                   _create{{function:javaName}}Writer({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}),
                   _{{function:javaName}}_READER,
-                  _{{function:javaName}}_EXCEPTION_READERS,
+                  _{{function:javaName}}_EXCEPTION_READERS_INT,
                   _metadata,
                   java.util.Collections.emptyMap());
 
@@ -708,7 +708,7 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
           {{#function:args}}
           {{#field:type}}
           {
-            oprot.writeFieldBegin(_{{function:javaName}}_{{field:javaTFieldName}});
+            oprot.writeFieldBegin(_{{function:javaName}}_{{field:javaTFieldName}}_INT);
 
             {{> FieldType}} _iter0 = {{field:javaName}};
 
@@ -799,8 +799,8 @@ public class {{service:javaCapitalName}}ReactiveClient {{#service:extends}} exte
                   _create{{function:javaName}}Writer({{#function:args}}{{field:javaName}}{{^last?}}, {{/last?}}{{/function:args}}),
                   _{{function:javaName}}_READER,{{#function:return_type}}{{#type:stream_has_first_response?}}
                   _{{function:javaName}}_FIRST_READER,{{/type:stream_has_first_response?}}{{/function:return_type}}
-                  _{{function:javaName}}_EXCEPTION_READERS,
-                  _{{function:javaName}}_STREAM_EXCEPTION_READERS,
+                  _{{function:javaName}}_EXCEPTION_READERS_INT,
+                  _{{function:javaName}}_STREAM_EXCEPTION_READERS_INT,
                   _metadataBuilder.build(),
                   java.util.Collections.emptyMap());
 

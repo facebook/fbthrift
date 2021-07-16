@@ -25,29 +25,29 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
     // Method Handlers
     private ThriftMethodHandler fooMethodHandler;
     // Interaction Handlers
-    private ThriftMethodHandler frobnicateMethodHandler;
-    private ThriftMethodHandler pingMethodHandler;
+    private ThriftMethodHandler frobnicateIMethodHandler;
+    private ThriftMethodHandler pingIMethodHandler;
     // Interaction Handlers
-    private ThriftMethodHandler frobnicateMethodHandler;
-    private ThriftMethodHandler pingMethodHandler;
+    private ThriftMethodHandler frobnicateIMethodHandler;
+    private ThriftMethodHandler pingIMethodHandler;
     // Interaction Handlers
-    private ThriftMethodHandler frobnicateMethodHandler;
+    private ThriftMethodHandler frobnicateIMethodHandler;
 
     // Method Exceptions
     private static final Class[] fooExceptions = new Class[] {
         org.apache.thrift.TException.class};
     // Interaction Exceptions
-    private static final Class[] frobnicateExceptions = new Class[] {
+    private static final Class[] frobnicateIExceptions = new Class[] {
         org.apache.thrift.TException.class};
-    private static final Class[] pingExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    // Interaction Exceptions
-    private static final Class[] frobnicateExceptions = new Class[] {
-        org.apache.thrift.TException.class};
-    private static final Class[] pingExceptions = new Class[] {
+    private static final Class[] pingIExceptions = new Class[] {
         org.apache.thrift.TException.class};
     // Interaction Exceptions
-    private static final Class[] frobnicateExceptions = new Class[] {
+    private static final Class[] frobnicateIExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] pingIExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    // Interaction Exceptions
+    private static final Class[] frobnicateIExceptions = new Class[] {
         org.apache.thrift.TException.class};
 
     public MyServiceClientImpl(
@@ -67,13 +67,13 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       // Set method handlers
       fooMethodHandler = methodHandlerMap.get("foo");
       // Set interaction handlers
-      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
-      pingMethodHandler = methodHandlerMap.get("ping");
+      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
+      pingIMethodHandler = methodHandlerMap.get("ping");
       // Set interaction handlers
-      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
-      pingMethodHandler = methodHandlerMap.get("ping");
+      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
+      pingIMethodHandler = methodHandlerMap.get("ping");
       // Set interaction handlers
-      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
+      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
     }
 
     public MyServiceClientImpl(
@@ -95,13 +95,13 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       // Set method handlers
       fooMethodHandler = methodHandlerMap.get("foo");
       // Set interaction handlers
-      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
-      pingMethodHandler = methodHandlerMap.get("ping");
+      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
+      pingIMethodHandler = methodHandlerMap.get("ping");
       // Set interaction handlers
-      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
-      pingMethodHandler = methodHandlerMap.get("ping");
+      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
+      pingIMethodHandler = methodHandlerMap.get("ping");
       // Set interaction handlers
-      frobnicateMethodHandler = methodHandlerMap.get("frobnicate");
+      frobnicateIMethodHandler = methodHandlerMap.get("frobnicate");
     }
 
     @java.lang.Override
@@ -155,7 +155,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       RpcOptions _rpcOptions) throws org.apache.thrift.TException {
         try {
           RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(frobnicateMethodHandler, frobnicateExceptions, rpcOptions));
+          return FutureUtil.get(executeWrapperWithOptions(frobnicateIMethodHandler, frobnicateIExceptions, rpcOptions));
         } catch (Throwable t) {
           if (t instanceof org.apache.thrift.TException) {
             throw (org.apache.thrift.TException) t;
@@ -178,7 +178,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       RpcOptions _rpcOptions) throws org.apache.thrift.TException {
         try {
           RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(pingMethodHandler, pingExceptions, rpcOptions));
+          return FutureUtil.get(executeWrapperWithOptions(pingIMethodHandler, pingIExceptions, rpcOptions));
         } catch (Throwable t) {
           if (t instanceof org.apache.thrift.TException) {
             throw (org.apache.thrift.TException) t;
@@ -230,7 +230,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       RpcOptions _rpcOptions) throws org.apache.thrift.TException {
         try {
           RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(frobnicateMethodHandler, frobnicateExceptions, rpcOptions));
+          return FutureUtil.get(executeWrapperWithOptions(frobnicateIMethodHandler, frobnicateIExceptions, rpcOptions));
         } catch (Throwable t) {
           if (t instanceof org.apache.thrift.TException) {
             throw (org.apache.thrift.TException) t;
@@ -253,7 +253,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       RpcOptions _rpcOptions) throws org.apache.thrift.TException {
         try {
           RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(pingMethodHandler, pingExceptions, rpcOptions));
+          return FutureUtil.get(executeWrapperWithOptions(pingIMethodHandler, pingIExceptions, rpcOptions));
         } catch (Throwable t) {
           if (t instanceof org.apache.thrift.TException) {
             throw (org.apache.thrift.TException) t;
@@ -305,7 +305,7 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       RpcOptions _rpcOptions) throws org.apache.thrift.TException {
         try {
           RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
-          return FutureUtil.get(executeWrapperWithOptions(frobnicateMethodHandler, frobnicateExceptions, rpcOptions));
+          return FutureUtil.get(executeWrapperWithOptions(frobnicateIMethodHandler, frobnicateIExceptions, rpcOptions));
         } catch (Throwable t) {
           if (t instanceof org.apache.thrift.TException) {
             throw (org.apache.thrift.TException) t;
