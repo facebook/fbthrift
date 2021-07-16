@@ -163,27 +163,19 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
 
       @java.lang.Override
       public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
-        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
         return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY));
       }
 
       @java.lang.Override
       public ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
         final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
-        RpcOptions _rpcOptions) throws {{#function:exceptions}}{{#field:type}}{{> BoxedType}}{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException {
+        RpcOptions _rpcOptions) {
         try {
           RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
           return executeWrapperWithOptions({{function:javaName}}IMethodHandler, {{function:javaName}}IExceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
         } catch (Throwable t) {
-          if (t instanceof org.apache.thrift.TException) {
-            throw (org.apache.thrift.TException) t;
-          }
-          {{#function:exceptions}}
-          if (t instanceof {{#field:type}}{{> BoxedType}}{{/field:type}}) {
-            throw ({{#field:type}}{{> BoxedType}}{{/field:type}}) t;
-          }
-          {{/function:exceptions}}
-          throw new org.apache.thrift.TException(t);
+          throw new RuntimeTException(t.getMessage(), t);
         }
       }
 
