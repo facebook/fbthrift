@@ -227,7 +227,7 @@ class THeader {
       const char* key, size_t keyLength, const char* value, size_t valueLength);
   void setHeaders(StringToStringMap&&);
   void clearHeaders();
-  bool isWriteHeadersEmpty();
+  bool isWriteHeadersEmpty() const;
   StringToStringMap& mutableWriteHeaders();
   StringToStringMap releaseWriteHeaders();
   StringToStringMap extractAllWriteHeaders();
@@ -245,7 +245,7 @@ class THeader {
   }
   StringToStringMap* getExtraWriteHeaders() const { return extraWriteHeaders_; }
 
-  std::string getPeerIdentity();
+  std::string getPeerIdentity() const;
   void setIdentity(const std::string& identity);
 
   // accessors for seqId
@@ -305,7 +305,7 @@ class THeader {
     compressionConfig_ = compressionConfig;
   }
 
-  folly::Optional<CompressionConfig> getDesiredCompressionConfig() {
+  folly::Optional<CompressionConfig> getDesiredCompressionConfig() const {
     return compressionConfig_;
   }
 
@@ -317,7 +317,7 @@ class THeader {
 
   folly::Optional<int64_t> getServerLoad() const { return serverLoad_; }
 
-  apache::thrift::concurrency::PRIORITY getCallPriority();
+  apache::thrift::concurrency::PRIORITY getCallPriority() const;
 
   std::chrono::milliseconds getTimeoutFromHeader(
       const std::string& header) const;
@@ -369,7 +369,7 @@ class THeader {
   static constexpr std::string_view CLIENT_METADATA_HEADER = "client_metadata";
 
  protected:
-  bool isFramed(CLIENT_TYPE clientType);
+  static bool isFramed(CLIENT_TYPE clientType);
 
   // Use first 64 bits to determine client protocol
   static folly::Optional<CLIENT_TYPE> analyzeFirst32bit(uint32_t w);
