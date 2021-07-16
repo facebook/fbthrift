@@ -5,12 +5,32 @@
     "IncludesIncluded" : {
       "lineno" : 32,
       "type_enum" : "STRUCT",
-      "spec_args" : "includes.Included"
+      "spec_args" : "includes.Included",
+      "source_range" : {
+        "begin" : {
+          "line" : 116,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 116,
+          "column" : 43
+        }
+      }
     },
     "IncludesTransitiveFoo" : {
       "lineno" : 34,
       "type_enum" : "TYPEDEF",
-      "spec_args" : "includes.TransitiveFoo"
+      "spec_args" : "includes.TransitiveFoo",
+      "source_range" : {
+        "begin" : {
+          "line" : 118,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 118,
+          "column" : 53
+        }
+      }
     }
   },
   "services" : {
@@ -32,7 +52,17 @@
               "spec_args" : "includes.Included"
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 106,
+              "column" : 20
+            },
+            "end" : {
+              "line" : 108,
+              "column" : 59
+            }
+          }
         },
         "MyService.has_arg_docs" : {
           "return_type" : {
@@ -49,9 +79,30 @@
               "spec_args" : "includes.Included"
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 108,
+              "column" : 59
+            },
+            "end" : {
+              "line" : 112,
+              "column" : 4
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 103,
+          "column" : 44
+        },
+        "end" : {
+          "line" : 113,
+          "column" : 2
         }
       }
+
     }
   }
 }

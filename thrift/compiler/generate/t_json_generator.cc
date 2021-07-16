@@ -83,6 +83,7 @@ class t_json_generator : public t_concat_generator {
       const std::vector<const t_const*>& annotations);
   void print_node_annotations(
       const t_named& node, bool add_heading_comma, bool add_trailing_comma);
+  void print_source_range(const source_range& range);
 
   /**
    * True if we should generate annotations in json representation.
@@ -431,10 +432,18 @@ void t_json_generator::print_annotations(
     }
     f_out_ << endl;
     first = false;
-    indent(f_out_) << "\"" << iter->first << "\" : ";
+    indent(f_out_) << "\"" << iter->first << "\" : {" << endl;
+    indent_up();
+
+    indent(f_out_) << "\"value\" : ";
     json_quote_ascii(f_out_, iter->second.value);
+    f_out_ << "," << endl;
+
+    print_source_range(iter->second.src_range);
+
+    indent_down();
+    indent(f_out_) << "}" << endl;
   }
-  f_out_ << endl;
   indent_down();
   indent(f_out_) << "}";
 }
@@ -495,7 +504,8 @@ void t_json_generator::generate_typedef(const t_typedef* ttypedef) {
   print_type(ttypedef->get_type());
   print_node_annotations(
       *ttypedef, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
-  f_out_ << endl;
+  f_out_ << "," << endl;
+  print_source_range(ttypedef->src_range());
   indent_down();
   indent(f_out_) << "}";
 }
@@ -529,7 +539,8 @@ void t_json_generator::generate_enum(const t_enum* tenum) {
   }
   f_out_ << endl;
   indent_down();
-  indent(f_out_) << "}" << endl;
+  indent(f_out_) << "}," << endl;
+  print_source_range(tenum->src_range());
   indent_down();
   indent(f_out_) << "}";
 }
@@ -560,7 +571,8 @@ void t_json_generator::generate_const(const t_const* tconst) {
   print_type(tconst->get_type());
   print_node_annotations(
       *tconst, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
-  f_out_ << endl;
+  f_out_ << "," << endl;
+  print_source_range(tconst->src_range());
   indent_down();
   indent(f_out_) << "}";
 }
@@ -603,7 +615,8 @@ void t_json_generator::generate_struct(const t_struct* tstruct) {
     }
     print_node_annotations(
         **mem_iter, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
-    f_out_ << endl;
+    f_out_ << "," << endl;
+    print_source_range((*mem_iter)->src_range());
     indent_down();
     indent(f_out_) << "}";
   }
@@ -611,7 +624,8 @@ void t_json_generator::generate_struct(const t_struct* tstruct) {
   indent_down();
   indent(f_out_) << "}," << endl;
   indent(f_out_) << "\"annotation_last_lineno\" : "
-                 << tstruct->last_annotation_lineno() << endl;
+                 << tstruct->last_annotation_lineno() << "," << endl;
+  print_source_range(tstruct->src_range());
   indent_down();
   indent(f_out_) << "}";
 }
@@ -720,13 +734,16 @@ void t_json_generator::generate_service(const t_service* tservice) {
     f_out_ << "]";
     print_node_annotations(
         **fn_iter, /*add_heading_comma=*/true, /*add_trailing_comma=*/false);
-    f_out_ << endl;
+    f_out_ << "," << endl;
+    print_source_range((*fn_iter)->src_range());
     indent_down();
     indent(f_out_) << "}";
   }
   f_out_ << endl;
   indent_down();
-  indent(f_out_) << "}";
+  indent(f_out_) << "}," << endl;
+
+  print_source_range(tservice->src_range());
 
   f_out_ << endl;
   indent_down();
@@ -736,6 +753,34 @@ void t_json_generator::generate_service(const t_service* tservice) {
 bool t_json_generator::should_resolve_to_true_type(const t_type* ttype) {
   // Only resolve undefined typedefs as they were used for undeclared types
   return dynamic_cast<const t_placeholder_typedef*>(ttype) != nullptr;
+}
+
+/**
+ * Prints source range information
+ * of a given source_range class.
+ *
+ * @param range The source range
+ */
+void t_json_generator::print_source_range(const source_range& range) {
+  indent(f_out_) << "\"source_range\" : {" << endl;
+  indent_up();
+
+  indent(f_out_) << "\"begin\" : {" << endl;
+  indent_up();
+  indent(f_out_) << "\"line\" : " << range.begin().line() << "," << endl;
+  indent(f_out_) << "\"column\" : " << range.begin().column() << endl;
+  indent_down();
+  indent(f_out_) << "}," << endl;
+
+  indent(f_out_) << "\"end\" : {" << endl;
+  indent_up();
+  indent(f_out_) << "\"line\" : " << range.end().line() << "," << endl;
+  indent(f_out_) << "\"column\" : " << range.end().column() << endl;
+  indent_down();
+  indent(f_out_) << "}" << endl;
+
+  indent_down();
+  indent(f_out_) << "}" << endl;
 }
 
 THRIFT_REGISTER_GENERATOR(

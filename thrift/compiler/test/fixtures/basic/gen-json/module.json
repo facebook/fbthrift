@@ -7,6 +7,16 @@
       "constants" : {
         "MyValue1" : 0,
         "MyValue2" : 1
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 21,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 24,
+          "column" : 2
+        }
       }
     }
   },
@@ -19,40 +29,120 @@
         "MyIntField" : {
           "type_enum" : "I64",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 27,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 27,
+              "column" : 21
+            }
+          }
         },
         "MyStringField" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 28,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 28,
+              "column" : 27
+            }
+          }
         },
         "MyDataField" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyDataItem",
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 30,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 30,
+              "column" : 29
+            }
+          }
         },
         "myEnum" : {
           "type_enum" : "ENUM",
           "spec_args" : "MyEnum",
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 31,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 31,
+              "column" : 20
+            }
+          }
         },
         "oneway" : {
           "type_enum" : "BOOL",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 32,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 32,
+              "column" : 18
+            }
+          }
         },
         "readonly" : {
           "type_enum" : "BOOL",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 33,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 33,
+              "column" : 20
+            }
+          }
         },
         "idempotent" : {
           "type_enum" : "BOOL",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 34,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 34,
+              "column" : 22
+            }
+          }
         }
       },
-      "annotation_last_lineno" : -1
+      "annotation_last_lineno" : -1,
+      "source_range" : {
+        "begin" : {
+          "line" : 26,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 35,
+          "column" : 2
+        }
+      }
     },
     "MyDataItem" : {
       "lineno" : 37,
@@ -61,7 +151,17 @@
       "fields" : {
 
       },
-      "annotation_last_lineno" : -1
+      "annotation_last_lineno" : -1,
+      "source_range" : {
+        "begin" : {
+          "line" : 37,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 38,
+          "column" : 2
+        }
+      }
     },
     "MyUnion" : {
       "lineno" : 40,
@@ -71,20 +171,60 @@
         "myEnum" : {
           "type_enum" : "ENUM",
           "spec_args" : "MyEnum",
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 41,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 41,
+              "column" : 20
+            }
+          }
         },
         "myStruct" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyStruct",
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 42,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 42,
+              "column" : 24
+            }
+          }
         },
         "myDataItem" : {
           "type_enum" : "STRUCT",
           "spec_args" : "MyDataItem",
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 43,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 43,
+              "column" : 28
+            }
+          }
         }
       },
-      "annotation_last_lineno" : -1
+      "annotation_last_lineno" : -1,
+      "source_range" : {
+        "begin" : {
+          "line" : 40,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 44,
+          "column" : 2
+        }
+      }
     }
   },
   "services" : {
@@ -97,7 +237,17 @@
             "spec_args" : null
           },
           "args" : [],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 46,
+              "column" : 20
+            },
+            "end" : {
+              "line" : 47,
+              "column" : 14
+            }
+          }
         },
         "MyService.getRandomData" : {
           "return_type" : {
@@ -105,7 +255,17 @@
             "spec_args" : null
           },
           "args" : [],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 47,
+              "column" : 14
+            },
+            "end" : {
+              "line" : 48,
+              "column" : 25
+            }
+          }
         },
         "MyService.sink" : {
           "return_type" : {
@@ -118,7 +278,17 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 48,
+              "column" : 25
+            },
+            "end" : {
+              "line" : 49,
+              "column" : 25
+            }
+          }
         },
         "MyService.putDataById" : {
           "return_type" : {
@@ -135,7 +305,17 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 49,
+              "column" : 25
+            },
+            "end" : {
+              "line" : 51,
+              "column" : 46
+            }
+          }
         },
         "MyService.hasDataById" : {
           "return_type" : {
@@ -148,7 +328,17 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 52,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 52,
+              "column" : 39
+            }
+          }
         },
         "MyService.getDataById" : {
           "return_type" : {
@@ -161,7 +351,17 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 53,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 53,
+              "column" : 41
+            }
+          }
         },
         "MyService.deleteDataById" : {
           "return_type" : {
@@ -174,7 +374,17 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 54,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 54,
+              "column" : 44
+            }
+          }
         },
         "MyService.lobDataById" : {
           "return_type" : {
@@ -191,9 +401,30 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 55,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 55,
+              "column" : 53
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 46,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 56,
+          "column" : 2
         }
       }
+
     },
     "DbMixedStackArguments" : {
       "lineno" : 58,
@@ -209,7 +440,17 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 58,
+              "column" : 32
+            },
+            "end" : {
+              "line" : 59,
+              "column" : 38
+            }
+          }
         },
         "DbMixedStackArguments.getDataByKey1" : {
           "return_type" : {
@@ -222,9 +463,30 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 59,
+              "column" : 38
+            },
+            "end" : {
+              "line" : 60,
+              "column" : 38
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 58,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 61,
+          "column" : 2
         }
       }
+
     }
   }
 }

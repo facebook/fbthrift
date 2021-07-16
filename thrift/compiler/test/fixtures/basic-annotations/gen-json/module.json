@@ -8,6 +8,16 @@
         "MyValue1" : 0,
         "MyValue2" : 1,
         "DOMAIN" : 2
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 20,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 24,
+          "column" : 2
+        }
       }
     }
   },
@@ -20,18 +30,63 @@
         "name" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 27,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 27,
+              "column" : 18
+            }
+          }
         }
       },
-      "annotation_last_lineno" : -1
+      "annotation_last_lineno" : -1,
+      "source_range" : {
+        "begin" : {
+          "line" : 26,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 28,
+          "column" : 2
+        }
+      }
     },
     "MyStruct" : {
       "lineno" : 30,
       "is_exception" : false,
       "is_union" : false,
       "annotations" : {
-        "android.generate_builder" : "1",
-        "cpp.internal.deprecated._data.method" : "1"
+        "android.generate_builder" : {
+          "value" : "1",
+          "source_range" : {
+            "begin" : {
+              "line" : 40,
+              "column" : 4
+            },
+            "end" : {
+              "line" : 40,
+              "column" : 28
+            }
+          }
+        }
+,
+        "cpp.internal.deprecated._data.method" : {
+          "value" : "1",
+          "source_range" : {
+            "begin" : {
+              "line" : 40,
+              "column" : 30
+            },
+            "end" : {
+              "line" : 40,
+              "column" : 66
+            }
+          }
+        }
       },
       "fields" : {
         "major" : {
@@ -39,7 +94,29 @@
           "spec_args" : null,
           "required" : true,
           "annotations" : {
-            "cpp.name" : "majorVer"
+            "cpp.name" : {
+              "value" : "majorVer",
+              "source_range" : {
+                "begin" : {
+                  "line" : 32,
+                  "column" : 17
+                },
+                "end" : {
+                  "line" : 32,
+                  "column" : 38
+                }
+              }
+            }
+          },
+          "source_range" : {
+            "begin" : {
+              "line" : 32,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 32,
+              "column" : 40
+            }
           }
         },
         "package" : {
@@ -47,7 +124,29 @@
           "spec_args" : null,
           "required" : true,
           "annotations" : {
-            "java.swift.name" : "_package"
+            "java.swift.name" : {
+              "value" : "_package",
+              "source_range" : {
+                "begin" : {
+                  "line" : 34,
+                  "column" : 22
+                },
+                "end" : {
+                  "line" : 34,
+                  "column" : 50
+                }
+              }
+            }
+          },
+          "source_range" : {
+            "begin" : {
+              "line" : 34,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 34,
+              "column" : 52
+            }
           }
         },
         "annotation_with_quote" : {
@@ -55,7 +154,29 @@
           "spec_args" : null,
           "required" : true,
           "annotations" : {
-            "go.tag" : "tag:\"somevalue\""
+            "go.tag" : {
+              "value" : "tag:\"somevalue\"",
+              "source_range" : {
+                "begin" : {
+                  "line" : 36,
+                  "column" : 36
+                },
+                "end" : {
+                  "line" : 36,
+                  "column" : 62
+                }
+              }
+            }
+          },
+          "source_range" : {
+            "begin" : {
+              "line" : 36,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 36,
+              "column" : 64
+            }
           }
         },
         "class_" : {
@@ -63,7 +184,29 @@
           "spec_args" : null,
           "required" : true,
           "annotations" : {
-            "java.swift.name" : "class_"
+            "java.swift.name" : {
+              "value" : "class_",
+              "source_range" : {
+                "begin" : {
+                  "line" : 37,
+                  "column" : 21
+                },
+                "end" : {
+                  "line" : 37,
+                  "column" : 47
+                }
+              }
+            }
+          },
+          "source_range" : {
+            "begin" : {
+              "line" : 37,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 37,
+              "column" : 49
+            }
           }
         },
         "annotation_with_trailing_comma" : {
@@ -71,16 +214,58 @@
           "spec_args" : null,
           "required" : true,
           "annotations" : {
-            "custom" : "test"
+            "custom" : {
+              "value" : "test",
+              "source_range" : {
+                "begin" : {
+                  "line" : 38,
+                  "column" : 45
+                },
+                "end" : {
+                  "line" : 38,
+                  "column" : 60
+                }
+              }
+            }
+          },
+          "source_range" : {
+            "begin" : {
+              "line" : 38,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 38,
+              "column" : 62
+            }
           }
         },
         "empty_annotations" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 39,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 39,
+              "column" : 34
+            }
+          }
         }
       },
-      "annotation_last_lineno" : 40
+      "annotation_last_lineno" : 40,
+      "source_range" : {
+        "begin" : {
+          "line" : 30,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 40,
+          "column" : 67
+        }
+      }
     },
     "SecretStruct" : {
       "lineno" : 61,
@@ -90,18 +275,60 @@
         "id" : {
           "type_enum" : "I64",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 62,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 62,
+              "column" : 13
+            }
+          }
         },
         "password" : {
           "type_enum" : "STRING",
           "spec_args" : null,
           "required" : true,
           "annotations" : {
-            "java.sensitive" : "1"
+            "java.sensitive" : {
+              "value" : "1",
+              "source_range" : {
+                "begin" : {
+                  "line" : 63,
+                  "column" : 23
+                },
+                "end" : {
+                  "line" : 63,
+                  "column" : 37
+                }
+              }
+            }
+          },
+          "source_range" : {
+            "begin" : {
+              "line" : 63,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 63,
+              "column" : 39
+            }
           }
         }
       },
-      "annotation_last_lineno" : -1
+      "annotation_last_lineno" : -1,
+      "source_range" : {
+        "begin" : {
+          "line" : 61,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 64,
+          "column" : 2
+        }
+      }
     }
   },
   "services" : {
@@ -114,7 +341,17 @@
             "spec_args" : null
           },
           "args" : [],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 42,
+              "column" : 20
+            },
+            "end" : {
+              "line" : 43,
+              "column" : 14
+            }
+          }
         },
         "MyService.getRandomData" : {
           "return_type" : {
@@ -122,7 +359,17 @@
             "spec_args" : null
           },
           "args" : [],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 43,
+              "column" : 14
+            },
+            "end" : {
+              "line" : 44,
+              "column" : 25
+            }
+          }
         },
         "MyService.hasDataById" : {
           "return_type" : {
@@ -135,7 +382,17 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 44,
+              "column" : 25
+            },
+            "end" : {
+              "line" : 45,
+              "column" : 30
+            }
+          }
         },
         "MyService.getDataById" : {
           "return_type" : {
@@ -148,7 +405,17 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 45,
+              "column" : 30
+            },
+            "end" : {
+              "line" : 46,
+              "column" : 32
+            }
+          }
         },
         "MyService.putDataById" : {
           "return_type" : {
@@ -165,7 +432,17 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 46,
+              "column" : 32
+            },
+            "end" : {
+              "line" : 47,
+              "column" : 46
+            }
+          }
         },
         "MyService.lobDataById" : {
           "return_type" : {
@@ -182,7 +459,17 @@
               "spec_args" : null
             }
           ],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 48,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 48,
+              "column" : 53
+            }
+          }
         },
         "MyService.doNothing" : {
           "return_type" : {
@@ -192,15 +479,60 @@
           "args" : [],
           "throws" : [],
           "annotations" : {
-            "cpp.name" : "cppDoNothing"
+            "cpp.name" : {
+              "value" : "cppDoNothing",
+              "source_range" : {
+                "begin" : {
+                  "line" : 49,
+                  "column" : 21
+                },
+                "end" : {
+                  "line" : 49,
+                  "column" : 46
+                }
+              }
+            }
+          },
+          "source_range" : {
+            "begin" : {
+              "line" : 48,
+              "column" : 53
+            },
+            "end" : {
+              "line" : 49,
+              "column" : 48
+            }
           }
         }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 42,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 50,
+          "column" : 2
+        }
       }
+
     },
     "MyServicePrioParent" : {
       "lineno" : 52,
       "annotations" : {
-        "priority" : "HIGH"
+        "priority" : {
+          "value" : "HIGH",
+          "source_range" : {
+            "begin" : {
+              "line" : 55,
+              "column" : 4
+            },
+            "end" : {
+              "line" : 55,
+              "column" : 21
+            }
+          }
+        }
       },
       "functions" : {
         "MyServicePrioParent.ping" : {
@@ -211,7 +543,29 @@
           "args" : [],
           "throws" : [],
           "annotations" : {
-            "priority" : "IMPORTANT"
+            "priority" : {
+              "value" : "IMPORTANT",
+              "source_range" : {
+                "begin" : {
+                  "line" : 53,
+                  "column" : 16
+                },
+                "end" : {
+                  "line" : 53,
+                  "column" : 38
+                }
+              }
+            }
+          },
+          "source_range" : {
+            "begin" : {
+              "line" : 52,
+              "column" : 30
+            },
+            "end" : {
+              "line" : 53,
+              "column" : 40
+            }
           }
         },
         "MyServicePrioParent.pong" : {
@@ -222,10 +576,43 @@
           "args" : [],
           "throws" : [],
           "annotations" : {
-            "priority" : "HIGH_IMPORTANT"
+            "priority" : {
+              "value" : "HIGH_IMPORTANT",
+              "source_range" : {
+                "begin" : {
+                  "line" : 54,
+                  "column" : 16
+                },
+                "end" : {
+                  "line" : 54,
+                  "column" : 43
+                }
+              }
+            }
+          },
+          "source_range" : {
+            "begin" : {
+              "line" : 53,
+              "column" : 40
+            },
+            "end" : {
+              "line" : 54,
+              "column" : 45
+            }
           }
         }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 52,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 55,
+          "column" : 22
+        }
       }
+
     },
     "MyServicePrioChild" : {
       "extends" : {
@@ -242,10 +629,43 @@
           "args" : [],
           "throws" : [],
           "annotations" : {
-            "priority" : "BEST_EFFORT"
+            "priority" : {
+              "value" : "BEST_EFFORT",
+              "source_range" : {
+                "begin" : {
+                  "line" : 58,
+                  "column" : 16
+                },
+                "end" : {
+                  "line" : 58,
+                  "column" : 40
+                }
+              }
+            }
+          },
+          "source_range" : {
+            "begin" : {
+              "line" : 57,
+              "column" : 57
+            },
+            "end" : {
+              "line" : 58,
+              "column" : 42
+            }
           }
         }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 57,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 59,
+          "column" : 2
+        }
       }
+
     }
   }
 }

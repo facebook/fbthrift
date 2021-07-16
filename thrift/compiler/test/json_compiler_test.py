@@ -115,6 +115,16 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_union": False,
                         "lineno": 1,
                         "annotation_last_lineno": -1,
+                        "source_range": {
+                            "begin": {
+                                "line": 1,
+                                "column": 1,
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 2,
+                            },
+                        },
                     },
                 },
             },
@@ -145,6 +155,16 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_union": False,
                         "lineno": 1,
                         "annotation_last_lineno": -1,
+                        "source_range": {
+                            "begin": {
+                                "line": 1,
+                                "column": 1,
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 2,
+                            },
+                        },
                     },
                     "DataHolder": {
                         "fields": {
@@ -152,12 +172,32 @@ class JsonCompilerTest(unittest.TestCase):
                                 "required": True,
                                 "type_enum": "STRUCT",
                                 "spec_args": "DataItem",
+                                "source_range": {
+                                    "begin": {
+                                        "line": 4,
+                                        "column": 5,
+                                    },
+                                    "end": {
+                                        "line": 4,
+                                        "column": 22,
+                                    },
+                                },
                             },
                         },
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 3,
                         "annotation_last_lineno": -1,
+                        "source_range": {
+                            "begin": {
+                                "line": 3,
+                                "column": 1,
+                            },
+                            "end": {
+                                "line": 5,
+                                "column": 2,
+                            },
+                        },
                     },
                 },
             },
@@ -188,6 +228,16 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_union": False,
                         "lineno": 1,
                         "annotation_last_lineno": -1,
+                        "source_range": {
+                            "begin": {
+                                "line": 1,
+                                "column": 1,
+                            },
+                            "end": {
+                                "line": 2,
+                                "column": 2,
+                            },
+                        },
                     },
                     "DataHolder": {
                         "fields": {
@@ -204,12 +254,32 @@ class JsonCompilerTest(unittest.TestCase):
                                         "spec_args": "DataItem",
                                     },
                                 },
+                                "source_range": {
+                                    "begin": {
+                                        "line": 4,
+                                        "column": 5,
+                                    },
+                                    "end": {
+                                        "line": 4,
+                                        "column": 35,
+                                    },
+                                },
                             },
                         },
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 3,
                         "annotation_last_lineno": -1,
+                        "source_range": {
+                            "begin": {
+                                "line": 3,
+                                "column": 1,
+                            },
+                            "end": {
+                                "line": 5,
+                                "column": 2,
+                            },
+                        },
                     },
                 },
             },
@@ -242,6 +312,16 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_union": False,
                         "lineno": 4,
                         "annotation_last_lineno": -1,
+                        "source_range": {
+                            "begin": {
+                                "line": 4,
+                                "column": 1,
+                            },
+                            "end": {
+                                "line": 5,
+                                "column": 2,
+                            },
+                        },
                     },
                     "DataHolder": {
                         "fields": {
@@ -249,12 +329,32 @@ class JsonCompilerTest(unittest.TestCase):
                                 "required": True,
                                 "type_enum": "STRUCT",
                                 "spec_args": "DataItem",
+                                "source_range": {
+                                    "begin": {
+                                        "line": 2,
+                                        "column": 5,
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 22,
+                                    },
+                                },
                             },
                         },
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
                         "annotation_last_lineno": -1,
+                        "source_range": {
+                            "begin": {
+                                "line": 1,
+                                "column": 1,
+                            },
+                            "end": {
+                                "line": 3,
+                                "column": 2,
+                            },
+                        },
                     },
                 },
             },
@@ -290,11 +390,31 @@ class JsonCompilerTest(unittest.TestCase):
                                 "required": True,
                                 "spec_args": None,
                                 "type_enum": "STRING",
+                                "source_range": {
+                                    "begin": {
+                                        "line": 2,
+                                        "column": 3,
+                                    },
+                                    "end": {
+                                        "line": 2,
+                                        "column": 18,
+                                    },
+                                },
                             },
                         },
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
+                        "source_range": {
+                            "begin": {
+                                "line": 1,
+                                "column": 1,
+                            },
+                            "end": {
+                                "line": 3,
+                                "column": 2,
+                            },
+                        },
                     },
                     "DataHolder": {
                         "fields": {
@@ -303,8 +423,42 @@ class JsonCompilerTest(unittest.TestCase):
                                 "type_enum": "STRING",
                                 "spec_args": None,
                                 "annotations": {
-                                    "foo": "bar",
-                                    "ignore": "1",
+                                    "foo": {
+                                        "value": "bar",
+                                        "source_range": {
+                                            "begin": {
+                                                "line": 7,
+                                                "column": 19,
+                                            },
+                                            "end": {
+                                                "line": 7,
+                                                "column": 28,
+                                            },
+                                        },
+                                    },
+                                    "ignore": {
+                                        "value": "1",
+                                        "source_range": {
+                                            "begin": {
+                                                "line": 7,
+                                                "column": 30,
+                                            },
+                                            "end": {
+                                                "line": 7,
+                                                "column": 36,
+                                            },
+                                        },
+                                    },
+                                },
+                                "source_range": {
+                                    "begin": {
+                                        "line": 7,
+                                        "column": 3,
+                                    },
+                                    "end": {
+                                        "line": 7,
+                                        "column": 37,
+                                    },
                                 },
                             },
                         },
@@ -313,11 +467,33 @@ class JsonCompilerTest(unittest.TestCase):
                         "lineno": 6,
                         "annotation_last_lineno": 8,
                         "annotations": {
-                            "my_annotation_key": "my_annotation_value",
+                            "my_annotation_key": {
+                                "value": "my_annotation_value",
+                                "source_range": {
+                                    "begin": {
+                                        "line": 8,
+                                        "column": 4,
+                                    },
+                                    "end": {
+                                        "line": 8,
+                                        "column": 45,
+                                    },
+                                },
+                            },
                         },
                         "structured_annotations": {
                             "Annotation": {
                                 "name": "aba",
+                            },
+                        },
+                        "source_range": {
+                            "begin": {
+                                "line": 5,
+                                "column": 1,
+                            },
+                            "end": {
+                                "line": 8,
+                                "column": 46,
                             },
                         },
                     },
