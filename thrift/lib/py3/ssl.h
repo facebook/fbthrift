@@ -64,6 +64,11 @@ class ConnectHandler : public folly::AsyncSocket::ConnectCallback,
     return promise_.getFuture();
   }
 
+  void setSupportedApplicationProtocols(
+      const std::vector<std::string>& protocols) {
+    socket_->setSupportedApplicationProtocols(protocols);
+  }
+
   void connectSuccess() noexcept override {
     UniquePtr p(this);
     promise_.setValue([this]() mutable -> RequestChannel_ptr {
@@ -111,9 +116,6 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
   auto eb = folly::getEventBase();
   return folly::via(
       eb, [=, host{std::move(host)}, endpoint{std::move(endpoint)}]() mutable {
-        if (client_t == CLIENT_TYPE::THRIFT_ROCKET_CLIENT_TYPE) {
-          ctx->setAdvertisedNextProtocols({"rs"});
-        }
         ConnectHandler::UniquePtr handler{new ConnectHandler(
             ctx,
             eb,
@@ -124,6 +126,10 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
             client_t,
             proto,
             std::move(endpoint))};
+
+        if (client_t == CLIENT_TYPE::THRIFT_ROCKET_CLIENT_TYPE) {
+          handler->setSupportedApplicationProtocols({"rs"});
+        }
         auto future = handler->connect();
         handler.release();
         return future;
