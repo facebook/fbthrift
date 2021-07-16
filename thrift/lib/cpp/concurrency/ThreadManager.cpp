@@ -1422,13 +1422,26 @@ ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
   for (size_t i = 0; i < executors.size(); i++) {
     auto& executor = executors[i];
     if (!executor) {
-      auto tm = ThreadManager::newSimpleThreadManager(2);
+      auto tm = ThreadManager::newSimpleThreadManager(
+          i == PRIORITY::NORMAL ? std::thread::hardware_concurrency() : 2);
       executor = tm;
       for (int j = 0; j < N_SOURCES; j++) {
         executors_[idxFromPriSrc(i, j)] =
             tm->getKeepAlive(
                   static_cast<PRIORITY>(0),
                   static_cast<ThreadManager::Source>(j))
+                .get();
+      }
+    } else if (
+        auto simpletm = dynamic_cast<SimpleThreadManagerImpl*>(executor.get())) {
+      executors_[idxFromPriSrc(i, 0)] = executor.get();
+      std::unique_ptr<folly::MeteredExecutor> adapter;
+      for (int j = 1; j < N_SOURCES; j++) {
+        executors_[idxFromPriSrc(i, j)] =
+            simpletm
+                ->getKeepAlive(
+                    static_cast<PRIORITY>(0),
+                    static_cast<ThreadManager::Source>(j))
                 .get();
       }
     } else {

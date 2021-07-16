@@ -1092,15 +1092,12 @@ TEST_P(HeaderOrRocket, ThreadManagerAdapterOverSimpleTMUpstreamPriorities) {
   auto handler = std::make_shared<TestInterface>();
   ScopedServerInterfaceThread runner(handler, "::1", 0, [&](auto& ts) {
     // empty executor will default to SimpleThreadManager
-    auto executor = std::shared_ptr<folly::Executor>();
+    auto executor = ThreadManager::newSimpleThreadManager("tm", 1);
     auto tm = std::make_shared<ThreadManagerExecutorAdapter>(executor);
-    tm->setNamePrefix("tm");
     auto tf =
         std::make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
     tm->threadFactory(tf);
-    // Our TM starts with 2 threads, reduce it to one thread for simplicity
     tm->start();
-    tm->removeWorker(1);
     ts.setThreadManager(tm);
   });
   std::make_shared<TestInterface>();
