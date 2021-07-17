@@ -17,6 +17,7 @@
 #include <memory>
 #include <stdexcept>
 
+#include <folly/Portability.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
@@ -180,6 +181,10 @@ TEST_P(AsyncProcessorMethodResolutionTestP, EmptyMap) {
 }
 
 TEST_P(AsyncProcessorMethodResolutionTestP, MistypedMetadataDeathTest) {
+  if constexpr (!folly::kIsDebug) {
+    // Opt-mode causes UB instead of dying
+    return;
+  }
   auto runTest = [&](auto&& callback) {
     auto service = std::make_shared<ChildWithMetadata>([](auto defaultResult) {
       MethodMetadataMap result;
@@ -203,6 +208,10 @@ TEST_P(AsyncProcessorMethodResolutionTestP, MistypedMetadataDeathTest) {
 }
 
 TEST_P(AsyncProcessorMethodResolutionTestP, ParentMapDeathTest) {
+  if constexpr (!folly::kIsDebug) {
+    // Opt-mode causes UB instead of dying
+    return;
+  }
   // We strictly require the correct metadata type, even if the parent's map
   // might contain all the function pointers we need.
   EXPECT_DEATH(

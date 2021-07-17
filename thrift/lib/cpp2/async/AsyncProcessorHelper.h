@@ -38,7 +38,7 @@ class AsyncProcessorHelper {
       typename Metadata,
       typename = std::enable_if_t<
           std::is_base_of_v<AsyncProcessorFactory::MethodMetadata, Metadata>>>
-  static bool isMetadataOfType(
+  static const Metadata* metadataOfType(
       const AsyncProcessorFactory::MethodMetadata& methodMetadata) {
     // If Metadata is final so we know that dynamic_cast will be a simple vtable
     // comparison. i.e. we know at compile-time that methodMetadata cannot be of
@@ -65,7 +65,7 @@ class AsyncProcessorHelper {
     // for every request so we should encourage performant checks. In almost all
     // cases, it should be possible to make the Metadata type final.
     static_assert(std::is_final_v<Metadata>);
-    return dynamic_cast<const Metadata*>(&methodMetadata) != nullptr;
+    return dynamic_cast<const Metadata*>(&methodMetadata);
   }
 };
 
