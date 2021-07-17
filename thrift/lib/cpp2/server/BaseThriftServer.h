@@ -846,6 +846,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   void setMonitoringInterface(
       std::shared_ptr<MonitoringServerInterface> iface) {
+    CHECK(configMutable());
     monitoringServiceHandler_ = std::move(iface);
   }
 

@@ -129,9 +129,10 @@ class AsyncProcessorMethodResolutionTestP
   TransportType transportType() const { return GetParam(); }
 
   std::unique_ptr<ScopedServerInterfaceThread> makeServer(
-      std::shared_ptr<AsyncProcessorFactory> service) {
-    auto runner =
-        std::make_unique<ScopedServerInterfaceThread>(std::move(service));
+      std::shared_ptr<AsyncProcessorFactory> service,
+      ScopedServerInterfaceThread::ServerConfigCb configureServer = {}) {
+    auto runner = std::make_unique<ScopedServerInterfaceThread>(
+        std::move(service), std::move(configureServer));
     if (transportType() == TransportType::HTTP2) {
       auto& thriftServer =
           dynamic_cast<ThriftServer&>(runner->getThriftServer());
@@ -360,8 +361,10 @@ TEST(AsyncProcessorMethodResolutionTest, MultipleService) {
       result = "hello from Monitor";
     }
   };
-  ScopedServerInterfaceThread runner{std::make_shared<Child>()};
-  runner.getThriftServer().setMonitoringInterface(std::make_shared<Monitor>());
+  ScopedServerInterfaceThread runner{
+      std::make_shared<Child>(), [&](ThriftServer& server) {
+        server.setMonitoringInterface(std::make_shared<Monitor>());
+      }};
 
   auto client = runner.newClient<ChildAsyncClient>(
       nullptr, RocketClientChannel::newChannel);
