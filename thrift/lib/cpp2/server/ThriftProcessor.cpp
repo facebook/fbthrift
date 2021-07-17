@@ -88,18 +88,19 @@ void ThriftProcessor::onThriftRequest(
     return;
   }
 
-  auto baseReqCtx = processorFactory.getBaseContextForRequest();
+  const auto& serviceMetadata = worker->getMetadataForService(processorFactory);
+  using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
+  const PerServiceMetadata::FindMethodResult methodMetadataResult =
+      serviceMetadata.findMethod(request->getMethodName());
+
+  auto baseReqCtx =
+      serviceMetadata.getBaseContextForRequest(methodMetadataResult);
   auto reqCtx = baseReqCtx ? folly::RequestContext::copyAsChild(*baseReqCtx)
                            : std::make_shared<folly::RequestContext>();
   folly::RequestContextScopeGuard rctx(reqCtx);
 
   auto protoId = request->getProtoId();
   auto reqContext = request->getRequestContext();
-
-  const auto& serviceMetadata = worker->getMetadataForService(processorFactory);
-  using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
-  const PerServiceMetadata::FindMethodResult methodMetadataResult =
-      serviceMetadata.findMethod(request->getMethodName());
 
   folly::variant_match(
       methodMetadataResult,

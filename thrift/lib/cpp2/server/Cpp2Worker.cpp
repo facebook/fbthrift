@@ -400,5 +400,18 @@ Cpp2Worker::PerServiceMetadata::findMethod(std::string_view methodName) const {
       });
 }
 
+std::shared_ptr<folly::RequestContext>
+Cpp2Worker::PerServiceMetadata::getBaseContextForRequest(
+    const Cpp2Worker::PerServiceMetadata::FindMethodResult& findMethodResult)
+    const {
+  using Result = std::shared_ptr<folly::RequestContext>;
+  return folly::variant_match(
+      findMethodResult,
+      [&](const PerServiceMetadata::MetadataFound& found) -> Result {
+        return processorFactory_.getBaseContextForRequest(found.metadata);
+      },
+      [](auto&&) -> Result { return nullptr; });
+}
+
 } // namespace thrift
 } // namespace apache

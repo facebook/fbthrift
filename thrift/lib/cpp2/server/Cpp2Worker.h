@@ -153,8 +153,9 @@ class Cpp2Worker : public IOWorkerContext,
   class PerServiceMetadata {
    public:
     explicit PerServiceMetadata(
+        AsyncProcessorFactory& processorFactory,
         AsyncProcessorFactory::CreateMethodMetadataResult&& methods)
-        : methods_(std::move(methods)) {}
+        : processorFactory_(processorFactory), methods_(std::move(methods)) {}
 
     /**
      * AsyncProcessorFactory::createMethodMetadata is not implemented.
@@ -196,7 +197,17 @@ class Cpp2Worker : public IOWorkerContext,
      */
     FindMethodResult findMethod(std::string_view methodName) const;
 
+    /**
+     * Extracts the base request context from the service based on the result of
+     * findMethod().
+     * This returns nullptr iff no metadata was found or createMethodMetadata()
+     * is not implemented.
+     */
+    std::shared_ptr<folly::RequestContext> getBaseContextForRequest(
+        const FindMethodResult&) const;
+
    private:
+    AsyncProcessorFactory& processorFactory_;
     AsyncProcessorFactory::CreateMethodMetadataResult methods_;
   };
   /**
@@ -213,7 +224,8 @@ class Cpp2Worker : public IOWorkerContext,
     }
     auto [metadata, _] = perServiceMetadata_.emplace(
         &processorFactory,
-        PerServiceMetadata{processorFactory.createMethodMetadata()});
+        PerServiceMetadata{
+            processorFactory, processorFactory.createMethodMetadata()});
     return metadata->second;
   }
 

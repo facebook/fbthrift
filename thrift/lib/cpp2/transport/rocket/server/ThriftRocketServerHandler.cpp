@@ -344,14 +344,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
     readEnd = std::chrono::steady_clock::now();
   }
 
-  auto baseReqCtx = processorFactory_->getBaseContextForRequest();
-  auto rootid = requestsRegistry_->genRootId();
-  auto reqCtx = baseReqCtx
-      ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
-      : std::make_shared<folly::RequestContext>(rootid);
-
-  folly::RequestContextScopeGuard rctx(reqCtx);
-
   rocket::Payload debugPayload = payload.clone();
   auto requestPayloadTry =
       unpackAsCompressed<RequestPayload>(std::move(payload));
@@ -361,10 +353,17 @@ void ThriftRocketServerHandler::handleRequestCommon(
     return makeRequest(std::move(md), std::move(payload), std::move(reqCtx));
   };
 
+  auto createDefaultRequestContext = [&] {
+    return std::make_shared<folly::RequestContext>(
+        requestsRegistry_->genRootId());
+  };
+
   if (requestPayloadTry.hasException()) {
     handleDecompressionFailure(
         makeActiveRequest(
-            RequestRpcMetadata(), rocket::Payload{}, std::move(reqCtx)),
+            RequestRpcMetadata(),
+            rocket::Payload{},
+            createDefaultRequestContext()),
         requestPayloadTry.exception().what().toStdString());
     return;
   }
@@ -374,13 +373,17 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   if (!isMetadataValid(metadata)) {
     handleRequestWithBadMetadata(makeActiveRequest(
-        std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
+        std::move(metadata),
+        std::move(debugPayload),
+        createDefaultRequestContext()));
     return;
   }
 
   if (worker_->isStopping()) {
     handleServerShutdown(makeActiveRequest(
-        std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
+        std::move(metadata),
+        std::move(debugPayload),
+        createDefaultRequestContext()));
     return;
   }
 
@@ -406,7 +409,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
     } catch (...) {
       handleDecompressionFailure(
           makeActiveRequest(
-              std::move(metadata), rocket::Payload{}, std::move(reqCtx)),
+              std::move(metadata),
+              rocket::Payload{},
+              createDefaultRequestContext()),
           folly::exceptionStr(std::current_exception()).toStdString());
       return;
     }
@@ -418,7 +423,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
 
   if (badChecksum) {
     handleRequestWithBadChecksum(makeActiveRequest(
-        std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
+        std::move(metadata),
+        std::move(debugPayload),
+        createDefaultRequestContext()));
     return;
   }
 
@@ -440,10 +447,30 @@ void ThriftRocketServerHandler::handleRequestCommon(
     }
     handleInjectedFault(
         makeActiveRequest(
-            std::move(metadata), std::move(debugPayload), std::move(reqCtx)),
+            std::move(metadata),
+            std::move(debugPayload),
+            createDefaultRequestContext()),
         injectedFault);
     return;
   }
+
+  using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
+  const PerServiceMetadata::FindMethodResult methodMetadataResult =
+      serviceMetadata_->findMethod(
+          metadata.name_ref()
+              ? metadata.name_ref()->view()
+              : std::string_view{}); // need to call with empty string_view
+                                     // because we still distinguish
+                                     // between NotImplemented and
+                                     // MetadataNotFound
+
+  auto rootid = requestsRegistry_->genRootId();
+  auto baseReqCtx =
+      serviceMetadata_->getBaseContextForRequest(methodMetadataResult);
+  auto reqCtx = baseReqCtx
+      ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
+      : std::make_shared<folly::RequestContext>(rootid);
+  folly::RequestContextScopeGuard rctx(reqCtx);
 
   // A request should not be active until the overload checking is done.
   auto request = makeRequest(
@@ -528,10 +555,6 @@ void ThriftRocketServerHandler::handleRequestCommon(
     DCHECK_EQ(cpp2ReqCtx->getInteractionId(), 0);
     cpp2ReqCtx->setInteractionId(*interactionCreate->interactionId_ref());
   }
-
-  using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
-  const PerServiceMetadata::FindMethodResult methodMetadataResult =
-      serviceMetadata_->findMethod(request->getMethodName());
 
   auto serializedCompressedRequest = SerializedCompressedRequest(
       std::move(data),

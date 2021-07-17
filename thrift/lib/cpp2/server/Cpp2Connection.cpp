@@ -405,7 +405,12 @@ void Cpp2Connection::requestReceived(
     }
   }
 
-  auto baseReqCtx = processorFactory_.getBaseContextForRequest();
+  using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
+  const PerServiceMetadata::FindMethodResult methodMetadataResult =
+      serviceMetadata_.findMethod(methodName);
+
+  auto baseReqCtx =
+      serviceMetadata_.getBaseContextForRequest(methodMetadataResult);
   auto rootid = worker_->getRequestsRegistry()->genRootId();
   auto reqCtx = baseReqCtx
       ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
@@ -576,10 +581,6 @@ void Cpp2Connection::requestReceived(
           });
     }
   }
-
-  using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
-  const PerServiceMetadata::FindMethodResult methodMetadataResult =
-      serviceMetadata_.findMethod(reqContext->getMethodName());
 
   try {
     ResponseChannelRequest::UniquePtr req = std::move(t2r);

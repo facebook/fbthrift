@@ -97,15 +97,6 @@ class AsyncProcessorFactory {
   virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
   virtual std::vector<ServiceHandler*> getServiceHandlers() = 0;
 
-  /**
-   * Override to return a pre-initialized RequestContext.
-   * Its content will be copied in the RequestContext initialized at
-   * the beginning of each thrift request processing.
-   */
-  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
-    return nullptr;
-  }
-
   struct MethodMetadata {
     virtual ~MethodMetadata() = default;
   };
@@ -170,6 +161,20 @@ class AsyncProcessorFactory {
    * reference from the map (or be WildcardMethodMetadata).
    */
   virtual CreateMethodMetadataResult createMethodMetadata() { return {}; }
+
+  /**
+   * Override to return a pre-initialized RequestContext.
+   * Its content will be copied in the RequestContext initialized at
+   * the beginning of each thrift request processing.
+   *
+   * The method metadata (per createMethodMetadata's contract) is also passed
+   * in. If createMethodMetadata is unimplemented or the method is not found,
+   * then this function will not be called.
+   */
+  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest(
+      const MethodMetadata&) {
+    return nullptr;
+  }
 
   virtual ~AsyncProcessorFactory() = default;
 };
