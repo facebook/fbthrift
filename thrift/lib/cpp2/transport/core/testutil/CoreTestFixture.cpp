@@ -32,6 +32,7 @@ CoreTestFixture::CoreTestFixture() : processor_(server_) {
   threadManager_->start();
   server_.setThreadManager(threadManager_);
   server_.setProcessorFactory(service_);
+  server_.setup();
   channel_ = std::make_shared<FakeChannel>(&eventBase_);
   worker_ = Cpp2Worker::createDummy(&eventBase_);
 }

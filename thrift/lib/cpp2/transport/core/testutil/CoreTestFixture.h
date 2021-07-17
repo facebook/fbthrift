@@ -22,10 +22,10 @@
 #include <folly/io/IOBufQueue.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/EventBaseLocal.h>
+#include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp2/server/ThriftProcessor.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/core/testutil/FakeChannel.h>
-#include <thrift/lib/cpp2/transport/core/testutil/FakeThreadManager.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TestServiceMock.h>
 #include <thrift/lib/cpp2/transport/core/testutil/gen-cpp2/TestService.tcc>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -70,14 +70,12 @@ class CoreTestFixture : public testing::Test {
   std::unique_ptr<Cpp2ConnContext> newCpp2ConnContext();
 
  protected:
-  // The thrift server is only used by ThriftProcessor. We don't actually spin
-  // up a server.
   ThriftServer server_;
   std::shared_ptr<testing::StrictMock<testutil::testservice::TestServiceMock>>
       service_ = std::make_shared<
           testing::StrictMock<testutil::testservice::TestServiceMock>>();
-  std::shared_ptr<FakeThreadManager> threadManager_ =
-      std::make_shared<FakeThreadManager>();
+  std::shared_ptr<concurrency::ThreadManager> threadManager_ =
+      concurrency::ThreadManager::newSimpleThreadManager(1);
   ThriftProcessor processor_;
   folly::EventBase eventBase_;
   std::shared_ptr<FakeChannel> channel_;
