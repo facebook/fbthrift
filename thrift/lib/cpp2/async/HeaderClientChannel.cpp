@@ -32,7 +32,7 @@
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/thrift/gen-cpp2/RocketUpgradeAsyncClient.h>
 
-THRIFT_FLAG_DEFINE_bool(raw_client_rocket_upgrade_enabled, false);
+THRIFT_FLAG_DEFINE_bool(raw_client_rocket_upgrade_enabled_v2, false);
 THRIFT_FLAG_DEFINE_int64(raw_client_rocket_upgrade_timeout_ms, 500);
 
 using folly::IOBuf;
@@ -115,7 +115,7 @@ HeaderClientChannel::Ptr HeaderClientChannel::newChannel(
       WithoutRocketUpgrade(), std::move(transport), std::move(options));
   return Ptr(new RocketUpgradeChannel(
       std::move(headerChannel),
-      THRIFT_FLAG(raw_client_rocket_upgrade_enabled),
+      THRIFT_FLAG(raw_client_rocket_upgrade_enabled_v2),
       std::move(rocketUpgradeSetupMetadata)));
 }
 

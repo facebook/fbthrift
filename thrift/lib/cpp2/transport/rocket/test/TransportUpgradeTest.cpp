@@ -25,7 +25,7 @@
 #include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/test/util/gen-cpp2/TransportUpgrade.h>
 
-THRIFT_FLAG_DECLARE_bool(raw_client_rocket_upgrade_enabled);
+THRIFT_FLAG_DECLARE_bool(raw_client_rocket_upgrade_enabled_v2);
 THRIFT_FLAG_DECLARE_int64(raw_client_rocket_upgrade_timeout_ms);
 THRIFT_FLAG_DECLARE_bool(server_rocket_upgrade_enabled);
 
@@ -76,7 +76,7 @@ class TransportUpgradeTest : public TestSetup {
       bool serverUpgradeEnabled,
       HeaderClientChannel::Options options = HeaderClientChannel::Options()) {
     // enable raw client transport upgrade to rocket
-    THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
+    THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled_v2, true);
     THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, serverUpgradeEnabled);
 
     folly::EventBase evb;
@@ -104,7 +104,7 @@ class TransportUpgradeTest : public TestSetup {
       bool serverUpgradeEnabled,
       HeaderClientChannel::Options options = HeaderClientChannel::Options()) {
     // enable raw client transport upgrade to rocket
-    THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
+    THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled_v2, true);
     THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, serverUpgradeEnabled);
 
     folly::EventBase evb;
@@ -215,7 +215,7 @@ TEST_F(
 
 TEST_F(TransportUpgradeTest, RawClientRocketUpgradeOneway) {
   // enable raw client transport upgrade to rocket
-  THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
+  THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled_v2, true);
   THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, true);
 
   EXPECT_CALL(*handler_.get(), noResponse(_)).Times(1);
@@ -240,7 +240,7 @@ TEST_F(TransportUpgradeTest, RawClientRocketUpgradeOneway) {
 
 TEST_F(TransportUpgradeTest, RawClientNoUpgrade) {
   // enable raw client transport upgrade to rocket
-  THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
+  THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled_v2, true);
   THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, true);
 
   folly::EventBase evb;
@@ -260,7 +260,7 @@ TEST_F(TransportUpgradeTest, RawClientNoUpgrade) {
 
 TEST_F(TransportUpgradeTest, RawClientRocketUpgradeTimeout) {
   // enable raw client transport upgrade from header to rocket
-  THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
+  THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled_v2, true);
   THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, true);
 
   folly::EventBase evb;
@@ -312,7 +312,7 @@ TEST_F(TransportUpgradeTest, RawClientRocketUpgradeTimeout) {
 
 TEST_F(TransportUpgradeTest, Fibers) {
   // enable raw client transport upgrade from header to rocket
-  THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
+  THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled_v2, true);
   THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, true);
 
   folly::EventBase evb;

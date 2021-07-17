@@ -50,7 +50,7 @@ DECLARE_string(transport);
 
 DEFINE_string(host, "::1", "host to connect to");
 
-THRIFT_FLAG_DECLARE_bool(raw_client_rocket_upgrade_enabled);
+THRIFT_FLAG_DECLARE_bool(raw_client_rocket_upgrade_enabled_v2);
 THRIFT_FLAG_DECLARE_bool(server_rocket_upgrade_enabled);
 
 namespace apache {
@@ -183,10 +183,10 @@ void TransportCompatibilityTest::connectToServer(
         std::unique_ptr<TestServiceAsyncClient>,
         std::shared_ptr<ClientConnectionIf>)> callMe) {
   if (upgradeToRocket_) {
-    THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, true);
+    THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled_v2, true);
     THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, true);
   } else {
-    THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled, false);
+    THRIFT_FLAG_SET_MOCK(raw_client_rocket_upgrade_enabled_v2, false);
     THRIFT_FLAG_SET_MOCK(server_rocket_upgrade_enabled, false);
   }
   server_->connectToServer(
