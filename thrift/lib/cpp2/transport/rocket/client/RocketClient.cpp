@@ -71,6 +71,12 @@ transport::TTransportException toTransportException(
 }
 } // namespace
 
+folly::EventBaseLocal<RocketClient::FlushManager>&
+RocketClient::getEventBaseLocal() {
+  static folly::EventBaseLocal<RocketClient::FlushManager> evbLocal;
+  return evbLocal;
+}
+
 RocketClient::RocketClient(
     folly::EventBase& evb,
     folly::AsyncTransport::UniquePtr socket,
@@ -89,6 +95,8 @@ RocketClient::RocketClient(
     socket->setCloseOnFailedWrite(false);
   }
   evb_->runOnDestruction(eventBaseDestructionCallback_);
+  // Get or create flush manager from EventBaseLocal
+  flushManager_ = &FlushManager::getInstance(*evb_);
 }
 
 RocketClient::~RocketClient() {
@@ -1028,12 +1036,31 @@ StreamId RocketClient::makeStreamId() {
   return id;
 }
 
-void RocketClient::WriteLoopCallback::runLoopCallback() noexcept {
-  if (!client_.flushList_ && !std::exchange(rescheduled_, true)) {
-    client_.evb_->runInLoop(this, true /* thisIteration */);
+void RocketClient::FlushManager::runLoopCallback() noexcept {
+  // always reschedule until the end of event loop.
+  if (!std::exchange(rescheduled_, true)) {
+    evb_.runInLoop(this, true /* thisIteration */);
     return;
   }
   rescheduled_ = false;
+
+  auto cbs = std::move(flushList_);
+  while (!cbs.empty()) {
+    auto callback = &cbs.front();
+    cbs.pop_front();
+    callback->runLoopCallback();
+  }
+}
+
+void RocketClient::FlushManager::enqueueFlush(RocketClient& client) {
+  // add write callback to flush list and schedule flush manager callback
+  flushList_.push_back(client.writeLoopCallback_);
+  if (!isLoopCallbackScheduled()) {
+    evb_.runInLoop(this);
+  }
+}
+
+void RocketClient::WriteLoopCallback::runLoopCallback() noexcept {
   client_.writeScheduledRequestsToSocket();
 }
 
@@ -1042,7 +1069,8 @@ void RocketClient::scheduleWriteLoopCallback() {
     if (flushList_) {
       flushList_->push_back(writeLoopCallback_);
     } else {
-      evb_->runInLoop(&writeLoopCallback_);
+      // use FlushManager to handle scheduling
+      flushManager_->enqueueFlush(*this);
     }
   }
 }
@@ -1259,6 +1287,7 @@ void RocketClient::attachEventBase(folly::EventBase& evb) {
   evb_ = &evb;
   socket_->attachEventBase(evb_);
   evb_->runOnDestruction(eventBaseDestructionCallback_);
+  flushManager_ = &FlushManager::getInstance(*evb_);
 }
 
 void RocketClient::detachEventBase() {
@@ -1277,6 +1306,7 @@ void RocketClient::detachEventBase() {
   eventBaseDestructionCallback_.cancel();
   detachableLoopCallback_.cancelLoopCallback();
   socket_->detachEventBase();
+  flushManager_ = nullptr;
   evb_ = nullptr;
   flushList_ = nullptr;
 }

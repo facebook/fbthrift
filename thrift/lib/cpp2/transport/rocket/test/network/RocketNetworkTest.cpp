@@ -81,6 +81,30 @@ class RocketNetworkTest : public testing::Test {
 
  public:
   void withClient(folly::Function<void(RocketTestClient&)> f) { f(*client_); }
+  void withClients(folly::Function<void(RocketTestClient&, RocketClient&)> f) {
+    RocketClient::Ptr client2;
+    createAndConnectClient(client_->getEventBase(), client2);
+    f(*client_, *client2.get());
+    disconnectClient(client_->getEventBase(), client2);
+  }
+
+  void createAndConnectClient(
+      folly::EventBase& evb, RocketClient::Ptr& client) {
+    evb.runInEventBaseThreadAndWait([&] {
+      folly::AsyncSocket::UniquePtr socket(new folly::AsyncSocket(
+          &evb,
+          folly::SocketAddress("::1", this->server_->getListeningPort())));
+      client = RocketClient::create(
+          evb,
+          std::move(socket),
+          std::make_unique<rocket::SetupFrame>(
+              this->client_->makeTestSetupFrame()));
+    });
+  }
+
+  void disconnectClient(folly::EventBase& evb, RocketClient::Ptr& client) {
+    evb.runInEventBaseThread([cl = std::move(client)] {});
+  }
 
   folly::ManualExecutor* getUserExecutor() { return &userExecutor_; }
 
@@ -98,6 +122,51 @@ struct OnWriteSuccess : RocketClient::WriteSuccessCallback {
   void onWriteSuccess() noexcept override { writeSuccess = true; }
 };
 } // namespace
+
+TEST_F(RocketNetworkTest, FlushManager) {
+  this->withClients([](RocketTestClient& client, RocketClient& client2) {
+    constexpr folly::StringPiece kMetadata1("metadata1");
+    constexpr folly::StringPiece kData1("test_request1");
+    constexpr folly::StringPiece kMetadata2("metadata2");
+    constexpr folly::StringPiece kData2("test_request2");
+
+    auto& client1 = client.getRawClient();
+    auto& eventBase = client.getEventBase();
+    RocketClient::FlushManager* flushManager{nullptr};
+
+    auto& fm = folly::fibers::getFiberManager(eventBase);
+
+    OnWriteSuccess onWriteSuccess1, onWriteSuccess2;
+    // Add a task that would initiate sending the requests from 2 clients
+    fm.addTaskRemoteFuture([&] {
+        auto reply1Fut = fm.addTaskEagerFuture([&] {
+          return client1.sendRequestResponseSync(
+              Payload::makeFromMetadataAndData(kMetadata1, kData1),
+              std::chrono::milliseconds(250),
+              &onWriteSuccess1);
+        });
+
+        auto reply2Fut = fm.addTaskEagerFuture([&] {
+          return client2.sendRequestResponseSync(
+              Payload::makeFromMetadataAndData(kMetadata2, kData2),
+              std::chrono::milliseconds(250),
+              &onWriteSuccess2);
+        });
+
+        flushManager = &RocketClient::FlushManager::getInstance(eventBase);
+        EXPECT_EQ(flushManager->getNumPendingClients(), 2);
+        EXPECT_FALSE(onWriteSuccess1.writeSuccess);
+        EXPECT_FALSE(onWriteSuccess2.writeSuccess);
+
+        auto reply1 = std::move(reply1Fut).getTry();
+        auto reply2 = std::move(reply2Fut).getTry();
+        EXPECT_TRUE(reply1.hasValue());
+        EXPECT_TRUE(reply2.hasValue());
+
+        EXPECT_EQ(flushManager->getNumPendingClients(), 0);
+      }).get();
+  });
+}
 
 TEST_F(RocketNetworkTest, FlushList) {
   this->withClient([](RocketTestClient& client) {

@@ -27,6 +27,7 @@
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/EventBaseLocal.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -204,6 +205,24 @@ class RocketClient : public virtual folly::DelayedDestruction,
    */
   void setFlushList(FlushList* flushList) { flushList_ = flushList; }
 
+  class FlushManager : private folly::EventBase::LoopCallback {
+   public:
+    explicit FlushManager(folly::EventBase& evb) : evb_(evb) {}
+    static FlushManager& getInstance(folly::EventBase& evb) {
+      return getEventBaseLocal().try_emplace(evb, evb);
+    }
+    void enqueueFlush(RocketClient& client);
+    // has time complexity linear to number of elements in flush list
+    size_t getNumPendingClients() const { return flushList_.size(); }
+
+   private:
+    void runLoopCallback() noexcept override final;
+
+    folly::EventBase& evb_;
+    FlushList flushList_;
+    bool rescheduled_{false};
+  };
+
   void scheduleTimeout(
       folly::HHWheelTimer::Callback* callback,
       const std::chrono::milliseconds& timeout) {
@@ -350,11 +369,13 @@ class RocketClient : public virtual folly::DelayedDestruction,
 
    private:
     RocketClient& client_;
-    bool rescheduled_{false};
   };
   WriteLoopCallback writeLoopCallback_;
   void scheduleWriteLoopCallback();
   FlushList* flushList_{nullptr};
+
+  FlushManager* flushManager_{nullptr};
+  static folly::EventBaseLocal<FlushManager>& getEventBaseLocal();
 
   folly::AsyncTransport::UniquePtr socket_;
   folly::Function<void()> onDetachable_;
