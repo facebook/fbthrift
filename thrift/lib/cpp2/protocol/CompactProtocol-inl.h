@@ -225,7 +225,8 @@ uint32_t CompactProtocolWriter::writeSetEnd() {
 uint32_t CompactProtocolWriter::writeBool(bool value) {
   uint32_t wsize = 0;
 
-  if (booleanField_.name != NULL) {
+  value = detail::validate_bool(value);
+  if (booleanField_.name != nullptr) {
     // we haven't written the field header yet
     wsize += writeFieldBeginInternal(
         booleanField_.name,
@@ -234,7 +235,7 @@ uint32_t CompactProtocolWriter::writeBool(bool value) {
         value ? apache::thrift::detail::compact::CT_BOOLEAN_TRUE
               : apache::thrift::detail::compact::CT_BOOLEAN_FALSE,
         lastFieldId_);
-    booleanField_.name = NULL;
+    booleanField_.name = nullptr;
   } else {
     // we're not part of a field, so just write the value
     wsize += writeByte(
