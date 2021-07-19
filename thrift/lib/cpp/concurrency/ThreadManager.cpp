@@ -1433,7 +1433,8 @@ ThreadManagerExecutorAdapter::ThreadManagerExecutorAdapter(
                 .get();
       }
     } else if (
-        auto simpletm = dynamic_cast<SimpleThreadManagerImpl*>(executor.get())) {
+        auto simpletm =
+            dynamic_cast<SimpleThreadManagerImpl*>(executor.get())) {
       executors_[idxFromPriSrc(i, 0)] = executor.get();
       std::unique_ptr<folly::MeteredExecutor> adapter;
       for (int j = 1; j < N_SOURCES; j++) {
