@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/CPortability.h>
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -21,16 +22,19 @@
 using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 
-#if !__has_feature(undefined_behavior_sanitizer)
+FOLLY_DISABLE_UNDEFINED_BEHAVIOR_SANITIZER("undefined")
+bool makeInvalidBool() {
+  return *reinterpret_cast<const volatile bool*>("\x42");
+}
+
 TEST(CompactProtocolTest, writeInvalidBool) {
   auto w = CompactProtocolWriter();
   auto q = folly::IOBufQueue();
   w.setOutput(&q);
-  bool value = *reinterpret_cast<const volatile bool*>("\x42");
   // writeBool should either throw or write a valid bool. The exact value may
   // depend on the build mode because the optimizer can make use of the UB.
   try {
-    w.writeBool(value);
+    w.writeBool(makeInvalidBool());
   } catch (const std::invalid_argument&) {
     return;
   }
@@ -38,4 +42,3 @@ TEST(CompactProtocolTest, writeInvalidBool) {
   q.appendToString(s);
   EXPECT_TRUE(s == std::string(1, '\1') || s == std::string(1, '\2'));
 }
-#endif
