@@ -242,22 +242,26 @@ void HeaderServerChannel::HeaderRequest::serializeAndSendError(
     int32_t protoSeqId,
     MessageChannel::SendCallback* cb) {
   if (isOneway()) {
-    sendReply(std::unique_ptr<folly::IOBuf>(), cb);
+    sendReply(ResponsePayload{}, cb);
     return;
   }
 
   std::unique_ptr<folly::IOBuf> exbuf;
   uint16_t proto = header.getProtocolId();
   try {
-    exbuf = serializeError(proto, tae, methodName, protoSeqId);
+    exbuf = serializeError</*includeEnvelope=*/true>(
+        proto, tae, methodName, protoSeqId);
   } catch (const TProtocolException& pe) {
     LOG(ERROR) << "serializeError failed. type=" << pe.getType()
                << " what()=" << pe.what();
     channel_->closeNow();
     return;
   }
-  exbuf = THeader::transform(std::move(exbuf), header.getWriteTransforms());
-  sendReply(std::move(exbuf), cb);
+  LegacySerializedResponse response{std::move(exbuf)};
+  auto [_, responsePayload] =
+      std::move(response).extractPayload(/*includeEnvelope=*/true, proto);
+  responsePayload.transform(header_->getWriteTransforms());
+  sendException(std::move(responsePayload), cb);
 }
 
 /**
@@ -275,15 +279,22 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
     std::unique_ptr<folly::IOBuf> exbuf;
     uint16_t proto = header_->getProtocolId();
     try {
-      exbuf = serializeError(proto, tae, getBuf());
+      exbuf = serializeError</*includeEnvelope=*/true>(proto, tae, getBuf());
     } catch (const TProtocolException& pe) {
       LOG(ERROR) << "serializeError failed. type=" << pe.getType()
                  << " what()=" << pe.what();
       channel_->closeNow();
       return;
     }
-    exbuf = THeader::transform(std::move(exbuf), header_->getWriteTransforms());
-    sendReply(std::move(exbuf), nullptr);
+    LegacySerializedResponse response{std::move(exbuf)};
+    auto [mtype, responsePayload] =
+        std::move(response).extractPayload(/*includeEnvelope=*/true, proto);
+    responsePayload.transform(header_->getWriteTransforms());
+    if (mtype == MessageType::T_EXCEPTION) {
+      sendException(std::move(responsePayload), nullptr);
+    } else {
+      sendReply(std::move(responsePayload), nullptr);
+    }
   });
 }
 
