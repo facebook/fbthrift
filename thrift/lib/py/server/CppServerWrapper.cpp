@@ -239,7 +239,7 @@ class PythonAsyncProcessor : public AsyncProcessor {
     bool oneway = isOnewayMethod(fname);
 
     if (oneway && !req->isOneway()) {
-      req->sendReply(std::unique_ptr<folly::IOBuf>());
+      req->sendReply(ResponsePayload{});
     }
 
     apache::thrift::LegacyRequestExpiryGuard rh{std::move(req), eb};
@@ -290,7 +290,8 @@ class PythonAsyncProcessor : public AsyncProcessor {
              req_up = std::move(req_up),
              context,
              eb = rh.eb,
-             contextData](object output) mutable {
+             contextData,
+             protType](object output) mutable {
               // Make sure the request is deleted in evb.
               SCOPE_EXIT {
                 eb->runInEventBaseThread(
@@ -341,12 +342,21 @@ class PythonAsyncProcessor : public AsyncProcessor {
                   context->getHeader()->setHeader(
                       kHeaderExWhat, cppContextData.getHeaderExWhat());
                 }
-                auto q = THeader::transform(
-                    std::move(outbuf),
-                    context->getHeader()->getWriteTransforms());
+                auto response = LegacySerializedResponse{std::move(outbuf)};
+                auto [mtype, payload] = std::move(response).extractPayload(
+                    req_up->includeEnvelope(), protType);
+                payload.transform(context->getHeader()->getWriteTransforms());
                 eb->runInEventBaseThread(
-                    [req_up = std::move(req_up), q = std::move(q)]() mutable {
-                      req_up->sendReply(std::move(q));
+                    [mtype = mtype,
+                     req_up = std::move(req_up),
+                     payload = std::move(payload)]() mutable {
+                      if (mtype == MessageType::T_REPLY) {
+                        req_up->sendReply(std::move(payload));
+                      } else if (mtype == MessageType::T_EXCEPTION) {
+                        req_up->sendException(std::move(payload));
+                      } else {
+                        LOG(ERROR) << "Invalid type. type=" << uint16_t(mtype);
+                      }
                     });
               } catch (const std::exception& e) {
                 if (!oneway) {
