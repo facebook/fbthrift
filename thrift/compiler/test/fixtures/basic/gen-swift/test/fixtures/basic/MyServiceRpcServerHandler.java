@@ -84,14 +84,12 @@ public class MyServiceRpcServerHandler
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("ping", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -149,7 +147,7 @@ public class MyServiceRpcServerHandler
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("ping", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
@@ -174,7 +172,6 @@ public class MyServiceRpcServerHandler
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getRandomData", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
@@ -185,7 +182,6 @@ oprot.writeString(_iter0);
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -228,7 +224,7 @@ oprot.writeString(_iter0);
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method getRandomData returned null");
                   com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getRandomData", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
                 }
               )
             )
@@ -243,7 +239,7 @@ oprot.writeString(_iter0);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getRandomData", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
@@ -278,14 +274,12 @@ oprot.writeString(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("sink", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -344,7 +338,7 @@ oprot.writeString(_iter0);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("sink", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
@@ -389,14 +383,12 @@ oprot.writeString(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("putDataById", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -456,7 +448,7 @@ oprot.writeString(_iter0);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("putDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
@@ -491,7 +483,6 @@ oprot.writeString(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("hasDataById", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
@@ -502,7 +493,6 @@ oprot.writeBool(_iter0);
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -546,7 +536,7 @@ oprot.writeBool(_iter0);
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method hasDataById returned null");
                   com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("hasDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
                 }
               )
             )
@@ -561,7 +551,7 @@ oprot.writeBool(_iter0);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("hasDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
@@ -596,7 +586,6 @@ oprot.writeBool(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getDataById", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
@@ -607,7 +596,6 @@ oprot.writeString(_iter0);
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -651,7 +639,7 @@ oprot.writeString(_iter0);
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method getDataById returned null");
                   com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
                 }
               )
             )
@@ -666,7 +654,7 @@ oprot.writeString(_iter0);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
@@ -701,14 +689,12 @@ oprot.writeString(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("deleteDataById", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -767,7 +753,7 @@ oprot.writeString(_iter0);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("deleteDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
@@ -812,14 +798,12 @@ oprot.writeString(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("lobDataById", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -879,7 +863,7 @@ oprot.writeString(_iter0);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("lobDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 

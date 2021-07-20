@@ -76,7 +76,6 @@ public class ServiceRpcServerHandler
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("func", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
@@ -87,7 +86,6 @@ oprot.writeI32(_iter0);
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -132,7 +130,7 @@ oprot.writeI32(_iter0);
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method func returned null");
                   com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("func", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
                 }
               )
             )
@@ -147,7 +145,7 @@ oprot.writeI32(_iter0);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("func", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 

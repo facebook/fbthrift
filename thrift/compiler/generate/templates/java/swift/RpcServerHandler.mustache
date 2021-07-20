@@ -88,7 +88,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("{{function:javaName}}", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         {{function:unsetIsNested}}
@@ -102,7 +101,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -120,7 +118,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
       return oprot -> {
       try {
         _chain.declaredUserException(_t);
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("{{function:javaName}}", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         oprot.writeFieldBegin(
@@ -131,7 +128,6 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
         oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWriteException(_t);
       } catch (Throwable _e) {
@@ -178,7 +174,7 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method {{function:javaName}} returned null");
                   com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("{{function:javaName}}", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
                   {{/function:voidType}}
                   {{#function:voidType}}
                   _chain.preWrite(null);
@@ -196,6 +192,12 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
                 {{#function:exceptions}}
                 if (_t instanceof {{#field:type}}{{> Type}}{{/field:type}}) {
                     _exceptionWriter = _create_{{function:javaName}}_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) {{field:key}});
+                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _exceptionWriter);
+
+                    return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 {{/function:exceptions}}
                 {{#function:exceptions?}}
@@ -207,15 +209,15 @@ public class {{service:javaCapitalName}}RpcServerHandler {{#service:extends}} ex
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("{{function:javaName}}", _tApplicationException, _chain, _payload.getMessageSeqId());
-                {{#function:exceptions?}}
-                }
-                {{/function:exceptions?}}
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
+                {{#function:exceptions?}}
+                }
+                {{/function:exceptions?}}
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
             _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());

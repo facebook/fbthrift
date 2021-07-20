@@ -56,14 +56,12 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("doMid", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -121,7 +119,7 @@ public class MyNodeRpcServerHandler  extends test.fixtures.inheritance.MyRootRpc
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("doMid", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 

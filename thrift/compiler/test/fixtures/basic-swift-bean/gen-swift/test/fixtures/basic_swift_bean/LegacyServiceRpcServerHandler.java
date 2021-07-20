@@ -86,7 +86,6 @@ public class LegacyServiceRpcServerHandler
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("getPoints", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
@@ -108,7 +107,6 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -153,7 +151,7 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method getPoints returned null");
                   com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getPoints", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
                 }
               )
             )
@@ -168,7 +166,7 @@ oprot.writeListBegin(new TList(TType.I32, _iter1.getValue().size()));
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getPoints", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 

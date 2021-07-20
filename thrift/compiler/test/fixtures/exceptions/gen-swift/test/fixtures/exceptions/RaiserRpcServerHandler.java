@@ -68,14 +68,12 @@ public class RaiserRpcServerHandler
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("doBland", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -133,7 +131,7 @@ public class RaiserRpcServerHandler
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("doBland", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
@@ -158,14 +156,12 @@ public class RaiserRpcServerHandler
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("doRaise", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -182,7 +178,6 @@ public class RaiserRpcServerHandler
       return oprot -> {
       try {
         _chain.declaredUserException(_t);
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("doRaise", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         oprot.writeFieldBegin(
@@ -193,7 +188,6 @@ public class RaiserRpcServerHandler
         oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWriteException(_t);
       } catch (Throwable _e) {
@@ -245,12 +239,30 @@ public class RaiserRpcServerHandler
 
                 if (_t instanceof test.fixtures.exceptions.Banal) {
                     _exceptionWriter = _create_doRaise_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 1);
+                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _exceptionWriter);
+
+                    return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 if (_t instanceof test.fixtures.exceptions.Fiery) {
                     _exceptionWriter = _create_doRaise_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 2);
+                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _exceptionWriter);
+
+                    return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 if (_t instanceof test.fixtures.exceptions.Serious) {
                     _exceptionWriter = _create_doRaise_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 3);
+                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _exceptionWriter);
+
+                    return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 else {
                 // exception is not of user declared type
@@ -259,13 +271,13 @@ public class RaiserRpcServerHandler
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("doRaise", _tApplicationException, _chain, _payload.getMessageSeqId());
-                }
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
+                }
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
             _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
@@ -286,7 +298,6 @@ public class RaiserRpcServerHandler
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("get200", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
@@ -297,7 +308,6 @@ oprot.writeString(_iter0);
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -340,7 +350,7 @@ oprot.writeString(_iter0);
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method get200 returned null");
                   com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("get200", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
                 }
               )
             )
@@ -355,7 +365,7 @@ oprot.writeString(_iter0);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("get200", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
@@ -380,7 +390,6 @@ oprot.writeString(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("get500", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         
@@ -391,7 +400,6 @@ oprot.writeString(_iter0);
 
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWrite(_r);
       } catch (Throwable _e) {
@@ -408,7 +416,6 @@ oprot.writeString(_iter0);
       return oprot -> {
       try {
         _chain.declaredUserException(_t);
-        oprot.writeMessageBegin(new org.apache.thrift.protocol.TMessage("get500", TMessageType.REPLY, _seqId));
         oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
 
         oprot.writeFieldBegin(
@@ -419,7 +426,6 @@ oprot.writeString(_iter0);
         oprot.writeFieldEnd();
         oprot.writeFieldStop();
         oprot.writeStructEnd();
-        oprot.writeMessageEnd();
 
         _chain.postWriteException(_t);
       } catch (Throwable _e) {
@@ -461,7 +467,7 @@ oprot.writeString(_iter0);
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method get500 returned null");
                   com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("get500", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
                 }
               )
             )
@@ -471,12 +477,30 @@ oprot.writeString(_iter0);
 
                 if (_t instanceof test.fixtures.exceptions.Fiery) {
                     _exceptionWriter = _create_get500_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 1);
+                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _exceptionWriter);
+
+                    return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 if (_t instanceof test.fixtures.exceptions.Banal) {
                     _exceptionWriter = _create_get500_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 2);
+                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _exceptionWriter);
+
+                    return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 if (_t instanceof test.fixtures.exceptions.Serious) {
                     _exceptionWriter = _create_get500_exception_writer(_t, _chain, _payload.getMessageSeqId(), (short) 3);
+                                    com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
+                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                        _payload,
+                        _exceptionWriter);
+
+                    return reactor.core.publisher.Mono.just(_serverResponsePayload);
                 }
                 else {
                 // exception is not of user declared type
@@ -485,13 +509,13 @@ oprot.writeString(_iter0);
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
                 _tApplicationException.initCause(_t);
                 _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("get500", _tApplicationException, _chain, _payload.getMessageSeqId());
-                }
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
                         _payload,
                         _exceptionWriter);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
+                }
             });
           if (com.facebook.thrift.util.resources.RpcResources.isForceExecutionOffEventLoop()) {
             _internalResponse = _internalResponse.publishOn(com.facebook.thrift.util.resources.RpcResources.getOffLoopScheduler());
