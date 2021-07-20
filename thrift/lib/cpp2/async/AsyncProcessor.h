@@ -656,6 +656,8 @@ class HandlerCallbackBase {
   folly::Optional<uint32_t> checksumIfNeeded(
       LegacySerializedResponse& response);
 
+  folly::Optional<uint32_t> checksumIfNeeded(SerializedResponse& response);
+
   virtual void transform(LegacySerializedResponse& reponse);
 
   // Can be called from IO or TM thread
