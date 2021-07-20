@@ -349,7 +349,7 @@ class ResponseCallback : public HeaderServerChannel::Callback {
     if (req->isOneway()) {
       oneway_++;
     } else {
-      req->sendReply(req->extractBuf());
+      req->sendReply(ResponsePayload::create(req->extractBuf()));
     }
   }
 
@@ -628,10 +628,11 @@ class InOrderTest
       c_->request_++;
       c_->requestBytes_ += req->getBuf()->computeChainDataLength();
       if (c_->firstbuf_) {
-        req->sendReply(req->extractBuf());
+        req->sendReply(ResponsePayload::create(req->extractBuf()));
         auto firstbuf = dynamic_cast<HeaderServerChannel::HeaderRequest*>(
             c_->firstbuf_.get());
-        c_->firstbuf_->sendReply(firstbuf->extractBuf());
+        c_->firstbuf_->sendReply(
+            ResponsePayload::create(firstbuf->extractBuf()));
       } else {
         c_->firstbuf_ = std::move(rcr);
       }
@@ -719,7 +720,7 @@ class BadSeqIdTest
     header->setSequenceNumber(-1);
     HeaderServerChannel::HeaderRequest r(
         channel1_.get(), req->extractBuf(), std::move(header), {});
-    r.sendReply(r.extractBuf());
+    r.sendReply(ResponsePayload::create(r.extractBuf()));
   }
 
   void preLoop() override {
