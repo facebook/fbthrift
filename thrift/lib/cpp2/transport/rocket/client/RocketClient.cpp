@@ -73,8 +73,10 @@ transport::TTransportException toTransportException(
 
 folly::EventBaseLocal<RocketClient::FlushManager>&
 RocketClient::getEventBaseLocal() {
-  static folly::EventBaseLocal<RocketClient::FlushManager> evbLocal;
-  return evbLocal;
+  static folly::Indestructible<
+      folly::EventBaseLocal<RocketClient::FlushManager>>
+      evbLocal;
+  return *evbLocal;
 }
 
 RocketClient::RocketClient(
