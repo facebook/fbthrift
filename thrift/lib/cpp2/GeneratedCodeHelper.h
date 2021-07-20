@@ -742,11 +742,22 @@ namespace ap {
 template <typename ProtocolReader, typename ProtocolWriter>
 struct helper {
   static std::unique_ptr<folly::IOBuf> write_exn(
+      bool includeEnvelope,
       const char* method,
       ProtocolWriter* prot,
       int32_t protoSeqId,
       ContextStack* ctx,
       const TApplicationException& x);
+
+  // Temporary for backwards compatibility
+  static std::unique_ptr<folly::IOBuf> write_exn(
+      const char* method,
+      ProtocolWriter* prot,
+      int32_t protoSeqId,
+      ContextStack* ctx,
+      const TApplicationException& x) {
+    return write_exn(true, method, prot, protoSeqId, ctx, x);
+  }
 
   static void process_exn(
       const char* func,

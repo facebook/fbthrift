@@ -53,6 +53,7 @@ namespace ap {
 
 template <typename ProtocolReader, typename ProtocolWriter>
 std::unique_ptr<folly::IOBuf> helper<ProtocolReader, ProtocolWriter>::write_exn(
+    bool includeEnvelope,
     const char* method,
     ProtocolWriter* prot,
     int32_t protoSeqId,
@@ -66,9 +67,13 @@ std::unique_ptr<folly::IOBuf> helper<ProtocolReader, ProtocolWriter>::write_exn(
   if (ctx) {
     ctx->handlerErrorWrapped(exception_wrapper(x));
   }
-  prot->writeMessageBegin(method, MessageType::T_EXCEPTION, protoSeqId);
+  if (includeEnvelope) {
+    prot->writeMessageBegin(method, MessageType::T_EXCEPTION, protoSeqId);
+  }
   apache::thrift::detail::serializeExceptionBody(prot, &x);
-  prot->writeMessageEnd();
+  if (includeEnvelope) {
+    prot->writeMessageEnd();
+  }
   return std::move(queue).move();
 }
 
@@ -87,23 +92,26 @@ void helper<ProtocolReader, ProtocolWriter>::process_exn(
     TApplicationException x(type, msg);
     auto payload = THeader::transform(
         helper_w<ProtocolWriter>::write_exn(
-            func, &oprot, protoSeqId, nullptr, x),
+            req->includeEnvelope(), func, &oprot, protoSeqId, nullptr, x),
         ctx->getHeader()->getWriteTransforms());
-    eb->runInEventBaseThread([payload = move(payload),
-                              request = move(req)]() mutable {
-      if (request->isStream()) {
-        request->sendStreamReply(
-            std::move(payload), detail::ServerStreamFactory{nullptr});
-      } else if (request->isSink()) {
+    eb->runInEventBaseThread(
+        [payload = move(payload), request = move(req)]() mutable {
+          if (request->isStream()) {
+            request->sendStreamReply(
+                ResponsePayload::create(std::move(payload)),
+                detail::ServerStreamFactory{nullptr});
+          } else if (request->isSink()) {
 #if FOLLY_HAS_COROUTINES
-        request->sendSinkReply(std::move(payload), detail::SinkConsumerImpl{});
+            request->sendSinkReply(
+                ResponsePayload::create(std::move(payload)),
+                detail::SinkConsumerImpl{});
 #else
-        DCHECK(false);
+            DCHECK(false);
 #endif
-      } else {
-        request->sendReply(std::move(payload));
-      }
-    });
+          } else {
+            request->sendReply(ResponsePayload::create(std::move(payload)));
+          }
+        });
   } else {
     LOG(ERROR) << msg << " in oneway function " << func;
   }
