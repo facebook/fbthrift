@@ -469,7 +469,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf> exbuf;
       auto proto = getProtoId();
       try {
-        exbuf = serializeError(proto, tae, getMethodName(), 0);
+        if (includeEnvelope()) {
+          exbuf = serializeError</*includeEnvelope=*/true>(
+              proto, tae, getMethodName(), 0);
+        } else {
+          exbuf = serializeError</*includeEnvelope=*/false>(
+              proto, tae, getMethodName(), 0);
+        }
       } catch (const protocol::TProtocolException& pe) {
         // Should never happen.  Log an error and return an empty
         // payload.

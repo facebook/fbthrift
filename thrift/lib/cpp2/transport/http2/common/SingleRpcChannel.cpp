@@ -397,7 +397,7 @@ void SingleRpcChannel::sendThriftErrorResponse(
   std::unique_ptr<IOBuf> payload;
   auto proto = static_cast<int16_t>(protoId);
   try {
-    payload = serializeError(proto, tae, name, 0);
+    payload = serializeError</*includeEnvelope=*/true>(proto, tae, name, 0);
   } catch (const TProtocolException& pe) {
     // Should never happen.  Log an error and return an empty
     // payload.

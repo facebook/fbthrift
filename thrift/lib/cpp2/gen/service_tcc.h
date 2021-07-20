@@ -46,18 +46,25 @@ namespace ap {
 
 template <typename Prot>
 std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
+    bool includeEnvelope,
     TApplicationException const& x,
     Cpp2RequestContext* const ctx,
     char const* const method) {
   Prot prot;
   size_t bufSize = x.serializedSizeZC(&prot);
-  bufSize += prot.serializedMessageSize(method);
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-  prot.setOutput(&queue, bufSize);
-  prot.writeMessageBegin(
-      method, MessageType::T_EXCEPTION, ctx->getProtoSeqId());
+  if (includeEnvelope) {
+    bufSize += prot.serializedMessageSize(method);
+    prot.setOutput(&queue, bufSize);
+    prot.writeMessageBegin(
+        method, MessageType::T_EXCEPTION, ctx->getProtoSeqId());
+  } else {
+    prot.setOutput(&queue, bufSize);
+  }
   x.write(&prot);
-  prot.writeMessageEnd();
+  if (includeEnvelope) {
+    prot.writeMessageEnd();
+  }
   queue.append(transport::THeader::transform(
       queue.move(), ctx->getHeader()->getWriteTransforms()));
   return queue.move();
@@ -72,6 +79,16 @@ void inline sendExceptionHelper(
   }
 #endif
   req->sendException(std::move(payload));
+}
+
+// Temporary for backwards compatibility whilst all users are migrated to
+// optionally include the envelope.
+template <typename Prot>
+std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
+    TApplicationException const& x,
+    Cpp2RequestContext* const ctx,
+    char const* const method) {
+  return process_serialize_xform_app_exn<Prot>(true, x, ctx, method);
 }
 
 template <typename Prot>
@@ -94,7 +111,10 @@ void process_handle_exn_deserialization(
   }
   ::apache::thrift::util::appendExceptionToHeader(ew, *ctx);
   auto buf = process_serialize_xform_app_exn<Prot>(
-      ::apache::thrift::util::toTApplicationException(ew), ctx, method);
+      req->includeEnvelope(),
+      ::apache::thrift::util::toTApplicationException(ew),
+      ctx,
+      method);
   eb->runInEventBaseThread(
       [buf = std::move(buf), req = std::move(req)]() mutable {
         sendExceptionHelper(std::move(req), std::move(buf));
@@ -116,7 +136,8 @@ void process_throw_wrapped_handler_error(
   ::apache::thrift::util::appendExceptionToHeader(ew, *ctx);
   auto xp = ew.get_exception<TApplicationException>();
   auto x = xp ? std::move(*xp) : TApplicationException(ew.what().toStdString());
-  auto buf = process_serialize_xform_app_exn<Prot>(x, ctx, method);
+  auto buf = process_serialize_xform_app_exn<Prot>(
+      req->includeEnvelope(), x, ctx, method);
   sendExceptionHelper(std::move(req), std::move(buf));
 }
 
