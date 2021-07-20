@@ -130,12 +130,10 @@ class SecretStruct;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyStructNestedAnnotation final  {
  private:
@@ -244,12 +242,10 @@ uint32_t MyStructNestedAnnotation::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyStruct final  {
  private:
@@ -557,12 +553,10 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class SecretStruct final  {
  private:

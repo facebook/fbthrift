@@ -132,12 +132,10 @@ typedef ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Baz> Uni
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class Foo final  {
  private:
@@ -490,12 +488,10 @@ uint32_t Foo::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class Baz final  {
  private:
@@ -927,12 +923,10 @@ uint32_t Baz::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class Bar final  {
  private:

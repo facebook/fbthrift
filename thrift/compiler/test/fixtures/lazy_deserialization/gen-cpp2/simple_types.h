@@ -196,12 +196,10 @@ class Empty;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class Foo final  {
  private:
@@ -403,12 +401,10 @@ uint32_t Foo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class LazyFoo final  {
  private:
@@ -611,12 +607,10 @@ uint32_t LazyFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class OptionalFoo final  {
  private:
@@ -822,12 +816,10 @@ uint32_t OptionalFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class OptionalLazyFoo final  {
  private:
@@ -1032,12 +1024,10 @@ uint32_t OptionalLazyFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class LazyCppRef final  {
  private:
@@ -1169,12 +1159,10 @@ uint32_t LazyCppRef::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class IndexedFoo final  {
  private:
@@ -1446,12 +1434,10 @@ uint32_t IndexedFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class OptionalIndexedFoo final  {
  private:
@@ -1727,12 +1713,10 @@ uint32_t OptionalIndexedFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class Empty final  {
  private:

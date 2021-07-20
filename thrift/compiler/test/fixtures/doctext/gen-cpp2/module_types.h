@@ -107,12 +107,10 @@ typedef ::std::int32_t number;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class A final  {
  private:
@@ -218,12 +216,10 @@ uint32_t A::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class U final  {
  private:
@@ -497,12 +493,10 @@ uint32_t U::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT Bang final : public apache::thrift::TException {
  private:

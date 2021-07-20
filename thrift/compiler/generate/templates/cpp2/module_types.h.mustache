@@ -66,12 +66,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%#program:structs%>
 <% > common/namespace_cpp2_begin%>
 
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:name%> <%!
 %><%^struct:virtual%>final <%/struct:virtual%><%#struct:exception?%><%!

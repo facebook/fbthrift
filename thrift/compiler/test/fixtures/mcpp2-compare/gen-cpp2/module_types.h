@@ -1078,12 +1078,10 @@ template<> struct equal_to<typename ::some::valid::ns::AnnotatedStruct> {
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class Empty final  {
  private:
@@ -1149,12 +1147,10 @@ uint32_t Empty::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ASimpleStruct final  {
  private:
@@ -1260,12 +1256,10 @@ uint32_t ASimpleStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ASimpleStructNoexcept final  {
  private:
@@ -1371,12 +1365,10 @@ uint32_t ASimpleStructNoexcept::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyStruct final  {
  private:
@@ -1777,12 +1769,10 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class SimpleUnion  {
  private:
@@ -2057,12 +2047,10 @@ uint32_t SimpleUnion::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ComplexUnion final  {
  private:
@@ -4207,12 +4195,10 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT AnException final : public apache::thrift::TException {
  private:
@@ -4800,12 +4786,10 @@ uint32_t AnException::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
  private:
@@ -4993,12 +4977,10 @@ uint32_t AnotherException::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class containerStruct final  {
  private:
@@ -6631,12 +6613,10 @@ uint32_t containerStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyIncludedStruct final  {
  private:
@@ -6818,12 +6798,10 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class AnnotatedStruct  {
  private:
@@ -7881,12 +7859,10 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ComplexContainerStruct final  {
  private:
@@ -8021,12 +7997,10 @@ uint32_t ComplexContainerStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FloatStruct final  {
  private:
@@ -8167,12 +8141,10 @@ uint32_t FloatStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FloatUnion final  {
  private:
@@ -8432,12 +8404,10 @@ uint32_t FloatUnion::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class AllRequiredNoExceptMoveCtrStruct final  {
  private:

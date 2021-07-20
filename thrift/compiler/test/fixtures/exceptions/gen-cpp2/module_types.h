@@ -79,12 +79,10 @@ class Banal;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT Fiery final : public apache::thrift::TException {
  private:
@@ -202,12 +200,10 @@ uint32_t Fiery::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT Serious final : public apache::thrift::TException {
  private:
@@ -331,12 +327,10 @@ uint32_t Serious::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT ComplexFieldNames final : public apache::thrift::TException {
  private:
@@ -498,12 +492,10 @@ uint32_t ComplexFieldNames::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT CustomFieldNames final : public apache::thrift::TException {
  private:
@@ -665,12 +657,10 @@ uint32_t CustomFieldNames::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT ExceptionWithPrimitiveField final : public apache::thrift::TException {
  private:
@@ -827,12 +817,10 @@ uint32_t ExceptionWithPrimitiveField::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT Banal final : public apache::thrift::TException {
  private:

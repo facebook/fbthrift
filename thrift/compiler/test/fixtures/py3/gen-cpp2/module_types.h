@@ -235,12 +235,10 @@ typedef foo::Bar foo_bar;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace py3 { namespace simple {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT SimpleException final : public apache::thrift::TException {
  private:
@@ -357,12 +355,10 @@ uint32_t SimpleException::read(Protocol_* iprot) {
 
 }} // py3::simple
 namespace py3 { namespace simple {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class OptionalRefStruct final  {
  private:
@@ -471,12 +467,10 @@ uint32_t OptionalRefStruct::read(Protocol_* iprot) {
 
 }} // py3::simple
 namespace py3 { namespace simple {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class SimpleStruct final  {
  private:
@@ -826,12 +820,10 @@ uint32_t SimpleStruct::read(Protocol_* iprot) {
 
 }} // py3::simple
 namespace py3 { namespace simple {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ComplexStruct final  {
  private:
@@ -1233,12 +1225,10 @@ uint32_t ComplexStruct::read(Protocol_* iprot) {
 
 }} // py3::simple
 namespace py3 { namespace simple {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class BinaryUnion final  {
  private:
@@ -1444,12 +1434,10 @@ uint32_t BinaryUnion::read(Protocol_* iprot) {
 
 }} // py3::simple
 namespace py3 { namespace simple {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class BinaryUnionStruct final  {
  private:

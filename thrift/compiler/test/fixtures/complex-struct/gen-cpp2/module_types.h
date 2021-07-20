@@ -652,12 +652,10 @@ typedef ::std::map<::std::int32_t, ::std::int64_t> FMap;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyStructFloatFieldThrowExp final  {
  private:
@@ -871,12 +869,10 @@ uint32_t MyStructFloatFieldThrowExp::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyStructMapFloatThrowExp final  {
  private:
@@ -1014,12 +1010,10 @@ uint32_t MyStructMapFloatThrowExp::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyDataItem final  {
  private:
@@ -1085,12 +1079,10 @@ uint32_t MyDataItem::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyStruct final  {
  private:
@@ -2100,12 +2092,10 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class SimpleStruct final  {
  private:
@@ -2250,12 +2240,10 @@ uint32_t SimpleStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ComplexNestedStruct final  {
  private:
@@ -2922,12 +2910,10 @@ uint32_t ComplexNestedStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyUnion final  {
  private:
@@ -3489,12 +3475,10 @@ uint32_t MyUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class defaultStruct final  {
  private:
@@ -4314,12 +4298,10 @@ uint32_t defaultStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyStructTypeDef final  {
  private:
@@ -4703,12 +4685,10 @@ uint32_t MyStructTypeDef::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyUnionFloatFieldThrowExp final  {
  private:
@@ -5140,12 +5120,10 @@ uint32_t MyUnionFloatFieldThrowExp::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class TypeRemapped final  {
  private:
@@ -5355,12 +5333,10 @@ uint32_t TypeRemapped::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT emptyXcep final : public apache::thrift::TException {
  private:
@@ -5438,12 +5414,10 @@ uint32_t emptyXcep::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT reqXcep final : public apache::thrift::TException {
  private:
@@ -5592,12 +5566,10 @@ uint32_t reqXcep::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT optXcep final : public apache::thrift::TException {
  private:
@@ -5759,12 +5731,10 @@ uint32_t optXcep::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class FOLLY_EXPORT complexException final : public apache::thrift::TException {
  private:

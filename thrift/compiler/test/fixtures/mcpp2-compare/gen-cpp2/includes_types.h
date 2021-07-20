@@ -97,12 +97,10 @@ typedef ::std::int64_t IncludedInt64;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace a { namespace different { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class AStruct final  {
  private:
@@ -208,12 +206,10 @@ uint32_t AStruct::read(Protocol_* iprot) {
 
 }}} // a::different::ns
 namespace a { namespace different { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class AStructB final  {
  private:

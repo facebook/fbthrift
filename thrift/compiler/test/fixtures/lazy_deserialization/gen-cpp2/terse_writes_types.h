@@ -117,12 +117,10 @@ class TerseOptionalLazyFoo;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class TerseFoo final  {
  private:
@@ -324,12 +322,10 @@ uint32_t TerseFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class TerseLazyFoo final  {
  private:
@@ -532,12 +528,10 @@ uint32_t TerseLazyFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class TerseOptionalFoo final  {
  private:
@@ -743,12 +737,10 @@ uint32_t TerseOptionalFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class TerseOptionalLazyFoo final  {
  private:

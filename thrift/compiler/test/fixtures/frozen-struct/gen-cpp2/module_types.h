@@ -124,12 +124,10 @@ class ModuleB;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace some { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ModuleA final  {
  private:
@@ -407,12 +405,10 @@ uint32_t ModuleA::read(Protocol_* iprot) {
 
 }} // some::ns
 namespace some { namespace ns {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ModuleB final  {
  private:

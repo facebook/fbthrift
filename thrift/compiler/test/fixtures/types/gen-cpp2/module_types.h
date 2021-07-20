@@ -550,12 +550,10 @@ template<> struct equal_to<typename ::apache::thrift::fixtures::types::decorated
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class decorated_struct final  {
  private:
@@ -664,12 +662,10 @@ uint32_t decorated_struct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ContainerStruct final  {
  private:
@@ -1006,12 +1002,10 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class CppTypeStruct final  {
  private:
@@ -1114,12 +1108,10 @@ uint32_t CppTypeStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class VirtualStruct  {
  private:
@@ -1227,12 +1219,10 @@ uint32_t VirtualStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyStructWithForwardRefEnum final  {
  private:
@@ -1372,12 +1362,10 @@ uint32_t MyStructWithForwardRefEnum::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class TrivialNumeric final  {
  private:
@@ -1518,12 +1506,10 @@ uint32_t TrivialNumeric::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class TrivialNestedWithDefault final  {
  private:
@@ -1663,12 +1649,10 @@ uint32_t TrivialNestedWithDefault::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ComplexString final  {
  private:
@@ -1810,12 +1794,10 @@ uint32_t ComplexString::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ComplexNestedWithDefault final  {
  private:
@@ -1959,12 +1941,10 @@ uint32_t ComplexNestedWithDefault::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MinPadding final  {
  private:
@@ -2196,12 +2176,10 @@ uint32_t MinPadding::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyDataItem final  {
  private:
@@ -2264,12 +2242,10 @@ uint32_t MyDataItem::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class MyStruct final  {
  private:
@@ -2478,12 +2454,10 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class Renaming final  {
  private:
@@ -2589,12 +2563,10 @@ uint32_t Renaming::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class AnnotatedTypes final  {
  private:
@@ -2736,12 +2708,10 @@ uint32_t AnnotatedTypes::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ForwardUsageStruct final  {
  private:
@@ -2845,12 +2815,10 @@ uint32_t ForwardUsageStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ForwardUsageRoot final  {
  private:
@@ -2966,12 +2934,10 @@ uint32_t ForwardUsageRoot::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ForwardUsageByRef final  {
  private:
@@ -3075,12 +3041,10 @@ uint32_t ForwardUsageByRef::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class NoexceptMoveEmpty final  {
  private:
@@ -3146,12 +3110,10 @@ uint32_t NoexceptMoveEmpty::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class NoexceptMoveSimpleStruct final  {
  private:
@@ -3257,12 +3219,10 @@ uint32_t NoexceptMoveSimpleStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class NoexceptMoveComplexStruct final  {
  private:
@@ -3663,12 +3623,10 @@ uint32_t NoexceptMoveComplexStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class NoExceptMoveUnion final  {
  private:
@@ -3942,12 +3900,10 @@ uint32_t NoExceptMoveUnion::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class AllocatorAware final  {
  private:
@@ -4224,12 +4180,10 @@ uint32_t AllocatorAware::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class AllocatorAware2 final  {
  private:
@@ -4354,12 +4308,10 @@ uint32_t AllocatorAware2::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class TypedefStruct final  {
  private:
@@ -4534,12 +4486,10 @@ uint32_t TypedefStruct::read(Protocol_* iprot) {
 
 }}}} // apache::thrift::fixtures::types
 namespace apache { namespace thrift { namespace fixtures { namespace types {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class StructWithDoubleUnderscores final  {
  private:

@@ -162,12 +162,10 @@ typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 // END hash_and_equal_to
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace test { namespace fixtures { namespace tablebased {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class TrivialTypesStruct final  {
  private:
@@ -434,12 +432,10 @@ uint32_t TrivialTypesStruct::read(Protocol_* iprot) {
 
 }}} // test::fixtures::tablebased
 namespace test { namespace fixtures { namespace tablebased {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ContainerStruct final  {
  private:
@@ -778,12 +774,10 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
 
 }}} // test::fixtures::tablebased
 namespace test { namespace fixtures { namespace tablebased {
-#ifndef SWIG
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-#endif
 
 class ExampleUnion final  {
  private:
