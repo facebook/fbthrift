@@ -101,7 +101,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
   typedef apache::thrift::ThriftPresult<true>
       RocketUpgrade_upgradeToRocket_presult;
   template <class ProtocolWriter>
-  folly::IOBufQueue upgradeToRocketReply(int32_t protoSeqId) {
+  ResponsePayload upgradeToRocketReply(int32_t protoSeqId) {
     folly::IOBufQueue queue;
     ProtocolWriter w;
     w.setOutput(&queue);
@@ -109,7 +109,7 @@ class Cpp2Connection : public HeaderServerChannel::Callback,
     RocketUpgrade_upgradeToRocket_presult result;
     apache::thrift::detail::serializeResponseBody(&w, &result);
     w.writeMessageEnd();
-    return queue;
+    return ResponsePayload::create(queue.move());
   }
 
  protected:

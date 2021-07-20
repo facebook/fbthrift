@@ -363,15 +363,16 @@ void Cpp2Connection::requestReceived(
   // sending the reply.
   if (methodName == "upgradeToRocket") {
     if (THRIFT_FLAG(server_rocket_upgrade_enabled)) {
-      folly::IOBufQueue queue;
+      ResponsePayload response;
       switch (protoId) {
         case apache::thrift::protocol::T_BINARY_PROTOCOL:
-          queue = upgradeToRocketReply<apache::thrift::BinaryProtocolWriter>(
+          response = upgradeToRocketReply<apache::thrift::BinaryProtocolWriter>(
               meta.seqId);
           break;
         case apache::thrift::protocol::T_COMPACT_PROTOCOL:
-          queue = upgradeToRocketReply<apache::thrift::CompactProtocolWriter>(
-              meta.seqId);
+          response =
+              upgradeToRocketReply<apache::thrift::CompactProtocolWriter>(
+                  meta.seqId);
           break;
         default:
           LOG(DFATAL) << "Unsupported protocol found";
@@ -387,7 +388,7 @@ void Cpp2Connection::requestReceived(
       }
 
       hreq->sendReply(
-          queue.move(),
+          std::move(response),
           new TransportUpgradeSendCallback(
               transport_,
               context_.getPeerAddress(),
@@ -761,7 +762,8 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
 void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
     HeaderServerChannel::HeaderRequest::TimeoutResponseType responseType) {
   if (!tryCancel()) {
-    // Timeout was not properly cancelled when request was previously cancelled
+    // Timeout was not properly cancelled when request was previously
+    // cancelled
     DCHECK(false);
   }
   auto* observer = connection_->getWorker()->getServer()->getObserver();
@@ -826,7 +828,8 @@ void Cpp2Connection::Cpp2Request::setLatencyHeader(
     const std::string& key,
     const std::string& value,
     transport::THeader::StringToStringMap* newHeaders) const {
-  // newHeaders is used timeout exceptions, where req->header cannot be mutated.
+  // newHeaders is used timeout exceptions, where req->header cannot be
+  // mutated.
   if (newHeaders) {
     (*newHeaders)[key] = value;
   } else {
