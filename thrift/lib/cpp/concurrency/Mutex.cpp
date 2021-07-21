@@ -30,10 +30,6 @@ namespace concurrency {
 
 Mutex::Mutex() : impl_(std::make_shared<PthreadMutex>(PTHREAD_MUTEX_NORMAL)) {}
 
-void* Mutex::getUnderlyingImpl() const {
-  return impl_->getUnderlyingImpl();
-}
-
 void Mutex::lock() const {
   impl_->lock();
 }
@@ -48,10 +44,6 @@ bool Mutex::timedlock(std::chrono::milliseconds ms) const {
 
 void Mutex::unlock() const {
   impl_->unlock();
-}
-
-bool Mutex::isLocked() const {
-  return impl_->isLocked();
 }
 
 } // namespace concurrency

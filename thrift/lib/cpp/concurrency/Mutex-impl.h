@@ -76,19 +76,6 @@ class PthreadMutex {
     CHECK(ret != EPERM);
   }
 
-  bool isLocked() {
-    // TODO: this doesn't work with recursive locks
-    // We would probably need to track additional state to handle this
-    // correctly for recursive locks.
-    if (try_lock()) {
-      unlock();
-      return false;
-    }
-    return true;
-  }
-
-  void* getUnderlyingImpl() const { return (void*)&pthread_mutex_; }
-
  private:
   mutable pthread_mutex_t pthread_mutex_;
 };

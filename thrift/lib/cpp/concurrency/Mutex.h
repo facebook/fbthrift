@@ -43,21 +43,6 @@ class Mutex final {
   bool timedlock(std::chrono::milliseconds milliseconds) const;
   void unlock() const;
 
-  /**
-   * Determine if the mutex is locked.
-   *
-   * This is intended to be used primarily as a debugging aid, and is not
-   * guaranteed to be a fast operation.  For example, a common use case is to
-   * assert(mutex.isLocked()) in functions that may only be called with a
-   * particular mutex already locked.
-   *
-   * TODO: This method currently always returns false for recursive mutexes.
-   * Avoid calling this method on recursive mutexes.
-   */
-  bool isLocked() const;
-
-  void* getUnderlyingImpl() const;
-
  private:
   std::shared_ptr<PthreadMutex> impl_;
 };
