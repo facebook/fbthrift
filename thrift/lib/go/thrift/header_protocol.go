@@ -81,11 +81,9 @@ func (p *HeaderProtocol) ResetProtocol() error {
 func (p *HeaderProtocol) WriteMessageBegin(name string, typeId MessageType, seqid int32) error {
 	p.ResetProtocol()
 
-	// The conditions here only match on the Go client side.
-	// If we are a client, set header seq id same as msg id
-	if typeId == CALL || typeId == ONEWAY {
-		p.trans.SetSeqID(uint32(seqid))
-	}
+	// Set header seq id same as msg id
+	p.trans.SetSeqID(uint32(seqid))
+
 	return p.Protocol.WriteMessageBegin(name, typeId, seqid)
 }
 
