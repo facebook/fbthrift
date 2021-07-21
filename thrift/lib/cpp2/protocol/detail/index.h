@@ -20,9 +20,12 @@
 #include <folly/Range.h>
 #include <folly/Traits.h>
 #include <folly/io/Cursor.h>
+#include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
+
+DECLARE_bool(thrift_enable_lazy_deserialization);
 
 namespace apache {
 namespace thrift {
@@ -169,6 +172,10 @@ class ProtocolReaderStructReadStateWithIndexImpl
 
   FOLLY_ALWAYS_INLINE folly::Optional<folly::IOBuf> tryFastSkip(
       Protocol* iprot, int16_t id, TType type, bool fixedCostSkip) {
+    if (!FLAGS_thrift_enable_lazy_deserialization) {
+      return {};
+    }
+
     if (fixedCostSkip) {
       return tryFastSkipImpl(iprot, [&] { iprot->skip(type); });
     }
@@ -196,6 +203,10 @@ class ProtocolReaderStructReadStateWithIndexImpl
     indexReader_.setInput(std::move(structBegin));
     if (auto serializedDataSize = readIndexOffsetField(indexReader_)) {
       foundSizeField_ = true;
+      if (!FLAGS_thrift_enable_lazy_deserialization) {
+        return;
+      }
+
       indexReader_.skipBytes(*serializedDataSize);
       if (auto count = readIndexField(indexReader_)) {
         indexFieldCount_ = *count;

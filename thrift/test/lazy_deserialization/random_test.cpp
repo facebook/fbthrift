@@ -21,6 +21,7 @@
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/protocol/detail/index.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_types.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/terse_writes_types.h>
 
@@ -223,10 +224,13 @@ void randomTestWithSeed(int seed) {
 
 class RandomTestWithSeed : public testing::TestWithParam<int> {};
 TEST_P(RandomTestWithSeed, test) {
-  randomTestWithSeed<Foo, LazyFoo>(GetParam());
-  randomTestWithSeed<OptionalFoo, OptionalLazyFoo>(GetParam());
-  randomTestWithSeed<TerseFoo, TerseLazyFoo>(GetParam());
-  randomTestWithSeed<TerseOptionalFoo, TerseOptionalLazyFoo>(GetParam());
+  for (bool enable : {false, true}) {
+    FLAGS_thrift_enable_lazy_deserialization = enable;
+    randomTestWithSeed<Foo, LazyFoo>(GetParam());
+    randomTestWithSeed<OptionalFoo, OptionalLazyFoo>(GetParam());
+    randomTestWithSeed<TerseFoo, TerseLazyFoo>(GetParam());
+    randomTestWithSeed<TerseOptionalFoo, TerseOptionalLazyFoo>(GetParam());
+  }
 }
 
 INSTANTIATE_TEST_CASE_P(

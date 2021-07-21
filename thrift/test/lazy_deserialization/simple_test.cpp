@@ -17,6 +17,7 @@
 #include <folly/container/Foreach.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
+#include <thrift/lib/cpp2/protocol/detail/index.h>
 #include <thrift/test/lazy_deserialization/MemberAccessor.h>
 #include <thrift/test/lazy_deserialization/common.h>
 #include <thrift/test/lazy_deserialization/gen-cpp2/simple_types.h>
@@ -458,6 +459,20 @@ TYPED_TEST(LazyDeserialization, MulthtreadAccess) {
       EXPECT_EQ(foo, bar);
     }
   });
+}
+
+TYPED_TEST(LazyDeserialization, TestGFlags) {
+  using LazyStruct = typename TypeParam::LazyStruct;
+  FLAGS_thrift_enable_lazy_deserialization = false;
+
+  auto foo = this->genLazyStruct();
+  auto s = this->serialize(foo);
+  auto lazyFoo = this->template deserialize<LazyStruct>(s);
+
+  EXPECT_EQ(get_field1(lazyFoo), foo.field1_ref());
+  EXPECT_EQ(get_field2(lazyFoo), foo.field2_ref());
+  EXPECT_FALSE(get_field3(lazyFoo).empty());
+  EXPECT_FALSE(get_field4(lazyFoo).empty());
 }
 
 } // namespace apache::thrift::test
