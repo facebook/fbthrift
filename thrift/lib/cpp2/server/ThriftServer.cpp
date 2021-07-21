@@ -28,6 +28,7 @@
 #include <folly/ScopeGuard.h>
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/IOThreadPoolDeadlockDetectorObserver.h>
+#include <folly/experimental/coro/BlockingWait.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -418,6 +419,11 @@ void ThriftServer::setup() {
       eventHandler->preStart(&addresses_.at(0));
     }
 
+    stoppedListening_ = false;
+#if FOLLY_HAS_COROUTINES
+    asyncScope_ = std::make_unique<folly::coro::CancellableAsyncScope>();
+#endif
+
     // Called after setup
     callOnStartServing();
 
@@ -557,8 +563,18 @@ void ThriftServer::stop() {
 }
 
 void ThriftServer::stopListening() {
+  // We have to make sure stopListening() is not called twice when both
+  // stopListening() and cleanUp() are called
+  if (stoppedListening_.exchange(true)) {
+    // stopListening() was called earlier
+    return;
+  }
   // Called before cleanUp
   callOnStopServing();
+
+#if FOLLY_HAS_COROUTINES
+  asyncScope_->requestCancellation();
+#endif
 
   {
     auto sockets = getSockets();
@@ -671,7 +687,6 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
 }
 
 void ThriftServer::callOnStartServing() {
-  calledOnStopServing_ = false;
   auto handlerList = getProcessorFactory()->getServiceHandlers();
   std::vector<folly::SemiFuture<folly::Unit>> futures;
   futures.reserve(handlerList.size());
@@ -684,12 +699,6 @@ void ThriftServer::callOnStartServing() {
 }
 
 void ThriftServer::callOnStopServing() {
-  // We have to make sure callOnStopServing() is not called twice when both
-  // stopListening() and cleanUp() are called
-  if (calledOnStopServing_.exchange(true)) {
-    // callOnStopServing() was called earlier
-    return;
-  }
   auto handlerList = getProcessorFactory()->getServiceHandlers();
   std::vector<folly::SemiFuture<folly::Unit>> futures;
   futures.reserve(handlerList.size());
@@ -702,6 +711,10 @@ void ThriftServer::callOnStopServing() {
 }
 
 void ThriftServer::stopCPUWorkers() {
+#if FOLLY_HAS_COROUTINES
+  // Wait for tasks running on AsyncScope to join
+  folly::coro::blockingWait(asyncScope_->joinAsync());
+#endif
   // Wait for any tasks currently running on the task queue workers to
   // finish, then stop the task queue workers. Have to do this now, so
   // there aren't tasks completing and trying to write to i/o thread

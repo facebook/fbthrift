@@ -32,6 +32,7 @@
 #include <folly/Singleton.h>
 #include <folly/SocketAddress.h>
 #include <folly/executors/IOThreadPoolExecutor.h>
+#include <folly/experimental/coro/AsyncScope.h>
 #include <folly/experimental/observer/Observer.h>
 #include <folly/io/ShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
@@ -215,7 +216,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void callOnStartServing();
   void callOnStopServing();
 
-  std::atomic<bool> calledOnStopServing_{false};
+  std::atomic<bool> stoppedListening_{false};
+
+#if FOLLY_HAS_COROUTINES
+  std::unique_ptr<folly::coro::CancellableAsyncScope> asyncScope_;
+#endif
 
   bool stopAcceptingAndJoinOutstandingRequestsDone_{false};
 
@@ -545,6 +550,14 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   }
 
   static folly::observer::Observer<bool> enableStopTLS();
+
+#if FOLLY_HAS_COROUTINES
+  /**
+   * Get CancellableAsyncScope that will be maintained by the Thrift Server.
+   * Cancellation is requested when the server is stopping.
+   */
+  folly::coro::CancellableAsyncScope& getAsyncScope() { return *asyncScope_; }
+#endif
 
   void setAcceptorFactory(
       const std::shared_ptr<wangle::AcceptorFactory>& acceptorFactory) {

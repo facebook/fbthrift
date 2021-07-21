@@ -35,6 +35,7 @@
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <folly/executors/MeteredExecutor.h>
+#include <folly/experimental/coro/Sleep.h>
 #include <folly/experimental/observer/SimpleObservable.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/io/async/AsyncServerSocket.h>
@@ -1448,7 +1449,7 @@ TEST_P(HeaderOrRocket, QueueTimeoutOnServerShutdown) {
       if (once) {
         once = false;
         started.post();
-        resume.wait();
+        EXPECT_TRUE(resume.try_wait_for(2s));
         // Wait for the server to start shutdown
         auto worker = getRequestContext()->getConnectionContext()->getWorker();
         while (!worker->isStopping()) {
@@ -2957,6 +2958,30 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
   runner->getThriftServer().setEnabled(true);
   client.semifuture_voidResponse().get();
   EXPECT_EQ("echo", client.semifuture_echoRequest("echo").get());
+
+  folly::Baton<> backgroundEnter, backgroundExit;
+
+  auto backgroundTask = [&]() -> folly::coro::Task<void> {
+    backgroundEnter.post();
+    EXPECT_TRUE(backgroundExit.try_wait_for(2s));
+    // Wait for cancellation
+    const folly::CancellationToken& ct =
+        co_await folly::coro::co_current_cancellation_token;
+    for (size_t retry = 0; retry < 20 && !ct.isCancellationRequested();
+         retry++) {
+      co_await folly::coro::sleepReturnEarlyOnCancel(100ms);
+    }
+    EXPECT_TRUE(ct.isCancellationRequested());
+    co_return;
+  };
+
+  auto& server = dynamic_cast<ThriftServer&>(runner->getThriftServer());
+  server.getAsyncScope().add(
+      backgroundTask().scheduleOn(server.getThreadManager().get()));
+  // Wait for backgroundTask to start
+  EXPECT_TRUE(backgroundEnter.try_wait_for(2s));
+  client.semifuture_voidResponse().get();
+  backgroundExit.post();
 
   // Stop the server on a different thread
   folly::getGlobalIOExecutor()->getEventBase()->runInEventBaseThread(
