@@ -40,7 +40,9 @@ class Mutex final {
   ~Mutex() {}
   void lock() const;
   bool trylock() const;
+  bool try_lock();
   bool timedlock(std::chrono::milliseconds milliseconds) const;
+  bool try_lock_for(std::chrono::milliseconds timeout);
   void unlock() const;
 
  private:

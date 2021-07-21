@@ -38,8 +38,16 @@ bool Mutex::trylock() const {
   return impl_->try_lock();
 }
 
+bool Mutex::try_lock() {
+  return impl_->try_lock();
+}
+
 bool Mutex::timedlock(std::chrono::milliseconds ms) const {
   return impl_->try_lock_for(ms);
+}
+
+bool Mutex::try_lock_for(std::chrono::milliseconds timeout) {
+  return impl_->try_lock_for(timeout);
 }
 
 void Mutex::unlock() const {
