@@ -243,8 +243,6 @@ class ThriftServerRequestSink final : public ThriftRequestCore {
 
   bool isSink() const override { return true; }
 
-  bool isReplyChecksumNeeded() const override { return true; }
-
   void closeConnection(folly::exception_wrapper ew) noexcept override;
 
  private:
