@@ -82,7 +82,7 @@ func NewNumericFromFloat(dValue float32) Numeric {
 
 func NewNumericFromI64(iValue int64) Numeric {
 	dValue := float64(iValue)
-	sValue := string(iValue)
+	sValue := strconv.FormatInt(iValue, 10)
 	isNil := false
 	return &numeric{iValue: iValue, dValue: dValue, sValue: sValue, isNil: isNil}
 }
