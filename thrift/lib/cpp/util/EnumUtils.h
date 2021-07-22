@@ -43,6 +43,19 @@ bool tryParseEnum(const char* name, EnumType* out) {
   return TEnumTraits<EnumType>::findValue(name, out);
 }
 
+/*
+ * Same as tryParseEnum but throw an exception if the given name is not found in
+ * enum
+ */
+
+template <typename EnumType>
+EnumType enumValueOrThrow(const char* name) {
+  EnumType out;
+  if (!tryParseEnum(name, &out)) {
+    throw std::out_of_range("name not found in enum");
+  }
+  return out;
+}
 /**
  * Returns the human-readable name for an Enum type.
  * WARNING! By default it returns nullptr if the value is not in enum.

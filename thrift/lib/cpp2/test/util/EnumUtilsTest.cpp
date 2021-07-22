@@ -22,6 +22,15 @@
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
 
+TEST(EnumUtilsTest, EnumValue) {
+  EXPECT_EQ(enumValueOrThrow<MyEnum>("UNKNOWN"), MyEnum::UNKNOWN);
+  EXPECT_EQ(enumValueOrThrow<MyEnum>("VALUE"), MyEnum::VALUE);
+  EXPECT_EQ(enumValueOrThrow<MyEnum>("FOO"), MyEnum::FOO);
+  EXPECT_EQ(enumValueOrThrow<MyEnum>("BAR"), MyEnum::BAR);
+  EXPECT_THROW(enumValueOrThrow<MyEnum>("NOTBAR"), std::out_of_range);
+  EXPECT_THROW(enumValueOrThrow<MyEnum>("Universe"), std::out_of_range);
+}
+
 TEST(EnumUtilsTest, ShortEnumName) {
   EXPECT_STREQ(enumName((MyEnum)0), "UNKNOWN");
   EXPECT_STREQ(enumName((MyEnum)1), "VALUE");
