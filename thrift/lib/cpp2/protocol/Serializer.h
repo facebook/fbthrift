@@ -38,6 +38,10 @@ struct Serializer {
       const folly::io::Cursor& cursor,
       T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    if /*constexpr*/ (!is_thrift_class_v<T>) {
+      FB_LOG_ONCE(ERROR)
+          << "Thrift serialization is only defined for structs and unions, not containers thereof";
+    }
     Reader reader(sharing);
     reader.setInput(cursor);
 
@@ -123,6 +127,10 @@ struct Serializer {
       const T& obj,
       folly::IOBufQueue* out,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    if /*constexpr*/ (!is_thrift_class_v<T>) {
+      FB_LOG_ONCE(ERROR)
+          << "Thrift serialization is only defined for structs and unions, not containers thereof";
+    }
     Writer writer(sharing);
     writer.setOutput(out);
 
