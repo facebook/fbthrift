@@ -107,7 +107,7 @@ class AsyncProcessorFactory {
    * the AsyncProcessor returned by getProcessor.
    */
   using MethodMetadataMap =
-      folly::F14FastMap<std::string, std::unique_ptr<const MethodMetadata>>;
+      folly::F14FastMap<std::string, std::shared_ptr<const MethodMetadata>>;
   /**
    * A marker struct indicating that the AsyncProcessor supports any method, or
    * a list of methods that is not enumerable. This applies to AsyncProcessor

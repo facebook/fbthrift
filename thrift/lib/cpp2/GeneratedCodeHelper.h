@@ -1026,7 +1026,7 @@ void populateMethodMetadataMap(AsyncProcessorFactory::MethodMetadataMap& map) {
         methodName,
         // Always create GeneratatedMethodMetadata<MostDerivedProcessor> so that
         // all entries in the map are of the same type.
-        std::make_unique<
+        std::make_shared<
             ServerInterface::GeneratedMethodMetadata<MostDerivedProcessor>>(
             downcastProcessFuncs<MostDerivedProcessor>(processFuncs)));
   }

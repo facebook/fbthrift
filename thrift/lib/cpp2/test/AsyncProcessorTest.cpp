@@ -192,7 +192,7 @@ TEST_P(AsyncProcessorMethodResolutionTestP, MistypedMetadataDeathTest) {
       const auto& defaultMap = expectMethodMetadataMap(defaultResult);
       for (auto& [name, _] : defaultMap) {
         class DummyMethodMetadata : public MethodMetadata {};
-        result.emplace(name, std::make_unique<DummyMethodMetadata>());
+        result.emplace(name, std::make_shared<DummyMethodMetadata>());
       }
       return result;
     });
