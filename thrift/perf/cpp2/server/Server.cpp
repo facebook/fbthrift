@@ -41,7 +41,6 @@ using facebook::thrift::benchmarks::BenchmarkHandler;
 using facebook::thrift::benchmarks::QPSStats;
 using proxygen::HTTPServerOptions;
 using std::thread;
-using std::chrono::seconds;
 
 std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
     std::shared_ptr<ThriftServer> server) {
