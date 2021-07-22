@@ -101,10 +101,6 @@ uint32_t writeVarint32(uint32_t n, uint8_t* pkt) {
   return wsize;
 }
 
-uint32_t writeVarint16(uint16_t n, uint8_t* pkt) {
-  return writeVarint32(n, pkt);
-}
-
 namespace detail {
 [[noreturn]] void throwInvalidVarint() {
   throw std::out_of_range("invalid varint read");
