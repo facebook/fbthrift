@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#if __BMI2__ || __AVX2__
+#if __BMI2__
 #include <immintrin.h>
 #endif
 
@@ -181,7 +181,7 @@ uint8_t writeVarintUnrolled(Cursor& c, T value) {
   return apache::thrift::util::detail::writeVarintSlow<Cursor, T>(c, value);
 }
 
-#if __BMI2__ || __AVX2__
+#if __BMI2__
 
 template <class Cursor, class T>
 uint8_t writeVarintBMI2(Cursor& c, T valueS) {
@@ -240,14 +240,14 @@ uint8_t writeVarint(Cursor& c, T value) {
   return writeVarintBMI2(c, value);
 }
 
-#else // __BMI2__ || __AVX2__
+#else // __BMI2__
 
 template <class Cursor, class T>
 uint8_t writeVarint(Cursor& c, T value) {
   return writeVarintUnrolled(c, value);
 }
 
-#endif // __BMI2__ || __AVX2__
+#endif // __BMI2__
 
 inline int32_t zigzagToI32(uint32_t n) {
   return (n & 1) ? ~(n >> 1) : (n >> 1);
