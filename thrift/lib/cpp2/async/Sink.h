@@ -81,11 +81,16 @@ class ClientSink {
                   while (true) {
                     auto item =
                         co_await folly::coro::co_awaitTry(_generator.next());
-                    if (!item.hasException() && !item.hasValue()) {
-                      break;
+                    if (item.hasException()) {
+                      sinkThrew = true;
+                      co_yield serializer_(
+                          folly::Try<T>(std::move(item.exception())));
+                      co_return;
                     }
-                    sinkThrew = item.hasException();
-                    co_yield serializer_(std::move(item));
+                    if (!item->has_value()) {
+                      co_return;
+                    }
+                    co_yield serializer_(folly::Try<T>(std::move(**item)));
                   }
                   co_return;
                 }(std::move(generator)));

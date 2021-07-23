@@ -91,35 +91,37 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
                 continue;
               }
 
-              auto&& next = co_await folly::coro::co_awaitTry(
+              auto next = co_await folly::coro::co_awaitTry(
                   folly::coro::co_withCancellation(
                       stream->cancelSource_.getToken(), gen_.next()));
-              if (next.hasValue()) {
-                if constexpr (WithHeader) {
-                  if (!next->payload) {
-                    StreamPayloadMetadata md;
-                    md.otherMetadata_ref() = std::move(next->metadata);
-                    stream->publish(folly::Try<StreamPayload>(
-                        folly::in_place, nullptr, std::move(md)));
-                  } else {
-                    StreamPayload sp =
-                        *encode(folly::Try<T>(*std::move(next->payload)));
-                    sp.metadata.otherMetadata_ref() = std::move(next->metadata);
-                    stream->publish(folly::Try<StreamPayload>(std::move(sp)));
-                    --credits;
-                  }
-                } else {
-                  stream->publish(encode(std::move(next)));
-                  --credits;
-                }
-                continue;
-              } else if (next.hasException()) {
+              if (next.hasException()) {
                 stream->publish(
                     encode(folly::Try<T>(std::move(next.exception()))));
-              } else {
-                stream->publish({});
+                co_return;
               }
-              co_return;
+              if (!next->has_value()) {
+                stream->publish({});
+                co_return;
+              }
+
+              auto&& item = **next;
+              if constexpr (WithHeader) {
+                if (!item.payload) {
+                  StreamPayloadMetadata md;
+                  md.otherMetadata_ref() = std::move(item.metadata);
+                  stream->publish(folly::Try<StreamPayload>(
+                      folly::in_place, nullptr, std::move(md)));
+                } else {
+                  StreamPayload sp =
+                      *encode(folly::Try<T>(*std::move(item.payload)));
+                  sp.metadata.otherMetadata_ref() = std::move(item.metadata);
+                  stream->publish(folly::Try<StreamPayload>(std::move(sp)));
+                  --credits;
+                }
+              } else {
+                stream->publish(encode(folly::Try<T>(std::move(item))));
+                --credits;
+              }
             }
           })
           .scheduleOn(std::move(serverExecutor))
