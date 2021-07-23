@@ -80,7 +80,7 @@ public class MyServiceRpcServerHandler
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
         
 
@@ -116,7 +116,7 @@ public class MyServiceRpcServerHandler
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                   _payload,
                   _create_ping_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
@@ -126,7 +126,7 @@ public class MyServiceRpcServerHandler
               reactor.core.publisher.Mono.fromSupplier(
                 () -> {
                   _chain.preWrite(null);
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  return com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                     _payload,
                     _create_ping_response_writer(null, _chain, _payload.getMessageSeqId()));
                 }
@@ -134,18 +134,13 @@ public class MyServiceRpcServerHandler
             )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.thrift.payload.Writer _exceptionWriter = null;
-
                 // exception is not of user declared type
                 String _errorMessage = String.format("Internal error processing ping: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
                 org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
                 _tApplicationException.initCause(_t);
-                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("ping", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(),  _chain);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
@@ -168,11 +163,11 @@ public class MyServiceRpcServerHandler
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
         
         String _iter0 = (String)_r;
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.STRING_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
 oprot.writeString(_iter0);
         oprot.writeFieldEnd();
 
@@ -208,7 +203,7 @@ oprot.writeString(_iter0);
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                   _payload,
                   _create_getRandomData_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
@@ -219,25 +214,19 @@ oprot.writeString(_iter0);
                 () -> {
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method getRandomData returned null");
-                  com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getRandomData", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
                 }
               )
             )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.thrift.payload.Writer _exceptionWriter = null;
-
                 // exception is not of user declared type
                 String _errorMessage = String.format("Internal error processing getRandomData: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
                 org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
                 _tApplicationException.initCause(_t);
-                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getRandomData", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(),  _chain);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
@@ -270,11 +259,11 @@ oprot.writeString(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
         
         boolean _iter0 = (boolean)_r;
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.BOOL_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.BOOL_FIELD);
 oprot.writeBool(_iter0);
         oprot.writeFieldEnd();
 
@@ -311,7 +300,7 @@ oprot.writeBool(_iter0);
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                   _payload,
                   _create_hasDataById_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
@@ -322,25 +311,19 @@ oprot.writeBool(_iter0);
                 () -> {
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method hasDataById returned null");
-                  com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("hasDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
                 }
               )
             )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.thrift.payload.Writer _exceptionWriter = null;
-
                 // exception is not of user declared type
                 String _errorMessage = String.format("Internal error processing hasDataById: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
                 org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
                 _tApplicationException.initCause(_t);
-                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("hasDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(),  _chain);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
@@ -373,11 +356,11 @@ oprot.writeBool(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
         
         String _iter0 = (String)_r;
-        oprot.writeFieldBegin(com.facebook.thrift.util.GeneratedUtil.STRING_FIELD);
+        oprot.writeFieldBegin(com.facebook.thrift.util.RpcPayloadUtil.STRING_FIELD);
 oprot.writeString(_iter0);
         oprot.writeFieldEnd();
 
@@ -414,7 +397,7 @@ oprot.writeString(_iter0);
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                   _payload,
                   _create_getDataById_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
@@ -425,25 +408,19 @@ oprot.writeString(_iter0);
                 () -> {
                   org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.MISSING_RESULT, "method getDataById returned null");
-                  com.facebook.thrift.payload.Writer _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
-                  return com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(_payload, _exceptionWriter);
+                  return com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(), _chain);
                 }
               )
             )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.thrift.payload.Writer _exceptionWriter = null;
-
                 // exception is not of user declared type
                 String _errorMessage = String.format("Internal error processing getDataById: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
                 org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
                 _tApplicationException.initCause(_t);
-                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("getDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(),  _chain);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
@@ -486,7 +463,7 @@ oprot.writeString(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
         
 
@@ -524,7 +501,7 @@ oprot.writeString(_iter0);
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                   _payload,
                   _create_putDataById_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
@@ -534,7 +511,7 @@ oprot.writeString(_iter0);
               reactor.core.publisher.Mono.fromSupplier(
                 () -> {
                   _chain.preWrite(null);
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  return com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                     _payload,
                     _create_putDataById_response_writer(null, _chain, _payload.getMessageSeqId()));
                 }
@@ -542,18 +519,13 @@ oprot.writeString(_iter0);
             )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.thrift.payload.Writer _exceptionWriter = null;
-
                 // exception is not of user declared type
                 String _errorMessage = String.format("Internal error processing putDataById: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
                 org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
                 _tApplicationException.initCause(_t);
-                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("putDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(),  _chain);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
@@ -596,7 +568,7 @@ oprot.writeString(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
         
 
@@ -634,7 +606,7 @@ oprot.writeString(_iter0);
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                   _payload,
                   _create_lobDataById_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
@@ -644,7 +616,7 @@ oprot.writeString(_iter0);
               reactor.core.publisher.Mono.fromSupplier(
                 () -> {
                   _chain.preWrite(null);
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  return com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                     _payload,
                     _create_lobDataById_response_writer(null, _chain, _payload.getMessageSeqId()));
                 }
@@ -652,18 +624,13 @@ oprot.writeString(_iter0);
             )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.thrift.payload.Writer _exceptionWriter = null;
-
                 // exception is not of user declared type
                 String _errorMessage = String.format("Internal error processing lobDataById: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
                 org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
                 _tApplicationException.initCause(_t);
-                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("lobDataById", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(),  _chain);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
@@ -686,7 +653,7 @@ oprot.writeString(_iter0);
       final int _seqId) {
       return oprot -> {
       try {
-        oprot.writeStructBegin(com.facebook.thrift.util.GeneratedUtil.TSTRUCT);
+        oprot.writeStructBegin(com.facebook.thrift.util.RpcPayloadUtil.TSTRUCT);
 
         
 
@@ -722,7 +689,7 @@ oprot.writeString(_iter0);
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                   _payload,
                   _create_doNothing_response_writer(_response, _chain, _payload.getMessageSeqId()));
 
@@ -732,7 +699,7 @@ oprot.writeString(_iter0);
               reactor.core.publisher.Mono.fromSupplier(
                 () -> {
                   _chain.preWrite(null);
-                  return com.facebook.thrift.util.GeneratedUtil.createServerResponsePayload(
+                  return com.facebook.thrift.util.RpcPayloadUtil.createServerResponsePayload(
                     _payload,
                     _create_doNothing_response_writer(null, _chain, _payload.getMessageSeqId()));
                 }
@@ -740,18 +707,13 @@ oprot.writeString(_iter0);
             )
             .<com.facebook.thrift.payload.ServerResponsePayload>onErrorResume(_t -> {
                 _chain.preWriteException(_t);
-                com.facebook.thrift.payload.Writer _exceptionWriter = null;
-
                 // exception is not of user declared type
                 String _errorMessage = String.format("Internal error processing doNothing: %s", _t.getMessage() == null ? "<null>" : _t.getMessage());
                 org.apache.thrift.TApplicationException _tApplicationException =
                     new org.apache.thrift.TApplicationException(org.apache.thrift.TApplicationException.INTERNAL_ERROR, _errorMessage);
                 _tApplicationException.initCause(_t);
-                _exceptionWriter = com.facebook.thrift.util.GeneratedUtil.getTApplicationExceptionWriter("doNothing", _tApplicationException, _chain, _payload.getMessageSeqId());
                 com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =
-                    com.facebook.thrift.util.GeneratedUtil.createPayloadFromTApplicationException(
-                        _payload,
-                        _exceptionWriter);
+                    com.facebook.thrift.util.RpcPayloadUtil.fromTApplicationException(_tApplicationException, _payload.getRequestRpcMetadata(),  _chain);
 
                 return reactor.core.publisher.Mono.just(_serverResponsePayload);
             });
