@@ -213,10 +213,10 @@ uint8_t writeVarintBMI2(Cursor& c, T valueS) {
     return v;
   }();
 
-  auto clzl = __builtin_clzl(static_cast<uint64_t>(value));
+  auto clzll = __builtin_clzll(static_cast<uint64_t>(value));
   // Only the first 56 bits of @value will be deposited in @v.
-  uint64_t v = _pdep_u64(value, ~kMask) | (kMask >> kShift[clzl]);
-  uint8_t size = kSize[clzl];
+  uint64_t v = _pdep_u64(value, ~kMask) | (kMask >> kShift[clzll]);
+  uint8_t size = kSize[clzll];
 
   if (sizeof(T) < sizeof(uint64_t)) {
     c.template write<uint64_t>(v, size);
