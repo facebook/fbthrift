@@ -82,7 +82,6 @@ unixcomment   ("#"[^\n]*)
 symbol        ([:;\,\{\}\(\)\=<>\[\]@])
 dliteral      ("\""[^"]*"\"")
 sliteral      ("'"[^']*"'")
-st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 
 %%
 
@@ -211,10 +210,6 @@ st_identifier ([a-zA-Z-][\.a-zA-Z_0-9-]*)
 
 {identifier} {
   return apache::thrift::compiler::yy::parser::make_tok_identifier(std::string{yytext}, *yylloc);
-}
-
-{st_identifier} {
-  return apache::thrift::compiler::yy::parser::make_tok_st_identifier(std::string{yytext}, *yylloc);
 }
 
 {dliteral} {

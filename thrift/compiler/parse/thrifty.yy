@@ -109,7 +109,6 @@ class t_container_type;
 %token<std::string>     tok_literal
 %token<t_doc>
                         tok_doctext
-%token<std::string>     tok_st_identifier
 
 /**
  * Constant values
