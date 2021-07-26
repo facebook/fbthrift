@@ -99,12 +99,7 @@ uint32_t BinaryProtocolWriter::writeSetEnd() {
 }
 
 uint32_t BinaryProtocolWriter::writeBool(bool value) {
-  // Store in a volatile variable to prevent the compiler from optimizing the
-  // check away. Without the check we may produce undeserializable data.
-  volatile uint8_t volatileByte = value;
-  uint8_t byte = volatileByte;
-  CHECK(byte == 0 || byte == 1);
-  out_.write(byte);
+  out_.write(detail::validate_bool(value));
   return sizeof(value);
 }
 

@@ -101,15 +101,13 @@ inline bool validate_bool(uint8_t value) {
       : invalid);
   return value;
 invalid:
-  folly::throw_exception<std::invalid_argument>("invalid bool value");
+  CHECK(false) << "invalid bool value";
 #else
   // Store in a volatile variable to prevent the compiler from optimizing the
   // check away.
   volatile uint8_t volatileByte = value;
   uint8_t byte = volatileByte;
-  if (byte != 0 && byte != 1) {
-    folly::throw_exception<std::invalid_argument>("invalid bool value");
-  }
+  CHECK(byte == 0 || byte == 1) << "invalid bool value";
   return byte != 0;
 #endif
 }

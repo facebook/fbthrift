@@ -33,12 +33,13 @@ TEST(CompactProtocolTest, writeInvalidBool) {
   w.setOutput(&q);
   // writeBool should either throw or write a valid bool. The exact value may
   // depend on the build mode because the optimizer can make use of the UB.
-  try {
-    w.writeBool(makeInvalidBool());
-  } catch (const std::invalid_argument&) {
-    return;
-  }
-  auto s = std::string();
-  q.appendToString(s);
-  EXPECT_TRUE(s == std::string(1, '\1') || s == std::string(1, '\2'));
+  EXPECT_DEATH(
+      {
+        w.writeBool(makeInvalidBool());
+        auto s = std::string();
+        q.appendToString(s);
+        // Die on success.
+        CHECK(s != std::string(1, '\1') && s != std::string(1, '\2'));
+      },
+      "Check failed");
 }
