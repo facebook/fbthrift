@@ -23,13 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="CompatibleWithKeywordSink", builder=CompatibleWithKeywordSink.Builder.class)
-public final class CompatibleWithKeywordSink {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="CompatibleWithKeywordSink", builder=CompatibleWithKeywordSink.Builder.class)
+public final class CompatibleWithKeywordSink implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public CompatibleWithKeywordSink(
-        @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final String sink
+        @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE) final String sink
     ) {
         this.sink = sink;
     }
@@ -40,11 +39,10 @@ public final class CompatibleWithKeywordSink {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String sink = null;
     
-        @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
         public Builder setSink(String sink) {
             this.sink = sink;
             return this;
@@ -62,7 +60,6 @@ public final class CompatibleWithKeywordSink {
             CompatibleWithKeywordSink result = new CompatibleWithKeywordSink (
                 this.sink
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -78,14 +75,8 @@ public final class CompatibleWithKeywordSink {
       FIELD_METADATA.put(1, SINK_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="sink", requiredness=Requiredness.NONE)
     public String getSink() { return sink; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSink() {
-        return this.sink != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -117,6 +108,10 @@ public final class CompatibleWithKeywordSink {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<CompatibleWithKeywordSink> asReader() {
+      return CompatibleWithKeywordSink::read0;
+    }
     
     public static CompatibleWithKeywordSink read0(TProtocol oprot) throws TException {
       TField __field;
@@ -155,4 +150,11 @@ public final class CompatibleWithKeywordSink {
       oprot.writeStructEnd();
     }
     
+    private static class _CompatibleWithKeywordSinkLazy {
+        private static final CompatibleWithKeywordSink _DEFAULT = new CompatibleWithKeywordSink.Builder().build();
+    }
+    
+    public static CompatibleWithKeywordSink defaultInstance() {
+        return  _CompatibleWithKeywordSinkLazy._DEFAULT;
+    }
 }

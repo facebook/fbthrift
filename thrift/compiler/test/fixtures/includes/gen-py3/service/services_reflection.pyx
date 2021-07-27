@@ -11,7 +11,7 @@ from thrift.py3.reflection cimport (
   NumberType as __NumberType,
 )
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 cimport includes.types as _includes_types
 cimport module.types as _module_types

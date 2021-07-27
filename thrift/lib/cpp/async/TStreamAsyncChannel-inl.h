@@ -256,8 +256,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::setRecvTimeout(
 
 template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::getReadBuffer(
-    void** bufReturn,
-    size_t* lenReturn) {
+    void** bufReturn, size_t* lenReturn) {
   readState_.getReadBuffer(bufReturn, lenReturn);
 }
 
@@ -306,8 +305,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeSuccess() noexcept {
 
 template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::writeErr(
-    size_t bytesWritten,
-    const folly::AsyncSocketException& ex) noexcept {
+    size_t bytesWritten, const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
 
   transport::TTransportException tex(ex);
@@ -492,8 +490,7 @@ void TStreamAsyncChannel<WriteRequest_, ReadState_>::processReadEOF() noexcept {
 
 template <typename WriteRequest_, typename ReadState_>
 void TStreamAsyncChannel<WriteRequest_, ReadState_>::invokeReadCallback(
-    VoidCallback cb,
-    char const* callbackName) noexcept {
+    VoidCallback cb, char const* callbackName) noexcept {
   readState_.unsetCallbackBuffer();
   readCallback_ = VoidCallback();
   readErrorCallback_ = VoidCallback();

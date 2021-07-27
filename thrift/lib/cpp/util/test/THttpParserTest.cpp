@@ -14,7 +14,9 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
+
 #include <fmt/core.h>
 
 #include <folly/String.h>
@@ -25,7 +27,7 @@ namespace {
 
 class THttpClientParserTest : public testing::Test {};
 
-using HeaderMap = std::map<std::string, std::string>;
+using HeaderMap = apache::thrift::transport::THeader::StringToStringMap;
 
 void write(apache::thrift::util::THttpParser& parser, folly::StringPiece text) {
   while (!text.empty()) {
@@ -42,11 +44,11 @@ void write(apache::thrift::util::THttpParser& parser, folly::StringPiece text) {
 
 TEST_F(THttpClientParserTest, too_many_headers) {
   apache::thrift::util::THttpClientParser parser;
-  std::map<std::string, std::string> header;
+  HeaderMap header;
   for (int i = 0; i < 100; i++) {
     header[fmt::format("testing_header{}", i)] = "test_header";
   }
-  std::map<std::string, std::string> header_persistent;
+  HeaderMap header_persistent;
   auto answer = std::string("{'testing': 'this is a test'}");
   auto pre = folly::IOBuf::copyBuffer(answer.c_str(), answer.size());
   auto buf = parser.constructHeader(

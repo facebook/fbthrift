@@ -46,11 +46,9 @@ struct SinkConsumerImpl {
   uint64_t bufferSize;
   std::chrono::milliseconds chunkTimeout;
   folly::Executor::KeepAlive<> executor;
-  Tile* interaction{nullptr};
+  TilePtr interaction{};
 
-  explicit operator bool() const {
-    return (bool)consumer;
-  }
+  explicit operator bool() const { return (bool)consumer; }
 #endif
 };
 
@@ -103,7 +101,13 @@ class ServerSinkBridge : public TwoWayBridge<
       folly::EventBase& evb,
       SinkClientCallback* callback);
 
-  folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> makeGenerator();
+  // TODO(T88629984): These are implemented as static functions because
+  // clang-9 + member function coroutines + ASAN == ICE. Revert D27688850
+  // once everything using thrift sink is past clang-9.
+  static folly::coro::Task<void> startImpl(ServerSinkBridge& self);
+
+  static folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> makeGenerator(
+      ServerSinkBridge& self);
 
   void processClientMessages();
 
@@ -118,6 +122,7 @@ class ServerSinkBridge : public TwoWayBridge<
 
   // only access in evb_ thread
   bool sinkComplete_{false};
+  TileStreamGuard interaction_;
 };
 #endif
 

@@ -15,10 +15,19 @@
  */
 
 #include <thrift/lib/cpp2/async/ReconnectingRequestChannel.h>
+
+#include <folly/Portability.h>
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/AsyncGenerator.h>
+#include <folly/experimental/coro/BlockingWait.h>
+#include <folly/experimental/coro/Task.h>
+#endif
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/io/async/test/ScopedBoundPort.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
@@ -34,9 +43,28 @@ using folly::AsyncSocket;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
-  MOCK_METHOD1(echoInt, int32_t(int32_t));
-  MOCK_METHOD1(noResponse, void(int64_t));
-  MOCK_METHOD2(range, apache::thrift::ServerStream<int32_t>(int32_t, int32_t));
+  MOCK_METHOD(int32_t, echoInt, (int32_t), (override));
+  MOCK_METHOD(void, noResponse, (int64_t), (override));
+  MOCK_METHOD(
+      apache::thrift::ServerStream<int32_t>,
+      range,
+      (int32_t, int32_t),
+      (override));
+#if FOLLY_HAS_COROUTINES
+  folly::coro::Task<SinkConsumer<int32_t, int32_t>> co_sumSink() override {
+    SinkConsumer<int32_t, int32_t> sink;
+    sink.consumer = [](folly::coro::AsyncGenerator<int32_t&&> gen)
+        -> folly::coro::Task<int32_t> {
+      int32_t res = 0;
+      while (auto val = co_await gen.next()) {
+        res += *val;
+      }
+      co_return res;
+    };
+    sink.bufferSize = 10;
+    co_return sink;
+  }
+#endif
 };
 
 class ReconnectingRequestChannelTest : public Test {
@@ -53,6 +81,24 @@ class ReconnectingRequestChannelTest : public Test {
   uint32_t connection_count_ = 0;
 
   void runReconnect(TestServiceAsyncClient& client, bool testStreaming);
+
+#if FOLLY_HAS_COROUTINES
+  folly::coro::Task<std::shared_ptr<TestServiceAsyncClient>> co_getClient() {
+    auto executor = co_await folly::coro::co_current_executor;
+    auto channel = PooledRequestChannel::newChannel(
+        executor, ioThread_, [this](folly::EventBase& evb) {
+          return ReconnectingRequestChannel::newChannel(
+              evb, [this](folly::EventBase& evb) {
+                auto socket =
+                    AsyncSocket::UniquePtr(new AsyncSocket(&evb, up_addr));
+                return RocketClientChannel::newChannel(std::move(socket));
+              });
+        });
+    co_return std::make_shared<TestServiceAsyncClient>(std::move(channel));
+  }
+  std::shared_ptr<folly::IOExecutor> ioThread_{
+      std::make_shared<folly::ScopedEventBaseThread>()};
+#endif
 };
 
 TEST_F(ReconnectingRequestChannelTest, ReconnectHeader) {
@@ -78,8 +124,7 @@ TEST_F(ReconnectingRequestChannelTest, ReconnectRocket) {
 }
 
 void ReconnectingRequestChannelTest::runReconnect(
-    TestServiceAsyncClient& client,
-    bool testStreaming) {
+    TestServiceAsyncClient& client, bool testStreaming) {
   EXPECT_CALL(*handler, echoInt(_))
       .WillOnce(Return(1))
       .WillOnce(Return(3))
@@ -137,3 +182,35 @@ void ReconnectingRequestChannelTest::runReconnect(
     EXPECT_EQ(connection_count_, 2);
   }
 }
+
+#if FOLLY_HAS_COROUTINES
+TEST_F(ReconnectingRequestChannelTest, sinkReconnect) {
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto client = co_await co_getClient();
+    auto consumer = co_await client->co_sumSink();
+    auto res =
+        co_await consumer.sink([]() -> folly::coro::AsyncGenerator<int32_t&&> {
+          for (int32_t i = 1; i <= 5; ++i) {
+            co_yield std::move(i);
+          }
+        }());
+    EXPECT_EQ(res, 15);
+
+    // bounce
+    runner =
+        std::make_unique<apache::thrift::ScopedServerInterfaceThread>(handler);
+    up_addr = runner->getAddress();
+
+    // no exception here - the underlying impl is marked !good so the next
+    // request ends up triggering the reconnect
+    consumer = co_await client->co_sumSink();
+    res =
+        co_await consumer.sink([]() -> folly::coro::AsyncGenerator<int32_t&&> {
+          for (int32_t i = 1; i <= 5; ++i) {
+            co_yield std::move(i);
+          }
+        }());
+    EXPECT_EQ(res, 15);
+  }());
+}
+#endif

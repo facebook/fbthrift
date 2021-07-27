@@ -24,9 +24,7 @@ using namespace apache::thrift::detail;
 
 template <ChunkRepr repr>
 void expectRepr(
-    std::uint32_t n,
-    std::initializer_list<unsigned char> expected,
-    int line) {
+    std::uint32_t n, std::initializer_list<unsigned char> expected, int line) {
   EXPECT_EQ(4, expected.size());
   const unsigned char* expectedBytes = expected.begin();
   std::array<unsigned char, sizeof(n)> actualBytes;

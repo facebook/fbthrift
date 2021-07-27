@@ -37,6 +37,9 @@ TEST(AnyRegistryTest, ShortType) {
   EXPECT_TRUE(any.type_ref());
   EXPECT_FALSE(any.typeHashPrefixSha2_256_ref());
   EXPECT_EQ(registry.load<int>(any), 1);
+  EXPECT_EQ(*registry.tryGetTypeId(any), typeid(int));
+  EXPECT_EQ(registry.getTypeId(any), typeid(int));
+  EXPECT_EQ(registry.getTypeUri(any), shortThriftType().uri_ref().value());
 }
 
 void checkLongType(int typeBytes, int expectedOutBytes) {
@@ -72,6 +75,9 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
         &intCodec);
   }
   EXPECT_EQ(registry.load<int>(any), 1);
+  EXPECT_EQ(*registry.tryGetTypeId(any), typeid(int));
+  EXPECT_EQ(registry.getTypeId(any), typeid(int));
+  EXPECT_EQ(registry.getTypeUri(any), longType.uri_ref().value());
 }
 
 TEST(AnyRegistryTest, LongType) {
@@ -352,10 +358,8 @@ TEST(AnyRegistryTest, StdProtocol) {
 }
 
 TEST(AnyRegistryTest, Generated) {
-  // Double regeister fails with a runtime error.
-  EXPECT_THROW(
-      detail::registerGeneratedStruct<Value>(testThriftType("Value")),
-      std::runtime_error);
+  // Double register fails with a runtime error.
+  EXPECT_THROW(detail::registerGeneratedStruct<Value>(), std::runtime_error);
 
   auto value = asValueStruct<type::i32_t>(1);
   auto any = AnyRegistry::generated().store<StandardProtocol::Compact>(value);

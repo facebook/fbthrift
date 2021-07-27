@@ -15,17 +15,22 @@
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-cdef extern from "thrift/compiler/parse/parsing_driver.h" namespace "apache::thrift::compiler":
+cdef extern from "thrift/compiler/ast/diagnostic.h" namespace "apache::thrift::compiler":
     cdef cppclass diagnostic_level:
         pass
 
-cdef extern from "thrift/compiler/parse/parsing_driver.h" namespace "apache::thrift::compiler":
-    cdef struct diagnostic_message:
-        diagnostic_level level
-        string filename
-        int lineno
-        string last_token
-        string message
+cdef extern from "thrift/compiler/ast/diagnostic.h" namespace "apache::thrift::compiler":
+    cdef cppclass diagnostic:
+        diagnostic_level level()
+        string file()
+        int lineno()
+        string token()
+        string message()
+        string str()
+
+    cdef cppclass diagnostic_results:
+        vector[diagnostic] diagnostics()
+
 
 cdef extern from "thrift/compiler/compiler.h" namespace "apache::thrift::compiler":
     cdef cppclass compile_retcode:
@@ -33,6 +38,6 @@ cdef extern from "thrift/compiler/compiler.h" namespace "apache::thrift::compile
 
     cdef struct compile_result:
         compile_retcode retcode
-        vector[diagnostic_message] diagnostics
+        diagnostic_results detail
 
     cdef compile_result compile(vector[string]) except +

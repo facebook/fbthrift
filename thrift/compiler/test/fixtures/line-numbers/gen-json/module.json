@@ -6,48 +6,108 @@
       "lineno" : 18,
       "value" : 42,
       "type_enum" : "I64",
-      "spec_args" : null
+      "spec_args" : null,
+      "source_range" : {
+        "begin" : {
+          "line" : 18,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 18,
+          "column" : 25
+        }
+      }
     }
   },
   "enumerations" : {
     "MyEnum" : {
-      "lineno" : 40,
+      "lineno" : 27,
       "constants" : {
         "VALUE1" : 1,
         "VALUE2" : 2
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 27,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 30,
+          "column" : 2
+        }
       }
     }
   },
   "typedefs" : {
     "MyMapTypedef" : {
-      "lineno" : 23,
+      "lineno" : 20,
       "type_enum" : "MAP",
-      "spec_args" : { "key_type" : { "type_enum" : "I64", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } 
+      "spec_args" : { "key_type" : { "type_enum" : "I64", "spec_args" : null }, "val_type" : { "type_enum" : "STRING", "spec_args" : null} } ,
+      "source_range" : {
+        "begin" : {
+          "line" : 20,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 20,
+          "column" : 38
+        }
+      }
     }
   },
   "structs" : {
     "MyStruct" : {
-      "lineno" : 29,
+      "lineno" : 22,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
         "MyIntField" : {
           "type_enum" : "I64",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 23,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 23,
+              "column" : 21
+            }
+          }
         },
         "MyStringField" : {
           "type_enum" : "STRING",
           "spec_args" : null,
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 24,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 24,
+              "column" : 27
+            }
+          }
         }
       },
-      "annotation_last_lineno" : -1
+      "annotation_last_lineno" : -1,
+      "source_range" : {
+        "begin" : {
+          "line" : 22,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 25,
+          "column" : 2
+        }
+      }
     }
   },
   "services" : {
     "MyService" : {
-      "lineno" : 50,
+      "lineno" : 32,
       "functions" : {
         "MyService.ping" : {
           "return_type" : {
@@ -55,9 +115,30 @@
             "spec_args" : null
           },
           "args" : [],
-          "throws" : []
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 32,
+              "column" : 20
+            },
+            "end" : {
+              "line" : 33,
+              "column" : 14
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 32,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 34,
+          "column" : 2
         }
       }
+
     }
   }
 }

@@ -29,7 +29,6 @@
 
 #include <thrift/lib/cpp2/test/util/TestInterface.h>
 
-#include <thrift/lib/cpp2/test/util/TestProxygenThriftServerFactory.h>
 #include <thrift/lib/cpp2/test/util/TestThriftServerFactory.h>
 
 #include <thrift/lib/cpp2/test/util/TestHTTPClientChannelFactory.h>
@@ -60,7 +59,6 @@ namespace {
 
 enum ThriftServerTypes {
   THRIFT_SERVER,
-  PROXYGEN,
 };
 
 enum ClientChannelTypes {
@@ -81,11 +79,6 @@ class SharedServerTests
       case THRIFT_SERVER: {
         auto f = std::make_unique<TestThriftServerFactory<TestInterface>>();
         serverFactory = std::move(f);
-        break;
-      }
-      case PROXYGEN: {
-        serverFactory =
-            std::make_unique<TestProxygenThriftServerFactory<TestInterface>>();
         break;
       }
       default:
@@ -110,9 +103,7 @@ class SharedServerTests
     }
   }
 
-  void createServer() {
-    server = serverFactory->create();
-  }
+  void createServer() { server = serverFactory->create(); }
 
   void startServer() {
     if (!server) {
@@ -338,32 +329,6 @@ TEST_P(SharedServerTests, ThriftServerSizeLimits) {
 }
 
 namespace {
-class MyExecutor : public folly::Executor {
- public:
-  void add(folly::Func f) override {
-    calls++;
-    f();
-  }
-
-  std::atomic<int> calls{0};
-};
-} // namespace
-
-TEST_P(SharedServerTests, PoolExecutorTest) {
-  auto exe = std::make_shared<MyExecutor>();
-  serverFactory->useSimpleThreadManager(false).useThreadManager(
-      std::make_shared<
-          apache::thrift::concurrency::ThreadManagerExecutorAdapter>(exe));
-
-  init();
-
-  std::string response;
-
-  client->sync_echoRequest(response, "test");
-  EXPECT_EQ(1, exe->calls);
-}
-
-namespace {
 class FiberExecutor : public folly::Executor {
  public:
   void add(folly::Func f) override {
@@ -413,15 +378,9 @@ class TestServerEventHandler
     return shared_from_this();
   }
 
-  void check() {
-    EXPECT_EQ(8, count);
-  }
-  void preServe(const folly::SocketAddress*) override {
-    EXPECT_EQ(0, count++);
-  }
-  void newConnection(TConnectionContext*) override {
-    EXPECT_EQ(1, count++);
-  }
+  void check() { EXPECT_EQ(8, count); }
+  void preServe(const folly::SocketAddress*) override { EXPECT_EQ(0, count++); }
+  void newConnection(TConnectionContext*) override { EXPECT_EQ(1, count++); }
   void connectionDestroyed(TConnectionContext*) override {
     EXPECT_EQ(7, count++);
   }
@@ -430,12 +389,8 @@ class TestServerEventHandler
     EXPECT_EQ(2, count++);
     return nullptr;
   }
-  void freeContext(void*, const char*) override {
-    EXPECT_EQ(6, count++);
-  }
-  void preRead(void*, const char*) override {
-    EXPECT_EQ(3, count++);
-  }
+  void freeContext(void*, const char*) override { EXPECT_EQ(6, count++); }
+  void preRead(void*, const char*) override { EXPECT_EQ(3, count++); }
   void onReadData(void*, const char*, const SerializedMessage&) override {
     EXPECT_EQ(4, count++);
   }
@@ -475,12 +430,4 @@ INSTANTIATE_TEST_CASE_P(
     Combine(
         Values(ThriftServerTypes::THRIFT_SERVER),
         Values(ClientChannelTypes::HEADER),
-        Values(protocol::T_BINARY_PROTOCOL, protocol::T_COMPACT_PROTOCOL)));
-
-INSTANTIATE_TEST_CASE_P(
-    ProxygenThriftServerTests,
-    SharedServerTests,
-    Combine(
-        Values(ThriftServerTypes::PROXYGEN),
-        Values(ClientChannelTypes::HTTP2),
         Values(protocol::T_BINARY_PROTOCOL, protocol::T_COMPACT_PROTOCOL)));

@@ -17,15 +17,15 @@
 namespace java.swift test.fixtures.enums
 
 enum Metasyntactic {
-    FOO = 1;
-    BAR = 2;
-    BAZ = 3;
-    BAX = 4;
+  FOO = 1,
+  BAR = 2,
+  BAZ = 3,
+  BAX = 4,
 }
 
 struct SomeStruct {
-    1: Metasyntactic reasonable = FOO;
-    2: Metasyntactic fine = 2;
-    3: Metasyntactic questionable = -1;
-    4: set<i32> tags = [];
+  1: Metasyntactic reasonable = FOO;
+  2: Metasyntactic fine = 2;
+  3: Metasyntactic questionable = -1;
+  4: set<i32> tags = [];
 }

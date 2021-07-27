@@ -62,23 +62,15 @@ class Protocol {
   // protocol.
   std::string_view name() const noexcept;
 
-  StandardProtocol standard() const noexcept {
-    return standard_;
-  }
+  StandardProtocol standard() const noexcept { return standard_; }
 
-  const std::string& custom() const noexcept {
-    return custom_;
-  }
+  const std::string& custom() const noexcept { return custom_; }
 
   bool isStandard() const noexcept {
     return standard_ != StandardProtocol::Custom;
   }
-  bool isCustom() const noexcept {
-    return !custom_.empty();
-  }
-  bool isNone() const noexcept {
-    return !isStandard() && !isCustom();
-  }
+  bool isCustom() const noexcept { return !custom_.empty(); }
+  bool isNone() const noexcept { return !isStandard() && !isCustom(); }
 
   ProtocolStruct asStruct() const noexcept;
 
@@ -117,8 +109,8 @@ inline const Protocol kNoProtocol = {};
 namespace std {
 template <>
 struct hash<apache::thrift::conformance::Protocol> {
-  size_t operator()(const apache::thrift::conformance::Protocol& protocol) const
-      noexcept {
+  size_t operator()(
+      const apache::thrift::conformance::Protocol& protocol) const noexcept {
     size_t h1 = std::hash<apache::thrift::conformance::StandardProtocol>{}(
         protocol.standard());
     size_t h2 = std::hash<std::string>{}(protocol.custom());

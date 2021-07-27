@@ -99,12 +99,10 @@ struct3 test_data() {
 struct test_callback {
   explicit test_callback(std::vector<std::string>& out) : out_(out) {}
 
-  template <typename T>
+  template <typename T, typename TC>
   void operator()(
-      T const*,
-      T const*,
-      folly::StringPiece path,
-      folly::StringPiece) const {
+      TC, T const*, T const*, folly::StringPiece path, folly::StringPiece)
+      const {
     out_.emplace_back(path.data(), path.size());
   }
 

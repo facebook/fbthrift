@@ -17,15 +17,16 @@
 namespace cpp2 apache.thrift.test
 
 struct SumRequest {
-  1: i32 x,
-  2: i32 y
+  1: i32 x;
+  2: i32 y;
 }
 
 struct SumResponse {
-  1: i32 sum,
+  1: i32 sum;
 }
 
-exception Ex {}
+exception Ex {
+}
 
 service Coroutine {
   SumResponse computeSumNoCoro(1: SumRequest request);
@@ -50,8 +51,10 @@ service Coroutine {
 
   oneway void onewayRequest(1: i32 x) (cpp.coroutine);
 
-  SumResponse computeSumThrowsUserEx(1: SumRequest request) throws (1: Ex e)
-    (cpp.coroutine);
-  i32 computeSumThrowsUserExPrimitive(1: i32 x, 2: i32 y) throws (1: Ex e)
-    (cpp.coroutine);
+  SumResponse computeSumThrowsUserEx(1: SumRequest request) throws (1: Ex e) (
+    cpp.coroutine,
+  );
+  i32 computeSumThrowsUserExPrimitive(1: i32 x, 2: i32 y) throws (1: Ex e) (
+    cpp.coroutine,
+  );
 }

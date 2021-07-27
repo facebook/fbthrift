@@ -15,23 +15,76 @@
  */
 
 #include <thrift/test/reflection/gen-cpp2/reflection_for_each_field.h>
+#include <thrift/test/reflection/gen-cpp2/reflection_visit_by_thrift_field_metadata.h> // @manual
 
 #include <folly/Overload.h>
 #include <folly/portability/GTest.h>
 
 #include <typeindex>
 
-using namespace std;
-using namespace apache::thrift;
+using apache::thrift::field_ref;
+using apache::thrift::optional_field_ref;
+using apache::thrift::required_field_ref;
+using std::deque;
+using std::is_same_v;
+using std::string;
+using std::type_index;
+using std::vector;
 
 namespace test_cpp2 {
 namespace cpp_reflection {
+namespace {
 
-TEST(struct1, test_metadata) {
+struct ForEachFieldAdapter {
+  template <class... Args>
+  void operator()(Args&&... args) const {
+    apache::thrift::for_each_field(std::forward<Args>(args)...);
+  }
+};
+
+struct VisitByThriftIdAdapter {
+  template <class T, class F>
+  void operator()(T&& t, F f) const {
+    for (auto&& meta : *::apache::thrift::get_struct_metadata<std::decay_t<T>>()
+                            .fields_ref()) {
+      apache::thrift::visit_by_thrift_field_metadata(
+          std::forward<T>(t), meta, [&](auto&& ref) { f(meta, ref); });
+    }
+  }
+
+  template <class T, class F>
+  void operator()(T&& t1, T&& t2, F f) const {
+    using namespace apache::thrift;
+    for (auto&& meta : *get_struct_metadata<std::decay_t<T>>().fields_ref()) {
+      visit_by_thrift_field_metadata(
+          std::forward<T>(t1), meta, [&](auto&& ref1) {
+            visit_by_thrift_field_metadata(
+                std::forward<T>(t2), meta, [&](auto&& ref2) {
+                  if constexpr (std::
+                                    is_same_v<decltype(ref1), decltype(ref2)>) {
+                    f(meta, ref1, ref2);
+                  } else {
+                    ASSERT_TRUE(false);
+                  }
+                });
+          });
+    }
+  }
+};
+
+template <class Adapter>
+struct ForEachFieldTest : ::testing::Test {
+  static constexpr Adapter adapter;
+};
+
+using Adapters = ::testing::Types<ForEachFieldAdapter, VisitByThriftIdAdapter>;
+TYPED_TEST_CASE(ForEachFieldTest, Adapters);
+
+TYPED_TEST(ForEachFieldTest, test_metadata) {
   struct1 s;
-  for_each_field(s, [i = 0](auto& meta, auto&& ref) mutable {
+  TestFixture::adapter(s, [i = 0](auto& meta, auto&& ref) mutable {
     EXPECT_EQ(*meta.id_ref(), 1 << i);
-    EXPECT_EQ(*meta.name_ref(), "field" + to_string(i));
+    EXPECT_EQ(*meta.name_ref(), "field" + std::to_string(i));
     EXPECT_EQ(
         meta.type_ref()->getType(),
         (vector{
@@ -63,7 +116,7 @@ TEST(struct1, test_metadata) {
   });
 }
 
-TEST(struct1, modify_field) {
+TYPED_TEST(ForEachFieldTest, modify_field) {
   struct1 s;
   s.field0_ref() = 10;
   s.field1_ref() = "20";
@@ -97,7 +150,7 @@ TEST(struct1, modify_field) {
         ref.set_ui_2(30);
       },
       [](auto&) { EXPECT_TRUE(false) << "type mismatch"; });
-  for_each_field(s, [run](auto&, auto&& ref) {
+  TestFixture::adapter(s, [run](auto&, auto&& ref) {
     EXPECT_TRUE(ref.has_value());
     run(*ref);
   });
@@ -109,7 +162,7 @@ TEST(struct1, modify_field) {
   EXPECT_EQ(s.field5_ref()->get_ui_2(), 30);
 }
 
-TEST(hasRefUnique, test_cpp_ref_unique) {
+TYPED_TEST(ForEachFieldTest, test_cpp_ref_unique) {
   hasRefUnique s;
   deque<string> names = {
       "aStruct",
@@ -123,7 +176,7 @@ TEST(hasRefUnique, test_cpp_ref_unique) {
       "anOptionalMap",
       "anOptionalUnion",
   };
-  for_each_field(s, [&, i = 0](auto& meta, auto&& ref) mutable {
+  TestFixture::adapter(s, [&, i = 0](auto& meta, auto&& ref) mutable {
     EXPECT_EQ(*meta.name_ref(), names[i++]);
     if constexpr (is_same_v<decltype(*ref), deque<string>&>) {
       if (*meta.is_optional_ref()) {
@@ -146,9 +199,9 @@ TEST(hasRefUnique, test_cpp_ref_unique) {
   EXPECT_FALSE(s.anOptionalUnion_ref());
 }
 
-TEST(struct1, test_reference_type) {
+TYPED_TEST(ForEachFieldTest, test_reference_type) {
   struct1 s;
-  for_each_field(s, [](auto& meta, auto&& ref) {
+  TestFixture::adapter(s, [](auto& meta, auto&& ref) {
     switch (*meta.id_ref()) {
       case 1:
         EXPECT_TRUE((is_same_v<decltype(*ref), int32_t&>));
@@ -172,7 +225,7 @@ TEST(struct1, test_reference_type) {
         EXPECT_TRUE(false) << *meta.name_ref() << " " << *meta.id_ref();
     }
   });
-  for_each_field(move(s), [](auto& meta, auto&& ref) {
+  TestFixture::adapter(std::move(s), [](auto& meta, auto&& ref) {
     switch (*meta.id_ref()) {
       case 1:
         EXPECT_TRUE((is_same_v<decltype(*ref), int32_t&&>));
@@ -197,7 +250,7 @@ TEST(struct1, test_reference_type) {
     }
   });
   const struct1 t;
-  for_each_field(t, [](auto& meta, auto&& ref) {
+  TestFixture::adapter(t, [](auto& meta, auto&& ref) {
     switch (*meta.id_ref()) {
       case 1:
         EXPECT_TRUE((is_same_v<decltype(*ref), const int32_t&>));
@@ -221,7 +274,7 @@ TEST(struct1, test_reference_type) {
         EXPECT_TRUE(false) << *meta.name_ref() << " " << *meta.id_ref();
     }
   });
-  for_each_field(move(t), [](auto& meta, auto&& ref) {
+  TestFixture::adapter(std::move(t), [](auto& meta, auto&& ref) {
     switch (*meta.id_ref()) {
       case 1:
         EXPECT_TRUE((is_same_v<decltype(*ref), const int32_t&&>));
@@ -247,13 +300,13 @@ TEST(struct1, test_reference_type) {
   });
 }
 
-TEST(structA, test_two_structs_document) {
+TYPED_TEST(ForEachFieldTest, test_two_structs_document) {
   structA thrift1;
   thrift1.a_ref() = 10;
   thrift1.b_ref() = "20";
   structA thrift2 = thrift1;
 
-  for_each_field(
+  TestFixture::adapter(
       thrift1,
       thrift2,
       [](const apache::thrift::metadata::ThriftField& meta,
@@ -263,7 +316,7 @@ TEST(structA, test_two_structs_document) {
       });
 }
 
-TEST(struct1, test_two_structs_assignment) {
+TYPED_TEST(ForEachFieldTest, test_two_structs_assignment) {
   struct1 s, t;
   s.field0_ref() = 10;
   s.field1_ref() = "11";
@@ -293,12 +346,33 @@ TEST(struct1, test_two_structs_assignment) {
         EXPECT_EQ(*meta.is_optional_ref(), true);
       },
       [](auto&&...) {});
-  for_each_field(s, t, run);
+  TestFixture::adapter(s, t, run);
   EXPECT_EQ(s.field0_ref(), 30);
   EXPECT_EQ(s.field1_ref(), "33");
   EXPECT_EQ(t.field0_ref(), 40);
   EXPECT_EQ(t.field1_ref(), "44");
 }
 
+struct TestPassCallableByValue {
+  int i = 0;
+  template <class... Args>
+  void operator()(Args&&...) {
+    ++i;
+  }
+};
+
+TYPED_TEST(ForEachFieldTest, PassCallableByValue) {
+  TestPassCallableByValue f;
+  TestFixture::adapter(struct1{}, f);
+  EXPECT_EQ(f.i, 0);
+  TestFixture::adapter(struct1{}, struct1{}, f);
+  EXPECT_EQ(f.i, 0);
+  TestFixture::adapter(struct1{}, std::ref(f));
+  EXPECT_EQ(f.i, 6);
+  TestFixture::adapter(struct1{}, struct1{}, std::ref(f));
+  EXPECT_EQ(f.i, 12);
+}
+
+} // namespace
 } // namespace cpp_reflection
 } // namespace test_cpp2

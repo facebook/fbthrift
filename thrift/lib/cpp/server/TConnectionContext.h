@@ -20,6 +20,8 @@
 #include <stddef.h>
 #include <memory>
 
+#include <folly/Indestructible.h>
+#include <folly/Memory.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp/transport/THeader.h>
@@ -35,14 +37,10 @@ class TConnectionContext {
 
   virtual ~TConnectionContext() = default;
 
-  virtual const folly::SocketAddress* getPeerAddress() const {
-    return nullptr;
-  }
+  virtual const folly::SocketAddress* getPeerAddress() const { return nullptr; }
 
   // Expose the THeader to read headers or other flags
-  transport::THeader* getHeader() const {
-    return header_;
-  }
+  transport::THeader* getHeader() const { return header_; }
 
   bool setHeader(const std::string& key, const std::string& value) {
     if (header_) {
@@ -53,28 +51,26 @@ class TConnectionContext {
     }
   }
 
-  std::map<std::string, std::string> getHeaders() const {
+  const transport::THeader::StringToStringMap& getHeaders() const {
     if (header_) {
       return header_->getHeaders();
     } else {
-      return std::map<std::string, std::string>();
+      static const folly::Indestructible<transport::THeader::StringToStringMap>
+          kEmpty;
+      return *kEmpty;
     }
   }
 
-  const std::map<std::string, std::string>* getHeadersPtr() const {
+  const transport::THeader::StringToStringMap* getHeadersPtr() const {
     return header_ ? &header_->getHeaders() : nullptr;
   }
 
-  virtual folly::EventBaseManager* getEventBaseManager() {
-    return nullptr;
-  }
+  virtual folly::EventBaseManager* getEventBaseManager() { return nullptr; }
 
   /**
    * Get the user data field.
    */
-  virtual void* getUserData() const {
-    return nullptr;
-  }
+  virtual void* getUserData() const { return nullptr; }
 
   /**
    * Set the user data field.
@@ -86,15 +82,18 @@ class TConnectionContext {
    *
    * @return Returns the old user data value.
    */
-  virtual void* setUserData(
-      void* /*data*/,
-      void (*)(void*) = nullptr /*destructor*/) {
+  void* setUserData(void* data, void (*destructor)(void*) = nullptr) {
+    return setUserData({data, destructor ? destructor : no_op_destructor});
+  }
+  virtual void* setUserData(folly::erased_unique_ptr) {
     throw std::runtime_error(
         "setUserData is not implemented by this connection context type");
   }
 
  protected:
   apache::thrift::transport::THeader* header_;
+
+  static void no_op_destructor(void* /*ptr*/) {}
 };
 
 } // namespace server

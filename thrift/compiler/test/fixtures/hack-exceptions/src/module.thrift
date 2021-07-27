@@ -20,26 +20,26 @@ enum MyEnum {
 }
 
 exception MyException1 {
-  1: string message,
-  2: optional MyEnum code,
+  1: string message;
+  2: optional MyEnum code;
 }
 
 exception MyException2 {
-  1: string message,
-  2: required MyEnum code,
+  1: string message;
+  2: required MyEnum code;
 }
 
 exception MyException3 {
-  1: string message,
-  2: MyEnum code,
+  1: string message;
+  2: MyEnum code;
 }
 
 exception MyException4 {
-  1: string message,
-  2: MyEnum code = MyEnum.MyValue2,
+  1: string message;
+  2: MyEnum code = MyEnum.MyValue2;
 }
 
 exception MyException5 {
-  1: string message,
-  2: optional i64 code,
+  1: string message;
+  2: optional i64 code;
 }

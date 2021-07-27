@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from typing import AsyncIterator
 from cpython.version cimport PY_VERSION_HEX
 from libc.stdint cimport (
     int8_t as cint8_t,
@@ -21,6 +22,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.utility cimport move as cmove
+from libcpp.pair cimport pair
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport (
@@ -33,7 +35,13 @@ from folly cimport (
   cFollyPromise,
   cFollyUnit,
   c_unit,
-
+)
+from thrift.py3.common cimport (
+    cThriftServiceContext as __fbthrift_cThriftServiceContext,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    ServiceMetadata,
+    extractMetadataFromServiceContext,
+    MetadataBox as __MetadataBox,
 )
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -41,8 +49,8 @@ if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
 
 cimport folly.futures
 from folly.executor cimport get_executor
-cimport folly.iobuf as __iobuf
-import folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
@@ -60,9 +68,6 @@ import types as _py_types
 from module.services_wrapper cimport cSinkServiceInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[] move_promise_ "std::move"(
-        cFollyPromise[])
 
 @cython.auto_pickle(False)
 cdef class Promise_:
@@ -70,8 +75,8 @@ cdef class Promise_:
 
     @staticmethod
     cdef create(cFollyPromise[] cPromise):
-        inst = <Promise_>Promise_.__new__(Promise_)
-        inst.cPromise = move_promise_(cPromise)
+        cdef Promise_ inst = Promise_.__new__(Promise_)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _SinkService_annotations = _py_types.MappingProxyType({
@@ -93,6 +98,18 @@ cdef class SinkServiceInterface(
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__SinkService(for_clients=False)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cSinkServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.SinkService"
 
 
 

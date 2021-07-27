@@ -23,14 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStructMapFloatThrowExp", builder=MyStructMapFloatThrowExp.Builder.class)
-public final class MyStructMapFloatThrowExp {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="MyStructMapFloatThrowExp", builder=MyStructMapFloatThrowExp.Builder.class)
+public final class MyStructMapFloatThrowExp implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStructMapFloatThrowExp(
-        @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
-        @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE) final Map<Integer, List<List<Float>>> mapListOfFloats
+        @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE) final Map<Integer, List<List<Float>>> mapListOfFloats
     ) {
         this.myLongField = myLongField;
         this.mapListOfFloats = mapListOfFloats;
@@ -43,12 +42,11 @@ public final class MyStructMapFloatThrowExp {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long myLongField = 0L;
         private Map<Integer, List<List<Float>>> mapListOfFloats = null;
     
-        @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
         public Builder setMyLongField(long myLongField) {
             this.myLongField = myLongField;
             return this;
@@ -56,7 +54,7 @@ public final class MyStructMapFloatThrowExp {
     
         public long getMyLongField() { return myLongField; }
     
-            @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
         public Builder setMapListOfFloats(Map<Integer, List<List<Float>>> mapListOfFloats) {
             this.mapListOfFloats = mapListOfFloats;
             return this;
@@ -76,7 +74,6 @@ public final class MyStructMapFloatThrowExp {
                 this.myLongField,
                 this.mapListOfFloats
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -97,24 +94,12 @@ public final class MyStructMapFloatThrowExp {
       FIELD_METADATA.put(2, MAP_LIST_OF_FLOATS_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyLongField() {
-        return __isset_bit_vector.get(_MYLONGFIELD);
-    }
     
     
-    @ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="mapListOfFloats", requiredness=Requiredness.NONE)
     public Map<Integer, List<List<Float>>> getMapListOfFloats() { return mapListOfFloats; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMapListOfFloats() {
-        return this.mapListOfFloats != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -149,6 +134,10 @@ public final class MyStructMapFloatThrowExp {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStructMapFloatThrowExp> asReader() {
+      return MyStructMapFloatThrowExp::read0;
+    }
     
     public static MyStructMapFloatThrowExp read0(TProtocol oprot) throws TException {
       TField __field;
@@ -251,4 +240,11 @@ public final class MyStructMapFloatThrowExp {
       oprot.writeStructEnd();
     }
     
+    private static class _MyStructMapFloatThrowExpLazy {
+        private static final MyStructMapFloatThrowExp _DEFAULT = new MyStructMapFloatThrowExp.Builder().build();
+    }
+    
+    public static MyStructMapFloatThrowExp defaultInstance() {
+        return  _MyStructMapFloatThrowExpLazy._DEFAULT;
+    }
 }

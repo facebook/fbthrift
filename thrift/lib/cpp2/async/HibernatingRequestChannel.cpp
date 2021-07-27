@@ -27,9 +27,7 @@ class HibernatingRequestChannel::RequestCallback
   RequestCallback(apache::thrift::RequestClientCallback::Ptr cob, ImplPtr impl)
       : impl_(std::move(impl)), cob_(std::move(cob)) {}
 
-  void onRequestSent() noexcept override {
-    cob_->onRequestSent();
-  }
+  void onRequestSent() noexcept override { cob_->onRequestSent(); }
 
   void onResponse(ClientReceiveState&& state) noexcept override {
     cob_.release()->onResponse(std::move(state));
@@ -48,7 +46,7 @@ class HibernatingRequestChannel::RequestCallback
 
 void HibernatingRequestChannel::sendRequestResponse(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     apache::thrift::RequestClientCallback::Ptr cob) {
@@ -58,7 +56,7 @@ void HibernatingRequestChannel::sendRequestResponse(
       new RequestCallback(std::move(cob), std::move(implPtr)));
   implRef.sendRequestResponse(
       options,
-      methodName,
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       std::move(cob));

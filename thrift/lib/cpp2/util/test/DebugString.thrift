@@ -17,7 +17,7 @@
 namespace cpp2 apache.thrift.test
 
 struct Struct1 {
-   1: optional string str;
+  1: optional string str;
 }
 
 struct Struct2 {
@@ -25,8 +25,8 @@ struct Struct2 {
 }
 
 struct MixedStruct {
-  1: optional bool myBool,
-  2: optional byte myByte,
+  1: optional bool myBool;
+  2: optional byte myByte;
   3: optional i16 myI16;
   4: optional i32 myI32;
   5: optional i64 myI64;

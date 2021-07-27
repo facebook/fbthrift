@@ -37,6 +37,16 @@ var MyEnumToValue = map[string]MyEnum {
   "MyValue2": MyEnum_MyValue2,
 }
 
+var MyEnumNames = []string {
+  "MyValue1",
+  "MyValue2",
+}
+
+var MyEnumValues = []MyEnum {
+  MyEnum_MyValue1,
+  MyEnum_MyValue2,
+}
+
 func (p MyEnum) String() string {
   if v, ok := MyEnumToName[p]; ok {
     return v
@@ -58,15 +68,23 @@ func MyEnumPtr(v MyEnum) *MyEnum { return &v }
 //  - MyStringField
 //  - MyDataField
 //  - MyEnum
+//  - Oneway
+//  - Readonly
+//  - Idempotent
 type MyStruct struct {
   MyIntField int64 `thrift:"MyIntField,1" db:"MyIntField" json:"MyIntField"`
   MyStringField string `thrift:"MyStringField,2" db:"MyStringField" json:"MyStringField"`
   MyDataField *MyDataItem `thrift:"MyDataField,3" db:"MyDataField" json:"MyDataField"`
   MyEnum MyEnum `thrift:"myEnum,4" db:"myEnum" json:"myEnum"`
+  Oneway bool `thrift:"oneway,5" db:"oneway" json:"oneway"`
+  Readonly bool `thrift:"readonly,6" db:"readonly" json:"readonly"`
+  Idempotent bool `thrift:"idempotent,7" db:"idempotent" json:"idempotent"`
 }
 
 func NewMyStruct() *MyStruct {
-  return &MyStruct{}
+  return &MyStruct{
+    MyDataField: NewMyDataItem(),
+  }
 }
 
 
@@ -88,8 +106,112 @@ return p.MyDataField
 func (p *MyStruct) GetMyEnum() MyEnum {
   return p.MyEnum
 }
+
+func (p *MyStruct) GetOneway() bool {
+  return p.Oneway
+}
+
+func (p *MyStruct) GetReadonly() bool {
+  return p.Readonly
+}
+
+func (p *MyStruct) GetIdempotent() bool {
+  return p.Idempotent
+}
 func (p *MyStruct) IsSetMyDataField() bool {
   return p != nil && p.MyDataField != nil
+}
+
+type MyStructBuilder struct {
+  obj *MyStruct
+}
+
+func NewMyStructBuilder() *MyStructBuilder{
+  return &MyStructBuilder{
+    obj: NewMyStruct(),
+  }
+}
+
+func (p MyStructBuilder) Emit() *MyStruct{
+  return &MyStruct{
+    MyIntField: p.obj.MyIntField,
+    MyStringField: p.obj.MyStringField,
+    MyDataField: p.obj.MyDataField,
+    MyEnum: p.obj.MyEnum,
+    Oneway: p.obj.Oneway,
+    Readonly: p.obj.Readonly,
+    Idempotent: p.obj.Idempotent,
+  }
+}
+
+func (m *MyStructBuilder) MyIntField(myIntField int64) *MyStructBuilder {
+  m.obj.MyIntField = myIntField
+  return m
+}
+
+func (m *MyStructBuilder) MyStringField(myStringField string) *MyStructBuilder {
+  m.obj.MyStringField = myStringField
+  return m
+}
+
+func (m *MyStructBuilder) MyDataField(myDataField *MyDataItem) *MyStructBuilder {
+  m.obj.MyDataField = myDataField
+  return m
+}
+
+func (m *MyStructBuilder) MyEnum(myEnum MyEnum) *MyStructBuilder {
+  m.obj.MyEnum = myEnum
+  return m
+}
+
+func (m *MyStructBuilder) Oneway(oneway bool) *MyStructBuilder {
+  m.obj.Oneway = oneway
+  return m
+}
+
+func (m *MyStructBuilder) Readonly(readonly bool) *MyStructBuilder {
+  m.obj.Readonly = readonly
+  return m
+}
+
+func (m *MyStructBuilder) Idempotent(idempotent bool) *MyStructBuilder {
+  m.obj.Idempotent = idempotent
+  return m
+}
+
+func (m *MyStruct) SetMyIntField(myIntField int64) *MyStruct {
+  m.MyIntField = myIntField
+  return m
+}
+
+func (m *MyStruct) SetMyStringField(myStringField string) *MyStruct {
+  m.MyStringField = myStringField
+  return m
+}
+
+func (m *MyStruct) SetMyDataField(myDataField *MyDataItem) *MyStruct {
+  m.MyDataField = myDataField
+  return m
+}
+
+func (m *MyStruct) SetMyEnum(myEnum MyEnum) *MyStruct {
+  m.MyEnum = myEnum
+  return m
+}
+
+func (m *MyStruct) SetOneway(oneway bool) *MyStruct {
+  m.Oneway = oneway
+  return m
+}
+
+func (m *MyStruct) SetReadonly(readonly bool) *MyStruct {
+  m.Readonly = readonly
+  return m
+}
+
+func (m *MyStruct) SetIdempotent(idempotent bool) *MyStruct {
+  m.Idempotent = idempotent
+  return m
 }
 
 func (p *MyStruct) Read(iprot thrift.Protocol) error {
@@ -121,6 +243,18 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
       if err := p.ReadField4(iprot); err != nil {
         return err
       }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
+        return err
+      }
+    case 6:
+      if err := p.ReadField6(iprot); err != nil {
+        return err
+      }
+    case 7:
+      if err := p.ReadField7(iprot); err != nil {
+        return err
+      }
     default:
       if err := iprot.Skip(fieldTypeId); err != nil {
         return err
@@ -138,19 +272,19 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
 
 func (p *MyStruct)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.MyIntField = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.MyIntField = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.MyStringField = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.MyStringField = v
+  }
   return nil
 }
 
@@ -164,11 +298,38 @@ func (p *MyStruct)  ReadField3(iprot thrift.Protocol) error {
 
 func (p *MyStruct)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 4: ", err)
-} else {
-  temp := MyEnum(v)
-  p.MyEnum = temp
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    temp := MyEnum(v)
+    p.MyEnum = temp
+  }
+  return nil
 }
+
+func (p *MyStruct)  ReadField5(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 5: ", err)
+  } else {
+    p.Oneway = v
+  }
+  return nil
+}
+
+func (p *MyStruct)  ReadField6(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 6: ", err)
+  } else {
+    p.Readonly = v
+  }
+  return nil
+}
+
+func (p *MyStruct)  ReadField7(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadBool(); err != nil {
+    return thrift.PrependError("error reading field 7: ", err)
+  } else {
+    p.Idempotent = v
+  }
   return nil
 }
 
@@ -179,6 +340,9 @@ func (p *MyStruct) Write(oprot thrift.Protocol) error {
   if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField3(oprot); err != nil { return err }
   if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
+  if err := p.writeField6(oprot); err != nil { return err }
+  if err := p.writeField7(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -227,6 +391,36 @@ func (p *MyStruct) writeField4(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *MyStruct) writeField5(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("oneway", thrift.BOOL, 5); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:oneway: ", p), err) }
+  if err := oprot.WriteBool(bool(p.Oneway)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.oneway (5) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 5:oneway: ", p), err) }
+  return err
+}
+
+func (p *MyStruct) writeField6(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("readonly", thrift.BOOL, 6); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 6:readonly: ", p), err) }
+  if err := oprot.WriteBool(bool(p.Readonly)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.readonly (6) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 6:readonly: ", p), err) }
+  return err
+}
+
+func (p *MyStruct) writeField7(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("idempotent", thrift.BOOL, 7); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 7:idempotent: ", p), err) }
+  if err := oprot.WriteBool(bool(p.Idempotent)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.idempotent (7) field write error: ", p), err) }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 7:idempotent: ", p), err) }
+  return err
+}
+
 func (p *MyStruct) String() string {
   if p == nil {
     return "<nil>"
@@ -241,7 +435,10 @@ func (p *MyStruct) String() string {
     myDataFieldVal = fmt.Sprintf("%v", p.MyDataField)
   }
   myEnumVal := fmt.Sprintf("%v", p.MyEnum)
-  return fmt.Sprintf("MyStruct({MyIntField:%s MyStringField:%s MyDataField:%s MyEnum:%s})", myIntFieldVal, myStringFieldVal, myDataFieldVal, myEnumVal)
+  onewayVal := fmt.Sprintf("%v", p.Oneway)
+  readonlyVal := fmt.Sprintf("%v", p.Readonly)
+  idempotentVal := fmt.Sprintf("%v", p.Idempotent)
+  return fmt.Sprintf("MyStruct({MyIntField:%s MyStringField:%s MyDataField:%s MyEnum:%s Oneway:%s Readonly:%s Idempotent:%s})", myIntFieldVal, myStringFieldVal, myDataFieldVal, myEnumVal, onewayVal, readonlyVal, idempotentVal)
 }
 
 type MyDataItem struct {
@@ -249,6 +446,21 @@ type MyDataItem struct {
 
 func NewMyDataItem() *MyDataItem {
   return &MyDataItem{}
+}
+
+type MyDataItemBuilder struct {
+  obj *MyDataItem
+}
+
+func NewMyDataItemBuilder() *MyDataItemBuilder{
+  return &MyDataItemBuilder{
+    obj: NewMyDataItem(),
+  }
+}
+
+func (p MyDataItemBuilder) Emit() *MyDataItem{
+  return &MyDataItem{
+  }
 }
 
 func (p *MyDataItem) Read(iprot thrift.Protocol) error {
@@ -299,9 +511,9 @@ func (p *MyDataItem) String() string {
 //  - MyStruct
 //  - MyDataItem
 type MyUnion struct {
-  MyEnum *MyEnum `thrift:"myEnum,1" db:"myEnum" json:"myEnum,omitempty"`
-  MyStruct *MyStruct `thrift:"myStruct,2" db:"myStruct" json:"myStruct,omitempty"`
-  MyDataItem *MyDataItem `thrift:"myDataItem,3" db:"myDataItem" json:"myDataItem,omitempty"`
+  MyEnum *MyEnum `thrift:"myEnum,1,optional" db:"myEnum" json:"myEnum,omitempty"`
+  MyStruct *MyStruct `thrift:"myStruct,2,optional" db:"myStruct" json:"myStruct,omitempty"`
+  MyDataItem *MyDataItem `thrift:"myDataItem,3,optional" db:"myDataItem" json:"myDataItem,omitempty"`
 }
 
 func NewMyUnion() *MyUnion {
@@ -356,6 +568,54 @@ func (p *MyUnion) IsSetMyDataItem() bool {
   return p != nil && p.MyDataItem != nil
 }
 
+type MyUnionBuilder struct {
+  obj *MyUnion
+}
+
+func NewMyUnionBuilder() *MyUnionBuilder{
+  return &MyUnionBuilder{
+    obj: NewMyUnion(),
+  }
+}
+
+func (p MyUnionBuilder) Emit() *MyUnion{
+  return &MyUnion{
+    MyEnum: p.obj.MyEnum,
+    MyStruct: p.obj.MyStruct,
+    MyDataItem: p.obj.MyDataItem,
+  }
+}
+
+func (m *MyUnionBuilder) MyEnum(myEnum *MyEnum) *MyUnionBuilder {
+  m.obj.MyEnum = myEnum
+  return m
+}
+
+func (m *MyUnionBuilder) MyStruct(myStruct *MyStruct) *MyUnionBuilder {
+  m.obj.MyStruct = myStruct
+  return m
+}
+
+func (m *MyUnionBuilder) MyDataItem(myDataItem *MyDataItem) *MyUnionBuilder {
+  m.obj.MyDataItem = myDataItem
+  return m
+}
+
+func (m *MyUnion) SetMyEnum(myEnum *MyEnum) *MyUnion {
+  m.MyEnum = myEnum
+  return m
+}
+
+func (m *MyUnion) SetMyStruct(myStruct *MyStruct) *MyUnion {
+  m.MyStruct = myStruct
+  return m
+}
+
+func (m *MyUnion) SetMyDataItem(myDataItem *MyDataItem) *MyUnion {
+  m.MyDataItem = myDataItem
+  return m
+}
+
 func (p *MyUnion) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -398,11 +658,11 @@ func (p *MyUnion) Read(iprot thrift.Protocol) error {
 
 func (p *MyUnion)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  temp := MyEnum(v)
-  p.MyEnum = &temp
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := MyEnum(v)
+    p.MyEnum = &temp
+  }
   return nil
 }
 

@@ -292,5 +292,18 @@ TEST(fatal_union, by_field_id) {
   EXPECT_EQ(10, member_info::get(u));
 }
 
+TEST(fatal_struct, renamed_field) {
+  using emeta = fatal::enum_traits<union_with_renamed_field::Type>;
+  using vmeta = emeta::member::boring_cxx_name;
+  auto vname = fatal::to_instance<std::string, vmeta::name>();
+  EXPECT_EQ("fancy.idl.name", vname);
+
+  using umeta = apache::thrift::reflect_variant<union_with_renamed_field>;
+  using fmeta =
+      umeta::by_type_id<union_with_renamed_field::Type::boring_cxx_name>;
+  auto fname = fatal::to_instance<std::string, fmeta::metadata::name>();
+  EXPECT_EQ("fancy.idl.name", fname);
+}
+
 } // namespace cpp_reflection
 } // namespace test_cpp2

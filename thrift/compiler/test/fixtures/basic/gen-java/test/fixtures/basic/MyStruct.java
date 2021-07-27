@@ -30,6 +30,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
   private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("MyStringField", TType.STRING, (short)2);
   private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("MyDataField", TType.STRUCT, (short)3);
   private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)4);
+  private static final TField ONEWAY_FIELD_DESC = new TField("oneway", TType.BOOL, (short)5);
+  private static final TField READONLY_FIELD_DESC = new TField("readonly", TType.BOOL, (short)6);
+  private static final TField IDEMPOTENT_FIELD_DESC = new TField("idempotent", TType.BOOL, (short)7);
 
   public long MyIntField;
   public String MyStringField;
@@ -39,14 +42,23 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
    * @see MyEnum
    */
   public MyEnum myEnum;
+  public boolean oneway;
+  public boolean readonly;
+  public boolean idempotent;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
   public static final int MYENUM = 4;
+  public static final int ONEWAY = 5;
+  public static final int READONLY = 6;
+  public static final int IDEMPOTENT = 7;
 
   // isset id assignments
   private static final int __MYINTFIELD_ISSET_ID = 0;
-  private BitSet __isset_bit_vector = new BitSet(1);
+  private static final int __ONEWAY_ISSET_ID = 1;
+  private static final int __READONLY_ISSET_ID = 2;
+  private static final int __IDEMPOTENT_ISSET_ID = 3;
+  private BitSet __isset_bit_vector = new BitSet(4);
 
   public static final Map<Integer, FieldMetaData> metaDataMap;
 
@@ -60,6 +72,12 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         new StructMetaData(TType.STRUCT, MyDataItem.class)));
     tmpMetaDataMap.put(MYENUM, new FieldMetaData("myEnum", TFieldRequirementType.DEFAULT, 
         new FieldValueMetaData(TType.I32)));
+    tmpMetaDataMap.put(ONEWAY, new FieldMetaData("oneway", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
+    tmpMetaDataMap.put(READONLY, new FieldMetaData("readonly", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
+    tmpMetaDataMap.put(IDEMPOTENT, new FieldMetaData("idempotent", TFieldRequirementType.DEFAULT, 
+        new FieldValueMetaData(TType.BOOL)));
     metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
   }
 
@@ -74,13 +92,22 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       long MyIntField,
       String MyStringField,
       MyDataItem MyDataField,
-      MyEnum myEnum) {
+      MyEnum myEnum,
+      boolean oneway,
+      boolean readonly,
+      boolean idempotent) {
     this();
     this.MyIntField = MyIntField;
     setMyIntFieldIsSet(true);
     this.MyStringField = MyStringField;
     this.MyDataField = MyDataField;
     this.myEnum = myEnum;
+    this.oneway = oneway;
+    setOnewayIsSet(true);
+    this.readonly = readonly;
+    setReadonlyIsSet(true);
+    this.idempotent = idempotent;
+    setIdempotentIsSet(true);
   }
 
   public static class Builder {
@@ -88,8 +115,11 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     private String MyStringField;
     private MyDataItem MyDataField;
     private MyEnum myEnum;
+    private boolean oneway;
+    private boolean readonly;
+    private boolean idempotent;
 
-    BitSet __optional_isset = new BitSet(1);
+    BitSet __optional_isset = new BitSet(4);
 
     public Builder() {
     }
@@ -115,6 +145,24 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return this;
     }
 
+    public Builder setOneway(final boolean oneway) {
+      this.oneway = oneway;
+      __optional_isset.set(__ONEWAY_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setReadonly(final boolean readonly) {
+      this.readonly = readonly;
+      __optional_isset.set(__READONLY_ISSET_ID, true);
+      return this;
+    }
+
+    public Builder setIdempotent(final boolean idempotent) {
+      this.idempotent = idempotent;
+      __optional_isset.set(__IDEMPOTENT_ISSET_ID, true);
+      return this;
+    }
+
     public MyStruct build() {
       MyStruct result = new MyStruct();
       if (__optional_isset.get(__MYINTFIELD_ISSET_ID)) {
@@ -123,6 +171,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       result.setMyStringField(this.MyStringField);
       result.setMyDataField(this.MyDataField);
       result.setMyEnum(this.myEnum);
+      if (__optional_isset.get(__ONEWAY_ISSET_ID)) {
+        result.setOneway(this.oneway);
+      }
+      if (__optional_isset.get(__READONLY_ISSET_ID)) {
+        result.setReadonly(this.readonly);
+      }
+      if (__optional_isset.get(__IDEMPOTENT_ISSET_ID)) {
+        result.setIdempotent(this.idempotent);
+      }
       return result;
     }
   }
@@ -147,6 +204,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     if (other.isSetMyEnum()) {
       this.myEnum = TBaseHelper.deepCopy(other.myEnum);
     }
+    this.oneway = TBaseHelper.deepCopy(other.oneway);
+    this.readonly = TBaseHelper.deepCopy(other.readonly);
+    this.idempotent = TBaseHelper.deepCopy(other.idempotent);
   }
 
   public MyStruct deepCopy() {
@@ -256,6 +316,75 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
     }
   }
 
+  public boolean isOneway() {
+    return this.oneway;
+  }
+
+  public MyStruct setOneway(boolean oneway) {
+    this.oneway = oneway;
+    setOnewayIsSet(true);
+    return this;
+  }
+
+  public void unsetOneway() {
+    __isset_bit_vector.clear(__ONEWAY_ISSET_ID);
+  }
+
+  // Returns true if field oneway is set (has been assigned a value) and false otherwise
+  public boolean isSetOneway() {
+    return __isset_bit_vector.get(__ONEWAY_ISSET_ID);
+  }
+
+  public void setOnewayIsSet(boolean __value) {
+    __isset_bit_vector.set(__ONEWAY_ISSET_ID, __value);
+  }
+
+  public boolean isReadonly() {
+    return this.readonly;
+  }
+
+  public MyStruct setReadonly(boolean readonly) {
+    this.readonly = readonly;
+    setReadonlyIsSet(true);
+    return this;
+  }
+
+  public void unsetReadonly() {
+    __isset_bit_vector.clear(__READONLY_ISSET_ID);
+  }
+
+  // Returns true if field readonly is set (has been assigned a value) and false otherwise
+  public boolean isSetReadonly() {
+    return __isset_bit_vector.get(__READONLY_ISSET_ID);
+  }
+
+  public void setReadonlyIsSet(boolean __value) {
+    __isset_bit_vector.set(__READONLY_ISSET_ID, __value);
+  }
+
+  public boolean isIdempotent() {
+    return this.idempotent;
+  }
+
+  public MyStruct setIdempotent(boolean idempotent) {
+    this.idempotent = idempotent;
+    setIdempotentIsSet(true);
+    return this;
+  }
+
+  public void unsetIdempotent() {
+    __isset_bit_vector.clear(__IDEMPOTENT_ISSET_ID);
+  }
+
+  // Returns true if field idempotent is set (has been assigned a value) and false otherwise
+  public boolean isSetIdempotent() {
+    return __isset_bit_vector.get(__IDEMPOTENT_ISSET_ID);
+  }
+
+  public void setIdempotentIsSet(boolean __value) {
+    __isset_bit_vector.set(__IDEMPOTENT_ISSET_ID, __value);
+  }
+
   public void setFieldValue(int fieldID, Object __value) {
     switch (fieldID) {
     case MYINTFIELD:
@@ -290,6 +419,30 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       }
       break;
 
+    case ONEWAY:
+      if (__value == null) {
+        unsetOneway();
+      } else {
+        setOneway((Boolean)__value);
+      }
+      break;
+
+    case READONLY:
+      if (__value == null) {
+        unsetReadonly();
+      } else {
+        setReadonly((Boolean)__value);
+      }
+      break;
+
+    case IDEMPOTENT:
+      if (__value == null) {
+        unsetIdempotent();
+      } else {
+        setIdempotent((Boolean)__value);
+      }
+      break;
+
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
     }
@@ -308,6 +461,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     case MYENUM:
       return getMyEnum();
+
+    case ONEWAY:
+      return new Boolean(isOneway());
+
+    case READONLY:
+      return new Boolean(isReadonly());
+
+    case IDEMPOTENT:
+      return new Boolean(isIdempotent());
 
     default:
       throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -332,12 +494,18 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
 
     if (!TBaseHelper.equalsNobinary(this.isSetMyEnum(), that.isSetMyEnum(), this.myEnum, that.myEnum)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.oneway, that.oneway)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.readonly, that.readonly)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.idempotent, that.idempotent)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum});
+    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, oneway, readonly, idempotent});
   }
 
   @Override
@@ -381,6 +549,30 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       return lastComparison;
     }
     lastComparison = TBaseHelper.compareTo(myEnum, other.myEnum);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetOneway()).compareTo(other.isSetOneway());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(oneway, other.oneway);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetReadonly()).compareTo(other.isSetReadonly());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(readonly, other.readonly);
+    if (lastComparison != 0) { 
+      return lastComparison;
+    }
+    lastComparison = Boolean.valueOf(isSetIdempotent()).compareTo(other.isSetIdempotent());
+    if (lastComparison != 0) {
+      return lastComparison;
+    }
+    lastComparison = TBaseHelper.compareTo(idempotent, other.idempotent);
     if (lastComparison != 0) { 
       return lastComparison;
     }
@@ -428,6 +620,30 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case ONEWAY:
+          if (__field.type == TType.BOOL) {
+            this.oneway = iprot.readBool();
+            setOnewayIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case READONLY:
+          if (__field.type == TType.BOOL) {
+            this.readonly = iprot.readBool();
+            setReadonlyIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case IDEMPOTENT:
+          if (__field.type == TType.BOOL) {
+            this.idempotent = iprot.readBool();
+            setIdempotentIsSet(true);
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -463,6 +679,15 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
       oprot.writeI32(this.myEnum == null ? 0 : this.myEnum.getValue());
       oprot.writeFieldEnd();
     }
+    oprot.writeFieldBegin(ONEWAY_FIELD_DESC);
+    oprot.writeBool(this.oneway);
+    oprot.writeFieldEnd();
+    oprot.writeFieldBegin(READONLY_FIELD_DESC);
+    oprot.writeBool(this.readonly);
+    oprot.writeFieldEnd();
+    oprot.writeFieldBegin(IDEMPOTENT_FIELD_DESC);
+    oprot.writeBool(this.idempotent);
+    oprot.writeFieldEnd();
     oprot.writeFieldStop();
     oprot.writeStructEnd();
   }
@@ -529,6 +754,27 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable, Compara
         sb.append(")");
       }
     }
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("oneway");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this.isOneway(), indent + 1, prettyPrint));
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("readonly");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this.isReadonly(), indent + 1, prettyPrint));
+    first = false;
+    if (!first) sb.append("," + newLine);
+    sb.append(indentStr);
+    sb.append("idempotent");
+    sb.append(space);
+    sb.append(":").append(space);
+    sb.append(TBaseHelper.toString(this.isIdempotent(), indent + 1, prettyPrint));
     first = false;
     sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
     sb.append(")");

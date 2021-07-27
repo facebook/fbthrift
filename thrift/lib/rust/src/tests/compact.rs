@@ -20,8 +20,7 @@ use super::{
 use crate::thrift_protocol::MessageType;
 use crate::ttype::TType;
 use crate::{CompactProtocol, Protocol, ProtocolReader, ProtocolWriter};
-use bytes::buf::BufExt;
-use bytes::Bytes;
+use bytes::{Buf, Bytes};
 use std::{convert::TryFrom, io::Cursor, u8};
 
 #[test]
@@ -499,12 +498,12 @@ fn read_binary_from_chained_buffer() {
 
     let mut deserializer = CompactProtocolDeserializer::new(joined);
 
-    let result = deserializer
+    let result: Vec<u8> = deserializer
         .read_binary()
         .expect("read \"hello\" from the buffer");
     assert_eq!(result.as_slice(), b"hello");
 
-    let result = deserializer
+    let result: Vec<u8> = deserializer
         .read_binary()
         .expect("read \" world\" from the buffer");
     assert_eq!(result.as_slice(), b" world");

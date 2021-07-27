@@ -13,6 +13,7 @@
 #include <thrift/lib/py3/enums.h>
 #include "src/gen-cpp2/module_data.h"
 #include "src/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_metadata.h"
 namespace thrift {
 namespace py3 {
 
@@ -83,6 +84,9 @@ void reset_field<::cpp2::Internship>(
       return;
     case 2:
       obj.employer_ref().copy_from(default_inst<::cpp2::Internship>().employer_ref());
+      return;
+    case 3:
+      obj.compensation_ref().copy_from(default_inst<::cpp2::Internship>().compensation_ref());
       return;
   }
 }

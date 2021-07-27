@@ -25,19 +25,27 @@ namespace cpp_reflection {
 
 TEST(reflection_deps, recursive_dependencies) {
   using namespace apache::thrift;
-  EXPECT_SAME<type_class::structure, reflect_type_class<dep_A_struct>>();
+  EXPECT_SAME<
+      type_class::structure,
+      reflect_type_class_of_thrift_class<dep_A_struct>>();
 
-  using b_type = typename std::decay<decltype(
-      std::declval<dep_A_struct>().b_ref())::value_type>::type;
-  EXPECT_SAME<type_class::structure, reflect_type_class<b_type>>();
+  using b_type = typename std::decay<
+      decltype(std::declval<dep_A_struct>().b_ref())::value_type>::type;
+  EXPECT_SAME<
+      type_class::structure,
+      reflect_type_class_of_thrift_class<b_type>>();
 
-  using c_type = typename std::decay<decltype(
-      std::declval<dep_A_struct>().c_ref())::value_type>::type;
-  EXPECT_SAME<type_class::structure, reflect_type_class<c_type>>();
+  using c_type = typename std::decay<
+      decltype(std::declval<dep_A_struct>().c_ref())::value_type>::type;
+  EXPECT_SAME<
+      type_class::structure,
+      reflect_type_class_of_thrift_class<c_type>>();
 
-  using d_type = typename std::decay<decltype(
-      std::declval<c_type>().d_ref())::value_type>::type;
-  EXPECT_SAME<type_class::structure, reflect_type_class<d_type>>();
+  using d_type = typename std::decay<
+      decltype(std::declval<c_type>().d_ref())::value_type>::type;
+  EXPECT_SAME<
+      type_class::structure,
+      reflect_type_class_of_thrift_class<d_type>>();
 }
 
 } // namespace cpp_reflection

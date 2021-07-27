@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from typing import AsyncIterator
 from cpython.version cimport PY_VERSION_HEX
 from libc.stdint cimport (
     int8_t as cint8_t,
@@ -21,6 +22,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.utility cimport move as cmove
+from libcpp.pair cimport pair
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport (
@@ -33,7 +35,13 @@ from folly cimport (
   cFollyPromise,
   cFollyUnit,
   c_unit,
-
+)
+from thrift.py3.common cimport (
+    cThriftServiceContext as __fbthrift_cThriftServiceContext,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    ServiceMetadata,
+    extractMetadataFromServiceContext,
+    MetadataBox as __MetadataBox,
 )
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -41,8 +49,8 @@ if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
 
 cimport folly.futures
 from folly.executor cimport get_executor
-cimport folly.iobuf as __iobuf
-import folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
@@ -61,15 +69,6 @@ from module.services_wrapper cimport cMyServiceInterface
 from module.services_wrapper cimport cDbMixedStackArgumentsInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move_promise_binary "std::move"(
-        cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
-        cFollyPromise[cbool])
-    cdef cFollyPromise[unique_ptr[string]] move_promise_string "std::move"(
-        cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
-        cFollyPromise[cFollyUnit])
 
 @cython.auto_pickle(False)
 cdef class Promise_binary:
@@ -77,8 +76,8 @@ cdef class Promise_binary:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
-        inst.cPromise = move_promise_binary(cPromise)
+        cdef Promise_binary inst = Promise_binary.__new__(Promise_binary)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -87,8 +86,8 @@ cdef class Promise_cbool:
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
-        inst.cPromise = move_promise_cbool(cPromise)
+        cdef Promise_cbool inst = Promise_cbool.__new__(Promise_cbool)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -97,8 +96,8 @@ cdef class Promise_string:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_string>Promise_string.__new__(Promise_string)
-        inst.cPromise = move_promise_string(cPromise)
+        cdef Promise_string inst = Promise_string.__new__(Promise_string)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -107,8 +106,8 @@ cdef class Promise_cFollyUnit:
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = move_promise_cFollyUnit(cPromise)
+        cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({
@@ -144,6 +143,25 @@ cdef class MyServiceInterface(
         raise NotImplementedError("async def getRandomData is not implemented")
 
     @staticmethod
+    def pass_context_sink(fn):
+        return pass_context(fn)
+
+    async def sink(
+            self,
+            sink):
+        raise NotImplementedError("async def sink is not implemented")
+
+    @staticmethod
+    def pass_context_putDataById(fn):
+        return pass_context(fn)
+
+    async def putDataById(
+            self,
+            id,
+            data):
+        raise NotImplementedError("async def putDataById is not implemented")
+
+    @staticmethod
     def pass_context_hasDataById(fn):
         return pass_context(fn)
 
@@ -162,14 +180,13 @@ cdef class MyServiceInterface(
         raise NotImplementedError("async def getDataById is not implemented")
 
     @staticmethod
-    def pass_context_putDataById(fn):
+    def pass_context_deleteDataById(fn):
         return pass_context(fn)
 
-    async def putDataById(
+    async def deleteDataById(
             self,
-            id,
-            data):
-        raise NotImplementedError("async def putDataById is not implemented")
+            id):
+        raise NotImplementedError("async def deleteDataById is not implemented")
 
     @staticmethod
     def pass_context_lobDataById(fn):
@@ -184,6 +201,18 @@ cdef class MyServiceInterface(
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__MyService(for_clients=False)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cMyServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyService"
 
 cdef object _DbMixedStackArguments_annotations = _py_types.MappingProxyType({
 })
@@ -223,6 +252,18 @@ cdef class DbMixedStackArgumentsInterface(
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__DbMixedStackArguments(for_clients=False)
 
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cDbMixedStackArgumentsSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.DbMixedStackArguments"
+
 
 
 cdef api void call_cy_MyService_ping(
@@ -230,7 +271,7 @@ cdef api void call_cy_MyService_ping(
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -276,7 +317,7 @@ cdef api void call_cy_MyService_getRandomData(
     Cpp2RequestContext* ctx,
     cFollyPromise[unique_ptr[string]] cPromise
 ):
-    __promise = Promise_string.create(move_promise_string(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
@@ -317,13 +358,123 @@ async def MyService_getRandomData_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
+cdef api void call_cy_MyService_sink(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    cint64_t sink
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    arg_sink = sink
+    __context = RequestContext.create(ctx)
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
+    asyncio.get_event_loop().create_task(
+        MyService_sink_coro(
+            self,
+            __context,
+            __promise,
+            arg_sink
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def MyService_sink_coro(
+    object self,
+    object ctx,
+    Promise_cFollyUnit promise,
+    sink
+):
+    try:
+        if ctx and getattr(self.sink, "pass_context", False):
+            result = await self.sink(ctx,
+                      sink)
+        else:
+            result = await self.sink(
+                      sink)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler sink:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
+cdef api void call_cy_MyService_putDataById(
+    object self,
+    Cpp2RequestContext* ctx,
+    cFollyPromise[cFollyUnit] cPromise,
+    cint64_t id,
+    unique_ptr[string] data
+):
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
+    arg_id = id
+    arg_data = (deref(data)).data().decode('UTF-8')
+    __context = RequestContext.create(ctx)
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
+        __context = None
+    asyncio.get_event_loop().create_task(
+        MyService_putDataById_coro(
+            self,
+            __context,
+            __promise,
+            arg_id,
+            arg_data
+        )
+    )
+    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
+        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+
+async def MyService_putDataById_coro(
+    object self,
+    object ctx,
+    Promise_cFollyUnit promise,
+    id,
+    data
+):
+    try:
+        if ctx and getattr(self.putDataById, "pass_context", False):
+            result = await self.putDataById(ctx,
+                      id,
+                      data)
+        else:
+            result = await self.putDataById(
+                      id,
+                      data)
+    except __ApplicationError as ex:
+        # If the handler raised an ApplicationError convert it to a C++ one
+        promise.cPromise.setException(cTApplicationException(
+            ex.type.value, ex.message.encode('UTF-8')
+        ))
+    except Exception as ex:
+        print(
+            "Unexpected error in service handler putDataById:",
+            file=sys.stderr)
+        traceback.print_exc()
+        promise.cPromise.setException(cTApplicationException(
+            cTApplicationExceptionType__UNKNOWN, repr(ex).encode('UTF-8')
+        ))
+    else:
+        promise.cPromise.setValue(c_unit)
+
 cdef api void call_cy_MyService_hasDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
+    cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -375,7 +526,7 @@ cdef api void call_cy_MyService_getDataById(
     cFollyPromise[unique_ptr[string]] cPromise,
     cint64_t id
 ):
-    __promise = Promise_string.create(move_promise_string(cPromise))
+    cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -421,48 +572,42 @@ async def MyService_getDataById_coro(
     else:
         promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
-cdef api void call_cy_MyService_putDataById(
+cdef api void call_cy_MyService_deleteDataById(
     object self,
     Cpp2RequestContext* ctx,
     cFollyPromise[cFollyUnit] cPromise,
-    cint64_t id,
-    unique_ptr[string] data
+    cint64_t id
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_id = id
-    arg_data = (deref(data)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
         __context = None
     asyncio.get_event_loop().create_task(
-        MyService_putDataById_coro(
+        MyService_deleteDataById_coro(
             self,
             __context,
             __promise,
-            arg_id,
-            arg_data
+            arg_id
         )
     )
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
         __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
-async def MyService_putDataById_coro(
+async def MyService_deleteDataById_coro(
     object self,
     object ctx,
     Promise_cFollyUnit promise,
-    id,
-    data
+    id
 ):
     try:
-        if ctx and getattr(self.putDataById, "pass_context", False):
-            result = await self.putDataById(ctx,
-                      id,
-                      data)
+        if ctx and getattr(self.deleteDataById, "pass_context", False):
+            result = await self.deleteDataById(ctx,
+                      id)
         else:
-            result = await self.putDataById(
-                      id,
-                      data)
+            result = await self.deleteDataById(
+                      id)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -470,7 +615,7 @@ async def MyService_putDataById_coro(
         ))
     except Exception as ex:
         print(
-            "Unexpected error in service handler putDataById:",
+            "Unexpected error in service handler deleteDataById:",
             file=sys.stderr)
         traceback.print_exc()
         promise.cPromise.setException(cTApplicationException(
@@ -486,7 +631,7 @@ cdef api void call_cy_MyService_lobDataById(
     cint64_t id,
     unique_ptr[string] data
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = (deref(data)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -543,7 +688,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] key
 ):
-    __promise = Promise_binary.create(move_promise_binary(cPromise))
+    cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
     arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -595,7 +740,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] key
 ):
-    __promise = Promise_binary.create(move_promise_binary(cPromise))
+    cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
     arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final

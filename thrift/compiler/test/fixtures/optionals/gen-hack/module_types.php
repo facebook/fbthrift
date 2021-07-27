@@ -16,6 +16,29 @@ enum Animal: int {
   TARANTULA = 3;
 }
 
+class Animal_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.Animal",
+        "elements" => dict[
+          1 => "DOG",
+          2 => "CAT",
+          3 => "TARANTULA",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift struct:-
  * Color
@@ -49,10 +72,10 @@ class Color implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'red' => float,
-    ?'green' => float,
-    ?'blue' => float,
-    ?'alpha' => float,
+    ?'red' => ?float,
+    ?'green' => ?float,
+    ?'blue' => ?float,
+    ?'alpha' => ?float,
   );
 
   const int STRUCTURAL_ID = 5495510740722957663;
@@ -77,21 +100,18 @@ class Color implements \IThriftStruct {
    */
   public float $alpha;
 
-  <<__Rx>>
-  public function __construct(?float $red = null, ?float $green = null, ?float $blue = null, ?float $alpha = null  ) {
+  public function __construct(?float $red = null, ?float $green = null, ?float $blue = null, ?float $alpha = null  )[] {
     $this->red = $red ?? 0.0;
     $this->green = $green ?? 0.0;
     $this->blue = $blue ?? 0.0;
     $this->alpha = $alpha ?? 0.0;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'red'),
       Shapes::idx($shape, 'green'),
@@ -100,37 +120,71 @@ class Color implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Color';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'red' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'green' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'blue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'alpha' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Color",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
+                )
+              ),
+              "name" => "red",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
+                )
+              ),
+              "name" => "green",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
+                )
+              ),
+              "name" => "blue",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
+                )
+              ),
+              "name" => "alpha",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -178,7 +232,7 @@ class Vehicle implements \IThriftStruct {
     ?'licensePlate' => ?string,
     ?'description' => ?string,
     ?'name' => ?string,
-    ?'hasAC' => bool,
+    ?'hasAC' => ?bool,
   );
 
   const int STRUCTURAL_ID = 2222890000100114781;
@@ -208,8 +262,7 @@ class Vehicle implements \IThriftStruct {
    */
   public bool $hasAC;
 
-  <<__Rx>>
-  public function __construct(?Color $color = null, ?string $licensePlate = null, ?string $description = null, ?string $name = null, ?bool $hasAC = null  ) {
+  public function __construct(?Color $color = null, ?string $licensePlate = null, ?string $description = null, ?string $name = null, ?bool $hasAC = null  )[] {
     $this->color = $color;
     $this->licensePlate = $licensePlate;
     $this->description = $description;
@@ -217,13 +270,11 @@ class Vehicle implements \IThriftStruct {
     $this->hasAC = $hasAC ?? false;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'color'),
       Shapes::idx($shape, 'licensePlate'),
@@ -233,41 +284,90 @@ class Vehicle implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Vehicle';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'color' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'licensePlate' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'description' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'hasAC' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Vehicle",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.Color",
+                    )
+                  ),
+                )
+              ),
+              "name" => "color",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "licensePlate",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "description",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "hasAC",
+              "is_optional" => true,
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -358,8 +458,8 @@ class Person implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'id' => int,
-    ?'name' => string,
+    ?'id' => ?int,
+    ?'name' => ?string,
     ?'age' => ?int,
     ?'address' => ?string,
     ?'favoriteColor' => ?Color,
@@ -422,8 +522,7 @@ class Person implements \IThriftStruct {
    */
   public ?Vector<Vehicle> $vehicles;
 
-  <<__Rx>>
-  public function __construct(?int $id = null, ?string $name = null, ?int $age = null, ?string $address = null, ?Color $favoriteColor = null, ?Set<int> $friends = null, ?int $bestFriend = null, ?Map<Animal, string> $petNames = null, ?Animal $afraidOfAnimal = null, ?Vector<Vehicle> $vehicles = null  ) {
+  public function __construct(?int $id = null, ?string $name = null, ?int $age = null, ?string $address = null, ?Color $favoriteColor = null, ?Set<int> $friends = null, ?int $bestFriend = null, ?Map<Animal, string> $petNames = null, ?Animal $afraidOfAnimal = null, ?Vector<Vehicle> $vehicles = null  )[] {
     $this->id = $id ?? 0;
     $this->name = $name ?? '';
     $this->age = $age;
@@ -436,13 +535,11 @@ class Person implements \IThriftStruct {
     $this->vehicles = $vehicles;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'id'),
       Shapes::idx($shape, 'name'),
@@ -457,61 +554,217 @@ class Person implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Person';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'id' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'age' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'address' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'favoriteColor' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'friends' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'bestFriend' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'petNames' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'afraidOfAnimal' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'vehicles' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Person",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.PersonID",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "id",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                )
+              ),
+              "name" => "age",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "address",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.Color",
+                    )
+                  ),
+                )
+              ),
+              "name" => "favoriteColor",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 6,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_set" => tmeta_ThriftSetType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                            shape(
+                              "name" => "module.PersonID",
+                              "underlyingType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "friends",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 7,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.PersonID",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "bestFriend",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 8,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_enum" => tmeta_ThriftEnumType::fromShape(
+                            shape(
+                              "name" => "module.Animal",
+                            )
+                          ),
+                        )
+                      ),
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "petNames",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 9,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.Animal",
+                    )
+                  ),
+                )
+              ),
+              "name" => "afraidOfAnimal",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 10,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.Vehicle",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "vehicles",
+              "is_optional" => true,
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }

@@ -35,18 +35,12 @@ class TBinaryACProtocolTraits {
 
   // Methods required by TUnframedACReadState
   bool getMessageLength(
-      uint8_t* buffer,
-      uint32_t bufferLength,
-      uint32_t* messageLength);
+      uint8_t* buffer, uint32_t bufferLength, uint32_t* messageLength);
 
   // Methods specific to TBinaryAsyncChannel
 
-  void setStrictRead(bool strictRead) {
-    strictRead_ = strictRead;
-  }
-  bool getStrictRead() const {
-    return strictRead_;
-  }
+  void setStrictRead(bool strictRead) { strictRead_ = strictRead; }
+  bool getStrictRead() const { return strictRead_; }
 
  private:
   bool strictRead_;
@@ -126,21 +120,13 @@ class TBinaryAsyncChannelFactory : public TStreamAsyncChannelFactory {
         sendTimeout_(0),
         strictRead_(true) {}
 
-  void setMaxMessageSize(uint32_t bytes) {
-    maxMessageSize_ = bytes;
-  }
+  void setMaxMessageSize(uint32_t bytes) { maxMessageSize_ = bytes; }
 
-  void setRecvTimeout(uint32_t milliseconds) {
-    recvTimeout_ = milliseconds;
-  }
+  void setRecvTimeout(uint32_t milliseconds) { recvTimeout_ = milliseconds; }
 
-  void setSendTimeout(uint32_t milliseconds) {
-    sendTimeout_ = milliseconds;
-  }
+  void setSendTimeout(uint32_t milliseconds) { sendTimeout_ = milliseconds; }
 
-  void setStrictRead(bool strict) {
-    strictRead_ = strict;
-  }
+  void setStrictRead(bool strict) { strictRead_ = strict; }
 
   std::shared_ptr<TAsyncEventChannel> newChannel(
       const std::shared_ptr<folly::AsyncTransport>& transport) override {

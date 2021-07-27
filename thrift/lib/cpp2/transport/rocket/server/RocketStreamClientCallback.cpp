@@ -48,9 +48,7 @@ class TimeoutCallback : public folly::HHWheelTimer::Callback {
  public:
   explicit TimeoutCallback(RocketStreamClientCallback& parent)
       : parent_(parent) {}
-  void timeoutExpired() noexcept override {
-    parent_.timeoutExpired();
-  }
+  void timeoutExpired() noexcept override { parent_.timeoutExpired(); }
 
  private:
   RocketStreamClientCallback& parent_;
@@ -74,6 +72,9 @@ bool RocketStreamClientCallback::onFirstResponse(
   }
 
   serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(serverCallback);
+  if (UNLIKELY(connection_.areStreamsPaused())) {
+    pauseStream();
+  }
 
   DCHECK_NE(tokens_, 0u);
   int tokens = 0;
@@ -82,6 +83,8 @@ bool RocketStreamClientCallback::onFirstResponse(
   } else {
     scheduleTimeout();
   }
+
+  firstResponse.metadata.streamId_ref() = static_cast<uint32_t>(streamId_);
 
   connection_.sendPayload(
       streamId_, pack(std::move(firstResponse)), Flags::none().next(true));
@@ -128,6 +131,7 @@ bool RocketStreamClientCallback::onStreamNext(StreamPayload&& payload) {
 
   connection_.sendPayload(
       streamId_, pack(std::move(payload)), Flags::none().next(true));
+
   return true;
 }
 
@@ -152,6 +156,27 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
             RocketException(
                 ErrorCode::APPLICATION_ERROR, std::move(err.encoded)));
       },
+      [this](::apache::thrift::detail::EncodedStreamError& err) {
+        if (connection_.getVersion() >= 8) {
+          // apply compression if client has specified compression codec
+          if (compressionConfig_) {
+            apache::thrift::rocket::detail::setCompressionCodec(
+                *compressionConfig_,
+                err.encoded.metadata,
+                err.encoded.payload->computeChainDataLength());
+          }
+          connection_.sendPayload(
+              streamId_,
+              pack(std::move(err.encoded)),
+              Flags::none().next(true).complete(true));
+        } else {
+          connection_.sendError(
+              streamId_,
+              RocketException(
+                  ErrorCode::APPLICATION_ERROR,
+                  std::move(err.encoded.payload)));
+        }
+      },
       [this, &ew](...) {
         connection_.sendError(
             streamId_,
@@ -161,17 +186,29 @@ void RocketStreamClientCallback::onStreamError(folly::exception_wrapper ew) {
 }
 
 bool RocketStreamClientCallback::onStreamHeaders(HeadersPayload&& payload) {
-  connection_.sendExt(
-      streamId_,
-      pack(payload),
-      Flags::none().ignore(true),
-      ExtFrameType::HEADERS_PUSH);
+  if (connection_.getVersion() >= 7) {
+    ServerPushMetadata serverMeta;
+    serverMeta.streamHeadersPush_ref().ensure().streamId_ref() =
+        static_cast<uint32_t>(streamId_);
+    serverMeta.streamHeadersPush_ref()->headersPayloadContent_ref() =
+        std::move(payload.payload);
+    connection_.sendMetadataPush(packCompact(std::move(serverMeta)));
+  } else {
+    connection_.sendExt(
+        streamId_,
+        pack(payload),
+        Flags::none().ignore(true),
+        ExtFrameType::HEADERS_PUSH);
+  }
   return true;
 }
 
 void RocketStreamClientCallback::resetServerCallback(
     StreamServerCallback& serverCallback) {
   serverCallbackOrCancelled_ = reinterpret_cast<intptr_t>(&serverCallback);
+  if (UNLIKELY(connection_.areStreamsPaused())) {
+    pauseStream();
+  }
 }
 
 bool RocketStreamClientCallback::request(uint32_t tokens) {
@@ -188,6 +225,22 @@ void RocketStreamClientCallback::headers(HeadersPayload&& payload) {
   std::ignore = serverCallback()->onSinkHeaders(std::move(payload));
 }
 
+void RocketStreamClientCallback::pauseStream() {
+  DCHECK(connection_.areStreamsPaused());
+  if (UNLIKELY(!serverCallbackReady())) {
+    return;
+  }
+  serverCallback()->pauseStream();
+}
+
+void RocketStreamClientCallback::resumeStream() {
+  DCHECK(!connection_.areStreamsPaused());
+  if (UNLIKELY(!serverCallbackReady())) {
+    return;
+  }
+  serverCallback()->resumeStream();
+}
+
 void RocketStreamClientCallback::onStreamCancel() {
   serverCallback()->onStreamCancel();
 }
@@ -196,13 +249,25 @@ void RocketStreamClientCallback::timeoutExpired() noexcept {
   DCHECK_EQ(0u, tokens_);
 
   serverCallback()->onStreamCancel();
-  onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
-      rocket::ErrorCode::APPLICATION_ERROR,
-      serializeErrorStruct(
-          protoId_,
-          TApplicationException(
-              TApplicationException::TApplicationExceptionType::TIMEOUT,
-              "Stream expire timeout(no credit from client)"))));
+  if (connection_.getVersion() >= 8) {
+    StreamRpcError streamRpcError;
+    streamRpcError.code_ref() = StreamRpcErrorCode::CREDIT_TIMEOUT;
+    streamRpcError.name_utf8_ref() =
+        apache::thrift::TEnumTraits<StreamRpcErrorCode>::findName(
+            StreamRpcErrorCode::CREDIT_TIMEOUT);
+    streamRpcError.what_utf8_ref() =
+        "Stream expire timeout(no credit from client)";
+    onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
+        rocket::ErrorCode::CANCELED, packCompact(streamRpcError)));
+  } else {
+    onStreamError(folly::make_exception_wrapper<rocket::RocketException>(
+        rocket::ErrorCode::APPLICATION_ERROR,
+        serializeErrorStruct(
+            protoId_,
+            TApplicationException(
+                TApplicationException::TApplicationExceptionType::TIMEOUT,
+                "Stream expire timeout(no credit from client)"))));
+  }
 }
 
 void RocketStreamClientCallback::setProtoId(protocol::PROTOCOL_TYPES protoId) {

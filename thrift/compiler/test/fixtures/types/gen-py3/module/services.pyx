@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from typing import AsyncIterator
 from cpython.version cimport PY_VERSION_HEX
 from libc.stdint cimport (
     int8_t as cint8_t,
@@ -21,6 +22,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.utility cimport move as cmove
+from libcpp.pair cimport pair
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport (
@@ -33,7 +35,13 @@ from folly cimport (
   cFollyPromise,
   cFollyUnit,
   c_unit,
-
+)
+from thrift.py3.common cimport (
+    cThriftServiceContext as __fbthrift_cThriftServiceContext,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    ServiceMetadata,
+    extractMetadataFromServiceContext,
+    MetadataBox as __MetadataBox,
 )
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -41,8 +49,8 @@ if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
 
 cimport folly.futures
 from folly.executor cimport get_executor
-cimport folly.iobuf as __iobuf
-import folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
@@ -62,11 +70,6 @@ import types as _py_types
 from module.services_wrapper cimport cSomeServiceInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[cmap[string,cint64_t]]] move_promise_cmap__binary_cint64_t "std::move"(
-        cFollyPromise[unique_ptr[cmap[string,cint64_t]]])
-    cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] move_promise__module_types_std_unordered_map__cint32_t_string "std::move"(
-        cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]])
 
 @cython.auto_pickle(False)
 cdef class Promise_cmap__binary_cint64_t:
@@ -74,8 +77,8 @@ cdef class Promise_cmap__binary_cint64_t:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise):
-        inst = <Promise_cmap__binary_cint64_t>Promise_cmap__binary_cint64_t.__new__(Promise_cmap__binary_cint64_t)
-        inst.cPromise = move_promise_cmap__binary_cint64_t(cPromise)
+        cdef Promise_cmap__binary_cint64_t inst = Promise_cmap__binary_cint64_t.__new__(Promise_cmap__binary_cint64_t)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
@@ -84,8 +87,8 @@ cdef class Promise__module_types_std_unordered_map__cint32_t_string:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] cPromise):
-        inst = <Promise__module_types_std_unordered_map__cint32_t_string>Promise__module_types_std_unordered_map__cint32_t_string.__new__(Promise__module_types_std_unordered_map__cint32_t_string)
-        inst.cPromise = move_promise__module_types_std_unordered_map__cint32_t_string(cPromise)
+        cdef Promise__module_types_std_unordered_map__cint32_t_string inst = Promise__module_types_std_unordered_map__cint32_t_string.__new__(Promise__module_types_std_unordered_map__cint32_t_string)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _SomeService_annotations = _py_types.MappingProxyType({
@@ -126,6 +129,18 @@ cdef class SomeServiceInterface(
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__SomeService(for_clients=False)
 
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cSomeServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.SomeService"
+
 
 
 cdef api void call_cy_SomeService_bounce_map(
@@ -134,7 +149,7 @@ cdef api void call_cy_SomeService_bounce_map(
     cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] cPromise,
     unique_ptr[_module_types.std_unordered_map[cint32_t,string]] m
 ):
-    __promise = Promise__module_types_std_unordered_map__cint32_t_string.create(move_promise__module_types_std_unordered_map__cint32_t_string(cPromise))
+    cdef Promise__module_types_std_unordered_map__cint32_t_string __promise = Promise__module_types_std_unordered_map__cint32_t_string.create(cmove(cPromise))
     arg_m = _module_types.std_unordered_map__Map__i32_string.create(__to_shared_ptr(cmove(m)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -187,7 +202,7 @@ cdef api void call_cy_SomeService_binary_keyed_map(
     cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise,
     unique_ptr[vector[cint64_t]] r
 ):
-    __promise = Promise_cmap__binary_cint64_t.create(move_promise_cmap__binary_cint64_t(cPromise))
+    cdef Promise_cmap__binary_cint64_t __promise = Promise_cmap__binary_cint64_t.create(cmove(cPromise))
     arg_r = _module_types.List__i64.create(__to_shared_ptr(cmove(r)))
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final

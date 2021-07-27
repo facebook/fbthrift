@@ -884,7 +884,7 @@ class StructRandomizer(BaseRandomizer):
                 fields[fuzz_field_name] = fuzzed_value
 
             for field_name, seed_val in six.iteritems(seed):
-                if field_name == fuzz_field_name:
+                if field_name == fuzz_field_name or field_name not in field_rules:
                     continue
                 field_randomizer = field_rules[field_name]['randomizer']
                 fields[field_name] = field_randomizer.eval_seed(seed_val)
@@ -895,6 +895,8 @@ class StructRandomizer(BaseRandomizer):
         fields = {}
         seed = self.type_spec.value_to_dict(seed)
         for key, val in six.iteritems(seed):
+            if key not in self._field_rules:
+                continue
             field_randomizer = self._field_rules[key]['randomizer']
             val = field_randomizer.eval_seed(val)
             fields[key] = val

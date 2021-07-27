@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,9 +31,15 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -46,6 +51,10 @@ cdef extern from *:
 cdef extern from *:
     ctypedef cint32_t Baz "Baz"
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass EnumMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cMyEnumA "::cpp2::MyEnumA":
         pass
@@ -57,10 +66,15 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
 cdef class MyEnumA(thrift.py3.types.CompiledEnum):
     pass
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cSmallStruct__isset "::cpp2::SmallStruct::__isset":
-        bint small_A
-        bint small_B
 
     cdef cppclass cSmallStruct "::cpp2::SmallStruct":
         cSmallStruct() except +
@@ -72,34 +86,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cSmallStruct&)
         bint operator>=(cSmallStruct&)
         __field_ref[cbool] small_A_ref()
-        cbool small_A
         __field_ref[cint32_t] small_B_ref()
+        cbool small_A
         cint32_t small_B
-        cSmallStruct__isset __isset
 
-    cdef cppclass ccontainerStruct__isset "::cpp2::containerStruct::__isset":
-        bint fieldA
-        bint fieldB
-        bint fieldC
-        bint fieldD
-        bint fieldE
-        bint fieldF
-        bint fieldG
-        bint fieldH
-        bint fieldI
-        bint fieldJ
-        bint fieldK
-        bint fieldL
-        bint fieldM
-        bint fieldN
-        bint fieldO
-        bint fieldP
-        bint fieldQ
-        bint fieldR
-        bint fieldS
-        bint fieldT
-        bint fieldU
-        bint fieldX
 
     cdef cppclass ccontainerStruct "::cpp2::containerStruct":
         ccontainerStruct() except +
@@ -111,52 +101,56 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(ccontainerStruct&)
         bint operator>=(ccontainerStruct&)
         __field_ref[cbool] fieldA_ref()
-        cbool fieldA
         __field_ref[cmap[string,cbool]] fieldB_ref()
-        cmap[string,cbool] fieldB
         __field_ref[cset[cint32_t]] fieldC_ref()
-        cset[cint32_t] fieldC
         __field_ref[string] fieldD_ref()
-        string fieldD
         __field_ref[string] fieldE_ref()
-        string fieldE
         __field_ref[vector[vector[vector[cint32_t]]]] fieldF_ref()
-        vector[vector[vector[cint32_t]]] fieldF
         __field_ref[cmap[string,cmap[string,cmap[string,cint32_t]]]] fieldG_ref()
-        cmap[string,cmap[string,cmap[string,cint32_t]]] fieldG
         __field_ref[vector[cset[cint32_t]]] fieldH_ref()
-        vector[cset[cint32_t]] fieldH
         __field_ref[cbool] fieldI_ref()
-        cbool fieldI
         __field_ref[cmap[string,vector[cint32_t]]] fieldJ_ref()
-        cmap[string,vector[cint32_t]] fieldJ
         __field_ref[vector[vector[vector[vector[cint32_t]]]]] fieldK_ref()
-        vector[vector[vector[vector[cint32_t]]]] fieldK
         __field_ref[cset[cset[cset[cbool]]]] fieldL_ref()
-        cset[cset[cset[cbool]]] fieldL
         __field_ref[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] fieldM_ref()
-        cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]] fieldM
         __field_ref[vector[Foo]] fieldN_ref()
-        vector[Foo] fieldN
         __field_ref[vector[Bar]] fieldO_ref()
-        vector[Bar] fieldO
         __field_ref[vector[Baz]] fieldP_ref()
-        vector[Baz] fieldP
         __field_ref[cMyEnumA] fieldQ_ref()
+        unique_ptr[cmap[string,cbool]] fieldR_ref()
+        unique_ptr[cSmallStruct] fieldS_ref()
+        shared_ptr[cSmallStruct] fieldT_ref()
+        shared_ptr[const cSmallStruct] fieldU_ref()
+        unique_ptr[cSmallStruct] fieldX_ref()
+        cbool fieldA
+        cmap[string,cbool] fieldB
+        cset[cint32_t] fieldC
+        string fieldD
+        string fieldE
+        vector[vector[vector[cint32_t]]] fieldF
+        cmap[string,cmap[string,cmap[string,cint32_t]]] fieldG
+        vector[cset[cint32_t]] fieldH
+        cbool fieldI
+        cmap[string,vector[cint32_t]] fieldJ
+        vector[vector[vector[vector[cint32_t]]]] fieldK
+        cset[cset[cset[cbool]]] fieldL
+        cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]] fieldM
+        vector[Foo] fieldN
+        vector[Bar] fieldO
+        vector[Baz] fieldP
         cMyEnumA fieldQ
         unique_ptr[cmap[string,cbool]] fieldR
         unique_ptr[cSmallStruct] fieldS
         shared_ptr[cSmallStruct] fieldT
         shared_ptr[const cSmallStruct] fieldU
         unique_ptr[cSmallStruct] fieldX
-        ccontainerStruct__isset __isset
 
 
 
 
 cdef class SmallStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cSmallStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__SmallStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__SmallStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSmallStruct])
@@ -165,24 +159,25 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 
 cdef class containerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[ccontainerStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__containerStruct_FieldsSetter _fields_setter
-    cdef Map__string_bool __field_fieldB
-    cdef Set__i32 __field_fieldC
-    cdef List__List__List__i32 __field_fieldF
-    cdef Map__string_Map__string_Map__string_i32 __field_fieldG
-    cdef List__Set__i32 __field_fieldH
-    cdef Map__string_List__i32 __field_fieldJ
-    cdef List__List__List__List__i32 __field_fieldK
-    cdef Set__Set__Set__bool __field_fieldL
-    cdef Map__Set__List__i32_Map__List__Set__string_string __field_fieldM
-    cdef List__Foo__i64 __field_fieldN
-    cdef List__Bar__double __field_fieldO
-    cdef List__Baz__i32 __field_fieldP
-    cdef Map__string_bool __field_fieldR
-    cdef SmallStruct __field_fieldS
-    cdef SmallStruct __field_fieldT
-    cdef SmallStruct __field_fieldU
-    cdef SmallStruct __field_fieldX
+    cdef _fbthrift_types_fields.__containerStruct_FieldsSetter _fields_setter
+    cdef Map__string_bool __fbthrift_cached_fieldB
+    cdef Set__i32 __fbthrift_cached_fieldC
+    cdef List__List__List__i32 __fbthrift_cached_fieldF
+    cdef Map__string_Map__string_Map__string_i32 __fbthrift_cached_fieldG
+    cdef List__Set__i32 __fbthrift_cached_fieldH
+    cdef Map__string_List__i32 __fbthrift_cached_fieldJ
+    cdef List__List__List__List__i32 __fbthrift_cached_fieldK
+    cdef Set__Set__Set__bool __fbthrift_cached_fieldL
+    cdef Map__Set__List__i32_Map__List__Set__string_string __fbthrift_cached_fieldM
+    cdef List__Foo__i64 __fbthrift_cached_fieldN
+    cdef List__Bar__double __fbthrift_cached_fieldO
+    cdef List__Baz__i32 __fbthrift_cached_fieldP
+    cdef object __fbthrift_cached_fieldQ
+    cdef Map__string_bool __fbthrift_cached_fieldR
+    cdef SmallStruct __fbthrift_cached_fieldS
+    cdef SmallStruct __fbthrift_cached_fieldT
+    cdef SmallStruct __fbthrift_cached_fieldU
+    cdef SmallStruct __fbthrift_cached_fieldX
 
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct])

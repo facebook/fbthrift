@@ -7,7 +7,7 @@
 
 import typing as _typing
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
 
@@ -21,7 +21,7 @@ class SimpleException_Builder(thrift.py3.builder.StructBuilder):
 
 
 class OptionalRefStruct_Builder(thrift.py3.builder.StructBuilder):
-    optional_blob: _typing.Optional[__iobuf.IOBuf]
+    optional_blob: _typing.Optional[_fbthrift_iobuf.IOBuf]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
@@ -53,7 +53,7 @@ class ComplexStruct_Builder(thrift.py3.builder.StructBuilder):
 
 
 class BinaryUnion_Builder(thrift.py3.builder.StructBuilder):
-    iobuf_val: _typing.Optional[__iobuf.IOBuf]
+    iobuf_val: _typing.Optional[_fbthrift_iobuf.IOBuf]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

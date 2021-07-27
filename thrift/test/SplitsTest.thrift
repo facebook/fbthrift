@@ -17,13 +17,13 @@
 namespace cpp2 apache.thrift
 
 struct struct1 {
-  1: i32 i,
-  2: string s,
+  1: i32 i;
+  2: string s;
 }
 
 struct struct2 {
-  1: i32 i,
-  2: string s,
+  1: i32 i;
+  2: string s;
 }
 
 enum enum1 {
@@ -32,6 +32,6 @@ enum enum1 {
 }
 
 struct struct3 {
-  1: struct1 field1,
-  2: optional struct2 field2,
+  1: struct1 field1;
+  2: optional struct2 field2;
 }

@@ -12,16 +12,27 @@
 namespace apache {
 namespace thrift {
 
+const std::array<::cpp2::MyEnum, 2> TEnumDataStorage<::cpp2::MyEnum>::values = {{
+  type::MyValue1,
+  type::MyValue2,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::MyEnum>::names = {{
+  "MyValue1",
+  "MyValue2",
+}};
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::MyEnum>::size;
-constexpr const std::array<::cpp2::MyEnum, 2> TEnumDataStorage<::cpp2::MyEnum>::values;
-constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::cpp2::MyEnum>::names;
-
-
-constexpr const std::size_t TStructDataStorage<::cpp2::MyStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::MyStruct>::fields_size> TStructDataStorage<::cpp2::MyStruct>::fields_types;
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::MyStruct>::fields_names = {{
+  "MyIntField",
+  "MyStringField",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::MyStruct>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::MyStruct>::fields_types = {{
+  TType::T_I64,
+  TType::T_STRING,
+}};
 
 } // namespace thrift
 } // namespace apache

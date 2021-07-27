@@ -11,7 +11,8 @@ import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
-import com.facebook.swift.transport.client.*;
+import com.facebook.thrift.client.*;
+import com.facebook.thrift.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -21,13 +22,14 @@ import reactor.core.publisher.Mono;
 @SwiftGenerated
 public class MyServiceClientImpl extends AbstractThriftClient implements MyService {
 
-
     // Method Handlers
     private ThriftMethodHandler pingMethodHandler;
     private ThriftMethodHandler getRandomDataMethodHandler;
+    private ThriftMethodHandler sinkMethodHandler;
+    private ThriftMethodHandler putDataByIdMethodHandler;
     private ThriftMethodHandler hasDataByIdMethodHandler;
     private ThriftMethodHandler getDataByIdMethodHandler;
-    private ThriftMethodHandler putDataByIdMethodHandler;
+    private ThriftMethodHandler deleteDataByIdMethodHandler;
     private ThriftMethodHandler lobDataByIdMethodHandler;
 
     // Method Exceptions
@@ -35,11 +37,15 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
         org.apache.thrift.TException.class};
     private static final Class[] getRandomDataExceptions = new Class[] {
         org.apache.thrift.TException.class};
+    private static final Class[] sinkExceptions = new Class[] {
+        org.apache.thrift.TException.class};
+    private static final Class[] putDataByIdExceptions = new Class[] {
+        org.apache.thrift.TException.class};
     private static final Class[] hasDataByIdExceptions = new Class[] {
         org.apache.thrift.TException.class};
     private static final Class[] getDataByIdExceptions = new Class[] {
         org.apache.thrift.TException.class};
-    private static final Class[] putDataByIdExceptions = new Class[] {
+    private static final Class[] deleteDataByIdExceptions = new Class[] {
         org.apache.thrift.TException.class};
     private static final Class[] lobDataByIdExceptions = new Class[] {
         org.apache.thrift.TException.class};
@@ -61,9 +67,11 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       // Set method handlers
       pingMethodHandler = methodHandlerMap.get("ping");
       getRandomDataMethodHandler = methodHandlerMap.get("getRandomData");
+      sinkMethodHandler = methodHandlerMap.get("sink");
+      putDataByIdMethodHandler = methodHandlerMap.get("putDataById");
       hasDataByIdMethodHandler = methodHandlerMap.get("hasDataById");
       getDataByIdMethodHandler = methodHandlerMap.get("getDataById");
-      putDataByIdMethodHandler = methodHandlerMap.get("putDataById");
+      deleteDataByIdMethodHandler = methodHandlerMap.get("deleteDataById");
       lobDataByIdMethodHandler = methodHandlerMap.get("lobDataById");
     }
 
@@ -86,9 +94,11 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       // Set method handlers
       pingMethodHandler = methodHandlerMap.get("ping");
       getRandomDataMethodHandler = methodHandlerMap.get("getRandomData");
+      sinkMethodHandler = methodHandlerMap.get("sink");
+      putDataByIdMethodHandler = methodHandlerMap.get("putDataById");
       hasDataByIdMethodHandler = methodHandlerMap.get("hasDataById");
       getDataByIdMethodHandler = methodHandlerMap.get("getDataById");
-      putDataByIdMethodHandler = methodHandlerMap.get("putDataById");
+      deleteDataByIdMethodHandler = methodHandlerMap.get("deleteDataById");
       lobDataByIdMethodHandler = methodHandlerMap.get("lobDataById");
     }
 
@@ -100,8 +110,20 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
     @java.lang.Override
     public void ping() throws org.apache.thrift.TException {
+      pingWrapper(RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void ping(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      pingWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> pingWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        execute(pingMethodHandler, pingExceptions);
+        return FutureUtil.get(executeWrapperWithOptions(pingMethodHandler, pingExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -112,100 +134,20 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
 
     @java.lang.Override
     public String getRandomData() throws org.apache.thrift.TException {
-      try {
-        return (String) execute(getRandomDataMethodHandler, getRandomDataExceptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      return getRandomDataWrapper(RpcOptions.EMPTY).getData();
     }
 
     @java.lang.Override
-    public boolean hasDataById(
-        long id) throws org.apache.thrift.TException {
-      try {
-        return (boolean) execute(hasDataByIdMethodHandler, hasDataByIdExceptions, id);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
-    @java.lang.Override
-    public String getDataById(
-        long id) throws org.apache.thrift.TException {
-      try {
-        return (String) execute(getDataByIdMethodHandler, getDataByIdExceptions, id);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
-    @java.lang.Override
-    public void putDataById(
-        long id,
-        String data) throws org.apache.thrift.TException {
-      try {
-        execute(putDataByIdMethodHandler, putDataByIdExceptions, id, data);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
-    @java.lang.Override
-    public void lobDataById(
-        long id,
-        String data) throws org.apache.thrift.TException {
-      try {
-        execute(lobDataByIdMethodHandler, lobDataByIdExceptions, id, data);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
-
-    public void ping(
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        executeWithOptions(pingMethodHandler, pingExceptions, rpcOptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
     public String getRandomData(
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        return (String) executeWithOptions(getRandomDataMethodHandler, getRandomDataExceptions, rpcOptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      return getRandomDataWrapper(rpcOptions).getData();
     }
 
-    public boolean hasDataById(
-        long id,
+    @java.lang.Override
+    public ResponseWrapper<String> getRandomDataWrapper(
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        return (boolean) executeWithOptions(hasDataByIdMethodHandler, hasDataByIdExceptions, rpcOptions, id);
+        return FutureUtil.get(executeWrapperWithOptions(getRandomDataMethodHandler, getRandomDataExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -214,11 +156,25 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
     }
 
-    public String getDataById(
-        long id,
+    @java.lang.Override
+    public void sink(
+        long sink) throws org.apache.thrift.TException {
+      sinkWrapper(sink, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void sink(
+        long sink,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      sinkWrapper(sink, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> sinkWrapper(
+        long sink,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        return (String) executeWithOptions(getDataByIdMethodHandler, getDataByIdExceptions, rpcOptions, id);
+        return FutureUtil.get(executeWrapperWithOptions(sinkMethodHandler, sinkExceptions, rpcOptions, sink));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -227,12 +183,28 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
     }
 
+    @java.lang.Override
+    public void putDataById(
+        long id,
+        String data) throws org.apache.thrift.TException {
+      putDataByIdWrapper(id, data, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
     public void putDataById(
         long id,
         String data,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      putDataByIdWrapper(id, data, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> putDataByIdWrapper(
+        long id,
+        String data,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        executeWithOptions(putDataByIdMethodHandler, putDataByIdExceptions, rpcOptions, id, data);
+        return FutureUtil.get(executeWrapperWithOptions(putDataByIdMethodHandler, putDataByIdExceptions, rpcOptions, id, data));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -241,12 +213,109 @@ public class MyServiceClientImpl extends AbstractThriftClient implements MyServi
       }
     }
 
+    @java.lang.Override
+    public boolean hasDataById(
+        long id) throws org.apache.thrift.TException {
+      return hasDataByIdWrapper(id, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public boolean hasDataById(
+        long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return hasDataByIdWrapper(id, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Boolean> hasDataByIdWrapper(
+        long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return FutureUtil.get(executeWrapperWithOptions(hasDataByIdMethodHandler, hasDataByIdExceptions, rpcOptions, id));
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    @java.lang.Override
+    public String getDataById(
+        long id) throws org.apache.thrift.TException {
+      return getDataByIdWrapper(id, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public String getDataById(
+        long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return getDataByIdWrapper(id, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<String> getDataByIdWrapper(
+        long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return FutureUtil.get(executeWrapperWithOptions(getDataByIdMethodHandler, getDataByIdExceptions, rpcOptions, id));
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    @java.lang.Override
+    public void deleteDataById(
+        long id) throws org.apache.thrift.TException {
+      deleteDataByIdWrapper(id, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void deleteDataById(
+        long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      deleteDataByIdWrapper(id, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> deleteDataByIdWrapper(
+        long id,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      try {
+        return FutureUtil.get(executeWrapperWithOptions(deleteDataByIdMethodHandler, deleteDataByIdExceptions, rpcOptions, id));
+      } catch (Throwable t) {
+        if (t instanceof org.apache.thrift.TException) {
+          throw (org.apache.thrift.TException) t;
+        }
+        throw new org.apache.thrift.TException(t);
+      }
+    }
+
+    @java.lang.Override
+    public void lobDataById(
+        long id,
+        String data) throws org.apache.thrift.TException {
+      lobDataByIdWrapper(id, data, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
     public void lobDataById(
         long id,
         String data,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      lobDataByIdWrapper(id, data, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> lobDataByIdWrapper(
+        long id,
+        String data,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        executeWithOptions(lobDataByIdMethodHandler, lobDataByIdExceptions, rpcOptions, id, data);
+        return FutureUtil.get(executeWrapperWithOptions(lobDataByIdMethodHandler, lobDataByIdExceptions, rpcOptions, id, data));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

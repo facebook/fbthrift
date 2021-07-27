@@ -17,6 +17,7 @@
 #include <folly/portability/GTest.h>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/io/IOBuf.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 
@@ -29,10 +30,13 @@ class FakeOwner : public folly::DelayedDestruction {
   void handleFrame(std::unique_ptr<folly::IOBuf>) {}
   void close(folly::exception_wrapper) noexcept {}
   void scheduleTimeout(
-      folly::HHWheelTimer::Callback*,
-      const std::chrono::milliseconds&) {}
+      folly::HHWheelTimer::Callback*, const std::chrono::milliseconds&) {}
+  bool incMemoryUsage(uint32_t) { return true; }
+  void decMemoryUsage(uint32_t) {}
 };
 
+// TODO: This should be removed once the new buffer logic controlled by
+// THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
 TEST(ParserTest, resizeBufferTest) {
   FakeOwner owner;
   Parser<FakeOwner> parser(owner, std::chrono::milliseconds(0));
@@ -48,6 +52,8 @@ TEST(ParserTest, resizeBufferTest) {
   EXPECT_EQ(parser.getReadBufferSize(), Parser<FakeOwner>::kMaxBufferSize);
 }
 
+// TODO: This should be removed once the new buffer logic controlled by
+// THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
 TEST(ParserTest, noResizeBufferReadBufGtMaxTest) {
   FakeOwner owner;
   Parser<FakeOwner> parser(owner, std::chrono::milliseconds(0));
@@ -63,6 +69,8 @@ TEST(ParserTest, noResizeBufferReadBufGtMaxTest) {
   EXPECT_EQ(parser.getReadBufferSize(), Parser<FakeOwner>::kMaxBufferSize * 2);
 }
 
+// TODO: This should be removed once the new buffer logic controlled by
+// THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
 TEST(ParserTest, noResizeBufferReadBufEqMaxTest) {
   FakeOwner owner;
   Parser<FakeOwner> parser(owner, std::chrono::milliseconds(0));
@@ -78,6 +86,8 @@ TEST(ParserTest, noResizeBufferReadBufEqMaxTest) {
   EXPECT_EQ(parser.getReadBufferSize(), Parser<FakeOwner>::kMaxBufferSize * 2);
 }
 
+// TODO: This should be removed once the new buffer logic controlled by
+// THRIFT_FLAG(rocket_parser_dont_hold_buffer_enabled) is stable.
 TEST(ParserTest, AlignmentTest) {
   std::string s = "1234567890";
   auto iobuf = folly::IOBuf::copyBuffer(s);
@@ -103,6 +113,79 @@ TEST(ParserTest, AlignmentTest) {
   EXPECT_EQ(iobuf->length() + iobuf->tailroom(), 10);
   EXPECT_EQ(iobuf->tailroom(), 0);
   EXPECT_EQ(folly::StringPiece(iobuf->coalesce()), s);
+}
+
+TEST(ParserTest, AlignmentIOBufQueueTest) {
+  std::string s = "1234567890";
+  folly::IOBufQueue iobufQueue{folly::IOBufQueue::cacheChainLength()};
+  iobufQueue.append(folly::IOBuf::copyBuffer(s));
+  auto res = alignTo4kBufQueue(
+      iobufQueue, 4 /* 4 should be the first on 4k aligned address */, 1000);
+  EXPECT_TRUE(res);
+  auto iobuf = iobufQueue.move();
+  EXPECT_EQ(reinterpret_cast<std::uintptr_t>(iobuf->data() + 4) % 4096u, 0);
+  EXPECT_EQ(iobuf->length() + iobuf->tailroom(), 1000);
+  EXPECT_EQ(folly::StringPiece(iobuf->coalesce()), s);
+
+  iobufQueue.clear();
+  iobufQueue.append(folly::IOBuf::copyBuffer(s));
+  // it is possible the aligned part has not been received yet
+  res = alignTo4kBufQueue(iobufQueue, 256, 1000);
+  EXPECT_TRUE(res);
+  iobuf = iobufQueue.move();
+  EXPECT_EQ(reinterpret_cast<std::uintptr_t>(iobuf->data() + 256) % 4096u, 0);
+  EXPECT_EQ(iobuf->length() + iobuf->tailroom(), 1000);
+  EXPECT_EQ(folly::StringPiece(iobuf->coalesce()), s);
+
+  iobufQueue.clear();
+  iobufQueue.append(folly::IOBuf::copyBuffer(s));
+  // it is also possible the frame is smaller than received data
+  res = alignTo4kBufQueue(iobufQueue, 4, 7);
+  EXPECT_TRUE(res);
+  iobuf = iobufQueue.move();
+  EXPECT_EQ(reinterpret_cast<std::uintptr_t>(iobuf->data() + 4) % 4096u, 0);
+  EXPECT_EQ(iobuf->length() + iobuf->tailroom(), 10);
+  EXPECT_EQ(iobuf->tailroom(), 0);
+  EXPECT_EQ(folly::StringPiece(iobuf->coalesce()), s);
+}
+
+TEST(ParserTest, BufferIsChainedAlignmentTest) {
+  std::string s = "1234567890";
+  auto iobuf = folly::IOBuf::copyBuffer(s);
+  auto iobuf2 = folly::IOBuf::copyBuffer(s);
+  iobuf->appendChain(std::move(iobuf2));
+  EXPECT_TRUE(iobuf->isChained());
+
+  folly::IOBufQueue iobufQueue{folly::IOBufQueue::cacheChainLength()};
+  iobufQueue.append(std::move(iobuf));
+  auto res = alignTo4kBufQueue(
+      iobufQueue, 4 /* 4 should be the first on 4k aligned address */, 1000);
+  EXPECT_TRUE(res);
+  auto buf = iobufQueue.move();
+  EXPECT_EQ(reinterpret_cast<std::uintptr_t>(buf->data() + 4) % 4096u, 0);
+  EXPECT_EQ(buf->length() + buf->tailroom(), 1000);
+  EXPECT_EQ(folly::StringPiece(buf->coalesce()), s + s);
+}
+
+TEST(ParserTest, PageAlignedBufferTest) {
+  // total number of (usable) bytes to be allocated
+  constexpr size_t kNumBytes = 32;
+  // portion of kNumBytes to be placed before page boundary
+  constexpr size_t kStartOffset = 13;
+  // final length of the iobuf (must be <= kNumBytes)
+  size_t trimLength = 0;
+  auto buf = get4kAlignedBuf(kNumBytes, kStartOffset, trimLength);
+  ASSERT_NE(nullptr, buf.get());
+  EXPECT_EQ(
+      reinterpret_cast<std::uintptr_t>(buf->data() + kStartOffset) % 4096u, 0);
+  EXPECT_EQ(trimLength, buf->length());
+
+  trimLength = kStartOffset;
+  buf = get4kAlignedBuf(kNumBytes, kStartOffset, trimLength);
+  ASSERT_NE(nullptr, buf.get());
+  EXPECT_EQ(
+      reinterpret_cast<std::uintptr_t>(buf->data() + kStartOffset) % 4096u, 0);
+  EXPECT_EQ(trimLength, buf->length());
 }
 
 } // namespace rocket

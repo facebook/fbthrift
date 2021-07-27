@@ -23,14 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="BigStruct", builder=BigStruct.Builder.class)
-public final class BigStruct {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="BigStruct", builder=BigStruct.Builder.class)
+public final class BigStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public BigStruct(
-        @ThriftField(value=1, name="s", requiredness=Requiredness.NONE) final test.fixtures.module2.Struct s,
-        @ThriftField(value=2, name="id", requiredness=Requiredness.NONE) final int id
+        @com.facebook.swift.codec.ThriftField(value=1, name="s", requiredness=Requiredness.NONE) final test.fixtures.module2.Struct s,
+        @com.facebook.swift.codec.ThriftField(value=2, name="id", requiredness=Requiredness.NONE) final int id
     ) {
         this.s = s;
         this.id = id;
@@ -43,12 +42,11 @@ public final class BigStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.module2.Struct s = null;
         private int id = 0;
     
-        @ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
         public Builder setS(test.fixtures.module2.Struct s) {
             this.s = s;
             return this;
@@ -56,7 +54,7 @@ public final class BigStruct {
     
         public test.fixtures.module2.Struct getS() { return s; }
     
-            @ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
         public Builder setId(int id) {
             this.id = id;
             return this;
@@ -76,7 +74,6 @@ public final class BigStruct {
                 this.s,
                 this.id
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -97,24 +94,12 @@ public final class BigStruct {
       FIELD_METADATA.put(2, ID_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
     public test.fixtures.module2.Struct getS() { return s; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetS() {
-        return this.s != null;
-    }
     
     
-    @ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="id", requiredness=Requiredness.NONE)
     public int getId() { return id; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetId() {
-        return __isset_bit_vector.get(_ID);
-    }
     
     @java.lang.Override
     public String toString() {
@@ -149,6 +134,10 @@ public final class BigStruct {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<BigStruct> asReader() {
+      return BigStruct::read0;
+    }
     
     public static BigStruct read0(TProtocol oprot) throws TException {
       TField __field;
@@ -198,4 +187,11 @@ public final class BigStruct {
       oprot.writeStructEnd();
     }
     
+    private static class _BigStructLazy {
+        private static final BigStruct _DEFAULT = new BigStruct.Builder().build();
+    }
+    
+    public static BigStruct defaultInstance() {
+        return  _BigStructLazy._DEFAULT;
+    }
 }

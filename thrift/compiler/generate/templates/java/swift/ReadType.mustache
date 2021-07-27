@@ -15,9 +15,9 @@
   limitations under the License.
 
 }}{{#type:typedef?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedefType}}{{type:setIsMapKey}}{{> ReadType}}{{/type:typedefType}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedefType}}{{type:setIsMapValue}}{{> ReadType}}{{/type:typedefType}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedefType}}{{> ReadType}}{{/type:typedefType}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
+    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> ReadType}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
 }}{{#type:set?}}{{> ReadTypeContainer}}{{/type:set?}}{{!
@@ -42,8 +42,14 @@
 }}{{/type:binary?}}{{!
 
 }}{{#type:string?}}{{!
-}}{{#field:isNested?}}oprot.readString(){{/field:isNested?}}{{!
-}}{{^field:isNested?}}{{> FieldType}} {{field:javaName}} = oprot.readString();{{/field:isNested?}}{{!
+}}{{#field:isNested?}}{{!
+  }}{{#type:isBinaryString?}}oprot.readBinary().array(){{/type:isBinaryString?}}{{!
+  }}{{^type:isBinaryString?}}oprot.readString(){{/type:isBinaryString?}}{{!
+}}{{/field:isNested?}}{{!
+}}{{^field:isNested?}}{{> FieldType}} {{field:javaName}} = {{!
+  }}{{#type:isBinaryString?}}oprot.readBinary();{{/type:isBinaryString?}}{{!
+  }}{{^type:isBinaryString?}}oprot.readString();{{/type:isBinaryString?}}{{!
+}}{{/field:isNested?}}{{!
 }}{{/type:string?}}{{!
 
 }}{{#type:bool?}}{{!

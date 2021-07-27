@@ -38,7 +38,7 @@
 #include <folly/CppAttributes.h>
 #include <folly/Traits.h>
 #include <folly/functional/Invoke.h>
-#include <thrift/lib/cpp2/OptionalField.h>
+#include <thrift/lib/cpp2/FieldRef.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 
 #include <thrift/lib/cpp2/reflection/internal/reflection-inl-pre.h>
@@ -159,58 +159,6 @@ enum class optionality {
 /////////////////////////////
 
 /**
- * Returns the type class of a type.
- *
- * The type classes are defined in `namespace apache::thrift::type_class` in the
- * header `thrift/lib/cpp2/Thrift.h`.
- *
- * To keep compilation times at bay, strings and containers are not detected by
- * default, therefore they will yield `unknown` as their type class. To enable
- * their detection you must include `container_traits.h`. There's also support
- * for containers defined in Folly at `container_traits_folly.h`.
- *
- * See `type_class` for the possible categories.
- *
- * Example:
- *
- *  /////////////////////
- *  // MyModule.thrift //
- *  /////////////////////
- *  namespace cpp2 My.Namespace
- *
- *  struct MyStruct {
- *    1: i32 a
- *    2: string b
- *    3: double c
- *  }
- *
- *  enum MyEnum { a, b, c }
- *
- *  typedef list<string> MyList;
- *
- *  /////////////
- *  // foo.cpp //
- *  /////////////
- *
- *  // yields `type_class::structure`
- *  using result1 = reflect_type_class<MyStruct>;
- *
- *  // yields `type_class::enumeration`
- *  using result2 = reflect_type_class<MyEnum>;
- *
- *  // yields `type_class::list<type_class::string>`
- *  using result3 = reflect_type_class<MyList>;
- *
- *  // yields `type_class::unknown`
- *  using result4 = reflect_type_class<void>;
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename T>
-using reflect_type_class =
-    typename apache::thrift::detail::reflect_type_class_impl<T>::type;
-
-/**
  * Returns the type class of a thrift class, which is either a structure, a
  * variant, or an exception.
  *
@@ -310,6 +258,56 @@ template <typename T>
 using reflect_type_class_of_thrift_class_enum =
     typename detail::reflect_type_class_of_thrift_class_enum_impl<T>::type;
 
+/**
+ * Returns the type class of a thrift class, which is either a structure, a
+ * variant, or an exception, or of a thrift enum.
+ *
+ * Example:
+ *
+ *  /////////////////////
+ *  // MyModule.thrift //
+ *  /////////////////////
+ *  namespace cpp2 My.Namespace
+ *
+ *  struct MyStruct {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  union MyUnion {
+ *    1: i32 a
+ *    2: string b
+ *    3: double c
+ *  }
+ *
+ *  enum MyEnum { a, b, c }
+ *
+ *  typedef list<string> MyList;
+ *
+ *  /////////////
+ *  // foo.cpp //
+ *  /////////////
+ *
+ *  // yields `type_class::structure`
+ *  using result1 = reflect_type_class_of_thrift_class_enum<MyStruct>;
+ *
+ *  // yields `type_class::variant`
+ *  using result1 = reflect_type_class_of_thrift_class_enum<MyUnion>;
+ *
+ *  // yields `type_class::enumeration`
+ *  using result2 = reflect_type_class_of_thrift_class_enum<MyEnum>;
+ *
+ *  // yields `type_class::unknown`
+ *  using result3 = reflect_type_class_of_thrift_class_enum<MyList>;
+ *
+ *  // yields `type_class::unknown`
+ *  using result4 = reflect_type_class_of_thrift_class_enum<void>;
+ */
+template <typename T>
+using reflect_type_class_of_thrift_class_enum =
+    typename detail::reflect_type_class_of_thrift_class_enum_impl<T>::type;
+
 /////////////////////////
 // SECTION: MODULE API //
 /////////////////////////
@@ -323,14 +321,7 @@ using reflect_type_class_of_thrift_class_enum =
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <
-    typename Name,
-    typename Namespaces,
-    typename Enums,
-    typename Unions,
-    typename Structs,
-    typename Constants,
-    typename Services>
+template <typename Traits>
 struct reflected_module {
   /**
    * The name.
@@ -353,7 +344,7 @@ struct reflected_module {
    *  //   char, 'M', 'y', 'M', 'o', 'd', 'u', 'l', 'e',
    *  // >`
    */
-  using name = Name;
+  using name = typename Traits::name;
 
   /**
    * The map from language to namespace.
@@ -403,7 +394,7 @@ struct reflected_module {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using namespaces = Namespaces;
+  using namespaces = typename Traits::namespaces;
 
   /**
    * The list of enumerations with reflection metadata available.
@@ -417,7 +408,7 @@ struct reflected_module {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using enums = Enums;
+  using enums = typename Traits::enums;
 
   /**
    * The list of unions with reflection metadata available.
@@ -431,7 +422,7 @@ struct reflected_module {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using unions = Unions;
+  using unions = typename Traits::unions;
 
   /**
    * The list of structs with reflection metadata available.
@@ -442,7 +433,7 @@ struct reflected_module {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using structs = Structs;
+  using structs = typename Traits::structs;
 
   /**
    * The list of services with reflection metadata available.
@@ -452,7 +443,7 @@ struct reflected_module {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using services = Services;
+  using services = typename Traits::services;
 };
 
 /**
@@ -609,8 +600,11 @@ using is_reflectable_module = std::integral_constant<
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T>
-using reflect_module_tag = typename apache::thrift::detail::
-    reflect_module_tag_selector<reflect_type_class<T>, T, false>::type;
+using reflect_module_tag =
+    typename apache::thrift::detail::reflect_module_tag_selector<
+        reflect_type_class_of_thrift_class_enum<T>,
+        T,
+        false>::type;
 
 /**
  * Tries to get the reflection metadata tag for the Thrift file where the type
@@ -644,8 +638,12 @@ e:
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
 template <typename T, typename Default = void>
-using try_reflect_module_tag = typename apache::thrift::detail::
-    reflect_module_tag_selector<reflect_type_class<T>, T, true, Default>::type;
+using try_reflect_module_tag =
+    typename apache::thrift::detail::reflect_module_tag_selector<
+        reflect_type_class_of_thrift_class_enum<T>,
+        T,
+        true,
+        Default>::type;
 
 /**
  * Represents an annotation from `reflected_annotations::map`.
@@ -820,13 +818,7 @@ struct reflected_annotations {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <
-    typename Struct,
-    typename Name,
-    typename MembersInfo,
-    typename Info,
-    typename MembersAnnotations,
-    typename Metadata>
+template <typename Traits>
 struct reflected_struct {
   /**
    * A type alias for the struct itself.
@@ -840,7 +832,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using type = Struct;
+  using type = typename Traits::type;
 
   /**
    * A compile-time string representing the struct name.
@@ -857,7 +849,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using name = Name;
+  using name = typename Traits::name;
 
   /**
    * The reflection metadata tag for the Thrift file where this structure is
@@ -872,7 +864,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using module = typename Metadata::module;
+  using module = typename Traits::metadata::module;
 
   /**
    * An implementation defined type template that provides the appropriate
@@ -900,7 +892,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using member = MembersInfo;
+  using member = typename Traits::member;
 
   /**
    * A `fatal::list` of `reflected_struct_data_member` representing each member.
@@ -925,7 +917,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using members = Info;
+  using members = typename Traits::members;
 
   /**
    * An instantiation of `reflected_annotations` representing the annotations
@@ -942,7 +934,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using annotations = typename Metadata::annotations;
+  using annotations = typename Traits::metadata::annotations;
 
   /**
    * An implementation defined type that provides the annotations for each
@@ -960,7 +952,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using members_annotations = MembersAnnotations;
+  using members_annotations = typename Traits::members_annotations;
 
   /**
    * A unique identifier generated by thrift for this structure.
@@ -969,7 +961,7 @@ struct reflected_struct {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using legacy_id = typename Metadata::legacy_id;
+  using legacy_id = typename Traits::metadata::legacy_id;
 };
 
 /**
@@ -981,16 +973,7 @@ struct reflected_struct {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <
-    typename Name,
-    typename Type,
-    field_id_t Id,
-    optionality Optionality,
-    typename Getter,
-    typename FieldRefGetter,
-    typename TypeClass,
-    typename Annotations,
-    typename Owner>
+template <typename Traits>
 struct reflected_struct_data_member {
   /**
    * A `fatal::sequence` of `char` representing the data member name as
@@ -1021,7 +1004,7 @@ struct reflected_struct_data_member {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using name = Name;
+  using name = typename Traits::name;
 
   /**
    * The type of the data member.
@@ -1048,7 +1031,7 @@ struct reflected_struct_data_member {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using type = Type;
+  using type = typename Traits::type;
 
   /**
    * A `std::integral_constant` of type `field_id_t` representing the Thrift
@@ -1079,7 +1062,7 @@ struct reflected_struct_data_member {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using id = std::integral_constant<field_id_t, Id>;
+  using id = std::integral_constant<field_id_t, Traits::id>;
 
   /**
    * A `std::integral_constant` of type `optionality` representing whether a
@@ -1118,7 +1101,7 @@ struct reflected_struct_data_member {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using optional = std::integral_constant<optionality, Optionality>;
+  using optional = std::integral_constant<optionality, Traits::optional>;
 
   /**
    * A type that works as a getter for the data member.
@@ -1160,12 +1143,12 @@ struct reflected_struct_data_member {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using getter = Getter;
+  using getter = typename Traits::getter;
 
   /**
    * Similar to getter, but return `(optional_)?field_ref` instead.
    */
-  using field_ref_getter = FieldRefGetter;
+  using field_ref_getter = typename Traits::field_ref_getter;
 
   /**
    * The type class for this member.
@@ -1192,7 +1175,7 @@ struct reflected_struct_data_member {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using type_class = TypeClass;
+  using type_class = typename Traits::type_class;
 
   /**
    * An instantiation of `reflected_annotations` representing the annotations
@@ -1222,7 +1205,7 @@ struct reflected_struct_data_member {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using annotations = Annotations;
+  using annotations = typename Traits::annotations;
 
   /**
    * Checks whether the member represented by this metadata is set in the given
@@ -1258,8 +1241,7 @@ struct reflected_struct_data_member {
   template <typename T>
   static constexpr inline bool is_set(T const& owner) {
     namespace impl = apache::thrift::detail::reflection_impl;
-    using direct_getter = impl::getter_direct_getter_t<getter>;
-    return impl::isset<Owner, direct_getter>::check(owner);
+    return impl::is_set(field_ref_getter{}(owner));
   }
 
   /**
@@ -1291,8 +1273,8 @@ struct reflected_struct_data_member {
   template <typename T>
   static constexpr inline bool mark_set(T& owner, bool set) {
     namespace impl = apache::thrift::detail::reflection_impl;
-    using direct_getter = impl::getter_direct_getter_t<getter>;
-    return impl::isset<Owner, direct_getter>::mark(owner, set);
+    impl::mark_set(field_ref_getter{}(owner), set);
+    return set;
   }
 };
 
@@ -1832,7 +1814,7 @@ using reflect_variant = reflected_variant<T>;
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename Name, field_id_t Id, typename TypeClass>
+template <typename Traits>
 struct reflected_variant_member_metadata {
   /**
    * A compile-time string representing the name of this member.
@@ -1846,7 +1828,7 @@ struct reflected_variant_member_metadata {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using name = Name;
+  using name = typename Traits::name;
 
   /**
    * A `std::integral_constant` of type `field_id_t` representing the Thrift
@@ -1861,7 +1843,7 @@ struct reflected_variant_member_metadata {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using id = std::integral_constant<field_id_t, Id>;
+  using id = std::integral_constant<field_id_t, Traits::id>;
 
   /**
    * The type class for this member.
@@ -1875,7 +1857,7 @@ struct reflected_variant_member_metadata {
    *
    * @author: Marcelo Juchem <marcelo@fb.com>
    */
-  using type_class = TypeClass;
+  using type_class = typename Traits::type_class;
 };
 
 /**
@@ -1914,779 +1896,6 @@ struct reflected_variant_member_metadata {
  */
 template <typename T>
 using is_reflectable_union = fatal::has_variant_traits<T>;
-
-//////////////////////////
-// CONTAINER TRAITS API //
-//////////////////////////
-
-/**
- * This is the type trait class that provides uniform interface to the
- * properties and functionality of string types.
- *
- * To make a custom string type available to Thrift's compile-time reflection
- * support, specialize this template for it.
- *
- * To keep compilation times at bay, standard strings are not supported by
- * default, therefore they will yield an undefined `thrift_string_traits`.
- * To enable their support, include `container_traits.h`. There's also support
- * for containers defined in Folly at `container_traits_folly.h`.
- *
- * This is the specialization for standard strings, showing what's offered by
- * the `thrift_string_traits` class. It can also be used as a template when
- * adding support for custom string classes:
- *
- *  template <typename C, typename T, typename A>
- *  struct thrift_string_traits<std::basic_string<C, T, A>> {
- *    using type = std::basic_string<C, T, A>;
- *
- *    using value_type = typename type::value_type;
- *    using size_type = typename type::size_type;
- *    using iterator = typename type::iterator;
- *    using const_iterator = typename type::const_iterator;
- *
- *    static iterator begin(type &what) { return what.begin(); }
- *    static iterator end(type &what) { return what.end(); }
- *
- *    static const_iterator cbegin(type const &what) { return what.cbegin(); }
- *    static const_iterator begin(type const &what) { return what.cbegin(); }
- *    static const_iterator cend(type const &what) { return what.end(); }
- *    static const_iterator end(type const &what) { return what.end(); }
- *
- *    static void clear(type &what) { what.clear(); }
- *    static bool empty(type const &what) { return what.empty(); }
- *    static size_type size(type const &what) { return what.size(); }
- *
- *    static value_type const *data(type const &what) { return what.data(); }
- *    static value_type const *c_str(type const &what) { return what.c_str(); }
- *  };
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename>
-struct thrift_string_traits;
-
-template <typename String>
-struct thrift_string_traits_std {
-  using type = String;
-
-  using value_type = typename type::value_type;
-  using size_type = typename type::size_type;
-  using iterator = typename type::iterator;
-  using const_iterator = typename type::const_iterator;
-
-  static inline iterator begin(type& what) {
-    return what.begin();
-  }
-  static inline iterator end(type& what) {
-    return what.end();
-  }
-
-  static inline const_iterator cbegin(type const& what) {
-    return what.cbegin();
-  }
-  static inline const_iterator begin(type const& what) {
-    return what.begin();
-  }
-  static inline const_iterator cend(type const& what) {
-    return what.cend();
-  }
-  static inline const_iterator end(type const& what) {
-    return what.end();
-  }
-
-  static inline void clear(type& what) {
-    what.clear();
-  }
-  static inline bool empty(type const& what) {
-    return what.empty();
-  }
-  static inline size_type size(type const& what) {
-    return what.size();
-  }
-
-  static inline value_type const* data(type const& what) {
-    return what.data();
-  }
-  static inline value_type const* c_str(type const& what) {
-    return what.c_str();
-  }
-};
-
-template <typename String>
-class thrift_string_traits_adapter {
- private:
-  using orig = String;
-  using type = folly::remove_cvref_t<orig>;
-  using deco = fatal::add_const_from_t<type, orig>;
-
-  using traits = thrift_string_traits<type>;
-  static_assert(
-      fatal::is_complete<traits>::value,
-      "the required thrift_string_traits specialization is missing");
-
-  deco& _;
-
- public:
-  using value_type = typename traits::value_type;
-  using size_type = typename traits::size_type;
-  using iterator = typename traits::iterator;
-  using const_iterator = typename traits::const_iterator;
-
-  explicit thrift_string_traits_adapter(deco& what) : _(what) {}
-
-  auto& operator*() {
-    return _;
-  }
-  auto& operator*() const {
-    return _;
-  }
-
-  auto begin() {
-    return traits::begin(_);
-  }
-  auto end() {
-    return traits::end(_);
-  }
-
-  auto cbegin() const {
-    return traits::cbegin(_);
-  }
-  auto begin() const {
-    return traits::begin(_);
-  }
-  auto cend() const {
-    return traits::cend(_);
-  }
-  auto end() const {
-    return traits::end(_);
-  }
-
-  auto clear() {
-    traits::clear(_);
-  }
-  auto empty() const {
-    return traits::empty(_);
-  }
-  auto size() const {
-    return traits::size(_);
-  }
-
-  auto const* data() const {
-    return traits::data(_);
-  }
-  auto const* c_str() const {
-    return traits::c_str(_);
-  }
-};
-
-/**
- * This is the type trait class that provides uniform interface to the
- * properties and functionality of list types.
- *
- * To make a custom list type available to Thrift's compile-time reflection
- * support, specialize this template for it.
- *
- * To keep compilation times at bay, standard lists are not supported by
- * default, therefore they will yield an undefined `thrift_list_traits`.
- * To enable their support, include `container_traits.h`. There's also support
- * for containers defined in Folly at `container_traits_folly.h`.
- *
- * This is the specialization for standard vector, showing what's offered by
- * the `thrift_list_traits` class. It can also be used as a template when
- * adding support for custom list classes:
- *
- *  template <typename T, typename A>
- *  struct thrift_list_traits<std::vector<T, A>> {
- *    using type = std::vector<T, A>;
- *
- *    using value_type = typename type::value_type;
- *    using size_type = typename type::size_type;
- *    using iterator = typename type::iterator;
- *    using const_iterator = typename type::const_iterator;
- *
- *    static iterator begin(type &what) { return what.begin(); }
- *    static iterator end(type &what) { return what.end(); }
- *
- *    static const_iterator cbegin(type const &what) { return what.cbegin(); }
- *    static const_iterator begin(type const &what) { return what.begin(); }
- *    static const_iterator cend(type const &what) { return what.cend(); }
- *    static const_iterator end(type const &what) { return what.end(); }
- *
- *    static void clear(type &what) { what.clear(); }
- *    static bool empty(type const &what) { return what.empty(); }
- *    static void push_back(type &what, value_type const &e) {
- *      what.push_back(e); }
- *    static void push_back(type &what, value_type &&e) {
- *      what.push_back(std::move(e)); }
- *    static void reserve(type &what, size_type size) { what.reserve(size); }
- *    static size_type size(type const &what) { return what.size(); }
- *  };
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename>
-struct thrift_list_traits;
-
-template <typename List>
-struct thrift_list_traits_std {
-  using type = List;
-
-  using value_type = typename type::value_type;
-  using size_type = typename type::size_type;
-  using iterator = typename type::iterator;
-  using const_iterator = typename type::const_iterator;
-
-  static inline iterator begin(type& what) {
-    return what.begin();
-  }
-  static inline iterator end(type& what) {
-    return what.end();
-  }
-
-  static inline const_iterator cbegin(type const& what) {
-    return what.cbegin();
-  }
-  static inline const_iterator begin(type const& what) {
-    return what.begin();
-  }
-  static inline const_iterator cend(type const& what) {
-    return what.cend();
-  }
-  static inline const_iterator end(type const& what) {
-    return what.end();
-  }
-
-  static inline void clear(type& what) {
-    what.clear();
-  }
-  static inline bool empty(type const& what) {
-    return what.empty();
-  }
-  static inline void push_back(type& what, value_type const& val) {
-    what.push_back(val);
-  }
-  static inline void push_back(type& what, value_type&& val) {
-    what.push_back(std::move(val));
-  }
-  static inline void reserve(type& what, size_type size) {
-    what.reserve(size);
-  }
-  static inline size_type size(type const& what) {
-    return what.size();
-  }
-  static inline iterator erase(type& what, const_iterator pos) {
-    return what.erase(pos);
-  }
-};
-
-template <typename List>
-class thrift_list_traits_adapter {
- private:
-  using orig = List;
-  using type = folly::remove_cvref_t<orig>;
-  using deco = fatal::add_const_from_t<type, orig>;
-
-  using traits = thrift_list_traits<type>;
-  static_assert(
-      fatal::is_complete<traits>::value,
-      "the required thrift_list_traits specialization is missing");
-
-  deco& _;
-
- public:
-  using value_type = typename traits::value_type;
-  using size_type = typename traits::size_type;
-  using iterator = typename traits::iterator;
-  using const_iterator = typename traits::const_iterator;
-
-  explicit thrift_list_traits_adapter(deco& what) : _(what) {}
-
-  auto& operator*() {
-    return _;
-  }
-  auto& operator*() const {
-    return _;
-  }
-
-  auto begin() {
-    return traits::begin(_);
-  }
-  auto end() {
-    return traits::end(_);
-  }
-
-  auto cbegin() const {
-    return traits::cbegin(_);
-  }
-  auto begin() const {
-    return traits::begin(_);
-  }
-  auto cend() const {
-    return traits::cend(_);
-  }
-  auto end() const {
-    return traits::end(_);
-  }
-
-  auto clear() {
-    traits::clear(_);
-  }
-  auto empty() const {
-    return traits::empty(_);
-  }
-  auto push_back(value_type const& e) {
-    traits::push_back(_, e);
-  }
-  auto push_back(value_type&& e) {
-    traits::push_back(_, std::move(e));
-  }
-  auto reserve(size_type size) {
-    traits::reserve(_, size);
-  }
-  auto size() const {
-    return traits::size(_);
-  }
-  auto erase(const_iterator pos) {
-    return traits::erase(_, pos);
-  }
-};
-
-/**
- * This is the type trait class that provides uniform interface to the
- * properties and functionality of set types.
- *
- * To make a custom set type available to Thrift's compile-time reflection
- * support, specialize this template for it.
- *
- * To keep compilation times at bay, standard sets are not supported by
- * default, therefore they will yield an undefined `thrift_set_traits`.
- * To enable their support, include `container_traits.h`. There's also support
- * for containers defined in Folly at `container_traits_folly.h`.
- *
- * This is the specialization for standard sets, showing what's offered by
- * the `thrift_set_traits` class. It can also be used as a template when
- * adding support for custom set classes:
- *
- *  template <typename K, typename H, typename E, typename A>
- *  struct thrift_set_traits<std::unordered_set<K, H, E, A>> {
- *    using type = std::unordered_set<K, H, E, A>;
- *
- *    using key_type = typename type::key_type;
- *    using value_type = typename type::value_type;
- *    using size_type = typename type::size_type;
- *    using iterator = typename type::iterator;
- *    using const_iterator = typename type::const_iterator;
- *    using reference = typename type::reference;
- *    using const_reference = typename type::const_reference;
- *
- *    static iterator begin(type &what) { return what.begin(); }
- *    static iterator end(type &what) { return what.end(); }
- *
- *    static const_iterator cbegin(type const &what) { return what.cbegin(); }
- *    static const_iterator begin(type const &what) { return what.begin(); }
- *    static const_iterator cend(type const &what) { return what.cend(); }
- *    static const_iterator end(type const &what) { return what.end(); }
- *
- *    static void clear(type &what) { what.clear(); }
- *    static bool empty(type const &what) { return what.empty(); }
- *    static iterator find(type &what, value_type const &val) {
- *      return what.find(val); }
- *    static const_iterator find(type const &what, value_type const &val) {
- *      return what.find(val); }
- *    static iterator insert(
- *        type &what, const_iterator position, value_type const &val) {
- *      return what.insert(position, val); }
- *    static iterator insert(
- *        type &what, const_iterator position, value_type &&val) {
- *      return what.insert(position, std::move(e)); }
- *    static size_type size(type const &what) { return what.size(); }
- *  };
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename>
-struct thrift_set_traits;
-
-template <typename Set>
-struct thrift_set_traits_std {
-  using type = Set;
-
-  using key_type = typename type::key_type;
-  using value_type = typename type::value_type;
-  using size_type = typename type::size_type;
-  using iterator = typename type::iterator;
-  using const_iterator = typename type::const_iterator;
-  using reference = typename type::reference;
-  using const_reference = typename type::const_reference;
-
-  static inline iterator begin(type& what) {
-    return what.begin();
-  }
-  static inline iterator end(type& what) {
-    return what.end();
-  }
-
-  static inline const_iterator cbegin(type const& what) {
-    return what.cbegin();
-  }
-  static inline const_iterator begin(type const& what) {
-    return what.begin();
-  }
-  static inline const_iterator cend(type const& what) {
-    return what.cend();
-  }
-  static inline const_iterator end(type const& what) {
-    return what.end();
-  }
-
-  static inline void clear(type& what) {
-    what.clear();
-  }
-  static inline bool empty(type const& what) {
-    return what.empty();
-  }
-  static inline iterator find(type& what, value_type const& val) {
-    return what.find(val);
-  }
-  static inline const_iterator find(type const& what, value_type const& val) {
-    return what.find(val);
-  }
-  static inline iterator
-  insert(type& what, const_iterator position, value_type const& val) {
-    return what.insert(position, val);
-  }
-  static inline iterator
-  insert(type& what, const_iterator position, value_type&& val) {
-    return what.insert(position, std::move(val));
-  }
-  static inline size_type size(type const& what) {
-    return what.size();
-  }
-  static inline iterator erase(type& what, const_iterator pos) {
-    return what.erase(pos);
-  }
-  static inline size_type erase(type& what, const key_type& key) {
-    return what.erase(key);
-  }
-};
-
-template <typename Set>
-class thrift_set_traits_adapter {
- private:
-  using orig = Set;
-  using type = folly::remove_cvref_t<orig>;
-  using deco = fatal::add_const_from_t<type, orig>;
-
-  using traits = thrift_set_traits<type>;
-  static_assert(
-      fatal::is_complete<traits>::value,
-      "the required thrift_set_traits specialization is missing");
-
-  deco& _;
-
- public:
-  using key_type = typename traits::key_type;
-  using value_type = typename traits::value_type;
-  using size_type = typename traits::size_type;
-  using iterator = typename traits::iterator;
-  using const_iterator = typename traits::const_iterator;
-  using reference = typename traits::reference;
-  using const_reference = typename traits::const_reference;
-
-  explicit thrift_set_traits_adapter(deco& what) : _(what) {}
-
-  auto& operator*() {
-    return _;
-  }
-  auto& operator*() const {
-    return _;
-  }
-
-  auto begin() {
-    return traits::begin(_);
-  }
-  auto end() {
-    return traits::end(_);
-  }
-
-  auto cbegin() const {
-    return traits::cbegin(_);
-  }
-  auto begin() const {
-    return traits::begin(_);
-  }
-  auto cend() const {
-    return traits::cend(_);
-  }
-  auto end() const {
-    return traits::end(_);
-  }
-
-  auto clear() {
-    traits::clear(_);
-  }
-  auto empty() const {
-    return traits::empty(_);
-  }
-  auto find(key_type const& k) {
-    return traits::find(_, k);
-  }
-  auto find(key_type const& k) const {
-    return traits::find(_, k);
-  }
-  auto insert(const_iterator position, value_type const& val) {
-    return traits::insert(_, position, val);
-  }
-  auto insert(const_iterator position, value_type&& val) {
-    return traits::insert(_, position, std::move(val));
-  }
-  auto size() const {
-    return traits::size(_);
-  }
-  auto erase(const_iterator pos) {
-    return traits::erase(_, pos);
-  }
-  auto erase(const key_type& key) {
-    return traits::erase(_, key);
-  }
-};
-
-/**
- * This is the type trait class that provides uniform interface to the
- * properties and functionality of map types.
- *
- * To make a custom map type available to Thrift's compile-time reflection
- * support, specialize this template for it.
- *
- * To keep compilation times at bay, standard maps are not supported by
- * default, therefore they will yield an undefined `thrift_map_traits`.
- * To enable their support, include `container_traits.h`. There's also support
- * for containers defined in Folly at `container_traits_folly.h`.
- *
- * This is the specialization for standard maps, showing what's offered by
- * the `thrift_map_traits` class. It can also be used as a template when
- * adding support for custom map classes:
- *
- *  template <typename K, typename T, typename H, typename E, typename A>
- *  struct thrift_map_traits<std::unordered_map<K, T, H, E, A>> {
- *    using type = std::unordered_map<K, T, H, E, A>;
- *
- *    using key_type = typename type::key_type;
- *    using mapped_type = typename type::mapped_type;
- *    using value_type = typename type::value_type;
- *    using size_type = typename type::size_type;
- *    using iterator = typename type::iterator;
- *    using const_iterator = typename type::const_iterator;
- *    using reference = typename type::reference;
- *    using const_reference = typename type::const_reference;
- *
- *    using key_const_reference = key_type const &;
- *    using mapped_const_reference = mapped_type const &;
- *    using mapped_reference = mapped_type &;
- *
- *    static iterator begin(type &what) { return what.begin(); }
- *    static iterator end(type &what) { return what.end(); }
- *
- *    static const_iterator cbegin(type const &what) { return what.cbegin(); }
- *    static const_iterator begin(type const &what) { return what.begin(); }
- *    static const_iterator cend(type const &what) { return what.cend(); }
- *    static const_iterator end(type const &what) { return what.end(); }
- *
- *    static key_const_reference key(const_iterator i) { return i->first; }
- *    static key_const_reference key(iterator i) { return i->first; }
- *    static mapped_const_reference mapped(const_iterator i) {
- *      return i->second; }
- *    static mapped_reference mapped(iterator i) { return i->second; }
- *
- *    static void clear(type &what) { what.clear(); }
- *    static bool empty(type const &what) { return what.empty(); }
- *    static iterator find(type &what, key_type const &k) {
- *      return what.find(k); }
- *    static const_iterator find(type const &what, key_type const &k) {
- *      return what.find(k); }
- *    static mapped_type& get_or_create(type &what, key_type const &k) {
- *      return what[k]; }
- *    static mapped_type& get_or_create(type &what, key_type &&k) {
- *      return what[std::move(k)]; }
- *    static size_type size(type const &what) { return what.size(); }
- *  };
- *
- * @author: Marcelo Juchem <marcelo@fb.com>
- */
-template <typename>
-struct thrift_map_traits;
-
-template <typename Map>
-struct thrift_map_traits_std {
-  using type = Map;
-
-  using key_type = typename type::key_type;
-  using mapped_type = typename type::mapped_type;
-  using value_type = typename type::value_type;
-  using size_type = typename type::size_type;
-  using iterator = typename type::iterator;
-  using const_iterator = typename type::const_iterator;
-  using reference = typename type::reference;
-  using const_reference = typename type::const_reference;
-
-  using key_const_reference = key_type const&;
-  using mapped_const_reference = mapped_type const&;
-  using mapped_reference = mapped_type&;
-
-  static inline iterator begin(type& what) {
-    return what.begin();
-  }
-  static inline iterator end(type& what) {
-    return what.end();
-  }
-
-  static inline const_iterator cbegin(type const& what) {
-    return what.cbegin();
-  }
-  static inline const_iterator begin(type const& what) {
-    return what.begin();
-  }
-  static inline const_iterator cend(type const& what) {
-    return what.cend();
-  }
-  static inline const_iterator end(type const& what) {
-    return what.end();
-  }
-
-  static inline key_const_reference key(const_iterator i) {
-    return i->first;
-  }
-  static inline key_const_reference key(iterator i) {
-    return i->first;
-  }
-  static inline key_const_reference key(const_reference v) {
-    return v.first;
-  }
-  static inline mapped_const_reference mapped(const_iterator i) {
-    return i->second;
-  }
-  static inline mapped_reference mapped(iterator i) {
-    return i->second;
-  }
-  static inline mapped_reference mapped(reference v) {
-    return v.second;
-  }
-  static inline mapped_const_reference mapped(const_reference v) {
-    return v.second;
-  }
-
-  static inline void clear(type& what) {
-    what.clear();
-  }
-  static inline bool empty(type const& what) {
-    return what.empty();
-  }
-  static inline iterator find(type& what, key_type const& k) {
-    return what.find(k);
-  }
-  static inline const_iterator find(type const& what, key_type const& k) {
-    return what.find(k);
-  }
-  static inline mapped_type& get_or_create(type& what, key_type const& k) {
-    return what[k];
-  }
-  static inline mapped_type& get_or_create(type& what, key_type&& k) {
-    return what[std::move(k)];
-  }
-  static inline size_type size(type const& what) {
-    return what.size();
-  }
-  static inline iterator erase(type& what, const_iterator pos) {
-    return what.erase(pos);
-  }
-  static inline size_type erase(type& what, const key_type& key) {
-    return what.erase(key);
-  }
-};
-
-template <typename Map>
-class thrift_map_traits_adapter {
- private:
-  using orig = Map;
-  using type = folly::remove_cvref_t<orig>;
-  using deco = fatal::add_const_from_t<type, orig>;
-
-  using traits = thrift_map_traits<type>;
-  static_assert(
-      fatal::is_complete<traits>::value,
-      "the required thrift_map_traits specialization is missing");
-
-  deco& _;
-
- public:
-  using key_type = typename traits::key_type;
-  using mapped_type = typename traits::mapped_type;
-  using value_type = typename traits::value_type;
-  using size_type = typename traits::size_type;
-  using iterator = typename traits::iterator;
-  using const_iterator = typename traits::const_iterator;
-
-  using key_const_reference = typename traits::key_const_reference;
-  using mapped_const_reference = typename traits::mapped_const_reference;
-  using mapped_reference = typename traits::mapped_reference;
-
-  explicit thrift_map_traits_adapter(deco& what) : _(what) {}
-
-  auto& operator*() {
-    return _;
-  }
-  auto& operator*() const {
-    return _;
-  }
-
-  auto begin() {
-    return traits::begin(_);
-  }
-  auto end() {
-    return traits::end(_);
-  }
-
-  auto cbegin() const {
-    return traits::cbegin(_);
-  }
-  auto begin() const {
-    return traits::begin(_);
-  }
-  auto cend() const {
-    return traits::cend(_);
-  }
-  auto end() const {
-    return traits::end(_);
-  }
-
-  auto clear() {
-    traits::clear(_);
-  }
-  auto empty() const {
-    return traits::empty(_);
-  }
-  auto find(key_const_reference k) {
-    return traits::find(_, k);
-  }
-  auto find(key_const_reference k) const {
-    return traits::find(_, k);
-  }
-  auto& operator[](key_type const& k) {
-    return traits::get_or_create(_, k);
-  }
-  auto& operator[](key_type&& k) {
-    return traits::get_or_create(_, std::move(k));
-  }
-  auto size() const {
-    return traits::size(_);
-  }
-  auto erase(const_iterator pos) {
-    return traits::erase(_, pos);
-  }
-  auto erase(const key_type& key) {
-    return traits::erase(_, key);
-  }
-};
 
 } // namespace thrift
 } // namespace apache

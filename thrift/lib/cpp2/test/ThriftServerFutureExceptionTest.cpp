@@ -39,9 +39,7 @@ class RaiserHandler : public RaiserSvIf {
   explicit RaiserHandler(function<Future<Unit>()> go) : go_(move(go)) {}
 
  private:
-  Future<Unit> future_doRaise() override {
-    return go_();
-  }
+  Future<Unit> future_doRaise() override { return go_(); }
 
   function<Future<Unit>()> go_;
 };

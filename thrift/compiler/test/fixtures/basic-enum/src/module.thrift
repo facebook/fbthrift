@@ -19,7 +19,8 @@ namespace java test.fixtures.enumstrict
 namespace cpp2 test.fixtures.enumstrict
 namespace py3 test.fixtures.enumstrict
 
-enum EmptyEnum {}
+enum EmptyEnum {
+}
 
 enum MyEnum {
   ONE = 1,
@@ -49,9 +50,11 @@ enum MyBigEnum {
   NINETEEN = 19,
 }
 
-const MyEnum kOne = MyEnum.ONE
+const MyEnum kOne = MyEnum.ONE;
+
+const map<MyEnum, string> enumNames = {MyEnum.ONE: "one", MyEnum.TWO: "two"};
 
 struct MyStruct {
-  1: MyEnum myEnum,
-  2: MyBigEnum myBigEnum = MyBigEnum.ONE
+  1: MyEnum myEnum;
+  2: MyBigEnum myBigEnum = MyBigEnum.ONE;
 }

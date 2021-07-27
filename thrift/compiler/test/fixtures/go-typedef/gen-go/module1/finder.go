@@ -240,13 +240,78 @@ func (p *FinderThreadsafeClient) recvPreviousPlate() (value Plate, err error) {
 }
 
 
+type FinderChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *FinderChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *FinderChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *FinderChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewFinderChannelClient(channel thrift.RequestChannel) *FinderChannelClient {
+  return &FinderChannelClient{RequestChannel: channel}
+}
+
+// Parameters:
+//  - Plate
+func (p *FinderChannelClient) ByPlate(ctx context.Context, plate Plate) (_r *Automobile, err error) {
+  args := FinderByPlateArgs{
+    Plate : plate,
+  }
+  var result FinderByPlateResult
+  err = p.RequestChannel.Call(ctx, "byPlate", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Plate
+func (p *FinderChannelClient) AliasByPlate(ctx context.Context, plate Plate) (_r *Car, err error) {
+  args := FinderAliasByPlateArgs{
+    Plate : plate,
+  }
+  var result FinderAliasByPlateResult
+  err = p.RequestChannel.Call(ctx, "aliasByPlate", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - Plate
+func (p *FinderChannelClient) PreviousPlate(ctx context.Context, plate Plate) (_r Plate, err error) {
+  args := FinderPreviousPlateArgs{
+    Plate : plate,
+  }
+  var result FinderPreviousPlateResult
+  err = p.RequestChannel.Call(ctx, "previousPlate", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+
 type FinderProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler Finder
 }
 
 func (p *FinderProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *FinderProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *FinderProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -260,16 +325,28 @@ func (p *FinderProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
   return p.processorMap
 }
 
+func (p *FinderProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewFinderProcessor(handler Finder) *FinderProcessor {
-  self9 := &FinderProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self9 := &FinderProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self9.processorMap["byPlate"] = &finderProcessorByPlate{handler:handler}
   self9.processorMap["aliasByPlate"] = &finderProcessorAliasByPlate{handler:handler}
   self9.processorMap["previousPlate"] = &finderProcessorPreviousPlate{handler:handler}
+  self9.functionServiceMap["byPlate"] = "Finder"
+  self9.functionServiceMap["aliasByPlate"] = "Finder"
+  self9.functionServiceMap["previousPlate"] = "Finder"
   return self9
 }
 
 type finderProcessorByPlate struct {
   handler Finder
+}
+
+func (p *FinderByPlateResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *finderProcessorByPlate) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -322,6 +399,11 @@ type finderProcessorAliasByPlate struct {
   handler Finder
 }
 
+func (p *FinderAliasByPlateResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *finderProcessorAliasByPlate) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := FinderAliasByPlateArgs{}
   if err := args.Read(iprot); err != nil {
@@ -370,6 +452,11 @@ func (p *finderProcessorAliasByPlate) Run(argStruct thrift.Struct) (thrift.Writa
 
 type finderProcessorPreviousPlate struct {
   handler Finder
+}
+
+func (p *FinderPreviousPlateResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *finderProcessorPreviousPlate) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -436,6 +523,32 @@ func NewFinderByPlateArgs() *FinderByPlateArgs {
 func (p *FinderByPlateArgs) GetPlate() Plate {
   return p.Plate
 }
+type FinderByPlateArgsBuilder struct {
+  obj *FinderByPlateArgs
+}
+
+func NewFinderByPlateArgsBuilder() *FinderByPlateArgsBuilder{
+  return &FinderByPlateArgsBuilder{
+    obj: NewFinderByPlateArgs(),
+  }
+}
+
+func (p FinderByPlateArgsBuilder) Emit() *FinderByPlateArgs{
+  return &FinderByPlateArgs{
+    Plate: p.obj.Plate,
+  }
+}
+
+func (f *FinderByPlateArgsBuilder) Plate(plate Plate) *FinderByPlateArgsBuilder {
+  f.obj.Plate = plate
+  return f
+}
+
+func (f *FinderByPlateArgs) SetPlate(plate Plate) *FinderByPlateArgs {
+  f.Plate = plate
+  return f
+}
+
 func (p *FinderByPlateArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -470,11 +583,11 @@ func (p *FinderByPlateArgs) Read(iprot thrift.Protocol) error {
 
 func (p *FinderByPlateArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  temp := Plate(v)
-  p.Plate = temp
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := Plate(v)
+    p.Plate = temp
+  }
   return nil
 }
 
@@ -512,7 +625,7 @@ func (p *FinderByPlateArgs) String() string {
 //  - Success
 type FinderByPlateResult struct {
   thrift.IResponse
-  Success *Automobile `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *Automobile `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewFinderByPlateResult() *FinderByPlateResult {
@@ -528,6 +641,32 @@ return p.Success
 }
 func (p *FinderByPlateResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type FinderByPlateResultBuilder struct {
+  obj *FinderByPlateResult
+}
+
+func NewFinderByPlateResultBuilder() *FinderByPlateResultBuilder{
+  return &FinderByPlateResultBuilder{
+    obj: NewFinderByPlateResult(),
+  }
+}
+
+func (p FinderByPlateResultBuilder) Emit() *FinderByPlateResult{
+  return &FinderByPlateResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (f *FinderByPlateResultBuilder) Success(success *Automobile) *FinderByPlateResultBuilder {
+  f.obj.Success = success
+  return f
+}
+
+func (f *FinderByPlateResult) SetSuccess(success *Automobile) *FinderByPlateResult {
+  f.Success = success
+  return f
 }
 
 func (p *FinderByPlateResult) Read(iprot thrift.Protocol) error {
@@ -623,6 +762,32 @@ func NewFinderAliasByPlateArgs() *FinderAliasByPlateArgs {
 func (p *FinderAliasByPlateArgs) GetPlate() Plate {
   return p.Plate
 }
+type FinderAliasByPlateArgsBuilder struct {
+  obj *FinderAliasByPlateArgs
+}
+
+func NewFinderAliasByPlateArgsBuilder() *FinderAliasByPlateArgsBuilder{
+  return &FinderAliasByPlateArgsBuilder{
+    obj: NewFinderAliasByPlateArgs(),
+  }
+}
+
+func (p FinderAliasByPlateArgsBuilder) Emit() *FinderAliasByPlateArgs{
+  return &FinderAliasByPlateArgs{
+    Plate: p.obj.Plate,
+  }
+}
+
+func (f *FinderAliasByPlateArgsBuilder) Plate(plate Plate) *FinderAliasByPlateArgsBuilder {
+  f.obj.Plate = plate
+  return f
+}
+
+func (f *FinderAliasByPlateArgs) SetPlate(plate Plate) *FinderAliasByPlateArgs {
+  f.Plate = plate
+  return f
+}
+
 func (p *FinderAliasByPlateArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -657,11 +822,11 @@ func (p *FinderAliasByPlateArgs) Read(iprot thrift.Protocol) error {
 
 func (p *FinderAliasByPlateArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  temp := Plate(v)
-  p.Plate = temp
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := Plate(v)
+    p.Plate = temp
+  }
   return nil
 }
 
@@ -699,7 +864,7 @@ func (p *FinderAliasByPlateArgs) String() string {
 //  - Success
 type FinderAliasByPlateResult struct {
   thrift.IResponse
-  Success *Car `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *Car `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewFinderAliasByPlateResult() *FinderAliasByPlateResult {
@@ -715,6 +880,32 @@ return p.Success
 }
 func (p *FinderAliasByPlateResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type FinderAliasByPlateResultBuilder struct {
+  obj *FinderAliasByPlateResult
+}
+
+func NewFinderAliasByPlateResultBuilder() *FinderAliasByPlateResultBuilder{
+  return &FinderAliasByPlateResultBuilder{
+    obj: NewFinderAliasByPlateResult(),
+  }
+}
+
+func (p FinderAliasByPlateResultBuilder) Emit() *FinderAliasByPlateResult{
+  return &FinderAliasByPlateResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (f *FinderAliasByPlateResultBuilder) Success(success *Car) *FinderAliasByPlateResultBuilder {
+  f.obj.Success = success
+  return f
+}
+
+func (f *FinderAliasByPlateResult) SetSuccess(success *Car) *FinderAliasByPlateResult {
+  f.Success = success
+  return f
 }
 
 func (p *FinderAliasByPlateResult) Read(iprot thrift.Protocol) error {
@@ -810,6 +1001,32 @@ func NewFinderPreviousPlateArgs() *FinderPreviousPlateArgs {
 func (p *FinderPreviousPlateArgs) GetPlate() Plate {
   return p.Plate
 }
+type FinderPreviousPlateArgsBuilder struct {
+  obj *FinderPreviousPlateArgs
+}
+
+func NewFinderPreviousPlateArgsBuilder() *FinderPreviousPlateArgsBuilder{
+  return &FinderPreviousPlateArgsBuilder{
+    obj: NewFinderPreviousPlateArgs(),
+  }
+}
+
+func (p FinderPreviousPlateArgsBuilder) Emit() *FinderPreviousPlateArgs{
+  return &FinderPreviousPlateArgs{
+    Plate: p.obj.Plate,
+  }
+}
+
+func (f *FinderPreviousPlateArgsBuilder) Plate(plate Plate) *FinderPreviousPlateArgsBuilder {
+  f.obj.Plate = plate
+  return f
+}
+
+func (f *FinderPreviousPlateArgs) SetPlate(plate Plate) *FinderPreviousPlateArgs {
+  f.Plate = plate
+  return f
+}
+
 func (p *FinderPreviousPlateArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -844,11 +1061,11 @@ func (p *FinderPreviousPlateArgs) Read(iprot thrift.Protocol) error {
 
 func (p *FinderPreviousPlateArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  temp := Plate(v)
-  p.Plate = temp
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    temp := Plate(v)
+    p.Plate = temp
+  }
   return nil
 }
 
@@ -886,7 +1103,7 @@ func (p *FinderPreviousPlateArgs) String() string {
 //  - Success
 type FinderPreviousPlateResult struct {
   thrift.IResponse
-  Success *Plate `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *Plate `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewFinderPreviousPlateResult() *FinderPreviousPlateResult {
@@ -902,6 +1119,32 @@ return *p.Success
 }
 func (p *FinderPreviousPlateResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type FinderPreviousPlateResultBuilder struct {
+  obj *FinderPreviousPlateResult
+}
+
+func NewFinderPreviousPlateResultBuilder() *FinderPreviousPlateResultBuilder{
+  return &FinderPreviousPlateResultBuilder{
+    obj: NewFinderPreviousPlateResult(),
+  }
+}
+
+func (p FinderPreviousPlateResultBuilder) Emit() *FinderPreviousPlateResult{
+  return &FinderPreviousPlateResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (f *FinderPreviousPlateResultBuilder) Success(success *Plate) *FinderPreviousPlateResultBuilder {
+  f.obj.Success = success
+  return f
+}
+
+func (f *FinderPreviousPlateResult) SetSuccess(success *Plate) *FinderPreviousPlateResult {
+  f.Success = success
+  return f
 }
 
 func (p *FinderPreviousPlateResult) Read(iprot thrift.Protocol) error {
@@ -938,11 +1181,11 @@ func (p *FinderPreviousPlateResult) Read(iprot thrift.Protocol) error {
 
 func (p *FinderPreviousPlateResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  temp := Plate(v)
-  p.Success = &temp
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    temp := Plate(v)
+    p.Success = &temp
+  }
   return nil
 }
 

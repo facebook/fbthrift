@@ -23,7 +23,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
@@ -51,7 +51,7 @@ cdef class __AStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __AStruct_FieldsSetter create(_includes_types.cAStruct* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
 
 
 ctypedef void (*__AStructB_FieldsSetterFunc)(__AStructB_FieldsSetter, object) except *
@@ -62,5 +62,5 @@ cdef class __AStructB_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __AStructB_FieldsSetter create(_includes_types.cAStructB* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
 

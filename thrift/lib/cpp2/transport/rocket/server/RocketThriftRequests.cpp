@@ -32,8 +32,9 @@
 #endif
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/server/LoggingEvent.h>
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
-#include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Flags.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketSinkClientCallback.h>
@@ -96,11 +97,8 @@ RocketException makeResponseRpcError(
 }
 
 void preprocessProxiedExceptionHeaders(
-    ResponseRpcMetadata& metadata,
-    int32_t version) {
-  if (version < 4) {
-    return;
-  }
+    ResponseRpcMetadata& metadata, int32_t version) {
+  DCHECK_GE(version, 4);
 
   auto otherMetadataRef = metadata.otherMetadata_ref();
   if (!otherMetadataRef) {
@@ -120,7 +118,7 @@ void preprocessProxiedExceptionHeaders(
   }
 
   if (auto pexPtr = folly::get_ptr(otherMetadata, "pex")) {
-    metadata.set_proxiedPayloadMetadata(ProxiedPayloadMetadata());
+    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
 
     otherMetadata.insert({"ex", std::move(*pexPtr)});
     otherMetadata.erase("pex");
@@ -128,7 +126,7 @@ void preprocessProxiedExceptionHeaders(
 
   if (auto proxiedErrorPtr =
           folly::get_ptr(otherMetadata, "servicerouter:sr_error")) {
-    metadata.set_proxiedPayloadMetadata(ProxiedPayloadMetadata());
+    metadata.proxiedPayloadMetadata_ref() = ProxiedPayloadMetadata();
 
     otherMetadata.insert(
         {"servicerouter:sr_internal_error", std::move(*proxiedErrorPtr)});
@@ -150,7 +148,7 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
     reader.readMessageBegin(methodNameIgnore, mtype, seqIdIgnore);
 
     switch (mtype) {
-      case T_REPLY: {
+      case MessageType::T_REPLY: {
         auto prefixSize = reader.getCursorPosition();
 
         protocol::TType ftype;
@@ -171,22 +169,39 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
           preprocessProxiedExceptionHeaders(metadata, version);
 
           PayloadExceptionMetadataBase exceptionMetadataBase;
-
+          PayloadDeclaredExceptionMetadata declaredExceptionMetadata;
           if (auto otherMetadataRef = metadata.otherMetadata_ref()) {
-            if (auto uexPtr = folly::get_ptr(*otherMetadataRef, "uex")) {
+            // defined in sync with
+            // thrift/lib/cpp2/transport/core/RpcMetadataUtil.h
+
+            // Setting user exception name and content
+            static const auto uex =
+                std::string(apache::thrift::detail::kHeaderUex);
+            if (auto uexPtr = folly::get_ptr(*otherMetadataRef, uex)) {
               exceptionMetadataBase.name_utf8_ref() = *uexPtr;
-              otherMetadataRef->erase("uex");
+              otherMetadataRef->erase(uex);
             }
-            if (auto uexwPtr = folly::get_ptr(*otherMetadataRef, "uexw")) {
+            static const auto uexw =
+                std::string(apache::thrift::detail::kHeaderUexw);
+            if (auto uexwPtr = folly::get_ptr(*otherMetadataRef, uexw)) {
               exceptionMetadataBase.what_utf8_ref() = *uexwPtr;
-              otherMetadataRef->erase("uexw");
+              otherMetadataRef->erase(uexw);
+            }
+
+            // Setting user declared exception classification
+            static const auto exMeta =
+                std::string(apache::thrift::detail::kHeaderExMeta);
+            if (auto metaPtr = folly::get_ptr(*otherMetadataRef, exMeta)) {
+              ErrorClassification errorClassification =
+                  apache::thrift::detail::deserializeErrorClassification(
+                      *metaPtr);
+              declaredExceptionMetadata.errorClassification_ref() =
+                  std::move(errorClassification);
             }
           }
-
           PayloadExceptionMetadata exceptionMetadata;
           exceptionMetadata.set_declaredException(
-              PayloadDeclaredExceptionMetadata());
-
+              std::move(declaredExceptionMetadata));
           exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
           payloadMetadata.set_exceptionMetadata(
               std::move(exceptionMetadataBase));
@@ -194,10 +209,8 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         metadata.payloadMetadata_ref() = std::move(payloadMetadata);
         break;
       }
-      case T_EXCEPTION: {
-        if (version < 2) {
-          return {};
-        }
+      case MessageType::T_EXCEPTION: {
+        DCHECK_GE(version, 2);
 
         preprocessProxiedExceptionHeaders(metadata, version);
 
@@ -208,6 +221,9 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         exceptionMetadataBase.what_utf8_ref() = ex.getMessage();
 
         auto otherMetadataRef = metadata.otherMetadata_ref();
+        DCHECK(
+            !otherMetadataRef ||
+            !folly::get_ptr(*otherMetadataRef, "servicerouter:sr_error"));
         if (auto proxyErrorPtr = otherMetadataRef
                 ? folly::get_ptr(
                       *otherMetadataRef, "servicerouter:sr_internal_error")
@@ -221,24 +237,8 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
 
           otherMetadataRef->erase("servicerouter:sr_internal_error");
           otherMetadataRef->erase("ex");
-        } else if (
-            auto proxiedErrorPtr = otherMetadataRef
-                ? folly::get_ptr(*otherMetadataRef, "servicerouter:sr_error")
-                : nullptr) {
-          exceptionMetadataBase.name_utf8_ref() = "ProxiedException";
-          PayloadExceptionMetadata exceptionMetadata;
-          exceptionMetadata.set_proxiedException(
-              PayloadProxiedExceptionMetadata());
-          exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
-
-          payload = protocol::base64Decode(*proxiedErrorPtr);
-
-          otherMetadataRef->erase("servicerouter:sr_error");
-          otherMetadataRef->erase("ex");
         } else {
-          if (version < 3) {
-            return {};
-          }
+          DCHECK_GE(version, 3);
 
           auto exPtr = otherMetadataRef
               ? folly::get_ptr(*otherMetadataRef, "ex")
@@ -270,39 +270,24 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
                         ResponseRpcErrorCode::QUEUE_TIMEOUT},
                        {kResponseTooBigErrorCode,
                         ResponseRpcErrorCode::RESPONSE_TOO_BIG},
+                       {kMethodUnknownErrorCode,
+                        ResponseRpcErrorCode::UNKNOWN_METHOD},
                        {kRequestTypeDoesntMatchServiceFunctionType,
                         ResponseRpcErrorCode::WRONG_RPC_KIND},
                        {kInteractionIdUnknownErrorCode,
                         ResponseRpcErrorCode::UNKNOWN_INTERACTION_ID},
                        {kInteractionConstructorErrorErrorCode,
-                        ResponseRpcErrorCode::INTERACTION_CONSTRUCTOR_ERROR}});
+                        ResponseRpcErrorCode::INTERACTION_CONSTRUCTOR_ERROR},
+                       {kRequestParsingErrorCode,
+                        ResponseRpcErrorCode::REQUEST_PARSING_FAILURE},
+                       {kChecksumMismatchErrorCode,
+                        ResponseRpcErrorCode::CHECKSUM_MISMATCH}});
                   if (auto errorCode = folly::get_ptr(errorCodeMap, *exPtr)) {
                     return *errorCode;
                   }
                 }
 
-                if (uexPtr) {
-                  // fall through to handle more specific exception
-                  return folly::none;
-                }
-                switch (ex.getType()) {
-                  case TApplicationException::UNKNOWN_METHOD:
-                    return ResponseRpcErrorCode::UNKNOWN_METHOD;
-
-                  case TApplicationException::PROTOCOL_ERROR:
-                  case TApplicationException::INVALID_TRANSFORM:
-                  case TApplicationException::UNSUPPORTED_CLIENT_TYPE:
-                    return ResponseRpcErrorCode::REQUEST_PARSING_FAILURE;
-
-                  case TApplicationException::CHECKSUM_MISMATCH:
-                    return ResponseRpcErrorCode::CHECKSUM_MISMATCH;
-
-                  case TApplicationException::INTERRUPTION:
-                    return ResponseRpcErrorCode::INTERRUPTION;
-
-                  default:
-                    return folly::none;
-                }
+                return folly::none;
               }()) {
             return makeResponseRpcError(*errorCode, ex.getMessage(), metadata);
           }
@@ -312,11 +297,25 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
           }
           PayloadExceptionMetadata exceptionMetadata;
           if (exPtr && *exPtr == kAppClientErrorCode) {
-            exceptionMetadata.set_appClientException(
-                PayloadAppClientExceptionMetadata());
+            if (version < 8) {
+              exceptionMetadata.set_DEPRECATED_appClientException(
+                  PayloadAppClientExceptionMetadata());
+            } else {
+              PayloadAppUnknownExceptionMetdata aue;
+              aue.errorClassification_ref().ensure().blame_ref() =
+                  ErrorBlame::CLIENT;
+              exceptionMetadata.set_appUnknownException(std::move(aue));
+            }
           } else {
-            exceptionMetadata.set_appServerException(
-                PayloadAppServerExceptionMetadata());
+            if (version < 8) {
+              exceptionMetadata.set_DEPRECATED_appServerException(
+                  PayloadAppServerExceptionMetadata());
+            } else {
+              PayloadAppUnknownExceptionMetdata aue;
+              aue.errorClassification_ref().ensure().blame_ref() =
+                  ErrorBlame::SERVER;
+              exceptionMetadata.set_appUnknownException(std::move(aue));
+            }
           }
           exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
 
@@ -335,21 +334,18 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponseHelper(
         break;
       }
       default:
-        if (version < 3) {
-          return {};
-        }
+        DCHECK_GE(version, 3);
         return makeResponseRpcError(
             ResponseRpcErrorCode::UNKNOWN, "Invalid message type", metadata);
     }
   } catch (...) {
-    auto message = fmt::format(
-        "Invalid response payload envelope: {}",
-        folly::exceptionStr(std::current_exception()).toStdString());
-    if (version < 3) {
-      return TApplicationException(std::move(message));
-    }
+    DCHECK_GE(version, 3);
     return makeResponseRpcError(
-        ResponseRpcErrorCode::UNKNOWN, message, metadata);
+        ResponseRpcErrorCode::UNKNOWN,
+        fmt::format(
+            "Invalid response payload envelope: {}",
+            folly::exceptionStr(std::current_exception()).toStdString()),
+        metadata);
   }
   return {};
 }
@@ -367,17 +363,27 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
         metadata);
   }
 
+  THRIFT_APPLICATION_EVENT(server_write_headers).log([&] {
+    auto size =
+        metadata.otherMetadata_ref() ? metadata.otherMetadata_ref()->size() : 0;
+    std::vector<folly::dynamic> keys;
+    if (size) {
+      keys.reserve(size);
+      for (auto& [k, v] : *metadata.otherMetadata_ref()) {
+        keys.push_back(k);
+      }
+    }
+    return folly::dynamic::object("size", size) //
+        ("keys", folly::dynamic::array(std::move(keys)));
+  });
+
   // apply compression if client has specified compression codec
   if (compressionConfig.has_value()) {
     rocket::detail::setCompressionCodec(
         *compressionConfig, metadata, payload->computeChainDataLength());
   }
 
-  DCHECK(version >= 0);
-  if (version == 0) {
-    return {};
-  }
-
+  DCHECK_GE(version, 1);
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL:
       return processFirstResponseHelper<BinaryProtocolReader>(
@@ -386,12 +392,11 @@ FOLLY_NODISCARD folly::exception_wrapper processFirstResponse(
       return processFirstResponseHelper<CompactProtocolReader>(
           metadata, payload, version);
     default: {
-      auto message = "Invalid response payload protocol id";
-      if (version < 3) {
-        return TApplicationException(std::move(message));
-      }
+      DCHECK_GE(version, 3);
       return makeResponseRpcError(
-          ResponseRpcErrorCode::UNKNOWN, message, metadata);
+          ResponseRpcErrorCode::UNKNOWN,
+          "Invalid response payload protocol id",
+          metadata);
     }
   }
 }
@@ -405,7 +410,7 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
     Cpp2ConnContext& connContext,
     std::shared_ptr<folly::RequestContext> rctx,
     RequestsRegistry& reqRegistry,
-    std::unique_ptr<folly::IOBuf> debugPayload,
+    rocket::Payload&& debugPayload,
     RocketServerFrameContext&& context,
     int32_t version)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
@@ -418,7 +423,8 @@ ThriftServerRequestResponse::ThriftServerRequestResponse(
       *getRequestContext(),
       std::move(rctx),
       getProtoId(),
-      std::move(debugPayload));
+      std::move(debugPayload),
+      stateMachine_);
   scheduleTimeouts();
 }
 
@@ -442,6 +448,13 @@ void ThriftServerRequestResponse::sendThriftResponse(
       std::move(cb));
 }
 
+void ThriftServerRequestResponse::sendThriftException(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::MessageChannel::SendCallbackPtr cb) noexcept {
+  sendThriftResponse(std::move(metadata), std::move(data), std::move(cb));
+}
+
 void ThriftServerRequestResponse::sendSerializedError(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> exbuf) noexcept {
@@ -461,7 +474,7 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
     Cpp2ConnContext& connContext,
     std::shared_ptr<folly::RequestContext> rctx,
     RequestsRegistry& reqRegistry,
-    std::unique_ptr<folly::IOBuf> debugPayload,
+    rocket::Payload&& debugPayload,
     RocketServerFrameContext&& context,
     folly::Function<void()> onComplete)
     : ThriftRequestCore(serverConfigs, std::move(metadata), connContext),
@@ -474,7 +487,8 @@ ThriftServerRequestFnf::ThriftServerRequestFnf(
       *getRequestContext(),
       std::move(rctx),
       getProtoId(),
-      std::move(debugPayload));
+      std::move(debugPayload),
+      stateMachine_);
   scheduleTimeouts();
 }
 
@@ -491,9 +505,15 @@ void ThriftServerRequestFnf::sendThriftResponse(
   LOG(FATAL) << "One-way requests cannot send responses";
 }
 
+void ThriftServerRequestFnf::sendThriftException(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::MessageChannel::SendCallbackPtr cb) noexcept {
+  sendThriftResponse(std::move(metadata), std::move(data), std::move(cb));
+}
+
 void ThriftServerRequestFnf::sendSerializedError(
-    ResponseRpcMetadata&&,
-    std::unique_ptr<folly::IOBuf>) noexcept {}
+    ResponseRpcMetadata&&, std::unique_ptr<folly::IOBuf>) noexcept {}
 
 void ThriftServerRequestFnf::closeConnection(
     folly::exception_wrapper ew) noexcept {
@@ -508,7 +528,7 @@ ThriftServerRequestStream::ThriftServerRequestStream(
     Cpp2ConnContext& connContext,
     std::shared_ptr<folly::RequestContext> rctx,
     RequestsRegistry& reqRegistry,
-    std::unique_ptr<folly::IOBuf> debugPayload,
+    rocket::Payload&& debugPayload,
     RocketServerFrameContext&& context,
     int32_t version,
     RocketStreamClientCallback* clientCallback,
@@ -525,7 +545,8 @@ ThriftServerRequestStream::ThriftServerRequestStream(
       *getRequestContext(),
       std::move(rctx),
       getProtoId(),
-      std::move(debugPayload));
+      std::move(debugPayload),
+      stateMachine_);
   if (auto compressionConfig = getCompressionConfig()) {
     clientCallback_->setCompressionConfig(*compressionConfig);
   }
@@ -537,6 +558,13 @@ void ThriftServerRequestStream::sendThriftResponse(
     std::unique_ptr<folly::IOBuf>,
     apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
   LOG(FATAL) << "Stream requests must respond via sendStreamThriftResponse";
+}
+
+void ThriftServerRequestStream::sendThriftException(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
+  sendSerializedError(std::move(metadata), std::move(data));
 }
 
 bool ThriftServerRequestStream::sendStreamThriftResponse(
@@ -570,6 +598,10 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
     ResponseRpcMetadata&& metadata,
     std::unique_ptr<folly::IOBuf> data,
     apache::thrift::detail::ServerStreamFactory&& stream) noexcept {
+  if (!stream) {
+    sendSerializedError(std::move(metadata), std::move(data));
+    return;
+  }
   if (auto error = processFirstResponse(
           metadata, data, getProtoId(), version_, getCompressionConfig())) {
     error.handle(
@@ -583,8 +615,8 @@ void ThriftServerRequestStream::sendStreamThriftResponse(
   context_.unsetMarkRequestComplete();
   clientCallback_->setProtoId(getProtoId());
   stream(
-      apache::thrift::FirstResponsePayload{std::move(data),
-                                           std::move(metadata)},
+      apache::thrift::FirstResponsePayload{
+          std::move(data), std::move(metadata)},
       clientCallback_,
       &evb_);
 }
@@ -621,7 +653,7 @@ ThriftServerRequestSink::ThriftServerRequestSink(
     Cpp2ConnContext& connContext,
     std::shared_ptr<folly::RequestContext> rctx,
     RequestsRegistry& reqRegistry,
-    std::unique_ptr<folly::IOBuf> debugPayload,
+    rocket::Payload&& debugPayload,
     RocketServerFrameContext&& context,
     int32_t version,
     RocketSinkClientCallback* clientCallback,
@@ -638,7 +670,8 @@ ThriftServerRequestSink::ThriftServerRequestSink(
       *getRequestContext(),
       std::move(rctx),
       getProtoId(),
-      std::move(debugPayload));
+      std::move(debugPayload),
+      stateMachine_);
   if (auto compressionConfig = getCompressionConfig()) {
     clientCallback_->setCompressionConfig(*compressionConfig);
   }
@@ -650,6 +683,13 @@ void ThriftServerRequestSink::sendThriftResponse(
     std::unique_ptr<folly::IOBuf>,
     apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
   LOG(FATAL) << "Sink requests must respond via sendSinkThriftResponse";
+}
+
+void ThriftServerRequestSink::sendThriftException(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    apache::thrift::MessageChannel::SendCallbackPtr) noexcept {
+  sendSerializedError(std::move(metadata), std::move(data));
 }
 
 void ThriftServerRequestSink::sendSerializedError(
@@ -702,12 +742,37 @@ void ThriftServerRequestSink::sendSinkThriftResponse(
       serverCallback.get());
 
   folly::coro::co_invoke(
-      [serverCallback =
-           std::move(serverCallback)]() -> folly::coro::Task<void> {
-        co_return co_await serverCallback->start();
-      })
+      &apache::thrift::detail::ServerSinkBridge::start,
+      std::move(serverCallback))
       .scheduleOn(executor)
       .start();
+}
+
+bool ThriftServerRequestSink::sendSinkThriftResponse(
+    ResponseRpcMetadata&& metadata,
+    std::unique_ptr<folly::IOBuf> data,
+    SinkServerCallbackPtr serverCallback) noexcept {
+  if (!serverCallback) {
+    sendSerializedError(std::move(metadata), std::move(data));
+    return false;
+  }
+  if (auto error = processFirstResponse(
+          metadata, data, getProtoId(), version_, getCompressionConfig())) {
+    error.handle(
+        [&](RocketException& ex) {
+          std::exchange(clientCallback_, nullptr)
+              ->onFirstResponseError(std::move(ex));
+        },
+        [&](...) { sendErrorWrapped(std::move(error), kUnknownErrorCode); });
+    return false;
+  }
+  context_.unsetMarkRequestComplete();
+  serverCallback->resetClientCallback(*clientCallback_);
+  clientCallback_->setProtoId(getProtoId());
+  return clientCallback_->onFirstResponse(
+      FirstResponsePayload{std::move(data), std::move(metadata)},
+      nullptr, /* evb */
+      serverCallback.release());
 }
 #endif
 

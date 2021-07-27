@@ -20,8 +20,7 @@ namespace example {
 namespace chatroom {
 
 void EchoHandler::echo(
-    std::string& response,
-    std::unique_ptr<std::string> message) {
+    std::string& response, std::unique_ptr<std::string> message) {
   response = *message;
 }
 } // namespace chatroom

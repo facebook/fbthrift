@@ -6,7 +6,7 @@
 #
 from cpython cimport bool as pbool, int as pint, float as pfloat
 
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 
@@ -15,13 +15,6 @@ cimport module.types as _module_types
 
 cdef class MyStructNestedAnnotation_Builder(thrift.py3.builder.StructBuilder):
     cdef public str name
-
-
-cdef class MyStructAnnotation_Builder(thrift.py3.builder.StructBuilder):
-    cdef public pint count
-    cdef public str name
-    cdef public str extra
-    cdef public object nest
 
 
 cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):

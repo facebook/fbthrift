@@ -48,9 +48,7 @@ struct memory_buffer {
     return data;
   }
 
-  bool empty() const {
-    return index_ == buffer_.size();
-  }
+  bool empty() const { return index_ == buffer_.size(); }
 
  private:
   using buffer_type = std::vector<char>;
@@ -240,9 +238,7 @@ struct serializer<type_class::map<KeyTypeClass, MappedTypeClass>> {
 struct struct_member_serializer {
   template <typename Member, std::size_t Index, typename T>
   void operator()(
-      fatal::indexed<Member, Index>,
-      T const& what,
-      data_writer& writer) const {
+      fatal::indexed<Member, Index>, T const& what, data_writer& writer) const {
     auto const& value = typename Member::getter{}(what);
     serializer<typename Member::type_class>::serialize(value, writer);
   }
@@ -250,8 +246,8 @@ struct struct_member_serializer {
 
 struct struct_member_deserializer {
   template <typename Member, std::size_t Index, typename T>
-  void operator()(fatal::indexed<Member, Index>, T& out, data_reader& reader)
-      const {
+  void operator()(
+      fatal::indexed<Member, Index>, T& out, data_reader& reader) const {
     auto& member_ref = typename Member::getter{}(out);
     serializer<typename Member::type_class>::deserialize(member_ref, reader);
   }
@@ -333,12 +329,12 @@ struct serializer<type_class::variant> {
 
 template <typename T>
 void serialize(T const& what, data_writer& writer) {
-  serializer<reflect_type_class<T>>::serialize(what, writer);
+  serializer<reflect_type_class_of_thrift_class<T>>::serialize(what, writer);
 }
 
 template <typename T>
 void deserialize(T& out, data_reader& reader) {
-  serializer<reflect_type_class<T>>::deserialize(out, reader);
+  serializer<reflect_type_class_of_thrift_class<T>>::deserialize(out, reader);
 }
 
 template <typename T>

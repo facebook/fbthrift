@@ -16,8 +16,15 @@
 
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 
+#include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+
 namespace apache {
 namespace thrift {
+
+bool ThriftRequestCore::includeInRecentRequestsCount(
+    const std::string_view methodName) {
+  return util::includeInRecentRequestsCount(methodName);
+}
 
 ThriftRequestCore::RequestTimestampSample::RequestTimestampSample(
     server::TServerObserver::CallTimestamps& timestamps,
@@ -37,9 +44,7 @@ void ThriftRequestCore::RequestTimestampSample::sendQueued() {
 }
 
 void ThriftRequestCore::RequestTimestampSample::messageSent() {
-  SCOPE_EXIT {
-    delete this;
-  };
+  SCOPE_EXIT { delete this; };
   timestamps_.writeEnd = std::chrono::steady_clock::now();
   if (chainedCallback_ != nullptr) {
     chainedCallback_->messageSent();
@@ -48,9 +53,7 @@ void ThriftRequestCore::RequestTimestampSample::messageSent() {
 
 void ThriftRequestCore::RequestTimestampSample::messageSendError(
     folly::exception_wrapper&& e) {
-  SCOPE_EXIT {
-    delete this;
-  };
+  SCOPE_EXIT { delete this; };
   timestamps_.writeEnd = std::chrono::steady_clock::now();
   if (chainedCallback_ != nullptr) {
     chainedCallback_->messageSendError(std::move(e));
@@ -64,14 +67,14 @@ ThriftRequestCore::RequestTimestampSample::~RequestTimestampSample() {
 }
 
 MessageChannel::SendCallbackPtr ThriftRequestCore::prepareSendCallback(
-    MessageChannel::SendCallbackPtr&& cb,
-    server::TServerObserver* observer) {
+    MessageChannel::SendCallbackPtr&& cb, server::TServerObserver* observer) {
   auto cbPtr = std::move(cb);
   // If we are sampling this call, wrap it with a RequestTimestampSample,
   // which also implements MessageChannel::SendCallback. Callers of
   // sendReply/sendError are responsible for cleaning up their own callbacks.
   auto& timestamps = getTimestamps();
-  if (timestamps.getSamplingStatus().isEnabledByServer()) {
+  if (stateMachine_.getStartedProcessing() &&
+      timestamps.getSamplingStatus().isEnabledByServer()) {
     auto chainedCallback = cbPtr.release();
     return MessageChannel::SendCallbackPtr(
         new ThriftRequestCore::RequestTimestampSample(
@@ -93,11 +96,11 @@ void ThriftRequestCore::sendReplyInternal(
 }
 
 void ThriftRequestCore::sendReply(
-    std::unique_ptr<folly::IOBuf>&& buf,
+    ResponsePayload&& response,
     MessageChannel::SendCallback* cb,
     folly::Optional<uint32_t> crc32c) {
   auto cbWrapper = MessageChannel::SendCallbackPtr(cb);
-  if (active_.exchange(false)) {
+  if (tryCancel()) {
     cancelTimeout();
     // Mark processEnd for the request.
     // Note: this processEnd time unfortunately does not account for the time
@@ -115,7 +118,41 @@ void ThriftRequestCore::sendReply(
         metadata.crc32c_ref() = *crc32c;
       }
       sendReplyInternal(
-          std::move(metadata), std::move(buf), std::move(cbWrapper));
+          std::move(metadata),
+          std::move(response).buffer(),
+          std::move(cbWrapper));
+      if (auto* observer = serverConfigs_.getObserver()) {
+        observer->sentReply();
+      }
+    }
+  }
+}
+
+void ThriftRequestCore::sendException(
+    ResponsePayload&& response, MessageChannel::SendCallback* cb) {
+  auto cbWrapper = MessageChannel::SendCallbackPtr(cb);
+  if (tryCancel()) {
+    cancelTimeout();
+    // Mark processEnd for the request.
+    // Note: this processEnd time unfortunately does not account for the time
+    // to compress the response in rocket today (which happens in
+    // ThriftServerRequestResponse::sendThriftResponse).
+    // TODO: refactor to move response compression to CPU thread.
+    ;
+    auto& timestamps = getTimestamps();
+    if (UNLIKELY(timestamps.getSamplingStatus().isEnabled())) {
+      timestamps.processEnd = std::chrono::steady_clock::now();
+    }
+    if (!isOneway()) {
+      auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
+      if (checkResponseSize(*response.buffer())) {
+        sendThriftException(
+            std::move(metadata),
+            std::move(response).buffer(),
+            std::move(cbWrapper));
+      } else {
+        sendResponseTooBigEx();
+      }
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
       }

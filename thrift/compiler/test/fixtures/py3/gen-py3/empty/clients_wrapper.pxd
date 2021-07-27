@@ -20,8 +20,9 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
+from thrift.py3.client cimport cClientWrapper
 
 cimport empty.types as _empty_types
 

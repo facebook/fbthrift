@@ -23,14 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
-public final class MyStruct {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
+public final class MyStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.swift.enumstrict.MyEnum myEnum,
-        @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE) final test.fixtures.swift.enumstrict.MyBigEnum myBigEnum
+        @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE) final test.fixtures.swift.enumstrict.MyEnum myEnum,
+        @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE) final test.fixtures.swift.enumstrict.MyBigEnum myBigEnum
     ) {
         this.myEnum = myEnum;
         this.myBigEnum = myBigEnum;
@@ -38,17 +37,16 @@ public final class MyStruct {
     
     @ThriftConstructor
     protected MyStruct() {
-      this.myEnum = null;
-      this.myBigEnum = null;
+      this.myEnum = test.fixtures.swift.enumstrict.MyEnum.fromInteger(0);
+      this.myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.ONE;
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
-        private test.fixtures.swift.enumstrict.MyEnum myEnum = null;
+        private test.fixtures.swift.enumstrict.MyEnum myEnum = test.fixtures.swift.enumstrict.MyEnum.fromInteger(0);
         private test.fixtures.swift.enumstrict.MyBigEnum myBigEnum = test.fixtures.swift.enumstrict.MyBigEnum.ONE;
     
-        @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
         public Builder setMyEnum(test.fixtures.swift.enumstrict.MyEnum myEnum) {
             this.myEnum = myEnum;
             return this;
@@ -56,7 +54,7 @@ public final class MyStruct {
     
         public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
     
-            @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
         public Builder setMyBigEnum(test.fixtures.swift.enumstrict.MyBigEnum myBigEnum) {
             this.myBigEnum = myBigEnum;
             return this;
@@ -76,7 +74,6 @@ public final class MyStruct {
                 this.myEnum,
                 this.myBigEnum
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -97,24 +94,12 @@ public final class MyStruct {
       FIELD_METADATA.put(2, MY_BIG_ENUM_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.swift.enumstrict.MyEnum getMyEnum() { return myEnum; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyEnum() {
-        return this.myEnum != null;
-    }
     
     
-    @ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="myBigEnum", requiredness=Requiredness.NONE)
     public test.fixtures.swift.enumstrict.MyBigEnum getMyBigEnum() { return myBigEnum; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyBigEnum() {
-        return this.myBigEnum != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -149,6 +134,10 @@ public final class MyStruct {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
+      return MyStruct::read0;
+    }
     
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
@@ -196,4 +185,11 @@ public final class MyStruct {
       oprot.writeStructEnd();
     }
     
+    private static class _MyStructLazy {
+        private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
+    }
+    
+    public static MyStruct defaultInstance() {
+        return  _MyStructLazy._DEFAULT;
+    }
 }

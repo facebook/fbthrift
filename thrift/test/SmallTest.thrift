@@ -21,32 +21,32 @@ struct Goodbyez {
 }
 
 struct BoolPasser {
-  1: bool value = 1
+  1: bool value = 1;
 }
 
 struct Hello {
-  1: i32 simple = 53,
-  2: map<i32,i32> complex = {23:532, 6243:632, 2355:532},
-  3: map<i32, map<i32,i32>> complexer,
-  4: string words = "words",
-  5: Goodbyez thinz = {'val' : 36632},
-  6: float x
+  1: i32 simple = 53;
+  2: map<i32, i32> complex = {23: 532, 6243: 632, 2355: 532};
+  3: map<i32, map<i32, i32>> complexer;
+  4: string words = "words";
+  5: Goodbyez thinz = {'val': 36632};
+  6: float x;
 }
 
-const map<i32,map<i32,i32>> CMAP = { 235: {235:235}, 53:{53:53} }
+const map<i32, map<i32, i32>> CMAP = {235: {235: 235}, 53: {53: 53}};
 const i32 CINT = 325;
 const float A = 10;
-const Hello WHOA = {'simple' : 532}
+const Hello WHOA = {'simple': 532};
 
 exception Goodbye {
-  1: i32 simple,
-  2: map<i32,i32> complex,
-  3: map<i32, map<i32,i32>> complexer,
+  1: i32 simple;
+  2: map<i32, i32> complex;
+  3: map<i32, map<i32, i32>> complexer;
 }
 
 service SmallService {
-  Hello testMe(1:i32 hello=64, 2: Hello wonk) throws (1: Goodbye g),
-  void testVoid() throws (1: Goodbye g),
-  i32 testI32(1:i32 boo),
-  float testFloat(1:i32 boo, 2:float foo)
+  Hello testMe(1: i32 hello = 64, 2: Hello wonk) throws (1: Goodbye g);
+  void testVoid() throws (1: Goodbye g);
+  i32 testI32(1: i32 boo);
+  float testFloat(1: i32 boo, 2: float foo);
 }

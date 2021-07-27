@@ -21,8 +21,8 @@
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_layouts.h>
 #include <thrift/lib/cpp2/frozen/test/gen-cpp2/Example_types.h>
 
-using namespace apache::thrift;
-using namespace frozen;
+namespace apache::thrift::frozen {
+namespace {
 
 constexpr int kRows = 490;
 constexpr int kCols = 51;
@@ -119,12 +119,26 @@ BENCHMARK_RELATIVE_PARAM(benchmarkSumSavedCols, fuvvi32)
 constexpr size_t kEntries = 1000000;
 constexpr size_t kChunkSize = 1000;
 
-template <class K>
+template <typename T>
+FixedSizeString<sizeof(T)> copyToFixedSizeStr(T value) {
+  FixedSizeString<sizeof(T)> valueStr;
+  valueStr.resize(sizeof(T));
+  memcpy(&valueStr[0], reinterpret_cast<const void*>(&value), sizeof(T));
+  return valueStr;
+}
+
+template <typename K>
 K makeKey() {
   return folly::to<K>(folly::Random::rand32(kEntries));
 }
 
-template <class K>
+template <>
+FixedSizeString<8> makeKey<FixedSizeString<8>>() {
+  return copyToFixedSizeStr(
+      folly::to<int64_t>(folly::Random::rand32(kEntries)));
+}
+
+template <typename K>
 const std::vector<K>& makeKeys() {
   // static to reuse storage across iterations.
   static std::vector<K> keys(kChunkSize);
@@ -144,15 +158,66 @@ Map makeMap() {
   return hist;
 }
 
-template <class K>
-using OwnedKey = typename std::conditional<
-    std::is_same<K, folly::StringPiece>::value,
-    std::string,
-    K>::type;
+template <
+    typename K,
+    typename V,
+    template <typename, typename>
+    class ContainerType>
+auto convertToFixedSizeMap(const ContainerType<K, V>& map) {
+  ContainerType<FixedSizeString<sizeof(K)>, FixedSizeString<sizeof(V)>> strMap;
+  strMap.reserve(map.size());
+  for (const auto& [key, value] : map) {
+    strMap[copyToFixedSizeStr(key)] = copyToFixedSizeStr(value);
+  }
+  return strMap;
+}
+
+template <typename K, typename V>
+using UnorderedMapType = std::unordered_map<K, V>;
+
+template <typename K>
+struct OwnedKey {
+  using type = K;
+};
+
+template <>
+struct OwnedKey<folly::StringPiece> {
+  using type = std::string;
+};
+
+template <>
+struct OwnedKey<folly::ByteRange> {
+  using type = FixedSizeString<8>;
+};
+
+template <
+    typename M,
+    typename T,
+    std::enable_if_t<
+        !std::is_same<typename M::key_type, folly::ByteRange>::value,
+        bool> = true>
+typename M::const_iterator mapFind(const M& map, const T& key) {
+  return map.find(key);
+}
+
+// Enabled for hashmaps with FixedSizeString as the key_type, where the
+// corresponding view map would have folly::ByteRange as the key_type.
+template <
+    typename M,
+    typename T,
+    std::enable_if_t<
+        std::is_same<typename M::key_type, folly::ByteRange>::value,
+        bool> = true>
+typename M::const_iterator mapFind(const M& map, const T& key) {
+  static_assert(std::is_same<T, FixedSizeString<8>>::value);
+  auto keyView = folly::ByteRange{
+      reinterpret_cast<const uint8_t*>(key.data()), key.size()};
+  return map.find(keyView);
+}
 
 template <class Map>
 void benchmarkLookup(size_t iters, const Map& map) {
-  using K = OwnedKey<typename Map::key_type>;
+  using K = typename OwnedKey<typename Map::key_type>::type;
   int s = 0;
   for (;;) {
     folly::BenchmarkSuspender setup;
@@ -164,7 +229,7 @@ void benchmarkLookup(size_t iters, const Map& map) {
         folly::doNotOptimizeAway(s);
         return;
       }
-      auto found = map.find(key);
+      auto found = mapFind(map, key);
       if (found != map.end()) {
         ++s;
       }
@@ -179,10 +244,13 @@ auto hashMap_f32 = makeMap<std::unordered_map<float, int>>();
 auto hashMap_i32 = makeMap<std::unordered_map<int32_t, int>>();
 auto hashMap_i64 = makeMap<std::unordered_map<int64_t, int>>();
 auto hashMap_str = makeMap<std::unordered_map<std::string, int>>();
+auto hashMap_fixedStr =
+    convertToFixedSizeMap<int64_t, int, UnorderedMapType>(hashMap_i64);
 auto frozenHashMap_f32 = freeze(hashMap_f32);
 auto frozenHashMap_i32 = freeze(hashMap_i32);
 auto frozenHashMap_i64 = freeze(hashMap_i64);
 auto frozenHashMap_str = freeze(hashMap_str);
+auto frozenHashMap_fixedStr = freeze(hashMap_fixedStr);
 
 BENCHMARK_PARAM(benchmarkLookup, hashMap_f32)
 BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_f32)
@@ -192,6 +260,8 @@ BENCHMARK_PARAM(benchmarkLookup, hashMap_i64)
 BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_i64)
 BENCHMARK_PARAM(benchmarkLookup, hashMap_str)
 BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_str)
+BENCHMARK_PARAM(benchmarkLookup, hashMap_fixedStr)
+BENCHMARK_RELATIVE_PARAM(benchmarkLookup, frozenHashMap_fixedStr)
 
 BENCHMARK_DRAW_LINE();
 
@@ -253,50 +323,54 @@ BENCHMARK_RELATIVE_PARAM(benchmarkOldFreezeDataToString, hashMap_i32)
 ============================================================================
 thrift/lib/cpp2/frozen/test/FrozenBench.cpp     relative  time/iter  iters/s
 ============================================================================
-benchmarkSum(vvi16)                                          4.93us  203.01K
-benchmarkSum(fvvi16)                               3.86%   127.70us    7.83K
-benchmarkSum(fuvvi16)                             49.45%     9.96us  100.39K
-benchmarkSum(vvi32)                                          5.76us  173.51K
-benchmarkSum(fvvi32)                               4.51%   127.72us    7.83K
-benchmarkSum(fuvvi32)                             55.70%    10.35us   96.64K
-benchmarkSum(vvi64)                                         13.80us   72.48K
-benchmarkSum(fvvi64)                               7.37%   187.20us    5.34K
-benchmarkSum(fuvvi64)                             75.72%    18.22us   54.88K
-benchmarkSum(vvf32)                                         83.52us   11.97K
-benchmarkSum(fvvf32)                              99.54%    83.90us   11.92K
+benchmarkSum(vvi16)                                          4.32us  231.24K
+benchmarkSum(fvvi16)                               3.52%   122.88us    8.14K
+benchmarkSum(fuvvi16)                             47.29%     9.15us  109.35K
+benchmarkSum(vvi32)                                          3.56us  280.96K
+benchmarkSum(fvvi32)                               3.18%   112.05us    8.92K
+benchmarkSum(fuvvi32)                             45.79%     7.77us  128.64K
+benchmarkSum(vvi64)                                          6.46us  154.76K
+benchmarkSum(fvvi64)                               5.16%   125.33us    7.98K
+benchmarkSum(fuvvi64)                             59.78%    10.81us   92.51K
+benchmarkSum(vvf32)                                         83.51us   11.97K
+benchmarkSum(fvvf32)                              99.09%    84.28us   11.87K
 ----------------------------------------------------------------------------
-benchmarkSumCols(vvi32)                                     35.23us   28.38K
-benchmarkSumCols(fvvi32)                          12.49%   282.07us    3.55K
-benchmarkSumCols(fuvvi32)                         18.26%   192.99us    5.18K
-benchmarkSumSavedCols(fvvi32)                     32.34%   108.94us    9.18K
-benchmarkSumSavedCols(fuvvi32)                   194.45%    18.12us   55.19K
+benchmarkSumCols(vvi32)                                     18.26us   54.77K
+benchmarkSumCols(fvvi32)                           5.11%   357.29us    2.80K
+benchmarkSumCols(fuvvi32)                          9.18%   198.89us    5.03K
+benchmarkSumSavedCols(fvvi32)                     14.73%   123.94us    8.07K
+benchmarkSumSavedCols(fuvvi32)                    92.12%    19.82us   50.46K
 ----------------------------------------------------------------------------
-benchmarkLookup(hashMap_f32)                                64.58ns   15.49M
-benchmarkLookup(frozenHashMap_f32)               132.46%    48.75ns   20.51M
-benchmarkLookup(hashMap_i32)                                21.59ns   46.31M
-benchmarkLookup(frozenHashMap_i32)                57.54%    37.52ns   26.65M
-benchmarkLookup(hashMap_i64)                                26.85ns   37.24M
-benchmarkLookup(frozenHashMap_i64)                77.91%    34.47ns   29.01M
-benchmarkLookup(hashMap_str)                               122.18ns    8.18M
-benchmarkLookup(frozenHashMap_str)               128.36%    95.18ns   10.51M
+benchmarkLookup(hashMap_f32)                               163.78ns    6.11M
+benchmarkLookup(frozenHashMap_f32)               299.82%    54.63ns   18.31M
+benchmarkLookup(hashMap_i32)                                43.95ns   22.75M
+benchmarkLookup(frozenHashMap_i32)                97.45%    45.10ns   22.17M
+benchmarkLookup(hashMap_i64)                                61.90ns   16.15M
+benchmarkLookup(frozenHashMap_i64)               144.47%    42.85ns   23.34M
+benchmarkLookup(hashMap_str)                               389.26ns    2.57M
+benchmarkLookup(frozenHashMap_str)               347.28%   112.09ns    8.92M
+benchmarkLookup(hashMap_fixedStr)                          132.96ns    7.52M
+benchmarkLookup(frozenHashMap_fixedStr)          273.92%    48.54ns   20.60M
 ----------------------------------------------------------------------------
-benchmarkLookup(map_f32)                                   352.68ns    2.84M
-benchmarkLookup(frozenMap_f32)                   177.46%   198.74ns    5.03M
-benchmarkLookup(map_i32)                                   347.51ns    2.88M
-benchmarkLookup(frozenMap_i32)                   110.00%   315.92ns    3.17M
-benchmarkLookup(map_i64)                                   344.25ns    2.90M
-benchmarkLookup(frozenMap_i64)                   123.47%   278.80ns    3.59M
+benchmarkLookup(map_f32)                                   627.60ns    1.59M
+benchmarkLookup(frozenMap_f32)                   265.51%   236.37ns    4.23M
+benchmarkLookup(map_i32)                                   486.12ns    2.06M
+benchmarkLookup(frozenMap_i32)                   146.07%   332.81ns    3.00M
+benchmarkLookup(map_i64)                                   492.17ns    2.03M
+benchmarkLookup(frozenMap_i64)                   126.09%   390.34ns    2.56M
 ----------------------------------------------------------------------------
-benchmarkFreezeDataToString(vvf32)                         107.88us    9.27K
-benchmarkOldFreezeDataToString(vvf32)             82.78%   130.31us    7.67K
-benchmarkFreezeDataToString(tuple)                         233.81ns    4.28M
-benchmarkOldFreezeDataToString(tuple)            236.93%    98.68ns   10.13M
-benchmarkFreezeDataToString(strings)                       839.63ns    1.19M
-benchmarkOldFreezeDataToString(strings)          297.64%   282.10ns    3.54M
-benchmarkFreezeDataToString(hashMap_i32)                    41.09ms    24.34
-benchmarkOldFreezeDataToString(hashMap_i32)       43.27%    94.95ms    10.53
+benchmarkFreezeDataToString(vvf32)                         133.03us    7.52K
+benchmarkOldFreezeDataToString(vvf32)             81.62%   162.99us    6.14K
+benchmarkFreezeDataToString(tuple)                         204.38ns    4.89M
+benchmarkOldFreezeDataToString(tuple)            184.05%   111.05ns    9.01M
+benchmarkFreezeDataToString(strings)                       800.70ns    1.25M
+benchmarkOldFreezeDataToString(strings)          215.42%   371.69ns    2.69M
+benchmarkFreezeDataToString(hashMap_i32)                   115.49ms     8.66
+benchmarkOldFreezeDataToString(hashMap_i32)       62.11%   185.93ms     5.38
 ============================================================================
 #endif
+} // namespace
+} // namespace apache::thrift::frozen
 
 int main(int argc, char** argv) {
   google::InitGoogleLogging(argv[0]);

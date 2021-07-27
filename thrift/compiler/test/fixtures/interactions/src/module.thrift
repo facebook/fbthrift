@@ -19,8 +19,12 @@ namespace java.swift test.fixtures.interactions
 namespace py test.fixtures.interactions
 namespace py3 test.fixtures.interactions
 
+exception CustomException {
+  1: string message;
+}
+
 interaction MyInteraction {
-  i32 frobnicate();
+  i32 frobnicate() throws (1: CustomException ex);
   oneway void ping();
   stream<bool> truthify();
   set<float>, sink<string, binary> encode();
@@ -33,8 +37,13 @@ interaction MyInteractionFast {
   set<float>, sink<string, binary> encode();
 } (process_in_event_base)
 
+interaction SerialInteraction {
+  void frobnicate();
+} (serial)
+
 service MyService {
   performs MyInteraction;
   performs MyInteractionFast;
+  performs SerialInteraction;
   void foo();
 }

@@ -64,7 +64,44 @@ class FooHackServiceAsyncRpcOptionsClient extends \ThriftClientBase implements F
 // HELPER FUNCTIONS AND STRUCTURES
 
 class FooHackServiceStaticMetadata implements \IThriftServiceStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+  public static function getServiceMetadata()[]: \tmeta_ThriftService {
+    return \tmeta_ThriftService::fromShape(
+      shape(
+        "name" => "module.FooHackService",
+      )
+    );
+  }
+
+  public static function getServiceMetadataResponse()[]: \tmeta_ThriftServiceMetadataResponse {
+    return \tmeta_ThriftServiceMetadataResponse::fromShape(
+      shape(
+        'context' => \tmeta_ThriftServiceContext::fromShape(
+          shape(
+            'service_info' => self::getServiceMetadata(),
+            'module' => \tmeta_ThriftModuleContext::fromShape(
+              shape(
+                'name' => 'module',
+              )
+            ),
+          )
+        ),
+        'metadata' => \tmeta_ThriftMetadata::fromShape(
+          shape(
+            'enums' => dict[
+            ],
+            'structs' => dict[
+            ],
+            'exceptions' => dict[
+            ],
+            'services' => dict[
+            ],
+          )
+        ),
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[

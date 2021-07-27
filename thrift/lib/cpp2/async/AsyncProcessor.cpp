@@ -16,6 +16,10 @@
 
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
+#include <folly/io/async/EventBaseAtomicNotificationQueue.h>
+
+#include <thrift/lib/cpp2/async/ReplyInfo.h>
+
 namespace apache {
 namespace thrift {
 
@@ -24,17 +28,6 @@ thread_local RequestParams ServerInterface::requestParams_;
 
 EventTask::~EventTask() {
   expired();
-}
-
-void EventTask::run() {
-  if (!oneway_) {
-    if (req_ && !req_->isActive()) {
-      // del on eventbase thread
-      base_->runInEventBaseThread([req = std::move(req_)]() mutable {});
-      return;
-    }
-  }
-  taskFunc_(std::move(req_));
 }
 
 void EventTask::expired() {
@@ -59,29 +52,60 @@ void EventTask::failWith(folly::exception_wrapper ex, std::string exCode) {
     req->sendErrorWrapped(std::move(ex), std::move(exCode));
   };
 
-  if (base_->isInEventBaseThread()) {
+  if (eb_->inRunningEventBaseThread()) {
     cleanUp();
   } else {
-    base_->runInEventBaseThread(std::move(cleanUp));
+    eb_->runInEventBaseThread(std::move(cleanUp));
   }
 }
 
+void EventTask::setTile(TilePtr&& tile) {
+  ctx_->setTile(std::move(tile));
+}
+
 void AsyncProcessor::terminateInteraction(
-    int64_t,
-    Cpp2ConnContext&,
-    folly::EventBase&) noexcept {
+    int64_t, Cpp2ConnContext&, folly::EventBase&) noexcept {
   LOG(DFATAL) << "This processor doesn't support interactions";
 }
 
 void AsyncProcessor::destroyAllInteractions(
-    Cpp2ConnContext&,
-    concurrency::ThreadManager&,
-    folly::EventBase&) noexcept {}
+    Cpp2ConnContext&, folly::EventBase&) noexcept {}
+
+void AsyncProcessor::processSerializedCompressedRequest(
+    ResponseChannelRequest::UniquePtr req,
+    SerializedCompressedRequest&& serializedRequest,
+    protocol::PROTOCOL_TYPES prot_type,
+    Cpp2RequestContext* context,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  processSerializedRequest(
+      std::move(req),
+      std::move(serializedRequest).uncompress(),
+      prot_type,
+      context,
+      eb,
+      tm);
+}
+
+void AsyncProcessor::processSerializedCompressedRequestWithMetadata(
+    ResponseChannelRequest::UniquePtr,
+    SerializedCompressedRequest&&,
+    const MethodMetadata&,
+    protocol::PROTOCOL_TYPES,
+    Cpp2RequestContext*,
+    folly::EventBase*,
+    concurrency::ThreadManager*) {
+  LOG(FATAL)
+      << "processSerializedCompressedRequestWithMetadata was called because "
+         "AsyncProcessorFactory::createMethodMetadata (from the provided service) "
+         "opted in to use the MethodMetadata-based method resolution API. "
+         "Therefore, this method must be overridden alongside processSerializedRequest.";
+}
 
 bool GeneratedAsyncProcessor::createInteraction(
     ResponseChannelRequest::UniquePtr& req,
     int64_t id,
-    const std::string& name,
+    std::string&& name,
     Cpp2RequestContext& ctx,
     concurrency::ThreadManager* tm,
     folly::EventBase& eb,
@@ -100,7 +124,7 @@ bool GeneratedAsyncProcessor::createInteraction(
   // In the eb model we create the interaction inline.
   if (!tm) {
     si->setEventBase(&eb);
-    si->setConnectionContext(&ctx);
+    si->setRequestContext(&ctx);
     auto tile = folly::makeTryWith(
         [&] { return nullthrows(createInteractionImpl(name)); });
     if (tile.hasException()) {
@@ -111,66 +135,38 @@ bool GeneratedAsyncProcessor::createInteraction(
           kInteractionConstructorErrorErrorCode);
       return true; // Not a duplicate; caller will see missing tile.
     }
-    (*tile)->destructionExecutor_ = &eb;
-    return conn.addTile(id, std::move(*tile));
+    return conn.addTile(id, {tile->release(), &eb});
   }
 
   // In the tm model we use a promise.
-  auto promise = std::make_unique<TilePromise>();
-  auto promisePtr = promise.get();
-  if (!conn.addTile(id, std::move(promise))) {
+  auto promisePtr = new TilePromise; // freed by RefGuard on next line
+  if (!conn.addTile(id, {promisePtr, &eb})) {
     return false;
   }
 
   folly::via(
       tm,
-      [=, eb = &eb, ctx = &ctx] {
+      [=, eb = &eb, ctx = &ctx, name = std::move(name)] {
         si->setEventBase(eb);
         si->setThreadManager(tm);
-        si->setConnectionContext(ctx);
+        si->setRequestContext(ctx);
         return nullthrows(createInteractionImpl(name));
       })
       .via(&eb)
       .thenTry([&conn, id, tm, &eb, promisePtr](auto&& t) {
-        auto promise = std::unique_ptr<TilePromise>(promisePtr);
-        std::unique_ptr<Tile> tile;
-        if (t.hasValue()) {
-          tile = std::move(*t);
-          tile->destructionExecutor_ = tm;
+        if (t.hasException()) {
+          promisePtr->failWith(
+              folly::make_exception_wrapper<TApplicationException>(
+                  "Interaction constructor failed with " +
+                  t.exception().what().toStdString()),
+              kInteractionConstructorErrorErrorCode);
+          conn.removeTile(id);
+          return;
         }
 
-        if (promise->destructionRequested_) {
-          // promise not in tile map, not running continuations
-          if (tile) {
-            auto ex = std::move(tile->destructionExecutor_);
-            std::move(ex).add([tile = std::move(tile)](auto) {});
-          }
-        } else if (promise->terminationRequested_) {
-          // promise not in tile map, continuations will free tile
-          if (tile) {
-            tile->terminationRequested_ = true;
-            promise->fulfill<InteractionEventTask>(*tile.release(), *tm, eb);
-          } else {
-            promise->failWith<EventTask>(
-                folly::make_exception_wrapper<TApplicationException>(
-                    "Interaction constructor failed with " +
-                    t.exception().what().toStdString()),
-                kInteractionConstructorErrorErrorCode);
-          }
-        } else {
-          if (tile) {
-            // promise and tile managed by pointer in tile map
-            promise->fulfill<InteractionEventTask>(*tile, *tm, eb);
-            conn.resetTile(id, std::move(tile)).release(); // aliases promise
-          } else {
-            promise->failWith<EventTask>(
-                folly::make_exception_wrapper<TApplicationException>(
-                    "Interaction constructor failed with " +
-                    t.exception().what().toStdString()),
-                kInteractionConstructorErrorErrorCode);
-            conn.removeTile(id).release(); // aliases promise
-          }
-        }
+        TilePtr tile{t->release(), &eb};
+        promisePtr->fulfill(*tile, *tm, eb);
+        conn.tryReplaceTile(id, std::move(tile));
       });
   return true;
 }
@@ -181,51 +177,32 @@ std::unique_ptr<Tile> GeneratedAsyncProcessor::createInteractionImpl(
 }
 
 void GeneratedAsyncProcessor::terminateInteraction(
-    int64_t id,
-    Cpp2ConnContext& conn,
-    folly::EventBase& eb) noexcept {
+    int64_t id, Cpp2ConnContext& conn, folly::EventBase& eb) noexcept {
   eb.dcheckIsInEventBaseThread();
 
-  auto tile = conn.removeTile(id);
-  if (!tile) {
-    return;
-  } else if (tile->refCount_ || tile->__fbthrift_isPromise()) {
-    tile->terminationRequested_ = true;
-    tile.release(); // freed by last decref
-  } else {
-    auto ex = std::move(tile->destructionExecutor_);
-    std::move(ex).add([tile = std::move(tile)](auto) {});
-  }
+  conn.removeTile(id);
 }
 
 void GeneratedAsyncProcessor::destroyAllInteractions(
-    Cpp2ConnContext& conn,
-    concurrency::ThreadManager& tm,
-    folly::EventBase& eb) noexcept {
+    Cpp2ConnContext& conn, folly::EventBase& eb) noexcept {
   eb.dcheckIsInEventBaseThread();
 
   if (conn.tiles_.empty()) {
     return;
   }
 
-  auto tiles = std::move(conn.tiles_);
-  for (auto& [id, tile] : tiles) {
-    if (tile->refCount_) {
-      if (tile->__fbthrift_isPromise()) {
-        static_cast<TilePromise&>(*tile).destructionRequested_ = true;
-      } else {
-        tile->terminationRequested_ = true;
-      }
-      tile.release();
-    }
+  std::vector<int64_t> ids;
+  ids.reserve(conn.tiles_.size());
+  for (auto& [id, tile] : conn.tiles_) {
+    ids.push_back(id);
   }
-
-  tm.add([tiles = std::move(tiles)] {});
+  for (auto id : ids) {
+    terminateInteraction(id, conn, eb);
+  }
 }
 
 bool GeneratedAsyncProcessor::validateRpcKind(
-    ResponseChannelRequest::UniquePtr& req,
-    RpcKind kind) {
+    ResponseChannelRequest::UniquePtr& req, RpcKind kind) {
   switch (kind) {
     case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
       switch (req->rpcKind()) {
@@ -269,7 +246,7 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
     concurrency::ThreadManager* tm,
     RpcKind kind,
     ServerInterface* si,
-    const char* interaction) {
+    folly::StringPiece interaction) {
   if (!validateRpcKind(req, kind)) {
     return false;
   }
@@ -277,13 +254,12 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
   bool interactionMetadataValid;
   if (auto interactionId = ctx->getInteractionId()) {
     if (auto interactionCreate = ctx->getInteractionCreate()) {
-      if (!interaction ||
-          *interactionCreate->interactionName_ref() != interaction) {
+      if (*interactionCreate->interactionName_ref() != interaction) {
         interactionMetadataValid = false;
       } else if (!createInteraction(
                      req,
                      interactionId,
-                     *interactionCreate->interactionName_ref(),
+                     std::move(*interactionCreate->interactionName_ref()).str(),
                      *ctx,
                      tm,
                      *eb,
@@ -301,15 +277,14 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
         interactionMetadataValid = true;
       }
     } else {
-      interactionMetadataValid = !!interaction;
+      interactionMetadataValid = !interaction.empty();
     }
 
     if (interactionMetadataValid && !tm) {
       try {
-        // This is otherwise done by InteractionEventTask when dequeued.
+        // This is otherwise done while constructing InteractionEventTask.
         auto& tile = ctx->getConnectionContext()->getTile(interactionId);
-        ctx->setTile(tile);
-        tile.__fbthrift_acquireRef(*eb);
+        ctx->setTile({&tile, eb});
       } catch (const std::out_of_range&) {
         req->sendErrorWrapped(
             TApplicationException(
@@ -319,7 +294,7 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
       }
     }
   } else {
-    interactionMetadataValid = !interaction;
+    interactionMetadataValid = interaction.empty();
   }
   if (!interactionMetadataValid) {
     req->sendErrorWrapped(
@@ -334,8 +309,7 @@ bool GeneratedAsyncProcessor::setUpRequestProcessing(
 }
 
 concurrency::PRIORITY ServerInterface::getRequestPriority(
-    Cpp2RequestContext* ctx,
-    concurrency::PRIORITY prio) {
+    Cpp2RequestContext* ctx, concurrency::PRIORITY prio) {
   concurrency::PRIORITY callPriority = ctx->getCallPriority();
   return callPriority == concurrency::N_PRIORITIES ? prio : callPriority;
 }
@@ -373,6 +347,18 @@ void ServerInterface::BlockingThreadManager::keepAliveRelease() noexcept {
   }
 }
 
+folly::Executor::KeepAlive<> ServerInterface::getInternalKeepAlive() {
+  return getThreadManager()->getKeepAlive(
+      getRequestContext()->getRequestExecutionScope(),
+      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+}
+
+folly::Executor::KeepAlive<> HandlerCallbackBase::getInternalKeepAlive() {
+  return getThreadManager()->getKeepAlive(
+      getRequestContext()->getRequestExecutionScope(),
+      apache::thrift::concurrency::ThreadManager::Source::INTERNAL);
+}
+
 HandlerCallbackBase::~HandlerCallbackBase() {
   // req must be deleted in the eb
   if (req_) {
@@ -383,15 +369,19 @@ HandlerCallbackBase::~HandlerCallbackBase() {
       return;
     }
     assert(eb_ != nullptr);
-    if (eb_->inRunningEventBaseThread()) {
-      releaseInteractionInstance();
-      req_.reset();
-    } else {
-      eb_->runInEventBaseThread(
-          [req = std::move(req_),
-           interaction = std::exchange(interaction_, nullptr),
-           eb = getEventBase()] { releaseInteraction(interaction, eb); });
-    }
+    releaseRequest(std::move(req_), eb_, std::move(interaction_));
+  }
+}
+
+void HandlerCallbackBase::releaseRequest(
+    ResponseChannelRequest::UniquePtr request,
+    folly::EventBase* eb,
+    TilePtr&& interaction) {
+  DCHECK(request);
+  DCHECK(eb != nullptr);
+  if (!eb->inRunningEventBaseThread()) {
+    eb->runInEventBaseThread(
+        [req = std::move(request), interaction = std::move(interaction)] {});
   }
 }
 
@@ -412,23 +402,30 @@ void HandlerCallbackBase::forward(const HandlerCallbackBase& other) {
 }
 
 folly::Optional<uint32_t> HandlerCallbackBase::checksumIfNeeded(
-    folly::IOBufQueue& queue) {
+    LegacySerializedResponse& response) {
   folly::Optional<uint32_t> crc32c;
-  if (req_->isReplyChecksumNeeded() && !queue.empty()) {
-    std::unique_ptr<folly::IOBuf> iobuf(queue.move());
-    if (iobuf) {
-      crc32c = checksum::crc32c(*iobuf);
-      queue.append(std::move(iobuf));
-    }
+  if (req_->isReplyChecksumNeeded() && response.buffer &&
+      !response.buffer->empty()) {
+    LOG(ERROR) << "Checksum calculation disabled";
   }
   return crc32c;
 }
 
-void HandlerCallbackBase::transform(folly::IOBufQueue& queue) {
+folly::Optional<uint32_t> HandlerCallbackBase::checksumIfNeeded(
+    SerializedResponse& response) {
+  folly::Optional<uint32_t> crc32c;
+  if (req_->isReplyChecksumNeeded() && response.buffer &&
+      !response.buffer->empty()) {
+    LOG(ERROR) << "Checksum calculation disabled";
+  }
+  return crc32c;
+}
+
+void HandlerCallbackBase::transform(LegacySerializedResponse& response) {
   // Do any compression or other transforms in this thread, the same thread
   // that serialization happens on.
-  queue.append(transport::THeader::transform(
-      queue.move(), reqCtx_->getHeader()->getWriteTransforms()));
+  response.buffer = transport::THeader::transform(
+      std::move(response.buffer), reqCtx_->getHeader()->getWriteTransforms());
 }
 
 void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
@@ -441,102 +438,77 @@ void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
 
 void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
   if (eb_->inRunningEventBaseThread()) {
-    releaseInteractionInstance();
-    std::exchange(req_, {})->sendErrorWrapped(
-        folly::make_exception_wrapper<TApplicationException>(
-            TApplicationException::LOADSHEDDING, message),
-        kAppOverloadedErrorCode);
+    AppOverloadExceptionInfo::send(std::move(req_), message);
   } else {
-    eb_->runInEventBaseThread(
-        [message,
-         interaction = std::exchange(interaction_, nullptr),
-         req = std::move(req_),
-         eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, eb);
-          req->sendErrorWrapped(
-              folly::make_exception_wrapper<TApplicationException>(
-                  TApplicationException::LOADSHEDDING, std::move(message)),
-              kAppOverloadedErrorCode);
-        });
+    putMessageInReplyQueue(
+        std::in_place_type_t<AppOverloadExceptionInfo>(),
+        std::move(req_),
+        message);
   }
 }
 
-void HandlerCallbackBase::sendReply(folly::IOBufQueue queue) {
-  folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
-  transform(queue);
+void HandlerCallbackBase::sendReply(LegacySerializedResponse response) {
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
+  transform(response);
   if (getEventBase()->isInEventBaseThread()) {
-    releaseInteractionInstance();
-    std::exchange(req_, {})->sendReply(queue.move(), nullptr, crc32c);
+    QueueReplyInfo(
+        std::move(req_), std::move(response), crc32c)(*getEventBase());
   } else {
-    getEventBase()->runInEventBaseThread(
-        [req = std::move(req_),
-         queue = std::move(queue),
-         crc32c,
-         interaction = std::exchange(interaction_, nullptr),
-         eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, eb);
-          req->sendReply(queue.move(), nullptr, crc32c);
-        });
+    putMessageInReplyQueue(
+        std::in_place_type_t<QueueReplyInfo>(),
+        std::move(req_),
+        std::move(response),
+        crc32c);
   }
 }
 
 void HandlerCallbackBase::sendReply(
     ResponseAndServerStreamFactory&& responseAndStream) {
-  auto& queue = responseAndStream.response;
+  auto& response = responseAndStream.response;
   auto& stream = responseAndStream.stream;
-  folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
-  transform(queue);
-  stream.setInteraction(std::exchange(interaction_, nullptr));
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
+  transform(response);
+  stream.setInteraction(std::move(interaction_));
   if (getEventBase()->isInEventBaseThread()) {
-    std::exchange(req_, {})->sendStreamReply(
-        queue.move(), std::move(stream), crc32c);
+    StreamReplyInfo(
+        std::move(req_), std::move(stream), std::move(response), crc32c)(
+        *getEventBase());
   } else {
-    getEventBase()->runInEventBaseThread([req = std::move(req_),
-                                          queue = std::move(queue),
-                                          stream = std::move(stream),
-                                          crc32c]() mutable {
-      req->sendStreamReply(queue.move(), std::move(stream), crc32c);
-    });
+    putMessageInReplyQueue(
+        std::in_place_type_t<StreamReplyInfo>(),
+        std::move(req_),
+        std::move(stream),
+        std::move(response),
+        crc32c);
   }
 }
 
 void HandlerCallbackBase::sendReply(
-    FOLLY_MAYBE_UNUSED
-        std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl>&&
-            responseAndSinkConsumer) {
+    FOLLY_MAYBE_UNUSED std::pair<
+        LegacySerializedResponse,
+        apache::thrift::detail::SinkConsumerImpl>&& responseAndSinkConsumer) {
 #if FOLLY_HAS_COROUTINES
-  auto& queue = responseAndSinkConsumer.first;
+  auto& response = responseAndSinkConsumer.first;
   auto& sinkConsumer = responseAndSinkConsumer.second;
-  folly::Optional<uint32_t> crc32c = checksumIfNeeded(queue);
-  transform(queue);
-  sinkConsumer.interaction = std::exchange(interaction_, nullptr);
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
+  transform(response);
+  sinkConsumer.interaction = std::move(interaction_);
 
   if (getEventBase()->isInEventBaseThread()) {
-    std::exchange(req_, {})->sendSinkReply(
-        queue.move(), std::move(sinkConsumer), crc32c);
+    SinkConsumerReplyInfo(
+        std::move(req_), std::move(sinkConsumer), std::move(response), crc32c)(
+        *getEventBase());
   } else {
-    getEventBase()->runInEventBaseThread(
-        [req = std::move(req_),
-         queue = std::move(queue),
-         sinkConsumer = std::move(sinkConsumer),
-         crc32c]() mutable {
-          req->sendSinkReply(queue.move(), std::move(sinkConsumer), crc32c);
-        });
+    putMessageInReplyQueue(
+        std::in_place_type_t<SinkConsumerReplyInfo>(),
+        std::move(req_),
+        std::move(sinkConsumer),
+        std::move(response),
+        crc32c);
   }
 #else
   std::terminate();
 #endif
-}
-
-void HandlerCallbackBase::releaseInteraction(
-    Tile* interaction,
-    folly::EventBase* eb) {
-  if (interaction) {
-    interaction->__fbthrift_releaseRef(*eb);
-  }
-}
-void HandlerCallbackBase::releaseInteractionInstance() {
-  releaseInteraction(std::exchange(interaction_, nullptr), getEventBase());
 }
 
 HandlerCallback<void>::HandlerCallback(
@@ -548,7 +520,7 @@ HandlerCallback<void>::HandlerCallback(
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx,
-    Tile* interaction)
+    TilePtr&& interaction)
     : HandlerCallbackBase(
           std::move(req),
           std::move(ctx),
@@ -556,7 +528,7 @@ HandlerCallback<void>::HandlerCallback(
           eb,
           tm,
           reqCtx,
-          interaction),
+          std::move(interaction)),
       cp_(cp) {
   this->protoSeqId_ = protoSeqId;
 }

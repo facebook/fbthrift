@@ -6,7 +6,7 @@
 #
 
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3.reflection cimport (
     NumberType as __NumberType,
@@ -39,7 +39,7 @@ cdef __StructSpec get_reflection__MyUnion():
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
-            },
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
         ),
     )
     spec.add_field(
@@ -51,7 +51,7 @@ cdef __StructSpec get_reflection__MyUnion():
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
-            },
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
         ),
     )
     return spec
@@ -76,7 +76,7 @@ cdef __StructSpec get_reflection__MyField():
             qualifier=__Qualifier.OPTIONAL,
             default=None,
             annotations={
-            },
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
         ),
     )
     spec.add_field(
@@ -88,7 +88,7 @@ cdef __StructSpec get_reflection__MyField():
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
-            },
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
         ),
     )
     spec.add_field(
@@ -100,7 +100,43 @@ cdef __StructSpec get_reflection__MyField():
             qualifier=__Qualifier.REQUIRED,
             default=None,
             annotations={
-            },
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=4,
+            name="opt_enum_value",
+            type=_module_types.MyEnum,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=5,
+            name="enum_value",
+            type=_module_types.MyEnum,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=6,
+            name="req_enum_value",
+            type=_module_types.MyEnum,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.REQUIRED,
+            default=None,
+            annotations={
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
         ),
     )
     return spec
@@ -186,7 +222,7 @@ cdef __StructSpec get_reflection__StructWithUnion():
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
             annotations={
-            },
+                """cpp.ref""": """true""",                """cpp2.ref""": """true""",            },
         ),
     )
     spec.add_field(
@@ -580,7 +616,7 @@ cdef __StructSpec get_reflection__StructWithRefAndAnnotCppNoexceptMoveCtor():
         name="StructWithRefAndAnnotCppNoexceptMoveCtor",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move_ctor""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(

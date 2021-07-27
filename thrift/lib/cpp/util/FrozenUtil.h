@@ -36,9 +36,7 @@ void freezeToFile(const T& value, int fd);
 
 template <class T>
 void freezeToSparseFile(
-    const T& value,
-    folly::File file,
-    size_t sparseSize = 1L << 30 /* 1 GB */);
+    const T& value, folly::File file, size_t sparseSize = 1L << 30 /* 1 GB */);
 
 template <class T, class Frozen = typename Freezer<T>::FrozenType>
 const Frozen* mapFrozen(folly::ByteRange mapping);

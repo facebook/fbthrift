@@ -24,27 +24,25 @@ using folly::IOBuf;
 using namespace folly::io;
 
 TEST(VarintTest, Varint) {
-  unique_ptr<IOBuf> iobuf1(IOBuf::create(1000));
-  iobuf1->append(1000);
-  RWPrivateCursor wcursor(iobuf1.get());
-  Cursor rcursor(iobuf1.get());
+  folly::IOBufQueue queue;
+  QueueAppender appender(&queue, 1000);
   int64_t v = 1;
-  writeVarint(wcursor, 0);
+  writeVarint(appender, 0);
   for (int bit = 0; bit < 64; bit++, v <<= int(bit < 64)) {
     if (bit < 8) {
-      writeVarint(wcursor, int8_t(v));
+      writeVarint(appender, int8_t(v));
     }
     if (bit < 16) {
-      writeVarint(wcursor, int16_t(v));
+      writeVarint(appender, int16_t(v));
     }
     if (bit < 32) {
-      writeVarint(wcursor, int32_t(v));
+      writeVarint(appender, int32_t(v));
     }
-    writeVarint(wcursor, v);
+    writeVarint(appender, v);
   }
   int32_t oversize = 1000000;
-  writeVarint(wcursor, oversize);
-
+  writeVarint(appender, oversize);
+  Cursor rcursor(queue.front());
   EXPECT_EQ(0, readVarint<int8_t>(rcursor));
   v = 1;
   for (int bit = 0; bit < 64; bit++, v <<= int(bit < 64)) {

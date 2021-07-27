@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,15 +31,28 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass EnumMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
+    cdef cppclass cMyEnum "::cpp2::MyEnum":
+        pass
+
     cdef cppclass cTypedEnum "::cpp2::TypedEnum":
         pass
 
@@ -48,9 +60,21 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
 
 
 
+cdef class MyEnum(thrift.py3.types.CompiledEnum):
+    pass
+
+
 cdef class TypedEnum(thrift.py3.types.CompiledEnum):
     pass
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     cdef enum cMyUnion__type "::cpp2::MyUnion::Type":
         cMyUnion__type___EMPTY__ "::cpp2::MyUnion::Type::__EMPTY__",
@@ -67,15 +91,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyUnion&)
         bint operator>=(cMyUnion&)
         cMyUnion__type getType() const
-        const cint32_t& get_anInteger() const
-        cint32_t& set_anInteger(const cint32_t&)
-        const string& get_aString() const
-        string& set_aString(const string&)
+        const unique_ptr[cint32_t]& get_anInteger() const
+        unique_ptr[cint32_t]& set_anInteger(const cint32_t&)
+        const unique_ptr[string]& get_aString() const
+        unique_ptr[string]& set_aString(const string&)
 
-    cdef cppclass cMyField__isset "::cpp2::MyField::__isset":
-        bint opt_value
-        bint value
-        bint req_value
 
     cdef cppclass cMyField "::cpp2::MyField":
         cMyField() except +
@@ -86,18 +106,19 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyField&)
         bint operator<=(cMyField&)
         bint operator>=(cMyField&)
-        __optional_field_ref[cint64_t] opt_value_ref()
-        cint64_t opt_value
-        __field_ref[cint64_t] value_ref()
-        cint64_t value
-        __required_field_ref[cint64_t] req_value_ref()
-        cint64_t req_value
-        cMyField__isset __isset
+        unique_ptr[cint64_t] opt_value_ref()
+        unique_ptr[cint64_t] value_ref()
+        unique_ptr[cint64_t] req_value_ref()
+        unique_ptr[cMyEnum] opt_enum_value_ref()
+        unique_ptr[cMyEnum] enum_value_ref()
+        unique_ptr[cMyEnum] req_enum_value_ref()
+        unique_ptr[cint64_t] opt_value
+        unique_ptr[cint64_t] value
+        unique_ptr[cint64_t] req_value
+        unique_ptr[cMyEnum] opt_enum_value
+        unique_ptr[cMyEnum] enum_value
+        unique_ptr[cMyEnum] req_enum_value
 
-    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
-        bint opt_ref
-        bint ref
-        bint req_ref
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -108,15 +129,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cMyStruct&)
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
+        unique_ptr[cMyField] opt_ref_ref()
+        unique_ptr[cMyField] ref_ref()
+        unique_ptr[cMyField] req_ref_ref()
         unique_ptr[cMyField] opt_ref
         unique_ptr[cMyField] ref
         unique_ptr[cMyField] req_ref
-        cMyStruct__isset __isset
 
-    cdef cppclass cStructWithUnion__isset "::cpp2::StructWithUnion::__isset":
-        bint u
-        bint aDouble
-        bint f
 
     cdef cppclass cStructWithUnion "::cpp2::StructWithUnion":
         cStructWithUnion() except +
@@ -127,15 +146,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithUnion&)
         bint operator<=(cStructWithUnion&)
         bint operator>=(cStructWithUnion&)
-        unique_ptr[cMyUnion] u
-        __field_ref[double] aDouble_ref()
-        double aDouble
+        unique_ptr[cMyUnion] u_ref()
+        unique_ptr[double] aDouble_ref()
         __field_ref[cMyField] f_ref()
+        unique_ptr[cMyUnion] u
+        unique_ptr[double] aDouble
         cMyField f
-        cStructWithUnion__isset __isset
 
-    cdef cppclass cRecursiveStruct__isset "::cpp2::RecursiveStruct::__isset":
-        bint mes
 
     cdef cppclass cRecursiveStruct "::cpp2::RecursiveStruct":
         cRecursiveStruct() except +
@@ -148,15 +165,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cRecursiveStruct&)
         __optional_field_ref[vector[cRecursiveStruct]] mes_ref()
         vector[cRecursiveStruct] mes
-        cRecursiveStruct__isset __isset
 
-    cdef cppclass cStructWithContainers__isset "::cpp2::StructWithContainers::__isset":
-        bint list_ref
-        bint set_ref
-        bint map_ref
-        bint list_ref_unique
-        bint set_ref_shared
-        bint list_ref_shared_const
 
     cdef cppclass cStructWithContainers "::cpp2::StructWithContainers":
         cStructWithContainers() except +
@@ -167,18 +176,19 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithContainers&)
         bint operator<=(cStructWithContainers&)
         bint operator>=(cStructWithContainers&)
+        unique_ptr[vector[cint32_t]] list_ref_ref()
+        unique_ptr[cset[cint32_t]] set_ref_ref()
+        unique_ptr[cmap[cint32_t,cint32_t]] map_ref_ref()
+        unique_ptr[vector[cint32_t]] list_ref_unique_ref()
+        shared_ptr[cset[cint32_t]] set_ref_shared_ref()
+        shared_ptr[const vector[cint32_t]] list_ref_shared_const_ref()
         unique_ptr[vector[cint32_t]] list_ref
         unique_ptr[cset[cint32_t]] set_ref
         unique_ptr[cmap[cint32_t,cint32_t]] map_ref
         unique_ptr[vector[cint32_t]] list_ref_unique
         shared_ptr[cset[cint32_t]] set_ref_shared
         shared_ptr[const vector[cint32_t]] list_ref_shared_const
-        cStructWithContainers__isset __isset
 
-    cdef cppclass cStructWithSharedConst__isset "::cpp2::StructWithSharedConst::__isset":
-        bint opt_shared_const
-        bint shared_const
-        bint req_shared_const
 
     cdef cppclass cStructWithSharedConst "::cpp2::StructWithSharedConst":
         cStructWithSharedConst() except +
@@ -189,13 +199,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithSharedConst&)
         bint operator<=(cStructWithSharedConst&)
         bint operator>=(cStructWithSharedConst&)
+        shared_ptr[const cMyField] opt_shared_const_ref()
+        shared_ptr[const cMyField] shared_const_ref()
+        shared_ptr[const cMyField] req_shared_const_ref()
         shared_ptr[const cMyField] opt_shared_const
         shared_ptr[const cMyField] shared_const
         shared_ptr[const cMyField] req_shared_const
-        cStructWithSharedConst__isset __isset
 
-    cdef cppclass cEmpty__isset "::cpp2::Empty::__isset":
-        pass
 
     cdef cppclass cEmpty "::cpp2::Empty":
         cEmpty() except +
@@ -206,12 +216,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cEmpty&)
         bint operator<=(cEmpty&)
         bint operator>=(cEmpty&)
-        cEmpty__isset __isset
 
-    cdef cppclass cStructWithRef__isset "::cpp2::StructWithRef::__isset":
-        bint def_field
-        bint opt_field
-        bint req_field
 
     cdef cppclass cStructWithRef "::cpp2::StructWithRef":
         cStructWithRef() except +
@@ -222,15 +227,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithRef&)
         bint operator<=(cStructWithRef&)
         bint operator>=(cStructWithRef&)
+        unique_ptr[cEmpty] def_field_ref()
+        unique_ptr[cEmpty] opt_field_ref()
+        unique_ptr[cEmpty] req_field_ref()
         unique_ptr[cEmpty] def_field
         unique_ptr[cEmpty] opt_field
         unique_ptr[cEmpty] req_field
-        cStructWithRef__isset __isset
 
-    cdef cppclass cStructWithRefTypeUnique__isset "::cpp2::StructWithRefTypeUnique::__isset":
-        bint def_field
-        bint opt_field
-        bint req_field
 
     cdef cppclass cStructWithRefTypeUnique "::cpp2::StructWithRefTypeUnique":
         cStructWithRefTypeUnique() except +
@@ -241,15 +244,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithRefTypeUnique&)
         bint operator<=(cStructWithRefTypeUnique&)
         bint operator>=(cStructWithRefTypeUnique&)
+        unique_ptr[cEmpty] def_field_ref()
+        unique_ptr[cEmpty] opt_field_ref()
+        unique_ptr[cEmpty] req_field_ref()
         unique_ptr[cEmpty] def_field
         unique_ptr[cEmpty] opt_field
         unique_ptr[cEmpty] req_field
-        cStructWithRefTypeUnique__isset __isset
 
-    cdef cppclass cStructWithRefTypeShared__isset "::cpp2::StructWithRefTypeShared::__isset":
-        bint def_field
-        bint opt_field
-        bint req_field
 
     cdef cppclass cStructWithRefTypeShared "::cpp2::StructWithRefTypeShared":
         cStructWithRefTypeShared() except +
@@ -260,15 +261,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithRefTypeShared&)
         bint operator<=(cStructWithRefTypeShared&)
         bint operator>=(cStructWithRefTypeShared&)
+        shared_ptr[cEmpty] def_field_ref()
+        shared_ptr[cEmpty] opt_field_ref()
+        shared_ptr[cEmpty] req_field_ref()
         shared_ptr[cEmpty] def_field
         shared_ptr[cEmpty] opt_field
         shared_ptr[cEmpty] req_field
-        cStructWithRefTypeShared__isset __isset
 
-    cdef cppclass cStructWithRefTypeSharedConst__isset "::cpp2::StructWithRefTypeSharedConst::__isset":
-        bint def_field
-        bint opt_field
-        bint req_field
 
     cdef cppclass cStructWithRefTypeSharedConst "::cpp2::StructWithRefTypeSharedConst":
         cStructWithRefTypeSharedConst() except +
@@ -279,13 +278,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithRefTypeSharedConst&)
         bint operator<=(cStructWithRefTypeSharedConst&)
         bint operator>=(cStructWithRefTypeSharedConst&)
+        shared_ptr[const cEmpty] def_field_ref()
+        shared_ptr[const cEmpty] opt_field_ref()
+        shared_ptr[const cEmpty] req_field_ref()
         shared_ptr[const cEmpty] def_field
         shared_ptr[const cEmpty] opt_field
         shared_ptr[const cEmpty] req_field
-        cStructWithRefTypeSharedConst__isset __isset
 
-    cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor__isset "::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor::__isset":
-        bint def_field
 
     cdef cppclass cStructWithRefAndAnnotCppNoexceptMoveCtor "::cpp2::StructWithRefAndAnnotCppNoexceptMoveCtor":
         cStructWithRefAndAnnotCppNoexceptMoveCtor() except +
@@ -296,8 +295,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         bint operator<=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
         bint operator>=(cStructWithRefAndAnnotCppNoexceptMoveCtor&)
+        unique_ptr[cEmpty] def_field_ref()
         unique_ptr[cEmpty] def_field
-        cStructWithRefAndAnnotCppNoexceptMoveCtor__isset __isset
 
 
 cdef class __MyUnionType(thrift.py3.types.CompiledEnum):
@@ -326,7 +325,10 @@ cdef class MyUnion(thrift.py3.types.Union):
 
 cdef class MyField(thrift.py3.types.Struct):
     cdef shared_ptr[cMyField] _cpp_obj
-    cdef __fbthrift_types_fields.__MyField_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__MyField_FieldsSetter _fields_setter
+    cdef object __fbthrift_cached_opt_enum_value
+    cdef object __fbthrift_cached_enum_value
+    cdef object __fbthrift_cached_req_enum_value
 
     @staticmethod
     cdef create(shared_ptr[cMyField])
@@ -335,10 +337,10 @@ cdef class MyField(thrift.py3.types.Struct):
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
-    cdef MyField __field_opt_ref
-    cdef MyField __field_ref
-    cdef MyField __field_req_ref
+    cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef MyField __fbthrift_cached_opt_ref
+    cdef MyField __fbthrift_cached_ref
+    cdef MyField __fbthrift_cached_req_ref
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
@@ -347,9 +349,9 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 cdef class StructWithUnion(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithUnion] _cpp_obj
-    cdef __fbthrift_types_fields.__StructWithUnion_FieldsSetter _fields_setter
-    cdef MyUnion __field_u
-    cdef MyField __field_f
+    cdef _fbthrift_types_fields.__StructWithUnion_FieldsSetter _fields_setter
+    cdef MyUnion __fbthrift_cached_u
+    cdef MyField __fbthrift_cached_f
 
     @staticmethod
     cdef create(shared_ptr[cStructWithUnion])
@@ -358,8 +360,8 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
 cdef class RecursiveStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cRecursiveStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__RecursiveStruct_FieldsSetter _fields_setter
-    cdef List__RecursiveStruct __field_mes
+    cdef _fbthrift_types_fields.__RecursiveStruct_FieldsSetter _fields_setter
+    cdef List__RecursiveStruct __fbthrift_cached_mes
 
     @staticmethod
     cdef create(shared_ptr[cRecursiveStruct])
@@ -368,13 +370,13 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 
 cdef class StructWithContainers(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithContainers] _cpp_obj
-    cdef __fbthrift_types_fields.__StructWithContainers_FieldsSetter _fields_setter
-    cdef List__i32 __field_list_ref
-    cdef Set__i32 __field_set_ref
-    cdef Map__i32_i32 __field_map_ref
-    cdef List__i32 __field_list_ref_unique
-    cdef Set__i32 __field_set_ref_shared
-    cdef List__i32 __field_list_ref_shared_const
+    cdef _fbthrift_types_fields.__StructWithContainers_FieldsSetter _fields_setter
+    cdef List__i32 __fbthrift_cached_list_ref
+    cdef Set__i32 __fbthrift_cached_set_ref
+    cdef Map__i32_i32 __fbthrift_cached_map_ref
+    cdef List__i32 __fbthrift_cached_list_ref_unique
+    cdef Set__i32 __fbthrift_cached_set_ref_shared
+    cdef List__i32 __fbthrift_cached_list_ref_shared_const
 
     @staticmethod
     cdef create(shared_ptr[cStructWithContainers])
@@ -383,10 +385,10 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 
 cdef class StructWithSharedConst(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithSharedConst] _cpp_obj
-    cdef __fbthrift_types_fields.__StructWithSharedConst_FieldsSetter _fields_setter
-    cdef MyField __field_opt_shared_const
-    cdef MyField __field_shared_const
-    cdef MyField __field_req_shared_const
+    cdef _fbthrift_types_fields.__StructWithSharedConst_FieldsSetter _fields_setter
+    cdef MyField __fbthrift_cached_opt_shared_const
+    cdef MyField __fbthrift_cached_shared_const
+    cdef MyField __fbthrift_cached_req_shared_const
 
     @staticmethod
     cdef create(shared_ptr[cStructWithSharedConst])
@@ -395,7 +397,7 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
 cdef class Empty(thrift.py3.types.Struct):
     cdef shared_ptr[cEmpty] _cpp_obj
-    cdef __fbthrift_types_fields.__Empty_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__Empty_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cEmpty])
@@ -404,10 +406,10 @@ cdef class Empty(thrift.py3.types.Struct):
 
 cdef class StructWithRef(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRef] _cpp_obj
-    cdef __fbthrift_types_fields.__StructWithRef_FieldsSetter _fields_setter
-    cdef Empty __field_def_field
-    cdef Empty __field_opt_field
-    cdef Empty __field_req_field
+    cdef _fbthrift_types_fields.__StructWithRef_FieldsSetter _fields_setter
+    cdef Empty __fbthrift_cached_def_field
+    cdef Empty __fbthrift_cached_opt_field
+    cdef Empty __fbthrift_cached_req_field
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRef])
@@ -416,10 +418,10 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
 cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefTypeUnique] _cpp_obj
-    cdef __fbthrift_types_fields.__StructWithRefTypeUnique_FieldsSetter _fields_setter
-    cdef Empty __field_def_field
-    cdef Empty __field_opt_field
-    cdef Empty __field_req_field
+    cdef _fbthrift_types_fields.__StructWithRefTypeUnique_FieldsSetter _fields_setter
+    cdef Empty __fbthrift_cached_def_field
+    cdef Empty __fbthrift_cached_opt_field
+    cdef Empty __fbthrift_cached_req_field
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeUnique])
@@ -428,10 +430,10 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
 cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefTypeShared] _cpp_obj
-    cdef __fbthrift_types_fields.__StructWithRefTypeShared_FieldsSetter _fields_setter
-    cdef Empty __field_def_field
-    cdef Empty __field_opt_field
-    cdef Empty __field_req_field
+    cdef _fbthrift_types_fields.__StructWithRefTypeShared_FieldsSetter _fields_setter
+    cdef Empty __fbthrift_cached_def_field
+    cdef Empty __fbthrift_cached_opt_field
+    cdef Empty __fbthrift_cached_req_field
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeShared])
@@ -440,10 +442,10 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
 cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefTypeSharedConst] _cpp_obj
-    cdef __fbthrift_types_fields.__StructWithRefTypeSharedConst_FieldsSetter _fields_setter
-    cdef Empty __field_def_field
-    cdef Empty __field_opt_field
-    cdef Empty __field_req_field
+    cdef _fbthrift_types_fields.__StructWithRefTypeSharedConst_FieldsSetter _fields_setter
+    cdef Empty __fbthrift_cached_def_field
+    cdef Empty __fbthrift_cached_opt_field
+    cdef Empty __fbthrift_cached_req_field
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefTypeSharedConst])
@@ -452,8 +454,8 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
 cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
     cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] _cpp_obj
-    cdef __fbthrift_types_fields.__StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter _fields_setter
-    cdef Empty __field_def_field
+    cdef _fbthrift_types_fields.__StructWithRefAndAnnotCppNoexceptMoveCtor_FieldsSetter _fields_setter
+    cdef Empty __fbthrift_cached_def_field
 
     @staticmethod
     cdef create(shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor])

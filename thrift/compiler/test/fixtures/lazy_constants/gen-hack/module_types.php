@@ -19,6 +19,30 @@ enum City: int {
   LON = 3;
 }
 
+class City_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.City",
+        "elements" => dict[
+          0 => "NYC",
+          1 => "MPK",
+          2 => "SEA",
+          3 => "LON",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift enum:-
  * Company
@@ -28,6 +52,30 @@ enum Company: int {
   WHATSAPP = 1;
   OCULUS = 2;
   INSTAGRAM = 3;
+}
+
+class Company_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.Company",
+        "elements" => dict[
+          0 => "FACEBOOK",
+          1 => "WHATSAPP",
+          2 => "OCULUS",
+          3 => "INSTAGRAM",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
 }
 
 /**
@@ -59,8 +107,8 @@ class Internship implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'weeks' => int,
-    ?'title' => string,
+    ?'weeks' => ?int,
+    ?'title' => ?string,
     ?'employer' => ?\test\fixtures\lazy_constants\Company,
   );
 
@@ -81,20 +129,17 @@ class Internship implements \IThriftStruct {
    */
   public ?\test\fixtures\lazy_constants\Company $employer;
 
-  <<__Rx>>
-  public function __construct(?int $weeks = null, ?string $title = null, ?\test\fixtures\lazy_constants\Company $employer = null  ) {
+  public function __construct(?int $weeks = null, ?string $title = null, ?\test\fixtures\lazy_constants\Company $employer = null  )[] {
     $this->weeks = $weeks ?? 0;
     $this->title = $title ?? '';
     $this->employer = $employer;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'weeks'),
       Shapes::idx($shape, 'title'),
@@ -102,33 +147,65 @@ class Internship implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Internship';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'weeks' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'title' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'employer' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Internship",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "weeks",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "title",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => \tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.Company",
+                    )
+                  ),
+                )
+              ),
+              "name" => "employer",
+              "is_optional" => true,
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -156,8 +233,8 @@ class Range implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'min' => int,
-    ?'max' => int,
+    ?'min' => ?int,
+    ?'max' => ?int,
   );
 
   const int STRUCTURAL_ID = 6850388386457434767;
@@ -172,48 +249,65 @@ class Range implements \IThriftStruct {
    */
   public int $max;
 
-  <<__Rx>>
-  public function __construct(?int $min = null, ?int $max = null  ) {
+  public function __construct(?int $min = null, ?int $max = null  )[] {
     $this->min = $min ?? 0;
     $this->max = $max ?? 0;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'min'),
       Shapes::idx($shape, 'max'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Range';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'min' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'max' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Range",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "min",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "max",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }

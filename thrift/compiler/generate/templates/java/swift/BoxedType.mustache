@@ -19,7 +19,7 @@
 }}{{/type:javaType}}{{!
 }}{{^type:javaType}}{{!
   }}{{#type:typedef?}}{{!
-    }}{{#type:typedefType}}{{> BoxedType}}{{/type:typedefType}}{{!
+    }}{{#type:typedef_type}}{{> BoxedType}}{{/type:typedef_type}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
     }}{{#type:void?}}Void{{/type:void?}}{{!
@@ -30,19 +30,22 @@
     }}{{#type:i64?}}Long{{/type:i64?}}{{!
     }}{{#type:double?}}Double{{/type:double?}}{{!
     }}{{#type:float?}}Float{{/type:float?}}{{!
-    }}{{#type:string?}}String{{/type:string?}}{{!
+    }}{{#type:string?}}{{!
+        }}{{#type:isBinaryString?}}byte[]{{/type:isBinaryString?}}{{!
+        }}{{^type:isBinaryString?}}String{{/type:isBinaryString?}}{{!
+    }}{{/type:string?}}{{!
     }}{{#type:binary?}}byte[]{{/type:binary?}}{{!
 
     }}{{#type:map?}}{{!
-        }}Map<{{#type:keyType}}{{> BoxedType}}{{/type:keyType}}, {{#type:valueType}}{{> BoxedType}}{{/type:valueType}}>{{!
+        }}Map<{{#type:key_type}}{{> BoxedType}}{{/type:key_type}}, {{#type:value_type}}{{> BoxedType}}{{/type:value_type}}>{{!
     }}{{/type:map?}}{{!
 
     }}{{#type:list?}}{{!
-        }}List<{{#type:listElemType}}{{> BoxedType}}{{/type:listElemType}}>{{!
+        }}List<{{#type:list_elem_type}}{{> BoxedType}}{{/type:list_elem_type}}>{{!
     }}{{/type:list?}}{{!
 
     }}{{#type:set?}}{{!
-        }}Set<{{#type:setElemType}}{{> BoxedType}}{{/type:setElemType}}>{{!
+        }}Set<{{#type:set_elem_type}}{{> BoxedType}}{{/type:set_elem_type}}>{{!
     }}{{/type:set?}}{{!
 
     }}{{#type:struct?}}{{!

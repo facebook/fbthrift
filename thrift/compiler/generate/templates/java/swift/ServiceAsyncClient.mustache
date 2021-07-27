@@ -23,7 +23,8 @@ import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
-import com.facebook.swift.transport.client.*;
+import com.facebook.thrift.client.*;
+import com.facebook.thrift.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -38,12 +39,25 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
     {{#service:supportedFunctions}}
     private ThriftMethodHandler {{function:javaName}}MethodHandler;
     {{/service:supportedFunctions}}
+    {{#service:interactions}}
+    // Interaction Handlers
+    {{#service:supportedFunctions}}
+    private ThriftMethodHandler {{function:javaName}}IMethodHandler;
+    {{/service:supportedFunctions}}
+    {{/service:interactions}}
 
     // Method Exceptions
     {{#service:supportedFunctions}}
     private static final Class[] {{function:javaName}}Exceptions = new Class[] {
         {{#function:exceptions}}{{#field:type}}{{> BoxedType}}.class{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException.class};
     {{/service:supportedFunctions}}
+    {{#service:interactions}}
+    // Interaction Exceptions
+    {{#service:supportedFunctions}}
+    private static final Class[] {{function:javaName}}IExceptions = new Class[] {
+        {{#function:exceptions}}{{#field:type}}{{> BoxedType}}.class{{/field:type}}, {{/function:exceptions}}org.apache.thrift.TException.class};
+    {{/service:supportedFunctions}}
+    {{/service:interactions}}
 
     public {{service:javaCapitalName}}AsyncClientImpl(
         RequestChannel channel,
@@ -63,6 +77,12 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
       {{#service:supportedFunctions}}
       {{function:javaName}}MethodHandler = methodHandlerMap.get("{{function:javaName}}");
       {{/service:supportedFunctions}}
+      {{#service:interactions}}
+      // Set interaction handlers
+      {{#service:supportedFunctions}}
+      {{function:javaName}}IMethodHandler = methodHandlerMap.get("{{function:javaName}}");
+      {{/service:supportedFunctions}}
+      {{/service:interactions}}
     }
 
     public {{service:javaCapitalName}}AsyncClientImpl(
@@ -85,6 +105,12 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
       {{#service:supportedFunctions}}
       {{function:javaName}}MethodHandler = methodHandlerMap.get("{{function:javaName}}");
       {{/service:supportedFunctions}}
+      {{#service:interactions}}
+      // Set interaction handlers
+      {{#service:supportedFunctions}}
+      {{function:javaName}}IMethodHandler = methodHandlerMap.get("{{function:javaName}}");
+      {{/service:supportedFunctions}}
+      {{/service:interactions}}
     }
 
     @java.lang.Override
@@ -95,26 +121,87 @@ public class {{service:javaCapitalName}}AsyncClientImpl extends {{^service:exten
     {{#service:supportedFunctions}}
 
     @java.lang.Override
-    public ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
+    public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
-        try {
-          return (ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}>) execute({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions{{#function:args}}, {{field:javaName}}{{/function:args}});
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return {{function:javaName}}({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY);
     }
-    {{/service:supportedFunctions}}
 
-    {{#service:supportedFunctions}}
+    @java.lang.Override
+    public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
+        {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions));
+    }
 
-    public ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}> {{function:javaName}}({{#function:args}}
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
         {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
         RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<{{#function:returnType}}{{> BoxedType}}{{/function:returnType}}>) executeWithOptions({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
+          return executeWrapperWithOptions({{function:javaName}}MethodHandler, {{function:javaName}}Exceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
     }
     {{/service:supportedFunctions}}
+    {{#service:interactions}}
+
+    public class {{service:name}}Impl implements {{service:name}} {
+      private final long interactionId;
+
+      {{service:name}}Impl(long interactionId) {
+        this.interactionId = interactionId;
+      }
+
+      {{#service:supportedFunctions}}
+      @java.lang.Override
+      public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
+          {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+          RpcOptions rpcOptions) {
+          return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}rpcOptions));
+      }
+
+      @java.lang.Override
+      public ListenableFuture<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}> {{function:javaName}}({{#function:args}}
+        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}}{{^last?}},{{/last?}}{{/function:args}}) {
+        return FutureUtil.transform({{function:javaName}}Wrapper({{#function:args}}{{field:javaName}}, {{/function:args}}RpcOptions.EMPTY));
+      }
+
+      @java.lang.Override
+      public ListenableFuture<ResponseWrapper<{{#function:return_type}}{{> BoxedType}}{{/function:return_type}}>> {{function:javaName}}Wrapper({{#function:args}}
+        final {{#field:type}}{{> Type}}{{/field:type}} {{field:javaName}},{{/function:args}}
+        RpcOptions _rpcOptions) {
+        try {
+          RpcOptions rpcOptions = updateRpcOptions(_rpcOptions);
+          return executeWrapperWithOptions({{function:javaName}}IMethodHandler, {{function:javaName}}IExceptions, rpcOptions{{#function:args}}, {{field:javaName}}{{/function:args}});
+        } catch (Throwable t) {
+          throw new RuntimeTException(t.getMessage(), t);
+        }
+      }
+
+      {{/service:supportedFunctions}}
+      @java.lang.Override
+      public void close() {
+        activeInteractions.remove(interactionId);
+      }
+
+      private RpcOptions updateRpcOptions(RpcOptions _rpcOptions) {
+        RpcOptions.Builder builder = new RpcOptions.Builder(_rpcOptions);
+        if (activeInteractions.contains(interactionId)) {
+          builder.setInteractionId(interactionId);
+        } else {
+          builder.setCreateInteractionId(interactionId).setInteractionId(0L);
+          activeInteractions.add(interactionId);
+        }
+        return builder.build();
+      }
+    }
+
+    public {{service:name}} create{{service:name}}() {
+        return new {{service:name}}Impl(interactionCounter.incrementAndGet());
+    }
+    {{^last?}}
+
+    {{/last?}}
+    {{/service:interactions}}
 }

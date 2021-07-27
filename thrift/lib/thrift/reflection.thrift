@@ -47,28 +47,27 @@ enum Type {
 }
 
 struct StructField {
-  1: bool isRequired,
-  2: i64 type,
-  3: string name,
-  4: optional map<string, string>
-    ( cpp.template = "std::unordered_map" )
-    annotations,
-  5: i16 order, // lexical order of this field, 0-based
+  1: bool isRequired;
+  2: i64 type;
+  3: string name;
+  4: optional map<string, string> (
+    cpp.template = "std::unordered_map",
+  ) annotations;
+  5: i16 order; // lexical order of this field, 0-based
 }
 
 struct DataType {
-  1: string name,
-  2: optional map<i16, StructField>
-    ( cpp.template = "std::unordered_map" )
-    fields,
-  3: optional i64 mapKeyType,
-  4: optional i64 valueType,
-  5: optional map<string, i32> ( cpp.template = "std::unordered_map" )
-    enumValues,
+  1: string name;
+  2: optional map<i16, StructField> (
+    cpp.template = "std::unordered_map",
+  ) fields;
+  3: optional i64 mapKeyType;
+  4: optional i64 valueType;
+  5: optional map<string, i32> (cpp.template = "std::unordered_map") enumValues;
 }
 
 struct Schema {
-  1: map<i64, DataType> ( cpp.template = "std::unordered_map" ) dataTypes,
+  1: map<i64, DataType> (cpp.template = "std::unordered_map") dataTypes;
   // name to type
-  2: map<string, i64> ( cpp.template = "std::unordered_map" ) names,
+  2: map<string, i64> (cpp.template = "std::unordered_map") names;
 }

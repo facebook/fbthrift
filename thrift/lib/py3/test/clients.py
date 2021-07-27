@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 import asyncio
 import errno
 import os
@@ -27,7 +25,12 @@ import unittest
 
 from testing.clients import TestingService
 from testing.types import Color, I32List, easy
-from thrift.py3.client import get_client, get_proxy_factory, install_proxy_factory
+from thrift.py3.client import (
+    Client,
+    get_client,
+    get_proxy_factory,
+    install_proxy_factory,
+)
 from thrift.py3.common import Priority, RpcOptions, WriteHeaders
 from thrift.py3.exceptions import TransportError
 from thrift.py3.test.client_event_handler.helper import (
@@ -40,8 +43,10 @@ async def bad_client_connect() -> None:
         await client.complex_action("foo", "bar", 9, "baz")
 
 
-class ThriftClientTestProxy:  # noqa: B903
-    def __init__(self, inner) -> None:
+class ThriftClientTestProxy:
+    inner: Client
+
+    def __init__(self, inner: Client) -> None:
         self.inner = inner
 
 
@@ -212,7 +217,7 @@ class ClientTests(unittest.TestCase):
 
     def test_client_event_handler(self) -> None:
         loop = asyncio.get_event_loop()
-        test_helper = ClientEventHandlerTestHelper()
+        test_helper: ClientEventHandlerTestHelper = ClientEventHandlerTestHelper()
 
         async def test() -> None:
             self.assertFalse(test_helper.is_handler_called())

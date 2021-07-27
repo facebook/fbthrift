@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -163,8 +162,7 @@ class getDataByKey0_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(getDataByKey0_args)
 getDataByKey0_args.thrift_spec = (
@@ -274,8 +272,7 @@ class getDataByKey0_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(getDataByKey0_result)
 getDataByKey0_result.thrift_spec = (
@@ -384,8 +381,7 @@ class getDataByKey1_args:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(getDataByKey1_args)
 getDataByKey1_args.thrift_spec = (
@@ -495,8 +491,7 @@ class getDataByKey1_result:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(getDataByKey1_result)
 getDataByKey1_result.thrift_spec = (

@@ -17,5 +17,5 @@
 namespace cpp2 apache.thrift.test
 
 exception MyException {
-  1: string msg,
+  1: string msg;
 } (message = 'msg')

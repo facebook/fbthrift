@@ -28,18 +28,14 @@ namespace test {
 struct MyInt {
   int value = 0;
   MyInt(int value) : value(value) {}
-  bool operator==(const MyInt& other) const {
-    return value == other.value;
-  }
+  bool operator==(const MyInt& other) const { return value == other.value; }
 };
 
 struct MyString {
   std::string value;
   MyString() = default;
   MyString(const char* value) : value(value) {}
-  bool operator==(const MyString& other) const {
-    return value == other.value;
-  }
+  bool operator==(const MyString& other) const { return value == other.value; }
 };
 
 } // namespace test
@@ -78,8 +74,8 @@ struct protocol_methods<type_class::string, test::MyString> {
   }
 
   template <typename Protocol, typename Context>
-  static void
-  readWithContext(Protocol& protocol, test::MyString& out, Context&) {
+  static void readWithContext(
+      Protocol& protocol, test::MyString& out, Context&) {
     read(protocol, out);
   }
 
@@ -90,8 +86,7 @@ struct protocol_methods<type_class::string, test::MyString> {
 
   template <bool, typename Protocol>
   static std::size_t serializedSize(
-      Protocol& protocol,
-      const test::MyString& in) {
+      Protocol& protocol, const test::MyString& in) {
     return protocol.serializedSizeString(in.value);
   }
 };

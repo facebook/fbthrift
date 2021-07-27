@@ -11,7 +11,7 @@ from thrift.py3.reflection cimport (
   NumberType as __NumberType,
 )
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 
 cimport module.types as _module_types
@@ -42,6 +42,53 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
             arguments=(
             ),
             result=str,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="sink",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="sink",
+                    type=int,
+                    kind=__NumberType.I64,
+                    annotations={
+                    },
+                ),
+            ),
+            result=None,
+            result_kind=__NumberType.NOT_A_NUMBER,
+            exceptions=(
+            ),
+            annotations={
+            },
+        )
+    )
+    spec.add_method(
+        __MethodSpec.create(
+            name="putDataById",
+            arguments=(
+                __ArgumentSpec.create(
+                    name="id",
+                    type=int,
+                    kind=__NumberType.I64,
+                    annotations={
+                    },
+                ),
+                __ArgumentSpec.create(
+                    name="data",
+                    type=str,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+            ),
+            result=None,
             result_kind=__NumberType.NOT_A_NUMBER,
             exceptions=(
             ),
@@ -91,19 +138,12 @@ cdef __InterfaceSpec get_reflection__MyService(bint for_clients):
     )
     spec.add_method(
         __MethodSpec.create(
-            name="putDataById",
+            name="deleteDataById",
             arguments=(
                 __ArgumentSpec.create(
                     name="id",
                     type=int,
                     kind=__NumberType.I64,
-                    annotations={
-                    },
-                ),
-                __ArgumentSpec.create(
-                    name="data",
-                    type=str,
-                    kind=__NumberType.NOT_A_NUMBER,
                     annotations={
                     },
                 ),

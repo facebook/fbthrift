@@ -6,6 +6,7 @@
 #
 
 cimport cython
+from typing import AsyncIterator
 from cpython.version cimport PY_VERSION_HEX
 from libc.stdint cimport (
     int8_t as cint8_t,
@@ -21,6 +22,7 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.utility cimport move as cmove
+from libcpp.pair cimport pair
 from cython.operator cimport dereference as deref
 from cpython.ref cimport PyObject
 from thrift.py3.exceptions cimport (
@@ -33,7 +35,13 @@ from folly cimport (
   cFollyPromise,
   cFollyUnit,
   c_unit,
-
+)
+from thrift.py3.common cimport (
+    cThriftServiceContext as __fbthrift_cThriftServiceContext,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    ServiceMetadata,
+    extractMetadataFromServiceContext,
+    MetadataBox as __MetadataBox,
 )
 
 if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -41,8 +49,8 @@ if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
 
 cimport folly.futures
 from folly.executor cimport get_executor
-cimport folly.iobuf as __iobuf
-import folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 
@@ -62,17 +70,6 @@ from module.services_wrapper cimport cMyServiceFastInterface
 from module.services_wrapper cimport cDbMixedStackArgumentsInterface
 
 
-cdef extern from "<utility>" namespace "std":
-    cdef cFollyPromise[unique_ptr[string]] move_promise_binary "std::move"(
-        cFollyPromise[unique_ptr[string]])
-    cdef cFollyPromise[string] move_promise_binary "std::move"(
-        cFollyPromise[string])
-    cdef cFollyPromise[cbool] move_promise_cbool "std::move"(
-        cFollyPromise[cbool])
-    cdef cFollyPromise[string] move_promise_string "std::move"(
-        cFollyPromise[string])
-    cdef cFollyPromise[cFollyUnit] move_promise_cFollyUnit "std::move"(
-        cFollyPromise[cFollyUnit])
 
 @cython.auto_pickle(False)
 cdef class Promise_binary:
@@ -80,48 +77,48 @@ cdef class Promise_binary:
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
-        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
-        inst.cPromise = move_promise_binary(cPromise)
+        cdef Promise_binary inst = Promise_binary.__new__(Promise_binary)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_binary:
+cdef class Promise__sa_binary:
     cdef cFollyPromise[string] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[string] cPromise):
-        inst = <Promise_binary>Promise_binary.__new__(Promise_binary)
-        inst.cPromise = move_promise_binary(cPromise)
+        cdef Promise__sa_binary inst = Promise__sa_binary.__new__(Promise__sa_binary)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_cbool:
+cdef class Promise__sa_cbool:
     cdef cFollyPromise[cbool] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
-        inst = <Promise_cbool>Promise_cbool.__new__(Promise_cbool)
-        inst.cPromise = move_promise_cbool(cPromise)
+        cdef Promise__sa_cbool inst = Promise__sa_cbool.__new__(Promise__sa_cbool)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_string:
+cdef class Promise__sa_string:
     cdef cFollyPromise[string] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[string] cPromise):
-        inst = <Promise_string>Promise_string.__new__(Promise_string)
-        inst.cPromise = move_promise_string(cPromise)
+        cdef Promise__sa_string inst = Promise__sa_string.__new__(Promise__sa_string)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
-cdef class Promise_cFollyUnit:
+cdef class Promise__sa_cFollyUnit:
     cdef cFollyPromise[cFollyUnit] cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
-        inst = <Promise_cFollyUnit>Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = move_promise_cFollyUnit(cPromise)
+        cdef Promise__sa_cFollyUnit inst = Promise__sa_cFollyUnit.__new__(Promise__sa_cFollyUnit)
+        inst.cPromise = cmove(cPromise)
         return inst
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({
@@ -182,6 +179,18 @@ cdef class MyServiceInterface(
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__MyService(for_clients=False)
 
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cMyServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyService"
+
 cdef object _MyServiceFast_annotations = _py_types.MappingProxyType({
 })
 
@@ -240,6 +249,18 @@ cdef class MyServiceFastInterface(
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__MyServiceFast(for_clients=False)
 
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cMyServiceFastSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyServiceFast"
+
 cdef object _DbMixedStackArguments_annotations = _py_types.MappingProxyType({
 })
 
@@ -278,6 +299,18 @@ cdef class DbMixedStackArgumentsInterface(
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__DbMixedStackArguments(for_clients=False)
 
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cDbMixedStackArgumentsSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.DbMixedStackArguments"
+
 
 
 cdef api void call_cy_MyService_hasDataById(
@@ -286,7 +319,7 @@ cdef api void call_cy_MyService_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
+    cdef Promise__sa_cbool __promise = Promise__sa_cbool.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -306,7 +339,7 @@ cdef api void call_cy_MyService_hasDataById(
 async def MyService_hasDataById_coro(
     object self,
     object ctx,
-    Promise_cbool promise,
+    Promise__sa_cbool promise,
     id
 ):
     try:
@@ -338,7 +371,7 @@ cdef api void call_cy_MyService_getDataById(
     cFollyPromise[string] cPromise,
     cint64_t id
 ):
-    __promise = Promise_string.create(move_promise_string(cPromise))
+    cdef Promise__sa_string __promise = Promise__sa_string.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -358,7 +391,7 @@ cdef api void call_cy_MyService_getDataById(
 async def MyService_getDataById_coro(
     object self,
     object ctx,
-    Promise_string promise,
+    Promise__sa_string promise,
     id
 ):
     try:
@@ -391,7 +424,7 @@ cdef api void call_cy_MyService_putDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -413,7 +446,7 @@ cdef api void call_cy_MyService_putDataById(
 async def MyService_putDataById_coro(
     object self,
     object ctx,
-    Promise_cFollyUnit promise,
+    Promise__sa_cFollyUnit promise,
     id,
     data
 ):
@@ -449,7 +482,7 @@ cdef api void call_cy_MyService_lobDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -471,7 +504,7 @@ cdef api void call_cy_MyService_lobDataById(
 async def MyService_lobDataById_coro(
     object self,
     object ctx,
-    Promise_cFollyUnit promise,
+    Promise__sa_cFollyUnit promise,
     id,
     data
 ):
@@ -506,7 +539,7 @@ cdef api void call_cy_MyServiceFast_hasDataById(
     cFollyPromise[cbool] cPromise,
     cint64_t id
 ):
-    __promise = Promise_cbool.create(move_promise_cbool(cPromise))
+    cdef Promise__sa_cbool __promise = Promise__sa_cbool.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -526,7 +559,7 @@ cdef api void call_cy_MyServiceFast_hasDataById(
 async def MyServiceFast_hasDataById_coro(
     object self,
     object ctx,
-    Promise_cbool promise,
+    Promise__sa_cbool promise,
     id
 ):
     try:
@@ -558,7 +591,7 @@ cdef api void call_cy_MyServiceFast_getDataById(
     cFollyPromise[string] cPromise,
     cint64_t id
 ):
-    __promise = Promise_string.create(move_promise_string(cPromise))
+    cdef Promise__sa_string __promise = Promise__sa_string.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -578,7 +611,7 @@ cdef api void call_cy_MyServiceFast_getDataById(
 async def MyServiceFast_getDataById_coro(
     object self,
     object ctx,
-    Promise_string promise,
+    Promise__sa_string promise,
     id
 ):
     try:
@@ -611,7 +644,7 @@ cdef api void call_cy_MyServiceFast_putDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -633,7 +666,7 @@ cdef api void call_cy_MyServiceFast_putDataById(
 async def MyServiceFast_putDataById_coro(
     object self,
     object ctx,
-    Promise_cFollyUnit promise,
+    Promise__sa_cFollyUnit promise,
     id,
     data
 ):
@@ -669,7 +702,7 @@ cdef api void call_cy_MyServiceFast_lobDataById(
     cint64_t id,
     string data
 ):
-    __promise = Promise_cFollyUnit.create(move_promise_cFollyUnit(cPromise))
+    cdef Promise__sa_cFollyUnit __promise = Promise__sa_cFollyUnit.create(cmove(cPromise))
     arg_id = id
     arg_data = data.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
@@ -691,7 +724,7 @@ cdef api void call_cy_MyServiceFast_lobDataById(
 async def MyServiceFast_lobDataById_coro(
     object self,
     object ctx,
-    Promise_cFollyUnit promise,
+    Promise__sa_cFollyUnit promise,
     id,
     data
 ):
@@ -726,7 +759,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
     cFollyPromise[unique_ptr[string]] cPromise,
     unique_ptr[string] key
 ):
-    __promise = Promise_binary.create(move_promise_binary(cPromise))
+    cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
     arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -778,7 +811,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
     cFollyPromise[string] cPromise,
     string key
 ):
-    __promise = Promise_binary.create(move_promise_binary(cPromise))
+    cdef Promise__sa_binary __promise = Promise__sa_binary.create(cmove(cPromise))
     arg_key = key.data().decode('UTF-8')
     __context = RequestContext.create(ctx)
     if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
@@ -798,7 +831,7 @@ cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
 async def DbMixedStackArguments_getDataByKey1_coro(
     object self,
     object ctx,
-    Promise_binary promise,
+    Promise__sa_binary promise,
     key
 ):
     try:

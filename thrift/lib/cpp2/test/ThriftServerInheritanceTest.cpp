@@ -31,15 +31,9 @@ using namespace apache::thrift::test;
 
 class Handler : public MyLeafSvIf {
  public:
-  Future<string> future_doRoot() override {
-    return makeFuture(string("root"));
-  }
-  Future<string> future_doNode() override {
-    return makeFuture(string("node"));
-  }
-  Future<string> future_doLeaf() override {
-    return makeFuture(string("leaf"));
-  }
+  Future<string> future_doRoot() override { return makeFuture(string("root")); }
+  Future<string> future_doNode() override { return makeFuture(string("node")); }
+  Future<string> future_doLeaf() override { return makeFuture(string("leaf")); }
 };
 
 class ThriftServerInheritanceTest : public testing::Test {};

@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("VirtualComplexUnion")
-public final class VirtualComplexUnion {
+public final class VirtualComplexUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("VirtualComplexUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -59,20 +59,20 @@ public final class VirtualComplexUnion {
         return res;
     }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setThingOne(final String thingOne) {
         this.value = thingOne;
         this.id = 1;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setThingTwo(final String thingTwo) {
         this.value = thingTwo;
         this.id = 2;
     }
 
-    @ThriftField(value=1, name="thingOne", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="thingOne", requiredness=Requiredness.NONE)
     public String getThingOne() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a thingOne element!");
@@ -84,7 +84,7 @@ public final class VirtualComplexUnion {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="thingTwo", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="thingTwo", requiredness=Requiredness.NONE)
     public String getThingTwo() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a thingTwo element!");
@@ -160,10 +160,10 @@ public final class VirtualComplexUnion {
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
       if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+         return;
       }
+      oprot.writeStructBegin(STRUCT_DESC);
       switch (this.id) {
       case _THINGONE: {
         oprot.writeFieldBegin(THING_ONE_FIELD_DESC);
@@ -184,6 +184,11 @@ public final class VirtualComplexUnion {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<VirtualComplexUnion> asReader() {
+      return VirtualComplexUnion::read0;
     }
     
     public static VirtualComplexUnion read0(TProtocol oprot) throws TException {

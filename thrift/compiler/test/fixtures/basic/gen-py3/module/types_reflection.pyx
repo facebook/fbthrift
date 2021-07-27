@@ -6,7 +6,7 @@
 #
 
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3.reflection cimport (
     NumberType as __NumberType,
@@ -76,6 +76,42 @@ cdef __StructSpec get_reflection__MyStruct():
             id=4,
             name="myEnum",
             type=_module_types.MyEnum,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=5,
+            name="oneway",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=6,
+            name="readonly",
+            type=bool,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=7,
+            name="idempotent",
+            type=bool,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,

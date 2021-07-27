@@ -42,10 +42,10 @@ int SyncClientTest() {
 
   folly::EventBase base;
 
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, "127.0.0.1", port));
+  auto socket = folly::AsyncSocket::newSocket(&base, "127.0.0.1", port);
 
-  TestServiceAsyncClient client(HeaderClientChannel::newChannel(socket));
+  TestServiceAsyncClient client(
+      HeaderClientChannel::newChannel(std::move(socket)));
 
   std::string response;
   client.sync_sendResponse(response, 64);

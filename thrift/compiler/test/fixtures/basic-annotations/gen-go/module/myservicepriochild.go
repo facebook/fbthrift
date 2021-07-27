@@ -124,6 +124,37 @@ func (p *MyServicePrioChildThreadsafeClient) recvPang() (err error) {
 }
 
 
+type MyServicePrioChildChannelClient struct {
+  *MyServicePrioParentChannelClient
+}
+
+func (c *MyServicePrioChildChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyServicePrioChildChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyServicePrioChildChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyServicePrioChildChannelClient(channel thrift.RequestChannel) *MyServicePrioChildChannelClient {
+  return &MyServicePrioChildChannelClient{MyServicePrioParentChannelClient: NewMyServicePrioParentChannelClient(channel)}
+}
+
+func (p *MyServicePrioChildChannelClient) Pang(ctx context.Context) (err error) {
+  args := MyServicePrioChildPangArgs{
+  }
+  var result MyServicePrioChildPangResult
+  err = p.RequestChannel.Call(ctx, "pang", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyServicePrioChildProcessor struct {
   *MyServicePrioParentProcessor
 }
@@ -131,11 +162,17 @@ type MyServicePrioChildProcessor struct {
 func NewMyServicePrioChildProcessor(handler MyServicePrioChild) *MyServicePrioChildProcessor {
   self10 := &MyServicePrioChildProcessor{NewMyServicePrioParentProcessor(handler)}
   self10.AddToProcessorMap("pang", &myServicePrioChildProcessorPang{handler:handler})
+  self10.AddToFunctionServiceMap("pang", "MyServicePrioChild")
   return self10
 }
 
 type myServicePrioChildProcessorPang struct {
   handler MyServicePrioChild
+}
+
+func (p *MyServicePrioChildPangResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *myServicePrioChildProcessorPang) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -192,6 +229,21 @@ func NewMyServicePrioChildPangArgs() *MyServicePrioChildPangArgs {
   return &MyServicePrioChildPangArgs{}
 }
 
+type MyServicePrioChildPangArgsBuilder struct {
+  obj *MyServicePrioChildPangArgs
+}
+
+func NewMyServicePrioChildPangArgsBuilder() *MyServicePrioChildPangArgsBuilder{
+  return &MyServicePrioChildPangArgsBuilder{
+    obj: NewMyServicePrioChildPangArgs(),
+  }
+}
+
+func (p MyServicePrioChildPangArgsBuilder) Emit() *MyServicePrioChildPangArgs{
+  return &MyServicePrioChildPangArgs{
+  }
+}
+
 func (p *MyServicePrioChildPangArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -241,6 +293,21 @@ type MyServicePrioChildPangResult struct {
 
 func NewMyServicePrioChildPangResult() *MyServicePrioChildPangResult {
   return &MyServicePrioChildPangResult{}
+}
+
+type MyServicePrioChildPangResultBuilder struct {
+  obj *MyServicePrioChildPangResult
+}
+
+func NewMyServicePrioChildPangResultBuilder() *MyServicePrioChildPangResultBuilder{
+  return &MyServicePrioChildPangResultBuilder{
+    obj: NewMyServicePrioChildPangResult(),
+  }
+}
+
+func (p MyServicePrioChildPangResultBuilder) Emit() *MyServicePrioChildPangResult{
+  return &MyServicePrioChildPangResult{
+  }
 }
 
 func (p *MyServicePrioChildPangResult) Read(iprot thrift.Protocol) error {

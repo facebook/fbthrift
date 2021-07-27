@@ -17,12 +17,14 @@
 namespace cpp2 apache.thrift.test
 
 struct ReflectionTestStruct1 {
-  3: i32 c,
-  1: required i32 a,
-  2: optional i32 b,
-  4: string d (some.field.annotation = "hello",
-               some.other.annotation = 1,
-               annotation.without.value),
+  3: i32 c;
+  1: required i32 a;
+  2: optional i32 b;
+  4: string d (
+    some.field.annotation = "hello",
+    some.other.annotation = 1,
+    annotation.without.value,
+  );
 }
 
 enum ReflectionTestEnum {
@@ -31,8 +33,8 @@ enum ReflectionTestEnum {
 }
 
 struct ReflectionTestStruct2 {
-  1: map<byte, ReflectionTestStruct1> a,
-  2: set<string> b,
-  3: list<i64> c,
-  4: ReflectionTestEnum d,
+  1: map<byte, ReflectionTestStruct1> a;
+  2: set<string> b;
+  3: list<i64> c;
+  4: ReflectionTestEnum d;
 }

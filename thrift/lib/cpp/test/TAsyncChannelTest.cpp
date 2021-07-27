@@ -65,8 +65,7 @@ class ChannelCallback {
         timestamp_(false) {}
 
   void send(
-      const std::shared_ptr<TAsyncChannel>& channel,
-      TMemoryBuffer* message) {
+      const std::shared_ptr<TAsyncChannel>& channel, TMemoryBuffer* message) {
     // helper function to get the correct callbacks
     channel->sendMessage(
         std::bind(&ChannelCallback::sendDone, this),
@@ -75,8 +74,7 @@ class ChannelCallback {
   }
 
   void recv(
-      const std::shared_ptr<TAsyncChannel>& channel,
-      TMemoryBuffer* message) {
+      const std::shared_ptr<TAsyncChannel>& channel, TMemoryBuffer* message) {
     // helper function to get the correct callbacks
     channel->recvMessage(
         std::bind(&ChannelCallback::recvDone, this),
@@ -102,22 +100,12 @@ class ChannelCallback {
     timestamp_.reset();
   }
 
-  uint32_t getSendDone() const {
-    return sendDone_;
-  }
-  uint32_t getSendError() const {
-    return sendError_;
-  }
-  uint32_t getRecvDone() const {
-    return recvDone_;
-  }
-  uint32_t getRecvError() const {
-    return recvError_;
-  }
+  uint32_t getSendDone() const { return sendDone_; }
+  uint32_t getSendError() const { return sendError_; }
+  uint32_t getRecvDone() const { return recvDone_; }
+  uint32_t getRecvError() const { return recvError_; }
 
-  const TimePoint& getTimestamp() const {
-    return timestamp_;
-  }
+  const TimePoint& getTimestamp() const { return timestamp_; }
 
  private:
   uint32_t sendDone_;
@@ -187,9 +175,7 @@ class Message {
     CHECK_EQ(memcmp(otherBuf, myBuf, length), 0);
   }
 
-  uint32_t getLength() const {
-    return buf_->available_read();
-  }
+  uint32_t getLength() const { return buf_->available_read(); }
 
   const uint8_t* getBuffer() const {
     uint32_t borrowLen = getLength();
@@ -253,17 +239,11 @@ class ChunkSender : private AsyncTransport::WriteCallback,
         message_(msg),
         schedule_(schedule) {}
 
-  void start() {
-    scheduleNext();
-  }
+  void start() { scheduleNext(); }
 
-  const ChunkSchedule* getSchedule() const {
-    return &schedule_;
-  }
+  const ChunkSchedule* getSchedule() const { return &schedule_; }
 
-  bool error() const {
-    return error_;
-  }
+  bool error() const { return error_; }
 
  private:
   void scheduleNext() {
@@ -325,15 +305,12 @@ class ChunkSender : private AsyncTransport::WriteCallback,
     }
   }
 
-  void writeErr(
-      size_t /* bytesWritten */,
-      const AsyncSocketException&) noexcept override {
+  void writeErr(size_t /* bytesWritten */, const AsyncSocketException&) noexcept
+      override {
     error_ = true;
   }
 
-  void timeoutExpired() noexcept override {
-    sendNow();
-  }
+  void timeoutExpired() noexcept override { sendNow(); }
 
   uint32_t bufOffset_;
   uint32_t scheduleIndex_;
@@ -409,21 +386,15 @@ class MultiMessageSenderReceiver : private AsyncTransport::WriteCallback,
     recvChannel_ = channel;
   }
 
-  bool getReadError() const {
-    return readError_;
-  }
+  bool getReadError() const { return readError_; }
 
-  bool getWriteError() const {
-    return writeError_;
-  }
+  bool getWriteError() const { return writeError_; }
 
   vector<std::shared_ptr<TMemoryBuffer>>& getReadBuffers() {
     return readBuffers_;
   }
 
-  vector<Message>& getWriteMessages() {
-    return writeMessages_;
-  }
+  vector<Message>& getWriteMessages() { return writeMessages_; }
 
   void recvDone() {
     uint8_t* request;
@@ -446,9 +417,7 @@ class MultiMessageSenderReceiver : private AsyncTransport::WriteCallback,
     }
   }
 
-  void recvError() {
-    readError_ = true;
-  }
+  void recvError() { readError_ = true; }
 
   void writeSuccess() noexcept override {
     uint32_t sentSize =
@@ -459,9 +428,8 @@ class MultiMessageSenderReceiver : private AsyncTransport::WriteCallback,
     }
   }
 
-  void writeErr(
-      size_t /* bytesWritten */,
-      const AsyncSocketException&) noexcept override {
+  void writeErr(size_t /* bytesWritten */, const AsyncSocketException&) noexcept
+      override {
     writeError_ = true;
   }
 
@@ -474,9 +442,7 @@ class MultiMessageSenderReceiver : private AsyncTransport::WriteCallback,
     }
   }
 
-  void timeoutExpired() noexcept override {
-    send();
-  }
+  void timeoutExpired() noexcept override { send(); }
 
   void send() {
     uint32_t availableSize = writeMemoryBuffer_.available_read();
@@ -522,14 +488,16 @@ template <typename ChannelT>
 class SocketPairTest {
  public:
   SocketPairTest() : eventBase_(), socketPair_() {
-    socket0_ = AsyncSocket::newSocket(
+    auto socket0 = AsyncSocket::newSocket(
         &eventBase_, socketPair_.extractNetworkSocket0());
+    socket0_ = socket0.get();
 
-    socket1_ = AsyncSocket::newSocket(
+    auto socket1 = AsyncSocket::newSocket(
         &eventBase_, socketPair_.extractNetworkSocket1());
+    socket1_ = socket1.get();
 
-    channel0_ = ChannelT::newChannel(socket0_);
-    channel1_ = ChannelT::newChannel(socket1_);
+    channel0_ = ChannelT::newChannel(std::move(socket0));
+    channel1_ = ChannelT::newChannel(std::move(socket1));
   }
   virtual ~SocketPairTest() {}
 
@@ -538,9 +506,7 @@ class SocketPairTest {
     eventBase_.loop();
   }
 
-  virtual void run() {
-    runWithTimeout(3000);
-  }
+  virtual void run() { runWithTimeout(3000); }
 
   virtual void runWithTimeout(uint32_t timeoutMS) {
     preLoop();
@@ -554,8 +520,8 @@ class SocketPairTest {
  protected:
   EventBase eventBase_;
   SocketPair socketPair_;
-  std::shared_ptr<AsyncSocket> socket0_;
-  std::shared_ptr<AsyncSocket> socket1_;
+  AsyncSocket* socket0_;
+  AsyncSocket* socket1_;
   std::shared_ptr<ChannelT> channel0_;
   std::shared_ptr<ChannelT> channel1_;
 };
@@ -566,17 +532,13 @@ class NeedsFrame {};
 template <>
 class NeedsFrame<TFramedAsyncChannel> {
  public:
-  static bool value() {
-    return true;
-  }
+  static bool value() { return true; }
 };
 
 template <>
 class NeedsFrame<TBinaryAsyncChannel> {
  public:
-  static bool value() {
-    return false;
-  }
+  static bool value() { return false; }
 };
 
 ///////////////////////////////////////////////////////////////////////////
@@ -632,7 +594,7 @@ class MultiSendRecvTest : public SocketPairTest<ChannelT> {
       milliseconds delayMS = milliseconds(0))
       : multiMessageSenderReceiver_(
             &this->eventBase_,
-            this->socket0_.get(),
+            this->socket0_,
             multiMessage,
             NeedsFrame<ChannelT>::value(),
             writeTimes,
@@ -822,9 +784,7 @@ class TimeoutQueuedTest : public SocketPairTest<ChannelT> {
     start_.reset();
   }
 
-  void recvMe() {
-    recvCallback_.recv(this->channel1_, &readMemoryBuffer_);
-  }
+  void recvMe() { recvCallback_.recv(this->channel1_, &readMemoryBuffer_); }
 
   void postLoop() override {
     CHECK_EQ(recvCallback_.getRecvError(), 2);
@@ -865,7 +825,7 @@ class RecvChunksTest : public SocketPairTest<ChannelT> {
         start_(false),
         timeout_(timeout),
         msg_(msgLen, NeedsFrame<ChannelT>::value()),
-        sender_(&this->eventBase_, this->socket0_.get(), &msg_, schedule) {}
+        sender_(&this->eventBase_, this->socket0_, &msg_, schedule) {}
 
   void preLoop() override {
     if (timeout_ > milliseconds(0)) {
@@ -1160,8 +1120,7 @@ class SendClosedTest : public SocketPairTest<ChannelT> {
 
     // Close the other socket after 25ms
     this->eventBase_.tryRunAfterDelay(
-        std::bind(&AsyncSocket::close, this->socket1_.get()),
-        closeTimeout_.count());
+        std::bind(&AsyncSocket::close, this->socket1_), closeTimeout_.count());
 
     start_.reset();
   }

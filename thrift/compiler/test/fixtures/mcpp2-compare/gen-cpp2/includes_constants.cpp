@@ -12,6 +12,6 @@
 
 namespace a { namespace different { namespace ns {
 
-constexpr int64_t const includes_constants::IncludedConstant_;
+constexpr ::std::int64_t const includes_constants::IncludedConstant_;
 
 }}} // a::different::ns

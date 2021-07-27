@@ -41,6 +41,43 @@ func (p *Accessory) GetInventoryId() int32 {
 func (p *Accessory) GetName() string {
   return p.Name
 }
+type AccessoryBuilder struct {
+  obj *Accessory
+}
+
+func NewAccessoryBuilder() *AccessoryBuilder{
+  return &AccessoryBuilder{
+    obj: NewAccessory(),
+  }
+}
+
+func (p AccessoryBuilder) Emit() *Accessory{
+  return &Accessory{
+    InventoryId: p.obj.InventoryId,
+    Name: p.obj.Name,
+  }
+}
+
+func (a *AccessoryBuilder) InventoryId(inventoryId int32) *AccessoryBuilder {
+  a.obj.InventoryId = inventoryId
+  return a
+}
+
+func (a *AccessoryBuilder) Name(name string) *AccessoryBuilder {
+  a.obj.Name = name
+  return a
+}
+
+func (a *Accessory) SetInventoryId(inventoryId int32) *Accessory {
+  a.InventoryId = inventoryId
+  return a
+}
+
+func (a *Accessory) SetName(name string) *Accessory {
+  a.Name = name
+  return a
+}
+
 func (p *Accessory) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -79,19 +116,19 @@ func (p *Accessory) Read(iprot thrift.Protocol) error {
 
 func (p *Accessory)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.InventoryId = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.InventoryId = v
+  }
   return nil
 }
 
 func (p *Accessory)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Name = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Name = v
+  }
   return nil
 }
 
@@ -157,6 +194,43 @@ func (p *PartName) GetInventoryId() int32 {
 func (p *PartName) GetName() string {
   return p.Name
 }
+type PartNameBuilder struct {
+  obj *PartName
+}
+
+func NewPartNameBuilder() *PartNameBuilder{
+  return &PartNameBuilder{
+    obj: NewPartName(),
+  }
+}
+
+func (p PartNameBuilder) Emit() *PartName{
+  return &PartName{
+    InventoryId: p.obj.InventoryId,
+    Name: p.obj.Name,
+  }
+}
+
+func (p *PartNameBuilder) InventoryId(inventoryId int32) *PartNameBuilder {
+  p.obj.InventoryId = inventoryId
+  return p
+}
+
+func (p *PartNameBuilder) Name(name string) *PartNameBuilder {
+  p.obj.Name = name
+  return p
+}
+
+func (p *PartName) SetInventoryId(inventoryId int32) *PartName {
+  p.InventoryId = inventoryId
+  return p
+}
+
+func (p *PartName) SetName(name string) *PartName {
+  p.Name = name
+  return p
+}
+
 func (p *PartName) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -195,19 +269,19 @@ func (p *PartName) Read(iprot thrift.Protocol) error {
 
 func (p *PartName)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.InventoryId = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.InventoryId = v
+  }
   return nil
 }
 
 func (p *PartName)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Name = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Name = v
+  }
   return nil
 }
 

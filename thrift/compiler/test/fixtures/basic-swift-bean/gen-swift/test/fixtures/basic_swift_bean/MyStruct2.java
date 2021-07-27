@@ -23,9 +23,8 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyStruct2")
-public final class MyStruct2 {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct("MyStruct2")
+public final class MyStruct2 implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStruct2() {
@@ -34,12 +33,11 @@ public final class MyStruct2 {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.basic_swift_bean.MyStruct1 myStruct1 = null;
         private String myString = null;
     
-        @ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
         public Builder setMyStruct1(test.fixtures.basic_swift_bean.MyStruct1 myStruct1) {
             this.myStruct1 = myStruct1;
             return this;
@@ -47,7 +45,7 @@ public final class MyStruct2 {
     
         public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
     
-            @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
         public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
@@ -66,7 +64,6 @@ public final class MyStruct2 {
             MyStruct2 result = new MyStruct2();
             result.myStruct1 = this.myStruct1;
             result.myString = this.myString;
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -87,45 +84,25 @@ static {
       FIELD_METADATA.put(2, MY_STRING_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myStruct1", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyStruct1 getMyStruct1() { return myStruct1; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct2 setMyStruct1(test.fixtures.basic_swift_bean.MyStruct1 myStruct1) {
         this.myStruct1 = myStruct1;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyStruct1() {
-        return this.myStruct1 != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyStruct1() {
-        this.myStruct1 = null;
-    }
     
-    @ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct2 setMyString(String myString) {
         this.myString = myString;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyString() {
-        return this.myString != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyString() {
-        this.myString = null;
-    }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -159,6 +136,10 @@ static {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStruct2> asReader() {
+      return MyStruct2::read0;
+    }
     
     public static MyStruct2 read0(TProtocol oprot) throws TException {
       TField __field;
@@ -210,4 +191,5 @@ static {
       oprot.writeStructEnd();
     }
     
+
 }

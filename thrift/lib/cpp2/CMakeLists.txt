@@ -28,6 +28,7 @@ get_property(RpcMetadata-cpp2-SOURCES GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES)
 get_property(metadata-cpp2-SOURCES GLOBAL PROPERTY metadata-cpp2-SOURCES)
 get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
 get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
+get_property(RocketUpgrade-cpp2-SOURCES GLOBAL PROPERTY RocketUpgrade-cpp2-SOURCES)
 
 bypass_source_check("${metadata-cpp2-SOURCES}")
 add_library(
@@ -73,6 +74,9 @@ add_library(
   ${RpcMetadata-cpp2-SOURCES}
   gen/module_types_cpp.cpp
   protocol/CompactProtocol.cpp # can't link against thriftprotocol, dep cycle
+  protocol/JSONProtocolCommon.cpp
+  ../cpp/protocol/TBase64Utils.cpp
+  ../cpp/protocol/TJSONProtocol.cpp
   ../cpp/protocol/TProtocolException.cpp
   ../cpp/util/VarintUtils.cpp
 )
@@ -91,10 +95,13 @@ add_library(
   protocol/CompactProtocol.cpp
   protocol/CompactV1Protocol.cpp
   protocol/DebugProtocol.cpp
-  protocol/JSONProtocolCommon.cpp
   protocol/JSONProtocol.cpp
+  protocol/JSONProtocolCommon.cpp
   protocol/Serializer.cpp
+  protocol/TableBasedSerializer.cpp
   protocol/VirtualProtocol.cpp
+  protocol/nimble/DecodeNimbleBlock.cpp
+  protocol/nimble/EncodeNimbleBlock.cpp
 
   ../cpp/protocol/TDebugProtocol.cpp
   ../cpp/protocol/TJSONProtocol.cpp
@@ -116,14 +123,18 @@ target_link_libraries(
     thrift-core
 )
 
+bypass_source_check("${RocketUpgrade-cpp2-SOURCES}")
 add_library(
   thriftcpp2
 
+  FieldRef.cpp
   Flags.cpp
   GeneratedCodeHelper.cpp
   PluggableFunction.cpp
   async/AsyncClient.cpp
   async/AsyncProcessor.cpp
+  async/AsyncProcessorHelper.cpp
+  async/ClientChannel.cpp
   async/ClientSinkBridge.cpp
   async/ClientStreamBridge.cpp
   async/Cpp2Channel.cpp
@@ -133,31 +144,44 @@ add_library(
   async/HeaderChannelTrait.cpp
   async/HeaderClientChannel.cpp
   async/HeaderServerChannel.cpp
+  async/HibernatingRequestChannel.cpp
+  async/Interaction.cpp
+  async/PooledRequestChannel.cpp
+  async/ReconnectingRequestChannel.cpp
+  async/RequestCallback.cpp
   async/RequestChannel.cpp
   async/ResponseChannel.cpp
+  async/RetryingRequestChannel.cpp
   async/RocketClientChannel.cpp
+  async/RpcOptions.cpp
   async/RpcTypes.cpp
   async/ServerGeneratorStream.cpp
   async/ServerSinkBridge.cpp
+  async/ThreadBoundAdaptorChannel.cpp
+  gen/module_metadata_cpp.cpp
+  gen/module_types_cpp.cpp
   security/SSLUtil.cpp
   security/extensions/ThriftParametersClientExtension.cpp
   security/extensions/ThriftParametersContext.cpp
   security/extensions/Types.cpp
-  server/RequestDebugLog.cpp
-  server/RequestsRegistry.cpp
+  server/AdaptiveConcurrency.cpp
   server/BaseThriftServer.cpp
   server/Cpp2ConnContext.cpp
   server/Cpp2Connection.cpp
   server/Cpp2Worker.cpp
   server/LoggingEvent.cpp
+  server/LoggingEventHelper.cpp
+  server/MonitoringMethodNames.cpp
+  server/RequestDebugLog.cpp
+  server/RequestsRegistry.cpp
   server/ServerInstrumentation.cpp
+  server/ThriftProcessor.cpp
   server/ThriftServer.cpp
   server/peeking/TLSHelper.cpp
   transport/core/RpcMetadataUtil.cpp
-  transport/core/ThriftProcessor.cpp
-  transport/core/ThriftRequest.cpp
   transport/core/ThriftClient.cpp
   transport/core/ThriftClientCallback.cpp
+  transport/core/ThriftRequest.cpp
   transport/rocket/PayloadUtils.cpp
   transport/rocket/Types.cpp
   transport/rocket/client/RequestContext.cpp
@@ -177,13 +201,17 @@ add_library(
   transport/rocket/server/RocketThriftRequests.cpp
   transport/rocket/server/ThriftRocketServerHandler.cpp
   util/Checksum.cpp
+  util/DebugString.cpp
   util/ScopedServerInterfaceThread.cpp
   util/ScopedServerThread.cpp
+  visitation/visit_by_thrift_field_metadata.cpp
+  ${RocketUpgrade-cpp2-SOURCES}
 )
 add_dependencies(
   thriftcpp2
   rpcmetadata
   thriftmetadata
+  RocketUpgrade-cpp2-target
 )
 target_link_libraries(
   thriftcpp2

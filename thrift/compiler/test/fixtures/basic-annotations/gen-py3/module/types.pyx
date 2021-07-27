@@ -5,7 +5,6 @@
 #  @generated
 #
 cimport cython as __cython
-from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -45,7 +44,7 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 from folly.range cimport Range as __cRange
@@ -64,18 +63,19 @@ cdef __EnumData __MyEnum_enum_data  = __EnumData.create(thrift.py3.types.createE
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __MyEnumMeta(thrift.py3.types.EnumMeta):
-
-    def __get_by_name(cls, str name):
-        return __MyEnum_enum_data.get_by_name(name)
-
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return __MyEnum_enum_data.get_by_value(value)
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return __MyEnum_enum_data.get_all_names()
 
     def __len__(cls):
         return __MyEnum_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __MyEnum_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -84,6 +84,16 @@ cdef class MyEnum(thrift.py3.types.CompiledEnum):
     cdef get_by_name(self, str name):
         return __MyEnum_enum_data.get_by_name(name)
 
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[cMyEnum].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyEnum"
 
 
 __SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
@@ -94,7 +104,7 @@ __SetMetaClass(<PyTypeObject*> MyEnum, <PyTypeObject*> __MyEnumMeta)
 cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     def __init__(MyStructNestedAnnotation self, **kwargs):
         self._cpp_obj = make_shared[cMyStructNestedAnnotation]()
-        self._fields_setter = __fbthrift_types_fields.__MyStructNestedAnnotation_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__MyStructNestedAnnotation_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(MyStructNestedAnnotation self, **kwargs):
@@ -102,15 +112,15 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
             return self
         cdef MyStructNestedAnnotation __fbthrift_inst = MyStructNestedAnnotation.__new__(MyStructNestedAnnotation)
         __fbthrift_inst._cpp_obj = make_shared[cMyStructNestedAnnotation](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__MyStructNestedAnnotation_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyStructNestedAnnotation_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStructNestedAnnotation", {
           "name": deref(self._cpp_obj).name_ref().has_value(),
         })
@@ -137,7 +147,7 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
         return MyStructNestedAnnotation.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cMyStructNestedAnnotation](
             self._cpp_obj,
             (<MyStructNestedAnnotation>other)._cpp_obj,
@@ -148,19 +158,29 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStructNestedAnnotation()
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyStructNestedAnnotation].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyStructNestedAnnotation"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMyStructNestedAnnotation](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 1
+        self._fbthrift_struct_size = 1
 
-    cdef __iobuf.IOBuf _serialize(MyStructNestedAnnotation self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(MyStructNestedAnnotation self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cMyStructNestedAnnotation](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(MyStructNestedAnnotation self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(MyStructNestedAnnotation self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cMyStructNestedAnnotation]()
         with nogil:
@@ -169,110 +189,10 @@ cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
-cdef class MyStructAnnotation(thrift.py3.types.Struct):
-    def __init__(MyStructAnnotation self, **kwargs):
-        self._cpp_obj = make_shared[cMyStructAnnotation]()
-        self._fields_setter = __fbthrift_types_fields.__MyStructAnnotation_FieldsSetter.create(self._cpp_obj.get())
-        super().__init__(**kwargs)
-
-    def __call__(MyStructAnnotation self, **kwargs):
-        if not kwargs:
-            return self
-        cdef MyStructAnnotation __fbthrift_inst = MyStructAnnotation.__new__(MyStructAnnotation)
-        __fbthrift_inst._cpp_obj = make_shared[cMyStructAnnotation](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__MyStructAnnotation_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
-        return __fbthrift_inst
-
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
-        self._fields_setter.set_field(name.encode("utf-8"), value)
-
-    cdef object __fbthrift_isset(self):
-        return thrift.py3.types._IsSet("MyStructAnnotation", {
-          "count": deref(self._cpp_obj).count_ref().has_value(),
-          "name": deref(self._cpp_obj).name_ref().has_value(),
-          "extra": deref(self._cpp_obj).extra_ref().has_value(),
-          "nest": deref(self._cpp_obj).nest_ref().has_value(),
-        })
-
-    @staticmethod
-    cdef create(shared_ptr[cMyStructAnnotation] cpp_obj):
-        __fbthrift_inst = <MyStructAnnotation>MyStructAnnotation.__new__(MyStructAnnotation)
-        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
-        return __fbthrift_inst
-
-    @property
-    def count(self):
-
-        return deref(self._cpp_obj).count_ref().value()
-
-    @property
-    def name(self):
-
-        return (<bytes>deref(self._cpp_obj).name_ref().value()).decode('UTF-8')
-
-    @property
-    def extra(self):
-        if not deref(self._cpp_obj).__isset.extra:
-            return None
-
-        return (<bytes>deref(self._cpp_obj).extra_ref().value_unchecked()).decode('UTF-8')
-
-    @property
-    def nest(self):
-
-        if self.__field_nest is None:
-            self.__field_nest = MyStructNestedAnnotation.create(__reference_shared_ptr(deref(self._cpp_obj).nest_ref().ref(), self._cpp_obj))
-        return self.__field_nest
-
-
-    def __hash__(MyStructAnnotation self):
-        return  super().__hash__()
-
-    def __copy__(MyStructAnnotation self):
-        cdef shared_ptr[cMyStructAnnotation] cpp_obj = make_shared[cMyStructAnnotation](
-            deref(self._cpp_obj)
-        )
-        return MyStructAnnotation.create(cmove(cpp_obj))
-
-    def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
-        return __richcmp[cMyStructAnnotation](
-            self._cpp_obj,
-            (<MyStructAnnotation>other)._cpp_obj,
-            op,
-        ) if r is None else r
-
-    @staticmethod
-    def __get_reflection__():
-        return _types_reflection.get_reflection__MyStructAnnotation()
-
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
-        return __get_field_name_by_index[cMyStructAnnotation](idx)
-
-    def __cinit__(self):
-        self.__fbthrift_struct_size = 4
-
-    cdef __iobuf.IOBuf _serialize(MyStructAnnotation self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
-        with nogil:
-            data = cmove(serializer.cserialize[cMyStructAnnotation](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
-
-    cdef cuint32_t _deserialize(MyStructAnnotation self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
-        cdef cuint32_t needed
-        self._cpp_obj = make_shared[cMyStructAnnotation]()
-        with nogil:
-            needed = serializer.cdeserialize[cMyStructAnnotation](buf, self._cpp_obj.get(), proto)
-        return needed
-
-
-@__cython.auto_pickle(False)
 cdef class MyStruct(thrift.py3.types.Struct):
     def __init__(MyStruct self, **kwargs):
         self._cpp_obj = make_shared[cMyStruct]()
-        self._fields_setter = __fbthrift_types_fields.__MyStruct_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(MyStruct self, **kwargs):
@@ -280,15 +200,15 @@ cdef class MyStruct(thrift.py3.types.Struct):
             return self
         cdef MyStruct __fbthrift_inst = MyStruct.__new__(MyStruct)
         __fbthrift_inst._cpp_obj = make_shared[cMyStruct](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__MyStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__MyStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("MyStruct", {
           "major": deref(self._cpp_obj).major_ref().has_value(),
           "package": deref(self._cpp_obj).package_ref().has_value(),
@@ -345,7 +265,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
         return MyStruct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cMyStruct](
             self._cpp_obj,
             (<MyStruct>other)._cpp_obj,
@@ -356,19 +276,29 @@ cdef class MyStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__MyStruct()
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cMyStruct].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyStruct"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cMyStruct](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 6
+        self._fbthrift_struct_size = 6
 
-    cdef __iobuf.IOBuf _serialize(MyStruct self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(MyStruct self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cMyStruct](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(MyStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(MyStruct self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cMyStruct]()
         with nogil:
@@ -380,7 +310,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 cdef class SecretStruct(thrift.py3.types.Struct):
     def __init__(SecretStruct self, **kwargs):
         self._cpp_obj = make_shared[cSecretStruct]()
-        self._fields_setter = __fbthrift_types_fields.__SecretStruct_FieldsSetter.create(self._cpp_obj.get())
+        self._fields_setter = _fbthrift_types_fields.__SecretStruct_FieldsSetter.create(self._cpp_obj.get())
         super().__init__(**kwargs)
 
     def __call__(SecretStruct self, **kwargs):
@@ -388,15 +318,15 @@ cdef class SecretStruct(thrift.py3.types.Struct):
             return self
         cdef SecretStruct __fbthrift_inst = SecretStruct.__new__(SecretStruct)
         __fbthrift_inst._cpp_obj = make_shared[cSecretStruct](deref(self._cpp_obj))
-        __fbthrift_inst._fields_setter = __fbthrift_types_fields.__SecretStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
-        for __fbthrift_name, __fbthrift_value in kwargs.items():
-            __fbthrift_inst.__fbthrift_set_field(__fbthrift_name, __fbthrift_value)
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__SecretStruct_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
         return __fbthrift_inst
 
-    cdef void __fbthrift_set_field(self, str name, object value) except *:
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
         self._fields_setter.set_field(name.encode("utf-8"), value)
 
-    cdef object __fbthrift_isset(self):
+    cdef object _fbthrift_isset(self):
         return thrift.py3.types._IsSet("SecretStruct", {
           "id": deref(self._cpp_obj).id_ref().has_value(),
           "password": deref(self._cpp_obj).password_ref().has_value(),
@@ -429,7 +359,7 @@ cdef class SecretStruct(thrift.py3.types.Struct):
         return SecretStruct.create(cmove(cpp_obj))
 
     def __richcmp__(self, other, int op):
-        r = self.__cmp_sametype(other, op)
+        r = self._fbthrift_cmp_sametype(other, op)
         return __richcmp[cSecretStruct](
             self._cpp_obj,
             (<SecretStruct>other)._cpp_obj,
@@ -440,19 +370,29 @@ cdef class SecretStruct(thrift.py3.types.Struct):
     def __get_reflection__():
         return _types_reflection.get_reflection__SecretStruct()
 
-    cdef __cstring_view __fbthrift_get_field_name_by_index(self, size_t idx):
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cSecretStruct].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.SecretStruct"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
         return __get_field_name_by_index[cSecretStruct](idx)
 
     def __cinit__(self):
-        self.__fbthrift_struct_size = 2
+        self._fbthrift_struct_size = 2
 
-    cdef __iobuf.IOBuf _serialize(SecretStruct self, __Protocol proto):
-        cdef unique_ptr[__iobuf.cIOBuf] data
+    cdef _fbthrift_iobuf.IOBuf _serialize(SecretStruct self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
         with nogil:
             data = cmove(serializer.cserialize[cSecretStruct](self._cpp_obj.get(), proto))
-        return __iobuf.from_unique_ptr(cmove(data))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
 
-    cdef cuint32_t _deserialize(SecretStruct self, const __iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+    cdef cuint32_t _deserialize(SecretStruct self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
         cdef cuint32_t needed
         self._cpp_obj = make_shared[cSecretStruct]()
         with nogil:

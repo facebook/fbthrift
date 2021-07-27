@@ -37,8 +37,10 @@ class EmptyServiceSvIf : public EmptyServiceSvAsyncIf, public apache::thrift::Se
  public:
   typedef EmptyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 
+ private:
 };
 
 class EmptyServiceSvNull : public EmptyServiceSvIf {
@@ -53,17 +55,17 @@ class EmptyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
  protected:
   EmptyServiceSvIf* iface_;
  public:
-  void processSerializedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
- protected:
-  std::shared_ptr<folly::RequestContext> getBaseContextForRequest() override;
+  // This is implemented in case the corresponding AsyncProcessorFactory did not implement createMethodMetadata.
+  // This can happen if the service is using a custom AsyncProcessorFactory but re-using the same AsyncProcessor.
+  void processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
+  // By default, this overload will be called for generated services
+  void processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) override;
  public:
-  using ProcessFunc = GeneratedAsyncProcessor::ProcessFunc<EmptyServiceAsyncProcessor>;
-  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFunc>;
-  static const EmptyServiceAsyncProcessor::ProcessMap& getBinaryProtocolProcessMap();
-  static const EmptyServiceAsyncProcessor::ProcessMap& getCompactProtocolProcessMap();
+  using ProcessFuncs = GeneratedAsyncProcessor::ProcessFuncs<EmptyServiceAsyncProcessor>;
+  using ProcessMap = GeneratedAsyncProcessor::ProcessMap<ProcessFuncs>;
+  static const EmptyServiceAsyncProcessor::ProcessMap& getOwnProcessMap();
  private:
-  static const EmptyServiceAsyncProcessor::ProcessMap binaryProcessMap_;
-  static const EmptyServiceAsyncProcessor::ProcessMap compactProcessMap_;
+  static const EmptyServiceAsyncProcessor::ProcessMap kOwnProcessMap_;
  private:
  public:
   EmptyServiceAsyncProcessor(EmptyServiceSvIf* iface) :

@@ -13,6 +13,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
+
+use crate::binary_type::{CopyFromBuf, Discard};
 use crate::bufext::BufMutExt;
 use crate::errors::ProtocolError;
 use crate::framing::{Framing, FramingDecoded, FramingEncoded, FramingEncodedFinal};
@@ -177,7 +179,7 @@ fn skip_inner<P: ProtocolReader + ?Sized>(
             p.read_string()?;
         }
         TType::String => {
-            p.read_binary()?;
+            p.read_binary::<Discard>()?;
         }
         TType::Stream => bail_err!(ProtocolError::StreamUnsupported),
         TType::Stop => bail_err!(ProtocolError::UnexpectedStopInSkip),
@@ -254,7 +256,7 @@ pub trait ProtocolReader {
     fn read_double(&mut self) -> Result<f64>;
     fn read_float(&mut self) -> Result<f32>;
     fn read_string(&mut self) -> Result<String>;
-    fn read_binary(&mut self) -> Result<Vec<u8>>;
+    fn read_binary<V: CopyFromBuf>(&mut self) -> Result<V>;
 
     /// Skip over the next data element from the provided input Protocol object
     fn skip(&mut self, field_type: TType) -> Result<()> {

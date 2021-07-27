@@ -40,7 +40,7 @@ enum {
 LatencyMonitor::LatencyMonitor(const shared_ptr<LoadConfig>& config)
     : numOpTypes_(config->getNumOpTypes()),
       opFields_(),
-      initialTime_(0),
+      initialTime_(),
       initialScoreBoard_(numOpTypes_),
       aggregateScoreBoard_(numOpTypes_),
       config_(config),
@@ -76,7 +76,7 @@ void LatencyMonitor::initializeInfo() {
   aggregateScoreBoard_ = initialScoreBoard_;
 
   // Record the start time
-  initialTime_ = concurrency::Util::currentTimeUsec();
+  initialTime_ = std::chrono::steady_clock::now();
 
   // Print information about how to read the output
   printLegend();
@@ -135,8 +135,9 @@ uint32_t LatencyMonitor::printInfo(uint64_t intervalUsec) {
   // Aggregate all of the worker's scoreboards into new data for this interval
   aggregateWorkerScorboards(&aggregateScoreBoard_);
 
-  int64_t now = concurrency::Util::currentTimeUsec();
-  uint64_t allTimeUsec = now - initialTime_;
+  auto now = std::chrono::steady_clock::now();
+  auto allTimeUsec =
+      std::chrono::duration_cast<std::chrono::microseconds>(now - initialTime_);
 
   uint64_t totalQueries = 0;
 
@@ -152,7 +153,8 @@ uint32_t LatencyMonitor::printInfo(uint64_t intervalUsec) {
     const LatencyScoreBoard::OpData* prev = prevScoreBoard.getOpData(op);
     const LatencyScoreBoard::OpData* initial = initialScoreBoard_.getOpData(op);
 
-    printOpInfo(fields, current, prev, initial, intervalUsec, allTimeUsec);
+    printOpInfo(
+        fields, current, prev, initial, intervalUsec, allTimeUsec.count());
     printf("| ");
 
     totalQueries += current->getCountSince(prev);
@@ -170,7 +172,12 @@ uint32_t LatencyMonitor::printInfo(uint64_t intervalUsec) {
     initialScoreBoard_.computeOpAggregate(&initial);
 
     printOpInfo(
-        &totalFields_, &current, &prev, &initial, intervalUsec, allTimeUsec);
+        &totalFields_,
+        &current,
+        &prev,
+        &initial,
+        intervalUsec,
+        allTimeUsec.count());
   }
 
   printf("\n");
@@ -356,10 +363,7 @@ void LatencyMonitor::formatLatency(char* buf, size_t buflen, double pct) {
 }
 
 void LatencyMonitor::formatLatency(
-    char* buf,
-    size_t buflen,
-    double avg,
-    double stddev) {
+    char* buf, size_t buflen, double avg, double stddev) {
   int avgPrecision = 0;
   if (avg < 1) {
     avgPrecision = 2;

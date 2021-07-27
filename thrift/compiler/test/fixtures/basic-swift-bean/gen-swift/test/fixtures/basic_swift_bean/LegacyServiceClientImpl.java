@@ -11,7 +11,8 @@ import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
-import com.facebook.swift.transport.client.*;
+import com.facebook.thrift.client.*;
+import com.facebook.thrift.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -20,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class LegacyServiceClientImpl extends AbstractThriftClient implements LegacyService {
-
 
     // Method Handlers
     private ThriftMethodHandler getPointsMethodHandler;
@@ -77,23 +77,24 @@ public class LegacyServiceClientImpl extends AbstractThriftClient implements Leg
     public Map<String, List<Integer>> getPoints(
         Set<String> key,
         long legacyStuff) throws org.apache.thrift.TException {
-      try {
-        return (Map<String, List<Integer>>) execute(getPointsMethodHandler, getPointsExceptions, key, legacyStuff);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      return getPointsWrapper(key, legacyStuff, RpcOptions.EMPTY).getData();
     }
 
-
+    @java.lang.Override
     public Map<String, List<Integer>> getPoints(
         Set<String> key,
         long legacyStuff,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      return getPointsWrapper(key, legacyStuff, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Map<String, List<Integer>>> getPointsWrapper(
+        Set<String> key,
+        long legacyStuff,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        return (Map<String, List<Integer>>) executeWithOptions(getPointsMethodHandler, getPointsExceptions, rpcOptions, key, legacyStuff);
+        return FutureUtil.get(executeWrapperWithOptions(getPointsMethodHandler, getPointsExceptions, rpcOptions, key, legacyStuff));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

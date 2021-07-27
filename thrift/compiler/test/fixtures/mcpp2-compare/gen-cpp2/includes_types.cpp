@@ -68,15 +68,17 @@ void TccStructTraits<::a::different::ns::AStruct>::translateFieldName(
 
 namespace a { namespace different { namespace ns {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AStruct::AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg) :
+AStruct::AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg) :
     FieldA(std::move(FieldA__arg)) {
   __isset.FieldA = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AStruct::__clear() {
   // clear all fields
-  FieldA = 0;
+  this->FieldA = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -86,7 +88,7 @@ bool AStruct::operator==(const AStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.FieldA == rhs.FieldA)) {
+  if (!(lhs.FieldA_ref() == rhs.FieldA_ref())) {
     return false;
   }
   return true;
@@ -96,8 +98,8 @@ bool AStruct::operator<(const AStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.FieldA == rhs.FieldA)) {
-    return lhs.FieldA < rhs.FieldA;
+  if (!(lhs.FieldA_ref() == rhs.FieldA_ref())) {
+    return lhs.FieldA_ref() < rhs.FieldA_ref();
   }
   return false;
 }
@@ -152,25 +154,36 @@ void TccStructTraits<::a::different::ns::AStructB>::translateFieldName(
 namespace a { namespace different { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AStructB::AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg) :
+AStructB::AStructB(const AStructB&) = default;
+AStructB& AStructB::operator=(const AStructB&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AStructB::AStructB(AStructB&& other) noexcept  :
+    FieldA(std::move(other.FieldA)) {}
+
+AStructB& AStructB::operator=(FOLLY_MAYBE_UNUSED AStructB&& other) noexcept {
+    this->FieldA = std::move(other.FieldA);
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AStructB::AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg) :
     FieldA(std::move(FieldA__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AStructB::__clear() {
   // clear all fields
-  if (FieldA) FieldA = std::make_shared< ::a::different::ns::AStruct>();
+  if (this->FieldA) this->FieldA.reset(new typename decltype(this->FieldA)::element_type());
 }
 
 bool AStructB::operator==(const AStructB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.FieldA != !!rhs.FieldA) {
+  if ((lhs.FieldA == nullptr) != (rhs.FieldA == nullptr) || (lhs.FieldA != nullptr && lhs.FieldA != rhs.FieldA && !(*lhs.FieldA == *rhs.FieldA))) {
     return false;
-  }
-  if (!!lhs.FieldA) {
-    if (lhs.FieldA != rhs.FieldA && !(*lhs.FieldA == *rhs.FieldA)) {
-      return false;
-    }
   }
   return true;
 }
@@ -179,13 +192,8 @@ bool AStructB::operator<(const AStructB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!!lhs.FieldA != !!rhs.FieldA) {
-    return !!lhs.FieldA < !!rhs.FieldA;
-  }
-  if (!!lhs.FieldA) {
-    if (lhs.FieldA != rhs.FieldA && !(*lhs.FieldA == *rhs.FieldA)) {
-      return *lhs.FieldA < *rhs.FieldA;
-    }
+  if ((lhs.FieldA == nullptr) != (rhs.FieldA == nullptr) || (lhs.FieldA != nullptr && lhs.FieldA != rhs.FieldA && !(*lhs.FieldA == *rhs.FieldA))) {
+    return lhs.FieldA == nullptr || (rhs.FieldA != nullptr && *lhs.FieldA < *rhs.FieldA);
   }
   return false;
 }
@@ -213,14 +221,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AStructB,
         ::apache::thrift::type_class::structure,
-         ::a::different::ns::AStruct>,
+        ::a::different::ns::AStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AStructB,
         ::apache::thrift::type_class::structure,
-         ::a::different::ns::AStruct>,
+        ::a::different::ns::AStruct>,
     "inconsistent use of nimble option");
 
 }}} // a::different::ns

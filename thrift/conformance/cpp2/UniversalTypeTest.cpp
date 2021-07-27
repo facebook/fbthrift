@@ -26,7 +26,7 @@
 #include <folly/FBString.h>
 #include <folly/String.h>
 #include <folly/portability/GTest.h>
-#include <thrift/conformance/if/gen-cpp2/thrift_type_info_constants.h>
+#include <thrift/conformance/if/gen-cpp2/type_constants.h>
 
 namespace apache::thrift::conformance {
 namespace {
@@ -95,10 +95,8 @@ auto Hash() {
 }
 
 TEST(UniversalTypeTest, Constants) {
-  IsSame<
-      type_hash_size_t,
-      decltype(thrift_type_info_constants::minTypeHashBytes())>();
-  EXPECT_EQ(kMinTypeHashBytes, thrift_type_info_constants::minTypeHashBytes());
+  IsSame<type_hash_size_t, decltype(type_constants::minTypeHashBytes())>();
+  EXPECT_EQ(kMinTypeHashBytes, type_constants::minTypeHashBytes());
 
   auto* ctx = EVP_MD_CTX_new();
   ASSERT_NE(ctx, nullptr);

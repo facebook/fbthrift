@@ -40,17 +40,13 @@ class Runnable {
    * Gets the thread object that is hosting this runnable object  - can return
    * an empty std::shared pointer if no references remain on the thread object
    */
-  virtual std::shared_ptr<Thread> thread() {
-    return thread_.lock();
-  }
+  virtual std::shared_ptr<Thread> thread() { return thread_.lock(); }
 
   /**
    * Sets the thread that is executing this object.  This is only meant for
    * use by concrete implementations of Thread.
    */
-  virtual void thread(std::shared_ptr<Thread> value) {
-    thread_ = value;
-  }
+  virtual void thread(std::shared_ptr<Thread> value) { thread_ = value; }
 
  private:
   std::weak_ptr<Thread> thread_;
@@ -63,11 +59,6 @@ enum PRIORITY {
   NORMAL,
   BEST_EFFORT,
   N_PRIORITIES
-};
-
-class PriorityRunnable : public virtual Runnable {
- public:
-  virtual PRIORITY getPriority() const = 0;
 };
 
 /**
@@ -106,22 +97,16 @@ class Thread {
   /**
    * Gets the runnable object this thread is hosting
    */
-  virtual std::shared_ptr<Runnable> runnable() const {
-    return _runnable;
-  }
+  virtual std::shared_ptr<Runnable> runnable() const { return _runnable; }
 
   /**
    * Sets thread name for debugging purposes after the thread was created.
    * Returns true on success.
    */
-  virtual bool setName(const std::string& /*name*/) {
-    return false;
-  }
+  virtual bool setName(const std::string& /*name*/) { return false; }
 
  protected:
-  virtual void runnable(std::shared_ptr<Runnable> value) {
-    _runnable = value;
-  }
+  virtual void runnable(std::shared_ptr<Runnable> value) { _runnable = value; }
 
  private:
   std::shared_ptr<Runnable> _runnable;

@@ -15,6 +15,28 @@ enum MyEnum: int {
   MyValue2 = 1;
 }
 
+class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.MyEnum",
+        "elements" => dict[
+          0 => "MyValue1",
+          1 => "MyValue2",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift exception:-
  * MyException1
@@ -39,7 +61,7 @@ class MyException1 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?MyEnum,
   );
 
@@ -55,60 +77,81 @@ class MyException1 extends \TException implements \IThriftStruct {
    */
   public /* Originally defined as MyEnum */ int $code;
 
-  public function setCodeAsEnum(MyEnum $code): void {
+  public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
     $this->code = $code;  
   }
 
-  public function getCodeAsEnum(): MyEnum {
+  public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
     return $this->code;  
   }
 
-  <<__Rx>>
-  public function __construct(?string $message = null, ?MyEnum $code = null  ) {
+  public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
     $this->code = $code ?? MyEnum::MyValue1;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
       Shapes::idx($shape, 'code'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException1';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.MyException1",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.MyEnum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "code",
+              "is_optional" => true,
+            )
+          ),
+        ],
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -137,7 +180,7 @@ class MyException2 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?MyEnum,
   );
 
@@ -153,60 +196,80 @@ class MyException2 extends \TException implements \IThriftStruct {
    */
   public /* Originally defined as MyEnum */ int $code;
 
-  public function setCodeAsEnum(MyEnum $code): void {
+  public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
     $this->code = $code;  
   }
 
-  public function getCodeAsEnum(): MyEnum {
+  public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
     return $this->code;  
   }
 
-  <<__Rx>>
-  public function __construct(?string $message = null, ?MyEnum $code = null  ) {
+  public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
     $this->code = $code ?? MyEnum::MyValue1;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
       Shapes::idx($shape, 'code'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException2';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.MyException2",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.MyEnum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "code",
+            )
+          ),
+        ],
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -235,7 +298,7 @@ class MyException3 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?MyEnum,
   );
 
@@ -251,60 +314,80 @@ class MyException3 extends \TException implements \IThriftStruct {
    */
   public /* Originally defined as MyEnum */ int $code;
 
-  public function setCodeAsEnum(MyEnum $code): void {
+  public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
     $this->code = $code;  
   }
 
-  public function getCodeAsEnum(): MyEnum {
+  public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
     return $this->code;  
   }
 
-  <<__Rx>>
-  public function __construct(?string $message = null, ?MyEnum $code = null  ) {
+  public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
     $this->code = $code ?? MyEnum::MyValue1;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
       Shapes::idx($shape, 'code'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException3';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.MyException3",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.MyEnum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "code",
+            )
+          ),
+        ],
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -333,7 +416,7 @@ class MyException4 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?MyEnum,
   );
 
@@ -349,60 +432,80 @@ class MyException4 extends \TException implements \IThriftStruct {
    */
   public /* Originally defined as MyEnum */ int $code;
 
-  public function setCodeAsEnum(MyEnum $code): void {
+  public function setCodeAsEnum(MyEnum $code)[write_props]: void {
     /* HH_FIXME[4110] nontransparent enum */
     $this->code = $code;  
   }
 
-  public function getCodeAsEnum(): MyEnum {
+  public function getCodeAsEnum()[]: MyEnum {
     /* HH_FIXME[4110] retain HHVM enforcement semantics */
     return $this->code;  
   }
 
-  <<__Rx>>
-  public function __construct(?string $message = null, ?MyEnum $code = null  ) {
+  public function __construct(?string $message = null, ?MyEnum $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
       /* HH_FIXME[4110] nontransparent Enum */
     $this->code = $code ?? MyEnum::MyValue2;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
       Shapes::idx($shape, 'code'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException4';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.MyException4",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.MyEnum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "code",
+            )
+          ),
+        ],
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -430,7 +533,7 @@ class MyException5 extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
     ?'code' => ?int,
   );
 
@@ -446,49 +549,66 @@ class MyException5 extends \TException implements \IThriftStruct {
    */
   public int $code;
 
-  <<__Rx>>
-  public function __construct(?string $message = null, ?int $code = null  ) {
+  public function __construct(?string $message = null, ?int $code = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
     $this->code = $code ?? 0;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
       Shapes::idx($shape, 'code'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException5';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'code' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.MyException5",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "code",
+              "is_optional" => true,
+            )
+          ),
+        ],
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }

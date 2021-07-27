@@ -46,9 +46,7 @@ class ScoreBoardOpVector {
   typedef typename DataVector::iterator Iterator;
   typedef typename DataVector::const_iterator ConstIterator;
 
-  explicit ScoreBoardOpVector(uint32_t numOpsHint) {
-    resize(numOpsHint);
-  }
+  explicit ScoreBoardOpVector(uint32_t numOpsHint) { resize(numOpsHint); }
 
   OpDataT* getOpData(uint32_t opType) {
     if (opType >= opData_.size()) {
@@ -89,19 +87,11 @@ class ScoreBoardOpVector {
     }
   }
 
-  Iterator begin() {
-    return opData_.begin();
-  }
-  Iterator end() {
-    return opData_.end();
-  }
+  Iterator begin() { return opData_.begin(); }
+  Iterator end() { return opData_.end(); }
 
-  ConstIterator begin() const {
-    return opData_.begin();
-  }
-  ConstIterator end() const {
-    return opData_.end();
-  }
+  ConstIterator begin() const { return opData_.begin(); }
+  ConstIterator end() const { return opData_.end(); }
 
  private:
   void resize(uint32_t numOps) {

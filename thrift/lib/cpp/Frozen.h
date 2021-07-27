@@ -25,10 +25,10 @@
 #include <unordered_map>
 #include <vector>
 
+#include <glog/logging.h>
 #include <folly/FBString.h>
 #include <folly/Range.h>
 #include <folly/lang/Bits.h>
-#include <glog/logging.h>
 #include <thrift/lib/cpp/RelativePtr.h>
 
 /**
@@ -127,16 +127,14 @@ struct TrivialFreezer {
   // Freeze 'src' into 'dst' recursively, using 'buffer' for additional storage.
   // 'buffer' must be advanced by specializations of this class if the spare
   // space is used.
-  static void
-  freezeImpl(const ThawedType& src, FrozenType& dst, byte*& /* buffer */) {
+  static void freezeImpl(
+      const ThawedType& src, FrozenType& dst, byte*& /* buffer */) {
     dst = src;
   }
 
   // Thaw 'src' into 'dst' recursively. Specializations of this class wil
   // recurse to each field, thawing each of their fields recursively.
-  static void thawImpl(const FrozenType& src, ThawedType& dst) {
-    dst = src;
-  }
+  static void thawImpl(const FrozenType& src, ThawedType& dst) { dst = src; }
 };
 
 /**
@@ -180,12 +178,8 @@ namespace frzn_dtl {
 // frozen size of implementation //
 template <typename T>
 struct z {
-  static constexpr inline std::size_t size() {
-    return sizeof(T);
-  }
-  static constexpr inline std::size_t alignment() {
-    return alignof(T);
-  }
+  static constexpr inline std::size_t size() { return sizeof(T); }
+  static constexpr inline std::size_t alignment() { return alignof(T); }
 };
 
 } // namespace frzn_dtl
@@ -228,9 +222,7 @@ const FrozenType* freeze(const T& src, byte*& buffer) {
 }
 
 struct FrozenTypeDeleter {
-  void operator()(const void* ptr) const {
-    free(const_cast<void*>(ptr));
-  }
+  void operator()(const void* ptr) const { free(const_cast<void*>(ptr)); }
 };
 
 template <class T, class FrozenType = typename Freezer<T>::FrozenType>
@@ -303,8 +295,8 @@ struct Freezer<std::pair<A, B>> {
         Freezer<B>::extraSizeImpl(src.second);
   }
 
-  static void
-  freezeImpl(const ThawedType& src, FrozenType& dst, byte*& buffer) {
+  static void freezeImpl(
+      const ThawedType& src, FrozenType& dst, byte*& buffer) {
     Freezer<A>::freezeImpl(src.first, dst.first, buffer);
     Freezer<B>::freezeImpl(src.second, dst.second, buffer);
   }
@@ -349,12 +341,8 @@ struct FrozenRange {
   FrozenRange(const_iterator begin, const_iterator end)
       : begin_(begin), end_(end) {}
 
-  const_iterator begin() const {
-    return const_iterator(begin_.get());
-  }
-  const_iterator end() const {
-    return const_iterator(end_.get());
-  }
+  const_iterator begin() const { return const_iterator(begin_.get()); }
+  const_iterator end() const { return const_iterator(end_.get()); }
 
   const value_type& front() const {
     if (size() == 0) {
@@ -370,16 +358,10 @@ struct FrozenRange {
     return this->end()[-1];
   }
 
-  size_t size() const {
-    return end() - begin();
-  }
-  bool empty() const {
-    return end_.get() == begin_.get();
-  }
+  size_t size() const { return end() - begin(); }
+  bool empty() const { return end_.get() == begin_.get(); }
 
-  const value_type& operator[](int i) const {
-    return *(begin() + i);
-  }
+  const value_type& operator[](int i) const { return *(begin() + i); }
 
   template <class T>
   bool operator<(const FrozenRange<T>& other) const {
@@ -396,17 +378,11 @@ struct FrozenRange {
     return range() == other.range();
   }
 
-  bool operator<(folly::StringPiece other) const {
-    return range() < other;
-  }
+  bool operator<(folly::StringPiece other) const { return range() < other; }
 
-  bool operator>(folly::StringPiece other) const {
-    return range() > other;
-  }
+  bool operator>(folly::StringPiece other) const { return range() > other; }
 
-  bool operator==(folly::StringPiece other) const {
-    return range() == other;
-  }
+  bool operator==(folly::StringPiece other) const { return range() == other; }
 
   folly::Range<const_iterator> range() const {
     return folly::Range<const_iterator>(this->begin(), this->end());
@@ -468,8 +444,7 @@ template <
 typename std::
     enable_if<!apache::thrift::detail::IsFrozenRange<Range>::value, bool>::type
     operator<(
-        const Range& range,
-        const FrozenRange<ThawedItem, FrozenItem>& frozen) {
+        const Range& range, const FrozenRange<ThawedItem, FrozenItem>& frozen) {
   return frozen > range;
 }
 
@@ -481,16 +456,14 @@ template <
 typename std::
     enable_if<!apache::thrift::detail::IsFrozenRange<Range>::value, bool>::type
     operator==(
-        const Range& range,
-        const FrozenRange<ThawedItem, FrozenItem>& frozen) {
+        const Range& range, const FrozenRange<ThawedItem, FrozenItem>& frozen) {
   return range.size() == frozen.size() &&
       std::equal(range.begin(), range.end(), frozen.begin());
 }
 
 template <class Ostream, class ThawedItem, class FrozenItem>
 Ostream& operator<<(
-    Ostream& os,
-    const FrozenRange<ThawedItem, FrozenItem>& frozen) {
+    Ostream& os, const FrozenRange<ThawedItem, FrozenItem>& frozen) {
   for (auto& item : frozen) {
     os << item;
   }
@@ -518,8 +491,8 @@ struct RangeFreezer {
     return size;
   }
 
-  static void
-  freezeImpl(const ThawedType& src, FrozenType& dst, byte*& buffer) {
+  static void freezeImpl(
+      const ThawedType& src, FrozenType& dst, byte*& buffer) {
     size_t size = src.size();
     if (!size) {
       // point to [nullptr, nullptr) if the range is empty.
@@ -787,8 +760,8 @@ struct HashMapFreezer {
     return size_t(size * 2.0 + bits - 1) / bits;
   }
 
-  static void
-  freezeImpl(const ThawedType& src, FrozenType& dst, byte*& buffer) {
+  static void freezeImpl(
+      const ThawedType& src, FrozenType& dst, byte*& buffer) {
     size_t size = src.size();
     if (!size) {
       // point to [nullptr, nullptr) if the range is empty.

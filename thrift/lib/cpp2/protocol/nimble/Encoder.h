@@ -42,9 +42,7 @@ class Encoder {
   Encoder(const Encoder&) = delete;
   Encoder& operator=(const Encoder&) = delete;
 
-  void encodeSizeChunk(std::uint32_t chunk) {
-    sizeStream_.encodeChunk(chunk);
-  }
+  void encodeSizeChunk(std::uint32_t chunk) { sizeStream_.encodeChunk(chunk); }
 
   void encodeContentChunk(std::uint32_t chunk) {
     contentStream_.encodeChunk(chunk);

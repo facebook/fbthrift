@@ -30,12 +30,8 @@ struct CppHasANumber : private boost::totally_ordered<CppHasANumber> {
   std::int32_t number{};
   CppHasANumber() {}
   explicit CppHasANumber(std::int32_t number_) : number(number_) {}
-  bool operator==(CppHasANumber that) const {
-    return number == that.number;
-  }
-  bool operator<(CppHasANumber that) const {
-    return number < that.number;
-  }
+  bool operator==(CppHasANumber that) const { return number == that.number; }
+  bool operator<(CppHasANumber that) const { return number < that.number; }
 };
 
 class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
@@ -45,15 +41,9 @@ class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
   class Foo {
    public:
     explicit Foo(std::int32_t& obj) : obj_(obj) {}
-    std::int32_t& result() & {
-      return obj_;
-    }
-    std::int32_t&& result() && {
-      return std::move(obj_);
-    }
-    std::int32_t const& result() const& {
-      return obj_;
-    }
+    std::int32_t& result() & { return obj_; }
+    std::int32_t&& result() && { return std::move(obj_); }
+    std::int32_t const& result() const& { return obj_; }
 
    private:
     std::int32_t& obj_;
@@ -67,22 +57,12 @@ class CppHasAResult : private boost::totally_ordered<CppHasAResult> {
     return *::new (this) CppHasAResult(that);
   }
 
-  bool operator==(CppHasAResult that) const {
-    return result_ == that.result_;
-  }
-  bool operator<(CppHasAResult that) const {
-    return result_ < that.result_;
-  }
+  bool operator==(CppHasAResult that) const { return result_ == that.result_; }
+  bool operator<(CppHasAResult that) const { return result_ < that.result_; }
 
-  Foo& foo() & {
-    return foo_;
-  }
-  Foo&& foo() && {
-    return static_cast<Foo&&>(foo_);
-  }
-  Foo const& foo() const& {
-    return foo_;
-  }
+  Foo& foo() & { return foo_; }
+  Foo&& foo() && { return static_cast<Foo&&>(foo_); }
+  Foo const& foo() const& { return foo_; }
 
  private:
   std::int32_t result_{};
@@ -95,11 +75,7 @@ struct CppHasAPhrase : private boost::totally_ordered<CppHasAPhrase> {
   std::string phrase{};
   CppHasAPhrase() {}
   explicit CppHasAPhrase(std::string phrase_) : phrase(std::move(phrase_)) {}
-  bool operator==(CppHasAPhrase that) const {
-    return phrase == that.phrase;
-  }
-  bool operator<(CppHasAPhrase that) const {
-    return phrase < that.phrase;
-  }
+  bool operator==(CppHasAPhrase that) const { return phrase == that.phrase; }
+  bool operator<(CppHasAPhrase that) const { return phrase < that.phrase; }
 };
 } // namespace reflection_indirection

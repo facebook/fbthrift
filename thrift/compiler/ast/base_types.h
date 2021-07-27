@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
+// TODO(afuller): Delete this file.
+
 #pragma once
 
-#include "thrift/compiler/ast/t_base_type.h"
+#include <thrift/compiler/ast/t_base_type.h>
 
 namespace apache {
 namespace thrift {
@@ -24,19 +26,37 @@ namespace compiler {
 
 /**
  * Global types for the parser to be able to reference
- *
- * shared_ptr<> would be nice, but...
  */
-t_type* void_type();
-t_type* string_type();
-t_type* binary_type();
-t_type* bool_type();
-t_type* byte_type();
-t_type* i16_type();
-t_type* i32_type();
-t_type* i64_type();
-t_type* double_type();
-t_type* float_type();
+inline const t_type* void_type() {
+  return &t_base_type::t_void();
+}
+inline const t_type* string_type() {
+  return &t_base_type::t_string();
+}
+inline const t_type* binary_type() {
+  return &t_base_type::t_binary();
+}
+inline const t_type* bool_type() {
+  return &t_base_type::t_bool();
+}
+inline const t_type* byte_type() {
+  return &t_base_type::t_byte();
+}
+inline const t_type* i16_type() {
+  return &t_base_type::t_i16();
+}
+inline const t_type* i32_type() {
+  return &t_base_type::t_i32();
+}
+inline const t_type* i64_type() {
+  return &t_base_type::t_i64();
+}
+inline const t_type* double_type() {
+  return &t_base_type::t_double();
+}
+inline const t_type* float_type() {
+  return &t_base_type::t_float();
+}
 
 } // namespace compiler
 } // namespace thrift

@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("DataUnion")
-public final class DataUnion {
+public final class DataUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("DataUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -74,7 +74,7 @@ public final class DataUnion {
     }
     
 
-    @ThriftField(value=1, name="binaryData", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="binaryData", requiredness=Requiredness.NONE)
     public byte[] getBinaryData() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a binaryData element!");
@@ -86,7 +86,7 @@ public final class DataUnion {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="stringData", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="stringData", requiredness=Requiredness.NONE)
     public String getStringData() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a stringData element!");
@@ -162,10 +162,10 @@ public final class DataUnion {
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
       if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+         return;
       }
+      oprot.writeStructBegin(STRUCT_DESC);
       switch (this.id) {
       case _BINARYDATA: {
         oprot.writeFieldBegin(BINARY_DATA_FIELD_DESC);
@@ -186,6 +186,11 @@ public final class DataUnion {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<DataUnion> asReader() {
+      return DataUnion::read0;
     }
     
     public static DataUnion read0(TProtocol oprot) throws TException {

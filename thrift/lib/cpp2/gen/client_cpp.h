@@ -16,62 +16,16 @@
 
 #pragma once
 
+#include <string_view>
+
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
 #include <thrift/lib/cpp/ContextStack.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/gen/client_h.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/detail/protocol_methods.h>
-#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
-
-#if FOLLY_HAS_COROUTINES
-#include <folly/experimental/coro/Error.h>
-#endif
-
-namespace apache {
-namespace thrift {
-namespace detail {
-namespace ac {
-
-struct ClientRequestContext {
-  ClientRequestContext(
-      uint16_t protocolId,
-      std::map<std::string, std::string> headers,
-      std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
-          handlers,
-      const char* service_name,
-      const char* fn_name)
-      : header(protocolId, std::move(headers)),
-        reqContext(initReqContext(&header)),
-        ctx(std::move(handlers), service_name, fn_name, &reqContext) {}
-
-  struct THeaderWrapper : public transport::THeader {
-    THeaderWrapper(
-        uint16_t protocolId,
-        std::map<std::string, std::string> headers)
-        : transport::THeader(transport::THeader::ALLOW_BIG_FRAMES) {
-      this->setProtocolId(protocolId);
-      this->setHeaders(std::move(headers));
-    }
-  };
-
-  THeaderWrapper header;
-  Cpp2ClientRequestContext reqContext;
-  ContextStack ctx;
-
- private:
-  static Cpp2ClientRequestContext initReqContext(transport::THeader* header) {
-    Cpp2ClientRequestContext reqContext;
-    reqContext.setRequestHeader(header);
-    return reqContext;
-  }
-};
-
-} // namespace ac
-} // namespace detail
-} // namespace thrift
-} // namespace apache

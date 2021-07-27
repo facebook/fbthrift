@@ -69,7 +69,7 @@ TYPED_TEST(EvolutionTest, evolution) {
     EXPECT_EQ(newObj.unqualified_new_ref(), "");
     EXPECT_EQ(newObj.required_new_ref(), "");
 
-    EXPECT_FALSE(newObj.unqualified_new_ref().has_value());
+    EXPECT_FALSE(newObj.unqualified_new_ref().is_set());
     EXPECT_FALSE(newObj.optional_new_ref().has_value());
     EXPECT_TRUE(newObj.required_new_ref().has_value());
   } else {
@@ -81,7 +81,7 @@ TYPED_TEST(EvolutionTest, evolution) {
   EXPECT_EQ(newObj.unqualified_added_ref(), "");
   EXPECT_EQ(newObj.required_added_ref(), "");
 
-  EXPECT_FALSE(newObj.unqualified_added_ref().has_value());
+  EXPECT_FALSE(newObj.unqualified_added_ref().is_set());
   EXPECT_FALSE(newObj.optional_added_ref().has_value());
   EXPECT_TRUE(newObj.required_added_ref().has_value());
 }

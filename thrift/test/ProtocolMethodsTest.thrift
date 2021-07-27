@@ -19,6 +19,6 @@ namespace cpp2 apache.thrift.test
 cpp_include "thrift/test/ProtocolMethodsTestCustomTypes.h"
 
 struct MyStruct {
-  1: i32 (cpp.type = 'MyInt') num
-  2: string (cpp.type = 'MyString') str
+  1: i32 (cpp.type = 'MyInt') num;
+  2: string (cpp.type = 'MyString') str;
 } (no_default_comparators)

@@ -25,4 +25,5 @@ enum MyEnum1 {
   ME1_6 = 6,
 }
 
-enum EmptyEnum {}
+enum EmptyEnum {
+}

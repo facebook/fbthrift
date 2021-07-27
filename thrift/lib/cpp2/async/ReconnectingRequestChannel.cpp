@@ -69,42 +69,65 @@ class ChannelKeepAliveStream : public StreamClientCallback {
       FirstResponsePayload&& firstResponsePayload,
       folly::EventBase* evb,
       StreamServerCallback* serverCallback) override {
-    SCOPE_EXIT {
-      delete this;
-    };
+    SCOPE_EXIT { delete this; };
     serverCallback->resetClientCallback(clientCallback_);
     return clientCallback_.onFirstResponse(
         std::move(firstResponsePayload), evb, serverCallback);
   }
   void onFirstResponseError(folly::exception_wrapper ew) override {
-    SCOPE_EXIT {
-      delete this;
-    };
+    SCOPE_EXIT { delete this; };
     return clientCallback_.onFirstResponseError(std::move(ew));
   }
 
-  virtual bool onStreamNext(StreamPayload&&) override {
-    std::terminate();
-  }
+  virtual bool onStreamNext(StreamPayload&&) override { std::terminate(); }
   virtual void onStreamError(folly::exception_wrapper) override {
     std::terminate();
   }
-  virtual void onStreamComplete() override {
-    std::terminate();
-  }
-  void resetServerCallback(StreamServerCallback&) override {
-    std::terminate();
-  }
+  virtual void onStreamComplete() override { std::terminate(); }
+  void resetServerCallback(StreamServerCallback&) override { std::terminate(); }
 
  private:
   ReconnectingRequestChannel::ImplPtr keepAlive_;
   StreamClientCallback& clientCallback_;
 };
+
+class ChannelKeepAliveSink : public SinkClientCallback {
+ public:
+  ChannelKeepAliveSink(
+      ReconnectingRequestChannel::ImplPtr impl,
+      SinkClientCallback& clientCallback)
+      : keepAlive_(std::move(impl)), clientCallback_(clientCallback) {}
+
+  bool onFirstResponse(
+      FirstResponsePayload&& firstResponsePayload,
+      folly::EventBase* evb,
+      SinkServerCallback* serverCallback) override {
+    SCOPE_EXIT { delete this; };
+    serverCallback->resetClientCallback(clientCallback_);
+    return clientCallback_.onFirstResponse(
+        std::move(firstResponsePayload), evb, serverCallback);
+  }
+  void onFirstResponseError(folly::exception_wrapper ew) override {
+    SCOPE_EXIT { delete this; };
+    return clientCallback_.onFirstResponseError(std::move(ew));
+  }
+
+  virtual void onFinalResponse(StreamPayload&&) override { std::terminate(); }
+  virtual void onFinalResponseError(folly::exception_wrapper) override {
+    std::terminate();
+  }
+  virtual bool onSinkRequestN(uint64_t) override { std::terminate(); }
+  void resetServerCallback(SinkServerCallback&) override { std::terminate(); }
+
+ private:
+  ReconnectingRequestChannel::ImplPtr keepAlive_;
+  SinkClientCallback& clientCallback_;
+};
 } // namespace
 
 void ReconnectingRequestChannel::sendRequestResponse(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
@@ -114,7 +137,7 @@ void ReconnectingRequestChannel::sendRequestResponse(
 
   return impl_->sendRequestResponse(
       options,
-      methodName,
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       std::move(cob));
@@ -122,7 +145,7 @@ void ReconnectingRequestChannel::sendRequestResponse(
 
 void ReconnectingRequestChannel::sendRequestNoResponse(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
@@ -132,7 +155,7 @@ void ReconnectingRequestChannel::sendRequestNoResponse(
 
   return impl_->sendRequestNoResponse(
       options,
-      methodName,
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       std::move(cob));
@@ -140,7 +163,7 @@ void ReconnectingRequestChannel::sendRequestNoResponse(
 
 void ReconnectingRequestChannel::sendRequestStream(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     StreamClientCallback* cob) {
@@ -148,7 +171,28 @@ void ReconnectingRequestChannel::sendRequestStream(
   cob = new ChannelKeepAliveStream(impl_, *cob);
 
   return impl_->sendRequestStream(
-      options, methodName, std::move(request), std::move(header), cob);
+      options,
+      std::move(methodMetadata),
+      std::move(request),
+      std::move(header),
+      cob);
+}
+
+void ReconnectingRequestChannel::sendRequestSink(
+    const RpcOptions& options,
+    MethodMetadata&& methodMetadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
+    SinkClientCallback* cob) {
+  reconnectIfNeeded();
+  cob = new ChannelKeepAliveSink(impl_, *cob);
+
+  return impl_->sendRequestSink(
+      options,
+      std::move(methodMetadata),
+      std::move(request),
+      std::move(header),
+      cob);
 }
 
 void ReconnectingRequestChannel::reconnectIfNeeded() {

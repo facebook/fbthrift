@@ -14,9 +14,9 @@ folly::Future<int64_t>
 TestServiceClientWrapper::init(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_int1) {
+  auto* client = static_cast<::cpp2::TestServiceAsyncClient*>(async_client_.get());
   folly::Promise<int64_t> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::TestServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_init, channel_);
   client->init(

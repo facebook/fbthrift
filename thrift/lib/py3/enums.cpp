@@ -110,8 +110,7 @@ std::pair<PyObject*, std::string_view> EnumFlagsData::tryGetByValue(
 }
 
 PyObject* EnumFlagsData::tryAddToFlagValuesCache(
-    uint32_t value,
-    PyObject* obj) {
+    uint32_t value, PyObject* obj) {
   {
     std::unique_lock wm{flagValueCacheMutex_};
     auto inserted = flagValuesToInstances_.emplace(value, obj);

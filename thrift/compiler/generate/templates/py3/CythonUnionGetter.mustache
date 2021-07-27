@@ -55,7 +55,7 @@ else:
 }}{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
   }}{{#type:iobuf?}}{{!
-    }}self.value =  __iobuf.from_unique_ptr({{!
+    }}self.value =  _fbthrift_iobuf.from_unique_ptr({{!
       }}deref(self._cpp_obj).get_{{field:py_name}}().clone()){{!
   }}{{/type:iobuf?}}{{!
   }}{{^type:iobuf?}}{{!

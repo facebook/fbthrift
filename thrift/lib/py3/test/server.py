@@ -13,8 +13,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 import asyncio
 import sys
 import types
@@ -44,6 +42,9 @@ class Handler(TestingServiceInterface):
         return not value
 
     async def getName(self) -> str:
+        return "Testing"
+
+    async def getMethodName(self) -> str:
         return "Testing"
 
     async def shutdown(self) -> None:
@@ -144,8 +145,6 @@ class ServicesTests(unittest.TestCase):
         MAX_CONNECTIONS = 132
         LISTEN_BACKLOG = 167
         NUM_IO_WORKERS = 10
-        NUM_CPU_WORKERS = 42
-        NUM_SSL_WORKERS = 12
         IDLE_TIMEOUT = 19.84
         QUEUE_TIMEOUT = 20.19
 
@@ -154,16 +153,12 @@ class ServicesTests(unittest.TestCase):
         server.set_max_connections(MAX_CONNECTIONS)
         server.set_listen_backlog(LISTEN_BACKLOG)
         server.set_io_worker_threads(NUM_IO_WORKERS)
-        server.set_cpu_worker_threads(NUM_CPU_WORKERS)
-        server.set_ssl_handshake_worker_threads(NUM_SSL_WORKERS)
         server.set_idle_timeout(IDLE_TIMEOUT)
         server.set_queue_timeout(QUEUE_TIMEOUT)
         self.assertEqual(server.get_max_requests(), MAX_REQUESTS)
         self.assertEqual(server.get_max_connections(), MAX_CONNECTIONS)
         self.assertEqual(server.get_listen_backlog(), LISTEN_BACKLOG)
         self.assertEqual(server.get_io_worker_threads(), NUM_IO_WORKERS)
-        self.assertEqual(server.get_cpu_worker_threads(), NUM_CPU_WORKERS)
-        self.assertEqual(server.get_ssl_handshake_worker_threads(), NUM_SSL_WORKERS)
         self.assertEqual(server.get_idle_timeout(), IDLE_TIMEOUT)
         self.assertEqual(server.get_queue_timeout(), QUEUE_TIMEOUT)
 

@@ -517,9 +517,10 @@ TEST_F(StreamingTest, ChecksummingRequest) {
         std::unique_ptr<folly::IOBuf> payload =
             folly::IOBuf::copyBuffer(asString);
 
-        for (CorruptionType testType : {CorruptionType::NONE,
-                                        CorruptionType::REQUESTS,
-                                        CorruptionType::RESPONSES}) {
+        for (CorruptionType testType :
+             {CorruptionType::NONE,
+              CorruptionType::REQUESTS,
+              CorruptionType::RESPONSES}) {
           setCorruption(testType);
           bool didThrow = false;
           try {
@@ -863,9 +864,8 @@ TEST_F(StreamingTest, DetachAndAttachEventBase) {
   folly::EventBase mainEventBase;
   auto socket = folly::AsyncSocket::UniquePtr(
       new folly::AsyncSocket(&mainEventBase, "::1", port_));
-  auto channel = [&]() -> std::shared_ptr<ClientChannel> {
-    return RocketClientChannel::newChannel(std::move(socket));
-  }();
+  std::shared_ptr<ClientChannel> channel =
+      RocketClientChannel::newChannel(std::move(socket));
 
   folly::Promise<folly::Unit> detachablePromise;
   auto detachableFuture = detachablePromise.getSemiFuture();
@@ -1005,7 +1005,7 @@ TEST_F(StreamingTest, CloseClientWithMultipleActiveStreams) {
 
 TEST_F(StreamingTest, SetMaxRequests) {
   server_->setMaxRequests(2);
-  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+  connectToServer([&](std::unique_ptr<StreamServiceAsyncClient> client) {
     apache::thrift::RpcOptions rpcOptions;
     rpcOptions.setChunkBufferSize(0);
     auto stream1 = client->sync_range(rpcOptions, 0, 10);
@@ -1082,6 +1082,31 @@ TEST_F(StreamingTest, LeakPublisherCheck) {
         client->sync_leakPublisherCheck(),
         apache::thrift::TApplicationException);
     waitNoLeak(client.get());
+  });
+}
+
+TEST_F(StreamingTest, ConnectionEgressBufferBackpressure) {
+  server_->setUseClientTimeout(false);
+  // Disable write batching
+  server_->setWriteBatchingInterval(std::chrono::milliseconds::zero());
+  // Trigger stream pause/resume by generating stream payloads that are too
+  // large to send at once, causing AsyncSocket to buffer the rest and invoking
+  // the buffer callback on the connection. A low backpressure threshold will
+  // then pause streams.
+  server_->setEgressBufferBackpressureThreshold(512);
+  server_->setEgressBufferRecoveryFactor(0.5);
+  connectToServer([](std::unique_ptr<StreamServiceAsyncClient> client) {
+    constexpr int kCount = 5;
+    constexpr int kSize = 10 * 1024 * 1024; // 10MB
+    apache::thrift::RpcOptions rpcOptions;
+    auto gen = client->sync_customBuffers(kCount, kSize).toAsyncGenerator();
+    size_t received = 0;
+    folly::coro::blockingWait([&]() mutable -> folly::coro::Task<void> {
+      while (auto next = co_await gen.next()) {
+        received++;
+      }
+    }());
+    EXPECT_EQ(kCount, received);
   });
 }
 

@@ -29,12 +29,19 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
-from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    cThriftServiceContext as __fbthrift_cThriftServiceContext,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    ServiceMetadata,
+    extractMetadataFromServiceContext,
+    MetadataBox as __MetadataBox,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
-cimport folly.iobuf as __iobuf
-import folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 cimport cython
 
@@ -302,7 +309,7 @@ cdef void ReturnService_list_UnionReturn_callback(
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ReturnService_readDataEb_callback(
-    cFollyTry[__iobuf.cIOBuf]&& result,
+    cFollyTry[_fbthrift_iobuf.cIOBuf]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -310,12 +317,12 @@ cdef void ReturnService_readDataEb_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(__iobuf.from_unique_ptr(result.value().clone()))
+            pyfuture.set_result(_fbthrift_iobuf.from_unique_ptr(result.value().clone()))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
 cdef void ReturnService_readData_callback(
-    cFollyTry[unique_ptr[__iobuf.cIOBuf]]&& result,
+    cFollyTry[unique_ptr[_fbthrift_iobuf.cIOBuf]]&& result,
     PyObject* userdata
 ):
     client, pyfuture, options = <object> userdata  
@@ -323,7 +330,7 @@ cdef void ReturnService_readData_callback(
         pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
     else:
         try:
-            pyfuture.set_result(__iobuf.from_unique_ptr(move_iobuf(result.value())))
+            pyfuture.set_result(_fbthrift_iobuf.from_unique_ptr(move_iobuf(result.value())))
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
@@ -725,6 +732,18 @@ cdef class EmptyService(thrift.py3.client.Client):
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__EmptyService(for_clients=True)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cEmptyServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.EmptyService"
 
 cdef object _ReturnService_annotations = _py_types.MappingProxyType({
 })
@@ -1138,7 +1157,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[__iobuf.cIOBuf](
+        bridgeFutureWith[_fbthrift_iobuf.cIOBuf](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).readDataEb(rpc_options._cpp_obj, 
                 size,
@@ -1164,7 +1183,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[unique_ptr[__iobuf.cIOBuf]](
+        bridgeFutureWith[unique_ptr[_fbthrift_iobuf.cIOBuf]](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).readData(rpc_options._cpp_obj, 
                 size,
@@ -1178,6 +1197,18 @@ cdef class ReturnService(thrift.py3.client.Client):
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__ReturnService(for_clients=True)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cReturnServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.ReturnService"
 
 cdef object _ParamService_annotations = _py_types.MappingProxyType({
 })
@@ -1947,4 +1978,16 @@ cdef class ParamService(thrift.py3.client.Client):
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__ParamService(for_clients=True)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cParamServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.ParamService"
 

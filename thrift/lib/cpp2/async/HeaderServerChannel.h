@@ -26,7 +26,6 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/async/Cpp2Channel.h>
-#include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
 #include <thrift/lib/cpp2/async/ServerChannel.h>
 
@@ -42,7 +41,6 @@ constexpr folly::StringPiece kClientLoggingHeader("client_logging_enabled");
  * manages requests / responses via seqId.
  */
 class HeaderServerChannel : public ServerChannel,
-                            public HeaderChannelTrait,
                             public MessageChannel::RecvCallback,
                             virtual public folly::DelayedDestruction {
  protected:
@@ -66,9 +64,7 @@ class HeaderServerChannel : public ServerChannel,
   // DelayedDestruction methods
   void destroy() override;
 
-  folly::AsyncTransport* getTransport() {
-    return cpp2Channel_->getTransport();
-  }
+  folly::AsyncTransport* getTransport() { return cpp2Channel_->getTransport(); }
 
   void setTransport(std::shared_ptr<folly::AsyncTransport> transport) {
     cpp2Channel_->setTransport(transport);
@@ -91,9 +87,7 @@ class HeaderServerChannel : public ServerChannel,
   void messageChannelEOF() override;
   void messageReceiveErrorWrapped(folly::exception_wrapper&&) override;
 
-  folly::EventBase* getEventBase() {
-    return cpp2Channel_->getEventBase();
-  }
+  folly::EventBase* getEventBase() { return cpp2Channel_->getEventBase(); }
 
   void sendCatchupRequests(
       std::unique_ptr<folly::IOBuf> next_req,
@@ -109,28 +103,30 @@ class HeaderServerChannel : public ServerChannel,
         const server::TServerObserver::SamplingStatus& samplingStatus);
 
     bool isActive() const override {
-      return active_;
-    }
-    void cancel() override {
-      active_ = false;
+      DCHECK(false);
+      return true;
     }
 
     bool isOneway() const override {
       return header_->getSequenceNumber() == ONEWAY_REQUEST_ID;
     }
 
-    void setInOrderRecvSequenceId(uint32_t seqId) {
-      InOrderRecvSeqId_ = seqId;
-    }
+    bool includeEnvelope() const override { return true; }
 
-    apache::thrift::transport::THeader* getHeader() {
-      return header_.get();
-    }
+    void setInOrderRecvSequenceId(uint32_t seqId) { InOrderRecvSeqId_ = seqId; }
+
+    apache::thrift::transport::THeader* getHeader() { return header_.get(); }
 
     void sendReply(
-        std::unique_ptr<folly::IOBuf>&&,
+        ResponsePayload&&,
         MessageChannel::SendCallback* cb = nullptr,
         folly::Optional<uint32_t> crc32 = folly::none) override;
+
+    void sendException(
+        ResponsePayload&& response,
+        MessageChannel::SendCallback* cb = nullptr) override {
+      sendReply(std::move(response), cb);
+    }
 
     void serializeAndSendError(
         apache::thrift::transport::THeader& header,
@@ -139,8 +135,8 @@ class HeaderServerChannel : public ServerChannel,
         int32_t protoSeqId,
         MessageChannel::SendCallback* cb);
 
-    void sendErrorWrapped(folly::exception_wrapper ex, std::string exCode)
-        override;
+    void sendErrorWrapped(
+        folly::exception_wrapper ex, std::string exCode) override;
 
     void sendErrorWrapped(
         folly::exception_wrapper ex,
@@ -161,19 +157,26 @@ class HeaderServerChannel : public ServerChannel,
         const std::string& methodName,
         int32_t protoSeqId,
         MessageChannel::SendCallback* cb,
-        const std::map<std::string, std::string>& headers,
+        const transport::THeader::StringToStringMap& headers,
         TimeoutResponseType responseType);
 
-    const SamplingStatus& getSamplingStatus() const {
-      return samplingStatus_;
+    const SamplingStatus& getSamplingStatus() const { return samplingStatus_; }
+
+    folly::IOBuf* getBuf() { return buf_.get(); }
+    std::unique_ptr<folly::IOBuf> extractBuf() { return std::move(buf_); }
+
+   protected:
+    bool tryStartProcessing() override {
+      DCHECK(false);
+      return true;
     }
 
    private:
+    std::unique_ptr<folly::IOBuf> buf_;
     HeaderServerChannel* channel_;
     std::unique_ptr<apache::thrift::transport::THeader> header_;
     std::unique_ptr<apache::thrift::transport::THeader> timeoutHeader_;
     uint32_t InOrderRecvSeqId_{0}; // Used internally for in-order requests
-    std::atomic<bool> active_;
     SamplingStatus samplingStatus_;
   };
 
@@ -182,17 +185,13 @@ class HeaderServerChannel : public ServerChannel,
     virtual void requestReceived(std::unique_ptr<HeaderRequest>&&) = 0;
   };
 
-  void setSampleRate(uint32_t sampleRate) {
-    sampleRate_ = sampleRate;
-  }
+  void setSampleRate(uint32_t sampleRate) { sampleRate_ = sampleRate; }
 
   void setQueueSends(bool queueSends) {
     cpp2Channel_->setQueueSends(queueSends);
   }
 
-  void closeNow() {
-    cpp2Channel_->closeNow();
-  }
+  void closeNow() { cpp2Channel_->closeNow(); }
 
   class ServerFramingHandler : public FramingHandler {
    public:
@@ -239,6 +238,8 @@ class HeaderServerChannel : public ServerChannel,
   static const int MAX_REQUEST_SIZE = 2000;
   static std::atomic<uint32_t> sample_;
   uint32_t sampleRate_;
+
+  transport::THeader::StringToStringMap persistentReadHeaders_;
 
   std::shared_ptr<Cpp2Channel> cpp2Channel_;
 };

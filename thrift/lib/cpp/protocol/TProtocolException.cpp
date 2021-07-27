@@ -42,9 +42,15 @@ namespace protocol {
   throw TProtocolException(TProtocolException::SIZE_LIMIT);
 }
 
+[[noreturn]] void TProtocolException::throwExceededSizeLimit(
+    size_t size, size_t limit) {
+  throw TProtocolException(
+      TProtocolException::SIZE_LIMIT,
+      fmt::format("TProtocolException: {} exceeds size limit {}", size, limit));
+}
+
 [[noreturn]] void TProtocolException::throwMissingRequiredField(
-    folly::StringPiece field,
-    folly::StringPiece type) {
+    folly::StringPiece field, folly::StringPiece type) {
   throw TProtocolException(
       TProtocolException::MISSING_REQUIRED_FIELD,
       fmt::format(

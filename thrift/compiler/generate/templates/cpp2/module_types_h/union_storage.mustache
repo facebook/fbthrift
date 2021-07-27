@@ -16,7 +16,7 @@
 
 %>  union storage_type {
 <%#struct:fields%>
-    <%#field:type%><% > types/ref_type%><%/field:type%> <%field:cpp_name%>;
+    <%field:cpp_storage_type%> <%field:cpp_name%>;
 <%/struct:fields%>
 
     storage_type() {}

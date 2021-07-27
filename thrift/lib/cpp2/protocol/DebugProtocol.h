@@ -20,9 +20,13 @@
 #include <fmt/core.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
+#include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+
+DECLARE_bool(thrift_cpp2_debug_skip_list_indices);
+DECLARE_int64(thrift_cpp2_debug_string_limit);
 
 namespace apache {
 namespace thrift {
@@ -31,7 +35,8 @@ class DebugProtocolWriter {
  public:
   struct Options {
     Options() {}
-    bool printListIndices = true;
+    bool skipListIndices = FLAGS_thrift_cpp2_debug_skip_list_indices;
+    size_t stringLengthLimit = FLAGS_thrift_cpp2_debug_string_limit;
   };
 
   using ProtocolReader = void;
@@ -44,9 +49,9 @@ class DebugProtocolWriter {
     return ProtocolType::T_DEBUG_PROTOCOL;
   }
 
-  static constexpr bool kSortKeys() {
-    return true;
-  }
+  static constexpr bool kSortKeys() { return true; }
+
+  static constexpr bool kHasIndexSupport() { return false; }
 
   void setOutput(
       folly::IOBufQueue* queue,
@@ -55,9 +60,7 @@ class DebugProtocolWriter {
   void setOutput(folly::io::QueueAppender&& output);
 
   uint32_t writeMessageBegin(
-      const std::string& name,
-      MessageType messageType,
-      int32_t seqid);
+      const std::string& name, MessageType messageType, int32_t seqid);
   uint32_t writeMessageEnd();
   uint32_t writeStructBegin(const char* name);
   uint32_t writeStructEnd();
@@ -82,17 +85,13 @@ class DebugProtocolWriter {
   uint32_t writeBinary(folly::ByteRange v);
   uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
   uint32_t writeBinary(const folly::IOBuf& str);
-  uint32_t writeSerializedData(const std::unique_ptr<folly::IOBuf>& /*data*/) {
-    // TODO
-    return 0;
-  }
 
   /**
    * Functions that return the serialized size
    */
   uint32_t serializedMessageSize(const std::string& name);
-  uint32_t
-  serializedFieldSize(const char* name, TType fieldName, int16_t fieldId);
+  uint32_t serializedFieldSize(
+      const char* name, TType fieldName, int16_t fieldId);
   uint32_t serializedStructSize(const char* name);
   uint32_t serializedSizeMapBegin(TType keyType, TType valType, uint32_t size);
   uint32_t serializedSizeMapEnd();
@@ -135,9 +134,7 @@ class DebugProtocolWriter {
     writeRaw(fmt::format(args...));
   }
 
-  void writeIndent() {
-    writeRaw(indent_);
-  }
+  void writeIndent() { writeRaw(indent_); }
 
   template <class... Args>
   void writeIndented(Args&&... args) {
@@ -172,8 +169,7 @@ class DebugProtocolWriter {
 
 template <class T>
 std::string debugString(
-    const T& obj,
-    DebugProtocolWriter::Options options = {}) {
+    const T& obj, DebugProtocolWriter::Options options = {}) {
   folly::IOBufQueue queue;
   DebugProtocolWriter proto(
       COPY_EXTERNAL_BUFFER, // Ignored by constructor.

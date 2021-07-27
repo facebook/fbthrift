@@ -17,20 +17,20 @@
 namespace cpp2 testutil.testservice
 
 struct Message {
-  1: string message
-  2: i64 timestamp
+  1: string message;
+  2: i64 timestamp;
 }
 
 exception Error {
 }
 
 exception FirstEx {
-  1: i64 errCode
-  2: string errMsg
+  1: i64 errCode;
+  2: string errMsg;
 }
 
 exception SecondEx {
-  1: i64 errCode
+  1: i64 errCode;
 }
 
 service StreamService {
@@ -43,6 +43,8 @@ service StreamService {
   stream<i32> slowRange(1: i32 from, 2: i32 to, 3: i32 millis);
   // Generate strings of size 1KB
   stream<string> buffers(1: i32 count);
+  // Generate strings of specified size
+  stream<string> customBuffers(1: i32 count, 2: i32 size);
 
   stream<i32> slowCancellation();
 
@@ -53,7 +55,7 @@ service StreamService {
 
   stream<Message> returnNullptr();
 
-  i32, stream<Message> throwError() throws (1: Error ex)
+  i32, stream<Message> throwError() throws (1: Error ex);
 
   i32, stream<i32> leakCheck(1: i32 from, 2: i32 to);
   i32, stream<i32> leakCheckWithSleep(1: i32 from, 2: i32 to, 3: i32 sleepMs);
@@ -68,11 +70,13 @@ service StreamService {
   void sendMessage(1: i32 messageId, 2: bool complete, 3: bool error);
   stream<i32> registerToMessages();
 
-  stream<Message throws (1: FirstEx e)> streamThrows(1: i32 whichEx)
-      throws (1: SecondEx e);
+  stream<Message throws (1: FirstEx e)> streamThrows(1: i32 whichEx) throws (
+    1: SecondEx e,
+  );
 
-  i32, stream<Message throws (1: FirstEx e)>
-      responseAndStreamThrows(1: i32 whichEx) throws (1: SecondEx e);
+  i32, stream<Message throws (1: FirstEx e)> responseAndStreamThrows(
+    1: i32 whichEx,
+  ) throws (1: SecondEx e);
 
   stream<i32> requestWithBlob(1: binary (cpp2.type = "folly::IOBuf") val);
 
@@ -116,4 +120,10 @@ service NewVersion {
   void ResponseandStreamToRequestResponse();
   stream<Message> RequestResponseToStream();
   Message, stream<Message> RequestResponseToResponseandStream();
+}
+
+service TransportUpgrade {
+  i32 addTwoNumbers(1: i32 num1, 2: i32 num2);
+  i32 add(1: i32 x);
+  oneway void noResponse(1: string param);
 }

@@ -23,16 +23,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Foo", builder=Foo.Builder.class)
-public final class Foo {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="Foo", builder=Foo.Builder.class)
+public final class Foo implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Foo(
-        @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED) final int myInteger,
-        @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL) final String myString,
-        @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE) final List<Boolean> myBools,
-        @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED) final List<Integer> myNumbers
+        @com.facebook.swift.codec.ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED) final int myInteger,
+        @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL) final String myString,
+        @com.facebook.swift.codec.ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE) final List<Boolean> myBools,
+        @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED) final List<Integer> myNumbers
     ) {
         this.myInteger = myInteger;
         this.myString = myString;
@@ -49,14 +48,13 @@ public final class Foo {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private int myInteger = 0;
         private String myString = null;
         private List<Boolean> myBools = null;
         private List<Integer> myNumbers = null;
     
-        @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
         public Builder setMyInteger(int myInteger) {
             this.myInteger = myInteger;
             return this;
@@ -64,7 +62,7 @@ public final class Foo {
     
         public int getMyInteger() { return myInteger; }
     
-            @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
         public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
@@ -72,7 +70,7 @@ public final class Foo {
     
         public String getMyString() { return myString; }
     
-            @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
         public Builder setMyBools(List<Boolean> myBools) {
             this.myBools = myBools;
             return this;
@@ -80,7 +78,7 @@ public final class Foo {
     
         public List<Boolean> getMyBools() { return myBools; }
     
-            @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
+            @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
         public Builder setMyNumbers(List<Integer> myNumbers) {
             this.myNumbers = myNumbers;
             return this;
@@ -104,7 +102,6 @@ public final class Foo {
                 this.myBools,
                 this.myNumbers
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -135,44 +132,20 @@ public final class Foo {
       FIELD_METADATA.put(4, MY_NUMBERS_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myInteger", requiredness=Requiredness.REQUIRED)
     public int getMyInteger() { return myInteger; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyInteger() {
-        return __isset_bit_vector.get(_MYINTEGER);
-    }
     
     
-    @ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=2, name="myString", requiredness=Requiredness.OPTIONAL)
     public String getMyString() { return myString; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyString() {
-        return this.myString != null;
-    }
     
     
-    @ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="myBools", requiredness=Requiredness.NONE)
     public List<Boolean> getMyBools() { return myBools; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyBools() {
-        return this.myBools != null;
-    }
     
     
-    @ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=4, name="myNumbers", requiredness=Requiredness.REQUIRED)
     public List<Integer> getMyNumbers() { return myNumbers; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyNumbers() {
-        return this.myNumbers != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -213,6 +186,10 @@ public final class Foo {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Foo> asReader() {
+      return Foo::read0;
+    }
     
     public static Foo read0(TProtocol oprot) throws TException {
       TField __field;
@@ -318,4 +295,11 @@ public final class Foo {
       oprot.writeStructEnd();
     }
     
+    private static class _FooLazy {
+        private static final Foo _DEFAULT = new Foo.Builder().build();
+    }
+    
+    public static Foo defaultInstance() {
+        return  _FooLazy._DEFAULT;
+    }
 }

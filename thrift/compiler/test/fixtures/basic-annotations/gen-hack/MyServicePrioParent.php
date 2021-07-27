@@ -152,7 +152,7 @@ trait MyServicePrioParentClientBase {
           inout $mtype,
           inout $rseqid,
         );
-        if ($mtype == \TMessageType::EXCEPTION) {
+        if ($mtype === \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
@@ -161,7 +161,7 @@ trait MyServicePrioParentClientBase {
         $result = MyServicePrioParent_ping_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
           throw new \TProtocolException("ping failed: sequence id is out of order");
         }
       }
@@ -245,7 +245,7 @@ trait MyServicePrioParentClientBase {
           inout $mtype,
           inout $rseqid,
         );
-        if ($mtype == \TMessageType::EXCEPTION) {
+        if ($mtype === \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
@@ -254,7 +254,7 @@ trait MyServicePrioParentClientBase {
         $result = MyServicePrioParent_pong_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
           throw new \TProtocolException("pong failed: sequence id is out of order");
         }
       }
@@ -290,6 +290,10 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
    *   ping();
    */
   public async function ping(): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $currentseqid = $this->sendImpl_ping();
     $channel = $this->channel_;
@@ -313,6 +317,10 @@ class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServ
    *   pong();
    */
   public async function pong(): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $currentseqid = $this->sendImpl_pong();
     $channel = $this->channel_;
@@ -341,6 +349,10 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
    *   ping();
    */
   public async function ping(): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $currentseqid = $this->sendImpl_ping();
     $channel = $this->channel_;
@@ -364,6 +376,10 @@ class MyServicePrioParentClient extends \ThriftClientBase implements MyServicePr
    *   pong();
    */
   public async function pong(): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $currentseqid = $this->sendImpl_pong();
     $channel = $this->channel_;
@@ -405,6 +421,10 @@ class MyServicePrioParentAsyncRpcOptionsClient extends \ThriftClientBase impleme
    *   ping();
    */
   public async function ping(\RpcOptions $rpc_options): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "ping");
     $currentseqid = $this->sendImpl_ping();
     $channel = $this->channel_;
@@ -428,6 +448,10 @@ class MyServicePrioParentAsyncRpcOptionsClient extends \ThriftClientBase impleme
    *   pong();
    */
   public async function pong(\RpcOptions $rpc_options): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("MyServicePrioParent", "pong");
     $currentseqid = $this->sendImpl_pong();
     $channel = $this->channel_;
@@ -467,7 +491,7 @@ abstract class MyServicePrioParentAsyncProcessorBase extends \ThriftAsyncProcess
     $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
     $result = MyServicePrioParent_ping_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyServicePrioParent', 'ping', $args);
       await $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
     } catch (\Exception $ex) {
@@ -511,7 +535,7 @@ abstract class MyServicePrioParentAsyncProcessorBase extends \ThriftAsyncProcess
     $this->eventHandler_->postRead($handler_ctx, 'pong', $args);
     $result = MyServicePrioParent_pong_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'pong', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyServicePrioParent', 'pong', $args);
       await $this->handler->pong();
       $this->eventHandler_->postExec($handler_ctx, 'pong', $result);
     } catch (\Exception $ex) {
@@ -536,6 +560,41 @@ abstract class MyServicePrioParentAsyncProcessorBase extends \ThriftAsyncProcess
       $output->getTransport()->flush();
     }
     $this->eventHandler_->postWrite($handler_ctx, 'pong', $result);
+  }
+  protected async function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
+    $reply_type = \TMessageType::REPLY;
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, '\tmeta_ThriftMetadataService_getThriftServiceMetadata_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, '\tmeta_ThriftMetadataService_getThriftServiceMetadata_args');
+    } else {
+      $args = \tmeta_ThriftMetadataService_getThriftServiceMetadata_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $result = \tmeta_ThriftMetadataService_getThriftServiceMetadata_result::withDefaultValues();
+    try {
+      $result->success = MyServicePrioParentStaticMetadata::getServiceMetadataResponse();
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'getThriftServiceMetadata', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'getThriftServiceMetadata', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("getThriftServiceMetadata", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
   }
 }
 class MyServicePrioParentAsyncProcessor extends MyServicePrioParentAsyncProcessorBase {
@@ -562,7 +621,7 @@ abstract class MyServicePrioParentSyncProcessorBase extends \ThriftSyncProcessor
     $this->eventHandler_->postRead($handler_ctx, 'ping', $args);
     $result = MyServicePrioParent_ping_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'ping', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyServicePrioParent', 'ping', $args);
       $this->handler->ping();
       $this->eventHandler_->postExec($handler_ctx, 'ping', $result);
     } catch (\Exception $ex) {
@@ -606,7 +665,7 @@ abstract class MyServicePrioParentSyncProcessorBase extends \ThriftSyncProcessor
     $this->eventHandler_->postRead($handler_ctx, 'pong', $args);
     $result = MyServicePrioParent_pong_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'pong', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'MyServicePrioParent', 'pong', $args);
       $this->handler->pong();
       $this->eventHandler_->postExec($handler_ctx, 'pong', $result);
     } catch (\Exception $ex) {
@@ -631,6 +690,41 @@ abstract class MyServicePrioParentSyncProcessorBase extends \ThriftSyncProcessor
       $output->getTransport()->flush();
     }
     $this->eventHandler_->postWrite($handler_ctx, 'pong', $result);
+  }
+  protected function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): void {
+    $reply_type = \TMessageType::REPLY;
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, '\tmeta_ThriftMetadataService_getThriftServiceMetadata_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, '\tmeta_ThriftMetadataService_getThriftServiceMetadata_args');
+    } else {
+      $args = \tmeta_ThriftMetadataService_getThriftServiceMetadata_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $result = \tmeta_ThriftMetadataService_getThriftServiceMetadata_result::withDefaultValues();
+    try {
+      $result->success = MyServicePrioParentStaticMetadata::getServiceMetadataResponse();
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'getThriftServiceMetadata', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'getThriftServiceMetadata', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("getThriftServiceMetadata", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
   }
 }
 class MyServicePrioParentSyncProcessor extends MyServicePrioParentSyncProcessorBase {
@@ -657,26 +751,32 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyServicePrioParent_ping_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.ping_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -684,19 +784,12 @@ class MyServicePrioParent_ping_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
   }
 
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
     );
   }
@@ -724,36 +817,37 @@ class MyServicePrioParent_ping_result implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyServicePrioParent_ping_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyServicePrioParent_ping_result",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   public function readFromJson(string $jsonText): void {
@@ -783,26 +877,32 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyServicePrioParent_pong_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.pong_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -810,19 +910,12 @@ class MyServicePrioParent_pong_args implements \IThriftStruct, \IThriftShapishSt
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
   }
 
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
     );
   }
@@ -850,36 +943,37 @@ class MyServicePrioParent_pong_result implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyServicePrioParent_pong_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyServicePrioParent_pong_result",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
   public function readFromJson(string $jsonText): void {
@@ -894,12 +988,69 @@ class MyServicePrioParent_pong_result implements \IThriftStruct {
 }
 
 class MyServicePrioParentStaticMetadata implements \IThriftServiceStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+  public static function getServiceMetadata()[]: \tmeta_ThriftService {
+    return tmeta_ThriftService::fromShape(
+      shape(
+        "name" => "module.MyServicePrioParent",
+        "functions" => vec[
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "ping",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "pong",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+            )
+          ),
+        ],
+      )
+    );
+  }
+
+  public static function getServiceMetadataResponse()[]: \tmeta_ThriftServiceMetadataResponse {
+    return \tmeta_ThriftServiceMetadataResponse::fromShape(
+      shape(
+        'context' => \tmeta_ThriftServiceContext::fromShape(
+          shape(
+            'service_info' => self::getServiceMetadata(),
+            'module' => \tmeta_ThriftModuleContext::fromShape(
+              shape(
+                'name' => 'module',
+              )
+            ),
+          )
+        ),
+        'metadata' => \tmeta_ThriftMetadata::fromShape(
+          shape(
+            'enums' => dict[
+            ],
+            'structs' => dict[
+            ],
+            'exceptions' => dict[
+            ],
+            'services' => dict[
+            ],
+          )
+        ),
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'ping' => dict[],
-        'pong' => dict[],
       ],
     );
   }

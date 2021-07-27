@@ -19,9 +19,9 @@
 }
 
 const <%service:name%>AsyncProcessor::InteractionConstructorMap <%service:name%>AsyncProcessor::interactionConstructorMap_ {
-<%#service:functions%><%#function:returnType%><%#function:starts_interaction?%>
+<%#service:functions%><%#function:return_type%><%#function:starts_interaction?%>
   {"<%type:name%>", &<%service:name%>AsyncProcessor::<%function:name%>},
-<%/function:starts_interaction?%><%/function:returnType%><%/service:functions%>
+<%/function:starts_interaction?%><%/function:return_type%><%/service:functions%>
 };
 
 std::unique_ptr<apache::thrift::Tile> <%service:name%>AsyncProcessor::createInteractionImpl(const std::string& name) {

@@ -167,9 +167,11 @@ void TccStructTraits<::some::valid::ns::Empty>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Empty::Empty(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Empty::__clear() {
   // clear all fields
 }
@@ -235,15 +237,17 @@ void TccStructTraits<::some::valid::ns::ASimpleStruct>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ASimpleStruct::ASimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg) :
+ASimpleStruct::ASimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
     boolField(std::move(boolField__arg)) {
   __isset.boolField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ASimpleStruct::__clear() {
   // clear all fields
-  boolField = 0;
+  this->boolField = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -253,7 +257,7 @@ bool ASimpleStruct::operator==(const ASimpleStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.boolField == rhs.boolField)) {
+  if (!(lhs.boolField_ref() == rhs.boolField_ref())) {
     return false;
   }
   return true;
@@ -308,15 +312,17 @@ void TccStructTraits<::some::valid::ns::ASimpleStructNoexcept>::translateFieldNa
 
 namespace some { namespace valid { namespace ns {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ASimpleStructNoexcept::ASimpleStructNoexcept(apache::thrift::FragileConstructor, int64_t boolField__arg) :
+ASimpleStructNoexcept::ASimpleStructNoexcept(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
     boolField(std::move(boolField__arg)) {
   __isset.boolField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ASimpleStructNoexcept::__clear() {
   // clear all fields
-  boolField = 0;
+  this->boolField = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -326,7 +332,7 @@ bool ASimpleStructNoexcept::operator==(const ASimpleStructNoexcept& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.boolField == rhs.boolField)) {
+  if (!(lhs.boolField_ref() == rhs.boolField_ref())) {
     return false;
   }
   return true;
@@ -336,8 +342,8 @@ bool ASimpleStructNoexcept::operator<(const ASimpleStructNoexcept& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.boolField == rhs.boolField)) {
-    return lhs.boolField < rhs.boolField;
+  if (!(lhs.boolField_ref() == rhs.boolField_ref())) {
+    return lhs.boolField_ref() < rhs.boolField_ref();
   }
   return false;
 }
@@ -392,17 +398,25 @@ void TccStructTraits<::some::valid::ns::MyStruct>::translateFieldName(
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(const MyStruct&) = default;
+MyStruct& MyStruct::operator=(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
       MyBoolField(0),
       MyIntField(12LL),
-      MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")),
-      MyMapEnumAndInt(std::initializer_list<std::pair<const  ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
-  { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")},
-  {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits< std::string>::fromStringLiteral("nothing")}}) {}
+      MyStringField(apache::thrift::StringTraits<std::string>::fromStringLiteral("test")),
+      MyMapEnumAndInt(std::initializer_list<std::pair<const ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
+  { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")},
+  {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits<std::string>::fromStringLiteral("nothing")}}) {
+}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+MyStruct::~MyStruct() {}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(MyStruct&& other) noexcept :
+MyStruct::MyStruct(MyStruct&& other) noexcept  :
     MyBoolField(std::move(other.MyBoolField)),
     MyIntField(std::move(other.MyIntField)),
     MyStringField(std::move(other.MyStringField)),
@@ -413,11 +427,24 @@ MyStruct::MyStruct(MyStruct&& other) noexcept :
     MyBinaryListField4(std::move(other.MyBinaryListField4)),
     MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
     __isset(other.__isset) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::~MyStruct() {}
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->MyBoolField = std::move(other.MyBoolField);
+    this->MyIntField = std::move(other.MyIntField);
+    this->MyStringField = std::move(other.MyStringField);
+    this->MyStringField2 = std::move(other.MyStringField2);
+    this->MyBinaryField = std::move(other.MyBinaryField);
+    this->MyBinaryField2 = std::move(other.MyBinaryField2);
+    this->MyBinaryField3 = std::move(other.MyBinaryField3);
+    this->MyBinaryListField4 = std::move(other.MyBinaryListField4);
+    this->MyMapEnumAndInt = std::move(other.MyMapEnumAndInt);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg) :
     MyBoolField(std::move(MyBoolField__arg)),
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
@@ -437,17 +464,18 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, in
   __isset.MyMapEnumAndInt = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
-  MyBoolField = 0;
-  MyIntField = 12LL;
-  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("test");
-  MyStringField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryListField4.clear();
-  MyMapEnumAndInt.clear();
+  this->MyBoolField = 0;
+  this->MyIntField = 12LL;
+  this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
+  this->MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryListField4.clear();
+  this->MyMapEnumAndInt.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -457,36 +485,31 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
+  if (!(lhs.MyBoolField_ref() == rhs.MyBoolField_ref())) {
     return false;
   }
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
     return false;
   }
-  if (!(lhs.MyStringField2 == rhs.MyStringField2)) {
+  if (!(lhs.MyStringField2_ref() == rhs.MyStringField2_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField, rhs.MyBinaryField)) {
     return false;
   }
-  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value()) {
+  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2))) {
     return false;
-  }
-  if (lhs.MyBinaryField2_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2)) {
-      return false;
-    }
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
     return false;
   }
-  if (!(lhs.MyBinaryListField4 == rhs.MyBinaryListField4)) {
+  if (!(lhs.MyBinaryListField4_ref() == rhs.MyBinaryListField4_ref())) {
     return false;
   }
-  if (!(lhs.MyMapEnumAndInt == rhs.MyMapEnumAndInt)) {
+  if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
     return false;
   }
   return true;
@@ -496,37 +519,32 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
-    return lhs.MyBoolField < rhs.MyBoolField;
+  if (!(lhs.MyBoolField_ref() == rhs.MyBoolField_ref())) {
+    return lhs.MyBoolField_ref() < rhs.MyBoolField_ref();
   }
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
-    return lhs.MyStringField < rhs.MyStringField;
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
+    return lhs.MyStringField_ref() < rhs.MyStringField_ref();
   }
-  if (!(lhs.MyStringField2 == rhs.MyStringField2)) {
-    return lhs.MyStringField2 < rhs.MyStringField2;
+  if (!(lhs.MyStringField2_ref() == rhs.MyStringField2_ref())) {
+    return lhs.MyStringField2_ref() < rhs.MyStringField2_ref();
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField, rhs.MyBinaryField)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField, rhs.MyBinaryField);
   }
-  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value()) {
-    return lhs.MyBinaryField2_ref().has_value() < rhs.MyBinaryField2_ref().has_value();
-  }
-  if (lhs.MyBinaryField2_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2)) {
-      return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField2, rhs.MyBinaryField2);
-    }
+  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2))) {
+    return !lhs.MyBinaryField2_ref().has_value() || (rhs.MyBinaryField2_ref().has_value() && apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField2, rhs.MyBinaryField2));
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField3, rhs.MyBinaryField3);
   }
-  if (!(lhs.MyBinaryListField4 == rhs.MyBinaryListField4)) {
-    return lhs.MyBinaryListField4 < rhs.MyBinaryListField4;
+  if (!(lhs.MyBinaryListField4_ref() == rhs.MyBinaryListField4_ref())) {
+    return lhs.MyBinaryListField4_ref() < rhs.MyBinaryListField4_ref();
   }
-  if (!(lhs.MyMapEnumAndInt == rhs.MyMapEnumAndInt)) {
-    return lhs.MyMapEnumAndInt < rhs.MyMapEnumAndInt;
+  if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
+    return lhs.MyMapEnumAndInt_ref() < rhs.MyMapEnumAndInt_ref();
   }
   return false;
 }
@@ -539,11 +557,11 @@ const ::std::vector<::std::string>& MyStruct::get_MyBinaryListField4() const& {
   return std::move(MyBinaryListField4);
 }
 
-const ::std::map< ::some::valid::ns::MyEnumA, ::std::string>& MyStruct::get_MyMapEnumAndInt() const& {
+const ::std::map<::some::valid::ns::MyEnumA, ::std::string>& MyStruct::get_MyMapEnumAndInt() const& {
   return MyMapEnumAndInt;
 }
 
-::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyStruct::get_MyMapEnumAndInt() && {
+::std::map<::some::valid::ns::MyEnumA, ::std::string> MyStruct::get_MyMapEnumAndInt() && {
   return std::move(MyMapEnumAndInt);
 }
 
@@ -967,31 +985,31 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
   }
 }
 
-std::unique_ptr< ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field( ::some::valid::ns::MyStruct const &t) {
+::std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct const &t) {
   __clear();
   type_ = Type::ref_field;
-  ::new (std::addressof(value_.ref_field)) std::unique_ptr< ::some::valid::ns::MyStruct>(new std::unique_ptr< ::some::valid::ns::MyStruct>::element_type(t));
+  ::new (std::addressof(value_.ref_field)) ::std::unique_ptr<::some::valid::ns::MyStruct>(new ::std::unique_ptr<::some::valid::ns::MyStruct>::element_type(t));
   return value_.ref_field;
 }
 
-std::unique_ptr< ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field( ::some::valid::ns::MyStruct&& t) {
+::std::unique_ptr<::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field(::some::valid::ns::MyStruct&& t) {
   __clear();
   type_ = Type::ref_field;
-  ::new (std::addressof(value_.ref_field)) std::unique_ptr< ::some::valid::ns::MyStruct>(new std::unique_ptr< ::some::valid::ns::MyStruct>::element_type(std::move(t)));
+  ::new (std::addressof(value_.ref_field)) ::std::unique_ptr<::some::valid::ns::MyStruct>(new ::std::unique_ptr<::some::valid::ns::MyStruct>::element_type(std::move(t)));
   return value_.ref_field;
 }
 
-std::shared_ptr<const  ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2( ::some::valid::ns::MyStruct const &t) {
+::std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct const &t) {
   __clear();
   type_ = Type::ref_field2;
-  ::new (std::addressof(value_.ref_field2)) std::shared_ptr<const  ::some::valid::ns::MyStruct>(new std::shared_ptr<const  ::some::valid::ns::MyStruct>::element_type(t));
+  ::new (std::addressof(value_.ref_field2)) ::std::shared_ptr<const ::some::valid::ns::MyStruct>(new ::std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(t));
   return value_.ref_field2;
 }
 
-std::shared_ptr<const  ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2( ::some::valid::ns::MyStruct&& t) {
+::std::shared_ptr<const ::some::valid::ns::MyStruct>& ComplexUnion::set_ref_field2(::some::valid::ns::MyStruct&& t) {
   __clear();
   type_ = Type::ref_field2;
-  ::new (std::addressof(value_.ref_field2)) std::shared_ptr<const  ::some::valid::ns::MyStruct>(new std::shared_ptr<const  ::some::valid::ns::MyStruct>::element_type(std::move(t)));
+  ::new (std::addressof(value_.ref_field2)) ::std::shared_ptr<const ::some::valid::ns::MyStruct>(new ::std::shared_ptr<const ::some::valid::ns::MyStruct>::element_type(std::move(t)));
   return value_.ref_field2;
 }
 
@@ -1018,98 +1036,98 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
+        ::std::set<::some::valid::ns::MyStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::variant,
-         ::some::valid::ns::SimpleUnion>,
+        ::some::valid::ns::SimpleUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::variant,
-         ::some::valid::ns::SimpleUnion>,
+        ::some::valid::ns::SimpleUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::SimpleUnion>>,
+        ::std::vector<::some::valid::ns::SimpleUnion>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
+        ::some::valid::ns::unionTypeDef>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexUnion,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
+        ::std::set<::some::valid::ns::MyStruct>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::variant,
-         ::some::valid::ns::SimpleUnion>,
+        ::some::valid::ns::SimpleUnion>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::variant,
-         ::some::valid::ns::SimpleUnion>,
+        ::some::valid::ns::SimpleUnion>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::SimpleUnion>>,
+        ::std::vector<::some::valid::ns::SimpleUnion>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
+        ::some::valid::ns::unionTypeDef>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexUnion,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
 
 }}} // some::valid::ns
@@ -1138,20 +1156,69 @@ void TccStructTraits<::some::valid::ns::AnException>::translateFieldName(
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnException::AnException(const AnException&) = default;
+AnException& AnException::operator=(const AnException&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnException::AnException() :
       code(0),
       req_code(0),
-      exception_list(std::initializer_list<int32_t>{1,
+      exception_list(std::initializer_list<::std::int32_t>{1,
   2,
   3}),
-      enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {
+}
 
+AnException::AnException(std::string __message) : AnException() {
+  message2 = std::move(__message);
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 AnException::~AnException() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AnException::AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<int32_t> exception_list__arg, ::std::set<int64_t> exception_set__arg, ::std::map<::std::string, int32_t> exception_map__arg, ::std::map<::std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, ::std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg) :
+AnException::AnException(AnException&& other) noexcept  :
+    code(std::move(other.code)),
+    req_code(std::move(other.req_code)),
+    message2(std::move(other.message2)),
+    req_message(std::move(other.req_message)),
+    exception_list(std::move(other.exception_list)),
+    exception_set(std::move(other.exception_set)),
+    exception_map(std::move(other.exception_map)),
+    req_exception_map(std::move(other.req_exception_map)),
+    enum_field(std::move(other.enum_field)),
+    enum_container(std::move(other.enum_container)),
+    a_struct(std::move(other.a_struct)),
+    a_set_struct(std::move(other.a_set_struct)),
+    a_union_list(std::move(other.a_union_list)),
+    union_typedef(std::move(other.union_typedef)),
+    a_union_typedef_list(std::move(other.a_union_typedef_list)),
+    __isset(other.__isset) {}
+AnException& AnException::operator=(FOLLY_MAYBE_UNUSED AnException&& other) noexcept {
+    this->code = std::move(other.code);
+    this->req_code = std::move(other.req_code);
+    this->message2 = std::move(other.message2);
+    this->req_message = std::move(other.req_message);
+    this->exception_list = std::move(other.exception_list);
+    this->exception_set = std::move(other.exception_set);
+    this->exception_map = std::move(other.exception_map);
+    this->req_exception_map = std::move(other.req_exception_map);
+    this->enum_field = std::move(other.enum_field);
+    this->enum_container = std::move(other.enum_container);
+    this->a_struct = std::move(other.a_struct);
+    this->a_set_struct = std::move(other.a_set_struct);
+    this->a_union_list = std::move(other.a_union_list);
+    this->union_typedef = std::move(other.union_typedef);
+    this->a_union_typedef_list = std::move(other.a_union_typedef_list);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<::std::int32_t> exception_list__arg, ::std::set<::std::int64_t> exception_set__arg, ::std::map<::std::string, ::std::int32_t> exception_map__arg, ::std::map<::std::string, ::std::int32_t> req_exception_map__arg, ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector<::some::valid::ns::MyEnumA> enum_container__arg, ::some::valid::ns::MyStruct a_struct__arg, ::std::set<::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector<::some::valid::ns::SimpleUnion> a_union_list__arg, ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list__arg) :
     code(std::move(code__arg)),
     req_code(std::move(req_code__arg)),
     message2(std::move(message2__arg)),
@@ -1181,23 +1248,24 @@ AnException::AnException(apache::thrift::FragileConstructor, int32_t code__arg, 
   __isset.a_union_typedef_list = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AnException::__clear() {
   // clear all fields
-  code = 0;
-  req_code = 0;
-  message2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  req_message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  exception_list.clear();
-  exception_set.clear();
-  exception_map.clear();
-  req_exception_map.clear();
-  enum_field = static_cast< ::some::valid::ns::MyEnumA>(0);
-  enum_container.clear();
-  a_struct.__clear();
-  a_set_struct.clear();
-  a_union_list.clear();
-  union_typedef.clear();
-  a_union_typedef_list.clear();
+  this->code = 0;
+  this->req_code = 0;
+  this->message2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->req_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->exception_list.clear();
+  this->exception_set.clear();
+  this->exception_map.clear();
+  this->req_exception_map.clear();
+  this->enum_field = static_cast< ::some::valid::ns::MyEnumA>(0);
+  this->enum_container.clear();
+  this->a_struct.__clear();
+  this->a_set_struct.clear();
+  this->a_union_list.clear();
+  this->union_typedef.clear();
+  this->a_union_typedef_list.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1207,49 +1275,49 @@ bool AnException::operator==(const AnException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.code == rhs.code)) {
+  if (!(lhs.code_ref() == rhs.code_ref())) {
     return false;
   }
-  if (!(lhs.req_code == rhs.req_code)) {
+  if (!(lhs.req_code_ref() == rhs.req_code_ref())) {
     return false;
   }
-  if (!(lhs.message2 == rhs.message2)) {
+  if (!(lhs.message2_ref() == rhs.message2_ref())) {
     return false;
   }
-  if (!(lhs.req_message == rhs.req_message)) {
+  if (!(lhs.req_message_ref() == rhs.req_message_ref())) {
     return false;
   }
-  if (!(lhs.exception_list == rhs.exception_list)) {
+  if (!(lhs.exception_list_ref() == rhs.exception_list_ref())) {
     return false;
   }
-  if (!(lhs.exception_set == rhs.exception_set)) {
+  if (!(lhs.exception_set_ref() == rhs.exception_set_ref())) {
     return false;
   }
-  if (!(lhs.exception_map == rhs.exception_map)) {
+  if (!(lhs.exception_map_ref() == rhs.exception_map_ref())) {
     return false;
   }
-  if (!(lhs.req_exception_map == rhs.req_exception_map)) {
+  if (!(lhs.req_exception_map_ref() == rhs.req_exception_map_ref())) {
     return false;
   }
-  if (!(lhs.enum_field == rhs.enum_field)) {
+  if (!(lhs.enum_field_ref() == rhs.enum_field_ref())) {
     return false;
   }
-  if (!(lhs.enum_container == rhs.enum_container)) {
+  if (!(lhs.enum_container_ref() == rhs.enum_container_ref())) {
     return false;
   }
-  if (!(lhs.a_struct == rhs.a_struct)) {
+  if (!(lhs.a_struct_ref() == rhs.a_struct_ref())) {
     return false;
   }
-  if (!(lhs.a_set_struct == rhs.a_set_struct)) {
+  if (!(lhs.a_set_struct_ref() == rhs.a_set_struct_ref())) {
     return false;
   }
-  if (!(lhs.a_union_list == rhs.a_union_list)) {
+  if (!(lhs.a_union_list_ref() == rhs.a_union_list_ref())) {
     return false;
   }
-  if (!(lhs.union_typedef == rhs.union_typedef)) {
+  if (!(lhs.union_typedef_ref() == rhs.union_typedef_ref())) {
     return false;
   }
-  if (!(lhs.a_union_typedef_list == rhs.a_union_typedef_list)) {
+  if (!(lhs.a_union_typedef_list_ref() == rhs.a_union_typedef_list_ref())) {
     return false;
   }
   return true;
@@ -1259,131 +1327,131 @@ bool AnException::operator<(const AnException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.code == rhs.code)) {
-    return lhs.code < rhs.code;
+  if (!(lhs.code_ref() == rhs.code_ref())) {
+    return lhs.code_ref() < rhs.code_ref();
   }
-  if (!(lhs.req_code == rhs.req_code)) {
-    return lhs.req_code < rhs.req_code;
+  if (!(lhs.req_code_ref() == rhs.req_code_ref())) {
+    return lhs.req_code_ref() < rhs.req_code_ref();
   }
-  if (!(lhs.message2 == rhs.message2)) {
-    return lhs.message2 < rhs.message2;
+  if (!(lhs.message2_ref() == rhs.message2_ref())) {
+    return lhs.message2_ref() < rhs.message2_ref();
   }
-  if (!(lhs.req_message == rhs.req_message)) {
-    return lhs.req_message < rhs.req_message;
+  if (!(lhs.req_message_ref() == rhs.req_message_ref())) {
+    return lhs.req_message_ref() < rhs.req_message_ref();
   }
-  if (!(lhs.exception_list == rhs.exception_list)) {
-    return lhs.exception_list < rhs.exception_list;
+  if (!(lhs.exception_list_ref() == rhs.exception_list_ref())) {
+    return lhs.exception_list_ref() < rhs.exception_list_ref();
   }
-  if (!(lhs.exception_set == rhs.exception_set)) {
-    return lhs.exception_set < rhs.exception_set;
+  if (!(lhs.exception_set_ref() == rhs.exception_set_ref())) {
+    return lhs.exception_set_ref() < rhs.exception_set_ref();
   }
-  if (!(lhs.exception_map == rhs.exception_map)) {
-    return lhs.exception_map < rhs.exception_map;
+  if (!(lhs.exception_map_ref() == rhs.exception_map_ref())) {
+    return lhs.exception_map_ref() < rhs.exception_map_ref();
   }
-  if (!(lhs.req_exception_map == rhs.req_exception_map)) {
-    return lhs.req_exception_map < rhs.req_exception_map;
+  if (!(lhs.req_exception_map_ref() == rhs.req_exception_map_ref())) {
+    return lhs.req_exception_map_ref() < rhs.req_exception_map_ref();
   }
-  if (!(lhs.enum_field == rhs.enum_field)) {
-    return lhs.enum_field < rhs.enum_field;
+  if (!(lhs.enum_field_ref() == rhs.enum_field_ref())) {
+    return lhs.enum_field_ref() < rhs.enum_field_ref();
   }
-  if (!(lhs.enum_container == rhs.enum_container)) {
-    return lhs.enum_container < rhs.enum_container;
+  if (!(lhs.enum_container_ref() == rhs.enum_container_ref())) {
+    return lhs.enum_container_ref() < rhs.enum_container_ref();
   }
-  if (!(lhs.a_struct == rhs.a_struct)) {
-    return lhs.a_struct < rhs.a_struct;
+  if (!(lhs.a_struct_ref() == rhs.a_struct_ref())) {
+    return lhs.a_struct_ref() < rhs.a_struct_ref();
   }
-  if (!(lhs.a_set_struct == rhs.a_set_struct)) {
-    return lhs.a_set_struct < rhs.a_set_struct;
+  if (!(lhs.a_set_struct_ref() == rhs.a_set_struct_ref())) {
+    return lhs.a_set_struct_ref() < rhs.a_set_struct_ref();
   }
-  if (!(lhs.a_union_list == rhs.a_union_list)) {
-    return lhs.a_union_list < rhs.a_union_list;
+  if (!(lhs.a_union_list_ref() == rhs.a_union_list_ref())) {
+    return lhs.a_union_list_ref() < rhs.a_union_list_ref();
   }
-  if (!(lhs.union_typedef == rhs.union_typedef)) {
-    return lhs.union_typedef < rhs.union_typedef;
+  if (!(lhs.union_typedef_ref() == rhs.union_typedef_ref())) {
+    return lhs.union_typedef_ref() < rhs.union_typedef_ref();
   }
-  if (!(lhs.a_union_typedef_list == rhs.a_union_typedef_list)) {
-    return lhs.a_union_typedef_list < rhs.a_union_typedef_list;
+  if (!(lhs.a_union_typedef_list_ref() == rhs.a_union_typedef_list_ref())) {
+    return lhs.a_union_typedef_list_ref() < rhs.a_union_typedef_list_ref();
   }
   return false;
 }
 
-const ::std::vector<int32_t>& AnException::get_exception_list() const& {
+const ::std::vector<::std::int32_t>& AnException::get_exception_list() const& {
   return exception_list;
 }
 
-::std::vector<int32_t> AnException::get_exception_list() && {
+::std::vector<::std::int32_t> AnException::get_exception_list() && {
   return std::move(exception_list);
 }
 
-const ::std::set<int64_t>& AnException::get_exception_set() const& {
+const ::std::set<::std::int64_t>& AnException::get_exception_set() const& {
   return exception_set;
 }
 
-::std::set<int64_t> AnException::get_exception_set() && {
+::std::set<::std::int64_t> AnException::get_exception_set() && {
   return std::move(exception_set);
 }
 
-const ::std::map<::std::string, int32_t>& AnException::get_exception_map() const& {
+const ::std::map<::std::string, ::std::int32_t>& AnException::get_exception_map() const& {
   return exception_map;
 }
 
-::std::map<::std::string, int32_t> AnException::get_exception_map() && {
+::std::map<::std::string, ::std::int32_t> AnException::get_exception_map() && {
   return std::move(exception_map);
 }
 
-const ::std::map<::std::string, int32_t>& AnException::get_req_exception_map() const& {
+const ::std::map<::std::string, ::std::int32_t>& AnException::get_req_exception_map() const& {
   return req_exception_map;
 }
 
-::std::map<::std::string, int32_t> AnException::get_req_exception_map() && {
+::std::map<::std::string, ::std::int32_t> AnException::get_req_exception_map() && {
   return std::move(req_exception_map);
 }
 
-const ::std::vector< ::some::valid::ns::MyEnumA>& AnException::get_enum_container() const& {
+const ::std::vector<::some::valid::ns::MyEnumA>& AnException::get_enum_container() const& {
   return enum_container;
 }
 
-::std::vector< ::some::valid::ns::MyEnumA> AnException::get_enum_container() && {
+::std::vector<::some::valid::ns::MyEnumA> AnException::get_enum_container() && {
   return std::move(enum_container);
 }
 
-const  ::some::valid::ns::MyStruct& AnException::get_a_struct() const& {
+const ::some::valid::ns::MyStruct& AnException::get_a_struct() const& {
   return a_struct;
 }
 
- ::some::valid::ns::MyStruct AnException::get_a_struct() && {
+::some::valid::ns::MyStruct AnException::get_a_struct() && {
   return std::move(a_struct);
 }
 
-const ::std::set< ::some::valid::ns::MyStruct>& AnException::get_a_set_struct() const& {
+const ::std::set<::some::valid::ns::MyStruct>& AnException::get_a_set_struct() const& {
   return a_set_struct;
 }
 
-::std::set< ::some::valid::ns::MyStruct> AnException::get_a_set_struct() && {
+::std::set<::some::valid::ns::MyStruct> AnException::get_a_set_struct() && {
   return std::move(a_set_struct);
 }
 
-const ::std::vector< ::some::valid::ns::SimpleUnion>& AnException::get_a_union_list() const& {
+const ::std::vector<::some::valid::ns::SimpleUnion>& AnException::get_a_union_list() const& {
   return a_union_list;
 }
 
-::std::vector< ::some::valid::ns::SimpleUnion> AnException::get_a_union_list() && {
+::std::vector<::some::valid::ns::SimpleUnion> AnException::get_a_union_list() && {
   return std::move(a_union_list);
 }
 
-const  ::some::valid::ns::unionTypeDef& AnException::get_union_typedef() const& {
+const ::some::valid::ns::unionTypeDef& AnException::get_union_typedef() const& {
   return union_typedef;
 }
 
- ::some::valid::ns::unionTypeDef AnException::get_union_typedef() && {
+::some::valid::ns::unionTypeDef AnException::get_union_typedef() && {
   return std::move(union_typedef);
 }
 
-const ::std::vector< ::some::valid::ns::unionTypeDef>& AnException::get_a_union_typedef_list() const& {
+const ::std::vector<::some::valid::ns::unionTypeDef>& AnException::get_a_union_typedef_list() const& {
   return a_union_typedef_list;
 }
 
-::std::vector< ::some::valid::ns::unionTypeDef> AnException::get_a_union_typedef_list() && {
+::std::vector<::some::valid::ns::unionTypeDef> AnException::get_a_union_typedef_list() && {
   return std::move(a_union_typedef_list);
 }
 
@@ -1427,50 +1495,50 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnException,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnException,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
+        ::std::set<::some::valid::ns::MyStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnException,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::SimpleUnion>>,
+        ::std::vector<::some::valid::ns::SimpleUnion>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnException,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
+        ::some::valid::ns::unionTypeDef>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnException,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnException,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
+        ::std::set<::some::valid::ns::MyStruct>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnException,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::SimpleUnion>>,
+        ::std::vector<::some::valid::ns::SimpleUnion>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnException,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
+        ::some::valid::ns::unionTypeDef>,
     "inconsistent use of nimble option");
 
 }}} // some::valid::ns
@@ -1499,7 +1567,37 @@ void TccStructTraits<::some::valid::ns::AnotherException>::translateFieldName(
 namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AnotherException::AnotherException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, ::std::string message__arg) :
+AnotherException::AnotherException(const AnotherException&) = default;
+AnotherException& AnotherException::operator=(const AnotherException&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnotherException::AnotherException() :
+      code(0),
+      req_code(0) {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+AnotherException::~AnotherException() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnotherException::AnotherException(AnotherException&& other) noexcept  :
+    code(std::move(other.code)),
+    req_code(std::move(other.req_code)),
+    message(std::move(other.message)),
+    __isset(other.__isset) {}
+AnotherException& AnotherException::operator=(FOLLY_MAYBE_UNUSED AnotherException&& other) noexcept {
+    this->code = std::move(other.code);
+    this->req_code = std::move(other.req_code);
+    this->message = std::move(other.message);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnotherException::AnotherException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message__arg) :
     code(std::move(code__arg)),
     req_code(std::move(req_code__arg)),
     message(std::move(message__arg)) {
@@ -1507,11 +1605,12 @@ AnotherException::AnotherException(apache::thrift::FragileConstructor, int32_t c
   __isset.message = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AnotherException::__clear() {
   // clear all fields
-  code = 0;
-  req_code = 0;
-  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->code = 0;
+  this->req_code = 0;
+  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1521,13 +1620,13 @@ bool AnotherException::operator==(const AnotherException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.code == rhs.code)) {
+  if (!(lhs.code_ref() == rhs.code_ref())) {
     return false;
   }
-  if (!(lhs.req_code == rhs.req_code)) {
+  if (!(lhs.req_code_ref() == rhs.req_code_ref())) {
     return false;
   }
-  if (!(lhs.message == rhs.message)) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
   return true;
@@ -1537,14 +1636,14 @@ bool AnotherException::operator<(const AnotherException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.code == rhs.code)) {
-    return lhs.code < rhs.code;
+  if (!(lhs.code_ref() == rhs.code_ref())) {
+    return lhs.code_ref() < rhs.code_ref();
   }
-  if (!(lhs.req_code == rhs.req_code)) {
-    return lhs.req_code < rhs.req_code;
+  if (!(lhs.req_code_ref() == rhs.req_code_ref())) {
+    return lhs.req_code_ref() < rhs.req_code_ref();
   }
-  if (!(lhs.message == rhs.message)) {
-    return lhs.message < rhs.message;
+  if (!(lhs.message_ref() == rhs.message_ref())) {
+    return lhs.message_ref() < rhs.message_ref();
   }
   return false;
 }
@@ -1605,37 +1704,37 @@ containerStruct::containerStruct() :
       fieldA(0),
       req_fieldA(0),
       opt_fieldA(0),
-      fieldC(std::initializer_list<int32_t>{1,
+      fieldC(std::initializer_list<::std::int32_t>{1,
   2,
   3,
   4}),
-      req_fieldC(std::initializer_list<int32_t>{1,
+      req_fieldC(std::initializer_list<::std::int32_t>{1,
   2,
   3,
   4}),
-      opt_fieldC(std::initializer_list<int32_t>{1,
+      opt_fieldC(std::initializer_list<::std::int32_t>{1,
   2,
   3,
   4}),
-      fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      req_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      opt_fieldE(apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring")),
-      fieldF(std::initializer_list<::std::vector<int32_t>>{std::initializer_list<int32_t>{1,
+      fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
+      req_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
+      opt_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
+      fieldF(std::initializer_list<::std::vector<::std::int32_t>>{std::initializer_list<::std::int32_t>{1,
   3,
   5,
   7,
   9},
-  std::initializer_list<int32_t>{2,
+  std::initializer_list<::std::int32_t>{2,
   4,
   8,
   10,
   12}}),
       fieldI(true),
-      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<int32_t>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldA"), std::initializer_list<int32_t>{1,
+      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
   4,
   8,
   12}},
-  {apache::thrift::StringTraits< std::string>::fromStringLiteral("subfieldB"), std::initializer_list<int32_t>{2,
+  {apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldB"), std::initializer_list<::std::int32_t>{2,
   5,
   9,
   13}}}),
@@ -1645,18 +1744,20 @@ containerStruct::containerStruct() :
       req_fieldR( ::some::valid::ns::MyEnumA::fieldB),
       opt_fieldR( ::some::valid::ns::MyEnumA::fieldB),
       fieldS( ::some::valid::ns::MyEnumA::fieldB),
-      fieldU(std::initializer_list< ::some::valid::ns::MyEnumA>{ ::some::valid::ns::MyEnumA::fieldC,
+      fieldU(std::initializer_list<::some::valid::ns::MyEnumA>{ ::some::valid::ns::MyEnumA::fieldC,
    ::some::valid::ns::MyEnumA::fieldB,
    ::some::valid::ns::MyEnumA::fieldA}),
       fieldAC( ::some::valid::ns::MyEnumB::AField),
-      fieldAD(static_cast< ::a::different::ns::AnEnum>(0)) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      fieldAD(static_cast< ::a::different::ns::AnEnum>(0)) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 containerStruct::~containerStruct() {}
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::set<int32_t> req_fieldC__arg, ::std::set<int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg, ::std::vector<::std::vector<int32_t>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG__arg, ::std::vector<::std::set<int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, ::std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, ::std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, ::std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, ::std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, ::std::map<::std::string, int32_t> fieldAE__arg,  ::some::valid::ns::IndirectionD fieldSD__arg) :
+containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::set<::std::int32_t> req_fieldC__arg, ::std::set<::std::int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg, ::std::vector<::std::vector<::std::int32_t>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> fieldG__arg, ::std::vector<::std::set<::std::int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<::std::int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::some::valid::ns::simpleTypeDef fieldN__arg, ::some::valid::ns::complexStructTypeDef fieldO__arg, ::std::vector<::some::valid::ns::mostComplexTypeDef> fieldP__arg, ::some::valid::ns::MyEnumA fieldQ__arg, ::some::valid::ns::MyEnumA fieldR__arg, ::some::valid::ns::MyEnumA req_fieldR__arg, ::some::valid::ns::MyEnumA opt_fieldR__arg, ::some::valid::ns::MyEnumA fieldS__arg, ::std::vector<::some::valid::ns::MyEnumA> fieldT__arg, ::std::vector<::some::valid::ns::MyEnumA> fieldU__arg, ::some::valid::ns::MyStruct fieldV__arg, ::some::valid::ns::MyStruct req_fieldV__arg, ::some::valid::ns::MyStruct opt_fieldV__arg, ::std::set<::some::valid::ns::MyStruct> fieldW__arg, ::some::valid::ns::ComplexUnion fieldX__arg, ::some::valid::ns::ComplexUnion req_fieldX__arg, ::some::valid::ns::ComplexUnion opt_fieldX__arg, ::std::vector<::some::valid::ns::ComplexUnion> fieldY__arg, ::some::valid::ns::unionTypeDef fieldZ__arg, ::std::vector<::some::valid::ns::unionTypeDef> fieldAA__arg, ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC> fieldAB__arg, ::some::valid::ns::MyEnumB fieldAC__arg, ::a::different::ns::AnEnum fieldAD__arg, ::std::map<::std::string, ::std::int32_t> fieldAE__arg, ::some::valid::ns::IndirectionD fieldSD__arg) :
     fieldA(std::move(fieldA__arg)),
     req_fieldA(std::move(req_fieldA__arg)),
     opt_fieldA(std::move(opt_fieldA__arg)),
@@ -1744,54 +1845,55 @@ containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA
   __isset.fieldSD = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void containerStruct::__clear() {
   // clear all fields
-  fieldA = 0;
-  req_fieldA = 0;
-  opt_fieldA = 0;
-  fieldB.clear();
-  req_fieldB.clear();
-  opt_fieldB.clear();
-  fieldC.clear();
-  req_fieldC.clear();
-  opt_fieldC.clear();
-  fieldD = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
-  req_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
-  opt_fieldE = apache::thrift::StringTraits< std::string>::fromStringLiteral("somestring");
-  fieldF.clear();
-  fieldG.clear();
-  fieldH.clear();
-  fieldI = true;
-  fieldJ.clear();
-  fieldK.clear();
-  fieldL.clear();
-  fieldM.clear();
-  fieldN = 0;
-  fieldO.clear();
-  fieldP.clear();
-  fieldQ = static_cast< ::some::valid::ns::MyEnumA>(0);
-  fieldR =  ::some::valid::ns::MyEnumA::fieldB;
-  req_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
-  opt_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
-  fieldS =  ::some::valid::ns::MyEnumA::fieldB;
-  fieldT.clear();
-  fieldU.clear();
-  fieldV.__clear();
-  req_fieldV.__clear();
-  opt_fieldV.__clear();
-  fieldW.clear();
-  fieldX.__clear();
-  req_fieldX.__clear();
-  opt_fieldX.__clear();
-  fieldY.clear();
-  fieldZ.clear();
-  fieldAA.clear();
-  fieldAB.clear();
-  fieldAC =  ::some::valid::ns::MyEnumB::AField;
-  fieldAD = static_cast< ::a::different::ns::AnEnum>(0);
-  fieldAE.clear();
-  ::apache::thrift::apply_indirection(fieldSD) = apache::thrift::StringTraits< ::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::fromStringLiteral("");
+  this->fieldA = 0;
+  this->req_fieldA = 0;
+  this->opt_fieldA = 0;
+  this->fieldB.clear();
+  this->req_fieldB.clear();
+  this->opt_fieldB.clear();
+  this->fieldC.clear();
+  this->req_fieldC.clear();
+  this->opt_fieldC.clear();
+  this->fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
+  this->fieldF.clear();
+  this->fieldG.clear();
+  this->fieldH.clear();
+  this->fieldI = true;
+  this->fieldJ.clear();
+  this->fieldK.clear();
+  this->fieldL.clear();
+  this->fieldM.clear();
+  this->fieldN = 0;
+  this->fieldO.clear();
+  this->fieldP.clear();
+  this->fieldQ = static_cast< ::some::valid::ns::MyEnumA>(0);
+  this->fieldR =  ::some::valid::ns::MyEnumA::fieldB;
+  this->req_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
+  this->opt_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
+  this->fieldS =  ::some::valid::ns::MyEnumA::fieldB;
+  this->fieldT.clear();
+  this->fieldU.clear();
+  this->fieldV.__clear();
+  this->req_fieldV.__clear();
+  this->opt_fieldV.__clear();
+  this->fieldW.clear();
+  this->fieldX.__clear();
+  this->req_fieldX.__clear();
+  this->opt_fieldX.__clear();
+  this->fieldY.clear();
+  this->fieldZ.clear();
+  this->fieldAA.clear();
+  this->fieldAB.clear();
+  this->fieldAC =  ::some::valid::ns::MyEnumB::AField;
+  this->fieldAD = static_cast< ::a::different::ns::AnEnum>(0);
+  this->fieldAE.clear();
+  ::apache::thrift::apply_indirection(this->fieldSD) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1801,142 +1903,142 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldA == rhs.req_fieldA)) {
+  if (!(lhs.req_fieldA_ref() == rhs.req_fieldA_ref())) {
     return false;
   }
-  if (lhs.opt_fieldA_ref() != rhs.opt_fieldA_ref()) {
+  if (!(lhs.opt_fieldA_ref() == rhs.opt_fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldB == rhs.req_fieldB)) {
+  if (!(lhs.req_fieldB_ref() == rhs.req_fieldB_ref())) {
     return false;
   }
-  if (lhs.opt_fieldB_ref() != rhs.opt_fieldB_ref()) {
+  if (!(lhs.opt_fieldB_ref() == rhs.opt_fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldC == rhs.req_fieldC)) {
+  if (!(lhs.req_fieldC_ref() == rhs.req_fieldC_ref())) {
     return false;
   }
-  if (lhs.opt_fieldC_ref() != rhs.opt_fieldC_ref()) {
+  if (!(lhs.opt_fieldC_ref() == rhs.opt_fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldE == rhs.req_fieldE)) {
+  if (!(lhs.req_fieldE_ref() == rhs.req_fieldE_ref())) {
     return false;
   }
-  if (lhs.opt_fieldE_ref() != rhs.opt_fieldE_ref()) {
+  if (!(lhs.opt_fieldE_ref() == rhs.opt_fieldE_ref())) {
     return false;
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
     return false;
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
     return false;
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
     return false;
   }
-  if (!(lhs.fieldI == rhs.fieldI)) {
+  if (!(lhs.fieldI_ref() == rhs.fieldI_ref())) {
     return false;
   }
-  if (!(lhs.fieldJ == rhs.fieldJ)) {
+  if (!(lhs.fieldJ_ref() == rhs.fieldJ_ref())) {
     return false;
   }
-  if (!(lhs.fieldK == rhs.fieldK)) {
+  if (!(lhs.fieldK_ref() == rhs.fieldK_ref())) {
     return false;
   }
-  if (!(lhs.fieldL == rhs.fieldL)) {
+  if (!(lhs.fieldL_ref() == rhs.fieldL_ref())) {
     return false;
   }
-  if (!(lhs.fieldM == rhs.fieldM)) {
+  if (!(lhs.fieldM_ref() == rhs.fieldM_ref())) {
     return false;
   }
-  if (!(lhs.fieldN == rhs.fieldN)) {
+  if (!(lhs.fieldN_ref() == rhs.fieldN_ref())) {
     return false;
   }
-  if (!(lhs.fieldO == rhs.fieldO)) {
+  if (!(lhs.fieldO_ref() == rhs.fieldO_ref())) {
     return false;
   }
-  if (!(lhs.fieldP == rhs.fieldP)) {
+  if (!(lhs.fieldP_ref() == rhs.fieldP_ref())) {
     return false;
   }
-  if (!(lhs.fieldQ == rhs.fieldQ)) {
+  if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
     return false;
   }
-  if (!(lhs.fieldR == rhs.fieldR)) {
+  if (!(lhs.fieldR_ref() == rhs.fieldR_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldR == rhs.req_fieldR)) {
+  if (!(lhs.req_fieldR_ref() == rhs.req_fieldR_ref())) {
     return false;
   }
-  if (lhs.opt_fieldR_ref() != rhs.opt_fieldR_ref()) {
+  if (!(lhs.opt_fieldR_ref() == rhs.opt_fieldR_ref())) {
     return false;
   }
-  if (!(lhs.fieldS == rhs.fieldS)) {
+  if (!(lhs.fieldS_ref() == rhs.fieldS_ref())) {
     return false;
   }
-  if (!(lhs.fieldT == rhs.fieldT)) {
+  if (!(lhs.fieldT_ref() == rhs.fieldT_ref())) {
     return false;
   }
-  if (!(lhs.fieldU == rhs.fieldU)) {
+  if (!(lhs.fieldU_ref() == rhs.fieldU_ref())) {
     return false;
   }
-  if (!(lhs.fieldV == rhs.fieldV)) {
+  if (!(lhs.fieldV_ref() == rhs.fieldV_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldV == rhs.req_fieldV)) {
+  if (!(lhs.req_fieldV_ref() == rhs.req_fieldV_ref())) {
     return false;
   }
-  if (lhs.opt_fieldV_ref() != rhs.opt_fieldV_ref()) {
+  if (!(lhs.opt_fieldV_ref() == rhs.opt_fieldV_ref())) {
     return false;
   }
-  if (!(lhs.fieldW == rhs.fieldW)) {
+  if (!(lhs.fieldW_ref() == rhs.fieldW_ref())) {
     return false;
   }
-  if (!(lhs.fieldX == rhs.fieldX)) {
+  if (!(lhs.fieldX_ref() == rhs.fieldX_ref())) {
     return false;
   }
-  if (!(lhs.req_fieldX == rhs.req_fieldX)) {
+  if (!(lhs.req_fieldX_ref() == rhs.req_fieldX_ref())) {
     return false;
   }
-  if (lhs.opt_fieldX_ref() != rhs.opt_fieldX_ref()) {
+  if (!(lhs.opt_fieldX_ref() == rhs.opt_fieldX_ref())) {
     return false;
   }
-  if (!(lhs.fieldY == rhs.fieldY)) {
+  if (!(lhs.fieldY_ref() == rhs.fieldY_ref())) {
     return false;
   }
-  if (!(lhs.fieldZ == rhs.fieldZ)) {
+  if (!(lhs.fieldZ_ref() == rhs.fieldZ_ref())) {
     return false;
   }
-  if (!(lhs.fieldAA == rhs.fieldAA)) {
+  if (!(lhs.fieldAA_ref() == rhs.fieldAA_ref())) {
     return false;
   }
-  if (!(lhs.fieldAB == rhs.fieldAB)) {
+  if (!(lhs.fieldAB_ref() == rhs.fieldAB_ref())) {
     return false;
   }
-  if (!(lhs.fieldAC == rhs.fieldAC)) {
+  if (!(lhs.fieldAC_ref() == rhs.fieldAC_ref())) {
     return false;
   }
-  if (!(lhs.fieldAD == rhs.fieldAD)) {
+  if (!(lhs.fieldAD_ref() == rhs.fieldAD_ref())) {
     return false;
   }
-  if (!(lhs.fieldAE == rhs.fieldAE)) {
+  if (!(lhs.fieldAE_ref() == rhs.fieldAE_ref())) {
     return false;
   }
-  if (!(lhs.fieldSD == rhs.fieldSD)) {
+  if (!(lhs.fieldSD_ref() == rhs.fieldSD_ref())) {
     return false;
   }
   return true;
@@ -1946,143 +2048,143 @@ bool containerStruct::operator<(const containerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
-    return lhs.fieldA < rhs.fieldA;
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
+    return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
-  if (!(lhs.req_fieldA == rhs.req_fieldA)) {
-    return lhs.req_fieldA < rhs.req_fieldA;
+  if (!(lhs.req_fieldA_ref() == rhs.req_fieldA_ref())) {
+    return lhs.req_fieldA_ref() < rhs.req_fieldA_ref();
   }
-  if (lhs.opt_fieldA_ref() != rhs.opt_fieldA_ref()) {
+  if (!(lhs.opt_fieldA_ref() == rhs.opt_fieldA_ref())) {
     return lhs.opt_fieldA_ref() < rhs.opt_fieldA_ref();
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
-    return lhs.fieldB < rhs.fieldB;
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
+    return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
-  if (!(lhs.req_fieldB == rhs.req_fieldB)) {
-    return lhs.req_fieldB < rhs.req_fieldB;
+  if (!(lhs.req_fieldB_ref() == rhs.req_fieldB_ref())) {
+    return lhs.req_fieldB_ref() < rhs.req_fieldB_ref();
   }
-  if (lhs.opt_fieldB_ref() != rhs.opt_fieldB_ref()) {
+  if (!(lhs.opt_fieldB_ref() == rhs.opt_fieldB_ref())) {
     return lhs.opt_fieldB_ref() < rhs.opt_fieldB_ref();
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
-    return lhs.fieldC < rhs.fieldC;
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
+    return lhs.fieldC_ref() < rhs.fieldC_ref();
   }
-  if (!(lhs.req_fieldC == rhs.req_fieldC)) {
-    return lhs.req_fieldC < rhs.req_fieldC;
+  if (!(lhs.req_fieldC_ref() == rhs.req_fieldC_ref())) {
+    return lhs.req_fieldC_ref() < rhs.req_fieldC_ref();
   }
-  if (lhs.opt_fieldC_ref() != rhs.opt_fieldC_ref()) {
+  if (!(lhs.opt_fieldC_ref() == rhs.opt_fieldC_ref())) {
     return lhs.opt_fieldC_ref() < rhs.opt_fieldC_ref();
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
-    return lhs.fieldD < rhs.fieldD;
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
+    return lhs.fieldD_ref() < rhs.fieldD_ref();
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
-    return lhs.fieldE < rhs.fieldE;
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
+    return lhs.fieldE_ref() < rhs.fieldE_ref();
   }
-  if (!(lhs.req_fieldE == rhs.req_fieldE)) {
-    return lhs.req_fieldE < rhs.req_fieldE;
+  if (!(lhs.req_fieldE_ref() == rhs.req_fieldE_ref())) {
+    return lhs.req_fieldE_ref() < rhs.req_fieldE_ref();
   }
-  if (lhs.opt_fieldE_ref() != rhs.opt_fieldE_ref()) {
+  if (!(lhs.opt_fieldE_ref() == rhs.opt_fieldE_ref())) {
     return lhs.opt_fieldE_ref() < rhs.opt_fieldE_ref();
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
-    return lhs.fieldF < rhs.fieldF;
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
+    return lhs.fieldF_ref() < rhs.fieldF_ref();
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
-    return lhs.fieldG < rhs.fieldG;
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
+    return lhs.fieldG_ref() < rhs.fieldG_ref();
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
-    return lhs.fieldH < rhs.fieldH;
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
+    return lhs.fieldH_ref() < rhs.fieldH_ref();
   }
-  if (!(lhs.fieldI == rhs.fieldI)) {
-    return lhs.fieldI < rhs.fieldI;
+  if (!(lhs.fieldI_ref() == rhs.fieldI_ref())) {
+    return lhs.fieldI_ref() < rhs.fieldI_ref();
   }
-  if (!(lhs.fieldJ == rhs.fieldJ)) {
-    return lhs.fieldJ < rhs.fieldJ;
+  if (!(lhs.fieldJ_ref() == rhs.fieldJ_ref())) {
+    return lhs.fieldJ_ref() < rhs.fieldJ_ref();
   }
-  if (!(lhs.fieldK == rhs.fieldK)) {
-    return lhs.fieldK < rhs.fieldK;
+  if (!(lhs.fieldK_ref() == rhs.fieldK_ref())) {
+    return lhs.fieldK_ref() < rhs.fieldK_ref();
   }
-  if (!(lhs.fieldL == rhs.fieldL)) {
-    return lhs.fieldL < rhs.fieldL;
+  if (!(lhs.fieldL_ref() == rhs.fieldL_ref())) {
+    return lhs.fieldL_ref() < rhs.fieldL_ref();
   }
-  if (!(lhs.fieldM == rhs.fieldM)) {
-    return lhs.fieldM < rhs.fieldM;
+  if (!(lhs.fieldM_ref() == rhs.fieldM_ref())) {
+    return lhs.fieldM_ref() < rhs.fieldM_ref();
   }
-  if (!(lhs.fieldN == rhs.fieldN)) {
-    return lhs.fieldN < rhs.fieldN;
+  if (!(lhs.fieldN_ref() == rhs.fieldN_ref())) {
+    return lhs.fieldN_ref() < rhs.fieldN_ref();
   }
-  if (!(lhs.fieldO == rhs.fieldO)) {
-    return lhs.fieldO < rhs.fieldO;
+  if (!(lhs.fieldO_ref() == rhs.fieldO_ref())) {
+    return lhs.fieldO_ref() < rhs.fieldO_ref();
   }
-  if (!(lhs.fieldP == rhs.fieldP)) {
-    return lhs.fieldP < rhs.fieldP;
+  if (!(lhs.fieldP_ref() == rhs.fieldP_ref())) {
+    return lhs.fieldP_ref() < rhs.fieldP_ref();
   }
-  if (!(lhs.fieldQ == rhs.fieldQ)) {
-    return lhs.fieldQ < rhs.fieldQ;
+  if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
+    return lhs.fieldQ_ref() < rhs.fieldQ_ref();
   }
-  if (!(lhs.fieldR == rhs.fieldR)) {
-    return lhs.fieldR < rhs.fieldR;
+  if (!(lhs.fieldR_ref() == rhs.fieldR_ref())) {
+    return lhs.fieldR_ref() < rhs.fieldR_ref();
   }
-  if (!(lhs.req_fieldR == rhs.req_fieldR)) {
-    return lhs.req_fieldR < rhs.req_fieldR;
+  if (!(lhs.req_fieldR_ref() == rhs.req_fieldR_ref())) {
+    return lhs.req_fieldR_ref() < rhs.req_fieldR_ref();
   }
-  if (lhs.opt_fieldR_ref() != rhs.opt_fieldR_ref()) {
+  if (!(lhs.opt_fieldR_ref() == rhs.opt_fieldR_ref())) {
     return lhs.opt_fieldR_ref() < rhs.opt_fieldR_ref();
   }
-  if (!(lhs.fieldS == rhs.fieldS)) {
-    return lhs.fieldS < rhs.fieldS;
+  if (!(lhs.fieldS_ref() == rhs.fieldS_ref())) {
+    return lhs.fieldS_ref() < rhs.fieldS_ref();
   }
-  if (!(lhs.fieldT == rhs.fieldT)) {
-    return lhs.fieldT < rhs.fieldT;
+  if (!(lhs.fieldT_ref() == rhs.fieldT_ref())) {
+    return lhs.fieldT_ref() < rhs.fieldT_ref();
   }
-  if (!(lhs.fieldU == rhs.fieldU)) {
-    return lhs.fieldU < rhs.fieldU;
+  if (!(lhs.fieldU_ref() == rhs.fieldU_ref())) {
+    return lhs.fieldU_ref() < rhs.fieldU_ref();
   }
-  if (!(lhs.fieldV == rhs.fieldV)) {
-    return lhs.fieldV < rhs.fieldV;
+  if (!(lhs.fieldV_ref() == rhs.fieldV_ref())) {
+    return lhs.fieldV_ref() < rhs.fieldV_ref();
   }
-  if (!(lhs.req_fieldV == rhs.req_fieldV)) {
-    return lhs.req_fieldV < rhs.req_fieldV;
+  if (!(lhs.req_fieldV_ref() == rhs.req_fieldV_ref())) {
+    return lhs.req_fieldV_ref() < rhs.req_fieldV_ref();
   }
-  if (lhs.opt_fieldV_ref() != rhs.opt_fieldV_ref()) {
+  if (!(lhs.opt_fieldV_ref() == rhs.opt_fieldV_ref())) {
     return lhs.opt_fieldV_ref() < rhs.opt_fieldV_ref();
   }
-  if (!(lhs.fieldW == rhs.fieldW)) {
-    return lhs.fieldW < rhs.fieldW;
+  if (!(lhs.fieldW_ref() == rhs.fieldW_ref())) {
+    return lhs.fieldW_ref() < rhs.fieldW_ref();
   }
-  if (!(lhs.fieldX == rhs.fieldX)) {
-    return lhs.fieldX < rhs.fieldX;
+  if (!(lhs.fieldX_ref() == rhs.fieldX_ref())) {
+    return lhs.fieldX_ref() < rhs.fieldX_ref();
   }
-  if (!(lhs.req_fieldX == rhs.req_fieldX)) {
-    return lhs.req_fieldX < rhs.req_fieldX;
+  if (!(lhs.req_fieldX_ref() == rhs.req_fieldX_ref())) {
+    return lhs.req_fieldX_ref() < rhs.req_fieldX_ref();
   }
-  if (lhs.opt_fieldX_ref() != rhs.opt_fieldX_ref()) {
+  if (!(lhs.opt_fieldX_ref() == rhs.opt_fieldX_ref())) {
     return lhs.opt_fieldX_ref() < rhs.opt_fieldX_ref();
   }
-  if (!(lhs.fieldY == rhs.fieldY)) {
-    return lhs.fieldY < rhs.fieldY;
+  if (!(lhs.fieldY_ref() == rhs.fieldY_ref())) {
+    return lhs.fieldY_ref() < rhs.fieldY_ref();
   }
-  if (!(lhs.fieldZ == rhs.fieldZ)) {
-    return lhs.fieldZ < rhs.fieldZ;
+  if (!(lhs.fieldZ_ref() == rhs.fieldZ_ref())) {
+    return lhs.fieldZ_ref() < rhs.fieldZ_ref();
   }
-  if (!(lhs.fieldAA == rhs.fieldAA)) {
-    return lhs.fieldAA < rhs.fieldAA;
+  if (!(lhs.fieldAA_ref() == rhs.fieldAA_ref())) {
+    return lhs.fieldAA_ref() < rhs.fieldAA_ref();
   }
-  if (!(lhs.fieldAB == rhs.fieldAB)) {
-    return lhs.fieldAB < rhs.fieldAB;
+  if (!(lhs.fieldAB_ref() == rhs.fieldAB_ref())) {
+    return lhs.fieldAB_ref() < rhs.fieldAB_ref();
   }
-  if (!(lhs.fieldAC == rhs.fieldAC)) {
-    return lhs.fieldAC < rhs.fieldAC;
+  if (!(lhs.fieldAC_ref() == rhs.fieldAC_ref())) {
+    return lhs.fieldAC_ref() < rhs.fieldAC_ref();
   }
-  if (!(lhs.fieldAD == rhs.fieldAD)) {
-    return lhs.fieldAD < rhs.fieldAD;
+  if (!(lhs.fieldAD_ref() == rhs.fieldAD_ref())) {
+    return lhs.fieldAD_ref() < rhs.fieldAD_ref();
   }
-  if (!(lhs.fieldAE == rhs.fieldAE)) {
-    return lhs.fieldAE < rhs.fieldAE;
+  if (!(lhs.fieldAE_ref() == rhs.fieldAE_ref())) {
+    return lhs.fieldAE_ref() < rhs.fieldAE_ref();
   }
-  if (!(lhs.fieldSD == rhs.fieldSD)) {
-    return lhs.fieldSD < rhs.fieldSD;
+  if (!(lhs.fieldSD_ref() == rhs.fieldSD_ref())) {
+    return lhs.fieldSD_ref() < rhs.fieldSD_ref();
   }
   return false;
 }
@@ -2111,67 +2213,67 @@ const ::std::map<::std::string, bool>* containerStruct::get_opt_fieldB() const& 
   return opt_fieldB_ref().has_value() ? std::addressof(opt_fieldB) : nullptr;
 }
 
-const ::std::set<int32_t>& containerStruct::get_fieldC() const& {
+const ::std::set<::std::int32_t>& containerStruct::get_fieldC() const& {
   return fieldC;
 }
 
-::std::set<int32_t> containerStruct::get_fieldC() && {
+::std::set<::std::int32_t> containerStruct::get_fieldC() && {
   return std::move(fieldC);
 }
 
-const ::std::set<int32_t>& containerStruct::get_req_fieldC() const& {
+const ::std::set<::std::int32_t>& containerStruct::get_req_fieldC() const& {
   return req_fieldC;
 }
 
-::std::set<int32_t> containerStruct::get_req_fieldC() && {
+::std::set<::std::int32_t> containerStruct::get_req_fieldC() && {
   return std::move(req_fieldC);
 }
 
-const ::std::set<int32_t>* containerStruct::get_opt_fieldC() const& {
+const ::std::set<::std::int32_t>* containerStruct::get_opt_fieldC() const& {
   return opt_fieldC_ref().has_value() ? std::addressof(opt_fieldC) : nullptr;
 }
 
-::std::set<int32_t>* containerStruct::get_opt_fieldC() & {
+::std::set<::std::int32_t>* containerStruct::get_opt_fieldC() & {
   return opt_fieldC_ref().has_value() ? std::addressof(opt_fieldC) : nullptr;
 }
 
-const ::std::vector<::std::vector<int32_t>>& containerStruct::get_fieldF() const& {
+const ::std::vector<::std::vector<::std::int32_t>>& containerStruct::get_fieldF() const& {
   return fieldF;
 }
 
-::std::vector<::std::vector<int32_t>> containerStruct::get_fieldF() && {
+::std::vector<::std::vector<::std::int32_t>> containerStruct::get_fieldF() && {
   return std::move(fieldF);
 }
 
-const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& containerStruct::get_fieldG() const& {
+const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>& containerStruct::get_fieldG() const& {
   return fieldG;
 }
 
-::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> containerStruct::get_fieldG() && {
+::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> containerStruct::get_fieldG() && {
   return std::move(fieldG);
 }
 
-const ::std::vector<::std::set<int32_t>>& containerStruct::get_fieldH() const& {
+const ::std::vector<::std::set<::std::int32_t>>& containerStruct::get_fieldH() const& {
   return fieldH;
 }
 
-::std::vector<::std::set<int32_t>> containerStruct::get_fieldH() && {
+::std::vector<::std::set<::std::int32_t>> containerStruct::get_fieldH() && {
   return std::move(fieldH);
 }
 
-const ::std::map<::std::string, ::std::vector<int32_t>>& containerStruct::get_fieldJ() const& {
+const ::std::map<::std::string, ::std::vector<::std::int32_t>>& containerStruct::get_fieldJ() const& {
   return fieldJ;
 }
 
-::std::map<::std::string, ::std::vector<int32_t>> containerStruct::get_fieldJ() && {
+::std::map<::std::string, ::std::vector<::std::int32_t>> containerStruct::get_fieldJ() && {
   return std::move(fieldJ);
 }
 
-const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& containerStruct::get_fieldK() const& {
+const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& containerStruct::get_fieldK() const& {
   return fieldK;
 }
 
-::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> containerStruct::get_fieldK() && {
+::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> containerStruct::get_fieldK() && {
   return std::move(fieldK);
 }
 
@@ -2183,139 +2285,139 @@ const ::std::set<::std::set<::std::set<bool>>>& containerStruct::get_fieldL() co
   return std::move(fieldL);
 }
 
-const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& containerStruct::get_fieldM() const& {
+const ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& containerStruct::get_fieldM() const& {
   return fieldM;
 }
 
-::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> containerStruct::get_fieldM() && {
+::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> containerStruct::get_fieldM() && {
   return std::move(fieldM);
 }
 
-const  ::some::valid::ns::complexStructTypeDef& containerStruct::get_fieldO() const& {
+const ::some::valid::ns::complexStructTypeDef& containerStruct::get_fieldO() const& {
   return fieldO;
 }
 
- ::some::valid::ns::complexStructTypeDef containerStruct::get_fieldO() && {
+::some::valid::ns::complexStructTypeDef containerStruct::get_fieldO() && {
   return std::move(fieldO);
 }
 
-const ::std::vector< ::some::valid::ns::mostComplexTypeDef>& containerStruct::get_fieldP() const& {
+const ::std::vector<::some::valid::ns::mostComplexTypeDef>& containerStruct::get_fieldP() const& {
   return fieldP;
 }
 
-::std::vector< ::some::valid::ns::mostComplexTypeDef> containerStruct::get_fieldP() && {
+::std::vector<::some::valid::ns::mostComplexTypeDef> containerStruct::get_fieldP() && {
   return std::move(fieldP);
 }
 
-const ::std::vector< ::some::valid::ns::MyEnumA>& containerStruct::get_fieldT() const& {
+const ::std::vector<::some::valid::ns::MyEnumA>& containerStruct::get_fieldT() const& {
   return fieldT;
 }
 
-::std::vector< ::some::valid::ns::MyEnumA> containerStruct::get_fieldT() && {
+::std::vector<::some::valid::ns::MyEnumA> containerStruct::get_fieldT() && {
   return std::move(fieldT);
 }
 
-const ::std::vector< ::some::valid::ns::MyEnumA>& containerStruct::get_fieldU() const& {
+const ::std::vector<::some::valid::ns::MyEnumA>& containerStruct::get_fieldU() const& {
   return fieldU;
 }
 
-::std::vector< ::some::valid::ns::MyEnumA> containerStruct::get_fieldU() && {
+::std::vector<::some::valid::ns::MyEnumA> containerStruct::get_fieldU() && {
   return std::move(fieldU);
 }
 
-const  ::some::valid::ns::MyStruct& containerStruct::get_fieldV() const& {
+const ::some::valid::ns::MyStruct& containerStruct::get_fieldV() const& {
   return fieldV;
 }
 
- ::some::valid::ns::MyStruct containerStruct::get_fieldV() && {
+::some::valid::ns::MyStruct containerStruct::get_fieldV() && {
   return std::move(fieldV);
 }
 
-const  ::some::valid::ns::MyStruct& containerStruct::get_req_fieldV() const& {
+const ::some::valid::ns::MyStruct& containerStruct::get_req_fieldV() const& {
   return req_fieldV;
 }
 
- ::some::valid::ns::MyStruct containerStruct::get_req_fieldV() && {
+::some::valid::ns::MyStruct containerStruct::get_req_fieldV() && {
   return std::move(req_fieldV);
 }
 
-const  ::some::valid::ns::MyStruct* containerStruct::get_opt_fieldV() const& {
+const ::some::valid::ns::MyStruct* containerStruct::get_opt_fieldV() const& {
   return opt_fieldV_ref().has_value() ? std::addressof(opt_fieldV) : nullptr;
 }
 
- ::some::valid::ns::MyStruct* containerStruct::get_opt_fieldV() & {
+::some::valid::ns::MyStruct* containerStruct::get_opt_fieldV() & {
   return opt_fieldV_ref().has_value() ? std::addressof(opt_fieldV) : nullptr;
 }
 
-const ::std::set< ::some::valid::ns::MyStruct>& containerStruct::get_fieldW() const& {
+const ::std::set<::some::valid::ns::MyStruct>& containerStruct::get_fieldW() const& {
   return fieldW;
 }
 
-::std::set< ::some::valid::ns::MyStruct> containerStruct::get_fieldW() && {
+::std::set<::some::valid::ns::MyStruct> containerStruct::get_fieldW() && {
   return std::move(fieldW);
 }
 
-const  ::some::valid::ns::ComplexUnion& containerStruct::get_fieldX() const& {
+const ::some::valid::ns::ComplexUnion& containerStruct::get_fieldX() const& {
   return fieldX;
 }
 
- ::some::valid::ns::ComplexUnion containerStruct::get_fieldX() && {
+::some::valid::ns::ComplexUnion containerStruct::get_fieldX() && {
   return std::move(fieldX);
 }
 
-const  ::some::valid::ns::ComplexUnion& containerStruct::get_req_fieldX() const& {
+const ::some::valid::ns::ComplexUnion& containerStruct::get_req_fieldX() const& {
   return req_fieldX;
 }
 
- ::some::valid::ns::ComplexUnion containerStruct::get_req_fieldX() && {
+::some::valid::ns::ComplexUnion containerStruct::get_req_fieldX() && {
   return std::move(req_fieldX);
 }
 
-const  ::some::valid::ns::ComplexUnion* containerStruct::get_opt_fieldX() const& {
+const ::some::valid::ns::ComplexUnion* containerStruct::get_opt_fieldX() const& {
   return opt_fieldX_ref().has_value() ? std::addressof(opt_fieldX) : nullptr;
 }
 
- ::some::valid::ns::ComplexUnion* containerStruct::get_opt_fieldX() & {
+::some::valid::ns::ComplexUnion* containerStruct::get_opt_fieldX() & {
   return opt_fieldX_ref().has_value() ? std::addressof(opt_fieldX) : nullptr;
 }
 
-const ::std::vector< ::some::valid::ns::ComplexUnion>& containerStruct::get_fieldY() const& {
+const ::std::vector<::some::valid::ns::ComplexUnion>& containerStruct::get_fieldY() const& {
   return fieldY;
 }
 
-::std::vector< ::some::valid::ns::ComplexUnion> containerStruct::get_fieldY() && {
+::std::vector<::some::valid::ns::ComplexUnion> containerStruct::get_fieldY() && {
   return std::move(fieldY);
 }
 
-const  ::some::valid::ns::unionTypeDef& containerStruct::get_fieldZ() const& {
+const ::some::valid::ns::unionTypeDef& containerStruct::get_fieldZ() const& {
   return fieldZ;
 }
 
- ::some::valid::ns::unionTypeDef containerStruct::get_fieldZ() && {
+::some::valid::ns::unionTypeDef containerStruct::get_fieldZ() && {
   return std::move(fieldZ);
 }
 
-const ::std::vector< ::some::valid::ns::unionTypeDef>& containerStruct::get_fieldAA() const& {
+const ::std::vector<::some::valid::ns::unionTypeDef>& containerStruct::get_fieldAA() const& {
   return fieldAA;
 }
 
-::std::vector< ::some::valid::ns::unionTypeDef> containerStruct::get_fieldAA() && {
+::std::vector<::some::valid::ns::unionTypeDef> containerStruct::get_fieldAA() && {
   return std::move(fieldAA);
 }
 
-const ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& containerStruct::get_fieldAB() const& {
+const ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>& containerStruct::get_fieldAB() const& {
   return fieldAB;
 }
 
-::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> containerStruct::get_fieldAB() && {
+::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC> containerStruct::get_fieldAB() && {
   return std::move(fieldAB);
 }
 
-const ::std::map<::std::string, int32_t>& containerStruct::get_fieldAE() const& {
+const ::std::map<::std::string, ::std::int32_t>& containerStruct::get_fieldAE() const& {
   return fieldAE;
 }
 
-::std::map<::std::string, int32_t> containerStruct::get_fieldAE() && {
+::std::map<::std::string, ::std::int32_t> containerStruct::get_fieldAE() && {
   return std::move(fieldAE);
 }
 
@@ -2390,122 +2492,122 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,
-         ::some::valid::ns::complexStructTypeDef>,
+        ::some::valid::ns::complexStructTypeDef>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
+        ::std::set<::some::valid::ns::MyStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
+        ::some::valid::ns::ComplexUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
+        ::some::valid::ns::ComplexUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
+        ::some::valid::ns::ComplexUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::ComplexUnion>>,
+        ::std::vector<::some::valid::ns::ComplexUnion>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         containerStruct,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
+        ::some::valid::ns::unionTypeDef>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>>,
-         ::some::valid::ns::complexStructTypeDef>,
+        ::some::valid::ns::complexStructTypeDef>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::MyStruct>,
+        ::some::valid::ns::MyStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::some::valid::ns::MyStruct>>,
+        ::std::set<::some::valid::ns::MyStruct>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
+        ::some::valid::ns::ComplexUnion>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
+        ::some::valid::ns::ComplexUnion>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::variant,
-         ::some::valid::ns::ComplexUnion>,
+        ::some::valid::ns::ComplexUnion>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::variant>,
-        ::std::vector< ::some::valid::ns::ComplexUnion>>,
+        ::std::vector<::some::valid::ns::ComplexUnion>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         containerStruct,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::variant>,
-         ::some::valid::ns::unionTypeDef>,
+        ::some::valid::ns::unionTypeDef>,
     "inconsistent use of nimble option");
 
 }}} // some::valid::ns
@@ -2542,7 +2644,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.MyIncludedStruct = srcObj.__isset.MyIncludedStruct;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  if (srcObj.ARefField) ARefField.reset(new  ::some::valid::ns::AStruct(*srcObj.ARefField));
+  ARefField = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::structure>(srcObj.ARefField);
   ARequiredField = srcObj.ARequiredField;
 }
 
@@ -2553,7 +2656,25 @@ MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg,  ::some::valid::ns::AStruct MyIncludedStruct__arg, std::unique_ptr< ::some::valid::ns::AStruct> ARefField__arg,  ::some::valid::ns::AStruct ARequiredField__arg) :
+MyIncludedStruct::MyIncludedStruct(MyIncludedStruct&& other) noexcept  :
+    MyIncludedInt(std::move(other.MyIncludedInt)),
+    MyIncludedStruct(std::move(other.MyIncludedStruct)),
+    ARefField(std::move(other.ARefField)),
+    ARequiredField(std::move(other.ARequiredField)),
+    __isset(other.__isset) {}
+MyIncludedStruct& MyIncludedStruct::operator=(FOLLY_MAYBE_UNUSED MyIncludedStruct&& other) noexcept {
+    this->MyIncludedInt = std::move(other.MyIncludedInt);
+    this->MyIncludedStruct = std::move(other.MyIncludedStruct);
+    this->ARefField = std::move(other.ARefField);
+    this->ARequiredField = std::move(other.ARequiredField);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor, ::a::different::ns::IncludedInt64 MyIncludedInt__arg, ::some::valid::ns::AStruct MyIncludedStruct__arg, ::std::unique_ptr<::some::valid::ns::AStruct> ARefField__arg, ::some::valid::ns::AStruct ARequiredField__arg) :
     MyIncludedInt(std::move(MyIncludedInt__arg)),
     MyIncludedStruct(std::move(MyIncludedStruct__arg)),
     ARefField(std::move(ARefField__arg)),
@@ -2562,12 +2683,13 @@ MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::dif
   __isset.MyIncludedStruct = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyIncludedStruct::__clear() {
   // clear all fields
-  MyIncludedInt = 42LL;
-  MyIncludedStruct.__clear();
-  if (ARefField) ARefField->__clear();
-  ARequiredField.__clear();
+  this->MyIncludedInt = 42LL;
+  this->MyIncludedStruct.__clear();
+  if (this->ARefField) this->ARefField->__clear();
+  this->ARequiredField.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2577,21 +2699,16 @@ bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIncludedInt == rhs.MyIncludedInt)) {
+  if (!(lhs.MyIncludedInt_ref() == rhs.MyIncludedInt_ref())) {
     return false;
   }
-  if (!(lhs.MyIncludedStruct == rhs.MyIncludedStruct)) {
+  if (!(lhs.MyIncludedStruct_ref() == rhs.MyIncludedStruct_ref())) {
     return false;
   }
-  if (!!lhs.ARefField != !!rhs.ARefField) {
+  if ((lhs.ARefField == nullptr) != (rhs.ARefField == nullptr) || (lhs.ARefField != nullptr && lhs.ARefField != rhs.ARefField && !(*lhs.ARefField == *rhs.ARefField))) {
     return false;
   }
-  if (!!lhs.ARefField) {
-    if (lhs.ARefField != rhs.ARefField && !(*lhs.ARefField == *rhs.ARefField)) {
-      return false;
-    }
-  }
-  if (!(lhs.ARequiredField == rhs.ARequiredField)) {
+  if (!(lhs.ARequiredField_ref() == rhs.ARequiredField_ref())) {
     return false;
   }
   return true;
@@ -2601,39 +2718,34 @@ bool MyIncludedStruct::operator<(const MyIncludedStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIncludedInt == rhs.MyIncludedInt)) {
-    return lhs.MyIncludedInt < rhs.MyIncludedInt;
+  if (!(lhs.MyIncludedInt_ref() == rhs.MyIncludedInt_ref())) {
+    return lhs.MyIncludedInt_ref() < rhs.MyIncludedInt_ref();
   }
-  if (!(lhs.MyIncludedStruct == rhs.MyIncludedStruct)) {
-    return lhs.MyIncludedStruct < rhs.MyIncludedStruct;
+  if (!(lhs.MyIncludedStruct_ref() == rhs.MyIncludedStruct_ref())) {
+    return lhs.MyIncludedStruct_ref() < rhs.MyIncludedStruct_ref();
   }
-  if (!!lhs.ARefField != !!rhs.ARefField) {
-    return !!lhs.ARefField < !!rhs.ARefField;
+  if ((lhs.ARefField == nullptr) != (rhs.ARefField == nullptr) || (lhs.ARefField != nullptr && lhs.ARefField != rhs.ARefField && !(*lhs.ARefField == *rhs.ARefField))) {
+    return lhs.ARefField == nullptr || (rhs.ARefField != nullptr && *lhs.ARefField < *rhs.ARefField);
   }
-  if (!!lhs.ARefField) {
-    if (lhs.ARefField != rhs.ARefField && !(*lhs.ARefField == *rhs.ARefField)) {
-      return *lhs.ARefField < *rhs.ARefField;
-    }
-  }
-  if (!(lhs.ARequiredField == rhs.ARequiredField)) {
-    return lhs.ARequiredField < rhs.ARequiredField;
+  if (!(lhs.ARequiredField_ref() == rhs.ARequiredField_ref())) {
+    return lhs.ARequiredField_ref() < rhs.ARequiredField_ref();
   }
   return false;
 }
 
-const  ::some::valid::ns::AStruct& MyIncludedStruct::get_MyIncludedStruct() const& {
+const ::some::valid::ns::AStruct& MyIncludedStruct::get_MyIncludedStruct() const& {
   return MyIncludedStruct;
 }
 
- ::some::valid::ns::AStruct MyIncludedStruct::get_MyIncludedStruct() && {
+::some::valid::ns::AStruct MyIncludedStruct::get_MyIncludedStruct() && {
   return std::move(MyIncludedStruct);
 }
 
-const  ::some::valid::ns::AStruct& MyIncludedStruct::get_ARequiredField() const& {
+const ::some::valid::ns::AStruct& MyIncludedStruct::get_ARequiredField() const& {
   return ARequiredField;
 }
 
- ::some::valid::ns::AStruct MyIncludedStruct::get_ARequiredField() && {
+::some::valid::ns::AStruct MyIncludedStruct::get_ARequiredField() && {
   return std::move(ARequiredField);
 }
 
@@ -2666,38 +2778,38 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyIncludedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
+        ::some::valid::ns::AStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyIncludedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
+        ::some::valid::ns::AStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyIncludedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
+        ::some::valid::ns::AStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyIncludedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
+        ::some::valid::ns::AStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyIncludedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
+        ::some::valid::ns::AStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyIncludedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::AStruct>,
+        ::some::valid::ns::AStruct>,
     "inconsistent use of nimble option");
 
 }}} // some::valid::ns
@@ -2727,73 +2839,32 @@ namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnnotatedStruct::AnnotatedStruct() :
-      cpp_unique_ref(std::make_unique< ::some::valid::ns::containerStruct>()),
-      cpp2_unique_ref(std::make_unique< ::some::valid::ns::containerStruct>()),
-      container_with_ref(std::make_unique<::std::map<int32_t, ::std::vector<::std::string>>>()),
-      req_cpp_unique_ref(std::make_unique< ::some::valid::ns::containerStruct>()),
-      req_cpp2_unique_ref(std::make_unique< ::some::valid::ns::containerStruct>()),
+      cpp_unique_ref(std::make_unique<::some::valid::ns::containerStruct>()),
+      cpp2_unique_ref(std::make_unique<::some::valid::ns::containerStruct>()),
+      container_with_ref(std::make_unique<::std::map<::std::int32_t, ::std::vector<::std::string>>>()),
+      req_cpp_unique_ref(std::make_unique<::some::valid::ns::containerStruct>()),
+      req_cpp2_unique_ref(std::make_unique<::some::valid::ns::containerStruct>()),
       req_container_with_ref(std::make_unique<::std::vector<::std::string>>()),
-      ref_type_unique(std::make_unique< ::some::valid::ns::containerStruct>()),
-      ref_type_shared(std::make_shared< ::some::valid::ns::containerStruct>()),
-      ref_type_const(std::make_shared<::std::map<int32_t, ::std::vector<::std::string>>>()),
-      req_ref_type_shared(std::make_shared< ::some::valid::ns::containerStruct>()),
-      req_ref_type_const(std::make_shared< ::some::valid::ns::containerStruct>()),
+      ref_type_unique(std::make_unique<::some::valid::ns::containerStruct>()),
+      ref_type_shared(std::make_shared<::some::valid::ns::containerStruct>()),
+      ref_type_const(std::make_shared<::std::map<::std::int32_t, ::std::vector<::std::string>>>()),
+      req_ref_type_shared(std::make_shared<::some::valid::ns::containerStruct>()),
+      req_ref_type_const(std::make_shared<::some::valid::ns::containerStruct>()),
       req_ref_type_unique(std::make_unique<::std::vector<::std::string>>()),
       base_type(0),
       indirection_a(0),
-      iobuf_type_val(apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value")),
-      iobuf_ptr_val(apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
-      struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits< std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(false))) {}
+      iobuf_type_val(apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("value")),
+      iobuf_ptr_val(apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
+      struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits<std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(false))) {
+}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AnnotatedStruct::AnnotatedStruct(AnnotatedStruct&& other) noexcept :
-    no_annotation(std::move(other.no_annotation)),
-    cpp_unique_ref(std::move(other.cpp_unique_ref)),
-    cpp2_unique_ref(std::move(other.cpp2_unique_ref)),
-    container_with_ref(std::move(other.container_with_ref)),
-    req_cpp_unique_ref(std::move(other.req_cpp_unique_ref)),
-    req_cpp2_unique_ref(std::move(other.req_cpp2_unique_ref)),
-    req_container_with_ref(std::move(other.req_container_with_ref)),
-    opt_cpp_unique_ref(std::move(other.opt_cpp_unique_ref)),
-    opt_cpp2_unique_ref(std::move(other.opt_cpp2_unique_ref)),
-    opt_container_with_ref(std::move(other.opt_container_with_ref)),
-    ref_type_unique(std::move(other.ref_type_unique)),
-    ref_type_shared(std::move(other.ref_type_shared)),
-    ref_type_const(std::move(other.ref_type_const)),
-    req_ref_type_shared(std::move(other.req_ref_type_shared)),
-    req_ref_type_const(std::move(other.req_ref_type_const)),
-    req_ref_type_unique(std::move(other.req_ref_type_unique)),
-    opt_ref_type_const(std::move(other.opt_ref_type_const)),
-    opt_ref_type_unique(std::move(other.opt_ref_type_unique)),
-    opt_ref_type_shared(std::move(other.opt_ref_type_shared)),
-    base_type(std::move(other.base_type)),
-    list_type(std::move(other.list_type)),
-    set_type(std::move(other.set_type)),
-    map_type(std::move(other.map_type)),
-    map_struct_type(std::move(other.map_struct_type)),
-    iobuf_type(std::move(other.iobuf_type)),
-    iobuf_ptr(std::move(other.iobuf_ptr)),
-    list_i32_template(std::move(other.list_i32_template)),
-    list_string_template(std::move(other.list_string_template)),
-    set_template(std::move(other.set_template)),
-    map_template(std::move(other.map_template)),
-    typedef_list_template(std::move(other.typedef_list_template)),
-    typedef_deque_template(std::move(other.typedef_deque_template)),
-    typedef_set_template(std::move(other.typedef_set_template)),
-    typedef_map_template(std::move(other.typedef_map_template)),
-    indirection_a(std::move(other.indirection_a)),
-    indirection_b(std::move(other.indirection_b)),
-    indirection_c(std::move(other.indirection_c)),
-    iobuf_type_val(std::move(other.iobuf_type_val)),
-    iobuf_ptr_val(std::move(other.iobuf_ptr_val)),
-    struct_struct(std::move(other.struct_struct)),
-    __isset(other.__isset) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnnotatedStruct::~AnnotatedStruct() {}
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<::std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<::std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<int64_t, ::std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg) :
+AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor, ::some::valid::ns::containerStruct no_annotation__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> cpp2_unique_ref__arg, ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, ::std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, ::std::unique_ptr<::std::set<::std::int32_t>> opt_container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> ref_type_unique__arg, ::std::shared_ptr<::some::valid::ns::containerStruct> ref_type_shared__arg, ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>> ref_type_const__arg, ::std::shared_ptr<::some::valid::ns::containerStruct> req_ref_type_shared__arg, ::std::shared_ptr<const ::some::valid::ns::containerStruct> req_ref_type_const__arg, ::std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, ::std::shared_ptr<const ::some::valid::ns::containerStruct> opt_ref_type_const__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_ref_type_unique__arg, ::std::shared_ptr<::std::set<::std::int32_t>> opt_ref_type_shared__arg, ::some::valid::ns::CppFakeI32 base_type__arg, ::some::valid::ns::FollySmallVectorI64 list_type__arg, ::some::valid::ns::SortedVectorSetString set_type__arg, ::some::valid::ns::FakeMap map_type__arg, ::some::valid::ns::UnorderedMapStruct map_struct_type__arg, ::some::valid::ns::IOBuf iobuf_type__arg, ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<::std::int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<::std::int64_t, ::std::string> map_template__arg, ::some::valid::ns::std_list typedef_list_template__arg, ::some::valid::ns::std_deque typedef_deque_template__arg, ::some::valid::ns::folly_set typedef_set_template__arg, ::some::valid::ns::folly_map typedef_map_template__arg, ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector<::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set<::some::valid::ns::IndirectionC> indirection_c__arg, ::some::valid::ns::IOBuf iobuf_type_val__arg, ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg, ::some::valid::ns::containerStruct struct_struct__arg) :
     no_annotation(std::move(no_annotation__arg)),
     cpp_unique_ref(std::move(cpp_unique_ref__arg)),
     cpp2_unique_ref(std::move(cpp2_unique_ref__arg)),
@@ -2858,48 +2929,49 @@ AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::va
   __isset.struct_struct = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AnnotatedStruct::__clear() {
   // clear all fields
-  no_annotation.__clear();
-  if (cpp_unique_ref) cpp_unique_ref->__clear();
-  if (cpp2_unique_ref) cpp2_unique_ref->__clear();
-  container_with_ref.reset(new typename decltype(container_with_ref)::element_type());
-  if (req_cpp_unique_ref) req_cpp_unique_ref->__clear();
-  if (req_cpp2_unique_ref) req_cpp2_unique_ref->__clear();
-  req_container_with_ref.reset(new typename decltype(req_container_with_ref)::element_type());
-  opt_cpp_unique_ref.reset();
-  opt_cpp2_unique_ref.reset();
-  opt_container_with_ref.reset();
-  if (ref_type_unique) ref_type_unique->__clear();
-  if (ref_type_shared) ref_type_shared->__clear();
-  ref_type_const = std::make_shared<::std::map<int32_t, ::std::vector<::std::string>>>();
-  if (req_ref_type_shared) req_ref_type_shared->__clear();
-  if (req_ref_type_const) req_ref_type_const = std::make_shared< ::some::valid::ns::containerStruct>();
-  req_ref_type_unique.reset(new typename decltype(req_ref_type_unique)::element_type());
-  opt_ref_type_const.reset();
-  opt_ref_type_unique.reset();
-  opt_ref_type_shared.reset();
-  base_type = 0;
-  list_type.clear();
-  set_type.clear();
-  map_type.clear();
-  map_struct_type.clear();
-  iobuf_type = apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("");
-  iobuf_ptr = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
-  list_i32_template.clear();
-  list_string_template.clear();
-  set_template.clear();
-  map_template.clear();
-  typedef_list_template.clear();
-  typedef_deque_template.clear();
-  typedef_set_template.clear();
-  typedef_map_template.clear();
-  ::apache::thrift::apply_indirection(indirection_a) = 0;
-  indirection_b.clear();
-  indirection_c.clear();
-  iobuf_type_val = apache::thrift::StringTraits< folly::IOBuf>::fromStringLiteral("value");
-  iobuf_ptr_val = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
-  struct_struct.__clear();
+  this->no_annotation.__clear();
+  if (this->cpp_unique_ref) this->cpp_unique_ref->__clear();
+  if (this->cpp2_unique_ref) this->cpp2_unique_ref->__clear();
+  this->container_with_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>();
+  if (this->req_cpp_unique_ref) this->req_cpp_unique_ref->__clear();
+  if (this->req_cpp2_unique_ref) this->req_cpp2_unique_ref->__clear();
+  this->req_container_with_ref = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::string>>>();
+  this->opt_cpp_unique_ref.reset();
+  this->opt_cpp2_unique_ref.reset();
+  this->opt_container_with_ref.reset();
+  if (this->ref_type_unique) this->ref_type_unique->__clear();
+  if (this->ref_type_shared) this->ref_type_shared->__clear();
+  this->ref_type_const = ::apache::thrift::detail::make_mutable_smart_ptr<::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>();
+  if (this->req_ref_type_shared) this->req_ref_type_shared->__clear();
+  if (this->req_ref_type_const) this->req_ref_type_const.reset(new typename decltype(this->req_ref_type_const)::element_type());
+  this->req_ref_type_unique = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::vector<::std::string>>>();
+  this->opt_ref_type_const.reset();
+  this->opt_ref_type_unique.reset();
+  this->opt_ref_type_shared.reset();
+  this->base_type = 0;
+  this->list_type.clear();
+  this->set_type.clear();
+  this->map_type.clear();
+  this->map_struct_type.clear();
+  this->iobuf_type = apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("");
+  this->iobuf_ptr = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
+  this->list_i32_template.clear();
+  this->list_string_template.clear();
+  this->set_template.clear();
+  this->map_template.clear();
+  this->typedef_list_template.clear();
+  this->typedef_deque_template.clear();
+  this->typedef_set_template.clear();
+  this->typedef_map_template.clear();
+  ::apache::thrift::apply_indirection(this->indirection_a) = 0;
+  this->indirection_b.clear();
+  this->indirection_c.clear();
+  this->iobuf_type_val = apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("value");
+  this->iobuf_ptr_val = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
+  this->struct_struct.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2909,166 +2981,76 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.no_annotation == rhs.no_annotation)) {
+  if (!(lhs.no_annotation_ref() == rhs.no_annotation_ref())) {
     return false;
   }
-  if (!!lhs.cpp_unique_ref != !!rhs.cpp_unique_ref) {
+  if ((lhs.cpp_unique_ref == nullptr) != (rhs.cpp_unique_ref == nullptr) || (lhs.cpp_unique_ref != nullptr && lhs.cpp_unique_ref != rhs.cpp_unique_ref && !(*lhs.cpp_unique_ref == *rhs.cpp_unique_ref))) {
     return false;
   }
-  if (!!lhs.cpp_unique_ref) {
-    if (lhs.cpp_unique_ref != rhs.cpp_unique_ref && !(*lhs.cpp_unique_ref == *rhs.cpp_unique_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.cpp2_unique_ref != !!rhs.cpp2_unique_ref) {
+  if ((lhs.cpp2_unique_ref == nullptr) != (rhs.cpp2_unique_ref == nullptr) || (lhs.cpp2_unique_ref != nullptr && lhs.cpp2_unique_ref != rhs.cpp2_unique_ref && !(*lhs.cpp2_unique_ref == *rhs.cpp2_unique_ref))) {
     return false;
   }
-  if (!!lhs.cpp2_unique_ref) {
-    if (lhs.cpp2_unique_ref != rhs.cpp2_unique_ref && !(*lhs.cpp2_unique_ref == *rhs.cpp2_unique_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.container_with_ref != !!rhs.container_with_ref) {
+  if ((lhs.container_with_ref == nullptr) != (rhs.container_with_ref == nullptr) || (lhs.container_with_ref != nullptr && lhs.container_with_ref != rhs.container_with_ref && !(*lhs.container_with_ref == *rhs.container_with_ref))) {
     return false;
   }
-  if (!!lhs.container_with_ref) {
-    if (lhs.container_with_ref != rhs.container_with_ref && !(*lhs.container_with_ref == *rhs.container_with_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_cpp_unique_ref != !!rhs.req_cpp_unique_ref) {
+  if ((lhs.req_cpp_unique_ref == nullptr) != (rhs.req_cpp_unique_ref == nullptr) || (lhs.req_cpp_unique_ref != nullptr && lhs.req_cpp_unique_ref != rhs.req_cpp_unique_ref && !(*lhs.req_cpp_unique_ref == *rhs.req_cpp_unique_ref))) {
     return false;
   }
-  if (!!lhs.req_cpp_unique_ref) {
-    if (lhs.req_cpp_unique_ref != rhs.req_cpp_unique_ref && !(*lhs.req_cpp_unique_ref == *rhs.req_cpp_unique_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_cpp2_unique_ref != !!rhs.req_cpp2_unique_ref) {
+  if ((lhs.req_cpp2_unique_ref == nullptr) != (rhs.req_cpp2_unique_ref == nullptr) || (lhs.req_cpp2_unique_ref != nullptr && lhs.req_cpp2_unique_ref != rhs.req_cpp2_unique_ref && !(*lhs.req_cpp2_unique_ref == *rhs.req_cpp2_unique_ref))) {
     return false;
   }
-  if (!!lhs.req_cpp2_unique_ref) {
-    if (lhs.req_cpp2_unique_ref != rhs.req_cpp2_unique_ref && !(*lhs.req_cpp2_unique_ref == *rhs.req_cpp2_unique_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_container_with_ref != !!rhs.req_container_with_ref) {
+  if ((lhs.req_container_with_ref == nullptr) != (rhs.req_container_with_ref == nullptr) || (lhs.req_container_with_ref != nullptr && lhs.req_container_with_ref != rhs.req_container_with_ref && !(*lhs.req_container_with_ref == *rhs.req_container_with_ref))) {
     return false;
   }
-  if (!!lhs.req_container_with_ref) {
-    if (lhs.req_container_with_ref != rhs.req_container_with_ref && !(*lhs.req_container_with_ref == *rhs.req_container_with_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_cpp_unique_ref != !!rhs.opt_cpp_unique_ref) {
+  if ((lhs.opt_cpp_unique_ref == nullptr) != (rhs.opt_cpp_unique_ref == nullptr) || (lhs.opt_cpp_unique_ref != nullptr && lhs.opt_cpp_unique_ref != rhs.opt_cpp_unique_ref && !(*lhs.opt_cpp_unique_ref == *rhs.opt_cpp_unique_ref))) {
     return false;
   }
-  if (!!lhs.opt_cpp_unique_ref) {
-    if (lhs.opt_cpp_unique_ref != rhs.opt_cpp_unique_ref && !(*lhs.opt_cpp_unique_ref == *rhs.opt_cpp_unique_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_cpp2_unique_ref != !!rhs.opt_cpp2_unique_ref) {
+  if ((lhs.opt_cpp2_unique_ref == nullptr) != (rhs.opt_cpp2_unique_ref == nullptr) || (lhs.opt_cpp2_unique_ref != nullptr && lhs.opt_cpp2_unique_ref != rhs.opt_cpp2_unique_ref && !(*lhs.opt_cpp2_unique_ref == *rhs.opt_cpp2_unique_ref))) {
     return false;
   }
-  if (!!lhs.opt_cpp2_unique_ref) {
-    if (lhs.opt_cpp2_unique_ref != rhs.opt_cpp2_unique_ref && !(*lhs.opt_cpp2_unique_ref == *rhs.opt_cpp2_unique_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_container_with_ref != !!rhs.opt_container_with_ref) {
+  if ((lhs.opt_container_with_ref == nullptr) != (rhs.opt_container_with_ref == nullptr) || (lhs.opt_container_with_ref != nullptr && lhs.opt_container_with_ref != rhs.opt_container_with_ref && !(*lhs.opt_container_with_ref == *rhs.opt_container_with_ref))) {
     return false;
   }
-  if (!!lhs.opt_container_with_ref) {
-    if (lhs.opt_container_with_ref != rhs.opt_container_with_ref && !(*lhs.opt_container_with_ref == *rhs.opt_container_with_ref)) {
-      return false;
-    }
-  }
-  if (!!lhs.ref_type_unique != !!rhs.ref_type_unique) {
+  if ((lhs.ref_type_unique == nullptr) != (rhs.ref_type_unique == nullptr) || (lhs.ref_type_unique != nullptr && lhs.ref_type_unique != rhs.ref_type_unique && !(*lhs.ref_type_unique == *rhs.ref_type_unique))) {
     return false;
   }
-  if (!!lhs.ref_type_unique) {
-    if (lhs.ref_type_unique != rhs.ref_type_unique && !(*lhs.ref_type_unique == *rhs.ref_type_unique)) {
-      return false;
-    }
-  }
-  if (!!lhs.ref_type_shared != !!rhs.ref_type_shared) {
+  if ((lhs.ref_type_shared == nullptr) != (rhs.ref_type_shared == nullptr) || (lhs.ref_type_shared != nullptr && lhs.ref_type_shared != rhs.ref_type_shared && !(*lhs.ref_type_shared == *rhs.ref_type_shared))) {
     return false;
   }
-  if (!!lhs.ref_type_shared) {
-    if (lhs.ref_type_shared != rhs.ref_type_shared && !(*lhs.ref_type_shared == *rhs.ref_type_shared)) {
-      return false;
-    }
-  }
-  if (!!lhs.ref_type_const != !!rhs.ref_type_const) {
+  if ((lhs.ref_type_const == nullptr) != (rhs.ref_type_const == nullptr) || (lhs.ref_type_const != nullptr && lhs.ref_type_const != rhs.ref_type_const && !(*lhs.ref_type_const == *rhs.ref_type_const))) {
     return false;
   }
-  if (!!lhs.ref_type_const) {
-    if (lhs.ref_type_const != rhs.ref_type_const && !(*lhs.ref_type_const == *rhs.ref_type_const)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_ref_type_shared != !!rhs.req_ref_type_shared) {
+  if ((lhs.req_ref_type_shared == nullptr) != (rhs.req_ref_type_shared == nullptr) || (lhs.req_ref_type_shared != nullptr && lhs.req_ref_type_shared != rhs.req_ref_type_shared && !(*lhs.req_ref_type_shared == *rhs.req_ref_type_shared))) {
     return false;
   }
-  if (!!lhs.req_ref_type_shared) {
-    if (lhs.req_ref_type_shared != rhs.req_ref_type_shared && !(*lhs.req_ref_type_shared == *rhs.req_ref_type_shared)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_ref_type_const != !!rhs.req_ref_type_const) {
+  if ((lhs.req_ref_type_const == nullptr) != (rhs.req_ref_type_const == nullptr) || (lhs.req_ref_type_const != nullptr && lhs.req_ref_type_const != rhs.req_ref_type_const && !(*lhs.req_ref_type_const == *rhs.req_ref_type_const))) {
     return false;
   }
-  if (!!lhs.req_ref_type_const) {
-    if (lhs.req_ref_type_const != rhs.req_ref_type_const && !(*lhs.req_ref_type_const == *rhs.req_ref_type_const)) {
-      return false;
-    }
-  }
-  if (!!lhs.req_ref_type_unique != !!rhs.req_ref_type_unique) {
+  if ((lhs.req_ref_type_unique == nullptr) != (rhs.req_ref_type_unique == nullptr) || (lhs.req_ref_type_unique != nullptr && lhs.req_ref_type_unique != rhs.req_ref_type_unique && !(*lhs.req_ref_type_unique == *rhs.req_ref_type_unique))) {
     return false;
   }
-  if (!!lhs.req_ref_type_unique) {
-    if (lhs.req_ref_type_unique != rhs.req_ref_type_unique && !(*lhs.req_ref_type_unique == *rhs.req_ref_type_unique)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_ref_type_const != !!rhs.opt_ref_type_const) {
+  if ((lhs.opt_ref_type_const == nullptr) != (rhs.opt_ref_type_const == nullptr) || (lhs.opt_ref_type_const != nullptr && lhs.opt_ref_type_const != rhs.opt_ref_type_const && !(*lhs.opt_ref_type_const == *rhs.opt_ref_type_const))) {
     return false;
   }
-  if (!!lhs.opt_ref_type_const) {
-    if (lhs.opt_ref_type_const != rhs.opt_ref_type_const && !(*lhs.opt_ref_type_const == *rhs.opt_ref_type_const)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_ref_type_unique != !!rhs.opt_ref_type_unique) {
+  if ((lhs.opt_ref_type_unique == nullptr) != (rhs.opt_ref_type_unique == nullptr) || (lhs.opt_ref_type_unique != nullptr && lhs.opt_ref_type_unique != rhs.opt_ref_type_unique && !(*lhs.opt_ref_type_unique == *rhs.opt_ref_type_unique))) {
     return false;
   }
-  if (!!lhs.opt_ref_type_unique) {
-    if (lhs.opt_ref_type_unique != rhs.opt_ref_type_unique && !(*lhs.opt_ref_type_unique == *rhs.opt_ref_type_unique)) {
-      return false;
-    }
-  }
-  if (!!lhs.opt_ref_type_shared != !!rhs.opt_ref_type_shared) {
+  if ((lhs.opt_ref_type_shared == nullptr) != (rhs.opt_ref_type_shared == nullptr) || (lhs.opt_ref_type_shared != nullptr && lhs.opt_ref_type_shared != rhs.opt_ref_type_shared && !(*lhs.opt_ref_type_shared == *rhs.opt_ref_type_shared))) {
     return false;
   }
-  if (!!lhs.opt_ref_type_shared) {
-    if (lhs.opt_ref_type_shared != rhs.opt_ref_type_shared && !(*lhs.opt_ref_type_shared == *rhs.opt_ref_type_shared)) {
-      return false;
-    }
-  }
-  if (!(lhs.base_type == rhs.base_type)) {
+  if (!(lhs.base_type_ref() == rhs.base_type_ref())) {
     return false;
   }
-  if (!(lhs.list_type == rhs.list_type)) {
+  if (!(lhs.list_type_ref() == rhs.list_type_ref())) {
     return false;
   }
-  if (!(lhs.set_type == rhs.set_type)) {
+  if (!(lhs.set_type_ref() == rhs.set_type_ref())) {
     return false;
   }
-  if (!(lhs.map_type == rhs.map_type)) {
+  if (!(lhs.map_type_ref() == rhs.map_type_ref())) {
     return false;
   }
-  if (!(lhs.map_struct_type == rhs.map_struct_type)) {
+  if (!(lhs.map_struct_type_ref() == rhs.map_struct_type_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<folly::IOBuf>::isEqual(lhs.iobuf_type, rhs.iobuf_type)) {
@@ -3077,37 +3059,37 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.iobuf_ptr, rhs.iobuf_ptr)) {
     return false;
   }
-  if (!(lhs.list_i32_template == rhs.list_i32_template)) {
+  if (!(lhs.list_i32_template_ref() == rhs.list_i32_template_ref())) {
     return false;
   }
-  if (!(lhs.list_string_template == rhs.list_string_template)) {
+  if (!(lhs.list_string_template_ref() == rhs.list_string_template_ref())) {
     return false;
   }
-  if (!(lhs.set_template == rhs.set_template)) {
+  if (!(lhs.set_template_ref() == rhs.set_template_ref())) {
     return false;
   }
-  if (!(lhs.map_template == rhs.map_template)) {
+  if (!(lhs.map_template_ref() == rhs.map_template_ref())) {
     return false;
   }
-  if (!(lhs.typedef_list_template == rhs.typedef_list_template)) {
+  if (!(lhs.typedef_list_template_ref() == rhs.typedef_list_template_ref())) {
     return false;
   }
-  if (!(lhs.typedef_deque_template == rhs.typedef_deque_template)) {
+  if (!(lhs.typedef_deque_template_ref() == rhs.typedef_deque_template_ref())) {
     return false;
   }
-  if (!(lhs.typedef_set_template == rhs.typedef_set_template)) {
+  if (!(lhs.typedef_set_template_ref() == rhs.typedef_set_template_ref())) {
     return false;
   }
-  if (!(lhs.typedef_map_template == rhs.typedef_map_template)) {
+  if (!(lhs.typedef_map_template_ref() == rhs.typedef_map_template_ref())) {
     return false;
   }
-  if (!(lhs.indirection_a == rhs.indirection_a)) {
+  if (!(lhs.indirection_a_ref() == rhs.indirection_a_ref())) {
     return false;
   }
-  if (!(lhs.indirection_b == rhs.indirection_b)) {
+  if (!(lhs.indirection_b_ref() == rhs.indirection_b_ref())) {
     return false;
   }
-  if (!(lhs.indirection_c == rhs.indirection_c)) {
+  if (!(lhs.indirection_c_ref() == rhs.indirection_c_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<folly::IOBuf>::isEqual(lhs.iobuf_type_val, rhs.iobuf_type_val)) {
@@ -3116,57 +3098,57 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.iobuf_ptr_val, rhs.iobuf_ptr_val)) {
     return false;
   }
-  if (!(lhs.struct_struct == rhs.struct_struct)) {
+  if (!(lhs.struct_struct_ref() == rhs.struct_struct_ref())) {
     return false;
   }
   return true;
 }
 
-const  ::some::valid::ns::containerStruct& AnnotatedStruct::get_no_annotation() const& {
+const ::some::valid::ns::containerStruct& AnnotatedStruct::get_no_annotation() const& {
   return no_annotation;
 }
 
- ::some::valid::ns::containerStruct AnnotatedStruct::get_no_annotation() && {
+::some::valid::ns::containerStruct AnnotatedStruct::get_no_annotation() && {
   return std::move(no_annotation);
 }
 
-const  ::some::valid::ns::FollySmallVectorI64& AnnotatedStruct::get_list_type() const& {
+const ::some::valid::ns::FollySmallVectorI64& AnnotatedStruct::get_list_type() const& {
   return list_type;
 }
 
- ::some::valid::ns::FollySmallVectorI64 AnnotatedStruct::get_list_type() && {
+::some::valid::ns::FollySmallVectorI64 AnnotatedStruct::get_list_type() && {
   return std::move(list_type);
 }
 
-const  ::some::valid::ns::SortedVectorSetString& AnnotatedStruct::get_set_type() const& {
+const ::some::valid::ns::SortedVectorSetString& AnnotatedStruct::get_set_type() const& {
   return set_type;
 }
 
- ::some::valid::ns::SortedVectorSetString AnnotatedStruct::get_set_type() && {
+::some::valid::ns::SortedVectorSetString AnnotatedStruct::get_set_type() && {
   return std::move(set_type);
 }
 
-const  ::some::valid::ns::FakeMap& AnnotatedStruct::get_map_type() const& {
+const ::some::valid::ns::FakeMap& AnnotatedStruct::get_map_type() const& {
   return map_type;
 }
 
- ::some::valid::ns::FakeMap AnnotatedStruct::get_map_type() && {
+::some::valid::ns::FakeMap AnnotatedStruct::get_map_type() && {
   return std::move(map_type);
 }
 
-const  ::some::valid::ns::UnorderedMapStruct& AnnotatedStruct::get_map_struct_type() const& {
+const ::some::valid::ns::UnorderedMapStruct& AnnotatedStruct::get_map_struct_type() const& {
   return map_struct_type;
 }
 
- ::some::valid::ns::UnorderedMapStruct AnnotatedStruct::get_map_struct_type() && {
+::some::valid::ns::UnorderedMapStruct AnnotatedStruct::get_map_struct_type() && {
   return std::move(map_struct_type);
 }
 
-const std::list<int32_t>& AnnotatedStruct::get_list_i32_template() const& {
+const std::list<::std::int32_t>& AnnotatedStruct::get_list_i32_template() const& {
   return list_i32_template;
 }
 
-std::list<int32_t> AnnotatedStruct::get_list_i32_template() && {
+std::list<::std::int32_t> AnnotatedStruct::get_list_i32_template() && {
   return std::move(list_i32_template);
 }
 
@@ -3186,67 +3168,67 @@ folly::sorted_vector_set<::std::string> AnnotatedStruct::get_set_template() && {
   return std::move(set_template);
 }
 
-const folly::sorted_vector_map<int64_t, ::std::string>& AnnotatedStruct::get_map_template() const& {
+const folly::sorted_vector_map<::std::int64_t, ::std::string>& AnnotatedStruct::get_map_template() const& {
   return map_template;
 }
 
-folly::sorted_vector_map<int64_t, ::std::string> AnnotatedStruct::get_map_template() && {
+folly::sorted_vector_map<::std::int64_t, ::std::string> AnnotatedStruct::get_map_template() && {
   return std::move(map_template);
 }
 
-const  ::some::valid::ns::std_list& AnnotatedStruct::get_typedef_list_template() const& {
+const ::some::valid::ns::std_list& AnnotatedStruct::get_typedef_list_template() const& {
   return typedef_list_template;
 }
 
- ::some::valid::ns::std_list AnnotatedStruct::get_typedef_list_template() && {
+::some::valid::ns::std_list AnnotatedStruct::get_typedef_list_template() && {
   return std::move(typedef_list_template);
 }
 
-const  ::some::valid::ns::std_deque& AnnotatedStruct::get_typedef_deque_template() const& {
+const ::some::valid::ns::std_deque& AnnotatedStruct::get_typedef_deque_template() const& {
   return typedef_deque_template;
 }
 
- ::some::valid::ns::std_deque AnnotatedStruct::get_typedef_deque_template() && {
+::some::valid::ns::std_deque AnnotatedStruct::get_typedef_deque_template() && {
   return std::move(typedef_deque_template);
 }
 
-const  ::some::valid::ns::folly_set& AnnotatedStruct::get_typedef_set_template() const& {
+const ::some::valid::ns::folly_set& AnnotatedStruct::get_typedef_set_template() const& {
   return typedef_set_template;
 }
 
- ::some::valid::ns::folly_set AnnotatedStruct::get_typedef_set_template() && {
+::some::valid::ns::folly_set AnnotatedStruct::get_typedef_set_template() && {
   return std::move(typedef_set_template);
 }
 
-const  ::some::valid::ns::folly_map& AnnotatedStruct::get_typedef_map_template() const& {
+const ::some::valid::ns::folly_map& AnnotatedStruct::get_typedef_map_template() const& {
   return typedef_map_template;
 }
 
- ::some::valid::ns::folly_map AnnotatedStruct::get_typedef_map_template() && {
+::some::valid::ns::folly_map AnnotatedStruct::get_typedef_map_template() && {
   return std::move(typedef_map_template);
 }
 
-const ::std::vector< ::some::valid::ns::IndirectionB>& AnnotatedStruct::get_indirection_b() const& {
+const ::std::vector<::some::valid::ns::IndirectionB>& AnnotatedStruct::get_indirection_b() const& {
   return indirection_b;
 }
 
-::std::vector< ::some::valid::ns::IndirectionB> AnnotatedStruct::get_indirection_b() && {
+::std::vector<::some::valid::ns::IndirectionB> AnnotatedStruct::get_indirection_b() && {
   return std::move(indirection_b);
 }
 
-const ::std::set< ::some::valid::ns::IndirectionC>& AnnotatedStruct::get_indirection_c() const& {
+const ::std::set<::some::valid::ns::IndirectionC>& AnnotatedStruct::get_indirection_c() const& {
   return indirection_c;
 }
 
-::std::set< ::some::valid::ns::IndirectionC> AnnotatedStruct::get_indirection_c() && {
+::std::set<::some::valid::ns::IndirectionC> AnnotatedStruct::get_indirection_c() && {
   return std::move(indirection_c);
 }
 
-const  ::some::valid::ns::containerStruct& AnnotatedStruct::get_struct_struct() const& {
+const ::some::valid::ns::containerStruct& AnnotatedStruct::get_struct_struct() const& {
   return struct_struct;
 }
 
- ::some::valid::ns::containerStruct AnnotatedStruct::get_struct_struct() && {
+::some::valid::ns::containerStruct AnnotatedStruct::get_struct_struct() && {
   return std::move(struct_struct);
 }
 
@@ -3315,182 +3297,182 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-         ::some::valid::ns::UnorderedMapStruct>,
+        ::some::valid::ns::UnorderedMapStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-         ::some::valid::ns::UnorderedMapStruct>,
+        ::some::valid::ns::UnorderedMapStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         AnnotatedStruct,
         ::apache::thrift::type_class::structure,
-         ::some::valid::ns::containerStruct>,
+        ::some::valid::ns::containerStruct>,
     "inconsistent use of nimble option");
 
 }}} // some::valid::ns
@@ -3518,18 +3500,51 @@ void TccStructTraits<::some::valid::ns::ComplexContainerStruct>::translateFieldN
 
 namespace some { namespace valid { namespace ns {
 
+ComplexContainerStruct::ComplexContainerStruct(const ComplexContainerStruct& srcObj) {
+  map_of_iobufs = srcObj.map_of_iobufs;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ComplexContainerStruct::ComplexContainerStruct(apache::thrift::FragileConstructor, ::std::map<::std::string,  ::some::valid::ns::IOBuf> map_of_iobufs__arg, ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg) :
+  __isset.map_of_iobufs = srcObj.__isset.map_of_iobufs;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  map_of_iobuf_ptrs = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>>(srcObj.map_of_iobuf_ptrs);
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.map_of_iobuf_ptrs = srcObj.__isset.map_of_iobuf_ptrs;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+ComplexContainerStruct& ComplexContainerStruct::operator=(const ComplexContainerStruct& src) {
+  ComplexContainerStruct tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexContainerStruct::ComplexContainerStruct(ComplexContainerStruct&& other) noexcept  :
+    map_of_iobufs(std::move(other.map_of_iobufs)),
+    map_of_iobuf_ptrs(std::move(other.map_of_iobuf_ptrs)),
+    __isset(other.__isset) {}
+ComplexContainerStruct& ComplexContainerStruct::operator=(FOLLY_MAYBE_UNUSED ComplexContainerStruct&& other) noexcept {
+    this->map_of_iobufs = std::move(other.map_of_iobufs);
+    this->map_of_iobuf_ptrs = std::move(other.map_of_iobuf_ptrs);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexContainerStruct::ComplexContainerStruct(apache::thrift::FragileConstructor, ::std::map<::std::string, ::some::valid::ns::IOBuf> map_of_iobufs__arg, ::std::map<::std::string, ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg) :
     map_of_iobufs(std::move(map_of_iobufs__arg)),
     map_of_iobuf_ptrs(std::move(map_of_iobuf_ptrs__arg)) {
   __isset.map_of_iobufs = true;
   __isset.map_of_iobuf_ptrs = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ComplexContainerStruct::__clear() {
   // clear all fields
-  map_of_iobufs.clear();
-  map_of_iobuf_ptrs.clear();
+  this->map_of_iobufs.clear();
+  this->map_of_iobuf_ptrs.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3539,10 +3554,10 @@ bool ComplexContainerStruct::operator==(const ComplexContainerStruct& rhs) const
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.map_of_iobufs == rhs.map_of_iobufs)) {
+  if (!(lhs.map_of_iobufs_ref() == rhs.map_of_iobufs_ref())) {
     return false;
   }
-  if (!(lhs.map_of_iobuf_ptrs == rhs.map_of_iobuf_ptrs)) {
+  if (!(lhs.map_of_iobuf_ptrs_ref() == rhs.map_of_iobuf_ptrs_ref())) {
     return false;
   }
   return true;
@@ -3552,28 +3567,28 @@ bool ComplexContainerStruct::operator<(const ComplexContainerStruct& rhs) const 
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.map_of_iobufs == rhs.map_of_iobufs)) {
-    return lhs.map_of_iobufs < rhs.map_of_iobufs;
+  if (!(lhs.map_of_iobufs_ref() == rhs.map_of_iobufs_ref())) {
+    return lhs.map_of_iobufs_ref() < rhs.map_of_iobufs_ref();
   }
-  if (!(lhs.map_of_iobuf_ptrs == rhs.map_of_iobuf_ptrs)) {
-    return lhs.map_of_iobuf_ptrs < rhs.map_of_iobuf_ptrs;
+  if (!(lhs.map_of_iobuf_ptrs_ref() == rhs.map_of_iobuf_ptrs_ref())) {
+    return lhs.map_of_iobuf_ptrs_ref() < rhs.map_of_iobuf_ptrs_ref();
   }
   return false;
 }
 
-const ::std::map<::std::string,  ::some::valid::ns::IOBuf>& ComplexContainerStruct::get_map_of_iobufs() const& {
+const ::std::map<::std::string, ::some::valid::ns::IOBuf>& ComplexContainerStruct::get_map_of_iobufs() const& {
   return map_of_iobufs;
 }
 
-::std::map<::std::string,  ::some::valid::ns::IOBuf> ComplexContainerStruct::get_map_of_iobufs() && {
+::std::map<::std::string, ::some::valid::ns::IOBuf> ComplexContainerStruct::get_map_of_iobufs() && {
   return std::move(map_of_iobufs);
 }
 
-const ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>& ComplexContainerStruct::get_map_of_iobuf_ptrs() const& {
+const ::std::map<::std::string, ::some::valid::ns::IOBufPtr>& ComplexContainerStruct::get_map_of_iobuf_ptrs() const& {
   return map_of_iobuf_ptrs;
 }
 
-::std::map<::std::string,  ::some::valid::ns::IOBufPtr> ComplexContainerStruct::get_map_of_iobuf_ptrs() && {
+::std::map<::std::string, ::some::valid::ns::IOBufPtr> ComplexContainerStruct::get_map_of_iobuf_ptrs() && {
   return std::move(map_of_iobuf_ptrs);
 }
 
@@ -3627,6 +3642,7 @@ void TccStructTraits<::some::valid::ns::FloatStruct>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 FloatStruct::FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg) :
     floatField(std::move(floatField__arg)),
@@ -3635,10 +3651,11 @@ FloatStruct::FloatStruct(apache::thrift::FragileConstructor, float floatField__a
   __isset.doubleField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void FloatStruct::__clear() {
   // clear all fields
-  floatField = 0;
-  doubleField = 0;
+  this->floatField = 0;
+  this->doubleField = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3648,10 +3665,10 @@ bool FloatStruct::operator==(const FloatStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.floatField == rhs.floatField)) {
+  if (!(lhs.floatField_ref() == rhs.floatField_ref())) {
     return false;
   }
-  if (!(lhs.doubleField == rhs.doubleField)) {
+  if (!(lhs.doubleField_ref() == rhs.doubleField_ref())) {
     return false;
   }
   return true;
@@ -3661,11 +3678,11 @@ bool FloatStruct::operator<(const FloatStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.floatField == rhs.floatField)) {
-    return lhs.floatField < rhs.floatField;
+  if (!(lhs.floatField_ref() == rhs.floatField_ref())) {
+    return lhs.floatField_ref() < rhs.floatField_ref();
   }
-  if (!(lhs.doubleField == rhs.doubleField)) {
-    return lhs.doubleField < rhs.doubleField;
+  if (!(lhs.doubleField_ref() == rhs.doubleField_ref())) {
+    return lhs.doubleField_ref() < rhs.doubleField_ref();
   }
   return false;
 }
@@ -3834,20 +3851,22 @@ void TccStructTraits<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct>::trans
 
 namespace some { namespace valid { namespace ns {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, int64_t intField__arg) :
+AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, ::std::int64_t intField__arg) :
     intField(std::move(intField__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AllRequiredNoExceptMoveCtrStruct::__clear() {
   // clear all fields
-  intField = 0;
+  this->intField = 0;
 }
 
 bool AllRequiredNoExceptMoveCtrStruct::operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.intField == rhs.intField)) {
+  if (!(lhs.intField_ref() == rhs.intField_ref())) {
     return false;
   }
   return true;
@@ -3857,8 +3876,8 @@ bool AllRequiredNoExceptMoveCtrStruct::operator<(const AllRequiredNoExceptMoveCt
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.intField == rhs.intField)) {
-    return lhs.intField < rhs.intField;
+  if (!(lhs.intField_ref() == rhs.intField_ref())) {
+    return lhs.intField_ref() < rhs.intField_ref();
   }
   return false;
 }

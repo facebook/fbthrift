@@ -63,9 +63,7 @@ struct BlockLayout : public LayoutBase {
     }
   };
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 } // namespace detail
 
@@ -145,9 +143,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
           if (p == buckets) {
             throw std::out_of_range("All buckets full!");
           }
-          if (*itemKey == KeyExtractor::getKey(**slot)) {
-            throw std::domain_error("Input collection is not distinct");
-          }
+          ensureDistinctKeys(*itemKey, KeyExtractor::getKey(**slot));
           continue;
         } else {
           *slot = KeyExtractor::getPointer(item);
@@ -209,6 +205,16 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     for (auto& it : index) {
       if (it) {
         root.freezeField(write, this->itemField, *it);
+
+        // Hash specializations must produce identical hashes for thawed and
+        // frozen representations of the same value. Note that this hash must
+        // also be robust in the presence of versioning; the addition of a new,
+        // unset field must produce the same hashes as before the newly
+        // introduced field.
+        assert(
+            KeyLayout::hash(KeyExtractor::getKey(*it)) ==
+            KeyLayout::hash(KeyExtractor::getViewKey(
+                this->itemField.layout.view({write.start, write.bitOffset}))));
         write = write(writeStep);
       }
     }
@@ -310,9 +316,7 @@ struct HashTableLayout : public ArrayLayout<T, Item> {
     }
   };
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 } // namespace detail
 } // namespace frozen

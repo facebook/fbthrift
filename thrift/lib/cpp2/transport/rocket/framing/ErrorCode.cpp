@@ -50,6 +50,8 @@ folly::StringPiece toString(ErrorCode ec) {
       return "RESERVED_EXT";
     case ErrorCode::CONNECTION_DRAIN_COMPLETE:
       return "CONNECTION_DRAIN_COMPLETE";
+    case ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT:
+      return "EXCEEDED_INGRESS_MEM_LIMIT";
   }
   return "UNKNOWN";
 }

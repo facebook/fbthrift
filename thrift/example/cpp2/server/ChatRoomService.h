@@ -16,8 +16,8 @@
 
 #pragma once
 
-#include <folly/Synchronized.h>
 #include <vector>
+#include <folly/Synchronized.h>
 
 #include <thrift/example/if/gen-cpp2/ChatRoomService.h>
 

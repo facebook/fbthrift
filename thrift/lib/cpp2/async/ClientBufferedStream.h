@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/GLog.h>
 #include <folly/Portability.h>
 #include <folly/futures/Future.h>
 #include <folly/synchronization/Baton.h>
@@ -40,32 +41,34 @@ class ClientBufferedStream {
   ClientBufferedStream(
       apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
-      int32_t bufferSize)
+      const BufferOptions& bufferOptions)
       : streamBridge_(std::move(streamBridge)),
         decode_(decode),
-        bufferSize_(bufferSize) {}
+        bufferOptions_(bufferOptions) {}
 
+  // onNextTry may return bool or void; false cancels the subscription.
   template <typename OnNextTry>
   void subscribeInline(OnNextTry&& onNextTry) && {
+    CHECK_EQ(bufferOptions_.memSize, 0)
+        << "MemoryBufferSize only supported by AsyncGenerator subscription";
     auto streamBridge = std::move(streamBridge_);
 
-    int32_t outstanding = bufferSize_;
-    int32_t payloadDataSize = 0;
+    if (bufferOptions_.chunkSize == 0) {
+      streamBridge->requestN(1);
+      ++bufferOptions_.chunkSize;
+    }
+
+    int32_t outstanding = bufferOptions_.chunkSize;
+    size_t payloadDataSize = 0;
 
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
     class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
      public:
-      void consume() override {
-        baton.post();
-      }
+      void consume() override { baton.post(); }
 
-      void canceled() override {
-        std::terminate();
-      }
+      void canceled() override { std::terminate(); }
 
-      void wait() {
-        baton.wait();
-      }
+      void wait() { baton.wait(); }
 
      private:
       folly::Baton<> baton;
@@ -73,11 +76,6 @@ class ClientBufferedStream {
 
     while (true) {
       if (queue.empty()) {
-        if (outstanding == 0) {
-          streamBridge->requestN(1);
-          ++outstanding;
-        }
-
         ReadyCallback callback;
         if (streamBridge->wait(&callback)) {
           callback.wait();
@@ -87,29 +85,35 @@ class ClientBufferedStream {
 
       {
         auto& payload = queue.front();
-        if (!payload.hasValue() && !payload.hasException()) {
-          onNextTry(folly::Try<T>());
-          break;
-        }
         if (payload.hasValue()) {
+          if (!payload->payload) {
+            FB_LOG_EVERY_MS(WARNING, 1000)
+                << "Dropping unhandled stream header frame";
+            queue.pop();
+            continue;
+          }
           payloadDataSize += payload->payload->computeChainDataLength();
         }
         auto value = decode_(std::move(payload));
         queue.pop();
-        const auto hasException = value.hasException();
-        onNextTry(std::move(value));
-        if (hasException) {
+        bool done = !value.hasValue();
+        using Res = std::invoke_result_t<OnNextTry, folly::Try<T>>;
+        if constexpr (std::is_same_v<Res, bool>) {
+          done |= !onNextTry(std::move(value));
+        } else {
+          static_assert(
+              std::is_void_v<Res>, "onNextTry must return bool or void");
+          onNextTry(std::move(value));
+        }
+        if (done) {
           break;
         }
       }
 
-      outstanding--;
-      // we request credits only if bufferSize_ > 0.
-      // For bufferSize_ = 0, the loop requests 1 credit at a time.
-      if ((outstanding <= bufferSize_ / 2) ||
+      if ((--outstanding <= bufferOptions_.chunkSize / 2) ||
           (payloadDataSize >= kRequestCreditPayloadSize)) {
-        streamBridge->requestN(bufferSize_ - outstanding);
-        outstanding = bufferSize_;
+        streamBridge->requestN(bufferOptions_.chunkSize - outstanding);
+        outstanding = bufferOptions_.chunkSize;
         payloadDataSize = 0;
       }
     }
@@ -117,18 +121,48 @@ class ClientBufferedStream {
 
 #if FOLLY_HAS_COROUTINES
   folly::coro::AsyncGenerator<T&&> toAsyncGenerator() && {
-    return toAsyncGeneratorImpl(std::move(streamBridge_), bufferSize_, decode_);
+    return bufferOptions_.memSize
+        ? toAsyncGeneratorWithSizeTarget<false>(
+              std::move(streamBridge_),
+              bufferOptions_.chunkSize,
+              decode_,
+              bufferOptions_.memSize)
+        : toAsyncGeneratorImpl<false>(
+              std::move(streamBridge_), bufferOptions_.chunkSize, decode_);
+  }
+
+  struct PayloadAndHeader {
+    std::optional<T> payload; // empty for header packet
+    StreamPayloadMetadata metadata;
+  };
+  folly::coro::AsyncGenerator<PayloadAndHeader&&>
+  toAsyncGeneratorWithHeader() && {
+    return bufferOptions_.memSize
+        ? toAsyncGeneratorWithSizeTarget<true>(
+              std::move(streamBridge_),
+              bufferOptions_.chunkSize,
+              decode_,
+              bufferOptions_.memSize)
+        : toAsyncGeneratorImpl<true>(
+              std::move(streamBridge_), bufferOptions_.chunkSize, decode_);
   }
 #endif // FOLLY_HAS_COROUTINES
 
   template <typename Callback>
   auto subscribeExTry(folly::Executor::KeepAlive<> e, Callback&& onNextTry) && {
+    CHECK_EQ(bufferOptions_.memSize, 0)
+        << "MemoryBufferSize only supported by AsyncGenerator subscription";
+    if (bufferOptions_.chunkSize == 0) {
+      streamBridge_->requestN(1);
+      ++bufferOptions_.chunkSize;
+    }
+
     auto c = new Continuation<std::decay_t<Callback>>(
         e,
         std::forward<Callback>(onNextTry),
         std::move(streamBridge_),
         decode_,
-        bufferSize_);
+        bufferOptions_.chunkSize);
     Subscription sub(c->state_);
     e->add([c]() { (*c)(); });
     return sub;
@@ -136,38 +170,34 @@ class ClientBufferedStream {
 
  private:
 #if FOLLY_HAS_COROUTINES
-  static folly::coro::AsyncGenerator<T&&> toAsyncGeneratorImpl(
+  template <bool WithHeader>
+  static folly::coro::AsyncGenerator<
+      std::conditional_t<WithHeader, PayloadAndHeader, T>&&>
+  toAsyncGeneratorImpl(
       apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
-      int32_t bufferSize,
+      int32_t chunkBufferSize,
       folly::Try<T> (*decode)(folly::Try<StreamPayload>&&)) {
-    int32_t outstanding = bufferSize;
-    int32_t payloadDataSize = 0;
+    if (chunkBufferSize == 0) {
+      streamBridge->requestN(1);
+      ++chunkBufferSize;
+    }
+
+    int32_t outstanding = chunkBufferSize;
+    size_t payloadDataSize = 0;
 
     apache::thrift::detail::ClientStreamBridge::ClientQueue queue;
     class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
      public:
-      void consume() override {
-        baton.post();
-      }
+      void consume() override { baton.post(); }
 
-      void canceled() override {
-        baton.post();
-      }
+      void canceled() override { baton.post(); }
 
       folly::coro::Baton baton;
     };
 
     while (true) {
-      if ((co_await folly::coro::co_current_cancellation_token)
-              .isCancellationRequested()) {
-        throw folly::OperationCancelled();
-      }
+      co_await folly::coro::co_safe_point;
       if (queue.empty()) {
-        if (outstanding == 0) {
-          streamBridge->requestN(1);
-          ++outstanding;
-        }
-
         ReadyCallback callback;
         if (streamBridge->wait(&callback)) {
           folly::CancellationCallback cb{
@@ -180,7 +210,7 @@ class ClientBufferedStream {
           // we've been cancelled
           apache::thrift::detail::ClientStreamBridge::Ptr(
               streamBridge.release());
-          throw folly::OperationCancelled();
+          co_yield folly::coro::co_cancelled;
         }
       }
 
@@ -190,22 +220,176 @@ class ClientBufferedStream {
           break;
         }
         if (payload.hasValue()) {
-          payloadDataSize += payload->payload->computeChainDataLength();
+          if (!payload->payload) {
+            if constexpr (!WithHeader) {
+              FB_LOG_EVERY_MS(WARNING, 1000)
+                  << "Dropping unhandled stream header frame";
+              queue.pop();
+              continue;
+            }
+          } else {
+            payloadDataSize += payload->payload->computeChainDataLength();
+          }
         }
-        auto value = decode(std::move(payload));
-        queue.pop();
-        // yield value or rethrow exception
-        co_yield std::move(value).value();
+        if constexpr (WithHeader) {
+          if (payload.hasValue()) {
+            PayloadAndHeader ret;
+            bool usedCredit = false;
+            ret.metadata = std::move(payload->metadata);
+            if (payload->payload) {
+              ret.payload = *decode(std::move(payload));
+              usedCredit = true;
+            }
+            queue.pop();
+            co_yield std::move(ret);
+            if (!usedCredit) {
+              continue;
+            }
+          } else {
+            co_yield folly::coro::co_error(
+                decode(std::move(payload)).exception());
+          }
+        } else {
+          auto value = decode(std::move(payload));
+          queue.pop();
+          co_yield folly::coro::co_result(std::move(value));
+        }
+
+        if ((--outstanding <= chunkBufferSize / 2) ||
+            (payloadDataSize >= kRequestCreditPayloadSize)) {
+          streamBridge->requestN(chunkBufferSize - outstanding);
+          outstanding = chunkBufferSize;
+          payloadDataSize = 0;
+        }
+      }
+    }
+  }
+
+  template <bool WithHeader>
+  static folly::coro::AsyncGenerator<
+      std::conditional_t<WithHeader, PayloadAndHeader, T>&&>
+  toAsyncGeneratorWithSizeTarget(
+      apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
+      int32_t chunkBufferSize,
+      folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
+      size_t memBufferTarget) {
+    if (chunkBufferSize == 0) {
+      streamBridge->requestN(1);
+      ++chunkBufferSize;
+    }
+
+    int32_t outstanding = chunkBufferSize;
+    size_t maxPayloadSize = 0, bufferMemSize = 0;
+
+    apache::thrift::detail::ClientStreamBridge::ClientQueueWithTailPtr queue;
+    class ReadyCallback : public apache::thrift::detail::ClientStreamConsumer {
+     public:
+      void consume() override { baton.post(); }
+
+      void canceled() override { baton.post(); }
+
+      folly::coro::Baton baton;
+    };
+
+    while (true) {
+      co_await folly::coro::co_safe_point;
+
+      {
+        // Always check for new buffered messages to update queue size
+        apache::thrift::detail::ClientStreamBridge::ClientQueue incoming;
+        if (queue.empty()) {
+          ReadyCallback callback;
+          if (streamBridge->wait(&callback)) {
+            folly::CancellationCallback cb{
+                co_await folly::coro::co_current_cancellation_token,
+                [&] { streamBridge->cancel(); }};
+            co_await callback.baton;
+          }
+          incoming = streamBridge->getMessages();
+          if (incoming.empty()) {
+            // we've been cancelled
+            apache::thrift::detail::ClientStreamBridge::Ptr(
+                streamBridge.release());
+            co_yield folly::coro::co_cancelled;
+          }
+        } else {
+          incoming = streamBridge->getMessages();
+        }
+
+        // Sum sizes of new buffered messages and append to queue
+        queue.append(
+            apache::thrift::detail::ClientStreamBridge::ClientQueueWithTailPtr(
+                std::move(incoming), [&](auto& payload) {
+                  if (payload.hasValue() && payload->payload) {
+                    bufferMemSize += payload->payload->computeChainDataLength();
+                  }
+                }));
       }
 
-      outstanding--;
-      // we request credits only if bufferSize_ > 0.
-      // For bufferSize_ = 0, the loop requests 1 credit at a time.
-      if ((outstanding <= bufferSize / 2) ||
-          (payloadDataSize >= kRequestCreditPayloadSize)) {
-        streamBridge->requestN(bufferSize - outstanding);
-        outstanding = bufferSize;
-        payloadDataSize = 0;
+      {
+        auto& payload = queue.front();
+        if (!payload.hasValue() && !payload.hasException()) {
+          break;
+        }
+        if (payload.hasValue()) {
+          if (!payload->payload) {
+            if constexpr (!WithHeader) {
+              FB_LOG_EVERY_MS(WARNING, 1000)
+                  << "Dropping unhandled stream header frame";
+              queue.pop();
+              continue;
+            }
+          } else {
+            maxPayloadSize = std::max(
+                maxPayloadSize, payload->payload->computeChainDataLength());
+          }
+        }
+        if constexpr (WithHeader) {
+          if (payload.hasValue()) {
+            PayloadAndHeader ret;
+            bool usedCredit = false;
+            ret.metadata = std::move(payload->metadata);
+            if (payload->payload) {
+              bufferMemSize -= payload->payload->computeChainDataLength();
+              ret.payload = *decode(std::move(payload));
+              usedCredit = true;
+            }
+            queue.pop();
+            co_yield std::move(ret);
+            if (!usedCredit) {
+              continue;
+            }
+          } else {
+            co_yield folly::coro::co_error(
+                decode(std::move(payload)).exception());
+          }
+        } else {
+          if (payload.hasValue() && payload->payload) {
+            bufferMemSize -= payload->payload->computeChainDataLength();
+          }
+          auto value = decode(std::move(payload));
+          queue.pop();
+          co_yield folly::coro::co_result(std::move(value));
+        }
+
+        --outstanding;
+        // Assuming all outstanding payloads come back with largest seen size.
+        size_t outstandingSize = bufferMemSize + outstanding * maxPayloadSize;
+        size_t spaceAvailable =
+            std::max<ssize_t>(memBufferTarget - outstandingSize, 0);
+        // Issue more credits when available space is at least half of the
+        // buffer, or 16kB if that's less than the payload size.
+        size_t threshold = (maxPayloadSize <= kRequestCreditPayloadSize)
+            ? std::min(memBufferTarget / 2, kRequestCreditPayloadSize)
+            : memBufferTarget / 2;
+
+        if (spaceAvailable >= threshold) {
+          // Convert to credits, again assuming largest size for new payloads.
+          int32_t request =
+              (spaceAvailable + maxPayloadSize - 1) / maxPayloadSize;
+          streamBridge->requestN(request);
+          outstanding += request;
+        }
       }
     }
   }
@@ -238,17 +422,11 @@ class ClientBufferedStream {
       }
     }
 
-    void cancel() {
-      state_->streamBridge->cancel();
-    }
+    void cancel() { state_->streamBridge->cancel(); }
 
-    void detach() && {
-      state_.reset();
-    }
+    void detach() && { state_.reset(); }
 
-    void join() && {
-      std::move(*this).futureJoin().wait();
-    }
+    void join() && { std::move(*this).futureJoin().wait(); }
 
     folly::SemiFuture<folly::Unit> futureJoin() && {
       return std::exchange(state_, nullptr)->promise.getSemiFuture();
@@ -273,18 +451,16 @@ class ClientBufferedStream {
         OnNextTry onNextTry,
         apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
         folly::Try<T> (*decode)(folly::Try<StreamPayload>&&),
-        int32_t bufferSize)
+        int32_t chunkBufferSize)
         : e_(e),
           onNextTry_(std::move(onNextTry)),
           decode_(decode),
-          bufferSize_(bufferSize),
+          chunkBufferSize_(chunkBufferSize),
           state_(std::make_shared<SharedState>(std::move(streamBridge))) {
-      outstanding_ = bufferSize_;
+      outstanding_ = chunkBufferSize_;
     }
 
-    ~Continuation() {
-      state_->promise.setValue();
-    }
+    ~Continuation() { state_->promise.setValue(); }
 
     // takes ownerhsip of pointer on success
     static bool wait(std::unique_ptr<Continuation>& cb) {
@@ -299,9 +475,7 @@ class ClientBufferedStream {
       e_->add([this]() { (*this)(); });
     }
 
-    void canceled() override {
-      delete this;
-    }
+    void canceled() override { delete this; }
 
     void operator()() noexcept {
       std::unique_ptr<Continuation> cb(this);
@@ -309,11 +483,6 @@ class ClientBufferedStream {
 
       while (!state_->streamBridge->isCanceled()) {
         if (queue.empty()) {
-          if (outstanding_ == 0) {
-            state_->streamBridge->requestN(1);
-            ++outstanding_;
-          }
-
           if (Continuation::wait(cb)) {
             // The filler will schedule us back on the executor once the queue
             // is refilled so we return here
@@ -334,6 +503,12 @@ class ClientBufferedStream {
             return;
           }
           if (payload.hasValue()) {
+            if (!payload->payload) {
+              FB_LOG_EVERY_MS(WARNING, 1000)
+                  << "Dropping unhandled stream header frame";
+              queue.pop();
+              continue;
+            }
             payloadDataSize_ += payload->payload->computeChainDataLength();
           }
           auto value = decode_(std::move(payload));
@@ -345,13 +520,10 @@ class ClientBufferedStream {
           }
         }
 
-        outstanding_--;
-        // we request credits only if bufferSize_ > 0.
-        // For bufferSize_ = 0, the loop requests 1 credit at a time.
-        if ((outstanding_ <= bufferSize_ / 2) ||
+        if ((--outstanding_ <= chunkBufferSize_ / 2) ||
             (payloadDataSize_ >= kRequestCreditPayloadSize)) {
-          state_->streamBridge->requestN(bufferSize_ - outstanding_);
-          outstanding_ = bufferSize_;
+          state_->streamBridge->requestN(chunkBufferSize_ - outstanding_);
+          outstanding_ = chunkBufferSize_;
           payloadDataSize_ = 0;
         }
       }
@@ -361,20 +533,20 @@ class ClientBufferedStream {
     folly::Executor::KeepAlive<> e_;
     OnNextTry onNextTry_;
     folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&);
-    int32_t bufferSize_;
+    int32_t chunkBufferSize_;
     int32_t outstanding_;
-    int32_t payloadDataSize_{0};
+    size_t payloadDataSize_{0};
     std::shared_ptr<SharedState> state_;
     friend class ClientBufferedStream;
   };
 
   apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge_;
   folly::Try<T> (*decode_)(folly::Try<StreamPayload>&&) = nullptr;
-  int32_t bufferSize_{0};
-  static constexpr int32_t kRequestCreditPayloadSize = 16384;
+  BufferOptions bufferOptions_;
+  static constexpr size_t kRequestCreditPayloadSize = 16384;
 
   friend class yarpl::flowable::ThriftStreamShim;
-}; // namespace thrift
+};
 
 template <typename Response, typename StreamElement>
 struct ResponseAndClientBufferedStream {

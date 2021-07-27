@@ -24,6 +24,7 @@
 #include <folly/experimental/coro/Task.h>
 #endif // FOLLY_HAS_COROUTINES
 #include <folly/Try.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ServerStreamDetail.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
 
@@ -36,6 +37,10 @@ class ServerStreamConsumer {
   virtual ~ServerStreamConsumer() = default;
   virtual void consume() = 0;
   virtual void canceled() = 0;
+};
+
+struct StreamControl {
+  enum Code : int32_t { CANCEL = -1, PAUSE = -2, RESUME = -3 };
 };
 
 class ServerGeneratorStream;
@@ -60,8 +65,14 @@ class ServerGeneratorStream : public TwoWayBridge<
 
 #if FOLLY_HAS_COROUTINES
   template <typename T>
+  struct PayloadAndHeader {
+    std::optional<T> payload; // empty for header packet
+    transport::THeader::StringToStringMap metadata;
+  };
+  template <bool WithHeader, typename T>
   static ServerStreamFn<T> fromAsyncGenerator(
-      folly::coro::AsyncGenerator<T&&>&& gen);
+      folly::coro::AsyncGenerator<
+          std::conditional_t<WithHeader, PayloadAndHeader<T>, T>&&>&& gen);
 #endif // FOLLY_HAS_COROUTINES
 
   void consume();
@@ -70,8 +81,7 @@ class ServerGeneratorStream : public TwoWayBridge<
 
  private:
   ServerGeneratorStream(
-      StreamClientCallback* clientCallback,
-      folly::EventBase* clientEb);
+      StreamClientCallback* clientCallback, folly::EventBase* clientEb);
 
   bool wait(ServerStreamConsumer* consumer);
 
@@ -84,6 +94,10 @@ class ServerGeneratorStream : public TwoWayBridge<
   void onStreamCancel() override;
 
   void resetClientCallback(StreamClientCallback& clientCallback) override;
+
+  void pauseStream() override;
+
+  void resumeStream() override;
 
   void processPayloads();
 

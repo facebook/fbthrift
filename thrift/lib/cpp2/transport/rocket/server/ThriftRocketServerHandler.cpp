@@ -23,15 +23,19 @@
 #include <folly/ExceptionString.h>
 #include <folly/ExceptionWrapper.h>
 #include <folly/GLog.h>
+#include <folly/Overload.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
-#include <thrift/lib/cpp2/server/LoggingEvent.h>
+#include <thrift/lib/cpp2/server/LoggingEventHelper.h>
+#include <thrift/lib/cpp2/server/MonitoringMethodNames.h>
 #include <thrift/lib/cpp2/server/VisitorHelper.h>
 #include <thrift/lib/cpp2/transport/core/ThriftRequest.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
@@ -46,7 +50,15 @@
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_constants.h>
 
+namespace {
+const int64_t kRocketServerMaxVersion = 8;
+const int64_t kRocketServerMinVersion = 6;
+} // namespace
+
 THRIFT_FLAG_DEFINE_bool(rocket_server_legacy_protocol_key, true);
+THRIFT_FLAG_DEFINE_int64(rocket_server_max_version, kRocketServerMaxVersion);
+
+THRIFT_FLAG_DEFINE_int64(monitoring_over_user_logging_sample_rate, 0);
 
 namespace apache {
 namespace thrift {
@@ -67,22 +79,25 @@ ThriftRocketServerHandler::ThriftRocketServerHandler(
     const std::vector<std::unique_ptr<SetupFrameHandler>>& handlers)
     : worker_(std::move(worker)),
       connectionGuard_(worker_->getActiveRequestsGuard()),
-      clientAddress_(clientAddress),
       connContext_(
-          &clientAddress_,
+          &clientAddress,
           transport,
           nullptr, /* eventBaseManager */
           nullptr, /* duplexChannel */
           nullptr, /* x509PeerCert */
-          worker_->getServer()->getClientIdentityHook()),
-      setupFrameHandlers_(handlers) {
-  if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
+          worker_->getServer()->getClientIdentityHook(),
+          worker_.get()),
+      setupFrameHandlers_(handlers),
+      version_(static_cast<int32_t>(std::min(
+          kRocketServerMaxVersion, THRIFT_FLAG(rocket_server_max_version)))) {
+  connContext_.setTransportType(Cpp2ConnContext::TransportType::ROCKET);
+  for (const auto& handler : worker_->getServer()->getEventHandlersUnsafe()) {
     handler->newConnection(&connContext_);
   }
 }
 
 ThriftRocketServerHandler::~ThriftRocketServerHandler() {
-  if (auto* handler = worker_->getServer()->getEventHandlerUnsafe()) {
+  for (const auto& handler : worker_->getServer()->getEventHandlersUnsafe()) {
     handler->connectionDestroyed(&connContext_);
   }
   // Ensure each connAccepted() call has a matching connClosed()
@@ -102,8 +117,7 @@ ThriftRocketServerHandler::shouldSample() {
 }
 
 void ThriftRocketServerHandler::handleSetupFrame(
-    SetupFrame&& frame,
-    RocketServerConnection& connection) {
+    SetupFrame&& frame, RocketServerConnection& connection) {
   if (!frame.payload().hasNonemptyMetadata()) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
         ErrorCode::INVALID_SETUP, "Missing required metadata in SETUP frame"));
@@ -134,30 +148,40 @@ void ThriftRocketServerHandler::handleSetupFrame(
           ErrorCode::INVALID_SETUP,
           "Error deserializing SETUP payload: underflow"));
     }
+    connContext_.readSetupMetadata(meta);
 
     auto minVersion = meta.minVersion_ref().value_or(0);
     auto maxVersion = meta.maxVersion_ref().value_or(0);
+
+    THRIFT_CONNECTION_EVENT(rocket.setup).log(connContext_, [&] {
+      return folly::dynamic::object("client_min_version", minVersion)(
+          "client_max_version", maxVersion)("server_version", version_);
+    });
 
     if (minVersion > version_) {
       return connection.close(folly::make_exception_wrapper<RocketException>(
           ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
     }
 
-    if (maxVersion < 0) {
+    if (maxVersion < kRocketServerMinVersion) {
       return connection.close(folly::make_exception_wrapper<RocketException>(
           ErrorCode::INVALID_SETUP, "Incompatible Rocket version"));
     }
     version_ = std::min(version_, maxVersion);
-
     eventBase_ = connContext_.getTransport()->getEventBase();
     for (const auto& h : setupFrameHandlers_) {
       auto processorInfo = h->tryHandle(meta);
       if (processorInfo) {
         bool valid = true;
-        valid &= !!(cpp2Processor_ = std::move(processorInfo->cpp2Processor_));
+        processorFactory_ = std::addressof(processorInfo->processorFactory_);
+        serviceMetadata_ =
+            std::addressof(worker_->getMetadataForService(*processorFactory_));
+        valid &= !!(processor_ = processorFactory_->getProcessor());
         valid &= !!(threadManager_ = std::move(processorInfo->threadManager_));
         valid &= !!(serverConfigs_ = &processorInfo->serverConfigs_);
-        valid &= !!(requestsRegistry_ = processorInfo->requestsRegistry_);
+        requestsRegistry_ = processorInfo->requestsRegistry_ != nullptr
+            ? processorInfo->requestsRegistry_
+            : worker_->getRequestsRegistry();
         if (!valid) {
           return connection.close(
               folly::make_exception_wrapper<RocketException>(
@@ -168,10 +192,14 @@ void ThriftRocketServerHandler::handleSetupFrame(
       }
     }
     // no custom frame handler was found, do the default
-    cpp2Processor_ = worker_->getServer()->getCpp2Processor();
+    processorFactory_ = worker_->getServer()->getProcessorFactory().get();
+    serviceMetadata_ =
+        std::addressof(worker_->getMetadataForService(*processorFactory_));
+    processor_ = processorFactory_->getProcessor();
     threadManager_ = worker_->getServer()->getThreadManager();
     serverConfigs_ = worker_->getServer();
     requestsRegistry_ = worker_->getRequestsRegistry();
+
     // add sampleRate
     if (serverConfigs_) {
       if (auto* observer = serverConfigs_->getObserver()) {
@@ -183,16 +211,15 @@ void ThriftRocketServerHandler::handleSetupFrame(
       connection.applyDscpAndMarkToSocket(meta);
     }
 
-    if (version_ >= 5) {
-      ServerPushMetadata serverMeta;
-      serverMeta.set_setupResponse();
-      serverMeta.setupResponse_ref()->version_ref() = version_;
-      CompactProtocolWriter compactProtocolWriter;
-      folly::IOBufQueue queue;
-      compactProtocolWriter.setOutput(&queue);
-      serverMeta.write(&compactProtocolWriter);
-      connection.sendMetadataPush(std::move(queue).move());
-    }
+    DCHECK_GE(version_, 5);
+    ServerPushMetadata serverMeta;
+    serverMeta.set_setupResponse();
+    serverMeta.setupResponse_ref()->version_ref() = version_;
+    CompactProtocolWriter compactProtocolWriter;
+    folly::IOBufQueue queue;
+    compactProtocolWriter.setOutput(&queue);
+    serverMeta.write(&compactProtocolWriter);
+    connection.sendMetadataPush(std::move(queue).move());
 
   } catch (const std::exception& e) {
     return connection.close(folly::make_exception_wrapper<RocketException>(
@@ -204,12 +231,10 @@ void ThriftRocketServerHandler::handleSetupFrame(
 }
 
 void ThriftRocketServerHandler::handleRequestResponseFrame(
-    RequestResponseFrame&& frame,
-    RocketServerFrameContext&& context) {
+    RequestResponseFrame&& frame, RocketServerFrameContext&& context) {
   auto makeRequestResponse = [&](RequestRpcMetadata&& md,
-                                 std::unique_ptr<folly::IOBuf> debugPayload,
+                                 rocket::Payload&& debugPayload,
                                  std::shared_ptr<folly::RequestContext> ctx) {
-    serverConfigs_->incActiveRequests();
     // Note, we're passing connContext by reference and rely on the next
     // chain of ownership to keep it alive: ThriftServerRequestResponse
     // stores RocketServerFrameContext, which keeps refcount on
@@ -232,12 +257,10 @@ void ThriftRocketServerHandler::handleRequestResponseFrame(
 }
 
 void ThriftRocketServerHandler::handleRequestFnfFrame(
-    RequestFnfFrame&& frame,
-    RocketServerFrameContext&& context) {
+    RequestFnfFrame&& frame, RocketServerFrameContext&& context) {
   auto makeRequestFnf = [&](RequestRpcMetadata&& md,
-                            std::unique_ptr<folly::IOBuf> debugPayload,
+                            rocket::Payload&& debugPayload,
                             std::shared_ptr<folly::RequestContext> ctx) {
-    serverConfigs_->incActiveRequests();
     // Note, we're passing connContext by reference and rely on a complex
     // chain of ownership (see handleRequestResponseFrame for detailed
     // explanation).
@@ -250,7 +273,7 @@ void ThriftRocketServerHandler::handleRequestFnfFrame(
         *requestsRegistry_,
         std::move(debugPayload),
         std::move(context),
-        [keepAlive = cpp2Processor_] {});
+        [keepAlive = processor_] {});
   };
 
   handleRequestCommon(std::move(frame.payload()), std::move(makeRequestFnf));
@@ -261,9 +284,8 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
     RocketServerFrameContext&& context,
     RocketStreamClientCallback* clientCallback) {
   auto makeRequestStream = [&](RequestRpcMetadata&& md,
-                               std::unique_ptr<folly::IOBuf> debugPayload,
+                               rocket::Payload&& debugPayload,
                                std::shared_ptr<folly::RequestContext> ctx) {
-    serverConfigs_->incActiveRequests();
     return RequestsRegistry::makeRequest<ThriftServerRequestStream>(
         *eventBase_,
         *serverConfigs_,
@@ -275,7 +297,7 @@ void ThriftRocketServerHandler::handleRequestStreamFrame(
         std::move(context),
         version_,
         clientCallback,
-        cpp2Processor_);
+        processor_);
   };
 
   handleRequestCommon(std::move(frame.payload()), std::move(makeRequestStream));
@@ -286,9 +308,8 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
     RocketServerFrameContext&& context,
     RocketSinkClientCallback* clientCallback) {
   auto makeRequestSink = [&](RequestRpcMetadata&& md,
-                             std::unique_ptr<folly::IOBuf> debugPayload,
+                             rocket::Payload&& debugPayload,
                              std::shared_ptr<folly::RequestContext> ctx) {
-    serverConfigs_->incActiveRequests();
     return RequestsRegistry::makeRequest<ThriftServerRequestSink>(
         *eventBase_,
         *serverConfigs_,
@@ -300,7 +321,7 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
         std::move(context),
         version_,
         clientCallback,
-        cpp2Processor_);
+        processor_);
   };
 
   handleRequestCommon(std::move(frame.payload()), std::move(makeRequestSink));
@@ -308,16 +329,14 @@ void ThriftRocketServerHandler::handleRequestChannelFrame(
 
 void ThriftRocketServerHandler::connectionClosing() {
   connContext_.connectionClosed();
-  if (cpp2Processor_) {
-    cpp2Processor_->destroyAllInteractions(
-        connContext_, *threadManager_, *eventBase_);
+  if (processor_) {
+    processor_->destroyAllInteractions(connContext_, *eventBase_);
   }
 }
 
 template <class F>
 void ThriftRocketServerHandler::handleRequestCommon(
-    Payload&& payload,
-    F&& makeRequest) {
+    Payload&& payload, F&& makeRequest) {
   // setup request sampling for counters and stats
   auto samplingStatus = shouldSample();
   std::chrono::steady_clock::time_point readEnd;
@@ -325,19 +344,26 @@ void ThriftRocketServerHandler::handleRequestCommon(
     readEnd = std::chrono::steady_clock::now();
   }
 
-  auto baseReqCtx = cpp2Processor_->getBaseContextForRequest();
-  auto rootid = requestsRegistry_->genRootId();
-  auto reqCtx = baseReqCtx
-      ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
-      : std::make_shared<folly::RequestContext>(rootid);
+  rocket::Payload debugPayload = payload.clone();
+  auto requestPayloadTry =
+      unpackAsCompressed<RequestPayload>(std::move(payload));
 
-  folly::RequestContextScopeGuard rctx(reqCtx);
+  auto makeActiveRequest = [&](auto&& md, auto&& payload, auto&& reqCtx) {
+    serverConfigs_->incActiveRequests();
+    return makeRequest(std::move(md), std::move(payload), std::move(reqCtx));
+  };
 
-  auto requestPayloadTry = unpack<RequestPayload>(std::move(payload));
+  auto createDefaultRequestContext = [&] {
+    return std::make_shared<folly::RequestContext>(
+        requestsRegistry_->genRootId());
+  };
 
   if (requestPayloadTry.hasException()) {
     handleDecompressionFailure(
-        makeRequest(RequestRpcMetadata(), {}, std::move(reqCtx)),
+        makeActiveRequest(
+            RequestRpcMetadata(),
+            rocket::Payload{},
+            createDefaultRequestContext()),
         requestPayloadTry.exception().what().toStdString());
     return;
   }
@@ -345,47 +371,50 @@ void ThriftRocketServerHandler::handleRequestCommon(
   auto& data = requestPayloadTry->payload;
   auto& metadata = requestPayloadTry->metadata;
 
-  auto debugPayload = data->clone();
-
   if (!isMetadataValid(metadata)) {
-    handleRequestWithBadMetadata(makeRequest(
-        std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
+    handleRequestWithBadMetadata(makeActiveRequest(
+        std::move(metadata),
+        std::move(debugPayload),
+        createDefaultRequestContext()));
     return;
   }
 
   if (worker_->isStopping()) {
-    handleServerShutdown(makeRequest(
-        std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
+    handleServerShutdown(makeActiveRequest(
+        std::move(metadata),
+        std::move(debugPayload),
+        createDefaultRequestContext()));
     return;
   }
-  // check if server is overloaded
-  auto errorCode = serverConfigs_->checkOverload(
-      metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref() : nullptr,
-      &*metadata.name_ref());
-  if (UNLIKELY(errorCode.has_value())) {
-    handleRequestOverloadedServer(
-        makeRequest(
-            std::move(metadata), std::move(debugPayload), std::move(reqCtx)),
-        errorCode.value());
-    return;
-  }
-  auto preprocessResult = serverConfigs_->preprocess(
-      metadata.otherMetadata_ref() ? &*metadata.otherMetadata_ref() : nullptr,
-      &*metadata.name_ref());
-  if (UNLIKELY(preprocessResult.has_value())) {
-    auto req = makeRequest(
-        std::move(metadata), std::move(debugPayload), std::move(reqCtx));
-    preprocessResult->apply_visitor(
-        apache::thrift::detail::VisitorHelper()
-            .with([&](AppClientException& ace) {
-              handleAppError(
-                  std::move(req), ace.name(), ace.getMessage(), true);
-            })
-            .with([&](const AppServerException& ase) {
-              handleAppError(
-                  std::move(req), ase.name(), ase.getMessage(), false);
-            }));
-    return;
+
+  THRIFT_APPLICATION_EVENT(server_read_headers).log([&] {
+    auto size =
+        metadata.otherMetadata_ref() ? metadata.otherMetadata_ref()->size() : 0;
+    std::vector<folly::dynamic> keys;
+    if (size) {
+      keys.reserve(size);
+      for (auto& [k, v] : *metadata.otherMetadata_ref()) {
+        keys.push_back(k);
+      }
+    }
+    return folly::dynamic::object("size", size) //
+        ("keys", folly::dynamic::array(std::move(keys)));
+  });
+
+  if (metadata.crc32c_ref()) {
+    try {
+      if (auto compression = metadata.compression_ref()) {
+        data = uncompressBuffer(std::move(data), *compression);
+      }
+    } catch (...) {
+      handleDecompressionFailure(
+          makeActiveRequest(
+              std::move(metadata),
+              rocket::Payload{},
+              createDefaultRequestContext()),
+          folly::exceptionStr(std::current_exception()).toStdString());
+      return;
+    }
   }
 
   // check the checksum
@@ -393,19 +422,96 @@ void ThriftRocketServerHandler::handleRequestCommon(
       (*metadata.crc32c_ref() != checksum::crc32c(*data));
 
   if (badChecksum) {
-    handleRequestWithBadChecksum(makeRequest(
-        std::move(metadata), std::move(debugPayload), std::move(reqCtx)));
+    handleRequestWithBadChecksum(makeActiveRequest(
+        std::move(metadata),
+        std::move(debugPayload),
+        createDefaultRequestContext()));
     return;
   }
 
+  if (auto injectedFailure = worker_->getServer()->maybeInjectFailure();
+      injectedFailure != ThriftServer::InjectedFailure::NONE) {
+    InjectedFault injectedFault;
+    switch (injectedFailure) {
+      case ThriftServer::InjectedFailure::NONE:
+        folly::assume_unreachable();
+      case ThriftServer::InjectedFailure::ERROR:
+        injectedFault = InjectedFault::ERROR;
+        break;
+      case ThriftServer::InjectedFailure::DROP:
+        injectedFault = InjectedFault::DROP;
+        break;
+      case ThriftServer::InjectedFailure::DISCONNECT:
+        injectedFault = InjectedFault::DISCONNECT;
+        break;
+    }
+    handleInjectedFault(
+        makeActiveRequest(
+            std::move(metadata),
+            std::move(debugPayload),
+            createDefaultRequestContext()),
+        injectedFault);
+    return;
+  }
+
+  using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
+  const PerServiceMetadata::FindMethodResult methodMetadataResult =
+      serviceMetadata_->findMethod(
+          metadata.name_ref()
+              ? metadata.name_ref()->view()
+              : std::string_view{}); // need to call with empty string_view
+                                     // because we still distinguish
+                                     // between NotImplemented and
+                                     // MetadataNotFound
+
+  auto rootid = requestsRegistry_->genRootId();
+  auto baseReqCtx =
+      serviceMetadata_->getBaseContextForRequest(methodMetadataResult);
+  auto reqCtx = baseReqCtx
+      ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
+      : std::make_shared<folly::RequestContext>(rootid);
+  folly::RequestContextScopeGuard rctx(reqCtx);
+
+  // A request should not be active until the overload checking is done.
   auto request = makeRequest(
       std::move(metadata), std::move(debugPayload), std::move(reqCtx));
 
-  logSetupConnectionEventsOnce(
-      setupLoggingFlag_,
-      request->getMethodName(),
-      *worker_.get(),
-      *connContext_.getTransport());
+  // check if server is overloaded
+  const auto& headers = request->getTHeader().getHeaders();
+  const auto& name = request->getMethodName();
+  auto errorCode = serverConfigs_->checkOverload(&headers, &name);
+  serverConfigs_->incActiveRequests();
+  if (UNLIKELY(errorCode.has_value())) {
+    handleRequestOverloadedServer(std::move(request), errorCode.value());
+    return;
+  }
+
+  if (!serverConfigs_->getEnabled() ||
+      (serverConfigs_->getRejectRequestsUntilStarted() &&
+       !serverConfigs_->getStarted())) {
+    if (!serverConfigs_->getInternalMethods().count(name)) {
+      handleServerNotReady(std::move(request));
+      return;
+    }
+  }
+
+  auto preprocessResult =
+      serverConfigs_->preprocess({headers, name, connContext_, request.get()});
+  if (UNLIKELY(preprocessResult.has_value())) {
+    preprocessResult->apply_visitor(
+        apache::thrift::detail::VisitorHelper()
+            .with([&](AppClientException& ace) {
+              handleAppError(
+                  std::move(request), ace.name(), ace.getMessage(), true);
+            })
+            .with([&](const AppServerException& ase) {
+              handleAppError(
+                  std::move(request), ase.name(), ase.getMessage(), false);
+            }));
+    return;
+  }
+
+  logSetupConnectionEventsOnce(setupLoggingFlag_, connContext_);
 
   auto* cpp2ReqCtx = request->getRequestContext();
   auto& timestamps = cpp2ReqCtx->getTimestamps();
@@ -413,6 +519,22 @@ void ThriftRocketServerHandler::handleRequestCommon(
   if (UNLIKELY(samplingStatus.isEnabled())) {
     timestamps.readEnd = readEnd;
     timestamps.processBegin = std::chrono::steady_clock::now();
+  }
+
+  // Log monitoring methods that are called over non-monitoring interface so
+  // that they can be migrated.
+  LoggingSampler monitoringLogSampler{
+      THRIFT_FLAG(monitoring_over_user_logging_sample_rate)};
+  if (UNLIKELY(monitoringLogSampler.isSampled())) {
+    if (LIKELY(connContext_.getInterfaceKind() != InterfaceKind::MONITORING)) {
+      auto& methodName = request->getMethodName();
+      if (UNLIKELY(isMonitoringMethodName(methodName))) {
+        THRIFT_CONNECTION_EVENT(monitoring_over_user)
+            .logSampled(connContext_, monitoringLogSampler, [&] {
+              return folly::dynamic::object("method_name", methodName);
+            });
+      }
+    }
   }
 
   if (serverConfigs_) {
@@ -433,14 +555,42 @@ void ThriftRocketServerHandler::handleRequestCommon(
     DCHECK_EQ(cpp2ReqCtx->getInteractionId(), 0);
     cpp2ReqCtx->setInteractionId(*interactionCreate->interactionId_ref());
   }
+
+  auto serializedCompressedRequest = SerializedCompressedRequest(
+      std::move(data),
+      metadata.crc32c_ref()
+          ? CompressionAlgorithm::NONE
+          : metadata.compression_ref().value_or(CompressionAlgorithm::NONE));
+
   try {
-    cpp2Processor_->processSerializedRequest(
-        std::move(request),
-        SerializedRequest(std::move(data)),
-        protocolId,
-        cpp2ReqCtx,
-        eventBase_,
-        threadManager_.get());
+    folly::variant_match(
+        methodMetadataResult,
+        [&](PerServiceMetadata::MetadataNotImplemented) {
+          // The AsyncProcessorFactory does not implement createMethodMetadata
+          // so we need to fallback to processSerializedCompressedRequest.
+          processor_->processSerializedCompressedRequest(
+              std::move(request),
+              std::move(serializedCompressedRequest),
+              protocolId,
+              cpp2ReqCtx,
+              eventBase_,
+              threadManager_.get());
+        },
+        [&](PerServiceMetadata::MetadataNotFound) {
+          std::string_view methodName = request->getMethodName();
+          AsyncProcessorHelper::sendUnknownMethodError(
+              std::move(request), methodName);
+        },
+        [&](const PerServiceMetadata::MetadataFound& found) {
+          processor_->processSerializedCompressedRequestWithMetadata(
+              std::move(request),
+              std::move(serializedCompressedRequest),
+              found.metadata,
+              protocolId,
+              cpp2ReqCtx,
+              eventBase_,
+              threadManager_.get());
+        });
   } catch (...) {
     LOG(DFATAL) << "AsyncProcessor::process exception: "
                 << folly::exceptionStr(std::current_exception());
@@ -456,7 +606,7 @@ void ThriftRocketServerHandler::handleRequestWithBadMetadata(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::UNSUPPORTED_CLIENT_TYPE,
           "Invalid metadata object"),
-      "Corrupted metadata in rsocket request");
+      kRequestParsingErrorCode);
 }
 
 void ThriftRocketServerHandler::handleRequestWithBadChecksum(
@@ -467,12 +617,11 @@ void ThriftRocketServerHandler::handleRequestWithBadChecksum(
   request->sendErrorWrapped(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::CHECKSUM_MISMATCH, "Checksum mismatch"),
-      "Corrupted request");
+      kChecksumMismatchErrorCode);
 }
 
 void ThriftRocketServerHandler::handleDecompressionFailure(
-    ThriftRequestCoreUniquePtr request,
-    std::string&& reason) {
+    ThriftRequestCoreUniquePtr request, std::string&& reason) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->taskKilled();
   }
@@ -480,12 +629,11 @@ void ThriftRocketServerHandler::handleDecompressionFailure(
       folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::INVALID_TRANSFORM,
           fmt::format("decompression failure: {}", std::move(reason))),
-      "decompression failure");
+      kRequestParsingErrorCode);
 }
 
 void ThriftRocketServerHandler::handleRequestOverloadedServer(
-    ThriftRequestCoreUniquePtr request,
-    const std::string& errorCode) {
+    ThriftRequestCoreUniquePtr request, const std::string& errorCode) {
   if (auto* observer = serverConfigs_->getObserver()) {
     observer->serverOverloaded();
   }
@@ -511,6 +659,17 @@ void ThriftRocketServerHandler::handleAppError(
       isClientError ? kAppClientErrorCode : kAppServerErrorCode);
 }
 
+void ThriftRocketServerHandler::handleServerNotReady(
+    ThriftRequestCoreUniquePtr request) {
+  if (auto* observer = serverConfigs_->getObserver()) {
+    observer->taskKilled();
+  }
+  request->sendErrorWrapped(
+      folly::make_exception_wrapper<TApplicationException>(
+          TApplicationException::LOADSHEDDING, "server not ready"),
+      kQueueOverloadedErrorCode);
+}
+
 void ThriftRocketServerHandler::handleServerShutdown(
     ThriftRequestCoreUniquePtr request) {
   if (auto* observer = serverConfigs_->getObserver()) {
@@ -522,14 +681,42 @@ void ThriftRocketServerHandler::handleServerShutdown(
       kQueueOverloadedErrorCode);
 }
 
+void ThriftRocketServerHandler::handleInjectedFault(
+    ThriftRequestCoreUniquePtr request, InjectedFault fault) {
+  switch (fault) {
+    case InjectedFault::ERROR:
+      if (auto* observer = serverConfigs_->getObserver()) {
+        observer->taskKilled();
+      }
+      request->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::INJECTED_FAILURE, "injected failure"),
+          kInjectedFailureErrorCode);
+      return;
+    case InjectedFault::DROP:
+      VLOG(1) << "ERROR: injected drop: "
+              << connContext_.getPeerAddress()->getAddressStr();
+      return;
+    case InjectedFault::DISCONNECT:
+      return request->closeConnection(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::INJECTED_FAILURE, "injected failure"));
+      return;
+  }
+}
+
 void ThriftRocketServerHandler::requestComplete() {
   serverConfigs_->decActiveRequests();
 }
 
 void ThriftRocketServerHandler::terminateInteraction(int64_t id) {
-  if (cpp2Processor_) {
-    cpp2Processor_->terminateInteraction(id, connContext_, *eventBase_);
+  if (processor_) {
+    processor_->terminateInteraction(id, connContext_, *eventBase_);
   }
+}
+
+void ThriftRocketServerHandler::onBeforeHandleFrame() {
+  worker_->getServer()->touchRequestTimestamp();
 }
 } // namespace rocket
 } // namespace thrift

@@ -17,6 +17,6 @@
 namespace cpp2 apache.thrift.test
 
 service HandlerGeneric {
-  string get_string() (cpp.coroutine),
-  string get_string_eb() (thread="eb"),
+  string get_string() (cpp.coroutine);
+  string get_string_eb() (thread = "eb");
 }

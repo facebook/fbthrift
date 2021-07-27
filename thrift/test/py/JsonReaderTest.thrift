@@ -15,11 +15,11 @@
  */
 
 struct StructContainingOptionalList {
-  1 : optional list<i32> data;
+  1: optional list<i32> data;
 }
 
 struct StructContainingRequiredList {
-  1 : required list<i32> data;
+  1: required list<i32> data;
 }
 
 enum EnumZeroToTen {
@@ -36,17 +36,17 @@ enum EnumZeroToTen {
 }
 
 struct StructContainingEnum {
-  1 : EnumZeroToTen data;
+  1: EnumZeroToTen data;
 }
 
 typedef i64 int64
 struct JsonTypedefs {
- 1: map<int64, int64> x,
- 2: list<int64> y,
- 3: set<int64> z,
- 4: int64 w,
+  1: map<int64, int64> x;
+  2: list<int64> y;
+  3: set<int64> z;
+  4: int64 w;
 }
 
 struct Container {
-  1: StructContainingEnum nested_struct,
+  1: StructContainingEnum nested_struct;
 }

@@ -48,19 +48,6 @@ namespace thrift {
 const std::chrono::milliseconds HTTPClientChannel::kDefaultTransactionTimeout =
     std::chrono::milliseconds(500);
 
-HTTPClientChannel::Ptr HTTPClientChannel::newHTTP1xChannel(
-    folly::AsyncTransport::UniquePtr transport,
-    const std::string& httpHost,
-    const std::string& httpUrl) {
-  HTTPClientChannel::Ptr channel(new HTTPClientChannel(
-      std::move(transport),
-      std::make_unique<proxygen::HTTP1xCodec>(
-          proxygen::TransportDirection::UPSTREAM)));
-  channel->setHTTPHost(httpHost);
-  channel->setHTTPUrl(httpUrl);
-  return channel;
-}
-
 HTTPClientChannel::Ptr HTTPClientChannel::newHTTP2Channel(
     folly::AsyncTransport::UniquePtr transport) {
   return HTTPClientChannel::Ptr(new HTTPClientChannel(
@@ -163,14 +150,15 @@ void HTTPClientChannel::destroy() {
 
 void HTTPClientChannel::sendRequestNoResponse(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
-  auto buf =
-      LegacySerializedRequest(
-          header->getProtocolId(), methodName, std::move(serializedRequest))
-          .buffer;
+  auto buf = LegacySerializedRequest(
+                 header->getProtocolId(),
+                 methodMetadata.name_view(),
+                 std::move(serializedRequest))
+                 .buffer;
 
   sendRequest_(
       rpcOptions, true, std::move(buf), std::move(header), std::move(cb));
@@ -178,14 +166,15 @@ void HTTPClientChannel::sendRequestNoResponse(
 
 void HTTPClientChannel::sendRequestResponse(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
-  auto buf =
-      LegacySerializedRequest(
-          header->getProtocolId(), methodName, std::move(serializedRequest))
-          .buffer;
+  auto buf = LegacySerializedRequest(
+                 header->getProtocolId(),
+                 methodMetadata.name_view(),
+                 std::move(serializedRequest))
+                 .buffer;
 
   sendRequest_(
       rpcOptions, false, std::move(buf), std::move(header), std::move(cb));
@@ -282,20 +271,14 @@ void HTTPClientChannel::setHeaders(
 }
 
 proxygen::HTTPMessage HTTPClientChannel::buildHTTPMessage(THeader* header) {
+  preprocessHeader(header);
+
   proxygen::HTTPMessage msg;
   msg.setMethod(proxygen::HTTPMethod::POST);
   msg.setURL(httpUrl_);
   msg.setHTTPVersion(1, 1);
   msg.setIsChunked(false);
   auto& headers = msg.getHeaders();
-
-  {
-    auto pwh = getPersistentWriteHeaders();
-    setHeaders(headers, pwh);
-    // We do not clear the persistent write headers, since http does not
-    // distinguish persistent/per request headers
-    // pwh.clear();
-  }
 
   {
     auto wh = header->releaseWriteHeaders();
@@ -357,8 +340,7 @@ void HTTPClientChannel::setFlowControl(
 // HTTPTransactionCallback methods
 
 HTTPClientChannel::HTTPTransactionCallback::HTTPTransactionCallback(
-    bool oneway,
-    RequestClientCallback::Ptr cb)
+    bool oneway, RequestClientCallback::Ptr cb)
     : oneway_(oneway), cb_(std::move(cb)), txn_(nullptr) {}
 
 HTTPClientChannel::HTTPTransactionCallback::~HTTPTransactionCallback() {

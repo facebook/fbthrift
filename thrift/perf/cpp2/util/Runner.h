@@ -16,13 +16,13 @@
 
 #pragma once
 
+#include <random>
+#include <glog/logging.h>
 #include <folly/init/Init.h>
 #include <folly/portability/GFlags.h>
-#include <glog/logging.h>
 #include <thrift/perf/cpp2/util/Operation.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
 #include <thrift/perf/cpp2/util/Util.h>
-#include <random>
 
 using apache::thrift::ClientConnectionIf;
 using apache::thrift::ClientReceiveState;
@@ -71,17 +71,13 @@ class Runner {
 };
 
 template <typename AsyncClient>
-class LoadCallback : public RequestCallback {
+class LoadCallback : public RequestCallbackWithValidator {
  public:
   LoadCallback(
-      Runner<AsyncClient>* runner,
-      Operation<AsyncClient>* ops,
-      OP_TYPE op)
+      Runner<AsyncClient>* runner, Operation<AsyncClient>* ops, OP_TYPE op)
       : runner_(runner), ops_(ops), op_(op) {}
 
-  void setIsOneway() {
-    isOneway_ = true;
-  }
+  void setIsOneway() { isOneway_ = true; }
 
   // TODO: Properly handle errors and exceptions
   void requestSent() override {
@@ -91,6 +87,9 @@ class LoadCallback : public RequestCallback {
     }
   }
   void replyReceived(ClientReceiveState&& rstate) override {
+    if (validator) {
+      validator(rstate);
+    }
     ops_->asyncReceived(op_, std::move(rstate));
     runner_->finishCall();
   }

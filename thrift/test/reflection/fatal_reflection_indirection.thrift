@@ -24,9 +24,9 @@ typedef i32 (cpp.type = 'CppHasAResult', cpp.indirection) HasAResult
 typedef string (cpp.type = 'CppHasAPhrase', cpp.indirection) HasAPhrase
 
 struct struct_with_indirections {
-  1: i32 real,
-  2: FakeI32 fake,
-  3: HasANumber number,
-  4: HasAResult result,
-  5: HasAPhrase phrase,
+  1: i32 real;
+  2: FakeI32 fake;
+  3: HasANumber number;
+  4: HasAResult result;
+  5: HasAPhrase phrase;
 }

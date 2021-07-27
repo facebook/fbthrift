@@ -30,6 +30,9 @@
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/ClientStreamBridge.h>
 #include <thrift/lib/cpp2/async/Interaction.h>
+#include <thrift/lib/cpp2/async/RpcOptions.h>
+#include <thrift/lib/cpp2/async/RpcTypes.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
 
 namespace apache {
 namespace thrift {
@@ -51,38 +54,41 @@ class ClientReceiveState {
       uint16_t _protocolId,
       std::unique_ptr<folly::IOBuf> _buf,
       std::unique_ptr<apache::thrift::transport::THeader> _header,
-      std::shared_ptr<apache::thrift::ContextStack> _ctx)
+      std::unique_ptr<apache::thrift::ContextStack> _ctx)
       : protocolId_(_protocolId),
         ctx_(std::move(_ctx)),
-        buf_(std::move(_buf)),
-        header_(std::move(_header)) {}
+        header_(std::move(_header)) {
+    initFromLegacyFormat(std::move(_buf));
+  }
   ClientReceiveState(
       uint16_t _protocolId,
       std::unique_ptr<folly::IOBuf> _buf,
       std::unique_ptr<apache::thrift::transport::THeader> _header,
-      std::shared_ptr<apache::thrift::ContextStack> _ctx,
+      std::unique_ptr<apache::thrift::ContextStack> _ctx,
       const RpcSizeStats& _rpcWireSizeStats)
       : protocolId_(_protocolId),
         ctx_(std::move(_ctx)),
-        buf_(std::move(_buf)),
         header_(std::move(_header)),
-        rpcSizeStats_(_rpcWireSizeStats) {}
+        rpcSizeStats_(_rpcWireSizeStats) {
+    initFromLegacyFormat(std::move(_buf));
+  }
   ClientReceiveState(
       uint16_t _protocolId,
       std::unique_ptr<folly::IOBuf> buf,
       std::unique_ptr<apache::thrift::transport::THeader> _header,
-      std::shared_ptr<apache::thrift::ContextStack> _ctx,
+      std::unique_ptr<apache::thrift::ContextStack> _ctx,
       apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
-      int32_t chunkBufferSize)
+      const BufferOptions& bufferOptions)
       : protocolId_(_protocolId),
         ctx_(std::move(_ctx)),
-        buf_(std::move(buf)),
         header_(std::move(_header)),
         streamBridge_(std::move(streamBridge)),
-        chunkBufferSize_(std::move(chunkBufferSize)) {}
+        bufferOptions_(bufferOptions) {
+    initFromLegacyFormat(std::move(buf));
+  }
   ClientReceiveState(
       folly::exception_wrapper _excw,
-      std::shared_ptr<apache::thrift::ContextStack> _ctx)
+      std::unique_ptr<apache::thrift::ContextStack> _ctx)
       : protocolId_(-1),
         ctx_(std::move(_ctx)),
         header_(std::make_unique<apache::thrift::transport::THeader>()),
@@ -92,35 +98,44 @@ class ClientReceiveState {
       std::unique_ptr<folly::IOBuf> _buf,
       apache::thrift::detail::ClientSinkBridge::Ptr sink,
       std::unique_ptr<apache::thrift::transport::THeader> _header,
-      std::shared_ptr<apache::thrift::ContextStack> _ctx)
+      std::unique_ptr<apache::thrift::ContextStack> _ctx)
       : protocolId_(_protocolId),
         ctx_(std::move(_ctx)),
-        buf_(std::move(_buf)),
         header_(std::move(_header)),
-        sink_(std::move(sink)) {}
-
-  bool isException() const {
-    return excw_ ? true : false;
+        sink_(std::move(sink)) {
+    initFromLegacyFormat(std::move(_buf));
   }
+  ClientReceiveState(
+      uint16_t _protocolId,
+      MessageType mtype,
+      SerializedResponse response,
+      std::unique_ptr<apache::thrift::transport::THeader> _header,
+      std::unique_ptr<apache::thrift::ContextStack> _ctx,
+      const RpcSizeStats& _rpcWireSizeStats)
+      : protocolId_(_protocolId),
+        messageType_(mtype),
+        ctx_(std::move(_ctx)),
+        response_(std::move(response)),
+        header_(std::move(_header)),
+        rpcSizeStats_(_rpcWireSizeStats) {}
 
-  folly::exception_wrapper const& exception() const {
-    return excw_;
-  }
+  bool isException() const { return excw_ ? true : false; }
 
-  folly::exception_wrapper& exception() {
-    return excw_;
-  }
+  folly::exception_wrapper const& exception() const { return excw_; }
 
-  uint16_t protocolId() const {
-    return protocolId_;
-  }
+  folly::exception_wrapper& exception() { return excw_; }
 
-  folly::IOBuf* buf() const {
-    return buf_.get();
-  }
+  uint16_t protocolId() const { return protocolId_; }
 
-  std::unique_ptr<folly::IOBuf> extractBuf() {
-    return std::move(buf_);
+  bool hasResponseBuffer() const { return (bool)response_.buffer; }
+
+  MessageType messageType() const { return messageType_; }
+
+  SerializedResponse& serializedResponse() { return response_; }
+  const SerializedResponse& serializedResponse() const { return response_; }
+
+  SerializedResponse extractSerializedResponse() {
+    return std::move(response_);
   }
 
   apache::thrift::detail::ClientStreamBridge::ClientPtr extractStreamBridge() {
@@ -131,13 +146,9 @@ class ClientReceiveState {
     return std::move(sink_);
   }
 
-  int32_t chunkBufferSize() const {
-    return chunkBufferSize_;
-  }
+  const BufferOptions& bufferOptions() const { return bufferOptions_; }
 
-  apache::thrift::transport::THeader* header() const {
-    return header_.get();
-  }
+  apache::thrift::transport::THeader* header() const { return header_.get(); }
 
   std::unique_ptr<apache::thrift::transport::THeader> extractHeader() {
     return std::move(header_);
@@ -147,32 +158,29 @@ class ClientReceiveState {
     header_ = std::move(h);
   }
 
-  apache::thrift::ContextStack* ctx() const {
-    return ctx_.get();
-  }
+  apache::thrift::ContextStack* ctx() const { return ctx_.get(); }
 
-  void resetProtocolId(uint16_t protocolId) {
-    protocolId_ = protocolId;
-  }
+  void resetProtocolId(uint16_t protocolId) { protocolId_ = protocolId; }
 
-  void resetCtx(std::shared_ptr<apache::thrift::ContextStack> _ctx) {
+  void resetCtx(std::unique_ptr<apache::thrift::ContextStack> _ctx) {
     ctx_ = std::move(_ctx);
   }
 
-  const RpcSizeStats& getRpcSizeStats() const {
-    return rpcSizeStats_;
-  }
+  const RpcSizeStats& getRpcSizeStats() const { return rpcSizeStats_; }
 
  private:
   uint16_t protocolId_;
-  std::shared_ptr<apache::thrift::ContextStack> ctx_;
-  std::unique_ptr<folly::IOBuf> buf_;
+  MessageType messageType_{MessageType::T_CALL};
+  std::unique_ptr<apache::thrift::ContextStack> ctx_;
+  SerializedResponse response_{nullptr};
   std::unique_ptr<apache::thrift::transport::THeader> header_;
   folly::exception_wrapper excw_;
   apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge_;
   apache::thrift::detail::ClientSinkBridge::Ptr sink_;
-  int32_t chunkBufferSize_;
+  BufferOptions bufferOptions_;
   RpcSizeStats rpcSizeStats_;
+
+  void initFromLegacyFormat(std::unique_ptr<folly::IOBuf> buffer);
 };
 
 class RequestClientCallback {
@@ -193,15 +201,11 @@ class RequestClientCallback {
 
   // If true, the transport can block current thread/fiber until the request is
   // complete.
-  virtual bool isSync() const {
-    return false;
-  }
+  virtual bool isSync() const { return false; }
 
   // If true, the transport can safely run this callback on its internal thread.
   // Should only be used for Thrift internal callbacks.
-  virtual bool isInlineSafe() const {
-    return false;
-  }
+  virtual bool isInlineSafe() const { return false; }
 };
 
 class RequestCallback : public RequestClientCallback {
@@ -280,30 +284,26 @@ class RequestCallback : public RequestClientCallback {
   struct Context {
     bool oneWay{false};
     uint16_t protocolId;
-    std::shared_ptr<apache::thrift::ContextStack> ctx;
+    std::unique_ptr<apache::thrift::ContextStack> ctx;
   };
 
  private:
   friend RequestClientCallback::Ptr toRequestClientCallbackPtr(
-      std::unique_ptr<RequestCallback>,
-      RequestCallback::Context);
+      std::unique_ptr<RequestCallback>, RequestCallback::Context);
 
   void setContext(Context context) {
     context_ = folly::RequestContext::saveContext();
     thriftContext_ = std::move(context);
   }
 
-  void setUnmanaged() {
-    unmanaged_ = true;
-  }
+  void setUnmanaged() { unmanaged_ = true; }
 
   bool unmanaged_{false};
   folly::Optional<Context> thriftContext_;
 };
 
 inline RequestClientCallback::Ptr toRequestClientCallbackPtr(
-    std::unique_ptr<RequestCallback> cb,
-    RequestCallback::Context context) {
+    std::unique_ptr<RequestCallback> cb, RequestCallback::Context context) {
   if (!cb) {
     return RequestClientCallback::Ptr();
   }
@@ -352,12 +352,8 @@ class FunctionSendRecvRequestCallback final : public SendRecvRequestCallback {
   using Recv = folly::Function<void(ClientReceiveState&&)>;
   FunctionSendRecvRequestCallback(Send sendf, Recv recvf)
       : sendf_(std::move(sendf)), recvf_(std::move(recvf)) {}
-  void send(folly::exception_wrapper&& ew) override {
-    sendf_(std::move(ew));
-  }
-  void recv(ClientReceiveState&& state) override {
-    recvf_(std::move(state));
-  }
+  void send(folly::exception_wrapper&& ew) override { sendf_(std::move(ew)); }
+  void recv(ClientReceiveState&& state) override { recvf_(std::move(state)); }
 
  private:
   Send sendf_;
@@ -422,210 +418,8 @@ class CloseCallback {
   virtual ~CloseCallback() {}
 };
 
-/**
- * RpcOptions class to set per-RPC options (such as request timeout).
- */
-class RpcOptions {
- public:
-  typedef apache::thrift::concurrency::PRIORITY PRIORITY;
-  RpcOptions() {}
-
-  /**
-   * NOTE: This only sets the receive timeout, and not the send timeout on
-   * transport. Probably you want to use HeaderClientChannel::setTimeout()
-   */
-  RpcOptions& setTimeout(std::chrono::milliseconds timeout) {
-    timeout_ = timeout;
-    return *this;
-  }
-
-  std::chrono::milliseconds getTimeout() const {
-    return timeout_;
-  }
-
-  RpcOptions& setPriority(PRIORITY priority) {
-    priority_ = static_cast<uint8_t>(priority);
-    return *this;
-  }
-
-  PRIORITY getPriority() const {
-    return static_cast<PRIORITY>(priority_);
-  }
-
-  // Do timeouts apply only on the client side?
-  RpcOptions& setClientOnlyTimeouts(bool val) {
-    clientOnlyTimeouts_ = val;
-    return *this;
-  }
-
-  bool getClientOnlyTimeouts() const {
-    return clientOnlyTimeouts_;
-  }
-
-  RpcOptions& setEnableChecksum(bool val) {
-    enableChecksum_ = val;
-    return *this;
-  }
-
-  bool getEnableChecksum() const {
-    return enableChecksum_;
-  }
-
-  RpcOptions& setChunkTimeout(std::chrono::milliseconds chunkTimeout) {
-    chunkTimeout_ = chunkTimeout;
-    return *this;
-  }
-
-  std::chrono::milliseconds getChunkTimeout() const {
-    return chunkTimeout_;
-  }
-
-  RpcOptions& setChunkBufferSize(int32_t chunkBufferSize) {
-    chunkBufferSize_ = chunkBufferSize;
-    return *this;
-  }
-
-  int32_t getChunkBufferSize() const {
-    return chunkBufferSize_;
-  }
-
-  RpcOptions& setQueueTimeout(std::chrono::milliseconds queueTimeout) {
-    queueTimeout_ = queueTimeout;
-    return *this;
-  }
-
-  std::chrono::milliseconds getQueueTimeout() const {
-    return queueTimeout_;
-  }
-
-  RpcOptions& setOverallTimeout(std::chrono::milliseconds overallTimeout) {
-    overallTimeout_ = overallTimeout;
-    return *this;
-  }
-
-  std::chrono::milliseconds getOverallTimeout() const {
-    return overallTimeout_;
-  }
-
-  RpcOptions& setProcessingTimeout(
-      std::chrono::milliseconds processingTimeout) {
-    processingTimeout_ = processingTimeout;
-    return *this;
-  }
-
-  std::chrono::milliseconds getProcessingTimeout() const {
-    return processingTimeout_;
-  }
-
-  /**
-   * Set routing key for (e.g. consistent hashing based) routing.
-   *
-   * @param routingKey routing key, e.g. consistent hashing seed
-   * @return reference to this object
-   */
-  RpcOptions& setRoutingKey(const std::string& routingKey) {
-    routingKey_ = routingKey;
-    return *this;
-  }
-
-  /**
-   * Set shard ID for sending request to sharding-based services.
-   *
-   * @param shardId shard ID to use for service discovery
-   * @return reference to this object
-   */
-  RpcOptions& setShardId(const std::string& shardId) {
-    shardId_ = shardId;
-    return *this;
-  }
-
-  const std::string& getRoutingKey() const {
-    return routingKey_;
-  }
-
-  const std::string& getShardId() const {
-    return shardId_;
-  }
-
-  void setWriteHeader(const std::string& key, const std::string& value) {
-    writeHeaders_[key] = value;
-  }
-
-  void setReadHeaders(std::map<std::string, std::string>&& readHeaders) {
-    readHeaders_ = std::move(readHeaders);
-  }
-
-  const std::map<std::string, std::string>& getReadHeaders() const {
-    return readHeaders_;
-  }
-
-  const std::map<std::string, std::string>& getWriteHeaders() const {
-    return writeHeaders_;
-  }
-
-  RpcOptions& setEnablePageAlignment(bool enablePageAlignment) {
-    enablePageAlignment_ = enablePageAlignment;
-    return *this;
-  }
-
-  bool getEnablePageAlignment() const {
-    return enablePageAlignment_;
-  }
-
-  std::map<std::string, std::string> releaseWriteHeaders() {
-    std::map<std::string, std::string> headers;
-    writeHeaders_.swap(headers);
-    return headers;
-  }
-
-  // Primarily used by generated code
-  RpcOptions& setInteractionId(const InteractionId& id) {
-    interactionId_ = id;
-    DCHECK_GT(interactionId_, 0);
-    return *this;
-  }
-
-  int64_t getInteractionId() const {
-    return interactionId_;
-  }
-
-  RpcOptions& setLoggingContext(const std::string& loggingContext) {
-    loggingContext_ = loggingContext;
-    return *this;
-  }
-
-  const std::string& getLoggingContext() const {
-    return loggingContext_;
-  }
-
- private:
-  std::chrono::milliseconds timeout_{0};
-  std::chrono::milliseconds chunkTimeout_{0};
-  std::chrono::milliseconds queueTimeout_{0};
-  std::chrono::milliseconds overallTimeout_{0};
-  std::chrono::milliseconds processingTimeout_{0};
-  uint8_t priority_{apache::thrift::concurrency::N_PRIORITIES};
-  bool clientOnlyTimeouts_{false};
-  bool enableChecksum_{false};
-  bool enablePageAlignment_{false};
-  int32_t chunkBufferSize_{100};
-  int64_t interactionId_{0};
-
-  std::string routingKey_;
-  std::string shardId_;
-  folly::Optional<std::string> clientId_;
-  folly::Optional<std::string> serviceTraceMeta_;
-
-  // For sending and receiving headers.
-  std::map<std::string, std::string> writeHeaders_;
-  std::map<std::string, std::string> readHeaders_;
-
-  // Custom data about the request for logging and analysis.
-  std::string loggingContext_;
-}; // namespace thrift
-
 struct RpcResponseContext {
-  std::map<std::string, std::string> headers;
+  transport::THeader::StringToStringMap headers;
   RpcSizeStats rpcSizeStats;
   std::optional<int64_t> serverLoad;
 };

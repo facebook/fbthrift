@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,9 +31,15 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 
-cimport include.types_fields as __fbthrift_types_fields
+cimport include.types_fields as _fbthrift_types_fields
 
 cdef extern from "gen-py3/include/types.h":
   pass
@@ -55,18 +60,27 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_unordered_map() except +
         std_unordered_map(std_unordered_map&) except +
 
         U& operator[](T&)
         iterator find(const T&)
+        const_iterator const_find "find"(const T&)
         size_type count(const T&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 

@@ -16,10 +16,10 @@ from .manifest import ManifestParser
 
 
 class Loader(object):
-    """ The loader allows our tests to patch the load operation """
+    """The loader allows our tests to patch the load operation"""
 
     def _list_manifests(self, build_opts):
-        """ Returns a generator that iterates all the available manifests """
+        """Returns a generator that iterates all the available manifests"""
         for (path, _, files) in os.walk(build_opts.manifests_dir):
             for name in files:
                 # skip hidden files
@@ -275,7 +275,14 @@ class ManifestLoader(object):
         env["os"] = self.build_opts.host_type.ostype
         env["distro"] = self.build_opts.host_type.distro
         env["distro_vers"] = self.build_opts.host_type.distrovers
-        for name in ["CXXFLAGS", "CPPFLAGS", "LDFLAGS", "CXX", "CC"]:
+        for name in [
+            "CXXFLAGS",
+            "CPPFLAGS",
+            "LDFLAGS",
+            "CXX",
+            "CC",
+            "GETDEPS_CMAKE_DEFINES",
+        ]:
             env[name] = os.environ.get(name)
         for tool in ["cc", "c++", "gcc", "g++", "clang", "clang++"]:
             env["tool-%s" % tool] = path_search(os.environ, tool)

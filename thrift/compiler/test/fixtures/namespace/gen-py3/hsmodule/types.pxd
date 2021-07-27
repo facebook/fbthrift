@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,9 +31,15 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 
-cimport hsmodule.types_fields as __fbthrift_types_fields
+cimport hsmodule.types_fields as _fbthrift_types_fields
 
 cdef extern from "gen-py3/hsmodule/types.h":
   pass
@@ -43,9 +48,15 @@ cdef extern from "gen-py3/hsmodule/types.h":
 
 
 
+cdef extern from "gen-cpp2/hsmodule_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "gen-cpp2/hsmodule_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cHsFoo__isset "::cpp2::HsFoo::__isset":
-        bint MyInt
 
     cdef cppclass cHsFoo "::cpp2::HsFoo":
         cHsFoo() except +
@@ -58,14 +69,13 @@ cdef extern from "gen-cpp2/hsmodule_types_custom_protocol.h" namespace "::cpp2":
         bint operator>=(cHsFoo&)
         __field_ref[cint64_t] MyInt_ref()
         cint64_t MyInt
-        cHsFoo__isset __isset
 
 
 
 
 cdef class HsFoo(thrift.py3.types.Struct):
     cdef shared_ptr[cHsFoo] _cpp_obj
-    cdef __fbthrift_types_fields.__HsFoo_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__HsFoo_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cHsFoo])

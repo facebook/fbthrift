@@ -12,11 +12,51 @@
 namespace apache {
 namespace thrift {
 
-
-constexpr const std::size_t TStructDataStorage<::extra::svc::containerStruct2>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::extra::svc::containerStruct2>::fields_size> TStructDataStorage<::extra::svc::containerStruct2>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::extra::svc::containerStruct2>::fields_size> TStructDataStorage<::extra::svc::containerStruct2>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::extra::svc::containerStruct2>::fields_size> TStructDataStorage<::extra::svc::containerStruct2>::fields_types;
+const std::array<folly::StringPiece, 13> TStructDataStorage<::extra::svc::containerStruct2>::fields_names = {{
+  "fieldA",
+  "req_fieldA",
+  "opt_fieldA",
+  "fieldB",
+  "req_fieldB",
+  "opt_fieldB",
+  "fieldC",
+  "req_fieldC",
+  "opt_fieldC",
+  "fieldD",
+  "fieldE",
+  "req_fieldE",
+  "opt_fieldE",
+}};
+const std::array<int16_t, 13> TStructDataStorage<::extra::svc::containerStruct2>::fields_ids = {{
+  1,
+  101,
+  201,
+  2,
+  102,
+  202,
+  3,
+  103,
+  203,
+  4,
+  5,
+  105,
+  205,
+}};
+const std::array<protocol::TType, 13> TStructDataStorage<::extra::svc::containerStruct2>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_BOOL,
+  TType::T_BOOL,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_MAP,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_SET,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_STRING,
+}};
 
 } // namespace thrift
 } // namespace apache

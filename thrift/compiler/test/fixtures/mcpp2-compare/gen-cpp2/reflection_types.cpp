@@ -35,15 +35,17 @@ void TccStructTraits<::cpp2::ReflectionStruct>::translateFieldName(
 
 namespace cpp2 {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg) :
+ReflectionStruct::ReflectionStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg) :
     fieldA(std::move(fieldA__arg)) {
   __isset.fieldA = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ReflectionStruct::__clear() {
   // clear all fields
-  fieldA = 5;
+  this->fieldA = 5;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -53,7 +55,7 @@ bool ReflectionStruct::operator==(const ReflectionStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
   return true;
@@ -63,8 +65,8 @@ bool ReflectionStruct::operator<(const ReflectionStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
-    return lhs.fieldA < rhs.fieldA;
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
+    return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
   return false;
 }

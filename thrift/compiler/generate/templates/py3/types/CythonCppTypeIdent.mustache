@@ -54,14 +54,14 @@ This is the equivalent of CythonCpp[Basic]Type, for use as part of an identifier
   }}{{/program:typeContext?}}{{/type:externalProgram?}}{{!
 }}{{/type:defaultTemplate?}}{{/type:container?}}{{!
 }}{{#type:list?}}{{type:cythonTemplate}}__{{!
-  }}{{#type:listElemType}}{{> types/CythonCppTypeIdent}}{{/type:listElemType}}{{!
+  }}{{#type:list_elem_type}}{{> types/CythonCppTypeIdent}}{{/type:list_elem_type}}{{!
 }}{{/type:list?}}{{!
 }}{{#type:set?}}{{type:cythonTemplate}}__{{!
-  }}{{#type:setElemType}}{{> types/CythonCppTypeIdent}}{{/type:setElemType}}{{!
+  }}{{#type:set_elem_type}}{{> types/CythonCppTypeIdent}}{{/type:set_elem_type}}{{!
 }}{{/type:set?}}{{!
 }}{{#type:map?}}{{type:cythonTemplate}}__{{!
-  }}{{#type:keyType}}{{> types/CythonCppTypeIdent}}{{/type:keyType}}_{{!
-  }}{{#type:valueType}}{{> types/CythonCppTypeIdent}}{{/type:valueType}}{{!
+  }}{{#type:key_type}}{{> types/CythonCppTypeIdent}}{{/type:key_type}}_{{!
+  }}{{#type:value_type}}{{> types/CythonCppTypeIdent}}{{/type:value_type}}{{!
 }}{{/type:map?}}{{!
 }}{{#type:enum}}{{!
   }}{{#type:externalProgram?}}{{> common/ModulePath}}_{{/type:externalProgram?}}{{!
@@ -71,12 +71,12 @@ This is the equivalent of CythonCpp[Basic]Type, for use as part of an identifier
   }}c{{enum:name}}{{!
 }}{{/type:enum}}{{!
 }}{{#type:streamresponse?}}{{!
-  }}{{#type:streamHasFirstResponse?}}cResponseAndServerStream__{{!
-  }}{{#type:streamFirstResponseType}}{{ >types/CythonCppTypeIdent}}{{/type:streamFirstResponseType}}_{{!
-  }}{{/type:streamHasFirstResponse?}}{{!
-  }}{{^type:streamHasFirstResponse?}}cServerStream__{{!
-  }}{{/type:streamHasFirstResponse?}}{{!
-  }}{{#type:streamElemType}}{{ >types/CythonCppTypeIdent}}{{/type:streamElemType}}{{!
+  }}{{#type:stream_has_first_response?}}cResponseAndServerStream__{{!
+  }}{{#type:stream_first_response_type}}{{ >types/CythonCppTypeIdent}}{{/type:stream_first_response_type}}_{{!
+  }}{{/type:stream_has_first_response?}}{{!
+  }}{{^type:stream_has_first_response?}}cServerStream__{{!
+  }}{{/type:stream_has_first_response?}}{{!
+  }}{{#type:stream_elem_type}}{{ >types/CythonCppTypeIdent}}{{/type:stream_elem_type}}{{!
 }}{{/type:streamresponse?}}{{!
 }}{{#type:void?}}cFollyUnit{{/type:void?}}{{!
 }}{{/type:hasCustomType?}}

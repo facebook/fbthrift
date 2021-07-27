@@ -27,25 +27,27 @@ struct ServerStreamFactory {
   template <typename F>
   explicit ServerStreamFactory(F&& fn) : fn_(std::forward<F>(fn)) {}
 
-  void setInteraction(Tile* interaction) {
-    interaction_ = interaction;
+  void setInteraction(TilePtr&& interaction) {
+    interaction_ = std::move(interaction);
   }
 
   void operator()(
       FirstResponsePayload&& payload,
       StreamClientCallback* cb,
       folly::EventBase* eb) {
-    fn_(std::move(payload), cb, eb, interaction_);
+    fn_(std::move(payload), cb, eb, std::move(interaction_));
   }
+
+  explicit operator bool() { return !!fn_; }
 
  private:
   folly::Function<void(
       FirstResponsePayload&&,
       StreamClientCallback*,
       folly::EventBase*,
-      Tile*)>
+      TilePtr&&)>
       fn_;
-  Tile* interaction_{nullptr};
+  TilePtr interaction_;
 };
 
 template <typename T>

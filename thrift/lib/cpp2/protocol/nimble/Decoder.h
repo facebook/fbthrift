@@ -60,8 +60,9 @@ class Decoder {
     apache::thrift::util::readVarint(cursor, stringSize);
 
     auto splice = [&](std::uint64_t size) {
-      if (size != static_cast<std::size_t>(size)) { // when size_t != uint64_t
-        protocol::TProtocolException::throwExceededSizeLimit();
+      std::size_t limit = static_cast<std::size_t>(size);
+      if (size != limit) { // when size_t != uint64_t
+        protocol::TProtocolException::throwExceededSizeLimit(limit, limit);
       }
       folly::io::Cursor result{cursor, (std::size_t)size};
       cursor.skip(size);
@@ -83,25 +84,19 @@ class Decoder {
     stringCursor_ = splice(stringSize);
 
     if (!cursor.isAtEnd()) {
-      protocol::TProtocolException::throwExceededSizeLimit();
+      protocol::TProtocolException::throwTruncatedData();
     }
   }
 
-  std::uint32_t nextSizeChunk() {
-    return sizeStream_.nextChunk();
-  }
+  std::uint32_t nextSizeChunk() { return sizeStream_.nextChunk(); }
 
-  std::uint32_t nextContentChunk() {
-    return contentStream_.nextChunk();
-  }
+  std::uint32_t nextContentChunk() { return contentStream_.nextChunk(); }
 
   std::uint32_t nextContentChunk(BufferingNimbleDecoderState& state) {
     return contentStream_.nextChunk(state);
   }
 
-  void skipStringBytes(std::size_t size) {
-    stringCursor_.skip(size);
-  }
+  void skipStringBytes(std::size_t size) { stringCursor_.skip(size); }
 
   void nextBinary(unsigned char* buf, std::size_t size) {
     stringCursor_.pull(buf, size);
@@ -120,7 +115,7 @@ class Decoder {
       auto data = stringCursor_.peekBytes();
       auto data_avail = std::min(data.size(), size);
       if (data.empty()) {
-        protocol::TProtocolException::throwExceededSizeLimit();
+        protocol::TProtocolException::throwTruncatedData();
       }
 
       str.append(reinterpret_cast<const char*>(data.data()), data_avail);
@@ -133,21 +128,13 @@ class Decoder {
     stringCursor_.clone(buf, size);
   }
 
-  folly::ByteRange fieldRange() {
-    return fieldCursor_.peekBytes();
-  }
+  folly::ByteRange fieldRange() { return fieldCursor_.peekBytes(); }
 
-  void skipFieldBytes(std::size_t size) {
-    fieldCursor_.skip(size);
-  }
+  void skipFieldBytes(std::size_t size) { fieldCursor_.skip(size); }
 
-  std::uint8_t nextFieldByte() {
-    return fieldCursor_.read<std::uint8_t>();
-  }
+  std::uint8_t nextFieldByte() { return fieldCursor_.read<std::uint8_t>(); }
 
-  std::uint16_t nextFieldShort() {
-    return fieldCursor_.read<std::uint16_t>();
-  }
+  std::uint16_t nextFieldShort() { return fieldCursor_.read<std::uint16_t>(); }
 
   BufferingNimbleDecoderState borrowState() {
     return contentStream_.borrowState();

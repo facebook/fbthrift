@@ -22,8 +22,8 @@ namespace apache::thrift::conformance {
 
 class ConformanceHandler : public ConformanceServiceSvIf {
  public:
-  void roundTrip(RoundTripResponse& res, std::unique_ptr<RoundTripRequest> req)
-      override;
+  void roundTrip(
+      RoundTripResponse& res, std::unique_ptr<RoundTripRequest> req) override;
 };
 
 } // namespace apache::thrift::conformance

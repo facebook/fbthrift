@@ -23,8 +23,7 @@ namespace thrift {
 
 template <typename T>
 ClientBufferedStream<T> ServerStream<T>::toClientStreamUnsafeDoNotUse(
-    folly::EventBase* eb,
-    size_t bufferSize) && {
+    folly::EventBase* eb, int32_t bufferSize) && {
   struct : public apache::thrift::detail::ClientStreamBridge::
                FirstResponseCallback {
     void onFirstResponse(
@@ -70,7 +69,7 @@ ClientBufferedStream<T> ServerStream<T>::toClientStreamUnsafeDoNotUse(
   firstResponseCallback.baton.wait();
   firstResponseCallback.ptr->requestN(bufferSize);
   return ClientBufferedStream<T>(
-      std::move(firstResponseCallback.ptr), decode, bufferSize);
+      std::move(firstResponseCallback.ptr), decode, {bufferSize});
 }
 
 } // namespace thrift

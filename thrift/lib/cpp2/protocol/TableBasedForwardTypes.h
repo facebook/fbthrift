@@ -18,40 +18,34 @@
 
 #include <thrift/lib/cpp/protocol/TType.h>
 
+// folly::Optional is obsolete so avoid making its definition visible via
+// Thrift-generated headers.
+namespace folly {
+template <class Value>
+class Optional;
+}
+
 namespace apache {
 namespace thrift {
 namespace detail {
+
+union ThriftValue;
+using OptionalThriftValue = folly::Optional<ThriftValue>;
 
 using VoidFuncPtr = void (*)(void*);
 
 struct TypeInfo {
   protocol::TType type;
 
-  // A function to set an object of a specific type, so deserialization logic
-  // can modify or initialize the object accordingly.
-  // This function helps us support cpp.type for primitive fields.
-  // It should take a Thrift object pointer and optionally the value to set.
-  // For container types, the function is the initialization function to clear
-  // the container before deserializing into the container.
-  VoidFuncPtr set;
+  // Returns the value of a Thrift object, dereferencing smart pointers and
+  // converting user-defined (via cpp.type) to native Thrift types if necessary.
+  OptionalThriftValue (*get)(const void* object);
 
-  // For primitive number types (float, i64, ...):
-  // A function to read an object pointer and return the Thrift type for
-  // serializing thrift.
-  // The function casts the object pointer to the object's type, optionally
-  // deref the smart pointer if applicable, and construct the underlying thrift
-  // type from the object. The signature is:
-  //
-  // UnderlyingThriftType (*)(const void* object)
-  //
-  // Where UnderlyingThriftType is the type that Thrift write functions can take
-  // as parameters (writeBinary, writeI64, ...).
-  //
-  // For others (string, struct, ...):
-  // A field may get annotated with cpp.ref_type = "unique".
-  // In that case we need to deref the smart pointer
-  // before we get to the actual address of the object.
-  VoidFuncPtr get;
+  // Sets the value of a Thrift object.
+  // This functions takes a pointer to the Thrift object and optionally the
+  // value to set. For container types, the function is the initialization
+  // function to clear the container before deserializing into the container.
+  VoidFuncPtr set;
 
   // A pointer to additional type information, e.g. `MapFieldExt` for a map.
   const void* typeExt;

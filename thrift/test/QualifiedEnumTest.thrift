@@ -20,7 +20,7 @@ enum MyQualifiedEnum {
   FOO = 0,
   BAR = 1,
 }
-const MyQualifiedEnum FOO = BAR
+const MyQualifiedEnum FOO = BAR;
 
 struct MyQualifiedStruct {
   1: optional MyQualifiedEnum field1 = FOO;

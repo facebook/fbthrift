@@ -79,9 +79,7 @@ class TSingletonProcessorFactory : public TProcessorFactory {
     return processor_;
   }
 
-  std::shared_ptr<TProcessor> getProcessor() {
-    return processor_;
-  }
+  std::shared_ptr<TProcessor> getProcessor() { return processor_; }
 
  private:
   std::shared_ptr<TProcessor> processor_;

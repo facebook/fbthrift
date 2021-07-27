@@ -14,36 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:cpp_indirection?%><%!
-  %>::apache::thrift::detail::indirection_tag<<%/type:cpp_indirection?%><%!
-
-%>::apache::thrift::type_class::<%!
-%><%#type:binary?%>binary<%/type:binary?%><%!
-%><%#type:string?%>string<%/type:string?%><%!
-%><%#type:bool?%>integral<%/type:bool?%><%!
-%><%#type:byte?%>integral<%/type:byte?%><%!
-%><%#type:i16?%>integral<%/type:i16?%><%!
-%><%#type:i32?%>integral<%/type:i32?%><%!
-%><%#type:i64?%>integral<%/type:i64?%><%!
-%><%#type:double?%>floating_point<%/type:double?%><%!
-%><%#type:float?%>floating_point<%/type:float?%><%!
-%><%#type:enum?%>enumeration<%/type:enum?%><%!
-%><%#type:struct?%><%#type:union?%>variant<%/type:union?%><%^type:union?%>structure<%/type:union?%><%/type:struct?%><%!
-
-
-%><%#type:list?%><%!
-  %>list<<%#type:listElemType%><% > common/type_class%><%/type:listElemType%>><%!
-%><%/type:list?%><%!
-
-%><%#type:set?%><%!
-  %>set<<%#type:setElemType%><% > common/type_class%><%/type:setElemType%>><%!
-%><%/type:set?%><%!
-
-%><%#type:map?%><%!
-    %>map<<%#type:keyType%><% > common/type_class%><%/type:keyType%>, <%#type:valueType%><% > common/type_class%><%/type:valueType%>><%!
-%><%/type:map?%><%!
-
-%><%#type:cpp_indirection?%><%!
-  %>, ::apache::thrift::detail::apply_indirection_fn<%!
-%>><%!
-%><%/type:cpp_indirection?%>
+%><%type:type_class_with_indirection%>

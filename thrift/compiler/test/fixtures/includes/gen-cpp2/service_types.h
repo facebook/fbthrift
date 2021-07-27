@@ -20,10 +20,12 @@
 // END forward_declare
 // BEGIN typedefs
 namespace cpp2 {
-typedef  ::cpp2::Included IncludesIncluded;
-typedef  ::cpp2::TransitiveFoo IncludesTransitiveFoo;
+typedef ::cpp2::Included IncludesIncluded;
+typedef ::cpp2::TransitiveFoo IncludesTransitiveFoo;
 
 } // cpp2
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+THRIFT_IGNORE_ISSET_USE_WARNING_END

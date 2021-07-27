@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -33,7 +32,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'MyEnum', 'MyStructNestedAnnotation', 'MyStructAnnotation', 'MyStruct', 'SecretStruct']
+__all__ = ['UTF8STRINGS', 'MyEnum', 'MyStructNestedAnnotation', 'MyStruct', 'SecretStruct']
 
 class MyEnum:
   MyValue1 = 0
@@ -137,146 +136,7 @@ class MyStructNestedAnnotation:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
-
-class MyStructAnnotation:
-  """
-  Attributes:
-   - count
-   - name
-   - extra
-   - nest
-  """
-
-  thrift_spec = None
-  thrift_field_annotations = None
-  thrift_struct_annotations = None
-  __init__ = None
-  @staticmethod
-  def isUnion():
-    return False
-
-  def read(self, iprot):
-    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
-      return
-    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
-      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
-      return
-    iprot.readStructBegin()
-    while True:
-      (fname, ftype, fid) = iprot.readFieldBegin()
-      if ftype == TType.STOP:
-        break
-      if fid == 1:
-        if ftype == TType.I64:
-          self.count = iprot.readI64()
-        else:
-          iprot.skip(ftype)
-      elif fid == 2:
-        if ftype == TType.STRING:
-          self.name = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
-        else:
-          iprot.skip(ftype)
-      elif fid == 3:
-        if ftype == TType.STRING:
-          self.extra = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
-        else:
-          iprot.skip(ftype)
-      elif fid == 4:
-        if ftype == TType.STRUCT:
-          self.nest = MyStructNestedAnnotation()
-          self.nest.read(iprot)
-        else:
-          iprot.skip(ftype)
-      else:
-        iprot.skip(ftype)
-      iprot.readFieldEnd()
-    iprot.readStructEnd()
-
-  def write(self, oprot):
-    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
-      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
-      return
-    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
-      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
-      return
-    oprot.writeStructBegin('MyStructAnnotation')
-    if self.count != None:
-      oprot.writeFieldBegin('count', TType.I64, 1)
-      oprot.writeI64(self.count)
-      oprot.writeFieldEnd()
-    if self.name != None:
-      oprot.writeFieldBegin('name', TType.STRING, 2)
-      oprot.writeString(self.name.encode('utf-8')) if UTF8STRINGS and not isinstance(self.name, bytes) else oprot.writeString(self.name)
-      oprot.writeFieldEnd()
-    if self.extra != None:
-      oprot.writeFieldBegin('extra', TType.STRING, 3)
-      oprot.writeString(self.extra.encode('utf-8')) if UTF8STRINGS and not isinstance(self.extra, bytes) else oprot.writeString(self.extra)
-      oprot.writeFieldEnd()
-    if self.nest != None:
-      oprot.writeFieldBegin('nest', TType.STRUCT, 4)
-      self.nest.write(oprot)
-      oprot.writeFieldEnd()
-    oprot.writeFieldStop()
-    oprot.writeStructEnd()
-
-  def readFromJson(self, json, is_text=True, **kwargs):
-    relax_enum_validation = bool(kwargs.pop('relax_enum_validation', False))
-    set_cls = kwargs.pop('custom_set_cls', set)
-    dict_cls = kwargs.pop('custom_dict_cls', dict)
-    if kwargs:
-        extra_kwargs = ', '.join(kwargs.keys())
-        raise ValueError(
-            'Unexpected keyword arguments: ' + extra_kwargs
-        )
-    json_obj = json
-    if is_text:
-      json_obj = loads(json)
-    if 'count' in json_obj and json_obj['count'] is not None:
-      self.count = long(json_obj['count'])
-    if 'name' in json_obj and json_obj['name'] is not None:
-      self.name = json_obj['name']
-    if 'extra' in json_obj and json_obj['extra'] is not None:
-      self.extra = json_obj['extra']
-    if 'nest' in json_obj and json_obj['nest'] is not None:
-      self.nest = MyStructNestedAnnotation()
-      self.nest.readFromJson(json_obj['nest'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
-
-  def __repr__(self):
-    L = []
-    padding = ' ' * 4
-    if self.count is not None:
-      value = pprint.pformat(self.count, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    count=%s' % (value))
-    if self.name is not None:
-      value = pprint.pformat(self.name, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    name=%s' % (value))
-    if self.extra is not None:
-      value = pprint.pformat(self.extra, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    extra=%s' % (value))
-    if self.nest is not None:
-      value = pprint.pformat(self.nest, indent=0)
-      value = padding.join(value.splitlines(True))
-      L.append('    nest=%s' % (value))
-    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
-
-  def __eq__(self, other):
-    if not isinstance(other, self.__class__):
-      return False
-
-    return self.__dict__ == other.__dict__ 
-
-  def __ne__(self, other):
-    return not (self == other)
-
-  # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class MyStruct:
   """
@@ -443,8 +303,7 @@ class MyStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class SecretStruct:
   """
@@ -547,8 +406,7 @@ class SecretStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(MyStructNestedAnnotation)
 MyStructNestedAnnotation.thrift_spec = (
@@ -573,38 +431,6 @@ def MyStructNestedAnnotation__setstate__(self, state):
 MyStructNestedAnnotation.__getstate__ = lambda self: self.__dict__.copy()
 MyStructNestedAnnotation.__setstate__ = MyStructNestedAnnotation__setstate__
 
-all_structs.append(MyStructAnnotation)
-MyStructAnnotation.thrift_spec = (
-  None, # 0
-  (1, TType.I64, 'count', None, None, 2, ), # 1
-  (2, TType.STRING, 'name', True, None, 2, ), # 2
-  (3, TType.STRING, 'extra', True, None, 1, ), # 3
-  (4, TType.STRUCT, 'nest', [MyStructNestedAnnotation, MyStructNestedAnnotation.thrift_spec, False], None, 2, ), # 4
-)
-
-MyStructAnnotation.thrift_struct_annotations = {
-}
-MyStructAnnotation.thrift_field_annotations = {
-}
-
-def MyStructAnnotation__init__(self, count=None, name=None, extra=None, nest=None,):
-  self.count = count
-  self.name = name
-  self.extra = extra
-  self.nest = nest
-
-MyStructAnnotation.__init__ = MyStructAnnotation__init__
-
-def MyStructAnnotation__setstate__(self, state):
-  state.setdefault('count', None)
-  state.setdefault('name', None)
-  state.setdefault('extra', None)
-  state.setdefault('nest', None)
-  self.__dict__ = state
-
-MyStructAnnotation.__getstate__ = lambda self: self.__dict__.copy()
-MyStructAnnotation.__setstate__ = MyStructAnnotation__setstate__
-
 all_structs.append(MyStruct)
 MyStruct.thrift_spec = (
   None, # 0
@@ -618,6 +444,7 @@ MyStruct.thrift_spec = (
 
 MyStruct.thrift_struct_annotations = {
   "android.generate_builder": "1",
+  "cpp.internal.deprecated._data.method": "1",
 }
 MyStruct.thrift_field_annotations = {
   1: {

@@ -7,6 +7,7 @@
 cimport cython as __cython
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_unique, unique_ptr, shared_ptr
+from thrift.py3.types cimport assign_unique_ptr, assign_shared_ptr, assign_shared_const_ptr
 
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -36,34 +37,31 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field MyIncludedField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, _includes_types.Included):
+        if not isinstance(_fbthrift_value, _includes_types.Included):
             raise TypeError(f'MyIncludedField is not a { _includes_types.Included !r}.')
-        deref(self._struct_cpp_obj).MyIncludedField_ref().assign(deref((<_includes_types.Included?> __fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.MyIncludedField = True
+        deref(self._struct_cpp_obj).MyIncludedField_ref().assign(deref((<_includes_types.Included?> _fbthrift_value)._cpp_obj))
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field MyOtherIncludedField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, _includes_types.Included):
+        if not isinstance(_fbthrift_value, _includes_types.Included):
             raise TypeError(f'MyOtherIncludedField is not a { _includes_types.Included !r}.')
-        deref(self._struct_cpp_obj).MyOtherIncludedField_ref().assign(deref((<_includes_types.Included?> __fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.MyOtherIncludedField = True
+        deref(self._struct_cpp_obj).MyOtherIncludedField_ref().assign(deref((<_includes_types.Included?> _fbthrift_value)._cpp_obj))
 
-    cdef void _set_field_2(self, __fbthrift_value) except *:
+    cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field MyIncludedInt
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 2)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'MyIncludedInt is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).MyIncludedInt_ref().assign(__fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.MyIncludedInt = True
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).MyIncludedInt_ref().assign(_fbthrift_value)
 

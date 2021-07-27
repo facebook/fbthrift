@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/util/ScopedServerThread.h>
+
 #include <common/fb303/cpp/FacebookBase2.h>
 #include <folly/Memory.h>
 #include <folly/SocketAddress.h>
@@ -22,9 +23,9 @@
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
-#include <folly/portability/GTest.h>
 #include <iostream>
 #include <stdexcept>
+#include <folly/portability/GTest.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::util;
@@ -36,9 +37,7 @@ using namespace testing;
 class DummyServiceHandler : virtual public facebook::fb303::FacebookBase2 {
  public:
   DummyServiceHandler() : FacebookBase2("dummy") {}
-  cpp2::fb_status getStatus() override {
-    return cpp2::fb_status::ALIVE;
-  }
+  cpp2::fb_status getStatus() override { return cpp2::fb_status::ALIVE; }
 };
 
 TEST(ScopedServerThreadTest, BindFailure) {

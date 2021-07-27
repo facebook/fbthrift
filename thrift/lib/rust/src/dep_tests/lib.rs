@@ -15,4 +15,7 @@
  */
 
 #![deny(warnings)]
+mod as_exception;
+mod binary;
+mod compact;
 mod simplejson;

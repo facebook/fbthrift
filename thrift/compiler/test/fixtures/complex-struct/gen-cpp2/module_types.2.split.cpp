@@ -36,6 +36,10 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(const MyStruct&) = default;
+MyStruct& MyStruct::operator=(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
       MyIntField(0),
       myEnum( ::cpp2::MyEnum::MyValue1),
@@ -43,14 +47,81 @@ MyStruct::MyStruct() :
       MyByteField(0),
       MyShortField(0),
       MyLongField(0),
-      MyDoubleField(0) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      MyDoubleField(0) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyStruct::~MyStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg, bool MyBoolField__arg, int8_t MyByteField__arg, int16_t MyShortField__arg, int64_t MyLongField__arg, double MyDoubleField__arg, ::std::vector<double> lDouble__arg, ::std::vector<int16_t> lShort__arg, ::std::vector<int32_t> lInteger__arg, ::std::vector<int64_t> lLong__arg, ::std::vector<::std::string> lString__arg, ::std::vector<bool> lBool__arg, ::std::vector<int8_t> lByte__arg, ::std::map<int16_t, ::std::string> mShortString__arg, ::std::map<int32_t, ::std::string> mIntegerString__arg, ::std::map<::std::string,  ::cpp2::MyStruct> mStringMyStruct__arg, ::std::map<::std::string, bool> mStringBool__arg, ::std::map<int32_t, int32_t> mIntegerInteger__arg, ::std::map<int32_t, bool> mIntegerBool__arg, ::std::set<int16_t> sShort__arg, ::std::set< ::cpp2::MyStruct> sMyStruct__arg, ::std::set<int64_t> sLong__arg, ::std::set<::std::string> sString__arg, ::std::set<int8_t> sByte__arg, ::std::map<::std::vector<int32_t>, ::std::vector<int32_t>> mListList__arg) :
+MyStruct::MyStruct(MyStruct&& other) noexcept  :
+    MyIntField(std::move(other.MyIntField)),
+    MyStringField(std::move(other.MyStringField)),
+    MyDataField(std::move(other.MyDataField)),
+    myEnum(std::move(other.myEnum)),
+    MyBoolField(std::move(other.MyBoolField)),
+    MyByteField(std::move(other.MyByteField)),
+    MyShortField(std::move(other.MyShortField)),
+    MyLongField(std::move(other.MyLongField)),
+    MyDoubleField(std::move(other.MyDoubleField)),
+    lDouble(std::move(other.lDouble)),
+    lShort(std::move(other.lShort)),
+    lInteger(std::move(other.lInteger)),
+    lLong(std::move(other.lLong)),
+    lString(std::move(other.lString)),
+    lBool(std::move(other.lBool)),
+    lByte(std::move(other.lByte)),
+    mShortString(std::move(other.mShortString)),
+    mIntegerString(std::move(other.mIntegerString)),
+    mStringMyStruct(std::move(other.mStringMyStruct)),
+    mStringBool(std::move(other.mStringBool)),
+    mIntegerInteger(std::move(other.mIntegerInteger)),
+    mIntegerBool(std::move(other.mIntegerBool)),
+    sShort(std::move(other.sShort)),
+    sMyStruct(std::move(other.sMyStruct)),
+    sLong(std::move(other.sLong)),
+    sString(std::move(other.sString)),
+    sByte(std::move(other.sByte)),
+    mListList(std::move(other.mListList)),
+    __isset(other.__isset) {}
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->MyIntField = std::move(other.MyIntField);
+    this->MyStringField = std::move(other.MyStringField);
+    this->MyDataField = std::move(other.MyDataField);
+    this->myEnum = std::move(other.myEnum);
+    this->MyBoolField = std::move(other.MyBoolField);
+    this->MyByteField = std::move(other.MyByteField);
+    this->MyShortField = std::move(other.MyShortField);
+    this->MyLongField = std::move(other.MyLongField);
+    this->MyDoubleField = std::move(other.MyDoubleField);
+    this->lDouble = std::move(other.lDouble);
+    this->lShort = std::move(other.lShort);
+    this->lInteger = std::move(other.lInteger);
+    this->lLong = std::move(other.lLong);
+    this->lString = std::move(other.lString);
+    this->lBool = std::move(other.lBool);
+    this->lByte = std::move(other.lByte);
+    this->mShortString = std::move(other.mShortString);
+    this->mIntegerString = std::move(other.mIntegerString);
+    this->mStringMyStruct = std::move(other.mStringMyStruct);
+    this->mStringBool = std::move(other.mStringBool);
+    this->mIntegerInteger = std::move(other.mIntegerInteger);
+    this->mIntegerBool = std::move(other.mIntegerBool);
+    this->sShort = std::move(other.sShort);
+    this->sMyStruct = std::move(other.sMyStruct);
+    this->sLong = std::move(other.sLong);
+    this->sString = std::move(other.sString);
+    this->sByte = std::move(other.sByte);
+    this->mListList = std::move(other.mListList);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool MyBoolField__arg, ::std::int8_t MyByteField__arg, ::std::int16_t MyShortField__arg, ::std::int64_t MyLongField__arg, double MyDoubleField__arg, ::std::vector<double> lDouble__arg, ::std::vector<::std::int16_t> lShort__arg, ::std::vector<::std::int32_t> lInteger__arg, ::std::vector<::std::int64_t> lLong__arg, ::std::vector<::std::string> lString__arg, ::std::vector<bool> lBool__arg, ::std::vector<::std::int8_t> lByte__arg, ::std::map<::std::int16_t, ::std::string> mShortString__arg, ::std::map<::std::int32_t, ::std::string> mIntegerString__arg, ::std::map<::std::string, ::cpp2::MyStruct> mStringMyStruct__arg, ::std::map<::std::string, bool> mStringBool__arg, ::std::map<::std::int32_t, ::std::int32_t> mIntegerInteger__arg, ::std::map<::std::int32_t, bool> mIntegerBool__arg, ::std::set<::std::int16_t> sShort__arg, ::std::set<::cpp2::MyStruct> sMyStruct__arg, ::std::set<::std::int64_t> sLong__arg, ::std::set<::std::string> sString__arg, ::std::set<::std::int8_t> sByte__arg, ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>> mListList__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     MyDataField(std::move(MyDataField__arg)),
@@ -109,35 +180,36 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, 
   __isset.mListList = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
-  MyIntField = 0;
-  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  myEnum =  ::cpp2::MyEnum::MyValue1;
-  MyBoolField = 0;
-  MyByteField = 0;
-  MyShortField = 0;
-  MyLongField = 0;
-  MyDoubleField = 0;
-  lDouble.clear();
-  lShort.clear();
-  lInteger.clear();
-  lLong.clear();
-  lString.clear();
-  lBool.clear();
-  lByte.clear();
-  mShortString.clear();
-  mIntegerString.clear();
-  mStringMyStruct.clear();
-  mStringBool.clear();
-  mIntegerInteger.clear();
-  mIntegerBool.clear();
-  sShort.clear();
-  sMyStruct.clear();
-  sLong.clear();
-  sString.clear();
-  sByte.clear();
-  mListList.clear();
+  this->MyIntField = 0;
+  this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myEnum =  ::cpp2::MyEnum::MyValue1;
+  this->MyBoolField = 0;
+  this->MyByteField = 0;
+  this->MyShortField = 0;
+  this->MyLongField = 0;
+  this->MyDoubleField = 0;
+  this->lDouble.clear();
+  this->lShort.clear();
+  this->lInteger.clear();
+  this->lLong.clear();
+  this->lString.clear();
+  this->lBool.clear();
+  this->lByte.clear();
+  this->mShortString.clear();
+  this->mIntegerString.clear();
+  this->mStringMyStruct.clear();
+  this->mStringBool.clear();
+  this->mIntegerInteger.clear();
+  this->mIntegerBool.clear();
+  this->sShort.clear();
+  this->sMyStruct.clear();
+  this->sLong.clear();
+  this->sString.clear();
+  this->sByte.clear();
+  this->mListList.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -147,88 +219,88 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
     return false;
   }
-  if (!(lhs.MyDataField == rhs.MyDataField)) {
+  if (!(lhs.MyDataField_ref() == rhs.MyDataField_ref())) {
     return false;
   }
-  if (!(lhs.myEnum == rhs.myEnum)) {
+  if (!(lhs.myEnum_ref() == rhs.myEnum_ref())) {
     return false;
   }
-  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
+  if (!(lhs.MyBoolField_ref() == rhs.MyBoolField_ref())) {
     return false;
   }
-  if (!(lhs.MyByteField == rhs.MyByteField)) {
+  if (!(lhs.MyByteField_ref() == rhs.MyByteField_ref())) {
     return false;
   }
-  if (!(lhs.MyShortField == rhs.MyShortField)) {
+  if (!(lhs.MyShortField_ref() == rhs.MyShortField_ref())) {
     return false;
   }
-  if (!(lhs.MyLongField == rhs.MyLongField)) {
+  if (!(lhs.MyLongField_ref() == rhs.MyLongField_ref())) {
     return false;
   }
-  if (!(lhs.MyDoubleField == rhs.MyDoubleField)) {
+  if (!(lhs.MyDoubleField_ref() == rhs.MyDoubleField_ref())) {
     return false;
   }
-  if (!(lhs.lDouble == rhs.lDouble)) {
+  if (!(lhs.lDouble_ref() == rhs.lDouble_ref())) {
     return false;
   }
-  if (!(lhs.lShort == rhs.lShort)) {
+  if (!(lhs.lShort_ref() == rhs.lShort_ref())) {
     return false;
   }
-  if (!(lhs.lInteger == rhs.lInteger)) {
+  if (!(lhs.lInteger_ref() == rhs.lInteger_ref())) {
     return false;
   }
-  if (!(lhs.lLong == rhs.lLong)) {
+  if (!(lhs.lLong_ref() == rhs.lLong_ref())) {
     return false;
   }
-  if (!(lhs.lString == rhs.lString)) {
+  if (!(lhs.lString_ref() == rhs.lString_ref())) {
     return false;
   }
-  if (!(lhs.lBool == rhs.lBool)) {
+  if (!(lhs.lBool_ref() == rhs.lBool_ref())) {
     return false;
   }
-  if (!(lhs.lByte == rhs.lByte)) {
+  if (!(lhs.lByte_ref() == rhs.lByte_ref())) {
     return false;
   }
-  if (!(lhs.mShortString == rhs.mShortString)) {
+  if (!(lhs.mShortString_ref() == rhs.mShortString_ref())) {
     return false;
   }
-  if (!(lhs.mIntegerString == rhs.mIntegerString)) {
+  if (!(lhs.mIntegerString_ref() == rhs.mIntegerString_ref())) {
     return false;
   }
-  if (!(lhs.mStringMyStruct == rhs.mStringMyStruct)) {
+  if (!(lhs.mStringMyStruct_ref() == rhs.mStringMyStruct_ref())) {
     return false;
   }
-  if (!(lhs.mStringBool == rhs.mStringBool)) {
+  if (!(lhs.mStringBool_ref() == rhs.mStringBool_ref())) {
     return false;
   }
-  if (!(lhs.mIntegerInteger == rhs.mIntegerInteger)) {
+  if (!(lhs.mIntegerInteger_ref() == rhs.mIntegerInteger_ref())) {
     return false;
   }
-  if (!(lhs.mIntegerBool == rhs.mIntegerBool)) {
+  if (!(lhs.mIntegerBool_ref() == rhs.mIntegerBool_ref())) {
     return false;
   }
-  if (!(lhs.sShort == rhs.sShort)) {
+  if (!(lhs.sShort_ref() == rhs.sShort_ref())) {
     return false;
   }
-  if (!(lhs.sMyStruct == rhs.sMyStruct)) {
+  if (!(lhs.sMyStruct_ref() == rhs.sMyStruct_ref())) {
     return false;
   }
-  if (!(lhs.sLong == rhs.sLong)) {
+  if (!(lhs.sLong_ref() == rhs.sLong_ref())) {
     return false;
   }
-  if (!(lhs.sString == rhs.sString)) {
+  if (!(lhs.sString_ref() == rhs.sString_ref())) {
     return false;
   }
-  if (!(lhs.sByte == rhs.sByte)) {
+  if (!(lhs.sByte_ref() == rhs.sByte_ref())) {
     return false;
   }
-  if (!(lhs.mListList == rhs.mListList)) {
+  if (!(lhs.mListList_ref() == rhs.mListList_ref())) {
     return false;
   }
   return true;
@@ -238,98 +310,98 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
-    return lhs.MyStringField < rhs.MyStringField;
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
+    return lhs.MyStringField_ref() < rhs.MyStringField_ref();
   }
-  if (!(lhs.MyDataField == rhs.MyDataField)) {
-    return lhs.MyDataField < rhs.MyDataField;
+  if (!(lhs.MyDataField_ref() == rhs.MyDataField_ref())) {
+    return lhs.MyDataField_ref() < rhs.MyDataField_ref();
   }
-  if (!(lhs.myEnum == rhs.myEnum)) {
-    return lhs.myEnum < rhs.myEnum;
+  if (!(lhs.myEnum_ref() == rhs.myEnum_ref())) {
+    return lhs.myEnum_ref() < rhs.myEnum_ref();
   }
-  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
-    return lhs.MyBoolField < rhs.MyBoolField;
+  if (!(lhs.MyBoolField_ref() == rhs.MyBoolField_ref())) {
+    return lhs.MyBoolField_ref() < rhs.MyBoolField_ref();
   }
-  if (!(lhs.MyByteField == rhs.MyByteField)) {
-    return lhs.MyByteField < rhs.MyByteField;
+  if (!(lhs.MyByteField_ref() == rhs.MyByteField_ref())) {
+    return lhs.MyByteField_ref() < rhs.MyByteField_ref();
   }
-  if (!(lhs.MyShortField == rhs.MyShortField)) {
-    return lhs.MyShortField < rhs.MyShortField;
+  if (!(lhs.MyShortField_ref() == rhs.MyShortField_ref())) {
+    return lhs.MyShortField_ref() < rhs.MyShortField_ref();
   }
-  if (!(lhs.MyLongField == rhs.MyLongField)) {
-    return lhs.MyLongField < rhs.MyLongField;
+  if (!(lhs.MyLongField_ref() == rhs.MyLongField_ref())) {
+    return lhs.MyLongField_ref() < rhs.MyLongField_ref();
   }
-  if (!(lhs.MyDoubleField == rhs.MyDoubleField)) {
-    return lhs.MyDoubleField < rhs.MyDoubleField;
+  if (!(lhs.MyDoubleField_ref() == rhs.MyDoubleField_ref())) {
+    return lhs.MyDoubleField_ref() < rhs.MyDoubleField_ref();
   }
-  if (!(lhs.lDouble == rhs.lDouble)) {
-    return lhs.lDouble < rhs.lDouble;
+  if (!(lhs.lDouble_ref() == rhs.lDouble_ref())) {
+    return lhs.lDouble_ref() < rhs.lDouble_ref();
   }
-  if (!(lhs.lShort == rhs.lShort)) {
-    return lhs.lShort < rhs.lShort;
+  if (!(lhs.lShort_ref() == rhs.lShort_ref())) {
+    return lhs.lShort_ref() < rhs.lShort_ref();
   }
-  if (!(lhs.lInteger == rhs.lInteger)) {
-    return lhs.lInteger < rhs.lInteger;
+  if (!(lhs.lInteger_ref() == rhs.lInteger_ref())) {
+    return lhs.lInteger_ref() < rhs.lInteger_ref();
   }
-  if (!(lhs.lLong == rhs.lLong)) {
-    return lhs.lLong < rhs.lLong;
+  if (!(lhs.lLong_ref() == rhs.lLong_ref())) {
+    return lhs.lLong_ref() < rhs.lLong_ref();
   }
-  if (!(lhs.lString == rhs.lString)) {
-    return lhs.lString < rhs.lString;
+  if (!(lhs.lString_ref() == rhs.lString_ref())) {
+    return lhs.lString_ref() < rhs.lString_ref();
   }
-  if (!(lhs.lBool == rhs.lBool)) {
-    return lhs.lBool < rhs.lBool;
+  if (!(lhs.lBool_ref() == rhs.lBool_ref())) {
+    return lhs.lBool_ref() < rhs.lBool_ref();
   }
-  if (!(lhs.lByte == rhs.lByte)) {
-    return lhs.lByte < rhs.lByte;
+  if (!(lhs.lByte_ref() == rhs.lByte_ref())) {
+    return lhs.lByte_ref() < rhs.lByte_ref();
   }
-  if (!(lhs.mShortString == rhs.mShortString)) {
-    return lhs.mShortString < rhs.mShortString;
+  if (!(lhs.mShortString_ref() == rhs.mShortString_ref())) {
+    return lhs.mShortString_ref() < rhs.mShortString_ref();
   }
-  if (!(lhs.mIntegerString == rhs.mIntegerString)) {
-    return lhs.mIntegerString < rhs.mIntegerString;
+  if (!(lhs.mIntegerString_ref() == rhs.mIntegerString_ref())) {
+    return lhs.mIntegerString_ref() < rhs.mIntegerString_ref();
   }
-  if (!(lhs.mStringMyStruct == rhs.mStringMyStruct)) {
-    return lhs.mStringMyStruct < rhs.mStringMyStruct;
+  if (!(lhs.mStringMyStruct_ref() == rhs.mStringMyStruct_ref())) {
+    return lhs.mStringMyStruct_ref() < rhs.mStringMyStruct_ref();
   }
-  if (!(lhs.mStringBool == rhs.mStringBool)) {
-    return lhs.mStringBool < rhs.mStringBool;
+  if (!(lhs.mStringBool_ref() == rhs.mStringBool_ref())) {
+    return lhs.mStringBool_ref() < rhs.mStringBool_ref();
   }
-  if (!(lhs.mIntegerInteger == rhs.mIntegerInteger)) {
-    return lhs.mIntegerInteger < rhs.mIntegerInteger;
+  if (!(lhs.mIntegerInteger_ref() == rhs.mIntegerInteger_ref())) {
+    return lhs.mIntegerInteger_ref() < rhs.mIntegerInteger_ref();
   }
-  if (!(lhs.mIntegerBool == rhs.mIntegerBool)) {
-    return lhs.mIntegerBool < rhs.mIntegerBool;
+  if (!(lhs.mIntegerBool_ref() == rhs.mIntegerBool_ref())) {
+    return lhs.mIntegerBool_ref() < rhs.mIntegerBool_ref();
   }
-  if (!(lhs.sShort == rhs.sShort)) {
-    return lhs.sShort < rhs.sShort;
+  if (!(lhs.sShort_ref() == rhs.sShort_ref())) {
+    return lhs.sShort_ref() < rhs.sShort_ref();
   }
-  if (!(lhs.sMyStruct == rhs.sMyStruct)) {
-    return lhs.sMyStruct < rhs.sMyStruct;
+  if (!(lhs.sMyStruct_ref() == rhs.sMyStruct_ref())) {
+    return lhs.sMyStruct_ref() < rhs.sMyStruct_ref();
   }
-  if (!(lhs.sLong == rhs.sLong)) {
-    return lhs.sLong < rhs.sLong;
+  if (!(lhs.sLong_ref() == rhs.sLong_ref())) {
+    return lhs.sLong_ref() < rhs.sLong_ref();
   }
-  if (!(lhs.sString == rhs.sString)) {
-    return lhs.sString < rhs.sString;
+  if (!(lhs.sString_ref() == rhs.sString_ref())) {
+    return lhs.sString_ref() < rhs.sString_ref();
   }
-  if (!(lhs.sByte == rhs.sByte)) {
-    return lhs.sByte < rhs.sByte;
+  if (!(lhs.sByte_ref() == rhs.sByte_ref())) {
+    return lhs.sByte_ref() < rhs.sByte_ref();
   }
-  if (!(lhs.mListList == rhs.mListList)) {
-    return lhs.mListList < rhs.mListList;
+  if (!(lhs.mListList_ref() == rhs.mListList_ref())) {
+    return lhs.mListList_ref() < rhs.mListList_ref();
   }
   return false;
 }
 
-const  ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
+const ::cpp2::MyDataItem& MyStruct::get_MyDataField() const& {
   return MyDataField;
 }
 
- ::cpp2::MyDataItem MyStruct::get_MyDataField() && {
+::cpp2::MyDataItem MyStruct::get_MyDataField() && {
   return std::move(MyDataField);
 }
 
@@ -341,27 +413,27 @@ const ::std::vector<double>& MyStruct::get_lDouble() const& {
   return std::move(lDouble);
 }
 
-const ::std::vector<int16_t>& MyStruct::get_lShort() const& {
+const ::std::vector<::std::int16_t>& MyStruct::get_lShort() const& {
   return lShort;
 }
 
-::std::vector<int16_t> MyStruct::get_lShort() && {
+::std::vector<::std::int16_t> MyStruct::get_lShort() && {
   return std::move(lShort);
 }
 
-const ::std::vector<int32_t>& MyStruct::get_lInteger() const& {
+const ::std::vector<::std::int32_t>& MyStruct::get_lInteger() const& {
   return lInteger;
 }
 
-::std::vector<int32_t> MyStruct::get_lInteger() && {
+::std::vector<::std::int32_t> MyStruct::get_lInteger() && {
   return std::move(lInteger);
 }
 
-const ::std::vector<int64_t>& MyStruct::get_lLong() const& {
+const ::std::vector<::std::int64_t>& MyStruct::get_lLong() const& {
   return lLong;
 }
 
-::std::vector<int64_t> MyStruct::get_lLong() && {
+::std::vector<::std::int64_t> MyStruct::get_lLong() && {
   return std::move(lLong);
 }
 
@@ -381,35 +453,35 @@ const ::std::vector<bool>& MyStruct::get_lBool() const& {
   return std::move(lBool);
 }
 
-const ::std::vector<int8_t>& MyStruct::get_lByte() const& {
+const ::std::vector<::std::int8_t>& MyStruct::get_lByte() const& {
   return lByte;
 }
 
-::std::vector<int8_t> MyStruct::get_lByte() && {
+::std::vector<::std::int8_t> MyStruct::get_lByte() && {
   return std::move(lByte);
 }
 
-const ::std::map<int16_t, ::std::string>& MyStruct::get_mShortString() const& {
+const ::std::map<::std::int16_t, ::std::string>& MyStruct::get_mShortString() const& {
   return mShortString;
 }
 
-::std::map<int16_t, ::std::string> MyStruct::get_mShortString() && {
+::std::map<::std::int16_t, ::std::string> MyStruct::get_mShortString() && {
   return std::move(mShortString);
 }
 
-const ::std::map<int32_t, ::std::string>& MyStruct::get_mIntegerString() const& {
+const ::std::map<::std::int32_t, ::std::string>& MyStruct::get_mIntegerString() const& {
   return mIntegerString;
 }
 
-::std::map<int32_t, ::std::string> MyStruct::get_mIntegerString() && {
+::std::map<::std::int32_t, ::std::string> MyStruct::get_mIntegerString() && {
   return std::move(mIntegerString);
 }
 
-const ::std::map<::std::string,  ::cpp2::MyStruct>& MyStruct::get_mStringMyStruct() const& {
+const ::std::map<::std::string, ::cpp2::MyStruct>& MyStruct::get_mStringMyStruct() const& {
   return mStringMyStruct;
 }
 
-::std::map<::std::string,  ::cpp2::MyStruct> MyStruct::get_mStringMyStruct() && {
+::std::map<::std::string, ::cpp2::MyStruct> MyStruct::get_mStringMyStruct() && {
   return std::move(mStringMyStruct);
 }
 
@@ -421,43 +493,43 @@ const ::std::map<::std::string, bool>& MyStruct::get_mStringBool() const& {
   return std::move(mStringBool);
 }
 
-const ::std::map<int32_t, int32_t>& MyStruct::get_mIntegerInteger() const& {
+const ::std::map<::std::int32_t, ::std::int32_t>& MyStruct::get_mIntegerInteger() const& {
   return mIntegerInteger;
 }
 
-::std::map<int32_t, int32_t> MyStruct::get_mIntegerInteger() && {
+::std::map<::std::int32_t, ::std::int32_t> MyStruct::get_mIntegerInteger() && {
   return std::move(mIntegerInteger);
 }
 
-const ::std::map<int32_t, bool>& MyStruct::get_mIntegerBool() const& {
+const ::std::map<::std::int32_t, bool>& MyStruct::get_mIntegerBool() const& {
   return mIntegerBool;
 }
 
-::std::map<int32_t, bool> MyStruct::get_mIntegerBool() && {
+::std::map<::std::int32_t, bool> MyStruct::get_mIntegerBool() && {
   return std::move(mIntegerBool);
 }
 
-const ::std::set<int16_t>& MyStruct::get_sShort() const& {
+const ::std::set<::std::int16_t>& MyStruct::get_sShort() const& {
   return sShort;
 }
 
-::std::set<int16_t> MyStruct::get_sShort() && {
+::std::set<::std::int16_t> MyStruct::get_sShort() && {
   return std::move(sShort);
 }
 
-const ::std::set< ::cpp2::MyStruct>& MyStruct::get_sMyStruct() const& {
+const ::std::set<::cpp2::MyStruct>& MyStruct::get_sMyStruct() const& {
   return sMyStruct;
 }
 
-::std::set< ::cpp2::MyStruct> MyStruct::get_sMyStruct() && {
+::std::set<::cpp2::MyStruct> MyStruct::get_sMyStruct() && {
   return std::move(sMyStruct);
 }
 
-const ::std::set<int64_t>& MyStruct::get_sLong() const& {
+const ::std::set<::std::int64_t>& MyStruct::get_sLong() const& {
   return sLong;
 }
 
-::std::set<int64_t> MyStruct::get_sLong() && {
+::std::set<::std::int64_t> MyStruct::get_sLong() && {
   return std::move(sLong);
 }
 
@@ -469,19 +541,19 @@ const ::std::set<::std::string>& MyStruct::get_sString() const& {
   return std::move(sString);
 }
 
-const ::std::set<int8_t>& MyStruct::get_sByte() const& {
+const ::std::set<::std::int8_t>& MyStruct::get_sByte() const& {
   return sByte;
 }
 
-::std::set<int8_t> MyStruct::get_sByte() && {
+::std::set<::std::int8_t> MyStruct::get_sByte() && {
   return std::move(sByte);
 }
 
-const ::std::map<::std::vector<int32_t>, ::std::vector<int32_t>>& MyStruct::get_mListList() const& {
+const ::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>>& MyStruct::get_mListList() const& {
   return mListList;
 }
 
-::std::map<::std::vector<int32_t>, ::std::vector<int32_t>> MyStruct::get_mListList() && {
+::std::map<::std::vector<::std::int32_t>, ::std::vector<::std::int32_t>> MyStruct::get_mListList() && {
   return std::move(mListList);
 }
 
@@ -534,14 +606,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -570,16 +642,49 @@ void TccStructTraits<::cpp2::MyStructTypeDef>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructTypeDef::MyStructTypeDef(const MyStructTypeDef&) = default;
+MyStructTypeDef& MyStructTypeDef::operator=(const MyStructTypeDef&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructTypeDef::MyStructTypeDef() :
       myLongField(0),
-      myLongTypeDef(0) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      myLongTypeDef(0) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyStructTypeDef::~MyStructTypeDef() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, int64_t myLongField__arg,  ::cpp2::longTypeDef myLongTypeDef__arg, ::std::string myStringField__arg,  ::cpp2::stringTypedef myStringTypedef__arg, ::std::map<int16_t, ::std::string> myMapField__arg,  ::cpp2::mapTypedef myMapTypedef__arg, ::std::vector<double> myListField__arg,  ::cpp2::listTypedef myListTypedef__arg, ::std::map<int16_t, ::std::vector< ::cpp2::listTypedef>> myMapListOfTypeDef__arg) :
+MyStructTypeDef::MyStructTypeDef(MyStructTypeDef&& other) noexcept  :
+    myLongField(std::move(other.myLongField)),
+    myLongTypeDef(std::move(other.myLongTypeDef)),
+    myStringField(std::move(other.myStringField)),
+    myStringTypedef(std::move(other.myStringTypedef)),
+    myMapField(std::move(other.myMapField)),
+    myMapTypedef(std::move(other.myMapTypedef)),
+    myListField(std::move(other.myListField)),
+    myListTypedef(std::move(other.myListTypedef)),
+    myMapListOfTypeDef(std::move(other.myMapListOfTypeDef)),
+    __isset(other.__isset) {}
+MyStructTypeDef& MyStructTypeDef::operator=(FOLLY_MAYBE_UNUSED MyStructTypeDef&& other) noexcept {
+    this->myLongField = std::move(other.myLongField);
+    this->myLongTypeDef = std::move(other.myLongTypeDef);
+    this->myStringField = std::move(other.myStringField);
+    this->myStringTypedef = std::move(other.myStringTypedef);
+    this->myMapField = std::move(other.myMapField);
+    this->myMapTypedef = std::move(other.myMapTypedef);
+    this->myListField = std::move(other.myListField);
+    this->myListTypedef = std::move(other.myListTypedef);
+    this->myMapListOfTypeDef = std::move(other.myMapListOfTypeDef);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::cpp2::longTypeDef myLongTypeDef__arg, ::std::string myStringField__arg, ::cpp2::stringTypedef myStringTypedef__arg, ::std::map<::std::int16_t, ::std::string> myMapField__arg, ::cpp2::mapTypedef myMapTypedef__arg, ::std::vector<double> myListField__arg, ::cpp2::listTypedef myListTypedef__arg, ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>> myMapListOfTypeDef__arg) :
     myLongField(std::move(myLongField__arg)),
     myLongTypeDef(std::move(myLongTypeDef__arg)),
     myStringField(std::move(myStringField__arg)),
@@ -600,17 +705,18 @@ MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, int64_t myL
   __isset.myMapListOfTypeDef = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStructTypeDef::__clear() {
   // clear all fields
-  myLongField = 0;
-  myLongTypeDef = 0;
-  myStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  myStringTypedef = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  myMapField.clear();
-  myMapTypedef.clear();
-  myListField.clear();
-  myListTypedef.clear();
-  myMapListOfTypeDef.clear();
+  this->myLongField = 0;
+  this->myLongTypeDef = 0;
+  this->myStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myStringTypedef = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myMapField.clear();
+  this->myMapTypedef.clear();
+  this->myListField.clear();
+  this->myListTypedef.clear();
+  this->myMapListOfTypeDef.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -620,31 +726,31 @@ bool MyStructTypeDef::operator==(const MyStructTypeDef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongField == rhs.myLongField)) {
+  if (!(lhs.myLongField_ref() == rhs.myLongField_ref())) {
     return false;
   }
-  if (!(lhs.myLongTypeDef == rhs.myLongTypeDef)) {
+  if (!(lhs.myLongTypeDef_ref() == rhs.myLongTypeDef_ref())) {
     return false;
   }
-  if (!(lhs.myStringField == rhs.myStringField)) {
+  if (!(lhs.myStringField_ref() == rhs.myStringField_ref())) {
     return false;
   }
-  if (!(lhs.myStringTypedef == rhs.myStringTypedef)) {
+  if (!(lhs.myStringTypedef_ref() == rhs.myStringTypedef_ref())) {
     return false;
   }
-  if (!(lhs.myMapField == rhs.myMapField)) {
+  if (!(lhs.myMapField_ref() == rhs.myMapField_ref())) {
     return false;
   }
-  if (!(lhs.myMapTypedef == rhs.myMapTypedef)) {
+  if (!(lhs.myMapTypedef_ref() == rhs.myMapTypedef_ref())) {
     return false;
   }
-  if (!(lhs.myListField == rhs.myListField)) {
+  if (!(lhs.myListField_ref() == rhs.myListField_ref())) {
     return false;
   }
-  if (!(lhs.myListTypedef == rhs.myListTypedef)) {
+  if (!(lhs.myListTypedef_ref() == rhs.myListTypedef_ref())) {
     return false;
   }
-  if (!(lhs.myMapListOfTypeDef == rhs.myMapListOfTypeDef)) {
+  if (!(lhs.myMapListOfTypeDef_ref() == rhs.myMapListOfTypeDef_ref())) {
     return false;
   }
   return true;
@@ -654,49 +760,49 @@ bool MyStructTypeDef::operator<(const MyStructTypeDef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongField == rhs.myLongField)) {
-    return lhs.myLongField < rhs.myLongField;
+  if (!(lhs.myLongField_ref() == rhs.myLongField_ref())) {
+    return lhs.myLongField_ref() < rhs.myLongField_ref();
   }
-  if (!(lhs.myLongTypeDef == rhs.myLongTypeDef)) {
-    return lhs.myLongTypeDef < rhs.myLongTypeDef;
+  if (!(lhs.myLongTypeDef_ref() == rhs.myLongTypeDef_ref())) {
+    return lhs.myLongTypeDef_ref() < rhs.myLongTypeDef_ref();
   }
-  if (!(lhs.myStringField == rhs.myStringField)) {
-    return lhs.myStringField < rhs.myStringField;
+  if (!(lhs.myStringField_ref() == rhs.myStringField_ref())) {
+    return lhs.myStringField_ref() < rhs.myStringField_ref();
   }
-  if (!(lhs.myStringTypedef == rhs.myStringTypedef)) {
-    return lhs.myStringTypedef < rhs.myStringTypedef;
+  if (!(lhs.myStringTypedef_ref() == rhs.myStringTypedef_ref())) {
+    return lhs.myStringTypedef_ref() < rhs.myStringTypedef_ref();
   }
-  if (!(lhs.myMapField == rhs.myMapField)) {
-    return lhs.myMapField < rhs.myMapField;
+  if (!(lhs.myMapField_ref() == rhs.myMapField_ref())) {
+    return lhs.myMapField_ref() < rhs.myMapField_ref();
   }
-  if (!(lhs.myMapTypedef == rhs.myMapTypedef)) {
-    return lhs.myMapTypedef < rhs.myMapTypedef;
+  if (!(lhs.myMapTypedef_ref() == rhs.myMapTypedef_ref())) {
+    return lhs.myMapTypedef_ref() < rhs.myMapTypedef_ref();
   }
-  if (!(lhs.myListField == rhs.myListField)) {
-    return lhs.myListField < rhs.myListField;
+  if (!(lhs.myListField_ref() == rhs.myListField_ref())) {
+    return lhs.myListField_ref() < rhs.myListField_ref();
   }
-  if (!(lhs.myListTypedef == rhs.myListTypedef)) {
-    return lhs.myListTypedef < rhs.myListTypedef;
+  if (!(lhs.myListTypedef_ref() == rhs.myListTypedef_ref())) {
+    return lhs.myListTypedef_ref() < rhs.myListTypedef_ref();
   }
-  if (!(lhs.myMapListOfTypeDef == rhs.myMapListOfTypeDef)) {
-    return lhs.myMapListOfTypeDef < rhs.myMapListOfTypeDef;
+  if (!(lhs.myMapListOfTypeDef_ref() == rhs.myMapListOfTypeDef_ref())) {
+    return lhs.myMapListOfTypeDef_ref() < rhs.myMapListOfTypeDef_ref();
   }
   return false;
 }
 
-const ::std::map<int16_t, ::std::string>& MyStructTypeDef::get_myMapField() const& {
+const ::std::map<::std::int16_t, ::std::string>& MyStructTypeDef::get_myMapField() const& {
   return myMapField;
 }
 
-::std::map<int16_t, ::std::string> MyStructTypeDef::get_myMapField() && {
+::std::map<::std::int16_t, ::std::string> MyStructTypeDef::get_myMapField() && {
   return std::move(myMapField);
 }
 
-const  ::cpp2::mapTypedef& MyStructTypeDef::get_myMapTypedef() const& {
+const ::cpp2::mapTypedef& MyStructTypeDef::get_myMapTypedef() const& {
   return myMapTypedef;
 }
 
- ::cpp2::mapTypedef MyStructTypeDef::get_myMapTypedef() && {
+::cpp2::mapTypedef MyStructTypeDef::get_myMapTypedef() && {
   return std::move(myMapTypedef);
 }
 
@@ -708,19 +814,19 @@ const ::std::vector<double>& MyStructTypeDef::get_myListField() const& {
   return std::move(myListField);
 }
 
-const  ::cpp2::listTypedef& MyStructTypeDef::get_myListTypedef() const& {
+const ::cpp2::listTypedef& MyStructTypeDef::get_myListTypedef() const& {
   return myListTypedef;
 }
 
- ::cpp2::listTypedef MyStructTypeDef::get_myListTypedef() && {
+::cpp2::listTypedef MyStructTypeDef::get_myListTypedef() && {
   return std::move(myListTypedef);
 }
 
-const ::std::map<int16_t, ::std::vector< ::cpp2::listTypedef>>& MyStructTypeDef::get_myMapListOfTypeDef() const& {
+const ::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>>& MyStructTypeDef::get_myMapListOfTypeDef() const& {
   return myMapListOfTypeDef;
 }
 
-::std::map<int16_t, ::std::vector< ::cpp2::listTypedef>> MyStructTypeDef::get_myMapListOfTypeDef() && {
+::std::map<::std::int16_t, ::std::vector<::cpp2::listTypedef>> MyStructTypeDef::get_myMapListOfTypeDef() && {
   return std::move(myMapListOfTypeDef);
 }
 
@@ -878,26 +984,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionFloatFieldThrowExp,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnionFloatFieldThrowExp,
         ::apache::thrift::type_class::structure,
-         ::cpp2::ComplexNestedStruct>,
+        ::cpp2::ComplexNestedStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyUnionFloatFieldThrowExp,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyUnionFloatFieldThrowExp,
         ::apache::thrift::type_class::structure,
-         ::cpp2::ComplexNestedStruct>,
+        ::cpp2::ComplexNestedStruct>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -926,8 +1032,29 @@ void TccStructTraits<::cpp2::emptyXcep>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+emptyXcep::emptyXcep(const emptyXcep&) = default;
+emptyXcep& emptyXcep::operator=(const emptyXcep&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+emptyXcep::emptyXcep() {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+emptyXcep::~emptyXcep() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+emptyXcep::emptyXcep(emptyXcep&& other) noexcept { (void)other; }
+emptyXcep& emptyXcep::operator=(FOLLY_MAYBE_UNUSED emptyXcep&& other) noexcept {
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 emptyXcep::emptyXcep(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void emptyXcep::__clear() {
   // clear all fields
 }
@@ -990,15 +1117,42 @@ void TccStructTraits<::cpp2::complexException>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-complexException::complexException() :
-      errorEnum( ::cpp2::MyEnum::MyValue1) {}
+complexException::complexException(const complexException&) = default;
+complexException& complexException::operator=(const complexException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+complexException::complexException() :
+      errorEnum( ::cpp2::MyEnum::MyValue1) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 complexException::~complexException() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-complexException::complexException(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::vector<::std::string> listStrings__arg,  ::cpp2::MyEnum errorEnum__arg,  ::cpp2::MyUnion unionError__arg,  ::cpp2::MyStruct structError__arg, ::std::map<int64_t, ::std::string> lsMap__arg) :
+complexException::complexException(complexException&& other) noexcept  :
+    message(std::move(other.message)),
+    listStrings(std::move(other.listStrings)),
+    errorEnum(std::move(other.errorEnum)),
+    unionError(std::move(other.unionError)),
+    structError(std::move(other.structError)),
+    lsMap(std::move(other.lsMap)),
+    __isset(other.__isset) {}
+complexException& complexException::operator=(FOLLY_MAYBE_UNUSED complexException&& other) noexcept {
+    this->message = std::move(other.message);
+    this->listStrings = std::move(other.listStrings);
+    this->errorEnum = std::move(other.errorEnum);
+    this->unionError = std::move(other.unionError);
+    this->structError = std::move(other.structError);
+    this->lsMap = std::move(other.lsMap);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+complexException::complexException(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::vector<::std::string> listStrings__arg, ::cpp2::MyEnum errorEnum__arg, ::cpp2::MyUnion unionError__arg, ::cpp2::MyStruct structError__arg, ::std::map<::std::int64_t, ::std::string> lsMap__arg) :
     message(std::move(message__arg)),
     listStrings(std::move(listStrings__arg)),
     errorEnum(std::move(errorEnum__arg)),
@@ -1013,14 +1167,15 @@ complexException::complexException(apache::thrift::FragileConstructor, ::std::st
   __isset.lsMap = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void complexException::__clear() {
   // clear all fields
-  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  listStrings.clear();
-  errorEnum =  ::cpp2::MyEnum::MyValue1;
-  unionError.__clear();
-  structError.__clear();
-  lsMap.clear();
+  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->listStrings.clear();
+  this->errorEnum =  ::cpp2::MyEnum::MyValue1;
+  this->unionError.__clear();
+  this->structError.__clear();
+  this->lsMap.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1030,22 +1185,22 @@ bool complexException::operator==(const complexException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
-  if (!(lhs.listStrings == rhs.listStrings)) {
+  if (!(lhs.listStrings_ref() == rhs.listStrings_ref())) {
     return false;
   }
-  if (!(lhs.errorEnum == rhs.errorEnum)) {
+  if (!(lhs.errorEnum_ref() == rhs.errorEnum_ref())) {
     return false;
   }
-  if (lhs.unionError_ref() != rhs.unionError_ref()) {
+  if (!(lhs.unionError_ref() == rhs.unionError_ref())) {
     return false;
   }
-  if (!(lhs.structError == rhs.structError)) {
+  if (!(lhs.structError_ref() == rhs.structError_ref())) {
     return false;
   }
-  if (!(lhs.lsMap == rhs.lsMap)) {
+  if (!(lhs.lsMap_ref() == rhs.lsMap_ref())) {
     return false;
   }
   return true;
@@ -1055,23 +1210,23 @@ bool complexException::operator<(const complexException& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
-    return lhs.message < rhs.message;
+  if (!(lhs.message_ref() == rhs.message_ref())) {
+    return lhs.message_ref() < rhs.message_ref();
   }
-  if (!(lhs.listStrings == rhs.listStrings)) {
-    return lhs.listStrings < rhs.listStrings;
+  if (!(lhs.listStrings_ref() == rhs.listStrings_ref())) {
+    return lhs.listStrings_ref() < rhs.listStrings_ref();
   }
-  if (!(lhs.errorEnum == rhs.errorEnum)) {
-    return lhs.errorEnum < rhs.errorEnum;
+  if (!(lhs.errorEnum_ref() == rhs.errorEnum_ref())) {
+    return lhs.errorEnum_ref() < rhs.errorEnum_ref();
   }
-  if (lhs.unionError_ref() != rhs.unionError_ref()) {
+  if (!(lhs.unionError_ref() == rhs.unionError_ref())) {
     return lhs.unionError_ref() < rhs.unionError_ref();
   }
-  if (!(lhs.structError == rhs.structError)) {
-    return lhs.structError < rhs.structError;
+  if (!(lhs.structError_ref() == rhs.structError_ref())) {
+    return lhs.structError_ref() < rhs.structError_ref();
   }
-  if (!(lhs.lsMap == rhs.lsMap)) {
-    return lhs.lsMap < rhs.lsMap;
+  if (!(lhs.lsMap_ref() == rhs.lsMap_ref())) {
+    return lhs.lsMap_ref() < rhs.lsMap_ref();
   }
   return false;
 }
@@ -1084,27 +1239,27 @@ const ::std::vector<::std::string>& complexException::get_listStrings() const& {
   return std::move(listStrings);
 }
 
-const  ::cpp2::MyUnion* complexException::get_unionError() const& {
+const ::cpp2::MyUnion* complexException::get_unionError() const& {
   return unionError_ref().has_value() ? std::addressof(unionError) : nullptr;
 }
 
- ::cpp2::MyUnion* complexException::get_unionError() & {
+::cpp2::MyUnion* complexException::get_unionError() & {
   return unionError_ref().has_value() ? std::addressof(unionError) : nullptr;
 }
 
-const  ::cpp2::MyStruct& complexException::get_structError() const& {
+const ::cpp2::MyStruct& complexException::get_structError() const& {
   return structError;
 }
 
- ::cpp2::MyStruct complexException::get_structError() && {
+::cpp2::MyStruct complexException::get_structError() && {
   return std::move(structError);
 }
 
-const ::std::map<int64_t, ::std::string>& complexException::get_lsMap() const& {
+const ::std::map<::std::int64_t, ::std::string>& complexException::get_lsMap() const& {
   return lsMap;
 }
 
-::std::map<int64_t, ::std::string> complexException::get_lsMap() && {
+::std::map<::std::int64_t, ::std::string> complexException::get_lsMap() && {
   return std::move(lsMap);
 }
 
@@ -1135,26 +1290,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         complexException,
         ::apache::thrift::type_class::variant,
-         ::cpp2::MyUnion>,
+        ::cpp2::MyUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         complexException,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyStruct>,
+        ::cpp2::MyStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         complexException,
         ::apache::thrift::type_class::variant,
-         ::cpp2::MyUnion>,
+        ::cpp2::MyUnion>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         complexException,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyStruct>,
+        ::cpp2::MyStruct>,
     "inconsistent use of nimble option");
 
 } // cpp2

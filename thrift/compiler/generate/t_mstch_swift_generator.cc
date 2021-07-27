@@ -39,7 +39,7 @@ std::string get_namespace_or_default(const t_program& prog) {
   if (prog_namespace != "") {
     return prog_namespace;
   } else {
-    throw std::runtime_error{"No namespace 'java.swift' in " + prog.get_name()};
+    throw std::runtime_error{"No namespace 'java.swift' in " + prog.name()};
   }
 }
 
@@ -58,29 +58,22 @@ std::string get_constants_class_name(const t_program& prog) {
 
     if (java_class_name == "" ||
         java_class_name.find('.') != std::string::npos) {
-      throw std::runtime_error{"Java Constants Class Name `" + java_class_name +
-                               "` is not well formatted."};
+      throw std::runtime_error{
+          "Java Constants Class Name `" + java_class_name +
+          "` is not well formatted."};
     }
 
     return java_class_name;
   }
 }
+
+template <typename Node>
+std::string get_java_swift_name(const Node* node) {
+  return node->get_annotation(
+      "java.swift.name", java::mangle_java_name(node->get_name(), false));
+}
+
 } // namespace
-
-template <typename Node>
-const std::string get_java_swift_name(const Node* node) {
-  auto name = node->annotations_.find("java.swift.name");
-  return name != node->annotations_.end()
-      ? name->second
-      : java::mangle_java_name(node->get_name(), false);
-}
-
-template <typename Node>
-const mstch::node get_java_annotation(const Node* node) {
-  auto jannots = node->annotations_.find("java.swift.annotations");
-  return jannots != node->annotations_.end() ? mstch::node(jannots->second)
-                                             : mstch::node();
-}
 
 class t_mstch_swift_generator : public t_mstch_generator {
  public:
@@ -90,10 +83,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       const std::map<std::string, std::string>& parsed_options,
       const std::string& /* option_string */)
       : t_mstch_generator(
-            program,
-            std::move(context),
-            "java/swift",
-            parsed_options) {
+            program, std::move(context), "java/swift", parsed_options) {
     out_dir_base_ = "gen-swift";
   }
 
@@ -114,7 +104,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       const t_program* program,
       const std::vector<T*>& items,
       const std::string& tpl_path) {
-    const auto& id = program->get_path();
+    const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
       cache_->programs_[id] = generators_->program_generator_->generate(
           program, generators_, cache_);
@@ -143,7 +133,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
       Cache& c,
       const t_program* program,
       const std::vector<T*>& services) {
-    const auto& id = program->get_path();
+    const auto& id = program->path();
     if (!cache_->programs_.count(id)) {
       cache_->programs_[id] = generators_->program_generator_->generate(
           program, generators_, cache_);
@@ -175,15 +165,103 @@ class t_mstch_swift_generator : public t_mstch_generator {
           c[async_service_id],
           "ServiceAsyncClient",
           package_dir / async_filename);
+
+      // Generate Async to Reactive Wrapper
+      auto async_reactive_wrapper_filename =
+          service_name + "AsyncReactiveWrapper.java";
+      const auto& async_reactive_wrapper_id =
+          id + service->get_name() + "AsyncReactiveWrapper";
+      if (!c.count(async_reactive_wrapper_id)) {
+        c[async_reactive_wrapper_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[async_reactive_wrapper_id],
+          "AsyncReactiveWrapper",
+          package_dir / async_reactive_wrapper_filename);
+
+      // Generate Blocking to Reactive Wrapper
+      auto blocking_reactive_wrapper_filename =
+          service_name + "BlockingReactiveWrapper.java";
+      const auto& blocking_reactive_wrapper_id =
+          id + service->get_name() + "BlockingReactiveWrapper";
+      if (!c.count(blocking_reactive_wrapper_id)) {
+        c[blocking_reactive_wrapper_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[blocking_reactive_wrapper_id],
+          "BlockingReactiveWrapper",
+          package_dir / blocking_reactive_wrapper_filename);
+
+      // Generate Reactive to Async Wrapper
+      auto reactive_async_wrapper_filename =
+          service_name + "ReactiveAsyncWrapper.java";
+      const auto& reactive_async_wrapper_id =
+          id + service->get_name() + "ReactiveAsyncWrapper";
+      if (!c.count(reactive_async_wrapper_id)) {
+        c[reactive_async_wrapper_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[reactive_async_wrapper_id],
+          "ReactiveAsyncWrapper",
+          package_dir / reactive_async_wrapper_filename);
+
+      // Generate Reactive to Blocking Wrapper
+      auto reactive_blocking_wrapper_filename =
+          service_name + "ReactiveBlockingWrapper.java";
+      const auto& reactive_blocking_wrapper_id =
+          id + service->get_name() + "ReactiveBlockingWrapper";
+      if (!c.count(reactive_blocking_wrapper_id)) {
+        c[reactive_blocking_wrapper_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[reactive_blocking_wrapper_id],
+          "ReactiveBlockingWrapper",
+          package_dir / reactive_blocking_wrapper_filename);
+
+      // Generate Reactive Client
+      auto reactive_client_filename = service_name + "ReactiveClient.java";
+      const auto& reactive_client_wrapper_id =
+          id + service->get_name() + "ReactiveClient";
+      if (!c.count(reactive_client_wrapper_id)) {
+        c[reactive_client_wrapper_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[reactive_client_wrapper_id],
+          "ReactiveClient",
+          package_dir / reactive_client_filename);
+
+      // Generate RpcServerHandler
+      auto rpc_server_handler_filename = service_name + "RpcServerHandler.java";
+      const auto& rpc_server_handler_id =
+          id + service->get_name() + "RpcServerHandler";
+      if (!c.count(rpc_server_handler_id)) {
+        c[rpc_server_handler_id] =
+            generator->generate(service, generators_, cache_);
+      }
+
+      render_to_file(
+          c[rpc_server_handler_id],
+          "RpcServerHandler",
+          package_dir / rpc_server_handler_filename);
     }
   }
 
   void generate_constants(const t_program* program) {
-    if (program->get_consts().empty()) {
+    if (program->consts().empty()) {
       // Only generate Constants.java if we actually have constants
       return;
     }
-    auto name = program->get_name();
+    auto name = program->name();
     const auto& prog = cached_program(program);
 
     auto package_dir = boost::filesystem::path{
@@ -195,7 +273,7 @@ class t_mstch_swift_generator : public t_mstch_generator {
   void generate_placeholder(const t_program* program) {
     auto package_dir = boost::filesystem::path{
         java::package_to_path(get_namespace_or_default(*program))};
-    auto placeholder_file_name = ".generated_" + program->get_name();
+    auto placeholder_file_name = ".generated_" + program->name();
     write_output(package_dir / placeholder_file_name, "");
   }
 };
@@ -216,9 +294,7 @@ class mstch_swift_program : public mstch_program {
              &mstch_swift_program::constant_class_name},
         });
   }
-  mstch::node java_package() {
-    return get_namespace_or_default(*program_);
-  }
+  mstch::node java_package() { return get_namespace_or_default(*program_); }
   mstch::node constant_class_name() {
     return get_constants_class_name(*program_);
   }
@@ -254,20 +330,19 @@ class mstch_swift_struct : public mstch_struct {
             {"struct:exceptionMessage", &mstch_swift_struct::exception_message},
             {"struct:needsExceptionMessage?",
              &mstch_swift_struct::needs_exception_message},
+            {"struct:enableIsSet?", &mstch_swift_struct::enable_is_set},
         });
     register_has_option(
         "struct:extendRuntimeException?", "legacy_extend_runtime_exception");
   }
   mstch::node java_package() {
-    return get_namespace_or_default(*(strct_->get_program()));
+    return get_namespace_or_default(*(strct_->program()));
   }
-  mstch::node is_struct_union() {
-    return strct_->is_union();
-  }
+  mstch::node is_struct_union() { return strct_->is_union(); }
   mstch::node is_union_field_type_unique() {
     std::set<std::string> field_types;
-    for (const auto* field : strct_->get_members()) {
-      auto type_name = field->get_type()->get_full_name();
+    for (const auto& field : strct_->fields()) {
+      auto type_name = field.type()->get_full_name();
       std::string type_with_erasure = type_name.substr(0, type_name.find('<'));
       if (field_types.find(type_with_erasure) != field_types.end()) {
         return false;
@@ -279,8 +354,7 @@ class mstch_swift_struct : public mstch_struct {
   }
   mstch::node is_as_bean() {
     if (!strct_->is_xception() && !strct_->is_union()) {
-      return strct_->annotations_.count("java.swift.mutable") &&
-          strct_->annotations_.at("java.swift.mutable") == "true";
+      return strct_->get_annotation("java.swift.mutable") == "true";
     } else {
       return false;
     }
@@ -288,46 +362,38 @@ class mstch_swift_struct : public mstch_struct {
 
   mstch::node is_BigStruct() {
     return (
-        strct_->is_struct() &&
-        strct_->get_members().size() > bigStructThreshold);
+        strct_->is_struct() && strct_->fields().size() > bigStructThreshold);
   }
 
   mstch::node java_capital_name() {
     return java::mangle_java_name(strct_->get_name(), true);
   }
   mstch::node has_java_annotations() {
-    return strct_->annotations_.find("java.swift.annotations") !=
-        strct_->annotations_.end();
+    return strct_->has_annotation("java.swift.annotations");
   }
   mstch::node java_annotations() {
-    return get_java_annotation(strct_);
+    return strct_->get_annotation("java.swift.annotations");
   }
   mstch::node exception_message() {
-    auto field_name_to_use = strct_->annotations_.at("message");
-    auto field = std::find_if(
-        strct_->get_members().begin(),
-        strct_->get_members().end(),
-        [&](auto const& m) { return m->get_name() == field_name_to_use; });
-
-    if (field != strct_->get_members().end()) {
-      return get_java_swift_name(*field);
+    const auto& field_name_to_use = strct_->get_annotation("message");
+    if (const auto* field = strct_->get_field_by_name(field_name_to_use)) {
+      return get_java_swift_name(field);
     }
 
-    throw std::runtime_error{"The exception message field '" +
-                             field_name_to_use + "' is not found in " +
-                             strct_->get_name() + "!"};
+    throw std::runtime_error{
+        "The exception message field '" + field_name_to_use +
+        "' is not found in " + strct_->get_name() + "!"};
   }
   // we can only override Throwable's getMessage() if:
   //  1 - there is provided 'message' annotation
   //  2 - there is no struct field named 'message'
   //      (since it will generate getMessage() as well)
   mstch::node needs_exception_message() {
-    return strct_->is_xception() && strct_->annotations_.count("message") &&
-        std::find_if(
-            strct_->get_members().begin(),
-            strct_->get_members().end(),
-            [](auto const& m) { return m->get_name() == "message"; }) ==
-        strct_->get_members().end();
+    return strct_->is_xception() && strct_->has_annotation("message") &&
+        strct_->get_field_by_name("message") == nullptr;
+  }
+  mstch::node enable_is_set() {
+    return strct_->has_annotation("java.swift.enable_is_set");
   }
 };
 
@@ -347,10 +413,15 @@ class mstch_swift_service : public mstch_service {
              &mstch_swift_service::java_capital_name},
             {"service:supportedFunctions",
              &mstch_swift_service::get_supported_functions},
+            {"service:streamingFunctions",
+             &mstch_swift_service::get_streaming_functions},
+            {"service:sinkFunctions", &mstch_swift_service::get_sink_functions},
+            {"service:disableReactive?",
+             &mstch_swift_service::disable_reactive},
         });
   }
   mstch::node java_package() {
-    return get_namespace_or_default(*(service_->get_program()));
+    return get_namespace_or_default(*(service_->program()));
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(service_->get_name(), true);
@@ -360,6 +431,30 @@ class mstch_swift_service : public mstch_service {
     for (auto func : service_->get_functions()) {
       if (!func->returns_stream() && !func->returns_sink() &&
           !func->get_returntype()->is_service()) {
+        funcs.push_back(func);
+      }
+    }
+    return generate_functions(funcs);
+  }
+
+  mstch::node disable_reactive() {
+    return service_->get_annotation("java.swift.disable_reactive");
+  }
+
+  mstch::node get_streaming_functions() {
+    std::vector<t_function*> funcs;
+    for (auto func : service_->get_functions()) {
+      if (func->returns_stream()) {
+        funcs.push_back(func);
+      }
+    }
+    return generate_functions(funcs);
+  }
+
+  mstch::node get_sink_functions() {
+    std::vector<t_function*> funcs;
+    for (auto func : service_->get_functions()) {
+      if (func->returns_sink()) {
         funcs.push_back(func);
       }
     }
@@ -379,11 +474,53 @@ class mstch_swift_function : public mstch_function {
         this,
         {
             {"function:javaName", &mstch_swift_function::java_name},
+            {"function:voidType", &mstch_swift_function::is_void_type},
+            {"function:nestedDepth", &mstch_swift_function::get_nested_depth},
+            {"function:nestedDepth++",
+             &mstch_swift_function::increment_nested_depth},
+            {"function:nestedDepth--",
+             &mstch_swift_function::decrement_nested_depth},
+            {"function:isFirstDepth?", &mstch_swift_function::is_first_depth},
+            {"function:prevNestedDepth",
+             &mstch_swift_function::preceding_nested_depth},
+            {"function:isNested?",
+             &mstch_swift_function::get_nested_container_flag},
+            {"function:setIsNested",
+             &mstch_swift_function::set_nested_container_flag},
+            {"function:unsetIsNested",
+             &mstch_swift_function::unset_nested_container_flag},
         });
   }
+
+  int32_t nestedDepth = 0;
+  bool isNestedContainerFlag = false;
+
+  mstch::node get_nested_depth() { return nestedDepth; }
+  mstch::node preceding_nested_depth() { return (nestedDepth - 1); }
+  mstch::node is_first_depth() { return (nestedDepth == 1); }
+  mstch::node get_nested_container_flag() { return isNestedContainerFlag; }
+  mstch::node set_nested_container_flag() {
+    isNestedContainerFlag = true;
+    return mstch::node();
+  }
+  mstch::node unset_nested_container_flag() {
+    isNestedContainerFlag = false;
+    return mstch::node();
+  }
+  mstch::node increment_nested_depth() {
+    nestedDepth++;
+    return mstch::node();
+  }
+  mstch::node decrement_nested_depth() {
+    nestedDepth--;
+    return mstch::node();
+  }
+
   mstch::node java_name() {
     return java::mangle_java_name(function_->get_name(), false);
   }
+
+  mstch::node is_void_type() { return function_->get_returntype()->is_void(); }
 };
 
 class mstch_swift_field : public mstch_field {
@@ -431,24 +568,16 @@ class mstch_swift_field : public mstch_field {
   bool isNestedContainerFlag = false;
 
   mstch::node has_initial_value() {
-    if (field_->get_req() == t_field::e_req::T_OPTIONAL) {
+    if (field_->get_req() == t_field::e_req::optional) {
       // default values are ignored for optional fields
       return false;
     }
     return field_->get_value();
   }
-  mstch::node get_nested_depth() {
-    return nestedDepth;
-  }
-  mstch::node preceding_nested_depth() {
-    return (nestedDepth - 1);
-  }
-  mstch::node is_first_depth() {
-    return (nestedDepth == 1);
-  }
-  mstch::node get_nested_container_flag() {
-    return isNestedContainerFlag;
-  }
+  mstch::node get_nested_depth() { return nestedDepth; }
+  mstch::node preceding_nested_depth() { return (nestedDepth - 1); }
+  mstch::node is_first_depth() { return (nestedDepth == 1); }
+  mstch::node get_nested_container_flag() { return isNestedContainerFlag; }
   mstch::node set_nested_container_flag() {
     isNestedContainerFlag = true;
     return mstch::node();
@@ -467,8 +596,9 @@ class mstch_swift_field : public mstch_field {
         type->is_i16() || type->is_i32() || type->is_i64() ||
         type->is_double() || type->is_float();
   }
+
   mstch::node is_nullable_or_optional_not_enum() {
-    if (field_->get_req() == t_field::e_req::T_OPTIONAL) {
+    if (field_->get_req() == t_field::e_req::optional) {
       return true;
     }
     const t_type* field_type = field_->get_type()->get_true_type();
@@ -482,9 +612,7 @@ class mstch_swift_field : public mstch_field {
   mstch::node is_container() {
     return field_->get_type()->get_true_type()->is_container();
   }
-  mstch::node java_name() {
-    return get_java_swift_name(field_);
-  }
+  mstch::node java_name() { return get_java_swift_name(field_); }
 
   mstch::node type_field_name() {
     auto type_name = field_->get_type()->get_full_name();
@@ -495,28 +623,21 @@ class mstch_swift_field : public mstch_field {
     return constant_name(field_->get_name()) + "_FIELD_DESC";
   }
   mstch::node java_capital_name() {
-    auto it = field_->annotations_.find("java.swift.name");
-    auto name =
-        it != field_->annotations_.end() ? it->second : field_->get_name();
-    return java::mangle_java_name(name, true);
+    return java::mangle_java_name(
+        field_->get_annotation("java.swift.name", &field_->get_name()), true);
   }
   mstch::node java_all_caps_name() {
     auto field_name = field_->get_name();
     boost::to_upper(field_name);
     return field_name;
   }
-  mstch::node java_default_value() {
-    return default_value_for_field(field_);
-  }
+  mstch::node java_default_value() { return default_value_for_field(field_); }
   mstch::node is_recursive_reference() {
-    return field_->annotations_.count("swift.recursive_reference") &&
-        field_->annotations_.at("swift.recursive_reference") == "true";
+    return field_->get_annotation("swift.recursive_reference") == "true";
   }
-  mstch::node is_negative_id() {
-    return field_->get_key() < 0;
-  }
+  mstch::node is_negative_id() { return field_->get_key() < 0; }
   std::string default_value_for_field(const t_field* field) {
-    if (field_->get_req() == t_field::e_req::T_OPTIONAL) {
+    if (field_->get_req() == t_field::e_req::optional) {
       return "null";
     }
     return default_value_for_type(field->get_type());
@@ -536,17 +657,21 @@ class mstch_swift_field : public mstch_field {
         return "0.";
       } else if (type->is_bool()) {
         return "false";
+      } else if (type->is_enum()) {
+        // we use fromInteger(0) as default value as it may be null or the enum
+        // entry for 0.
+        auto javaNamespace = get_namespace_or_default(*(type->program()));
+        auto enumType = java::mangle_java_name(type->get_name(), true);
+        return javaNamespace + "." + enumType + ".fromInteger(0)";
       }
       return "null";
     }
   }
   mstch::node has_java_annotations() {
-    return field_->annotations_.find("java.swift.annotations") !=
-        field_->annotations_.end();
+    return field_->has_annotation("java.swift.annotations");
   }
   mstch::node is_sensitive() {
-    return field_->annotations_.find("java.sensitive") !=
-        field_->annotations_.end();
+    return field_->has_annotation("java.sensitive");
   }
   std::string constant_name(string name) {
     string constant_str;
@@ -566,7 +691,7 @@ class mstch_swift_field : public mstch_field {
     return constant_str;
   }
   mstch::node java_annotations() {
-    return get_java_annotation(field_);
+    return field_->get_annotation("java.swift.annotations");
   }
 };
 
@@ -588,13 +713,13 @@ class mstch_swift_enum : public mstch_enum {
         });
   }
   mstch::node java_package() {
-    return get_namespace_or_default(*(enm_->get_program()));
+    return get_namespace_or_default(*(enm_->program()));
   }
   mstch::node java_capital_name() {
     return java::mangle_java_name(enm_->get_name(), true);
   }
   mstch::node java_skip_enum_name_map() {
-    return enm_->annotations_.count("java.swift.skip_enum_name_map") != 0;
+    return enm_->has_annotation("java.swift.skip_enum_name_map");
   }
 };
 
@@ -659,22 +784,22 @@ class mstch_swift_const : public mstch_const {
     if (cnst_->get_type()->is_map()) {
       t_map* map = (t_map*)cnst_->get_type();
       if (map->get_key_type()->is_enum()) {
-        return map->get_key_type()->annotations_.count(
-                   "java.swift.skip_enum_name_map") != 0;
+        return map->get_key_type()->has_annotation(
+            "java.swift.skip_enum_name_map");
       }
     }
     if (cnst_->get_type()->is_list()) {
       t_list* list = (t_list*)cnst_->get_type();
       if (list->get_elem_type()->is_enum()) {
-        return list->get_elem_type()->annotations_.count(
-                   "java.swift.skip_enum_name_map") != 0;
+        return list->get_elem_type()->has_annotation(
+            "java.swift.skip_enum_name_map");
       }
     }
     if (cnst_->get_type()->is_set()) {
       t_set* set = (t_set*)cnst_->get_type();
       if (set->get_elem_type()->is_enum()) {
-        return set->get_elem_type()->annotations_.count(
-                   "java.swift.skip_enum_name_map") != 0;
+        return set->get_elem_type()->has_annotation(
+            "java.swift.skip_enum_name_map");
       }
     }
     return mstch::node();
@@ -720,9 +845,7 @@ class mstch_swift_const_value : public mstch_const_value {
     }
     return mstch::node();
   }
-  bool same_type_as_expected() const override {
-    return true;
-  }
+  bool same_type_as_expected() const override { return true; }
 };
 
 class mstch_swift_type : public mstch_type {
@@ -743,6 +866,7 @@ class mstch_swift_type : public mstch_type {
             {"type:isMapKey?", &mstch_swift_type::get_map_key_flag},
             {"type:setIsMapValue", &mstch_swift_type::set_is_map_value},
             {"type:isMapValue?", &mstch_swift_type::get_map_value_flag},
+            {"type:isBinaryString?", &mstch_swift_type::is_binary_string},
             {"type:setIsNotMap", &mstch_swift_type::set_is_not_map},
         });
   }
@@ -754,12 +878,8 @@ class mstch_swift_type : public mstch_type {
     isMapKeyFlag = false;
     return mstch::node();
   }
-  mstch::node get_map_value_flag() {
-    return isMapValueFlag;
-  }
-  mstch::node get_map_key_flag() {
-    return isMapKeyFlag;
-  }
+  mstch::node get_map_value_flag() { return isMapValueFlag; }
+  mstch::node get_map_key_flag() { return isMapKeyFlag; }
   mstch::node set_is_map_value() {
     isMapValueFlag = true;
     return mstch::node();
@@ -779,10 +899,10 @@ class mstch_swift_type : public mstch_type {
         type_->is_double() || type_->is_float();
   }
   mstch::node java_type() {
-    if (type_->get_true_type()->annotations_.count("java.swift.type")) {
-      return type_->get_true_type()->annotations_.at("java.swift.type");
-    }
-    return mstch::node();
+    return type_->get_true_type()->get_annotation("java.swift.type");
+  }
+  mstch::node is_binary_string() {
+    return type_->get_true_type()->get_annotation("java.swift.binary_string");
   }
 };
 
@@ -954,8 +1074,8 @@ class const_value_swift_generator : public const_value_generator {
 void t_mstch_swift_generator::generate_program() {
   set_mstch_generators();
 
-  auto name = get_program()->get_name();
-  const auto& id = get_program()->get_path();
+  auto name = get_program()->name();
+  const auto& id = get_program()->path();
   if (!cache_->programs_.count(id)) {
     cache_->programs_[id] = generators_->program_generator_->generate(
         get_program(), generators_, cache_);
@@ -965,24 +1085,24 @@ void t_mstch_swift_generator::generate_program() {
       generators_->struct_generator_.get(),
       cache_->structs_,
       get_program(),
-      get_program()->get_objects(),
+      get_program()->objects(),
       "Object");
   generate_items(
       generators_->service_generator_.get(),
       cache_->services_,
       get_program(),
-      get_program()->get_services(),
+      get_program()->services(),
       "Service");
   generate_client(
       generators_->service_generator_.get(),
       cache_->services_,
       get_program(),
-      get_program()->get_services());
+      get_program()->services());
   generate_items(
       generators_->enum_generator_.get(),
       cache_->enums_,
       get_program(),
-      get_program()->get_enums(),
+      get_program()->enums(),
       "Enum");
   generate_constants(get_program());
   generate_placeholder(get_program());

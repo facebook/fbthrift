@@ -36,14 +36,31 @@ void TccStructTraits<::cpp2::Mixin1>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin1::Mixin1(const Mixin1&) = default;
+Mixin1& Mixin1::operator=(const Mixin1&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin1::Mixin1(Mixin1&& other) noexcept  :
+    field1(std::move(other.field1)),
+    __isset(other.__isset) {}
+Mixin1& Mixin1::operator=(FOLLY_MAYBE_UNUSED Mixin1&& other) noexcept {
+    this->field1 = std::move(other.field1);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin1::Mixin1(apache::thrift::FragileConstructor, ::std::string field1__arg) :
     field1(std::move(field1__arg)) {
   __isset.field1 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Mixin1::__clear() {
   // clear all fields
-  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -53,7 +70,7 @@ bool Mixin1::operator==(const Mixin1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field1 == rhs.field1)) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
   return true;
@@ -63,8 +80,8 @@ bool Mixin1::operator<(const Mixin1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field1 == rhs.field1)) {
-    return lhs.field1 < rhs.field1;
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
+    return lhs.field1_ref() < rhs.field1_ref();
   }
   return false;
 }
@@ -115,17 +132,36 @@ void TccStructTraits<::cpp2::Mixin2>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Mixin2::Mixin2(apache::thrift::FragileConstructor,  ::cpp2::Mixin1 m1__arg, ::std::string field2__arg) :
+Mixin2::Mixin2(const Mixin2&) = default;
+Mixin2& Mixin2::operator=(const Mixin2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin2::Mixin2(Mixin2&& other) noexcept  :
+    m1(std::move(other.m1)),
+    field2(std::move(other.field2)),
+    __isset(other.__isset) {}
+Mixin2& Mixin2::operator=(FOLLY_MAYBE_UNUSED Mixin2&& other) noexcept {
+    this->m1 = std::move(other.m1);
+    this->field2 = std::move(other.field2);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin2::Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std::string field2__arg) :
     m1(std::move(m1__arg)),
     field2(std::move(field2__arg)) {
   __isset.m1 = true;
   __isset.field2 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Mixin2::__clear() {
   // clear all fields
-  m1.__clear();
-  field2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->m1.__clear();
+  this->field2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -135,10 +171,10 @@ bool Mixin2::operator==(const Mixin2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.m1 == rhs.m1)) {
+  if (!(lhs.m1_ref() == rhs.m1_ref())) {
     return false;
   }
-  if (lhs.field2_ref() != rhs.field2_ref()) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
   return true;
@@ -148,20 +184,20 @@ bool Mixin2::operator<(const Mixin2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.m1 == rhs.m1)) {
-    return lhs.m1 < rhs.m1;
+  if (!(lhs.m1_ref() == rhs.m1_ref())) {
+    return lhs.m1_ref() < rhs.m1_ref();
   }
-  if (lhs.field2_ref() != rhs.field2_ref()) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return lhs.field2_ref() < rhs.field2_ref();
   }
   return false;
 }
 
-const  ::cpp2::Mixin1& Mixin2::get_m1() const& {
+const ::cpp2::Mixin1& Mixin2::get_m1() const& {
   return m1;
 }
 
- ::cpp2::Mixin1 Mixin2::get_m1() && {
+::cpp2::Mixin1 Mixin2::get_m1() && {
   return std::move(m1);
 }
 
@@ -188,14 +224,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Mixin2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin1>,
+        ::cpp2::Mixin1>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Mixin2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin1>,
+        ::cpp2::Mixin1>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -224,14 +260,31 @@ void TccStructTraits<::cpp2::Mixin3Base>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin3Base::Mixin3Base(const Mixin3Base&) = default;
+Mixin3Base& Mixin3Base::operator=(const Mixin3Base&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Mixin3Base::Mixin3Base(Mixin3Base&& other) noexcept  :
+    field3(std::move(other.field3)),
+    __isset(other.__isset) {}
+Mixin3Base& Mixin3Base::operator=(FOLLY_MAYBE_UNUSED Mixin3Base&& other) noexcept {
+    this->field3 = std::move(other.field3);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin3Base::Mixin3Base(apache::thrift::FragileConstructor, ::std::string field3__arg) :
     field3(std::move(field3__arg)) {
   __isset.field3 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Mixin3Base::__clear() {
   // clear all fields
-  field3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->field3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -241,7 +294,7 @@ bool Mixin3Base::operator==(const Mixin3Base& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
   return true;
@@ -251,8 +304,8 @@ bool Mixin3Base::operator<(const Mixin3Base& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
   return false;
 }
@@ -303,7 +356,27 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg,  ::cpp2::Mixin2 m2__arg,  ::cpp2::Mixin3 m3__arg) :
+Foo::Foo(const Foo&) = default;
+Foo& Foo::operator=(const Foo&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Foo::Foo(Foo&& other) noexcept  :
+    field4(std::move(other.field4)),
+    m2(std::move(other.m2)),
+    m3(std::move(other.m3)),
+    __isset(other.__isset) {}
+Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
+    this->field4 = std::move(other.field4);
+    this->m2 = std::move(other.m2);
+    this->m3 = std::move(other.m3);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::Mixin2 m2__arg, ::cpp2::Mixin3 m3__arg) :
     field4(std::move(field4__arg)),
     m2(std::move(m2__arg)),
     m3(std::move(m3__arg)) {
@@ -312,11 +385,12 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg,  ::cpp2:
   __isset.m3 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Foo::__clear() {
   // clear all fields
-  field4 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  m2.__clear();
-  m3.__clear();
+  this->field4 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->m2.__clear();
+  this->m3.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -326,13 +400,13 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field4 == rhs.field4)) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
-  if (!(lhs.m2 == rhs.m2)) {
+  if (!(lhs.m2_ref() == rhs.m2_ref())) {
     return false;
   }
-  if (!(lhs.m3 == rhs.m3)) {
+  if (!(lhs.m3_ref() == rhs.m3_ref())) {
     return false;
   }
   return true;
@@ -342,31 +416,31 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field4 == rhs.field4)) {
-    return lhs.field4 < rhs.field4;
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
+    return lhs.field4_ref() < rhs.field4_ref();
   }
-  if (!(lhs.m2 == rhs.m2)) {
-    return lhs.m2 < rhs.m2;
+  if (!(lhs.m2_ref() == rhs.m2_ref())) {
+    return lhs.m2_ref() < rhs.m2_ref();
   }
-  if (!(lhs.m3 == rhs.m3)) {
-    return lhs.m3 < rhs.m3;
+  if (!(lhs.m3_ref() == rhs.m3_ref())) {
+    return lhs.m3_ref() < rhs.m3_ref();
   }
   return false;
 }
 
-const  ::cpp2::Mixin2& Foo::get_m2() const& {
+const ::cpp2::Mixin2& Foo::get_m2() const& {
   return m2;
 }
 
- ::cpp2::Mixin2 Foo::get_m2() && {
+::cpp2::Mixin2 Foo::get_m2() && {
   return std::move(m2);
 }
 
-const  ::cpp2::Mixin3& Foo::get_m3() const& {
+const ::cpp2::Mixin3& Foo::get_m3() const& {
   return m3;
 }
 
- ::cpp2::Mixin3 Foo::get_m3() && {
+::cpp2::Mixin3 Foo::get_m3() && {
   return std::move(m3);
 }
 
@@ -394,26 +468,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Foo,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin2>,
+        ::cpp2::Mixin2>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Foo,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin3>,
+        ::cpp2::Mixin3>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Foo,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin2>,
+        ::cpp2::Mixin2>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Foo,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Mixin3>,
+        ::cpp2::Mixin3>,
     "inconsistent use of nimble option");
 
 } // cpp2

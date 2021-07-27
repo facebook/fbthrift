@@ -18,6 +18,7 @@
 
 #include <folly/SocketAddress.h>
 
+#include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
@@ -33,11 +34,14 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     SocketAddress const& addr,
     ServerConfigCb configCb) {
   auto tf = make_shared<PosixThreadFactory>(PosixThreadFactory::ATTACHED);
-  auto tm = ThreadManager::newSimpleThreadManager(1, false);
+  auto tm = ThreadManager::newSimpleThreadManager(1);
   tm->threadFactory(move(tf));
   tm->start();
   auto ts = make_shared<ThriftServer>();
   ts->setAddress(addr);
+  // Allow plaintext on loopback so the plaintext clients created by default by
+  // the newClient methods can still connect.
+  ts->setAllowPlaintextOnLoopback(true);
   ts->setProcessorFactory(move(apf));
   ts->setNumIOWorkerThreads(1);
   ts->setNumCPUWorkerThreads(1);
@@ -51,7 +55,7 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     configCb(*ts);
   }
   ts_ = ts;
-  sst_.start(ts_);
+  sst_.start(ts_, [ts]() { ts->getEventBaseManager()->clearEventBase(); });
 }
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
@@ -60,9 +64,11 @@ ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     uint16_t port,
     ServerConfigCb configCb)
     : ScopedServerInterfaceThread(
-          move(apf),
-          SocketAddress(host, port),
-          move(configCb)) {}
+          move(apf), SocketAddress(host, port), move(configCb)) {}
+
+ScopedServerInterfaceThread::ScopedServerInterfaceThread(
+    shared_ptr<AsyncProcessorFactory> apf, ServerConfigCb configCb)
+    : ScopedServerInterfaceThread(move(apf), "::1", 0, move(configCb)) {}
 
 ScopedServerInterfaceThread::ScopedServerInterfaceThread(
     shared_ptr<BaseThriftServer> bts) {
@@ -82,5 +88,55 @@ uint16_t ScopedServerInterfaceThread::getPort() const {
   return getAddress().getPort();
 }
 
+RequestChannel::Ptr ScopedServerInterfaceThread::newChannel(
+    folly::Executor* callbackExecutor,
+    MakeChannelFunc makeChannel,
+    std::weak_ptr<folly::IOExecutor> executor) const {
+  return PooledRequestChannel::newChannel(
+      callbackExecutor,
+      std::move(executor),
+      [makeChannel = std::move(makeChannel),
+       address = getAddress()](folly::EventBase& eb) mutable {
+        return makeChannel(folly::AsyncSocket::UniquePtr(
+            new folly::AsyncSocket(&eb, address)));
+      });
+}
+
+namespace {
+struct TestClientRunner {
+  ScopedServerInterfaceThread runner;
+  RequestChannel::Ptr channel;
+
+  explicit TestClientRunner(std::shared_ptr<AsyncProcessorFactory> apf)
+      : runner(std::move(apf)) {}
+};
+} // namespace
+
+std::shared_ptr<RequestChannel>
+ScopedServerInterfaceThread::makeTestClientChannel(
+    std::shared_ptr<AsyncProcessorFactory> apf,
+    ScopedServerInterfaceThread::FaultInjectionFunc injectFault) {
+  auto runner = std::make_shared<TestClientRunner>(std::move(apf));
+  auto innerChannel = runner->runner.newChannel(
+      folly::getGlobalCPUExecutor().get(), RocketClientChannel::newChannel);
+  if (injectFault) {
+    runner->channel.reset(new apache::thrift::detail::FaultInjectionChannel(
+        std::move(innerChannel), std::move(injectFault)));
+  } else {
+    runner->channel = std::move(innerChannel);
+  }
+  auto* channel = runner->channel.get();
+  return folly::to_shared_ptr_aliasing(std::move(runner), channel);
+}
+
+namespace detail {
+void validateServiceName(AsyncProcessorFactory& apf, const char* serviceName) {
+  auto processor = apf.getProcessor();
+  if (auto* ptr = dynamic_cast<GeneratedAsyncProcessor*>(processor.get())) {
+    CHECK_STREQ(ptr->getServiceName(), serviceName)
+        << "Client and handler type mismatch";
+  }
+}
+} // namespace detail
 } // namespace thrift
 } // namespace apache

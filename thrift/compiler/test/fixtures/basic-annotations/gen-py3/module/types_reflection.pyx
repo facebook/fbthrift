@@ -6,7 +6,7 @@
 #
 
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3.reflection cimport (
     NumberType as __NumberType,
@@ -48,67 +48,6 @@ cdef __StructSpec get_reflection__MyStructNestedAnnotation():
         ),
     )
     return spec
-cdef __StructSpec get_reflection__MyStructAnnotation():
-    cdef _module_types.MyStructAnnotation defaults = _module_types.MyStructAnnotation.create(
-        constant_shared_ptr[_module_types.cMyStructAnnotation](
-            default_inst[_module_types.cMyStructAnnotation]()
-        )
-    )
-    cdef __StructSpec spec = __StructSpec.create(
-        name="MyStructAnnotation",
-        kind=__StructType.STRUCT,
-        annotations={
-        },
-    )
-    spec.add_field(
-        __FieldSpec.create(
-            id=1,
-            name="count",
-            type=int,
-            kind=__NumberType.I64,
-            qualifier=__Qualifier.UNQUALIFIED,
-            default=None,
-            annotations={
-            },
-        ),
-    )
-    spec.add_field(
-        __FieldSpec.create(
-            id=2,
-            name="name",
-            type=str,
-            kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.UNQUALIFIED,
-            default=None,
-            annotations={
-            },
-        ),
-    )
-    spec.add_field(
-        __FieldSpec.create(
-            id=3,
-            name="extra",
-            type=str,
-            kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.OPTIONAL,
-            default=None,
-            annotations={
-            },
-        ),
-    )
-    spec.add_field(
-        __FieldSpec.create(
-            id=4,
-            name="nest",
-            type=_module_types.MyStructNestedAnnotation,
-            kind=__NumberType.NOT_A_NUMBER,
-            qualifier=__Qualifier.UNQUALIFIED,
-            default=None,
-            annotations={
-            },
-        ),
-    )
-    return spec
 cdef __StructSpec get_reflection__MyStruct():
     cdef _module_types.MyStruct defaults = _module_types.MyStruct.create(
         constant_shared_ptr[_module_types.cMyStruct](
@@ -119,7 +58,7 @@ cdef __StructSpec get_reflection__MyStruct():
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """android.generate_builder""": """1""",        },
+            """android.generate_builder""": """1""",            """cpp.internal.deprecated._data.method""": """1""",        },
     )
     spec.add_field(
         __FieldSpec.create(

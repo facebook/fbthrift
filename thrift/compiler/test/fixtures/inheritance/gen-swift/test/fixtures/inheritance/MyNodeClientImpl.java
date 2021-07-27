@@ -11,7 +11,8 @@ import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
-import com.facebook.swift.transport.client.*;
+import com.facebook.thrift.client.*;
+import com.facebook.thrift.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -20,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class MyNodeClientImpl extends test.fixtures.inheritance.MyRootClientImpl implements MyNode {
-
 
     // Method Handlers
     private ThriftMethodHandler doMidMethodHandler;
@@ -75,21 +75,20 @@ public class MyNodeClientImpl extends test.fixtures.inheritance.MyRootClientImpl
 
     @java.lang.Override
     public void doMid() throws org.apache.thrift.TException {
-      try {
-        execute(doMidMethodHandler, doMidExceptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      doMidWrapper(RpcOptions.EMPTY).getData();
     }
 
-
+    @java.lang.Override
     public void doMid(
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      doMidWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> doMidWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        executeWithOptions(doMidMethodHandler, doMidExceptions, rpcOptions);
+        return FutureUtil.get(executeWrapperWithOptions(doMidMethodHandler, doMidExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

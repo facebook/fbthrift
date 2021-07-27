@@ -7,6 +7,7 @@
 cimport cython as __cython
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_unique, unique_ptr, shared_ptr
+from thrift.py3.types cimport assign_unique_ptr, assign_shared_ptr, assign_shared_const_ptr
 
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -35,19 +36,17 @@ cdef class __A_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field b
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_a_types.cA](deref(self._struct_cpp_obj), 0)
             return
-        deref(self._struct_cpp_obj).b_ref().assign(deref(_a_types.List__List__c_C(__fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.b = True
+        deref(self._struct_cpp_obj).b_ref().assign(deref(_a_types.List__List__c_C(_fbthrift_value)._cpp_obj))
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field other
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_a_types.cA](deref(self._struct_cpp_obj), 1)
             return
-        deref(self._struct_cpp_obj).other_ref().assign(deref(_a_types.List__c_C(__fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.other = True
+        deref(self._struct_cpp_obj).other_ref().assign(deref(_a_types.List__c_C(_fbthrift_value)._cpp_obj))
 

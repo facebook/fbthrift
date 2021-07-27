@@ -15,12 +15,17 @@
  */
 
 #include <thrift/compiler/generate/common.h>
+
 #include <boost/algorithm/string/replace.hpp>
 
 #include <regex>
 #include <stdexcept>
 #include <string>
 #include <vector>
+
+#include <thrift/compiler/ast/t_list.h>
+#include <thrift/compiler/ast/t_map.h>
+#include <thrift/compiler/ast/t_set.h>
 
 namespace apache {
 namespace thrift {
@@ -66,6 +71,34 @@ void strip_cpp_comments_and_newlines(std::string& s) {
 
   // strip newlines
   boost::algorithm::replace_all(s, "\n", " ");
+}
+
+namespace {
+
+template <typename F>
+void visit_type(const t_type* type, F&& visitor) {
+  visitor(type);
+  const auto* true_type = type->get_true_type();
+  if (const auto* tmap = dynamic_cast<const t_map*>(true_type)) {
+    visit_type(tmap->get_key_type(), std::forward<F>(visitor));
+    visit_type(tmap->get_val_type(), std::forward<F>(visitor));
+  } else if (const auto* tlist = dynamic_cast<const t_list*>(true_type)) {
+    visit_type(tlist->get_elem_type(), std::forward<F>(visitor));
+  } else if (const auto* tset = dynamic_cast<const t_set*>(true_type)) {
+    visit_type(tset->get_elem_type(), std::forward<F>(visitor));
+  }
+}
+
+} // namespace
+
+std::unordered_set<const t_type*> collect_types(const t_struct* strct) {
+  std::unordered_set<const t_type*> types;
+  for (const auto& field : strct->fields()) {
+    visit_type(&field.type().deref(), [&](const t_type* type) {
+      types.emplace(type);
+    });
+  }
+  return types;
 }
 
 } // namespace compiler

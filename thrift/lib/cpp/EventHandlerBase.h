@@ -32,9 +32,7 @@ class EventHandlerBase {
  public:
   void addEventHandler(const std::shared_ptr<TProcessorEventHandler>& handler);
 
-  void clearEventHandlers() {
-    handlers_.reset();
-  }
+  void clearEventHandlers() { handlers_.reset(); }
 
   folly::Range<std::shared_ptr<TProcessorEventHandler>*> getEventHandlers()
       const;
@@ -43,7 +41,7 @@ class EventHandlerBase {
       const char* service_name,
       const char* fn_name,
       server::TConnectionContext* connectionContext) {
-    return std::make_unique<ContextStack>(
+    return ContextStack::create(
         handlers_, service_name, fn_name, connectionContext);
   }
 

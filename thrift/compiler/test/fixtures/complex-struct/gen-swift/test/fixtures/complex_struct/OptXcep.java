@@ -21,11 +21,10 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("optXcep")
-public final class OptXcep extends java.lang.Exception {
+@com.facebook.swift.codec.ThriftStruct("optXcep")
+public final class OptXcep extends java.lang.Exception implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
-    private BitSet __isset_bit_vector = new BitSet();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -40,8 +39,8 @@ public final class OptXcep extends java.lang.Exception {
 
     @ThriftConstructor
     public OptXcep(
-        @ThriftField(value=1, name="message", requiredness=Requiredness.OPTIONAL) final String message,
-        @ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL) final Integer errorCode
+        @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.OPTIONAL) final String message,
+        @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL) final Integer errorCode
     ) {
         this.message = message;
         this.errorCode = errorCode;
@@ -54,12 +53,11 @@ public final class OptXcep extends java.lang.Exception {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String message = null;
         private Integer errorCode = null;
     
-        @ThriftField(value=1, name="message", requiredness=Requiredness.OPTIONAL)
+        @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.OPTIONAL)
         public Builder setMessage(String message) {
             this.message = message;
             return this;
@@ -67,7 +65,7 @@ public final class OptXcep extends java.lang.Exception {
     
         public String getMessage() { return message; }
     
-            @ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL)
         public Builder setErrorCode(Integer errorCode) {
             this.errorCode = errorCode;
             return this;
@@ -87,18 +85,21 @@ public final class OptXcep extends java.lang.Exception {
                 this.message,
                 this.errorCode
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
     
     
-    @ThriftField(value=1, name="message", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.OPTIONAL)
     public String getMessage() { return message; }
         
-    @ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=2, name="errorCode", requiredness=Requiredness.OPTIONAL)
     public Integer getErrorCode() { return errorCode; }
     
+    
+    public static com.facebook.thrift.payload.Reader<OptXcep> asReader() {
+      return OptXcep::read0;
+    }
     
     public static OptXcep read0(TProtocol oprot) throws TException {
       TField __field;

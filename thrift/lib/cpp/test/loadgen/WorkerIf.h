@@ -60,9 +60,7 @@ class WorkerFactory {
   virtual ~WorkerFactory() {}
 
   virtual WorkerIf* newWorker(
-      int id,
-      const std::shared_ptr<ScoreBoard>& sb,
-      IntervalTimer* itimer) = 0;
+      int id, const std::shared_ptr<ScoreBoard>& sb, IntervalTimer* itimer) = 0;
 };
 
 } // namespace loadgen

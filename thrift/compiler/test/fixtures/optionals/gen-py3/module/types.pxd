@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,14 +31,24 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass EnumMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cAnimal "::cpp2::Animal":
         pass
@@ -51,12 +60,15 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
 cdef class Animal(thrift.py3.types.CompiledEnum):
     pass
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cColor__isset "::cpp2::Color::__isset":
-        bint red
-        bint green
-        bint blue
-        bint alpha
 
     cdef cppclass cColor "::cpp2::Color":
         cColor() except +
@@ -68,21 +80,14 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cColor&)
         bint operator>=(cColor&)
         __field_ref[double] red_ref()
-        double red
         __field_ref[double] green_ref()
-        double green
         __field_ref[double] blue_ref()
-        double blue
         __field_ref[double] alpha_ref()
+        double red
+        double green
+        double blue
         double alpha
-        cColor__isset __isset
 
-    cdef cppclass cVehicle__isset "::cpp2::Vehicle::__isset":
-        bint color
-        bint licensePlate
-        bint description
-        bint name
-        bint hasAC
 
     cdef cppclass cVehicle "::cpp2::Vehicle":
         cVehicle() except +
@@ -94,28 +99,16 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cVehicle&)
         bint operator>=(cVehicle&)
         __field_ref[cColor] color_ref()
-        cColor color
         __optional_field_ref[string] licensePlate_ref()
-        string licensePlate
         __optional_field_ref[string] description_ref()
-        string description
         __optional_field_ref[string] name_ref()
-        string name
         __optional_field_ref[cbool] hasAC_ref()
+        cColor color
+        string licensePlate
+        string description
+        string name
         cbool hasAC
-        cVehicle__isset __isset
 
-    cdef cppclass cPerson__isset "::cpp2::Person::__isset":
-        bint id
-        bint name
-        bint age
-        bint address
-        bint favoriteColor
-        bint friends
-        bint bestFriend
-        bint petNames
-        bint afraidOfAnimal
-        bint vehicles
 
     cdef cppclass cPerson "::cpp2::Person":
         cPerson() except +
@@ -127,33 +120,32 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cPerson&)
         bint operator>=(cPerson&)
         __field_ref[cint64_t] id_ref()
-        cint64_t id
         __field_ref[string] name_ref()
-        string name
         __optional_field_ref[cint16_t] age_ref()
-        cint16_t age
         __optional_field_ref[string] address_ref()
-        string address
         __optional_field_ref[cColor] favoriteColor_ref()
-        cColor favoriteColor
         __optional_field_ref[cset[cint64_t]] friends_ref()
-        cset[cint64_t] friends
         __optional_field_ref[cint64_t] bestFriend_ref()
-        cint64_t bestFriend
         __optional_field_ref[cmap[cAnimal,string]] petNames_ref()
-        cmap[cAnimal,string] petNames
         __optional_field_ref[cAnimal] afraidOfAnimal_ref()
-        cAnimal afraidOfAnimal
         __optional_field_ref[vector[cVehicle]] vehicles_ref()
+        cint64_t id
+        string name
+        cint16_t age
+        string address
+        cColor favoriteColor
+        cset[cint64_t] friends
+        cint64_t bestFriend
+        cmap[cAnimal,string] petNames
+        cAnimal afraidOfAnimal
         vector[cVehicle] vehicles
-        cPerson__isset __isset
 
 
 
 
 cdef class Color(thrift.py3.types.Struct):
     cdef shared_ptr[cColor] _cpp_obj
-    cdef __fbthrift_types_fields.__Color_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__Color_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cColor])
@@ -162,8 +154,8 @@ cdef class Color(thrift.py3.types.Struct):
 
 cdef class Vehicle(thrift.py3.types.Struct):
     cdef shared_ptr[cVehicle] _cpp_obj
-    cdef __fbthrift_types_fields.__Vehicle_FieldsSetter _fields_setter
-    cdef Color __field_color
+    cdef _fbthrift_types_fields.__Vehicle_FieldsSetter _fields_setter
+    cdef Color __fbthrift_cached_color
 
     @staticmethod
     cdef create(shared_ptr[cVehicle])
@@ -172,11 +164,12 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
 cdef class Person(thrift.py3.types.Struct):
     cdef shared_ptr[cPerson] _cpp_obj
-    cdef __fbthrift_types_fields.__Person_FieldsSetter _fields_setter
-    cdef Color __field_favoriteColor
-    cdef Set__i64 __field_friends
-    cdef Map__Animal_string __field_petNames
-    cdef List__Vehicle __field_vehicles
+    cdef _fbthrift_types_fields.__Person_FieldsSetter _fields_setter
+    cdef Color __fbthrift_cached_favoriteColor
+    cdef Set__i64 __fbthrift_cached_friends
+    cdef Map__Animal_string __fbthrift_cached_petNames
+    cdef object __fbthrift_cached_afraidOfAnimal
+    cdef List__Vehicle __fbthrift_cached_vehicles
 
     @staticmethod
     cdef create(shared_ptr[cPerson])

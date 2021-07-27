@@ -86,34 +86,27 @@ exception EmptyData {
 }
 
 service TestService {
-  string lookup (
-    1: BTree root;
-    2: i32 key;
-  ) throws (
-    1: KeyNotFound e;
-    2: EmptyData f;
-  ),
+  string lookup(1: BTree root, 2: i32 key) throws (
+    1: KeyNotFound e,
+    2: EmptyData f,
+  );
 
-  void nested (
-    1: NestedStructs ns;
-  ),
+  void nested(1: NestedStructs ns);
 
-  void listStruct (
-    1: ListStruct ls;
-  )
+  void listStruct(1: ListStruct ls);
 }
 
-service DerivedTestService extends TestService { }
+service DerivedTestService extends TestService {
+}
 
-union EmptyUnion {}
+union EmptyUnion {
+}
 
 union NumberUnion {
-  1: i32 my_integer,
-  2: float my_float,
+  1: i32 my_integer;
+  2: float my_float;
 } (final)
 
 struct NumberUnionStruct {
-  1: NumberUnion nu = {
-    'my_integer': 100
-  }
+  1: NumberUnion nu = {'my_integer': 100};
 } (final)

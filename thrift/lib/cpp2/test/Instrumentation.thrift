@@ -22,11 +22,14 @@ service DebugTestService {
   string echo(1: string s) (cpp.coroutine);
 }
 
-service InstrumentationTestService extends DebugTestService {
+service InstrumentationTestService {
   void sendRequest() (cpp.coroutine);
   stream<i32> sendStreamingRequest() (cpp.coroutine);
   IOBuf sendPayload(1: i32 id, 2: string str) (cpp.coroutine);
-  void wait(1: i32 value, 2: bool busyWait, 3: bool setShallowRC) (cpp.coroutine);
+  void wait(1: i32 value, 2: bool busyWait, 3: bool setShallowRC) (
+    cpp.coroutine,
+  );
   void runCallback();
   void runCallback2();
+  void noop() (cpp.coroutine);
 }

@@ -19,6 +19,7 @@
 cimport cython as __cython
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_unique, unique_ptr, shared_ptr
+from thrift.py3.types cimport assign_unique_ptr, assign_shared_ptr, assign_shared_const_ptr
 
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -40,9 +41,9 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
     cdef __{{struct:name}}_FieldsSetter create({{> types/CurrentModuleTypes}}.c{{struct:name}}* struct_cpp_obj):
         cdef __{{struct:name}}_FieldsSetter __fbthrift_inst = __{{struct:name}}_FieldsSetter.__new__(__{{struct:name}}_FieldsSetter)
         __fbthrift_inst._struct_cpp_obj = struct_cpp_obj
-        {{#struct:fields}}
+        {{#struct:py3_fields}}
         __fbthrift_inst._setters[__cstring_view(<const char*>"{{field:py_name}}")] = __{{struct:name}}_FieldsSetter._set_field_{{field:index}}
-        {{/struct:fields}}
+        {{/struct:py3_fields}}
         return __fbthrift_inst
 
     cdef void set_field(__{{struct:name}}_FieldsSetter self, const char* name, object value) except *:
@@ -51,25 +52,25 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
         if found == self._setters.end():
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
     {{#field:type}}
 
-    cdef void _set_field_{{field:index}}(self, __fbthrift_value) except *:
+    cdef void _set_field_{{field:index}}(self, _fbthrift_value) except *:
         # for field {{field:py_name}}
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[{{> types/CurrentModuleTypes}}.c{{struct:name}}](deref(self._struct_cpp_obj), {{field:index}})
             return
         {{^type:container?}}
         {{#type:enum?}}
-        if not isinstance(__fbthrift_value, {{> types/PythonType}}):
-            raise TypeError(f'field {{field:py_name}} value: {repr(__fbthrift_value)} is not of the enum type { {{> types/PythonType}} }.')
+        if not isinstance(_fbthrift_value, {{> types/PythonType}}):
+            raise TypeError(f'field {{field:py_name}} value: {repr(_fbthrift_value)} is not of the enum type { {{> types/PythonType}} }.')
         {{/type:enum?}}
         {{^type:enum?}}
-        if not isinstance(__fbthrift_value, {{> types/PythonIsInstanceType}}):
+        if not isinstance(_fbthrift_value, {{> types/PythonIsInstanceType}}):
             raise TypeError(f'{{field:py_name}} is not a { {{> types/PythonType}} !r}.')
         {{#type:integer?}}
         {{! inject cython int overflow checks }}
-        __fbthrift_value = <{{> types/CythonPythonType}}> __fbthrift_value
+        _fbthrift_value = <{{> types/CythonPythonType}}> _fbthrift_value
         {{/type:integer?}}
         {{/type:enum?}}
         {{/type:container?}}
@@ -77,13 +78,13 @@ cdef class __{{struct:name}}_FieldsSetter(__StructFieldsSetter):
         deref(self._struct_cpp_obj).{{field:py_name}}_ref().assign({{> CythonFieldValueForAssignment}})
         {{/field:has_ref_accessor?}}
         {{^field:has_ref_accessor?}}
-        deref(self._struct_cpp_obj).{{field:py_name}} = {{> CythonFieldValueForAssignment}}
+        assign_{{#field:unique_ref?}}unique{{/field:unique_ref?}}{{!
+           }}{{#field:shared_ref?}}shared{{/field:shared_ref?}}{{!
+           }}{{#field:shared_const_ref?}}shared_const{{/field:shared_const_ref?}}{{!
+           }}_ptr[{{> types/CythonCppType}}](deref(self._struct_cpp_obj).{{field:py_name}}_ref(), {{> CythonFieldValueForAssignment}})
         {{/field:has_ref_accessor?}}
-        {{#field:isset?}}
-        deref(self._struct_cpp_obj).__isset.{{field:py_name}} = True
-        {{/field:isset?}}
     {{/field:type}}
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
 
 {{/struct:union?}}
 {{/program:structs}}

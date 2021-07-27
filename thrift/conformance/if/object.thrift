@@ -15,7 +15,6 @@
  */
 
 include "thrift/conformance/if/any.thrift"
-
 cpp_include "<folly/io/IOBuf.h>"
 
 namespace cpp2 apache.thrift.conformance
@@ -63,43 +62,3 @@ union Value {
   // A static object value.
   15: any.Any anyValue;
 } (thrift.uri = "facebook.com/thrift/Value")
-
-// An enumeration of all base types in thrift.
-//
-// Base types are unparametarized. For example, the base
-// type of map<int, string> is BaseType::Map and the base type of
-// all thrift structs is BaseType::Struct.
-//
-// Similar to lib/cpp/protocol/TType.h, but IDL
-// concepts instead of protocol concepts.
-enum BaseType {
-  Void = 0,
-
-  // Integral primitive types.
-  Bool = 1,
-  Byte = 2,
-  I16 = 3,
-  I32 = 4,
-  I64 = 5,
-
-  // Floating point primitive types.
-  Float = 6,
-  Double = 7,
-
-  // Enum type classes.
-  Enum = 8,
-
-  // String primitive types.
-  String = 9,
-  Binary = 10,
-
-  // Structured type classes.
-  Struct = 11,
-  Union = 12,
-  Exception = 13,
-
-  // Container type classes.
-  List = 14,
-  Set = 15,
-  Map = 16,
-}

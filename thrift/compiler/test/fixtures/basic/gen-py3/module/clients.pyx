@@ -29,12 +29,19 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
-from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    cThriftServiceContext as __fbthrift_cThriftServiceContext,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    ServiceMetadata,
+    extractMetadataFromServiceContext,
+    MetadataBox as __MetadataBox,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
-cimport folly.iobuf as __iobuf
-import folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 cimport cython
 
@@ -77,6 +84,32 @@ cdef void MyService_getRandomData_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
+cdef void MyService_sink_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_putDataById_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
 cdef void MyService_hasDataById_callback(
     cFollyTry[cbool]&& result,
     PyObject* userdata
@@ -103,7 +136,7 @@ cdef void MyService_getDataById_callback(
         except Exception as ex:
             pyfuture.set_exception(ex.with_traceback(None))
 
-cdef void MyService_putDataById_callback(
+cdef void MyService_deleteDataById_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
@@ -213,6 +246,60 @@ cdef class MyService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
     @cython.always_allow_keywords(True)
+    def sink(
+            MyService self,
+            sink not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        if not isinstance(sink, int):
+            raise TypeError(f'sink is not a {int !r}.')
+        else:
+            sink = <cint64_t> sink
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).sink(rpc_options._cpp_obj, 
+                sink,
+            ),
+            MyService_sink_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def putDataById(
+            MyService self,
+            id not None,
+            str data not None,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        if not isinstance(id, int):
+            raise TypeError(f'id is not a {int !r}.')
+        else:
+            id = <cint64_t> id
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).putDataById(rpc_options._cpp_obj, 
+                id,
+                data.encode('UTF-8'),
+            ),
+            MyService_putDataById_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
     def hasDataById(
             MyService self,
             id not None,
@@ -265,10 +352,9 @@ cdef class MyService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
     @cython.always_allow_keywords(True)
-    def putDataById(
+    def deleteDataById(
             MyService self,
             id not None,
-            str data not None,
             __RpcOptions rpc_options=None
     ):
         if rpc_options is None:
@@ -283,11 +369,10 @@ cdef class MyService(thrift.py3.client.Client):
         __userdata = (self, __future, rpc_options)
         bridgeFutureWith[cFollyUnit](
             self._executor,
-            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).putDataById(rpc_options._cpp_obj, 
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).deleteDataById(rpc_options._cpp_obj, 
                 id,
-                data.encode('UTF-8'),
             ),
-            MyService_putDataById_callback,
+            MyService_deleteDataById_callback,
             <PyObject *> __userdata
         )
         return asyncio_shield(__future)
@@ -324,6 +409,18 @@ cdef class MyService(thrift.py3.client.Client):
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__MyService(for_clients=True)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cMyServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyService"
 
 cdef object _DbMixedStackArguments_annotations = _py_types.MappingProxyType({
 })
@@ -389,4 +486,16 @@ cdef class DbMixedStackArguments(thrift.py3.client.Client):
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__DbMixedStackArguments(for_clients=True)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cDbMixedStackArgumentsSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.DbMixedStackArguments"
 

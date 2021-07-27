@@ -14,7 +14,15 @@
  * limitations under the License.
  */
 
+#if __BMI2__
+#include <immintrin.h>
+#endif
+
+#include <array>
+
+#include <folly/Utility.h>
 #include <folly/io/Cursor.h>
+#include <folly/lang/Bits.h>
 
 namespace apache {
 namespace thrift {
@@ -130,42 +138,9 @@ T readVarint(CursorT& c) {
 
 namespace detail {
 
-template <typename T>
-class has_ensure_and_append {
-  template <typename U>
-  static char f(decltype(&U::ensure), decltype(&U::append));
-  template <typename U>
-  static long f(...);
-
- public:
-  enum { value = sizeof(f<T>(nullptr, nullptr)) == sizeof(char) };
-};
-
-// Slow path if cursor class does not have ensure() and append() (e.g. RWCursor)
+// Cursor class must have ensure() and append() (e.g. QueueAppender)
 template <class Cursor, class T>
-typename std::enable_if<!has_ensure_and_append<Cursor>::value, uint8_t>::type
-writeVarintSlow(Cursor& c, T value) {
-  uint8_t sz = 0;
-  while (true) {
-    if ((value & ~0x7F) == 0) {
-      c.template write<uint8_t>((int8_t)value);
-      sz++;
-      break;
-    } else {
-      c.template write<uint8_t>((int8_t)((value & 0x7F) | 0x80));
-      sz++;
-      typedef typename std::make_unsigned<T>::type un_type;
-      value = (un_type)value >> 7;
-    }
-  }
-
-  return sz;
-}
-
-// Slow path if cursor class has ensure() and append() (e.g. QueueAppender)
-template <class Cursor, class T>
-typename std::enable_if<has_ensure_and_append<Cursor>::value, uint8_t>::type
-writeVarintSlow(Cursor& c, T value) {
+uint8_t writeVarintSlow(Cursor& c, T value) {
   enum { maxSize = (8 * sizeof(T) + 6) / 7 };
   typedef typename std::make_unsigned<T>::type un_type;
   un_type unval = static_cast<un_type>(value);
@@ -197,14 +172,82 @@ writeVarintSlow(Cursor& c, T value) {
 } // namespace detail
 
 template <class Cursor, class T>
-uint8_t writeVarint(Cursor& c, T value) {
+uint8_t writeVarintUnrolled(Cursor& c, T value) {
   if (LIKELY((value & ~0x7f) == 0)) {
-    c.template write<uint8_t>((int8_t)value);
+    c.template write<uint8_t>(static_cast<uint8_t>(value));
     return 1;
   }
 
   return apache::thrift::util::detail::writeVarintSlow<Cursor, T>(c, value);
 }
+
+#if __BMI2__
+
+template <class Cursor, class T>
+uint8_t writeVarintBMI2(Cursor& c, T valueS) {
+  auto value = folly::to_unsigned(valueS);
+  if (LIKELY((value & ~0x7f) == 0)) {
+    c.template write<uint8_t>(static_cast<uint8_t>(value));
+    return 1;
+  }
+
+  if (sizeof(T) == 1) {
+    c.template write<uint16_t>(value | 0x100);
+    return 2;
+  }
+
+  constexpr uint64_t kMask = 0x8080808080808080ULL;
+  static constexpr std::array<uint8_t, 64> kShift = []() {
+    std::array<uint8_t, 64> v = {};
+    for (size_t i = 0; i < 64; i++) {
+      uint8_t byteShift = i == 0 ? 0 : (8 - ((63 - i) / 7));
+      v[i] = byteShift * 8;
+    }
+    return v;
+  }();
+  static constexpr std::array<uint8_t, 64> kSize = []() {
+    std::array<uint8_t, 64> v = {};
+    for (size_t i = 0; i < 64; i++) {
+      v[i] = ((63 - i) / 7) + 1;
+    }
+    return v;
+  }();
+
+  auto clzll = __builtin_clzll(static_cast<uint64_t>(value));
+  // Only the first 56 bits of @value will be deposited in @v.
+  uint64_t v = _pdep_u64(value, ~kMask) | (kMask >> kShift[clzll]);
+  uint8_t size = kSize[clzll];
+
+  if (sizeof(T) < sizeof(uint64_t)) {
+    c.template write<uint64_t>(v, size);
+  } else {
+    // Ensure max encoding space for u64 varint (10 bytes).
+    // Write 56 bits using pdep and the other 8 bits manually.
+    // Write 10B to @c, but only update the size using @size.
+    // (Writing exta bytes is faster than branching based on @size.)
+    c.ensure(10);
+    uint8_t* p = c.writableData();
+    folly::storeUnaligned<uint64_t>(p, v);
+    p[sizeof(uint64_t) + 0] = value >> 56;
+    p[sizeof(uint64_t) + 1] = 1;
+    c.append(size);
+  }
+  return size;
+}
+
+template <class Cursor, class T>
+uint8_t writeVarint(Cursor& c, T value) {
+  return writeVarintBMI2(c, value);
+}
+
+#else // __BMI2__
+
+template <class Cursor, class T>
+uint8_t writeVarint(Cursor& c, T value) {
+  return writeVarintUnrolled(c, value);
+}
+
+#endif // __BMI2__
 
 inline int32_t zigzagToI32(uint32_t n) {
   return (n & 1) ? ~(n >> 1) : (n >> 1);

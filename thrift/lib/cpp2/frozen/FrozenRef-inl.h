@@ -102,10 +102,7 @@ struct RefLayout : public LayoutBase {
   }
 
   FieldPosition layoutValueField(
-      LayoutRoot& root,
-      LayoutPosition self,
-      FieldPosition pos,
-      const T* ptr) {
+      LayoutRoot& root, LayoutPosition self, FieldPosition pos, const T* ptr) {
     assert(ptr);
     assert(valueField_);
     size_t valueBytes = valueField_->layout.size;
@@ -122,8 +119,8 @@ struct RefLayout : public LayoutBase {
     return pos;
   }
 
-  void freezeValueField(FreezeRoot& root, FreezePosition self, const T* ptr)
-      const {
+  void freezeValueField(
+      FreezeRoot& root, FreezePosition self, const T* ptr) const {
     assert(ptr);
     assert(valueField_);
     size_t valueBytes = valueField_->layout.size;
@@ -184,8 +181,8 @@ struct RefLayout : public LayoutBase {
         thawField(self, layout->offsetField, offset);
         if (offset != kOffsetNull) {
           ViewPosition that = self(layout->decodeOffset(offset));
-          valueView_ = std::make_unique<ValueView>(
-              layout->valueField_->layout.view(that(layout->valueField_->pos)));
+          valueView_ =
+              layout->valueField_->layout.view(that(layout->valueField_->pos));
         }
       }
     }
@@ -198,12 +195,10 @@ struct RefLayout : public LayoutBase {
 
     inline const ValueView* operator->() const {
       assert(valueView_);
-      return valueView_.get();
+      return &*valueView_;
     }
 
-    inline explicit operator bool() const noexcept {
-      return bool(valueView_);
-    }
+    inline explicit operator bool() const noexcept { return bool(valueView_); }
 
     inline bool operator==(const View& that) const noexcept {
       if (valueView_) {
@@ -232,36 +227,33 @@ struct RefLayout : public LayoutBase {
     }
 
     friend inline bool operator==(
-        const std::nullptr_t,
-        const View& x) noexcept {
+        const std::nullptr_t, const View& x) noexcept {
       return !x.valueView_;
     }
 
     friend inline bool operator!=(
-        const std::nullptr_t,
-        const View& x) noexcept {
+        const std::nullptr_t, const View& x) noexcept {
       return bool(x.valueView_);
     }
 
    private:
-    std::unique_ptr<ValueView> valueView_;
+    folly::Optional<ValueView> valueView_;
   };
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 
 /**
- * Layout specialization for std::shared_ptr<T>
+ * Layout specialization for std::shared_ptr<[const] T>
  */
 template <class T>
 struct SharedRefLayout : public RefLayout<T> {
   std::shared_ptr<Field<T>> ownedField_;
 
+  template <class U>
   FieldPosition layout(
       LayoutRoot& root,
-      const std::shared_ptr<T>& pointer,
+      const std::shared_ptr<U>& pointer,
       LayoutPosition self) {
     FieldPosition pos = this->startFieldPosition();
     if (!pointer) {
@@ -295,9 +287,10 @@ struct SharedRefLayout : public RefLayout<T> {
     return pos;
   }
 
+  template <class U>
   void freeze(
       FreezeRoot& root,
-      const std::shared_ptr<T>& ptr,
+      const std::shared_ptr<U>& ptr,
       FreezePosition self) const {
     if (!ptr) {
       root.freezeField(self, this->offsetField, kOffsetNull);
@@ -320,6 +313,14 @@ struct SharedRefLayout : public RefLayout<T> {
         out = std::make_shared<T>();
         thawField(self(this->decodeOffset(offset)), *this->valueField_, *out);
       }
+    }
+  }
+
+  void thaw(ViewPosition self, std::shared_ptr<const T>& out) const {
+    if (this->valueField_) {
+      std::shared_ptr<T> tmp;
+      thaw(self, tmp);
+      out = std::move(tmp);
     }
   }
 
@@ -360,9 +361,7 @@ struct SharedRefLayout : public RefLayout<T> {
 
   using View = typename RefLayout<T>::View;
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 
 /**
@@ -465,15 +464,17 @@ struct UniqueRefLayout : public RefLayout<T> {
 
   using View = typename RefLayout<T>::View;
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 
 } // namespace detail
 
 template <class T>
 struct Layout<std::shared_ptr<T>>
+    : public apache::thrift::frozen::detail::SharedRefLayout<T> {};
+
+template <class T>
+struct Layout<std::shared_ptr<const T>>
     : public apache::thrift::frozen::detail::SharedRefLayout<T> {};
 
 template <class T, class D>

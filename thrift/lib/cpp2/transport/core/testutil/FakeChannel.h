@@ -51,17 +51,11 @@ class FakeChannel : public ThriftChannelIf {
     LOG(FATAL) << "sendThriftRequest() unused in this fake object.";
   }
 
-  folly::EventBase* getEventBase() noexcept override {
-    return evb_.get();
-  }
+  folly::EventBase* getEventBase() noexcept override { return evb_.get(); }
 
-  ResponseRpcMetadata* getMetadata() {
-    return &metadata_;
-  }
+  ResponseRpcMetadata* getMetadata() { return &metadata_; }
 
-  folly::IOBuf* getPayloadBuf() {
-    return payload_.get();
-  }
+  folly::IOBuf* getPayloadBuf() { return payload_.get(); }
 
  private:
   ResponseRpcMetadata metadata_;

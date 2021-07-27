@@ -25,13 +25,12 @@ class TestInterface : public apache::thrift::test::TestServiceSvIf {
   void noResponse(int64_t size) override;
   void voidResponse() override;
 
-  void echoRequest(std::string& _return, std::unique_ptr<std::string> req)
-      override;
+  void echoRequest(
+      std::string& _return, std::unique_ptr<std::string> req) override;
   typedef apache::thrift::HandlerCallback<std::unique_ptr<std::string>>
       StringCob;
   void async_tm_serializationTest(
-      std::unique_ptr<StringCob> callback,
-      bool inEventBase) override;
+      std::unique_ptr<StringCob> callback, bool inEventBase) override;
 
   void async_eb_eventBaseAsync(std::unique_ptr<StringCob> callback) override;
 

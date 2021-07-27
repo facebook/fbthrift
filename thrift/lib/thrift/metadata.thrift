@@ -15,39 +15,79 @@
  */
 
 namespace cpp2 apache.thrift.metadata
+namespace java.swift com.facebook.thrift.metadata
 namespace py apache.thrift.metadata
 namespace py3 apache.thrift
 namespace php tmeta
 namespace go thrift.lib.thrift.metadata
 
+/*
+ * Keep synced with : thrift/compiler/generate/t_hack_generator.cc
+ */
 enum ThriftPrimitiveType {
-  THRIFT_BOOL_TYPE = 1;
-  THRIFT_BYTE_TYPE = 2;
-  THRIFT_I16_TYPE = 3;
-  THRIFT_I32_TYPE = 4;
-  THRIFT_I64_TYPE = 5;
-  THRIFT_FLOAT_TYPE = 6;
-  THRIFT_DOUBLE_TYPE = 7;
-  THRIFT_BINARY_TYPE = 8;
-  THRIFT_STRING_TYPE = 9;
-  THRIFT_VOID_TYPE = 10;
+  THRIFT_BOOL_TYPE = 1,
+  THRIFT_BYTE_TYPE = 2,
+  THRIFT_I16_TYPE = 3,
+  THRIFT_I32_TYPE = 4,
+  THRIFT_I64_TYPE = 5,
+  THRIFT_FLOAT_TYPE = 6,
+  THRIFT_DOUBLE_TYPE = 7,
+  THRIFT_BINARY_TYPE = 8,
+  THRIFT_STRING_TYPE = 9,
+  THRIFT_VOID_TYPE = 10,
+}
+
+struct ThriftConstValuePair {
+  1: ThriftConstValue key;
+  2: ThriftConstValue value;
+}
+
+union ThriftConstValue {
+  1: bool cv_bool;
+  2: i64 cv_integer;
+  3: double cv_double;
+  4: string cv_string;
+  5: list<ThriftConstValuePair> cv_map;
+  6: list<ThriftConstValue> cv_list;
+  7: ThriftConstStruct cv_struct;
+}
+
+struct ThriftConstStruct {
+  1: ThriftStructType type;
+  2: map<string, ThriftConstValue> fields;
 }
 
 struct ThriftListType {
-  1: optional ThriftType valueType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+  1: optional ThriftType valueType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 struct ThriftSetType {
-  1: optional ThriftType valueType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+  1: optional ThriftType valueType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 struct ThriftMapType {
-  1: optional ThriftType keyType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box);
-  2: optional ThriftType valueType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+  1: optional ThriftType keyType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
+  2: optional ThriftType valueType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 struct ThriftEnumType {
@@ -64,24 +104,48 @@ struct ThriftUnionType {
 
 struct ThriftTypedefType {
   1: string name;
-  2: optional ThriftType underlyingType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+  2: optional ThriftType underlyingType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 struct ThriftStreamType {
-  1: optional ThriftType elemType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box);
-  2: optional ThriftType initialResponseType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+  1: optional ThriftType elemType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
+  2: optional ThriftType initialResponseType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 struct ThriftSinkType {
-  1: optional ThriftType elemType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box);
-  2: optional ThriftType finalResponseType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box);
-  3: optional ThriftType initialResponseType
-    (cpp.ref = "true", cpp2.ref = "true", rust.box);
+  1: optional ThriftType elemType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
+  2: optional ThriftType finalResponseType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
+  3: optional ThriftType initialResponseType (
+    cpp.ref = "true",
+    cpp2.ref = "true",
+    rust.box,
+    swift.recursive_reference = "true",
+  );
 }
 
 union ThriftType {
@@ -100,6 +164,7 @@ union ThriftType {
 struct ThriftEnum {
   1: string name;
   2: map<i32, string> elements;
+  3: list<ThriftConstStruct> structured_annotations;
 }
 
 struct ThriftField {
@@ -107,17 +172,21 @@ struct ThriftField {
   2: ThriftType type;
   3: string name;
   4: bool is_optional;
+  5: list<ThriftConstStruct> structured_annotations;
+  6: optional map<string, string> unstructured_annotations;
 }
 
 struct ThriftStruct {
   1: string name;
   2: list<ThriftField> fields;
   3: bool is_union;
+  4: list<ThriftConstStruct> structured_annotations;
 }
 
 struct ThriftException {
   1: string name;
   2: list<ThriftField> fields;
+  3: list<ThriftConstStruct> structured_annotations;
 }
 
 struct ThriftFunction {
@@ -126,12 +195,14 @@ struct ThriftFunction {
   3: list<ThriftField> arguments;
   4: list<ThriftField> exceptions;
   5: bool is_oneway;
+  6: list<ThriftConstStruct> structured_annotations;
 }
 
 struct ThriftService {
   1: string name;
   2: list<ThriftFunction> functions;
   3: optional string parent;
+  4: list<ThriftConstStruct> structured_annotations;
 }
 
 // ThriftModuleContext represents module-specific metadata.
@@ -153,7 +224,7 @@ struct ThriftServiceMetadataResponse {
 /**
  * ThriftMetadata is for looking up types/exceptions with a specific name in
  * some environments, typically used by ThriftServiceMetadataResponse to
- * help finding definitions of a service's depending types/execptions.
+ * help finding definitions of a service's depending types/exceptions.
  */
 struct ThriftMetadata {
   // 1: string file_name;
@@ -166,5 +237,5 @@ struct ThriftMetadata {
 }
 
 service ThriftMetadataService {
-  ThriftServiceMetadataResponse getThriftServiceMetadata()
+  ThriftServiceMetadataResponse getThriftServiceMetadata();
 }

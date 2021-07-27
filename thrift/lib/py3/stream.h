@@ -16,13 +16,22 @@
 
 #pragma once
 
+#include <exception>
+#include <memory>
+#include <optional>
+
+#include <Python.h>
+
 #include <folly/Portability.h>
-
-#if FOLLY_HAS_COROUTINES
-
+#include <folly/ScopeGuard.h>
+#include <folly/futures/Future.h>
+#include <folly/python/AsyncioExecutor.h>
 #include <folly/python/async_generator.h>
+#include <folly/python/executor.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
+
+#if FOLLY_HAS_COROUTINES
 
 namespace thrift {
 namespace py3 {
@@ -49,10 +58,66 @@ class ClientBufferedStreamWrapper {
 
 template <typename Response, typename StreamElement>
 apache::thrift::ResponseAndServerStream<Response, StreamElement>
-createEmptyResponseAndServerStream() {
-  return {{}, apache::thrift::ServerStream<StreamElement>::createEmpty()};
+createResponseAndServerStream(
+    Response response, apache::thrift::ServerStream<StreamElement> stream) {
+  return {std::move(response), std::move(stream)};
 }
 
+void cancelPythonIterator(PyObject*);
+
+folly::Function<void()> pythonFuncToCppFunc(PyObject* func) {
+  Py_INCREF(func);
+  return [func = std::move(func)] {
+    if (func != Py_None) {
+      PyObject_CallObject(func, nullptr);
+    }
+    Py_DECREF(func);
+  };
+}
+
+template <typename StreamElement>
+apache::thrift::ServerStream<StreamElement> createAsyncIteratorFromPyIterator(
+    PyObject* iter,
+    folly::Executor* executor,
+    folly::Function<void(
+        PyObject*, folly::Promise<std::optional<StreamElement>>)> genNext) {
+  Py_INCREF(iter);
+  auto guard = folly::makeGuard([iter] { Py_DECREF(iter); });
+
+  return folly::coro::co_invoke(
+      [iter,
+       executor = std::move(executor),
+       guard = std::move(guard),
+       genNext = std::move(
+           genNext)]() mutable -> folly::coro::AsyncGenerator<StreamElement&&> {
+        Py_INCREF(iter);
+        auto innerGuard = folly::makeGuard([iter] { Py_DECREF(iter); });
+
+        folly::CancellationCallback cb{
+            co_await folly::coro::co_current_cancellation_token,
+            [iter, executor, guard = std::move(innerGuard)]() mutable {
+              folly::via(executor, [iter, guard = std::move(guard)] {
+                cancelPythonIterator(iter);
+              });
+            }};
+
+        while (true) {
+          auto [promise, future] =
+              folly::makePromiseContract<std::optional<StreamElement>>(
+                  executor);
+          folly::via(
+              executor,
+              [&genNext, iter, promise = std::move(promise)]() mutable {
+                genNext(iter, std::move(promise));
+              });
+          auto val = co_await std::move(future);
+          if (!val) {
+            break;
+          }
+          co_yield std::move(val.value());
+        }
+      });
+}
 } // namespace py3
 } // namespace thrift
 

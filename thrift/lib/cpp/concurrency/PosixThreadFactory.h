@@ -97,7 +97,7 @@ class PosixThreadFactory : public ThreadFactory {
    * priority within a giving scheduler policy without knowing the absolute
    * value of the priority.
    */
-  enum PRIORITY {
+  enum THREAD_PRIORITY {
     LOWEST_PRI = 0,
     LOWER_PRI = 1,
     LOW_PRI = 2,
@@ -111,7 +111,7 @@ class PosixThreadFactory : public ThreadFactory {
   };
 
   static const POLICY kDefaultPolicy = OTHER;
-  static const PRIORITY kDefaultPriority = NORMAL_PRI;
+  static const THREAD_PRIORITY kDefaultPriority = NORMAL_PRI;
   static const int kDefaultStackSizeMB = 1;
 
   /**
@@ -130,7 +130,7 @@ class PosixThreadFactory : public ThreadFactory {
    */
   explicit PosixThreadFactory(
       POLICY policy = kDefaultPolicy,
-      PRIORITY priority = kDefaultPriority,
+      THREAD_PRIORITY priority = kDefaultPriority,
       int stackSize = kDefaultStackSizeMB,
       bool detached = true);
 
@@ -163,12 +163,12 @@ class PosixThreadFactory : public ThreadFactory {
   /**
    * Gets priority relative to current policy
    */
-  virtual PRIORITY getPriority() const;
+  virtual THREAD_PRIORITY getPriority() const;
 
   /**
    * Sets priority relative to current policy
    */
-  virtual void setPriority(PRIORITY priority);
+  virtual void setPriority(THREAD_PRIORITY priority);
 
   /**
    * Sets detached mode of threads
@@ -184,7 +184,7 @@ class PosixThreadFactory : public ThreadFactory {
   class Impl {
    protected:
     POLICY policy_;
-    PRIORITY priority_;
+    THREAD_PRIORITY priority_;
     int stackSize_;
     DetachState detached_;
 
@@ -202,10 +202,14 @@ class PosixThreadFactory : public ThreadFactory {
      * into the corresponding relative priority level (lowest..highest) and
      * then pro-rate accordingly.
      */
-    static int toPthreadPriority(POLICY policy, PRIORITY priority);
+    static int toPthreadPriority(POLICY policy, THREAD_PRIORITY priority);
 
    public:
-    Impl(POLICY policy, PRIORITY priority, int stackSize, DetachState detached);
+    Impl(
+        POLICY policy,
+        THREAD_PRIORITY priority,
+        int stackSize,
+        DetachState detached);
     virtual ~Impl() {}
 
     /**
@@ -219,7 +223,7 @@ class PosixThreadFactory : public ThreadFactory {
 
     int getStackSize() const;
     void setStackSize(int value);
-    PRIORITY getPriority() const;
+    THREAD_PRIORITY getPriority() const;
 
     /**
      * Sets priority.
@@ -227,7 +231,7 @@ class PosixThreadFactory : public ThreadFactory {
      *  XXX
      *  Need to handle incremental priorities properly.
      */
-    void setPriority(PRIORITY value);
+    void setPriority(THREAD_PRIORITY value);
 
     DetachState getDetachState() const;
     void setDetachState(DetachState value);

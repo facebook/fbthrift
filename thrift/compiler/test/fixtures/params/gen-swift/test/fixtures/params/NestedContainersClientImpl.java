@@ -11,7 +11,8 @@ import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
-import com.facebook.swift.transport.client.*;
+import com.facebook.thrift.client.*;
+import com.facebook.thrift.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -20,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class NestedContainersClientImpl extends AbstractThriftClient implements NestedContainers {
-
 
     // Method Handlers
     private ThriftMethodHandler mapListMethodHandler;
@@ -96,8 +96,22 @@ public class NestedContainersClientImpl extends AbstractThriftClient implements 
     @java.lang.Override
     public void mapList(
         Map<Integer, List<Integer>> foo) throws org.apache.thrift.TException {
+      mapListWrapper(foo, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void mapList(
+        Map<Integer, List<Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      mapListWrapper(foo, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> mapListWrapper(
+        Map<Integer, List<Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        execute(mapListMethodHandler, mapListExceptions, foo);
+        return FutureUtil.get(executeWrapperWithOptions(mapListMethodHandler, mapListExceptions, rpcOptions, foo));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -109,8 +123,22 @@ public class NestedContainersClientImpl extends AbstractThriftClient implements 
     @java.lang.Override
     public void mapSet(
         Map<Integer, Set<Integer>> foo) throws org.apache.thrift.TException {
+      mapSetWrapper(foo, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void mapSet(
+        Map<Integer, Set<Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      mapSetWrapper(foo, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> mapSetWrapper(
+        Map<Integer, Set<Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        execute(mapSetMethodHandler, mapSetExceptions, foo);
+        return FutureUtil.get(executeWrapperWithOptions(mapSetMethodHandler, mapSetExceptions, rpcOptions, foo));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -122,8 +150,22 @@ public class NestedContainersClientImpl extends AbstractThriftClient implements 
     @java.lang.Override
     public void listMap(
         List<Map<Integer, Integer>> foo) throws org.apache.thrift.TException {
+      listMapWrapper(foo, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void listMap(
+        List<Map<Integer, Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      listMapWrapper(foo, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> listMapWrapper(
+        List<Map<Integer, Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        execute(listMapMethodHandler, listMapExceptions, foo);
+        return FutureUtil.get(executeWrapperWithOptions(listMapMethodHandler, listMapExceptions, rpcOptions, foo));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -135,8 +177,22 @@ public class NestedContainersClientImpl extends AbstractThriftClient implements 
     @java.lang.Override
     public void listSet(
         List<Set<Integer>> foo) throws org.apache.thrift.TException {
+      listSetWrapper(foo, RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void listSet(
+        List<Set<Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      listSetWrapper(foo, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> listSetWrapper(
+        List<Set<Integer>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        execute(listSetMethodHandler, listSetExceptions, foo);
+        return FutureUtil.get(executeWrapperWithOptions(listSetMethodHandler, listSetExceptions, rpcOptions, foo));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -148,74 +204,22 @@ public class NestedContainersClientImpl extends AbstractThriftClient implements 
     @java.lang.Override
     public void turtles(
         List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo) throws org.apache.thrift.TException {
-      try {
-        execute(turtlesMethodHandler, turtlesExceptions, foo);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      turtlesWrapper(foo, RpcOptions.EMPTY).getData();
     }
 
-
-    public void mapList(
-        Map<Integer, List<Integer>> foo,
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        executeWithOptions(mapListMethodHandler, mapListExceptions, rpcOptions, foo);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
-    public void mapSet(
-        Map<Integer, Set<Integer>> foo,
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        executeWithOptions(mapSetMethodHandler, mapSetExceptions, rpcOptions, foo);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
-    public void listMap(
-        List<Map<Integer, Integer>> foo,
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        executeWithOptions(listMapMethodHandler, listMapExceptions, rpcOptions, foo);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
-    public void listSet(
-        List<Set<Integer>> foo,
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        executeWithOptions(listSetMethodHandler, listSetExceptions, rpcOptions, foo);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
+    @java.lang.Override
     public void turtles(
         List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      turtlesWrapper(foo, rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> turtlesWrapper(
+        List<List<Map<Integer, Map<Integer, Set<Integer>>>>> foo,
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        executeWithOptions(turtlesMethodHandler, turtlesExceptions, rpcOptions, foo);
+        return FutureUtil.get(executeWrapperWithOptions(turtlesMethodHandler, turtlesExceptions, rpcOptions, foo));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

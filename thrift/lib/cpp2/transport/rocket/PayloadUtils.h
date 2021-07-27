@@ -40,21 +40,16 @@ namespace rocket {
 namespace detail {
 template <class Metadata>
 Payload makePayload(
-    const Metadata& metadata,
-    std::unique_ptr<folly::IOBuf> data);
+    const Metadata& metadata, std::unique_ptr<folly::IOBuf> data);
 
 extern template Payload makePayload<>(
-    const RequestRpcMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const RequestRpcMetadata&, std::unique_ptr<folly::IOBuf> data);
 extern template Payload makePayload<>(
-    const ResponseRpcMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const ResponseRpcMetadata&, std::unique_ptr<folly::IOBuf> data);
 extern template Payload makePayload<>(
-    const StreamPayloadMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const StreamPayloadMetadata&, std::unique_ptr<folly::IOBuf> data);
 extern template Payload makePayload<>(
-    const HeadersPayloadMetadata&,
-    std::unique_ptr<folly::IOBuf> data);
+    const HeadersPayloadMetadata&, std::unique_ptr<folly::IOBuf> data);
 
 template <typename Metadata>
 void setCompressionCodec(
@@ -79,19 +74,20 @@ extern template void setCompressionCodec<>(
  * Helper method to compress the payload before sending to the remote endpoint.
  */
 void compressPayload(
-    std::unique_ptr<folly::IOBuf>& data,
-    CompressionAlgorithm compression);
+    std::unique_ptr<folly::IOBuf>& data, CompressionAlgorithm compression);
 
 /**
  * Helper method to uncompress the payload from remote endpoint.
  */
 folly::Expected<std::unique_ptr<folly::IOBuf>, std::string> uncompressPayload(
-    CompressionAlgorithm compression,
-    std::unique_ptr<folly::IOBuf> data);
+    CompressionAlgorithm compression, std::unique_ptr<folly::IOBuf> data);
 } // namespace detail
 
 template <typename T>
 size_t unpackCompact(T& output, const folly::IOBuf* buffer) {
+  if (!buffer) {
+    folly::throw_exception<std::runtime_error>("Underflow");
+  }
   CompactProtocolReader reader;
   reader.setInput(buffer);
   output.read(&reader);
@@ -111,35 +107,41 @@ inline size_t unpackCompact(
   return 0;
 }
 
+std::unique_ptr<folly::IOBuf> uncompressBuffer(
+    std::unique_ptr<folly::IOBuf>&& buffer, CompressionAlgorithm compression);
+
+namespace detail {
+template <class T, bool uncompressPayload>
+inline T unpackPayload(rocket::Payload&& payload) {
+  T t{{}, {}};
+  if (payload.hasNonemptyMetadata()) {
+    if (unpackCompact(t.metadata, payload.buffer()) != payload.metadataSize()) {
+      folly::throw_exception<std::out_of_range>("metadata size mismatch");
+    }
+  }
+  if constexpr (uncompressPayload) {
+    auto data = std::move(payload).data();
+    if (auto compression = t.metadata.compression_ref()) {
+      data = uncompressBuffer(std::move(data), *compression);
+    }
+    unpackCompact(t.payload, std::move(data));
+  } else {
+    t.payload = std::move(payload).data();
+  }
+  return t;
+}
+} // namespace detail
+
+template <class T>
+folly::Try<T> unpackAsCompressed(rocket::Payload&& payload) {
+  return folly::makeTryWith(
+      [&] { return detail::unpackPayload<T, false>(std::move(payload)); });
+}
+
 template <class T>
 folly::Try<T> unpack(rocket::Payload&& payload) {
-  return folly::makeTryWith([&] {
-    T t{{}, {}};
-    if (payload.hasNonemptyMetadata()) {
-      if (unpackCompact(t.metadata, payload.buffer()) !=
-          payload.metadataSize()) {
-        folly::throw_exception<std::out_of_range>("metadata size mismatch");
-      }
-    }
-
-    auto data = std::move(payload).data();
-    // uncompress the payload if needed
-    if (auto compress = t.metadata.compression_ref()) {
-      auto result = apache::thrift::rocket::detail::uncompressPayload(
-          *compress, std::move(data));
-      if (!result) {
-        folly::throw_exception<TApplicationException>(
-            TApplicationException::INVALID_TRANSFORM,
-            fmt::format(
-                "decompression failure: {}", std::move(result.error())));
-      }
-      data = std::move(result.value());
-    }
-
-    unpackCompact(t.payload, std::move(data));
-
-    return t;
-  });
+  return folly::makeTryWith(
+      [&] { return detail::unpackPayload<T, true>(std::move(payload)); });
 }
 
 template <typename T>

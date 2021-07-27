@@ -26,11 +26,158 @@
 #include <fatal/type/search.h>
 #include <fatal/type/variant_traits.h>
 #include <thrift/lib/cpp/Thrift.h>
-#include <thrift/lib/cpp2/reflection/container_traits.h>
 
 namespace apache {
 namespace thrift {
 namespace detail {
+
+struct recurse_helper {
+  /*
+   * This implicitly will dereference any smart pointer before hitting
+   * real conversion logic as we recurse. This is mainly to support
+   * structs that use cpp.ref or cpp.ref_type annotations.
+   */
+  template <typename TC, typename T>
+  static void to(folly::dynamic& out, T const& input, dynamic_format format) {
+    dynamic_converter_impl<TC>::to(out, input, format);
+  }
+
+  template <typename TC, typename T>
+  static void from(
+      T& out,
+      folly::dynamic const& input,
+      dynamic_format format,
+      format_adherence adherence) {
+    dynamic_converter_impl<TC>::from(out, input, format, adherence);
+  }
+
+  template <typename TC, typename T>
+  static void to(
+      folly::dynamic& out,
+      boxed_value_ptr<T> const& input,
+      dynamic_format format) {
+    if (!input) {
+      out = nullptr;
+      return;
+    }
+    dynamic_converter_impl<TC>::to(out, *input, format);
+  }
+
+  template <typename TC, typename T>
+  static void from(
+      boxed_value_ptr<T>& out,
+      folly::dynamic const& input,
+      dynamic_format format,
+      format_adherence adherence) {
+    if (input.isNull()) {
+      out.reset();
+      return;
+    }
+
+    boxed_value_ptr<T> temp;
+    dynamic_converter_impl<TC>::from(temp.emplace(), input, format, adherence);
+    out = std::move(temp);
+  }
+
+  template <typename TC, typename T>
+  static void to(
+      folly::dynamic& out,
+      std::shared_ptr<T> const& input,
+      dynamic_format format) {
+    if (!input) {
+      out = nullptr;
+      return;
+    }
+    dynamic_converter_impl<TC>::to(out, *input, format);
+  }
+
+  template <typename TC, typename T>
+  static void from(
+      std::shared_ptr<T>& out,
+      folly::dynamic const& input,
+      dynamic_format format,
+      format_adherence adherence) {
+    if (input.isNull()) {
+      out.reset();
+      return;
+    }
+
+    auto temp = std::make_shared<T>();
+    dynamic_converter_impl<TC>::from(*temp, input, format, adherence);
+    out = std::move(temp);
+  }
+
+  template <typename TC, typename T>
+  static void to(
+      folly::dynamic& out,
+      std::unique_ptr<T> const& input,
+      dynamic_format format) {
+    if (!input) {
+      out = nullptr;
+      return;
+    }
+    dynamic_converter_impl<TC>::to(out, *input, format);
+  }
+
+  template <typename TC, typename T>
+  static void from(
+      std::unique_ptr<T>& out,
+      folly::dynamic const& input,
+      dynamic_format format,
+      format_adherence adherence) {
+    if (input.isNull()) {
+      out.reset();
+      return;
+    }
+
+    auto temp = std::make_unique<T>();
+    dynamic_converter_impl<TC>::from(*temp, input, format, adherence);
+    out = std::move(temp);
+  }
+
+  template <typename TC, typename T>
+  static void to(
+      folly::dynamic& out,
+      std::shared_ptr<T const> const& input,
+      dynamic_format format) {
+    if (!input) {
+      out = nullptr;
+      return;
+    }
+    dynamic_converter_impl<TC>::to(out, *input, format);
+  }
+
+  template <typename TC, typename T>
+  static void from(
+      std::shared_ptr<T const>& out,
+      folly::dynamic const& input,
+      dynamic_format format,
+      format_adherence adherence) {
+    if (input.isNull()) {
+      out.reset();
+      return;
+    }
+
+    auto temp = std::make_shared<T>();
+    dynamic_converter_impl<TC>::from(*temp, input, format, adherence);
+    out = std::move(temp);
+  }
+
+  template <typename TC>
+  static void from(
+      std::unique_ptr<folly::IOBuf>& out,
+      folly::dynamic const& input,
+      dynamic_format format,
+      format_adherence adherence) {
+    if (input.isNull()) {
+      out.reset();
+      return;
+    }
+
+    // explicit overload exists for IOBuf -> binary so we add here too
+    dynamic_converter_impl<TC>::from(out, input, format, adherence);
+  }
+};
 
 template <>
 struct dynamic_converter_impl<type_class::enumeration> {
@@ -120,7 +267,7 @@ struct dynamic_converter_impl<type_class::list<ValueTypeClass>> {
 
     for (auto const& i : input) {
       folly::dynamic value(folly::dynamic::object);
-      dynamic_converter_impl<ValueTypeClass>::to(value, i, format);
+      recurse_helper::to<ValueTypeClass>(value, i, format);
       out.push_back(std::move(value));
     }
   }
@@ -137,8 +284,7 @@ struct dynamic_converter_impl<type_class::list<ValueTypeClass>> {
 
     for (auto const& i : input) {
       out.emplace_back();
-      dynamic_converter_impl<ValueTypeClass>::from(
-          out.back(), i, format, adherence);
+      recurse_helper::from<ValueTypeClass>(out.back(), i, format, adherence);
     }
   }
 };
@@ -151,9 +297,8 @@ struct dynamic_converter_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
 
     for (auto const& [k, m] : input) {
       folly::dynamic key(folly::dynamic::object);
-      dynamic_converter_impl<KeyTypeClass>::to(key, k, format);
-      dynamic_converter_impl<MappedTypeClass>::to(
-          out[std::move(key)], m, format);
+      recurse_helper::to<KeyTypeClass>(key, k, format);
+      recurse_helper::to<MappedTypeClass>(out[std::move(key)], m, format);
     }
   }
 
@@ -169,10 +314,9 @@ struct dynamic_converter_impl<type_class::map<KeyTypeClass, MappedTypeClass>> {
 
     for (auto const& i : input.items()) {
       typename T::key_type key;
-      dynamic_converter_impl<KeyTypeClass>::from(
-          key, i.first, format, adherence);
+      recurse_helper::from<KeyTypeClass>(key, i.first, format, adherence);
 
-      dynamic_converter_impl<MappedTypeClass>::from(
+      recurse_helper::from<MappedTypeClass>(
           out[std::move(key)], i.second, format, adherence);
     }
   }
@@ -186,7 +330,7 @@ struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
 
     for (auto const& i : input) {
       folly::dynamic value(folly::dynamic::object);
-      dynamic_converter_impl<ValueTypeClass>::to(value, i, format);
+      recurse_helper::to<ValueTypeClass>(value, i, format);
       out.push_back(std::move(value));
     }
   }
@@ -203,7 +347,7 @@ struct dynamic_converter_impl<type_class::set<ValueTypeClass>> {
 
     for (auto const& i : input) {
       typename T::value_type value;
-      dynamic_converter_impl<ValueTypeClass>::from(value, i, format, adherence);
+      recurse_helper::from<ValueTypeClass>(value, i, format, adherence);
       out.insert(std::move(value));
     }
   }
@@ -220,7 +364,7 @@ struct dynamic_converter_impl<type_class::variant> {
     fatal::scalar_search<descriptors, fatal::get_type::id>(
         input.getType(), [&](auto indexed) {
           using descriptor = decltype(fatal::tag_type(indexed));
-          dynamic_converter_impl<typename descriptor::metadata::type_class>::to(
+          recurse_helper::to<typename descriptor::metadata::type_class>(
               out[fatal::enum_to_string(input.getType(), nullptr)],
               typename descriptor::getter()(input),
               format);
@@ -236,7 +380,11 @@ struct dynamic_converter_impl<type_class::variant> {
     using variant_traits = fatal::variant_traits<T>;
     using id_traits = fatal::enum_traits<typename variant_traits::id>;
 
-    if (!input.isObject() || input.size() > 1) {
+    if (!input.isObject()) {
+      throw std::invalid_argument(folly::to<std::string>(
+          "dynamic input when converting to variant must be object: ",
+          input.typeName()));
+    } else if (input.size() > 1) {
       throw std::invalid_argument("unexpected additional fields for a variant");
     }
 
@@ -247,21 +395,21 @@ struct dynamic_converter_impl<type_class::variant> {
     } else {
       auto const type = i->first.stringPiece();
       auto const& entry = i->second;
-      bool const found = fatal::trie_find<
-          typename id_traits::fields,
-          fatal::get_type::name>(type.begin(), type.end(), [&](auto tag) {
-        using field = decltype(fatal::tag_type(tag));
-        using id = typename field::value;
-        using descriptor =
-            typename variant_traits::by_id::template descriptor<id>;
+      bool const found =
+          fatal::trie_find<typename id_traits::fields, fatal::get_type::name>(
+              type.begin(), type.end(), [&](auto tag) {
+                using field = decltype(fatal::tag_type(tag));
+                using id = typename field::value;
+                using descriptor =
+                    typename variant_traits::by_id::template descriptor<id>;
 
-        variant_traits::by_id::template set<id>(out);
-        dynamic_converter_impl<typename descriptor::metadata::type_class>::from(
-            variant_traits::by_id::template get<id>(out),
-            entry,
-            format,
-            adherence);
-      });
+                variant_traits::by_id::template set<id>(out);
+                recurse_helper::from<typename descriptor::metadata::type_class>(
+                    variant_traits::by_id::template get<id>(out),
+                    entry,
+                    format,
+                    adherence);
+              });
 
       if (!found) {
         throw std::invalid_argument("unrecognized variant type");
@@ -287,7 +435,7 @@ struct dynamic_converter_impl<type_class::structure> {
         return;
       }
 
-      impl::to(
+      recurse_helper::to<typename member::type_class>(
           out[folly::StringPiece(
               fatal::z_data<typename member::name>(),
               fatal::size<typename member::name>::value)],
@@ -309,7 +457,7 @@ struct dynamic_converter_impl<type_class::structure> {
           member_name.begin(), member_name.end(), [&](auto tag) {
             using member = decltype(fatal::tag_type(tag));
             member::mark_set(out, true);
-            dynamic_converter_impl<typename member::type_class>::from(
+            recurse_helper::from<typename member::type_class>(
                 typename member::getter{}(out), i.second, format, adherence);
           });
     }
@@ -332,8 +480,8 @@ struct dynamic_converter_impl<type_class::string> {
   }
 
   template <typename T>
-  static void
-  from(T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
+  static void from(
+      T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
     out = input.asString();
   }
 };
@@ -362,8 +510,8 @@ struct dynamic_converter_impl<type_class::binary> {
   }
 
   template <typename T>
-  static void
-  from(T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
+  static void from(
+      T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
     out = input.asString();
   }
 };
@@ -376,8 +524,8 @@ struct dynamic_converter_impl<type_class::floating_point> {
   }
 
   template <typename T>
-  static void
-  from(T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
+  static void from(
+      T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
     out = static_cast<T>(input.asDouble());
   }
 };
@@ -398,8 +546,8 @@ struct dynamic_converter_impl<type_class::integral> {
   }
 
   template <typename T>
-  static void
-  from(T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
+  static void from(
+      T& out, folly::dynamic const& input, dynamic_format, format_adherence) {
     out = static_cast<T>(input.asInt());
   }
 };

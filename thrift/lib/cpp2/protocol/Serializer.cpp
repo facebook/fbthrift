@@ -19,53 +19,8 @@
 namespace apache {
 namespace thrift {
 
-std::unique_ptr<folly::IOBuf> serializeError(
-    int protId,
-    const TApplicationException& obj,
-    folly::IOBuf* buf) {
-  switch (protId) {
-    case apache::thrift::protocol::T_BINARY_PROTOCOL: {
-      return serializeErrorProtocol<BinaryProtocolReader, BinaryProtocolWriter>(
-          obj, std::move(buf));
-    }
-    case apache::thrift::protocol::T_COMPACT_PROTOCOL: {
-      return serializeErrorProtocol<
-          CompactProtocolReader,
-          CompactProtocolWriter>(obj, std::move(buf));
-    }
-    default: {
-      LOG(ERROR) << "Invalid protocol from client";
-    }
-  }
-
-  return nullptr;
-}
-
-std::unique_ptr<folly::IOBuf> serializeError(
-    int protId,
-    const TApplicationException& obj,
-    const std::string& fname,
-    int32_t protoSeqId) {
-  switch (protId) {
-    case apache::thrift::protocol::T_BINARY_PROTOCOL: {
-      return serializeErrorProtocol<BinaryProtocolWriter>(
-          obj, fname, protoSeqId);
-    }
-    case apache::thrift::protocol::T_COMPACT_PROTOCOL: {
-      return serializeErrorProtocol<CompactProtocolWriter>(
-          obj, fname, protoSeqId);
-    }
-    default: {
-      LOG(ERROR) << "Invalid protocol from client";
-    }
-  }
-
-  return nullptr;
-}
-
 std::unique_ptr<folly::IOBuf> serializeErrorStruct(
-    protocol::PROTOCOL_TYPES protId,
-    const TApplicationException& obj) {
+    protocol::PROTOCOL_TYPES protId, const TApplicationException& obj) {
   auto f = [&](auto prot) -> std::unique_ptr<folly::IOBuf> {
     size_t bufSize = obj.serializedSizeZC(&prot);
     folly::IOBufQueue queue;

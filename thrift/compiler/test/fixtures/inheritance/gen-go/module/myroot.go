@@ -123,13 +123,49 @@ func (p *MyRootThreadsafeClient) recvDoRoot() (err error) {
 }
 
 
+type MyRootChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *MyRootChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyRootChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyRootChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyRootChannelClient(channel thrift.RequestChannel) *MyRootChannelClient {
+  return &MyRootChannelClient{RequestChannel: channel}
+}
+
+func (p *MyRootChannelClient) DoRoot(ctx context.Context) (err error) {
+  args := MyRootDoRootArgs{
+  }
+  var result MyRootDoRootResult
+  err = p.RequestChannel.Call(ctx, "do_root", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyRootProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler MyRoot
 }
 
 func (p *MyRootProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *MyRootProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *MyRootProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -143,14 +179,24 @@ func (p *MyRootProcessor) ProcessorMap() map[string]thrift.ProcessorFunction {
   return p.processorMap
 }
 
+func (p *MyRootProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewMyRootProcessor(handler MyRoot) *MyRootProcessor {
-  self0 := &MyRootProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self0 := &MyRootProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self0.processorMap["do_root"] = &myRootProcessorDoRoot{handler:handler}
+  self0.functionServiceMap["do_root"] = "MyRoot"
   return self0
 }
 
 type myRootProcessorDoRoot struct {
   handler MyRoot
+}
+
+func (p *MyRootDoRootResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *myRootProcessorDoRoot) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -207,6 +253,21 @@ func NewMyRootDoRootArgs() *MyRootDoRootArgs {
   return &MyRootDoRootArgs{}
 }
 
+type MyRootDoRootArgsBuilder struct {
+  obj *MyRootDoRootArgs
+}
+
+func NewMyRootDoRootArgsBuilder() *MyRootDoRootArgsBuilder{
+  return &MyRootDoRootArgsBuilder{
+    obj: NewMyRootDoRootArgs(),
+  }
+}
+
+func (p MyRootDoRootArgsBuilder) Emit() *MyRootDoRootArgs{
+  return &MyRootDoRootArgs{
+  }
+}
+
 func (p *MyRootDoRootArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -256,6 +317,21 @@ type MyRootDoRootResult struct {
 
 func NewMyRootDoRootResult() *MyRootDoRootResult {
   return &MyRootDoRootResult{}
+}
+
+type MyRootDoRootResultBuilder struct {
+  obj *MyRootDoRootResult
+}
+
+func NewMyRootDoRootResultBuilder() *MyRootDoRootResultBuilder{
+  return &MyRootDoRootResultBuilder{
+    obj: NewMyRootDoRootResult(),
+  }
+}
+
+func (p MyRootDoRootResultBuilder) Emit() *MyRootDoRootResult{
+  return &MyRootDoRootResult{
+  }
 }
 
 func (p *MyRootDoRootResult) Read(iprot thrift.Protocol) error {

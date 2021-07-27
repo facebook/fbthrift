@@ -34,7 +34,7 @@ class TProtocol;
  * exception from a handler method.  Because of the latter case, this
  * class can be serialized.
  */
-class TApplicationException : public TException {
+class FOLLY_EXPORT TApplicationException : public TException {
  public:
   /**
    * Error codes for the various types of exceptions.
@@ -67,15 +67,12 @@ class TApplicationException : public TException {
       : message_(message), type_(UNKNOWN) {}
 
   TApplicationException(
-      TApplicationExceptionType type,
-      const std::string& message)
+      TApplicationExceptionType type, const std::string& message)
       : message_(message), type_(type) {}
 
   ~TApplicationException() throw() override {}
 
-  const std::string& getMessage() const {
-    return message_;
-  }
+  const std::string& getMessage() const { return message_; }
 
   /**
    * Returns an error code that provides information about the type of error
@@ -83,17 +80,11 @@ class TApplicationException : public TException {
    *
    * @return Error code
    */
-  TApplicationExceptionType getType() const {
-    return type_;
-  }
+  TApplicationExceptionType getType() const { return type_; }
 
-  void setMessage(std::string&& msg) {
-    message_ = std::move(msg);
-  }
+  void setMessage(std::string&& msg) { message_ = std::move(msg); }
 
-  void setType(TApplicationExceptionType type) {
-    type_ = type;
-  }
+  void setType(TApplicationExceptionType type) { type_ = type; }
 
   const char* what() const throw() override {
     if (message_.empty()) {
@@ -279,12 +270,10 @@ class TApplicationException : public TException {
  * An error Thrift application can return from preprocess callback.
  * Indicates the error has been caused by the client
  */
-struct AppClientException : public TApplicationException {
+struct FOLLY_EXPORT AppClientException : public TApplicationException {
   AppClientException(std::string&& name, std::string&& message)
       : TApplicationException(std::move(message)), name_(std::move(name)) {}
-  const auto& name() const noexcept {
-    return name_;
-  }
+  const auto& name() const noexcept { return name_; }
 
  private:
   std::string name_;
@@ -296,12 +285,10 @@ struct AppClientException : public TApplicationException {
  * Indicates the server is aware it has encountered an error and is incapable
  * of performing the request.
  */
-struct AppServerException : TApplicationException {
+struct FOLLY_EXPORT AppServerException : TApplicationException {
   AppServerException(std::string&& name, std::string&& message)
       : TApplicationException(std::move(message)), name_(std::move(name)) {}
-  const auto& name() const noexcept {
-    return name_;
-  }
+  const auto& name() const noexcept { return name_; }
 
  private:
   std::string name_;

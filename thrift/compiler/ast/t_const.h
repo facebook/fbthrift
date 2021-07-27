@@ -18,8 +18,9 @@
 
 #include <memory>
 
-#include <thrift/compiler/ast/t_annotated.h>
 #include <thrift/compiler/ast/t_const_value.h>
+#include <thrift/compiler/ast/t_named.h>
+#include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
@@ -36,7 +37,7 @@ class t_program;
  * whole thing out.
  *
  */
-class t_const : public t_annotated {
+class t_const final : public t_named {
  public:
   /**
    * Constructor for t_const
@@ -48,41 +49,46 @@ class t_const : public t_annotated {
    */
   t_const(
       t_program* program,
-      t_type* type,
+      t_type_ref type,
       std::string name,
       std::unique_ptr<t_const_value> value)
-      : program_(program), type_(type), name_(name), value_(std::move(value)) {
+      : t_named(std::move(name)),
+        program_(program),
+        type_(std::move(type)),
+        value_(std::move(value)) {
     // value->get_owner() is set when rhs is referencing another constant.
     if (value_ && value_->get_owner() == nullptr) {
       value_->set_owner(this);
     }
   }
 
-  /**
-   * t_const getters
-   */
-  t_program* get_program() const {
-    return program_;
-  }
-
-  t_type* get_type() const {
-    return type_;
-  }
-
-  std::string get_name() const {
-    return name_;
-  }
-
-  t_const_value* get_value() const {
-    return value_.get();
-  }
+  const t_program* program() const { return program_; }
+  const t_type_ref& type() const { return type_; }
+  const t_const_value* value() const { return value_.get(); }
 
  private:
-  t_program* program_;
-  t_type* type_;
-  std::string name_;
+  t_program* const program_;
+  t_type_ref type_;
 
   std::unique_ptr<t_const_value> value_;
+
+  // TODO(afuller): Delete everything below here. It is only provided for
+  // backwards compatibility.
+ public:
+  t_const(
+      t_program* program,
+      const t_type* type,
+      std::string name,
+      std::unique_ptr<t_const_value> value)
+      : t_const(
+            program,
+            t_type_ref::from_req_ptr(type),
+            std::move(name),
+            std::move(value)) {}
+
+  t_program* get_program() const { return program_; }
+  const t_type* get_type() const { return type_.get_type(); }
+  t_const_value* get_value() const { return value_.get(); }
 };
 
 } // namespace compiler

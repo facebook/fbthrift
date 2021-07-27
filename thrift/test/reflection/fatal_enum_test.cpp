@@ -161,8 +161,7 @@ FATAL_S(field_annotation, "field_annotation");
 FATAL_S(field_annotated, "field annotated");
 FATAL_S(field_structured_annotation, "field_structured_annotation");
 FATAL_S(
-    field_structured_annotation_text,
-    R"({"a": "foo", "b": 567, "c": true})");
+    field_structured_annotation_text, R"({"a": "foo", "b": 567, "c": true})");
 FATAL_S(some_other_text, "some other text");
 FATAL_S(a, "a");
 FATAL_S(b, "b");
@@ -198,6 +197,13 @@ TEST(fatal_enum, field_annotations) {
               field_structured_annotation,
               field_structured_annotation_text>>,
       field2::map>();
+}
+
+TEST(fatal_struct, renamed_value) {
+  using meta = fatal::enum_traits<enum_with_renamed_value>;
+  using vmeta = meta::member::boring_cxx_name;
+  auto vname = fatal::to_instance<std::string, vmeta::name>();
+  EXPECT_EQ("fancy.idl.name", vname);
 }
 
 } // namespace cpp_reflection

@@ -131,13 +131,19 @@ class NonCopyableUnion;
 // END forward_declare
 // BEGIN typedefs
 namespace cpp2 {
-typedef ::std::map<int16_t, ::std::string> containerTypedef;
+typedef ::std::map<::std::int16_t, ::std::string> containerTypedef;
 
 } // cpp2
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class ComplexUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -145,6 +151,7 @@ class ComplexUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
@@ -166,7 +173,7 @@ class ComplexUnion final  {
   ComplexUnion()
       : type_(Type::__EMPTY__) {}
 
-  ComplexUnion(ComplexUnion&& rhs)
+  ComplexUnion(ComplexUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -253,7 +260,7 @@ class ComplexUnion final  {
     }
   }
 
-  ComplexUnion& operator=(ComplexUnion&& rhs) {
+  ComplexUnion& operator=(ComplexUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -347,39 +354,24 @@ class ComplexUnion final  {
     __clear();
   }
   union storage_type {
-    int64_t intValue;
+    ::std::int64_t intValue;
     ::std::string stringValue;
-    ::std::vector<int64_t> intListValue;
+    ::std::vector<::std::int64_t> intListValue;
     ::std::vector<::std::string> stringListValue;
-     ::cpp2::containerTypedef typedefValue;
-    std::unique_ptr<::std::string> stringRef;
+    ::cpp2::containerTypedef typedefValue;
+    ::std::unique_ptr<::std::string> stringRef;
 
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const ComplexUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ComplexUnion& __x, const ComplexUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const ComplexUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ComplexUnion& __x, const ComplexUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ComplexUnion& __x, const ComplexUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ComplexUnion& __x, const ComplexUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-  int64_t& set_intValue(int64_t t = int64_t()) {
+  bool operator==(const ComplexUnion&) const;
+  bool operator<(const ComplexUnion&) const;
+
+  ::std::int64_t& set_intValue(::std::int64_t t = ::std::int64_t()) {
     __clear();
     type_ = Type::intValue;
-    ::new (std::addressof(value_.intValue)) int64_t(t);
+    ::new (std::addressof(value_.intValue)) ::std::int64_t(t);
     return value_.intValue;
   }
 
@@ -404,24 +396,24 @@ class ComplexUnion final  {
     return value_.stringValue;
   }
 
-  ::std::vector<int64_t>& set_intListValue(::std::vector<int64_t> const &t) {
+  ::std::vector<::std::int64_t>& set_intListValue(::std::vector<::std::int64_t> const &t) {
     __clear();
     type_ = Type::intListValue;
-    ::new (std::addressof(value_.intListValue)) ::std::vector<int64_t>(t);
+    ::new (std::addressof(value_.intListValue)) ::std::vector<::std::int64_t>(t);
     return value_.intListValue;
   }
 
-  ::std::vector<int64_t>& set_intListValue(::std::vector<int64_t>&& t) {
+  ::std::vector<::std::int64_t>& set_intListValue(::std::vector<::std::int64_t>&& t) {
     __clear();
     type_ = Type::intListValue;
-    ::new (std::addressof(value_.intListValue)) ::std::vector<int64_t>(std::move(t));
+    ::new (std::addressof(value_.intListValue)) ::std::vector<::std::int64_t>(std::move(t));
     return value_.intListValue;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<int64_t>, T...>> ::std::vector<int64_t>& set_intListValue(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::int64_t>, T...>> ::std::vector<::std::int64_t>& set_intListValue(T&&... t) {
     __clear();
     type_ = Type::intListValue;
-    ::new (std::addressof(value_.intListValue)) ::std::vector<int64_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.intListValue)) ::std::vector<::std::int64_t>(std::forward<T>(t)...);
     return value_.intListValue;
   }
 
@@ -446,109 +438,121 @@ class ComplexUnion final  {
     return value_.stringListValue;
   }
 
-   ::cpp2::containerTypedef& set_typedefValue( ::cpp2::containerTypedef const &t) {
+  ::cpp2::containerTypedef& set_typedefValue(::cpp2::containerTypedef const &t) {
     __clear();
     type_ = Type::typedefValue;
-    ::new (std::addressof(value_.typedefValue))  ::cpp2::containerTypedef(t);
+    ::new (std::addressof(value_.typedefValue)) ::cpp2::containerTypedef(t);
     return value_.typedefValue;
   }
 
-   ::cpp2::containerTypedef& set_typedefValue( ::cpp2::containerTypedef&& t) {
+  ::cpp2::containerTypedef& set_typedefValue(::cpp2::containerTypedef&& t) {
     __clear();
     type_ = Type::typedefValue;
-    ::new (std::addressof(value_.typedefValue))  ::cpp2::containerTypedef(std::move(t));
+    ::new (std::addressof(value_.typedefValue)) ::cpp2::containerTypedef(std::move(t));
     return value_.typedefValue;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::containerTypedef, T...>>  ::cpp2::containerTypedef& set_typedefValue(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::containerTypedef, T...>> ::cpp2::containerTypedef& set_typedefValue(T&&... t) {
     __clear();
     type_ = Type::typedefValue;
-    ::new (std::addressof(value_.typedefValue))  ::cpp2::containerTypedef(std::forward<T>(t)...);
+    ::new (std::addressof(value_.typedefValue)) ::cpp2::containerTypedef(std::forward<T>(t)...);
     return value_.typedefValue;
   }
 
-  std::unique_ptr<::std::string>& set_stringRef(::std::string const &t) {
+  ::std::unique_ptr<::std::string>& set_stringRef(::std::string const &t) {
     __clear();
     type_ = Type::stringRef;
-    ::new (std::addressof(value_.stringRef)) std::unique_ptr<::std::string>(new std::unique_ptr<::std::string>::element_type(t));
+    ::new (std::addressof(value_.stringRef)) ::std::unique_ptr<::std::string>(new ::std::unique_ptr<::std::string>::element_type(t));
     return value_.stringRef;
   }
 
-  std::unique_ptr<::std::string>& set_stringRef(::std::string&& t) {
+  ::std::unique_ptr<::std::string>& set_stringRef(::std::string&& t) {
     __clear();
     type_ = Type::stringRef;
-    ::new (std::addressof(value_.stringRef)) std::unique_ptr<::std::string>(new std::unique_ptr<::std::string>::element_type(std::move(t)));
+    ::new (std::addressof(value_.stringRef)) ::std::unique_ptr<::std::string>(new ::std::unique_ptr<::std::string>::element_type(std::move(t)));
     return value_.stringRef;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> std::unique_ptr<::std::string>& set_stringRef(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::string, T...>> ::std::unique_ptr<::std::string>& set_stringRef(T&&... t) {
     __clear();
     type_ = Type::stringRef;
-    ::new (std::addressof(value_.stringRef)) std::unique_ptr<::std::string>(new std::unique_ptr<::std::string>::element_type(std::forward<T>(t)...));
+    ::new (std::addressof(value_.stringRef)) ::std::unique_ptr<::std::string>(new ::std::unique_ptr<::std::string>::element_type(std::forward<T>(t)...));
     return value_.stringRef;
   }
 
-  int64_t const & get_intValue() const {
+  ::std::int64_t const& get_intValue() const {
+    if (type_ != Type::intValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.intValue;
+  }
+
+  ::std::string const& get_stringValue() const {
+    if (type_ != Type::stringValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.stringValue;
+  }
+
+  ::std::vector<::std::int64_t> const& get_intListValue() const {
+    if (type_ != Type::intListValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.intListValue;
+  }
+
+  ::std::vector<::std::string> const& get_stringListValue() const {
+    if (type_ != Type::stringListValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.stringListValue;
+  }
+
+  ::cpp2::containerTypedef const& get_typedefValue() const {
+    if (type_ != Type::typedefValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.typedefValue;
+  }
+
+  ::std::unique_ptr<::std::string> const& get_stringRef() const {
+    if (type_ != Type::stringRef) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.stringRef;
+  }
+
+  ::std::int64_t& mutable_intValue() {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  ::std::string const & get_stringValue() const {
+  ::std::string& mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  ::std::vector<int64_t> const & get_intListValue() const {
+  ::std::vector<::std::int64_t>& mutable_intListValue() {
     assert(type_ == Type::intListValue);
     return value_.intListValue;
   }
 
-  ::std::vector<::std::string> const & get_stringListValue() const {
+  ::std::vector<::std::string>& mutable_stringListValue() {
     assert(type_ == Type::stringListValue);
     return value_.stringListValue;
   }
 
-   ::cpp2::containerTypedef const & get_typedefValue() const {
+  ::cpp2::containerTypedef& mutable_typedefValue() {
     assert(type_ == Type::typedefValue);
     return value_.typedefValue;
   }
 
-  std::unique_ptr<::std::string> const & get_stringRef() const {
+  ::std::unique_ptr<::std::string>& mutable_stringRef() {
     assert(type_ == Type::stringRef);
     return value_.stringRef;
   }
 
-  int64_t & mutable_intValue() {
-    assert(type_ == Type::intValue);
-    return value_.intValue;
-  }
-
-  ::std::string & mutable_stringValue() {
-    assert(type_ == Type::stringValue);
-    return value_.stringValue;
-  }
-
-  ::std::vector<int64_t> & mutable_intListValue() {
-    assert(type_ == Type::intListValue);
-    return value_.intListValue;
-  }
-
-  ::std::vector<::std::string> & mutable_stringListValue() {
-    assert(type_ == Type::stringListValue);
-    return value_.stringListValue;
-  }
-
-   ::cpp2::containerTypedef & mutable_typedefValue() {
-    assert(type_ == Type::typedefValue);
-    return value_.typedefValue;
-  }
-
-  std::unique_ptr<::std::string> & mutable_stringRef() {
-    assert(type_ == Type::stringRef);
-    return value_.stringRef;
-  }
-
-  int64_t move_intValue() {
+  ::std::int64_t move_intValue() {
     assert(type_ == Type::intValue);
     return std::move(value_.intValue);
   }
@@ -558,7 +562,7 @@ class ComplexUnion final  {
     return std::move(value_.stringValue);
   }
 
-  ::std::vector<int64_t> move_intListValue() {
+  ::std::vector<::std::int64_t> move_intListValue() {
     assert(type_ == Type::intListValue);
     return std::move(value_.intListValue);
   }
@@ -568,32 +572,32 @@ class ComplexUnion final  {
     return std::move(value_.stringListValue);
   }
 
-   ::cpp2::containerTypedef move_typedefValue() {
+  ::cpp2::containerTypedef move_typedefValue() {
     assert(type_ == Type::typedefValue);
     return std::move(value_.typedefValue);
   }
 
-  std::unique_ptr<::std::string> move_stringRef() {
+  ::std::unique_ptr<::std::string> move_stringRef() {
     assert(type_ == Type::stringRef);
     return std::move(value_.stringRef);
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intValue_ref() const& {
     return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue_ref() const&& {
     return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intValue_ref() & {
     return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue_ref() && {
     return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -616,22 +620,22 @@ class ComplexUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> stringValue_ref() && {
     return {std::move(value_.stringValue), type_, stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::vector<int64_t>>
+  template <typename..., typename T = ::std::vector<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intListValue_ref() const& {
     return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector<int64_t>>
+  template <typename..., typename T = ::std::vector<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intListValue_ref() const&& {
     return {std::move(value_.intListValue), type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector<int64_t>>
+  template <typename..., typename T = ::std::vector<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intListValue_ref() & {
     return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector<int64_t>>
+  template <typename..., typename T = ::std::vector<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intListValue_ref() && {
     return {std::move(value_.intListValue), type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -654,22 +658,22 @@ class ComplexUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> stringListValue_ref() && {
     return {std::move(value_.stringListValue), type_, stringListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::cpp2::containerTypedef>
+  template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> typedefValue_ref() const& {
     return {value_.typedefValue, type_, typedefValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::containerTypedef>
+  template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> typedefValue_ref() const&& {
     return {std::move(value_.typedefValue), type_, typedefValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::containerTypedef>
+  template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> typedefValue_ref() & {
     return {value_.typedefValue, type_, typedefValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::containerTypedef>
+  template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> typedefValue_ref() && {
     return {std::move(value_.typedefValue), type_, typedefValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -715,7 +719,7 @@ class ComplexUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ComplexUnion >;
+  friend class ::apache::thrift::Cpp2Ops<ComplexUnion>;
   friend void swap(ComplexUnion& a, ComplexUnion& b);
 };
 
@@ -728,6 +732,11 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class ListUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -735,6 +744,7 @@ class ListUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = ListUnion;
@@ -752,7 +762,7 @@ class ListUnion final  {
   ListUnion()
       : type_(Type::__EMPTY__) {}
 
-  ListUnion(ListUnion&& rhs)
+  ListUnion(ListUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -799,7 +809,7 @@ class ListUnion final  {
     }
   }
 
-  ListUnion& operator=(ListUnion&& rhs) {
+  ListUnion& operator=(ListUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -853,49 +863,34 @@ class ListUnion final  {
     __clear();
   }
   union storage_type {
-    ::std::vector<int64_t> intListValue;
+    ::std::vector<::std::int64_t> intListValue;
     ::std::vector<::std::string> stringListValue;
 
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const ListUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ListUnion& __x, const ListUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const ListUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ListUnion& __x, const ListUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ListUnion& __x, const ListUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ListUnion& __x, const ListUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-  ::std::vector<int64_t>& set_intListValue(::std::vector<int64_t> const &t) {
+  bool operator==(const ListUnion&) const;
+  bool operator<(const ListUnion&) const;
+
+  ::std::vector<::std::int64_t>& set_intListValue(::std::vector<::std::int64_t> const &t) {
     __clear();
     type_ = Type::intListValue;
-    ::new (std::addressof(value_.intListValue)) ::std::vector<int64_t>(t);
+    ::new (std::addressof(value_.intListValue)) ::std::vector<::std::int64_t>(t);
     return value_.intListValue;
   }
 
-  ::std::vector<int64_t>& set_intListValue(::std::vector<int64_t>&& t) {
+  ::std::vector<::std::int64_t>& set_intListValue(::std::vector<::std::int64_t>&& t) {
     __clear();
     type_ = Type::intListValue;
-    ::new (std::addressof(value_.intListValue)) ::std::vector<int64_t>(std::move(t));
+    ::new (std::addressof(value_.intListValue)) ::std::vector<::std::int64_t>(std::move(t));
     return value_.intListValue;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<int64_t>, T...>> ::std::vector<int64_t>& set_intListValue(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::int64_t>, T...>> ::std::vector<::std::int64_t>& set_intListValue(T&&... t) {
     __clear();
     type_ = Type::intListValue;
-    ::new (std::addressof(value_.intListValue)) ::std::vector<int64_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.intListValue)) ::std::vector<::std::int64_t>(std::forward<T>(t)...);
     return value_.intListValue;
   }
 
@@ -920,27 +915,31 @@ class ListUnion final  {
     return value_.stringListValue;
   }
 
-  ::std::vector<int64_t> const & get_intListValue() const {
+  ::std::vector<::std::int64_t> const& get_intListValue() const {
+    if (type_ != Type::intListValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.intListValue;
+  }
+
+  ::std::vector<::std::string> const& get_stringListValue() const {
+    if (type_ != Type::stringListValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.stringListValue;
+  }
+
+  ::std::vector<::std::int64_t>& mutable_intListValue() {
     assert(type_ == Type::intListValue);
     return value_.intListValue;
   }
 
-  ::std::vector<::std::string> const & get_stringListValue() const {
+  ::std::vector<::std::string>& mutable_stringListValue() {
     assert(type_ == Type::stringListValue);
     return value_.stringListValue;
   }
 
-  ::std::vector<int64_t> & mutable_intListValue() {
-    assert(type_ == Type::intListValue);
-    return value_.intListValue;
-  }
-
-  ::std::vector<::std::string> & mutable_stringListValue() {
-    assert(type_ == Type::stringListValue);
-    return value_.stringListValue;
-  }
-
-  ::std::vector<int64_t> move_intListValue() {
+  ::std::vector<::std::int64_t> move_intListValue() {
     assert(type_ == Type::intListValue);
     return std::move(value_.intListValue);
   }
@@ -950,22 +949,22 @@ class ListUnion final  {
     return std::move(value_.stringListValue);
   }
 
-  template <typename..., typename T = ::std::vector<int64_t>>
+  template <typename..., typename T = ::std::vector<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intListValue_ref() const& {
     return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector<int64_t>>
+  template <typename..., typename T = ::std::vector<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intListValue_ref() const&& {
     return {std::move(value_.intListValue), type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector<int64_t>>
+  template <typename..., typename T = ::std::vector<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intListValue_ref() & {
     return {value_.intListValue, type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector<int64_t>>
+  template <typename..., typename T = ::std::vector<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intListValue_ref() && {
     return {std::move(value_.intListValue), type_, intListValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -1011,7 +1010,7 @@ class ListUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ListUnion >;
+  friend class ::apache::thrift::Cpp2Ops<ListUnion>;
   friend void swap(ListUnion& a, ListUnion& b);
 };
 
@@ -1024,6 +1023,11 @@ uint32_t ListUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class DataUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1031,6 +1035,7 @@ class DataUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = DataUnion;
@@ -1048,7 +1053,7 @@ class DataUnion final  {
   DataUnion()
       : type_(Type::__EMPTY__) {}
 
-  DataUnion(DataUnion&& rhs)
+  DataUnion(DataUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1095,7 +1100,7 @@ class DataUnion final  {
     }
   }
 
-  DataUnion& operator=(DataUnion&& rhs) {
+  DataUnion& operator=(DataUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -1155,24 +1160,9 @@ class DataUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const DataUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const DataUnion& __x, const DataUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const DataUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const DataUnion& __x, const DataUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const DataUnion& __x, const DataUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const DataUnion& __x, const DataUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
+
+  bool operator==(const DataUnion&) const;
+  bool operator<(const DataUnion&) const;
 
   ::std::string& set_binaryData(::std::string const &t) {
     __clear();
@@ -1216,22 +1206,26 @@ class DataUnion final  {
     return value_.stringData;
   }
 
-  ::std::string const & get_binaryData() const {
-    assert(type_ == Type::binaryData);
+  ::std::string const& get_binaryData() const {
+    if (type_ != Type::binaryData) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.binaryData;
   }
 
-  ::std::string const & get_stringData() const {
-    assert(type_ == Type::stringData);
+  ::std::string const& get_stringData() const {
+    if (type_ != Type::stringData) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.stringData;
   }
 
-  ::std::string & mutable_binaryData() {
+  ::std::string& mutable_binaryData() {
     assert(type_ == Type::binaryData);
     return value_.binaryData;
   }
 
-  ::std::string & mutable_stringData() {
+  ::std::string& mutable_stringData() {
     assert(type_ == Type::stringData);
     return value_.stringData;
   }
@@ -1307,7 +1301,7 @@ class DataUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< DataUnion >;
+  friend class ::apache::thrift::Cpp2Ops<DataUnion>;
   friend void swap(DataUnion& a, DataUnion& b);
 };
 
@@ -1320,6 +1314,11 @@ uint32_t DataUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class Val final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1327,6 +1326,7 @@ class Val final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = Val;
@@ -1336,57 +1336,41 @@ class Val final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Val() :
-      intVal(0) {}
+      intVal(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, int32_t intVal__arg,  ::cpp2::containerTypedef typedefValue__arg);
+  Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::int32_t intVal__arg, ::cpp2::containerTypedef typedefValue__arg);
 
-  Val(Val&&) = default;
+  Val(Val&&) noexcept;
 
-  Val(const Val&) = default;
+  Val(const Val& src);
 
 
-  Val& operator=(Val&&) = default;
-
-  Val& operator=(const Val&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  Val& operator=(Val&&) noexcept;
+  Val& operator=(const Val& src);
   void __clear();
  private:
   ::std::string strVal;
  private:
-  int32_t intVal;
+  ::std::int32_t intVal;
  private:
-   ::cpp2::containerTypedef typedefValue;
+  ::cpp2::containerTypedef typedefValue;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool strVal;
     bool intVal;
     bool typedefValue;
   } __isset = {};
-  bool operator==(const Val& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Val& __x, const Val& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const Val& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Val& __x, const Val& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Val& __x, const Val& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Val& __x, const Val& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ public:
+
+  bool operator==(const Val&) const;
+  bool operator<(const Val&) const;
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> strVal_ref() const& {
     return {this->strVal, __isset.strVal};
@@ -1406,51 +1390,46 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> strVal_ref() && {
     return {std::move(this->strVal), __isset.strVal};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> intVal_ref() const& {
     return {this->intVal, __isset.intVal};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> intVal_ref() const&& {
     return {std::move(this->intVal), __isset.intVal};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> intVal_ref() & {
     return {this->intVal, __isset.intVal};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> intVal_ref() && {
     return {std::move(this->intVal), __isset.intVal};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::containerTypedef>
+  template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> typedefValue_ref() const& {
     return {this->typedefValue, __isset.typedefValue};
   }
 
-  template <typename..., typename T =  ::cpp2::containerTypedef>
+  template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedefValue_ref() const&& {
     return {std::move(this->typedefValue), __isset.typedefValue};
   }
 
-  template <typename..., typename T =  ::cpp2::containerTypedef>
+  template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> typedefValue_ref() & {
     return {this->typedefValue, __isset.typedefValue};
   }
 
-  template <typename..., typename T =  ::cpp2::containerTypedef>
+  template <typename..., typename T = ::cpp2::containerTypedef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedefValue_ref() && {
     return {std::move(this->typedefValue), __isset.typedefValue};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_strVal() const& {
     return strVal;
@@ -1461,34 +1440,31 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_Val_strVal_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.strVal_ref() = BAR;` instead of `FOO.set_strVal(BAR);`")]]
   ::std::string& set_strVal(T_Val_strVal_struct_setter&& strVal_) {
     strVal = std::forward<T_Val_strVal_struct_setter>(strVal_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.strVal = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return strVal;
   }
 
-  int32_t get_intVal() const {
+  ::std::int32_t get_intVal() const {
     return intVal;
   }
 
-  int32_t& set_intVal(int32_t intVal_) {
+  [[deprecated("Use `FOO.intVal_ref() = BAR;` instead of `FOO.set_intVal(BAR);`")]]
+  ::std::int32_t& set_intVal(::std::int32_t intVal_) {
     intVal = intVal_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.intVal = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return intVal;
   }
-  const  ::cpp2::containerTypedef& get_typedefValue() const&;
-   ::cpp2::containerTypedef get_typedefValue() &&;
+  const ::cpp2::containerTypedef& get_typedefValue() const&;
+  ::cpp2::containerTypedef get_typedefValue() &&;
 
-  template <typename T_Val_typedefValue_struct_setter =  ::cpp2::containerTypedef>
-   ::cpp2::containerTypedef& set_typedefValue(T_Val_typedefValue_struct_setter&& typedefValue_) {
+  template <typename T_Val_typedefValue_struct_setter = ::cpp2::containerTypedef>
+  [[deprecated("Use `FOO.typedefValue_ref() = BAR;` instead of `FOO.set_typedefValue(BAR);`")]]
+  ::cpp2::containerTypedef& set_typedefValue(T_Val_typedefValue_struct_setter&& typedefValue_) {
     typedefValue = std::forward<T_Val_typedefValue_struct_setter>(typedefValue_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.typedefValue = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return typedefValue;
   }
 
@@ -1505,7 +1481,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Val >;
+  friend class ::apache::thrift::Cpp2Ops<Val>;
   friend void swap(Val& a, Val& b);
 };
 
@@ -1518,6 +1494,11 @@ uint32_t Val::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class ValUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1525,6 +1506,7 @@ class ValUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = ValUnion;
@@ -1542,7 +1524,7 @@ class ValUnion final  {
   ValUnion()
       : type_(Type::__EMPTY__) {}
 
-  ValUnion(ValUnion&& rhs)
+  ValUnion(ValUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1589,7 +1571,7 @@ class ValUnion final  {
     }
   }
 
-  ValUnion& operator=(ValUnion&& rhs) {
+  ValUnion& operator=(ValUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -1643,138 +1625,127 @@ class ValUnion final  {
     __clear();
   }
   union storage_type {
-     ::cpp2::Val v1;
-     ::cpp2::Val v2;
+    ::cpp2::Val v1;
+    ::cpp2::Val v2;
 
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const ValUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ValUnion& __x, const ValUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const ValUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ValUnion& __x, const ValUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ValUnion& __x, const ValUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ValUnion& __x, const ValUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-   ::cpp2::Val& set_v1( ::cpp2::Val const &t) {
+  bool operator==(const ValUnion&) const;
+  bool operator<(const ValUnion&) const;
+
+  ::cpp2::Val& set_v1(::cpp2::Val const &t) {
     __clear();
     type_ = Type::v1;
-    ::new (std::addressof(value_.v1))  ::cpp2::Val(t);
+    ::new (std::addressof(value_.v1)) ::cpp2::Val(t);
     return value_.v1;
   }
 
-   ::cpp2::Val& set_v1( ::cpp2::Val&& t) {
+  ::cpp2::Val& set_v1(::cpp2::Val&& t) {
     __clear();
     type_ = Type::v1;
-    ::new (std::addressof(value_.v1))  ::cpp2::Val(std::move(t));
+    ::new (std::addressof(value_.v1)) ::cpp2::Val(std::move(t));
     return value_.v1;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::Val, T...>>  ::cpp2::Val& set_v1(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::Val, T...>> ::cpp2::Val& set_v1(T&&... t) {
     __clear();
     type_ = Type::v1;
-    ::new (std::addressof(value_.v1))  ::cpp2::Val(std::forward<T>(t)...);
+    ::new (std::addressof(value_.v1)) ::cpp2::Val(std::forward<T>(t)...);
     return value_.v1;
   }
 
-   ::cpp2::Val& set_v2( ::cpp2::Val const &t) {
+  ::cpp2::Val& set_v2(::cpp2::Val const &t) {
     __clear();
     type_ = Type::v2;
-    ::new (std::addressof(value_.v2))  ::cpp2::Val(t);
+    ::new (std::addressof(value_.v2)) ::cpp2::Val(t);
     return value_.v2;
   }
 
-   ::cpp2::Val& set_v2( ::cpp2::Val&& t) {
+  ::cpp2::Val& set_v2(::cpp2::Val&& t) {
     __clear();
     type_ = Type::v2;
-    ::new (std::addressof(value_.v2))  ::cpp2::Val(std::move(t));
+    ::new (std::addressof(value_.v2)) ::cpp2::Val(std::move(t));
     return value_.v2;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::Val, T...>>  ::cpp2::Val& set_v2(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::Val, T...>> ::cpp2::Val& set_v2(T&&... t) {
     __clear();
     type_ = Type::v2;
-    ::new (std::addressof(value_.v2))  ::cpp2::Val(std::forward<T>(t)...);
+    ::new (std::addressof(value_.v2)) ::cpp2::Val(std::forward<T>(t)...);
     return value_.v2;
   }
 
-   ::cpp2::Val const & get_v1() const {
+  ::cpp2::Val const& get_v1() const {
+    if (type_ != Type::v1) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.v1;
+  }
+
+  ::cpp2::Val const& get_v2() const {
+    if (type_ != Type::v2) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.v2;
+  }
+
+  ::cpp2::Val& mutable_v1() {
     assert(type_ == Type::v1);
     return value_.v1;
   }
 
-   ::cpp2::Val const & get_v2() const {
+  ::cpp2::Val& mutable_v2() {
     assert(type_ == Type::v2);
     return value_.v2;
   }
 
-   ::cpp2::Val & mutable_v1() {
-    assert(type_ == Type::v1);
-    return value_.v1;
-  }
-
-   ::cpp2::Val & mutable_v2() {
-    assert(type_ == Type::v2);
-    return value_.v2;
-  }
-
-   ::cpp2::Val move_v1() {
+  ::cpp2::Val move_v1() {
     assert(type_ == Type::v1);
     return std::move(value_.v1);
   }
 
-   ::cpp2::Val move_v2() {
+  ::cpp2::Val move_v2() {
     assert(type_ == Type::v2);
     return std::move(value_.v2);
   }
 
-  template <typename..., typename T =  ::cpp2::Val>
+  template <typename..., typename T = ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> v1_ref() const& {
     return {value_.v1, type_, v1, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::Val>
+  template <typename..., typename T = ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> v1_ref() const&& {
     return {std::move(value_.v1), type_, v1, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::Val>
+  template <typename..., typename T = ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> v1_ref() & {
     return {value_.v1, type_, v1, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::Val>
+  template <typename..., typename T = ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> v1_ref() && {
     return {std::move(value_.v1), type_, v1, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::cpp2::Val>
+  template <typename..., typename T = ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> v2_ref() const& {
     return {value_.v2, type_, v2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::Val>
+  template <typename..., typename T = ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> v2_ref() const&& {
     return {std::move(value_.v2), type_, v2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::Val>
+  template <typename..., typename T = ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> v2_ref() & {
     return {value_.v2, type_, v2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::Val>
+  template <typename..., typename T = ::cpp2::Val>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> v2_ref() && {
     return {std::move(value_.v2), type_, v2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -1801,7 +1772,7 @@ class ValUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ValUnion >;
+  friend class ::apache::thrift::Cpp2Ops<ValUnion>;
   friend void swap(ValUnion& a, ValUnion& b);
 };
 
@@ -1814,6 +1785,11 @@ uint32_t ValUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class VirtualComplexUnion  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1821,6 +1797,7 @@ class VirtualComplexUnion  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = VirtualComplexUnion;
@@ -1838,7 +1815,7 @@ class VirtualComplexUnion  {
   VirtualComplexUnion()
       : type_(Type::__EMPTY__) {}
 
-  VirtualComplexUnion(VirtualComplexUnion&& rhs)
+  VirtualComplexUnion(VirtualComplexUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1885,7 +1862,7 @@ class VirtualComplexUnion  {
     }
   }
 
-  VirtualComplexUnion& operator=(VirtualComplexUnion&& rhs) {
+  VirtualComplexUnion& operator=(VirtualComplexUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -1946,24 +1923,9 @@ class VirtualComplexUnion  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const VirtualComplexUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const VirtualComplexUnion& __x, const VirtualComplexUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const VirtualComplexUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const VirtualComplexUnion& __x, const VirtualComplexUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const VirtualComplexUnion& __x, const VirtualComplexUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const VirtualComplexUnion& __x, const VirtualComplexUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
+
+  bool operator==(const VirtualComplexUnion&) const;
+  bool operator<(const VirtualComplexUnion&) const;
 
   ::std::string& set_thingOne(::std::string const &t) {
     __clear();
@@ -2007,22 +1969,26 @@ class VirtualComplexUnion  {
     return value_.thingTwo;
   }
 
-  ::std::string const & get_thingOne() const {
-    assert(type_ == Type::thingOne);
+  ::std::string const& get_thingOne() const {
+    if (type_ != Type::thingOne) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.thingOne;
   }
 
-  ::std::string const & get_thingTwo() const {
-    assert(type_ == Type::thingTwo);
+  ::std::string const& get_thingTwo() const {
+    if (type_ != Type::thingTwo) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.thingTwo;
   }
 
-  ::std::string & mutable_thingOne() {
+  ::std::string& mutable_thingOne() {
     assert(type_ == Type::thingOne);
     return value_.thingOne;
   }
 
-  ::std::string & mutable_thingTwo() {
+  ::std::string& mutable_thingTwo() {
     assert(type_ == Type::thingTwo);
     return value_.thingTwo;
   }
@@ -2098,7 +2064,7 @@ class VirtualComplexUnion  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< VirtualComplexUnion >;
+  friend class ::apache::thrift::Cpp2Ops<VirtualComplexUnion>;
   friend void swap(VirtualComplexUnion& a, VirtualComplexUnion& b);
 };
 
@@ -2111,6 +2077,11 @@ uint32_t VirtualComplexUnion::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class NonCopyableStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2118,6 +2089,7 @@ class NonCopyableStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = NonCopyableStruct;
@@ -2127,12 +2099,12 @@ class NonCopyableStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NonCopyableStruct() :
-      num(0) {}
+      num(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  NonCopyableStruct(apache::thrift::FragileConstructor, int64_t num__arg);
+  NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg);
 
   NonCopyableStruct(NonCopyableStruct&&) = default;
 
@@ -2140,63 +2112,47 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   NonCopyableStruct& operator=(NonCopyableStruct&&) = default;
   void __clear();
  private:
-  int64_t num;
+  ::std::int64_t num;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool num;
   } __isset = {};
-  bool operator==(const NonCopyableStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const NonCopyableStruct& __x, const NonCopyableStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const NonCopyableStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const NonCopyableStruct& __x, const NonCopyableStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const NonCopyableStruct& __x, const NonCopyableStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const NonCopyableStruct& __x, const NonCopyableStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+ public:
+
+  bool operator==(const NonCopyableStruct&) const;
+  bool operator<(const NonCopyableStruct&) const;
+
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> num_ref() const& {
     return {this->num, __isset.num};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> num_ref() const&& {
     return {std::move(this->num), __isset.num};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> num_ref() & {
     return {this->num, __isset.num};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> num_ref() && {
     return {std::move(this->num), __isset.num};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_num() const {
+  ::std::int64_t get_num() const {
     return num;
   }
 
-  int64_t& set_num(int64_t num_) {
+  [[deprecated("Use `FOO.num_ref() = BAR;` instead of `FOO.set_num(BAR);`")]]
+  ::std::int64_t& set_num(::std::int64_t num_) {
     num = num_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.num = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return num;
   }
 
@@ -2213,7 +2169,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< NonCopyableStruct >;
+  friend class ::apache::thrift::Cpp2Ops<NonCopyableStruct>;
   friend void swap(NonCopyableStruct& a, NonCopyableStruct& b);
 };
 
@@ -2226,6 +2182,11 @@ uint32_t NonCopyableStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class NonCopyableUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2233,6 +2194,7 @@ class NonCopyableUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = NonCopyableUnion;
@@ -2249,7 +2211,7 @@ class NonCopyableUnion final  {
   NonCopyableUnion()
       : type_(Type::__EMPTY__) {}
 
-  NonCopyableUnion(NonCopyableUnion&& rhs)
+  NonCopyableUnion(NonCopyableUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -2268,7 +2230,7 @@ class NonCopyableUnion final  {
     rhs.__clear();
   }
 
-  NonCopyableUnion& operator=(NonCopyableUnion&& rhs) {
+  NonCopyableUnion& operator=(NonCopyableUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -2293,76 +2255,63 @@ class NonCopyableUnion final  {
     __clear();
   }
   union storage_type {
-     ::cpp2::NonCopyableStruct s;
+    ::cpp2::NonCopyableStruct s;
 
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const NonCopyableUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const NonCopyableUnion& __x, const NonCopyableUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const NonCopyableUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const NonCopyableUnion& __x, const NonCopyableUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const NonCopyableUnion& __x, const NonCopyableUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const NonCopyableUnion& __x, const NonCopyableUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
+
+  bool operator==(const NonCopyableUnion&) const;
+  bool operator<(const NonCopyableUnion&) const;
 
 
-   ::cpp2::NonCopyableStruct& set_s( ::cpp2::NonCopyableStruct&& t) {
+  ::cpp2::NonCopyableStruct& set_s(::cpp2::NonCopyableStruct&& t) {
     __clear();
     type_ = Type::s;
-    ::new (std::addressof(value_.s))  ::cpp2::NonCopyableStruct(std::move(t));
+    ::new (std::addressof(value_.s)) ::cpp2::NonCopyableStruct(std::move(t));
     return value_.s;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::NonCopyableStruct, T...>>  ::cpp2::NonCopyableStruct& set_s(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::NonCopyableStruct, T...>> ::cpp2::NonCopyableStruct& set_s(T&&... t) {
     __clear();
     type_ = Type::s;
-    ::new (std::addressof(value_.s))  ::cpp2::NonCopyableStruct(std::forward<T>(t)...);
+    ::new (std::addressof(value_.s)) ::cpp2::NonCopyableStruct(std::forward<T>(t)...);
     return value_.s;
   }
 
-   ::cpp2::NonCopyableStruct const & get_s() const {
+  ::cpp2::NonCopyableStruct const& get_s() const {
+    if (type_ != Type::s) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.s;
+  }
+
+  ::cpp2::NonCopyableStruct& mutable_s() {
     assert(type_ == Type::s);
     return value_.s;
   }
 
-   ::cpp2::NonCopyableStruct & mutable_s() {
-    assert(type_ == Type::s);
-    return value_.s;
-  }
-
-   ::cpp2::NonCopyableStruct move_s() {
+  ::cpp2::NonCopyableStruct move_s() {
     assert(type_ == Type::s);
     return std::move(value_.s);
   }
 
-  template <typename..., typename T =  ::cpp2::NonCopyableStruct>
+  template <typename..., typename T = ::cpp2::NonCopyableStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> s_ref() const& {
     return {value_.s, type_, s, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::NonCopyableStruct>
+  template <typename..., typename T = ::cpp2::NonCopyableStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> s_ref() const&& {
     return {std::move(value_.s), type_, s, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::NonCopyableStruct>
+  template <typename..., typename T = ::cpp2::NonCopyableStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> s_ref() & {
     return {value_.s, type_, s, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::NonCopyableStruct>
+  template <typename..., typename T = ::cpp2::NonCopyableStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> s_ref() && {
     return {std::move(value_.s), type_, s, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -2389,7 +2338,7 @@ class NonCopyableUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< NonCopyableUnion >;
+  friend class ::apache::thrift::Cpp2Ops<NonCopyableUnion>;
   friend void swap(NonCopyableUnion& a, NonCopyableUnion& b);
 };
 
@@ -2401,6 +2350,7 @@ uint32_t NonCopyableUnion::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

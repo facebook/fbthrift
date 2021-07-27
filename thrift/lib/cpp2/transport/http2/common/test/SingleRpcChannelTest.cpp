@@ -22,10 +22,10 @@
 #include <proxygen/httpserver/ScopedHTTPServer.h>
 
 #include <folly/io/async/AsyncSocket.h>
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/transport/core/ThriftClientCallback.h>
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
-#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/ChannelTestFixture.h>
@@ -43,9 +43,7 @@ class SingleRpcChannelTest
       public testing::WithParamInterface<string::size_type> {};
 
 TEST_P(SingleRpcChannelTest, VaryingChunkSizes) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
+  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders["key1"] = "value1";
   inputHeaders["key2"] = "value2";
@@ -67,14 +65,10 @@ TEST_P(SingleRpcChannelTest, VaryingChunkSizes) {
 }
 
 INSTANTIATE_TEST_CASE_P(
-    AllChunkSizes,
-    SingleRpcChannelTest,
-    testing::Values(0, 1, 2, 4, 10));
+    AllChunkSizes, SingleRpcChannelTest, testing::Values(0, 1, 2, 4, 10));
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorEmptyBody) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
+  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders["key1"] = "value1";
   string inputPayload = "";
@@ -96,9 +90,7 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorEmptyBody) {
 }
 
 TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoEnvelope) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
+  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> inputHeaders;
   inputHeaders["key1"] = "value1";
   string inputPayload = "notempty";
@@ -120,9 +112,7 @@ TEST_F(ChannelTestFixture, SingleRpcChannelErrorNoEnvelope) {
 }
 
 TEST_F(ChannelTestFixture, BadHeaderFields) {
-  apache::thrift::server::ServerConfigsMock server;
-  EchoProcessor processor(
-      server, "extrakey", "extravalue", "<eom>", eventBase_.get());
+  EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> headersExpectNoEncoding{
       {"X-FB-Header-Uppercase", "good value"},
       {"x-fb-header-lowercase", "good value"},
@@ -176,9 +166,7 @@ class TestRequestCallback : public apache::thrift::RequestCallback {
   explicit TestRequestCallback(folly::Promise<RequestState> promise)
       : promise_(std::move(promise)) {}
 
-  void requestSent() final {
-    rstate_.sent = true;
-  }
+  void requestSent() final { rstate_.sent = true; }
   void replyReceived(ClientReceiveState&& state) final {
     rstate_.reply = true;
     rstate_.receiveState = std::move(state);
@@ -200,8 +188,8 @@ std::unique_ptr<proxygen::ScopedHTTPServer> startProxygenServer(
     HandlerType handler) {
   folly::SocketAddress saddr;
   saddr.setFromLocalPort(static_cast<uint16_t>(0));
-  proxygen::HTTPServer::IPConfig cfg{saddr,
-                                     proxygen::HTTPServer::Protocol::HTTP2};
+  proxygen::HTTPServer::IPConfig cfg{
+      saddr, proxygen::HTTPServer::Protocol::HTTP2};
   auto f =
       std::make_unique<proxygen::ScopedHandlerFactory<HandlerType>>(handler);
   proxygen::HTTPServerOptions options;
@@ -215,16 +203,24 @@ void httpHandler(
     proxygen::HTTPMessage message,
     std::unique_ptr<folly::IOBuf> /* data */,
     proxygen::ResponseBuilder& builder) {
+  auto generateResponse = [](std::string value) {
+    auto resp = LegacySerializedResponse(
+        protocol::T_COMPACT_PROTOCOL,
+        "FooBar",
+        SerializedResponse(folly::IOBuf::copyBuffer(value)));
+    return std::move(resp.buffer);
+  };
   if (message.getURL() == "internal_error") {
-    builder.status(500, "Internal Server Error").body("internal error");
+    builder.status(500, "Internal Server Error")
+        .body(generateResponse("internal error"));
   } else if (message.getURL() == "thrift_serialized_internal_error") {
     builder.status(500, "OOM")
         .header(proxygen::HTTP_HEADER_CONTENT_TYPE, "application/x-thrift")
-        .body("oom");
+        .body(generateResponse("oom"));
   } else if (message.getURL() == "eof") {
     builder.status(200, "OK");
   } else {
-    builder.status(200, "OK").body("(y)");
+    builder.status(200, "OK").body(generateResponse("(y)"));
   }
 }
 
@@ -236,8 +232,8 @@ folly::Future<RequestState> sendRequest(
   auto f = promise.getFuture();
 
   apache::thrift::RequestCallback::Context context;
-  context.protocolId = apache::thrift::detail::compact::PROTOCOL_ID;
-  context.ctx = std::make_unique<ContextStack>("test");
+  context.protocolId = protocol::T_COMPACT_PROTOCOL;
+
   auto cb = std::make_unique<ThriftClientCallback>(
       &evb,
       false,
@@ -313,7 +309,10 @@ TEST(SingleRpcChannel, ClientExceptions) {
   EXPECT_FALSE(rstate.error);
   EXPECT_TRUE(rstate.reply);
   ASSERT_FALSE(rstate.receiveState.isException());
-  EXPECT_EQ("oom", folly::StringPiece(rstate.receiveState.buf()->coalesce()));
+  EXPECT_EQ(
+      "oom",
+      folly::StringPiece(
+          rstate.receiveState.serializedResponse().buffer->coalesce()));
 
   // The connection should be still good!
   EXPECT_TRUE(conn->good());
@@ -351,7 +350,7 @@ TEST(H2ChannelTest, decodeHeaders) {
    public:
     static void decodeHeaders(
         proxygen::HTTPMessage& message,
-        std::map<std::string, std::string>& otherMetadata,
+        transport::THeader::StringToStringMap& otherMetadata,
         RequestRpcMetadata* metadata) {
       H2Channel::decodeHeaders(message, otherMetadata, metadata);
     }
@@ -370,7 +369,7 @@ TEST(H2ChannelTest, decodeHeaders) {
       proxygen::HTTP_HEADER_CONTENT_LANGUAGE,
       "Arrgh, this be pirate tongue matey");
   RequestRpcMetadata metadata;
-  std::map<std::string, std::string> otherMetadata;
+  transport::THeader::StringToStringMap otherMetadata;
   FakeChannel::decodeHeaders(req, otherMetadata, &metadata);
   EXPECT_EQ(otherMetadata.size(), 3);
   EXPECT_EQ(

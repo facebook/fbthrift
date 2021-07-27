@@ -27,7 +27,7 @@ struct Frozen<<% > common/namespace_cpp2%><%struct:name%>, void> {
   bool <%field:cpp_name%> : 1;
 <%/type:bool?%>
 <%^type:bool?%>
-  typename Freezer<<% > types/type%>>::FrozenType <%field:cpp_name%>;
+  typename Freezer<<%type:cpp_type%>>::FrozenType <%field:cpp_name%>;
 <%/type:bool?%>
 <%/field:type%>
 <%/struct:fields%>

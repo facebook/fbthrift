@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -63,7 +62,7 @@ class Foo:
           self.mymap = {}
           (_ktype1, _vtype2, _size0 ) = iprot.readMapBegin() 
           if _size0 >= 0:
-            for _i4 in six.moves.range(_size0):
+            for _i4 in range(_size0):
               _key5 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               _val6 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               self.mymap[_key5] = _val6
@@ -80,7 +79,7 @@ class Foo:
           self.myset = set()
           (_etype12, _size9) = iprot.readSetBegin()
           if _size9 >= 0:
-            for _i13 in six.moves.range(_size9):
+            for _i13 in range(_size9):
               _elem14 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
               self.myset.add(_elem14)
           else: 
@@ -146,8 +145,7 @@ class Foo:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 all_structs.append(Foo)
 Foo.thrift_spec = (

@@ -22,28 +22,28 @@ namespace cpp2 apache.thrift.fixtures.types
 typedef binary TBinary
 
 struct decorated_struct {
-  1: string field,
+  1: string field;
 } (cpp.declare_hash, cpp.declare_equal_to)
 
 struct ContainerStruct {
-  12: list<i32> fieldA
-  2: list<i32> (cpp.template = "std::list") fieldB
-  3: list<i32> (cpp.template = "std::deque") fieldC
-  4: list<i32> (cpp.template = "folly::fbvector") fieldD
-  5: list<i32> (cpp.template = "folly::small_vector") fieldE
-  6: set<i32>
-      (cpp.template = "folly::sorted_vector_set",
-       rust.type = "sorted_vector_map::SortedVectorSet")
-      fieldF
-  7: map<i32, string>
-      (cpp.template = "folly::sorted_vector_map",
-       rust.type = "sorted_vector_map::SortedVectorMap")
-      fieldG
-  8: include.SomeMap fieldH
+  12: list<i32> fieldA;
+  2: list<i32> (cpp.template = "std::list") fieldB;
+  3: list<i32> (cpp.template = "std::deque") fieldC;
+  4: list<i32> (cpp.template = "folly::fbvector") fieldD;
+  5: list<i32> (cpp.template = "folly::small_vector") fieldE;
+  6: set<i32> (
+    cpp.template = "folly::sorted_vector_set",
+    rust.type = "sorted_vector_map::SortedVectorSet",
+  ) fieldF;
+  7: map<i32, string> (
+    cpp.template = "folly::sorted_vector_map",
+    rust.type = "sorted_vector_map::SortedVectorMap",
+  ) fieldG;
+  8: include.SomeMap fieldH;
 }
 
 struct CppTypeStruct {
-  1: list<i32> (cpp.type = "std::list<int32_t>") fieldA
+  1: list<i32> (cpp.type = "std::list<int32_t>") fieldA;
 }
 
 enum has_bitwise_ops {
@@ -60,17 +60,17 @@ enum is_unscoped {
 } (cpp.deprecated_enum_unscoped)
 
 service SomeService {
-  include.SomeMap bounce_map(1: include.SomeMap m),
-  map<TBinary, i64> binary_keyed_map(1: list<i64> r)
+  include.SomeMap bounce_map(1: include.SomeMap m);
+  map<TBinary, i64> binary_keyed_map(1: list<i64> r);
 }
 
 struct VirtualStruct {
-  1: i64 MyIntField,
+  1: i64 MyIntField;
 } (cpp.virtual)
 
 struct MyStructWithForwardRefEnum {
-  1: MyForwardRefEnum a = NONZERO,
-  2: MyForwardRefEnum b = MyForwardRefEnum.NONZERO,
+  1: MyForwardRefEnum a = NONZERO;
+  2: MyForwardRefEnum b = MyForwardRefEnum.NONZERO;
 }
 
 enum MyForwardRefEnum {
@@ -79,100 +79,98 @@ enum MyForwardRefEnum {
 }
 
 struct TrivialNumeric {
-  1: i32 a,
-  2: bool b,
+  1: i32 a;
+  2: bool b;
 }
 
 struct TrivialNestedWithDefault {
-  1: i32 z = 4,
-  2: TrivialNumeric n = {'a': 3, 'b': true},
+  1: i32 z = 4;
+  2: TrivialNumeric n = {'a': 3, 'b': true};
 }
 
 struct ComplexString {
-  1: string a,
-  2: map<string, i32> b,
+  1: string a;
+  2: map<string, i32> b;
 }
 
 struct ComplexNestedWithDefault {
-  1: string z = '4',
-  2: ComplexString n = {'a': '3', 'b': {'a': 3}},
+  1: string z = '4';
+  2: ComplexString n = {'a': '3', 'b': {'a': 3}};
 }
 
 struct MinPadding {
-  1: required byte small,
-  2: required i64 big,
-  3: required i16 medium,
-  4: required i32 biggish,
-  5: required byte tiny,
+  1: required byte small;
+  2: required i64 big;
+  3: required i16 medium;
+  4: required i32 biggish;
+  5: required byte tiny;
 } (cpp.minimize_padding)
 
 struct MyStruct {
-  1: i64 MyIntField,
-  2: string MyStringField,
-  3: i64 majorVer,
-  4: MyDataItem data,
+  1: i64 MyIntField;
+  2: string MyStringField;
+  3: i64 majorVer;
+  4: MyDataItem data;
 } (cpp2.noncomparable)
 
-struct MyDataItem {} (cpp2.noncomparable)
+struct MyDataItem {
+} (cpp2.noncomparable)
 
 struct Renaming {
-  1: i64 foo (cpp.name = 'bar'),
+  1: i64 foo (cpp.name = 'bar');
 }
 
 struct AnnotatedTypes {
-  1: TBinary (noop_annotation) binary_field,
-  2: include.SomeListOfTypeMap (noop_annotation) list_field,
+  1: TBinary (noop_annotation) binary_field;
+  2: include.SomeListOfTypeMap (noop_annotation) list_field;
 }
 
 # Validates that C++ codegen performes appropriate topological sorting of
 # structs definitions in the generated code
 struct ForwardUsageRoot {
   # use the type before it is defined
-  1: optional ForwardUsageStruct ForwardUsageStruct,
+  1: optional ForwardUsageStruct ForwardUsageStruct;
   # use the type before it is defined, but mark it as a ref in C++
   # (no need for it to be defined before this struct in generated code)
-  2: optional ForwardUsageByRef ForwardUsageByRef (cpp.ref = "true"),
+  2: optional ForwardUsageByRef ForwardUsageByRef (cpp.ref = "true");
 }
 
 struct ForwardUsageStruct {
-  1: optional ForwardUsageRoot foo
+  1: optional ForwardUsageRoot foo;
 }
 
 struct ForwardUsageByRef {
-  1: optional ForwardUsageRoot foo
+  1: optional ForwardUsageRoot foo;
 }
 
 struct NoexceptMoveEmpty {
 } (cpp.noexcept_move)
 
 struct NoexceptMoveSimpleStruct {
-  1: i64 boolField
+  1: i64 boolField;
 } (cpp.noexcept_move)
 
 enum MyEnumA {
-  fieldA = 1
-  fieldB = 2
-  fieldC = 4
+  fieldA = 1,
+  fieldB = 2,
+  fieldC = 4,
 }
 
 struct NoexceptMoveComplexStruct {
-  1: bool MyBoolField,
-  2: i64 MyIntField = 12,
-  3: string MyStringField = "test"
-  4: string MyStringField2
-  5: binary MyBinaryField
-  6: optional binary MyBinaryField2
-  7: required binary MyBinaryField3
-  8: list<binary> MyBinaryListField4
-  9: map<MyEnumA, string> MyMapEnumAndInt = {
-    1: "fieldA",
-    4: "fieldC",
-  }
+  1: bool MyBoolField;
+  2: i64 MyIntField = 12;
+  3: string MyStringField = "test";
+  4: string MyStringField2;
+  5: binary MyBinaryField;
+  6: optional binary MyBinaryField2;
+  7: required binary MyBinaryField3;
+  8: list<binary> MyBinaryListField4;
+  9: map<MyEnumA, string> MyMapEnumAndInt = {1: "fieldA", 4: "fieldC"};
 } (cpp.noexcept_move)
 
 union NoExceptMoveUnion {
-  1: string string_field,
-  2: i32 i32_field,
+  1: string string_field;
+  2: i32 i32_field;
 } (cpp.noexcept_move)
 
 # Allocator-aware struct with allocator-aware fields
@@ -182,9 +180,22 @@ struct AllocatorAware {
   3: map<i32, i32> (cpp.use_allocator) aa_map;
   4: string (cpp.use_allocator) aa_string;
   5: i32 not_a_container;
-} (cpp.allocator="some_allocator")
+} (cpp.allocator = "some_allocator")
 
 # Allocator-aware struct with no allocator-aware fields
 struct AllocatorAware2 {
   1: i32 not_a_container;
-} (cpp.allocator="some_allocator")
+} (cpp.allocator = "some_allocator")
+
+typedef i32 IntTypedef
+typedef IntTypedef UintTypedef (cpp.type = "std::uint32_t")
+
+struct TypedefStruct {
+  1: i32 i32_field;
+  2: IntTypedef IntTypedef_field;
+  3: UintTypedef UintTypedef_field;
+}
+
+struct StructWithDoubleUnderscores {
+  1: i32 __field;
+}

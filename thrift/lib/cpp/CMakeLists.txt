@@ -61,6 +61,7 @@ add_library(
   transport/TBufferTransports.cpp
   transport/THeader.cpp
   transport/TZlibTransport.cpp
+  ../cpp2/transport/rocket/framing/Util.cpp
   util/PausableTimer.cpp
   util/THttpParser.cpp
   util/VarintUtils.cpp
@@ -76,8 +77,8 @@ target_link_libraries(
     thrift-core
     rpcmetadata
     Folly::folly
+    ZLIB::ZLIB
     ${OPENSSL_LIBRARIES}
-    ${ZLIB_LIBRARIES}
     ${ZSTD_LIBRARIES}
 )
 
@@ -100,6 +101,7 @@ target_link_libraries(
     transport
     ${Boost_LIBRARIES}
     Folly::folly
+    wangle::wangle
     ${GLOG_LIBRARIES}
     ${OPENSSL_LIBRARIES}
 )

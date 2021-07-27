@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,9 +31,15 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 
-cimport includes.types_fields as __fbthrift_types_fields
+cimport includes.types_fields as _fbthrift_types_fields
 
 cdef extern from "gen-py3/includes/types.h":
   pass
@@ -42,6 +47,10 @@ cdef extern from "gen-py3/includes/types.h":
 cdef extern from "folly/sorted_vector_types.h":
   pass
 
+cdef extern from "gen-cpp2/includes_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass EnumMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
     cdef cppclass cAnEnum "::a::different::ns::AnEnum":
         pass
@@ -53,9 +62,15 @@ cdef extern from "gen-cpp2/includes_types.h" namespace "::a::different::ns":
 cdef class AnEnum(thrift.py3.types.CompiledEnum):
     pass
 
+cdef extern from "gen-cpp2/includes_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "gen-cpp2/includes_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::different::ns":
-    cdef cppclass cAStruct__isset "::a::different::ns::AStruct::__isset":
-        bint FieldA
 
     cdef cppclass cAStruct "::a::different::ns::AStruct":
         cAStruct() except +
@@ -68,10 +83,7 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
         bint operator>=(cAStruct&)
         __field_ref[cint32_t] FieldA_ref()
         cint32_t FieldA
-        cAStruct__isset __isset
 
-    cdef cppclass cAStructB__isset "::a::different::ns::AStructB::__isset":
-        bint FieldA
 
     cdef cppclass cAStructB "::a::different::ns::AStructB":
         cAStructB() except +
@@ -82,15 +94,15 @@ cdef extern from "gen-cpp2/includes_types_custom_protocol.h" namespace "::a::dif
         bint operator>(cAStructB&)
         bint operator<=(cAStructB&)
         bint operator>=(cAStructB&)
+        shared_ptr[const cAStruct] FieldA_ref()
         shared_ptr[const cAStruct] FieldA
-        cAStructB__isset __isset
 
 
 
 
 cdef class AStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cAStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__AStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__AStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cAStruct])
@@ -99,8 +111,8 @@ cdef class AStruct(thrift.py3.types.Struct):
 
 cdef class AStructB(thrift.py3.types.Struct):
     cdef shared_ptr[cAStructB] _cpp_obj
-    cdef __fbthrift_types_fields.__AStructB_FieldsSetter _fields_setter
-    cdef AStruct __field_FieldA
+    cdef _fbthrift_types_fields.__AStructB_FieldsSetter _fields_setter
+    cdef AStruct __fbthrift_cached_FieldA
 
     @staticmethod
     cdef create(shared_ptr[cAStructB])

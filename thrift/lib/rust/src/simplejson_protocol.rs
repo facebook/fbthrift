@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+use crate::binary_type::CopyFromBuf;
 use crate::bufext::BufMutExt;
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
@@ -27,8 +28,7 @@ use crate::ttype::TType;
 use crate::Result;
 use anyhow::{anyhow, bail};
 use bufsize::SizeCounter;
-use bytes::buf::ext::{BufMutExt as BytesBufMutExt, Writer};
-use bytes::{Buf, Bytes, BytesMut};
+use bytes::{buf::Writer, Buf, BufMut, Bytes, BytesMut};
 use ghost::phantom;
 use serde_json::ser::{CompactFormatter, Formatter};
 use std::io::Cursor;
@@ -44,6 +44,7 @@ pub struct SimpleJsonProtocolSerializer<B: BufMutExt> {
 
 pub struct SimpleJsonProtocolDeserializer<B> {
     buffer: B,
+    remaining: usize,
 }
 
 impl<F> Protocol for SimpleJsonProtocol<F>
@@ -351,27 +352,35 @@ enum CommaState {
     Trailing,
     NonTrailing,
     NoComma,
+    End,
 }
 
 impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
     pub fn new(buffer: B) -> Self {
-        SimpleJsonProtocolDeserializer { buffer }
+        let remaining = buffer.remaining();
+        SimpleJsonProtocolDeserializer { buffer, remaining }
     }
 
     pub fn into_inner(self) -> B {
         self.buffer
     }
 
-    fn peek_bytes(&self, len: usize) -> Option<&[u8]> {
-        if self.buffer.bytes().len() >= len {
-            Some(&self.buffer.bytes()[..len])
+    // TODO(azw): codify this (number of bytes left) in the Deserializer API
+    // `bytes` (named `chunks` in bytes1.0) does not represent a contiguous slice
+    // of the remaining bytes. All we can do is check if there is a byte to return
+    /// Returns a byte from the underly buffer if there is enough remaining
+    pub fn peek(&self) -> Option<u8> {
+        // fast path like https://docs.rs/bytes/1.0.1/src/bytes/buf/buf_impl.rs.html#18
+        if !self.buffer.chunk().is_empty() {
+            Some(self.buffer.chunk()[0])
         } else {
             None
         }
     }
 
-    fn peek(&self) -> Option<u8> {
-        self.peek_bytes(1).map(|s| s[0])
+    /// Like peek but panics if there is none remaining
+    fn peek_can_panic(&self) -> u8 {
+        self.buffer.chunk()[0]
     }
 
     fn strip_whitespace(&mut self) {
@@ -379,42 +388,53 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
             if !&[b' ', b'\t', b'\n', b'\r'].contains(&b) {
                 break;
             }
-            self.buffer.advance(1);
+            self.advance(1);
         }
     }
 
     // strip whitespace before and after
     fn eat(&mut self, val: &[u8]) -> Result<()> {
         self.strip_whitespace();
-        match self.peek_bytes(val.len()) {
-            Some(slice) => {
-                if slice != val {
-                    bail!("Expected {:?}, got {:?}", val, slice)
-                }
-            }
-            None => bail!("Expected {:?}", val),
+
+        if self.remaining < val.len() {
+            bail!("Expected {:?}, not enough remaining", val)
         }
-        self.advance(val.len());
+
+        for to_check in val {
+            let b = self.peek_can_panic();
+            if b != *to_check {
+                // TODO(azw): better error messages
+                bail!("Expected {} got {}", to_check, b)
+            }
+            self.advance(1);
+        }
         self.strip_whitespace();
         Ok(())
     }
 
     fn advance(&mut self, len: usize) {
         self.buffer.advance(len);
+
+        // advance will panic if we try to advance more than remaining
+        self.remaining -= len
     }
 
     // Attempts to eat a comma, returns
-    // Ok(Trailing) if this a "trailing" comma, where trailing means its
+    // Trailing if this a "trailing" comma, where trailing means its
     //   trailed by the `trailing` byte
-    // Ok(NonTrailing) if its read a comma that isn't trailing
-    // Ok(NoComma) if it correctly found NoComma
+    // NonTrailing if its read a comma that isn't trailing
+    // NoComma if it found no comma in the middle of the container
+    // End if it correctly found no comma at the end of the container
     fn possibly_read_comma(&mut self, trailing: u8) -> CommaState {
         match self.eat(b",") {
             Ok(()) => match self.peek() {
                 Some(b) if b == trailing => CommaState::Trailing,
                 _ => CommaState::NonTrailing,
             },
-            _ => CommaState::NoComma,
+            _ => match self.peek() {
+                Some(b) if b == trailing => CommaState::End,
+                _ => CommaState::NoComma,
+            },
         }
     }
 
@@ -520,7 +540,7 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
                 self.read_string()?;
             }
             TType::String => {
-                self.read_binary()?;
+                self.read_binary::<Vec<u8>>()?;
             }
             TType::Stream => bail_err!(ProtocolError::StreamUnsupported),
             TType::Stop => bail_err!(ProtocolError::UnexpectedStopInSkip),
@@ -536,8 +556,13 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
             Some(b'[') => Ok(TType::List),
             Some(b'"') => Ok(TType::UTF8),
             Some(b'n') => Ok(TType::Void),
+            Some(b't') | Some(b'f') => Ok(TType::Bool),
+            Some(b'-') => Ok(TType::Double),
             Some(b) if (b as char).is_ascii_digit() => Ok(TType::Double),
-            _ => bail!("Expected [, {{, or \", or number after {}"),
+            ch => bail!(
+                "Expected [, {{, or \", or number after {:?}",
+                ch.map(|a| a as char)
+            ),
         }
     }
 
@@ -547,8 +572,8 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
 
     fn check_null(&mut self) -> bool {
         self.strip_whitespace();
-        match self.peek_bytes(4) {
-            Some(slice) if slice == b"null" => {
+        match self.peek() {
+            Some(b'n') => {
                 return true;
             }
             _ => false,
@@ -613,6 +638,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
     fn read_field_end(&mut self) -> Result<()> {
         match self.possibly_read_comma(b'}') {
             CommaState::Trailing => bail!("Found trailing comma"),
+            CommaState::NoComma => bail!("Missing comma between fields"),
             _ => {}
         }
         Ok(())
@@ -645,6 +671,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
     fn read_map_value_end(&mut self) -> Result<()> {
         match self.possibly_read_comma(b'}') {
             CommaState::Trailing => bail!("Found trailing comma"),
+            CommaState::NoComma => bail!("Missing comma between fields"),
             _ => {}
         }
         Ok(())
@@ -672,6 +699,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
     fn read_list_value_end(&mut self) -> Result<()> {
         match self.possibly_read_comma(b']') {
             CommaState::Trailing => bail!("Found trailing comma"),
+            CommaState::NoComma => bail!("Missing comma between fields"),
             _ => {}
         }
         Ok(())
@@ -778,7 +806,7 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
         }
     }
 
-    fn read_binary(&mut self) -> Result<Vec<u8>> {
+    fn read_binary<V: CopyFromBuf>(&mut self) -> Result<V> {
         self.eat(b"\"")?;
         let mut ret = Vec::new();
         loop {
@@ -794,7 +822,8 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
                 None => bail!("Expected some char"),
             }
         }
-        Ok(base64::decode_config(&ret, base64::STANDARD_NO_PAD)?)
+        let bin = base64::decode_config(&ret, base64::STANDARD_NO_PAD)?;
+        Ok(V::from_vec(bin))
     }
 
     /// Override the default skip impl to handle random JSON noise

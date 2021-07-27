@@ -16,4 +16,5 @@
 
 namespace php Beeble
 
-service Brox {}
+service Brox {
+}

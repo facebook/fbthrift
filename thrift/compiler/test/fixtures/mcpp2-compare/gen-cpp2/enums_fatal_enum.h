@@ -15,46 +15,32 @@
 
 namespace facebook { namespace ns { namespace qwerty {
 
-namespace thrift_fatal_impl_detail {
+namespace __fbthrift_refl {
+namespace __fbthrift_refl_impl = ::apache::thrift::detail::reflection_impl;
 
-struct AnEnumA_enum_traits {
+class AnEnumA_enum_traits {
+ public:
   using type = ::facebook::ns::qwerty::AnEnumA;
-  using name = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumA;
 
-  struct AnEnumA__struct_unique_strings_list {
-    using FIELDA = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::FIELDA;
-  };
-
-  struct AnEnumA__struct_enum_members_FIELDA {
-    using name = AnEnumA__struct_unique_strings_list::FIELDA;
+ private:
+  struct __fbthrift_value_FIELDA {
+    using name = __fbthrift_strings_enums::__fbthrift_hash_add540b98778029e7e62e524687274b838fd038b831b1885b93d5ab01ef056e6;
     using value = std::integral_constant<type, type::FIELDA>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct AnEnumA__struct_enum_members {
-    using FIELDA = AnEnumA__struct_enum_members_FIELDA;
+  struct __fbthrift_member {
+    using FIELDA = __fbthrift_value_FIELDA;
   };
 
-  using member = AnEnumA__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_enums::AnEnumA;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::FIELDA
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -64,72 +50,37 @@ struct AnEnumA_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::facebook::ns::qwerty::thrift_fatal_impl_detail::AnEnumA_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    enums_tags::module,
-    ::apache::thrift::reflected_annotations<::facebook::ns::qwerty::thrift_fatal_impl_detail::AnEnumA_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(428815433984633608ull)
-  >
-);
-namespace thrift_fatal_impl_detail {
-
-struct AnEnumB_enum_traits {
+class AnEnumB_enum_traits {
+ public:
   using type = ::facebook::ns::qwerty::AnEnumB;
-  using name = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumB;
 
-  struct AnEnumB__struct_unique_strings_list {
-    using FIELDA = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::FIELDA;
-    using FIELDB = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::FIELDB;
-  };
-
-  struct AnEnumB__struct_enum_members_FIELDA {
-    using name = AnEnumB__struct_unique_strings_list::FIELDA;
+ private:
+  struct __fbthrift_value_FIELDA {
+    using name = __fbthrift_strings_enums::__fbthrift_hash_add540b98778029e7e62e524687274b838fd038b831b1885b93d5ab01ef056e6;
     using value = std::integral_constant<type, type::FIELDA>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct AnEnumB__struct_enum_members_FIELDB {
-    using name = AnEnumB__struct_unique_strings_list::FIELDB;
+  struct __fbthrift_value_FIELDB {
+    using name = __fbthrift_strings_enums::__fbthrift_hash_148e782df34993fa930a9b389d5a4e2e92f13610cf6adbeab2abf6e095f5ef89;
     using value = std::integral_constant<type, type::FIELDB>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct AnEnumB__struct_enum_members {
-    using FIELDA = AnEnumB__struct_enum_members_FIELDA;
-    using FIELDB = AnEnumB__struct_enum_members_FIELDB;
+  struct __fbthrift_member {
+    using FIELDA = __fbthrift_value_FIELDA;
+    using FIELDB = __fbthrift_value_FIELDB;
   };
 
-  using member = AnEnumB__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_enums::AnEnumB;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::FIELDA,
       member::FIELDB
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -140,56 +91,29 @@ struct AnEnumB_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::facebook::ns::qwerty::thrift_fatal_impl_detail::AnEnumB_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    enums_tags::module,
-    ::apache::thrift::reflected_annotations<::facebook::ns::qwerty::thrift_fatal_impl_detail::AnEnumB_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(15617140791710839720ull)
-  >
-);
-namespace thrift_fatal_impl_detail {
-
-struct AnEnumC_enum_traits {
+class AnEnumC_enum_traits {
+ public:
   using type = ::facebook::ns::qwerty::AnEnumC;
-  using name = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumC;
 
-  struct AnEnumC__struct_unique_strings_list {
-    using FIELDC = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::FIELDC;
-  };
-
-  struct AnEnumC__struct_enum_members_FIELDC {
-    using name = AnEnumC__struct_unique_strings_list::FIELDC;
+ private:
+  struct __fbthrift_value_FIELDC {
+    using name = __fbthrift_strings_enums::__fbthrift_hash_c907b51dbf720f8a71d2fe895168681ecaffaeebee9402b24e9da11816eda10e;
     using value = std::integral_constant<type, type::FIELDC>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct AnEnumC__struct_enum_members {
-    using FIELDC = AnEnumC__struct_enum_members_FIELDC;
+  struct __fbthrift_member {
+    using FIELDC = __fbthrift_value_FIELDC;
   };
 
-  using member = AnEnumC__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_enums::AnEnumC;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::FIELDC
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -199,56 +123,29 @@ struct AnEnumC_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::facebook::ns::qwerty::thrift_fatal_impl_detail::AnEnumC_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    enums_tags::module,
-    ::apache::thrift::reflected_annotations<::facebook::ns::qwerty::thrift_fatal_impl_detail::AnEnumC_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(2370933752103673064ull)
-  >
-);
-namespace thrift_fatal_impl_detail {
-
-struct AnEnumD_enum_traits {
+class AnEnumD_enum_traits {
+ public:
   using type = ::facebook::ns::qwerty::AnEnumD;
-  using name = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumD;
 
-  struct AnEnumD__struct_unique_strings_list {
-    using FIELDD = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::FIELDD;
-  };
-
-  struct AnEnumD__struct_enum_members_FIELDD {
-    using name = AnEnumD__struct_unique_strings_list::FIELDD;
+ private:
+  struct __fbthrift_value_FIELDD {
+    using name = __fbthrift_strings_enums::__fbthrift_hash_40d9038a74e2f4da3d23c9054a5c003163af248d9a0c6133ac130acfc5d4122d;
     using value = std::integral_constant<type, type::FIELDD>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct AnEnumD__struct_enum_members {
-    using FIELDD = AnEnumD__struct_enum_members_FIELDD;
+  struct __fbthrift_member {
+    using FIELDD = __fbthrift_value_FIELDD;
   };
 
-  using member = AnEnumD__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_enums::AnEnumD;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::FIELDD
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -258,56 +155,29 @@ struct AnEnumD_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::facebook::ns::qwerty::thrift_fatal_impl_detail::AnEnumD_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    enums_tags::module,
-    ::apache::thrift::reflected_annotations<::facebook::ns::qwerty::thrift_fatal_impl_detail::AnEnumD_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(2735336584205230696ull)
-  >
-);
-namespace thrift_fatal_impl_detail {
-
-struct AnEnumE_enum_traits {
+class AnEnumE_enum_traits {
+ public:
   using type = ::facebook::ns::qwerty::AnEnumE;
-  using name = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::AnEnumE;
 
-  struct AnEnumE__struct_unique_strings_list {
-    using FIELDA = thrift_fatal_impl_detail::facebook_ns_qwerty_enums__unique_strings_list::FIELDA;
-  };
-
-  struct AnEnumE__struct_enum_members_FIELDA {
-    using name = AnEnumE__struct_unique_strings_list::FIELDA;
+ private:
+  struct __fbthrift_value_FIELDA {
+    using name = __fbthrift_strings_enums::__fbthrift_hash_add540b98778029e7e62e524687274b838fd038b831b1885b93d5ab01ef056e6;
     using value = std::integral_constant<type, type::FIELDA>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct AnEnumE__struct_enum_members {
-    using FIELDA = AnEnumE__struct_enum_members_FIELDA;
+  struct __fbthrift_member {
+    using FIELDA = __fbthrift_value_FIELDA;
   };
 
-  using member = AnEnumE__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_enums::AnEnumE;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::FIELDA
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -317,14 +187,46 @@ struct AnEnumE_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
+} // __fbthrift_refl
 
 FATAL_REGISTER_ENUM_TRAITS(
-  ::facebook::ns::qwerty::thrift_fatal_impl_detail::AnEnumE_enum_traits,
+  __fbthrift_refl::AnEnumA_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    enums_tags::module,
-    ::apache::thrift::reflected_annotations<::facebook::ns::qwerty::thrift_fatal_impl_detail::AnEnumE_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(9931005972636376296ull)
+      enums_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::AnEnumA_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(428815433984633608ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::AnEnumB_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      enums_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::AnEnumB_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(15617140791710839720ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::AnEnumC_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      enums_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::AnEnumC_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(2370933752103673064ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::AnEnumD_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      enums_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::AnEnumD_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(2735336584205230696ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::AnEnumE_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      enums_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::AnEnumE_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(9931005972636376296ull)
   >
 );
 }}} // facebook::ns::qwerty

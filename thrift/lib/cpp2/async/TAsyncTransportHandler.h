@@ -76,8 +76,7 @@ class TAsyncTransportHandler : public wangle::BytesToBytesHandler,
   }
 
   folly::Future<folly::Unit> write(
-      Context* ctx,
-      std::unique_ptr<folly::IOBuf> buf) override {
+      Context* ctx, std::unique_ptr<folly::IOBuf> buf) override {
     if (UNLIKELY(!buf)) {
       return folly::makeFuture();
     }
@@ -94,8 +93,8 @@ class TAsyncTransportHandler : public wangle::BytesToBytesHandler,
     return future;
   }
 
-  folly::Future<folly::Unit> writeException(Context*, folly::exception_wrapper)
-      override {
+  folly::Future<folly::Unit> writeException(
+      Context*, folly::exception_wrapper) override {
     return shutdown(true);
   }
 
@@ -105,9 +104,7 @@ class TAsyncTransportHandler : public wangle::BytesToBytesHandler,
 
   // Must override to avoid warnings about hidden overloaded virtual due to
   // AsyncTransport::ReadCallback::readEOF()
-  void readEOF(Context* ctx) override {
-    ctx->fireReadEOF();
-  }
+  void readEOF(Context* ctx) override { ctx->fireReadEOF(); }
 
   void getReadBuffer(void** bufReturn, size_t* lenReturn) override {
     const auto readBufferSettings = getContext()->getReadBufferSettings();
@@ -122,9 +119,7 @@ class TAsyncTransportHandler : public wangle::BytesToBytesHandler,
     getContext()->fireRead(bufQueue_);
   }
 
-  bool isBufferMovable() noexcept override {
-    return true;
-  }
+  bool isBufferMovable() noexcept override { return true; }
 
   void readBufferAvailable(
       std::unique_ptr<folly::IOBuf> buf) noexcept override {
@@ -132,9 +127,7 @@ class TAsyncTransportHandler : public wangle::BytesToBytesHandler,
     getContext()->fireRead(bufQueue_);
   }
 
-  void readEOF() noexcept override {
-    getContext()->fireReadEOF();
-  }
+  void readEOF() noexcept override { getContext()->fireReadEOF(); }
 
   void readErr(const folly::AsyncSocketException& ex) noexcept override {
     getContext()->fireReadException(

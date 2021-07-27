@@ -168,14 +168,31 @@ void TccStructTraits<::apache::thrift::fixtures::types::decorated_struct>::trans
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+decorated_struct::decorated_struct(const decorated_struct&) = default;
+decorated_struct& decorated_struct::operator=(const decorated_struct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+decorated_struct::decorated_struct(decorated_struct&& other) noexcept  :
+    field(std::move(other.field)),
+    __isset(other.__isset) {}
+decorated_struct& decorated_struct::operator=(FOLLY_MAYBE_UNUSED decorated_struct&& other) noexcept {
+    this->field = std::move(other.field);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 decorated_struct::decorated_struct(apache::thrift::FragileConstructor, ::std::string field__arg) :
     field(std::move(field__arg)) {
   __isset.field = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void decorated_struct::__clear() {
   // clear all fields
-  field = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -185,7 +202,7 @@ bool decorated_struct::operator==(const decorated_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field == rhs.field)) {
+  if (!(lhs.field_ref() == rhs.field_ref())) {
     return false;
   }
   return true;
@@ -195,8 +212,8 @@ bool decorated_struct::operator<(const decorated_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field == rhs.field)) {
-    return lhs.field < rhs.field;
+  if (!(lhs.field_ref() == rhs.field_ref())) {
+    return lhs.field_ref() < rhs.field_ref();
   }
   return false;
 }
@@ -247,14 +264,45 @@ void TccStructTraits<::apache::thrift::fixtures::types::ContainerStruct>::transl
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ContainerStruct::ContainerStruct() {}
+ContainerStruct::ContainerStruct(const ContainerStruct&) = default;
+ContainerStruct& ContainerStruct::operator=(const ContainerStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ContainerStruct::ContainerStruct() {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ContainerStruct::~ContainerStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, ::std::string> fieldG__arg,  ::apache::thrift::fixtures::types::SomeMap fieldH__arg) :
+ContainerStruct::ContainerStruct(ContainerStruct&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    fieldB(std::move(other.fieldB)),
+    fieldC(std::move(other.fieldC)),
+    fieldD(std::move(other.fieldD)),
+    fieldE(std::move(other.fieldE)),
+    fieldF(std::move(other.fieldF)),
+    fieldG(std::move(other.fieldG)),
+    fieldH(std::move(other.fieldH)),
+    __isset(other.__isset) {}
+ContainerStruct& ContainerStruct::operator=(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    this->fieldB = std::move(other.fieldB);
+    this->fieldC = std::move(other.fieldC);
+    this->fieldD = std::move(other.fieldD);
+    this->fieldE = std::move(other.fieldE);
+    this->fieldF = std::move(other.fieldF);
+    this->fieldG = std::move(other.fieldG);
+    this->fieldH = std::move(other.fieldH);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, folly::sorted_vector_set<::std::int32_t> fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::apache::thrift::fixtures::types::SomeMap fieldH__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -273,16 +321,17 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
   __isset.fieldH = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ContainerStruct::__clear() {
   // clear all fields
-  fieldA.clear();
-  fieldB.clear();
-  fieldC.clear();
-  fieldD.clear();
-  fieldE.clear();
-  fieldF.clear();
-  fieldG.clear();
-  fieldH.clear();
+  this->fieldA.clear();
+  this->fieldB.clear();
+  this->fieldC.clear();
+  this->fieldD.clear();
+  this->fieldE.clear();
+  this->fieldF.clear();
+  this->fieldG.clear();
+  this->fieldH.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -292,94 +341,94 @@ bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
     return false;
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
     return false;
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
     return false;
   }
   return true;
 }
 
-const ::std::vector<int32_t>& ContainerStruct::get_fieldA() const& {
+const ::std::vector<::std::int32_t>& ContainerStruct::get_fieldA() const& {
   return fieldA;
 }
 
-::std::vector<int32_t> ContainerStruct::get_fieldA() && {
+::std::vector<::std::int32_t> ContainerStruct::get_fieldA() && {
   return std::move(fieldA);
 }
 
-const std::list<int32_t>& ContainerStruct::get_fieldB() const& {
+const std::list<::std::int32_t>& ContainerStruct::get_fieldB() const& {
   return fieldB;
 }
 
-std::list<int32_t> ContainerStruct::get_fieldB() && {
+std::list<::std::int32_t> ContainerStruct::get_fieldB() && {
   return std::move(fieldB);
 }
 
-const std::deque<int32_t>& ContainerStruct::get_fieldC() const& {
+const std::deque<::std::int32_t>& ContainerStruct::get_fieldC() const& {
   return fieldC;
 }
 
-std::deque<int32_t> ContainerStruct::get_fieldC() && {
+std::deque<::std::int32_t> ContainerStruct::get_fieldC() && {
   return std::move(fieldC);
 }
 
-const folly::fbvector<int32_t>& ContainerStruct::get_fieldD() const& {
+const folly::fbvector<::std::int32_t>& ContainerStruct::get_fieldD() const& {
   return fieldD;
 }
 
-folly::fbvector<int32_t> ContainerStruct::get_fieldD() && {
+folly::fbvector<::std::int32_t> ContainerStruct::get_fieldD() && {
   return std::move(fieldD);
 }
 
-const folly::small_vector<int32_t>& ContainerStruct::get_fieldE() const& {
+const folly::small_vector<::std::int32_t>& ContainerStruct::get_fieldE() const& {
   return fieldE;
 }
 
-folly::small_vector<int32_t> ContainerStruct::get_fieldE() && {
+folly::small_vector<::std::int32_t> ContainerStruct::get_fieldE() && {
   return std::move(fieldE);
 }
 
-const folly::sorted_vector_set<int32_t>& ContainerStruct::get_fieldF() const& {
+const folly::sorted_vector_set<::std::int32_t>& ContainerStruct::get_fieldF() const& {
   return fieldF;
 }
 
-folly::sorted_vector_set<int32_t> ContainerStruct::get_fieldF() && {
+folly::sorted_vector_set<::std::int32_t> ContainerStruct::get_fieldF() && {
   return std::move(fieldF);
 }
 
-const folly::sorted_vector_map<int32_t, ::std::string>& ContainerStruct::get_fieldG() const& {
+const folly::sorted_vector_map<::std::int32_t, ::std::string>& ContainerStruct::get_fieldG() const& {
   return fieldG;
 }
 
-folly::sorted_vector_map<int32_t, ::std::string> ContainerStruct::get_fieldG() && {
+folly::sorted_vector_map<::std::int32_t, ::std::string> ContainerStruct::get_fieldG() && {
   return std::move(fieldG);
 }
 
-const  ::apache::thrift::fixtures::types::SomeMap& ContainerStruct::get_fieldH() const& {
+const ::apache::thrift::fixtures::types::SomeMap& ContainerStruct::get_fieldH() const& {
   return fieldH;
 }
 
- ::apache::thrift::fixtures::types::SomeMap ContainerStruct::get_fieldH() && {
+::apache::thrift::fixtures::types::SomeMap ContainerStruct::get_fieldH() && {
   return std::move(fieldH);
 }
 
@@ -436,14 +485,31 @@ void TccStructTraits<::apache::thrift::fixtures::types::CppTypeStruct>::translat
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CppTypeStruct::CppTypeStruct(const CppTypeStruct&) = default;
+CppTypeStruct& CppTypeStruct::operator=(const CppTypeStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CppTypeStruct::CppTypeStruct(CppTypeStruct&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    __isset(other.__isset) {}
+CppTypeStruct& CppTypeStruct::operator=(FOLLY_MAYBE_UNUSED CppTypeStruct&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg) :
     fieldA(std::move(fieldA__arg)) {
   __isset.fieldA = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void CppTypeStruct::__clear() {
   // clear all fields
-  fieldA.clear();
+  this->fieldA.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -453,7 +519,7 @@ bool CppTypeStruct::operator==(const CppTypeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
   return true;
@@ -463,8 +529,8 @@ bool CppTypeStruct::operator<(const CppTypeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
-    return lhs.fieldA < rhs.fieldA;
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
+    return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
   return false;
 }
@@ -523,14 +589,31 @@ void TccStructTraits<::apache::thrift::fixtures::types::VirtualStruct>::translat
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-VirtualStruct::VirtualStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg) :
+VirtualStruct::VirtualStruct(const VirtualStruct&) = default;
+VirtualStruct& VirtualStruct::operator=(const VirtualStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+VirtualStruct::VirtualStruct(VirtualStruct&& other) noexcept  :
+    MyIntField(std::move(other.MyIntField)),
+    __isset(other.__isset) {}
+VirtualStruct& VirtualStruct::operator=(FOLLY_MAYBE_UNUSED VirtualStruct&& other) noexcept {
+    this->MyIntField = std::move(other.MyIntField);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+VirtualStruct::VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg) :
     MyIntField(std::move(MyIntField__arg)) {
   __isset.MyIntField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void VirtualStruct::__clear() {
   // clear all fields
-  MyIntField = 0;
+  this->MyIntField = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -540,7 +623,7 @@ bool VirtualStruct::operator==(const VirtualStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
   return true;
@@ -550,8 +633,8 @@ bool VirtualStruct::operator<(const VirtualStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
   return false;
 }
@@ -602,17 +685,36 @@ void TccStructTraits<::apache::thrift::fixtures::types::MyStructWithForwardRefEn
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg,  ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg) :
+MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(const MyStructWithForwardRefEnum&) = default;
+MyStructWithForwardRefEnum& MyStructWithForwardRefEnum::operator=(const MyStructWithForwardRefEnum&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(MyStructWithForwardRefEnum&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    __isset(other.__isset) {}
+MyStructWithForwardRefEnum& MyStructWithForwardRefEnum::operator=(FOLLY_MAYBE_UNUSED MyStructWithForwardRefEnum&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg, ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
   __isset.b = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStructWithForwardRefEnum::__clear() {
   // clear all fields
-  a =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
-  b =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
+  this->a =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
+  this->b =  ::apache::thrift::fixtures::types::MyForwardRefEnum::NONZERO;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -622,10 +724,10 @@ bool MyStructWithForwardRefEnum::operator==(const MyStructWithForwardRefEnum& rh
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
   return true;
@@ -635,11 +737,11 @@ bool MyStructWithForwardRefEnum::operator<(const MyStructWithForwardRefEnum& rhs
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
   return false;
 }
@@ -690,18 +792,20 @@ void TccStructTraits<::apache::thrift::fixtures::types::TrivialNumeric>::transla
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-TrivialNumeric::TrivialNumeric(apache::thrift::FragileConstructor, int32_t a__arg, bool b__arg) :
+TrivialNumeric::TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_t a__arg, bool b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
   __isset.b = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void TrivialNumeric::__clear() {
   // clear all fields
-  a = 0;
-  b = 0;
+  this->a = 0;
+  this->b = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -711,10 +815,10 @@ bool TrivialNumeric::operator==(const TrivialNumeric& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
   return true;
@@ -724,11 +828,11 @@ bool TrivialNumeric::operator<(const TrivialNumeric& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
   return false;
 }
@@ -779,18 +883,20 @@ void TccStructTraits<::apache::thrift::fixtures::types::TrivialNestedWithDefault
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstructor, int32_t z__arg,  ::apache::thrift::fixtures::types::TrivialNumeric n__arg) :
+TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstructor, ::std::int32_t z__arg, ::apache::thrift::fixtures::types::TrivialNumeric n__arg) :
     z(std::move(z__arg)),
     n(std::move(n__arg)) {
   __isset.z = true;
   __isset.n = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void TrivialNestedWithDefault::__clear() {
   // clear all fields
-  z = 4;
-  n.__clear();
+  this->z = 4;
+  this->n.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -800,10 +906,10 @@ bool TrivialNestedWithDefault::operator==(const TrivialNestedWithDefault& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.z == rhs.z)) {
+  if (!(lhs.z_ref() == rhs.z_ref())) {
     return false;
   }
-  if (!(lhs.n == rhs.n)) {
+  if (!(lhs.n_ref() == rhs.n_ref())) {
     return false;
   }
   return true;
@@ -813,20 +919,20 @@ bool TrivialNestedWithDefault::operator<(const TrivialNestedWithDefault& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.z == rhs.z)) {
-    return lhs.z < rhs.z;
+  if (!(lhs.z_ref() == rhs.z_ref())) {
+    return lhs.z_ref() < rhs.z_ref();
   }
-  if (!(lhs.n == rhs.n)) {
-    return lhs.n < rhs.n;
+  if (!(lhs.n_ref() == rhs.n_ref())) {
+    return lhs.n_ref() < rhs.n_ref();
   }
   return false;
 }
 
-const  ::apache::thrift::fixtures::types::TrivialNumeric& TrivialNestedWithDefault::get_n() const& {
+const ::apache::thrift::fixtures::types::TrivialNumeric& TrivialNestedWithDefault::get_n() const& {
   return n;
 }
 
- ::apache::thrift::fixtures::types::TrivialNumeric TrivialNestedWithDefault::get_n() && {
+::apache::thrift::fixtures::types::TrivialNumeric TrivialNestedWithDefault::get_n() && {
   return std::move(n);
 }
 
@@ -853,14 +959,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         TrivialNestedWithDefault,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::TrivialNumeric>,
+        ::apache::thrift::fixtures::types::TrivialNumeric>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         TrivialNestedWithDefault,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::TrivialNumeric>,
+        ::apache::thrift::fixtures::types::TrivialNumeric>,
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
@@ -889,17 +995,36 @@ void TccStructTraits<::apache::thrift::fixtures::types::ComplexString>::translat
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ComplexString::ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, int32_t> b__arg) :
+ComplexString::ComplexString(const ComplexString&) = default;
+ComplexString& ComplexString::operator=(const ComplexString&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexString::ComplexString(ComplexString&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    __isset(other.__isset) {}
+ComplexString& ComplexString::operator=(FOLLY_MAYBE_UNUSED ComplexString&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexString::ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, ::std::int32_t> b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
   __isset.b = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ComplexString::__clear() {
   // clear all fields
-  a = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  b.clear();
+  this->a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->b.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -909,10 +1034,10 @@ bool ComplexString::operator==(const ComplexString& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
   return true;
@@ -922,20 +1047,20 @@ bool ComplexString::operator<(const ComplexString& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
   return false;
 }
 
-const ::std::map<::std::string, int32_t>& ComplexString::get_b() const& {
+const ::std::map<::std::string, ::std::int32_t>& ComplexString::get_b() const& {
   return b;
 }
 
-::std::map<::std::string, int32_t> ComplexString::get_b() && {
+::std::map<::std::string, ::std::int32_t> ComplexString::get_b() && {
   return std::move(b);
 }
 
@@ -986,17 +1111,36 @@ void TccStructTraits<::apache::thrift::fixtures::types::ComplexNestedWithDefault
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg,  ::apache::thrift::fixtures::types::ComplexString n__arg) :
+ComplexNestedWithDefault::ComplexNestedWithDefault(const ComplexNestedWithDefault&) = default;
+ComplexNestedWithDefault& ComplexNestedWithDefault::operator=(const ComplexNestedWithDefault&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexNestedWithDefault::ComplexNestedWithDefault(ComplexNestedWithDefault&& other) noexcept  :
+    z(std::move(other.z)),
+    n(std::move(other.n)),
+    __isset(other.__isset) {}
+ComplexNestedWithDefault& ComplexNestedWithDefault::operator=(FOLLY_MAYBE_UNUSED ComplexNestedWithDefault&& other) noexcept {
+    this->z = std::move(other.z);
+    this->n = std::move(other.n);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg, ::apache::thrift::fixtures::types::ComplexString n__arg) :
     z(std::move(z__arg)),
     n(std::move(n__arg)) {
   __isset.z = true;
   __isset.n = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ComplexNestedWithDefault::__clear() {
   // clear all fields
-  z = apache::thrift::StringTraits< std::string>::fromStringLiteral("4");
-  n.__clear();
+  this->z = apache::thrift::StringTraits<std::string>::fromStringLiteral("4");
+  this->n.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1006,10 +1150,10 @@ bool ComplexNestedWithDefault::operator==(const ComplexNestedWithDefault& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.z == rhs.z)) {
+  if (!(lhs.z_ref() == rhs.z_ref())) {
     return false;
   }
-  if (!(lhs.n == rhs.n)) {
+  if (!(lhs.n_ref() == rhs.n_ref())) {
     return false;
   }
   return true;
@@ -1019,20 +1163,20 @@ bool ComplexNestedWithDefault::operator<(const ComplexNestedWithDefault& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.z == rhs.z)) {
-    return lhs.z < rhs.z;
+  if (!(lhs.z_ref() == rhs.z_ref())) {
+    return lhs.z_ref() < rhs.z_ref();
   }
-  if (!(lhs.n == rhs.n)) {
-    return lhs.n < rhs.n;
+  if (!(lhs.n_ref() == rhs.n_ref())) {
+    return lhs.n_ref() < rhs.n_ref();
   }
   return false;
 }
 
-const  ::apache::thrift::fixtures::types::ComplexString& ComplexNestedWithDefault::get_n() const& {
+const ::apache::thrift::fixtures::types::ComplexString& ComplexNestedWithDefault::get_n() const& {
   return n;
 }
 
- ::apache::thrift::fixtures::types::ComplexString ComplexNestedWithDefault::get_n() && {
+::apache::thrift::fixtures::types::ComplexString ComplexNestedWithDefault::get_n() && {
   return std::move(n);
 }
 
@@ -1059,14 +1203,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedWithDefault,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ComplexString>,
+        ::apache::thrift::fixtures::types::ComplexString>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedWithDefault,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ComplexString>,
+        ::apache::thrift::fixtures::types::ComplexString>,
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
@@ -1095,39 +1239,63 @@ void TccStructTraits<::apache::thrift::fixtures::types::MinPadding>::translateFi
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MinPadding::MinPadding(apache::thrift::FragileConstructor, int8_t small__arg, int64_t big__arg, int16_t medium__arg, int32_t biggish__arg, int8_t tiny__arg) :
+MinPadding::MinPadding(const MinPadding&) = default;
+MinPadding& MinPadding::operator=(const MinPadding&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MinPadding::MinPadding(MinPadding&& other) noexcept  :
+    big(std::move(other.big)),
+    biggish(std::move(other.biggish)),
+    medium(std::move(other.medium)),
+    small(std::move(other.small)),
+    tiny(std::move(other.tiny)) {}
+
+MinPadding& MinPadding::operator=(FOLLY_MAYBE_UNUSED MinPadding&& other) noexcept {
+    this->big = std::move(other.big);
+    this->biggish = std::move(other.biggish);
+    this->medium = std::move(other.medium);
+    this->small = std::move(other.small);
+    this->tiny = std::move(other.tiny);
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MinPadding::MinPadding(apache::thrift::FragileConstructor, ::std::int8_t small__arg, ::std::int64_t big__arg, ::std::int16_t medium__arg, ::std::int32_t biggish__arg, ::std::int8_t tiny__arg) :
     big(std::move(big__arg)),
     biggish(std::move(biggish__arg)),
     medium(std::move(medium__arg)),
     small(std::move(small__arg)),
     tiny(std::move(tiny__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MinPadding::__clear() {
   // clear all fields
-  small = 0;
-  big = 0;
-  medium = 0;
-  biggish = 0;
-  tiny = 0;
+  this->small = 0;
+  this->big = 0;
+  this->medium = 0;
+  this->biggish = 0;
+  this->tiny = 0;
 }
 
 bool MinPadding::operator==(const MinPadding& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.small == rhs.small)) {
+  if (!(lhs.small_ref() == rhs.small_ref())) {
     return false;
   }
-  if (!(lhs.big == rhs.big)) {
+  if (!(lhs.big_ref() == rhs.big_ref())) {
     return false;
   }
-  if (!(lhs.medium == rhs.medium)) {
+  if (!(lhs.medium_ref() == rhs.medium_ref())) {
     return false;
   }
-  if (!(lhs.biggish == rhs.biggish)) {
+  if (!(lhs.biggish_ref() == rhs.biggish_ref())) {
     return false;
   }
-  if (!(lhs.tiny == rhs.tiny)) {
+  if (!(lhs.tiny_ref() == rhs.tiny_ref())) {
     return false;
   }
   return true;
@@ -1137,20 +1305,20 @@ bool MinPadding::operator<(const MinPadding& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.small == rhs.small)) {
-    return lhs.small < rhs.small;
+  if (!(lhs.small_ref() == rhs.small_ref())) {
+    return lhs.small_ref() < rhs.small_ref();
   }
-  if (!(lhs.big == rhs.big)) {
-    return lhs.big < rhs.big;
+  if (!(lhs.big_ref() == rhs.big_ref())) {
+    return lhs.big_ref() < rhs.big_ref();
   }
-  if (!(lhs.medium == rhs.medium)) {
-    return lhs.medium < rhs.medium;
+  if (!(lhs.medium_ref() == rhs.medium_ref())) {
+    return lhs.medium_ref() < rhs.medium_ref();
   }
-  if (!(lhs.biggish == rhs.biggish)) {
-    return lhs.biggish < rhs.biggish;
+  if (!(lhs.biggish_ref() == rhs.biggish_ref())) {
+    return lhs.biggish_ref() < rhs.biggish_ref();
   }
-  if (!(lhs.tiny == rhs.tiny)) {
-    return lhs.tiny < rhs.tiny;
+  if (!(lhs.tiny_ref() == rhs.tiny_ref())) {
+    return lhs.tiny_ref() < rhs.tiny_ref();
   }
   return false;
 }
@@ -1201,9 +1369,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::MyDataItem>::translateFi
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyDataItem::__clear() {
   // clear all fields
 }
@@ -1254,7 +1424,29 @@ void TccStructTraits<::apache::thrift::fixtures::types::MyStruct>::translateFiel
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg, int64_t majorVer__arg,  ::apache::thrift::fixtures::types::MyDataItem data__arg) :
+MyStruct::MyStruct(const MyStruct&) = default;
+MyStruct& MyStruct::operator=(const MyStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(MyStruct&& other) noexcept  :
+    MyIntField(std::move(other.MyIntField)),
+    MyStringField(std::move(other.MyStringField)),
+    majorVer(std::move(other.majorVer)),
+    data(std::move(other.data)),
+    __isset(other.__isset) {}
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->MyIntField = std::move(other.MyIntField);
+    this->MyStringField = std::move(other.MyStringField);
+    this->majorVer = std::move(other.majorVer);
+    this->data = std::move(other.data);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::int64_t majorVer__arg, ::apache::thrift::fixtures::types::MyDataItem data__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
     majorVer(std::move(majorVer__arg)),
@@ -1265,11 +1457,12 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, 
   __isset.data = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
-  MyIntField = 0;
-  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  majorVer = 0;
+  this->MyIntField = 0;
+  this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->majorVer = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1277,11 +1470,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 
-const  ::apache::thrift::fixtures::types::MyDataItem& MyStruct::get_data() const& {
+const ::apache::thrift::fixtures::types::MyDataItem& MyStruct::get_data() const& {
   return data;
 }
 
- ::apache::thrift::fixtures::types::MyDataItem MyStruct::get_data() && {
+::apache::thrift::fixtures::types::MyDataItem MyStruct::get_data() && {
   return std::move(data);
 }
 
@@ -1310,14 +1503,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::MyDataItem>,
+        ::apache::thrift::fixtures::types::MyDataItem>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyStruct,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::MyDataItem>,
+        ::apache::thrift::fixtures::types::MyDataItem>,
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
@@ -1345,15 +1538,17 @@ void TccStructTraits<::apache::thrift::fixtures::types::Renaming>::translateFiel
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Renaming::Renaming(apache::thrift::FragileConstructor, int64_t bar__arg) :
+Renaming::Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg) :
     bar(std::move(bar__arg)) {
   __isset.bar = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Renaming::__clear() {
   // clear all fields
-  bar = 0;
+  this->bar = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1363,7 +1558,7 @@ bool Renaming::operator==(const Renaming& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.bar == rhs.bar)) {
+  if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return false;
   }
   return true;
@@ -1373,8 +1568,8 @@ bool Renaming::operator<(const Renaming& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.bar == rhs.bar)) {
-    return lhs.bar < rhs.bar;
+  if (!(lhs.bar_ref() == rhs.bar_ref())) {
+    return lhs.bar_ref() < rhs.bar_ref();
   }
   return false;
 }
@@ -1425,17 +1620,36 @@ void TccStructTraits<::apache::thrift::fixtures::types::AnnotatedTypes>::transla
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AnnotatedTypes::AnnotatedTypes(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::TBinary binary_field__arg,  ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg) :
+AnnotatedTypes::AnnotatedTypes(const AnnotatedTypes&) = default;
+AnnotatedTypes& AnnotatedTypes::operator=(const AnnotatedTypes&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnnotatedTypes::AnnotatedTypes(AnnotatedTypes&& other) noexcept  :
+    binary_field(std::move(other.binary_field)),
+    list_field(std::move(other.list_field)),
+    __isset(other.__isset) {}
+AnnotatedTypes& AnnotatedTypes::operator=(FOLLY_MAYBE_UNUSED AnnotatedTypes&& other) noexcept {
+    this->binary_field = std::move(other.binary_field);
+    this->list_field = std::move(other.list_field);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AnnotatedTypes::AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::TBinary binary_field__arg, ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg) :
     binary_field(std::move(binary_field__arg)),
     list_field(std::move(list_field__arg)) {
   __isset.binary_field = true;
   __isset.list_field = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AnnotatedTypes::__clear() {
   // clear all fields
-  binary_field = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  list_field.clear();
+  this->binary_field = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->list_field.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1448,17 +1662,17 @@ bool AnnotatedTypes::operator==(const AnnotatedTypes& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binary_field, rhs.binary_field)) {
     return false;
   }
-  if (!(lhs.list_field == rhs.list_field)) {
+  if (!(lhs.list_field_ref() == rhs.list_field_ref())) {
     return false;
   }
   return true;
 }
 
-const  ::apache::thrift::fixtures::types::SomeListOfTypeMap& AnnotatedTypes::get_list_field() const& {
+const ::apache::thrift::fixtures::types::SomeListOfTypeMap& AnnotatedTypes::get_list_field() const& {
   return list_field;
 }
 
- ::apache::thrift::fixtures::types::SomeListOfTypeMap AnnotatedTypes::get_list_field() && {
+::apache::thrift::fixtures::types::SomeListOfTypeMap AnnotatedTypes::get_list_field() && {
   return std::move(list_field);
 }
 
@@ -1509,14 +1723,31 @@ void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageStruct>::tra
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
+ForwardUsageStruct::ForwardUsageStruct(const ForwardUsageStruct&) = default;
+ForwardUsageStruct& ForwardUsageStruct::operator=(const ForwardUsageStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ForwardUsageStruct::ForwardUsageStruct(ForwardUsageStruct&& other) noexcept  :
+    foo(std::move(other.foo)),
+    __isset(other.__isset) {}
+ForwardUsageStruct& ForwardUsageStruct::operator=(FOLLY_MAYBE_UNUSED ForwardUsageStruct&& other) noexcept {
+    this->foo = std::move(other.foo);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
     foo(std::move(foo__arg)) {
   __isset.foo = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ForwardUsageStruct::__clear() {
   // clear all fields
-  foo.__clear();
+  this->foo.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1526,7 +1757,7 @@ bool ForwardUsageStruct::operator==(const ForwardUsageStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref() != rhs.foo_ref()) {
+  if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return false;
   }
   return true;
@@ -1536,17 +1767,17 @@ bool ForwardUsageStruct::operator<(const ForwardUsageStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref() != rhs.foo_ref()) {
+  if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return lhs.foo_ref() < rhs.foo_ref();
   }
   return false;
 }
 
-const  ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageStruct::get_foo() const& {
+const ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageStruct::get_foo() const& {
   return foo_ref().has_value() ? std::addressof(foo) : nullptr;
 }
 
- ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageStruct::get_foo() & {
+::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageStruct::get_foo() & {
   return foo_ref().has_value() ? std::addressof(foo) : nullptr;
 }
 
@@ -1572,14 +1803,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ForwardUsageStruct,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
+        ::apache::thrift::fixtures::types::ForwardUsageRoot>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ForwardUsageStruct,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
+        ::apache::thrift::fixtures::types::ForwardUsageRoot>,
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
@@ -1612,7 +1843,8 @@ ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.ForwardUsageStruct = srcObj.__isset.ForwardUsageStruct;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  if (srcObj.ForwardUsageByRef) ForwardUsageByRef.reset(new  ::apache::thrift::fixtures::types::ForwardUsageByRef(*srcObj.ForwardUsageByRef));
+  ForwardUsageByRef = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::structure>(srcObj.ForwardUsageByRef);
 }
 
 ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& src) {
@@ -1622,16 +1854,31 @@ ForwardUsageRoot& ForwardUsageRoot::operator=(const ForwardUsageRoot& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, std::unique_ptr< ::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg) :
+ForwardUsageRoot::ForwardUsageRoot(ForwardUsageRoot&& other) noexcept  :
+    ForwardUsageStruct(std::move(other.ForwardUsageStruct)),
+    ForwardUsageByRef(std::move(other.ForwardUsageByRef)),
+    __isset(other.__isset) {}
+ForwardUsageRoot& ForwardUsageRoot::operator=(FOLLY_MAYBE_UNUSED ForwardUsageRoot&& other) noexcept {
+    this->ForwardUsageStruct = std::move(other.ForwardUsageStruct);
+    this->ForwardUsageByRef = std::move(other.ForwardUsageByRef);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg) :
     ForwardUsageStruct(std::move(ForwardUsageStruct__arg)),
     ForwardUsageByRef(std::move(ForwardUsageByRef__arg)) {
   __isset.ForwardUsageStruct = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ForwardUsageRoot::__clear() {
   // clear all fields
-  ForwardUsageStruct.__clear();
-  ForwardUsageByRef.reset();
+  this->ForwardUsageStruct.__clear();
+  this->ForwardUsageByRef.reset();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1641,16 +1888,11 @@ bool ForwardUsageRoot::operator==(const ForwardUsageRoot& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.ForwardUsageStruct_ref() != rhs.ForwardUsageStruct_ref()) {
+  if (!(lhs.ForwardUsageStruct_ref() == rhs.ForwardUsageStruct_ref())) {
     return false;
   }
-  if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
+  if ((lhs.ForwardUsageByRef == nullptr) != (rhs.ForwardUsageByRef == nullptr) || (lhs.ForwardUsageByRef != nullptr && lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef))) {
     return false;
-  }
-  if (!!lhs.ForwardUsageByRef) {
-    if (lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef)) {
-      return false;
-    }
   }
   return true;
 }
@@ -1659,25 +1901,20 @@ bool ForwardUsageRoot::operator<(const ForwardUsageRoot& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.ForwardUsageStruct_ref() != rhs.ForwardUsageStruct_ref()) {
+  if (!(lhs.ForwardUsageStruct_ref() == rhs.ForwardUsageStruct_ref())) {
     return lhs.ForwardUsageStruct_ref() < rhs.ForwardUsageStruct_ref();
   }
-  if (!!lhs.ForwardUsageByRef != !!rhs.ForwardUsageByRef) {
-    return !!lhs.ForwardUsageByRef < !!rhs.ForwardUsageByRef;
-  }
-  if (!!lhs.ForwardUsageByRef) {
-    if (lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef)) {
-      return *lhs.ForwardUsageByRef < *rhs.ForwardUsageByRef;
-    }
+  if ((lhs.ForwardUsageByRef == nullptr) != (rhs.ForwardUsageByRef == nullptr) || (lhs.ForwardUsageByRef != nullptr && lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef))) {
+    return lhs.ForwardUsageByRef == nullptr || (rhs.ForwardUsageByRef != nullptr && *lhs.ForwardUsageByRef < *rhs.ForwardUsageByRef);
   }
   return false;
 }
 
-const  ::apache::thrift::fixtures::types::ForwardUsageStruct* ForwardUsageRoot::get_ForwardUsageStruct() const& {
+const ::apache::thrift::fixtures::types::ForwardUsageStruct* ForwardUsageRoot::get_ForwardUsageStruct() const& {
   return ForwardUsageStruct_ref().has_value() ? std::addressof(ForwardUsageStruct) : nullptr;
 }
 
- ::apache::thrift::fixtures::types::ForwardUsageStruct* ForwardUsageRoot::get_ForwardUsageStruct() & {
+::apache::thrift::fixtures::types::ForwardUsageStruct* ForwardUsageRoot::get_ForwardUsageStruct() & {
   return ForwardUsageStruct_ref().has_value() ? std::addressof(ForwardUsageStruct) : nullptr;
 }
 
@@ -1704,26 +1941,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ForwardUsageRoot,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageStruct>,
+        ::apache::thrift::fixtures::types::ForwardUsageStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ForwardUsageRoot,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageByRef>,
+        ::apache::thrift::fixtures::types::ForwardUsageByRef>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ForwardUsageRoot,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageStruct>,
+        ::apache::thrift::fixtures::types::ForwardUsageStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ForwardUsageRoot,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageByRef>,
+        ::apache::thrift::fixtures::types::ForwardUsageByRef>,
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
@@ -1752,14 +1989,31 @@ void TccStructTraits<::apache::thrift::fixtures::types::ForwardUsageByRef>::tran
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor,  ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
+ForwardUsageByRef::ForwardUsageByRef(const ForwardUsageByRef&) = default;
+ForwardUsageByRef& ForwardUsageByRef::operator=(const ForwardUsageByRef&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ForwardUsageByRef::ForwardUsageByRef(ForwardUsageByRef&& other) noexcept  :
+    foo(std::move(other.foo)),
+    __isset(other.__isset) {}
+ForwardUsageByRef& ForwardUsageByRef::operator=(FOLLY_MAYBE_UNUSED ForwardUsageByRef&& other) noexcept {
+    this->foo = std::move(other.foo);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
     foo(std::move(foo__arg)) {
   __isset.foo = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ForwardUsageByRef::__clear() {
   // clear all fields
-  foo.__clear();
+  this->foo.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1769,7 +2023,7 @@ bool ForwardUsageByRef::operator==(const ForwardUsageByRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref() != rhs.foo_ref()) {
+  if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return false;
   }
   return true;
@@ -1779,17 +2033,17 @@ bool ForwardUsageByRef::operator<(const ForwardUsageByRef& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.foo_ref() != rhs.foo_ref()) {
+  if (!(lhs.foo_ref() == rhs.foo_ref())) {
     return lhs.foo_ref() < rhs.foo_ref();
   }
   return false;
 }
 
-const  ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageByRef::get_foo() const& {
+const ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageByRef::get_foo() const& {
   return foo_ref().has_value() ? std::addressof(foo) : nullptr;
 }
 
- ::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageByRef::get_foo() & {
+::apache::thrift::fixtures::types::ForwardUsageRoot* ForwardUsageByRef::get_foo() & {
   return foo_ref().has_value() ? std::addressof(foo) : nullptr;
 }
 
@@ -1815,14 +2069,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ForwardUsageByRef,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
+        ::apache::thrift::fixtures::types::ForwardUsageRoot>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ForwardUsageByRef,
         ::apache::thrift::type_class::structure,
-         ::apache::thrift::fixtures::types::ForwardUsageRoot>,
+        ::apache::thrift::fixtures::types::ForwardUsageRoot>,
     "inconsistent use of nimble option");
 
 }}}} // apache::thrift::fixtures::types
@@ -1850,9 +2104,11 @@ void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveEmpty>::tran
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveEmpty::NoexceptMoveEmpty(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void NoexceptMoveEmpty::__clear() {
   // clear all fields
 }
@@ -1914,15 +2170,17 @@ void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct
 
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-NoexceptMoveSimpleStruct::NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg) :
+NoexceptMoveSimpleStruct::NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
     boolField(std::move(boolField__arg)) {
   __isset.boolField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void NoexceptMoveSimpleStruct::__clear() {
   // clear all fields
-  boolField = 0;
+  this->boolField = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1932,7 +2190,7 @@ bool NoexceptMoveSimpleStruct::operator==(const NoexceptMoveSimpleStruct& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.boolField == rhs.boolField)) {
+  if (!(lhs.boolField_ref() == rhs.boolField_ref())) {
     return false;
   }
   return true;
@@ -1942,8 +2200,8 @@ bool NoexceptMoveSimpleStruct::operator<(const NoexceptMoveSimpleStruct& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.boolField == rhs.boolField)) {
-    return lhs.boolField < rhs.boolField;
+  if (!(lhs.boolField_ref() == rhs.boolField_ref())) {
+    return lhs.boolField_ref() < rhs.boolField_ref();
   }
   return false;
 }
@@ -1994,16 +2252,24 @@ void TccStructTraits<::apache::thrift::fixtures::types::NoexceptMoveComplexStruc
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(const NoexceptMoveComplexStruct&) = default;
+NoexceptMoveComplexStruct& NoexceptMoveComplexStruct::operator=(const NoexceptMoveComplexStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
       MyBoolField(0),
       MyIntField(12LL),
-      MyStringField(apache::thrift::StringTraits< std::string>::fromStringLiteral("test")),
-      MyMapEnumAndInt(std::initializer_list<std::pair<const  ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldA")},
-  { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits< std::string>::fromStringLiteral("fieldC")}}) {}
+      MyStringField(apache::thrift::StringTraits<std::string>::fromStringLiteral("test")),
+      MyMapEnumAndInt(std::initializer_list<std::pair<const ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
+  { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")}}) {
+}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
+NoexceptMoveComplexStruct::~NoexceptMoveComplexStruct() {}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept :
+NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&& other) noexcept  :
     MyBoolField(std::move(other.MyBoolField)),
     MyIntField(std::move(other.MyIntField)),
     MyStringField(std::move(other.MyStringField)),
@@ -2014,11 +2280,24 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(NoexceptMoveComplexStruct&&
     MyBinaryListField4(std::move(other.MyBinaryListField4)),
     MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
     __isset(other.__isset) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-NoexceptMoveComplexStruct::~NoexceptMoveComplexStruct() {}
+NoexceptMoveComplexStruct& NoexceptMoveComplexStruct::operator=(FOLLY_MAYBE_UNUSED NoexceptMoveComplexStruct&& other) noexcept {
+    this->MyBoolField = std::move(other.MyBoolField);
+    this->MyIntField = std::move(other.MyIntField);
+    this->MyStringField = std::move(other.MyStringField);
+    this->MyStringField2 = std::move(other.MyStringField2);
+    this->MyBinaryField = std::move(other.MyBinaryField);
+    this->MyBinaryField2 = std::move(other.MyBinaryField2);
+    this->MyBinaryField3 = std::move(other.MyBinaryField3);
+    this->MyBinaryListField4 = std::move(other.MyBinaryListField4);
+    this->MyMapEnumAndInt = std::move(other.MyMapEnumAndInt);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt__arg) :
+NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> MyMapEnumAndInt__arg) :
     MyBoolField(std::move(MyBoolField__arg)),
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
@@ -2038,17 +2317,18 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileCons
   __isset.MyMapEnumAndInt = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void NoexceptMoveComplexStruct::__clear() {
   // clear all fields
-  MyBoolField = 0;
-  MyIntField = 12LL;
-  MyStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("test");
-  MyStringField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField2 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryField3 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  MyBinaryListField4.clear();
-  MyMapEnumAndInt.clear();
+  this->MyBoolField = 0;
+  this->MyIntField = 12LL;
+  this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
+  this->MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->MyBinaryListField4.clear();
+  this->MyMapEnumAndInt.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2058,36 +2338,31 @@ bool NoexceptMoveComplexStruct::operator==(const NoexceptMoveComplexStruct& rhs)
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
+  if (!(lhs.MyBoolField_ref() == rhs.MyBoolField_ref())) {
     return false;
   }
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
     return false;
   }
-  if (!(lhs.MyStringField2 == rhs.MyStringField2)) {
+  if (!(lhs.MyStringField2_ref() == rhs.MyStringField2_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField, rhs.MyBinaryField)) {
     return false;
   }
-  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value()) {
+  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2))) {
     return false;
-  }
-  if (lhs.MyBinaryField2_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2)) {
-      return false;
-    }
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
     return false;
   }
-  if (!(lhs.MyBinaryListField4 == rhs.MyBinaryListField4)) {
+  if (!(lhs.MyBinaryListField4_ref() == rhs.MyBinaryListField4_ref())) {
     return false;
   }
-  if (!(lhs.MyMapEnumAndInt == rhs.MyMapEnumAndInt)) {
+  if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
     return false;
   }
   return true;
@@ -2097,37 +2372,32 @@ bool NoexceptMoveComplexStruct::operator<(const NoexceptMoveComplexStruct& rhs) 
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyBoolField == rhs.MyBoolField)) {
-    return lhs.MyBoolField < rhs.MyBoolField;
+  if (!(lhs.MyBoolField_ref() == rhs.MyBoolField_ref())) {
+    return lhs.MyBoolField_ref() < rhs.MyBoolField_ref();
   }
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
-  if (!(lhs.MyStringField == rhs.MyStringField)) {
-    return lhs.MyStringField < rhs.MyStringField;
+  if (!(lhs.MyStringField_ref() == rhs.MyStringField_ref())) {
+    return lhs.MyStringField_ref() < rhs.MyStringField_ref();
   }
-  if (!(lhs.MyStringField2 == rhs.MyStringField2)) {
-    return lhs.MyStringField2 < rhs.MyStringField2;
+  if (!(lhs.MyStringField2_ref() == rhs.MyStringField2_ref())) {
+    return lhs.MyStringField2_ref() < rhs.MyStringField2_ref();
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField, rhs.MyBinaryField)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField, rhs.MyBinaryField);
   }
-  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value()) {
-    return lhs.MyBinaryField2_ref().has_value() < rhs.MyBinaryField2_ref().has_value();
-  }
-  if (lhs.MyBinaryField2_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2)) {
-      return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField2, rhs.MyBinaryField2);
-    }
+  if (lhs.MyBinaryField2_ref().has_value() != rhs.MyBinaryField2_ref().has_value() || (lhs.MyBinaryField2_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField2, rhs.MyBinaryField2))) {
+    return !lhs.MyBinaryField2_ref().has_value() || (rhs.MyBinaryField2_ref().has_value() && apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField2, rhs.MyBinaryField2));
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.MyBinaryField3, rhs.MyBinaryField3)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.MyBinaryField3, rhs.MyBinaryField3);
   }
-  if (!(lhs.MyBinaryListField4 == rhs.MyBinaryListField4)) {
-    return lhs.MyBinaryListField4 < rhs.MyBinaryListField4;
+  if (!(lhs.MyBinaryListField4_ref() == rhs.MyBinaryListField4_ref())) {
+    return lhs.MyBinaryListField4_ref() < rhs.MyBinaryListField4_ref();
   }
-  if (!(lhs.MyMapEnumAndInt == rhs.MyMapEnumAndInt)) {
-    return lhs.MyMapEnumAndInt < rhs.MyMapEnumAndInt;
+  if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
+    return lhs.MyMapEnumAndInt_ref() < rhs.MyMapEnumAndInt_ref();
   }
   return false;
 }
@@ -2140,11 +2410,11 @@ const ::std::vector<::std::string>& NoexceptMoveComplexStruct::get_MyBinaryListF
   return std::move(MyBinaryListField4);
 }
 
-const ::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string>& NoexceptMoveComplexStruct::get_MyMapEnumAndInt() const& {
+const ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>& NoexceptMoveComplexStruct::get_MyMapEnumAndInt() const& {
   return MyMapEnumAndInt;
 }
 
-::std::map< ::apache::thrift::fixtures::types::MyEnumA, ::std::string> NoexceptMoveComplexStruct::get_MyMapEnumAndInt() && {
+::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string> NoexceptMoveComplexStruct::get_MyMapEnumAndInt() && {
   return std::move(MyMapEnumAndInt);
 }
 
@@ -2312,15 +2582,40 @@ void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware>::transla
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AllocatorAware::AllocatorAware() :
-      not_a_container(0) {}
+AllocatorAware::AllocatorAware(const AllocatorAware&) = default;
+AllocatorAware& AllocatorAware::operator=(const AllocatorAware&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AllocatorAware::AllocatorAware() :
+      not_a_container(0) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 AllocatorAware::~AllocatorAware() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<int32_t> aa_list__arg, ::std::set<int32_t> aa_set__arg, ::std::map<int32_t, int32_t> aa_map__arg, ::std::string aa_string__arg, int32_t not_a_container__arg) :
+AllocatorAware::AllocatorAware(AllocatorAware&& other) noexcept  :
+    aa_list(std::move(other.aa_list)),
+    aa_set(std::move(other.aa_set)),
+    aa_map(std::move(other.aa_map)),
+    aa_string(std::move(other.aa_string)),
+    not_a_container(std::move(other.not_a_container)),
+    __isset(other.__isset) {}
+AllocatorAware& AllocatorAware::operator=(FOLLY_MAYBE_UNUSED AllocatorAware&& other) noexcept {
+    this->aa_list = std::move(other.aa_list);
+    this->aa_set = std::move(other.aa_set);
+    this->aa_map = std::move(other.aa_map);
+    this->aa_string = std::move(other.aa_string);
+    this->not_a_container = std::move(other.not_a_container);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> aa_list__arg, ::std::set<::std::int32_t> aa_set__arg, ::std::map<::std::int32_t, ::std::int32_t> aa_map__arg, ::std::string aa_string__arg, ::std::int32_t not_a_container__arg) :
     aa_list(std::move(aa_list__arg)),
     aa_set(std::move(aa_set__arg)),
     aa_map(std::move(aa_map__arg)),
@@ -2333,13 +2628,14 @@ AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector
   __isset.not_a_container = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AllocatorAware::__clear() {
   // clear all fields
-  aa_list.clear();
-  aa_set.clear();
-  aa_map.clear();
-  aa_string = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  not_a_container = 0;
+  this->aa_list.clear();
+  this->aa_set.clear();
+  this->aa_map.clear();
+  this->aa_string = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->not_a_container = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2349,19 +2645,19 @@ bool AllocatorAware::operator==(const AllocatorAware& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.aa_list == rhs.aa_list)) {
+  if (!(lhs.aa_list_ref() == rhs.aa_list_ref())) {
     return false;
   }
-  if (!(lhs.aa_set == rhs.aa_set)) {
+  if (!(lhs.aa_set_ref() == rhs.aa_set_ref())) {
     return false;
   }
-  if (!(lhs.aa_map == rhs.aa_map)) {
+  if (!(lhs.aa_map_ref() == rhs.aa_map_ref())) {
     return false;
   }
-  if (!(lhs.aa_string == rhs.aa_string)) {
+  if (!(lhs.aa_string_ref() == rhs.aa_string_ref())) {
     return false;
   }
-  if (!(lhs.not_a_container == rhs.not_a_container)) {
+  if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
     return false;
   }
   return true;
@@ -2371,45 +2667,45 @@ bool AllocatorAware::operator<(const AllocatorAware& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.aa_list == rhs.aa_list)) {
-    return lhs.aa_list < rhs.aa_list;
+  if (!(lhs.aa_list_ref() == rhs.aa_list_ref())) {
+    return lhs.aa_list_ref() < rhs.aa_list_ref();
   }
-  if (!(lhs.aa_set == rhs.aa_set)) {
-    return lhs.aa_set < rhs.aa_set;
+  if (!(lhs.aa_set_ref() == rhs.aa_set_ref())) {
+    return lhs.aa_set_ref() < rhs.aa_set_ref();
   }
-  if (!(lhs.aa_map == rhs.aa_map)) {
-    return lhs.aa_map < rhs.aa_map;
+  if (!(lhs.aa_map_ref() == rhs.aa_map_ref())) {
+    return lhs.aa_map_ref() < rhs.aa_map_ref();
   }
-  if (!(lhs.aa_string == rhs.aa_string)) {
-    return lhs.aa_string < rhs.aa_string;
+  if (!(lhs.aa_string_ref() == rhs.aa_string_ref())) {
+    return lhs.aa_string_ref() < rhs.aa_string_ref();
   }
-  if (!(lhs.not_a_container == rhs.not_a_container)) {
-    return lhs.not_a_container < rhs.not_a_container;
+  if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
+    return lhs.not_a_container_ref() < rhs.not_a_container_ref();
   }
   return false;
 }
 
-const ::std::vector<int32_t>& AllocatorAware::get_aa_list() const& {
+const ::std::vector<::std::int32_t>& AllocatorAware::get_aa_list() const& {
   return aa_list;
 }
 
-::std::vector<int32_t> AllocatorAware::get_aa_list() && {
+::std::vector<::std::int32_t> AllocatorAware::get_aa_list() && {
   return std::move(aa_list);
 }
 
-const ::std::set<int32_t>& AllocatorAware::get_aa_set() const& {
+const ::std::set<::std::int32_t>& AllocatorAware::get_aa_set() const& {
   return aa_set;
 }
 
-::std::set<int32_t> AllocatorAware::get_aa_set() && {
+::std::set<::std::int32_t> AllocatorAware::get_aa_set() && {
   return std::move(aa_set);
 }
 
-const ::std::map<int32_t, int32_t>& AllocatorAware::get_aa_map() const& {
+const ::std::map<::std::int32_t, ::std::int32_t>& AllocatorAware::get_aa_map() const& {
   return aa_map;
 }
 
-::std::map<int32_t, int32_t> AllocatorAware::get_aa_map() && {
+::std::map<::std::int32_t, ::std::int32_t> AllocatorAware::get_aa_map() && {
   return std::move(aa_map);
 }
 
@@ -2463,14 +2759,31 @@ void TccStructTraits<::apache::thrift::fixtures::types::AllocatorAware2>::transl
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AllocatorAware2::AllocatorAware2(apache::thrift::FragileConstructor, int32_t not_a_container__arg) :
+AllocatorAware2::AllocatorAware2(const AllocatorAware2&) = default;
+AllocatorAware2& AllocatorAware2::operator=(const AllocatorAware2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AllocatorAware2::AllocatorAware2(AllocatorAware2&& other) noexcept  :
+    not_a_container(std::move(other.not_a_container)),
+    __isset(other.__isset) {}
+AllocatorAware2& AllocatorAware2::operator=(FOLLY_MAYBE_UNUSED AllocatorAware2&& other) noexcept {
+    this->not_a_container = std::move(other.not_a_container);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+AllocatorAware2::AllocatorAware2(apache::thrift::FragileConstructor, ::std::int32_t not_a_container__arg) :
     not_a_container(std::move(not_a_container__arg)) {
   __isset.not_a_container = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void AllocatorAware2::__clear() {
   // clear all fields
-  not_a_container = 0;
+  this->not_a_container = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2480,7 +2793,7 @@ bool AllocatorAware2::operator==(const AllocatorAware2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.not_a_container == rhs.not_a_container)) {
+  if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
     return false;
   }
   return true;
@@ -2490,8 +2803,8 @@ bool AllocatorAware2::operator<(const AllocatorAware2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.not_a_container == rhs.not_a_container)) {
-    return lhs.not_a_container < rhs.not_a_container;
+  if (!(lhs.not_a_container_ref() == rhs.not_a_container_ref())) {
+    return lhs.not_a_container_ref() < rhs.not_a_container_ref();
   }
   return false;
 }
@@ -2513,6 +2826,207 @@ template void AllocatorAware2::readNoXfer<>(apache::thrift::CompactProtocolReade
 template uint32_t AllocatorAware2::write<>(apache::thrift::CompactProtocolWriter*) const;
 template uint32_t AllocatorAware2::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
 template uint32_t AllocatorAware2::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+}}}} // apache::thrift::fixtures::types
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::TypedefStruct>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::apache::thrift::fixtures::types::TypedefStruct>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+TypedefStruct::TypedefStruct(const TypedefStruct&) = default;
+TypedefStruct& TypedefStruct::operator=(const TypedefStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+TypedefStruct::TypedefStruct(TypedefStruct&& other) noexcept  :
+    i32_field(std::move(other.i32_field)),
+    IntTypedef_field(std::move(other.IntTypedef_field)),
+    UintTypedef_field(std::move(other.UintTypedef_field)),
+    __isset(other.__isset) {}
+TypedefStruct& TypedefStruct::operator=(FOLLY_MAYBE_UNUSED TypedefStruct&& other) noexcept {
+    this->i32_field = std::move(other.i32_field);
+    this->IntTypedef_field = std::move(other.IntTypedef_field);
+    this->UintTypedef_field = std::move(other.UintTypedef_field);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+TypedefStruct::TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t i32_field__arg, ::apache::thrift::fixtures::types::IntTypedef IntTypedef_field__arg, std::uint32_t UintTypedef_field__arg) :
+    i32_field(std::move(i32_field__arg)),
+    IntTypedef_field(std::move(IntTypedef_field__arg)),
+    UintTypedef_field(std::move(UintTypedef_field__arg)) {
+  __isset.i32_field = true;
+  __isset.IntTypedef_field = true;
+  __isset.UintTypedef_field = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+void TypedefStruct::__clear() {
+  // clear all fields
+  this->i32_field = 0;
+  this->IntTypedef_field = 0;
+  this->UintTypedef_field = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+bool TypedefStruct::operator==(const TypedefStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.i32_field_ref() == rhs.i32_field_ref())) {
+    return false;
+  }
+  if (!(lhs.IntTypedef_field_ref() == rhs.IntTypedef_field_ref())) {
+    return false;
+  }
+  if (!(lhs.UintTypedef_field_ref() == rhs.UintTypedef_field_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool TypedefStruct::operator<(const TypedefStruct& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.i32_field_ref() == rhs.i32_field_ref())) {
+    return lhs.i32_field_ref() < rhs.i32_field_ref();
+  }
+  if (!(lhs.IntTypedef_field_ref() == rhs.IntTypedef_field_ref())) {
+    return lhs.IntTypedef_field_ref() < rhs.IntTypedef_field_ref();
+  }
+  if (!(lhs.UintTypedef_field_ref() == rhs.UintTypedef_field_ref())) {
+    return lhs.UintTypedef_field_ref() < rhs.UintTypedef_field_ref();
+  }
+  return false;
+}
+
+
+void swap(TypedefStruct& a, TypedefStruct& b) {
+  using ::std::swap;
+  swap(a.i32_field_ref().value(), b.i32_field_ref().value());
+  swap(a.IntTypedef_field_ref().value(), b.IntTypedef_field_ref().value());
+  swap(a.UintTypedef_field_ref().value(), b.UintTypedef_field_ref().value());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+template void TypedefStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t TypedefStruct::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t TypedefStruct::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t TypedefStruct::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void TypedefStruct::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t TypedefStruct::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t TypedefStruct::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t TypedefStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+}}}} // apache::thrift::fixtures::types
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::apache::thrift::fixtures::types::StructWithDoubleUnderscores>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace apache { namespace thrift { namespace fixtures { namespace types {
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+StructWithDoubleUnderscores::StructWithDoubleUnderscores(apache::thrift::FragileConstructor, ::std::int32_t __field__arg) :
+    __field(std::move(__field__arg)) {
+  __isset.__field = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+void StructWithDoubleUnderscores::__clear() {
+  // clear all fields
+  this->__field = 0;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+bool StructWithDoubleUnderscores::operator==(const StructWithDoubleUnderscores& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.__field_ref() == rhs.__field_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool StructWithDoubleUnderscores::operator<(const StructWithDoubleUnderscores& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.__field_ref() == rhs.__field_ref())) {
+    return lhs.__field_ref() < rhs.__field_ref();
+  }
+  return false;
+}
+
+
+void swap(StructWithDoubleUnderscores& a, StructWithDoubleUnderscores& b) {
+  using ::std::swap;
+  swap(a.__field_ref().value(), b.__field_ref().value());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+template void StructWithDoubleUnderscores::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t StructWithDoubleUnderscores::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t StructWithDoubleUnderscores::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t StructWithDoubleUnderscores::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void StructWithDoubleUnderscores::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t StructWithDoubleUnderscores::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t StructWithDoubleUnderscores::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t StructWithDoubleUnderscores::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
 
 
 

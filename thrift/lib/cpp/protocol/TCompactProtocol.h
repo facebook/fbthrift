@@ -20,9 +20,9 @@
 #include <folly/lang/Bits.h>
 #include <thrift/lib/cpp/protocol/TVirtualProtocol.h>
 
-#include <folly/FBVector.h>
 #include <memory>
 #include <stack>
+#include <folly/FBVector.h>
 
 namespace apache {
 namespace thrift {
@@ -127,18 +127,12 @@ class TCompactProtocolT
     container_limit_ = container_limit;
   }
 
-  int32_t getStringSizeLimit() {
-    return string_limit_;
-  }
+  int32_t getStringSizeLimit() { return string_limit_; }
 
-  int32_t getContainerSizeLimit() {
-    return container_limit_;
-  }
+  int32_t getContainerSizeLimit() { return container_limit_; }
 
   /** Set this if you need backwards compatibility with an old version */
-  void setVersion(const int8_t version) {
-    version_ = version;
-  }
+  void setVersion(const int8_t version) { version_ = version; }
 
   /**
    * Writing functions
@@ -154,9 +148,7 @@ class TCompactProtocolT
   uint32_t writeStructEnd();
 
   uint32_t writeFieldBegin(
-      const char* name,
-      const TType fieldType,
-      const int16_t fieldId);
+      const char* name, const TType fieldType, const int16_t fieldId);
 
   uint32_t writeFieldStop();
 
@@ -164,8 +156,8 @@ class TCompactProtocolT
 
   uint32_t writeSetBegin(const TType elemType, const uint32_t size);
 
-  virtual uint32_t
-  writeMapBegin(const TType keyType, const TType valType, const uint32_t size);
+  virtual uint32_t writeMapBegin(
+      const TType keyType, const TType valType, const uint32_t size);
 
   uint32_t writeBool(const bool value);
 
@@ -193,21 +185,11 @@ class TCompactProtocolT
    * These methods are called by structs, but don't actually have any wired
    * output or purpose
    */
-  virtual uint32_t writeMessageEnd() {
-    return 0;
-  }
-  uint32_t writeMapEnd() {
-    return 0;
-  }
-  uint32_t writeListEnd() {
-    return 0;
-  }
-  uint32_t writeSetEnd() {
-    return 0;
-  }
-  uint32_t writeFieldEnd() {
-    return 0;
-  }
+  virtual uint32_t writeMessageEnd() { return 0; }
+  uint32_t writeMapEnd() { return 0; }
+  uint32_t writeListEnd() { return 0; }
+  uint32_t writeSetEnd() { return 0; }
+  uint32_t writeFieldEnd() { return 0; }
 
  protected:
   int32_t writeFieldBeginInternal(
@@ -222,22 +204,17 @@ class TCompactProtocolT
 
  public:
   uint32_t readMessageBegin(
-      std::string& name,
-      TMessageType& messageType,
-      int32_t& seqid);
+      std::string& name, TMessageType& messageType, int32_t& seqid);
 
   uint32_t readStructBegin(std::string& name);
 
   uint32_t readStructEnd();
 
-  uint32_t
-  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  uint32_t readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId);
 
   uint32_t readMapBegin(
-      TType& keyType,
-      TType& valType,
-      uint32_t& size,
-      bool& sizeUnknown);
+      TType& keyType, TType& valType, uint32_t& size, bool& sizeUnknown);
 
   uint32_t readListBegin(TType& elemType, uint32_t& size, bool& sizeUnknown);
 
@@ -269,21 +246,11 @@ class TCompactProtocolT
    *These methods are here for the struct to call, but don't have any wire
    * encoding.
    */
-  uint32_t readMessageEnd() {
-    return 0;
-  }
-  uint32_t readFieldEnd() {
-    return 0;
-  }
-  uint32_t readMapEnd() {
-    return 0;
-  }
-  uint32_t readListEnd() {
-    return 0;
-  }
-  uint32_t readSetEnd() {
-    return 0;
-  }
+  uint32_t readMessageEnd() { return 0; }
+  uint32_t readFieldEnd() { return 0; }
+  uint32_t readMapEnd() { return 0; }
+  uint32_t readListEnd() { return 0; }
+  uint32_t readSetEnd() { return 0; }
 
  protected:
   uint32_t readVarint32(int32_t& i32);

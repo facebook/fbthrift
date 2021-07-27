@@ -21,7 +21,6 @@
 #include <fatal/type/search.h>
 #include <fatal/type/variant_traits.h>
 #include <folly/String.h>
-#include <thrift/lib/cpp2/reflection/container_traits.h>
 
 namespace apache {
 namespace thrift {
@@ -146,15 +145,19 @@ struct pretty_print_structure_with_pointers {
 
   template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(
-      OutputStream& out,
-      std::shared_ptr<T> const& pMember) {
+      OutputStream& out, boxed_value_ptr<T> const& pMember) {
+    return recurse_into_ptr<TypeClass>(out, pMember ? &*pMember : nullptr);
+  }
+
+  template <typename TypeClass, typename OutputStream, typename T>
+  static void recurse_into(
+      OutputStream& out, std::shared_ptr<T> const& pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember.get());
   }
 
   template <typename TypeClass, typename OutputStream, typename T>
   static void recurse_into(
-      OutputStream& out,
-      std::unique_ptr<T> const& pMember) {
+      OutputStream& out, std::unique_ptr<T> const& pMember) {
     return recurse_into_ptr<TypeClass>(out, pMember.get());
   }
 };

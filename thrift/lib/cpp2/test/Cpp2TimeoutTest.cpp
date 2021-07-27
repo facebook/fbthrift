@@ -36,12 +36,8 @@ using namespace apache::thrift::util;
 class CloseChecker : public CloseCallback {
  public:
   CloseChecker() : closed_(false) {}
-  void channelClosed() override {
-    closed_ = true;
-  }
-  bool getClosed() {
-    return closed_;
-  }
+  void channelClosed() override { closed_ = true; }
+  bool getClosed() { return closed_; }
 
  private:
   bool closed_;
@@ -53,10 +49,9 @@ TEST(ThriftServer, IdleTimeoutTest) {
   ScopedServerThread sst(factory.create());
 
   folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
 
-  auto client_channel = HeaderClientChannel::newChannel(socket);
+  auto client_channel = HeaderClientChannel::newChannel(std::move(socket));
   CloseChecker checker;
   client_channel->setCloseCallback(&checker);
   base.tryRunAfterDelay([&base]() { base.terminateLoopSoon(); }, 100);
@@ -71,10 +66,9 @@ TEST(ThriftServer, NoIdleTimeoutWhileWorkingTest) {
   ScopedServerThread sst(factory.create());
 
   folly::EventBase base;
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
 
-  auto client_channel = HeaderClientChannel::newChannel(socket);
+  auto client_channel = HeaderClientChannel::newChannel(std::move(socket));
   auto client_channelp = client_channel.get();
   CloseChecker checker;
 
@@ -91,15 +85,14 @@ TEST(ThriftServer, NoIdleTimeoutWhileWorkingTest) {
 
 TEST(ThriftServer, IdleTimeoutAfterTest) {
   apache::thrift::TestThriftServerFactory<TestInterface> factory;
-  factory.idleTimeoutMs(10);
+  factory.idleTimeoutMs(20);
   ScopedServerThread sst(factory.create());
 
   folly::EventBase base;
 
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&base, *sst.getAddress()));
+  auto socket = folly::AsyncSocket::newSocket(&base, *sst.getAddress());
 
-  auto client_channel = HeaderClientChannel::newChannel(socket);
+  auto client_channel = HeaderClientChannel::newChannel(std::move(socket));
   auto client_channelp = client_channel.get();
   CloseChecker checker;
 

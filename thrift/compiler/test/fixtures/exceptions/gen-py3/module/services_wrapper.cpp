@@ -20,7 +20,7 @@ RaiserWrapper::RaiserWrapper(PyObject *obj, folly::Executor* exc)
 
 void RaiserWrapper::async_tm_doBland(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -38,7 +38,7 @@ void RaiserWrapper::async_tm_doBland(
 }
 void RaiserWrapper::async_tm_doRaise(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -56,7 +56,7 @@ void RaiserWrapper::async_tm_doRaise(
 }
 void RaiserWrapper::async_tm_get200(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -74,7 +74,7 @@ void RaiserWrapper::async_tm_get200(
 }
 void RaiserWrapper::async_tm_get500(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,

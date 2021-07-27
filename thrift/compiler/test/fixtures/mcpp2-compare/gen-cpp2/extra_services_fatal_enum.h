@@ -15,4 +15,9 @@
 
 namespace extra { namespace svc {
 
+namespace __fbthrift_refl {
+namespace __fbthrift_refl_impl = ::apache::thrift::detail::reflection_impl;
+
+} // __fbthrift_refl
+
 }} // extra::svc

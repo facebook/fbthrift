@@ -28,11 +28,14 @@
 namespace apache {
 namespace thrift {
 
+class Cpp2Worker;
+
 class SingleRpcChannel : public H2Channel {
  public:
   SingleRpcChannel(
       proxygen::HTTPTransaction* toHttp2,
-      ThriftProcessor* processor);
+      ThriftProcessor* processor,
+      std::shared_ptr<Cpp2Worker> worker);
 
   SingleRpcChannel(
       folly::EventBase& evb,
@@ -86,6 +89,8 @@ class SingleRpcChannel : public H2Channel {
   // Owned by H2ThriftServer.
   ThriftProcessor* processor_{nullptr};
 
+  std::shared_ptr<Cpp2Worker> worker_;
+
   // Event base on which all methods in this object must be invoked.
   folly::EventBase* evb_{nullptr};
 
@@ -104,6 +109,8 @@ class SingleRpcChannel : public H2Channel {
 
   bool receivedThriftRPC_{false};
   bool receivedH2Stream_{false};
+
+  std::shared_ptr<void> activeRequestsGuard_;
 };
 
 } // namespace thrift

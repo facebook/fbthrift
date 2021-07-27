@@ -24,8 +24,7 @@ namespace example {
 namespace chatroom {
 
 void ChatRoomServiceHandler::getMessages(
-    GetMessagesResponse& resp,
-    std::unique_ptr<GetMessagesRequest> req) {
+    GetMessagesResponse& resp, std::unique_ptr<GetMessagesRequest> req) {
   int64_t idx = 0;
   if (auto token = req->token_ref()) {
     idx = *token->index_ref();

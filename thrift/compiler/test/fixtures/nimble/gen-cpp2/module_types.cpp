@@ -35,8 +35,9 @@ void TccStructTraits<::cpp2::BasicTypes>::translateFieldName(
 
 namespace cpp2 {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-BasicTypes::BasicTypes(apache::thrift::FragileConstructor, int32_t first__arg, int32_t second__arg, int64_t third__arg, bool isTrue__arg) :
+BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first__arg, ::std::int32_t second__arg, ::std::int64_t third__arg, bool isTrue__arg) :
     first(std::move(first__arg)),
     second(std::move(second__arg)),
     third(std::move(third__arg)),
@@ -46,12 +47,13 @@ BasicTypes::BasicTypes(apache::thrift::FragileConstructor, int32_t first__arg, i
   __isset.isTrue = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void BasicTypes::__clear() {
   // clear all fields
-  first = 0;
-  second = 0;
-  third = 0;
-  isTrue = 0;
+  this->first = 0;
+  this->second = 0;
+  this->third = 0;
+  this->isTrue = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -61,16 +63,16 @@ bool BasicTypes::operator==(const BasicTypes& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.first == rhs.first)) {
+  if (!(lhs.first_ref() == rhs.first_ref())) {
     return false;
   }
-  if (lhs.second_ref() != rhs.second_ref()) {
+  if (!(lhs.second_ref() == rhs.second_ref())) {
     return false;
   }
-  if (lhs.third_ref() != rhs.third_ref()) {
+  if (!(lhs.third_ref() == rhs.third_ref())) {
     return false;
   }
-  if (!(lhs.isTrue == rhs.isTrue)) {
+  if (!(lhs.isTrue_ref() == rhs.isTrue_ref())) {
     return false;
   }
   return true;
@@ -80,17 +82,17 @@ bool BasicTypes::operator<(const BasicTypes& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.first == rhs.first)) {
-    return lhs.first < rhs.first;
+  if (!(lhs.first_ref() == rhs.first_ref())) {
+    return lhs.first_ref() < rhs.first_ref();
   }
-  if (lhs.second_ref() != rhs.second_ref()) {
+  if (!(lhs.second_ref() == rhs.second_ref())) {
     return lhs.second_ref() < rhs.second_ref();
   }
-  if (lhs.third_ref() != rhs.third_ref()) {
+  if (!(lhs.third_ref() == rhs.third_ref())) {
     return lhs.third_ref() < rhs.third_ref();
   }
-  if (!(lhs.isTrue == rhs.isTrue)) {
-    return lhs.isTrue < rhs.isTrue;
+  if (!(lhs.isTrue_ref() == rhs.isTrue_ref())) {
+    return lhs.isTrue_ref() < rhs.isTrue_ref();
   }
   return false;
 }

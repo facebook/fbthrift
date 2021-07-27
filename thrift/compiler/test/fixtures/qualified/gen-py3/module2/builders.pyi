@@ -7,7 +7,7 @@
 
 import typing as _typing
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
 import module0.types as _module0_types

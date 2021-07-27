@@ -23,8 +23,8 @@ structures, some work is required.
 
 This template assumes that the Python object is in a variable named <field>.
 
-}}{{#type:iobuf?}}deref((<__iobuf.IOBuf>{{field:py_name}}).c_clone()){{/type:iobuf?}}{{!
-}}{{#type:iobufRef?}}((<__iobuf.IOBuf>{{field:py_name}}).c_clone()){{/type:iobufRef?}}{{!
+}}{{#type:iobuf?}}deref((<_fbthrift_iobuf.IOBuf>{{field:py_name}}).c_clone()){{/type:iobuf?}}{{!
+}}{{#type:iobufRef?}}((<_fbthrift_iobuf.IOBuf>{{field:py_name}}).c_clone()){{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
   }}{{> types/CythonCppType}}(cmove(<string>{{field:py_name}})){{!
 }}{{/type:flexibleBinary?}}{{!

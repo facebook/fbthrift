@@ -13,6 +13,7 @@
 #include <thrift/lib/py3/enums.h>
 #include "src/gen-cpp2/module_data.h"
 #include "src/gen-cpp2/module_types.h"
+#include "src/gen-cpp2/module_metadata.h"
 namespace thrift {
 namespace py3 {
 
@@ -377,7 +378,7 @@ void reset_field<::some::valid::ns::MyIncludedStruct>(
       obj.MyIncludedStruct_ref().copy_from(default_inst<::some::valid::ns::MyIncludedStruct>().MyIncludedStruct_ref());
       return;
     case 2:
-      obj.ARefField.reset();
+      obj.ARefField_ref().reset();
       return;
     case 3:
       obj.ARequiredField_ref().copy_from(default_inst<::some::valid::ns::MyIncludedStruct>().ARequiredField_ref());
@@ -393,58 +394,58 @@ void reset_field<::some::valid::ns::AnnotatedStruct>(
       obj.no_annotation_ref().copy_from(default_inst<::some::valid::ns::AnnotatedStruct>().no_annotation_ref());
       return;
     case 1:
-      obj.cpp_unique_ref.reset();
+      obj.cpp_unique_ref_ref().reset();
       return;
     case 2:
-      obj.cpp2_unique_ref.reset();
+      obj.cpp2_unique_ref_ref().reset();
       return;
     case 3:
-      obj.container_with_ref.reset();
+      obj.container_with_ref_ref().reset();
       return;
     case 4:
-      obj.req_cpp_unique_ref.reset();
+      obj.req_cpp_unique_ref_ref().reset();
       return;
     case 5:
-      obj.req_cpp2_unique_ref.reset();
+      obj.req_cpp2_unique_ref_ref().reset();
       return;
     case 6:
-      obj.req_container_with_ref.reset();
+      obj.req_container_with_ref_ref().reset();
       return;
     case 7:
-      obj.opt_cpp_unique_ref.reset();
+      obj.opt_cpp_unique_ref_ref().reset();
       return;
     case 8:
-      obj.opt_cpp2_unique_ref.reset();
+      obj.opt_cpp2_unique_ref_ref().reset();
       return;
     case 9:
-      obj.opt_container_with_ref.reset();
+      obj.opt_container_with_ref_ref().reset();
       return;
     case 10:
-      obj.ref_type_unique.reset();
+      obj.ref_type_unique_ref().reset();
       return;
     case 11:
-      obj.ref_type_shared.reset();
+      obj.ref_type_shared_ref().reset();
       return;
     case 12:
-      obj.ref_type_const.reset();
+      obj.ref_type_const_ref().reset();
       return;
     case 13:
-      obj.req_ref_type_shared.reset();
+      obj.req_ref_type_shared_ref().reset();
       return;
     case 14:
-      obj.req_ref_type_const.reset();
+      obj.req_ref_type_const_ref().reset();
       return;
     case 15:
-      obj.req_ref_type_unique.reset();
+      obj.req_ref_type_unique_ref().reset();
       return;
     case 16:
-      obj.opt_ref_type_const.reset();
+      obj.opt_ref_type_const_ref().reset();
       return;
     case 17:
-      obj.opt_ref_type_unique.reset();
+      obj.opt_ref_type_unique_ref().reset();
       return;
     case 18:
-      obj.opt_ref_type_shared.reset();
+      obj.opt_ref_type_shared_ref().reset();
       return;
     case 19:
       obj.base_type_ref().copy_from(default_inst<::some::valid::ns::AnnotatedStruct>().base_type_ref());

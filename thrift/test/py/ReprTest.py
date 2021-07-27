@@ -22,8 +22,8 @@ from thrift.test.UnionTest.ttypes import \
     RandomStuff, \
     StructWithUnionAndOther, \
     TestUnion, \
-    OneOfEach
-
+    OneOfEach, \
+    StructWithDoubleUnderscoreField
 
 class TestRepr(unittest.TestCase):
 
@@ -64,4 +64,12 @@ class TestRepr(unittest.TestCase):
                 byte_list=[1, 2, 3],
                 i16_list=[1, 2, 3],
                 i64_list=[1, 2, 3])"""
+        self.assertEquals(repr(obj), textwrap.dedent(output))
+
+    def test_double_underscore_field_repr(self):
+        obj = StructWithDoubleUnderscoreField(__field=123, field=456)
+        output = """\
+            StructWithDoubleUnderscoreField(
+                __field=123,
+                field=456)"""
         self.assertEquals(repr(obj), textwrap.dedent(output))

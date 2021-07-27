@@ -19,27 +19,28 @@
 #include <string>
 #include <vector>
 
+#include <thrift/compiler/ast/diagnostic.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-struct diagnostic_message;
-
 enum class compile_retcode {
-  SUCCESS = 0,
-  FAILURE = 1,
+  success = 0,
+  failure = 1,
 };
 
 struct compile_result {
-  compile_retcode retcode;
-  std::vector<diagnostic_message> diagnostics;
+  compile_retcode retcode = compile_retcode::failure;
+  diagnostic_results detail;
 };
 
 /**
  * Parse it up, then spit it back out, in pretty much every language. Alright
  * not that many languages, but the cool ones that we care about.
  */
-compile_result compile(std::vector<std::string> arguments);
+compile_result compile(const std::vector<std::string>& arguments);
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

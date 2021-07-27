@@ -19,6 +19,7 @@
 #include <chrono>
 #include <limits>
 #include <memory>
+#include <optional>
 
 #include <folly/ScopeGuard.h>
 #include <folly/fibers/FiberManagerMap.h>
@@ -26,6 +27,7 @@
 #include <folly/io/async/DelayedDestruction.h>
 
 #include <thrift/lib/cpp2/async/ClientChannel.h>
+#include <thrift/lib/cpp2/transport/rocket/client/RocketClient.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Frames.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -52,14 +54,15 @@ namespace transport {
 class THeader;
 } // namespace transport
 
-class RocketClientChannel final : public ClientChannel {
+class RocketClientChannel final : public ClientChannel,
+                                  private rocket::RocketClient {
  public:
   using Ptr = std::
       unique_ptr<RocketClientChannel, folly::DelayedDestruction::Destructor>;
 
-  static Ptr newChannel(
-      folly::AsyncTransport::UniquePtr socket,
-      RequestSetupMetadata meta = RequestSetupMetadata());
+  static Ptr newChannel(folly::AsyncTransport::UniquePtr socket);
+  static Ptr newChannelWithMetadata(
+      folly::AsyncTransport::UniquePtr socket, RequestSetupMetadata meta);
 
   using RequestChannel::sendRequestNoResponse;
   using RequestChannel::sendRequestResponse;
@@ -68,43 +71,37 @@ class RocketClientChannel final : public ClientChannel {
 
   void sendRequestResponse(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      apache::thrift::MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestNoResponse(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      apache::thrift::MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cb) override;
 
   void sendRequestStream(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      apache::thrift::MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* clientCallback) override;
 
   void sendRequestSink(
       const RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      apache::thrift::MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* clientCallback) override;
 
-  folly::EventBase* getEventBase() const override {
-    return evb_;
-  }
+  folly::EventBase* getEventBase() const override { return evb_; }
 
-  uint16_t getProtocolId() override {
-    return protocolId_;
-  }
+  uint16_t getProtocolId() override { return protocolId_; }
 
-  void setProtocolId(uint16_t protocolId) {
-    protocolId_ = protocolId;
-  }
+  void setProtocolId(uint16_t protocolId) { protocolId_ = protocolId; }
 
   folly::AsyncTransport* FOLLY_NULLABLE getTransport() override;
   bool good() override;
@@ -117,18 +114,12 @@ class RocketClientChannel final : public ClientChannel {
   void setOnDetachable(folly::Function<void()> onDetachable) override;
   void unsetOnDetachable() override;
 
-  uint32_t getTimeout() override {
-    return timeout_.count();
-  }
+  uint32_t getTimeout() override { return timeout_.count(); }
   void setTimeout(uint32_t timeoutMs) override;
 
-  CLIENT_TYPE getClientType() override {
-    return THRIFT_ROCKET_CLIENT_TYPE;
-  }
+  CLIENT_TYPE getClientType() override { return THRIFT_ROCKET_CLIENT_TYPE; }
 
-  void setMaxPendingRequests(uint32_t n) {
-    maxInflightRequestsAndStreams_ = n;
-  }
+  void setMaxPendingRequests(uint32_t n) { maxInflightRequestsAndStreams_ = n; }
   SaturationStatus getSaturationStatus() override;
 
   void closeNow() override;
@@ -140,37 +131,27 @@ class RocketClientChannel final : public ClientChannel {
 
   void setFlushList(FlushList* flushList);
 
-  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo);
-
-  void setAutoCompressSizeLimit(int32_t size);
-
   // must be called from evb thread
   void terminateInteraction(InteractionId id) override;
 
   // supports nesting
   // must be called from evb thread
-  InteractionId registerInteraction(folly::StringPiece name, int64_t id)
-      override;
+  InteractionId registerInteraction(
+      apache::thrift::ManagedStringView&& name, int64_t id) override;
 
  private:
   static constexpr std::chrono::seconds kDefaultRpcTimeout{60};
 
-  folly::EventBase* evb_{nullptr};
-  std::unique_ptr<rocket::RocketClient, folly::DelayedDestruction::Destructor>
-      rclient_;
   uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
   std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
-
+  bool clientDestroyed_{false};
   uint32_t maxInflightRequestsAndStreams_{std::numeric_limits<uint32_t>::max()};
-  struct Shared {
-    uint32_t inflightRequests{0};
-  };
-  const std::shared_ptr<Shared> shared_{std::make_shared<Shared>()};
+  folly::EventBase* evb_{nullptr};
 
-  folly::F14FastMap<int64_t, std::string> pendingInteractions_;
-  folly::Optional<int32_t> serverVersion_;
+  folly::F14FastMap<int64_t, ManagedStringView> pendingInteractions_;
 
   RocketClientChannel(
+      folly::EventBase* evb,
       folly::AsyncTransport::UniquePtr socket,
       RequestSetupMetadata meta);
 
@@ -182,18 +163,18 @@ class RocketClientChannel final : public ClientChannel {
   void sendThriftRequest(
       const RpcOptions& rpcOptions,
       RpcKind kind,
-      folly::StringPiece methodName,
+      apache::thrift::ManagedStringView&& methodName,
       SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       RequestClientCallback::Ptr cb);
 
   void sendSingleRequestNoResponse(
-      const RequestRpcMetadata& metadata,
+      RequestRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> buf,
       RequestClientCallback::Ptr cb);
 
   void sendSingleRequestSingleResponse(
-      const RequestRpcMetadata& metadata,
+      RequestRpcMetadata&& metadata,
       std::chrono::milliseconds timeout,
       std::unique_ptr<folly::IOBuf> buf,
       RequestClientCallback::Ptr cb);
@@ -207,12 +188,7 @@ class RocketClientChannel final : public ClientChannel {
 
   rocket::SetupFrame makeSetupFrame(RequestSetupMetadata meta);
 
-  void handleMetadataPush(rocket::MetadataPushFrame&& frame);
-
-  auto inflightGuard() {
-    ++shared_->inflightRequests;
-    return folly::makeGuard([shared = shared_] { --shared->inflightRequests; });
-  }
+  int32_t getServerVersion() const;
 
   class SingleRequestSingleResponseCallback;
   class SingleRequestNoResponseCallback;

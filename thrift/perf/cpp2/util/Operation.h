@@ -40,6 +40,8 @@ enum OP_TYPE {
   DOWNLOAD = 4,
   UPLOAD = 5,
   STREAM = 6,
+  SEMIFUTURE_SUM = 7,
+  CO_SUM = 8,
 };
 
 template <typename AsyncClient>
@@ -49,22 +51,19 @@ class Operation {
       : client_(std::move(client)),
         noop_(std::make_unique<Noop<AsyncClient>>(stats)),
         sum_(std::make_unique<Sum<AsyncClient>>(stats)),
-        timeout_(std::make_unique<Timeout<AsyncClient>>(stats))
+        timeout_(std::make_unique<Timeout<AsyncClient>>(stats)),
 #ifdef STREAM_PERF_TEST
-        ,
         download_(std::make_unique<Download<AsyncClient>>(stats)),
         upload_(std::make_unique<Upload<AsyncClient>>(stats, FLAGS_chunk_size)),
         stream_(std::make_unique<StreamDownload<AsyncClient>>(
-            stats,
-            FLAGS_chunk_size))
+            stats, FLAGS_chunk_size)),
 #endif
-  {
+        semifuture_sum_(std::make_unique<SemiFutureSum<AsyncClient>>(stats)),
+        co_sum_(std::make_unique<CoSum<AsyncClient>>(stats)) {
   }
   ~Operation() = default;
 
-  int32_t outstandingOps() {
-    return outstanding_ops_;
-  }
+  int32_t outstandingOps() { return outstanding_ops_; }
 
   void async(OP_TYPE op, std::unique_ptr<LoadCallback<AsyncClient>> cb) {
     ++outstanding_ops_;
@@ -93,6 +92,12 @@ class Operation {
         stream_->async(client_.get(), std::move(cb), outstanding_ops_);
         break;
 #endif
+      case SEMIFUTURE_SUM:
+        semifuture_sum_->async(client_.get(), std::move(cb));
+        break;
+      case CO_SUM:
+        co_sum_->async(client_.get(), std::move(cb));
+        break;
       default:
         break;
     }
@@ -111,29 +116,28 @@ class Operation {
   }
 
   void asyncReceived(OP_TYPE op, ClientReceiveState&& rstate) {
+    --outstanding_ops_;
     switch (op) {
       case NOOP:
-        --outstanding_ops_;
         noop_->asyncReceived(client_.get(), std::move(rstate));
         break;
       case SUM:
-        --outstanding_ops_;
         sum_->asyncReceived(client_.get(), std::move(rstate));
         break;
       case TIMEOUT:
-        --outstanding_ops_;
         timeout_->asyncReceived(client_.get(), std::move(rstate));
         break;
 #ifdef STREAM_PERF_TEST
       case DOWNLOAD:
-        --outstanding_ops_;
         download_->asyncReceived(client_.get(), std::move(rstate));
         break;
       case UPLOAD:
-        --outstanding_ops_;
         upload_->asyncReceived(client_.get(), std::move(rstate));
         break;
 #endif
+      case SEMIFUTURE_SUM:
+      case CO_SUM:
+        break;
       default:
         LOG(ERROR) << "Should not have async callback";
         break;
@@ -160,6 +164,9 @@ class Operation {
         upload_->error(client_.get(), std::move(rstate));
         break;
 #endif
+      case SEMIFUTURE_SUM:
+      case CO_SUM:
+        break;
       default:
         LOG(ERROR) << "Should not have async callback";
         break;
@@ -176,6 +183,8 @@ class Operation {
   std::unique_ptr<Upload<AsyncClient>> upload_;
   std::unique_ptr<StreamDownload<AsyncClient>> stream_;
 #endif
+  std::unique_ptr<SemiFutureSum<AsyncClient>> semifuture_sum_;
+  std::unique_ptr<CoSum<AsyncClient>> co_sum_;
 
   int32_t outstanding_ops_{0};
 };

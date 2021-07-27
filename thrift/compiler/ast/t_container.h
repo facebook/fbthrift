@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef T_CONTAINER_H
-#define T_CONTAINER_H
+#pragma once
 
 #include <thrift/compiler/ast/t_type.h>
 
@@ -23,36 +22,39 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-class t_container : public t_type {
+class t_container : public t_templated_type {
  public:
-  t_container() : cpp_name_(), has_cpp_name_(false) {}
+  /**
+   * The subset of t_type::type values that are containers.
+   */
+  enum class type {
+    t_list = int(t_type::type::t_list),
+    t_set = int(t_type::type::t_set),
+    t_map = int(t_type::type::t_map),
+  };
 
-  ~t_container() override {}
-
-  void set_cpp_name(std::string cpp_name) {
-    cpp_name_ = cpp_name;
-    has_cpp_name_ = true;
+  using t_type::type_name;
+  static const std::string& type_name(type container_type) {
+    return type_name(static_cast<t_type::type>(container_type));
   }
 
-  bool has_cpp_name() {
-    return has_cpp_name_;
-  }
+  virtual type container_type() const = 0;
 
-  std::string get_cpp_name() {
-    return cpp_name_;
-  }
+ protected:
+  t_container() = default;
 
-  bool is_container() const override {
-    return true;
+  // TODO(afuller): Remove everything below here. It is provided only for
+  // backwards compatibility.
+ public:
+  bool is_container() const override { return true; }
+  bool is_set() const final { return container_type() == type::t_set; }
+  bool is_list() const final { return container_type() == type::t_list; }
+  bool is_map() const final { return container_type() == type::t_map; }
+  t_type::type get_type_value() const override {
+    return static_cast<t_type::type>(container_type());
   }
-
- private:
-  std::string cpp_name_;
-  bool has_cpp_name_;
 };
 
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif

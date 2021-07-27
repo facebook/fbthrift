@@ -64,29 +64,18 @@ enum class AnEnumE {
 
 
 }}} // facebook::ns::qwerty
+
 namespace std {
-
-
-template<> struct hash<typename ::facebook::ns::qwerty::AnEnumA> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumA> {};
-template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumA> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumA> {};
-
-
-template<> struct hash<typename ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumB> {};
-template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumB> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumB> {};
-
-
-template<> struct hash<typename ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumC> {};
-template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumC> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumC> {};
-
-
-template<> struct hash<typename ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumD> {};
-template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumD> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumD> {};
-
-
-template<> struct hash<typename ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_hash<typename ::facebook::ns::qwerty::AnEnumE> {};
-template<> struct equal_to<typename ::facebook::ns::qwerty::AnEnumE> : public apache::thrift::detail::enum_equal_to<typename ::facebook::ns::qwerty::AnEnumE> {};
-
-
+template<> struct hash<::facebook::ns::qwerty::AnEnumA> :
+  ::apache::thrift::detail::enum_hash<::facebook::ns::qwerty::AnEnumA> {};
+template<> struct hash<::facebook::ns::qwerty::AnEnumB> :
+  ::apache::thrift::detail::enum_hash<::facebook::ns::qwerty::AnEnumB> {};
+template<> struct hash<::facebook::ns::qwerty::AnEnumC> :
+  ::apache::thrift::detail::enum_hash<::facebook::ns::qwerty::AnEnumC> {};
+template<> struct hash<::facebook::ns::qwerty::AnEnumD> :
+  ::apache::thrift::detail::enum_hash<::facebook::ns::qwerty::AnEnumD> {};
+template<> struct hash<::facebook::ns::qwerty::AnEnumE> :
+  ::apache::thrift::detail::enum_hash<::facebook::ns::qwerty::AnEnumE> {};
 } // std
 
 namespace apache { namespace thrift {
@@ -224,7 +213,13 @@ class SomeStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace facebook { namespace ns { namespace qwerty {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class SomeStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -232,6 +227,7 @@ class SomeStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = SomeStruct;
@@ -241,12 +237,12 @@ class SomeStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SomeStruct() :
-      fieldA(0) {}
+      fieldA(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SomeStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
+  SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg);
 
   SomeStruct(SomeStruct&&) = default;
 
@@ -256,66 +252,49 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SomeStruct& operator=(SomeStruct&&) = default;
 
   SomeStruct& operator=(const SomeStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t fieldA;
+  ::std::int32_t fieldA;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
   } __isset = {};
-  bool operator==(const SomeStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const SomeStruct& __x, const SomeStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const SomeStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const SomeStruct& __x, const SomeStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const SomeStruct& __x, const SomeStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const SomeStruct& __x, const SomeStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+ public:
+
+  bool operator==(const SomeStruct&) const;
+  bool operator<(const SomeStruct&) const;
+
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA_ref() const&& {
     return {std::move(this->fieldA), __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA_ref() & {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_fieldA() const {
+  ::std::int32_t get_fieldA() const {
     return fieldA;
   }
 
-  int32_t& set_fieldA(int32_t fieldA_) {
+  [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
+  ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldA;
   }
 
@@ -332,7 +311,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SomeStruct >;
+  friend class ::apache::thrift::Cpp2Ops<SomeStruct>;
   friend void swap(SomeStruct& a, SomeStruct& b);
 };
 
@@ -344,3 +323,4 @@ uint32_t SomeStruct::read(Protocol_* iprot) {
 }
 
 }}} // facebook::ns::qwerty
+THRIFT_IGNORE_ISSET_USE_WARNING_END

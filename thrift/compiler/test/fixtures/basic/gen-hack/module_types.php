@@ -15,6 +15,28 @@ enum MyEnum: int {
   MyValue2 = 1;
 }
 
+class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.MyEnum",
+        "elements" => dict[
+          0 => "MyValue1",
+          1 => "MyValue2",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift struct:-
  * MyStruct
@@ -41,19 +63,37 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
       'type' => \TType::I32,
       'enum' => MyEnum::class,
     ),
+    5 => shape(
+      'var' => 'oneway',
+      'type' => \TType::BOOL,
+    ),
+    6 => shape(
+      'var' => 'readonly',
+      'type' => \TType::BOOL,
+    ),
+    7 => shape(
+      'var' => 'idempotent',
+      'type' => \TType::BOOL,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'MyIntField' => 1,
     'MyStringField' => 2,
     'MyDataField' => 3,
     'myEnum' => 4,
+    'oneway' => 5,
+    'readonly' => 6,
+    'idempotent' => 7,
   ];
 
   const type TConstructorShape = shape(
-    ?'MyIntField' => int,
-    ?'MyStringField' => string,
+    ?'MyIntField' => ?int,
+    ?'MyStringField' => ?string,
     ?'MyDataField' => ?MyDataItem,
     ?'myEnum' => ?MyEnum,
+    ?'oneway' => ?bool,
+    ?'readonly' => ?bool,
+    ?'idempotent' => ?bool,
   );
 
   const type TShape = shape(
@@ -61,9 +101,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     'MyStringField' => string,
     ?'MyDataField' => ?MyDataItem::TShape,
     ?'myEnum' => ?MyEnum,
+    'oneway' => bool,
+    'readonly' => bool,
+    'idempotent' => bool,
     ...
   );
-  const int STRUCTURAL_ID = 1814653584841679556;
+  const int STRUCTURAL_ID = 8914171512789040840;
   /**
    * Original thrift field:-
    * 1: i64 MyIntField
@@ -84,84 +127,186 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    * 4: enum module.MyEnum myEnum
    */
   public ?MyEnum $myEnum;
+  /**
+   * Original thrift field:-
+   * 5: bool oneway
+   */
+  public bool $oneway;
+  /**
+   * Original thrift field:-
+   * 6: bool readonly
+   */
+  public bool $readonly;
+  /**
+   * Original thrift field:-
+   * 7: bool idempotent
+   */
+  public bool $idempotent;
 
-  <<__Rx>>
-  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?MyEnum $myEnum = null  ) {
+  public function __construct(?int $MyIntField = null, ?string $MyStringField = null, ?MyDataItem $MyDataField = null, ?MyEnum $myEnum = null, ?bool $oneway = null, ?bool $readonly = null, ?bool $idempotent = null  )[] {
     $this->MyIntField = $MyIntField ?? 0;
     $this->MyStringField = $MyStringField ?? '';
     $this->MyDataField = $MyDataField;
     $this->myEnum = $myEnum;
+    $this->oneway = $oneway ?? false;
+    $this->readonly = $readonly ?? false;
+    $this->idempotent = $idempotent ?? false;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'MyIntField'),
       Shapes::idx($shape, 'MyStringField'),
       Shapes::idx($shape, 'MyDataField'),
       Shapes::idx($shape, 'myEnum'),
+      Shapes::idx($shape, 'oneway'),
+      Shapes::idx($shape, 'readonly'),
+      Shapes::idx($shape, 'idempotent'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyStruct';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyStruct",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "MyIntField",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "MyStringField",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.MyDataItem",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.MyDataItem",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "MyDataField",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.MyEnum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "myEnum",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "oneway",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 6,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "readonly",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 7,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "idempotent",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'MyIntField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyStringField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'MyDataField' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'myEnum' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['MyIntField'],
+      $shape['MyStringField'],
+      Shapes::idx($shape, 'MyDataField') === null ? null : (MyDataItem::__fromShape($shape['MyDataField'])),
+      Shapes::idx($shape, 'myEnum'),
+      $shape['oneway'],
+      $shape['readonly'],
+      $shape['idempotent'],
+    );
   }
 
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->MyIntField = $shape['MyIntField'];
-    $me->MyStringField = $shape['MyStringField'];
-    if (Shapes::idx($shape, 'MyDataField') !== null) {
-      $me->MyDataField = MyDataItem::__fromShape($shape['MyDataField']);
-    }
-    if (Shapes::idx($shape, 'myEnum') !== null) {
-      $me->myEnum = $shape['myEnum'];
-    }
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'MyIntField' => $this->MyIntField,
       'MyStringField' => $this->MyStringField,
       'MyDataField' => $this->MyDataField?->__toShape(),
       'myEnum' => $this->myEnum,
+      'oneway' => $this->oneway,
+      'readonly' => $this->readonly,
+      'idempotent' => $this->idempotent,
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -185,6 +330,15 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     }    
     if (idx($parsed, 'myEnum') !== null) {
       $this->myEnum = MyEnum::coerce(/* HH_FIXME[4110] */ $parsed['myEnum']);    }    
+    if (idx($parsed, 'oneway') !== null) {
+      $this->oneway = /* HH_FIXME[4110] */ $parsed['oneway'];
+    }    
+    if (idx($parsed, 'readonly') !== null) {
+      $this->readonly = /* HH_FIXME[4110] */ $parsed['readonly'];
+    }    
+    if (idx($parsed, 'idempotent') !== null) {
+      $this->idempotent = /* HH_FIXME[4110] */ $parsed['idempotent'];
+    }    
   }
 
 }
@@ -209,26 +363,32 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
   );
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyDataItem';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyDataItem",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -236,19 +396,12 @@ class MyDataItem implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+    );
   }
 
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
     );
   }
@@ -333,8 +486,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   public ?MyDataItem $myDataItem;
   protected MyUnionEnum $_type = MyUnionEnum::_EMPTY_;
 
-  <<__Rx>>
-  public function __construct(?MyEnum $myEnum = null, ?MyStruct $myStruct = null, ?MyDataItem $myDataItem = null  ) {
+  public function __construct(?MyEnum $myEnum = null, ?MyStruct $myStruct = null, ?MyDataItem $myDataItem = null  )[] {
     $this->_type = MyUnionEnum::_EMPTY_;
     if ($myEnum !== null) {
       $this->myEnum = $myEnum;
@@ -350,13 +502,11 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     }
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'myEnum'),
       Shapes::idx($shape, 'myStruct'),
@@ -364,15 +514,15 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyUnion';
   }
 
-  public function getType(): MyUnionEnum {
+  public function getType()[]: MyUnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case MyUnionEnum::myEnum:
         $this->myEnum = null;
@@ -389,14 +539,22 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     $this->_type = MyUnionEnum::_EMPTY_;
 }
 
-  public function set_myEnum(MyEnum $myEnum): this {
+  public function set_myEnum(MyEnum $myEnum)[write_props]: this {
+    return $this->setx_myEnum($myEnum);
+   }
+
+  public function setx_myEnum(MyEnum $myEnum)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::myEnum;
     $this->myEnum = $myEnum;
     return $this;
   }
 
-  public function get_myEnum(): MyEnum {
+  public function get_myEnum()[]: MyEnum {
+    return $this->getx_myEnum();
+  }
+
+  public function getx_myEnum()[]: MyEnum {
     invariant(
       $this->_type === MyUnionEnum::myEnum,
       'get_myEnum called on an instance of MyUnion whose current type is %s',
@@ -405,14 +563,22 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $this->myEnum as nonnull;
   }
 
-  public function set_myStruct(MyStruct $myStruct): this {
+  public function set_myStruct(MyStruct $myStruct)[write_props]: this {
+    return $this->setx_myStruct($myStruct);
+   }
+
+  public function setx_myStruct(MyStruct $myStruct)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::myStruct;
     $this->myStruct = $myStruct;
     return $this;
   }
 
-  public function get_myStruct(): MyStruct {
+  public function get_myStruct()[]: MyStruct {
+    return $this->getx_myStruct();
+  }
+
+  public function getx_myStruct()[]: MyStruct {
     invariant(
       $this->_type === MyUnionEnum::myStruct,
       'get_myStruct called on an instance of MyUnion whose current type is %s',
@@ -421,14 +587,22 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $this->myStruct as nonnull;
   }
 
-  public function set_myDataItem(MyDataItem $myDataItem): this {
+  public function set_myDataItem(MyDataItem $myDataItem)[write_props]: this {
+    return $this->setx_myDataItem($myDataItem);
+   }
+
+  public function setx_myDataItem(MyDataItem $myDataItem)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::myDataItem;
     $this->myDataItem = $myDataItem;
     return $this;
   }
 
-  public function get_myDataItem(): MyDataItem {
+  public function get_myDataItem()[]: MyDataItem {
+    return $this->getx_myDataItem();
+  }
+
+  public function getx_myDataItem()[]: MyDataItem {
     invariant(
       $this->_type === MyUnionEnum::myDataItem,
       'get_myDataItem called on an instance of MyUnion whose current type is %s',
@@ -437,52 +611,79 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
     return $this->myDataItem as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyUnion",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.MyEnum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "myEnum",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.MyStruct",
+                    )
+                  ),
+                )
+              ),
+              "name" => "myStruct",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.MyDataItem",
+                    )
+                  ),
+                )
+              ),
+              "name" => "myDataItem",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'myEnum' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'myStruct' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'myDataItem' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'myEnum'),
+      Shapes::idx($shape, 'myStruct') === null ? null : (MyStruct::__fromShape($shape['myStruct'])),
+      Shapes::idx($shape, 'myDataItem') === null ? null : (MyDataItem::__fromShape($shape['myDataItem'])),
+    );
   }
 
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->_type = MyUnionEnum::_EMPTY_;
-    if (Shapes::idx($shape, 'myEnum') !== null) {
-      $me->myEnum = $shape['myEnum'];
-      $me->_type = MyUnionEnum::myEnum;
-    }
-    if (Shapes::idx($shape, 'myStruct') !== null) {
-      $me->myStruct = MyStruct::__fromShape($shape['myStruct']);
-      $me->_type = MyUnionEnum::myStruct;
-    }
-    if (Shapes::idx($shape, 'myDataItem') !== null) {
-      $me->myDataItem = MyDataItem::__fromShape($shape['myDataItem']);
-      $me->_type = MyUnionEnum::myDataItem;
-    }
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'myEnum' => $this->myEnum,
       'myStruct' => $this->myStruct?->__toShape(),

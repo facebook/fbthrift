@@ -17,8 +17,8 @@
 #include <iostream>
 #include <memory>
 
-#include <folly/init/Init.h>
 #include <glog/logging.h>
+#include <folly/init/Init.h>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
 #include <thrift/conformance/cpp2/ConformanceHandler.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>

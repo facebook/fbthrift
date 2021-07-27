@@ -59,8 +59,7 @@ Client::~Client() {
 }
 
 void Client::runSynchronously(
-    double rps,
-    std::chrono::duration<double> duration) {
+    double rps, std::chrono::duration<double> duration) {
   auto eventBase = scopedEventBaseThread_.getEventBase();
   auto deadline = std::chrono::steady_clock::now() + duration;
 

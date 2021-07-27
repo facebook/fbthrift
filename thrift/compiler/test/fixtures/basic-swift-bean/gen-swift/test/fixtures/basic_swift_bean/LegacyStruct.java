@@ -23,9 +23,8 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("LegacyStruct")
-public final class LegacyStruct {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct("LegacyStruct")
+public final class LegacyStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public LegacyStruct() {
@@ -34,12 +33,11 @@ public final class LegacyStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private int normal = 0;
         private int bad = 0;
     
-        @ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
         public Builder setNormal(int normal) {
             this.normal = normal;
             return this;
@@ -47,7 +45,7 @@ public final class LegacyStruct {
     
         public int getNormal() { return normal; }
     
-            @ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
         public Builder setBad(int bad) {
             this.bad = bad;
             return this;
@@ -66,7 +64,6 @@ public final class LegacyStruct {
             LegacyStruct result = new LegacyStruct();
             result.normal = this.normal;
             result.bad = this.bad;
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -87,45 +84,25 @@ static {
       FIELD_METADATA.put(-1, BAD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="normal", requiredness=Requiredness.NONE)
     public int getNormal() { return normal; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public LegacyStruct setNormal(int normal) {
         this.normal = normal;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetNormal() {
-        return __isset_bit_vector.get(_NORMAL);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetNormal() {
-        __isset_bit_vector.clear(_NORMAL);
-    }
     
-    @ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=-1, name="bad", isLegacyId=true, requiredness=Requiredness.NONE)
     public int getBad() { return bad; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public LegacyStruct setBad(int bad) {
         this.bad = bad;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetBad() {
-        return __isset_bit_vector.get(_BAD);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetBad() {
-        __isset_bit_vector.clear(_BAD);
-    }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -159,6 +136,10 @@ static {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<LegacyStruct> asReader() {
+      return LegacyStruct::read0;
+    }
     
     public static LegacyStruct read0(TProtocol oprot) throws TException {
       TField __field;
@@ -206,4 +187,5 @@ static {
       oprot.writeStructEnd();
     }
     
+
 }

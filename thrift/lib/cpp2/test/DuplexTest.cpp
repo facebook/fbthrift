@@ -14,8 +14,10 @@
  * limitations under the License.
  */
 
+#include <algorithm>
 #include <atomic>
 #include <memory>
+#include <vector>
 
 #include <boost/lexical_cast.hpp>
 
@@ -46,24 +48,29 @@ using std::unique_ptr;
 class DuplexClientInterface : public DuplexClientSvIf {
  public:
   DuplexClientInterface(int32_t first, int32_t count, bool& success)
-      : expectIndex_(first), lastIndex_(first + count), success_(success) {}
+      : firstIndex_(first), indexesSeen_(count, false), success_(success) {}
 
   void async_tm_update(
       unique_ptr<HandlerCallback<int32_t>> callback,
       int32_t currentIndex) override {
-    EXPECT_EQ(currentIndex, expectIndex_);
-    expectIndex_++;
+    // The order we see the values for currentIndex is not defined, but we do
+    // expect to see each possible value once.
+    std::lock_guard<std::mutex> g(m_);
+    EXPECT_FALSE(indexesSeen_[currentIndex - firstIndex_]);
+    indexesSeen_[currentIndex - firstIndex_] = true;
     EventBase* eb = callback->getEventBase();
     callback->result(currentIndex);
-    if (expectIndex_ == lastIndex_) {
+    if (std::find(indexesSeen_.begin(), indexesSeen_.end(), false) ==
+        indexesSeen_.end()) {
       success_ = true;
       eb->runInEventBaseThread([eb] { eb->terminateLoopSoon(); });
     }
   }
 
  private:
-  int32_t expectIndex_;
-  int32_t lastIndex_;
+  int32_t firstIndex_;
+  std::vector<bool> indexesSeen_;
+  std::mutex m_;
   bool& success_;
 };
 
@@ -126,8 +133,7 @@ class DuplexServiceInterface : public DuplexServiceSvIf {
   }
 
   void async_tm_regularMethod(
-      unique_ptr<HandlerCallback<int32_t>> callback,
-      int32_t val) override {
+      unique_ptr<HandlerCallback<int32_t>> callback, int32_t val) override {
     callback->result(val * 2);
   }
 };
@@ -179,9 +185,11 @@ void testNonHeader(CLIENT_TYPE type) {
   std::shared_ptr<AsyncSocket> socket(
       AsyncSocket::newSocket(&base, *sst.getAddress()));
 
-  auto duplexChannel =
-      std::make_shared<DuplexChannel>(DuplexChannel::Who::CLIENT, socket);
-  duplexChannel->getClientChannel()->setClientType(type);
+  HeaderClientChannel::Options options;
+  options.setClientType(type);
+  auto duplexChannel = std::make_shared<DuplexChannel>(
+      DuplexChannel::Who::CLIENT, socket, std::move(options));
+
   DuplexServiceAsyncClient client(duplexChannel->getClientChannel());
 
   int res = client.sync_regularMethod(5);

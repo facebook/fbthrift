@@ -37,7 +37,13 @@ class Foo;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class Foo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -45,6 +51,7 @@ class Foo final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = Foo;
@@ -54,12 +61,12 @@ class Foo final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo() :
-      bar(0) {}
+      bar(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Foo(apache::thrift::FragileConstructor, int32_t bar__arg);
+  Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg);
 
   Foo(Foo&&) = default;
 
@@ -69,55 +76,43 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Foo& operator=(Foo&&) = default;
 
   Foo& operator=(const Foo&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  int32_t bar;
+  ::std::int32_t bar;
+
+ private:
 
  public:
-  bool operator==(const Foo& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Foo& __x, const Foo& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const Foo& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Foo& __x, const Foo& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Foo& __x, const Foo& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Foo& __x, const Foo& __y) {
-    return !(__x < __y);
-  }
-#endif
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto bar_ref() const& {
+
+  bool operator==(const Foo&) const;
+  bool operator<(const Foo&) const;
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> bar_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->bar};
   }
 
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto bar_ref() const&& {
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> bar_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->bar)};
   }
 
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto bar_ref() & {
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> bar_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->bar};
   }
 
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto bar_ref() && {
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> bar_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->bar)};
   }
 
-  int32_t get_bar() const {
+  ::std::int32_t get_bar() const {
     return bar;
   }
 
-  int32_t& set_bar(int32_t bar_) {
+  [[deprecated("Use `FOO.bar_ref() = BAR;` instead of `FOO.set_bar(BAR);`")]]
+  ::std::int32_t& set_bar(::std::int32_t bar_) {
     bar = bar_;
     return bar;
   }
@@ -135,7 +130,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Foo >;
+  friend class ::apache::thrift::Cpp2Ops<Foo>;
   friend void swap(Foo& a, Foo& b);
 };
 
@@ -147,3 +142,4 @@ uint32_t Foo::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

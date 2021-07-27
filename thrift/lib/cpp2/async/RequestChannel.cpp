@@ -21,113 +21,9 @@
 
 namespace apache {
 namespace thrift {
-
-template <typename F>
-static void maybeRunInEb(folly::EventBase* eb, F func) {
-  if (!eb || eb->isInEventBaseThread()) {
-    func();
-  } else {
-    eb->runInEventBaseThread(std::forward<F>(func));
-  }
-}
-
-template <>
-void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_NO_RESPONSE>(
-    const apache::thrift::RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
-    SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestClientCallback::Ptr callback) {
-  maybeRunInEb(
-      getEventBase(),
-      [this,
-       rpcOptions,
-       methodNameStr = std::string(methodName),
-       request = std::move(request),
-       header = std::move(header),
-       callback = std::move(callback)]() mutable {
-        sendRequestNoResponse(
-            rpcOptions,
-            methodNameStr.c_str(),
-            std::move(request),
-            std::move(header),
-            std::move(callback));
-      });
-}
-template <>
-void RequestChannel::sendRequestAsync<RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE>(
-    const apache::thrift::RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
-    SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    RequestClientCallback::Ptr callback) {
-  maybeRunInEb(
-      getEventBase(),
-      [this,
-       rpcOptions,
-       methodNameStr = std::string(methodName),
-       request = std::move(request),
-       header = std::move(header),
-       callback = std::move(callback)]() mutable {
-        sendRequestResponse(
-            rpcOptions,
-            methodNameStr.c_str(),
-            std::move(request),
-            std::move(header),
-            std::move(callback));
-      });
-}
-template <>
-void RequestChannel::sendRequestAsync<
-    RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE>(
-    const apache::thrift::RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
-    SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    StreamClientCallback* callback) {
-  maybeRunInEb(
-      getEventBase(),
-      [this,
-       rpcOptions,
-       methodNameStr = std::string(methodName),
-       request = std::move(request),
-       header = std::move(header),
-       callback = std::move(callback)]() mutable {
-        sendRequestStream(
-            rpcOptions,
-            methodNameStr.c_str(),
-            std::move(request),
-            std::move(header),
-            callback);
-      });
-}
-template <>
-void RequestChannel::sendRequestAsync<RpcKind::SINK>(
-    const apache::thrift::RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
-    SerializedRequest&& request,
-    std::shared_ptr<apache::thrift::transport::THeader> header,
-    SinkClientCallback* callback) {
-  maybeRunInEb(
-      getEventBase(),
-      [this,
-       rpcOptions,
-       methodNameStr = std::string(methodName),
-       request = std::move(request),
-       header = std::move(header),
-       callback = std::move(callback)]() mutable {
-        sendRequestSink(
-            rpcOptions,
-            methodNameStr.c_str(),
-            std::move(request),
-            std::move(header),
-            callback);
-      });
-}
-
 void RequestChannel::sendRequestStream(
     const RpcOptions&,
-    folly::StringPiece,
+    MethodMetadata&&,
     SerializedRequest&&,
     std::shared_ptr<transport::THeader>,
     StreamClientCallback* clientCallback) {
@@ -138,7 +34,7 @@ void RequestChannel::sendRequestStream(
 
 void RequestChannel::sendRequestSink(
     const RpcOptions&,
-    folly::StringPiece,
+    MethodMetadata&&,
     SerializedRequest&&,
     std::shared_ptr<transport::THeader>,
     SinkClientCallback* clientCallback) {
@@ -151,12 +47,13 @@ void RequestChannel::terminateInteraction(InteractionId) {
   folly::terminate_with<std::runtime_error>(
       "This channel doesn't support interactions");
 }
-InteractionId RequestChannel::createInteraction(folly::StringPiece name) {
+InteractionId RequestChannel::createInteraction(ManagedStringView&& name) {
   static std::atomic<int64_t> nextId{0};
   int64_t id = 1 + nextId.fetch_add(1, std::memory_order_relaxed);
-  return registerInteraction(name, id);
+  return registerInteraction(std::move(name), id);
 }
-InteractionId RequestChannel::registerInteraction(folly::StringPiece, int64_t) {
+InteractionId RequestChannel::registerInteraction(
+    ManagedStringView&&, int64_t) {
   folly::terminate_with<std::runtime_error>(
       "This channel doesn't support interactions");
 }
@@ -166,6 +63,9 @@ InteractionId RequestChannel::createInteractionId(int64_t id) {
 void RequestChannel::releaseInteractionId(InteractionId&& id) {
   id.release();
 }
+
+template class ClientSyncCallback<true>;
+template class ClientSyncCallback<false>;
 
 } // namespace thrift
 } // namespace apache

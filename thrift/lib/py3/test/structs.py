@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 import copy
 import math
 import unittest
@@ -23,6 +21,9 @@ from testing.types import (
     File,
     Integers,
     Kind,
+    Nested1,
+    Nested2,
+    Nested3,
     NonCopyable,
     Optionals,
     Reserved,
@@ -31,8 +32,8 @@ from testing.types import (
     UnusedError,
     easy,
     hard,
-    mixed,
     numerical,
+    PrivateCppRefField,
 )
 from thrift.py3.common import Protocol
 from thrift.py3.serializer import deserialize
@@ -229,6 +230,45 @@ class StructTests(unittest.TestCase):
             ],
         )
 
+    def test_update_nested_fields(self) -> None:
+        n = Nested1(a=Nested2(b=Nested3(c=easy(val=42, name="foo"))))
+        n = Struct.update_nested_field(n, {"a.b.c": easy(val=128)})
+        self.assertEqual(n.a.b.c.val, 128)
+
+    def test_update_multiple_nested_fields(self) -> None:
+        n = Nested1(a=Nested2(b=Nested3(c=easy(val=42, name="foo"))))
+        n = Struct.update_nested_field(
+            n,
+            {
+                "a.b.c.name": "bar",
+                "a.b.c.val": 256,
+            },
+        )
+        self.assertEqual(n.a.b.c.name, "bar")
+        self.assertEqual(n.a.b.c.val, 256)
+
+    def test_update_invalid_nested_fields(self) -> None:
+        n = Nested1(a=Nested2(b=Nested3(c=easy(val=42, name="foo"))))
+        with self.assertRaises(ValueError):
+            Struct.update_nested_field(n, {"": 0})
+        with self.assertRaises(ValueError):
+            Struct.update_nested_field(n, {"e": 0})
+        with self.assertRaises(ValueError):
+            Struct.update_nested_field(n, {"a.b.e": 0})
+        with self.assertRaises(ValueError):
+            Struct.update_nested_field(n, {"a.e.f": 0})
+
+    def test_update_conflicting_nested_fields(self) -> None:
+        n = Nested1(a=Nested2(b=Nested3(c=easy(val=42, name="foo"))))
+        with self.assertRaises(ValueError):
+            n = Struct.update_nested_field(
+                n,
+                {
+                    "a.b.c": easy(val=128),
+                    "a.b.c.val": 256,
+                },
+            )
+
 
 class NumericalConversionsTests(unittest.TestCase):
     def test_overflow(self) -> None:
@@ -274,3 +314,22 @@ class NumericalConversionsTests(unittest.TestCase):
                 #  param but got `List[float]`.
                 int_list=[math.pi, math.e],
             )
+
+    def test_private_cpp_ref_field(self) -> None:
+        x = PrivateCppRefField(
+            field1=easy(val=1, name="11"),
+            field2=easy(val=2, name="22"),
+            field3=easy(val=3, name="33"),
+        )
+        field1 = x.field1
+        field2 = x.field2
+        field3 = x.field3
+        if field1:
+            self.assertEqual(field1.val, 1)
+            self.assertEqual(field1.name, "11")
+        if field2:
+            self.assertEqual(field2.val, 2)
+            self.assertEqual(field2.name, "22")
+        if field3:
+            self.assertEqual(field3.val, 3)
+            self.assertEqual(field3.name, "33")

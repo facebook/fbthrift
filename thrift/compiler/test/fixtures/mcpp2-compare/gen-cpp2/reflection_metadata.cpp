@@ -28,9 +28,9 @@ StructMetadata<::cpp2::ReflectionStruct>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& reflection_ReflectionStruct = res.first->second;
   reflection_ReflectionStruct.name_ref() = "reflection.ReflectionStruct";
   reflection_ReflectionStruct.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   reflection_ReflectionStruct_fields[] = {
-    std::make_tuple(1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)),
+    std::make_tuple(1, "fieldA", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : reflection_ReflectionStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -38,6 +38,7 @@ StructMetadata<::cpp2::ReflectionStruct>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     reflection_ReflectionStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

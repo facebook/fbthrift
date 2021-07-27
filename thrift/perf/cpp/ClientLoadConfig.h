@@ -114,13 +114,9 @@ class ClientLoadConfig : public loadgen::WeightedLoadConfig {
     }
   }
 
-  const folly::SocketAddress* getAddress() const {
-    return &address_;
-  }
+  const folly::SocketAddress* getAddress() const { return &address_; }
 
-  std::string getAddressHostname() const {
-    return addressHostname_;
-  }
+  std::string getAddressHostname() const { return addressHostname_; }
 
   bool useFramedTransport() const;
 

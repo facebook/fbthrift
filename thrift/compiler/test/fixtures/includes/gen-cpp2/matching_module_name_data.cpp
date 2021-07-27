@@ -12,11 +12,15 @@
 namespace apache {
 namespace thrift {
 
-
-constexpr const std::size_t TStructDataStorage<::matching_module_name::MyStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::matching_module_name::MyStruct>::fields_size> TStructDataStorage<::matching_module_name::MyStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::matching_module_name::MyStruct>::fields_size> TStructDataStorage<::matching_module_name::MyStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::matching_module_name::MyStruct>::fields_size> TStructDataStorage<::matching_module_name::MyStruct>::fields_types;
+const std::array<folly::StringPiece, 1> TStructDataStorage<::matching_module_name::MyStruct>::fields_names = {{
+  "OtherStructField",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::matching_module_name::MyStruct>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::matching_module_name::MyStruct>::fields_types = {{
+  TType::T_STRUCT,
+}};
 
 } // namespace thrift
 } // namespace apache

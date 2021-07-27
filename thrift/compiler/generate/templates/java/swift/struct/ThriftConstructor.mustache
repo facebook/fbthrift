@@ -46,7 +46,12 @@ public {{struct:javaCapitalName}}(
 @ThriftConstructor
 protected {{struct:javaCapitalName}}() {
   {{#struct:fields}}
+  {{^field:value}}
   this.{{field:javaName}} = {{field:javaDefaultValue}};
+  {{/field:value}}{{!
+  }}{{#field:value}}
+  this.{{field:javaName}} = {{#field:hasInitialValue?}}{{#field:type}}{{field:nestedDepth++}}{{> DefaultValue}}{{field:nestedDepth--}}{{/field:type}}{{/field:hasInitialValue?}}{{^field:hasInitialValue?}}{{field:javaDefaultValue}}{{/field:hasInitialValue?}};
+  {{/field:value}}
   {{/struct:fields}}
 }{{/struct:fields?}}
 {{/struct:asBean?}}

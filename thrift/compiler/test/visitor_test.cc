@@ -30,9 +30,7 @@ class InterleavedVisitorTest : public testing::Test {};
 TEST_F(InterleavedVisitorTest, mixed) {
   struct tracking_visitor : visitor {
     tracking_visitor(bool ret) : ret_(ret) {}
-    bool visit(t_program*) override {
-      return ret_;
-    }
+    bool visit(t_program*) override { return ret_; }
     bool visit(t_service* const service) override {
       visited_services.push_back(service);
       return true;
@@ -46,7 +44,7 @@ TEST_F(InterleavedVisitorTest, mixed) {
   auto vtor = interleaved_visitor({&tv_f, &tv_t});
 
   auto program = t_program("path/to/module.thrift");
-  auto service = std::make_unique<t_service>(&program);
+  auto service = std::make_unique<t_service>(&program, "MyService");
   auto service_ptr = service.get();
   program.add_service(std::move(service));
   vtor.traverse(&program);

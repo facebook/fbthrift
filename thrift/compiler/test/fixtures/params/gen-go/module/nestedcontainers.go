@@ -303,13 +303,104 @@ func (p *NestedContainersThreadsafeClient) recvTurtles() (err error) {
 }
 
 
+type NestedContainersChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *NestedContainersChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *NestedContainersChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *NestedContainersChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewNestedContainersChannelClient(channel thrift.RequestChannel) *NestedContainersChannelClient {
+  return &NestedContainersChannelClient{RequestChannel: channel}
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersChannelClient) MapList(ctx context.Context, foo map[int32][]int32) (err error) {
+  args := NestedContainersMapListArgs{
+    Foo : foo,
+  }
+  var result NestedContainersMapListResult
+  err = p.RequestChannel.Call(ctx, "mapList", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersChannelClient) MapSet(ctx context.Context, foo map[int32][]int32) (err error) {
+  args := NestedContainersMapSetArgs{
+    Foo : foo,
+  }
+  var result NestedContainersMapSetResult
+  err = p.RequestChannel.Call(ctx, "mapSet", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersChannelClient) ListMap(ctx context.Context, foo []map[int32]int32) (err error) {
+  args := NestedContainersListMapArgs{
+    Foo : foo,
+  }
+  var result NestedContainersListMapResult
+  err = p.RequestChannel.Call(ctx, "listMap", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersChannelClient) ListSet(ctx context.Context, foo [][]int32) (err error) {
+  args := NestedContainersListSetArgs{
+    Foo : foo,
+  }
+  var result NestedContainersListSetResult
+  err = p.RequestChannel.Call(ctx, "listSet", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - Foo
+func (p *NestedContainersChannelClient) Turtles(ctx context.Context, foo [][]map[int32]map[int32][]int32) (err error) {
+  args := NestedContainersTurtlesArgs{
+    Foo : foo,
+  }
+  var result NestedContainersTurtlesResult
+  err = p.RequestChannel.Call(ctx, "turtles", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type NestedContainersProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler NestedContainers
 }
 
 func (p *NestedContainersProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *NestedContainersProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *NestedContainersProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -323,18 +414,32 @@ func (p *NestedContainersProcessor) ProcessorMap() map[string]thrift.ProcessorFu
   return p.processorMap
 }
 
+func (p *NestedContainersProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewNestedContainersProcessor(handler NestedContainers) *NestedContainersProcessor {
-  self0 := &NestedContainersProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self0 := &NestedContainersProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self0.processorMap["mapList"] = &nestedContainersProcessorMapList{handler:handler}
   self0.processorMap["mapSet"] = &nestedContainersProcessorMapSet{handler:handler}
   self0.processorMap["listMap"] = &nestedContainersProcessorListMap{handler:handler}
   self0.processorMap["listSet"] = &nestedContainersProcessorListSet{handler:handler}
   self0.processorMap["turtles"] = &nestedContainersProcessorTurtles{handler:handler}
+  self0.functionServiceMap["mapList"] = "NestedContainers"
+  self0.functionServiceMap["mapSet"] = "NestedContainers"
+  self0.functionServiceMap["listMap"] = "NestedContainers"
+  self0.functionServiceMap["listSet"] = "NestedContainers"
+  self0.functionServiceMap["turtles"] = "NestedContainers"
   return self0
 }
 
 type nestedContainersProcessorMapList struct {
   handler NestedContainers
+}
+
+func (p *NestedContainersMapListResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *nestedContainersProcessorMapList) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -385,6 +490,11 @@ type nestedContainersProcessorMapSet struct {
   handler NestedContainers
 }
 
+func (p *NestedContainersMapSetResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *nestedContainersProcessorMapSet) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := NestedContainersMapSetArgs{}
   if err := args.Read(iprot); err != nil {
@@ -431,6 +541,11 @@ func (p *nestedContainersProcessorMapSet) Run(argStruct thrift.Struct) (thrift.W
 
 type nestedContainersProcessorListMap struct {
   handler NestedContainers
+}
+
+func (p *NestedContainersListMapResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *nestedContainersProcessorListMap) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -481,6 +596,11 @@ type nestedContainersProcessorListSet struct {
   handler NestedContainers
 }
 
+func (p *NestedContainersListSetResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *nestedContainersProcessorListSet) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := NestedContainersListSetArgs{}
   if err := args.Read(iprot); err != nil {
@@ -527,6 +647,11 @@ func (p *nestedContainersProcessorListSet) Run(argStruct thrift.Struct) (thrift.
 
 type nestedContainersProcessorTurtles struct {
   handler NestedContainers
+}
+
+func (p *NestedContainersTurtlesResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *nestedContainersProcessorTurtles) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -591,6 +716,32 @@ func NewNestedContainersMapListArgs() *NestedContainersMapListArgs {
 func (p *NestedContainersMapListArgs) GetFoo() map[int32][]int32 {
   return p.Foo
 }
+type NestedContainersMapListArgsBuilder struct {
+  obj *NestedContainersMapListArgs
+}
+
+func NewNestedContainersMapListArgsBuilder() *NestedContainersMapListArgsBuilder{
+  return &NestedContainersMapListArgsBuilder{
+    obj: NewNestedContainersMapListArgs(),
+  }
+}
+
+func (p NestedContainersMapListArgsBuilder) Emit() *NestedContainersMapListArgs{
+  return &NestedContainersMapListArgs{
+    Foo: p.obj.Foo,
+  }
+}
+
+func (n *NestedContainersMapListArgsBuilder) Foo(foo map[int32][]int32) *NestedContainersMapListArgsBuilder {
+  n.obj.Foo = foo
+  return n
+}
+
+func (n *NestedContainersMapListArgs) SetFoo(foo map[int32][]int32) *NestedContainersMapListArgs {
+  n.Foo = foo
+  return n
+}
+
 func (p *NestedContainersMapListArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -631,12 +782,12 @@ func (p *NestedContainersMapListArgs)  ReadField1(iprot thrift.Protocol) error {
   tMap := make(map[int32][]int32, size)
   p.Foo =  tMap
   for i := 0; i < size; i ++ {
-var _key2 int32
+    var _key2 int32
     if v, err := iprot.ReadI32(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key2 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key2 = v
+    }
     _, size, err := iprot.ReadListBegin()
     if err != nil {
       return thrift.PrependError("error reading list begin: ", err)
@@ -644,12 +795,12 @@ var _key2 int32
     tSlice := make([]int32, 0, size)
     _val3 :=  tSlice
     for i := 0; i < size; i ++ {
-var _elem4 int32
+      var _elem4 int32
       if v, err := iprot.ReadI32(); err != nil {
-      return thrift.PrependError("error reading field 0: ", err)
-} else {
-      _elem4 = v
-}
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _elem4 = v
+      }
       _val3 = append(_val3, _elem4)
     }
     if err := iprot.ReadListEnd(); err != nil {
@@ -719,6 +870,21 @@ func NewNestedContainersMapListResult() *NestedContainersMapListResult {
   return &NestedContainersMapListResult{}
 }
 
+type NestedContainersMapListResultBuilder struct {
+  obj *NestedContainersMapListResult
+}
+
+func NewNestedContainersMapListResultBuilder() *NestedContainersMapListResultBuilder{
+  return &NestedContainersMapListResultBuilder{
+    obj: NewNestedContainersMapListResult(),
+  }
+}
+
+func (p NestedContainersMapListResultBuilder) Emit() *NestedContainersMapListResult{
+  return &NestedContainersMapListResult{
+  }
+}
+
 func (p *NestedContainersMapListResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -777,6 +943,32 @@ func NewNestedContainersMapSetArgs() *NestedContainersMapSetArgs {
 func (p *NestedContainersMapSetArgs) GetFoo() map[int32][]int32 {
   return p.Foo
 }
+type NestedContainersMapSetArgsBuilder struct {
+  obj *NestedContainersMapSetArgs
+}
+
+func NewNestedContainersMapSetArgsBuilder() *NestedContainersMapSetArgsBuilder{
+  return &NestedContainersMapSetArgsBuilder{
+    obj: NewNestedContainersMapSetArgs(),
+  }
+}
+
+func (p NestedContainersMapSetArgsBuilder) Emit() *NestedContainersMapSetArgs{
+  return &NestedContainersMapSetArgs{
+    Foo: p.obj.Foo,
+  }
+}
+
+func (n *NestedContainersMapSetArgsBuilder) Foo(foo map[int32][]int32) *NestedContainersMapSetArgsBuilder {
+  n.obj.Foo = foo
+  return n
+}
+
+func (n *NestedContainersMapSetArgs) SetFoo(foo map[int32][]int32) *NestedContainersMapSetArgs {
+  n.Foo = foo
+  return n
+}
+
 func (p *NestedContainersMapSetArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -817,12 +1009,12 @@ func (p *NestedContainersMapSetArgs)  ReadField1(iprot thrift.Protocol) error {
   tMap := make(map[int32][]int32, size)
   p.Foo =  tMap
   for i := 0; i < size; i ++ {
-var _key5 int32
+    var _key5 int32
     if v, err := iprot.ReadI32(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key5 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key5 = v
+    }
     _, size, err := iprot.ReadSetBegin()
     if err != nil {
       return thrift.PrependError("error reading set begin: ", err)
@@ -830,12 +1022,12 @@ var _key5 int32
     tSet := make([]int32, 0, size)
     _val6 :=  tSet
     for i := 0; i < size; i ++ {
-var _elem7 int32
+      var _elem7 int32
       if v, err := iprot.ReadI32(); err != nil {
-      return thrift.PrependError("error reading field 0: ", err)
-} else {
-      _elem7 = v
-}
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _elem7 = v
+      }
       _val6 = append(_val6, _elem7)
     }
     if err := iprot.ReadSetEnd(); err != nil {
@@ -912,6 +1104,21 @@ func NewNestedContainersMapSetResult() *NestedContainersMapSetResult {
   return &NestedContainersMapSetResult{}
 }
 
+type NestedContainersMapSetResultBuilder struct {
+  obj *NestedContainersMapSetResult
+}
+
+func NewNestedContainersMapSetResultBuilder() *NestedContainersMapSetResultBuilder{
+  return &NestedContainersMapSetResultBuilder{
+    obj: NewNestedContainersMapSetResult(),
+  }
+}
+
+func (p NestedContainersMapSetResultBuilder) Emit() *NestedContainersMapSetResult{
+  return &NestedContainersMapSetResult{
+  }
+}
+
 func (p *NestedContainersMapSetResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -970,6 +1177,32 @@ func NewNestedContainersListMapArgs() *NestedContainersListMapArgs {
 func (p *NestedContainersListMapArgs) GetFoo() []map[int32]int32 {
   return p.Foo
 }
+type NestedContainersListMapArgsBuilder struct {
+  obj *NestedContainersListMapArgs
+}
+
+func NewNestedContainersListMapArgsBuilder() *NestedContainersListMapArgsBuilder{
+  return &NestedContainersListMapArgsBuilder{
+    obj: NewNestedContainersListMapArgs(),
+  }
+}
+
+func (p NestedContainersListMapArgsBuilder) Emit() *NestedContainersListMapArgs{
+  return &NestedContainersListMapArgs{
+    Foo: p.obj.Foo,
+  }
+}
+
+func (n *NestedContainersListMapArgsBuilder) Foo(foo []map[int32]int32) *NestedContainersListMapArgsBuilder {
+  n.obj.Foo = foo
+  return n
+}
+
+func (n *NestedContainersListMapArgs) SetFoo(foo []map[int32]int32) *NestedContainersListMapArgs {
+  n.Foo = foo
+  return n
+}
+
 func (p *NestedContainersListMapArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1017,18 +1250,18 @@ func (p *NestedContainersListMapArgs)  ReadField1(iprot thrift.Protocol) error {
     tMap := make(map[int32]int32, size)
     _elem8 :=  tMap
     for i := 0; i < size; i ++ {
-var _key9 int32
+      var _key9 int32
       if v, err := iprot.ReadI32(); err != nil {
-      return thrift.PrependError("error reading field 0: ", err)
-} else {
-      _key9 = v
-}
-var _val10 int32
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _key9 = v
+      }
+      var _val10 int32
       if v, err := iprot.ReadI32(); err != nil {
-      return thrift.PrependError("error reading field 0: ", err)
-} else {
-      _val10 = v
-}
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _val10 = v
+      }
       _elem8[_key9] = _val10
     }
     if err := iprot.ReadMapEnd(); err != nil {
@@ -1098,6 +1331,21 @@ func NewNestedContainersListMapResult() *NestedContainersListMapResult {
   return &NestedContainersListMapResult{}
 }
 
+type NestedContainersListMapResultBuilder struct {
+  obj *NestedContainersListMapResult
+}
+
+func NewNestedContainersListMapResultBuilder() *NestedContainersListMapResultBuilder{
+  return &NestedContainersListMapResultBuilder{
+    obj: NewNestedContainersListMapResult(),
+  }
+}
+
+func (p NestedContainersListMapResultBuilder) Emit() *NestedContainersListMapResult{
+  return &NestedContainersListMapResult{
+  }
+}
+
 func (p *NestedContainersListMapResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1156,6 +1404,32 @@ func NewNestedContainersListSetArgs() *NestedContainersListSetArgs {
 func (p *NestedContainersListSetArgs) GetFoo() [][]int32 {
   return p.Foo
 }
+type NestedContainersListSetArgsBuilder struct {
+  obj *NestedContainersListSetArgs
+}
+
+func NewNestedContainersListSetArgsBuilder() *NestedContainersListSetArgsBuilder{
+  return &NestedContainersListSetArgsBuilder{
+    obj: NewNestedContainersListSetArgs(),
+  }
+}
+
+func (p NestedContainersListSetArgsBuilder) Emit() *NestedContainersListSetArgs{
+  return &NestedContainersListSetArgs{
+    Foo: p.obj.Foo,
+  }
+}
+
+func (n *NestedContainersListSetArgsBuilder) Foo(foo [][]int32) *NestedContainersListSetArgsBuilder {
+  n.obj.Foo = foo
+  return n
+}
+
+func (n *NestedContainersListSetArgs) SetFoo(foo [][]int32) *NestedContainersListSetArgs {
+  n.Foo = foo
+  return n
+}
+
 func (p *NestedContainersListSetArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1203,12 +1477,12 @@ func (p *NestedContainersListSetArgs)  ReadField1(iprot thrift.Protocol) error {
     tSet := make([]int32, 0, size)
     _elem11 :=  tSet
     for i := 0; i < size; i ++ {
-var _elem12 int32
+      var _elem12 int32
       if v, err := iprot.ReadI32(); err != nil {
-      return thrift.PrependError("error reading field 0: ", err)
-} else {
-      _elem12 = v
-}
+        return thrift.PrependError("error reading field 0: ", err)
+      } else {
+        _elem12 = v
+      }
       _elem11 = append(_elem11, _elem12)
     }
     if err := iprot.ReadSetEnd(); err != nil {
@@ -1283,6 +1557,21 @@ func NewNestedContainersListSetResult() *NestedContainersListSetResult {
   return &NestedContainersListSetResult{}
 }
 
+type NestedContainersListSetResultBuilder struct {
+  obj *NestedContainersListSetResult
+}
+
+func NewNestedContainersListSetResultBuilder() *NestedContainersListSetResultBuilder{
+  return &NestedContainersListSetResultBuilder{
+    obj: NewNestedContainersListSetResult(),
+  }
+}
+
+func (p NestedContainersListSetResultBuilder) Emit() *NestedContainersListSetResult{
+  return &NestedContainersListSetResult{
+  }
+}
+
 func (p *NestedContainersListSetResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1341,6 +1630,32 @@ func NewNestedContainersTurtlesArgs() *NestedContainersTurtlesArgs {
 func (p *NestedContainersTurtlesArgs) GetFoo() [][]map[int32]map[int32][]int32 {
   return p.Foo
 }
+type NestedContainersTurtlesArgsBuilder struct {
+  obj *NestedContainersTurtlesArgs
+}
+
+func NewNestedContainersTurtlesArgsBuilder() *NestedContainersTurtlesArgsBuilder{
+  return &NestedContainersTurtlesArgsBuilder{
+    obj: NewNestedContainersTurtlesArgs(),
+  }
+}
+
+func (p NestedContainersTurtlesArgsBuilder) Emit() *NestedContainersTurtlesArgs{
+  return &NestedContainersTurtlesArgs{
+    Foo: p.obj.Foo,
+  }
+}
+
+func (n *NestedContainersTurtlesArgsBuilder) Foo(foo [][]map[int32]map[int32][]int32) *NestedContainersTurtlesArgsBuilder {
+  n.obj.Foo = foo
+  return n
+}
+
+func (n *NestedContainersTurtlesArgs) SetFoo(foo [][]map[int32]map[int32][]int32) *NestedContainersTurtlesArgs {
+  n.Foo = foo
+  return n
+}
+
 func (p *NestedContainersTurtlesArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1395,12 +1710,12 @@ func (p *NestedContainersTurtlesArgs)  ReadField1(iprot thrift.Protocol) error {
       tMap := make(map[int32]map[int32][]int32, size)
       _elem14 :=  tMap
       for i := 0; i < size; i ++ {
-var _key15 int32
+        var _key15 int32
         if v, err := iprot.ReadI32(); err != nil {
-        return thrift.PrependError("error reading field 0: ", err)
-} else {
-        _key15 = v
-}
+          return thrift.PrependError("error reading field 0: ", err)
+        } else {
+          _key15 = v
+        }
         _, _, size, err := iprot.ReadMapBegin()
         if err != nil {
           return thrift.PrependError("error reading map begin: ", err)
@@ -1408,12 +1723,12 @@ var _key15 int32
         tMap := make(map[int32][]int32, size)
         _val16 :=  tMap
         for i := 0; i < size; i ++ {
-var _key17 int32
+          var _key17 int32
           if v, err := iprot.ReadI32(); err != nil {
-          return thrift.PrependError("error reading field 0: ", err)
-} else {
-          _key17 = v
-}
+            return thrift.PrependError("error reading field 0: ", err)
+          } else {
+            _key17 = v
+          }
           _, size, err := iprot.ReadSetBegin()
           if err != nil {
             return thrift.PrependError("error reading set begin: ", err)
@@ -1421,12 +1736,12 @@ var _key17 int32
           tSet := make([]int32, 0, size)
           _val18 :=  tSet
           for i := 0; i < size; i ++ {
-var _elem19 int32
+            var _elem19 int32
             if v, err := iprot.ReadI32(); err != nil {
-            return thrift.PrependError("error reading field 0: ", err)
-} else {
-            _elem19 = v
-}
+              return thrift.PrependError("error reading field 0: ", err)
+            } else {
+              _elem19 = v
+            }
             _val18 = append(_val18, _elem19)
           }
           if err := iprot.ReadSetEnd(); err != nil {
@@ -1542,6 +1857,21 @@ type NestedContainersTurtlesResult struct {
 
 func NewNestedContainersTurtlesResult() *NestedContainersTurtlesResult {
   return &NestedContainersTurtlesResult{}
+}
+
+type NestedContainersTurtlesResultBuilder struct {
+  obj *NestedContainersTurtlesResult
+}
+
+func NewNestedContainersTurtlesResultBuilder() *NestedContainersTurtlesResultBuilder{
+  return &NestedContainersTurtlesResultBuilder{
+    obj: NewNestedContainersTurtlesResult(),
+  }
+}
+
+func (p NestedContainersTurtlesResultBuilder) Emit() *NestedContainersTurtlesResult{
+  return &NestedContainersTurtlesResult{
+  }
 }
 
 func (p *NestedContainersTurtlesResult) Read(iprot thrift.Protocol) error {

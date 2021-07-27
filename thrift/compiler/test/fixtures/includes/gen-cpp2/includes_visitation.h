@@ -5,5 +5,6 @@
  *  @generated
  */
 #pragma once
+#include "thrift/compiler/test/fixtures/includes/gen-cpp2/transitive_visitation.h"
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_for_each_field.h"
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/includes_visit_union.h"

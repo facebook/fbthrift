@@ -16,12 +16,12 @@
 
 #pragma once
 
-#include <glog/logging.h>
 #include <atomic>
 #include <cassert>
 #include <memory>
 #include <utility>
-
+#include <glog/logging.h>
+#include <folly/experimental/channels/detail/AtomicQueue.h>
 #include <folly/lang/Assume.h>
 
 namespace apache {
@@ -30,226 +30,39 @@ namespace detail {
 namespace twowaybridge_detail {
 
 template <typename T>
-class Queue {
+using Queue = folly::channels::detail::Queue<T>;
+
+template <typename T>
+class QueueWithTailPtr : public Queue<T> {
  public:
-  Queue() {}
-  Queue(Queue&& other) : head_(std::exchange(other.head_, nullptr)) {}
-  Queue& operator=(Queue&& other) {
-    clear();
-    std::swap(head_, other.head_);
-    return *this;
-  }
-  ~Queue() {
-    clear();
-  }
-
-  bool empty() const {
-    return !head_;
-  }
-
-  T& front() {
-    return head_->value;
-  }
-
-  void pop() {
-    std::unique_ptr<Node>(std::exchange(head_, head_->next));
-  }
-
-  void clear() {
-    while (!empty()) {
-      pop();
+  QueueWithTailPtr() = default;
+  template <typename F>
+  QueueWithTailPtr(Queue<T>&& queue, F&& visitor) : Queue<T>(std::move(queue)) {
+    for (auto* node = Queue<T>::head_; node; node = node->next) {
+      visitor(node->value);
+      tail_ = node;
     }
   }
 
-  explicit operator bool() const {
-    return !empty();
+  void append(QueueWithTailPtr&& other) {
+    if (!other.head_) {
+      return;
+    }
+    if (!Queue<T>::head_) {
+      Queue<T>::head_ = std::exchange(other.head_, nullptr);
+    } else {
+      tail_->next = std::exchange(other.head_, nullptr);
+    }
+    tail_ = other.tail_;
   }
-
-  struct Node {
-   private:
-    template <typename Consumer, typename Message>
-    friend class AtomicQueue;
-    friend class Queue;
-    template <typename Message, typename Value>
-    friend class AtomicQueueOrPtr;
-
-    explicit Node(T&& t) : value(std::move(t)) {}
-
-    T value;
-    Node* next{nullptr};
-  };
 
  private:
-  template <typename Consumer, typename Message>
-  friend class AtomicQueue;
-  template <typename Message, typename Value>
-  friend class AtomicQueueOrPtr;
-
-  explicit Queue(Node* head) : head_(head) {}
-  static Queue fromReversed(Node* tail) {
-    // Reverse a linked list.
-    Node* head{nullptr};
-    while (tail) {
-      head = std::exchange(tail, std::exchange(tail->next, head));
-    }
-    return Queue(head);
-  }
-
-  Node* head_{nullptr};
+  // holds invalid pointer if head_ is null
+  typename Queue<T>::Node* tail_;
 };
 
 template <typename Consumer, typename Message>
-class AtomicQueue {
- public:
-  using MessageQueue = Queue<Message>;
-
-  AtomicQueue() {}
-  ~AtomicQueue() {
-    auto storage = storage_.load(std::memory_order_acquire);
-    auto type = static_cast<Type>(storage & kTypeMask);
-    auto ptr = storage & kPointerMask;
-    switch (type) {
-      case Type::EMPTY:
-      case Type::CLOSED:
-        return;
-      case Type::TAIL:
-        MessageQueue::fromReversed(
-            reinterpret_cast<typename MessageQueue::Node*>(ptr));
-        return;
-      default:
-        folly::assume_unreachable();
-    };
-  }
-  AtomicQueue(const AtomicQueue&) = delete;
-  AtomicQueue& operator=(const AtomicQueue&) = delete;
-
-  void push(Message&& value) {
-    std::unique_ptr<typename MessageQueue::Node> node(
-        new typename MessageQueue::Node(std::move(value)));
-    assert(!(reinterpret_cast<intptr_t>(node.get()) & kTypeMask));
-
-    auto storage = storage_.load(std::memory_order_relaxed);
-    while (true) {
-      auto type = static_cast<Type>(storage & kTypeMask);
-      auto ptr = storage & kPointerMask;
-      switch (type) {
-        case Type::EMPTY:
-        case Type::TAIL:
-          node->next = reinterpret_cast<typename MessageQueue::Node*>(ptr);
-          if (storage_.compare_exchange_weak(
-                  storage,
-                  reinterpret_cast<intptr_t>(node.get()) |
-                      static_cast<intptr_t>(Type::TAIL),
-                  std::memory_order_release,
-                  std::memory_order_relaxed)) {
-            node.release();
-            return;
-          }
-          break;
-        case Type::CLOSED:
-          return;
-        case Type::CONSUMER:
-          node->next = nullptr;
-          if (storage_.compare_exchange_weak(
-                  storage,
-                  reinterpret_cast<intptr_t>(node.get()) |
-                      static_cast<intptr_t>(Type::TAIL),
-                  std::memory_order_acq_rel,
-                  std::memory_order_relaxed)) {
-            node.release();
-            auto consumer = reinterpret_cast<Consumer*>(ptr);
-            consumer->consume();
-            return;
-          }
-          break;
-        default:
-          folly::assume_unreachable();
-      }
-    }
-  }
-
-  bool wait(Consumer* consumer) {
-    assert(!(reinterpret_cast<intptr_t>(consumer) & kTypeMask));
-    auto storage = storage_.load(std::memory_order_relaxed);
-    while (true) {
-      auto type = static_cast<Type>(storage & kTypeMask);
-      switch (type) {
-        case Type::EMPTY:
-          if (storage_.compare_exchange_weak(
-                  storage,
-                  reinterpret_cast<intptr_t>(consumer) |
-                      static_cast<intptr_t>(Type::CONSUMER),
-                  std::memory_order_release,
-                  std::memory_order_relaxed)) {
-            return true;
-          }
-          break;
-        case Type::CLOSED:
-          consumer->canceled();
-          return true;
-        case Type::TAIL:
-          return false;
-        default:
-          folly::assume_unreachable();
-      }
-    }
-  }
-
-  void close() {
-    auto storage = storage_.exchange(
-        static_cast<intptr_t>(Type::CLOSED), std::memory_order_acquire);
-    auto type = static_cast<Type>(storage & kTypeMask);
-    auto ptr = storage & kPointerMask;
-    switch (type) {
-      case Type::EMPTY:
-        return;
-      case Type::TAIL:
-        MessageQueue::fromReversed(
-            reinterpret_cast<typename MessageQueue::Node*>(ptr));
-        return;
-      case Type::CONSUMER:
-        reinterpret_cast<Consumer*>(ptr)->canceled();
-        return;
-      default:
-        folly::assume_unreachable();
-    };
-  }
-
-  bool isClosed() {
-    auto type = static_cast<Type>(storage_ & kTypeMask);
-    return type == Type::CLOSED;
-  }
-
-  MessageQueue getMessages() {
-    auto storage = storage_.exchange(
-        static_cast<intptr_t>(Type::EMPTY), std::memory_order_acquire);
-    auto type = static_cast<Type>(storage & kTypeMask);
-    auto ptr = storage & kPointerMask;
-    switch (type) {
-      case Type::TAIL:
-        return MessageQueue::fromReversed(
-            reinterpret_cast<typename MessageQueue::Node*>(ptr));
-      case Type::EMPTY:
-        return MessageQueue();
-      case Type::CLOSED:
-        // We accidentally re-opened the queue, so close it again.
-        // This is only safe to do because isClosed() can't be called
-        // concurrently with getMessages().
-        close();
-        return MessageQueue();
-      default:
-        folly::assume_unreachable();
-    };
-  }
-
- private:
-  enum class Type : intptr_t { EMPTY = 0, CONSUMER = 1, TAIL = 2, CLOSED = 3 };
-
-  static constexpr intptr_t kTypeMask = 3;
-  static constexpr intptr_t kPointerMask = ~kTypeMask;
-
-  std::atomic<intptr_t> storage_{0};
-};
+using AtomicQueue = folly::channels::detail::AtomicQueue<Consumer, Message>;
 
 // queue with no consumers
 template <typename Message, typename Value>
@@ -378,11 +191,11 @@ class TwoWayBridge {
  public:
   using ClientQueue = twowaybridge_detail::Queue<ClientMessage>;
   using ServerQueue = twowaybridge_detail::Queue<ServerMessage>;
+  using ClientQueueWithTailPtr =
+      twowaybridge_detail::QueueWithTailPtr<ClientMessage>;
 
   struct Deleter {
-    void operator()(Derived* ptr) {
-      ptr->decref();
-    }
+    void operator()(Derived* ptr) { ptr->decref(); }
   };
   using Ptr = std::unique_ptr<Derived, Deleter>;
 
@@ -405,17 +218,13 @@ class TwoWayBridge {
     return clientQueue_.wait(consumer);
   }
 
-  ClientQueue clientGetMessages() {
-    return clientQueue_.getMessages();
-  }
+  ClientConsumer* cancelClientWait() { return clientQueue_.cancelCallback(); }
 
-  void clientClose() {
-    clientQueue_.close();
-  }
+  ClientQueue clientGetMessages() { return clientQueue_.getMessages(); }
 
-  bool isClientClosed() {
-    return clientQueue_.isClosed();
-  }
+  void clientClose() { clientQueue_.close(); }
+
+  bool isClientClosed() { return clientQueue_.isClosed(); }
 
   // These should only be called from the server thread
 
@@ -427,17 +236,13 @@ class TwoWayBridge {
     return serverQueue_.wait(consumer);
   }
 
-  ServerQueue serverGetMessages() {
-    return serverQueue_.getMessages();
-  }
+  ServerConsumer* cancelServerWait() { return serverQueue_.cancelCallback(); }
 
-  void serverClose() {
-    serverQueue_.close();
-  }
+  ServerQueue serverGetMessages() { return serverQueue_.getMessages(); }
 
-  bool isServerClosed() {
-    return serverQueue_.isClosed();
-  }
+  void serverClose() { serverQueue_.close(); }
+
+  bool isServerClosed() { return serverQueue_.isClosed(); }
 
  private:
   void decref() {
@@ -446,9 +251,7 @@ class TwoWayBridge {
     }
   }
 
-  Derived* derived() {
-    return static_cast<Derived*>(this);
-  }
+  Derived* derived() { return static_cast<Derived*>(this); }
 
   ClientAtomicQueue clientQueue_;
   ServerAtomicQueue serverQueue_;

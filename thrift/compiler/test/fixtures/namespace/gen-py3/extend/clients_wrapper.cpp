@@ -14,9 +14,9 @@ folly::Future<bool>
 ExtendTestServiceClientWrapper::check(
     apache::thrift::RpcOptions& rpcOptions,
     ::cpp2::HsFoo arg_struct1) {
+  auto* client = static_cast<::cpp2::ExtendTestServiceAsyncClient*>(async_client_.get());
   folly::Promise<bool> _promise;
   auto _future = _promise.getFuture();
-  auto* client = static_cast<::cpp2::ExtendTestServiceAsyncClient*>(async_client_.get());
   auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
     std::move(_promise), rpcOptions, client->recv_wrapped_check, channel_);
   client->check(

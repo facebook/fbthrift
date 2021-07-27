@@ -106,9 +106,7 @@ TEST_F(HandlerTest, async_tm_result_in_thread_nullptr) {
 #if FOLLY_HAS_COROUTINES
 TEST_F(HandlerTest, co_nullptr) {
   struct Handler : HandlerGenericSvIf {
-    Task<unique_ptr<string>> co_get_string() override {
-      co_return nullptr;
-    }
+    Task<unique_ptr<string>> co_get_string() override { co_return nullptr; }
   };
   ScopedServerInterfaceThread runner{make_shared<Handler>()};
   auto client =
@@ -121,9 +119,7 @@ TEST_F(HandlerTest, co_nullptr) {
 
 TEST_F(HandlerTest, future_nullptr) {
   struct Handler : HandlerGenericSvIf {
-    Future<unique_ptr<string>> future_get_string() override {
-      return nullptr;
-    }
+    Future<unique_ptr<string>> future_get_string() override { return nullptr; }
   };
   ScopedServerInterfaceThread runner{make_shared<Handler>()};
   auto client =

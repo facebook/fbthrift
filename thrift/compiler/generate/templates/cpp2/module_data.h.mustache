@@ -22,21 +22,13 @@
 #include "<%program:include_prefix%><%program:name%>_types.h"
 
 namespace apache { namespace thrift {
-
 <%#program:enums%>
+
 template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>> {
   using type = <% > common/namespace_cpp2%><%enum:name%>;
   static constexpr const std::size_t size = <%enum:size%>;
-  static constexpr const std::array<type, size> values = {{
-<%#enum:values%><%!
-%>    type::<%enumValue:cpp_name%>,
-<%/enum:values%>
-  }};
-  static constexpr const std::array<folly::StringPiece, size> names = {{
-<%#enum:values%><%!
-%>    "<%enumValue:name%>",
-<%/enum:values%>
-  }};
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
 };
 <%/program:enums%>
 <%#program:structs%>
@@ -45,45 +37,19 @@ template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>> {
 template <> struct TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>::Type> {
   using type = <% > common/namespace_cpp2%><%struct:name%>::Type;
   static constexpr const std::size_t size = <%struct:num_union_members%>;
-  static constexpr const std::array<type, size> values = {{
-<%#struct:fields%><%!
-%>    type::<%field:cpp_name%>,
-<%/struct:fields%>
-  }};
-  static constexpr const std::array<folly::StringPiece, size> names = {{
-<%#struct:fields%><%!
-%>    "<%field:name%>",
-<%/struct:fields%>
-  }};
+  static const std::array<type, size> values;
+  static const std::array<folly::StringPiece, size> names;
 };
 <%/struct:union?%>
 <%/program:structs%>
-
 <%#program:structs%>
 
 template <> struct TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>> {
- private:
-  using TType = apache::thrift::protocol::TType;
-
- public:
   static constexpr const std::size_t fields_size = <%struct:fields_size%>;
-  static constexpr std::array<folly::StringPiece, fields_size> fields_names = {{
-    <%#struct:fields%>
-    "<%field:name%>",
-    <%/struct:fields%>
-  }};
-  static constexpr std::array<int16_t, fields_size> fields_ids = {{
-    <%#struct:fields%>
-    <%field:key%>,
-    <%/struct:fields%>
-  }};
-  static constexpr std::array<TType, fields_size> fields_types = {{
-    <%#struct:fields%><%#field:type%>
-    TType::<% > module_types_tcc/struct_type%>,
-    <%/field:type%><%/struct:fields%>
-  }};
+  static const std::array<folly::StringPiece, fields_size> fields_names;
+  static const std::array<int16_t, fields_size> fields_ids;
+  static const std::array<protocol::TType, fields_size> fields_types;
 };
-
 <%/program:structs%>
 
 }} // apache::thrift

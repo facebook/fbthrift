@@ -19,15 +19,15 @@
 
 #include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/protocol/TType.h>
+#include <thrift/lib/cpp2/BoxedValuePtr.h>
 #include <thrift/lib/cpp2/FieldRef.h>
-#include <thrift/lib/cpp2/OptionalField.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 
+#include <initializer_list>
+#include <utility>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <folly/functional/Invoke.h>
-#include <initializer_list>
-#include <utility>
 
 #include <cstdint>
 
@@ -36,6 +36,30 @@ namespace thrift {
 
 enum FragileConstructor {
   FRAGILE,
+};
+
+// re-definition of the same enums from
+// thrift/compiler/ast/t_exception.h
+enum class ExceptionKind {
+  UNSPECIFIED = 0,
+  TRANSIENT = 1, // The associated RPC may succeed if retried.
+  STATEFUL = 2, // Server state must be change for the associated RPC to have
+                // any chance of succeeding.
+  PERMANENT =
+      3, // The associated RPC can never succeed, and should not be retried.
+};
+
+enum class ExceptionBlame {
+  UNSPECIFIED = 0,
+  SERVER = 1, // The error was the fault of the server.
+  CLIENT = 2, // The error was the fault of the client's request.
+};
+
+enum class ExceptionSafety {
+  UNSPECIFIED = 0,
+  SAFE = 1, // It is guarneteed the associated RPC failed completely, and no
+            // significant server state changed while trying to process the
+            // RPC.
 };
 
 namespace detail {
@@ -53,9 +77,34 @@ struct struct_private_access {
   template <typename T>
   static folly::bool_constant<T::__fbthrift_cpp2_gen_json> //
   __fbthrift_cpp2_gen_json();
+
   template <typename T>
   static folly::bool_constant<T::__fbthrift_cpp2_gen_nimble> //
   __fbthrift_cpp2_gen_nimble();
+
+  template <typename T>
+  static folly::bool_constant<T::__fbthrift_cpp2_gen_has_thrift_uri> //
+  __fbthrift_cpp2_gen_has_thrift_uri();
+
+  template <typename T>
+  static const char* __fbthrift_cpp2_gen_thrift_uri() {
+    return T::__fbthrift_cpp2_gen_thrift_uri();
+  }
+
+  template <typename T>
+  static constexpr ExceptionSafety __fbthrift_cpp2_gen_exception_safety() {
+    return T::__fbthrift_cpp2_gen_exception_safety;
+  }
+
+  template <typename T>
+  static constexpr ExceptionKind __fbthrift_cpp2_gen_exception_kind() {
+    return T::__fbthrift_cpp2_gen_exception_kind;
+  }
+
+  template <typename T>
+  static constexpr ExceptionBlame __fbthrift_cpp2_gen_exception_blame() {
+    return T::__fbthrift_cpp2_gen_exception_blame;
+  }
 };
 
 template <typename T, typename = void>
@@ -101,8 +150,19 @@ using type_class_of_thrift_class_or_t = //
             type_class::structure,
             Fallback>>;
 
+template <typename T, typename Fallback>
+using type_class_of_thrift_class_enum_or_t = //
+    folly::conditional_t<
+        std::is_enum<T>::value,
+        type_class::enumeration,
+        type_class_of_thrift_class_or_t<T, Fallback>>;
+
 template <typename T>
 using type_class_of_thrift_class_t = type_class_of_thrift_class_or_t<T, void>;
+
+template <typename T>
+using type_class_of_thrift_class_enum_t =
+    type_class_of_thrift_class_enum_or_t<T, void>;
 
 namespace detail {
 
@@ -111,13 +171,6 @@ struct enum_hash {
   size_t operator()(T t) const {
     using underlying_t = typename std::underlying_type<T>::type;
     return std::hash<underlying_t>()(underlying_t(t));
-  }
-};
-
-template <typename T>
-struct enum_equal_to {
-  bool operator()(T t0, T t1) const {
-    return t0 == t1;
   }
 };
 
@@ -164,8 +217,8 @@ FOLLY_INLINE_VARIABLE constexpr apache::thrift::detail::clear_fn clear;
     FOLLY_ERASE constexpr auto operator()(__fbthrift_t&& __fbthrift_v) const \
         noexcept(                                                            \
             noexcept(static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__)) \
-            -> decltype(                                                     \
-                (static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__)) {   \
+            -> decltype((                                                    \
+                static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__)) {    \
       return static_cast<__fbthrift_t&&>(__fbthrift_v).__VA_ARGS__;          \
     }                                                                        \
   }

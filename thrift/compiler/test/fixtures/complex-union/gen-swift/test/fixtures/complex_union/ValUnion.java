@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("ValUnion")
-public final class ValUnion {
+public final class ValUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("ValUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -59,20 +59,20 @@ public final class ValUnion {
         return res;
     }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setV1(final test.fixtures.complex_union.Val v1) {
         this.value = v1;
         this.id = 1;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setV2(final test.fixtures.complex_union.Val v2) {
         this.value = v2;
         this.id = 2;
     }
 
-    @ThriftField(value=1, name="v1", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="v1", requiredness=Requiredness.NONE)
     public test.fixtures.complex_union.Val getV1() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a v1 element!");
@@ -84,7 +84,7 @@ public final class ValUnion {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="v2", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="v2", requiredness=Requiredness.NONE)
     public test.fixtures.complex_union.Val getV2() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a v2 element!");
@@ -160,10 +160,10 @@ public final class ValUnion {
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
       if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+         return;
       }
+      oprot.writeStructBegin(STRUCT_DESC);
       switch (this.id) {
       case _V1: {
         oprot.writeFieldBegin(V1_FIELD_DESC);
@@ -184,6 +184,11 @@ public final class ValUnion {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<ValUnion> asReader() {
+      return ValUnion::read0;
     }
     
     public static ValUnion read0(TProtocol oprot) throws TException {

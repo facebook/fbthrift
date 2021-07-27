@@ -124,6 +124,37 @@ func (p *MyNodeThreadsafeClient) recvDoMid() (err error) {
 }
 
 
+type MyNodeChannelClient struct {
+  *MyRootChannelClient
+}
+
+func (c *MyNodeChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyNodeChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyNodeChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyNodeChannelClient(channel thrift.RequestChannel) *MyNodeChannelClient {
+  return &MyNodeChannelClient{MyRootChannelClient: NewMyRootChannelClient(channel)}
+}
+
+func (p *MyNodeChannelClient) DoMid(ctx context.Context) (err error) {
+  args := MyNodeDoMidArgs{
+  }
+  var result MyNodeDoMidResult
+  err = p.RequestChannel.Call(ctx, "do_mid", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyNodeProcessor struct {
   *MyRootProcessor
 }
@@ -131,11 +162,17 @@ type MyNodeProcessor struct {
 func NewMyNodeProcessor(handler MyNode) *MyNodeProcessor {
   self2 := &MyNodeProcessor{NewMyRootProcessor(handler)}
   self2.AddToProcessorMap("do_mid", &myNodeProcessorDoMid{handler:handler})
+  self2.AddToFunctionServiceMap("do_mid", "MyNode")
   return self2
 }
 
 type myNodeProcessorDoMid struct {
   handler MyNode
+}
+
+func (p *MyNodeDoMidResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *myNodeProcessorDoMid) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -192,6 +229,21 @@ func NewMyNodeDoMidArgs() *MyNodeDoMidArgs {
   return &MyNodeDoMidArgs{}
 }
 
+type MyNodeDoMidArgsBuilder struct {
+  obj *MyNodeDoMidArgs
+}
+
+func NewMyNodeDoMidArgsBuilder() *MyNodeDoMidArgsBuilder{
+  return &MyNodeDoMidArgsBuilder{
+    obj: NewMyNodeDoMidArgs(),
+  }
+}
+
+func (p MyNodeDoMidArgsBuilder) Emit() *MyNodeDoMidArgs{
+  return &MyNodeDoMidArgs{
+  }
+}
+
 func (p *MyNodeDoMidArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -241,6 +293,21 @@ type MyNodeDoMidResult struct {
 
 func NewMyNodeDoMidResult() *MyNodeDoMidResult {
   return &MyNodeDoMidResult{}
+}
+
+type MyNodeDoMidResultBuilder struct {
+  obj *MyNodeDoMidResult
+}
+
+func NewMyNodeDoMidResultBuilder() *MyNodeDoMidResultBuilder{
+  return &MyNodeDoMidResultBuilder{
+    obj: NewMyNodeDoMidResult(),
+  }
+}
+
+func (p MyNodeDoMidResultBuilder) Emit() *MyNodeDoMidResult{
+  return &MyNodeDoMidResult{
+  }
 }
 
 func (p *MyNodeDoMidResult) Read(iprot thrift.Protocol) error {

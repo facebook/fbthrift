@@ -23,14 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="SecretStruct", builder=SecretStruct.Builder.class)
-public final class SecretStruct {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="SecretStruct", builder=SecretStruct.Builder.class)
+public final class SecretStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public SecretStruct(
-        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
-        @ThriftField(value=2, name="password", requiredness=Requiredness.NONE) final String password
+        @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE) final long id,
+        @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE) final String password
     ) {
         this.id = id;
         this.password = password;
@@ -43,12 +42,11 @@ public final class SecretStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long id = 0L;
         private String password = null;
     
-        @ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
         public Builder setId(long id) {
             this.id = id;
             return this;
@@ -56,7 +54,8 @@ public final class SecretStruct {
     
         public long getId() { return id; }
     
-            @ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
+            @org.apache.thrift.annotations.Sensitive
+        @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
         public Builder setPassword(String password) {
             this.password = password;
             return this;
@@ -76,7 +75,6 @@ public final class SecretStruct {
                 this.id,
                 this.password
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -87,7 +85,8 @@ public final class SecretStruct {
     private final long id;
     public static final int _ID = 1;
     private static final TField ID_FIELD_DESC = new TField("id", TType.I64, (short)1);
-        private final String password;
+        @org.apache.thrift.annotations.Sensitive
+    private final String password;
     public static final int _PASSWORD = 2;
     private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)2);
     static {
@@ -97,24 +96,12 @@ public final class SecretStruct {
       FIELD_METADATA.put(2, PASSWORD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="id", requiredness=Requiredness.NONE)
     public long getId() { return id; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetId() {
-        return __isset_bit_vector.get(_ID);
-    }
     
     
-    @ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="password", requiredness=Requiredness.NONE)
     public String getPassword() { return password; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetPassword() {
-        return this.password != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -149,6 +136,10 @@ public final class SecretStruct {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<SecretStruct> asReader() {
+      return SecretStruct::read0;
+    }
     
     public static SecretStruct read0(TProtocol oprot) throws TException {
       TField __field;
@@ -198,4 +189,11 @@ public final class SecretStruct {
       oprot.writeStructEnd();
     }
     
+    private static class _SecretStructLazy {
+        private static final SecretStruct _DEFAULT = new SecretStruct.Builder().build();
+    }
+    
+    public static SecretStruct defaultInstance() {
+        return  _SecretStructLazy._DEFAULT;
+    }
 }

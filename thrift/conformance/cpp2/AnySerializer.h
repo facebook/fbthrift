@@ -44,8 +44,8 @@ class AnySerializer {
   // Enocde a value.
   //
   // Throws std::bad_any_cast if the type is not supported.
-  virtual void encode(any_ref value, folly::io::QueueAppender&& appender)
-      const = 0;
+  virtual void encode(
+      any_ref value, folly::io::QueueAppender&& appender) const = 0;
 
   // Decode a value.
   //
@@ -56,8 +56,8 @@ class AnySerializer {
       any_ref value) const = 0;
 
   // std::any overloads.
-  std::any decode(const std::type_info& typeInfo, folly::io::Cursor& cursor)
-      const;
+  std::any decode(
+      const std::type_info& typeInfo, folly::io::Cursor& cursor) const;
 
   // Compile-time type overloads.
   template <typename T>
@@ -66,8 +66,7 @@ class AnySerializer {
  protected:
   // Throws std::bad_any_cast if the types are not equal.
   static void checkType(
-      const std::type_info& actual,
-      const std::type_info& expected);
+      const std::type_info& actual, const std::type_info& expected);
 };
 
 // A helper base class for a serializer of a single type.
@@ -93,9 +92,7 @@ class BaseTypedAnySerializer : public AnySerializer {
       any_ref value) const final;
 
  private:
-  const Derived& derived() const {
-    return static_cast<const Derived&>(*this);
-  }
+  const Derived& derived() const { return static_cast<const Derived&>(*this); }
 };
 
 // Implementation.
@@ -113,7 +110,12 @@ void BaseTypedAnySerializer<T, Derived>::decode(
     folly::io::Cursor& cursor,
     any_ref value) const {
   checkType(typeInfo, typeid(T));
-  value.assign_value(derived().decode(cursor));
+  if (auto* obj = any_cast_exact<T>(&value)) {
+    derived().decode(cursor, *obj);
+  } else {
+    auto& any = any_cast_exact<std::any&>(value);
+    derived().decode(cursor, any.emplace<T>());
+  }
 }
 
 } // namespace apache::thrift::conformance

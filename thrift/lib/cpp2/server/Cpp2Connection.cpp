@@ -16,19 +16,24 @@
 
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 
+#include <folly/Overload.h>
+
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
+#include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
-#include <thrift/lib/cpp2/server/LoggingEvent.h>
+#include <thrift/lib/cpp2/server/LoggingEventHelper.h>
+#include <thrift/lib/cpp2/server/MonitoringMethodNames.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/VisitorHelper.h>
-#include <thrift/lib/cpp2/server/admission_strategy/AdmissionStrategy.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 
 THRIFT_FLAG_DEFINE_bool(server_rocket_upgrade_enabled, false);
+
+THRIFT_FLAG_DEFINE_int64(monitoring_over_header_logging_sample_rate, 1'000'000);
 
 namespace apache {
 namespace thrift {
@@ -60,9 +65,7 @@ class TransportUpgradeSendCallback : public MessageChannel::SendCallback {
   void sendQueued() override {}
 
   void messageSent() override {
-    SCOPE_EXIT {
-      delete this;
-    };
+    SCOPE_EXIT { delete this; };
     // do the transport upgrade
     for (auto& routingHandler :
          *cpp2Worker_->getServer()->getRoutingHandlers()) {
@@ -101,9 +104,7 @@ class TransportUpgradeSendCallback : public MessageChannel::SendCallback {
     }
   }
 
-  void messageSendError(folly::exception_wrapper&&) override {
-    delete this;
-  }
+  void messageSendError(folly::exception_wrapper&&) override { delete this; }
 
  private:
   const std::shared_ptr<folly::AsyncTransport>& transport_;
@@ -119,18 +120,21 @@ Cpp2Connection::Cpp2Connection(
     const folly::SocketAddress* address,
     std::shared_ptr<Cpp2Worker> worker,
     const std::shared_ptr<HeaderServerChannel>& serverChannel)
-    : processor_(worker->getServer()->getCpp2Processor()),
+    : processorFactory_(*worker->getServer()->getProcessorFactory()),
+      serviceMetadata_(worker->getMetadataForService(processorFactory_)),
+      processor_(processorFactory_.getProcessor()),
       duplexChannel_(
-          worker->getServer()->isDuplex() ? std::make_unique<DuplexChannel>(
-                                                DuplexChannel::Who::SERVER,
-                                                transport)
-                                          : nullptr),
+          worker->getServer()->isDuplex()
+              ? std::make_unique<DuplexChannel>(
+                    DuplexChannel::Who::SERVER, transport)
+              : nullptr),
       channel_(
           serverChannel ? serverChannel : // used by client
-              duplexChannel_ ? duplexChannel_->getServerChannel() : // server
-                  std::shared_ptr<HeaderServerChannel>(
-                      new HeaderServerChannel(transport),
-                      folly::DelayedDestruction::Destructor())),
+              duplexChannel_ ? duplexChannel_->getServerChannel()
+                             : // server
+              std::shared_ptr<HeaderServerChannel>(
+                  new HeaderServerChannel(transport),
+                  folly::DelayedDestruction::Destructor())),
       worker_(std::move(worker)),
       context_(
           address,
@@ -138,24 +142,24 @@ Cpp2Connection::Cpp2Connection(
           worker_->getServer()->getEventBaseManager(),
           duplexChannel_ ? duplexChannel_->getClientChannel() : nullptr,
           nullptr,
-          worker_->getServer()->getClientIdentityHook()),
+          worker_->getServer()->getClientIdentityHook(),
+          worker_.get()),
       transport_(transport),
       threadManager_(worker_->getServer()->getThreadManager()) {
+  context_.setTransportType(Cpp2ConnContext::TransportType::HEADER);
   channel_->setQueueSends(worker_->getServer()->getQueueSends());
 
   if (auto* observer = worker_->getServer()->getObserver()) {
     channel_->setSampleRate(observer->getSampleRate());
   }
 
-  auto handler = worker_->getServer()->getEventHandlerUnsafe();
-  if (handler) {
+  for (const auto& handler : worker_->getServer()->getEventHandlersUnsafe()) {
     handler->newConnection(&context_);
   }
 }
 
 Cpp2Connection::~Cpp2Connection() {
-  auto handler = worker_->getServer()->getEventHandlerUnsafe();
-  if (handler) {
+  for (const auto& handler : worker_->getServer()->getEventHandlersUnsafe()) {
     handler->connectionDestroyed(&context_);
   }
 
@@ -175,9 +179,11 @@ void Cpp2Connection::stop() {
   for (auto req : activeRequests_) {
     VLOG(1) << "Task killed due to channel close: "
             << context_.getPeerAddress()->describe();
-    req->cancelRequest();
-    if (auto* observer = worker_->getServer()->getObserver()) {
-      observer->taskKilled();
+    if (!req->isOneway()) {
+      req->cancelRequest();
+      if (auto* observer = worker_->getServer()->getObserver()) {
+        observer->taskKilled();
+      }
     }
   }
 
@@ -214,7 +220,7 @@ void Cpp2Connection::disconnect(const char* comment) noexcept {
 }
 
 void Cpp2Connection::setServerHeaders(
-    std::map<std::string, std::string>& writeHeaders) {
+    transport::THeader::StringToStringMap& writeHeaders) {
   if (getWorker()->isStopping()) {
     writeHeaders["connection"] = "goaway";
   }
@@ -307,39 +313,6 @@ void Cpp2Connection::requestReceived(
     readEnd = std::chrono::steady_clock::now();
   }
 
-  auto baseReqCtx = processor_->getBaseContextForRequest();
-  auto rootid = worker_->getRequestsRegistry()->genRootId();
-  auto reqCtx = baseReqCtx
-      ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
-      : std::make_shared<folly::RequestContext>(rootid);
-
-  folly::RequestContextScopeGuard rctx(reqCtx);
-
-  auto server = worker_->getServer();
-  auto* observer = server->getObserver();
-
-  server->touchRequestTimestamp();
-
-  auto injectedFailure = server->maybeInjectFailure();
-  switch (injectedFailure) {
-    case ThriftServer::InjectedFailure::NONE:
-      break;
-    case ThriftServer::InjectedFailure::ERROR:
-      killRequest(
-          std::move(hreq),
-          TApplicationException::TApplicationExceptionType::INJECTED_FAILURE,
-          kInjectedFailureErrorCode,
-          "injected failure");
-      return;
-    case ThriftServer::InjectedFailure::DROP:
-      VLOG(1) << "ERROR: injected drop: "
-              << context_.getPeerAddress()->getAddressStr();
-      return;
-    case ThriftServer::InjectedFailure::DISCONNECT:
-      disconnect("injected failure");
-      return;
-  }
-
   bool useHttpHandler = false;
   // Any POST not for / should go to the status handler
   if (hreq->getHeader()->getClientType() == THRIFT_HTTP_SERVER_TYPE) {
@@ -378,16 +351,104 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
+  auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
+      hreq->getHeader()->getProtocolId());
+  auto msgBegin = apache::thrift::detail::ap::deserializeMessageBegin(
+      *hreq->getBuf(), protoId);
+  std::string& methodName = msgBegin.methodName;
+  const auto& meta = msgBegin.metadata;
+
+  // Transport upgrade: check if client requested transport upgrade from header
+  // to rocket. If yes, reply immediately and upgrade the transport after
+  // sending the reply.
+  if (methodName == "upgradeToRocket") {
+    if (THRIFT_FLAG(server_rocket_upgrade_enabled)) {
+      ResponsePayload response;
+      switch (protoId) {
+        case apache::thrift::protocol::T_BINARY_PROTOCOL:
+          response = upgradeToRocketReply<apache::thrift::BinaryProtocolWriter>(
+              meta.seqId);
+          break;
+        case apache::thrift::protocol::T_COMPACT_PROTOCOL:
+          response =
+              upgradeToRocketReply<apache::thrift::CompactProtocolWriter>(
+                  meta.seqId);
+          break;
+        default:
+          LOG(DFATAL) << "Unsupported protocol found";
+          // if protocol is neither binary or compact, we want to kill the
+          // request and abort upgrade
+          killRequest(
+              std::move(hreq),
+              TApplicationException::TApplicationExceptionType::
+                  INVALID_PROTOCOL,
+              kUnknownErrorCode,
+              "invalid protocol used");
+          return;
+      }
+
+      hreq->sendReply(
+          std::move(response),
+          new TransportUpgradeSendCallback(
+              transport_,
+              context_.getPeerAddress(),
+              getWorker(),
+              this,
+              channel_.get()));
+      return;
+    } else {
+      killRequest(
+          std::move(hreq),
+          TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD,
+          kMethodUnknownErrorCode,
+          "Rocket upgrade disabled");
+      return;
+    }
+  }
+
+  using PerServiceMetadata = Cpp2Worker::PerServiceMetadata;
+  const PerServiceMetadata::FindMethodResult methodMetadataResult =
+      serviceMetadata_.findMethod(methodName);
+
+  auto baseReqCtx =
+      serviceMetadata_.getBaseContextForRequest(methodMetadataResult);
+  auto rootid = worker_->getRequestsRegistry()->genRootId();
+  auto reqCtx = baseReqCtx
+      ? folly::RequestContext::copyAsRoot(*baseReqCtx, rootid)
+      : std::make_shared<folly::RequestContext>(rootid);
+
+  folly::RequestContextScopeGuard rctx(reqCtx);
+
+  auto server = worker_->getServer();
+  auto* observer = server->getObserver();
+
+  server->touchRequestTimestamp();
+
+  auto injectedFailure = server->maybeInjectFailure();
+  switch (injectedFailure) {
+    case ThriftServer::InjectedFailure::NONE:
+      break;
+    case ThriftServer::InjectedFailure::ERROR:
+      killRequest(
+          std::move(hreq),
+          TApplicationException::TApplicationExceptionType::INJECTED_FAILURE,
+          kInjectedFailureErrorCode,
+          "injected failure");
+      return;
+    case ThriftServer::InjectedFailure::DROP:
+      VLOG(1) << "ERROR: injected drop: "
+              << context_.getPeerAddress()->getAddressStr();
+      return;
+    case ThriftServer::InjectedFailure::DISCONNECT:
+      disconnect("injected failure");
+      return;
+  }
+
   if (worker_->getServer()->getGetHeaderHandler()) {
     worker_->getServer()->getGetHeaderHandler()(
         hreq->getHeader(), context_.getPeerAddress());
   }
 
-  auto protoId = static_cast<apache::thrift::protocol::PROTOCOL_TYPES>(
-      hreq->getHeader()->getProtocolId());
-  const auto msgBegin = apache::thrift::detail::ap::deserializeMessageBegin(
-      *hreq->getBuf(), protoId);
-  const std::string& methodName = msgBegin.methodName;
   if (auto overloadResult = server->checkOverload(
           &hreq->getHeader()->getHeaders(), &methodName)) {
     killRequest(
@@ -398,8 +459,8 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
-  if (auto preprocessResult =
-          server->preprocess(&hreq->getHeader()->getHeaders(), &methodName)) {
+  if (auto preprocessResult = server->preprocess(
+          {hreq->getHeader()->getHeaders(), methodName, context_})) {
     preprocessResult.value().apply_visitor(
         apache::thrift::detail::VisitorHelper() //
             .with([&](AppClientException& ace) {
@@ -413,18 +474,6 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
-  auto admissionStrategy = worker_->getServer()->getAdmissionStrategy();
-  auto admissionController =
-      admissionStrategy->select(methodName, hreq->getHeader());
-  if (!admissionController->admit()) {
-    killRequest(
-        std::move(hreq),
-        TApplicationException::TApplicationExceptionType::LOADSHEDDING,
-        kOverloadedErrorCode,
-        "adaptive loadshedding rejection");
-    return;
-  }
-
   if (worker_->isStopping()) {
     killRequest(
         std::move(hreq),
@@ -434,42 +483,17 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
-  // Transport upgrade: check if client requested transport upgrade from header
-  // to rocket. If yes, reply immediately and upgrade the transport after
-  // sending the reply.
-  if (THRIFT_FLAG(server_rocket_upgrade_enabled) &&
-      methodName == "upgradeToRocket") {
-    folly::IOBufQueue queue;
-    switch (protoId) {
-      case apache::thrift::protocol::T_BINARY_PROTOCOL:
-        queue = upgradeToRocketReply<apache::thrift::BinaryProtocolWriter>(
-            msgBegin.seqId);
-        break;
-      case apache::thrift::protocol::T_COMPACT_PROTOCOL:
-        queue = upgradeToRocketReply<apache::thrift::CompactProtocolWriter>(
-            msgBegin.seqId);
-        break;
-      default:
-        LOG(DFATAL) << "Unsupported protocol found";
-        // if protocol is neither binary or compact, we want to kill the request
-        // and abort upgrade
-        killRequest(
-            std::move(hreq),
-            TApplicationException::TApplicationExceptionType::INVALID_PROTOCOL,
-            kUnknownErrorCode,
-            "invalid protocol used");
-        return;
+  if (!worker_->getServer()->getEnabled() ||
+      (worker_->getServer()->getRejectRequestsUntilStarted() &&
+       !worker_->getServer()->getStarted())) {
+    if (!worker_->getServer()->getInternalMethods().count(methodName)) {
+      killRequest(
+          std::move(hreq),
+          TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
+          kQueueOverloadedErrorCode,
+          "server not ready");
+      return;
     }
-
-    hreq->sendReply(
-        queue.move(),
-        new TransportUpgradeSendCallback(
-            transport_,
-            context_.getPeerAddress(),
-            getWorker(),
-            this,
-            channel_.get()));
-    return;
   }
 
   // After this, the request buffer is no longer owned by the request
@@ -477,14 +501,15 @@ void Cpp2Connection::requestReceived(
   auto serializedRequest = [&] {
     folly::IOBufQueue bufQueue;
     bufQueue.append(hreq->extractBuf());
-    bufQueue.trimStart(msgBegin.size);
+    bufQueue.trimStart(meta.size);
     return SerializedRequest(bufQueue.move());
   }();
 
   // We keep a clone of the request payload buffer for debugging purposes, but
   // the lifetime of payload should not necessarily be the same as its request
   // object's.
-  auto debugPayload = serializedRequest.buffer->clone();
+  auto debugPayload =
+      rocket::Payload::makeCombined(serializedRequest.buffer->clone(), 0);
 
   std::chrono::milliseconds queueTimeout;
   std::chrono::milliseconds taskTimeout;
@@ -494,19 +519,20 @@ void Cpp2Connection::requestReceived(
       hreq->getHeader()->getClientTimeout();
   auto differentTimeouts = server->getTaskExpireTimeForRequest(
       clientQueueTimeout, clientTimeout, queueTimeout, taskTimeout);
+  folly::call_once(clientInfoFlag_, [&] {
+    if (const auto& m = hreq->getHeader()->extractClientMetadata()) {
+      context_.setClientMetadata(*m);
+    }
+  });
 
   auto t2r = RequestsRegistry::makeRequest<Cpp2Request>(
-      std::move(hreq), std::move(reqCtx), this_, std::move(debugPayload));
+      std::move(hreq),
+      std::move(reqCtx),
+      this_,
+      std::move(debugPayload),
+      std::move(methodName));
 
-  logSetupConnectionEventsOnce(
-      setupLoggingFlag_,
-      t2r->getContext()->getMethodName(),
-      *worker_.get(),
-      *transport_.get());
-
-  if (admissionController) {
-    t2r->setAdmissionController(std::move(admissionController));
-  }
+  logSetupConnectionEventsOnce(setupLoggingFlag_, context_);
 
   server->incActiveRequests();
   if (samplingStatus.isEnabled()) {
@@ -543,20 +569,54 @@ void Cpp2Connection::requestReceived(
     reqContext->setRequestTimeout(taskTimeout);
   }
 
+  // Log monitoring methods that are called over header interface so that they
+  // can be migrated to rocket monitoring interface.
+  LoggingSampler monitoringLogSampler{
+      THRIFT_FLAG(monitoring_over_header_logging_sample_rate)};
+  if (monitoringLogSampler.isSampled()) {
+    if (isMonitoringMethodName(reqContext->getMethodName())) {
+      THRIFT_CONNECTION_EVENT(monitoring_over_header)
+          .logSampled(context_, monitoringLogSampler, [&] {
+            return folly::dynamic::object(
+                "method_name", reqContext->getMethodName());
+          });
+    }
+  }
+
   try {
     ResponseChannelRequest::UniquePtr req = std::move(t2r);
     if (!apache::thrift::detail::ap::setupRequestContextWithMessageBegin(
-            msgBegin, protoId, req, reqContext, worker_->getEventBase())) {
+            meta, protoId, req, reqContext, worker_->getEventBase())) {
       return;
     }
 
-    processor_->processSerializedRequest(
-        std::move(req),
-        std::move(serializedRequest),
-        protoId,
-        reqContext,
-        worker_->getEventBase(),
-        threadManager_.get());
+    folly::variant_match(
+        methodMetadataResult,
+        [&](PerServiceMetadata::MetadataNotImplemented) {
+          // The AsyncProcessorFactory does not implement createMethodMetadata
+          // so we need to fallback to processSerializedCompressedRequest.
+          processor_->processSerializedCompressedRequest(
+              std::move(req),
+              SerializedCompressedRequest(std::move(serializedRequest)),
+              protoId,
+              reqContext,
+              worker_->getEventBase(),
+              threadManager_.get());
+        },
+        [&](PerServiceMetadata::MetadataNotFound) {
+          AsyncProcessorHelper::sendUnknownMethodError(
+              std::move(req), reqContext->getMethodName());
+        },
+        [&](const PerServiceMetadata::MetadataFound& found) {
+          processor_->processSerializedCompressedRequestWithMetadata(
+              std::move(req),
+              SerializedCompressedRequest(std::move(serializedRequest)),
+              found.metadata,
+              protoId,
+              reqContext,
+              worker_->getEventBase(),
+              threadManager_.get());
+        });
   } catch (...) {
     LOG(DFATAL) << "AsyncProcessor::process exception: "
                 << folly::exceptionStr(std::current_exception());
@@ -583,12 +643,19 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
     std::unique_ptr<HeaderServerChannel::HeaderRequest> req,
     std::shared_ptr<folly::RequestContext> rctx,
     std::shared_ptr<Cpp2Connection> con,
-    std::unique_ptr<folly::IOBuf> debugPayload)
+    rocket::Payload&& debugPayload,
+    std::string&& methodName)
     : req_(std::move(req)),
       connection_(std::move(con)),
       // Note: tricky ordering here; see the note on connection_ in the class
       // definition.
-      reqContext_(&connection_->context_, req_->getHeader()),
+      reqContext_(
+          &connection_->context_, req_->getHeader(), std::move(methodName)),
+      stateMachine_(
+          util::includeInRecentRequestsCount(reqContext_.getMethodName()),
+          connection_->getWorker()
+              ->getServer()
+              ->getAdaptiveConcurrencyController()),
       activeRequestsGuard_(connection_->getWorker()->getActiveRequestsGuard()) {
   new (&debugStubToInit) RequestsRegistry::DebugStub(
       *connection_->getWorker()->getRequestsRegistry(),
@@ -596,7 +663,8 @@ Cpp2Connection::Cpp2Request::Cpp2Request(
       reqContext_,
       std::move(rctx),
       protocol::PROTOCOL_TYPES(req_->getHeader()->getProtocolId()),
-      std::move(debugPayload));
+      std::move(debugPayload),
+      stateMachine_);
   queueTimeout_.request_ = this;
   taskTimeout_.request_ = this;
 }
@@ -609,7 +677,8 @@ MessageChannel::SendCallback* Cpp2Connection::Cpp2Request::prepareSendCallback(
   // are responsible for cleaning up their own callbacks.
   MessageChannel::SendCallback* cb = sendCallback;
   auto& timestamps = getTimestamps();
-  if (timestamps.getSamplingStatus().isEnabledByServer()) {
+  if (stateMachine_.getStartedProcessing() &&
+      timestamps.getSamplingStatus().isEnabledByServer()) {
     // Cpp2Sample will delete itself when it's callback is called.
     cb = new Cpp2Sample(timestamps, observer, sendCallback);
   }
@@ -617,17 +686,16 @@ MessageChannel::SendCallback* Cpp2Connection::Cpp2Request::prepareSendCallback(
 }
 
 void Cpp2Connection::Cpp2Request::sendReply(
-    std::unique_ptr<folly::IOBuf>&& buf,
+    ResponsePayload&& response,
     MessageChannel::SendCallback* sendCallback,
     folly::Optional<uint32_t>) {
-  if (req_->isActive()) {
+  if (tryCancel()) {
     connection_->setServerHeaders(*req_);
     markProcessEnd();
     auto* observer = connection_->getWorker()->getServer()->getObserver();
     auto maxResponseSize =
         connection_->getWorker()->getServer()->getMaxResponseSize();
-    if (maxResponseSize != 0 &&
-        buf->computeChainDataLength() > maxResponseSize) {
+    if (maxResponseSize != 0 && response.length() > maxResponseSize) {
       req_->sendErrorWrapped(
           folly::make_exception_wrapper<TApplicationException>(
               TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
@@ -638,7 +706,35 @@ void Cpp2Connection::Cpp2Request::sendReply(
           prepareSendCallback(sendCallback, observer));
     } else {
       req_->sendReply(
-          std::move(buf), prepareSendCallback(sendCallback, observer));
+          std::move(response), prepareSendCallback(sendCallback, observer));
+    }
+    cancelTimeout();
+    if (observer) {
+      observer->sentReply();
+    }
+  }
+}
+
+void Cpp2Connection::Cpp2Request::sendException(
+    ResponsePayload&& response, MessageChannel::SendCallback* sendCallback) {
+  if (tryCancel()) {
+    connection_->setServerHeaders(*req_);
+    markProcessEnd();
+    auto* observer = connection_->getWorker()->getServer()->getObserver();
+    auto maxResponseSize =
+        connection_->getWorker()->getServer()->getMaxResponseSize();
+    if (maxResponseSize != 0 && response.length() > maxResponseSize) {
+      req_->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
+              "Response size too big"),
+          kResponseTooBigErrorCode,
+          reqContext_.getMethodName(),
+          reqContext_.getProtoSeqId(),
+          prepareSendCallback(sendCallback, observer));
+    } else {
+      req_->sendException(
+          std::move(response), prepareSendCallback(sendCallback, observer));
     }
     cancelTimeout();
     if (observer) {
@@ -648,9 +744,8 @@ void Cpp2Connection::Cpp2Request::sendReply(
 }
 
 void Cpp2Connection::Cpp2Request::sendErrorWrapped(
-    folly::exception_wrapper ew,
-    std::string exCode) {
-  if (req_->isActive()) {
+    folly::exception_wrapper ew, std::string exCode) {
+  if (tryCancel()) {
     connection_->setServerHeaders(*req_);
     markProcessEnd();
     auto* observer = connection_->getWorker()->getServer()->getObserver();
@@ -666,8 +761,13 @@ void Cpp2Connection::Cpp2Request::sendErrorWrapped(
 
 void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
     HeaderServerChannel::HeaderRequest::TimeoutResponseType responseType) {
+  if (!tryCancel()) {
+    // Timeout was not properly cancelled when request was previously
+    // cancelled
+    DCHECK(false);
+  }
   auto* observer = connection_->getWorker()->getServer()->getObserver();
-  std::map<std::string, std::string> headers;
+  transport::THeader::StringToStringMap headers;
   connection_->setServerHeaders(headers);
   markProcessEnd(&headers);
   req_->sendTimeoutResponse(
@@ -679,24 +779,26 @@ void Cpp2Connection::Cpp2Request::sendTimeoutResponse(
   cancelTimeout();
 }
 
+void Cpp2Connection::Cpp2Request::sendQueueTimeoutResponse() {
+  sendTimeoutResponse(
+      HeaderServerChannel::HeaderRequest::TimeoutResponseType::QUEUE);
+  connection_->queueTimeoutExpired();
+}
+
 void Cpp2Connection::Cpp2Request::TaskTimeout::timeoutExpired() noexcept {
-  request_->req_->cancel();
   request_->sendTimeoutResponse(
       HeaderServerChannel::HeaderRequest::TimeoutResponseType::TASK);
   request_->connection_->requestTimeoutExpired();
 }
 
 void Cpp2Connection::Cpp2Request::QueueTimeout::timeoutExpired() noexcept {
-  if (!request_->getStartedProcessing()) {
-    request_->req_->cancel();
-    request_->sendTimeoutResponse(
-        HeaderServerChannel::HeaderRequest::TimeoutResponseType::QUEUE);
-    request_->connection_->queueTimeoutExpired();
+  if (request_->stateMachine_.tryStopProcessing()) {
+    request_->sendQueueTimeoutResponse();
   }
 }
 
 void Cpp2Connection::Cpp2Request::markProcessEnd(
-    std::map<std::string, std::string>* newHeaders) {
+    transport::THeader::StringToStringMap* newHeaders) {
   auto& timestamps = getTimestamps();
   auto& samplingStatus = timestamps.getSamplingStatus();
   if (samplingStatus.isEnabled()) {
@@ -711,7 +813,7 @@ void Cpp2Connection::Cpp2Request::markProcessEnd(
 
 void Cpp2Connection::Cpp2Request::setLatencyHeaders(
     const apache::thrift::server::TServerObserver::CallTimestamps& timestamps,
-    std::map<std::string, std::string>* newHeaders) const {
+    transport::THeader::StringToStringMap* newHeaders) const {
   if (auto v = timestamps.processDelayLatencyUsec()) {
     setLatencyHeader(
         kQueueLatencyHeader.str(), folly::to<std::string>(*v), newHeaders);
@@ -725,8 +827,9 @@ void Cpp2Connection::Cpp2Request::setLatencyHeaders(
 void Cpp2Connection::Cpp2Request::setLatencyHeader(
     const std::string& key,
     const std::string& value,
-    std::map<std::string, std::string>* newHeaders) const {
-  // newHeaders is used timeout exceptions, where req->header cannot be mutated.
+    transport::THeader::StringToStringMap* newHeaders) const {
+  // newHeaders is used timeout exceptions, where req->header cannot be
+  // mutated.
   if (newHeaders) {
     (*newHeaders)[key] = value;
   } else {
@@ -740,10 +843,10 @@ Cpp2Connection::Cpp2Request::~Cpp2Request() {
   connection_->getWorker()->getServer()->decActiveRequests();
 }
 
-// Cancel request is usually called from a different thread than sendReply.
 void Cpp2Connection::Cpp2Request::cancelRequest() {
-  cancelTimeout();
-  req_->cancel();
+  if (tryCancel()) {
+    cancelTimeout();
+  }
 }
 
 Cpp2Connection::Cpp2Sample::Cpp2Sample(

@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/async/ServerStream.h>
+
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/portability/GTest.h>
 #include <folly/synchronization/Baton.h>
@@ -76,16 +77,10 @@ class ClientCallback : public StreamClientCallback {
     }
     return true;
   }
-  void onStreamError(folly::exception_wrapper) override {
-    std::terminate();
-  }
-  void onStreamComplete() override {
-    completed.post();
-  }
+  void onStreamError(folly::exception_wrapper) override { std::terminate(); }
+  void onStreamComplete() override { completed.post(); }
 
-  void resetServerCallback(StreamServerCallback&) override {
-    std::terminate();
-  }
+  void resetServerCallback(StreamServerCallback&) override { std::terminate(); }
 
   int i = 0;
   folly::fibers::Baton started, completed;
@@ -312,8 +307,7 @@ TEST(ServerStreamTest, CancelPublisher) {
       publisher.next(i);
     }
     std::move(publisher).complete();
-  })
-      .join();
+  }).join();
   EXPECT_LT(clientCallback.i, 10);
   EXPECT_TRUE(closed);
 }
@@ -372,15 +366,9 @@ TEST(ServerStreamTest, CancelDestroyPublisherRace) {
     folly::ScopedEventBaseThread clientEb, serverEb;
     folly::Baton<> baton;
     struct Destructible {
-      Destructible() {
-        x = 1;
-      }
-      ~Destructible() {
-        x = 0;
-      }
-      void operator()() {
-        EXPECT_EQ(x, 1);
-      }
+      Destructible() { x = 1; }
+      ~Destructible() { x = 0; }
+      void operator()() { EXPECT_EQ(x, 1); }
       int x;
     };
     auto [factory, publisher] = ServerStream<int>::createPublisher(

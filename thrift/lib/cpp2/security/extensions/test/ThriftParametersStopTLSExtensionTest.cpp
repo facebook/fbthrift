@@ -79,7 +79,6 @@ INSTANTIATE_TEST_CASE_P(
     StopTLSNegotationTest,
     ThriftParametersExtensionStopTLSTest,
     testing::Combine(
-        testing::Values(false, true),
-        testing::Values(false, true)));
+        testing::Values(false, true), testing::Values(false, true)));
 } // namespace thrift
 } // namespace apache

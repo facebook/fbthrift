@@ -77,7 +77,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * struct module.Internship instagram
    */
   <<__Memoize>>
-  public static function instagram(): \test\fixtures\lazy_constants\Internship{
+  public static function instagram()[]: \test\fixtures\lazy_constants\Internship{
     return \test\fixtures\lazy_constants\Internship::fromShape(
       shape(
         "weeks" => 12,
@@ -92,7 +92,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * list<struct module.Range> kRanges
    */
   <<__Memoize>>
-  public static function kRanges(): vec<\test\fixtures\lazy_constants\Range>{
+  public static function kRanges()[]: vec<\test\fixtures\lazy_constants\Range>{
     return vec[
       \test\fixtures\lazy_constants\Range::fromShape(
         shape(
@@ -114,7 +114,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * list<struct module.Internship> internList
    */
   <<__Memoize>>
-  public static function internList(): vec<\test\fixtures\lazy_constants\Internship>{
+  public static function internList()[]: vec<\test\fixtures\lazy_constants\Internship>{
     return vec[
       \test\fixtures\lazy_constants\Internship::fromShape(
         shape(
@@ -175,25 +175,8 @@ class module_CONSTANTS implements \IThriftConstants {
   ];
 
 
-  public static function getAllStructuredAnnotations(): dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
-      'myInt' => dict[],
-      'name' => dict[],
-      'states' => dict[],
-      'cities' => dict[],
-      'x' => dict[],
-      'y' => dict[],
-      'z' => dict[],
-      'const_enum_map' => dict[],
-      'instagram' => dict[],
-      'kRanges' => dict[],
-      'internList' => dict[],
-      'apostrophe' => dict[],
-      'tripleApostrophe' => dict[],
-      'quotationMark' => dict[],
-      'backslash' => dict[],
-      'escaped_a' => dict[],
-      'char2ascii' => dict[],
     ];
   }
 }

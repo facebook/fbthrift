@@ -92,6 +92,14 @@ cdef class ServiceInterface(AsyncProcessorFactory):
         # Same as above, but allow end users to define things to be cleaned up
         pass
 
+    @staticmethod
+    def __get_metadata__():
+        raise NotImplementedError()
+
+    @staticmethod
+    def __get_thrift_name__():
+        raise NotImplementedError()
+
 
 def getServiceName(ServiceInterface svc not None):
     processor = deref(svc._cpp_obj).getProcessor()
@@ -113,6 +121,7 @@ cdef class ThriftServer:
     def __init__(self, AsyncProcessorFactory handler, int port=0, ip=None, path=None):
         self.loop = asyncio.get_event_loop()
         self.factory = handler
+        self.server.get().setThreadManagerFromExecutor(get_executor())
 
         if handler._cpp_obj:
             self.server.get().setProcessorFactory(handler._cpp_obj)
@@ -140,7 +149,7 @@ cdef class ThriftServer:
                 object_partial(handleAddressCallback, <PyObject*> self.address_future)
             )
         )
-        self.server.get().metadata().wrapper = "ThriftServer-py3".encode()
+        self.server.get().metadata().wrapper = b"ThriftServer-py3"
 
     async def serve(self):
         def _serve():
@@ -193,20 +202,11 @@ cdef class ThriftServer:
     def get_io_worker_threads(self):
         return self.server.get().getNumIOWorkerThreads()
 
-    def set_cpu_worker_threads(self, num):
-        self.server.get().setNumCPUWorkerThreads(num)
-
     def get_cpu_worker_threads(self):
         return self.server.get().getNumCPUWorkerThreads()
 
     def set_workers_join_timeout(self, timeout):
         self.server.get().setWorkersJoinTimeout(seconds(<int64_t>timeout))
-
-    def set_ssl_handshake_worker_threads(self, num):
-        self.server.get().setNumSSLHandshakeWorkerThreads(num)
-
-    def get_ssl_handshake_worker_threads(self):
-        return self.server.get().getNumSSLHandshakeWorkerThreads()
 
     def get_ssl_policy(self):
         cdef cSSLPolicy cPolicy = self.server.get().getSSLPolicy()
@@ -252,6 +252,9 @@ cdef class ThriftServer:
     cdef void set_is_overloaded(self, cIsOverloadedFunc is_overloaded):
         self.server.get().setIsOverloaded(cmove(is_overloaded))
 
+    def set_language_framework_name(self, name):
+        self.server.get().metadata().languageFramework = name.encode()
+
     def stop(self):
         self.server.get().stop()
 
@@ -261,15 +264,27 @@ cdef class ThriftServer:
     def use_existing_socket(self, socket):
         self.server.get().useExistingSocket(socket)
 
+    def set_stop_workers_on_stop_listening(self, cbool stop_workers):
+        self.server.get().setStopWorkersOnStopListening(stop_workers)
+
+    def get_stop_workers_on_stop_listening(self):
+        return self.server.get().getStopWorkersOnStopListening()
+
 
 cdef class ConnectionContext:
     @staticmethod
     cdef ConnectionContext create(Cpp2ConnContext* ctx):
+        cdef const cfollySocketAddress* peer_address
+        cdef const cfollySocketAddress* local_address
         inst = <ConnectionContext>ConnectionContext.__new__(ConnectionContext)
         if ctx:
             inst._ctx = ctx
-            inst._peer_address = _get_SocketAddress(ctx.getPeerAddress())
-            inst._local_address = _get_SocketAddress(ctx.getLocalAddress())
+            peer_address = ctx.getPeerAddress()
+            if not peer_address.empty():
+                inst._peer_address = _get_SocketAddress(peer_address)
+            local_address = ctx.getLocalAddress()
+            if not local_address.empty():
+                inst._local_address = _get_SocketAddress(local_address)
         return inst
 
     @property
@@ -355,3 +370,7 @@ cdef class RequestContext:
 
     def set_header(self, str key not None, str value not None):
         self._ctx.getHeader().setHeader(key.encode('utf-8'), value.encode('utf-8'))
+
+    @property
+    def method_name(ConnectionContext self):
+        return self._ctx.getMethodName().decode('utf-8')

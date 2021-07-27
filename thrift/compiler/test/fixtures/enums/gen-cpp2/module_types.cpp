@@ -69,7 +69,29 @@ void TccStructTraits<::cpp2::SomeStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SomeStruct::SomeStruct(apache::thrift::FragileConstructor,  ::cpp2::Metasyntactic reasonable__arg,  ::cpp2::Metasyntactic fine__arg,  ::cpp2::Metasyntactic questionable__arg, ::std::set<int32_t> tags__arg) :
+SomeStruct::SomeStruct(const SomeStruct&) = default;
+SomeStruct& SomeStruct::operator=(const SomeStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SomeStruct::SomeStruct(SomeStruct&& other) noexcept  :
+    reasonable(std::move(other.reasonable)),
+    fine(std::move(other.fine)),
+    questionable(std::move(other.questionable)),
+    tags(std::move(other.tags)),
+    __isset(other.__isset) {}
+SomeStruct& SomeStruct::operator=(FOLLY_MAYBE_UNUSED SomeStruct&& other) noexcept {
+    this->reasonable = std::move(other.reasonable);
+    this->fine = std::move(other.fine);
+    this->questionable = std::move(other.questionable);
+    this->tags = std::move(other.tags);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic reasonable__arg, ::cpp2::Metasyntactic fine__arg, ::cpp2::Metasyntactic questionable__arg, ::std::set<::std::int32_t> tags__arg) :
     reasonable(std::move(reasonable__arg)),
     fine(std::move(fine__arg)),
     questionable(std::move(questionable__arg)),
@@ -80,12 +102,13 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor,  ::cpp2::Metasyntacti
   __isset.tags = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SomeStruct::__clear() {
   // clear all fields
-  reasonable =  ::cpp2::Metasyntactic::FOO;
-  fine =  ::cpp2::Metasyntactic::BAR;
-  questionable = static_cast< ::cpp2::Metasyntactic>(-1);
-  tags.clear();
+  this->reasonable =  ::cpp2::Metasyntactic::FOO;
+  this->fine =  ::cpp2::Metasyntactic::BAR;
+  this->questionable = static_cast< ::cpp2::Metasyntactic>(-1);
+  this->tags.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -95,16 +118,16 @@ bool SomeStruct::operator==(const SomeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.reasonable == rhs.reasonable)) {
+  if (!(lhs.reasonable_ref() == rhs.reasonable_ref())) {
     return false;
   }
-  if (!(lhs.fine == rhs.fine)) {
+  if (!(lhs.fine_ref() == rhs.fine_ref())) {
     return false;
   }
-  if (!(lhs.questionable == rhs.questionable)) {
+  if (!(lhs.questionable_ref() == rhs.questionable_ref())) {
     return false;
   }
-  if (!(lhs.tags == rhs.tags)) {
+  if (!(lhs.tags_ref() == rhs.tags_ref())) {
     return false;
   }
   return true;
@@ -114,26 +137,26 @@ bool SomeStruct::operator<(const SomeStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.reasonable == rhs.reasonable)) {
-    return lhs.reasonable < rhs.reasonable;
+  if (!(lhs.reasonable_ref() == rhs.reasonable_ref())) {
+    return lhs.reasonable_ref() < rhs.reasonable_ref();
   }
-  if (!(lhs.fine == rhs.fine)) {
-    return lhs.fine < rhs.fine;
+  if (!(lhs.fine_ref() == rhs.fine_ref())) {
+    return lhs.fine_ref() < rhs.fine_ref();
   }
-  if (!(lhs.questionable == rhs.questionable)) {
-    return lhs.questionable < rhs.questionable;
+  if (!(lhs.questionable_ref() == rhs.questionable_ref())) {
+    return lhs.questionable_ref() < rhs.questionable_ref();
   }
-  if (!(lhs.tags == rhs.tags)) {
-    return lhs.tags < rhs.tags;
+  if (!(lhs.tags_ref() == rhs.tags_ref())) {
+    return lhs.tags_ref() < rhs.tags_ref();
   }
   return false;
 }
 
-const ::std::set<int32_t>& SomeStruct::get_tags() const& {
+const ::std::set<::std::int32_t>& SomeStruct::get_tags() const& {
   return tags;
 }
 
-::std::set<int32_t> SomeStruct::get_tags() && {
+::std::set<::std::int32_t> SomeStruct::get_tags() && {
   return std::move(tags);
 }
 

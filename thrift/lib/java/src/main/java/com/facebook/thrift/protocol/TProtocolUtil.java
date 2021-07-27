@@ -98,7 +98,7 @@ public class TProtocolUtil {
         }
       case TType.STRING:
         {
-          prot.readBinary();
+          prot.skipBinary();
           break;
         }
       case TType.STRUCT:

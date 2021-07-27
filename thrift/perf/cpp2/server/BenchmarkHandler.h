@@ -73,8 +73,10 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
       std::unique_ptr<TwoInts> input) override {
     stats_->add(kSum_);
     auto result = std::make_unique<TwoInts>();
-    result->x_ref() = input->x_ref().value_or(0) + input->y_ref().value_or(0);
-    result->y_ref() = input->x_ref().value_or(0) - input->y_ref().value_or(0);
+    result->x_ref() = static_cast<uint32_t>(input->x_ref().value_or(0)) +
+        input->y_ref().value_or(0);
+    result->y_ref() = static_cast<uint32_t>(input->x_ref().value_or(0)) -
+        input->y_ref().value_or(0);
     callback->result(std::move(result));
   }
 
@@ -83,13 +85,11 @@ class BenchmarkHandler : virtual public StreamBenchmarkSvIf {
     result = chunk_;
   }
 
-  void upload(std::unique_ptr<Chunk2>) override {
-    stats_->add(kDownload_);
-  }
+  void upload(std::unique_ptr<Chunk2>) override { stats_->add(kDownload_); }
 
   ServerStream<Chunk2> streamDownload() override {
-    return folly::coro::
-        co_invoke([this]() -> folly::coro::AsyncGenerator<Chunk2&&> {
+    return folly::coro::co_invoke(
+        [this]() -> folly::coro::AsyncGenerator<Chunk2&&> {
           while (true) {
             co_yield folly::copy(chunk_);
             stats_->add(ks_Upload_);

@@ -122,3 +122,7 @@ func (t *testHandler) DoTestMultiException(ctx context.Context, arg0, arg1 strin
 func (t *testHandler) DoTestOneway(ctx context.Context, secondsToSleep int32) error {
 	return t.ReturnError
 }
+
+func (t *testHandler) XDoTestPoorName(ctx context.Context) error {
+	return t.ReturnError
+}

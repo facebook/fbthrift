@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("union1")
-public final class Union1 {
+public final class Union1 implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("union1");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -74,7 +74,7 @@ public final class Union1 {
     }
     
 
-    @ThriftField(value=1, name="i", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="i", requiredness=Requiredness.NONE)
     public int getI() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a i element!");
@@ -86,7 +86,7 @@ public final class Union1 {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="d", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="d", requiredness=Requiredness.NONE)
     public double getD() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a d element!");
@@ -162,10 +162,10 @@ public final class Union1 {
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
       if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+         return;
       }
+      oprot.writeStructBegin(STRUCT_DESC);
       switch (this.id) {
       case _I: {
         oprot.writeFieldBegin(I_FIELD_DESC);
@@ -186,6 +186,11 @@ public final class Union1 {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<Union1> asReader() {
+      return Union1::read0;
     }
     
     public static Union1 read0(TProtocol oprot) throws TException {

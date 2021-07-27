@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <thrift/compiler/ast/t_node.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
@@ -25,13 +27,11 @@ class t_program;
 /**
  * This node models an include statement in the Thrift program.
  */
-class t_include : public t_doc {
+class t_include : public t_node {
  public:
   explicit t_include(t_program* program) : program_(program) {}
 
-  t_program* get_program() const {
-    return program_;
-  }
+  t_program* get_program() const { return program_; }
 
  private:
   t_program* program_;

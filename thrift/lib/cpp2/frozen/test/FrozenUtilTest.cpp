@@ -54,7 +54,7 @@ TEST(FrozenUtil, FutureVersion) {
   {
     schema::Schema schema;
     *schema.fileVersion_ref() = 1000;
-    schema.__isset.fileVersion = true;
+    schema.fileVersion_ref().ensure();
 
     std::string schemaStr;
     CompactSerializer::serialize(schema, &schemaStr);

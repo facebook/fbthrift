@@ -54,8 +54,7 @@ std::set<std::string> parseNonconforming(std::string_view data);
 
 // Runs a conformance test case against the given client.
 testing::AssertionResult RunTestCase(
-    ConformanceServiceAsyncClient& client,
-    const TestCase& testCase);
+    ConformanceServiceAsyncClient& client, const TestCase& testCase);
 
 // Registers a test suite with gtest.
 void RegisterTests(

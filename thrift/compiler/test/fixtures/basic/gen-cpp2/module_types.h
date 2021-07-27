@@ -17,6 +17,9 @@ struct MyIntField;
 struct MyStringField;
 struct MyDataField;
 struct myEnum;
+struct oneway;
+struct readonly;
+struct idempotent;
 struct myEnum;
 struct myStruct;
 struct myDataItem;
@@ -37,6 +40,18 @@ APACHE_THRIFT_DEFINE_ACCESSOR(MyDataField);
 #ifndef APACHE_THRIFT_ACCESSOR_myEnum
 #define APACHE_THRIFT_ACCESSOR_myEnum
 APACHE_THRIFT_DEFINE_ACCESSOR(myEnum);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_oneway
+#define APACHE_THRIFT_ACCESSOR_oneway
+APACHE_THRIFT_DEFINE_ACCESSOR(oneway);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_readonly
+#define APACHE_THRIFT_ACCESSOR_readonly
+APACHE_THRIFT_DEFINE_ACCESSOR(readonly);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_idempotent
+#define APACHE_THRIFT_ACCESSOR_idempotent
+APACHE_THRIFT_DEFINE_ACCESSOR(idempotent);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_myEnum
 #define APACHE_THRIFT_ACCESSOR_myEnum
@@ -66,13 +81,10 @@ enum class MyEnum {
 
 
 } // cpp2
+
 namespace std {
-
-
-template<> struct hash<typename ::cpp2::MyEnum> : public apache::thrift::detail::enum_hash<typename ::cpp2::MyEnum> {};
-template<> struct equal_to<typename ::cpp2::MyEnum> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::MyEnum> {};
-
-
+template<> struct hash<::cpp2::MyEnum> :
+  ::apache::thrift::detail::enum_hash<::cpp2::MyEnum> {};
 } // std
 
 namespace apache { namespace thrift {
@@ -120,7 +132,13 @@ class MyUnion;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class MyDataItem final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -128,6 +146,7 @@ class MyDataItem final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = MyDataItem;
@@ -137,8 +156,8 @@ class MyDataItem final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  MyDataItem() {}
+  MyDataItem() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyDataItem(apache::thrift::FragileConstructor);
@@ -151,26 +170,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyDataItem& operator=(MyDataItem&&) = default;
 
   MyDataItem& operator=(const MyDataItem&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
-  bool operator==(const MyDataItem& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyDataItem& __x, const MyDataItem& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const MyDataItem& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyDataItem& __x, const MyDataItem& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyDataItem& __x, const MyDataItem& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyDataItem& __x, const MyDataItem& __y) {
-    return !(__x < __y);
-  }
-#endif
+
+ public:
+
+  bool operator==(const MyDataItem&) const;
+  bool operator<(const MyDataItem&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -185,7 +190,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyDataItem >;
+  friend class ::apache::thrift::Cpp2Ops<MyDataItem>;
   friend void swap(MyDataItem& a, MyDataItem& b);
 };
 
@@ -198,6 +203,11 @@ uint32_t MyDataItem::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -205,6 +215,7 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -214,83 +225,75 @@ class MyStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  MyStruct() :
-      MyIntField(0),
-      myEnum( ::cpp2::MyEnum::MyValue1) {}
+  MyStruct();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t MyIntField__arg, ::std::string MyStringField__arg,  ::cpp2::MyDataItem MyDataField__arg,  ::cpp2::MyEnum myEnum__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::cpp2::MyDataItem MyDataField__arg, ::cpp2::MyEnum myEnum__arg, bool oneway__arg, bool readonly__arg, bool idempotent__arg);
 
-  MyStruct(MyStruct&&) = default;
+  MyStruct(MyStruct&&) noexcept;
 
-  MyStruct(const MyStruct&) = default;
+  MyStruct(const MyStruct& src);
 
 
-  MyStruct& operator=(MyStruct&&) = default;
-
-  MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  MyStruct& operator=(MyStruct&&) noexcept;
+  MyStruct& operator=(const MyStruct& src);
   void __clear();
+
+  ~MyStruct();
+
  private:
-  int64_t MyIntField;
+  ::std::int64_t MyIntField;
  private:
   ::std::string MyStringField;
  private:
-   ::cpp2::MyDataItem MyDataField;
+  ::cpp2::MyDataItem MyDataField;
  private:
-   ::cpp2::MyEnum myEnum;
+  ::cpp2::MyEnum myEnum;
+ private:
+  bool oneway;
+ private:
+  bool readonly;
+ private:
+  bool idempotent;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIntField;
     bool MyStringField;
     bool MyDataField;
     bool myEnum;
+    bool oneway;
+    bool readonly;
+    bool idempotent;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const MyStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+ public:
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
+
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField_ref() const& {
     return {this->MyStringField, __isset.MyStringField};
@@ -310,61 +313,115 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
     return {std::move(this->MyStringField), __isset.MyStringField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyDataField_ref() const& {
     return {this->MyDataField, __isset.MyDataField};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyDataField_ref() const&& {
     return {std::move(this->MyDataField), __isset.MyDataField};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyDataField_ref() & {
     return {this->MyDataField, __isset.MyDataField};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyDataField_ref() && {
     return {std::move(this->MyDataField), __isset.MyDataField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum_ref() const& {
     return {this->myEnum, __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myEnum_ref() const&& {
     return {std::move(this->myEnum), __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> myEnum_ref() & {
     return {this->myEnum, __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum_ref() && {
     return {std::move(this->myEnum), __isset.myEnum};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_MyIntField() const {
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> oneway_ref() const& {
+    return {this->oneway, __isset.oneway};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> oneway_ref() const&& {
+    return {std::move(this->oneway), __isset.oneway};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> oneway_ref() & {
+    return {this->oneway, __isset.oneway};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> oneway_ref() && {
+    return {std::move(this->oneway), __isset.oneway};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> readonly_ref() const& {
+    return {this->readonly, __isset.readonly};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> readonly_ref() const&& {
+    return {std::move(this->readonly), __isset.readonly};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> readonly_ref() & {
+    return {this->readonly, __isset.readonly};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> readonly_ref() && {
+    return {std::move(this->readonly), __isset.readonly};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> idempotent_ref() const& {
+    return {this->idempotent, __isset.idempotent};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> idempotent_ref() const&& {
+    return {std::move(this->idempotent), __isset.idempotent};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> idempotent_ref() & {
+    return {this->idempotent, __isset.idempotent};
+  }
+
+  template <typename..., typename T = bool>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> idempotent_ref() && {
+    return {std::move(this->idempotent), __isset.idempotent};
+  }
+
+  ::std::int64_t get_MyIntField() const {
     return MyIntField;
   }
 
-  int64_t& set_MyIntField(int64_t MyIntField_) {
+  [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
+  ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIntField;
   }
 
@@ -377,35 +434,65 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyStringField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyStringField;
   }
-  const  ::cpp2::MyDataItem& get_MyDataField() const&;
-   ::cpp2::MyDataItem get_MyDataField() &&;
+  const ::cpp2::MyDataItem& get_MyDataField() const&;
+  ::cpp2::MyDataItem get_MyDataField() &&;
 
-  template <typename T_MyStruct_MyDataField_struct_setter =  ::cpp2::MyDataItem>
-   ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
+  template <typename T_MyStruct_MyDataField_struct_setter = ::cpp2::MyDataItem>
+  [[deprecated("Use `FOO.MyDataField_ref() = BAR;` instead of `FOO.set_MyDataField(BAR);`")]]
+  ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
     MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyDataField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyDataField;
   }
 
-   ::cpp2::MyEnum get_myEnum() const {
+  ::cpp2::MyEnum get_myEnum() const {
     return myEnum;
   }
 
-   ::cpp2::MyEnum& set_myEnum( ::cpp2::MyEnum myEnum_) {
+  [[deprecated("Use `FOO.myEnum_ref() = BAR;` instead of `FOO.set_myEnum(BAR);`")]]
+  ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum myEnum_) {
     myEnum = myEnum_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myEnum = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myEnum;
+  }
+
+  bool get_oneway() const {
+    return oneway;
+  }
+
+  [[deprecated("Use `FOO.oneway_ref() = BAR;` instead of `FOO.set_oneway(BAR);`")]]
+  bool& set_oneway(bool oneway_) {
+    oneway = oneway_;
+    __isset.oneway = true;
+    return oneway;
+  }
+
+  bool get_readonly() const {
+    return readonly;
+  }
+
+  [[deprecated("Use `FOO.readonly_ref() = BAR;` instead of `FOO.set_readonly(BAR);`")]]
+  bool& set_readonly(bool readonly_) {
+    readonly = readonly_;
+    __isset.readonly = true;
+    return readonly;
+  }
+
+  bool get_idempotent() const {
+    return idempotent;
+  }
+
+  [[deprecated("Use `FOO.idempotent_ref() = BAR;` instead of `FOO.set_idempotent(BAR);`")]]
+  bool& set_idempotent(bool idempotent_) {
+    idempotent = idempotent_;
+    __isset.idempotent = true;
+    return idempotent;
   }
 
   template <class Protocol_>
@@ -421,7 +508,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -434,6 +521,11 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class MyUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -441,6 +533,7 @@ class MyUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = MyUnion;
@@ -459,7 +552,7 @@ class MyUnion final  {
   MyUnion()
       : type_(Type::__EMPTY__) {}
 
-  MyUnion(MyUnion&& rhs)
+  MyUnion(MyUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -516,7 +609,7 @@ class MyUnion final  {
     }
   }
 
-  MyUnion& operator=(MyUnion&& rhs) {
+  MyUnion& operator=(MyUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -580,180 +673,171 @@ class MyUnion final  {
     __clear();
   }
   union storage_type {
-     ::cpp2::MyEnum myEnum;
-     ::cpp2::MyStruct myStruct;
-     ::cpp2::MyDataItem myDataItem;
+    ::cpp2::MyEnum myEnum;
+    ::cpp2::MyStruct myStruct;
+    ::cpp2::MyDataItem myDataItem;
 
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const MyUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyUnion& __x, const MyUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const MyUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyUnion& __x, const MyUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyUnion& __x, const MyUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyUnion& __x, const MyUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-   ::cpp2::MyEnum& set_myEnum( ::cpp2::MyEnum t =  ::cpp2::MyEnum()) {
+  bool operator==(const MyUnion&) const;
+  bool operator<(const MyUnion&) const;
+
+  ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum t = ::cpp2::MyEnum()) {
     __clear();
     type_ = Type::myEnum;
-    ::new (std::addressof(value_.myEnum))  ::cpp2::MyEnum(t);
+    ::new (std::addressof(value_.myEnum)) ::cpp2::MyEnum(t);
     return value_.myEnum;
   }
 
-   ::cpp2::MyStruct& set_myStruct( ::cpp2::MyStruct const &t) {
+  ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct const &t) {
     __clear();
     type_ = Type::myStruct;
-    ::new (std::addressof(value_.myStruct))  ::cpp2::MyStruct(t);
+    ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(t);
     return value_.myStruct;
   }
 
-   ::cpp2::MyStruct& set_myStruct( ::cpp2::MyStruct&& t) {
+  ::cpp2::MyStruct& set_myStruct(::cpp2::MyStruct&& t) {
     __clear();
     type_ = Type::myStruct;
-    ::new (std::addressof(value_.myStruct))  ::cpp2::MyStruct(std::move(t));
+    ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::move(t));
     return value_.myStruct;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::MyStruct, T...>>  ::cpp2::MyStruct& set_myStruct(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyStruct, T...>> ::cpp2::MyStruct& set_myStruct(T&&... t) {
     __clear();
     type_ = Type::myStruct;
-    ::new (std::addressof(value_.myStruct))  ::cpp2::MyStruct(std::forward<T>(t)...);
+    ::new (std::addressof(value_.myStruct)) ::cpp2::MyStruct(std::forward<T>(t)...);
     return value_.myStruct;
   }
 
-   ::cpp2::MyDataItem& set_myDataItem( ::cpp2::MyDataItem const &t) {
+  ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem const &t) {
     __clear();
     type_ = Type::myDataItem;
-    ::new (std::addressof(value_.myDataItem))  ::cpp2::MyDataItem(t);
+    ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(t);
     return value_.myDataItem;
   }
 
-   ::cpp2::MyDataItem& set_myDataItem( ::cpp2::MyDataItem&& t) {
+  ::cpp2::MyDataItem& set_myDataItem(::cpp2::MyDataItem&& t) {
     __clear();
     type_ = Type::myDataItem;
-    ::new (std::addressof(value_.myDataItem))  ::cpp2::MyDataItem(std::move(t));
+    ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::move(t));
     return value_.myDataItem;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::cpp2::MyDataItem, T...>>  ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::cpp2::MyDataItem, T...>> ::cpp2::MyDataItem& set_myDataItem(T&&... t) {
     __clear();
     type_ = Type::myDataItem;
-    ::new (std::addressof(value_.myDataItem))  ::cpp2::MyDataItem(std::forward<T>(t)...);
+    ::new (std::addressof(value_.myDataItem)) ::cpp2::MyDataItem(std::forward<T>(t)...);
     return value_.myDataItem;
   }
 
-   ::cpp2::MyEnum const & get_myEnum() const {
+  ::cpp2::MyEnum const& get_myEnum() const {
+    if (type_ != Type::myEnum) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.myEnum;
+  }
+
+  ::cpp2::MyStruct const& get_myStruct() const {
+    if (type_ != Type::myStruct) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.myStruct;
+  }
+
+  ::cpp2::MyDataItem const& get_myDataItem() const {
+    if (type_ != Type::myDataItem) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.myDataItem;
+  }
+
+  ::cpp2::MyEnum& mutable_myEnum() {
     assert(type_ == Type::myEnum);
     return value_.myEnum;
   }
 
-   ::cpp2::MyStruct const & get_myStruct() const {
+  ::cpp2::MyStruct& mutable_myStruct() {
     assert(type_ == Type::myStruct);
     return value_.myStruct;
   }
 
-   ::cpp2::MyDataItem const & get_myDataItem() const {
+  ::cpp2::MyDataItem& mutable_myDataItem() {
     assert(type_ == Type::myDataItem);
     return value_.myDataItem;
   }
 
-   ::cpp2::MyEnum & mutable_myEnum() {
-    assert(type_ == Type::myEnum);
-    return value_.myEnum;
-  }
-
-   ::cpp2::MyStruct & mutable_myStruct() {
-    assert(type_ == Type::myStruct);
-    return value_.myStruct;
-  }
-
-   ::cpp2::MyDataItem & mutable_myDataItem() {
-    assert(type_ == Type::myDataItem);
-    return value_.myDataItem;
-  }
-
-   ::cpp2::MyEnum move_myEnum() {
+  ::cpp2::MyEnum move_myEnum() {
     assert(type_ == Type::myEnum);
     return std::move(value_.myEnum);
   }
 
-   ::cpp2::MyStruct move_myStruct() {
+  ::cpp2::MyStruct move_myStruct() {
     assert(type_ == Type::myStruct);
     return std::move(value_.myStruct);
   }
 
-   ::cpp2::MyDataItem move_myDataItem() {
+  ::cpp2::MyDataItem move_myDataItem() {
     assert(type_ == Type::myDataItem);
     return std::move(value_.myDataItem);
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myEnum_ref() const& {
     return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myEnum_ref() const&& {
     return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myEnum_ref() & {
     return {value_.myEnum, type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyEnum>
+  template <typename..., typename T = ::cpp2::MyEnum>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myEnum_ref() && {
     return {std::move(value_.myEnum), type_, myEnum, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::cpp2::MyStruct>
+  template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myStruct_ref() const& {
     return {value_.myStruct, type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyStruct>
+  template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myStruct_ref() const&& {
     return {std::move(value_.myStruct), type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyStruct>
+  template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myStruct_ref() & {
     return {value_.myStruct, type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyStruct>
+  template <typename..., typename T = ::cpp2::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myStruct_ref() && {
     return {std::move(value_.myStruct), type_, myStruct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> myDataItem_ref() const& {
     return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> myDataItem_ref() const&& {
     return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> myDataItem_ref() & {
     return {value_.myDataItem, type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::cpp2::MyDataItem>
+  template <typename..., typename T = ::cpp2::MyDataItem>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> myDataItem_ref() && {
     return {std::move(value_.myDataItem), type_, myDataItem, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -780,7 +864,7 @@ class MyUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyUnion >;
+  friend class ::apache::thrift::Cpp2Ops<MyUnion>;
   friend void swap(MyUnion& a, MyUnion& b);
 };
 
@@ -792,6 +876,7 @@ uint32_t MyUnion::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

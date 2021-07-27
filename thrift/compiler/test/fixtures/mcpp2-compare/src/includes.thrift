@@ -20,17 +20,17 @@ namespace cpp2 a.different.ns
 
 typedef i64 IncludedInt64
 
-const i64 IncludedConstant = 42
+const i64 IncludedConstant = 42;
 
 enum AnEnum {
-  FIELDA = 2
-  FIELDB = 4
+  FIELDA = 2,
+  FIELDB = 4,
 }
 
-struct  AStruct {
- 1: i32 FieldA
+struct AStruct {
+  1: i32 FieldA;
 }
 
 struct AStructB {
-  1: AStruct FieldA (cpp2.ref_type = "shared_const")
+  1: AStruct FieldA (cpp2.ref_type = "shared_const");
 }

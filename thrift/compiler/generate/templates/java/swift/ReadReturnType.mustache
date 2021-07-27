@@ -1,0 +1,85 @@
+{{!
+
+  Copyright (c) Facebook, Inc. and its affiliates.
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+
+}}{{#type:typedef?}}{{!
+    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> ReadReturnType }}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> ReadReturnType }}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
+    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> ReadReturnType }}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+}}{{/type:typedef?}}{{!
+}}{{^type:typedef?}}{{!
+}}{{#type:set?}}{{> ReadReturnTypeContainer}}{{/type:set?}}{{!
+
+}}{{#type:list?}}{{> ReadReturnTypeContainer}}{{/type:list?}}{{!
+
+}}{{#type:map?}}{{> ReadReturnTypeContainer}}{{/type:map?}}{{!
+
+}}{{#type:struct?}}{{!
+}}{{#function:isNested?}}{{> BoxedType}}.read0(oprot){{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = {{> BoxedType}}.read0(oprot);{{/function:isNested?}}{{!
+}}{{/type:struct?}}{{!
+
+}}{{#type:enum?}}{{!
+}}{{#function:isNested?}}{{> BoxedType}}.fromInteger(oprot.readI32()){{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = {{> Type}}.fromInteger(oprot.readI32());{{/function:isNested?}}{{!
+}}{{/type:enum?}}{{!
+
+}}{{#type:binary?}}{{!
+}}{{#function:isNested?}}oprot.readBinary(){{^type:javaType}}.array(){{/type:javaType}}{{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = oprot.readBinary(){{^type:javaType}}.array(){{/type:javaType}};{{/function:isNested?}}{{!
+}}{{/type:binary?}}{{!
+
+}}{{#type:string?}}{{!
+}}{{#function:isNested?}}oprot.readString(){{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = oprot.readString();{{/function:isNested?}}{{!
+}}{{/type:string?}}{{!
+
+}}{{#type:bool?}}{{!
+}}{{#function:isNested?}}oprot.readBool(){{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = oprot.readBool();{{/function:isNested?}}{{!
+}}{{/type:bool?}}{{!
+
+}}{{#type:byte?}}{{!
+}}{{#function:isNested?}}oprot.readByte(){{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = oprot.readByte();{{/function:isNested?}}{{!
+}}{{/type:byte?}}{{!
+
+}}{{#type:i16?}}{{!
+}}{{#function:isNested?}}oprot.readI16(){{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = oprot.readI16();{{/function:isNested?}}{{!
+}}{{/type:i16?}}{{!
+
+}}{{#type:i32?}}{{!
+}}{{#function:isNested?}}oprot.readI32(){{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = oprot.readI32();{{/function:isNested?}}{{!
+}}{{/type:i32?}}{{!
+
+}}{{#type:i64?}}{{!
+}}{{#function:isNested?}}oprot.readI64(){{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = oprot.readI64();{{/function:isNested?}}{{!
+}}{{/type:i64?}}{{!
+
+}}{{#type:float?}}{{!
+}}{{#function:isNested?}}oprot.readFloat(){{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = oprot.readFloat();{{/function:isNested?}}{{!
+}}{{/type:float?}}{{!
+
+}}{{#type:double?}}{{!
+}}{{#function:isNested?}}oprot.readDouble(){{/function:isNested?}}{{!
+}}{{^function:isNested?}}{{> Type}} _r = oprot.readDouble();{{/function:isNested?}}{{!
+}}{{/type:double?}}{{!
+
+}}{{/type:typedef?}}{{!
+}}

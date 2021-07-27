@@ -16,9 +16,10 @@
 
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 
-#include <fmt/format.h>
-#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <atomic>
+#include <fmt/format.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace apache {
 namespace thrift {
@@ -69,7 +70,58 @@ folly::Synchronized<RegistryIdManager>& registryIdManager() {
   return *registryIdManagerPtr;
 }
 
+THRIFT_PLUGGABLE_FUNC_REGISTER(uint64_t, getCurrentServerTick) {
+  // Returns the current "tick" of the Thrift server -- a monotonically
+  // increasing counter that effectively determines the size of the time
+  // interval for each bucket in the RecentRequestCounter.
+  return 0;
+}
 } // namespace
+
+void RecentRequestCounter::increment() {
+  auto currBucket = getCurrentBucket();
+  counts_[currBucket].first += 1;
+  counts_[currBucket].second = ++currActiveCount_;
+}
+
+void RecentRequestCounter::decrement() {
+  if (currActiveCount_ > 0) {
+    auto currBucket = getCurrentBucket();
+    counts_[currBucket].second = --currActiveCount_;
+  }
+}
+
+RecentRequestCounter::Values RecentRequestCounter::get() const {
+  Values ret;
+  uint64_t currentBucket = getCurrentBucket();
+  uint64_t i = currentBucket + kBuckets;
+
+  for (auto& val : ret) {
+    val = counts_[i-- % kBuckets];
+  }
+
+  return ret;
+}
+
+uint64_t RecentRequestCounter::getCurrentBucket() const {
+  // Remove old request counts from counts_ and update lastTick_
+  uint64_t currentTick = THRIFT_PLUGGABLE_FUNC(getCurrentServerTick)();
+
+  if (lastTick_ < currentTick) {
+    uint64_t tickDiff = currentTick - lastTick_;
+    uint64_t ticksToClear = tickDiff < kBuckets ? tickDiff : kBuckets;
+
+    while (ticksToClear) {
+      auto index = (lastTick_ + ticksToClear--) % kBuckets;
+      counts_[index].first = 0;
+      counts_[index].second = currActiveCount_;
+    }
+    lastTick_ = currentTick;
+    currentBucket_ = lastTick_ % kBuckets;
+  }
+
+  return currentBucket_;
+}
 
 RequestsRegistry::RequestsRegistry(
     uint64_t requestPayloadMem,
@@ -95,6 +147,10 @@ RequestsRegistry::~RequestsRegistry() {
   return fmt::format("{:016x}", static_cast<uintptr_t>(rootid));
 }
 
+bool RequestsRegistry::isThriftRootId(intptr_t rootid) noexcept {
+  return rootid & 0x1;
+}
+
 intptr_t RequestsRegistry::genRootId() {
   // Ensure rootid's LSB is always 1.
   // This is to prevent any collision with rootids on folly::RequestsContext() -
@@ -103,7 +159,25 @@ intptr_t RequestsRegistry::genRootId() {
       (static_cast<uintptr_t>(registryId_) << kLsbBits);
 }
 
+void RequestsRegistry::registerStub(DebugStub& req) {
+  if (req.stateMachine_.includeInRecentRequests()) {
+    requestCounter_.increment();
+  }
+  uint64_t payloadSize = req.getPayloadSize();
+  reqActiveList_.push_back(req);
+  if (payloadSize > payloadMemoryLimitPerRequest_) {
+    req.releasePayload();
+    return;
+  }
+  reqPayloadList_.push_back(req);
+  payloadMemoryUsage_ += payloadSize;
+  evictStubPayloads();
+}
+
 void RequestsRegistry::moveToFinishedList(RequestsRegistry::DebugStub& stub) {
+  if (stub.stateMachine_.includeInRecentRequests()) {
+    requestCounter_.decrement();
+  }
   if (finishedRequestsLimit_ == 0) {
     return;
   }
@@ -124,15 +198,20 @@ void RequestsRegistry::moveToFinishedList(RequestsRegistry::DebugStub& stub) {
 }
 
 const std::string& RequestsRegistry::DebugStub::getMethodName() const {
-  return methodNameIfFinished_.empty() ? getCpp2RequestContext().getMethodName()
-                                       : methodNameIfFinished_;
+  return getCpp2RequestContext() ? getCpp2RequestContext()->getMethodName()
+                                 : methodNameIfFinished_;
+}
+
+const folly::SocketAddress* RequestsRegistry::DebugStub::getLocalAddress()
+    const {
+  return getCpp2RequestContext() ? getCpp2RequestContext()->getLocalAddress()
+                                 : &localAddressIfFinished_;
 }
 
 const folly::SocketAddress* RequestsRegistry::DebugStub::getPeerAddress()
     const {
-  return methodNameIfFinished_.empty()
-      ? getCpp2RequestContext().getPeerAddress()
-      : &peerAddressIfFinished_;
+  return getCpp2RequestContext() ? getCpp2RequestContext()->getPeerAddress()
+                                 : &peerAddressIfFinished_;
 }
 
 void RequestsRegistry::DebugStub::prepareAsFinished() {
@@ -140,8 +219,8 @@ void RequestsRegistry::DebugStub::prepareAsFinished() {
   rctx_.reset();
   methodNameIfFinished_ =
       const_cast<Cpp2RequestContext*>(reqContext_)->releaseMethodName();
-  peerAddressIfFinished_ =
-      *const_cast<Cpp2RequestContext*>(reqContext_)->getPeerAddress();
+  peerAddressIfFinished_ = *reqContext_->getPeerAddress();
+  localAddressIfFinished_ = *reqContext_->getLocalAddress();
   reqContext_ = nullptr;
   req_ = nullptr;
 }

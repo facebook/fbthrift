@@ -16,7 +16,7 @@
 
 %>class <%service:name%>SvNull : public <%service:name%>SvIf<%#service:extends%>, virtual public <% > common/namespace_cpp2%><%service:name%>SvIf<%/service:extends%> {
  public:
-<%#service:functions%><%#function:returnType%><%^function:starts_interaction?%><%^function:eb%><%^function:returns_stream?%>
-  <% > service_common/function_return_type %> <%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>) override;
-<%/function:returns_stream?%><%/function:eb%><%/function:starts_interaction?%><%/function:returnType%><%/service:functions%>
+<%#service:functions%><%#function:return_type%><%^function:starts_interaction?%><%^function:eb%><%^function:returns_stream?%>
+  <% > service_common/function_return_type%> <%function:cpp_name%>(<% > service_common/function_return_param%><% > service_common/function_param_list_commented_out%>) override;
+<%/function:returns_stream?%><%/function:eb%><%/function:starts_interaction?%><%/function:return_type%><%/service:functions%>
 };

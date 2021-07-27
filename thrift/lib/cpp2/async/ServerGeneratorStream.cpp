@@ -29,8 +29,7 @@ template class TwoWayBridge<
     ServerGeneratorStream>;
 
 ServerGeneratorStream::ServerGeneratorStream(
-    StreamClientCallback* clientCallback,
-    folly::EventBase* clientEb)
+    StreamClientCallback* clientCallback, folly::EventBase* clientEb)
     : streamClientCallback_(clientCallback), clientEventBase_(clientEb) {}
 
 ServerGeneratorStream::~ServerGeneratorStream() {}
@@ -63,13 +62,21 @@ void ServerGeneratorStream::onStreamCancel() {
 #if FOLLY_HAS_COROUTINES
   cancelSource_.requestCancellation();
 #endif
-  clientPush(-1);
+  clientPush(detail::StreamControl::CANCEL);
   clientClose();
 }
 
 void ServerGeneratorStream::resetClientCallback(
     StreamClientCallback& clientCallback) {
   streamClientCallback_ = &clientCallback;
+}
+
+void ServerGeneratorStream::pauseStream() {
+  clientPush(detail::StreamControl::PAUSE);
+}
+
+void ServerGeneratorStream::resumeStream() {
+  clientPush(detail::StreamControl::RESUME);
 }
 
 void ServerGeneratorStream::processPayloads() {
@@ -80,8 +87,10 @@ void ServerGeneratorStream::processPayloads() {
       DCHECK(!isClientClosed());
       auto& payload = messages.front();
       if (payload.hasValue()) {
-        auto alive =
-            streamClientCallback_->onStreamNext(std::move(payload.value()));
+        auto alive = payload->payload
+            ? streamClientCallback_->onStreamNext(std::move(payload.value()))
+            : streamClientCallback_->onStreamHeaders(
+                  HeadersPayload(std::move(payload->metadata)));
         if (!alive) {
           break;
         }

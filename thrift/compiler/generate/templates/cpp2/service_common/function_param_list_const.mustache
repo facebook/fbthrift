@@ -17,9 +17,9 @@
 %><%#function:args%><%#field:type%><%!
   %><%^first?%>, <%/first?%><%!
 %><%#type:resolves_to_complex_return?%><%!
-  %>const <% > types/type%>& <%field:cpp_name%><%!
+  %>const <%type:cpp_type%>& p_<%field:cpp_name%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%^type:resolves_to_complex_return?%><%!
-  %><% > types/type%> <%field:cpp_name%><%!
+  %><%type:cpp_type%> p_<%field:cpp_name%><%!
 %><%/type:resolves_to_complex_return?%><%!
 %><%/field:type%><%/function:args%>

@@ -5,7 +5,7 @@
 #  @generated
 #
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import typing as _typing
 from thrift.py3.server import RequestContext, ServiceInterface
 from abc import abstractmethod, ABCMeta
@@ -53,6 +53,41 @@ class MyServiceInterface(
     ) -> str: ...
 
     @staticmethod
+    def pass_context_sink(
+        fn: _typing.Callable[
+                [_MyServiceInterfaceT, RequestContext, int],
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
+        ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT, int],
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
+    ]: ...
+
+    @abstractmethod
+    async def sink(
+        self,
+        sink: int
+    ) -> None: ...
+
+    @staticmethod
+    def pass_context_putDataById(
+        fn: _typing.Callable[
+                [_MyServiceInterfaceT, RequestContext, int, str],
+                _typing.Coroutine[_typing.Any, _typing.Any, None]
+        ]
+    ) -> _typing.Callable[
+        [_MyServiceInterfaceT, int, str],
+        _typing.Coroutine[_typing.Any, _typing.Any, None]
+    ]: ...
+
+    @abstractmethod
+    async def putDataById(
+        self,
+        id: int,
+        data: str
+    ) -> None: ...
+
+    @staticmethod
     def pass_context_hasDataById(
         fn: _typing.Callable[
                 [_MyServiceInterfaceT, RequestContext, int],
@@ -87,21 +122,20 @@ class MyServiceInterface(
     ) -> str: ...
 
     @staticmethod
-    def pass_context_putDataById(
+    def pass_context_deleteDataById(
         fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int, str],
+                [_MyServiceInterfaceT, RequestContext, int],
                 _typing.Coroutine[_typing.Any, _typing.Any, None]
         ]
     ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int, str],
+        [_MyServiceInterfaceT, int],
         _typing.Coroutine[_typing.Any, _typing.Any, None]
     ]: ...
 
     @abstractmethod
-    async def putDataById(
+    async def deleteDataById(
         self,
-        id: int,
-        data: str
+        id: int
     ) -> None: ...
 
     @staticmethod

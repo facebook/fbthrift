@@ -17,6 +17,7 @@
 #pragma once
 
 #include <folly/ExceptionWrapper.h>
+
 #include <thrift/lib/cpp/SerializedMessage.h>
 #include <thrift/lib/cpp/TProcessorEventHandler.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
@@ -29,53 +30,27 @@ class ContextStack {
   friend class EventHandlerBase;
 
  public:
-  explicit ContextStack(const char* method)
-      : serviceName_(""), method_(method) {}
-
-  ContextStack(
+  // Note: factory functions return nullptr if handlers is nullptr or empty.
+  static std::unique_ptr<ContextStack> create(
       const std::shared_ptr<
           std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
       const char* serviceName,
       const char* method,
-      TConnectionContext* connectionContext)
-      : serviceName_(serviceName), method_(method) {
-    if (handlers && !handlers->empty()) {
-      handlers_ = handlers;
-      ctxs_.reserve(handlers->size());
-      for (const auto& handler : *handlers) {
-        ctxs_.push_back(handler->getServiceContext(
-            serviceName_, method_, connectionContext));
-      }
-    }
-  }
+      TConnectionContext* connectionContext);
 
-  ContextStack(
+  static std::unique_ptr<ContextStack> createWithClientContext(
       const std::shared_ptr<
           std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
+      const char* serviceName,
       const char* method,
-      TConnectionContext* connectionContext)
-      : serviceName_(""), method_(method) {
-    if (handlers && !handlers->empty()) {
-      handlers_ = handlers;
-      ctxs_.reserve(handlers->size());
-      for (const auto& handler : *handlers) {
-        ctxs_.push_back(handler->getContext(method_, connectionContext));
-      }
-    }
-  }
+      transport::THeader& header);
 
   ContextStack(ContextStack&&) = delete;
   ContextStack& operator=(ContextStack&&) = delete;
   ContextStack(const ContextStack&) = delete;
   ContextStack& operator=(const ContextStack&) = delete;
 
-  ~ContextStack() {
-    if (handlers_) {
-      for (size_t i = 0; i < handlers_->size(); i++) {
-        (*handlers_)[i]->freeContext(ctxs_[i], getMethod());
-      }
-    }
-  }
+  ~ContextStack();
 
   void preWrite();
 
@@ -92,23 +67,43 @@ class ContextStack {
   void handlerErrorWrapped(const folly::exception_wrapper& ew);
   void userExceptionWrapped(bool declared, const folly::exception_wrapper& ew);
 
-  void asyncComplete();
-
-  const char* getServiceName() const {
-    return serviceName_;
-  }
-
-  const char* getMethod() const {
-    return method_;
-  }
+  void resetClientRequestContextHeader();
 
  private:
-  std::vector<void*> ctxs_;
   std::shared_ptr<std::vector<std::shared_ptr<TProcessorEventHandler>>>
       handlers_;
   const char* const serviceName_;
   const char* const method_;
+  const bool hasClientRequestContext_{false};
+
+  friend struct std::default_delete<apache::thrift::ContextStack>;
+
+  struct WithEmbeddedClientRequestContext {};
+
+  ContextStack(
+      const std::shared_ptr<
+          std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
+      const char* serviceName,
+      const char* method,
+      TConnectionContext* connectionContext);
+
+  ContextStack(
+      WithEmbeddedClientRequestContext,
+      const std::shared_ptr<
+          std::vector<std::shared_ptr<TProcessorEventHandler>>>& handlers,
+      const char* serviceName,
+      const char* method,
+      TConnectionContext* connectionContext);
+
+  void*& contextAt(size_t i);
 };
 
 } // namespace thrift
 } // namespace apache
+
+namespace std {
+template <>
+struct default_delete<apache::thrift::ContextStack> {
+  void operator()(apache::thrift::ContextStack* cs) const;
+};
+} // namespace std

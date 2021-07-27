@@ -23,13 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="StructWithRefAndAnnotCppNoexceptMoveCtor", builder=StructWithRefAndAnnotCppNoexceptMoveCtor.Builder.class)
-public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="StructWithRefAndAnnotCppNoexceptMoveCtor", builder=StructWithRefAndAnnotCppNoexceptMoveCtor.Builder.class)
+public final class StructWithRefAndAnnotCppNoexceptMoveCtor implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public StructWithRefAndAnnotCppNoexceptMoveCtor(
-        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField
+        @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE) final test.fixtures.refs.Empty defField
     ) {
         this.defField = defField;
     }
@@ -40,11 +39,10 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.refs.Empty defField = null;
     
-        @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
         public Builder setDefField(test.fixtures.refs.Empty defField) {
             this.defField = defField;
             return this;
@@ -62,7 +60,6 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
             StructWithRefAndAnnotCppNoexceptMoveCtor result = new StructWithRefAndAnnotCppNoexceptMoveCtor (
                 this.defField
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -78,14 +75,8 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
       FIELD_METADATA.put(1, DEF_FIELD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="def_field", requiredness=Requiredness.NONE)
     public test.fixtures.refs.Empty getDefField() { return defField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetDefField() {
-        return this.defField != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -117,6 +108,10 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<StructWithRefAndAnnotCppNoexceptMoveCtor> asReader() {
+      return StructWithRefAndAnnotCppNoexceptMoveCtor::read0;
+    }
     
     public static StructWithRefAndAnnotCppNoexceptMoveCtor read0(TProtocol oprot) throws TException {
       TField __field;
@@ -155,4 +150,11 @@ public final class StructWithRefAndAnnotCppNoexceptMoveCtor {
       oprot.writeStructEnd();
     }
     
+    private static class _StructWithRefAndAnnotCppNoexceptMoveCtorLazy {
+        private static final StructWithRefAndAnnotCppNoexceptMoveCtor _DEFAULT = new StructWithRefAndAnnotCppNoexceptMoveCtor.Builder().build();
+    }
+    
+    public static StructWithRefAndAnnotCppNoexceptMoveCtor defaultInstance() {
+        return  _StructWithRefAndAnnotCppNoexceptMoveCtorLazy._DEFAULT;
+    }
 }

@@ -1,0 +1,438 @@
+{
+  "__fbthrift": {"@generated": 0},
+  "thrift_module" : "module",
+  "typedefs" : {
+    "SetWithAdapter" : {
+      "lineno" : 25,
+      "type_enum" : "SET",
+      "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
+      "source_range" : {
+        "begin" : {
+          "line" : 21,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 25,
+          "column" : 17
+        }
+      }
+    },
+    "ListWithElemAdapter" : {
+      "lineno" : 32,
+      "type_enum" : "LIST",
+      "spec_args" : { "type_enum" : "STRING", "spec_args" : null} ,
+      "source_range" : {
+        "begin" : {
+          "line" : 26,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 32,
+          "column" : 22
+        }
+      }
+    },
+    "StructWithAdapter" : {
+      "lineno" : 150,
+      "type_enum" : "TYPEDEF",
+      "spec_args" : "Bar",
+      "source_range" : {
+        "begin" : {
+          "line" : 146,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 150,
+          "column" : 20
+        }
+      }
+    },
+    "UnionWithAdapter" : {
+      "lineno" : 156,
+      "type_enum" : "TYPEDEF",
+      "spec_args" : "Baz",
+      "source_range" : {
+        "begin" : {
+          "line" : 152,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 156,
+          "column" : 19
+        }
+      }
+    }
+  },
+  "structs" : {
+    "Foo" : {
+      "lineno" : 34,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "intField" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 35,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 39,
+              "column" : 14
+            }
+          }
+        },
+        "optionalIntField" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 40,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 44,
+              "column" : 22
+            }
+          }
+        },
+        "intFieldWithDefault" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : true,
+          "default_value" : 13,
+          "source_range" : {
+            "begin" : {
+              "line" : 45,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 49,
+              "column" : 30
+            }
+          }
+        },
+        "setField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "SetWithAdapter",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 50,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 50,
+              "column" : 30
+            }
+          }
+        },
+        "optionalSetField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "SetWithAdapter",
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 51,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 51,
+              "column" : 47
+            }
+          }
+        },
+        "mapField" : {
+          "type_enum" : "MAP",
+          "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "TYPEDEF", "spec_args" : "ListWithElemAdapter"} } ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 52,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 63,
+              "column" : 14
+            }
+          }
+        },
+        "optionalMapField" : {
+          "type_enum" : "MAP",
+          "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "TYPEDEF", "spec_args" : "ListWithElemAdapter"} } ,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 64,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 75,
+              "column" : 22
+            }
+          }
+        },
+        "binaryField" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 76,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 80,
+              "column" : 17
+            }
+          }
+        }
+      },
+      "annotation_last_lineno" : -1,
+      "source_range" : {
+        "begin" : {
+          "line" : 34,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 81,
+          "column" : 2
+        }
+      }
+    },
+    "Baz" : {
+      "lineno" : 83,
+      "is_exception" : false,
+      "is_union" : true,
+      "fields" : {
+        "intField" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 84,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 88,
+              "column" : 14
+            }
+          }
+        },
+        "setField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "SetWithAdapter",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 89,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 89,
+              "column" : 30
+            }
+          }
+        },
+        "mapField" : {
+          "type_enum" : "MAP",
+          "spec_args" : { "key_type" : { "type_enum" : "STRING", "spec_args" : null }, "val_type" : { "type_enum" : "TYPEDEF", "spec_args" : "ListWithElemAdapter"} } ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 90,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 101,
+              "column" : 14
+            }
+          }
+        },
+        "binaryField" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 102,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 106,
+              "column" : 17
+            }
+          }
+        }
+      },
+      "annotation_last_lineno" : -1,
+      "source_range" : {
+        "begin" : {
+          "line" : 83,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 107,
+          "column" : 2
+        }
+      }
+    },
+    "Bar" : {
+      "lineno" : 109,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "structField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "Foo",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 110,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 114,
+              "column" : 17
+            }
+          }
+        },
+        "optionalStructField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "Foo",
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 115,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 119,
+              "column" : 25
+            }
+          }
+        },
+        "structListField" : {
+          "type_enum" : "LIST",
+          "spec_args" : { "type_enum" : "TYPEDEF", "spec_args" : "Foo"} ,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 120,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 126,
+              "column" : 21
+            }
+          }
+        },
+        "optionalStructListField" : {
+          "type_enum" : "LIST",
+          "spec_args" : { "type_enum" : "TYPEDEF", "spec_args" : "Foo"} ,
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 127,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 133,
+              "column" : 29
+            }
+          }
+        },
+        "unionField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "Baz",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 134,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 138,
+              "column" : 16
+            }
+          }
+        },
+        "optionalUnionField" : {
+          "type_enum" : "TYPEDEF",
+          "spec_args" : "Baz",
+          "required" : false,
+          "source_range" : {
+            "begin" : {
+              "line" : 139,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 143,
+              "column" : 24
+            }
+          }
+        }
+      },
+      "annotation_last_lineno" : -1,
+      "source_range" : {
+        "begin" : {
+          "line" : 109,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 144,
+          "column" : 2
+        }
+      }
+    }
+  },
+  "services" : {
+    "Service" : {
+      "lineno" : 158,
+      "functions" : {
+        "Service.func" : {
+          "return_type" : {
+            "type_enum" : "I32",
+            "spec_args" : null
+          },
+          "args" : [
+            {
+              "type_enum" : "STRING",
+              "spec_args" : null
+            },
+            {
+              "type_enum" : "STRUCT",
+              "spec_args" : "Foo"
+            }
+          ],
+          "throws" : [],
+          "source_range" : {
+            "begin" : {
+              "line" : 158,
+              "column" : 18
+            },
+            "end" : {
+              "line" : 170,
+              "column" : 4
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 158,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 171,
+          "column" : 2
+        }
+      }
+
+    }
+  }
+}

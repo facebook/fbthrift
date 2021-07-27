@@ -15,6 +15,7 @@
 # distutils: language=c++
 
 from libcpp.map cimport map as cmap
+from libcpp.memory cimport shared_ptr
 from libc.stdint cimport int32_t, int64_t
 from libcpp.string cimport string
 from thrift.py3.std_libcpp cimport milliseconds
@@ -67,6 +68,20 @@ cdef extern from "thrift/lib/cpp2/async/RequestChannel.h" namespace "apache::thr
         const cmap[string, string]& getWriteHeaders()
 
 
+cdef extern from "thrift/lib/cpp2/gen/module_metadata_h.h" namespace "::apache::thrift::metadata":
+    cdef cppclass cThriftServiceContext "::apache::thrift::metadata::ThriftServiceContext":
+        cThriftServiceContext()
+    cdef cppclass cThriftMetadata "::apache::thrift::metadata::ThriftMetadata":
+        cThriftMetadata()
+    cdef cppclass ServiceMetadata "::apache::thrift::detail::md::ServiceMetadata"[T]:
+        @staticmethod
+        void gen(cThriftMetadata &metadata, cThriftServiceContext& context)
+
+
+cdef extern from "<thrift/lib/py3/metadata.h>" namespace "::thrift::py3":
+    cdef void extractMetadataFromServiceContext(cThriftMetadata& metadata, cThriftServiceContext& context)
+
+
 cdef class RpcOptions:
     cdef object __weakref__
     cdef object _readheaders
@@ -84,3 +99,9 @@ cdef class WriteHeaders(Headers):
     cdef RpcOptions _parent
     @staticmethod
     cdef create(RpcOptions rpc_options)
+
+
+cdef class MetadataBox:
+    cdef shared_ptr[cThriftMetadata] _cpp_obj
+    @staticmethod
+    cdef box(cThriftMetadata&& meta)

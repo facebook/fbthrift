@@ -21,6 +21,7 @@
 #include <folly/io/IOBuf.h>
 #include <proxygen/lib/http/HTTPMessage.h>
 #include <proxygen/lib/http/ProxygenErrorEnum.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 
 namespace apache {
@@ -91,14 +92,14 @@ class H2Channel : public ThriftChannelIf {
  protected:
   // Encodes Thrift headers to be HTTP compliant.
   void encodeHeaders(
-      const std::map<std::string, std::string>& source,
+      const transport::THeader::StringToStringMap& source,
       proxygen::HTTPMessage& dest) noexcept;
 
   // Decodes previously encoded HTTP compliant headers into Thrift
   // headers.
   static void decodeHeaders(
       const proxygen::HTTPMessage& source,
-      std::map<std::string, std::string>& dest,
+      transport::THeader::StringToStringMap& dest,
       RequestRpcMetadata* metadata) noexcept;
 
   static bool handleThriftMetadata(

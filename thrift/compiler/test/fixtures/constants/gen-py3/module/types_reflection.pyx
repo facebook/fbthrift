@@ -6,7 +6,7 @@
 #
 
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3.reflection cimport (
     NumberType as __NumberType,
@@ -65,6 +65,18 @@ cdef __StructSpec get_reflection__Internship():
             name="employer",
             type=_module_types.Company,
             kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=4,
+            name="compensation",
+            type=float,
+            kind=__NumberType.DOUBLE,
             qualifier=__Qualifier.OPTIONAL,
             default=None,
             annotations={

@@ -27,15 +27,18 @@ namespace detail {
 
 class PluggableFunctionMetadata {
  public:
+  explicit PluggableFunctionMetadata(folly::StringPiece name) : name_(name) {}
   void setDefault(intptr_t defaultImpl) {
-    CHECK(!locked_) << "Pluggable function can't be updated once locked";
+    CHECK(!locked_) << "Pluggable function '" << name_
+                    << "' can't be updated once locked";
     CHECK(!std::exchange(defaultImpl_, defaultImpl))
-        << "Pluggable function can be registered only once";
+        << "Pluggable function '" << name_ << "' can be registered only once";
   }
   void set(intptr_t impl) {
-    CHECK(!locked_) << "Pluggable function can't be updated once locked";
+    CHECK(!locked_) << "Pluggable function '" << name_
+                    << "' can't be updated once locked";
     CHECK(!std::exchange(impl_, impl))
-        << "Pluggable function can be registered only once";
+        << "Pluggable function '" << name_ << "' can be registered only once";
   }
   intptr_t get() {
     locked_ = true;
@@ -50,12 +53,12 @@ class PluggableFunctionMetadata {
   std::atomic<bool> locked_{false};
   intptr_t defaultImpl_{};
   intptr_t impl_{};
+  const std::string name_;
 };
 
 namespace {
 PluggableFunctionMetadata& getPluggableFunctionMetadata(
-    folly::StringPiece name,
-    std::type_index functionTag) {
+    folly::StringPiece name, std::type_index functionTag) {
   using Map = std::unordered_map<
       std::string,
       std::pair<std::type_index, std::unique_ptr<PluggableFunctionMetadata>>>;
@@ -64,7 +67,7 @@ PluggableFunctionMetadata& getPluggableFunctionMetadata(
   auto entryAndInserted = wMap->emplace(std::make_pair(
       name.str(),
       std::make_pair(
-          functionTag, std::make_unique<PluggableFunctionMetadata>())));
+          functionTag, std::make_unique<PluggableFunctionMetadata>(name))));
   auto& entry = entryAndInserted.first->second;
   CHECK(entry.first == functionTag)
       << "Type mismatch for pluggable function " << name << ". Types are "
@@ -84,9 +87,7 @@ PluggableFunctionMetadata* registerPluggableFunction(
 }
 
 void setPluggableFunction(
-    folly::StringPiece name,
-    std::type_index functionTag,
-    intptr_t impl) {
+    folly::StringPiece name, std::type_index functionTag, intptr_t impl) {
   auto& metadata = getPluggableFunctionMetadata(name, functionTag);
   metadata.set(impl);
 }

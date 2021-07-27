@@ -46,8 +46,7 @@ class ConnectionManager {
   // Returns a connection that may be used to talk to a server at
   // "addr:port".
   std::shared_ptr<ClientConnectionIf> getConnection(
-      const std::string& addr,
-      uint16_t port);
+      const std::string& addr, uint16_t port);
 
  private:
   std::vector<std::unique_ptr<ConnectionThread>> threads_;

@@ -12,11 +12,24 @@
 namespace apache {
 namespace thrift {
 
-
-constexpr const std::size_t TStructDataStorage<::cpp2::BasicTypes>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::BasicTypes>::fields_size> TStructDataStorage<::cpp2::BasicTypes>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::BasicTypes>::fields_size> TStructDataStorage<::cpp2::BasicTypes>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::BasicTypes>::fields_size> TStructDataStorage<::cpp2::BasicTypes>::fields_types;
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::BasicTypes>::fields_names = {{
+  "first",
+  "second",
+  "third",
+  "isTrue",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::BasicTypes>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::BasicTypes>::fields_types = {{
+  TType::T_I32,
+  TType::T_I32,
+  TType::T_I64,
+  TType::T_BOOL,
+}};
 
 } // namespace thrift
 } // namespace apache

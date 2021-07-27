@@ -15,22 +15,29 @@
  */
 
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
+#include "thrift/lib/cpp2/async/RequestCallback.h"
 
 #include <atomic>
 
 #include <folly/executors/GlobalExecutor.h>
 
+#include <folly/Memory.h>
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/Sleep.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/test/TestSSLServer.h>
 #include <folly/portability/GTest.h>
 #include <folly/stop_watch.h>
 #include <folly/test/TestUtils.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
+#include <thrift/lib/cpp2/test/util/gen-cpp2/OtherService.h>
 #include <thrift/lib/cpp2/test/util/gen-cpp2/SimpleService.h>
+#include <thrift/lib/cpp2/transport/core/ThriftClient.h>
+#include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
+#include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
 
 using namespace std;
 using namespace folly;
@@ -41,13 +48,12 @@ class SimpleServiceImpl : public virtual SimpleServiceSvIf {
  public:
   ~SimpleServiceImpl() override {}
   void async_tm_add(
-      unique_ptr<HandlerCallback<int64_t>> cb,
-      int64_t a,
-      int64_t b) override {
+      unique_ptr<HandlerCallback<int64_t>> cb, int64_t a, int64_t b) override {
     cb->result(a + b);
   }
 
-  apache::thrift::SinkConsumer<int64_t, bool> slowReturnSink(int64_t sleepMs) {
+  apache::thrift::SinkConsumer<int64_t, bool> slowReturnSink(
+      int64_t sleepMs) override {
     return apache::thrift::SinkConsumer<int64_t, bool>{
         [&, sleepMs](folly::coro::AsyncGenerator<int64_t&&> gen)
             -> folly::coro::Task<bool> {
@@ -61,9 +67,18 @@ class SimpleServiceImpl : public virtual SimpleServiceSvIf {
         10};
   }
 
-  void waitForSinkComplete() {
-    requestSem_.wait();
+  folly::SemiFuture<apache::thrift::ServerStream<int64_t>>
+  semifuture_emptyStreamSlow(int64_t sleepMs) override {
+    requestSem_.post();
+    return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
+        .deferValue([](auto&&) {
+          return apache::thrift::ServerStream<int64_t>::createEmpty();
+        });
   }
+
+  void waitForSinkComplete() { requestSem_.wait(); }
+
+  void largeRequest(std::unique_ptr<std::unique_ptr<folly::IOBuf>>) override {}
 
  private:
   folly::LifoSem requestSem_;
@@ -100,6 +115,28 @@ TEST(ScopedServerInterfaceThread, newClient_SemiFuture) {
   EXPECT_EQ(6, cli->semifuture_add(-3, 9).get());
 }
 
+// Test that the client returned by newClient can still send requests when the
+// ThriftServer's SSLPolicy is REQUIRED
+TEST(ScopedServerInterfaceThread, newClientWithSSLPolicyREQUIRED) {
+  ScopedServerInterfaceThread ssit(
+      make_shared<SimpleServiceImpl>(), "::1", 0, [](ThriftServer& server) {
+        // server TLS setup
+        auto sslConfig = std::make_shared<wangle::SSLContextConfig>();
+        sslConfig->setCertificate(folly::kTestCert, folly::kTestKey, "");
+        sslConfig->clientCAFile = folly::kTestCA;
+        sslConfig->sessionContext = "ThriftServerTest";
+        sslConfig->setNextProtocols(
+            **apache::thrift::ThriftServer::defaultNextProtocols());
+        server.setSSLConfig(std::move(sslConfig));
+        // even with REQUIRED, plaintext clients from newClient should continue
+        // connecting successfully
+        server.setSSLPolicy(SSLPolicy::REQUIRED);
+      });
+  auto cli = ssit.newClient<SimpleServiceAsyncClient>();
+
+  EXPECT_EQ(6, cli->semifuture_add(-3, 9).get());
+}
+
 TEST(ScopedServerInterfaceThread, newRemoteClient) {
   struct Handler : SimpleServiceSvIf {
     struct State {
@@ -117,7 +154,7 @@ TEST(ScopedServerInterfaceThread, newRemoteClient) {
         auto s = static_cast<State*>(c->getUserData());
         if (s == nullptr) {
           s = new State();
-          c->setUserData(s, [](void* _) { delete static_cast<State*>(_); });
+          c->setUserData(folly::to_erased_unique_ptr(s));
         }
         cb->result(++s->requests + a + b);
       });
@@ -193,50 +230,148 @@ TEST(ScopedServerInterfaceThread, joinRequestsSinkSlowFinalResponse) {
   }());
 }
 
+TEST(ScopedServerInterfaceThread, TransportMemLimit) {
+  auto ts = make_shared<ThriftServer>();
+  auto serviceImpl = std::make_shared<SimpleServiceImpl>();
+  ts->setProcessorFactory(serviceImpl);
+  ts->setAddress({"::1", 0});
+  auto request = folly::IOBuf::create(257 * 1024);
+  request->append(257 * 1024);
+
+  ScopedServerInterfaceThread ssit(ts);
+
+  auto cli = ssit.newClient<SimpleServiceAsyncClient>(nullptr, [](auto socket) {
+    auto channel = RocketClientChannel::newChannel(std::move(socket));
+    return channel;
+  });
+  EXPECT_NO_THROW(cli->sync_largeRequest(request->clone()));
+
+  // upper bound can be changed after server started
+  ts->setIngressMemoryLimit(256 * 1024);
+  ts->setMinPayloadSizeToEnforceIngressMemoryLimit(256 * 1024);
+  folly::observer_detail::ObserverManager::waitForAllUpdates();
+  try {
+    cli->sync_largeRequest(std::move(request));
+    ADD_FAILURE();
+  } catch (apache::thrift::TApplicationException& ex) {
+    EXPECT_EQ(
+        apache::thrift::TApplicationException::TApplicationExceptionType::
+            LOADSHEDDING,
+        ex.getType());
+  }
+}
+
+TEST(ScopedServerInterfaceThread, faultInjection) {
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto serviceImpl = std::make_shared<SimpleServiceImpl>();
+    folly::Optional<ScopedServerInterfaceThread> ssit(
+        folly::in_place, serviceImpl);
+
+    class CustomException : public std::exception {};
+
+    auto throwOdd = [n = 0](auto) mutable {
+      return ++n % 2 ? folly::make_exception_wrapper<CustomException>()
+                     : folly::exception_wrapper{};
+    };
+
+    auto client = ssit->newClientWithFaultInjection<SimpleServiceAsyncClient>(
+        throwOdd, nullptr, RocketClientChannel::newChannel);
+
+    EXPECT_THROW(co_await client->co_add(1, 2), CustomException);
+    EXPECT_NO_THROW(co_await client->co_add(1, 2));
+
+    EXPECT_THROW(co_await client->co_lob(), CustomException);
+    EXPECT_NO_THROW(co_await client->co_lob());
+
+    EXPECT_THROW(client->sync_lob(), CustomException);
+    EXPECT_NO_THROW(client->sync_lob());
+
+    EXPECT_THROW(co_await client->co_emptyStreamSlow(0), CustomException);
+    EXPECT_NO_THROW(co_await client->co_emptyStreamSlow(0));
+
+    EXPECT_THROW(co_await client->co_slowReturnSink(0), CustomException);
+    EXPECT_NO_THROW(co_await client->co_slowReturnSink(0));
+  }());
+}
+
+TEST(ScopedServerInterfaceThread, makeTestClient) {
+  auto cli = makeTestClient<SimpleServiceAsyncClient>(
+      make_shared<SimpleServiceImpl>());
+  EXPECT_EQ(6, cli->sync_add(-3, 9));
+}
+
+TEST(ScopedServerInterfaceThread, makeTestClientMismatch) {
+  EXPECT_DEATH(
+      makeTestClient<SimpleServiceAsyncClient>(make_shared<OtherServiceSvIf>()),
+      "Client and handler type mismatch");
+}
+
 template <typename ChannelT, typename ServiceT>
 struct ChannelAndService {
-  using Channel = ChannelT;
   using Service = ServiceT;
+
+  static auto newChannel(folly::AsyncTransport::UniquePtr transport) {
+    auto channel = ChannelT::newChannel(std::move(transport));
+    channel->setTimeout(0);
+    return channel;
+  }
+
+  static bool isHeaderTransport() {
+    return std::is_same_v<HeaderClientChannel, ChannelT>;
+  }
+
+  static bool isH2Transport() { return false; }
+};
+
+template <typename ServiceT>
+struct ChannelAndService<H2ClientConnection, ServiceT> {
+  using Service = ServiceT;
+
+  static auto newChannel(folly::AsyncTransport::UniquePtr transport) {
+    auto h2ClientConnection =
+        H2ClientConnection::newHTTP2Connection(std::move(transport));
+    auto channel =
+        ThriftClient::Ptr(new ThriftClient(std::move(h2ClientConnection)));
+    channel->setProtocolId(
+        apache::thrift::protocol::PROTOCOL_TYPES::T_COMPACT_PROTOCOL);
+    channel->setTimeout(60000);
+    return channel;
+  }
+
+  static bool isHeaderTransport() { return false; }
+
+  static bool isH2Transport() { return true; }
 };
 
 template <typename ChannelAndServiceT>
 struct ScopedServerInterfaceThreadTest : public testing::Test {
-  using Channel = typename ChannelAndServiceT::Channel;
   using Service = typename ChannelAndServiceT::Service;
 
-  std::shared_ptr<Service> newService() {
-    return std::make_shared<Service>();
-  }
+  std::shared_ptr<Service> newService() { return std::make_shared<Service>(); }
 
   template <typename AsyncClientT>
   static std::unique_ptr<AsyncClientT> newClient(
       ScopedServerInterfaceThread& ssit) {
     return ssit.newClient<AsyncClientT>(nullptr, [](auto socket) {
-      auto channel = Channel::newChannel(std::move(socket));
-      channel->setTimeout(0);
-      return channel;
+      return ChannelAndServiceT::newChannel(std::move(socket));
     });
   }
 
   template <typename AsyncClientT>
   static std::unique_ptr<AsyncClientT> newRawClient(
-      folly::EventBase* evb,
-      ScopedServerInterfaceThread& ssit) {
+      folly::EventBase* evb, ScopedServerInterfaceThread& ssit) {
     return std::make_unique<AsyncClientT>(
-        folly::via(
-            evb,
-            [&] {
-              auto channel = Channel::newChannel(folly::AsyncSocket::UniquePtr(
-                  new folly::AsyncSocket(evb, ssit.getAddress())));
-              channel->setTimeout(0);
-              return channel;
-            })
-            .get());
+        folly::via(evb, [&] {
+          return ChannelAndServiceT::newChannel(folly::AsyncSocket::UniquePtr(
+              new folly::AsyncSocket(evb, ssit.getAddress())));
+        }).get());
   }
 
   static bool isHeaderTransport() {
-    return std::is_same_v<HeaderClientChannel, Channel>;
+    return ChannelAndServiceT::isHeaderTransport();
   }
+
+  static bool isH2Transport() { return ChannelAndServiceT::isH2Transport(); }
 
   void SetUp() {
     // By default, ThriftServer aborts the process if unable to shutdown
@@ -261,8 +396,7 @@ class SlowSimpleServiceImpl : public virtual SimpleServiceSvIf {
   }
 
   folly::Future<std::unique_ptr<std::string>> future_echoSlow(
-      std::unique_ptr<std::string> message,
-      int64_t sleepMs) override {
+      std::unique_ptr<std::string> message, int64_t sleepMs) override {
     requestSem_.post();
     return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
         .via(folly::getGlobalCPUExecutor())
@@ -299,8 +433,7 @@ class SlowSimpleServiceImplSemiFuture : public virtual SimpleServiceSvIf {
   }
 
   folly::SemiFuture<std::unique_ptr<std::string>> semifuture_echoSlow(
-      std::unique_ptr<std::string> message,
-      int64_t sleepMs) override {
+      std::unique_ptr<std::string> message, int64_t sleepMs) override {
     requestSem_.post();
     return folly::futures::sleep(std::chrono::milliseconds(sleepMs))
         .deferValue([message = std::move(message)](auto&&) mutable {
@@ -325,11 +458,29 @@ class SlowSimpleServiceImplSemiFuture : public virtual SimpleServiceSvIf {
   folly::LifoSem requestSem_;
 };
 
+std::unique_ptr<HTTP2RoutingHandler> createHTTP2RoutingHandler(
+    ThriftServer& server) {
+  auto h2_options = std::make_unique<proxygen::HTTPServerOptions>();
+  h2_options->threads = static_cast<size_t>(server.getNumIOWorkerThreads());
+  h2_options->idleTimeout = server.getIdleTimeout();
+  h2_options->shutdownOn = {SIGINT, SIGTERM};
+
+  return std::make_unique<HTTP2RoutingHandler>(
+      std::move(h2_options), server.getThriftProcessor(), server);
+}
+
+void addH2RoutingHandler(BaseThriftServer& server) {
+  auto& thriftServer = static_cast<ThriftServer&>(server);
+  thriftServer.addRoutingHandler(createHTTP2RoutingHandler(thriftServer));
+}
+
 using TestTypes = ::testing::Types<
     ChannelAndService<HeaderClientChannel, SlowSimpleServiceImpl>,
     ChannelAndService<HeaderClientChannel, SlowSimpleServiceImplSemiFuture>,
     ChannelAndService<RocketClientChannel, SlowSimpleServiceImpl>,
-    ChannelAndService<RocketClientChannel, SlowSimpleServiceImplSemiFuture>>;
+    ChannelAndService<RocketClientChannel, SlowSimpleServiceImplSemiFuture>,
+    ChannelAndService<H2ClientConnection, SlowSimpleServiceImpl>,
+    ChannelAndService<H2ClientConnection, SlowSimpleServiceImplSemiFuture>>;
 TYPED_TEST_CASE(ScopedServerInterfaceThreadTest, TestTypes);
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {
@@ -337,6 +488,7 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {
 
   folly::Optional<ScopedServerInterfaceThread> ssit(
       folly::in_place, serviceImpl);
+  addH2RoutingHandler(ssit->getThriftServer());
 
   auto cli = this->template newClient<SimpleServiceAsyncClient>(*ssit);
 
@@ -354,14 +506,17 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequests) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsRestartServer) {
+  if (this->isH2Transport()) {
+    return;
+  }
+
   auto ts = make_shared<ThriftServer>();
 
   for (size_t i = 0; i < 2; ++i) {
     auto tf = make_shared<apache::thrift::concurrency::PosixThreadFactory>(
         apache::thrift::concurrency::PosixThreadFactory::ATTACHED);
     auto tm =
-        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(
-            1, false);
+        apache::thrift::concurrency::ThreadManager::newSimpleThreadManager(1);
     tm->threadFactory(move(tf));
     tm->start();
     ts->setAddress({"::1", 0});
@@ -390,8 +545,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsRestartServer) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStreamTaskTimeout) {
-  SKIP_IF(this->isHeaderTransport())
-      << "Streaming is not implemented for Header transport";
+  if (this->isHeaderTransport() || this->isH2Transport()) {
+    return; // Streaming is not implemented for Header/H2 transport.
+  }
 
   auto serviceImpl = this->newService();
 
@@ -416,8 +572,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStreamTaskTimeout) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsLargeMessage) {
-  SKIP_IF(this->isHeaderTransport())
-      << "Clean shutdown is not implemented for Header transport";
+  if (this->isHeaderTransport() || this->isH2Transport()) {
+    return; // Clean shutdown is not implemented for Header/H2 transport.
+  }
 
   std::string message(10000000, 'a');
 
@@ -442,6 +599,10 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsLargeMessage) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsTimeout) {
+  if (this->isH2Transport()) {
+    return;
+  }
+
   auto serviceImpl = this->newService();
 
   folly::Optional<ScopedServerInterfaceThread> ssit(
@@ -470,6 +631,10 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsTimeout) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, writeError) {
+  if (this->isH2Transport()) {
+    return;
+  }
+
   auto serviceImpl = this->newService();
 
   ScopedServerInterfaceThread ssit(serviceImpl);
@@ -506,8 +671,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, writeError) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
-  SKIP_IF(this->isHeaderTransport())
-      << "Clean shutdown is not implemented for Header transport";
+  if (this->isHeaderTransport() || this->isH2Transport()) {
+    return; // Clean shutdown is not implemented for Header/H2 transport.
+  }
 
   std::string message(10000000, 'a');
 
@@ -615,6 +781,8 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsDetachedConnection) {
   folly::Optional<ScopedServerInterfaceThread> ssit(
       folly::in_place, serviceImpl, "::1");
 
+  addH2RoutingHandler(ssit->getThriftServer());
+
   folly::ScopedEventBaseThread evbThread;
 
   auto cli = this->template newRawClient<SimpleServiceAsyncClient>(
@@ -647,6 +815,10 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsDetachedConnection) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, closeConnection) {
+  if (this->isH2Transport()) {
+    return;
+  }
+
   auto serviceImpl = this->newService();
 
   folly::Optional<ScopedServerInterfaceThread> ssit(
@@ -667,14 +839,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, closeConnection) {
   serviceImpl->waitForRequest();
   serviceImpl.reset();
 
-  folly::via(
-      evbThread.getEventBase(),
-      [&] {
-        dynamic_cast<ClientChannel*>(cli->getChannel())
-            ->getTransport()
-            ->closeNow();
-      })
-      .get();
+  folly::via(evbThread.getEventBase(), [&] {
+    dynamic_cast<ClientChannel*>(cli->getChannel())->getTransport()->closeNow();
+  }).get();
 
   try {
     std::move(future).get();
@@ -694,6 +861,8 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsCancel) {
 
   folly::Optional<ScopedServerInterfaceThread> ssit(
       folly::in_place, serviceImpl);
+
+  addH2RoutingHandler(ssit->getThriftServer());
 
   auto cli = this->template newClient<SimpleServiceAsyncClient>(*ssit);
 
@@ -730,8 +899,9 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsCancel) {
 }
 
 TYPED_TEST(ScopedServerInterfaceThreadTest, SetMaxRequestsJoinWrites) {
-  SKIP_IF(this->isHeaderTransport())
-      << "Joining writes is not implemented for Header transport";
+  if (this->isHeaderTransport() || this->isH2Transport()) {
+    return; // Joining writes is not implemented for Header/H2 transport.
+  }
 
   std::string message(10000000, 'a');
 

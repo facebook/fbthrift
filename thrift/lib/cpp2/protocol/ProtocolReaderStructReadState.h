@@ -35,13 +35,9 @@ struct ProtocolReaderStructReadState {
 
   constexpr static bool kAcceptsContext = false;
 
-  void readStructBegin(Protocol* iprot) {
-    iprot->readStructBegin(fieldName_);
-  }
+  void readStructBegin(Protocol* iprot) { iprot->readStructBegin(fieldName_); }
 
-  void readStructEnd(Protocol* iprot) {
-    iprot->readStructEnd();
-  }
+  void readStructEnd(Protocol* iprot) { iprot->readStructEnd(); }
 
   void readFieldBegin(Protocol* iprot) {
     iprot->readFieldBegin(fieldName_, fieldType, fieldId);
@@ -51,9 +47,7 @@ struct ProtocolReaderStructReadState {
     iprot->readFieldBegin(fieldName_, fieldType, fieldId);
   }
 
-  void readFieldEnd(Protocol* iprot) {
-    iprot->readFieldEnd();
-  }
+  void readFieldEnd(Protocol* iprot) { iprot->readFieldEnd(); }
 
   /**
    * Transition to parsing next field. Under the hood it handles
@@ -91,22 +85,22 @@ struct ProtocolReaderStructReadState {
    * type information.
    */
   FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
-      Protocol* /*iprot*/,
-      TType expectedFieldType) {
+      Protocol* /*iprot*/, TType expectedFieldType) {
     return fieldType == expectedFieldType;
   }
 
-  inline void skip(Protocol* iprot) {
-    iprot->skip(fieldType);
+  void skip(Protocol* iprot) { iprot->skip(fieldType); }
+  folly::Optional<folly::IOBuf> tryFastSkip(
+      Protocol* /*iprot*/,
+      int16_t /*fieldId*/,
+      TType /*fieldType*/,
+      bool /*fixedCostSkip*/) {
+    return {};
   }
 
-  std::string& fieldName() {
-    return fieldName_;
-  }
+  std::string& fieldName() { return fieldName_; }
 
-  bool atStop() {
-    return fieldType == protocol::T_STOP;
-  }
+  bool atStop() { return fieldType == protocol::T_STOP; }
 
   void afterAdvanceFailure(Protocol* /*iprot*/) {}
 

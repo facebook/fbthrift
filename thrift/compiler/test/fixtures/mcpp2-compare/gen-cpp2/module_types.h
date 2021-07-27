@@ -896,25 +896,16 @@ enum class MyEnumB {
 
 
 }}} // some::valid::ns
+
 namespace std {
-
-
-template<> struct hash<typename ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::MyEnumA> {};
-template<> struct equal_to<typename ::some::valid::ns::MyEnumA> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::MyEnumA> {};
-
-
-template<> struct hash<typename ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::AnnotatedEnum> {};
-template<> struct equal_to<typename ::some::valid::ns::AnnotatedEnum> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::AnnotatedEnum> {};
-
-
-template<> struct hash<typename ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::AnnotatedEnum2> {};
-template<> struct equal_to<typename ::some::valid::ns::AnnotatedEnum2> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::AnnotatedEnum2> {};
-
-
-template<> struct hash<typename ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_hash<typename ::some::valid::ns::MyEnumB> {};
-template<> struct equal_to<typename ::some::valid::ns::MyEnumB> : public apache::thrift::detail::enum_equal_to<typename ::some::valid::ns::MyEnumB> {};
-
-
+template<> struct hash<::some::valid::ns::MyEnumA> :
+  ::apache::thrift::detail::enum_hash<::some::valid::ns::MyEnumA> {};
+template<> struct hash<::some::valid::ns::AnnotatedEnum> :
+  ::apache::thrift::detail::enum_hash<::some::valid::ns::AnnotatedEnum> {};
+template<> struct hash<::some::valid::ns::AnnotatedEnum2> :
+  ::apache::thrift::detail::enum_hash<::some::valid::ns::AnnotatedEnum2> {};
+template<> struct hash<::some::valid::ns::MyEnumB> :
+  ::apache::thrift::detail::enum_hash<::some::valid::ns::MyEnumB> {};
 } // std
 
 namespace apache { namespace thrift {
@@ -1040,28 +1031,28 @@ class AllRequiredNoExceptMoveCtrStruct;
 // END forward_declare
 // BEGIN typedefs
 namespace some { namespace valid { namespace ns {
-typedef  ::a::different::ns::AStruct AStruct;
-typedef int32_t simpleTypeDef;
-typedef ::std::map<int16_t, ::std::string> containerTypeDef;
-typedef ::std::vector<::std::map<int16_t, ::std::string>> complexContainerTypeDef;
-typedef ::std::set< ::some::valid::ns::SimpleUnion> unionTypeDef;
-typedef ::std::vector< ::some::valid::ns::MyStruct> structTypeDef;
-typedef ::std::vector<::std::map< ::some::valid::ns::Empty,  ::some::valid::ns::MyStruct>> complexStructTypeDef;
-typedef ::std::vector< ::some::valid::ns::complexStructTypeDef> mostComplexTypeDef;
+typedef ::a::different::ns::AStruct AStruct;
+typedef ::std::int32_t simpleTypeDef;
+typedef ::std::map<::std::int16_t, ::std::string> containerTypeDef;
+typedef ::std::vector<::std::map<::std::int16_t, ::std::string>> complexContainerTypeDef;
+typedef ::std::set<::some::valid::ns::SimpleUnion> unionTypeDef;
+typedef ::std::vector<::some::valid::ns::MyStruct> structTypeDef;
+typedef ::std::vector<::std::map<::some::valid::ns::Empty, ::some::valid::ns::MyStruct>> complexStructTypeDef;
+typedef ::std::vector<::some::valid::ns::complexStructTypeDef> mostComplexTypeDef;
 typedef Foo IndirectionA;
 typedef Baz IndirectionC;
 typedef Bar IndirectionB;
 typedef FooBar IndirectionD;
-typedef ::std::map< ::some::valid::ns::MyEnumA, ::std::string> HashedTypedef;
+typedef ::std::map<::some::valid::ns::MyEnumA, ::std::string> HashedTypedef;
 typedef CppFakeI32 CppFakeI32;
 typedef folly::small_vector<int64_t, 8 /* maxInline */> FollySmallVectorI64;
 typedef folly::sorted_vector_set<std::string> SortedVectorSetString;
 typedef FakeMap FakeMap;
 typedef std::unordered_map<std::string, containerStruct> UnorderedMapStruct;
-typedef std::list<int32_t> std_list;
+typedef std::list<::std::int32_t> std_list;
 typedef std::deque<::std::string> std_deque;
 typedef folly::sorted_vector_set<::std::string> folly_set;
-typedef folly::sorted_vector_map<int64_t, ::std::string> folly_map;
+typedef folly::sorted_vector_map<::std::int64_t, ::std::string> folly_map;
 typedef folly::IOBuf IOBuf;
 typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 
@@ -1085,7 +1076,13 @@ template<> struct equal_to<typename ::some::valid::ns::AnnotatedStruct> {
 };
 } // std
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class Empty final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1093,6 +1090,7 @@ class Empty final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = Empty;
@@ -1102,12 +1100,13 @@ class Empty final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  Empty() {}
+  Empty() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Empty(apache::thrift::FragileConstructor);
-  Empty(Empty&& other) noexcept {}
+
+  Empty(Empty&&) = default;
 
   Empty(const Empty&) = default;
 
@@ -1115,26 +1114,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
-  bool operator==(const Empty& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Empty& __x, const Empty& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const Empty& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Empty& __x, const Empty& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Empty& __x, const Empty& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Empty& __x, const Empty& __y) {
-    return !(__x < __y);
-  }
-#endif
+
+ public:
+
+  bool operator==(const Empty&) const;
+  bool operator<(const Empty&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -1149,7 +1134,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Empty >;
+  friend class ::apache::thrift::Cpp2Ops<Empty>;
   friend void swap(Empty& a, Empty& b);
 };
 
@@ -1162,6 +1147,11 @@ uint32_t Empty::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class ASimpleStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1169,6 +1159,7 @@ class ASimpleStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = ASimpleStruct;
@@ -1178,12 +1169,12 @@ class ASimpleStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ASimpleStruct() :
-      boolField(0) {}
+      boolField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ASimpleStruct(apache::thrift::FragileConstructor, int64_t boolField__arg);
+  ASimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
 
   ASimpleStruct(ASimpleStruct&&) = default;
 
@@ -1193,66 +1184,49 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ASimpleStruct& operator=(ASimpleStruct&&) = default;
 
   ASimpleStruct& operator=(const ASimpleStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t boolField;
+  ::std::int64_t boolField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool boolField;
   } __isset = {};
-  bool operator==(const ASimpleStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ASimpleStruct& __x, const ASimpleStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const ASimpleStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ASimpleStruct& __x, const ASimpleStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ASimpleStruct& __x, const ASimpleStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ASimpleStruct& __x, const ASimpleStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+ public:
+
+  bool operator==(const ASimpleStruct&) const;
+  bool operator<(const ASimpleStruct&) const;
+
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> boolField_ref() const& {
     return {this->boolField, __isset.boolField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> boolField_ref() const&& {
     return {std::move(this->boolField), __isset.boolField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> boolField_ref() & {
     return {this->boolField, __isset.boolField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> boolField_ref() && {
     return {std::move(this->boolField), __isset.boolField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_boolField() const {
+  ::std::int64_t get_boolField() const {
     return boolField;
   }
 
-  int64_t& set_boolField(int64_t boolField_) {
+  [[deprecated("Use `FOO.boolField_ref() = BAR;` instead of `FOO.set_boolField(BAR);`")]]
+  ::std::int64_t& set_boolField(::std::int64_t boolField_) {
     boolField = boolField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.boolField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return boolField;
   }
 
@@ -1269,7 +1243,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ASimpleStruct >;
+  friend class ::apache::thrift::Cpp2Ops<ASimpleStruct>;
   friend void swap(ASimpleStruct& a, ASimpleStruct& b);
 };
 
@@ -1282,6 +1256,11 @@ uint32_t ASimpleStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class ASimpleStructNoexcept final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1289,6 +1268,7 @@ class ASimpleStructNoexcept final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = ASimpleStructNoexcept;
@@ -1298,83 +1278,64 @@ class ASimpleStructNoexcept final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ASimpleStructNoexcept() :
-      boolField(0) {}
+      boolField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ASimpleStructNoexcept(apache::thrift::FragileConstructor, int64_t boolField__arg);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ASimpleStructNoexcept(ASimpleStructNoexcept&& other) noexcept :
-      boolField(std::move(other.boolField)),
-      __isset(other.__isset) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  ASimpleStructNoexcept(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg);
+
+  ASimpleStructNoexcept(ASimpleStructNoexcept&&) = default;
+
   ASimpleStructNoexcept(const ASimpleStructNoexcept&) = default;
 
 
   ASimpleStructNoexcept& operator=(ASimpleStructNoexcept&&) = default;
 
   ASimpleStructNoexcept& operator=(const ASimpleStructNoexcept&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int64_t boolField;
+  ::std::int64_t boolField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool boolField;
   } __isset = {};
-  bool operator==(const ASimpleStructNoexcept& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ASimpleStructNoexcept& __x, const ASimpleStructNoexcept& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const ASimpleStructNoexcept& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ASimpleStructNoexcept& __x, const ASimpleStructNoexcept& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ASimpleStructNoexcept& __x, const ASimpleStructNoexcept& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ASimpleStructNoexcept& __x, const ASimpleStructNoexcept& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+ public:
+
+  bool operator==(const ASimpleStructNoexcept&) const;
+  bool operator<(const ASimpleStructNoexcept&) const;
+
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> boolField_ref() const& {
     return {this->boolField, __isset.boolField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> boolField_ref() const&& {
     return {std::move(this->boolField), __isset.boolField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> boolField_ref() & {
     return {this->boolField, __isset.boolField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> boolField_ref() && {
     return {std::move(this->boolField), __isset.boolField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_boolField() const {
+  ::std::int64_t get_boolField() const {
     return boolField;
   }
 
-  int64_t& set_boolField(int64_t boolField_) {
+  [[deprecated("Use `FOO.boolField_ref() = BAR;` instead of `FOO.set_boolField(BAR);`")]]
+  ::std::int64_t& set_boolField(::std::int64_t boolField_) {
     boolField = boolField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.boolField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return boolField;
   }
 
@@ -1391,7 +1352,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ASimpleStructNoexcept >;
+  friend class ::apache::thrift::Cpp2Ops<ASimpleStructNoexcept>;
   friend void swap(ASimpleStructNoexcept& a, ASimpleStructNoexcept& b);
 };
 
@@ -1404,6 +1365,11 @@ uint32_t ASimpleStructNoexcept::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1411,6 +1377,7 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -1421,20 +1388,18 @@ class MyStruct final  {
  public:
 
   MyStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg);
-  MyStruct(MyStruct&& other) noexcept;
+  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg);
 
-  MyStruct(const MyStruct&) = default;
+  MyStruct(MyStruct&&) noexcept;
+
+  MyStruct(const MyStruct& src);
 
 
-  MyStruct& operator=(MyStruct&&) = default;
-
-  MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  MyStruct& operator=(MyStruct&&) noexcept;
+  MyStruct& operator=(const MyStruct& src);
   void __clear();
 
   ~MyStruct();
@@ -1442,7 +1407,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   bool MyBoolField;
  private:
-  int64_t MyIntField;
+  ::std::int64_t MyIntField;
  private:
   ::std::string MyStringField;
  private:
@@ -1456,9 +1421,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::vector<::std::string> MyBinaryListField4;
  private:
-  ::std::map< ::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt;
+  ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyBoolField;
@@ -1470,26 +1435,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool MyBinaryListField4;
     bool MyMapEnumAndInt;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const MyStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ public:
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
+
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBoolField_ref() const& {
     return {this->MyBoolField, __isset.MyBoolField};
@@ -1509,31 +1460,27 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBoolField_ref() && {
     return {std::move(this->MyBoolField), __isset.MyBoolField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIntField_ref() const& {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIntField_ref() const&& {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIntField_ref() & {
     return {this->MyIntField, __isset.MyIntField};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIntField_ref() && {
     return {std::move(this->MyIntField), __isset.MyIntField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField_ref() const& {
     return {this->MyStringField, __isset.MyStringField};
@@ -1553,9 +1500,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField_ref() && {
     return {std::move(this->MyStringField), __isset.MyStringField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyStringField2_ref() const& {
     return {this->MyStringField2, __isset.MyStringField2};
@@ -1575,9 +1520,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyStringField2_ref() && {
     return {std::move(this->MyStringField2), __isset.MyStringField2};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBinaryField_ref() const& {
     return {this->MyBinaryField, __isset.MyBinaryField};
@@ -1597,9 +1540,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBinaryField_ref() && {
     return {std::move(this->MyBinaryField), __isset.MyBinaryField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> MyBinaryField2_ref() const& {
     return {this->MyBinaryField2, __isset.MyBinaryField2};
@@ -1619,28 +1560,27 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyBinaryField2_ref() && {
     return {std::move(this->MyBinaryField2), __isset.MyBinaryField2};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto MyBinaryField3_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> MyBinaryField3_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->MyBinaryField3};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto MyBinaryField3_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> MyBinaryField3_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->MyBinaryField3)};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto MyBinaryField3_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> MyBinaryField3_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->MyBinaryField3};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto MyBinaryField3_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> MyBinaryField3_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->MyBinaryField3)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::vector<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyBinaryListField4_ref() const& {
     return {this->MyBinaryListField4, __isset.MyBinaryListField4};
@@ -1660,51 +1600,46 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyBinaryListField4_ref() && {
     return {std::move(this->MyBinaryListField4), __isset.MyBinaryListField4};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map< ::some::valid::ns::MyEnumA, ::std::string>>
+  template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyMapEnumAndInt_ref() const& {
     return {this->MyMapEnumAndInt, __isset.MyMapEnumAndInt};
   }
 
-  template <typename..., typename T = ::std::map< ::some::valid::ns::MyEnumA, ::std::string>>
+  template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyMapEnumAndInt_ref() const&& {
     return {std::move(this->MyMapEnumAndInt), __isset.MyMapEnumAndInt};
   }
 
-  template <typename..., typename T = ::std::map< ::some::valid::ns::MyEnumA, ::std::string>>
+  template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyMapEnumAndInt_ref() & {
     return {this->MyMapEnumAndInt, __isset.MyMapEnumAndInt};
   }
 
-  template <typename..., typename T = ::std::map< ::some::valid::ns::MyEnumA, ::std::string>>
+  template <typename..., typename T = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyMapEnumAndInt_ref() && {
     return {std::move(this->MyMapEnumAndInt), __isset.MyMapEnumAndInt};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   bool get_MyBoolField() const {
     return MyBoolField;
   }
 
+  [[deprecated("Use `FOO.MyBoolField_ref() = BAR;` instead of `FOO.set_MyBoolField(BAR);`")]]
   bool& set_MyBoolField(bool MyBoolField_) {
     MyBoolField = MyBoolField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyBoolField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyBoolField;
   }
 
-  int64_t get_MyIntField() const {
+  ::std::int64_t get_MyIntField() const {
     return MyIntField;
   }
 
-  int64_t& set_MyIntField(int64_t MyIntField_) {
+  [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
+  ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIntField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIntField;
   }
 
@@ -1717,11 +1652,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyStringField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyStringField;
   }
 
@@ -1734,11 +1668,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStruct_MyStringField2_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.MyStringField2_ref() = BAR;` instead of `FOO.set_MyStringField2(BAR);`")]]
   ::std::string& set_MyStringField2(T_MyStruct_MyStringField2_struct_setter&& MyStringField2_) {
     MyStringField2 = std::forward<T_MyStruct_MyStringField2_struct_setter>(MyStringField2_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyStringField2 = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyStringField2;
   }
 
@@ -1751,11 +1684,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStruct_MyBinaryField_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.MyBinaryField_ref() = BAR;` instead of `FOO.set_MyBinaryField(BAR);`")]]
   ::std::string& set_MyBinaryField(T_MyStruct_MyBinaryField_struct_setter&& MyBinaryField_) {
     MyBinaryField = std::forward<T_MyStruct_MyBinaryField_struct_setter>(MyBinaryField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyBinaryField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyBinaryField;
   }
 
@@ -1769,11 +1701,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::std::string* get_MyBinaryField2() && = delete;
 
   template <typename T_MyStruct_MyBinaryField2_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.MyBinaryField2_ref() = BAR;` instead of `FOO.set_MyBinaryField2(BAR);`")]]
   ::std::string& set_MyBinaryField2(T_MyStruct_MyBinaryField2_struct_setter&& MyBinaryField2_) {
     MyBinaryField2 = std::forward<T_MyStruct_MyBinaryField2_struct_setter>(MyBinaryField2_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyBinaryField2 = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyBinaryField2;
   }
 
@@ -1786,6 +1717,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStruct_MyBinaryField3_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.MyBinaryField3_ref() = BAR;` instead of `FOO.set_MyBinaryField3(BAR);`")]]
   ::std::string& set_MyBinaryField3(T_MyStruct_MyBinaryField3_struct_setter&& MyBinaryField3_) {
     MyBinaryField3 = std::forward<T_MyStruct_MyBinaryField3_struct_setter>(MyBinaryField3_);
     return MyBinaryField3;
@@ -1794,22 +1726,20 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::std::vector<::std::string> get_MyBinaryListField4() &&;
 
   template <typename T_MyStruct_MyBinaryListField4_struct_setter = ::std::vector<::std::string>>
+  [[deprecated("Use `FOO.MyBinaryListField4_ref() = BAR;` instead of `FOO.set_MyBinaryListField4(BAR);`")]]
   ::std::vector<::std::string>& set_MyBinaryListField4(T_MyStruct_MyBinaryListField4_struct_setter&& MyBinaryListField4_) {
     MyBinaryListField4 = std::forward<T_MyStruct_MyBinaryListField4_struct_setter>(MyBinaryListField4_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyBinaryListField4 = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyBinaryListField4;
   }
-  const ::std::map< ::some::valid::ns::MyEnumA, ::std::string>& get_MyMapEnumAndInt() const&;
-  ::std::map< ::some::valid::ns::MyEnumA, ::std::string> get_MyMapEnumAndInt() &&;
+  const ::std::map<::some::valid::ns::MyEnumA, ::std::string>& get_MyMapEnumAndInt() const&;
+  ::std::map<::some::valid::ns::MyEnumA, ::std::string> get_MyMapEnumAndInt() &&;
 
-  template <typename T_MyStruct_MyMapEnumAndInt_struct_setter = ::std::map< ::some::valid::ns::MyEnumA, ::std::string>>
-  ::std::map< ::some::valid::ns::MyEnumA, ::std::string>& set_MyMapEnumAndInt(T_MyStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
+  template <typename T_MyStruct_MyMapEnumAndInt_struct_setter = ::std::map<::some::valid::ns::MyEnumA, ::std::string>>
+  [[deprecated("Use `FOO.MyMapEnumAndInt_ref() = BAR;` instead of `FOO.set_MyMapEnumAndInt(BAR);`")]]
+  ::std::map<::some::valid::ns::MyEnumA, ::std::string>& set_MyMapEnumAndInt(T_MyStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
     MyMapEnumAndInt = std::forward<T_MyStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyMapEnumAndInt = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyMapEnumAndInt;
   }
 
@@ -1826,7 +1756,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -1839,6 +1769,11 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class SimpleUnion  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1846,6 +1781,7 @@ class SimpleUnion  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = SimpleUnion;
@@ -1863,7 +1799,7 @@ class SimpleUnion  {
   SimpleUnion()
       : type_(Type::__EMPTY__) {}
 
-  SimpleUnion(SimpleUnion&& rhs)
+  SimpleUnion(SimpleUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -1910,7 +1846,7 @@ class SimpleUnion  {
     }
   }
 
-  SimpleUnion& operator=(SimpleUnion&& rhs) {
+  SimpleUnion& operator=(SimpleUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -1965,35 +1901,20 @@ class SimpleUnion  {
   }
 
   union storage_type {
-    int64_t intValue;
+    ::std::int64_t intValue;
     ::std::string stringValue;
 
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const SimpleUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const SimpleUnion& __x, const SimpleUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const SimpleUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const SimpleUnion& __x, const SimpleUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const SimpleUnion& __x, const SimpleUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const SimpleUnion& __x, const SimpleUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-  int64_t& set_intValue(int64_t t = int64_t()) {
+  bool operator==(const SimpleUnion&) const;
+  bool operator<(const SimpleUnion&) const;
+
+  ::std::int64_t& set_intValue(::std::int64_t t = ::std::int64_t()) {
     __clear();
     type_ = Type::intValue;
-    ::new (std::addressof(value_.intValue)) int64_t(t);
+    ::new (std::addressof(value_.intValue)) ::std::int64_t(t);
     return value_.intValue;
   }
 
@@ -2018,27 +1939,31 @@ class SimpleUnion  {
     return value_.stringValue;
   }
 
-  int64_t const & get_intValue() const {
+  ::std::int64_t const& get_intValue() const {
+    if (type_ != Type::intValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.intValue;
+  }
+
+  ::std::string const& get_stringValue() const {
+    if (type_ != Type::stringValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.stringValue;
+  }
+
+  ::std::int64_t& mutable_intValue() {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  ::std::string const & get_stringValue() const {
+  ::std::string& mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  int64_t & mutable_intValue() {
-    assert(type_ == Type::intValue);
-    return value_.intValue;
-  }
-
-  ::std::string & mutable_stringValue() {
-    assert(type_ == Type::stringValue);
-    return value_.stringValue;
-  }
-
-  int64_t move_intValue() {
+  ::std::int64_t move_intValue() {
     assert(type_ == Type::intValue);
     return std::move(value_.intValue);
   }
@@ -2048,22 +1973,22 @@ class SimpleUnion  {
     return std::move(value_.stringValue);
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intValue_ref() const& {
     return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue_ref() const&& {
     return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intValue_ref() & {
     return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue_ref() && {
     return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -2109,7 +2034,7 @@ class SimpleUnion  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SimpleUnion >;
+  friend class ::apache::thrift::Cpp2Ops<SimpleUnion>;
   friend void swap(SimpleUnion& a, SimpleUnion& b);
 };
 
@@ -2122,6 +2047,11 @@ uint32_t SimpleUnion::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class ComplexUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -2129,6 +2059,7 @@ class ComplexUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = ComplexUnion;
@@ -2171,7 +2102,7 @@ class ComplexUnion final  {
   ComplexUnion()
       : type_(Type::__EMPTY__) {}
 
-  ComplexUnion(ComplexUnion&& rhs)
+  ComplexUnion(ComplexUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -2468,7 +2399,7 @@ class ComplexUnion final  {
     }
   }
 
-  ComplexUnion& operator=(ComplexUnion&& rhs) {
+  ComplexUnion& operator=(ComplexUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -2772,67 +2703,52 @@ class ComplexUnion final  {
     __clear();
   }
   union storage_type {
-    int64_t intValue;
-    int64_t opt_intValue;
+    ::std::int64_t intValue;
+    ::std::int64_t opt_intValue;
     ::std::string stringValue;
     ::std::string opt_stringValue;
-    int16_t intValue2;
-    int32_t intValue3;
+    ::std::int16_t intValue2;
+    ::std::int32_t intValue3;
     double doubelValue;
     bool boolValue;
-    ::std::vector<int32_t> union_list;
-    ::std::set<int64_t> union_set;
-    ::std::map<::std::string, int32_t> union_map;
-    ::std::map<::std::string, int32_t> opt_union_map;
-     ::some::valid::ns::MyEnumA enum_field;
-    ::std::vector< ::some::valid::ns::MyEnumA> enum_container;
-     ::some::valid::ns::MyStruct a_struct;
-    ::std::set< ::some::valid::ns::MyStruct> a_set_struct;
-     ::some::valid::ns::SimpleUnion a_union;
-     ::some::valid::ns::SimpleUnion opt_a_union;
-    ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
-     ::some::valid::ns::unionTypeDef a_union_typedef;
-    ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
+    ::std::vector<::std::int32_t> union_list;
+    ::std::set<::std::int64_t> union_set;
+    ::std::map<::std::string, ::std::int32_t> union_map;
+    ::std::map<::std::string, ::std::int32_t> opt_union_map;
+    ::some::valid::ns::MyEnumA enum_field;
+    ::std::vector<::some::valid::ns::MyEnumA> enum_container;
+    ::some::valid::ns::MyStruct a_struct;
+    ::std::set<::some::valid::ns::MyStruct> a_set_struct;
+    ::some::valid::ns::SimpleUnion a_union;
+    ::some::valid::ns::SimpleUnion opt_a_union;
+    ::std::vector<::some::valid::ns::SimpleUnion> a_union_list;
+    ::some::valid::ns::unionTypeDef a_union_typedef;
+    ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list;
     ::std::string MyBinaryField;
     ::std::string MyBinaryField2;
     ::std::vector<::std::string> MyBinaryListField4;
-    std::unique_ptr< ::some::valid::ns::MyStruct> ref_field;
-    std::shared_ptr<const  ::some::valid::ns::MyStruct> ref_field2;
-     ::some::valid::ns::AnException excp_field;
+    ::std::unique_ptr<::some::valid::ns::MyStruct> ref_field;
+    ::std::shared_ptr<const ::some::valid::ns::MyStruct> ref_field2;
+    ::some::valid::ns::AnException excp_field;
 
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const ComplexUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ComplexUnion& __x, const ComplexUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const ComplexUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ComplexUnion& __x, const ComplexUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ComplexUnion& __x, const ComplexUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ComplexUnion& __x, const ComplexUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-  int64_t& set_intValue(int64_t t = int64_t()) {
+  bool operator==(const ComplexUnion&) const;
+  bool operator<(const ComplexUnion&) const;
+
+  ::std::int64_t& set_intValue(::std::int64_t t = ::std::int64_t()) {
     __clear();
     type_ = Type::intValue;
-    ::new (std::addressof(value_.intValue)) int64_t(t);
+    ::new (std::addressof(value_.intValue)) ::std::int64_t(t);
     return value_.intValue;
   }
 
-  int64_t& set_opt_intValue(int64_t t = int64_t()) {
+  ::std::int64_t& set_opt_intValue(::std::int64_t t = ::std::int64_t()) {
     __clear();
     type_ = Type::opt_intValue;
-    ::new (std::addressof(value_.opt_intValue)) int64_t(t);
+    ::new (std::addressof(value_.opt_intValue)) ::std::int64_t(t);
     return value_.opt_intValue;
   }
 
@@ -2878,17 +2794,17 @@ class ComplexUnion final  {
     return value_.opt_stringValue;
   }
 
-  int16_t& set_intValue2(int16_t t = int16_t()) {
+  ::std::int16_t& set_intValue2(::std::int16_t t = ::std::int16_t()) {
     __clear();
     type_ = Type::intValue2;
-    ::new (std::addressof(value_.intValue2)) int16_t(t);
+    ::new (std::addressof(value_.intValue2)) ::std::int16_t(t);
     return value_.intValue2;
   }
 
-  int32_t& set_intValue3(int32_t t = int32_t()) {
+  ::std::int32_t& set_intValue3(::std::int32_t t = ::std::int32_t()) {
     __clear();
     type_ = Type::intValue3;
-    ::new (std::addressof(value_.intValue3)) int32_t(t);
+    ::new (std::addressof(value_.intValue3)) ::std::int32_t(t);
     return value_.intValue3;
   }
 
@@ -2906,262 +2822,262 @@ class ComplexUnion final  {
     return value_.boolValue;
   }
 
-  ::std::vector<int32_t>& set_union_list(::std::vector<int32_t> const &t) {
+  ::std::vector<::std::int32_t>& set_union_list(::std::vector<::std::int32_t> const &t) {
     __clear();
     type_ = Type::union_list;
-    ::new (std::addressof(value_.union_list)) ::std::vector<int32_t>(t);
+    ::new (std::addressof(value_.union_list)) ::std::vector<::std::int32_t>(t);
     return value_.union_list;
   }
 
-  ::std::vector<int32_t>& set_union_list(::std::vector<int32_t>&& t) {
+  ::std::vector<::std::int32_t>& set_union_list(::std::vector<::std::int32_t>&& t) {
     __clear();
     type_ = Type::union_list;
-    ::new (std::addressof(value_.union_list)) ::std::vector<int32_t>(std::move(t));
+    ::new (std::addressof(value_.union_list)) ::std::vector<::std::int32_t>(std::move(t));
     return value_.union_list;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<int32_t>, T...>> ::std::vector<int32_t>& set_union_list(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::std::int32_t>, T...>> ::std::vector<::std::int32_t>& set_union_list(T&&... t) {
     __clear();
     type_ = Type::union_list;
-    ::new (std::addressof(value_.union_list)) ::std::vector<int32_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.union_list)) ::std::vector<::std::int32_t>(std::forward<T>(t)...);
     return value_.union_list;
   }
 
-  ::std::set<int64_t>& set_union_set(::std::set<int64_t> const &t) {
+  ::std::set<::std::int64_t>& set_union_set(::std::set<::std::int64_t> const &t) {
     __clear();
     type_ = Type::union_set;
-    ::new (std::addressof(value_.union_set)) ::std::set<int64_t>(t);
+    ::new (std::addressof(value_.union_set)) ::std::set<::std::int64_t>(t);
     return value_.union_set;
   }
 
-  ::std::set<int64_t>& set_union_set(::std::set<int64_t>&& t) {
+  ::std::set<::std::int64_t>& set_union_set(::std::set<::std::int64_t>&& t) {
     __clear();
     type_ = Type::union_set;
-    ::new (std::addressof(value_.union_set)) ::std::set<int64_t>(std::move(t));
+    ::new (std::addressof(value_.union_set)) ::std::set<::std::int64_t>(std::move(t));
     return value_.union_set;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<int64_t>, T...>> ::std::set<int64_t>& set_union_set(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<::std::int64_t>, T...>> ::std::set<::std::int64_t>& set_union_set(T&&... t) {
     __clear();
     type_ = Type::union_set;
-    ::new (std::addressof(value_.union_set)) ::std::set<int64_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.union_set)) ::std::set<::std::int64_t>(std::forward<T>(t)...);
     return value_.union_set;
   }
 
-  ::std::map<::std::string, int32_t>& set_union_map(::std::map<::std::string, int32_t> const &t) {
+  ::std::map<::std::string, ::std::int32_t>& set_union_map(::std::map<::std::string, ::std::int32_t> const &t) {
     __clear();
     type_ = Type::union_map;
-    ::new (std::addressof(value_.union_map)) ::std::map<::std::string, int32_t>(t);
+    ::new (std::addressof(value_.union_map)) ::std::map<::std::string, ::std::int32_t>(t);
     return value_.union_map;
   }
 
-  ::std::map<::std::string, int32_t>& set_union_map(::std::map<::std::string, int32_t>&& t) {
+  ::std::map<::std::string, ::std::int32_t>& set_union_map(::std::map<::std::string, ::std::int32_t>&& t) {
     __clear();
     type_ = Type::union_map;
-    ::new (std::addressof(value_.union_map)) ::std::map<::std::string, int32_t>(std::move(t));
+    ::new (std::addressof(value_.union_map)) ::std::map<::std::string, ::std::int32_t>(std::move(t));
     return value_.union_map;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, int32_t>, T...>> ::std::map<::std::string, int32_t>& set_union_map(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, ::std::int32_t>, T...>> ::std::map<::std::string, ::std::int32_t>& set_union_map(T&&... t) {
     __clear();
     type_ = Type::union_map;
-    ::new (std::addressof(value_.union_map)) ::std::map<::std::string, int32_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.union_map)) ::std::map<::std::string, ::std::int32_t>(std::forward<T>(t)...);
     return value_.union_map;
   }
 
-  ::std::map<::std::string, int32_t>& set_opt_union_map(::std::map<::std::string, int32_t> const &t) {
+  ::std::map<::std::string, ::std::int32_t>& set_opt_union_map(::std::map<::std::string, ::std::int32_t> const &t) {
     __clear();
     type_ = Type::opt_union_map;
-    ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, int32_t>(t);
+    ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, ::std::int32_t>(t);
     return value_.opt_union_map;
   }
 
-  ::std::map<::std::string, int32_t>& set_opt_union_map(::std::map<::std::string, int32_t>&& t) {
+  ::std::map<::std::string, ::std::int32_t>& set_opt_union_map(::std::map<::std::string, ::std::int32_t>&& t) {
     __clear();
     type_ = Type::opt_union_map;
-    ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, int32_t>(std::move(t));
+    ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, ::std::int32_t>(std::move(t));
     return value_.opt_union_map;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, int32_t>, T...>> ::std::map<::std::string, int32_t>& set_opt_union_map(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::map<::std::string, ::std::int32_t>, T...>> ::std::map<::std::string, ::std::int32_t>& set_opt_union_map(T&&... t) {
     __clear();
     type_ = Type::opt_union_map;
-    ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, int32_t>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.opt_union_map)) ::std::map<::std::string, ::std::int32_t>(std::forward<T>(t)...);
     return value_.opt_union_map;
   }
 
-   ::some::valid::ns::MyEnumA& set_enum_field( ::some::valid::ns::MyEnumA t =  ::some::valid::ns::MyEnumA()) {
+  ::some::valid::ns::MyEnumA& set_enum_field(::some::valid::ns::MyEnumA t = ::some::valid::ns::MyEnumA()) {
     __clear();
     type_ = Type::enum_field;
-    ::new (std::addressof(value_.enum_field))  ::some::valid::ns::MyEnumA(t);
+    ::new (std::addressof(value_.enum_field)) ::some::valid::ns::MyEnumA(t);
     return value_.enum_field;
   }
 
-  ::std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(::std::vector< ::some::valid::ns::MyEnumA> const &t) {
+  ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(::std::vector<::some::valid::ns::MyEnumA> const &t) {
     __clear();
     type_ = Type::enum_container;
-    ::new (std::addressof(value_.enum_container)) ::std::vector< ::some::valid::ns::MyEnumA>(t);
+    ::new (std::addressof(value_.enum_container)) ::std::vector<::some::valid::ns::MyEnumA>(t);
     return value_.enum_container;
   }
 
-  ::std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(::std::vector< ::some::valid::ns::MyEnumA>&& t) {
+  ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(::std::vector<::some::valid::ns::MyEnumA>&& t) {
     __clear();
     type_ = Type::enum_container;
-    ::new (std::addressof(value_.enum_container)) ::std::vector< ::some::valid::ns::MyEnumA>(std::move(t));
+    ::new (std::addressof(value_.enum_container)) ::std::vector<::some::valid::ns::MyEnumA>(std::move(t));
     return value_.enum_container;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector< ::some::valid::ns::MyEnumA>, T...>> ::std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::MyEnumA>, T...>> ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(T&&... t) {
     __clear();
     type_ = Type::enum_container;
-    ::new (std::addressof(value_.enum_container)) ::std::vector< ::some::valid::ns::MyEnumA>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.enum_container)) ::std::vector<::some::valid::ns::MyEnumA>(std::forward<T>(t)...);
     return value_.enum_container;
   }
 
-   ::some::valid::ns::MyStruct& set_a_struct( ::some::valid::ns::MyStruct const &t) {
+  ::some::valid::ns::MyStruct& set_a_struct(::some::valid::ns::MyStruct const &t) {
     __clear();
     type_ = Type::a_struct;
-    ::new (std::addressof(value_.a_struct))  ::some::valid::ns::MyStruct(t);
+    ::new (std::addressof(value_.a_struct)) ::some::valid::ns::MyStruct(t);
     return value_.a_struct;
   }
 
-   ::some::valid::ns::MyStruct& set_a_struct( ::some::valid::ns::MyStruct&& t) {
+  ::some::valid::ns::MyStruct& set_a_struct(::some::valid::ns::MyStruct&& t) {
     __clear();
     type_ = Type::a_struct;
-    ::new (std::addressof(value_.a_struct))  ::some::valid::ns::MyStruct(std::move(t));
+    ::new (std::addressof(value_.a_struct)) ::some::valid::ns::MyStruct(std::move(t));
     return value_.a_struct;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::MyStruct, T...>>  ::some::valid::ns::MyStruct& set_a_struct(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::some::valid::ns::MyStruct& set_a_struct(T&&... t) {
     __clear();
     type_ = Type::a_struct;
-    ::new (std::addressof(value_.a_struct))  ::some::valid::ns::MyStruct(std::forward<T>(t)...);
+    ::new (std::addressof(value_.a_struct)) ::some::valid::ns::MyStruct(std::forward<T>(t)...);
     return value_.a_struct;
   }
 
-  ::std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(::std::set< ::some::valid::ns::MyStruct> const &t) {
+  ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(::std::set<::some::valid::ns::MyStruct> const &t) {
     __clear();
     type_ = Type::a_set_struct;
-    ::new (std::addressof(value_.a_set_struct)) ::std::set< ::some::valid::ns::MyStruct>(t);
+    ::new (std::addressof(value_.a_set_struct)) ::std::set<::some::valid::ns::MyStruct>(t);
     return value_.a_set_struct;
   }
 
-  ::std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(::std::set< ::some::valid::ns::MyStruct>&& t) {
+  ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(::std::set<::some::valid::ns::MyStruct>&& t) {
     __clear();
     type_ = Type::a_set_struct;
-    ::new (std::addressof(value_.a_set_struct)) ::std::set< ::some::valid::ns::MyStruct>(std::move(t));
+    ::new (std::addressof(value_.a_set_struct)) ::std::set<::some::valid::ns::MyStruct>(std::move(t));
     return value_.a_set_struct;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set< ::some::valid::ns::MyStruct>, T...>> ::std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::set<::some::valid::ns::MyStruct>, T...>> ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(T&&... t) {
     __clear();
     type_ = Type::a_set_struct;
-    ::new (std::addressof(value_.a_set_struct)) ::std::set< ::some::valid::ns::MyStruct>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.a_set_struct)) ::std::set<::some::valid::ns::MyStruct>(std::forward<T>(t)...);
     return value_.a_set_struct;
   }
 
-   ::some::valid::ns::SimpleUnion& set_a_union( ::some::valid::ns::SimpleUnion const &t) {
+  ::some::valid::ns::SimpleUnion& set_a_union(::some::valid::ns::SimpleUnion const &t) {
     __clear();
     type_ = Type::a_union;
-    ::new (std::addressof(value_.a_union))  ::some::valid::ns::SimpleUnion(t);
+    ::new (std::addressof(value_.a_union)) ::some::valid::ns::SimpleUnion(t);
     return value_.a_union;
   }
 
-   ::some::valid::ns::SimpleUnion& set_a_union( ::some::valid::ns::SimpleUnion&& t) {
+  ::some::valid::ns::SimpleUnion& set_a_union(::some::valid::ns::SimpleUnion&& t) {
     __clear();
     type_ = Type::a_union;
-    ::new (std::addressof(value_.a_union))  ::some::valid::ns::SimpleUnion(std::move(t));
+    ::new (std::addressof(value_.a_union)) ::some::valid::ns::SimpleUnion(std::move(t));
     return value_.a_union;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::SimpleUnion, T...>>  ::some::valid::ns::SimpleUnion& set_a_union(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::SimpleUnion, T...>> ::some::valid::ns::SimpleUnion& set_a_union(T&&... t) {
     __clear();
     type_ = Type::a_union;
-    ::new (std::addressof(value_.a_union))  ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
+    ::new (std::addressof(value_.a_union)) ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
     return value_.a_union;
   }
 
-   ::some::valid::ns::SimpleUnion& set_opt_a_union( ::some::valid::ns::SimpleUnion const &t) {
+  ::some::valid::ns::SimpleUnion& set_opt_a_union(::some::valid::ns::SimpleUnion const &t) {
     __clear();
     type_ = Type::opt_a_union;
-    ::new (std::addressof(value_.opt_a_union))  ::some::valid::ns::SimpleUnion(t);
+    ::new (std::addressof(value_.opt_a_union)) ::some::valid::ns::SimpleUnion(t);
     return value_.opt_a_union;
   }
 
-   ::some::valid::ns::SimpleUnion& set_opt_a_union( ::some::valid::ns::SimpleUnion&& t) {
+  ::some::valid::ns::SimpleUnion& set_opt_a_union(::some::valid::ns::SimpleUnion&& t) {
     __clear();
     type_ = Type::opt_a_union;
-    ::new (std::addressof(value_.opt_a_union))  ::some::valid::ns::SimpleUnion(std::move(t));
+    ::new (std::addressof(value_.opt_a_union)) ::some::valid::ns::SimpleUnion(std::move(t));
     return value_.opt_a_union;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::SimpleUnion, T...>>  ::some::valid::ns::SimpleUnion& set_opt_a_union(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::SimpleUnion, T...>> ::some::valid::ns::SimpleUnion& set_opt_a_union(T&&... t) {
     __clear();
     type_ = Type::opt_a_union;
-    ::new (std::addressof(value_.opt_a_union))  ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
+    ::new (std::addressof(value_.opt_a_union)) ::some::valid::ns::SimpleUnion(std::forward<T>(t)...);
     return value_.opt_a_union;
   }
 
-  ::std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(::std::vector< ::some::valid::ns::SimpleUnion> const &t) {
+  ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(::std::vector<::some::valid::ns::SimpleUnion> const &t) {
     __clear();
     type_ = Type::a_union_list;
-    ::new (std::addressof(value_.a_union_list)) ::std::vector< ::some::valid::ns::SimpleUnion>(t);
+    ::new (std::addressof(value_.a_union_list)) ::std::vector<::some::valid::ns::SimpleUnion>(t);
     return value_.a_union_list;
   }
 
-  ::std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(::std::vector< ::some::valid::ns::SimpleUnion>&& t) {
+  ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(::std::vector<::some::valid::ns::SimpleUnion>&& t) {
     __clear();
     type_ = Type::a_union_list;
-    ::new (std::addressof(value_.a_union_list)) ::std::vector< ::some::valid::ns::SimpleUnion>(std::move(t));
+    ::new (std::addressof(value_.a_union_list)) ::std::vector<::some::valid::ns::SimpleUnion>(std::move(t));
     return value_.a_union_list;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector< ::some::valid::ns::SimpleUnion>, T...>> ::std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::SimpleUnion>, T...>> ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(T&&... t) {
     __clear();
     type_ = Type::a_union_list;
-    ::new (std::addressof(value_.a_union_list)) ::std::vector< ::some::valid::ns::SimpleUnion>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.a_union_list)) ::std::vector<::some::valid::ns::SimpleUnion>(std::forward<T>(t)...);
     return value_.a_union_list;
   }
 
-   ::some::valid::ns::unionTypeDef& set_a_union_typedef( ::some::valid::ns::unionTypeDef const &t) {
+  ::some::valid::ns::unionTypeDef& set_a_union_typedef(::some::valid::ns::unionTypeDef const &t) {
     __clear();
     type_ = Type::a_union_typedef;
-    ::new (std::addressof(value_.a_union_typedef))  ::some::valid::ns::unionTypeDef(t);
+    ::new (std::addressof(value_.a_union_typedef)) ::some::valid::ns::unionTypeDef(t);
     return value_.a_union_typedef;
   }
 
-   ::some::valid::ns::unionTypeDef& set_a_union_typedef( ::some::valid::ns::unionTypeDef&& t) {
+  ::some::valid::ns::unionTypeDef& set_a_union_typedef(::some::valid::ns::unionTypeDef&& t) {
     __clear();
     type_ = Type::a_union_typedef;
-    ::new (std::addressof(value_.a_union_typedef))  ::some::valid::ns::unionTypeDef(std::move(t));
+    ::new (std::addressof(value_.a_union_typedef)) ::some::valid::ns::unionTypeDef(std::move(t));
     return value_.a_union_typedef;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::unionTypeDef, T...>>  ::some::valid::ns::unionTypeDef& set_a_union_typedef(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::unionTypeDef, T...>> ::some::valid::ns::unionTypeDef& set_a_union_typedef(T&&... t) {
     __clear();
     type_ = Type::a_union_typedef;
-    ::new (std::addressof(value_.a_union_typedef))  ::some::valid::ns::unionTypeDef(std::forward<T>(t)...);
+    ::new (std::addressof(value_.a_union_typedef)) ::some::valid::ns::unionTypeDef(std::forward<T>(t)...);
     return value_.a_union_typedef;
   }
 
-  ::std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(::std::vector< ::some::valid::ns::unionTypeDef> const &t) {
+  ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(::std::vector<::some::valid::ns::unionTypeDef> const &t) {
     __clear();
     type_ = Type::a_union_typedef_list;
-    ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector< ::some::valid::ns::unionTypeDef>(t);
+    ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector<::some::valid::ns::unionTypeDef>(t);
     return value_.a_union_typedef_list;
   }
 
-  ::std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(::std::vector< ::some::valid::ns::unionTypeDef>&& t) {
+  ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(::std::vector<::some::valid::ns::unionTypeDef>&& t) {
     __clear();
     type_ = Type::a_union_typedef_list;
-    ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector< ::some::valid::ns::unionTypeDef>(std::move(t));
+    ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector<::some::valid::ns::unionTypeDef>(std::move(t));
     return value_.a_union_typedef_list;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector< ::some::valid::ns::unionTypeDef>, T...>> ::std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::std::vector<::some::valid::ns::unionTypeDef>, T...>> ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T&&... t) {
     __clear();
     type_ = Type::a_union_typedef_list;
-    ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector< ::some::valid::ns::unionTypeDef>(std::forward<T>(t)...);
+    ::new (std::addressof(value_.a_union_typedef_list)) ::std::vector<::some::valid::ns::unionTypeDef>(std::forward<T>(t)...);
     return value_.a_union_typedef_list;
   }
 
@@ -3227,324 +3143,378 @@ class ComplexUnion final  {
     ::new (std::addressof(value_.MyBinaryListField4)) ::std::vector<::std::string>(std::forward<T>(t)...);
     return value_.MyBinaryListField4;
   }
-  std::unique_ptr< ::some::valid::ns::MyStruct>& set_ref_field( ::some::valid::ns::MyStruct const &t);
-  std::unique_ptr< ::some::valid::ns::MyStruct>& set_ref_field( ::some::valid::ns::MyStruct&& t);
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::MyStruct, T...>> std::unique_ptr< ::some::valid::ns::MyStruct>& set_ref_field(T&&... t) {
+  ::std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(::some::valid::ns::MyStruct const &t);
+  ::std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(::some::valid::ns::MyStruct&& t);
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::std::unique_ptr<::some::valid::ns::MyStruct>& set_ref_field(T&&... t) {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
-    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), std::unique_ptr< ::some::valid::ns::MyStruct>, void>;
+    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::unique_ptr<::some::valid::ns::MyStruct>, void>;
     __clear();
     type_ = Type::ref_field;
     ::new (std::addressof(value_.ref_field)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
     return value_.ref_field;
   }
-  std::shared_ptr<const  ::some::valid::ns::MyStruct>& set_ref_field2( ::some::valid::ns::MyStruct const &t);
-  std::shared_ptr<const  ::some::valid::ns::MyStruct>& set_ref_field2( ::some::valid::ns::MyStruct&& t);
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::MyStruct, T...>> std::shared_ptr<const  ::some::valid::ns::MyStruct>& set_ref_field2(T&&... t) {
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(::some::valid::ns::MyStruct const &t);
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(::some::valid::ns::MyStruct&& t);
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::MyStruct, T...>> ::std::shared_ptr<const ::some::valid::ns::MyStruct>& set_ref_field2(T&&... t) {
     // defer resolution of ref_ in case ref_::element_type would here be incomplete
-    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), std::shared_ptr<const  ::some::valid::ns::MyStruct>, void>;
+    using ref_ = folly::conditional_t<(sizeof...(T) < size_t(-1)), ::std::shared_ptr<const ::some::valid::ns::MyStruct>, void>;
     __clear();
     type_ = Type::ref_field2;
     ::new (std::addressof(value_.ref_field2)) ref_(new typename ref_::element_type(std::forward<T>(t)...));
     return value_.ref_field2;
   }
 
-   ::some::valid::ns::AnException& set_excp_field( ::some::valid::ns::AnException const &t) {
+  ::some::valid::ns::AnException& set_excp_field(::some::valid::ns::AnException const &t) {
     __clear();
     type_ = Type::excp_field;
-    ::new (std::addressof(value_.excp_field))  ::some::valid::ns::AnException(t);
+    ::new (std::addressof(value_.excp_field)) ::some::valid::ns::AnException(t);
     return value_.excp_field;
   }
 
-   ::some::valid::ns::AnException& set_excp_field( ::some::valid::ns::AnException&& t) {
+  ::some::valid::ns::AnException& set_excp_field(::some::valid::ns::AnException&& t) {
     __clear();
     type_ = Type::excp_field;
-    ::new (std::addressof(value_.excp_field))  ::some::valid::ns::AnException(std::move(t));
+    ::new (std::addressof(value_.excp_field)) ::some::valid::ns::AnException(std::move(t));
     return value_.excp_field;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::some::valid::ns::AnException, T...>>  ::some::valid::ns::AnException& set_excp_field(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::AnException, T...>> ::some::valid::ns::AnException& set_excp_field(T&&... t) {
     __clear();
     type_ = Type::excp_field;
-    ::new (std::addressof(value_.excp_field))  ::some::valid::ns::AnException(std::forward<T>(t)...);
+    ::new (std::addressof(value_.excp_field)) ::some::valid::ns::AnException(std::forward<T>(t)...);
     return value_.excp_field;
   }
 
-  int64_t const & get_intValue() const {
+  ::std::int64_t const& get_intValue() const {
+    if (type_ != Type::intValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.intValue;
+  }
+
+  ::std::int64_t const& get_opt_intValue() const {
+    if (type_ != Type::opt_intValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.opt_intValue;
+  }
+
+  ::std::string const& get_stringValue() const {
+    if (type_ != Type::stringValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.stringValue;
+  }
+
+  ::std::string const& get_opt_stringValue() const {
+    if (type_ != Type::opt_stringValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.opt_stringValue;
+  }
+
+  ::std::int16_t const& get_intValue2() const {
+    if (type_ != Type::intValue2) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.intValue2;
+  }
+
+  ::std::int32_t const& get_intValue3() const {
+    if (type_ != Type::intValue3) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.intValue3;
+  }
+
+  double const& get_doubelValue() const {
+    if (type_ != Type::doubelValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.doubelValue;
+  }
+
+  bool const& get_boolValue() const {
+    if (type_ != Type::boolValue) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.boolValue;
+  }
+
+  ::std::vector<::std::int32_t> const& get_union_list() const {
+    if (type_ != Type::union_list) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.union_list;
+  }
+
+  ::std::set<::std::int64_t> const& get_union_set() const {
+    if (type_ != Type::union_set) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.union_set;
+  }
+
+  ::std::map<::std::string, ::std::int32_t> const& get_union_map() const {
+    if (type_ != Type::union_map) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.union_map;
+  }
+
+  ::std::map<::std::string, ::std::int32_t> const& get_opt_union_map() const {
+    if (type_ != Type::opt_union_map) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.opt_union_map;
+  }
+
+  ::some::valid::ns::MyEnumA const& get_enum_field() const {
+    if (type_ != Type::enum_field) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.enum_field;
+  }
+
+  ::std::vector<::some::valid::ns::MyEnumA> const& get_enum_container() const {
+    if (type_ != Type::enum_container) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.enum_container;
+  }
+
+  ::some::valid::ns::MyStruct const& get_a_struct() const {
+    if (type_ != Type::a_struct) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.a_struct;
+  }
+
+  ::std::set<::some::valid::ns::MyStruct> const& get_a_set_struct() const {
+    if (type_ != Type::a_set_struct) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.a_set_struct;
+  }
+
+  ::some::valid::ns::SimpleUnion const& get_a_union() const {
+    if (type_ != Type::a_union) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.a_union;
+  }
+
+  ::some::valid::ns::SimpleUnion const& get_opt_a_union() const {
+    if (type_ != Type::opt_a_union) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.opt_a_union;
+  }
+
+  ::std::vector<::some::valid::ns::SimpleUnion> const& get_a_union_list() const {
+    if (type_ != Type::a_union_list) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.a_union_list;
+  }
+
+  ::some::valid::ns::unionTypeDef const& get_a_union_typedef() const {
+    if (type_ != Type::a_union_typedef) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.a_union_typedef;
+  }
+
+  ::std::vector<::some::valid::ns::unionTypeDef> const& get_a_union_typedef_list() const {
+    if (type_ != Type::a_union_typedef_list) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.a_union_typedef_list;
+  }
+
+  ::std::string const& get_MyBinaryField() const {
+    if (type_ != Type::MyBinaryField) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.MyBinaryField;
+  }
+
+  ::std::string const& get_MyBinaryField2() const {
+    if (type_ != Type::MyBinaryField2) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.MyBinaryField2;
+  }
+
+  ::std::vector<::std::string> const& get_MyBinaryListField4() const {
+    if (type_ != Type::MyBinaryListField4) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.MyBinaryListField4;
+  }
+
+  ::std::unique_ptr<::some::valid::ns::MyStruct> const& get_ref_field() const {
+    if (type_ != Type::ref_field) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.ref_field;
+  }
+
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct> const& get_ref_field2() const {
+    if (type_ != Type::ref_field2) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.ref_field2;
+  }
+
+  ::some::valid::ns::AnException const& get_excp_field() const {
+    if (type_ != Type::excp_field) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.excp_field;
+  }
+
+  ::std::int64_t& mutable_intValue() {
     assert(type_ == Type::intValue);
     return value_.intValue;
   }
 
-  int64_t const & get_opt_intValue() const {
+  ::std::int64_t& mutable_opt_intValue() {
     assert(type_ == Type::opt_intValue);
     return value_.opt_intValue;
   }
 
-  ::std::string const & get_stringValue() const {
+  ::std::string& mutable_stringValue() {
     assert(type_ == Type::stringValue);
     return value_.stringValue;
   }
 
-  ::std::string const & get_opt_stringValue() const {
+  ::std::string& mutable_opt_stringValue() {
     assert(type_ == Type::opt_stringValue);
     return value_.opt_stringValue;
   }
 
-  int16_t const & get_intValue2() const {
+  ::std::int16_t& mutable_intValue2() {
     assert(type_ == Type::intValue2);
     return value_.intValue2;
   }
 
-  int32_t const & get_intValue3() const {
+  ::std::int32_t& mutable_intValue3() {
     assert(type_ == Type::intValue3);
     return value_.intValue3;
   }
 
-  double const & get_doubelValue() const {
+  double& mutable_doubelValue() {
     assert(type_ == Type::doubelValue);
     return value_.doubelValue;
   }
 
-  bool const & get_boolValue() const {
+  bool& mutable_boolValue() {
     assert(type_ == Type::boolValue);
     return value_.boolValue;
   }
 
-  ::std::vector<int32_t> const & get_union_list() const {
+  ::std::vector<::std::int32_t>& mutable_union_list() {
     assert(type_ == Type::union_list);
     return value_.union_list;
   }
 
-  ::std::set<int64_t> const & get_union_set() const {
+  ::std::set<::std::int64_t>& mutable_union_set() {
     assert(type_ == Type::union_set);
     return value_.union_set;
   }
 
-  ::std::map<::std::string, int32_t> const & get_union_map() const {
+  ::std::map<::std::string, ::std::int32_t>& mutable_union_map() {
     assert(type_ == Type::union_map);
     return value_.union_map;
   }
 
-  ::std::map<::std::string, int32_t> const & get_opt_union_map() const {
+  ::std::map<::std::string, ::std::int32_t>& mutable_opt_union_map() {
     assert(type_ == Type::opt_union_map);
     return value_.opt_union_map;
   }
 
-   ::some::valid::ns::MyEnumA const & get_enum_field() const {
+  ::some::valid::ns::MyEnumA& mutable_enum_field() {
     assert(type_ == Type::enum_field);
     return value_.enum_field;
   }
 
-  ::std::vector< ::some::valid::ns::MyEnumA> const & get_enum_container() const {
+  ::std::vector<::some::valid::ns::MyEnumA>& mutable_enum_container() {
     assert(type_ == Type::enum_container);
     return value_.enum_container;
   }
 
-   ::some::valid::ns::MyStruct const & get_a_struct() const {
+  ::some::valid::ns::MyStruct& mutable_a_struct() {
     assert(type_ == Type::a_struct);
     return value_.a_struct;
   }
 
-  ::std::set< ::some::valid::ns::MyStruct> const & get_a_set_struct() const {
+  ::std::set<::some::valid::ns::MyStruct>& mutable_a_set_struct() {
     assert(type_ == Type::a_set_struct);
     return value_.a_set_struct;
   }
 
-   ::some::valid::ns::SimpleUnion const & get_a_union() const {
+  ::some::valid::ns::SimpleUnion& mutable_a_union() {
     assert(type_ == Type::a_union);
     return value_.a_union;
   }
 
-   ::some::valid::ns::SimpleUnion const & get_opt_a_union() const {
+  ::some::valid::ns::SimpleUnion& mutable_opt_a_union() {
     assert(type_ == Type::opt_a_union);
     return value_.opt_a_union;
   }
 
-  ::std::vector< ::some::valid::ns::SimpleUnion> const & get_a_union_list() const {
+  ::std::vector<::some::valid::ns::SimpleUnion>& mutable_a_union_list() {
     assert(type_ == Type::a_union_list);
     return value_.a_union_list;
   }
 
-   ::some::valid::ns::unionTypeDef const & get_a_union_typedef() const {
+  ::some::valid::ns::unionTypeDef& mutable_a_union_typedef() {
     assert(type_ == Type::a_union_typedef);
     return value_.a_union_typedef;
   }
 
-  ::std::vector< ::some::valid::ns::unionTypeDef> const & get_a_union_typedef_list() const {
+  ::std::vector<::some::valid::ns::unionTypeDef>& mutable_a_union_typedef_list() {
     assert(type_ == Type::a_union_typedef_list);
     return value_.a_union_typedef_list;
   }
 
-  ::std::string const & get_MyBinaryField() const {
+  ::std::string& mutable_MyBinaryField() {
     assert(type_ == Type::MyBinaryField);
     return value_.MyBinaryField;
   }
 
-  ::std::string const & get_MyBinaryField2() const {
+  ::std::string& mutable_MyBinaryField2() {
     assert(type_ == Type::MyBinaryField2);
     return value_.MyBinaryField2;
   }
 
-  ::std::vector<::std::string> const & get_MyBinaryListField4() const {
+  ::std::vector<::std::string>& mutable_MyBinaryListField4() {
     assert(type_ == Type::MyBinaryListField4);
     return value_.MyBinaryListField4;
   }
 
-  std::unique_ptr< ::some::valid::ns::MyStruct> const & get_ref_field() const {
+  ::std::unique_ptr<::some::valid::ns::MyStruct>& mutable_ref_field() {
     assert(type_ == Type::ref_field);
     return value_.ref_field;
   }
 
-  std::shared_ptr<const  ::some::valid::ns::MyStruct> const & get_ref_field2() const {
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct>& mutable_ref_field2() {
     assert(type_ == Type::ref_field2);
     return value_.ref_field2;
   }
 
-   ::some::valid::ns::AnException const & get_excp_field() const {
+  ::some::valid::ns::AnException& mutable_excp_field() {
     assert(type_ == Type::excp_field);
     return value_.excp_field;
   }
 
-  int64_t & mutable_intValue() {
-    assert(type_ == Type::intValue);
-    return value_.intValue;
-  }
-
-  int64_t & mutable_opt_intValue() {
-    assert(type_ == Type::opt_intValue);
-    return value_.opt_intValue;
-  }
-
-  ::std::string & mutable_stringValue() {
-    assert(type_ == Type::stringValue);
-    return value_.stringValue;
-  }
-
-  ::std::string & mutable_opt_stringValue() {
-    assert(type_ == Type::opt_stringValue);
-    return value_.opt_stringValue;
-  }
-
-  int16_t & mutable_intValue2() {
-    assert(type_ == Type::intValue2);
-    return value_.intValue2;
-  }
-
-  int32_t & mutable_intValue3() {
-    assert(type_ == Type::intValue3);
-    return value_.intValue3;
-  }
-
-  double & mutable_doubelValue() {
-    assert(type_ == Type::doubelValue);
-    return value_.doubelValue;
-  }
-
-  bool & mutable_boolValue() {
-    assert(type_ == Type::boolValue);
-    return value_.boolValue;
-  }
-
-  ::std::vector<int32_t> & mutable_union_list() {
-    assert(type_ == Type::union_list);
-    return value_.union_list;
-  }
-
-  ::std::set<int64_t> & mutable_union_set() {
-    assert(type_ == Type::union_set);
-    return value_.union_set;
-  }
-
-  ::std::map<::std::string, int32_t> & mutable_union_map() {
-    assert(type_ == Type::union_map);
-    return value_.union_map;
-  }
-
-  ::std::map<::std::string, int32_t> & mutable_opt_union_map() {
-    assert(type_ == Type::opt_union_map);
-    return value_.opt_union_map;
-  }
-
-   ::some::valid::ns::MyEnumA & mutable_enum_field() {
-    assert(type_ == Type::enum_field);
-    return value_.enum_field;
-  }
-
-  ::std::vector< ::some::valid::ns::MyEnumA> & mutable_enum_container() {
-    assert(type_ == Type::enum_container);
-    return value_.enum_container;
-  }
-
-   ::some::valid::ns::MyStruct & mutable_a_struct() {
-    assert(type_ == Type::a_struct);
-    return value_.a_struct;
-  }
-
-  ::std::set< ::some::valid::ns::MyStruct> & mutable_a_set_struct() {
-    assert(type_ == Type::a_set_struct);
-    return value_.a_set_struct;
-  }
-
-   ::some::valid::ns::SimpleUnion & mutable_a_union() {
-    assert(type_ == Type::a_union);
-    return value_.a_union;
-  }
-
-   ::some::valid::ns::SimpleUnion & mutable_opt_a_union() {
-    assert(type_ == Type::opt_a_union);
-    return value_.opt_a_union;
-  }
-
-  ::std::vector< ::some::valid::ns::SimpleUnion> & mutable_a_union_list() {
-    assert(type_ == Type::a_union_list);
-    return value_.a_union_list;
-  }
-
-   ::some::valid::ns::unionTypeDef & mutable_a_union_typedef() {
-    assert(type_ == Type::a_union_typedef);
-    return value_.a_union_typedef;
-  }
-
-  ::std::vector< ::some::valid::ns::unionTypeDef> & mutable_a_union_typedef_list() {
-    assert(type_ == Type::a_union_typedef_list);
-    return value_.a_union_typedef_list;
-  }
-
-  ::std::string & mutable_MyBinaryField() {
-    assert(type_ == Type::MyBinaryField);
-    return value_.MyBinaryField;
-  }
-
-  ::std::string & mutable_MyBinaryField2() {
-    assert(type_ == Type::MyBinaryField2);
-    return value_.MyBinaryField2;
-  }
-
-  ::std::vector<::std::string> & mutable_MyBinaryListField4() {
-    assert(type_ == Type::MyBinaryListField4);
-    return value_.MyBinaryListField4;
-  }
-
-  std::unique_ptr< ::some::valid::ns::MyStruct> & mutable_ref_field() {
-    assert(type_ == Type::ref_field);
-    return value_.ref_field;
-  }
-
-  std::shared_ptr<const  ::some::valid::ns::MyStruct> & mutable_ref_field2() {
-    assert(type_ == Type::ref_field2);
-    return value_.ref_field2;
-  }
-
-   ::some::valid::ns::AnException & mutable_excp_field() {
-    assert(type_ == Type::excp_field);
-    return value_.excp_field;
-  }
-
-  int64_t move_intValue() {
+  ::std::int64_t move_intValue() {
     assert(type_ == Type::intValue);
     return std::move(value_.intValue);
   }
 
-  int64_t move_opt_intValue() {
+  ::std::int64_t move_opt_intValue() {
     assert(type_ == Type::opt_intValue);
     return std::move(value_.opt_intValue);
   }
@@ -3559,12 +3529,12 @@ class ComplexUnion final  {
     return std::move(value_.opt_stringValue);
   }
 
-  int16_t move_intValue2() {
+  ::std::int16_t move_intValue2() {
     assert(type_ == Type::intValue2);
     return std::move(value_.intValue2);
   }
 
-  int32_t move_intValue3() {
+  ::std::int32_t move_intValue3() {
     assert(type_ == Type::intValue3);
     return std::move(value_.intValue3);
   }
@@ -3579,67 +3549,67 @@ class ComplexUnion final  {
     return std::move(value_.boolValue);
   }
 
-  ::std::vector<int32_t> move_union_list() {
+  ::std::vector<::std::int32_t> move_union_list() {
     assert(type_ == Type::union_list);
     return std::move(value_.union_list);
   }
 
-  ::std::set<int64_t> move_union_set() {
+  ::std::set<::std::int64_t> move_union_set() {
     assert(type_ == Type::union_set);
     return std::move(value_.union_set);
   }
 
-  ::std::map<::std::string, int32_t> move_union_map() {
+  ::std::map<::std::string, ::std::int32_t> move_union_map() {
     assert(type_ == Type::union_map);
     return std::move(value_.union_map);
   }
 
-  ::std::map<::std::string, int32_t> move_opt_union_map() {
+  ::std::map<::std::string, ::std::int32_t> move_opt_union_map() {
     assert(type_ == Type::opt_union_map);
     return std::move(value_.opt_union_map);
   }
 
-   ::some::valid::ns::MyEnumA move_enum_field() {
+  ::some::valid::ns::MyEnumA move_enum_field() {
     assert(type_ == Type::enum_field);
     return std::move(value_.enum_field);
   }
 
-  ::std::vector< ::some::valid::ns::MyEnumA> move_enum_container() {
+  ::std::vector<::some::valid::ns::MyEnumA> move_enum_container() {
     assert(type_ == Type::enum_container);
     return std::move(value_.enum_container);
   }
 
-   ::some::valid::ns::MyStruct move_a_struct() {
+  ::some::valid::ns::MyStruct move_a_struct() {
     assert(type_ == Type::a_struct);
     return std::move(value_.a_struct);
   }
 
-  ::std::set< ::some::valid::ns::MyStruct> move_a_set_struct() {
+  ::std::set<::some::valid::ns::MyStruct> move_a_set_struct() {
     assert(type_ == Type::a_set_struct);
     return std::move(value_.a_set_struct);
   }
 
-   ::some::valid::ns::SimpleUnion move_a_union() {
+  ::some::valid::ns::SimpleUnion move_a_union() {
     assert(type_ == Type::a_union);
     return std::move(value_.a_union);
   }
 
-   ::some::valid::ns::SimpleUnion move_opt_a_union() {
+  ::some::valid::ns::SimpleUnion move_opt_a_union() {
     assert(type_ == Type::opt_a_union);
     return std::move(value_.opt_a_union);
   }
 
-  ::std::vector< ::some::valid::ns::SimpleUnion> move_a_union_list() {
+  ::std::vector<::some::valid::ns::SimpleUnion> move_a_union_list() {
     assert(type_ == Type::a_union_list);
     return std::move(value_.a_union_list);
   }
 
-   ::some::valid::ns::unionTypeDef move_a_union_typedef() {
+  ::some::valid::ns::unionTypeDef move_a_union_typedef() {
     assert(type_ == Type::a_union_typedef);
     return std::move(value_.a_union_typedef);
   }
 
-  ::std::vector< ::some::valid::ns::unionTypeDef> move_a_union_typedef_list() {
+  ::std::vector<::some::valid::ns::unionTypeDef> move_a_union_typedef_list() {
     assert(type_ == Type::a_union_typedef_list);
     return std::move(value_.a_union_typedef_list);
   }
@@ -3659,56 +3629,56 @@ class ComplexUnion final  {
     return std::move(value_.MyBinaryListField4);
   }
 
-  std::unique_ptr< ::some::valid::ns::MyStruct> move_ref_field() {
+  ::std::unique_ptr<::some::valid::ns::MyStruct> move_ref_field() {
     assert(type_ == Type::ref_field);
     return std::move(value_.ref_field);
   }
 
-  std::shared_ptr<const  ::some::valid::ns::MyStruct> move_ref_field2() {
+  ::std::shared_ptr<const ::some::valid::ns::MyStruct> move_ref_field2() {
     assert(type_ == Type::ref_field2);
     return std::move(value_.ref_field2);
   }
 
-   ::some::valid::ns::AnException move_excp_field() {
+  ::some::valid::ns::AnException move_excp_field() {
     assert(type_ == Type::excp_field);
     return std::move(value_.excp_field);
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intValue_ref() const& {
     return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue_ref() const&& {
     return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intValue_ref() & {
     return {value_.intValue, type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue_ref() && {
     return {std::move(value_.intValue), type_, intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> opt_intValue_ref() const& {
     return {value_.opt_intValue, type_, opt_intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> opt_intValue_ref() const&& {
     return {std::move(value_.opt_intValue), type_, opt_intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> opt_intValue_ref() & {
     return {value_.opt_intValue, type_, opt_intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> opt_intValue_ref() && {
     return {std::move(value_.opt_intValue), type_, opt_intValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -3750,41 +3720,41 @@ class ComplexUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> opt_stringValue_ref() && {
     return {std::move(value_.opt_stringValue), type_, opt_stringValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = int16_t>
+  template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intValue2_ref() const& {
     return {value_.intValue2, type_, intValue2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int16_t>
+  template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue2_ref() const&& {
     return {std::move(value_.intValue2), type_, intValue2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int16_t>
+  template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intValue2_ref() & {
     return {value_.intValue2, type_, intValue2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int16_t>
+  template <typename..., typename T = ::std::int16_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue2_ref() && {
     return {std::move(value_.intValue2), type_, intValue2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> intValue3_ref() const& {
     return {value_.intValue3, type_, intValue3, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> intValue3_ref() const&& {
     return {std::move(value_.intValue3), type_, intValue3, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> intValue3_ref() & {
     return {value_.intValue3, type_, intValue3, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> intValue3_ref() && {
     return {std::move(value_.intValue3), type_, intValue3, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -3826,250 +3796,250 @@ class ComplexUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> boolValue_ref() && {
     return {std::move(value_.boolValue), type_, boolValue, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> union_list_ref() const& {
     return {value_.union_list, type_, union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> union_list_ref() const&& {
     return {std::move(value_.union_list), type_, union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> union_list_ref() & {
     return {value_.union_list, type_, union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> union_list_ref() && {
     return {std::move(value_.union_list), type_, union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::set<int64_t>>
+  template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> union_set_ref() const& {
     return {value_.union_set, type_, union_set, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::set<int64_t>>
+  template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> union_set_ref() const&& {
     return {std::move(value_.union_set), type_, union_set, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::set<int64_t>>
+  template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> union_set_ref() & {
     return {value_.union_set, type_, union_set, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::set<int64_t>>
+  template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> union_set_ref() && {
     return {std::move(value_.union_set), type_, union_set, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> union_map_ref() const& {
     return {value_.union_map, type_, union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> union_map_ref() const&& {
     return {std::move(value_.union_map), type_, union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> union_map_ref() & {
     return {value_.union_map, type_, union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> union_map_ref() && {
     return {std::move(value_.union_map), type_, union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> opt_union_map_ref() const& {
     return {value_.opt_union_map, type_, opt_union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> opt_union_map_ref() const&& {
     return {std::move(value_.opt_union_map), type_, opt_union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> opt_union_map_ref() & {
     return {value_.opt_union_map, type_, opt_union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> opt_union_map_ref() && {
     return {std::move(value_.opt_union_map), type_, opt_union_map, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> enum_field_ref() const& {
     return {value_.enum_field, type_, enum_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> enum_field_ref() const&& {
     return {std::move(value_.enum_field), type_, enum_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> enum_field_ref() & {
     return {value_.enum_field, type_, enum_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> enum_field_ref() && {
     return {std::move(value_.enum_field), type_, enum_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> enum_container_ref() const& {
     return {value_.enum_container, type_, enum_container, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> enum_container_ref() const&& {
     return {std::move(value_.enum_container), type_, enum_container, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> enum_container_ref() & {
     return {value_.enum_container, type_, enum_container, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> enum_container_ref() && {
     return {std::move(value_.enum_container), type_, enum_container, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_struct_ref() const& {
     return {value_.a_struct, type_, a_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_struct_ref() const&& {
     return {std::move(value_.a_struct), type_, a_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> a_struct_ref() & {
     return {value_.a_struct, type_, a_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_struct_ref() && {
     return {std::move(value_.a_struct), type_, a_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_set_struct_ref() const& {
     return {value_.a_set_struct, type_, a_set_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_set_struct_ref() const&& {
     return {std::move(value_.a_set_struct), type_, a_set_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> a_set_struct_ref() & {
     return {value_.a_set_struct, type_, a_set_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_set_struct_ref() && {
     return {std::move(value_.a_set_struct), type_, a_set_struct, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
+  template <typename..., typename T = ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_union_ref() const& {
     return {value_.a_union, type_, a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
+  template <typename..., typename T = ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_union_ref() const&& {
     return {std::move(value_.a_union), type_, a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
+  template <typename..., typename T = ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> a_union_ref() & {
     return {value_.a_union, type_, a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
+  template <typename..., typename T = ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_union_ref() && {
     return {std::move(value_.a_union), type_, a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
+  template <typename..., typename T = ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> opt_a_union_ref() const& {
     return {value_.opt_a_union, type_, opt_a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
+  template <typename..., typename T = ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> opt_a_union_ref() const&& {
     return {std::move(value_.opt_a_union), type_, opt_a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
+  template <typename..., typename T = ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> opt_a_union_ref() & {
     return {value_.opt_a_union, type_, opt_a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::SimpleUnion>
+  template <typename..., typename T = ::some::valid::ns::SimpleUnion>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> opt_a_union_ref() && {
     return {std::move(value_.opt_a_union), type_, opt_a_union, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_union_list_ref() const& {
     return {value_.a_union_list, type_, a_union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_union_list_ref() const&& {
     return {std::move(value_.a_union_list), type_, a_union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> a_union_list_ref() & {
     return {value_.a_union_list, type_, a_union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_union_list_ref() && {
     return {std::move(value_.a_union_list), type_, a_union_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_union_typedef_ref() const& {
     return {value_.a_union_typedef, type_, a_union_typedef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_union_typedef_ref() const&& {
     return {std::move(value_.a_union_typedef), type_, a_union_typedef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> a_union_typedef_ref() & {
     return {value_.a_union_typedef, type_, a_union_typedef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_union_typedef_ref() && {
     return {std::move(value_.a_union_typedef), type_, a_union_typedef, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> a_union_typedef_list_ref() const& {
     return {value_.a_union_typedef_list, type_, a_union_typedef_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> a_union_typedef_list_ref() const&& {
     return {std::move(value_.a_union_typedef_list), type_, a_union_typedef_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> a_union_typedef_list_ref() & {
     return {value_.a_union_typedef_list, type_, a_union_typedef_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> a_union_typedef_list_ref() && {
     return {std::move(value_.a_union_typedef_list), type_, a_union_typedef_list, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -4130,60 +4100,60 @@ class ComplexUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> MyBinaryListField4_ref() && {
     return {std::move(value_.MyBinaryListField4), type_, MyBinaryListField4, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> ref_field_ref() const& {
     return {value_.ref_field, type_, ref_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> ref_field_ref() const&& {
     return {std::move(value_.ref_field), type_, ref_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> ref_field_ref() & {
     return {value_.ref_field, type_, ref_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> ref_field_ref() && {
     return {std::move(value_.ref_field), type_, ref_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> ref_field2_ref() const& {
     return {value_.ref_field2, type_, ref_field2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> ref_field2_ref() const&& {
     return {std::move(value_.ref_field2), type_, ref_field2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> ref_field2_ref() & {
     return {value_.ref_field2, type_, ref_field2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> ref_field2_ref() && {
     return {std::move(value_.ref_field2), type_, ref_field2, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::some::valid::ns::AnException>
+  template <typename..., typename T = ::some::valid::ns::AnException>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> excp_field_ref() const& {
     return {value_.excp_field, type_, excp_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::AnException>
+  template <typename..., typename T = ::some::valid::ns::AnException>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> excp_field_ref() const&& {
     return {std::move(value_.excp_field), type_, excp_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::AnException>
+  template <typename..., typename T = ::some::valid::ns::AnException>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> excp_field_ref() & {
     return {value_.excp_field, type_, excp_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::AnException>
+  template <typename..., typename T = ::some::valid::ns::AnException>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> excp_field_ref() && {
     return {std::move(value_.excp_field), type_, excp_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -4212,7 +4182,7 @@ class ComplexUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ComplexUnion >;
+  friend class ::apache::thrift::Cpp2Ops<ComplexUnion>;
   friend void swap(ComplexUnion& a, ComplexUnion& b);
 };
 
@@ -4225,13 +4195,25 @@ uint32_t ComplexUnion::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-class AnException final : public apache::thrift::TException {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
+class FOLLY_EXPORT AnException final : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
+         ::apache::thrift::ExceptionKind::UNSPECIFIED;
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
+         ::apache::thrift::ExceptionSafety::UNSPECIFIED;
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
+         ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
   using __fbthrift_cpp2_type = AnException;
@@ -4242,63 +4224,55 @@ class AnException final : public apache::thrift::TException {
  public:
 
   AnException();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  explicit AnException(std::string __message);
 
-
-  explicit AnException(const std::string& __message) :
-      message2(__message) {}
-
-  explicit AnException(std::string&& __message) :
-      message2(std::move(__message)) {}
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AnException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<int32_t> exception_list__arg, ::std::set<int64_t> exception_set__arg, ::std::map<::std::string, int32_t> exception_map__arg, ::std::map<::std::string, int32_t> req_exception_map__arg,  ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector< ::some::valid::ns::MyEnumA> enum_container__arg,  ::some::valid::ns::MyStruct a_struct__arg, ::std::set< ::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list__arg,  ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list__arg);
+  AnException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<::std::int32_t> exception_list__arg, ::std::set<::std::int64_t> exception_set__arg, ::std::map<::std::string, ::std::int32_t> exception_map__arg, ::std::map<::std::string, ::std::int32_t> req_exception_map__arg, ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector<::some::valid::ns::MyEnumA> enum_container__arg, ::some::valid::ns::MyStruct a_struct__arg, ::std::set<::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector<::some::valid::ns::SimpleUnion> a_union_list__arg, ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list__arg);
 
-  AnException(AnException&&) = default;
+  AnException(AnException&&) noexcept;
 
-  AnException(const AnException&) = default;
+  AnException(const AnException& src);
 
 
-  AnException& operator=(AnException&&) = default;
-
-  AnException& operator=(const AnException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  AnException& operator=(AnException&&) noexcept;
+  AnException& operator=(const AnException& src);
   void __clear();
 
-  ~AnException();
+  ~AnException() override;
 
  private:
-  int32_t code;
+  ::std::int32_t code;
  public:
-  int32_t req_code;
+  ::std::int32_t req_code;
  private:
   ::std::string message2;
  public:
   ::std::string req_message;
  private:
-  ::std::vector<int32_t> exception_list;
+  ::std::vector<::std::int32_t> exception_list;
  private:
-  ::std::set<int64_t> exception_set;
+  ::std::set<::std::int64_t> exception_set;
  private:
-  ::std::map<::std::string, int32_t> exception_map;
+  ::std::map<::std::string, ::std::int32_t> exception_map;
  public:
-  ::std::map<::std::string, int32_t> req_exception_map;
+  ::std::map<::std::string, ::std::int32_t> req_exception_map;
  private:
-   ::some::valid::ns::MyEnumA enum_field;
+  ::some::valid::ns::MyEnumA enum_field;
  private:
-  ::std::vector< ::some::valid::ns::MyEnumA> enum_container;
+  ::std::vector<::some::valid::ns::MyEnumA> enum_container;
  private:
-   ::some::valid::ns::MyStruct a_struct;
+  ::some::valid::ns::MyStruct a_struct;
  private:
-  ::std::set< ::some::valid::ns::MyStruct> a_set_struct;
+  ::std::set<::some::valid::ns::MyStruct> a_set_struct;
  private:
-  ::std::vector< ::some::valid::ns::SimpleUnion> a_union_list;
+  ::std::vector<::some::valid::ns::SimpleUnion> a_union_list;
  private:
-   ::some::valid::ns::unionTypeDef union_typedef;
+  ::some::valid::ns::unionTypeDef union_typedef;
  private:
-  ::std::vector< ::some::valid::ns::unionTypeDef> a_union_typedef_list;
+  ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool code;
@@ -4314,67 +4288,52 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool union_typedef;
     bool a_union_typedef_list;
   } __isset = {};
-  bool operator==(const AnException& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AnException& __x, const AnException& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const AnException& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AnException& __x, const AnException& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AnException& __x, const AnException& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AnException& __x, const AnException& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+ public:
+
+  bool operator==(const AnException&) const;
+  bool operator<(const AnException&) const;
+
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> code_ref() const& {
     return {this->code, __isset.code};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> code_ref() const&& {
     return {std::move(this->code), __isset.code};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> code_ref() & {
     return {this->code, __isset.code};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> code_ref() && {
     return {std::move(this->code), __isset.code};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto req_code_ref() const& {
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_code_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_code};
   }
 
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto req_code_ref() const&& {
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_code_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_code)};
   }
 
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto req_code_ref() & {
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_code_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_code};
   }
 
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto req_code_ref() && {
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_code_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_code)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> message2_ref() const& {
     return {this->message2, __isset.message2};
@@ -4394,283 +4353,264 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> message2_ref() && {
     return {std::move(this->message2), __isset.message2};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto req_message_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_message_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_message};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto req_message_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_message_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_message)};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto req_message_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_message_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_message};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto req_message_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_message_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_message)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> exception_list_ref() const& {
     return {this->exception_list, __isset.exception_list};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> exception_list_ref() const&& {
     return {std::move(this->exception_list), __isset.exception_list};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> exception_list_ref() & {
     return {this->exception_list, __isset.exception_list};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> exception_list_ref() && {
     return {std::move(this->exception_list), __isset.exception_list};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set<int64_t>>
+  template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> exception_set_ref() const& {
     return {this->exception_set, __isset.exception_set};
   }
 
-  template <typename..., typename T = ::std::set<int64_t>>
+  template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> exception_set_ref() const&& {
     return {std::move(this->exception_set), __isset.exception_set};
   }
 
-  template <typename..., typename T = ::std::set<int64_t>>
+  template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> exception_set_ref() & {
     return {this->exception_set, __isset.exception_set};
   }
 
-  template <typename..., typename T = ::std::set<int64_t>>
+  template <typename..., typename T = ::std::set<::std::int64_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> exception_set_ref() && {
     return {std::move(this->exception_set), __isset.exception_set};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> exception_map_ref() const& {
     return {this->exception_map, __isset.exception_map};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> exception_map_ref() const&& {
     return {std::move(this->exception_map), __isset.exception_map};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> exception_map_ref() & {
     return {this->exception_map, __isset.exception_map};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> exception_map_ref() && {
     return {std::move(this->exception_map), __isset.exception_map};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
-  FOLLY_ERASE auto req_exception_map_ref() const& {
+
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_exception_map_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_exception_map};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
-  FOLLY_ERASE auto req_exception_map_ref() const&& {
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_exception_map_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_exception_map)};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
-  FOLLY_ERASE auto req_exception_map_ref() & {
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_exception_map_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_exception_map};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
-  FOLLY_ERASE auto req_exception_map_ref() && {
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_exception_map_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_exception_map)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> enum_field_ref() const& {
     return {this->enum_field, __isset.enum_field};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> enum_field_ref() const&& {
     return {std::move(this->enum_field), __isset.enum_field};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> enum_field_ref() & {
     return {this->enum_field, __isset.enum_field};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> enum_field_ref() && {
     return {std::move(this->enum_field), __isset.enum_field};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> enum_container_ref() const& {
     return {this->enum_container, __isset.enum_container};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> enum_container_ref() const&& {
     return {std::move(this->enum_container), __isset.enum_container};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> enum_container_ref() & {
     return {this->enum_container, __isset.enum_container};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> enum_container_ref() && {
     return {std::move(this->enum_container), __isset.enum_container};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_struct_ref() const& {
     return {this->a_struct, __isset.a_struct};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_struct_ref() const&& {
     return {std::move(this->a_struct), __isset.a_struct};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> a_struct_ref() & {
     return {this->a_struct, __isset.a_struct};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_struct_ref() && {
     return {std::move(this->a_struct), __isset.a_struct};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_set_struct_ref() const& {
     return {this->a_set_struct, __isset.a_set_struct};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_set_struct_ref() const&& {
     return {std::move(this->a_set_struct), __isset.a_set_struct};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> a_set_struct_ref() & {
     return {this->a_set_struct, __isset.a_set_struct};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_set_struct_ref() && {
     return {std::move(this->a_set_struct), __isset.a_set_struct};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_union_list_ref() const& {
     return {this->a_union_list, __isset.a_union_list};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_union_list_ref() const&& {
     return {std::move(this->a_union_list), __isset.a_union_list};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> a_union_list_ref() & {
     return {this->a_union_list, __isset.a_union_list};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::SimpleUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::SimpleUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_union_list_ref() && {
     return {std::move(this->a_union_list), __isset.a_union_list};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> union_typedef_ref() const& {
     return {this->union_typedef, __isset.union_typedef};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> union_typedef_ref() const&& {
     return {std::move(this->union_typedef), __isset.union_typedef};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> union_typedef_ref() & {
     return {this->union_typedef, __isset.union_typedef};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> union_typedef_ref() && {
     return {std::move(this->union_typedef), __isset.union_typedef};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> a_union_typedef_list_ref() const& {
     return {this->a_union_typedef_list, __isset.a_union_typedef_list};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> a_union_typedef_list_ref() const&& {
     return {std::move(this->a_union_typedef_list), __isset.a_union_typedef_list};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> a_union_typedef_list_ref() & {
     return {this->a_union_typedef_list, __isset.a_union_typedef_list};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> a_union_typedef_list_ref() && {
     return {std::move(this->a_union_typedef_list), __isset.a_union_typedef_list};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_code() const {
+  ::std::int32_t get_code() const {
     return code;
   }
 
-  int32_t& set_code(int32_t code_) {
+  [[deprecated("Use `FOO.code_ref() = BAR;` instead of `FOO.set_code(BAR);`")]]
+  ::std::int32_t& set_code(::std::int32_t code_) {
     code = code_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.code = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return code;
   }
 
-  int32_t get_req_code() const {
+  ::std::int32_t get_req_code() const {
     return req_code;
   }
 
-  int32_t& set_req_code(int32_t req_code_) {
+  [[deprecated("Use `FOO.req_code_ref() = BAR;` instead of `FOO.set_req_code(BAR);`")]]
+  ::std::int32_t& set_req_code(::std::int32_t req_code_) {
     req_code = req_code_;
     return req_code;
   }
@@ -4684,11 +4624,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_AnException_message2_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.message2_ref() = BAR;` instead of `FOO.set_message2(BAR);`")]]
   ::std::string& set_message2(T_AnException_message2_struct_setter&& message2_) {
     message2 = std::forward<T_AnException_message2_struct_setter>(message2_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.message2 = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return message2;
   }
 
@@ -4701,127 +4640,119 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_AnException_req_message_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.req_message_ref() = BAR;` instead of `FOO.set_req_message(BAR);`")]]
   ::std::string& set_req_message(T_AnException_req_message_struct_setter&& req_message_) {
     req_message = std::forward<T_AnException_req_message_struct_setter>(req_message_);
     return req_message;
   }
-  const ::std::vector<int32_t>& get_exception_list() const&;
-  ::std::vector<int32_t> get_exception_list() &&;
+  const ::std::vector<::std::int32_t>& get_exception_list() const&;
+  ::std::vector<::std::int32_t> get_exception_list() &&;
 
-  template <typename T_AnException_exception_list_struct_setter = ::std::vector<int32_t>>
-  ::std::vector<int32_t>& set_exception_list(T_AnException_exception_list_struct_setter&& exception_list_) {
+  template <typename T_AnException_exception_list_struct_setter = ::std::vector<::std::int32_t>>
+  [[deprecated("Use `FOO.exception_list_ref() = BAR;` instead of `FOO.set_exception_list(BAR);`")]]
+  ::std::vector<::std::int32_t>& set_exception_list(T_AnException_exception_list_struct_setter&& exception_list_) {
     exception_list = std::forward<T_AnException_exception_list_struct_setter>(exception_list_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.exception_list = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return exception_list;
   }
-  const ::std::set<int64_t>& get_exception_set() const&;
-  ::std::set<int64_t> get_exception_set() &&;
+  const ::std::set<::std::int64_t>& get_exception_set() const&;
+  ::std::set<::std::int64_t> get_exception_set() &&;
 
-  template <typename T_AnException_exception_set_struct_setter = ::std::set<int64_t>>
-  ::std::set<int64_t>& set_exception_set(T_AnException_exception_set_struct_setter&& exception_set_) {
+  template <typename T_AnException_exception_set_struct_setter = ::std::set<::std::int64_t>>
+  [[deprecated("Use `FOO.exception_set_ref() = BAR;` instead of `FOO.set_exception_set(BAR);`")]]
+  ::std::set<::std::int64_t>& set_exception_set(T_AnException_exception_set_struct_setter&& exception_set_) {
     exception_set = std::forward<T_AnException_exception_set_struct_setter>(exception_set_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.exception_set = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return exception_set;
   }
-  const ::std::map<::std::string, int32_t>& get_exception_map() const&;
-  ::std::map<::std::string, int32_t> get_exception_map() &&;
+  const ::std::map<::std::string, ::std::int32_t>& get_exception_map() const&;
+  ::std::map<::std::string, ::std::int32_t> get_exception_map() &&;
 
-  template <typename T_AnException_exception_map_struct_setter = ::std::map<::std::string, int32_t>>
-  ::std::map<::std::string, int32_t>& set_exception_map(T_AnException_exception_map_struct_setter&& exception_map_) {
+  template <typename T_AnException_exception_map_struct_setter = ::std::map<::std::string, ::std::int32_t>>
+  [[deprecated("Use `FOO.exception_map_ref() = BAR;` instead of `FOO.set_exception_map(BAR);`")]]
+  ::std::map<::std::string, ::std::int32_t>& set_exception_map(T_AnException_exception_map_struct_setter&& exception_map_) {
     exception_map = std::forward<T_AnException_exception_map_struct_setter>(exception_map_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.exception_map = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return exception_map;
   }
-  const ::std::map<::std::string, int32_t>& get_req_exception_map() const&;
-  ::std::map<::std::string, int32_t> get_req_exception_map() &&;
+  const ::std::map<::std::string, ::std::int32_t>& get_req_exception_map() const&;
+  ::std::map<::std::string, ::std::int32_t> get_req_exception_map() &&;
 
-  template <typename T_AnException_req_exception_map_struct_setter = ::std::map<::std::string, int32_t>>
-  ::std::map<::std::string, int32_t>& set_req_exception_map(T_AnException_req_exception_map_struct_setter&& req_exception_map_) {
+  template <typename T_AnException_req_exception_map_struct_setter = ::std::map<::std::string, ::std::int32_t>>
+  [[deprecated("Use `FOO.req_exception_map_ref() = BAR;` instead of `FOO.set_req_exception_map(BAR);`")]]
+  ::std::map<::std::string, ::std::int32_t>& set_req_exception_map(T_AnException_req_exception_map_struct_setter&& req_exception_map_) {
     req_exception_map = std::forward<T_AnException_req_exception_map_struct_setter>(req_exception_map_);
     return req_exception_map;
   }
 
-   ::some::valid::ns::MyEnumA get_enum_field() const {
+  ::some::valid::ns::MyEnumA get_enum_field() const {
     return enum_field;
   }
 
-   ::some::valid::ns::MyEnumA& set_enum_field( ::some::valid::ns::MyEnumA enum_field_) {
+  [[deprecated("Use `FOO.enum_field_ref() = BAR;` instead of `FOO.set_enum_field(BAR);`")]]
+  ::some::valid::ns::MyEnumA& set_enum_field(::some::valid::ns::MyEnumA enum_field_) {
     enum_field = enum_field_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.enum_field = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return enum_field;
   }
-  const ::std::vector< ::some::valid::ns::MyEnumA>& get_enum_container() const&;
-  ::std::vector< ::some::valid::ns::MyEnumA> get_enum_container() &&;
+  const ::std::vector<::some::valid::ns::MyEnumA>& get_enum_container() const&;
+  ::std::vector<::some::valid::ns::MyEnumA> get_enum_container() &&;
 
-  template <typename T_AnException_enum_container_struct_setter = ::std::vector< ::some::valid::ns::MyEnumA>>
-  ::std::vector< ::some::valid::ns::MyEnumA>& set_enum_container(T_AnException_enum_container_struct_setter&& enum_container_) {
+  template <typename T_AnException_enum_container_struct_setter = ::std::vector<::some::valid::ns::MyEnumA>>
+  [[deprecated("Use `FOO.enum_container_ref() = BAR;` instead of `FOO.set_enum_container(BAR);`")]]
+  ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(T_AnException_enum_container_struct_setter&& enum_container_) {
     enum_container = std::forward<T_AnException_enum_container_struct_setter>(enum_container_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.enum_container = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return enum_container;
   }
-  const  ::some::valid::ns::MyStruct& get_a_struct() const&;
-   ::some::valid::ns::MyStruct get_a_struct() &&;
+  const ::some::valid::ns::MyStruct& get_a_struct() const&;
+  ::some::valid::ns::MyStruct get_a_struct() &&;
 
-  template <typename T_AnException_a_struct_struct_setter =  ::some::valid::ns::MyStruct>
-   ::some::valid::ns::MyStruct& set_a_struct(T_AnException_a_struct_struct_setter&& a_struct_) {
+  template <typename T_AnException_a_struct_struct_setter = ::some::valid::ns::MyStruct>
+  [[deprecated("Use `FOO.a_struct_ref() = BAR;` instead of `FOO.set_a_struct(BAR);`")]]
+  ::some::valid::ns::MyStruct& set_a_struct(T_AnException_a_struct_struct_setter&& a_struct_) {
     a_struct = std::forward<T_AnException_a_struct_struct_setter>(a_struct_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.a_struct = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return a_struct;
   }
-  const ::std::set< ::some::valid::ns::MyStruct>& get_a_set_struct() const&;
-  ::std::set< ::some::valid::ns::MyStruct> get_a_set_struct() &&;
+  const ::std::set<::some::valid::ns::MyStruct>& get_a_set_struct() const&;
+  ::std::set<::some::valid::ns::MyStruct> get_a_set_struct() &&;
 
-  template <typename T_AnException_a_set_struct_struct_setter = ::std::set< ::some::valid::ns::MyStruct>>
-  ::std::set< ::some::valid::ns::MyStruct>& set_a_set_struct(T_AnException_a_set_struct_struct_setter&& a_set_struct_) {
+  template <typename T_AnException_a_set_struct_struct_setter = ::std::set<::some::valid::ns::MyStruct>>
+  [[deprecated("Use `FOO.a_set_struct_ref() = BAR;` instead of `FOO.set_a_set_struct(BAR);`")]]
+  ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(T_AnException_a_set_struct_struct_setter&& a_set_struct_) {
     a_set_struct = std::forward<T_AnException_a_set_struct_struct_setter>(a_set_struct_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.a_set_struct = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return a_set_struct;
   }
-  const ::std::vector< ::some::valid::ns::SimpleUnion>& get_a_union_list() const&;
-  ::std::vector< ::some::valid::ns::SimpleUnion> get_a_union_list() &&;
+  const ::std::vector<::some::valid::ns::SimpleUnion>& get_a_union_list() const&;
+  ::std::vector<::some::valid::ns::SimpleUnion> get_a_union_list() &&;
 
-  template <typename T_AnException_a_union_list_struct_setter = ::std::vector< ::some::valid::ns::SimpleUnion>>
-  ::std::vector< ::some::valid::ns::SimpleUnion>& set_a_union_list(T_AnException_a_union_list_struct_setter&& a_union_list_) {
+  template <typename T_AnException_a_union_list_struct_setter = ::std::vector<::some::valid::ns::SimpleUnion>>
+  [[deprecated("Use `FOO.a_union_list_ref() = BAR;` instead of `FOO.set_a_union_list(BAR);`")]]
+  ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(T_AnException_a_union_list_struct_setter&& a_union_list_) {
     a_union_list = std::forward<T_AnException_a_union_list_struct_setter>(a_union_list_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.a_union_list = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return a_union_list;
   }
-  const  ::some::valid::ns::unionTypeDef& get_union_typedef() const&;
-   ::some::valid::ns::unionTypeDef get_union_typedef() &&;
+  const ::some::valid::ns::unionTypeDef& get_union_typedef() const&;
+  ::some::valid::ns::unionTypeDef get_union_typedef() &&;
 
-  template <typename T_AnException_union_typedef_struct_setter =  ::some::valid::ns::unionTypeDef>
-   ::some::valid::ns::unionTypeDef& set_union_typedef(T_AnException_union_typedef_struct_setter&& union_typedef_) {
+  template <typename T_AnException_union_typedef_struct_setter = ::some::valid::ns::unionTypeDef>
+  [[deprecated("Use `FOO.union_typedef_ref() = BAR;` instead of `FOO.set_union_typedef(BAR);`")]]
+  ::some::valid::ns::unionTypeDef& set_union_typedef(T_AnException_union_typedef_struct_setter&& union_typedef_) {
     union_typedef = std::forward<T_AnException_union_typedef_struct_setter>(union_typedef_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.union_typedef = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return union_typedef;
   }
-  const ::std::vector< ::some::valid::ns::unionTypeDef>& get_a_union_typedef_list() const&;
-  ::std::vector< ::some::valid::ns::unionTypeDef> get_a_union_typedef_list() &&;
+  const ::std::vector<::some::valid::ns::unionTypeDef>& get_a_union_typedef_list() const&;
+  ::std::vector<::some::valid::ns::unionTypeDef> get_a_union_typedef_list() &&;
 
-  template <typename T_AnException_a_union_typedef_list_struct_setter = ::std::vector< ::some::valid::ns::unionTypeDef>>
-  ::std::vector< ::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T_AnException_a_union_typedef_list_struct_setter&& a_union_typedef_list_) {
+  template <typename T_AnException_a_union_typedef_list_struct_setter = ::std::vector<::some::valid::ns::unionTypeDef>>
+  [[deprecated("Use `FOO.a_union_typedef_list_ref() = BAR;` instead of `FOO.set_a_union_typedef_list(BAR);`")]]
+  ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T_AnException_a_union_typedef_list_struct_setter&& a_union_typedef_list_) {
     a_union_typedef_list = std::forward<T_AnException_a_union_typedef_list_struct_setter>(a_union_typedef_list_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.a_union_typedef_list = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return a_union_typedef_list;
   }
 
@@ -4842,7 +4773,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AnException >;
+  friend class ::apache::thrift::Cpp2Ops<AnException>;
   friend void swap(AnException& a, AnException& b);
 };
 
@@ -4855,13 +4786,25 @@ uint32_t AnException::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
-class AnotherException : public apache::thrift::TException {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
+class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+  static constexpr ::apache::thrift::ExceptionKind __fbthrift_cpp2_gen_exception_kind =
+         ::apache::thrift::ExceptionKind::UNSPECIFIED;
+  static constexpr ::apache::thrift::ExceptionSafety __fbthrift_cpp2_gen_exception_safety =
+         ::apache::thrift::ExceptionSafety::UNSPECIFIED;
+  static constexpr ::apache::thrift::ExceptionBlame __fbthrift_cpp2_gen_exception_blame =
+         ::apache::thrift::ExceptionBlame::UNSPECIFIED;
 
  public:
   using __fbthrift_cpp2_type = AnotherException;
@@ -4871,101 +4814,82 @@ class AnotherException : public apache::thrift::TException {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  AnotherException() :
-      code(0),
-      req_code(0) {}
+  AnotherException();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AnotherException(apache::thrift::FragileConstructor, int32_t code__arg, int32_t req_code__arg, ::std::string message__arg);
+  AnotherException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message__arg);
 
-  AnotherException(AnotherException&&) = default;
+  AnotherException(AnotherException&&) noexcept;
 
-  AnotherException(const AnotherException&) = default;
+  AnotherException(const AnotherException& src);
 
 
-  AnotherException& operator=(AnotherException&&) = default;
-
-  AnotherException& operator=(const AnotherException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  AnotherException& operator=(AnotherException&&) noexcept;
+  AnotherException& operator=(const AnotherException& src);
   void __clear();
 
-  virtual ~AnotherException() {}
+  virtual ~AnotherException();
 
  private:
-  int32_t code;
+  ::std::int32_t code;
  public:
-  int32_t req_code;
+  ::std::int32_t req_code;
  private:
   ::std::string message;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool code;
     bool message;
   } __isset = {};
-  bool operator==(const AnotherException& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AnotherException& __x, const AnotherException& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const AnotherException& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AnotherException& __x, const AnotherException& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AnotherException& __x, const AnotherException& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AnotherException& __x, const AnotherException& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+ public:
+
+  bool operator==(const AnotherException&) const;
+  bool operator<(const AnotherException&) const;
+
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> code_ref() const& {
     return {this->code, __isset.code};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> code_ref() const&& {
     return {std::move(this->code), __isset.code};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> code_ref() & {
     return {this->code, __isset.code};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> code_ref() && {
     return {std::move(this->code), __isset.code};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto req_code_ref() const& {
+
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_code_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_code};
   }
 
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto req_code_ref() const&& {
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_code_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_code)};
   }
 
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto req_code_ref() & {
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_code_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_code};
   }
 
-  template <typename..., typename T = int32_t>
-  FOLLY_ERASE auto req_code_ref() && {
+  template <typename..., typename T = ::std::int32_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_code_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_code)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> message_ref() const& {
     return {this->message, __isset.message};
@@ -4985,25 +4909,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> message_ref() && {
     return {std::move(this->message), __isset.message};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_code() const {
+  ::std::int32_t get_code() const {
     return code;
   }
 
-  int32_t& set_code(int32_t code_) {
+  [[deprecated("Use `FOO.code_ref() = BAR;` instead of `FOO.set_code(BAR);`")]]
+  ::std::int32_t& set_code(::std::int32_t code_) {
     code = code_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.code = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return code;
   }
 
-  int32_t get_req_code() const {
+  ::std::int32_t get_req_code() const {
     return req_code;
   }
 
-  int32_t& set_req_code(int32_t req_code_) {
+  [[deprecated("Use `FOO.req_code_ref() = BAR;` instead of `FOO.set_req_code(BAR);`")]]
+  ::std::int32_t& set_req_code(::std::int32_t req_code_) {
     req_code = req_code_;
     return req_code;
   }
@@ -5017,11 +4940,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_AnotherException_message_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_AnotherException_message_struct_setter&& message_) {
     message = std::forward<T_AnotherException_message_struct_setter>(message_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.message = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return message;
   }
 
@@ -5042,7 +4964,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AnotherException >;
+  friend class ::apache::thrift::Cpp2Ops<AnotherException>;
   friend void swap(AnotherException& a, AnotherException& b);
 };
 
@@ -5055,6 +4977,11 @@ uint32_t AnotherException::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class containerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -5062,6 +4989,7 @@ class containerStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = containerStruct;
@@ -5072,11 +5000,10 @@ class containerStruct final  {
  public:
 
   containerStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<int32_t> fieldC__arg, ::std::set<int32_t> req_fieldC__arg, ::std::set<int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg, ::std::vector<::std::vector<int32_t>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG__arg, ::std::vector<::std::set<int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg,  ::some::valid::ns::simpleTypeDef fieldN__arg,  ::some::valid::ns::complexStructTypeDef fieldO__arg, ::std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP__arg,  ::some::valid::ns::MyEnumA fieldQ__arg,  ::some::valid::ns::MyEnumA fieldR__arg,  ::some::valid::ns::MyEnumA req_fieldR__arg,  ::some::valid::ns::MyEnumA opt_fieldR__arg,  ::some::valid::ns::MyEnumA fieldS__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldT__arg, ::std::vector< ::some::valid::ns::MyEnumA> fieldU__arg,  ::some::valid::ns::MyStruct fieldV__arg,  ::some::valid::ns::MyStruct req_fieldV__arg,  ::some::valid::ns::MyStruct opt_fieldV__arg, ::std::set< ::some::valid::ns::MyStruct> fieldW__arg,  ::some::valid::ns::ComplexUnion fieldX__arg,  ::some::valid::ns::ComplexUnion req_fieldX__arg,  ::some::valid::ns::ComplexUnion opt_fieldX__arg, ::std::vector< ::some::valid::ns::ComplexUnion> fieldY__arg,  ::some::valid::ns::unionTypeDef fieldZ__arg, ::std::vector< ::some::valid::ns::unionTypeDef> fieldAA__arg, ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB__arg,  ::some::valid::ns::MyEnumB fieldAC__arg,  ::a::different::ns::AnEnum fieldAD__arg, ::std::map<::std::string, int32_t> fieldAE__arg,  ::some::valid::ns::IndirectionD fieldSD__arg);
+  containerStruct(apache::thrift::FragileConstructor, bool fieldA__arg, bool req_fieldA__arg, bool opt_fieldA__arg, ::std::map<::std::string, bool> fieldB__arg, ::std::map<::std::string, bool> req_fieldB__arg, ::std::map<::std::string, bool> opt_fieldB__arg, ::std::set<::std::int32_t> fieldC__arg, ::std::set<::std::int32_t> req_fieldC__arg, ::std::set<::std::int32_t> opt_fieldC__arg, ::std::string fieldD__arg, ::std::string fieldE__arg, ::std::string req_fieldE__arg, ::std::string opt_fieldE__arg, ::std::vector<::std::vector<::std::int32_t>> fieldF__arg, ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> fieldG__arg, ::std::vector<::std::set<::std::int32_t>> fieldH__arg, bool fieldI__arg, ::std::map<::std::string, ::std::vector<::std::int32_t>> fieldJ__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> fieldK__arg, ::std::set<::std::set<::std::set<bool>>> fieldL__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM__arg, ::some::valid::ns::simpleTypeDef fieldN__arg, ::some::valid::ns::complexStructTypeDef fieldO__arg, ::std::vector<::some::valid::ns::mostComplexTypeDef> fieldP__arg, ::some::valid::ns::MyEnumA fieldQ__arg, ::some::valid::ns::MyEnumA fieldR__arg, ::some::valid::ns::MyEnumA req_fieldR__arg, ::some::valid::ns::MyEnumA opt_fieldR__arg, ::some::valid::ns::MyEnumA fieldS__arg, ::std::vector<::some::valid::ns::MyEnumA> fieldT__arg, ::std::vector<::some::valid::ns::MyEnumA> fieldU__arg, ::some::valid::ns::MyStruct fieldV__arg, ::some::valid::ns::MyStruct req_fieldV__arg, ::some::valid::ns::MyStruct opt_fieldV__arg, ::std::set<::some::valid::ns::MyStruct> fieldW__arg, ::some::valid::ns::ComplexUnion fieldX__arg, ::some::valid::ns::ComplexUnion req_fieldX__arg, ::some::valid::ns::ComplexUnion opt_fieldX__arg, ::std::vector<::some::valid::ns::ComplexUnion> fieldY__arg, ::some::valid::ns::unionTypeDef fieldZ__arg, ::std::vector<::some::valid::ns::unionTypeDef> fieldAA__arg, ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC> fieldAB__arg, ::some::valid::ns::MyEnumB fieldAC__arg, ::a::different::ns::AnEnum fieldAD__arg, ::std::map<::std::string, ::std::int32_t> fieldAE__arg, ::some::valid::ns::IndirectionD fieldSD__arg);
 
   containerStruct(containerStruct&&) = default;
 
@@ -5099,11 +5026,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
  private:
   ::std::map<::std::string, bool> opt_fieldB;
  private:
-  ::std::set<int32_t> fieldC;
+  ::std::set<::std::int32_t> fieldC;
  public:
-  ::std::set<int32_t> req_fieldC;
+  ::std::set<::std::int32_t> req_fieldC;
  private:
-  ::std::set<int32_t> opt_fieldC;
+  ::std::set<::std::int32_t> opt_fieldC;
  private:
   ::std::string fieldD;
  private:
@@ -5113,73 +5040,73 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
  private:
   ::std::string opt_fieldE;
  private:
-  ::std::vector<::std::vector<int32_t>> fieldF;
+  ::std::vector<::std::vector<::std::int32_t>> fieldF;
  private:
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> fieldG;
+  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> fieldG;
  private:
-  ::std::vector<::std::set<int32_t>> fieldH;
+  ::std::vector<::std::set<::std::int32_t>> fieldH;
  private:
   bool fieldI;
  private:
-  ::std::map<::std::string, ::std::vector<int32_t>> fieldJ;
+  ::std::map<::std::string, ::std::vector<::std::int32_t>> fieldJ;
  private:
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> fieldK;
+  ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> fieldK;
  private:
   ::std::set<::std::set<::std::set<bool>>> fieldL;
  private:
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM;
+  ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> fieldM;
  private:
-   ::some::valid::ns::simpleTypeDef fieldN;
+  ::some::valid::ns::simpleTypeDef fieldN;
  private:
-   ::some::valid::ns::complexStructTypeDef fieldO;
+  ::some::valid::ns::complexStructTypeDef fieldO;
  private:
-  ::std::vector< ::some::valid::ns::mostComplexTypeDef> fieldP;
+  ::std::vector<::some::valid::ns::mostComplexTypeDef> fieldP;
  private:
-   ::some::valid::ns::MyEnumA fieldQ;
+  ::some::valid::ns::MyEnumA fieldQ;
  private:
-   ::some::valid::ns::MyEnumA fieldR;
+  ::some::valid::ns::MyEnumA fieldR;
  public:
-   ::some::valid::ns::MyEnumA req_fieldR;
+  ::some::valid::ns::MyEnumA req_fieldR;
  private:
-   ::some::valid::ns::MyEnumA opt_fieldR;
+  ::some::valid::ns::MyEnumA opt_fieldR;
  private:
-   ::some::valid::ns::MyEnumA fieldS;
+  ::some::valid::ns::MyEnumA fieldS;
  private:
-  ::std::vector< ::some::valid::ns::MyEnumA> fieldT;
+  ::std::vector<::some::valid::ns::MyEnumA> fieldT;
  private:
-  ::std::vector< ::some::valid::ns::MyEnumA> fieldU;
+  ::std::vector<::some::valid::ns::MyEnumA> fieldU;
  private:
-   ::some::valid::ns::MyStruct fieldV;
+  ::some::valid::ns::MyStruct fieldV;
  public:
-   ::some::valid::ns::MyStruct req_fieldV;
+  ::some::valid::ns::MyStruct req_fieldV;
  private:
-   ::some::valid::ns::MyStruct opt_fieldV;
+  ::some::valid::ns::MyStruct opt_fieldV;
  private:
-  ::std::set< ::some::valid::ns::MyStruct> fieldW;
+  ::std::set<::some::valid::ns::MyStruct> fieldW;
  private:
-   ::some::valid::ns::ComplexUnion fieldX;
+  ::some::valid::ns::ComplexUnion fieldX;
  public:
-   ::some::valid::ns::ComplexUnion req_fieldX;
+  ::some::valid::ns::ComplexUnion req_fieldX;
  private:
-   ::some::valid::ns::ComplexUnion opt_fieldX;
+  ::some::valid::ns::ComplexUnion opt_fieldX;
  private:
-  ::std::vector< ::some::valid::ns::ComplexUnion> fieldY;
+  ::std::vector<::some::valid::ns::ComplexUnion> fieldY;
  private:
-   ::some::valid::ns::unionTypeDef fieldZ;
+  ::some::valid::ns::unionTypeDef fieldZ;
  private:
-  ::std::vector< ::some::valid::ns::unionTypeDef> fieldAA;
+  ::std::vector<::some::valid::ns::unionTypeDef> fieldAA;
  private:
-  ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> fieldAB;
+  ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC> fieldAB;
  private:
-   ::some::valid::ns::MyEnumB fieldAC;
+  ::some::valid::ns::MyEnumB fieldAC;
  private:
-   ::a::different::ns::AnEnum fieldAD;
+  ::a::different::ns::AnEnum fieldAD;
  private:
-  ::std::map<::std::string, int32_t> fieldAE;
+  ::std::map<::std::string, ::std::int32_t> fieldAE;
  private:
-   ::some::valid::ns::IndirectionD fieldSD;
+  ::some::valid::ns::IndirectionD fieldSD;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -5222,26 +5149,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     bool fieldAE;
     bool fieldSD;
   } __isset = {};
-  bool operator==(const containerStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const containerStruct& __x, const containerStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const containerStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const containerStruct& __x, const containerStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const containerStruct& __x, const containerStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const containerStruct& __x, const containerStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ public:
+
+  bool operator==(const containerStruct&) const;
+  bool operator<(const containerStruct&) const;
+
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
@@ -5261,28 +5174,27 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
   template <typename..., typename T = bool>
-  FOLLY_ERASE auto req_fieldA_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldA_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldA};
   }
 
   template <typename..., typename T = bool>
-  FOLLY_ERASE auto req_fieldA_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldA_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldA)};
   }
 
   template <typename..., typename T = bool>
-  FOLLY_ERASE auto req_fieldA_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_fieldA_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_fieldA};
   }
 
   template <typename..., typename T = bool>
-  FOLLY_ERASE auto req_fieldA_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldA_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldA)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldA_ref() const& {
     return {this->opt_fieldA, __isset.opt_fieldA};
@@ -5302,9 +5214,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldA_ref() && {
     return {std::move(this->opt_fieldA), __isset.opt_fieldA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldB_ref() const& {
     return {this->fieldB, __isset.fieldB};
@@ -5324,28 +5234,27 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB_ref() && {
     return {std::move(this->fieldB), __isset.fieldB};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
   template <typename..., typename T = ::std::map<::std::string, bool>>
-  FOLLY_ERASE auto req_fieldB_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldB_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldB};
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
-  FOLLY_ERASE auto req_fieldB_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldB_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldB)};
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
-  FOLLY_ERASE auto req_fieldB_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_fieldB_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_fieldB};
   }
 
   template <typename..., typename T = ::std::map<::std::string, bool>>
-  FOLLY_ERASE auto req_fieldB_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldB_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldB)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::map<::std::string, bool>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldB_ref() const& {
     return {this->opt_fieldB, __isset.opt_fieldB};
@@ -5365,72 +5274,67 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldB_ref() && {
     return {std::move(this->opt_fieldB), __isset.opt_fieldB};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldC_ref() const& {
     return {this->fieldC, __isset.fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC_ref() const&& {
     return {std::move(this->fieldC), __isset.fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldC_ref() & {
     return {this->fieldC, __isset.fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC_ref() && {
     return {std::move(this->fieldC), __isset.fieldC};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename..., typename T = ::std::set<int32_t>>
-  FOLLY_ERASE auto req_fieldC_ref() const& {
+
+  template <typename..., typename T = ::std::set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldC_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
-  FOLLY_ERASE auto req_fieldC_ref() const&& {
+  template <typename..., typename T = ::std::set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldC_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldC)};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
-  FOLLY_ERASE auto req_fieldC_ref() & {
+  template <typename..., typename T = ::std::set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_fieldC_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
-  FOLLY_ERASE auto req_fieldC_ref() && {
+  template <typename..., typename T = ::std::set<::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldC_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldC)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldC_ref() const& {
     return {this->opt_fieldC, __isset.opt_fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldC_ref() const&& {
     return {std::move(this->opt_fieldC), __isset.opt_fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_fieldC_ref() & {
     return {this->opt_fieldC, __isset.opt_fieldC};
   }
 
-  template <typename..., typename T = ::std::set<int32_t>>
+  template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldC_ref() && {
     return {std::move(this->opt_fieldC), __isset.opt_fieldC};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldD_ref() const& {
     return {this->fieldD, __isset.fieldD};
@@ -5450,9 +5354,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD_ref() && {
     return {std::move(this->fieldD), __isset.fieldD};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldE_ref() const& {
     return {this->fieldE, __isset.fieldE};
@@ -5472,28 +5374,27 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE_ref() && {
     return {std::move(this->fieldE), __isset.fieldE};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto req_fieldE_ref() const& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldE_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldE};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto req_fieldE_ref() const&& {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldE_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldE)};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto req_fieldE_ref() & {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_fieldE_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_fieldE};
   }
 
   template <typename..., typename T = ::std::string>
-  FOLLY_ERASE auto req_fieldE_ref() && {
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldE_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldE)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldE_ref() const& {
     return {this->opt_fieldE, __isset.opt_fieldE};
@@ -5513,75 +5414,67 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldE_ref() && {
     return {std::move(this->opt_fieldE), __isset.opt_fieldE};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldF_ref() const& {
     return {this->fieldF, __isset.fieldF};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldF_ref() const&& {
     return {std::move(this->fieldF), __isset.fieldF};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldF_ref() & {
     return {this->fieldF, __isset.fieldF};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF_ref() && {
     return {std::move(this->fieldF), __isset.fieldF};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldG_ref() const& {
     return {this->fieldG, __isset.fieldG};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldG_ref() const&& {
     return {std::move(this->fieldG), __isset.fieldG};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldG_ref() & {
     return {this->fieldG, __isset.fieldG};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG_ref() && {
     return {std::move(this->fieldG), __isset.fieldG};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<::std::set<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldH_ref() const& {
     return {this->fieldH, __isset.fieldH};
   }
 
-  template <typename..., typename T = ::std::vector<::std::set<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldH_ref() const&& {
     return {std::move(this->fieldH), __isset.fieldH};
   }
 
-  template <typename..., typename T = ::std::vector<::std::set<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldH_ref() & {
     return {this->fieldH, __isset.fieldH};
   }
 
-  template <typename..., typename T = ::std::vector<::std::set<int32_t>>>
+  template <typename..., typename T = ::std::vector<::std::set<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldH_ref() && {
     return {std::move(this->fieldH), __isset.fieldH};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = bool>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldI_ref() const& {
     return {this->fieldI, __isset.fieldI};
@@ -5601,53 +5494,47 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldI_ref() && {
     return {std::move(this->fieldI), __isset.fieldI};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::string, ::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldJ_ref() const& {
     return {this->fieldJ, __isset.fieldJ};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldJ_ref() const&& {
     return {std::move(this->fieldJ), __isset.fieldJ};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldJ_ref() & {
     return {this->fieldJ, __isset.fieldJ};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, ::std::vector<int32_t>>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldJ_ref() && {
     return {std::move(this->fieldJ), __isset.fieldJ};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldK_ref() const& {
     return {this->fieldK, __isset.fieldK};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldK_ref() const&& {
     return {std::move(this->fieldK), __isset.fieldK};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldK_ref() & {
     return {this->fieldK, __isset.fieldK};
   }
 
-  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
+  template <typename..., typename T = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldK_ref() && {
     return {std::move(this->fieldK), __isset.fieldK};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::set<::std::set<::std::set<bool>>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldL_ref() const& {
     return {this->fieldL, __isset.fieldL};
@@ -5667,580 +5554,535 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldL_ref() && {
     return {std::move(this->fieldL), __isset.fieldL};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldM_ref() const& {
     return {this->fieldM, __isset.fieldM};
   }
 
-  template <typename..., typename T = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldM_ref() const&& {
     return {std::move(this->fieldM), __isset.fieldM};
   }
 
-  template <typename..., typename T = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldM_ref() & {
     return {this->fieldM, __isset.fieldM};
   }
 
-  template <typename..., typename T = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  template <typename..., typename T = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldM_ref() && {
     return {std::move(this->fieldM), __isset.fieldM};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::simpleTypeDef>
+  template <typename..., typename T = ::some::valid::ns::simpleTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldN_ref() const& {
     return {this->fieldN, __isset.fieldN};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::simpleTypeDef>
+  template <typename..., typename T = ::some::valid::ns::simpleTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldN_ref() const&& {
     return {std::move(this->fieldN), __isset.fieldN};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::simpleTypeDef>
+  template <typename..., typename T = ::some::valid::ns::simpleTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldN_ref() & {
     return {this->fieldN, __isset.fieldN};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::simpleTypeDef>
+  template <typename..., typename T = ::some::valid::ns::simpleTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldN_ref() && {
     return {std::move(this->fieldN), __isset.fieldN};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::complexStructTypeDef>
+  template <typename..., typename T = ::some::valid::ns::complexStructTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldO_ref() const& {
     return {this->fieldO, __isset.fieldO};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::complexStructTypeDef>
+  template <typename..., typename T = ::some::valid::ns::complexStructTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldO_ref() const&& {
     return {std::move(this->fieldO), __isset.fieldO};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::complexStructTypeDef>
+  template <typename..., typename T = ::some::valid::ns::complexStructTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldO_ref() & {
     return {this->fieldO, __isset.fieldO};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::complexStructTypeDef>
+  template <typename..., typename T = ::some::valid::ns::complexStructTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldO_ref() && {
     return {std::move(this->fieldO), __isset.fieldO};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::mostComplexTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::mostComplexTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldP_ref() const& {
     return {this->fieldP, __isset.fieldP};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::mostComplexTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::mostComplexTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldP_ref() const&& {
     return {std::move(this->fieldP), __isset.fieldP};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::mostComplexTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::mostComplexTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldP_ref() & {
     return {this->fieldP, __isset.fieldP};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::mostComplexTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::mostComplexTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldP_ref() && {
     return {std::move(this->fieldP), __isset.fieldP};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldQ_ref() const& {
     return {this->fieldQ, __isset.fieldQ};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldQ_ref() const&& {
     return {std::move(this->fieldQ), __isset.fieldQ};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldQ_ref() & {
     return {this->fieldQ, __isset.fieldQ};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldQ_ref() && {
     return {std::move(this->fieldQ), __isset.fieldQ};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldR_ref() const& {
     return {this->fieldR, __isset.fieldR};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldR_ref() const&& {
     return {std::move(this->fieldR), __isset.fieldR};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldR_ref() & {
     return {this->fieldR, __isset.fieldR};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldR_ref() && {
     return {std::move(this->fieldR), __isset.fieldR};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
-  FOLLY_ERASE auto req_fieldR_ref() const& {
+
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldR_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldR};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
-  FOLLY_ERASE auto req_fieldR_ref() const&& {
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldR_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldR)};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
-  FOLLY_ERASE auto req_fieldR_ref() & {
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_fieldR_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_fieldR};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
-  FOLLY_ERASE auto req_fieldR_ref() && {
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldR_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldR)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldR_ref() const& {
     return {this->opt_fieldR, __isset.opt_fieldR};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldR_ref() const&& {
     return {std::move(this->opt_fieldR), __isset.opt_fieldR};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_fieldR_ref() & {
     return {this->opt_fieldR, __isset.opt_fieldR};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldR_ref() && {
     return {std::move(this->opt_fieldR), __isset.opt_fieldR};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldS_ref() const& {
     return {this->fieldS, __isset.fieldS};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldS_ref() const&& {
     return {std::move(this->fieldS), __isset.fieldS};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldS_ref() & {
     return {this->fieldS, __isset.fieldS};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumA>
+  template <typename..., typename T = ::some::valid::ns::MyEnumA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldS_ref() && {
     return {std::move(this->fieldS), __isset.fieldS};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldT_ref() const& {
     return {this->fieldT, __isset.fieldT};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldT_ref() const&& {
     return {std::move(this->fieldT), __isset.fieldT};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldT_ref() & {
     return {this->fieldT, __isset.fieldT};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldT_ref() && {
     return {std::move(this->fieldT), __isset.fieldT};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldU_ref() const& {
     return {this->fieldU, __isset.fieldU};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldU_ref() const&& {
     return {std::move(this->fieldU), __isset.fieldU};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldU_ref() & {
     return {this->fieldU, __isset.fieldU};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::MyEnumA>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::MyEnumA>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldU_ref() && {
     return {std::move(this->fieldU), __isset.fieldU};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldV_ref() const& {
     return {this->fieldV, __isset.fieldV};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldV_ref() const&& {
     return {std::move(this->fieldV), __isset.fieldV};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldV_ref() & {
     return {this->fieldV, __isset.fieldV};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldV_ref() && {
     return {std::move(this->fieldV), __isset.fieldV};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
-  FOLLY_ERASE auto req_fieldV_ref() const& {
+
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldV_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldV};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
-  FOLLY_ERASE auto req_fieldV_ref() const&& {
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldV_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldV)};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
-  FOLLY_ERASE auto req_fieldV_ref() & {
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_fieldV_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_fieldV};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
-  FOLLY_ERASE auto req_fieldV_ref() && {
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldV_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldV)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldV_ref() const& {
     return {this->opt_fieldV, __isset.opt_fieldV};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldV_ref() const&& {
     return {std::move(this->opt_fieldV), __isset.opt_fieldV};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_fieldV_ref() & {
     return {this->opt_fieldV, __isset.opt_fieldV};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyStruct>
+  template <typename..., typename T = ::some::valid::ns::MyStruct>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldV_ref() && {
     return {std::move(this->opt_fieldV), __isset.opt_fieldV};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldW_ref() const& {
     return {this->fieldW, __isset.fieldW};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldW_ref() const&& {
     return {std::move(this->fieldW), __isset.fieldW};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldW_ref() & {
     return {this->fieldW, __isset.fieldW};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::MyStruct>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::MyStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldW_ref() && {
     return {std::move(this->fieldW), __isset.fieldW};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldX_ref() const& {
     return {this->fieldX, __isset.fieldX};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldX_ref() const&& {
     return {std::move(this->fieldX), __isset.fieldX};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldX_ref() & {
     return {this->fieldX, __isset.fieldX};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldX_ref() && {
     return {std::move(this->fieldX), __isset.fieldX};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
-  FOLLY_ERASE auto req_fieldX_ref() const& {
+
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> req_fieldX_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->req_fieldX};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
-  FOLLY_ERASE auto req_fieldX_ref() const&& {
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> req_fieldX_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->req_fieldX)};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
-  FOLLY_ERASE auto req_fieldX_ref() & {
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> req_fieldX_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->req_fieldX};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
-  FOLLY_ERASE auto req_fieldX_ref() && {
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> req_fieldX_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->req_fieldX)};
   }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> opt_fieldX_ref() const& {
     return {this->opt_fieldX, __isset.opt_fieldX};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> opt_fieldX_ref() const&& {
     return {std::move(this->opt_fieldX), __isset.opt_fieldX};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> opt_fieldX_ref() & {
     return {this->opt_fieldX, __isset.opt_fieldX};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::ComplexUnion>
+  template <typename..., typename T = ::some::valid::ns::ComplexUnion>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> opt_fieldX_ref() && {
     return {std::move(this->opt_fieldX), __isset.opt_fieldX};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::ComplexUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::ComplexUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldY_ref() const& {
     return {this->fieldY, __isset.fieldY};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::ComplexUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::ComplexUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldY_ref() const&& {
     return {std::move(this->fieldY), __isset.fieldY};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::ComplexUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::ComplexUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldY_ref() & {
     return {this->fieldY, __isset.fieldY};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::ComplexUnion>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::ComplexUnion>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldY_ref() && {
     return {std::move(this->fieldY), __isset.fieldY};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldZ_ref() const& {
     return {this->fieldZ, __isset.fieldZ};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldZ_ref() const&& {
     return {std::move(this->fieldZ), __isset.fieldZ};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldZ_ref() & {
     return {this->fieldZ, __isset.fieldZ};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::unionTypeDef>
+  template <typename..., typename T = ::some::valid::ns::unionTypeDef>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldZ_ref() && {
     return {std::move(this->fieldZ), __isset.fieldZ};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldAA_ref() const& {
     return {this->fieldAA, __isset.fieldAA};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldAA_ref() const&& {
     return {std::move(this->fieldAA), __isset.fieldAA};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldAA_ref() & {
     return {this->fieldAA, __isset.fieldAA};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::unionTypeDef>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::unionTypeDef>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldAA_ref() && {
     return {std::move(this->fieldAA), __isset.fieldAA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>
+  template <typename..., typename T = ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldAB_ref() const& {
     return {this->fieldAB, __isset.fieldAB};
   }
 
-  template <typename..., typename T = ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>
+  template <typename..., typename T = ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldAB_ref() const&& {
     return {std::move(this->fieldAB), __isset.fieldAB};
   }
 
-  template <typename..., typename T = ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>
+  template <typename..., typename T = ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldAB_ref() & {
     return {this->fieldAB, __isset.fieldAB};
   }
 
-  template <typename..., typename T = ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>
+  template <typename..., typename T = ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldAB_ref() && {
     return {std::move(this->fieldAB), __isset.fieldAB};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::MyEnumB>
+  template <typename..., typename T = ::some::valid::ns::MyEnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldAC_ref() const& {
     return {this->fieldAC, __isset.fieldAC};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumB>
+  template <typename..., typename T = ::some::valid::ns::MyEnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldAC_ref() const&& {
     return {std::move(this->fieldAC), __isset.fieldAC};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumB>
+  template <typename..., typename T = ::some::valid::ns::MyEnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldAC_ref() & {
     return {this->fieldAC, __isset.fieldAC};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::MyEnumB>
+  template <typename..., typename T = ::some::valid::ns::MyEnumB>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldAC_ref() && {
     return {std::move(this->fieldAC), __isset.fieldAC};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::a::different::ns::AnEnum>
+  template <typename..., typename T = ::a::different::ns::AnEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldAD_ref() const& {
     return {this->fieldAD, __isset.fieldAD};
   }
 
-  template <typename..., typename T =  ::a::different::ns::AnEnum>
+  template <typename..., typename T = ::a::different::ns::AnEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldAD_ref() const&& {
     return {std::move(this->fieldAD), __isset.fieldAD};
   }
 
-  template <typename..., typename T =  ::a::different::ns::AnEnum>
+  template <typename..., typename T = ::a::different::ns::AnEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldAD_ref() & {
     return {this->fieldAD, __isset.fieldAD};
   }
 
-  template <typename..., typename T =  ::a::different::ns::AnEnum>
+  template <typename..., typename T = ::a::different::ns::AnEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldAD_ref() && {
     return {std::move(this->fieldAD), __isset.fieldAD};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldAE_ref() const& {
     return {this->fieldAE, __isset.fieldAE};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldAE_ref() const&& {
     return {std::move(this->fieldAE), __isset.fieldAE};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldAE_ref() & {
     return {this->fieldAE, __isset.fieldAE};
   }
 
-  template <typename..., typename T = ::std::map<::std::string, int32_t>>
+  template <typename..., typename T = ::std::map<::std::string, ::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldAE_ref() && {
     return {std::move(this->fieldAE), __isset.fieldAE};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::IndirectionD>
+  template <typename..., typename T = ::some::valid::ns::IndirectionD>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldSD_ref() const& {
     return {this->fieldSD, __isset.fieldSD};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IndirectionD>
+  template <typename..., typename T = ::some::valid::ns::IndirectionD>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldSD_ref() const&& {
     return {std::move(this->fieldSD), __isset.fieldSD};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IndirectionD>
+  template <typename..., typename T = ::some::valid::ns::IndirectionD>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldSD_ref() & {
     return {this->fieldSD, __isset.fieldSD};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IndirectionD>
+  template <typename..., typename T = ::some::valid::ns::IndirectionD>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldSD_ref() && {
     return {std::move(this->fieldSD), __isset.fieldSD};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   bool get_fieldA() const {
     return fieldA;
   }
 
+  [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   bool& set_fieldA(bool fieldA_) {
     fieldA = fieldA_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldA;
   }
 
@@ -6248,6 +6090,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return req_fieldA;
   }
 
+  [[deprecated("Use `FOO.req_fieldA_ref() = BAR;` instead of `FOO.set_req_fieldA(BAR);`")]]
   bool& set_req_fieldA(bool req_fieldA_) {
     req_fieldA = req_fieldA_;
     return req_fieldA;
@@ -6262,28 +6105,27 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
   bool* get_opt_fieldA() && = delete;
 
+  [[deprecated("Use `FOO.opt_fieldA_ref() = BAR;` instead of `FOO.set_opt_fieldA(BAR);`")]]
   bool& set_opt_fieldA(bool opt_fieldA_) {
     opt_fieldA = opt_fieldA_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.opt_fieldA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return opt_fieldA;
   }
   const ::std::map<::std::string, bool>& get_fieldB() const&;
   ::std::map<::std::string, bool> get_fieldB() &&;
 
   template <typename T_containerStruct_fieldB_struct_setter = ::std::map<::std::string, bool>>
+  [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_containerStruct_fieldB_struct_setter>(fieldB_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldB = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldB;
   }
   const ::std::map<::std::string, bool>& get_req_fieldB() const&;
   ::std::map<::std::string, bool> get_req_fieldB() &&;
 
   template <typename T_containerStruct_req_fieldB_struct_setter = ::std::map<::std::string, bool>>
+  [[deprecated("Use `FOO.req_fieldB_ref() = BAR;` instead of `FOO.set_req_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_req_fieldB(T_containerStruct_req_fieldB_struct_setter&& req_fieldB_) {
     req_fieldB = std::forward<T_containerStruct_req_fieldB_struct_setter>(req_fieldB_);
     return req_fieldB;
@@ -6293,42 +6135,40 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::std::map<::std::string, bool>* get_opt_fieldB() && = delete;
 
   template <typename T_containerStruct_opt_fieldB_struct_setter = ::std::map<::std::string, bool>>
+  [[deprecated("Use `FOO.opt_fieldB_ref() = BAR;` instead of `FOO.set_opt_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_opt_fieldB(T_containerStruct_opt_fieldB_struct_setter&& opt_fieldB_) {
     opt_fieldB = std::forward<T_containerStruct_opt_fieldB_struct_setter>(opt_fieldB_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.opt_fieldB = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return opt_fieldB;
   }
-  const ::std::set<int32_t>& get_fieldC() const&;
-  ::std::set<int32_t> get_fieldC() &&;
+  const ::std::set<::std::int32_t>& get_fieldC() const&;
+  ::std::set<::std::int32_t> get_fieldC() &&;
 
-  template <typename T_containerStruct_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
+  template <typename T_containerStruct_fieldC_struct_setter = ::std::set<::std::int32_t>>
+  [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
+  ::std::set<::std::int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_containerStruct_fieldC_struct_setter>(fieldC_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldC = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldC;
   }
-  const ::std::set<int32_t>& get_req_fieldC() const&;
-  ::std::set<int32_t> get_req_fieldC() &&;
+  const ::std::set<::std::int32_t>& get_req_fieldC() const&;
+  ::std::set<::std::int32_t> get_req_fieldC() &&;
 
-  template <typename T_containerStruct_req_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_req_fieldC(T_containerStruct_req_fieldC_struct_setter&& req_fieldC_) {
+  template <typename T_containerStruct_req_fieldC_struct_setter = ::std::set<::std::int32_t>>
+  [[deprecated("Use `FOO.req_fieldC_ref() = BAR;` instead of `FOO.set_req_fieldC(BAR);`")]]
+  ::std::set<::std::int32_t>& set_req_fieldC(T_containerStruct_req_fieldC_struct_setter&& req_fieldC_) {
     req_fieldC = std::forward<T_containerStruct_req_fieldC_struct_setter>(req_fieldC_);
     return req_fieldC;
   }
-  const ::std::set<int32_t>* get_opt_fieldC() const&;
-  ::std::set<int32_t>* get_opt_fieldC() &;
-  ::std::set<int32_t>* get_opt_fieldC() && = delete;
+  const ::std::set<::std::int32_t>* get_opt_fieldC() const&;
+  ::std::set<::std::int32_t>* get_opt_fieldC() &;
+  ::std::set<::std::int32_t>* get_opt_fieldC() && = delete;
 
-  template <typename T_containerStruct_opt_fieldC_struct_setter = ::std::set<int32_t>>
-  ::std::set<int32_t>& set_opt_fieldC(T_containerStruct_opt_fieldC_struct_setter&& opt_fieldC_) {
+  template <typename T_containerStruct_opt_fieldC_struct_setter = ::std::set<::std::int32_t>>
+  [[deprecated("Use `FOO.opt_fieldC_ref() = BAR;` instead of `FOO.set_opt_fieldC(BAR);`")]]
+  ::std::set<::std::int32_t>& set_opt_fieldC(T_containerStruct_opt_fieldC_struct_setter&& opt_fieldC_) {
     opt_fieldC = std::forward<T_containerStruct_opt_fieldC_struct_setter>(opt_fieldC_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.opt_fieldC = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return opt_fieldC;
   }
 
@@ -6341,11 +6181,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_containerStruct_fieldD_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
   ::std::string& set_fieldD(T_containerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_containerStruct_fieldD_struct_setter>(fieldD_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldD = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldD;
   }
 
@@ -6358,11 +6197,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_containerStruct_fieldE_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
   ::std::string& set_fieldE(T_containerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_containerStruct_fieldE_struct_setter>(fieldE_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldE = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldE;
   }
 
@@ -6375,6 +6213,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_containerStruct_req_fieldE_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.req_fieldE_ref() = BAR;` instead of `FOO.set_req_fieldE(BAR);`")]]
   ::std::string& set_req_fieldE(T_containerStruct_req_fieldE_struct_setter&& req_fieldE_) {
     req_fieldE = std::forward<T_containerStruct_req_fieldE_struct_setter>(req_fieldE_);
     return req_fieldE;
@@ -6390,44 +6229,40 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::std::string* get_opt_fieldE() && = delete;
 
   template <typename T_containerStruct_opt_fieldE_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.opt_fieldE_ref() = BAR;` instead of `FOO.set_opt_fieldE(BAR);`")]]
   ::std::string& set_opt_fieldE(T_containerStruct_opt_fieldE_struct_setter&& opt_fieldE_) {
     opt_fieldE = std::forward<T_containerStruct_opt_fieldE_struct_setter>(opt_fieldE_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.opt_fieldE = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return opt_fieldE;
   }
-  const ::std::vector<::std::vector<int32_t>>& get_fieldF() const&;
-  ::std::vector<::std::vector<int32_t>> get_fieldF() &&;
+  const ::std::vector<::std::vector<::std::int32_t>>& get_fieldF() const&;
+  ::std::vector<::std::vector<::std::int32_t>> get_fieldF() &&;
 
-  template <typename T_containerStruct_fieldF_struct_setter = ::std::vector<::std::vector<int32_t>>>
-  ::std::vector<::std::vector<int32_t>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
+  template <typename T_containerStruct_fieldF_struct_setter = ::std::vector<::std::vector<::std::int32_t>>>
+  [[deprecated("Use `FOO.fieldF_ref() = BAR;` instead of `FOO.set_fieldF(BAR);`")]]
+  ::std::vector<::std::vector<::std::int32_t>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_containerStruct_fieldF_struct_setter>(fieldF_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldF = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldF;
   }
-  const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& get_fieldG() const&;
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>> get_fieldG() &&;
+  const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>& get_fieldG() const&;
+  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>> get_fieldG() &&;
 
-  template <typename T_containerStruct_fieldG_struct_setter = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>>
-  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
+  template <typename T_containerStruct_fieldG_struct_setter = ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>
+  [[deprecated("Use `FOO.fieldG_ref() = BAR;` instead of `FOO.set_fieldG(BAR);`")]]
+  ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_containerStruct_fieldG_struct_setter>(fieldG_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldG = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldG;
   }
-  const ::std::vector<::std::set<int32_t>>& get_fieldH() const&;
-  ::std::vector<::std::set<int32_t>> get_fieldH() &&;
+  const ::std::vector<::std::set<::std::int32_t>>& get_fieldH() const&;
+  ::std::vector<::std::set<::std::int32_t>> get_fieldH() &&;
 
-  template <typename T_containerStruct_fieldH_struct_setter = ::std::vector<::std::set<int32_t>>>
-  ::std::vector<::std::set<int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
+  template <typename T_containerStruct_fieldH_struct_setter = ::std::vector<::std::set<::std::int32_t>>>
+  [[deprecated("Use `FOO.fieldH_ref() = BAR;` instead of `FOO.set_fieldH(BAR);`")]]
+  ::std::vector<::std::set<::std::int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_containerStruct_fieldH_struct_setter>(fieldH_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldH = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldH;
   }
 
@@ -6435,342 +6270,318 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldI;
   }
 
+  [[deprecated("Use `FOO.fieldI_ref() = BAR;` instead of `FOO.set_fieldI(BAR);`")]]
   bool& set_fieldI(bool fieldI_) {
     fieldI = fieldI_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldI = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldI;
   }
-  const ::std::map<::std::string, ::std::vector<int32_t>>& get_fieldJ() const&;
-  ::std::map<::std::string, ::std::vector<int32_t>> get_fieldJ() &&;
+  const ::std::map<::std::string, ::std::vector<::std::int32_t>>& get_fieldJ() const&;
+  ::std::map<::std::string, ::std::vector<::std::int32_t>> get_fieldJ() &&;
 
-  template <typename T_containerStruct_fieldJ_struct_setter = ::std::map<::std::string, ::std::vector<int32_t>>>
-  ::std::map<::std::string, ::std::vector<int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
+  template <typename T_containerStruct_fieldJ_struct_setter = ::std::map<::std::string, ::std::vector<::std::int32_t>>>
+  [[deprecated("Use `FOO.fieldJ_ref() = BAR;` instead of `FOO.set_fieldJ(BAR);`")]]
+  ::std::map<::std::string, ::std::vector<::std::int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
     fieldJ = std::forward<T_containerStruct_fieldJ_struct_setter>(fieldJ_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldJ = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldJ;
   }
-  const ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& get_fieldK() const&;
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>> get_fieldK() &&;
+  const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& get_fieldK() const&;
+  ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>> get_fieldK() &&;
 
-  template <typename T_containerStruct_fieldK_struct_setter = ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>>
-  ::std::vector<::std::vector<::std::vector<::std::vector<int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
+  template <typename T_containerStruct_fieldK_struct_setter = ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>>
+  [[deprecated("Use `FOO.fieldK_ref() = BAR;` instead of `FOO.set_fieldK(BAR);`")]]
+  ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
     fieldK = std::forward<T_containerStruct_fieldK_struct_setter>(fieldK_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldK = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldK;
   }
   const ::std::set<::std::set<::std::set<bool>>>& get_fieldL() const&;
   ::std::set<::std::set<::std::set<bool>>> get_fieldL() &&;
 
   template <typename T_containerStruct_fieldL_struct_setter = ::std::set<::std::set<::std::set<bool>>>>
+  [[deprecated("Use `FOO.fieldL_ref() = BAR;` instead of `FOO.set_fieldL(BAR);`")]]
   ::std::set<::std::set<::std::set<bool>>>& set_fieldL(T_containerStruct_fieldL_struct_setter&& fieldL_) {
     fieldL = std::forward<T_containerStruct_fieldL_struct_setter>(fieldL_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldL = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldL;
   }
-  const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& get_fieldM() const&;
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> get_fieldM() &&;
+  const ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& get_fieldM() const&;
+  ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> get_fieldM() &&;
 
-  template <typename T_containerStruct_fieldM_struct_setter = ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
-  ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
+  template <typename T_containerStruct_fieldM_struct_setter = ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>>
+  [[deprecated("Use `FOO.fieldM_ref() = BAR;` instead of `FOO.set_fieldM(BAR);`")]]
+  ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
     fieldM = std::forward<T_containerStruct_fieldM_struct_setter>(fieldM_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldM = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldM;
   }
 
-   ::some::valid::ns::simpleTypeDef get_fieldN() const {
+  ::some::valid::ns::simpleTypeDef get_fieldN() const {
     return fieldN;
   }
 
-   ::some::valid::ns::simpleTypeDef& set_fieldN( ::some::valid::ns::simpleTypeDef fieldN_) {
+  [[deprecated("Use `FOO.fieldN_ref() = BAR;` instead of `FOO.set_fieldN(BAR);`")]]
+  ::some::valid::ns::simpleTypeDef& set_fieldN(::some::valid::ns::simpleTypeDef fieldN_) {
     fieldN = fieldN_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldN = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldN;
   }
-  const  ::some::valid::ns::complexStructTypeDef& get_fieldO() const&;
-   ::some::valid::ns::complexStructTypeDef get_fieldO() &&;
+  const ::some::valid::ns::complexStructTypeDef& get_fieldO() const&;
+  ::some::valid::ns::complexStructTypeDef get_fieldO() &&;
 
-  template <typename T_containerStruct_fieldO_struct_setter =  ::some::valid::ns::complexStructTypeDef>
-   ::some::valid::ns::complexStructTypeDef& set_fieldO(T_containerStruct_fieldO_struct_setter&& fieldO_) {
+  template <typename T_containerStruct_fieldO_struct_setter = ::some::valid::ns::complexStructTypeDef>
+  [[deprecated("Use `FOO.fieldO_ref() = BAR;` instead of `FOO.set_fieldO(BAR);`")]]
+  ::some::valid::ns::complexStructTypeDef& set_fieldO(T_containerStruct_fieldO_struct_setter&& fieldO_) {
     fieldO = std::forward<T_containerStruct_fieldO_struct_setter>(fieldO_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldO = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldO;
   }
-  const ::std::vector< ::some::valid::ns::mostComplexTypeDef>& get_fieldP() const&;
-  ::std::vector< ::some::valid::ns::mostComplexTypeDef> get_fieldP() &&;
+  const ::std::vector<::some::valid::ns::mostComplexTypeDef>& get_fieldP() const&;
+  ::std::vector<::some::valid::ns::mostComplexTypeDef> get_fieldP() &&;
 
-  template <typename T_containerStruct_fieldP_struct_setter = ::std::vector< ::some::valid::ns::mostComplexTypeDef>>
-  ::std::vector< ::some::valid::ns::mostComplexTypeDef>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
+  template <typename T_containerStruct_fieldP_struct_setter = ::std::vector<::some::valid::ns::mostComplexTypeDef>>
+  [[deprecated("Use `FOO.fieldP_ref() = BAR;` instead of `FOO.set_fieldP(BAR);`")]]
+  ::std::vector<::some::valid::ns::mostComplexTypeDef>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
     fieldP = std::forward<T_containerStruct_fieldP_struct_setter>(fieldP_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldP = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldP;
   }
 
-   ::some::valid::ns::MyEnumA get_fieldQ() const {
+  ::some::valid::ns::MyEnumA get_fieldQ() const {
     return fieldQ;
   }
 
-   ::some::valid::ns::MyEnumA& set_fieldQ( ::some::valid::ns::MyEnumA fieldQ_) {
+  [[deprecated("Use `FOO.fieldQ_ref() = BAR;` instead of `FOO.set_fieldQ(BAR);`")]]
+  ::some::valid::ns::MyEnumA& set_fieldQ(::some::valid::ns::MyEnumA fieldQ_) {
     fieldQ = fieldQ_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldQ = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldQ;
   }
 
-   ::some::valid::ns::MyEnumA get_fieldR() const {
+  ::some::valid::ns::MyEnumA get_fieldR() const {
     return fieldR;
   }
 
-   ::some::valid::ns::MyEnumA& set_fieldR( ::some::valid::ns::MyEnumA fieldR_) {
+  [[deprecated("Use `FOO.fieldR_ref() = BAR;` instead of `FOO.set_fieldR(BAR);`")]]
+  ::some::valid::ns::MyEnumA& set_fieldR(::some::valid::ns::MyEnumA fieldR_) {
     fieldR = fieldR_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldR = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldR;
   }
 
-   ::some::valid::ns::MyEnumA get_req_fieldR() const {
+  ::some::valid::ns::MyEnumA get_req_fieldR() const {
     return req_fieldR;
   }
 
-   ::some::valid::ns::MyEnumA& set_req_fieldR( ::some::valid::ns::MyEnumA req_fieldR_) {
+  [[deprecated("Use `FOO.req_fieldR_ref() = BAR;` instead of `FOO.set_req_fieldR(BAR);`")]]
+  ::some::valid::ns::MyEnumA& set_req_fieldR(::some::valid::ns::MyEnumA req_fieldR_) {
     req_fieldR = req_fieldR_;
     return req_fieldR;
   }
 
-  const  ::some::valid::ns::MyEnumA* get_opt_fieldR() const& {
+  const ::some::valid::ns::MyEnumA* get_opt_fieldR() const& {
     return opt_fieldR_ref() ? std::addressof(opt_fieldR) : nullptr;
   }
 
-   ::some::valid::ns::MyEnumA* get_opt_fieldR() & {
+  ::some::valid::ns::MyEnumA* get_opt_fieldR() & {
     return opt_fieldR_ref() ? std::addressof(opt_fieldR) : nullptr;
   }
-   ::some::valid::ns::MyEnumA* get_opt_fieldR() && = delete;
+  ::some::valid::ns::MyEnumA* get_opt_fieldR() && = delete;
 
-   ::some::valid::ns::MyEnumA& set_opt_fieldR( ::some::valid::ns::MyEnumA opt_fieldR_) {
+  [[deprecated("Use `FOO.opt_fieldR_ref() = BAR;` instead of `FOO.set_opt_fieldR(BAR);`")]]
+  ::some::valid::ns::MyEnumA& set_opt_fieldR(::some::valid::ns::MyEnumA opt_fieldR_) {
     opt_fieldR = opt_fieldR_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.opt_fieldR = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return opt_fieldR;
   }
 
-   ::some::valid::ns::MyEnumA get_fieldS() const {
+  ::some::valid::ns::MyEnumA get_fieldS() const {
     return fieldS;
   }
 
-   ::some::valid::ns::MyEnumA& set_fieldS( ::some::valid::ns::MyEnumA fieldS_) {
+  [[deprecated("Use `FOO.fieldS_ref() = BAR;` instead of `FOO.set_fieldS(BAR);`")]]
+  ::some::valid::ns::MyEnumA& set_fieldS(::some::valid::ns::MyEnumA fieldS_) {
     fieldS = fieldS_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldS = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldS;
   }
-  const ::std::vector< ::some::valid::ns::MyEnumA>& get_fieldT() const&;
-  ::std::vector< ::some::valid::ns::MyEnumA> get_fieldT() &&;
+  const ::std::vector<::some::valid::ns::MyEnumA>& get_fieldT() const&;
+  ::std::vector<::some::valid::ns::MyEnumA> get_fieldT() &&;
 
-  template <typename T_containerStruct_fieldT_struct_setter = ::std::vector< ::some::valid::ns::MyEnumA>>
-  ::std::vector< ::some::valid::ns::MyEnumA>& set_fieldT(T_containerStruct_fieldT_struct_setter&& fieldT_) {
+  template <typename T_containerStruct_fieldT_struct_setter = ::std::vector<::some::valid::ns::MyEnumA>>
+  [[deprecated("Use `FOO.fieldT_ref() = BAR;` instead of `FOO.set_fieldT(BAR);`")]]
+  ::std::vector<::some::valid::ns::MyEnumA>& set_fieldT(T_containerStruct_fieldT_struct_setter&& fieldT_) {
     fieldT = std::forward<T_containerStruct_fieldT_struct_setter>(fieldT_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldT = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldT;
   }
-  const ::std::vector< ::some::valid::ns::MyEnumA>& get_fieldU() const&;
-  ::std::vector< ::some::valid::ns::MyEnumA> get_fieldU() &&;
+  const ::std::vector<::some::valid::ns::MyEnumA>& get_fieldU() const&;
+  ::std::vector<::some::valid::ns::MyEnumA> get_fieldU() &&;
 
-  template <typename T_containerStruct_fieldU_struct_setter = ::std::vector< ::some::valid::ns::MyEnumA>>
-  ::std::vector< ::some::valid::ns::MyEnumA>& set_fieldU(T_containerStruct_fieldU_struct_setter&& fieldU_) {
+  template <typename T_containerStruct_fieldU_struct_setter = ::std::vector<::some::valid::ns::MyEnumA>>
+  [[deprecated("Use `FOO.fieldU_ref() = BAR;` instead of `FOO.set_fieldU(BAR);`")]]
+  ::std::vector<::some::valid::ns::MyEnumA>& set_fieldU(T_containerStruct_fieldU_struct_setter&& fieldU_) {
     fieldU = std::forward<T_containerStruct_fieldU_struct_setter>(fieldU_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldU = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldU;
   }
-  const  ::some::valid::ns::MyStruct& get_fieldV() const&;
-   ::some::valid::ns::MyStruct get_fieldV() &&;
+  const ::some::valid::ns::MyStruct& get_fieldV() const&;
+  ::some::valid::ns::MyStruct get_fieldV() &&;
 
-  template <typename T_containerStruct_fieldV_struct_setter =  ::some::valid::ns::MyStruct>
-   ::some::valid::ns::MyStruct& set_fieldV(T_containerStruct_fieldV_struct_setter&& fieldV_) {
+  template <typename T_containerStruct_fieldV_struct_setter = ::some::valid::ns::MyStruct>
+  [[deprecated("Use `FOO.fieldV_ref() = BAR;` instead of `FOO.set_fieldV(BAR);`")]]
+  ::some::valid::ns::MyStruct& set_fieldV(T_containerStruct_fieldV_struct_setter&& fieldV_) {
     fieldV = std::forward<T_containerStruct_fieldV_struct_setter>(fieldV_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldV = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldV;
   }
-  const  ::some::valid::ns::MyStruct& get_req_fieldV() const&;
-   ::some::valid::ns::MyStruct get_req_fieldV() &&;
+  const ::some::valid::ns::MyStruct& get_req_fieldV() const&;
+  ::some::valid::ns::MyStruct get_req_fieldV() &&;
 
-  template <typename T_containerStruct_req_fieldV_struct_setter =  ::some::valid::ns::MyStruct>
-   ::some::valid::ns::MyStruct& set_req_fieldV(T_containerStruct_req_fieldV_struct_setter&& req_fieldV_) {
+  template <typename T_containerStruct_req_fieldV_struct_setter = ::some::valid::ns::MyStruct>
+  [[deprecated("Use `FOO.req_fieldV_ref() = BAR;` instead of `FOO.set_req_fieldV(BAR);`")]]
+  ::some::valid::ns::MyStruct& set_req_fieldV(T_containerStruct_req_fieldV_struct_setter&& req_fieldV_) {
     req_fieldV = std::forward<T_containerStruct_req_fieldV_struct_setter>(req_fieldV_);
     return req_fieldV;
   }
-  const  ::some::valid::ns::MyStruct* get_opt_fieldV() const&;
-   ::some::valid::ns::MyStruct* get_opt_fieldV() &;
-   ::some::valid::ns::MyStruct* get_opt_fieldV() && = delete;
+  const ::some::valid::ns::MyStruct* get_opt_fieldV() const&;
+  ::some::valid::ns::MyStruct* get_opt_fieldV() &;
+  ::some::valid::ns::MyStruct* get_opt_fieldV() && = delete;
 
-  template <typename T_containerStruct_opt_fieldV_struct_setter =  ::some::valid::ns::MyStruct>
-   ::some::valid::ns::MyStruct& set_opt_fieldV(T_containerStruct_opt_fieldV_struct_setter&& opt_fieldV_) {
+  template <typename T_containerStruct_opt_fieldV_struct_setter = ::some::valid::ns::MyStruct>
+  [[deprecated("Use `FOO.opt_fieldV_ref() = BAR;` instead of `FOO.set_opt_fieldV(BAR);`")]]
+  ::some::valid::ns::MyStruct& set_opt_fieldV(T_containerStruct_opt_fieldV_struct_setter&& opt_fieldV_) {
     opt_fieldV = std::forward<T_containerStruct_opt_fieldV_struct_setter>(opt_fieldV_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.opt_fieldV = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return opt_fieldV;
   }
-  const ::std::set< ::some::valid::ns::MyStruct>& get_fieldW() const&;
-  ::std::set< ::some::valid::ns::MyStruct> get_fieldW() &&;
+  const ::std::set<::some::valid::ns::MyStruct>& get_fieldW() const&;
+  ::std::set<::some::valid::ns::MyStruct> get_fieldW() &&;
 
-  template <typename T_containerStruct_fieldW_struct_setter = ::std::set< ::some::valid::ns::MyStruct>>
-  ::std::set< ::some::valid::ns::MyStruct>& set_fieldW(T_containerStruct_fieldW_struct_setter&& fieldW_) {
+  template <typename T_containerStruct_fieldW_struct_setter = ::std::set<::some::valid::ns::MyStruct>>
+  [[deprecated("Use `FOO.fieldW_ref() = BAR;` instead of `FOO.set_fieldW(BAR);`")]]
+  ::std::set<::some::valid::ns::MyStruct>& set_fieldW(T_containerStruct_fieldW_struct_setter&& fieldW_) {
     fieldW = std::forward<T_containerStruct_fieldW_struct_setter>(fieldW_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldW = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldW;
   }
-  const  ::some::valid::ns::ComplexUnion& get_fieldX() const&;
-   ::some::valid::ns::ComplexUnion get_fieldX() &&;
+  const ::some::valid::ns::ComplexUnion& get_fieldX() const&;
+  ::some::valid::ns::ComplexUnion get_fieldX() &&;
 
-  template <typename T_containerStruct_fieldX_struct_setter =  ::some::valid::ns::ComplexUnion>
-   ::some::valid::ns::ComplexUnion& set_fieldX(T_containerStruct_fieldX_struct_setter&& fieldX_) {
+  template <typename T_containerStruct_fieldX_struct_setter = ::some::valid::ns::ComplexUnion>
+  [[deprecated("Use `FOO.fieldX_ref() = BAR;` instead of `FOO.set_fieldX(BAR);`")]]
+  ::some::valid::ns::ComplexUnion& set_fieldX(T_containerStruct_fieldX_struct_setter&& fieldX_) {
     fieldX = std::forward<T_containerStruct_fieldX_struct_setter>(fieldX_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldX = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldX;
   }
-  const  ::some::valid::ns::ComplexUnion& get_req_fieldX() const&;
-   ::some::valid::ns::ComplexUnion get_req_fieldX() &&;
+  const ::some::valid::ns::ComplexUnion& get_req_fieldX() const&;
+  ::some::valid::ns::ComplexUnion get_req_fieldX() &&;
 
-  template <typename T_containerStruct_req_fieldX_struct_setter =  ::some::valid::ns::ComplexUnion>
-   ::some::valid::ns::ComplexUnion& set_req_fieldX(T_containerStruct_req_fieldX_struct_setter&& req_fieldX_) {
+  template <typename T_containerStruct_req_fieldX_struct_setter = ::some::valid::ns::ComplexUnion>
+  [[deprecated("Use `FOO.req_fieldX_ref() = BAR;` instead of `FOO.set_req_fieldX(BAR);`")]]
+  ::some::valid::ns::ComplexUnion& set_req_fieldX(T_containerStruct_req_fieldX_struct_setter&& req_fieldX_) {
     req_fieldX = std::forward<T_containerStruct_req_fieldX_struct_setter>(req_fieldX_);
     return req_fieldX;
   }
-  const  ::some::valid::ns::ComplexUnion* get_opt_fieldX() const&;
-   ::some::valid::ns::ComplexUnion* get_opt_fieldX() &;
-   ::some::valid::ns::ComplexUnion* get_opt_fieldX() && = delete;
+  const ::some::valid::ns::ComplexUnion* get_opt_fieldX() const&;
+  ::some::valid::ns::ComplexUnion* get_opt_fieldX() &;
+  ::some::valid::ns::ComplexUnion* get_opt_fieldX() && = delete;
 
-  template <typename T_containerStruct_opt_fieldX_struct_setter =  ::some::valid::ns::ComplexUnion>
-   ::some::valid::ns::ComplexUnion& set_opt_fieldX(T_containerStruct_opt_fieldX_struct_setter&& opt_fieldX_) {
+  template <typename T_containerStruct_opt_fieldX_struct_setter = ::some::valid::ns::ComplexUnion>
+  [[deprecated("Use `FOO.opt_fieldX_ref() = BAR;` instead of `FOO.set_opt_fieldX(BAR);`")]]
+  ::some::valid::ns::ComplexUnion& set_opt_fieldX(T_containerStruct_opt_fieldX_struct_setter&& opt_fieldX_) {
     opt_fieldX = std::forward<T_containerStruct_opt_fieldX_struct_setter>(opt_fieldX_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.opt_fieldX = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return opt_fieldX;
   }
-  const ::std::vector< ::some::valid::ns::ComplexUnion>& get_fieldY() const&;
-  ::std::vector< ::some::valid::ns::ComplexUnion> get_fieldY() &&;
+  const ::std::vector<::some::valid::ns::ComplexUnion>& get_fieldY() const&;
+  ::std::vector<::some::valid::ns::ComplexUnion> get_fieldY() &&;
 
-  template <typename T_containerStruct_fieldY_struct_setter = ::std::vector< ::some::valid::ns::ComplexUnion>>
-  ::std::vector< ::some::valid::ns::ComplexUnion>& set_fieldY(T_containerStruct_fieldY_struct_setter&& fieldY_) {
+  template <typename T_containerStruct_fieldY_struct_setter = ::std::vector<::some::valid::ns::ComplexUnion>>
+  [[deprecated("Use `FOO.fieldY_ref() = BAR;` instead of `FOO.set_fieldY(BAR);`")]]
+  ::std::vector<::some::valid::ns::ComplexUnion>& set_fieldY(T_containerStruct_fieldY_struct_setter&& fieldY_) {
     fieldY = std::forward<T_containerStruct_fieldY_struct_setter>(fieldY_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldY = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldY;
   }
-  const  ::some::valid::ns::unionTypeDef& get_fieldZ() const&;
-   ::some::valid::ns::unionTypeDef get_fieldZ() &&;
+  const ::some::valid::ns::unionTypeDef& get_fieldZ() const&;
+  ::some::valid::ns::unionTypeDef get_fieldZ() &&;
 
-  template <typename T_containerStruct_fieldZ_struct_setter =  ::some::valid::ns::unionTypeDef>
-   ::some::valid::ns::unionTypeDef& set_fieldZ(T_containerStruct_fieldZ_struct_setter&& fieldZ_) {
+  template <typename T_containerStruct_fieldZ_struct_setter = ::some::valid::ns::unionTypeDef>
+  [[deprecated("Use `FOO.fieldZ_ref() = BAR;` instead of `FOO.set_fieldZ(BAR);`")]]
+  ::some::valid::ns::unionTypeDef& set_fieldZ(T_containerStruct_fieldZ_struct_setter&& fieldZ_) {
     fieldZ = std::forward<T_containerStruct_fieldZ_struct_setter>(fieldZ_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldZ = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldZ;
   }
-  const ::std::vector< ::some::valid::ns::unionTypeDef>& get_fieldAA() const&;
-  ::std::vector< ::some::valid::ns::unionTypeDef> get_fieldAA() &&;
+  const ::std::vector<::some::valid::ns::unionTypeDef>& get_fieldAA() const&;
+  ::std::vector<::some::valid::ns::unionTypeDef> get_fieldAA() &&;
 
-  template <typename T_containerStruct_fieldAA_struct_setter = ::std::vector< ::some::valid::ns::unionTypeDef>>
-  ::std::vector< ::some::valid::ns::unionTypeDef>& set_fieldAA(T_containerStruct_fieldAA_struct_setter&& fieldAA_) {
+  template <typename T_containerStruct_fieldAA_struct_setter = ::std::vector<::some::valid::ns::unionTypeDef>>
+  [[deprecated("Use `FOO.fieldAA_ref() = BAR;` instead of `FOO.set_fieldAA(BAR);`")]]
+  ::std::vector<::some::valid::ns::unionTypeDef>& set_fieldAA(T_containerStruct_fieldAA_struct_setter&& fieldAA_) {
     fieldAA = std::forward<T_containerStruct_fieldAA_struct_setter>(fieldAA_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldAA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldAA;
   }
-  const ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& get_fieldAB() const&;
-  ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC> get_fieldAB() &&;
+  const ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>& get_fieldAB() const&;
+  ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC> get_fieldAB() &&;
 
-  template <typename T_containerStruct_fieldAB_struct_setter = ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>>
-  ::std::map< ::some::valid::ns::IndirectionB,  ::some::valid::ns::IndirectionC>& set_fieldAB(T_containerStruct_fieldAB_struct_setter&& fieldAB_) {
+  template <typename T_containerStruct_fieldAB_struct_setter = ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>>
+  [[deprecated("Use `FOO.fieldAB_ref() = BAR;` instead of `FOO.set_fieldAB(BAR);`")]]
+  ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>& set_fieldAB(T_containerStruct_fieldAB_struct_setter&& fieldAB_) {
     fieldAB = std::forward<T_containerStruct_fieldAB_struct_setter>(fieldAB_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldAB = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldAB;
   }
 
-   ::some::valid::ns::MyEnumB get_fieldAC() const {
+  ::some::valid::ns::MyEnumB get_fieldAC() const {
     return fieldAC;
   }
 
-   ::some::valid::ns::MyEnumB& set_fieldAC( ::some::valid::ns::MyEnumB fieldAC_) {
+  [[deprecated("Use `FOO.fieldAC_ref() = BAR;` instead of `FOO.set_fieldAC(BAR);`")]]
+  ::some::valid::ns::MyEnumB& set_fieldAC(::some::valid::ns::MyEnumB fieldAC_) {
     fieldAC = fieldAC_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldAC = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldAC;
   }
 
-   ::a::different::ns::AnEnum get_fieldAD() const {
+  ::a::different::ns::AnEnum get_fieldAD() const {
     return fieldAD;
   }
 
-   ::a::different::ns::AnEnum& set_fieldAD( ::a::different::ns::AnEnum fieldAD_) {
+  [[deprecated("Use `FOO.fieldAD_ref() = BAR;` instead of `FOO.set_fieldAD(BAR);`")]]
+  ::a::different::ns::AnEnum& set_fieldAD(::a::different::ns::AnEnum fieldAD_) {
     fieldAD = fieldAD_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldAD = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldAD;
   }
-  const ::std::map<::std::string, int32_t>& get_fieldAE() const&;
-  ::std::map<::std::string, int32_t> get_fieldAE() &&;
+  const ::std::map<::std::string, ::std::int32_t>& get_fieldAE() const&;
+  ::std::map<::std::string, ::std::int32_t> get_fieldAE() &&;
 
-  template <typename T_containerStruct_fieldAE_struct_setter = ::std::map<::std::string, int32_t>>
-  ::std::map<::std::string, int32_t>& set_fieldAE(T_containerStruct_fieldAE_struct_setter&& fieldAE_) {
+  template <typename T_containerStruct_fieldAE_struct_setter = ::std::map<::std::string, ::std::int32_t>>
+  [[deprecated("Use `FOO.fieldAE_ref() = BAR;` instead of `FOO.set_fieldAE(BAR);`")]]
+  ::std::map<::std::string, ::std::int32_t>& set_fieldAE(T_containerStruct_fieldAE_struct_setter&& fieldAE_) {
     fieldAE = std::forward<T_containerStruct_fieldAE_struct_setter>(fieldAE_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldAE = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldAE;
   }
 
-  const  ::some::valid::ns::IndirectionD& get_fieldSD() const& {
+  const ::some::valid::ns::IndirectionD& get_fieldSD() const& {
     return fieldSD;
   }
 
-   ::some::valid::ns::IndirectionD get_fieldSD() && {
+  ::some::valid::ns::IndirectionD get_fieldSD() && {
     return std::move(fieldSD);
   }
 
-  template <typename T_containerStruct_fieldSD_struct_setter =  ::some::valid::ns::IndirectionD>
-   ::some::valid::ns::IndirectionD& set_fieldSD(T_containerStruct_fieldSD_struct_setter&& fieldSD_) {
+  template <typename T_containerStruct_fieldSD_struct_setter = ::some::valid::ns::IndirectionD>
+  [[deprecated("Use `FOO.fieldSD_ref() = BAR;` instead of `FOO.set_fieldSD(BAR);`")]]
+  ::some::valid::ns::IndirectionD& set_fieldSD(T_containerStruct_fieldSD_struct_setter&& fieldSD_) {
     fieldSD = std::forward<T_containerStruct_fieldSD_struct_setter>(fieldSD_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldSD = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldSD;
   }
 
@@ -6789,7 +6600,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< containerStruct >;
+  friend class ::apache::thrift::Cpp2Ops<containerStruct>;
   friend void swap(containerStruct& a, containerStruct& b);
 };
 
@@ -6802,6 +6613,11 @@ uint32_t containerStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class MyIncludedStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -6809,6 +6625,7 @@ class MyIncludedStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = MyIncludedStruct;
@@ -6818,157 +6635,139 @@ class MyIncludedStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyIncludedStruct() :
       MyIncludedInt(42LL),
-      ARefField(std::make_unique< ::some::valid::ns::AStruct>()) {}
+      ARefField(std::make_unique<::some::valid::ns::AStruct>()) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyIncludedStruct(apache::thrift::FragileConstructor,  ::a::different::ns::IncludedInt64 MyIncludedInt__arg,  ::some::valid::ns::AStruct MyIncludedStruct__arg, std::unique_ptr< ::some::valid::ns::AStruct> ARefField__arg,  ::some::valid::ns::AStruct ARequiredField__arg);
+  MyIncludedStruct(apache::thrift::FragileConstructor, ::a::different::ns::IncludedInt64 MyIncludedInt__arg, ::some::valid::ns::AStruct MyIncludedStruct__arg, ::std::unique_ptr<::some::valid::ns::AStruct> ARefField__arg, ::some::valid::ns::AStruct ARequiredField__arg);
 
-  MyIncludedStruct(MyIncludedStruct&&) = default;
+  MyIncludedStruct(MyIncludedStruct&&) noexcept;
   MyIncludedStruct(const MyIncludedStruct& src);
 
 
-  MyIncludedStruct& operator=(MyIncludedStruct&&) = default;
+  MyIncludedStruct& operator=(MyIncludedStruct&&) noexcept;
   MyIncludedStruct& operator=(const MyIncludedStruct& src);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::a::different::ns::IncludedInt64 MyIncludedInt;
+  ::a::different::ns::IncludedInt64 MyIncludedInt;
  private:
-   ::some::valid::ns::AStruct MyIncludedStruct;
+  ::some::valid::ns::AStruct MyIncludedStruct;
  public:
-  std::unique_ptr< ::some::valid::ns::AStruct> ARefField;
+  ::std::unique_ptr<::some::valid::ns::AStruct> ARefField;
  public:
-   ::some::valid::ns::AStruct ARequiredField;
+  ::some::valid::ns::AStruct ARequiredField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool MyIncludedInt;
     bool MyIncludedStruct;
   } __isset = {};
-  bool operator==(const MyIncludedStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyIncludedStruct& __x, const MyIncludedStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const MyIncludedStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyIncludedStruct& __x, const MyIncludedStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyIncludedStruct& __x, const MyIncludedStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyIncludedStruct& __x, const MyIncludedStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::a::different::ns::IncludedInt64>
+ public:
+
+  bool operator==(const MyIncludedStruct&) const;
+  bool operator<(const MyIncludedStruct&) const;
+
+  template <typename..., typename T = ::a::different::ns::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedInt_ref() const& {
     return {this->MyIncludedInt, __isset.MyIncludedInt};
   }
 
-  template <typename..., typename T =  ::a::different::ns::IncludedInt64>
+  template <typename..., typename T = ::a::different::ns::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedInt_ref() const&& {
     return {std::move(this->MyIncludedInt), __isset.MyIncludedInt};
   }
 
-  template <typename..., typename T =  ::a::different::ns::IncludedInt64>
+  template <typename..., typename T = ::a::different::ns::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIncludedInt_ref() & {
     return {this->MyIncludedInt, __isset.MyIncludedInt};
   }
 
-  template <typename..., typename T =  ::a::different::ns::IncludedInt64>
+  template <typename..., typename T = ::a::different::ns::IncludedInt64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedInt_ref() && {
     return {std::move(this->MyIncludedInt), __isset.MyIncludedInt};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::AStruct>
+  template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyIncludedStruct_ref() const& {
     return {this->MyIncludedStruct, __isset.MyIncludedStruct};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::AStruct>
+  template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyIncludedStruct_ref() const&& {
     return {std::move(this->MyIncludedStruct), __isset.MyIncludedStruct};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::AStruct>
+  template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> MyIncludedStruct_ref() & {
     return {this->MyIncludedStruct, __isset.MyIncludedStruct};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::AStruct>
+  template <typename..., typename T = ::some::valid::ns::AStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyIncludedStruct_ref() && {
     return {std::move(this->MyIncludedStruct), __isset.MyIncludedStruct};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::AStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
   FOLLY_ERASE T& ARefField_ref() & { return ARefField; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::AStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
   FOLLY_ERASE const T& ARefField_ref() const& { return ARefField; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::AStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
   FOLLY_ERASE T&& ARefField_ref() && { return std::move(ARefField); }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::AStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::AStruct>>
   FOLLY_ERASE const T&& ARefField_ref() const&& { return std::move(ARefField); }
-  template <typename..., typename T =  ::some::valid::ns::AStruct>
-  FOLLY_ERASE auto ARequiredField_ref() const& {
+
+  template <typename..., typename T = ::some::valid::ns::AStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> ARequiredField_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->ARequiredField};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::AStruct>
-  FOLLY_ERASE auto ARequiredField_ref() const&& {
+  template <typename..., typename T = ::some::valid::ns::AStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> ARequiredField_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->ARequiredField)};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::AStruct>
-  FOLLY_ERASE auto ARequiredField_ref() & {
+  template <typename..., typename T = ::some::valid::ns::AStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> ARequiredField_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->ARequiredField};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::AStruct>
-  FOLLY_ERASE auto ARequiredField_ref() && {
+  template <typename..., typename T = ::some::valid::ns::AStruct>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> ARequiredField_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->ARequiredField)};
   }
 
-   ::a::different::ns::IncludedInt64 get_MyIncludedInt() const {
+  ::a::different::ns::IncludedInt64 get_MyIncludedInt() const {
     return MyIncludedInt;
   }
 
-   ::a::different::ns::IncludedInt64& set_MyIncludedInt( ::a::different::ns::IncludedInt64 MyIncludedInt_) {
+  [[deprecated("Use `FOO.MyIncludedInt_ref() = BAR;` instead of `FOO.set_MyIncludedInt(BAR);`")]]
+  ::a::different::ns::IncludedInt64& set_MyIncludedInt(::a::different::ns::IncludedInt64 MyIncludedInt_) {
     MyIncludedInt = MyIncludedInt_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIncludedInt = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIncludedInt;
   }
-  const  ::some::valid::ns::AStruct& get_MyIncludedStruct() const&;
-   ::some::valid::ns::AStruct get_MyIncludedStruct() &&;
+  const ::some::valid::ns::AStruct& get_MyIncludedStruct() const&;
+  ::some::valid::ns::AStruct get_MyIncludedStruct() &&;
 
-  template <typename T_MyIncludedStruct_MyIncludedStruct_struct_setter =  ::some::valid::ns::AStruct>
-   ::some::valid::ns::AStruct& set_MyIncludedStruct(T_MyIncludedStruct_MyIncludedStruct_struct_setter&& MyIncludedStruct_) {
+  template <typename T_MyIncludedStruct_MyIncludedStruct_struct_setter = ::some::valid::ns::AStruct>
+  [[deprecated("Use `FOO.MyIncludedStruct_ref() = BAR;` instead of `FOO.set_MyIncludedStruct(BAR);`")]]
+  ::some::valid::ns::AStruct& set_MyIncludedStruct(T_MyIncludedStruct_MyIncludedStruct_struct_setter&& MyIncludedStruct_) {
     MyIncludedStruct = std::forward<T_MyIncludedStruct_MyIncludedStruct_struct_setter>(MyIncludedStruct_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.MyIncludedStruct = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return MyIncludedStruct;
   }
-  const  ::some::valid::ns::AStruct& get_ARequiredField() const&;
-   ::some::valid::ns::AStruct get_ARequiredField() &&;
+  const ::some::valid::ns::AStruct& get_ARequiredField() const&;
+  ::some::valid::ns::AStruct get_ARequiredField() &&;
 
-  template <typename T_MyIncludedStruct_ARequiredField_struct_setter =  ::some::valid::ns::AStruct>
-   ::some::valid::ns::AStruct& set_ARequiredField(T_MyIncludedStruct_ARequiredField_struct_setter&& ARequiredField_) {
+  template <typename T_MyIncludedStruct_ARequiredField_struct_setter = ::some::valid::ns::AStruct>
+  [[deprecated("Use `FOO.ARequiredField_ref() = BAR;` instead of `FOO.set_ARequiredField(BAR);`")]]
+  ::some::valid::ns::AStruct& set_ARequiredField(T_MyIncludedStruct_ARequiredField_struct_setter&& ARequiredField_) {
     ARequiredField = std::forward<T_MyIncludedStruct_ARequiredField_struct_setter>(ARequiredField_);
     return ARequiredField;
   }
@@ -6986,7 +6785,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyIncludedStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyIncludedStruct>;
   friend void swap(MyIncludedStruct& a, MyIncludedStruct& b);
 };
 
@@ -6999,6 +6798,11 @@ uint32_t MyIncludedStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class AnnotatedStruct  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -7006,6 +6810,7 @@ class AnnotatedStruct  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = AnnotatedStruct;
@@ -7016,12 +6821,12 @@ class AnnotatedStruct  {
  public:
 
   AnnotatedStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AnnotatedStruct(apache::thrift::FragileConstructor,  ::some::valid::ns::containerStruct no_annotation__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref__arg, std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, std::unique_ptr<::std::set<int32_t>> opt_container_with_ref__arg, std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique__arg, std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared__arg, std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>> ref_type_const__arg, std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const__arg, std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const__arg, std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique__arg, std::shared_ptr<::std::set<int32_t>> opt_ref_type_shared__arg,  ::some::valid::ns::CppFakeI32 base_type__arg,  ::some::valid::ns::FollySmallVectorI64 list_type__arg,  ::some::valid::ns::SortedVectorSetString set_type__arg,  ::some::valid::ns::FakeMap map_type__arg,  ::some::valid::ns::UnorderedMapStruct map_struct_type__arg,  ::some::valid::ns::IOBuf iobuf_type__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<int64_t, ::std::string> map_template__arg,  ::some::valid::ns::std_list typedef_list_template__arg,  ::some::valid::ns::std_deque typedef_deque_template__arg,  ::some::valid::ns::folly_set typedef_set_template__arg,  ::some::valid::ns::folly_map typedef_map_template__arg,  ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector< ::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set< ::some::valid::ns::IndirectionC> indirection_c__arg,  ::some::valid::ns::IOBuf iobuf_type_val__arg,  ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg,  ::some::valid::ns::containerStruct struct_struct__arg);
-  AnnotatedStruct(AnnotatedStruct&& other) noexcept;
+  AnnotatedStruct(apache::thrift::FragileConstructor, ::some::valid::ns::containerStruct no_annotation__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> cpp2_unique_ref__arg, ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp2_unique_ref__arg, ::std::unique_ptr<::std::vector<::std::string>> req_container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp_unique_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp2_unique_ref__arg, ::std::unique_ptr<::std::set<::std::int32_t>> opt_container_with_ref__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> ref_type_unique__arg, ::std::shared_ptr<::some::valid::ns::containerStruct> ref_type_shared__arg, ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>> ref_type_const__arg, ::std::shared_ptr<::some::valid::ns::containerStruct> req_ref_type_shared__arg, ::std::shared_ptr<const ::some::valid::ns::containerStruct> req_ref_type_const__arg, ::std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique__arg, ::std::shared_ptr<const ::some::valid::ns::containerStruct> opt_ref_type_const__arg, ::std::unique_ptr<::some::valid::ns::containerStruct> opt_ref_type_unique__arg, ::std::shared_ptr<::std::set<::std::int32_t>> opt_ref_type_shared__arg, ::some::valid::ns::CppFakeI32 base_type__arg, ::some::valid::ns::FollySmallVectorI64 list_type__arg, ::some::valid::ns::SortedVectorSetString set_type__arg, ::some::valid::ns::FakeMap map_type__arg, ::some::valid::ns::UnorderedMapStruct map_struct_type__arg, ::some::valid::ns::IOBuf iobuf_type__arg, ::some::valid::ns::IOBufPtr iobuf_ptr__arg, std::list<::std::int32_t> list_i32_template__arg, std::deque<::std::string> list_string_template__arg, folly::sorted_vector_set<::std::string> set_template__arg, folly::sorted_vector_map<::std::int64_t, ::std::string> map_template__arg, ::some::valid::ns::std_list typedef_list_template__arg, ::some::valid::ns::std_deque typedef_deque_template__arg, ::some::valid::ns::folly_set typedef_set_template__arg, ::some::valid::ns::folly_map typedef_map_template__arg, ::some::valid::ns::IndirectionA indirection_a__arg, ::std::vector<::some::valid::ns::IndirectionB> indirection_b__arg, ::std::set<::some::valid::ns::IndirectionC> indirection_c__arg, ::some::valid::ns::IOBuf iobuf_type_val__arg, ::some::valid::ns::IOBufPtr iobuf_ptr_val__arg, ::some::valid::ns::containerStruct struct_struct__arg);
+
+  AnnotatedStruct(AnnotatedStruct&&) = default;
 
 
   AnnotatedStruct& operator=(AnnotatedStruct&&) = default;
@@ -7030,87 +6835,87 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   virtual ~AnnotatedStruct();
 
  private:
-   ::some::valid::ns::containerStruct no_annotation;
+  ::some::valid::ns::containerStruct no_annotation;
  public:
-  std::unique_ptr< ::some::valid::ns::containerStruct> cpp_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> cpp_unique_ref;
  public:
-  std::unique_ptr< ::some::valid::ns::containerStruct> cpp2_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> cpp2_unique_ref;
  public:
-  std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>> container_with_ref;
+  ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>> container_with_ref;
  public:
-  std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp_unique_ref;
  public:
-  std::unique_ptr< ::some::valid::ns::containerStruct> req_cpp2_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> req_cpp2_unique_ref;
  public:
-  std::unique_ptr<::std::vector<::std::string>> req_container_with_ref;
+  ::std::unique_ptr<::std::vector<::std::string>> req_container_with_ref;
  public:
-  std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp_unique_ref;
  public:
-  std::unique_ptr< ::some::valid::ns::containerStruct> opt_cpp2_unique_ref;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> opt_cpp2_unique_ref;
  public:
-  std::unique_ptr<::std::set<int32_t>> opt_container_with_ref;
+  ::std::unique_ptr<::std::set<::std::int32_t>> opt_container_with_ref;
  public:
-  std::unique_ptr< ::some::valid::ns::containerStruct> ref_type_unique;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> ref_type_unique;
  public:
-  std::shared_ptr< ::some::valid::ns::containerStruct> ref_type_shared;
+  ::std::shared_ptr<::some::valid::ns::containerStruct> ref_type_shared;
  public:
-  std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>> ref_type_const;
+  ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>> ref_type_const;
  public:
-  std::shared_ptr< ::some::valid::ns::containerStruct> req_ref_type_shared;
+  ::std::shared_ptr<::some::valid::ns::containerStruct> req_ref_type_shared;
  public:
-  std::shared_ptr<const  ::some::valid::ns::containerStruct> req_ref_type_const;
+  ::std::shared_ptr<const ::some::valid::ns::containerStruct> req_ref_type_const;
  public:
-  std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique;
+  ::std::unique_ptr<::std::vector<::std::string>> req_ref_type_unique;
  public:
-  std::shared_ptr<const  ::some::valid::ns::containerStruct> opt_ref_type_const;
+  ::std::shared_ptr<const ::some::valid::ns::containerStruct> opt_ref_type_const;
  public:
-  std::unique_ptr< ::some::valid::ns::containerStruct> opt_ref_type_unique;
+  ::std::unique_ptr<::some::valid::ns::containerStruct> opt_ref_type_unique;
  public:
-  std::shared_ptr<::std::set<int32_t>> opt_ref_type_shared;
+  ::std::shared_ptr<::std::set<::std::int32_t>> opt_ref_type_shared;
  private:
-   ::some::valid::ns::CppFakeI32 base_type;
+  ::some::valid::ns::CppFakeI32 base_type;
  private:
-   ::some::valid::ns::FollySmallVectorI64 list_type;
+  ::some::valid::ns::FollySmallVectorI64 list_type;
  private:
-   ::some::valid::ns::SortedVectorSetString set_type;
+  ::some::valid::ns::SortedVectorSetString set_type;
  private:
-   ::some::valid::ns::FakeMap map_type;
+  ::some::valid::ns::FakeMap map_type;
  private:
-   ::some::valid::ns::UnorderedMapStruct map_struct_type;
+  ::some::valid::ns::UnorderedMapStruct map_struct_type;
  private:
-   ::some::valid::ns::IOBuf iobuf_type;
+  ::some::valid::ns::IOBuf iobuf_type;
  public:
-   ::some::valid::ns::IOBufPtr iobuf_ptr;
+  ::some::valid::ns::IOBufPtr iobuf_ptr;
  private:
-  std::list<int32_t> list_i32_template;
+  std::list<::std::int32_t> list_i32_template;
  private:
   std::deque<::std::string> list_string_template;
  private:
   folly::sorted_vector_set<::std::string> set_template;
  private:
-  folly::sorted_vector_map<int64_t, ::std::string> map_template;
+  folly::sorted_vector_map<::std::int64_t, ::std::string> map_template;
  private:
-   ::some::valid::ns::std_list typedef_list_template;
+  ::some::valid::ns::std_list typedef_list_template;
  private:
-   ::some::valid::ns::std_deque typedef_deque_template;
+  ::some::valid::ns::std_deque typedef_deque_template;
  private:
-   ::some::valid::ns::folly_set typedef_set_template;
+  ::some::valid::ns::folly_set typedef_set_template;
  private:
-   ::some::valid::ns::folly_map typedef_map_template;
+  ::some::valid::ns::folly_map typedef_map_template;
  private:
-   ::some::valid::ns::IndirectionA indirection_a;
+  ::some::valid::ns::IndirectionA indirection_a;
  private:
-  ::std::vector< ::some::valid::ns::IndirectionB> indirection_b;
+  ::std::vector<::some::valid::ns::IndirectionB> indirection_b;
  private:
-  ::std::set< ::some::valid::ns::IndirectionC> indirection_c;
+  ::std::set<::some::valid::ns::IndirectionC> indirection_c;
  private:
-   ::some::valid::ns::IOBuf iobuf_type_val;
+  ::some::valid::ns::IOBuf iobuf_type_val;
  public:
-   ::some::valid::ns::IOBufPtr iobuf_ptr_val;
+  ::some::valid::ns::IOBufPtr iobuf_ptr_val;
  private:
-   ::some::valid::ns::containerStruct struct_struct;
+  ::some::valid::ns::containerStruct struct_struct;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool no_annotation;
@@ -7136,422 +6941,390 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     bool iobuf_ptr_val;
     bool struct_struct;
   } __isset = {};
-  bool operator==(const AnnotatedStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AnnotatedStruct& __x, const AnnotatedStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const AnnotatedStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AnnotatedStruct& __x, const AnnotatedStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AnnotatedStruct& __x, const AnnotatedStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AnnotatedStruct& __x, const AnnotatedStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::containerStruct>
+ public:
+
+  bool operator==(const AnnotatedStruct&) const;
+  bool operator<(const AnnotatedStruct&) const;
+
+  template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> no_annotation_ref() const& {
     return {this->no_annotation, __isset.no_annotation};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::containerStruct>
+  template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> no_annotation_ref() const&& {
     return {std::move(this->no_annotation), __isset.no_annotation};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::containerStruct>
+  template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> no_annotation_ref() & {
     return {this->no_annotation, __isset.no_annotation};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::containerStruct>
+  template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> no_annotation_ref() && {
     return {std::move(this->no_annotation), __isset.no_annotation};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& cpp_unique_ref_ref() & { return cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& cpp_unique_ref_ref() const& { return cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& cpp_unique_ref_ref() && { return std::move(cpp_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& cpp_unique_ref_ref() const&& { return std::move(cpp_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& cpp2_unique_ref_ref() & { return cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& cpp2_unique_ref_ref() const& { return cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& cpp2_unique_ref_ref() && { return std::move(cpp2_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& cpp2_unique_ref_ref() const&& { return std::move(cpp2_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE T& container_with_ref_ref() & { return container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE const T& container_with_ref_ref() const& { return container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE T&& container_with_ref_ref() && { return std::move(container_with_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::map<int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE const T&& container_with_ref_ref() const&& { return std::move(container_with_ref); }
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_cpp_unique_ref_ref() & { return req_cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& req_cpp_unique_ref_ref() const& { return req_cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& req_cpp_unique_ref_ref() && { return std::move(req_cpp_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& req_cpp_unique_ref_ref() const&& { return std::move(req_cpp_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_cpp2_unique_ref_ref() & { return req_cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& req_cpp2_unique_ref_ref() const& { return req_cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& req_cpp2_unique_ref_ref() && { return std::move(req_cpp2_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& req_cpp2_unique_ref_ref() const&& { return std::move(req_cpp2_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE T& req_container_with_ref_ref() & { return req_container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE const T& req_container_with_ref_ref() const& { return req_container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE T&& req_container_with_ref_ref() && { return std::move(req_container_with_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE const T&& req_container_with_ref_ref() const&& { return std::move(req_container_with_ref); }
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_cpp_unique_ref_ref() & { return opt_cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& opt_cpp_unique_ref_ref() const& { return opt_cpp_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& opt_cpp_unique_ref_ref() && { return std::move(opt_cpp_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& opt_cpp_unique_ref_ref() const&& { return std::move(opt_cpp_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_cpp2_unique_ref_ref() & { return opt_cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& opt_cpp2_unique_ref_ref() const& { return opt_cpp2_unique_ref; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& opt_cpp2_unique_ref_ref() && { return std::move(opt_cpp2_unique_ref); }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& opt_cpp2_unique_ref_ref() const&& { return std::move(opt_cpp2_unique_ref); }
-  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T& opt_container_with_ref_ref() & { return opt_container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T& opt_container_with_ref_ref() const& { return opt_container_with_ref; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T&& opt_container_with_ref_ref() && { return std::move(opt_container_with_ref); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T&& opt_container_with_ref_ref() const&& { return std::move(opt_container_with_ref); }
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& ref_type_unique_ref() & { return ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& ref_type_unique_ref() const& { return ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& ref_type_unique_ref() && { return std::move(ref_type_unique); }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& ref_type_unique_ref() const&& { return std::move(ref_type_unique); }
-  template <typename ..., typename T = std::shared_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& ref_type_shared_ref() & { return ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& ref_type_shared_ref() const& { return ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& ref_type_shared_ref() && { return std::move(ref_type_shared); }
 
-  template <typename ..., typename T = std::shared_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& ref_type_shared_ref() const&& { return std::move(ref_type_shared); }
-  template <typename ..., typename T = std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE T& ref_type_const_ref() & { return ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE const T& ref_type_const_ref() const& { return ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE T&& ref_type_const_ref() && { return std::move(ref_type_const); }
 
-  template <typename ..., typename T = std::shared_ptr<const ::std::map<int32_t, ::std::vector<::std::string>>>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::std::map<::std::int32_t, ::std::vector<::std::string>>>>
   FOLLY_ERASE const T&& ref_type_const_ref() const&& { return std::move(ref_type_const); }
-  template <typename ..., typename T = std::shared_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_ref_type_shared_ref() & { return req_ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& req_ref_type_shared_ref() const& { return req_ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& req_ref_type_shared_ref() && { return std::move(req_ref_type_shared); }
 
-  template <typename ..., typename T = std::shared_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& req_ref_type_shared_ref() const&& { return std::move(req_ref_type_shared); }
-  template <typename ..., typename T = std::shared_ptr<const  ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& req_ref_type_const_ref() & { return req_ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& req_ref_type_const_ref() const& { return req_ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& req_ref_type_const_ref() && { return std::move(req_ref_type_const); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& req_ref_type_const_ref() const&& { return std::move(req_ref_type_const); }
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE T& req_ref_type_unique_ref() & { return req_ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE const T& req_ref_type_unique_ref() const& { return req_ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE T&& req_ref_type_unique_ref() && { return std::move(req_ref_type_unique); }
 
-  template <typename ..., typename T = std::unique_ptr<::std::vector<::std::string>>>
+  template <typename ..., typename T = ::std::unique_ptr<::std::vector<::std::string>>>
   FOLLY_ERASE const T&& req_ref_type_unique_ref() const&& { return std::move(req_ref_type_unique); }
-  template <typename ..., typename T = std::shared_ptr<const  ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_ref_type_const_ref() & { return opt_ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& opt_ref_type_const_ref() const& { return opt_ref_type_const; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& opt_ref_type_const_ref() && { return std::move(opt_ref_type_const); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& opt_ref_type_const_ref() const&& { return std::move(opt_ref_type_const); }
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T& opt_ref_type_unique_ref() & { return opt_ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T& opt_ref_type_unique_ref() const& { return opt_ref_type_unique; }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE T&& opt_ref_type_unique_ref() && { return std::move(opt_ref_type_unique); }
 
-  template <typename ..., typename T = std::unique_ptr< ::some::valid::ns::containerStruct>>
+  template <typename ..., typename T = ::std::unique_ptr<::some::valid::ns::containerStruct>>
   FOLLY_ERASE const T&& opt_ref_type_unique_ref() const&& { return std::move(opt_ref_type_unique); }
-  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T& opt_ref_type_shared_ref() & { return opt_ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T& opt_ref_type_shared_ref() const& { return opt_ref_type_shared; }
 
-  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE T&& opt_ref_type_shared_ref() && { return std::move(opt_ref_type_shared); }
 
-  template <typename ..., typename T = std::shared_ptr<::std::set<int32_t>>>
+  template <typename ..., typename T = ::std::shared_ptr<::std::set<::std::int32_t>>>
   FOLLY_ERASE const T&& opt_ref_type_shared_ref() const&& { return std::move(opt_ref_type_shared); }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::CppFakeI32>
+  template <typename..., typename T = ::some::valid::ns::CppFakeI32>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> base_type_ref() const& {
     return {this->base_type, __isset.base_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::CppFakeI32>
+  template <typename..., typename T = ::some::valid::ns::CppFakeI32>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> base_type_ref() const&& {
     return {std::move(this->base_type), __isset.base_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::CppFakeI32>
+  template <typename..., typename T = ::some::valid::ns::CppFakeI32>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> base_type_ref() & {
     return {this->base_type, __isset.base_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::CppFakeI32>
+  template <typename..., typename T = ::some::valid::ns::CppFakeI32>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> base_type_ref() && {
     return {std::move(this->base_type), __isset.base_type};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::FollySmallVectorI64>
+  template <typename..., typename T = ::some::valid::ns::FollySmallVectorI64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> list_type_ref() const& {
     return {this->list_type, __isset.list_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::FollySmallVectorI64>
+  template <typename..., typename T = ::some::valid::ns::FollySmallVectorI64>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> list_type_ref() const&& {
     return {std::move(this->list_type), __isset.list_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::FollySmallVectorI64>
+  template <typename..., typename T = ::some::valid::ns::FollySmallVectorI64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> list_type_ref() & {
     return {this->list_type, __isset.list_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::FollySmallVectorI64>
+  template <typename..., typename T = ::some::valid::ns::FollySmallVectorI64>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> list_type_ref() && {
     return {std::move(this->list_type), __isset.list_type};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::SortedVectorSetString>
+  template <typename..., typename T = ::some::valid::ns::SortedVectorSetString>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> set_type_ref() const& {
     return {this->set_type, __isset.set_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::SortedVectorSetString>
+  template <typename..., typename T = ::some::valid::ns::SortedVectorSetString>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> set_type_ref() const&& {
     return {std::move(this->set_type), __isset.set_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::SortedVectorSetString>
+  template <typename..., typename T = ::some::valid::ns::SortedVectorSetString>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> set_type_ref() & {
     return {this->set_type, __isset.set_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::SortedVectorSetString>
+  template <typename..., typename T = ::some::valid::ns::SortedVectorSetString>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> set_type_ref() && {
     return {std::move(this->set_type), __isset.set_type};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::FakeMap>
+  template <typename..., typename T = ::some::valid::ns::FakeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> map_type_ref() const& {
     return {this->map_type, __isset.map_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::FakeMap>
+  template <typename..., typename T = ::some::valid::ns::FakeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_type_ref() const&& {
     return {std::move(this->map_type), __isset.map_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::FakeMap>
+  template <typename..., typename T = ::some::valid::ns::FakeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> map_type_ref() & {
     return {this->map_type, __isset.map_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::FakeMap>
+  template <typename..., typename T = ::some::valid::ns::FakeMap>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_type_ref() && {
     return {std::move(this->map_type), __isset.map_type};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::UnorderedMapStruct>
+  template <typename..., typename T = ::some::valid::ns::UnorderedMapStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> map_struct_type_ref() const& {
     return {this->map_struct_type, __isset.map_struct_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::UnorderedMapStruct>
+  template <typename..., typename T = ::some::valid::ns::UnorderedMapStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_struct_type_ref() const&& {
     return {std::move(this->map_struct_type), __isset.map_struct_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::UnorderedMapStruct>
+  template <typename..., typename T = ::some::valid::ns::UnorderedMapStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> map_struct_type_ref() & {
     return {this->map_struct_type, __isset.map_struct_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::UnorderedMapStruct>
+  template <typename..., typename T = ::some::valid::ns::UnorderedMapStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_struct_type_ref() && {
     return {std::move(this->map_struct_type), __isset.map_struct_type};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::IOBuf>
+  template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> iobuf_type_ref() const& {
     return {this->iobuf_type, __isset.iobuf_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBuf>
+  template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> iobuf_type_ref() const&& {
     return {std::move(this->iobuf_type), __isset.iobuf_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBuf>
+  template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> iobuf_type_ref() & {
     return {this->iobuf_type, __isset.iobuf_type};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBuf>
+  template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> iobuf_type_ref() && {
     return {std::move(this->iobuf_type), __isset.iobuf_type};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::IOBufPtr>
+  template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> iobuf_ptr_ref() const& {
     return {this->iobuf_ptr, __isset.iobuf_ptr};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBufPtr>
+  template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> iobuf_ptr_ref() const&& {
     return {std::move(this->iobuf_ptr), __isset.iobuf_ptr};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBufPtr>
+  template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> iobuf_ptr_ref() & {
     return {this->iobuf_ptr, __isset.iobuf_ptr};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBufPtr>
+  template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> iobuf_ptr_ref() && {
     return {std::move(this->iobuf_ptr), __isset.iobuf_ptr};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> list_i32_template_ref() const& {
     return {this->list_i32_template, __isset.list_i32_template};
   }
 
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> list_i32_template_ref() const&& {
     return {std::move(this->list_i32_template), __isset.list_i32_template};
   }
 
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> list_i32_template_ref() & {
     return {this->list_i32_template, __isset.list_i32_template};
   }
 
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> list_i32_template_ref() && {
     return {std::move(this->list_i32_template), __isset.list_i32_template};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = std::deque<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> list_string_template_ref() const& {
     return {this->list_string_template, __isset.list_string_template};
@@ -7571,9 +7344,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> list_string_template_ref() && {
     return {std::move(this->list_string_template), __isset.list_string_template};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = folly::sorted_vector_set<::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> set_template_ref() const& {
     return {this->set_template, __isset.set_template};
@@ -7593,515 +7364,470 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> set_template_ref() && {
     return {std::move(this->set_template), __isset.set_template};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = folly::sorted_vector_map<int64_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int64_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> map_template_ref() const& {
     return {this->map_template, __isset.map_template};
   }
 
-  template <typename..., typename T = folly::sorted_vector_map<int64_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int64_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_template_ref() const&& {
     return {std::move(this->map_template), __isset.map_template};
   }
 
-  template <typename..., typename T = folly::sorted_vector_map<int64_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int64_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> map_template_ref() & {
     return {this->map_template, __isset.map_template};
   }
 
-  template <typename..., typename T = folly::sorted_vector_map<int64_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int64_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_template_ref() && {
     return {std::move(this->map_template), __isset.map_template};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::std_list>
+  template <typename..., typename T = ::some::valid::ns::std_list>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> typedef_list_template_ref() const& {
     return {this->typedef_list_template, __isset.typedef_list_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::std_list>
+  template <typename..., typename T = ::some::valid::ns::std_list>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedef_list_template_ref() const&& {
     return {std::move(this->typedef_list_template), __isset.typedef_list_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::std_list>
+  template <typename..., typename T = ::some::valid::ns::std_list>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> typedef_list_template_ref() & {
     return {this->typedef_list_template, __isset.typedef_list_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::std_list>
+  template <typename..., typename T = ::some::valid::ns::std_list>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedef_list_template_ref() && {
     return {std::move(this->typedef_list_template), __isset.typedef_list_template};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::std_deque>
+  template <typename..., typename T = ::some::valid::ns::std_deque>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> typedef_deque_template_ref() const& {
     return {this->typedef_deque_template, __isset.typedef_deque_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::std_deque>
+  template <typename..., typename T = ::some::valid::ns::std_deque>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedef_deque_template_ref() const&& {
     return {std::move(this->typedef_deque_template), __isset.typedef_deque_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::std_deque>
+  template <typename..., typename T = ::some::valid::ns::std_deque>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> typedef_deque_template_ref() & {
     return {this->typedef_deque_template, __isset.typedef_deque_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::std_deque>
+  template <typename..., typename T = ::some::valid::ns::std_deque>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedef_deque_template_ref() && {
     return {std::move(this->typedef_deque_template), __isset.typedef_deque_template};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::folly_set>
+  template <typename..., typename T = ::some::valid::ns::folly_set>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> typedef_set_template_ref() const& {
     return {this->typedef_set_template, __isset.typedef_set_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::folly_set>
+  template <typename..., typename T = ::some::valid::ns::folly_set>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedef_set_template_ref() const&& {
     return {std::move(this->typedef_set_template), __isset.typedef_set_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::folly_set>
+  template <typename..., typename T = ::some::valid::ns::folly_set>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> typedef_set_template_ref() & {
     return {this->typedef_set_template, __isset.typedef_set_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::folly_set>
+  template <typename..., typename T = ::some::valid::ns::folly_set>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedef_set_template_ref() && {
     return {std::move(this->typedef_set_template), __isset.typedef_set_template};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::folly_map>
+  template <typename..., typename T = ::some::valid::ns::folly_map>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> typedef_map_template_ref() const& {
     return {this->typedef_map_template, __isset.typedef_map_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::folly_map>
+  template <typename..., typename T = ::some::valid::ns::folly_map>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> typedef_map_template_ref() const&& {
     return {std::move(this->typedef_map_template), __isset.typedef_map_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::folly_map>
+  template <typename..., typename T = ::some::valid::ns::folly_map>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> typedef_map_template_ref() & {
     return {this->typedef_map_template, __isset.typedef_map_template};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::folly_map>
+  template <typename..., typename T = ::some::valid::ns::folly_map>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> typedef_map_template_ref() && {
     return {std::move(this->typedef_map_template), __isset.typedef_map_template};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::IndirectionA>
+  template <typename..., typename T = ::some::valid::ns::IndirectionA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> indirection_a_ref() const& {
     return {this->indirection_a, __isset.indirection_a};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IndirectionA>
+  template <typename..., typename T = ::some::valid::ns::IndirectionA>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> indirection_a_ref() const&& {
     return {std::move(this->indirection_a), __isset.indirection_a};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IndirectionA>
+  template <typename..., typename T = ::some::valid::ns::IndirectionA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> indirection_a_ref() & {
     return {this->indirection_a, __isset.indirection_a};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IndirectionA>
+  template <typename..., typename T = ::some::valid::ns::IndirectionA>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> indirection_a_ref() && {
     return {std::move(this->indirection_a), __isset.indirection_a};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::IndirectionB>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> indirection_b_ref() const& {
     return {this->indirection_b, __isset.indirection_b};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::IndirectionB>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> indirection_b_ref() const&& {
     return {std::move(this->indirection_b), __isset.indirection_b};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::IndirectionB>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> indirection_b_ref() & {
     return {this->indirection_b, __isset.indirection_b};
   }
 
-  template <typename..., typename T = ::std::vector< ::some::valid::ns::IndirectionB>>
+  template <typename..., typename T = ::std::vector<::some::valid::ns::IndirectionB>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> indirection_b_ref() && {
     return {std::move(this->indirection_b), __isset.indirection_b};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::set< ::some::valid::ns::IndirectionC>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> indirection_c_ref() const& {
     return {this->indirection_c, __isset.indirection_c};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::IndirectionC>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> indirection_c_ref() const&& {
     return {std::move(this->indirection_c), __isset.indirection_c};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::IndirectionC>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> indirection_c_ref() & {
     return {this->indirection_c, __isset.indirection_c};
   }
 
-  template <typename..., typename T = ::std::set< ::some::valid::ns::IndirectionC>>
+  template <typename..., typename T = ::std::set<::some::valid::ns::IndirectionC>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> indirection_c_ref() && {
     return {std::move(this->indirection_c), __isset.indirection_c};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::IOBuf>
+  template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> iobuf_type_val_ref() const& {
     return {this->iobuf_type_val, __isset.iobuf_type_val};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBuf>
+  template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> iobuf_type_val_ref() const&& {
     return {std::move(this->iobuf_type_val), __isset.iobuf_type_val};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBuf>
+  template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> iobuf_type_val_ref() & {
     return {this->iobuf_type_val, __isset.iobuf_type_val};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBuf>
+  template <typename..., typename T = ::some::valid::ns::IOBuf>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> iobuf_type_val_ref() && {
     return {std::move(this->iobuf_type_val), __isset.iobuf_type_val};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::IOBufPtr>
+  template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> iobuf_ptr_val_ref() const& {
     return {this->iobuf_ptr_val, __isset.iobuf_ptr_val};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBufPtr>
+  template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> iobuf_ptr_val_ref() const&& {
     return {std::move(this->iobuf_ptr_val), __isset.iobuf_ptr_val};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBufPtr>
+  template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> iobuf_ptr_val_ref() & {
     return {this->iobuf_ptr_val, __isset.iobuf_ptr_val};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::IOBufPtr>
+  template <typename..., typename T = ::some::valid::ns::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> iobuf_ptr_val_ref() && {
     return {std::move(this->iobuf_ptr_val), __isset.iobuf_ptr_val};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::some::valid::ns::containerStruct>
+  template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> struct_struct_ref() const& {
     return {this->struct_struct, __isset.struct_struct};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::containerStruct>
+  template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> struct_struct_ref() const&& {
     return {std::move(this->struct_struct), __isset.struct_struct};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::containerStruct>
+  template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> struct_struct_ref() & {
     return {this->struct_struct, __isset.struct_struct};
   }
 
-  template <typename..., typename T =  ::some::valid::ns::containerStruct>
+  template <typename..., typename T = ::some::valid::ns::containerStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> struct_struct_ref() && {
     return {std::move(this->struct_struct), __isset.struct_struct};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  const  ::some::valid::ns::containerStruct& get_no_annotation() const&;
-   ::some::valid::ns::containerStruct get_no_annotation() &&;
+  const ::some::valid::ns::containerStruct& get_no_annotation() const&;
+  ::some::valid::ns::containerStruct get_no_annotation() &&;
 
-  template <typename T_AnnotatedStruct_no_annotation_struct_setter =  ::some::valid::ns::containerStruct>
-   ::some::valid::ns::containerStruct& set_no_annotation(T_AnnotatedStruct_no_annotation_struct_setter&& no_annotation_) {
+  template <typename T_AnnotatedStruct_no_annotation_struct_setter = ::some::valid::ns::containerStruct>
+  [[deprecated("Use `FOO.no_annotation_ref() = BAR;` instead of `FOO.set_no_annotation(BAR);`")]]
+  ::some::valid::ns::containerStruct& set_no_annotation(T_AnnotatedStruct_no_annotation_struct_setter&& no_annotation_) {
     no_annotation = std::forward<T_AnnotatedStruct_no_annotation_struct_setter>(no_annotation_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.no_annotation = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return no_annotation;
   }
 
-   ::some::valid::ns::CppFakeI32 get_base_type() const {
+  ::some::valid::ns::CppFakeI32 get_base_type() const {
     return base_type;
   }
 
-   ::some::valid::ns::CppFakeI32& set_base_type( ::some::valid::ns::CppFakeI32 base_type_) {
+  [[deprecated("Use `FOO.base_type_ref() = BAR;` instead of `FOO.set_base_type(BAR);`")]]
+  ::some::valid::ns::CppFakeI32& set_base_type(::some::valid::ns::CppFakeI32 base_type_) {
     base_type = base_type_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.base_type = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return base_type;
   }
-  const  ::some::valid::ns::FollySmallVectorI64& get_list_type() const&;
-   ::some::valid::ns::FollySmallVectorI64 get_list_type() &&;
+  const ::some::valid::ns::FollySmallVectorI64& get_list_type() const&;
+  ::some::valid::ns::FollySmallVectorI64 get_list_type() &&;
 
-  template <typename T_AnnotatedStruct_list_type_struct_setter =  ::some::valid::ns::FollySmallVectorI64>
-   ::some::valid::ns::FollySmallVectorI64& set_list_type(T_AnnotatedStruct_list_type_struct_setter&& list_type_) {
+  template <typename T_AnnotatedStruct_list_type_struct_setter = ::some::valid::ns::FollySmallVectorI64>
+  [[deprecated("Use `FOO.list_type_ref() = BAR;` instead of `FOO.set_list_type(BAR);`")]]
+  ::some::valid::ns::FollySmallVectorI64& set_list_type(T_AnnotatedStruct_list_type_struct_setter&& list_type_) {
     list_type = std::forward<T_AnnotatedStruct_list_type_struct_setter>(list_type_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.list_type = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return list_type;
   }
-  const  ::some::valid::ns::SortedVectorSetString& get_set_type() const&;
-   ::some::valid::ns::SortedVectorSetString get_set_type() &&;
+  const ::some::valid::ns::SortedVectorSetString& get_set_type() const&;
+  ::some::valid::ns::SortedVectorSetString get_set_type() &&;
 
-  template <typename T_AnnotatedStruct_set_type_struct_setter =  ::some::valid::ns::SortedVectorSetString>
-   ::some::valid::ns::SortedVectorSetString& set_set_type(T_AnnotatedStruct_set_type_struct_setter&& set_type_) {
+  template <typename T_AnnotatedStruct_set_type_struct_setter = ::some::valid::ns::SortedVectorSetString>
+  [[deprecated("Use `FOO.set_type_ref() = BAR;` instead of `FOO.set_set_type(BAR);`")]]
+  ::some::valid::ns::SortedVectorSetString& set_set_type(T_AnnotatedStruct_set_type_struct_setter&& set_type_) {
     set_type = std::forward<T_AnnotatedStruct_set_type_struct_setter>(set_type_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.set_type = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return set_type;
   }
-  const  ::some::valid::ns::FakeMap& get_map_type() const&;
-   ::some::valid::ns::FakeMap get_map_type() &&;
+  const ::some::valid::ns::FakeMap& get_map_type() const&;
+  ::some::valid::ns::FakeMap get_map_type() &&;
 
-  template <typename T_AnnotatedStruct_map_type_struct_setter =  ::some::valid::ns::FakeMap>
-   ::some::valid::ns::FakeMap& set_map_type(T_AnnotatedStruct_map_type_struct_setter&& map_type_) {
+  template <typename T_AnnotatedStruct_map_type_struct_setter = ::some::valid::ns::FakeMap>
+  [[deprecated("Use `FOO.map_type_ref() = BAR;` instead of `FOO.set_map_type(BAR);`")]]
+  ::some::valid::ns::FakeMap& set_map_type(T_AnnotatedStruct_map_type_struct_setter&& map_type_) {
     map_type = std::forward<T_AnnotatedStruct_map_type_struct_setter>(map_type_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.map_type = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return map_type;
   }
-  const  ::some::valid::ns::UnorderedMapStruct& get_map_struct_type() const&;
-   ::some::valid::ns::UnorderedMapStruct get_map_struct_type() &&;
+  const ::some::valid::ns::UnorderedMapStruct& get_map_struct_type() const&;
+  ::some::valid::ns::UnorderedMapStruct get_map_struct_type() &&;
 
-  template <typename T_AnnotatedStruct_map_struct_type_struct_setter =  ::some::valid::ns::UnorderedMapStruct>
-   ::some::valid::ns::UnorderedMapStruct& set_map_struct_type(T_AnnotatedStruct_map_struct_type_struct_setter&& map_struct_type_) {
+  template <typename T_AnnotatedStruct_map_struct_type_struct_setter = ::some::valid::ns::UnorderedMapStruct>
+  [[deprecated("Use `FOO.map_struct_type_ref() = BAR;` instead of `FOO.set_map_struct_type(BAR);`")]]
+  ::some::valid::ns::UnorderedMapStruct& set_map_struct_type(T_AnnotatedStruct_map_struct_type_struct_setter&& map_struct_type_) {
     map_struct_type = std::forward<T_AnnotatedStruct_map_struct_type_struct_setter>(map_struct_type_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.map_struct_type = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return map_struct_type;
   }
 
-  const  ::some::valid::ns::IOBuf& get_iobuf_type() const& {
+  const ::some::valid::ns::IOBuf& get_iobuf_type() const& {
     return iobuf_type;
   }
 
-   ::some::valid::ns::IOBuf get_iobuf_type() && {
+  ::some::valid::ns::IOBuf get_iobuf_type() && {
     return std::move(iobuf_type);
   }
 
-  template <typename T_AnnotatedStruct_iobuf_type_struct_setter =  ::some::valid::ns::IOBuf>
-   ::some::valid::ns::IOBuf& set_iobuf_type(T_AnnotatedStruct_iobuf_type_struct_setter&& iobuf_type_) {
+  template <typename T_AnnotatedStruct_iobuf_type_struct_setter = ::some::valid::ns::IOBuf>
+  [[deprecated("Use `FOO.iobuf_type_ref() = BAR;` instead of `FOO.set_iobuf_type(BAR);`")]]
+  ::some::valid::ns::IOBuf& set_iobuf_type(T_AnnotatedStruct_iobuf_type_struct_setter&& iobuf_type_) {
     iobuf_type = std::forward<T_AnnotatedStruct_iobuf_type_struct_setter>(iobuf_type_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.iobuf_type = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return iobuf_type;
   }
 
-  const  ::some::valid::ns::IOBufPtr& get_iobuf_ptr() const& {
+  const ::some::valid::ns::IOBufPtr& get_iobuf_ptr() const& {
     return iobuf_ptr;
   }
 
-   ::some::valid::ns::IOBufPtr get_iobuf_ptr() && {
+  ::some::valid::ns::IOBufPtr get_iobuf_ptr() && {
     return std::move(iobuf_ptr);
   }
 
-  template <typename T_AnnotatedStruct_iobuf_ptr_struct_setter =  ::some::valid::ns::IOBufPtr>
-   ::some::valid::ns::IOBufPtr& set_iobuf_ptr(T_AnnotatedStruct_iobuf_ptr_struct_setter&& iobuf_ptr_) {
+  template <typename T_AnnotatedStruct_iobuf_ptr_struct_setter = ::some::valid::ns::IOBufPtr>
+  [[deprecated("Use `FOO.iobuf_ptr_ref() = BAR;` instead of `FOO.set_iobuf_ptr(BAR);`")]]
+  ::some::valid::ns::IOBufPtr& set_iobuf_ptr(T_AnnotatedStruct_iobuf_ptr_struct_setter&& iobuf_ptr_) {
     iobuf_ptr = std::forward<T_AnnotatedStruct_iobuf_ptr_struct_setter>(iobuf_ptr_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.iobuf_ptr = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return iobuf_ptr;
   }
-  const std::list<int32_t>& get_list_i32_template() const&;
-  std::list<int32_t> get_list_i32_template() &&;
+  const std::list<::std::int32_t>& get_list_i32_template() const&;
+  std::list<::std::int32_t> get_list_i32_template() &&;
 
-  template <typename T_AnnotatedStruct_list_i32_template_struct_setter = std::list<int32_t>>
-  std::list<int32_t>& set_list_i32_template(T_AnnotatedStruct_list_i32_template_struct_setter&& list_i32_template_) {
+  template <typename T_AnnotatedStruct_list_i32_template_struct_setter = std::list<::std::int32_t>>
+  [[deprecated("Use `FOO.list_i32_template_ref() = BAR;` instead of `FOO.set_list_i32_template(BAR);`")]]
+  std::list<::std::int32_t>& set_list_i32_template(T_AnnotatedStruct_list_i32_template_struct_setter&& list_i32_template_) {
     list_i32_template = std::forward<T_AnnotatedStruct_list_i32_template_struct_setter>(list_i32_template_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.list_i32_template = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return list_i32_template;
   }
   const std::deque<::std::string>& get_list_string_template() const&;
   std::deque<::std::string> get_list_string_template() &&;
 
   template <typename T_AnnotatedStruct_list_string_template_struct_setter = std::deque<::std::string>>
+  [[deprecated("Use `FOO.list_string_template_ref() = BAR;` instead of `FOO.set_list_string_template(BAR);`")]]
   std::deque<::std::string>& set_list_string_template(T_AnnotatedStruct_list_string_template_struct_setter&& list_string_template_) {
     list_string_template = std::forward<T_AnnotatedStruct_list_string_template_struct_setter>(list_string_template_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.list_string_template = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return list_string_template;
   }
   const folly::sorted_vector_set<::std::string>& get_set_template() const&;
   folly::sorted_vector_set<::std::string> get_set_template() &&;
 
   template <typename T_AnnotatedStruct_set_template_struct_setter = folly::sorted_vector_set<::std::string>>
+  [[deprecated("Use `FOO.set_template_ref() = BAR;` instead of `FOO.set_set_template(BAR);`")]]
   folly::sorted_vector_set<::std::string>& set_set_template(T_AnnotatedStruct_set_template_struct_setter&& set_template_) {
     set_template = std::forward<T_AnnotatedStruct_set_template_struct_setter>(set_template_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.set_template = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return set_template;
   }
-  const folly::sorted_vector_map<int64_t, ::std::string>& get_map_template() const&;
-  folly::sorted_vector_map<int64_t, ::std::string> get_map_template() &&;
+  const folly::sorted_vector_map<::std::int64_t, ::std::string>& get_map_template() const&;
+  folly::sorted_vector_map<::std::int64_t, ::std::string> get_map_template() &&;
 
-  template <typename T_AnnotatedStruct_map_template_struct_setter = folly::sorted_vector_map<int64_t, ::std::string>>
-  folly::sorted_vector_map<int64_t, ::std::string>& set_map_template(T_AnnotatedStruct_map_template_struct_setter&& map_template_) {
+  template <typename T_AnnotatedStruct_map_template_struct_setter = folly::sorted_vector_map<::std::int64_t, ::std::string>>
+  [[deprecated("Use `FOO.map_template_ref() = BAR;` instead of `FOO.set_map_template(BAR);`")]]
+  folly::sorted_vector_map<::std::int64_t, ::std::string>& set_map_template(T_AnnotatedStruct_map_template_struct_setter&& map_template_) {
     map_template = std::forward<T_AnnotatedStruct_map_template_struct_setter>(map_template_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.map_template = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return map_template;
   }
-  const  ::some::valid::ns::std_list& get_typedef_list_template() const&;
-   ::some::valid::ns::std_list get_typedef_list_template() &&;
+  const ::some::valid::ns::std_list& get_typedef_list_template() const&;
+  ::some::valid::ns::std_list get_typedef_list_template() &&;
 
-  template <typename T_AnnotatedStruct_typedef_list_template_struct_setter =  ::some::valid::ns::std_list>
-   ::some::valid::ns::std_list& set_typedef_list_template(T_AnnotatedStruct_typedef_list_template_struct_setter&& typedef_list_template_) {
+  template <typename T_AnnotatedStruct_typedef_list_template_struct_setter = ::some::valid::ns::std_list>
+  [[deprecated("Use `FOO.typedef_list_template_ref() = BAR;` instead of `FOO.set_typedef_list_template(BAR);`")]]
+  ::some::valid::ns::std_list& set_typedef_list_template(T_AnnotatedStruct_typedef_list_template_struct_setter&& typedef_list_template_) {
     typedef_list_template = std::forward<T_AnnotatedStruct_typedef_list_template_struct_setter>(typedef_list_template_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.typedef_list_template = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return typedef_list_template;
   }
-  const  ::some::valid::ns::std_deque& get_typedef_deque_template() const&;
-   ::some::valid::ns::std_deque get_typedef_deque_template() &&;
+  const ::some::valid::ns::std_deque& get_typedef_deque_template() const&;
+  ::some::valid::ns::std_deque get_typedef_deque_template() &&;
 
-  template <typename T_AnnotatedStruct_typedef_deque_template_struct_setter =  ::some::valid::ns::std_deque>
-   ::some::valid::ns::std_deque& set_typedef_deque_template(T_AnnotatedStruct_typedef_deque_template_struct_setter&& typedef_deque_template_) {
+  template <typename T_AnnotatedStruct_typedef_deque_template_struct_setter = ::some::valid::ns::std_deque>
+  [[deprecated("Use `FOO.typedef_deque_template_ref() = BAR;` instead of `FOO.set_typedef_deque_template(BAR);`")]]
+  ::some::valid::ns::std_deque& set_typedef_deque_template(T_AnnotatedStruct_typedef_deque_template_struct_setter&& typedef_deque_template_) {
     typedef_deque_template = std::forward<T_AnnotatedStruct_typedef_deque_template_struct_setter>(typedef_deque_template_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.typedef_deque_template = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return typedef_deque_template;
   }
-  const  ::some::valid::ns::folly_set& get_typedef_set_template() const&;
-   ::some::valid::ns::folly_set get_typedef_set_template() &&;
+  const ::some::valid::ns::folly_set& get_typedef_set_template() const&;
+  ::some::valid::ns::folly_set get_typedef_set_template() &&;
 
-  template <typename T_AnnotatedStruct_typedef_set_template_struct_setter =  ::some::valid::ns::folly_set>
-   ::some::valid::ns::folly_set& set_typedef_set_template(T_AnnotatedStruct_typedef_set_template_struct_setter&& typedef_set_template_) {
+  template <typename T_AnnotatedStruct_typedef_set_template_struct_setter = ::some::valid::ns::folly_set>
+  [[deprecated("Use `FOO.typedef_set_template_ref() = BAR;` instead of `FOO.set_typedef_set_template(BAR);`")]]
+  ::some::valid::ns::folly_set& set_typedef_set_template(T_AnnotatedStruct_typedef_set_template_struct_setter&& typedef_set_template_) {
     typedef_set_template = std::forward<T_AnnotatedStruct_typedef_set_template_struct_setter>(typedef_set_template_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.typedef_set_template = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return typedef_set_template;
   }
-  const  ::some::valid::ns::folly_map& get_typedef_map_template() const&;
-   ::some::valid::ns::folly_map get_typedef_map_template() &&;
+  const ::some::valid::ns::folly_map& get_typedef_map_template() const&;
+  ::some::valid::ns::folly_map get_typedef_map_template() &&;
 
-  template <typename T_AnnotatedStruct_typedef_map_template_struct_setter =  ::some::valid::ns::folly_map>
-   ::some::valid::ns::folly_map& set_typedef_map_template(T_AnnotatedStruct_typedef_map_template_struct_setter&& typedef_map_template_) {
+  template <typename T_AnnotatedStruct_typedef_map_template_struct_setter = ::some::valid::ns::folly_map>
+  [[deprecated("Use `FOO.typedef_map_template_ref() = BAR;` instead of `FOO.set_typedef_map_template(BAR);`")]]
+  ::some::valid::ns::folly_map& set_typedef_map_template(T_AnnotatedStruct_typedef_map_template_struct_setter&& typedef_map_template_) {
     typedef_map_template = std::forward<T_AnnotatedStruct_typedef_map_template_struct_setter>(typedef_map_template_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.typedef_map_template = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return typedef_map_template;
   }
 
-   ::some::valid::ns::IndirectionA get_indirection_a() const {
+  ::some::valid::ns::IndirectionA get_indirection_a() const {
     return indirection_a;
   }
 
-   ::some::valid::ns::IndirectionA& set_indirection_a( ::some::valid::ns::IndirectionA indirection_a_) {
+  [[deprecated("Use `FOO.indirection_a_ref() = BAR;` instead of `FOO.set_indirection_a(BAR);`")]]
+  ::some::valid::ns::IndirectionA& set_indirection_a(::some::valid::ns::IndirectionA indirection_a_) {
     indirection_a = indirection_a_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.indirection_a = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return indirection_a;
   }
-  const ::std::vector< ::some::valid::ns::IndirectionB>& get_indirection_b() const&;
-  ::std::vector< ::some::valid::ns::IndirectionB> get_indirection_b() &&;
+  const ::std::vector<::some::valid::ns::IndirectionB>& get_indirection_b() const&;
+  ::std::vector<::some::valid::ns::IndirectionB> get_indirection_b() &&;
 
-  template <typename T_AnnotatedStruct_indirection_b_struct_setter = ::std::vector< ::some::valid::ns::IndirectionB>>
-  ::std::vector< ::some::valid::ns::IndirectionB>& set_indirection_b(T_AnnotatedStruct_indirection_b_struct_setter&& indirection_b_) {
+  template <typename T_AnnotatedStruct_indirection_b_struct_setter = ::std::vector<::some::valid::ns::IndirectionB>>
+  [[deprecated("Use `FOO.indirection_b_ref() = BAR;` instead of `FOO.set_indirection_b(BAR);`")]]
+  ::std::vector<::some::valid::ns::IndirectionB>& set_indirection_b(T_AnnotatedStruct_indirection_b_struct_setter&& indirection_b_) {
     indirection_b = std::forward<T_AnnotatedStruct_indirection_b_struct_setter>(indirection_b_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.indirection_b = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return indirection_b;
   }
-  const ::std::set< ::some::valid::ns::IndirectionC>& get_indirection_c() const&;
-  ::std::set< ::some::valid::ns::IndirectionC> get_indirection_c() &&;
+  const ::std::set<::some::valid::ns::IndirectionC>& get_indirection_c() const&;
+  ::std::set<::some::valid::ns::IndirectionC> get_indirection_c() &&;
 
-  template <typename T_AnnotatedStruct_indirection_c_struct_setter = ::std::set< ::some::valid::ns::IndirectionC>>
-  ::std::set< ::some::valid::ns::IndirectionC>& set_indirection_c(T_AnnotatedStruct_indirection_c_struct_setter&& indirection_c_) {
+  template <typename T_AnnotatedStruct_indirection_c_struct_setter = ::std::set<::some::valid::ns::IndirectionC>>
+  [[deprecated("Use `FOO.indirection_c_ref() = BAR;` instead of `FOO.set_indirection_c(BAR);`")]]
+  ::std::set<::some::valid::ns::IndirectionC>& set_indirection_c(T_AnnotatedStruct_indirection_c_struct_setter&& indirection_c_) {
     indirection_c = std::forward<T_AnnotatedStruct_indirection_c_struct_setter>(indirection_c_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.indirection_c = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return indirection_c;
   }
 
-  const  ::some::valid::ns::IOBuf& get_iobuf_type_val() const& {
+  const ::some::valid::ns::IOBuf& get_iobuf_type_val() const& {
     return iobuf_type_val;
   }
 
-   ::some::valid::ns::IOBuf get_iobuf_type_val() && {
+  ::some::valid::ns::IOBuf get_iobuf_type_val() && {
     return std::move(iobuf_type_val);
   }
 
-  template <typename T_AnnotatedStruct_iobuf_type_val_struct_setter =  ::some::valid::ns::IOBuf>
-   ::some::valid::ns::IOBuf& set_iobuf_type_val(T_AnnotatedStruct_iobuf_type_val_struct_setter&& iobuf_type_val_) {
+  template <typename T_AnnotatedStruct_iobuf_type_val_struct_setter = ::some::valid::ns::IOBuf>
+  [[deprecated("Use `FOO.iobuf_type_val_ref() = BAR;` instead of `FOO.set_iobuf_type_val(BAR);`")]]
+  ::some::valid::ns::IOBuf& set_iobuf_type_val(T_AnnotatedStruct_iobuf_type_val_struct_setter&& iobuf_type_val_) {
     iobuf_type_val = std::forward<T_AnnotatedStruct_iobuf_type_val_struct_setter>(iobuf_type_val_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.iobuf_type_val = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return iobuf_type_val;
   }
 
-  const  ::some::valid::ns::IOBufPtr& get_iobuf_ptr_val() const& {
+  const ::some::valid::ns::IOBufPtr& get_iobuf_ptr_val() const& {
     return iobuf_ptr_val;
   }
 
-   ::some::valid::ns::IOBufPtr get_iobuf_ptr_val() && {
+  ::some::valid::ns::IOBufPtr get_iobuf_ptr_val() && {
     return std::move(iobuf_ptr_val);
   }
 
-  template <typename T_AnnotatedStruct_iobuf_ptr_val_struct_setter =  ::some::valid::ns::IOBufPtr>
-   ::some::valid::ns::IOBufPtr& set_iobuf_ptr_val(T_AnnotatedStruct_iobuf_ptr_val_struct_setter&& iobuf_ptr_val_) {
+  template <typename T_AnnotatedStruct_iobuf_ptr_val_struct_setter = ::some::valid::ns::IOBufPtr>
+  [[deprecated("Use `FOO.iobuf_ptr_val_ref() = BAR;` instead of `FOO.set_iobuf_ptr_val(BAR);`")]]
+  ::some::valid::ns::IOBufPtr& set_iobuf_ptr_val(T_AnnotatedStruct_iobuf_ptr_val_struct_setter&& iobuf_ptr_val_) {
     iobuf_ptr_val = std::forward<T_AnnotatedStruct_iobuf_ptr_val_struct_setter>(iobuf_ptr_val_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.iobuf_ptr_val = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return iobuf_ptr_val;
   }
-  const  ::some::valid::ns::containerStruct& get_struct_struct() const&;
-   ::some::valid::ns::containerStruct get_struct_struct() &&;
+  const ::some::valid::ns::containerStruct& get_struct_struct() const&;
+  ::some::valid::ns::containerStruct get_struct_struct() &&;
 
-  template <typename T_AnnotatedStruct_struct_struct_struct_setter =  ::some::valid::ns::containerStruct>
-   ::some::valid::ns::containerStruct& set_struct_struct(T_AnnotatedStruct_struct_struct_struct_setter&& struct_struct_) {
+  template <typename T_AnnotatedStruct_struct_struct_struct_setter = ::some::valid::ns::containerStruct>
+  [[deprecated("Use `FOO.struct_struct_ref() = BAR;` instead of `FOO.set_struct_struct(BAR);`")]]
+  ::some::valid::ns::containerStruct& set_struct_struct(T_AnnotatedStruct_struct_struct_struct_setter&& struct_struct_) {
     struct_struct = std::forward<T_AnnotatedStruct_struct_struct_struct_setter>(struct_struct_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.struct_struct = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return struct_struct;
   }
 
@@ -8120,7 +7846,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AnnotatedStruct >;
+  friend class ::apache::thrift::Cpp2Ops<AnnotatedStruct>;
   friend void swap(AnnotatedStruct& a, AnnotatedStruct& b);
 };
 
@@ -8133,6 +7859,11 @@ uint32_t AnnotatedStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class ComplexContainerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8140,6 +7871,7 @@ class ComplexContainerStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = ComplexContainerStruct;
@@ -8149,115 +7881,93 @@ class ComplexContainerStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  ComplexContainerStruct() {}
+  ComplexContainerStruct() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ComplexContainerStruct(apache::thrift::FragileConstructor, ::std::map<::std::string,  ::some::valid::ns::IOBuf> map_of_iobufs__arg, ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg);
+  ComplexContainerStruct(apache::thrift::FragileConstructor, ::std::map<::std::string, ::some::valid::ns::IOBuf> map_of_iobufs__arg, ::std::map<::std::string, ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs__arg);
 
-  ComplexContainerStruct(ComplexContainerStruct&&) = default;
+  ComplexContainerStruct(ComplexContainerStruct&&) noexcept;
+  ComplexContainerStruct(const ComplexContainerStruct& src);
 
-  ComplexContainerStruct(const ComplexContainerStruct&) = default;
 
-
-  ComplexContainerStruct& operator=(ComplexContainerStruct&&) = default;
-
-  ComplexContainerStruct& operator=(const ComplexContainerStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  ComplexContainerStruct& operator=(ComplexContainerStruct&&) noexcept;
+  ComplexContainerStruct& operator=(const ComplexContainerStruct& src);
   void __clear();
  private:
-  ::std::map<::std::string,  ::some::valid::ns::IOBuf> map_of_iobufs;
+  ::std::map<::std::string, ::some::valid::ns::IOBuf> map_of_iobufs;
  private:
-  ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs;
+  ::std::map<::std::string, ::some::valid::ns::IOBufPtr> map_of_iobuf_ptrs;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool map_of_iobufs;
     bool map_of_iobuf_ptrs;
   } __isset = {};
-  bool operator==(const ComplexContainerStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ComplexContainerStruct& __x, const ComplexContainerStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const ComplexContainerStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ComplexContainerStruct& __x, const ComplexContainerStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ComplexContainerStruct& __x, const ComplexContainerStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ComplexContainerStruct& __x, const ComplexContainerStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::string,  ::some::valid::ns::IOBuf>>
+ public:
+
+  bool operator==(const ComplexContainerStruct&) const;
+  bool operator<(const ComplexContainerStruct&) const;
+
+  template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> map_of_iobufs_ref() const& {
     return {this->map_of_iobufs, __isset.map_of_iobufs};
   }
 
-  template <typename..., typename T = ::std::map<::std::string,  ::some::valid::ns::IOBuf>>
+  template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_of_iobufs_ref() const&& {
     return {std::move(this->map_of_iobufs), __isset.map_of_iobufs};
   }
 
-  template <typename..., typename T = ::std::map<::std::string,  ::some::valid::ns::IOBuf>>
+  template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> map_of_iobufs_ref() & {
     return {this->map_of_iobufs, __isset.map_of_iobufs};
   }
 
-  template <typename..., typename T = ::std::map<::std::string,  ::some::valid::ns::IOBuf>>
+  template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_of_iobufs_ref() && {
     return {std::move(this->map_of_iobufs), __isset.map_of_iobufs};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>>
+  template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> map_of_iobuf_ptrs_ref() const& {
     return {this->map_of_iobuf_ptrs, __isset.map_of_iobuf_ptrs};
   }
 
-  template <typename..., typename T = ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>>
+  template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> map_of_iobuf_ptrs_ref() const&& {
     return {std::move(this->map_of_iobuf_ptrs), __isset.map_of_iobuf_ptrs};
   }
 
-  template <typename..., typename T = ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>>
+  template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> map_of_iobuf_ptrs_ref() & {
     return {this->map_of_iobuf_ptrs, __isset.map_of_iobuf_ptrs};
   }
 
-  template <typename..., typename T = ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>>
+  template <typename..., typename T = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> map_of_iobuf_ptrs_ref() && {
     return {std::move(this->map_of_iobuf_ptrs), __isset.map_of_iobuf_ptrs};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  const ::std::map<::std::string,  ::some::valid::ns::IOBuf>& get_map_of_iobufs() const&;
-  ::std::map<::std::string,  ::some::valid::ns::IOBuf> get_map_of_iobufs() &&;
+  const ::std::map<::std::string, ::some::valid::ns::IOBuf>& get_map_of_iobufs() const&;
+  ::std::map<::std::string, ::some::valid::ns::IOBuf> get_map_of_iobufs() &&;
 
-  template <typename T_ComplexContainerStruct_map_of_iobufs_struct_setter = ::std::map<::std::string,  ::some::valid::ns::IOBuf>>
-  ::std::map<::std::string,  ::some::valid::ns::IOBuf>& set_map_of_iobufs(T_ComplexContainerStruct_map_of_iobufs_struct_setter&& map_of_iobufs_) {
+  template <typename T_ComplexContainerStruct_map_of_iobufs_struct_setter = ::std::map<::std::string, ::some::valid::ns::IOBuf>>
+  [[deprecated("Use `FOO.map_of_iobufs_ref() = BAR;` instead of `FOO.set_map_of_iobufs(BAR);`")]]
+  ::std::map<::std::string, ::some::valid::ns::IOBuf>& set_map_of_iobufs(T_ComplexContainerStruct_map_of_iobufs_struct_setter&& map_of_iobufs_) {
     map_of_iobufs = std::forward<T_ComplexContainerStruct_map_of_iobufs_struct_setter>(map_of_iobufs_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.map_of_iobufs = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return map_of_iobufs;
   }
-  const ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>& get_map_of_iobuf_ptrs() const&;
-  ::std::map<::std::string,  ::some::valid::ns::IOBufPtr> get_map_of_iobuf_ptrs() &&;
+  const ::std::map<::std::string, ::some::valid::ns::IOBufPtr>& get_map_of_iobuf_ptrs() const&;
+  ::std::map<::std::string, ::some::valid::ns::IOBufPtr> get_map_of_iobuf_ptrs() &&;
 
-  template <typename T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter = ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>>
-  ::std::map<::std::string,  ::some::valid::ns::IOBufPtr>& set_map_of_iobuf_ptrs(T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter&& map_of_iobuf_ptrs_) {
+  template <typename T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter = ::std::map<::std::string, ::some::valid::ns::IOBufPtr>>
+  [[deprecated("Use `FOO.map_of_iobuf_ptrs_ref() = BAR;` instead of `FOO.set_map_of_iobuf_ptrs(BAR);`")]]
+  ::std::map<::std::string, ::some::valid::ns::IOBufPtr>& set_map_of_iobuf_ptrs(T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter&& map_of_iobuf_ptrs_) {
     map_of_iobuf_ptrs = std::forward<T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter>(map_of_iobuf_ptrs_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.map_of_iobuf_ptrs = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return map_of_iobuf_ptrs;
   }
 
@@ -8274,7 +7984,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ComplexContainerStruct >;
+  friend class ::apache::thrift::Cpp2Ops<ComplexContainerStruct>;
   friend void swap(ComplexContainerStruct& a, ComplexContainerStruct& b);
 };
 
@@ -8287,6 +7997,11 @@ uint32_t ComplexContainerStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class FloatStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8294,6 +8009,7 @@ class FloatStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = FloatStruct;
@@ -8303,10 +8019,10 @@ class FloatStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FloatStruct() :
       floatField(0),
-      doubleField(0) {}
+      doubleField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   FloatStruct(apache::thrift::FragileConstructor, float floatField__arg, double doubleField__arg);
@@ -8319,39 +8035,24 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FloatStruct& operator=(FloatStruct&&) = default;
 
   FloatStruct& operator=(const FloatStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
   float floatField;
  private:
   double doubleField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool floatField;
     bool doubleField;
   } __isset = {};
-  bool operator==(const FloatStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const FloatStruct& __x, const FloatStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const FloatStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const FloatStruct& __x, const FloatStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const FloatStruct& __x, const FloatStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const FloatStruct& __x, const FloatStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ public:
+
+  bool operator==(const FloatStruct&) const;
+  bool operator<(const FloatStruct&) const;
+
   template <typename..., typename T = float>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> floatField_ref() const& {
     return {this->floatField, __isset.floatField};
@@ -8371,9 +8072,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> floatField_ref() && {
     return {std::move(this->floatField), __isset.floatField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = double>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> doubleField_ref() const& {
     return {this->doubleField, __isset.doubleField};
@@ -8393,17 +8092,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> doubleField_ref() && {
     return {std::move(this->doubleField), __isset.doubleField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   float get_floatField() const {
     return floatField;
   }
 
+  [[deprecated("Use `FOO.floatField_ref() = BAR;` instead of `FOO.set_floatField(BAR);`")]]
   float& set_floatField(float floatField_) {
     floatField = floatField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.floatField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return floatField;
   }
 
@@ -8411,11 +8108,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     return doubleField;
   }
 
+  [[deprecated("Use `FOO.doubleField_ref() = BAR;` instead of `FOO.set_doubleField(BAR);`")]]
   double& set_doubleField(double doubleField_) {
     doubleField = doubleField_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.doubleField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return doubleField;
   }
 
@@ -8432,7 +8128,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< FloatStruct >;
+  friend class ::apache::thrift::Cpp2Ops<FloatStruct>;
   friend void swap(FloatStruct& a, FloatStruct& b);
 };
 
@@ -8445,6 +8141,11 @@ uint32_t FloatStruct::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class FloatUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8452,6 +8153,7 @@ class FloatUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = FloatUnion;
@@ -8469,7 +8171,7 @@ class FloatUnion final  {
   FloatUnion()
       : type_(Type::__EMPTY__) {}
 
-  FloatUnion(FloatUnion&& rhs)
+  FloatUnion(FloatUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -8516,7 +8218,7 @@ class FloatUnion final  {
     }
   }
 
-  FloatUnion& operator=(FloatUnion&& rhs) {
+  FloatUnion& operator=(FloatUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -8576,24 +8278,9 @@ class FloatUnion final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const FloatUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const FloatUnion& __x, const FloatUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const FloatUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const FloatUnion& __x, const FloatUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const FloatUnion& __x, const FloatUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const FloatUnion& __x, const FloatUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
+
+  bool operator==(const FloatUnion&) const;
+  bool operator<(const FloatUnion&) const;
 
   float& set_floatSide(float t = float()) {
     __clear();
@@ -8609,22 +8296,26 @@ class FloatUnion final  {
     return value_.doubleSide;
   }
 
-  float const & get_floatSide() const {
-    assert(type_ == Type::floatSide);
+  float const& get_floatSide() const {
+    if (type_ != Type::floatSide) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.floatSide;
   }
 
-  double const & get_doubleSide() const {
-    assert(type_ == Type::doubleSide);
+  double const& get_doubleSide() const {
+    if (type_ != Type::doubleSide) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
     return value_.doubleSide;
   }
 
-  float & mutable_floatSide() {
+  float& mutable_floatSide() {
     assert(type_ == Type::floatSide);
     return value_.floatSide;
   }
 
-  double & mutable_doubleSide() {
+  double& mutable_doubleSide() {
     assert(type_ == Type::doubleSide);
     return value_.doubleSide;
   }
@@ -8700,7 +8391,7 @@ class FloatUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< FloatUnion >;
+  friend class ::apache::thrift::Cpp2Ops<FloatUnion>;
   friend void swap(FloatUnion& a, FloatUnion& b);
 };
 
@@ -8713,6 +8404,11 @@ uint32_t FloatUnion::read(Protocol_* iprot) {
 
 }}} // some::valid::ns
 namespace some { namespace valid { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class AllRequiredNoExceptMoveCtrStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -8720,6 +8416,7 @@ class AllRequiredNoExceptMoveCtrStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = AllRequiredNoExceptMoveCtrStruct;
@@ -8729,72 +8426,58 @@ class AllRequiredNoExceptMoveCtrStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AllRequiredNoExceptMoveCtrStruct() :
-      intField(0) {}
+      intField(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, int64_t intField__arg);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&& other) noexcept :
-      intField(std::move(other.intField)) {}
+  AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, ::std::int64_t intField__arg);
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  AllRequiredNoExceptMoveCtrStruct(AllRequiredNoExceptMoveCtrStruct&&) = default;
+
   AllRequiredNoExceptMoveCtrStruct(const AllRequiredNoExceptMoveCtrStruct&) = default;
 
 
   AllRequiredNoExceptMoveCtrStruct& operator=(AllRequiredNoExceptMoveCtrStruct&&) = default;
 
   AllRequiredNoExceptMoveCtrStruct& operator=(const AllRequiredNoExceptMoveCtrStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  public:
-  int64_t intField;
+  ::std::int64_t intField;
+
+ private:
 
  public:
-  bool operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AllRequiredNoExceptMoveCtrStruct& __x, const AllRequiredNoExceptMoveCtrStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const AllRequiredNoExceptMoveCtrStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AllRequiredNoExceptMoveCtrStruct& __x, const AllRequiredNoExceptMoveCtrStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AllRequiredNoExceptMoveCtrStruct& __x, const AllRequiredNoExceptMoveCtrStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AllRequiredNoExceptMoveCtrStruct& __x, const AllRequiredNoExceptMoveCtrStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
-  template <typename..., typename T = int64_t>
-  FOLLY_ERASE auto intField_ref() const& {
+
+  bool operator==(const AllRequiredNoExceptMoveCtrStruct&) const;
+  bool operator<(const AllRequiredNoExceptMoveCtrStruct&) const;
+
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&> intField_ref() const& {
     return ::apache::thrift::required_field_ref<const T&>{this->intField};
   }
 
-  template <typename..., typename T = int64_t>
-  FOLLY_ERASE auto intField_ref() const&& {
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<const T&&> intField_ref() const&& {
     return ::apache::thrift::required_field_ref<const T&&>{std::move(this->intField)};
   }
 
-  template <typename..., typename T = int64_t>
-  FOLLY_ERASE auto intField_ref() & {
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&> intField_ref() & {
     return ::apache::thrift::required_field_ref<T&>{this->intField};
   }
 
-  template <typename..., typename T = int64_t>
-  FOLLY_ERASE auto intField_ref() && {
+  template <typename..., typename T = ::std::int64_t>
+  FOLLY_ERASE ::apache::thrift::required_field_ref<T&&> intField_ref() && {
     return ::apache::thrift::required_field_ref<T&&>{std::move(this->intField)};
   }
 
-  int64_t get_intField() const {
+  ::std::int64_t get_intField() const {
     return intField;
   }
 
-  int64_t& set_intField(int64_t intField_) {
+  [[deprecated("Use `FOO.intField_ref() = BAR;` instead of `FOO.set_intField(BAR);`")]]
+  ::std::int64_t& set_intField(::std::int64_t intField_) {
     intField = intField_;
     return intField;
   }
@@ -8812,7 +8495,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AllRequiredNoExceptMoveCtrStruct >;
+  friend class ::apache::thrift::Cpp2Ops<AllRequiredNoExceptMoveCtrStruct>;
   friend void swap(AllRequiredNoExceptMoveCtrStruct& a, AllRequiredNoExceptMoveCtrStruct& b);
 };
 
@@ -8824,6 +8507,7 @@ uint32_t AllRequiredNoExceptMoveCtrStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

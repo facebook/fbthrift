@@ -23,13 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStructNestedAnnotation", builder=MyStructNestedAnnotation.Builder.class)
-public final class MyStructNestedAnnotation {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="MyStructNestedAnnotation", builder=MyStructNestedAnnotation.Builder.class)
+public final class MyStructNestedAnnotation implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStructNestedAnnotation(
-        @ThriftField(value=1, name="name", requiredness=Requiredness.NONE) final String name
+        @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE) final String name
     ) {
         this.name = name;
     }
@@ -40,11 +39,10 @@ public final class MyStructNestedAnnotation {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String name = null;
     
-        @ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
         public Builder setName(String name) {
             this.name = name;
             return this;
@@ -62,7 +60,6 @@ public final class MyStructNestedAnnotation {
             MyStructNestedAnnotation result = new MyStructNestedAnnotation (
                 this.name
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -78,14 +75,8 @@ public final class MyStructNestedAnnotation {
       FIELD_METADATA.put(1, NAME_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetName() {
-        return this.name != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -117,6 +108,10 @@ public final class MyStructNestedAnnotation {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStructNestedAnnotation> asReader() {
+      return MyStructNestedAnnotation::read0;
+    }
     
     public static MyStructNestedAnnotation read0(TProtocol oprot) throws TException {
       TField __field;
@@ -155,4 +150,11 @@ public final class MyStructNestedAnnotation {
       oprot.writeStructEnd();
     }
     
+    private static class _MyStructNestedAnnotationLazy {
+        private static final MyStructNestedAnnotation _DEFAULT = new MyStructNestedAnnotation.Builder().build();
+    }
+    
+    public static MyStructNestedAnnotation defaultInstance() {
+        return  _MyStructNestedAnnotationLazy._DEFAULT;
+    }
 }

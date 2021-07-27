@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,14 +31,24 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
 
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass EnumMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
     cdef cppclass cMyEnum "::cpp2::MyEnum":
         pass
@@ -51,9 +60,15 @@ cdef extern from "src/gen-cpp2/module_types.h" namespace "::cpp2":
 cdef class MyEnum(thrift.py3.types.CompiledEnum):
     pass
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cMyStructNestedAnnotation__isset "::cpp2::MyStructNestedAnnotation::__isset":
-        bint name
 
     cdef cppclass cMyStructNestedAnnotation "::cpp2::MyStructNestedAnnotation":
         cMyStructNestedAnnotation() except +
@@ -66,40 +81,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cMyStructNestedAnnotation&)
         __field_ref[string] name_ref()
         string name
-        cMyStructNestedAnnotation__isset __isset
 
-    cdef cppclass cMyStructAnnotation__isset "::cpp2::MyStructAnnotation::__isset":
-        bint count
-        bint name
-        bint extra
-        bint nest
-
-    cdef cppclass cMyStructAnnotation "::cpp2::MyStructAnnotation":
-        cMyStructAnnotation() except +
-        cMyStructAnnotation(const cMyStructAnnotation&) except +
-        bint operator==(cMyStructAnnotation&)
-        bint operator!=(cMyStructAnnotation&)
-        bint operator<(cMyStructAnnotation&)
-        bint operator>(cMyStructAnnotation&)
-        bint operator<=(cMyStructAnnotation&)
-        bint operator>=(cMyStructAnnotation&)
-        __field_ref[cint64_t] count_ref()
-        cint64_t count
-        __field_ref[string] name_ref()
-        string name
-        __optional_field_ref[string] extra_ref()
-        string extra
-        __field_ref[cMyStructNestedAnnotation] nest_ref()
-        cMyStructNestedAnnotation nest
-        cMyStructAnnotation__isset __isset
-
-    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
-        bint major "majorVer"
-        bint package
-        bint annotation_with_quote
-        bint class_
-        bint annotation_with_trailing_comma
-        bint empty_annotations
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -111,22 +93,18 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
         __field_ref[cint64_t] major_ref "majorVer_ref"()
-        cint64_t major "majorVer"
         __field_ref[string] package_ref()
-        string package
         __field_ref[string] annotation_with_quote_ref()
-        string annotation_with_quote
         __field_ref[string] class__ref()
-        string class_
         __field_ref[string] annotation_with_trailing_comma_ref()
-        string annotation_with_trailing_comma
         __field_ref[string] empty_annotations_ref()
+        cint64_t major "majorVer"
+        string package
+        string annotation_with_quote
+        string class_
+        string annotation_with_trailing_comma
         string empty_annotations
-        cMyStruct__isset __isset
 
-    cdef cppclass cSecretStruct__isset "::cpp2::SecretStruct::__isset":
-        bint id
-        bint password
 
     cdef cppclass cSecretStruct "::cpp2::SecretStruct":
         cSecretStruct() except +
@@ -138,36 +116,25 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cSecretStruct&)
         bint operator>=(cSecretStruct&)
         __field_ref[cint64_t] id_ref()
-        cint64_t id
         __field_ref[string] password_ref()
+        cint64_t id
         string password
-        cSecretStruct__isset __isset
 
 
 
 
 cdef class MyStructNestedAnnotation(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStructNestedAnnotation] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStructNestedAnnotation_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__MyStructNestedAnnotation_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cMyStructNestedAnnotation])
 
 
 
-cdef class MyStructAnnotation(thrift.py3.types.Struct):
-    cdef shared_ptr[cMyStructAnnotation] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStructAnnotation_FieldsSetter _fields_setter
-    cdef MyStructNestedAnnotation __field_nest
-
-    @staticmethod
-    cdef create(shared_ptr[cMyStructAnnotation])
-
-
-
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
@@ -176,7 +143,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 cdef class SecretStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cSecretStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__SecretStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__SecretStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSecretStruct])

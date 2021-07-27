@@ -23,15 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
-public final class MyStruct {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
+public final class MyStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optRef,
-        @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField ref,
-        @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.MyField reqRef
+        @com.facebook.swift.codec.ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optRef,
+        @com.facebook.swift.codec.ThriftField(value=2, name="ref", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField ref,
+        @com.facebook.swift.codec.ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.MyField reqRef
     ) {
         this.optRef = optRef;
         this.ref = ref;
@@ -46,13 +45,12 @@ public final class MyStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.refs.MyField optRef = null;
         private test.fixtures.refs.MyField ref = null;
         private test.fixtures.refs.MyField reqRef = null;
     
-        @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL)
+        @com.facebook.swift.codec.ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL)
         public Builder setOptRef(test.fixtures.refs.MyField optRef) {
             this.optRef = optRef;
             return this;
@@ -60,7 +58,7 @@ public final class MyStruct {
     
         public test.fixtures.refs.MyField getOptRef() { return optRef; }
     
-            @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
         public Builder setRef(test.fixtures.refs.MyField ref) {
             this.ref = ref;
             return this;
@@ -68,7 +66,7 @@ public final class MyStruct {
     
         public test.fixtures.refs.MyField getRef() { return ref; }
     
-            @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
+            @com.facebook.swift.codec.ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
         public Builder setReqRef(test.fixtures.refs.MyField reqRef) {
             this.reqRef = reqRef;
             return this;
@@ -90,7 +88,6 @@ public final class MyStruct {
                 this.ref,
                 this.reqRef
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -116,34 +113,16 @@ public final class MyStruct {
       FIELD_METADATA.put(3, REQ_REF_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=1, name="opt_ref", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyField getOptRef() { return optRef; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetOptRef() {
-        return this.optRef != null;
-    }
     
     
-    @ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="ref", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getRef() { return ref; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetRef() {
-        return this.ref != null;
-    }
     
     
-    @ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=3, name="req_ref", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqRef() { return reqRef; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetReqRef() {
-        return this.reqRef != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -181,6 +160,10 @@ public final class MyStruct {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
+      return MyStruct::read0;
+    }
     
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
@@ -245,4 +228,11 @@ public final class MyStruct {
       oprot.writeStructEnd();
     }
     
+    private static class _MyStructLazy {
+        private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
+    }
+    
+    public static MyStruct defaultInstance() {
+        return  _MyStructLazy._DEFAULT;
+    }
 }

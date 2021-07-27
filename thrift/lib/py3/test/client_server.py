@@ -17,6 +17,7 @@ import asyncio
 import socket
 import sys
 import tempfile
+import time
 import unittest
 from pathlib import Path
 from typing import Optional, Sequence
@@ -32,7 +33,7 @@ from testing.services import TestingServiceInterface
 from testing.types import Color, HardError, easy
 from thrift.py3.client import ClientType, get_client
 from thrift.py3.common import Protocol, RpcOptions
-from thrift.py3.exceptions import TransportError
+from thrift.py3.exceptions import ApplicationError, TransportError
 from thrift.py3.server import (
     RequestContext,
     ServiceInterface,
@@ -55,6 +56,10 @@ class Handler(TestingServiceInterface):
             ctx = get_context()
             ctx.set_header("contextvar", "true")
         return "Testing"
+
+    async def getMethodName(self) -> str:
+        ctx = get_context()
+        return ctx.method_name
 
     async def shutdown(self) -> None:
         pass
@@ -135,6 +140,10 @@ class ClientServerTests(unittest.TestCase):
                         "Testing", await client.getName(rpc_options=options)
                     )
                     self.assertEqual("true", options.read_headers["contextvar"])
+                    self.assertEqual(
+                        "getMethodName",
+                        await client.getMethodName(),
+                    )
 
         loop.run_until_complete(inner_test())
 
@@ -378,6 +387,49 @@ class ClientServerTests(unittest.TestCase):
 
         loop.run_until_complete(inner_test())
 
+    def test_queue_timeout(self) -> None:
+        """
+        This tests whether queue timeout functions properly.
+        """
+
+        class SlowDerivedHandler(Handler, DerivedTestingServiceInterface):
+            async def getName(self) -> str:
+                time.sleep(1)
+                return "SlowDerivedTesting"
+
+            async def derived_pick_a_color(self, color: Color) -> Color:
+                return color
+
+        testing = TestServer(handler=SlowDerivedHandler())
+        testing.server.set_queue_timeout(0.01)
+        loop = asyncio.get_event_loop()
+
+        async def client_call(sa: SocketAddress) -> str:
+            ip, port = sa.ip, sa.port
+            assert ip and port
+            async with get_client(DerivedTestingService, host=ip, port=port) as client:
+                try:
+                    return await client.getName()
+                except ApplicationError as err:
+                    if "Queue Timeout" in str(err):
+                        return "Queue Timeout"
+                    else:
+                        return ""
+
+        async def clients_run(server: TestServer) -> None:
+            async with server as sa:
+                results = await asyncio.gather(
+                    client_call(sa),
+                    client_call(sa),
+                    client_call(sa),
+                    client_call(sa),
+                    client_call(sa),
+                )
+                self.assertEqual(results.count("SlowDerivedTesting"), 2)
+                self.assertEqual(results.count("Queue Timeout"), 3)
+
+        loop.run_until_complete(clients_run(testing))
+
 
 class StackHandler(StackServiceInterface):
     async def add_to(self, lst: Sequence[int], value: int) -> Sequence[int]:
@@ -385,6 +437,9 @@ class StackHandler(StackServiceInterface):
 
     async def get_simple(self) -> simple:
         return simple(val=66)
+
+    async def get_simple_no_sa(self) -> simple:
+        return simple(val=88)
 
     async def take_simple(self, smpl: simple) -> None:
         if smpl.val != 10:
@@ -423,6 +478,7 @@ class ClientStackServerTests(unittest.TestCase):
                         (3, 4, 5, 6), await client.add_to(lst=(1, 2, 3, 4), value=2)
                     )
                     self.assertEqual(66, (await client.get_simple()).val)
+                    self.assertEqual((await client.get_simple_no_sa()).val, 88)
                     await client.take_simple(simple(val=10))
                     self.assertEqual(b"abc", bytes(await client.get_iobuf()))
                     await client.take_iobuf(IOBuf(b"cba"))

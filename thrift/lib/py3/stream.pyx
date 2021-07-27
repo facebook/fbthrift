@@ -16,6 +16,10 @@ from folly.executor cimport get_executor
 
 import asyncio
 
+cdef public api void cancelAsyncGenerator(object generator):
+    asyncio.get_event_loop().create_task(
+        generator.aclose()
+    )
 
 cdef class ClientBufferedStream:
     """
@@ -46,4 +50,7 @@ cdef class ServerStream:
     pass
 
 cdef class ResponseAndServerStream:
+    pass
+
+cdef class ServerPublisher:
     pass

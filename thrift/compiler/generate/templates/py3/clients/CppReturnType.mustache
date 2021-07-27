@@ -15,12 +15,12 @@
   limitations under the License.
 
 }}{{!
-Cpp type of returnType for stream types.
+Cpp type of return_type for stream types.
 }}{{#type:streamresponse?}}{{!
-  }}{{#type:streamHasFirstResponse?}}apache::thrift::ResponseAndClientBufferedStream<{{!
-    }}{{#type:streamFirstResponseType}}{{ >types/CppValueType}}{{/type:streamFirstResponseType}},{{!
-  }}{{/type:streamHasFirstResponse?}}{{!
-  }}{{^type:streamHasFirstResponse?}}apache::thrift::ClientBufferedStream<{{/type:streamHasFirstResponse?}}{{!
-  }}{{#type:streamElemType}}{{ >types/CppValueType}}{{/type:streamElemType}}>{{!
+  }}{{#type:stream_has_first_response?}}apache::thrift::ResponseAndClientBufferedStream<{{!
+    }}{{#type:stream_first_response_type}}{{ >types/CppValueType}}{{/type:stream_first_response_type}},{{!
+  }}{{/type:stream_has_first_response?}}{{!
+  }}{{^type:stream_has_first_response?}}apache::thrift::ClientBufferedStream<{{/type:stream_has_first_response?}}{{!
+  }}{{#type:stream_elem_type}}{{ >types/CppValueType}}{{/type:stream_elem_type}}>{{!
 }}{{/type:streamresponse?}}{{!
 }}{{^type:streamresponse?}}{{ >types/CppValueType}}{{/type:streamresponse?}}

@@ -21,11 +21,10 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("CustomFieldNames")
-public final class CustomFieldNames extends java.lang.RuntimeException {
+@com.facebook.swift.codec.ThriftStruct("CustomFieldNames")
+public final class CustomFieldNames extends java.lang.RuntimeException implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
-    private BitSet __isset_bit_vector = new BitSet();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -40,8 +39,8 @@ public final class CustomFieldNames extends java.lang.RuntimeException {
 
     @ThriftConstructor
     public CustomFieldNames(
-        @ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE) final String errorMessage,
-        @ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE) final String internalGreatMessage
+        @com.facebook.swift.codec.ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE) final String errorMessage,
+        @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE) final String internalGreatMessage
     ) {
         this.errorMessage = errorMessage;
         this.internalGreatMessage = internalGreatMessage;
@@ -54,12 +53,11 @@ public final class CustomFieldNames extends java.lang.RuntimeException {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String errorMessage = null;
         private String internalGreatMessage = null;
     
-        @ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)
         public Builder setErrorMessage(String errorMessage) {
             this.errorMessage = errorMessage;
             return this;
@@ -67,7 +65,7 @@ public final class CustomFieldNames extends java.lang.RuntimeException {
     
         public String getErrorMessage() { return errorMessage; }
     
-            @ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
         public Builder setInternalGreatMessage(String internalGreatMessage) {
             this.internalGreatMessage = internalGreatMessage;
             return this;
@@ -87,21 +85,24 @@ public final class CustomFieldNames extends java.lang.RuntimeException {
                 this.errorMessage,
                 this.internalGreatMessage
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
     
     
-    @ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="error_message", requiredness=Requiredness.NONE)
     public String getErrorMessage() { return errorMessage; }
         
-    @ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="internal_error_message", requiredness=Requiredness.NONE)
     public String getInternalGreatMessage() { return internalGreatMessage; }
         
     @java.lang.Override
     public String getMessage() {
       return internalGreatMessage;
+    }
+    
+    public static com.facebook.thrift.payload.Reader<CustomFieldNames> asReader() {
+      return CustomFieldNames::read0;
     }
     
     public static CustomFieldNames read0(TProtocol oprot) throws TException {

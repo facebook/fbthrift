@@ -35,6 +35,8 @@ boost::python::object makePythonAddress(const folly::SocketAddress& sa) {
     return boost::python::make_tuple(sa.getAddressStr(), sa.getPort());
   } else if (sa.getFamily() == AF_INET6) {
     return boost::python::make_tuple(sa.getAddressStr(), sa.getPort(), 0, 0);
+  } else if (sa.getFamily() == AF_UNIX) {
+    return boost::python::str(sa.getPath());
   } else {
     LOG(FATAL) << "CppServerWrapper can't create a non-inet thrift endpoint";
     abort();
@@ -85,21 +87,11 @@ class CppContextData {
   boost::python::object getLocalAddress() const {
     return makePythonAddress(localAddress_);
   }
-  const Cpp2ConnContext* getConnCtx() const {
-    return connCtx_;
-  }
-  Cpp2RequestContext* getReqCtx() const {
-    return requestCtx_;
-  }
-  const std::string& getHeaderEx() {
-    return headerEx_;
-  }
-  void setHeaderEx(const std::string& headerEx) {
-    headerEx_ = headerEx;
-  }
-  const std::string& getHeaderExWhat() {
-    return headerExWhat_;
-  }
+  const Cpp2ConnContext* getConnCtx() const { return connCtx_; }
+  Cpp2RequestContext* getReqCtx() const { return requestCtx_; }
+  const std::string& getHeaderEx() { return headerEx_; }
+  void setHeaderEx(const std::string& headerEx) { headerEx_ = headerEx; }
+  const std::string& getHeaderExWhat() { return headerExWhat_; }
   void setHeaderExWhat(const std::string& headerExWhat) {
     headerExWhat_ = headerExWhat;
   }

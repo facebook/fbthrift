@@ -27,9 +27,7 @@ class MockCallback : public RequestCallback {
  public:
   MockCallback(bool clientError, bool serverError)
       : clientError_(clientError), serverError_(serverError) {}
-  virtual ~MockCallback() {
-    EXPECT_TRUE(callbackReceived_);
-  }
+  virtual ~MockCallback() { EXPECT_TRUE(callbackReceived_); }
 
   void requestSent() override {}
 
@@ -37,7 +35,8 @@ class MockCallback : public RequestCallback {
     EXPECT_FALSE(crs.isException());
     EXPECT_FALSE(callbackReceived_);
     EXPECT_FALSE(clientError_);
-    auto reply = crs.buf()->cloneAsValue().moveToFbString();
+    auto reply =
+        crs.serializedResponse().buffer->cloneAsValue().moveToFbString();
     bool expired = (reply.find("Task expired") != folly::fbstring::npos) ||
         (reply.find("Queue Timeout") != folly::fbstring::npos);
     EXPECT_EQ(serverError_, expired);
@@ -51,9 +50,7 @@ class MockCallback : public RequestCallback {
     EXPECT_TRUE(clientError_ || serverError_);
     callbackReceived_ = true;
   }
-  bool callbackReceived() {
-    return callbackReceived_;
-  }
+  bool callbackReceived() { return callbackReceived_; }
 
  private:
   bool clientError_;

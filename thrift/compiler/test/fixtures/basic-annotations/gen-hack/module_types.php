@@ -16,6 +16,29 @@ enum MyEnum: int {
   DOMAIN = 2;
 }
 
+class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.MyEnum",
+        "elements" => dict[
+          0 => "MyValue1",
+          1 => "MyValue2",
+          2 => "DOMAIN",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift struct:-
  * MyStructNestedAnnotation
@@ -34,7 +57,7 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
   ];
 
   const type TConstructorShape = shape(
-    ?'name' => string,
+    ?'name' => ?string,
   );
 
   const type TShape = shape(
@@ -48,217 +71,63 @@ class MyStructNestedAnnotation implements \IThriftStruct, \IThriftShapishStruct 
    */
   public string $name;
 
-  <<__Rx>>
-  public function __construct(?string $name = null  ) {
+  public function __construct(?string $name = null  )[] {
     $this->name = $name ?? '';
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyStructNestedAnnotation';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyStructNestedAnnotation",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->name = $shape['name'];
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
-    return shape(
-      'name' => $this->name,
-    );
-  }
-  public function readFromJson(string $jsonText): void {
-    $parsed = json_decode($jsonText, true);
-
-    if ($parsed === null || !($parsed is KeyedContainer<_, _>)) {
-      throw new \TProtocolException("Cannot parse the given json string.");
-    }
-
-    if (idx($parsed, 'name') !== null) {
-      $this->name = /* HH_FIXME[4110] */ $parsed['name'];
-    }    
-  }
-
-}
-
-/**
- * Original thrift struct:-
- * MyStructAnnotation
- */
-class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-    1 => shape(
-      'var' => 'count',
-      'type' => \TType::I64,
-    ),
-    2 => shape(
-      'var' => 'name',
-      'type' => \TType::STRING,
-    ),
-    3 => shape(
-      'var' => 'extra',
-      'type' => \TType::STRING,
-    ),
-    4 => shape(
-      'var' => 'nest',
-      'type' => \TType::STRUCT,
-      'class' => MyStructNestedAnnotation::class,
-    ),
-  ];
-  const dict<string, int> FIELDMAP = dict[
-    'count' => 1,
-    'name' => 2,
-    'extra' => 3,
-    'nest' => 4,
-  ];
-
-  const type TConstructorShape = shape(
-    ?'count' => int,
-    ?'name' => string,
-    ?'extra' => ?string,
-    ?'nest' => ?MyStructNestedAnnotation,
-  );
-
-  const type TShape = shape(
-    'count' => int,
-    'name' => string,
-    ?'extra' => ?string,
-    ?'nest' => ?MyStructNestedAnnotation::TShape,
-    ...
-  );
-  const int STRUCTURAL_ID = 6634109792509290256;
-  /**
-   * Original thrift field:-
-   * 1: i64 count
-   */
-  public int $count;
-  /**
-   * Original thrift field:-
-   * 2: string name
-   */
-  public string $name;
-  /**
-   * Original thrift field:-
-   * 3: string extra
-   */
-  public ?string $extra;
-  /**
-   * Original thrift field:-
-   * 4: struct module.MyStructNestedAnnotation nest
-   */
-  public ?MyStructNestedAnnotation $nest;
-
-  <<__Rx>>
-  public function __construct(?int $count = null, ?string $name = null, ?string $extra = null, ?MyStructNestedAnnotation $nest = null  ) {
-    $this->count = $count ?? 0;
-    $this->name = $name ?? '';
-    $this->extra = $extra;
-    $this->nest = $nest;
-  }
-
-  <<__Rx>>
-  public static function withDefaultValues(): this {
-    return new static();
-  }
-
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
-      Shapes::idx($shape, 'count'),
-      Shapes::idx($shape, 'name'),
-      Shapes::idx($shape, 'extra'),
-      Shapes::idx($shape, 'nest'),
+      $shape['name'],
     );
   }
 
-  public function getName(): string {
-    return 'MyStructAnnotation';
-  }
-
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public function __toShape()[]: self::TShape {
     return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'count' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'extra' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'nest' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
-    );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->count = $shape['count'];
-    $me->name = $shape['name'];
-    if (Shapes::idx($shape, 'extra') !== null) {
-      $me->extra = $shape['extra'];
-    }
-    if (Shapes::idx($shape, 'nest') !== null) {
-      $me->nest = MyStructNestedAnnotation::__fromShape($shape['nest']);
-    }
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
-    return shape(
-      'count' => $this->count,
       'name' => $this->name,
-      'extra' => $this->extra,
-      'nest' => $this->nest?->__toShape(),
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -268,20 +137,8 @@ class MyStructAnnotation implements \IThriftStruct, \IThriftShapishStruct {
       throw new \TProtocolException("Cannot parse the given json string.");
     }
 
-    if (idx($parsed, 'count') !== null) {
-      $this->count = /* HH_FIXME[4110] */ $parsed['count'];
-    }    
     if (idx($parsed, 'name') !== null) {
       $this->name = /* HH_FIXME[4110] */ $parsed['name'];
-    }    
-    if (idx($parsed, 'extra') !== null) {
-      $this->extra = /* HH_FIXME[4110] */ $parsed['extra'];
-    }    
-    if (idx($parsed, 'nest') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['nest']);
-      $_tmp1 = MyStructNestedAnnotation::withDefaultValues();
-      $_tmp1->readFromJson($_tmp0);
-      $this->nest = $_tmp1;
     }    
   }
 
@@ -330,12 +187,12 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'major' => int,
-    ?'package' => string,
-    ?'annotation_with_quote' => string,
-    ?'class_' => string,
-    ?'annotation_with_trailing_comma' => string,
-    ?'empty_annotations' => string,
+    ?'major' => ?int,
+    ?'package' => ?string,
+    ?'annotation_with_quote' => ?string,
+    ?'class_' => ?string,
+    ?'annotation_with_trailing_comma' => ?string,
+    ?'empty_annotations' => ?string,
   );
 
   const type TShape = shape(
@@ -379,8 +236,7 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   public string $empty_annotations;
 
-  <<__Rx>>
-  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null  ) {
+  public function __construct(?int $major = null, ?string $package = null, ?string $annotation_with_quote = null, ?string $class_ = null, ?string $annotation_with_trailing_comma = null, ?string $empty_annotations = null  )[] {
     $this->major = $major ?? 0;
     $this->package = $package ?? '';
     $this->annotation_with_quote = $annotation_with_quote ?? '';
@@ -389,13 +245,11 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     $this->empty_annotations = $empty_annotations ?? '';
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'major'),
       Shapes::idx($shape, 'package'),
@@ -406,73 +260,107 @@ class MyStruct implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyStruct';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyStruct",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "major",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "package",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "annotation_with_quote",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "class_",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "annotation_with_trailing_comma",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 6,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "empty_annotations",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'major' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'package' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'annotation_with_quote' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'class_' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'annotation_with_trailing_comma' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'empty_annotations' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-      'android.generate_builder' => "1",
-      'struct_annotation' => MyStructAnnotation::fromShape(
-        shape(
-          "count" => 123,
-          "name" => "\"structy\"",
-          "nest" => MyStructNestedAnnotation::fromShape(
-            shape(
-              "name" => "'nesty'",
-            )
-          ),
-        )
-      ),
-    ];
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['major'],
+      $shape['package'],
+      $shape['annotation_with_quote'],
+      $shape['class_'],
+      $shape['annotation_with_trailing_comma'],
+      $shape['empty_annotations'],
+    );
   }
 
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->major = $shape['major'];
-    $me->package = $shape['package'];
-    $me->annotation_with_quote = $shape['annotation_with_quote'];
-    $me->class_ = $shape['class_'];
-    $me->annotation_with_trailing_comma = $shape['annotation_with_trailing_comma'];
-    $me->empty_annotations = $shape['empty_annotations'];
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'major' => $this->major,
       'package' => $this->package,
@@ -534,8 +422,8 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'id' => int,
-    ?'password' => string,
+    ?'id' => ?int,
+    ?'password' => ?string,
   );
 
   const type TShape = shape(
@@ -555,60 +443,75 @@ class SecretStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   public string $password;
 
-  <<__Rx>>
-  public function __construct(?int $id = null, ?string $password = null  ) {
+  public function __construct(?int $id = null, ?string $password = null  )[] {
     $this->id = $id ?? 0;
     $this->password = $password ?? '';
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'id'),
       Shapes::idx($shape, 'password'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'SecretStruct';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.SecretStruct",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "id",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "password",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'id' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'password' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['id'],
+      $shape['password'],
+    );
   }
 
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->id = $shape['id'];
-    $me->password = $shape['password'];
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'id' => $this->id,
       'password' => $this->password,

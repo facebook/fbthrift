@@ -22,7 +22,7 @@ void MyServiceWrapper::async_tm_hasDataById(
   std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
     , int64_t id
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -44,7 +44,7 @@ void MyServiceWrapper::async_tm_getDataById(
   std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback
     , int64_t id
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -67,7 +67,7 @@ void MyServiceWrapper::async_tm_putDataById(
     , int64_t id
     , const std::string& data
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -92,7 +92,7 @@ void MyServiceWrapper::async_tm_lobDataById(
     , int64_t id
     , const std::string& data
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -128,7 +128,7 @@ void MyServiceFastWrapper::async_eb_hasDataById(
   std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
     , int64_t id
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -150,7 +150,7 @@ void MyServiceFastWrapper::async_eb_getDataById(
   std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback
     , int64_t id
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -173,7 +173,7 @@ void MyServiceFastWrapper::async_eb_putDataById(
     , int64_t id
     , const std::string& data
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -198,7 +198,7 @@ void MyServiceFastWrapper::async_eb_lobDataById(
     , int64_t id
     , const std::string& data
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -234,7 +234,7 @@ void DbMixedStackArgumentsWrapper::async_tm_getDataByKey0(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
     , std::unique_ptr<std::string> key
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -256,7 +256,7 @@ void DbMixedStackArgumentsWrapper::async_tm_getDataByKey1(
   std::unique_ptr<apache::thrift::HandlerCallback<std::string>> callback
     , const std::string& key
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,

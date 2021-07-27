@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,10 +31,16 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 cimport module.types as _module_types
 
-cimport matching_struct_names.types_fields as __fbthrift_types_fields
+cimport matching_struct_names.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/matching_struct_names/types.h":
   pass
@@ -44,9 +49,15 @@ cdef extern from "src/gen-py3/matching_struct_names/types.h":
 
 
 
+cdef extern from "src/gen-cpp2/matching_struct_names_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/matching_struct_names_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cMyStruct__isset "::cpp2::MyStruct::__isset":
-        bint field
 
     cdef cppclass cMyStruct "::cpp2::MyStruct":
         cMyStruct() except +
@@ -59,13 +70,7 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator>=(cMyStruct&)
         __field_ref[string] field_ref()
         string field
-        cMyStruct__isset __isset
 
-    cdef cppclass cCombo__isset "::cpp2::Combo::__isset":
-        bint listOfOurMyStructLists
-        bint theirMyStructList
-        bint ourMyStructList
-        bint listOfTheirMyStructList
 
     cdef cppclass cCombo "::cpp2::Combo":
         cCombo() except +
@@ -77,21 +82,20 @@ cdef extern from "src/gen-cpp2/matching_struct_names_types_custom_protocol.h" na
         bint operator<=(cCombo&)
         bint operator>=(cCombo&)
         __field_ref[vector[vector[cMyStruct]]] listOfOurMyStructLists_ref()
-        vector[vector[cMyStruct]] listOfOurMyStructLists
         __field_ref[vector[_module_types.cMyStruct]] theirMyStructList_ref()
-        vector[_module_types.cMyStruct] theirMyStructList
         __field_ref[vector[cMyStruct]] ourMyStructList_ref()
-        vector[cMyStruct] ourMyStructList
         __field_ref[vector[vector[_module_types.cMyStruct]]] listOfTheirMyStructList_ref()
+        vector[vector[cMyStruct]] listOfOurMyStructLists
+        vector[_module_types.cMyStruct] theirMyStructList
+        vector[cMyStruct] ourMyStructList
         vector[vector[_module_types.cMyStruct]] listOfTheirMyStructList
-        cCombo__isset __isset
 
 
 
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
@@ -100,11 +104,11 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 cdef class Combo(thrift.py3.types.Struct):
     cdef shared_ptr[cCombo] _cpp_obj
-    cdef __fbthrift_types_fields.__Combo_FieldsSetter _fields_setter
-    cdef List__List__MyStruct __field_listOfOurMyStructLists
-    cdef List__module_MyStruct __field_theirMyStructList
-    cdef List__MyStruct __field_ourMyStructList
-    cdef List__List__module_MyStruct __field_listOfTheirMyStructList
+    cdef _fbthrift_types_fields.__Combo_FieldsSetter _fields_setter
+    cdef List__List__MyStruct __fbthrift_cached_listOfOurMyStructLists
+    cdef List__module_MyStruct __fbthrift_cached_theirMyStructList
+    cdef List__MyStruct __fbthrift_cached_ourMyStructList
+    cdef List__List__module_MyStruct __fbthrift_cached_listOfTheirMyStructList
 
     @staticmethod
     cdef create(shared_ptr[cCombo])

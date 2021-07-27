@@ -21,6 +21,7 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/reflection/populator.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
+#include <thrift/test/testset/Testing.h>
 #include <thrift/test/testset/gen-cpp2/testset_fatal_types.h>
 
 namespace apache::thrift::test {
@@ -32,7 +33,7 @@ using conformance::AnyRegistry;
 using conformance::StandardProtocol;
 
 template <typename T>
-class SerializtionRoundTripTest : public testing::Test {
+class SerializationRoundTripTest : public testing::Test {
  private:
   std::mt19937 rng_;
 
@@ -63,34 +64,34 @@ class SerializtionRoundTripTest : public testing::Test {
   }
 };
 
-TYPED_TEST_CASE_P(SerializtionRoundTripTest);
+TYPED_TEST_CASE_P(SerializationRoundTripTest);
 
-TYPED_TEST_P(SerializtionRoundTripTest, Compact) {
+TYPED_TEST_P(SerializationRoundTripTest, Compact) {
   this->template testSerializer<CompactSerializer>();
 }
 
-TYPED_TEST_P(SerializtionRoundTripTest, Binary) {
+TYPED_TEST_P(SerializationRoundTripTest, Binary) {
   this->template testSerializer<BinarySerializer>();
 }
 
-TYPED_TEST_P(SerializtionRoundTripTest, SimpleJson) {
+TYPED_TEST_P(SerializationRoundTripTest, SimpleJson) {
   this->template testSerializer<SimpleJSONSerializer>();
 }
 
-TYPED_TEST_P(SerializtionRoundTripTest, Compact_Any) {
+TYPED_TEST_P(SerializationRoundTripTest, Compact_Any) {
   this->template testAny<StandardProtocol::Compact>();
 }
 
-TYPED_TEST_P(SerializtionRoundTripTest, Binary_Any) {
+TYPED_TEST_P(SerializationRoundTripTest, Binary_Any) {
   this->template testAny<StandardProtocol::Binary>();
 }
 
-TYPED_TEST_P(SerializtionRoundTripTest, SimpleJson_Any) {
+TYPED_TEST_P(SerializationRoundTripTest, SimpleJson_Any) {
   this->template testAny<StandardProtocol::SimpleJson>();
 }
 
 REGISTER_TYPED_TEST_CASE_P(
-    SerializtionRoundTripTest,
+    SerializationRoundTripTest,
     Compact,
     Binary,
     SimpleJson,
@@ -98,43 +99,7 @@ REGISTER_TYPED_TEST_CASE_P(
     Binary_Any,
     SimpleJson_Any);
 
-using testset_info = reflect_module<testset::testset_tags::module>;
-
-template <typename Ts>
-struct to_gtest_types;
-template <typename... Ts>
-struct to_gtest_types<fatal::list<Ts...>> {
-  using type = testing::Types<fatal::first<Ts>...>;
-};
-// Unfortuantely, the version of testing::Types we are using only supports up to
-// 50 types, so we have to batch.
-constexpr size_t kBatchSize = 50;
-template <typename Ts>
-using to_gtest_types_t = typename to_gtest_types<Ts>::type;
-#define INST_TEST_BATCH(Type, Batch)                           \
-  using testset_##Type##Batch = to_gtest_types_t<fatal::slice< \
-      testset_info::Type,                                      \
-      Batch * kBatchSize,                                      \
-      (Batch + 1) * kBatchSize>>;                              \
-  INSTANTIATE_TYPED_TEST_CASE_P(                               \
-      Type##Batch, SerializtionRoundTripTest, testset_##Type##Batch)
-#define INST_TEST_LAST(Type, Batch)                                          \
-  using testset_##Type##Batch =                                              \
-      to_gtest_types_t<fatal::tail<testset_info::Type, Batch * kBatchSize>>; \
-  INSTANTIATE_TYPED_TEST_CASE_P(                                             \
-      Type##Batch, SerializtionRoundTripTest, testset_##Type##Batch)
-
-INST_TEST_BATCH(structs, 0);
-INST_TEST_BATCH(structs, 1);
-INST_TEST_BATCH(structs, 2);
-INST_TEST_BATCH(structs, 3);
-INST_TEST_BATCH(structs, 5);
-INST_TEST_BATCH(structs, 6);
-INST_TEST_BATCH(structs, 7);
-INST_TEST_LAST(structs, 8);
-
-INST_TEST_BATCH(unions, 0);
-INST_TEST_LAST(unions, 1);
+THRIFT_INST_TESTSET_ALL(SerializationRoundTripTest);
 
 } // namespace
 } // namespace apache::thrift::test

@@ -28,6 +28,21 @@ func NewAlso() *Also {
   return &Also{}
 }
 
+type AlsoBuilder struct {
+  obj *Also
+}
+
+func NewAlsoBuilder() *AlsoBuilder{
+  return &AlsoBuilder{
+    obj: NewAlso(),
+  }
+}
+
+func (p AlsoBuilder) Emit() *Also{
+  return &Also{
+  }
+}
+
 func (p *Also) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)

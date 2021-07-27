@@ -15,11 +15,12 @@
   limitations under the License.
 
 %>class <%^service:interaction?%><%service:name%>SvIf : public <%service:name%>SvAsyncIf, <%#service:extends%>virtual public <% > common/namespace_cpp2%><%service:name%>SvIf<%/service:extends%><%^service:extends%>public apache::thrift::ServerInterface<%/service:extends%><%/service:interaction?%><%!
-%><%#service:interaction?%><%service:name%>If : public apache::thrift::Tile, public apache::thrift::ServerInterface<%/service:interaction?%> {
+%><%#service:interaction?%><%service:name%>If : public apache::thrift::<%#interaction:serial?%>SerialInteraction<%/interaction:serial?%>Tile, public apache::thrift::ServerInterface<%/service:interaction?%> {
  public:
   typedef <%service:parent_service_name%>AsyncProcessor ProcessorType;
 <%^service:interaction?%>
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
+  CreateMethodMetadataResult createMethodMetadata() override;
 
 <%#service:interactions%>
 <% > service_h/service_interface%>
@@ -30,25 +31,26 @@
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     std::terminate();
   }
+  CreateMethodMetadataResult createMethodMetadata() override {
+    std::terminate();
+  }
 <%/service:interaction?%>
-<%#service:functions%><%#function:returnType%><%^function:starts_interaction?%>
-<%^function:eb%><%^service:interaction?%>
-  virtual <% > service_common/function_return_type %> <%function:cpp_name%>(<% > service_common/function_return_param %><% > service_common/function_param_list_commented_out%>);
-  folly::Future<<% > service_common/async_return_type %>> future_<%function:cpp_name%>(<% > service_common/function_param_list%>) override;
-  folly::SemiFuture<<% > service_common/async_return_type %>> semifuture_<%function:cpp_name%>(<% > service_common/function_param_list%>) override;
+<%#service:functions%><%#function:return_type%><%^function:starts_interaction?%>
+<%^function:eb%>
+  virtual <% > service_common/function_return_type%> <%function:cpp_name%>(<% > service_common/function_return_param%><% > service_common/function_param_list_commented_out%>);
+<%^service:interaction?%>
+  folly::Future<<% > service_common/async_return_type%>> future_<%function:cpp_name%>(<% > service_common/function_param_list%>) override;
+  folly::SemiFuture<<% > service_common/async_return_type%>> semifuture_<%function:cpp_name%>(<% > service_common/function_param_list%>) override;
+<%/service:interaction?%>
+<%#service:interaction?%>
+  virtual folly::SemiFuture<<% > service_common/async_return_type%>> semifuture_<%function:cpp_name%>(<% > service_common/function_param_list%>);
+<%/service:interaction?%>
 <%#function:coroutine?%>
 #if FOLLY_HAS_COROUTINES
-  virtual folly::coro::Task<<% > service_common/callback_type %>> co_<%function:cpp_name%>(<% > service_common/function_param_list%>);
-  virtual folly::coro::Task<<% > service_common/callback_type %>> co_<%function:cpp_name%>(apache::thrift::RequestParams params<%function:comma%><% > service_common/function_param_list%>);
+  virtual folly::coro::Task<<% > service_common/callback_type%>> co_<%function:cpp_name%>(<% > service_common/function_param_list%>);
+  virtual folly::coro::Task<<% > service_common/callback_type%>> co_<%function:cpp_name%>(apache::thrift::RequestParams params<%function:comma%><% > service_common/function_param_list%>);
 #endif
 <%/function:coroutine?%>
-<%/service:interaction?%><%#service:interaction?%>
-#if FOLLY_HAS_COROUTINES
-  virtual folly::coro::Task<<% > service_common/callback_type %>> co_<%function:cpp_name%>(<% > service_common/function_param_list%>);
-  virtual folly::coro::Task<<% > service_common/callback_type %>> co_<%function:cpp_name%>(apache::thrift::RequestParams params<%function:comma%><% > service_common/function_param_list%>);
-#endif
-  virtual folly::SemiFuture<<% > service_common/async_return_type %>> semifuture_<%function:cpp_name%>(<% > service_common/function_param_list%>);
-<%/service:interaction?%>
 <%/function:eb%>
 <%#function:oneway?%>
   <%#service:interaction?%>virtual <%/service:interaction?%>void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback<%function:comma%><% > service_common/function_param_list%>)<%^service:interaction?%> override<%/service:interaction?%>;
@@ -57,8 +59,14 @@
   <%#service:interaction?%>virtual <%/service:interaction?%>void async_<%#function:eb%>eb<%/function:eb%><%^function:eb%>tm<%/function:eb%>_<%function:cpp_name%>(std::unique_ptr<apache::thrift::HandlerCallback<<% > types/unique_ptr_type%>>> callback<%function:comma%><% > service_common/function_param_list%>)<%^service:interaction?%> override<%/service:interaction?%>;
 <%/function:oneway?%>
 <%/function:starts_interaction?%><%#function:starts_interaction?%>
-  virtual std::unique_ptr<<%type:name%>If> <%function:cpp_name%>();
+  virtual std::unique_ptr<<%type:name%>If> <%function:cpp_name%>() = 0;
 <%/function:starts_interaction?%>
-<%/function:returnType%>
+<%/function:return_type%>
+<%/service:functions%>
+ private:
+<%#service:functions%>
+<%^function:eb%>
+  std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_<%function:cpp_name%>{apache::thrift::detail::si::InvocationType::AsyncTm};
+<%/function:eb%>
 <%/service:functions%>
 };

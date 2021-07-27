@@ -185,6 +185,12 @@ class MakeBuilder(BuilderBase):
         self._run_cmd(cmd, env=env)
 
 
+class CMakeBootStrapBuilder(MakeBuilder):
+    def _build(self, install_dirs, reconfigure):
+        self._run_cmd(["./bootstrap", "--prefix=" + self.inst_dir])
+        super(CMakeBootStrapBuilder, self)._build(install_dirs, reconfigure)
+
+
 class AutoconfBuilder(BuilderBase):
     def __init__(self, build_opts, ctx, manifest, src_dir, build_dir, inst_dir, args):
         super(AutoconfBuilder, self).__init__(
@@ -263,6 +269,56 @@ class Iproute2Builder(BuilderBase):
         self._run_cmd(install_cmd, env=env)
 
 
+class BistroBuilder(BuilderBase):
+    def _build(self, install_dirs, reconfigure):
+        p = os.path.join(self.src_dir, "bistro", "bistro")
+        env = self._compute_env(install_dirs)
+        env["PATH"] = env["PATH"] + ":" + os.path.join(p, "bin")
+        env["TEMPLATES_PATH"] = os.path.join(p, "include", "thrift", "templates")
+        self._run_cmd(
+            [
+                os.path.join(".", "cmake", "run-cmake.sh"),
+                "Release",
+                "-DCMAKE_INSTALL_PREFIX=" + self.inst_dir,
+            ],
+            cwd=p,
+            env=env,
+        )
+        self._run_cmd(
+            [
+                "make",
+                "install",
+                "-j",
+                str(self.build_opts.num_jobs),
+            ],
+            cwd=os.path.join(p, "cmake", "Release"),
+            env=env,
+        )
+
+    def run_tests(
+        self, install_dirs, schedule_type, owner, test_filter, retry, no_testpilot
+    ):
+        env = self._compute_env(install_dirs)
+        build_dir = os.path.join(self.src_dir, "bistro", "bistro", "cmake", "Release")
+        NUM_RETRIES = 5
+        for i in range(NUM_RETRIES):
+            cmd = ["ctest", "--output-on-failure"]
+            if i > 0:
+                cmd.append("--rerun-failed")
+            cmd.append(build_dir)
+            try:
+                self._run_cmd(
+                    cmd,
+                    cwd=build_dir,
+                    env=env,
+                )
+            except Exception:
+                print(f"Tests failed... retrying ({i+1}/{NUM_RETRIES})")
+            else:
+                return
+        raise Exception(f"Tests failed even after {NUM_RETRIES} retries")
+
+
 class CMakeBuilder(BuilderBase):
     MANUAL_BUILD_SCRIPT = """\
 #!{sys.executable}
@@ -288,9 +344,7 @@ def get_jobs_argument(num_jobs_arg: int) -> str:
         return "-j" + str(num_jobs_arg)
 
     import multiprocessing
-    num_jobs = multiprocessing.cpu_count()
-    if sys.platform == "win32":
-        num_jobs //= 2
+    num_jobs = multiprocessing.cpu_count() // 2
     return "-j" + str(num_jobs)
 
 
@@ -389,6 +443,7 @@ if __name__ == "__main__":
         inst_dir,
         defines,
         final_install_prefix=None,
+        extra_cmake_defines=None,
     ):
         super(CMakeBuilder, self).__init__(
             build_opts,
@@ -400,6 +455,8 @@ if __name__ == "__main__":
             final_install_prefix=final_install_prefix,
         )
         self.defines = defines or {}
+        if extra_cmake_defines:
+            self.defines.update(extra_cmake_defines)
 
     def _invalidate_cache(self):
         for name in [
@@ -617,11 +674,18 @@ if __name__ == "__main__":
             for test in data["tests"]:
                 working_dir = get_property(test, "WORKING_DIRECTORY")
                 labels = []
+                machine_suffix = self.build_opts.host_type.as_tuple_string()
+                labels.append("tpx_test_config::buildsystem=getdeps")
+                labels.append("tpx_test_config::platform={}".format(machine_suffix))
+
                 if get_property(test, "DISABLED"):
                     labels.append("disabled")
                 command = test["command"]
                 if working_dir:
                     command = [cmake, "-E", "chdir", working_dir] + command
+
+                import os
+
                 tests.append(
                     {
                         "type": "custom",
@@ -629,6 +693,10 @@ if __name__ == "__main__":
                         % (self.manifest.name, test["name"], machine_suffix),
                         "command": command,
                         "labels": labels,
+                        "env": {},
+                        "required_paths": [],
+                        "contacts": [],
+                        "cwd": os.getcwd(),
                     }
                 )
             return tests
@@ -638,39 +706,62 @@ if __name__ == "__main__":
             # better signals for flaky tests.
             retry = 0
 
+        from sys import platform
+
         testpilot = path_search(env, "testpilot")
-        if testpilot and not no_testpilot:
+        tpx = path_search(env, "tpx")
+        if (tpx or testpilot) and not no_testpilot:
             buck_test_info = list_tests()
+            import os
+
             buck_test_info_name = os.path.join(self.build_dir, ".buck-test-info.json")
             with open(buck_test_info_name, "w") as f:
                 json.dump(buck_test_info, f)
 
             env.set("http_proxy", "")
             env.set("https_proxy", "")
-            machine_suffix = self.build_opts.host_type.as_tuple_string()
-
             runs = []
+            from sys import platform
 
-            testpilot_args = [
-                testpilot,
-                # Need to force the repo type otherwise testpilot on windows
-                # can be confused (presumably sparse profile related)
-                "--force-repo",
-                "fbcode",
-                "--force-repo-root",
-                self.build_opts.fbsource_dir,
-                "--buck-test-info",
-                buck_test_info_name,
-                "--retry=%d" % retry,
-                "-j=%s" % str(self.build_opts.num_jobs),
-                "--test-config",
-                "platform=%s" % machine_suffix,
-                "buildsystem=getdeps",
-                "--print-long-results",
-            ]
+            if platform == "win32":
+                machine_suffix = self.build_opts.host_type.as_tuple_string()
+                testpilot_args = [
+                    "parexec-testinfra.exe",
+                    "C:/tools/testpilot/sc_testpilot.par",
+                    # Need to force the repo type otherwise testpilot on windows
+                    # can be confused (presumably sparse profile related)
+                    "--force-repo",
+                    "fbcode",
+                    "--force-repo-root",
+                    self.build_opts.fbsource_dir,
+                    "--buck-test-info",
+                    buck_test_info_name,
+                    "--retry=%d" % retry,
+                    "-j=%s" % str(self.build_opts.num_jobs),
+                    "--test-config",
+                    "platform=%s" % machine_suffix,
+                    "buildsystem=getdeps",
+                    "--return-nonzero-on-failures",
+                ]
+            else:
+                testpilot_args = [
+                    tpx,
+                    "--buck-test-info",
+                    buck_test_info_name,
+                    "--retry=%d" % retry,
+                    "-j=%s" % str(self.build_opts.num_jobs),
+                    "--print-long-results",
+                ]
 
             if owner:
                 testpilot_args += ["--contacts", owner]
+
+            if tpx and env:
+                testpilot_args.append("--env")
+                testpilot_args.extend(f"{key}={val}" for key, val in env.items())
+
+            if test_filter:
+                testpilot_args += ["--", test_filter]
 
             if schedule_type == "continuous":
                 runs.append(
@@ -709,9 +800,6 @@ if __name__ == "__main__":
                 )
             else:
                 runs.append(["--collection", "oss-diff", "--purpose", "diff"])
-
-            if test_filter:
-                testpilot_args += [test_filter]
 
             for run in runs:
                 self._run_cmd(
@@ -787,7 +875,9 @@ class OpenSSLBuilder(BuilderBase):
             args = ["darwin64-x86_64-cc"]
         elif self.build_opts.is_linux():
             make = "make"
-            args = ["linux-x86_64"]
+            args = (
+                ["linux-x86_64"] if not self.build_opts.is_arm() else ["linux-aarch64"]
+            )
         else:
             raise Exception("don't know how to build openssl for %r" % self.ctx)
 

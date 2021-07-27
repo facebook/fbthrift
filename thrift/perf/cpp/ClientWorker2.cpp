@@ -34,7 +34,7 @@ const int kTimeout = 60000;
 
 std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
   const std::shared_ptr<ClientLoadConfig>& config = getConfig();
-  std::shared_ptr<folly::AsyncSocket> socket;
+  folly::AsyncSocket::UniquePtr socket;
   std::unique_ptr<RequestChannel, folly::DelayedDestruction::Destructor>
       channel;
   if (config->useSSL()) {
@@ -63,15 +63,18 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
     socket = folly::AsyncSocket::newSocket(
         ebm_.getEventBase(), *config->getAddress());
   }
-  std::unique_ptr<HeaderClientChannel, folly::DelayedDestruction::Destructor>
-      headerChannel(HeaderClientChannel::newChannel(socket));
-  // Always use binary in loadtesting to get apples to apples comparison
-  headerChannel->setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
-  if (config->zlib()) {
-    headerChannel->setTransform(THeader::ZLIB_TRANSFORM);
-  }
+  HeaderClientChannel::Options options;
   if (!config->useHeaderProtocol()) {
-    headerChannel->setClientType(THRIFT_FRAMED_DEPRECATED);
+    options.setClientType(THRIFT_FRAMED_DEPRECATED);
+  }
+  // Always use binary in loadtesting to get apples to apples comparison
+  options.setProtocolId(apache::thrift::protocol::T_BINARY_PROTOCOL);
+  auto headerChannel =
+      HeaderClientChannel::newChannel(std::move(socket), std::move(options));
+  if (config->zlib()) {
+    apache::thrift::CompressionConfig compressionConfig;
+    compressionConfig.codecConfig_ref().ensure().set_zlibConfig();
+    headerChannel->setDesiredCompressionConfig(compressionConfig);
   }
   headerChannel->setTimeout(kTimeout);
   channel = std::move(headerChannel);
@@ -81,8 +84,7 @@ std::shared_ptr<ClientWorker2::Client> ClientWorker2::createConnection() {
 }
 
 void ClientWorker2::performOperation(
-    const std::shared_ptr<Client>& client,
-    uint32_t opType) {
+    const std::shared_ptr<Client>& client, uint32_t opType) {
   switch (static_cast<ClientLoadConfig::OperationEnum>(opType)) {
     case ClientLoadConfig::OP_NOOP:
       return performNoop(client);

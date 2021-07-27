@@ -28,9 +28,9 @@ StructMetadata<::cpp2::InitialResponse>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_InitialResponse = res.first->second;
   module_InitialResponse.name_ref() = "module.InitialResponse";
   module_InitialResponse.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_InitialResponse_fields[] = {
-    std::make_tuple(1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_InitialResponse_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -38,6 +38,7 @@ StructMetadata<::cpp2::InitialResponse>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_InitialResponse.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -51,9 +52,9 @@ StructMetadata<::cpp2::FinalResponse>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_FinalResponse = res.first->second;
   module_FinalResponse.name_ref() = "module.FinalResponse";
   module_FinalResponse.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_FinalResponse_fields[] = {
-    std::make_tuple(1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_FinalResponse_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -61,6 +62,7 @@ StructMetadata<::cpp2::FinalResponse>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_FinalResponse.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -74,9 +76,9 @@ StructMetadata<::cpp2::SinkPayload>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_SinkPayload = res.first->second;
   module_SinkPayload.name_ref() = "module.SinkPayload";
   module_SinkPayload.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_SinkPayload_fields[] = {
-    std::make_tuple(1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "content", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_SinkPayload_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -84,6 +86,7 @@ StructMetadata<::cpp2::SinkPayload>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_SinkPayload.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -97,9 +100,9 @@ StructMetadata<::cpp2::CompatibleWithKeywordSink>::gen(ThriftMetadata& metadata)
   ::apache::thrift::metadata::ThriftStruct& module_CompatibleWithKeywordSink = res.first->second;
   module_CompatibleWithKeywordSink.name_ref() = "module.CompatibleWithKeywordSink";
   module_CompatibleWithKeywordSink.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_CompatibleWithKeywordSink_fields[] = {
-    std::make_tuple(1, "sink", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "sink", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_CompatibleWithKeywordSink_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -107,6 +110,7 @@ StructMetadata<::cpp2::CompatibleWithKeywordSink>::gen(ThriftMetadata& metadata)
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_CompatibleWithKeywordSink.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -120,9 +124,9 @@ StructMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_InitialException = res.first->second;
   module_InitialException.name_ref() = "module.InitialException";
   module_InitialException.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_InitialException_fields[] = {
-    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_InitialException_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -130,6 +134,7 @@ StructMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_InitialException.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -143,9 +148,9 @@ StructMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_SinkException1 = res.first->second;
   module_SinkException1.name_ref() = "module.SinkException1";
   module_SinkException1.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_SinkException1_fields[] = {
-    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_SinkException1_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -153,6 +158,7 @@ StructMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_SinkException1.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -166,9 +172,9 @@ StructMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
   ::apache::thrift::metadata::ThriftStruct& module_SinkException2 = res.first->second;
   module_SinkException2.name_ref() = "module.SinkException2";
   module_SinkException2.is_union_ref() = false;
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_SinkException2_fields[] = {
-    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
+    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_SinkException2_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -176,6 +182,7 @@ StructMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
     field.name_ref() = std::get<1>(f);
     field.is_optional_ref() = std::get<2>(f);
     std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = std::get<4>(f);
     module_SinkException2.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -188,9 +195,9 @@ void ExceptionMetadata<::cpp2::InitialException>::gen(ThriftMetadata& metadata) 
   }
   ::apache::thrift::metadata::ThriftException& module_InitialException = res.first->second;
   module_InitialException.name_ref() = "module.InitialException";
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_InitialException_fields[] = {
-    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_InitialException_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -208,9 +215,9 @@ void ExceptionMetadata<::cpp2::SinkException1>::gen(ThriftMetadata& metadata) {
   }
   ::apache::thrift::metadata::ThriftException& module_SinkException1 = res.first->second;
   module_SinkException1.name_ref() = "module.SinkException1";
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_SinkException1_fields[] = {
-    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)),
+    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_SinkException1_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -228,9 +235,9 @@ void ExceptionMetadata<::cpp2::SinkException2>::gen(ThriftMetadata& metadata) {
   }
   ::apache::thrift::metadata::ThriftException& module_SinkException2 = res.first->second;
   module_SinkException2.name_ref() = "module.SinkException2";
-  static const std::tuple<int32_t, const char*, bool, std::unique_ptr<MetadataTypeInterface>>
+  static const EncodedThriftField
   module_SinkException2_fields[] = {
-    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE)),
+    std::make_tuple(1, "reason", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_SinkException2_fields) {
     ::apache::thrift::metadata::ThriftField field;

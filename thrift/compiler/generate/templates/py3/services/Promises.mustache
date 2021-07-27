@@ -26,25 +26,11 @@ executing.
 
 }}
 
-cdef extern from "<utility>" namespace "std":
 {{#program:unique_functions_by_return_type}}
-{{#function:returnType}}
-    cdef cFollyPromise[{{!
-            }}{{> services/CythonReturnTypeCppType}}{{!
-        }}] move_promise_{{> types/CythonCppTypeIdent}} "std::move"(
-        cFollyPromise[{{!
-            }}{{> services/CythonReturnTypeCppType}}{{!
-        }}])
-{{/function:returnType}}
-{{/program:unique_functions_by_return_type}}
-{{^program:unique_functions_by_return_type}}
-    pass
-{{/program:unique_functions_by_return_type}}
-{{#program:unique_functions_by_return_type}}
-{{#function:returnType}}
+{{#function:return_type}}
 
 @cython.auto_pickle(False)
-cdef class Promise_{{> types/CythonCppTypeIdent}}:
+cdef class {{> services/PromiseName}}:
     cdef cFollyPromise[{{!
             }}{{> services/CythonReturnTypeCppType}}{{!
         }}] cPromise
@@ -53,10 +39,9 @@ cdef class Promise_{{> types/CythonCppTypeIdent}}:
     cdef create(cFollyPromise[{{!
             }}{{> services/CythonReturnTypeCppType}}{{!
         }}] cPromise):
-        inst = <Promise_{{> types/CythonCppTypeIdent}}>{{!
-        }}Promise_{{> types/CythonCppTypeIdent}}.__new__({{!
-        }}Promise_{{> types/CythonCppTypeIdent}})
-        inst.cPromise = move_promise_{{> types/CythonCppTypeIdent}}(cPromise)
+        cdef {{> services/PromiseName}} inst = {{> services/PromiseName}}.__new__({{!
+        }}{{> services/PromiseName}})
+        inst.cPromise = cmove(cPromise)
         return inst
-{{/function:returnType}}
+{{/function:return_type}}
 {{/program:unique_functions_by_return_type}}

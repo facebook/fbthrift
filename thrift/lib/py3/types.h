@@ -41,8 +41,7 @@ std::shared_ptr<T> constant_shared_ptr(const T& x) {
 // const/reference qualifier when custom cpp.type with those are defined
 template <typename T, typename S>
 std::shared_ptr<folly::remove_cvref_t<T>> reference_shared_ptr(
-    const folly::remove_cvref_t<T>& ref,
-    const std::shared_ptr<S>& owner) {
+    const folly::remove_cvref_t<T>& ref, const std::shared_ptr<S>& owner) {
   using Type = folly::remove_cvref_t<T>;
   return std::shared_ptr<Type>(owner, const_cast<Type*>(&ref));
 }
@@ -103,8 +102,7 @@ bool setcmp(const std::shared_ptr<T>& a, const std::shared_ptr<T>& b, int op) {
 
 template <typename T>
 std::shared_ptr<T> setand(
-    const std::shared_ptr<T>& a,
-    const std::shared_ptr<T>& b) {
+    const std::shared_ptr<T>& a, const std::shared_ptr<T>& b) {
   T out;
   for (const auto& e : *a) {
     if (b->find(e) != b->end()) {
@@ -116,8 +114,7 @@ std::shared_ptr<T> setand(
 
 template <typename T>
 std::shared_ptr<T> setsub(
-    const std::shared_ptr<T>& a,
-    const std::shared_ptr<T>& b) {
+    const std::shared_ptr<T>& a, const std::shared_ptr<T>& b) {
   T out;
   for (const auto& e : *a) {
     if (b->find(e) == b->end()) {
@@ -129,8 +126,7 @@ std::shared_ptr<T> setsub(
 
 template <typename T>
 std::shared_ptr<T> setor(
-    const std::shared_ptr<T>& a,
-    const std::shared_ptr<T>& b) {
+    const std::shared_ptr<T>& a, const std::shared_ptr<T>& b) {
   T out;
   for (const auto& e : *a) {
     out.insert(e);
@@ -143,8 +139,7 @@ std::shared_ptr<T> setor(
 
 template <typename T>
 std::shared_ptr<T> setxor(
-    const std::shared_ptr<T>& a,
-    const std::shared_ptr<T>& b) {
+    const std::shared_ptr<T>& a, const std::shared_ptr<T>& b) {
   T out;
   for (const auto& e : *a) {
     if (b->find(e) == b->end()) {
@@ -168,8 +163,8 @@ enum SetOp {
 };
 
 template <typename T>
-std::shared_ptr<T>
-set_op(const std::shared_ptr<T>& a, const std::shared_ptr<T>& b, SetOp op) {
+std::shared_ptr<T> set_op(
+    const std::shared_ptr<T>& a, const std::shared_ptr<T>& b, SetOp op) {
   switch (op) {
     case SetOp::AND:
       return setand(a, b);
@@ -201,14 +196,13 @@ std::optional<size_t> list_index(
 
 template <typename T>
 size_t list_count(
-    const std::shared_ptr<T>& list,
-    const typename T::value_type& item) {
+    const std::shared_ptr<T>& list, const typename T::value_type& item) {
   return std::count(list->begin(), list->end(), item);
 }
 
 template <typename T>
-std::shared_ptr<T>
-list_slice(const std::shared_ptr<T>& cpp_obj, int start, int stop, int step) {
+std::shared_ptr<T> list_slice(
+    const std::shared_ptr<T>& cpp_obj, int start, int stop, int step) {
   DCHECK(step != 0 && start >= -1 && stop >= -1);
   T res{};
   if (step > 0) {
@@ -228,9 +222,7 @@ list_slice(const std::shared_ptr<T>& cpp_obj, int start, int stop, int step) {
 
 template <typename T, typename V>
 void list_getitem(
-    const std::shared_ptr<T>& cpp_obj,
-    int index,
-    std::shared_ptr<V>& out) {
+    const std::shared_ptr<T>& cpp_obj, int index, std::shared_ptr<V>& out) {
   // the caller need to make sure index is valid
   DCHECK(index >= 0 && index < cpp_obj->size());
   out = std::shared_ptr<V>(cpp_obj, &cpp_obj->operator[](index));
@@ -261,8 +253,7 @@ struct set_iter {
 
 template <typename T>
 bool map_contains(
-    const std::shared_ptr<T>& cpp_obj,
-    const typename T::key_type key) {
+    const std::shared_ptr<T>& cpp_obj, const typename T::key_type key) {
   return cpp_obj->find(key) != cpp_obj->end();
 }
 
@@ -276,9 +267,7 @@ void map_getitem(
 
 template <typename T, typename V>
 void map_getitem(
-    const std::shared_ptr<T>& cpp_obj,
-    const typename T::key_type key,
-    V& out) {
+    const std::shared_ptr<T>& cpp_obj, const typename T::key_type key, V& out) {
   out = cpp_obj->operator[](key);
 }
 
@@ -299,8 +288,7 @@ struct map_iter {
   }
   template <typename V>
   void genNextValue(
-      const std::shared_ptr<T>& cpp_obj,
-      std::shared_ptr<V>& out) {
+      const std::shared_ptr<T>& cpp_obj, std::shared_ptr<V>& out) {
     out = std::shared_ptr<V>(cpp_obj, const_cast<V*>(&it->second));
     ++it;
   }
@@ -310,8 +298,8 @@ struct map_iter {
     ++it;
   }
   template <typename K, typename V>
-  void
-  genNextItem(const std::shared_ptr<T>& cpp_obj, K& key_out, V& value_out) {
+  void genNextItem(
+      const std::shared_ptr<T>& cpp_obj, K& key_out, V& value_out) {
     key_out = it->first;
     value_out = it->second;
     ++it;
@@ -363,6 +351,25 @@ std::string_view get_field_name_by_index(size_t idx) {
   auto const name = std::string_view(storage::fields_names.at(idx));
   auto found = map.find(name);
   return found == map.end() ? name : found->second;
+}
+
+// This is workaround of cython's limitation that function return isn't C++
+// left-values. e.g. `foo.bar_ref() = make_unique[T]()` isn't valid cython code
+// We need to write `assign_unique_ptr(foo.bar_ref(), make_unique[T]())` instead
+template <typename T>
+void assign_unique_ptr(std::unique_ptr<T>& x, std::unique_ptr<T> y) {
+  x = std::move(y);
+}
+
+template <typename T>
+void assign_shared_ptr(std::shared_ptr<T>& x, std::shared_ptr<T> y) {
+  x = std::move(y);
+}
+
+template <typename T>
+void assign_shared_const_ptr(
+    std::shared_ptr<const T>& x, std::shared_ptr<const T> y) {
+  x = std::move(y);
 }
 
 } // namespace py3

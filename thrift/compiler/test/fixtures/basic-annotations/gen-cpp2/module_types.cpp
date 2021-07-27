@@ -69,14 +69,31 @@ void TccStructTraits<::cpp2::MyStructNestedAnnotation>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructNestedAnnotation::MyStructNestedAnnotation(const MyStructNestedAnnotation&) = default;
+MyStructNestedAnnotation& MyStructNestedAnnotation::operator=(const MyStructNestedAnnotation&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructNestedAnnotation::MyStructNestedAnnotation(MyStructNestedAnnotation&& other) noexcept  :
+    name(std::move(other.name)),
+    __isset(other.__isset) {}
+MyStructNestedAnnotation& MyStructNestedAnnotation::operator=(FOLLY_MAYBE_UNUSED MyStructNestedAnnotation&& other) noexcept {
+    this->name = std::move(other.name);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructNestedAnnotation::MyStructNestedAnnotation(apache::thrift::FragileConstructor, ::std::string name__arg) :
     name(std::move(name__arg)) {
   __isset.name = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStructNestedAnnotation::__clear() {
   // clear all fields
-  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -86,7 +103,7 @@ bool MyStructNestedAnnotation::operator==(const MyStructNestedAnnotation& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
   return true;
@@ -96,8 +113,8 @@ bool MyStructNestedAnnotation::operator<(const MyStructNestedAnnotation& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
   return false;
 }
@@ -128,135 +145,6 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-void TccStructTraits<::cpp2::MyStructAnnotation>::translateFieldName(
-    folly::StringPiece _fname,
-    int16_t& fid,
-    apache::thrift::protocol::TType& _ftype) noexcept {
-  using data = apache::thrift::TStructDataStorage<::cpp2::MyStructAnnotation>;
-  static const st::translate_field_name_table table{
-      data::fields_size,
-      data::fields_names.data(),
-      data::fields_ids.data(),
-      data::fields_types.data()};
-  st::translate_field_name(_fname, fid, _ftype, table);
-}
-
-} // namespace detail
-} // namespace thrift
-} // namespace apache
-
-namespace cpp2 {
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStructAnnotation::MyStructAnnotation(apache::thrift::FragileConstructor, int64_t count__arg, ::std::string name__arg, ::std::string extra__arg,  ::cpp2::MyStructNestedAnnotation nest__arg) :
-    count(std::move(count__arg)),
-    name(std::move(name__arg)),
-    extra(std::move(extra__arg)),
-    nest(std::move(nest__arg)) {
-  __isset.count = true;
-  __isset.name = true;
-  __isset.extra = true;
-  __isset.nest = true;
-}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-void MyStructAnnotation::__clear() {
-  // clear all fields
-  count = 0;
-  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  extra = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  nest.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-}
-
-bool MyStructAnnotation::operator==(const MyStructAnnotation& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.count == rhs.count)) {
-    return false;
-  }
-  if (!(lhs.name == rhs.name)) {
-    return false;
-  }
-  if (lhs.extra_ref() != rhs.extra_ref()) {
-    return false;
-  }
-  if (!(lhs.nest == rhs.nest)) {
-    return false;
-  }
-  return true;
-}
-
-bool MyStructAnnotation::operator<(const MyStructAnnotation& rhs) const {
-  (void)rhs;
-  auto& lhs = *this;
-  (void)lhs;
-  if (!(lhs.count == rhs.count)) {
-    return lhs.count < rhs.count;
-  }
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
-  }
-  if (lhs.extra_ref() != rhs.extra_ref()) {
-    return lhs.extra_ref() < rhs.extra_ref();
-  }
-  if (!(lhs.nest == rhs.nest)) {
-    return lhs.nest < rhs.nest;
-  }
-  return false;
-}
-
-const  ::cpp2::MyStructNestedAnnotation& MyStructAnnotation::get_nest() const& {
-  return nest;
-}
-
- ::cpp2::MyStructNestedAnnotation MyStructAnnotation::get_nest() && {
-  return std::move(nest);
-}
-
-
-void swap(MyStructAnnotation& a, MyStructAnnotation& b) {
-  using ::std::swap;
-  swap(a.count_ref().value(), b.count_ref().value());
-  swap(a.name_ref().value(), b.name_ref().value());
-  swap(a.extra_ref().value_unchecked(), b.extra_ref().value_unchecked());
-  swap(a.nest_ref().value(), b.nest_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-}
-
-template void MyStructAnnotation::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
-template uint32_t MyStructAnnotation::write<>(apache::thrift::BinaryProtocolWriter*) const;
-template uint32_t MyStructAnnotation::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
-template uint32_t MyStructAnnotation::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
-template void MyStructAnnotation::readNoXfer<>(apache::thrift::CompactProtocolReader*);
-template uint32_t MyStructAnnotation::write<>(apache::thrift::CompactProtocolWriter*) const;
-template uint32_t MyStructAnnotation::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
-template uint32_t MyStructAnnotation::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_json<
-        MyStructAnnotation,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::MyStructNestedAnnotation>,
-    "inconsistent use of json option");
-
-static_assert(
-    ::apache::thrift::detail::st::gen_check_nimble<
-        MyStructAnnotation,
-        ::apache::thrift::type_class::structure,
-         ::cpp2::MyStructNestedAnnotation>,
-    "inconsistent use of nimble option");
-
-} // cpp2
-
-namespace apache {
-namespace thrift {
-namespace detail {
-
 void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
     folly::StringPiece _fname,
     int16_t& fid,
@@ -277,15 +165,42 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct() :
-      majorVer(0) {}
+MyStruct::MyStruct(const MyStruct&) = default;
+MyStruct& MyStruct::operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct() :
+      majorVer(0) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyStruct::~MyStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg) :
+MyStruct::MyStruct(MyStruct&& other) noexcept  :
+    majorVer(std::move(other.majorVer)),
+    package(std::move(other.package)),
+    annotation_with_quote(std::move(other.annotation_with_quote)),
+    class_(std::move(other.class_)),
+    annotation_with_trailing_comma(std::move(other.annotation_with_trailing_comma)),
+    empty_annotations(std::move(other.empty_annotations)),
+    __isset(other.__isset) {}
+MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
+    this->majorVer = std::move(other.majorVer);
+    this->package = std::move(other.package);
+    this->annotation_with_quote = std::move(other.annotation_with_quote);
+    this->class_ = std::move(other.class_);
+    this->annotation_with_trailing_comma = std::move(other.annotation_with_trailing_comma);
+    this->empty_annotations = std::move(other.empty_annotations);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg) :
     majorVer(std::move(majorVer__arg)),
     package(std::move(package__arg)),
     annotation_with_quote(std::move(annotation_with_quote__arg)),
@@ -300,14 +215,15 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::
   __isset.empty_annotations = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStruct::__clear() {
   // clear all fields
-  majorVer = 0;
-  package = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  annotation_with_quote = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  class_ = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  annotation_with_trailing_comma = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  empty_annotations = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->majorVer = 0;
+  this->package = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->annotation_with_quote = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->annotation_with_trailing_comma = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->empty_annotations = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -317,22 +233,22 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.majorVer == rhs.majorVer)) {
+  if (!(lhs.majorVer_ref() == rhs.majorVer_ref())) {
     return false;
   }
-  if (!(lhs.package == rhs.package)) {
+  if (!(lhs.package_ref() == rhs.package_ref())) {
     return false;
   }
-  if (!(lhs.annotation_with_quote == rhs.annotation_with_quote)) {
+  if (!(lhs.annotation_with_quote_ref() == rhs.annotation_with_quote_ref())) {
     return false;
   }
-  if (!(lhs.class_ == rhs.class_)) {
+  if (!(lhs.class__ref() == rhs.class__ref())) {
     return false;
   }
-  if (!(lhs.annotation_with_trailing_comma == rhs.annotation_with_trailing_comma)) {
+  if (!(lhs.annotation_with_trailing_comma_ref() == rhs.annotation_with_trailing_comma_ref())) {
     return false;
   }
-  if (!(lhs.empty_annotations == rhs.empty_annotations)) {
+  if (!(lhs.empty_annotations_ref() == rhs.empty_annotations_ref())) {
     return false;
   }
   return true;
@@ -342,23 +258,23 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.majorVer == rhs.majorVer)) {
-    return lhs.majorVer < rhs.majorVer;
+  if (!(lhs.majorVer_ref() == rhs.majorVer_ref())) {
+    return lhs.majorVer_ref() < rhs.majorVer_ref();
   }
-  if (!(lhs.package == rhs.package)) {
-    return lhs.package < rhs.package;
+  if (!(lhs.package_ref() == rhs.package_ref())) {
+    return lhs.package_ref() < rhs.package_ref();
   }
-  if (!(lhs.annotation_with_quote == rhs.annotation_with_quote)) {
-    return lhs.annotation_with_quote < rhs.annotation_with_quote;
+  if (!(lhs.annotation_with_quote_ref() == rhs.annotation_with_quote_ref())) {
+    return lhs.annotation_with_quote_ref() < rhs.annotation_with_quote_ref();
   }
-  if (!(lhs.class_ == rhs.class_)) {
-    return lhs.class_ < rhs.class_;
+  if (!(lhs.class__ref() == rhs.class__ref())) {
+    return lhs.class__ref() < rhs.class__ref();
   }
-  if (!(lhs.annotation_with_trailing_comma == rhs.annotation_with_trailing_comma)) {
-    return lhs.annotation_with_trailing_comma < rhs.annotation_with_trailing_comma;
+  if (!(lhs.annotation_with_trailing_comma_ref() == rhs.annotation_with_trailing_comma_ref())) {
+    return lhs.annotation_with_trailing_comma_ref() < rhs.annotation_with_trailing_comma_ref();
   }
-  if (!(lhs.empty_annotations == rhs.empty_annotations)) {
-    return lhs.empty_annotations < rhs.empty_annotations;
+  if (!(lhs.empty_annotations_ref() == rhs.empty_annotations_ref())) {
+    return lhs.empty_annotations_ref() < rhs.empty_annotations_ref();
   }
   return false;
 }
@@ -414,17 +330,36 @@ void TccStructTraits<::cpp2::SecretStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SecretStruct::SecretStruct(apache::thrift::FragileConstructor, int64_t id__arg, ::std::string password__arg) :
+SecretStruct::SecretStruct(const SecretStruct&) = default;
+SecretStruct& SecretStruct::operator=(const SecretStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SecretStruct::SecretStruct(SecretStruct&& other) noexcept  :
+    id(std::move(other.id)),
+    password(std::move(other.password)),
+    __isset(other.__isset) {}
+SecretStruct& SecretStruct::operator=(FOLLY_MAYBE_UNUSED SecretStruct&& other) noexcept {
+    this->id = std::move(other.id);
+    this->password = std::move(other.password);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SecretStruct::SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string password__arg) :
     id(std::move(id__arg)),
     password(std::move(password__arg)) {
   __isset.id = true;
   __isset.password = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SecretStruct::__clear() {
   // clear all fields
-  id = 0;
-  password = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->id = 0;
+  this->password = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -434,10 +369,10 @@ bool SecretStruct::operator==(const SecretStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.id == rhs.id)) {
+  if (!(lhs.id_ref() == rhs.id_ref())) {
     return false;
   }
-  if (!(lhs.password == rhs.password)) {
+  if (!(lhs.password_ref() == rhs.password_ref())) {
     return false;
   }
   return true;
@@ -447,11 +382,11 @@ bool SecretStruct::operator<(const SecretStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.id == rhs.id)) {
-    return lhs.id < rhs.id;
+  if (!(lhs.id_ref() == rhs.id_ref())) {
+    return lhs.id_ref() < rhs.id_ref();
   }
-  if (!(lhs.password == rhs.password)) {
-    return lhs.password < rhs.password;
+  if (!(lhs.password_ref() == rhs.password_ref())) {
+    return lhs.password_ref() < rhs.password_ref();
   }
   return false;
 }

@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,11 +31,17 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 cimport module0.types as _module0_types
 cimport module1.types as _module1_types
 
-cimport module2.types_fields as __fbthrift_types_fields
+cimport module2.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module2/types.h":
   pass
@@ -45,10 +50,15 @@ cdef extern from "src/gen-py3/module2/types.h":
 
 
 
+cdef extern from "src/gen-cpp2/module2_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module2_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::module2":
-    cdef cppclass cStruct__isset "::module2::Struct::__isset":
-        bint first
-        bint second
 
     cdef cppclass cStruct "::module2::Struct":
         cStruct() except +
@@ -60,14 +70,10 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         bint operator<=(cStruct&)
         bint operator>=(cStruct&)
         __field_ref[_module0_types.cStruct] first_ref()
-        _module0_types.cStruct first
         __field_ref[_module1_types.cStruct] second_ref()
+        _module0_types.cStruct first
         _module1_types.cStruct second
-        cStruct__isset __isset
 
-    cdef cppclass cBigStruct__isset "::module2::BigStruct::__isset":
-        bint s
-        bint id
 
     cdef cppclass cBigStruct "::module2::BigStruct":
         cBigStruct() except +
@@ -79,19 +85,18 @@ cdef extern from "src/gen-cpp2/module2_types_custom_protocol.h" namespace "::mod
         bint operator<=(cBigStruct&)
         bint operator>=(cBigStruct&)
         __field_ref[cStruct] s_ref()
-        cStruct s
         __field_ref[cint32_t] id_ref()
+        cStruct s
         cint32_t id
-        cBigStruct__isset __isset
 
 
 
 
 cdef class Struct(thrift.py3.types.Struct):
     cdef shared_ptr[cStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__Struct_FieldsSetter _fields_setter
-    cdef _module0_types.Struct __field_first
-    cdef _module1_types.Struct __field_second
+    cdef _fbthrift_types_fields.__Struct_FieldsSetter _fields_setter
+    cdef _module0_types.Struct __fbthrift_cached_first
+    cdef _module1_types.Struct __fbthrift_cached_second
 
     @staticmethod
     cdef create(shared_ptr[cStruct])
@@ -100,8 +105,8 @@ cdef class Struct(thrift.py3.types.Struct):
 
 cdef class BigStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cBigStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__BigStruct_FieldsSetter _fields_setter
-    cdef Struct __field_s
+    cdef _fbthrift_types_fields.__BigStruct_FieldsSetter _fields_setter
+    cdef Struct __fbthrift_cached_s
 
     @staticmethod
     cdef create(shared_ptr[cBigStruct])

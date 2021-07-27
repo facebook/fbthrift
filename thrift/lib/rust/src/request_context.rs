@@ -25,6 +25,8 @@ pub trait RequestContext {
         service_name: &Self::Name,
         fn_name: &Self::Name,
     ) -> Result<Self::ContextStack, Error>;
+
+    fn set_user_exception_header(&self, ex_type: &str, ex_reason: &str) -> Result<(), Error>;
 }
 
 impl RequestContext for () {
@@ -36,6 +38,10 @@ impl RequestContext for () {
         _service_name: &Self::Name,
         _fn_name: &Self::Name,
     ) -> Result<Self::ContextStack, Error> {
+        Ok(())
+    }
+
+    fn set_user_exception_header(&self, _ex_type: &str, _ex_reason: &str) -> Result<(), Error> {
         Ok(())
     }
 }

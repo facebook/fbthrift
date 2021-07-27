@@ -42,12 +42,9 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
   using CompactProtocolWriter::setOutput;
 
   inline uint32_t writeMessageBegin(
-      const std::string& name,
-      MessageType messageType,
-      int32_t seqid);
+      const std::string& name, MessageType messageType, int32_t seqid);
   using CompactProtocolWriter::writeBool;
   using CompactProtocolWriter::writeByte;
-  using CompactProtocolWriter::writeCollectionBegin;
   using CompactProtocolWriter::writeFieldBegin;
   using CompactProtocolWriter::writeFieldEnd;
   using CompactProtocolWriter::writeFieldStop;
@@ -66,7 +63,6 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
   inline uint32_t writeDouble(double dub);
   using CompactProtocolWriter::writeBinary;
   using CompactProtocolWriter::writeFloat;
-  using CompactProtocolWriter::writeSerializedData;
   using CompactProtocolWriter::writeString;
 
   using CompactProtocolWriter::serializedFieldSize;
@@ -83,7 +79,6 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
   using CompactProtocolWriter::serializedSizeListEnd;
   using CompactProtocolWriter::serializedSizeMapBegin;
   using CompactProtocolWriter::serializedSizeMapEnd;
-  using CompactProtocolWriter::serializedSizeSerializedData;
   using CompactProtocolWriter::serializedSizeSetBegin;
   using CompactProtocolWriter::serializedSizeSetEnd;
   using CompactProtocolWriter::serializedSizeStop;
@@ -105,8 +100,8 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using CompactProtocolReader::setInput;
   using CompactProtocolReader::setStringSizeLimit;
 
-  inline void
-  readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
+  inline void readMessageBegin(
+      std::string& name, MessageType& messageType, int32_t& seqid);
   using CompactProtocolReader::readBool;
   using CompactProtocolReader::readByte;
   using CompactProtocolReader::readFieldBegin;
@@ -124,6 +119,7 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using CompactProtocolReader::readStructBegin;
   using CompactProtocolReader::readStructEnd;
   inline void readDouble(double& dub);
+  using CompactProtocolReader::fixedSizeInContainer;
   using CompactProtocolReader::peekList;
   using CompactProtocolReader::peekMap;
   using CompactProtocolReader::peekSet;
@@ -131,6 +127,7 @@ class CompactV1ProtocolReader : protected CompactProtocolReader {
   using CompactProtocolReader::readFloat;
   using CompactProtocolReader::readString;
   using CompactProtocolReader::skip;
+  using CompactProtocolReader::skipBytes;
 
   using CompactProtocolReader::getCursor;
   using CompactProtocolReader::getCursorPosition;

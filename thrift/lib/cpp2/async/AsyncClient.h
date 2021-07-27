@@ -33,9 +33,7 @@ class GeneratedAsyncClient : public TClientBase {
 
   virtual char const* getServiceName() const noexcept = 0;
 
-  RequestChannel* getChannel() const noexcept {
-    return channel_.get();
-  }
+  RequestChannel* getChannel() const noexcept { return channel_.get(); }
 
   std::shared_ptr<RequestChannel> getChannelShared() const noexcept {
     return channel_;
@@ -52,12 +50,13 @@ class GeneratedAsyncClient : public TClientBase {
 class InteractionHandle : public GeneratedAsyncClient {
  public:
   InteractionHandle(
-      std::shared_ptr<RequestChannel> channel,
-      folly::StringPiece methodName);
+      std::shared_ptr<RequestChannel> channel, folly::StringPiece methodName);
   InteractionHandle(std::shared_ptr<RequestChannel> channel, InteractionId id);
   ~InteractionHandle();
   InteractionHandle(InteractionHandle&&) noexcept = default;
   InteractionHandle& operator=(InteractionHandle&&);
+
+  const InteractionId& getInteractionId();
 
  protected:
   void setInteraction(RpcOptions& rpcOptions);

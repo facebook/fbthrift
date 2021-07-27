@@ -56,7 +56,7 @@ multi line string.
         .put("keys", "values")
         .build();
 
-    public static final test.fixtures.constants.Internship INSTAGRAM = new test.fixtures.constants.Internship.Builder().setWeeks(12).setTitle("Software Engineer").setEmployer(test.fixtures.constants.Company.INSTAGRAM).build();
+    public static final test.fixtures.constants.Internship INSTAGRAM = new test.fixtures.constants.Internship.Builder().setWeeks(12).setTitle("Software Engineer").setEmployer(test.fixtures.constants.Company.INSTAGRAM).setCompensation((double)1200).build();
 
     public static final test.fixtures.constants.Internship PARTIAL_CONST = new test.fixtures.constants.Internship.Builder().setWeeks(8).setTitle("Some Job").build();
 
@@ -67,7 +67,7 @@ multi line string.
 
     public static final List<test.fixtures.constants.Internship> INTERN_LIST = ImmutableList.<test.fixtures.constants.Internship>builder()
         .add(test.fixtures.constants.Constants.INSTAGRAM)
-        .add(new test.fixtures.constants.Internship.Builder().setWeeks(10).setTitle("Sales Intern").setEmployer(test.fixtures.constants.Company.FACEBOOK).build())
+        .add(new test.fixtures.constants.Internship.Builder().setWeeks(10).setTitle("Sales Intern").setEmployer(test.fixtures.constants.Company.FACEBOOK).setCompensation((double)1000).build())
         .build();
 
     public static final test.fixtures.constants.Struct1 POD_0 = new test.fixtures.constants.Struct1.Builder().build();

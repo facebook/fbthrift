@@ -66,3 +66,28 @@ TEST_F(SimpleJSONProtocolTest, roundtrip_struct_with_empty_map_string_i64) {
   EXPECT_EQ(serialized.size(), size);
   EXPECT_EQ(orig, deserialized);
 }
+
+TEST_F(SimpleJSONProtocolTest, roundtrip_one_of_each_float_range) {
+  // Test values for OneOfEach.{myDouble, myFloat} respectively
+  const vector<tuple<double, float>> kTestCases = {
+      {numeric_limits<double>::lowest(), numeric_limits<float>::lowest()},
+      {nextafter(numeric_limits<double>::lowest(), 0.0),
+       nextafter(numeric_limits<float>::lowest(), 0.f)},
+      {numeric_limits<double>::max(), numeric_limits<float>::max()},
+      {nextafter(numeric_limits<double>::max(), 0.0),
+       nextafter(numeric_limits<float>::max(), 0.f)},
+      {-0.0, -0.f},
+      {0.0, 0.f},
+      {123456.0, 123456.f},
+  };
+
+  for (const auto& testCase : kTestCases) {
+    auto orig = OneOfEach{};
+    tie(*orig.myDouble_ref(), *orig.myFloat_ref()) = testCase;
+    const auto serialized = S::serialize<string>(orig);
+    OneOfEach deserialized;
+    const auto size = S::deserialize(serialized, deserialized);
+    EXPECT_EQ(serialized.size(), size) << serialized;
+    EXPECT_EQ(orig, deserialized) << serialized;
+  }
+}

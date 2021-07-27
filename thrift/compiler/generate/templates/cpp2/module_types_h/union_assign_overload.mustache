@@ -14,7 +14,7 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%>  <%struct:name%>& operator=(<%struct:name%>&& rhs)<%#struct:cpp_noexcept_move%> noexcept<%/struct:cpp_noexcept_move%> {
+%>  <%struct:name%>& operator=(<%struct:name%>&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }

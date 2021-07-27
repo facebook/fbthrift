@@ -34,7 +34,8 @@ namespace protocol {
  * pipes etc.
  *
  */
-class TProtocolException : public apache::thrift::TLibraryException {
+class FOLLY_EXPORT TProtocolException
+    : public apache::thrift::TLibraryException {
  public:
   /**
    * Error codes for the various types of exceptions.
@@ -68,9 +69,7 @@ class TProtocolException : public apache::thrift::TLibraryException {
    *
    * @return Error code
    */
-  TProtocolExceptionType getType() const {
-    return type_;
-  }
+  TProtocolExceptionType getType() const { return type_; }
 
   const char* what() const throw() override {
     if (message_.empty()) {
@@ -100,10 +99,12 @@ class TProtocolException : public apache::thrift::TLibraryException {
   [[noreturn]] static void throwUnionMissingStop();
   [[noreturn]] static void throwReportedTypeMismatch();
   [[noreturn]] static void throwNegativeSize();
-  [[noreturn]] static void throwExceededSizeLimit();
+  [[deprecated("Use override with size and limit.")]] //
+  [[noreturn]] static void
+  throwExceededSizeLimit();
+  [[noreturn]] static void throwExceededSizeLimit(size_t size, size_t limit);
   [[noreturn]] static void throwMissingRequiredField(
-      folly::StringPiece field,
-      folly::StringPiece type);
+      folly::StringPiece field, folly::StringPiece type);
   [[noreturn]] static void throwBoolValueOutOfRange(uint8_t value);
   [[noreturn]] static void throwInvalidSkipType(TType type);
   [[noreturn]] static void throwInvalidFieldData();

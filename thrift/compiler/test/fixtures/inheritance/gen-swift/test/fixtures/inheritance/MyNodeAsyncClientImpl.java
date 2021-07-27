@@ -11,7 +11,8 @@ import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
-import com.facebook.swift.transport.client.*;
+import com.facebook.thrift.client.*;
+import com.facebook.thrift.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -75,18 +76,20 @@ public class MyNodeAsyncClientImpl extends test.fixtures.inheritance.MyRootAsync
 
     @java.lang.Override
     public ListenableFuture<Void> doMid() {
-        try {
-          return (ListenableFuture<Void>) execute(doMidMethodHandler, doMidExceptions);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return doMid(RpcOptions.EMPTY);
     }
 
-
+    @java.lang.Override
     public ListenableFuture<Void> doMid(
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(doMidWrapper(rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<Void>> doMidWrapper(
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<Void>) executeWithOptions(doMidMethodHandler, doMidExceptions, rpcOptions);
+          return executeWrapperWithOptions(doMidMethodHandler, doMidExceptions, rpcOptions);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

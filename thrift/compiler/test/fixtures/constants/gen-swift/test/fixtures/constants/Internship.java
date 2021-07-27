@@ -23,19 +23,20 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Internship", builder=Internship.Builder.class)
-public final class Internship {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="Internship", builder=Internship.Builder.class)
+public final class Internship implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Internship(
-        @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED) final int weeks,
-        @ThriftField(value=2, name="title", requiredness=Requiredness.NONE) final String title,
-        @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL) final test.fixtures.constants.Company employer
+        @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED) final int weeks,
+        @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE) final String title,
+        @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL) final test.fixtures.constants.Company employer,
+        @com.facebook.swift.codec.ThriftField(value=4, name="compensation", requiredness=Requiredness.OPTIONAL) final Double compensation
     ) {
         this.weeks = weeks;
         this.title = title;
         this.employer = employer;
+        this.compensation = compensation;
     }
     
     @ThriftConstructor
@@ -43,16 +44,17 @@ public final class Internship {
       this.weeks = 0;
       this.title = null;
       this.employer = null;
+      this.compensation = null;
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private int weeks = 0;
         private String title = null;
         private test.fixtures.constants.Company employer = null;
+        private Double compensation = null;
     
-        @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
+        @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
         public Builder setWeeks(int weeks) {
             this.weeks = weeks;
             return this;
@@ -60,7 +62,7 @@ public final class Internship {
     
         public int getWeeks() { return weeks; }
     
-            @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
         public Builder setTitle(String title) {
             this.title = title;
             return this;
@@ -68,7 +70,7 @@ public final class Internship {
     
         public String getTitle() { return title; }
     
-            @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
         public Builder setEmployer(test.fixtures.constants.Company employer) {
             this.employer = employer;
             return this;
@@ -76,11 +78,20 @@ public final class Internship {
     
         public test.fixtures.constants.Company getEmployer() { return employer; }
     
+            @com.facebook.swift.codec.ThriftField(value=4, name="compensation", requiredness=Requiredness.OPTIONAL)
+        public Builder setCompensation(Double compensation) {
+            this.compensation = compensation;
+            return this;
+        }
+    
+        public Double getCompensation() { return compensation; }
+    
         public Builder() { }
         public Builder(Internship other) {
             this.weeks = other.weeks;
             this.title = other.title;
             this.employer = other.employer;
+            this.compensation = other.compensation;
         }
     
         @ThriftConstructor
@@ -88,9 +99,9 @@ public final class Internship {
             Internship result = new Internship (
                 this.weeks,
                 this.title,
-                this.employer
+                this.employer,
+                this.compensation
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -107,6 +118,9 @@ public final class Internship {
         private final test.fixtures.constants.Company employer;
     public static final int _EMPLOYER = 3;
     private static final TField EMPLOYER_FIELD_DESC = new TField("employer", TType.I32, (short)3);
+        private final Double compensation;
+    public static final int _COMPENSATION = 4;
+    private static final TField COMPENSATION_FIELD_DESC = new TField("compensation", TType.DOUBLE, (short)4);
     static {
       NAMES_TO_IDS.put("weeks", 1);
       FIELD_METADATA.put(1, WEEKS_FIELD_DESC);
@@ -114,36 +128,24 @@ public final class Internship {
       FIELD_METADATA.put(2, TITLE_FIELD_DESC);
       NAMES_TO_IDS.put("employer", 3);
       FIELD_METADATA.put(3, EMPLOYER_FIELD_DESC);
+      NAMES_TO_IDS.put("compensation", 4);
+      FIELD_METADATA.put(4, COMPENSATION_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
     public int getWeeks() { return weeks; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetWeeks() {
-        return __isset_bit_vector.get(_WEEKS);
-    }
     
     
-    @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
     public String getTitle() { return title; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetTitle() {
-        return this.title != null;
-    }
     
     
-    @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.constants.Company getEmployer() { return employer; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetEmployer() {
-        return this.employer != null;
-    }
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=4, name="compensation", requiredness=Requiredness.OPTIONAL)
+    public Double getCompensation() { return compensation; }
     
     @java.lang.Override
     public String toString() {
@@ -151,6 +153,7 @@ public final class Internship {
         helper.add("weeks", weeks);
         helper.add("title", title);
         helper.add("employer", employer);
+        helper.add("compensation", compensation);
         return helper.toString();
     }
     
@@ -169,6 +172,7 @@ public final class Internship {
             Objects.equals(weeks, other.weeks) &&
             Objects.equals(title, other.title) &&
             Objects.equals(employer, other.employer) &&
+            Objects.equals(compensation, other.compensation) &&
             true;
     }
     
@@ -177,10 +181,15 @@ public final class Internship {
         return Arrays.deepHashCode(new Object[] {
             weeks,
             title,
-            employer
+            employer,
+            compensation
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Internship> asReader() {
+      return Internship::read0;
+    }
     
     public static Internship read0(TProtocol oprot) throws TException {
       TField __field;
@@ -214,6 +223,14 @@ public final class Internship {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _COMPENSATION:
+          if (__field.type == TType.DOUBLE) {
+            Double compensation = oprot.readDouble();
+            builder.setCompensation(compensation);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -239,8 +256,20 @@ public final class Internship {
         oprot.writeI32(this.employer == null ? 0 : this.employer.getValue());
         oprot.writeFieldEnd();
       }
+      if (this.compensation != null) {
+        oprot.writeFieldBegin(COMPENSATION_FIELD_DESC);
+        oprot.writeDouble(this.compensation);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
     
+    private static class _InternshipLazy {
+        private static final Internship _DEFAULT = new Internship.Builder().build();
+    }
+    
+    public static Internship defaultInstance() {
+        return  _InternshipLazy._DEFAULT;
+    }
 }

@@ -61,14 +61,13 @@ void ThriftClientCallback::onThriftRequestSent() {
 }
 
 void ThriftClientCallback::onThriftResponse(
-    ResponseRpcMetadata&& metadata,
-    std::unique_ptr<IOBuf> payload) noexcept {
+    ResponseRpcMetadata&& metadata, std::unique_ptr<IOBuf> payload) noexcept {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   cancelTimeout();
   if (active_) {
     active_ = false;
     auto tHeader = std::make_unique<transport::THeader>();
-    tHeader->setClientType(THRIFT_HTTP_CLIENT_TYPE);
+    tHeader->setClientType(THRIFT_HTTP2_CLIENT_TYPE);
     apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(
         metadata, *tHeader);
     cb_.release()->onResponse(ClientReceiveState(

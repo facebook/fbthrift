@@ -21,11 +21,10 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("Serious")
-public final class Serious extends java.lang.RuntimeException {
+@com.facebook.swift.codec.ThriftStruct("Serious")
+public final class Serious extends java.lang.RuntimeException implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
-    private BitSet __isset_bit_vector = new BitSet();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -37,7 +36,7 @@ public final class Serious extends java.lang.RuntimeException {
 
     @ThriftConstructor
     public Serious(
-        @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL) final String sonnet
+        @com.facebook.swift.codec.ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL) final String sonnet
     ) {
         this.sonnet = sonnet;
     }
@@ -48,11 +47,10 @@ public final class Serious extends java.lang.RuntimeException {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String sonnet = null;
     
-        @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
+        @com.facebook.swift.codec.ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
         public Builder setSonnet(String sonnet) {
             this.sonnet = sonnet;
             return this;
@@ -70,18 +68,21 @@ public final class Serious extends java.lang.RuntimeException {
             Serious result = new Serious (
                 this.sonnet
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
     
     
-    @ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=1, name="sonnet", requiredness=Requiredness.OPTIONAL)
     public String getSonnet() { return sonnet; }
         
     @java.lang.Override
     public String getMessage() {
       return sonnet;
+    }
+    
+    public static com.facebook.thrift.payload.Reader<Serious> asReader() {
+      return Serious::read0;
     }
     
     public static Serious read0(TProtocol oprot) throws TException {

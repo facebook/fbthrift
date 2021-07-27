@@ -44,7 +44,7 @@ TEST(Reflection, Basic) {
     EXPECT_EQ(int(Type::TYPE_I32), *f.type_ref());
     EXPECT_EQ("a", *f.name_ref());
     EXPECT_EQ(1, *f.order_ref());
-    EXPECT_FALSE(f.__isset.annotations);
+    EXPECT_FALSE(f.annotations_ref().has_value());
   }
 
   {
@@ -53,7 +53,7 @@ TEST(Reflection, Basic) {
     EXPECT_EQ(int(Type::TYPE_I32), *f.type_ref());
     EXPECT_EQ("b", *f.name_ref());
     EXPECT_EQ(2, *f.order_ref());
-    EXPECT_FALSE(f.__isset.annotations);
+    EXPECT_FALSE(f.annotations_ref().has_value());
   }
 
   {
@@ -64,7 +64,7 @@ TEST(Reflection, Basic) {
     EXPECT_EQ(int(Type::TYPE_I32), *f.type_ref());
     EXPECT_EQ("c", *f.name_ref());
     EXPECT_EQ(0, *f.order_ref());
-    EXPECT_FALSE(f.__isset.annotations);
+    EXPECT_FALSE(f.annotations_ref().has_value());
   }
 
   {
@@ -73,7 +73,7 @@ TEST(Reflection, Basic) {
     EXPECT_EQ(int(Type::TYPE_STRING), *f.type_ref());
     EXPECT_EQ("d", *f.name_ref());
     EXPECT_EQ(3, *f.order_ref());
-    EXPECT_TRUE(f.__isset.annotations);
+    EXPECT_TRUE(f.annotations_ref().has_value());
     EXPECT_EQ("hello", f.annotations_ref()->at("some.field.annotation"));
     EXPECT_EQ("1", f.annotations_ref()->at("some.other.annotation"));
     EXPECT_EQ("1", f.annotations_ref()->at("annotation.without.value"));
@@ -89,7 +89,7 @@ TEST(Reflection, Complex) {
   EXPECT_EQ(
       refl<ReflectionTestStruct2>::id(),
       schema.names_ref()->at(*s2.name_ref()));
-  EXPECT_TRUE(s2.__isset.fields);
+  EXPECT_TRUE(s2.fields_ref().has_value());
   EXPECT_EQ(4, s2.fields_ref()->size());
 
   {
@@ -139,7 +139,7 @@ TEST(Reflection, Complex) {
     auto& m = schema.dataTypes_ref()->at(*f.type_ref());
     EXPECT_EQ("enum ReflectionTest.ReflectionTestEnum", *m.name_ref());
     EXPECT_EQ(*f.type_ref(), schema.names_ref()->at(*m.name_ref()));
-    EXPECT_TRUE(m.__isset.enumValues);
+    EXPECT_TRUE(m.enumValues_ref().has_value());
     EXPECT_EQ(2, m.enumValues_ref()->size());
     EXPECT_EQ(5, m.enumValues_ref()->at("FOO"));
     EXPECT_EQ(4, m.enumValues_ref()->at("BAR"));

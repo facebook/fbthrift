@@ -5,5 +5,7 @@
  *  @generated
  */
 #pragma once
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_visitation.h"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include2_visitation.h"
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_for_each_field.h"
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/module_visit_union.h"

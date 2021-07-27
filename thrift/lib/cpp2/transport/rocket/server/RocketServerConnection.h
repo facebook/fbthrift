@@ -17,15 +17,17 @@
 #pragma once
 
 #include <chrono>
+#include <deque>
 #include <memory>
 #include <ostream>
 #include <unordered_map>
 #include <utility>
-
-#include <boost/variant.hpp>
+#include <variant>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/Executor.h>
 #include <folly/container/F14Map.h>
+#include <folly/experimental/observer/Observer.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
@@ -36,6 +38,8 @@
 #include <wangle/acceptor/ManagedConnection.h>
 
 #include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/server/MemoryTracker.h>
+#include <thrift/lib/cpp2/transport/core/ManagedConnectionIf.h>
 #include <thrift/lib/cpp2/transport/rocket/RocketException.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/Parser.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerFrameContext.h>
@@ -52,19 +56,32 @@ class RocketStreamClientCallback;
 namespace rocket {
 
 class RocketServerConnection final
-    : public wangle::ManagedConnection,
-      private folly::AsyncTransport::WriteCallback {
+    : public ManagedConnectionIf,
+      private folly::AsyncTransport::WriteCallback,
+      private folly::AsyncTransport::BufferCallback {
  public:
   using UniquePtr = std::
       unique_ptr<RocketServerConnection, folly::DelayedDestruction::Destructor>;
 
+  // (configuration parameters mostly inherited from the server)
+  struct Config {
+    Config() {}
+    std::chrono::milliseconds socketWriteTimeout{
+        std::chrono::milliseconds::zero()};
+    std::chrono::milliseconds streamStarvationTimeout{std::chrono::seconds{60}};
+    std::chrono::milliseconds writeBatchingInterval{
+        std::chrono::milliseconds::zero()};
+    size_t writeBatchingSize{0};
+    size_t egressBufferBackpressureThreshold{0};
+    double egressBufferBackpressureRecoveryFactor{0.0};
+  };
+
   RocketServerConnection(
       folly::AsyncTransport::UniquePtr socket,
       std::unique_ptr<RocketServerHandler> frameHandler,
-      std::chrono::milliseconds streamStarvationTimeout,
-      std::chrono::milliseconds writeBatchingInterval =
-          std::chrono::milliseconds::zero(),
-      size_t writeBatchingSize = 0);
+      MemoryTracker& ingressMemoryTracker,
+      MemoryTracker& egressMemoryTracker,
+      const Config& cfg = {});
 
   void send(
       std::unique_ptr<folly::IOBuf> data,
@@ -76,8 +93,7 @@ class RocketServerConnection final
       uint32_t initialRequestN);
 
   RocketSinkClientCallback& createSinkClientCallback(
-      StreamId streamId,
-      RocketServerConnection& connection);
+      StreamId streamId, RocketServerConnection& connection);
 
   // Parser callbacks
   void handleFrame(std::unique_ptr<folly::IOBuf> frame);
@@ -89,17 +105,13 @@ class RocketServerConnection final
       size_t bytesWritten,
       const folly::AsyncSocketException& ex) noexcept final;
 
-  folly::EventBase& getEventBase() const {
-    return evb_;
-  }
+  // AsyncTransport::BufferCallback implementation
+  void onEgressBuffered() final;
+  void onEgressBufferCleared() final;
 
-  size_t getNumStreams() const {
-    return streams_.size();
-  }
+  folly::EventBase& getEventBase() const { return evb_; }
 
-  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
-    negotiatedCompressionAlgo_ = compressionAlgo;
-  }
+  size_t getNumStreams() const { return streams_.size(); }
 
   void sendPayload(
       StreamId streamId,
@@ -123,12 +135,9 @@ class RocketServerConnection final
 
   void scheduleStreamTimeout(folly::HHWheelTimer::Callback*);
   void scheduleSinkTimeout(
-      folly::HHWheelTimer::Callback*,
-      std::chrono::milliseconds timeout);
+      folly::HHWheelTimer::Callback*, std::chrono::milliseconds timeout);
 
-  void incInflightFinalResponse() {
-    inflightSinkFinalResponses_++;
-  }
+  void incInflightFinalResponse() { inflightSinkFinalResponses_++; }
   void decInflightFinalResponse() {
     DCHECK(inflightSinkFinalResponses_ != 0);
     inflightSinkFinalResponses_--;
@@ -148,9 +157,7 @@ class RocketServerConnection final
     ReadResumableHandle& operator=(ReadResumableHandle&&) = delete;
 
     void resume() &&;
-    folly::EventBase& getEventBase() {
-      return connection_->evb_;
-    }
+    folly::EventBase& getEventBase() { return connection_->evb_; }
 
     Cpp2ConnContext* getCpp2ConnContext() {
       return connection_->frameHandler_->getCpp2ConnContext();
@@ -171,9 +178,7 @@ class RocketServerConnection final
     ReadPausableHandle& operator=(ReadPausableHandle&&) = delete;
 
     ReadResumableHandle pause() &&;
-    folly::EventBase& getEventBase() {
-      return connection_->evb_;
-    }
+    folly::EventBase& getEventBase() { return connection_->evb_; }
 
     Cpp2ConnContext* getCpp2ConnContext() {
       return connection_->frameHandler_->getCpp2ConnContext();
@@ -188,18 +193,54 @@ class RocketServerConnection final
     onWriteQuiescence_ = std::move(cb);
   }
 
+  bool incMemoryUsage(uint32_t memSize) {
+    if (!ingressMemoryTracker_.increment(memSize)) {
+      ingressMemoryTracker_.decrement(memSize);
+      state_ = ConnectionState::DRAINING;
+      drainingErrorCode_ = ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT;
+      socket_->setReadCB(nullptr);
+      closeIfNeeded();
+      return false;
+    } else {
+      return true;
+    }
+  }
+
+  void decMemoryUsage(uint32_t memSize) {
+    ingressMemoryTracker_.decrement(memSize);
+  }
+
+  int32_t getVersion() const { return frameHandler_->getVersion(); }
+
+  bool areStreamsPaused() const noexcept { return streamsPaused_; }
+
+  size_t getNumActiveRequests() const final { return inflightRequests_; }
+
+  size_t getNumPendingWrites() const final {
+    size_t result = 0;
+    for (const WriteBatchContext& batch : inflightWritesQueue_) {
+      result += batch.requestCompleteCount;
+    }
+    return result;
+  }
+
+  folly::SocketAddress getPeerAddress() const final {
+    return socket_->getPeerAddress();
+  }
+
  private:
   // Note that attachEventBase()/detachEventBase() are not supported in server
   // code
   folly::EventBase& evb_;
   folly::AsyncTransport::UniquePtr socket_;
+  folly::AsyncSocket* const rawSocket_;
 
   Parser<RocketServerConnection> parser_{*this};
   std::unique_ptr<RocketServerHandler> frameHandler_;
   bool setupFrameReceived_{false};
   folly::F14NodeMap<
       StreamId,
-      boost::variant<
+      std::variant<
           RequestResponseFrame,
           RequestFnfFrame,
           RequestStreamFrame,
@@ -220,13 +261,14 @@ class RocketServerConnection final
   // The size of the queue is equal to the total number of inflight writes to
   // the underlying transport, i.e., writes for which the
   // writeSuccess()/writeErr() has not yet been called.
-  std::queue<WriteBatchContext> inflightWritesQueue_;
+  std::deque<WriteBatchContext> inflightWritesQueue_;
   // Totoal number of inflight final response for sink semantic, the counter
   // only bumps when sink is in waiting for final response state,
   // (onSinkComplete get called)
   size_t inflightSinkFinalResponses_{0};
-
-  folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
+  // Write buffer size (aka egress size). Represents the amount of data that has
+  // not yet been delivered to the client.
+  size_t egressBufferSize_{0};
 
   enum class ConnectionState : uint8_t {
     ALIVE,
@@ -237,14 +279,18 @@ class RocketServerConnection final
     CLOSED,
   };
   ConnectionState state_{ConnectionState::ALIVE};
+  std::optional<ErrorCode> drainingErrorCode_;
 
-  using ClientCallbackUniquePtr = boost::variant<
+  using ClientCallbackUniquePtr = std::variant<
       std::unique_ptr<RocketStreamClientCallback>,
       std::unique_ptr<RocketSinkClientCallback>>;
   using ClientCallbackPtr =
-      boost::variant<RocketStreamClientCallback*, RocketSinkClientCallback*>;
+      std::variant<RocketStreamClientCallback*, RocketSinkClientCallback*>;
   folly::F14FastMap<StreamId, ClientCallbackUniquePtr> streams_;
   const std::chrono::milliseconds streamStarvationTimeout_;
+  const size_t egressBufferBackpressureThreshold_;
+  const size_t egressBufferRecoverySize_;
+  bool streamsPaused_{false};
 
   class WriteBatcher : private folly::EventBase::LoopCallback,
                        private folly::HHWheelTimer::Callback {
@@ -297,18 +343,12 @@ class RocketServerConnection final
       flushPendingWrites();
     }
 
-    bool empty() const {
-      return !bufferedWrites_;
-    }
+    bool empty() const { return !bufferedWrites_; }
 
    private:
-    void runLoopCallback() noexcept final {
-      flushPendingWrites();
-    }
+    void runLoopCallback() noexcept final { flushPendingWrites(); }
 
-    void timeoutExpired() noexcept final {
-      flushPendingWrites();
-    }
+    void timeoutExpired() noexcept final { flushPendingWrites(); }
 
     void flushPendingWrites() noexcept {
       bufferedWritesCount_ = 0;
@@ -332,62 +372,48 @@ class RocketServerConnection final
         : connection_(connection) {}
 
     void activate() {
-      deadline_ = std::chrono::steady_clock::now() + kTimeout;
-      tryClose();
+      if (!drainComplete_) {
+        // Make sure the EventBase doesn't get destroyed until the timer
+        // expires.
+        evbKA_ = folly::getKeepAliveToken(connection_.evb_);
+        connection_.evb_.timer().scheduleTimeout(this, kTimeout);
+      }
     }
+
+    void drainComplete() {
+      if (!drainComplete_) {
+        cancelTimeout();
+        evbKA_.reset();
+        connection_.socket_->setReadCB(nullptr);
+        drainComplete_ = true;
+      }
+    }
+
+    bool isDrainComplete() const { return drainComplete_; }
 
    private:
-    void tryClose() {
-      if (shouldClose()) {
-        connection_.destroy();
-        return;
-      }
-      connection_.evb_.timer().scheduleTimeout(this, kRetryInterval);
-    }
-
-    bool shouldClose() {
-      if (std::chrono::steady_clock::now() >= deadline_) {
-        return true;
-      }
-
-#if defined(__linux__)
-      if (auto socket = connection_.socket_
-                            ->getUnderlyingTransport<folly::AsyncSocket>()) {
-        tcp_info info;
-        socklen_t infolen = sizeof(info);
-        if (socket->getSockOpt(IPPROTO_TCP, TCP_INFO, &info, &infolen)) {
-          return true;
-        }
-        DCHECK(infolen == sizeof(info));
-        return info.tcpi_unacked == 0;
-      }
-#endif
-
-      return true;
-    }
-
     void timeoutExpired() noexcept final {
-      tryClose();
+      drainComplete();
+      connection_.closeIfNeeded();
     }
 
     RocketServerConnection& connection_;
-    std::chrono::steady_clock::time_point deadline_;
-    static constexpr std::chrono::milliseconds kRetryInterval{50};
+    bool drainComplete_{false};
+    folly::Executor::KeepAlive<> evbKA_;
     static constexpr std::chrono::seconds kTimeout{1};
   };
   SocketDrainer socketDrainer_;
   size_t activePausedHandlers_{0};
   folly::Function<void(ReadPausableHandle)> onWriteQuiescence_;
 
+  MemoryTracker& ingressMemoryTracker_;
+  MemoryTracker& egressMemoryTracker_;
+
   ~RocketServerConnection();
 
   void closeIfNeeded();
   void flushWrites(
-      std::unique_ptr<folly::IOBuf> writes,
-      WriteBatchContext&& context) {
-    inflightWritesQueue_.push(std::move(context));
-    socket_->writeChain(this, std::move(writes));
-  }
+      std::unique_ptr<folly::IOBuf> writes, WriteBatchContext&& context);
 
   void timeoutExpired() noexcept final;
   void describe(std::ostream&) const final {}
@@ -430,9 +456,7 @@ class RocketServerConnection final
     }
   }
 
-  void incInflightRequests() {
-    ++inflightRequests_;
-  }
+  void incInflightRequests() { ++inflightRequests_; }
 
   void decInflightRequests() {
     --inflightRequests_;
@@ -450,6 +474,9 @@ class RocketServerConnection final
     }
     frameHandler_->requestComplete();
   }
+
+  void pauseStreams();
+  void resumeStreams();
 
   friend class RocketServerFrameContext;
 };

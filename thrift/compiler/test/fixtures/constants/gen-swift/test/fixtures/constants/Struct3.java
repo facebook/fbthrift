@@ -23,15 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="struct3", builder=Struct3.Builder.class)
-public final class Struct3 {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="struct3", builder=Struct3.Builder.class)
+public final class Struct3 implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Struct3(
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final String a,
-        @ThriftField(value=2, name="b", requiredness=Requiredness.NONE) final int b,
-        @ThriftField(value=3, name="c", requiredness=Requiredness.NONE) final test.fixtures.constants.Struct2 c
+        @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final String a,
+        @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE) final int b,
+        @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.NONE) final test.fixtures.constants.Struct2 c
     ) {
         this.a = a;
         this.b = b;
@@ -46,13 +45,12 @@ public final class Struct3 {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String a = null;
         private int b = 0;
         private test.fixtures.constants.Struct2 c = null;
     
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
         public Builder setA(String a) {
             this.a = a;
             return this;
@@ -60,7 +58,7 @@ public final class Struct3 {
     
         public String getA() { return a; }
     
-            @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
         public Builder setB(int b) {
             this.b = b;
             return this;
@@ -68,7 +66,7 @@ public final class Struct3 {
     
         public int getB() { return b; }
     
-            @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
         public Builder setC(test.fixtures.constants.Struct2 c) {
             this.c = c;
             return this;
@@ -90,7 +88,6 @@ public final class Struct3 {
                 this.b,
                 this.c
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -116,34 +113,16 @@ public final class Struct3 {
       FIELD_METADATA.put(3, C_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public String getA() { return a; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetA() {
-        return this.a != null;
-    }
     
     
-    @ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="b", requiredness=Requiredness.NONE)
     public int getB() { return b; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetB() {
-        return __isset_bit_vector.get(_B);
-    }
     
     
-    @ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="c", requiredness=Requiredness.NONE)
     public test.fixtures.constants.Struct2 getC() { return c; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetC() {
-        return this.c != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -181,6 +160,10 @@ public final class Struct3 {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Struct3> asReader() {
+      return Struct3::read0;
+    }
     
     public static Struct3 read0(TProtocol oprot) throws TException {
       TField __field;
@@ -243,4 +226,11 @@ public final class Struct3 {
       oprot.writeStructEnd();
     }
     
+    private static class _Struct3Lazy {
+        private static final Struct3 _DEFAULT = new Struct3.Builder().build();
+    }
+    
+    public static Struct3 defaultInstance() {
+        return  _Struct3Lazy._DEFAULT;
+    }
 }

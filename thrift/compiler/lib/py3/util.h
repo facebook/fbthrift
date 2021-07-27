@@ -38,7 +38,7 @@ inline const std::unordered_set<std::string>& get_python_reserved_names() {
 namespace py3 {
 
 template <class T>
-std::string get_py3_name(const T& elem) {
+std::string get_py3_name(const T& node) {
   // Reserved Cython / Python keywords that are not blocked by thrift grammer
   // TODO: get rid of this list and force users to rename explicitly
   static const std::unordered_set<std::string> cython_keywords = {
@@ -52,12 +52,11 @@ std::string get_py3_name(const T& elem) {
       "cppclass",
       "ctypedef",
   };
-  const std::map<std::string, std::string>& annotations = elem.annotations_;
-  const auto& it = annotations.find("py3.name");
-  if (it != annotations.end()) {
-    return it->second;
+
+  if (const auto* name = node.get_annotation_or_null("py3.name")) {
+    return *name;
   }
-  const auto& name = elem.get_name();
+  const auto& name = node.get_name();
   const auto& python_keywords = get_python_reserved_names();
   if (cython_keywords.find(name) != cython_keywords.end() ||
       python_keywords.find(name) != python_keywords.end()) {

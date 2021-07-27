@@ -16,168 +16,52 @@
 
 %>template <class Protocol_>
 uint32_t <%struct:name%>::serializedSize(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("<%struct:name%>");
-<%#struct:fields%><%#field:type%>
-<%#field:optional?%>
-  if (this-><%field:cpp_name%><%^field:cpp_ref?%>_ref().has_value()<%/field:cpp_ref?%>) {
-<%/field:optional?%>
-<%#field:terse_writes?%><% > module_types_tcc/terse_if%><%/field:terse_writes?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-<%#field:cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  if (this-><%field:cpp_name%>) {
-<%/field:cpp_ref?%>
-<%#type:resolves_to_base?%>
-<%#type:resolves_to_integral?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:resolves_to_integral?%>
-<%#type:string_or_binary?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:string_or_binary?%>
-<%^type:resolves_to_integral?%><%^type:string_or_binary?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, this-><%field:cpp_name%>);
-<%/type:string_or_binary?%><%/type:resolves_to_integral?%>
-<%/type:resolves_to_base?%>
-<%#type:resolves_to_container_or_enum?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:resolves_to_container_or_enum?%>
-<%#type:struct?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:struct?%>
-<%#field:cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  else {
-<%#type:resolves_to_container_or_enum?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>End();
-<%/type:resolves_to_container_or_enum?%>
-<%#type:struct?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%>  xfer += prot_->serializedStructSize("<%type:name%>");
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%>  xfer += prot_->serializedSizeStop();
-<%/type:struct?%>
-<%#field:optional?%>  <%/field:optional?%>  }
-<%/field:cpp_ref?%>
-<%#field:optional?%>
-  }
-<%/field:optional?%>
-<%#field:terse_writes?%>
-  }
-<%/field:terse_writes?%>
-<%/field:type%><%/struct:fields%>
+<%#struct:fields%>
+<% > module_types_tcc/serialize_field_size%>
+<%/struct:fields%>
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t <%struct:name%>::serializedSizeZC(Protocol_ const* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("<%struct:name%>");
-<%#struct:fields%><%#field:type%>
-<%#field:optional?%>
-  if (this-><%field:cpp_name%><%^field:cpp_ref?%>_ref().has_value()<%/field:cpp_ref?%>) {
-<%/field:optional?%>
-<%#field:terse_writes?%><% > module_types_tcc/terse_if%><%/field:terse_writes?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedFieldSize("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-<%#field:cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  if (this-><%field:cpp_name%>) {
-<%/field:cpp_ref?%>
-<%#type:resolves_to_base?%>
-<%#type:resolves_to_integral?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:resolves_to_integral?%>
-<%#type:string_or_binary?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<<%#type:binary?%>true<%/type:binary?%><%^type:binary?%>false<%/type:binary?%>>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:string_or_binary?%>
-<%^type:resolves_to_integral?%><%^type:string_or_binary?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<<%#type:binary?%>true<%/type:binary?%><%^type:binary?%>false<%/type:binary?%>>(*prot_, this-><%field:cpp_name%>);
-<%/type:string_or_binary?%><%/type:resolves_to_integral?%>
-<%/type:resolves_to_base?%>
-<%#type:resolves_to_container_or_enum?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<false>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:resolves_to_container_or_enum?%>
-<%#type:struct?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::serializedSize<true>(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:struct?%>
-<%#field:cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  else {
-<%#type:resolves_to_container_or_enum?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->serializedSize<% > module_types_tcc/struct_field_type%>End();
-<%/type:resolves_to_container_or_enum?%>
-<%#type:struct?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%>  xfer += prot_->serializedStructSize("<%type:name%>");
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%>  xfer += prot_->serializedSizeStop();
-<%/type:struct?%>
-<%#field:optional?%>  <%/field:optional?%>  }
-<%/field:cpp_ref?%>
-<%#field:optional?%>
-  }
-<%/field:optional?%>
-<%#field:terse_writes?%>
-  }
-<%/field:terse_writes?%>
-<%/field:type%><%/struct:fields%>
+<%#struct:fields%>
+<% > module_types_tcc/serialize_field_size_zc%>
+<%/struct:fields%>
   xfer += prot_->serializedSizeStop();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 <%^program:tablebased?%>
 template <class Protocol_>
 uint32_t <%struct:name%>::write(Protocol_* prot_) const {
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("<%struct:name%>");
-<%#struct:fields%><%#field:type%>
-<%#field:optional?%>
-  if (this-><%field:cpp_name%><%^field:cpp_ref?%>_ref().has_value()<%/field:cpp_ref?%>) {
-<%/field:optional?%>
-<%#field:terse_writes?%><% > module_types_tcc/terse_if%><%/field:terse_writes?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->writeFieldBegin("<%field:name%>", apache::thrift::protocol::<% > module_types_tcc/struct_type%>, <%field:key%>);
-<%#field:cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  if (this-><%field:cpp_name%>) {
-<%/field:cpp_ref?%>
-<%#type:resolves_to_base?%>
-<%#type:resolves_to_integral?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::write(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:resolves_to_integral?%>
-<%#type:string_or_binary?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::write(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:string_or_binary?%>
-<%^type:resolves_to_integral?%><%^type:string_or_binary?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::write(*prot_, this-><%field:cpp_name%>);
-<%/type:string_or_binary?%><%/type:resolves_to_integral?%>
-<%/type:resolves_to_base?%>
-<%#type:resolves_to_container_or_enum?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::write(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:resolves_to_container_or_enum?%>
-<%#type:struct?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += ::apache::thrift::detail::pm::protocol_methods< <% > common/type_class%>, <% > types/type%>>::write(*prot_, <%#field:cpp_ref?%>*<%/field:cpp_ref?%>this-><%field:cpp_name%>);
-<%/type:struct?%>
-<%#field:cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  else {
-<%#type:resolves_to_container_or_enum?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->write<% > module_types_tcc/struct_field_type%>Begin(<% > module_types_tcc/container_struct_type%>, 0);
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->write<% > module_types_tcc/struct_field_type%>End();
-<%/type:resolves_to_container_or_enum?%>
-<%#type:struct?%>
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%>  xfer += prot_->writeStructBegin("<%type:name%>");
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%>  xfer += prot_->writeStructEnd();
-<%#field:cpp_ref?%>  <%/field:cpp_ref?%><%#field:optional?%>  <%/field:optional?%>  xfer += prot_->writeFieldStop();
-<%/type:struct?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  }
-<%/field:cpp_ref?%>
-<%#field:optional?%>  <%/field:optional?%><%#field:terse_writes?%>  <%/field:terse_writes?%>  xfer += prot_->writeFieldEnd();
-<%#field:optional?%>
-  }
-<%/field:optional?%>
-<%#field:terse_writes?%>
-  }
-<%/field:terse_writes?%>
-<%/field:type%><%/struct:fields%>
+<%#struct:indexing?%>
+  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer);
+<%/struct:indexing?%>
+<%#struct:fields?%>
+  bool previousFieldHasValue = true;
+<%/struct:fields?%>
+<%#struct:fields%>
+<% > module_types_tcc/serialize_field%>
+<%/struct:fields%>
+<%#struct:indexing?%>
+  indexWriter.finalize();
+<%/struct:indexing?%>
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 <%/program:tablebased?%>
 <%#program:tablebased?%>

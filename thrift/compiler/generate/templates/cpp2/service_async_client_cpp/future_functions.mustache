@@ -32,16 +32,16 @@ folly::SemiFuture<<% > types/service_type_semi%>> <% > service_common/client_cla
 
 <%^type:streamresponse?%>
 folly::Future<<% > types/service_type_semi%>> <% > service_common/client_class_name%>::future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
-  folly::Promise<<% > types/service_type_semi%>> _promise;
-  auto _future = _promise.getFuture();
+  folly::Promise<<% > types/service_type_semi%>> promise;
+  auto future = promise.getFuture();
 <%#function:oneway?%>
-  auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(_promise), channel_);
+  auto callback = std::make_unique<apache::thrift::OneWayFutureCallback>(std::move(promise), channel_);
 <%/function:oneway?%>
 <%^function:oneway?%>
-  auto callback = std::make_unique<apache::thrift::FutureCallback<<% > types/service_type_semi%>>>(std::move(_promise), recv_wrapped_<%function:cpp_name%>, channel_);
+  auto callback = std::make_unique<apache::thrift::FutureCallback<<% > types/service_type_semi%>>>(std::move(promise), recv_wrapped_<%function:cpp_name%>, channel_);
 <%/function:oneway?%>
   <%function:cpp_name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
-  return _future;
+  return future;
 }
 <%/type:streamresponse?%>
 <%/service:reduced_client?%>
@@ -61,11 +61,11 @@ folly::SemiFuture<<% > types/service_type_semi%>> <% > service_common/client_cla
 <%^function:oneway?%><%^service:reduced_client?%>
 <%^type:streamresponse?%>
 folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> <% > service_common/client_class_name%>::header_future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
-  folly::Promise<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<<% > types/service_type_semi%>>>(std::move(_promise), recv_wrapped_<%function:cpp_name%>, channel_);
+  folly::Promise<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> promise;
+  auto future = promise.getFuture();
+  auto callback = std::make_unique<apache::thrift::HeaderFutureCallback<<% > types/service_type_semi%>>>(std::move(promise), recv_wrapped_<%function:cpp_name%>, channel_);
   <%function:cpp_name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
-  return _future;
+  return future;
 }
 <%/type:streamresponse?%>
 

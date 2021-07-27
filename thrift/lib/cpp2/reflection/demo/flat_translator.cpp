@@ -19,7 +19,6 @@
 
 #include <folly/Conv.h>
 #include <folly/init/Init.h>
-#include <thrift/lib/cpp2/reflection/container_traits.h>
 #include <thrift/lib/cpp2/reflection/demo/gen-cpp2/flat_config_constants.h>
 #include <thrift/lib/cpp2/reflection/demo/gen-cpp2/flat_config_fatal_types.h>
 #include <thrift/lib/cpp2/reflection/demo/gen-cpp2/legacy_config_constants.h>
@@ -36,8 +35,8 @@ struct get_property {
 
 struct legacy_to_flat_translator {
   template <typename Member>
-  void operator()(fatal::tag<Member>, std::string const& from, flat_config& to)
-      const {
+  void operator()(
+      fatal::tag<Member>, std::string const& from, flat_config& to) const {
     auto& value = typename Member::getter{}(to);
     value = folly::to<typename Member::type>(from);
   }
@@ -73,12 +72,25 @@ void translate(flat_config const& from, legacy_config& to) {
   fatal::foreach<members>(flat_to_legacy_translator(), from, to);
 }
 
+template <typename T>
+struct get_type_class_;
+template <>
+struct get_type_class_<static_reflection::demo::flat_config> {
+  using type = type_class::structure;
+};
+template <>
+struct get_type_class_<static_reflection::demo::legacy_config> {
+  using type = type_class::map<type_class::string, type_class::string>;
+};
+template <typename T>
+using get_type_class = typename get_type_class_<T>::type;
+
 template <typename To, typename From>
 void test(From const& from) {
   To to;
   translate(from, to);
-  print(from);
-  print(to);
+  print_as(get_type_class<From>{}, from);
+  print_as(get_type_class<To>{}, to);
 }
 
 int main(int argc, char** argv) {

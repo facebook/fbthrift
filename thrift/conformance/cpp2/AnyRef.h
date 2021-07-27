@@ -146,23 +146,17 @@ class any_ref final {
   const std::type_info& type() const noexcept;
 
   // If a reference is being stored.
-  bool has_reference() const noexcept {
-    return value_ != nullptr;
-  }
+  bool has_reference() const noexcept { return value_ != nullptr; }
 
   // If a value is being referenced.
   //
   // Returns false if not referencing a value or referencing an std::any without
   // a value.
   bool has_value() const noexcept;
-  operator bool() const noexcept {
-    return has_value();
-  }
+  operator bool() const noexcept { return has_value(); }
 
   // Runtime equivalent of std::is_const_v;
-  bool is_const() const noexcept {
-    return details_->is_const;
-  }
+  bool is_const() const noexcept { return details_->is_const; }
 
   // Runtime equivalent of sd::is_rvalue_reference_v.
   bool is_rvalue_reference() const noexcept {
@@ -220,7 +214,7 @@ T* any_cast(const any_ref* operand) noexcept;
 template <typename T>
 T any_cast(const any_ref& operand);
 
-// Implemenation.
+// Implementation.
 
 template <typename T>
 bool any_ref::try_assign_value(T&& value) noexcept {
@@ -272,9 +266,10 @@ FOLLY_EXPORT auto any_ref::details() -> const TypeDetails* {
   static_assert(
       std::is_trivially_destructible_v<TypeDetails>,
       "if this changes, switch to folly::Indestructible");
-  static const TypeDetails kValue{std::is_const_v<std::remove_reference_t<T>>,
-                                  std::is_rvalue_reference_v<T>,
-                                  typeid(T)};
+  static const TypeDetails kValue{
+      std::is_const_v<std::remove_reference_t<T>>,
+      std::is_rvalue_reference_v<T>,
+      typeid(T)};
   return &kValue;
 }
 

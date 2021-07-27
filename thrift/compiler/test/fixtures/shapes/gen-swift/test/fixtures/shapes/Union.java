@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("Union")
-public final class Union {
+public final class Union implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("Union");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -74,7 +74,7 @@ public final class Union {
     }
     
 
-    @ThriftField(value=1, name="intValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="intValue", requiredness=Requiredness.NONE)
     public long getIntValue() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a intValue element!");
@@ -86,7 +86,7 @@ public final class Union {
         return this.id == 1;
     }
 
-    @ThriftField(value=5, name="stringValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="stringValue", requiredness=Requiredness.NONE)
     public String getStringValue() {
         if (this.id != 5) {
             throw new IllegalStateException("Not a stringValue element!");
@@ -162,10 +162,10 @@ public final class Union {
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
       if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+         return;
       }
+      oprot.writeStructBegin(STRUCT_DESC);
       switch (this.id) {
       case _INTVALUE: {
         oprot.writeFieldBegin(INT_VALUE_FIELD_DESC);
@@ -186,6 +186,11 @@ public final class Union {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<Union> asReader() {
+      return Union::read0;
     }
     
     public static Union read0(TProtocol oprot) throws TException {

@@ -16,63 +16,71 @@
 
 #pragma once
 
-#include <folly/Synchronized.h>
-#include <functional>
-#include <mutex>
+#include <cstddef>
 #include <set>
-#include <vector>
+#include <string>
+#include <string_view>
+
+#include <folly/Function.h>
+#include <folly/experimental/PrimaryPtr.h>
 
 namespace apache {
 namespace thrift {
 
 class ThriftServer;
 
-/**
- * Instrument all the ThriftServer instances.
- * ServerInstrumentation serves for two purposes:
- * 1. Store a set of existing ThriftServer pointers in memory.
- * 2. As the entry point to access instrumentation data from servers.
- */
-class ServerInstrumentation {
-  friend class ThriftServer;
+namespace instrumentation {
 
+constexpr std::string_view kThriftServerTrackerKey = "thrift_server";
+
+class ServerTrackerRef {
  public:
-  static size_t getServerCount() {
-    return ServerCollection::getInstance().getServers()->size();
-  }
-
-  template <typename F>
-  static void forEachServer(F&& f) {
-    auto servers = ServerCollection::getInstance().getServers();
-    for (auto server : *servers) {
-      f(*server);
+  bool tryWithLock(
+      folly::FunctionRef<void(std::string_view, ThriftServer&)> f) {
+    if (auto locked = ref_.lock()) {
+      DCHECK(locked->server);
+      f(locked->key, *locked->server);
+      return true;
     }
+
+    return false;
   }
 
  private:
-  static void registerServer(ThriftServer& server) {
-    ServerCollection::getInstance().addServer(server);
-  }
-
-  static void removeServer(ThriftServer& server) {
-    ServerCollection::getInstance().removeServer(server);
-  }
-
-  class ServerCollection {
-   private:
-    folly::Synchronized<std::set<ThriftServer*>> servers_;
-    ServerCollection() {}
-
-   public:
-    ServerCollection(ServerCollection const&) = delete;
-    void operator=(ServerCollection const&) = delete;
-    static ServerCollection& getInstance();
-
-    folly::Synchronized<std::set<ThriftServer*>>::ConstLockedPtr getServers()
-        const;
-    void addServer(ThriftServer& server);
-    void removeServer(ThriftServer& server);
+  friend class ServerTracker;
+  struct ControlBlock {
+    ControlBlock(std::string_view k, ThriftServer& s) : key(k), server(&s) {}
+    std::string_view key;
+    ThriftServer* server;
   };
+
+  explicit ServerTrackerRef(folly::PrimaryPtrRef<ControlBlock> ref)
+      : ref_(std::move(ref)) {}
+  folly::PrimaryPtrRef<ControlBlock> ref_;
 };
+
+class ServerTracker {
+ public:
+  ServerTracker(std::string_view key, ThriftServer& server);
+  ~ServerTracker();
+
+  ThriftServer& getServer() const { return server_; }
+
+  ServerTrackerRef ref() const { return ServerTrackerRef{cb_.ref()}; }
+
+  const std::string& getKey() const { return key_; }
+
+ private:
+  std::string key_;
+  ThriftServer& server_;
+  folly::PrimaryPtr<ServerTrackerRef::ControlBlock> cb_;
+};
+
+size_t getServerCount(std::string_view key);
+
+void forEachServer(
+    std::string_view key, folly::FunctionRef<void(ThriftServer&)>);
+
+} // namespace instrumentation
 } // namespace thrift
 } // namespace apache

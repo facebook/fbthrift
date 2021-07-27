@@ -17,28 +17,56 @@
   "type" : "enum",
   "name" : "{{type:name}}"
 }{{/type:enum?}}{{!
+}}{{#type:sink?}}{
+  "type" : "sink",
+{{#type:sink_elem_type}}
+  "inner_type" : {{> Types}},
+{{/type:sink_elem_type}}
+{{#type:sink_has_first_response?}}
+{{#type:sink_first_response_type}}
+  "first_response_type" : {{> Types}},
+{{/type:sink_first_response_type}}
+{{/type:sink_has_first_response?}}
+{{#type:sink_final_response_type}}
+  "final_response_type" : {{> Types}}
+{{/type:sink_final_response_type}}
+}{{/type:sink?}}{{!
+}}{{#type:streamresponse?}}{
+  "type" : "streamresponse",
+{{#type:stream_elem_type}}
+  "inner_type" : {{> Types}}{{!
+}}{{/type:stream_elem_type}}{{!
+}}{{#type:stream_has_first_response?}},
+{{#type:stream_first_response_type}}
+  "first_response_type" : {{> Types}}
+{{/type:stream_first_response_type}}
+{{/type:stream_has_first_response?}}
+{{^type:stream_has_first_response?}}
+
+{{/type:stream_has_first_response?}}
+}{{/type:streamresponse?}}{{!
 }}{{#type:service?}}{
   "type" : "service",
   "name" : "{{type:name}}"
 }{{/type:service?}}{{!
 }}{{#type:list?}}{
   "type" : "list",
-{{#type:listElemType}}
+{{#type:list_elem_type}}
   "inner_type" : {{> Types}}
-{{/type:listElemType}}
+{{/type:list_elem_type}}
 }{{/type:list?}}{{!
 }}{{#type:set?}}{
   "type" : "set",
-{{#type:setElemType}}
+{{#type:set_elem_type}}
   "inner_type" : {{> Types}}
-{{/type:setElemType}}
+{{/type:set_elem_type}}
 }{{/type:set?}}{{!
 }}{{#type:map?}}{
   "type" : "map",
-{{#type:keyType}}
+{{#type:key_type}}
   "key_type" : {{> Types}},
-{{/type:keyType}}
-{{#type:valueType}}
+{{/type:key_type}}
+{{#type:value_type}}
   "value_type" : {{> Types}}
-{{/type:valueType}}
+{{/type:value_type}}
 }{{/type:map?}}

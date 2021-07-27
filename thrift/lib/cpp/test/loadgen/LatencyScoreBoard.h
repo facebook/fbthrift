@@ -22,6 +22,8 @@
 #include <thrift/lib/cpp/test/loadgen/ScoreBoard.h>
 #include <thrift/lib/cpp/test/loadgen/ScoreBoardOpVector.h>
 
+#include <chrono>
+
 namespace apache {
 namespace thrift {
 namespace loadgen {
@@ -64,7 +66,7 @@ class LatencyScoreBoard : public ScoreBoard {
   };
 
   explicit LatencyScoreBoard(uint32_t numOpsHint)
-      : startTime_(0), opData_(numOpsHint) {}
+      : startTime_(), opData_(numOpsHint) {}
 
   void opStarted(uint32_t opType) override;
   void opSucceeded(uint32_t opType) override;
@@ -95,7 +97,7 @@ class LatencyScoreBoard : public ScoreBoard {
   void accumulate(const LatencyScoreBoard* other);
 
  private:
-  int64_t startTime_;
+  std::chrono::steady_clock::time_point startTime_;
   ScoreBoardOpVector<OpData> opData_;
 };
 

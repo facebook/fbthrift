@@ -32,16 +32,22 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
       apache::thrift::RpcOptions& rpcOptions);
     folly::Future<std::string> getRandomData(
       apache::thrift::RpcOptions& rpcOptions);
+    folly::Future<folly::Unit> sink(
+      apache::thrift::RpcOptions& rpcOptions,
+      int64_t arg_sink);
+    folly::Future<folly::Unit> putDataById(
+      apache::thrift::RpcOptions& rpcOptions,
+      int64_t arg_id,
+      std::string arg_data);
     folly::Future<bool> hasDataById(
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id);
     folly::Future<std::string> getDataById(
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id);
-    folly::Future<folly::Unit> putDataById(
+    folly::Future<folly::Unit> deleteDataById(
       apache::thrift::RpcOptions& rpcOptions,
-      int64_t arg_id,
-      std::string arg_data);
+      int64_t arg_id);
     folly::Future<folly::Unit> lobDataById(
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id,

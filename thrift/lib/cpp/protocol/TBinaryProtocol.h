@@ -82,13 +82,9 @@ class TBinaryProtocolT : public TVirtualProtocol<TBinaryProtocolT<Transport_>> {
     container_limit_ = container_limit;
   }
 
-  int32_t getStringSizeLimit() {
-    return string_limit_;
-  }
+  int32_t getStringSizeLimit() { return string_limit_; }
 
-  int32_t getContainerSizeLimit() {
-    return container_limit_;
-  }
+  int32_t getContainerSizeLimit() { return container_limit_; }
 
   void setStrict(bool strict_read, bool strict_write) {
     strict_read_ = strict_read;
@@ -111,16 +107,14 @@ class TBinaryProtocolT : public TVirtualProtocol<TBinaryProtocolT<Transport_>> {
   inline uint32_t writeStructEnd();
 
   inline uint32_t writeFieldBegin(
-      const char* name,
-      const TType fieldType,
-      const int16_t fieldId);
+      const char* name, const TType fieldType, const int16_t fieldId);
 
   inline uint32_t writeFieldEnd();
 
   inline uint32_t writeFieldStop();
 
-  inline uint32_t
-  writeMapBegin(const TType keyType, const TType valType, const uint32_t size);
+  inline uint32_t writeMapBegin(
+      const TType keyType, const TType valType, const uint32_t size);
 
   inline uint32_t writeMapEnd();
 
@@ -156,9 +150,7 @@ class TBinaryProtocolT : public TVirtualProtocol<TBinaryProtocolT<Transport_>> {
    */
 
   /*ol*/ uint32_t readMessageBegin(
-      std::string& name,
-      TMessageType& messageType,
-      int32_t& seqid);
+      std::string& name, TMessageType& messageType, int32_t& seqid);
 
   /*ol*/ uint32_t readMessageEnd();
 
@@ -166,26 +158,23 @@ class TBinaryProtocolT : public TVirtualProtocol<TBinaryProtocolT<Transport_>> {
 
   inline uint32_t readStructEnd();
 
-  inline uint32_t
-  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  inline uint32_t readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId);
 
   inline uint32_t readFieldEnd();
 
   inline uint32_t readMapBegin(
-      TType& keyType,
-      TType& valType,
-      uint32_t& size,
-      bool& sizeUnknown);
+      TType& keyType, TType& valType, uint32_t& size, bool& sizeUnknown);
 
   inline uint32_t readMapEnd();
 
-  inline uint32_t
-  readListBegin(TType& elemType, uint32_t& size, bool& SizeUnknown);
+  inline uint32_t readListBegin(
+      TType& elemType, uint32_t& size, bool& SizeUnknown);
 
   inline uint32_t readListEnd();
 
-  inline uint32_t
-  readSetBegin(TType& elemType, uint32_t& size, bool& sizeUnknown);
+  inline uint32_t readSetBegin(
+      TType& elemType, uint32_t& size, bool& sizeUnknown);
 
   inline uint32_t readSetEnd();
 

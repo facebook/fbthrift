@@ -73,21 +73,14 @@ enum class MyBigEnum {
 
 
 }}} // test::fixtures::enumstrict
+
 namespace std {
-
-
-template<> struct hash<typename ::test::fixtures::enumstrict::EmptyEnum> : public apache::thrift::detail::enum_hash<typename ::test::fixtures::enumstrict::EmptyEnum> {};
-template<> struct equal_to<typename ::test::fixtures::enumstrict::EmptyEnum> : public apache::thrift::detail::enum_equal_to<typename ::test::fixtures::enumstrict::EmptyEnum> {};
-
-
-template<> struct hash<typename ::test::fixtures::enumstrict::MyEnum> : public apache::thrift::detail::enum_hash<typename ::test::fixtures::enumstrict::MyEnum> {};
-template<> struct equal_to<typename ::test::fixtures::enumstrict::MyEnum> : public apache::thrift::detail::enum_equal_to<typename ::test::fixtures::enumstrict::MyEnum> {};
-
-
-template<> struct hash<typename ::test::fixtures::enumstrict::MyBigEnum> : public apache::thrift::detail::enum_hash<typename ::test::fixtures::enumstrict::MyBigEnum> {};
-template<> struct equal_to<typename ::test::fixtures::enumstrict::MyBigEnum> : public apache::thrift::detail::enum_equal_to<typename ::test::fixtures::enumstrict::MyBigEnum> {};
-
-
+template<> struct hash<::test::fixtures::enumstrict::EmptyEnum> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enumstrict::EmptyEnum> {};
+template<> struct hash<::test::fixtures::enumstrict::MyEnum> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enumstrict::MyEnum> {};
+template<> struct hash<::test::fixtures::enumstrict::MyBigEnum> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::enumstrict::MyBigEnum> {};
 } // std
 
 namespace apache { namespace thrift {
@@ -177,7 +170,13 @@ class MyStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace test { namespace fixtures { namespace enumstrict {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -185,6 +184,7 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -194,13 +194,13 @@ class MyStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct() :
       myEnum(static_cast< ::test::fixtures::enumstrict::MyEnum>(0)),
-      myBigEnum( ::test::fixtures::enumstrict::MyBigEnum::ONE) {}
+      myBigEnum( ::test::fixtures::enumstrict::MyBigEnum::ONE) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor,  ::test::fixtures::enumstrict::MyEnum myEnum__arg,  ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstrict::MyEnum myEnum__arg, ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -210,103 +210,83 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::test::fixtures::enumstrict::MyEnum myEnum;
+  ::test::fixtures::enumstrict::MyEnum myEnum;
  private:
-   ::test::fixtures::enumstrict::MyBigEnum myBigEnum;
+  ::test::fixtures::enumstrict::MyBigEnum myBigEnum;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myEnum;
     bool myBigEnum;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const MyStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyEnum>
+ public:
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
+
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum_ref() const& {
     return {this->myEnum, __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myEnum_ref() const&& {
     return {std::move(this->myEnum), __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> myEnum_ref() & {
     return {this->myEnum, __isset.myEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum_ref() && {
     return {std::move(this->myEnum), __isset.myEnum};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyBigEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myBigEnum_ref() const& {
     return {this->myBigEnum, __isset.myBigEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyBigEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myBigEnum_ref() const&& {
     return {std::move(this->myBigEnum), __isset.myBigEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyBigEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> myBigEnum_ref() & {
     return {this->myBigEnum, __isset.myBigEnum};
   }
 
-  template <typename..., typename T =  ::test::fixtures::enumstrict::MyBigEnum>
+  template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myBigEnum_ref() && {
     return {std::move(this->myBigEnum), __isset.myBigEnum};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-   ::test::fixtures::enumstrict::MyEnum get_myEnum() const {
+  ::test::fixtures::enumstrict::MyEnum get_myEnum() const {
     return myEnum;
   }
 
-   ::test::fixtures::enumstrict::MyEnum& set_myEnum( ::test::fixtures::enumstrict::MyEnum myEnum_) {
+  [[deprecated("Use `FOO.myEnum_ref() = BAR;` instead of `FOO.set_myEnum(BAR);`")]]
+  ::test::fixtures::enumstrict::MyEnum& set_myEnum(::test::fixtures::enumstrict::MyEnum myEnum_) {
     myEnum = myEnum_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myEnum = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myEnum;
   }
 
-   ::test::fixtures::enumstrict::MyBigEnum get_myBigEnum() const {
+  ::test::fixtures::enumstrict::MyBigEnum get_myBigEnum() const {
     return myBigEnum;
   }
 
-   ::test::fixtures::enumstrict::MyBigEnum& set_myBigEnum( ::test::fixtures::enumstrict::MyBigEnum myBigEnum_) {
+  [[deprecated("Use `FOO.myBigEnum_ref() = BAR;` instead of `FOO.set_myBigEnum(BAR);`")]]
+  ::test::fixtures::enumstrict::MyBigEnum& set_myBigEnum(::test::fixtures::enumstrict::MyBigEnum myBigEnum_) {
     myBigEnum = myBigEnum_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.myBigEnum = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return myBigEnum;
   }
 
@@ -323,7 +303,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -335,3 +315,4 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 }}} // test::fixtures::enumstrict
+THRIFT_IGNORE_ISSET_USE_WARNING_END

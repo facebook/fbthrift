@@ -13,20 +13,18 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 import unittest
 
 import convertible.ttypes as ttypes
 import convertible.types as types
 from thrift.py3.converter import to_py3_struct
+from thrift.py3.types import Struct
 
 
 class ConverterTest(unittest.TestCase):
     def test_simple(self) -> None:
         simple = to_py3_struct(
             types.Simple,
-            # pyre-fixme[28]: Unexpected keyword argument `name`.
             ttypes.Simple(
                 intField=42,
                 strField="simple",
@@ -43,14 +41,12 @@ class ConverterTest(unittest.TestCase):
         self.assertEqual(simple.strSet, {"hello", "world"})
         self.assertEqual(simple.strToIntMap, {"one": 1, "two": 2})
         self.assertEqual(simple.color, types.Color.GREEN)
-        # pyre-fixme[16]: `Simple` has no attribute `name_`.
         self.assertEqual(simple.name_, "myname")
 
     def test_nested(self) -> None:
         nested = to_py3_struct(
             types.Nested,
             ttypes.Nested(
-                # pyre-fixme[28]: Unexpected keyword argument `name`.
                 simpleField=ttypes.Simple(
                     intField=42,
                     strField="simple",
@@ -61,7 +57,6 @@ class ConverterTest(unittest.TestCase):
                     name="myname",
                 ),
                 simpleList=[
-                    # pyre-fixme[28]: Unexpected keyword argument `name`.
                     ttypes.Simple(
                         intField=200,
                         strField="face",
@@ -71,7 +66,6 @@ class ConverterTest(unittest.TestCase):
                         color=ttypes.Color.RED,
                         name="myname",
                     ),
-                    # pyre-fixme[28]: Unexpected keyword argument `name`.
                     ttypes.Simple(
                         intField=404,
                         strField="b00k",
@@ -83,7 +77,6 @@ class ConverterTest(unittest.TestCase):
                     ),
                 ],
                 colorToSimpleMap={
-                    # pyre-fixme[28]: Unexpected keyword argument `name`.
                     ttypes.Color.BLUE: ttypes.Simple(
                         intField=500,
                         strField="internal",
@@ -109,7 +102,6 @@ class ConverterTest(unittest.TestCase):
         self.assertEqual(simple_union.value, 42)
 
     def test_union_with_py3_name_annotation(self) -> None:
-        # pyre-fixme[28]: Unexpected keyword argument `name`.
         simple_union = to_py3_struct(types.Union, ttypes.Union(name="myname"))
         self.assertEqual(simple_union.type, types.Union.Type.name_)
         self.assertEqual(simple_union.value, "myname")
@@ -133,5 +125,13 @@ class ConverterTest(unittest.TestCase):
                 )
             ),
         )
-        self.assertEqual(complex_union.type, types.Union.Type.simpleField)
-        self.assertEqual(complex_union.simpleField.intField, 42)
+        self.assertEqual(complex_union.type, types.Union.Type.simple_)
+        self.assertEqual(complex_union.simple_.intField, 42)
+
+    def test_optional_defaults(self) -> None:
+        converted = to_py3_struct(
+            types.OptionalDefaultsStruct,
+            ttypes.OptionalDefaultsStruct(),
+        )
+        self.assertFalse(Struct.isset(converted).sillyString)
+        self.assertFalse(Struct.isset(converted).sillyColor)

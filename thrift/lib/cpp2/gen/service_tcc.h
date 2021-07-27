@@ -46,49 +46,78 @@ namespace ap {
 
 template <typename Prot>
 std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
+    bool includeEnvelope,
     TApplicationException const& x,
     Cpp2RequestContext* const ctx,
     char const* const method) {
   Prot prot;
   size_t bufSize = x.serializedSizeZC(&prot);
-  bufSize += prot.serializedMessageSize(method);
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-  prot.setOutput(&queue, bufSize);
-  prot.writeMessageBegin(
-      method, apache::thrift::T_EXCEPTION, ctx->getProtoSeqId());
+  if (includeEnvelope) {
+    bufSize += prot.serializedMessageSize(method);
+    prot.setOutput(&queue, bufSize);
+    prot.writeMessageBegin(
+        method, MessageType::T_EXCEPTION, ctx->getProtoSeqId());
+  } else {
+    prot.setOutput(&queue, bufSize);
+  }
   x.write(&prot);
-  prot.writeMessageEnd();
+  if (includeEnvelope) {
+    prot.writeMessageEnd();
+  }
   queue.append(transport::THeader::transform(
       queue.move(), ctx->getHeader()->getWriteTransforms()));
   return queue.move();
 }
 
+void inline sendExceptionHelper(
+    ResponseChannelRequest::UniquePtr req, ResponsePayload&& payload) {
+#if !FOLLY_HAS_COROUTINES
+  if (req->isSink()) {
+    DCHECK(false);
+    return;
+  }
+#endif
+  req->sendException(std::move(payload));
+}
+
+// Temporary for backwards compatibility whilst all users are migrated to
+// optionally include the envelope.
+template <typename Prot>
+std::unique_ptr<folly::IOBuf> process_serialize_xform_app_exn(
+    TApplicationException const& x,
+    Cpp2RequestContext* const ctx,
+    char const* const method) {
+  return process_serialize_xform_app_exn<Prot>(true, x, ctx, method);
+}
+
 template <typename Prot>
 void process_handle_exn_deserialization(
-    std::exception const& ex,
+    const folly::exception_wrapper& ew,
     ResponseChannelRequest::UniquePtr req,
     Cpp2RequestContext* const ctx,
     folly::EventBase* const eb,
     char const* const method) {
-  LOG(ERROR) << folly::exceptionStr(ex) << " in function " << method;
-  TApplicationException x(
-      TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR,
-      ex.what());
-  auto buf = process_serialize_xform_app_exn<Prot>(x, ctx, method);
+  if (auto rpe = dynamic_cast<const RequestParsingError*>(ew.get_exception())) {
+    eb->runInEventBaseThread([request = std::move(req),
+                              msg = std::string(rpe->what())]() {
+      request->sendErrorWrapped(
+          folly::make_exception_wrapper<TApplicationException>(
+              TApplicationException::TApplicationExceptionType::PROTOCOL_ERROR,
+              msg),
+          kRequestParsingErrorCode);
+    });
+    return;
+  }
+  ::apache::thrift::util::appendExceptionToHeader(ew, *ctx);
+  auto buf = process_serialize_xform_app_exn<Prot>(
+      req->includeEnvelope(),
+      ::apache::thrift::util::toTApplicationException(ew),
+      ctx,
+      method);
   eb->runInEventBaseThread(
       [buf = std::move(buf), req = std::move(req)]() mutable {
-        if (req->isStream()) {
-          std::ignore = req->sendStreamReply(
-              std::move(buf), StreamServerCallbackPtr(nullptr));
-        } else if (req->isSink()) {
-#if FOLLY_HAS_COROUTINES
-          req->sendSinkReply(std::move(buf), {});
-#else
-          DCHECK(false);
-#endif
-        } else {
-          req->sendReply(std::move(buf));
-        }
+        sendExceptionHelper(std::move(req), std::move(buf));
       });
 }
 
@@ -100,23 +129,16 @@ void process_throw_wrapped_handler_error(
     ContextStack* const stack,
     char const* const method) {
   LOG(ERROR) << ew << " in function " << method;
-  stack->userExceptionWrapped(false, ew);
-  stack->handlerErrorWrapped(ew);
+  if (stack) {
+    stack->userExceptionWrapped(false, ew);
+    stack->handlerErrorWrapped(ew);
+  }
+  ::apache::thrift::util::appendExceptionToHeader(ew, *ctx);
   auto xp = ew.get_exception<TApplicationException>();
   auto x = xp ? std::move(*xp) : TApplicationException(ew.what().toStdString());
-  auto buf = process_serialize_xform_app_exn<Prot>(x, ctx, method);
-  if (req->isStream()) {
-    std::ignore =
-        req->sendStreamReply(std::move(buf), StreamServerCallbackPtr(nullptr));
-  } else if (req->isSink()) {
-#if FOLLY_HAS_COROUTINES
-    req->sendSinkReply(std::move(buf), {});
-#else
-    DCHECK(false);
-#endif
-  } else {
-    req->sendReply(std::move(buf));
-  }
+  auto buf = process_serialize_xform_app_exn<Prot>(
+      req->includeEnvelope(), x, ctx, method);
+  sendExceptionHelper(std::move(req), std::move(buf));
 }
 
 } // namespace ap

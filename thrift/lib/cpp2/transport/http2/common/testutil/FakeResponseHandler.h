@@ -37,9 +37,7 @@ class FakeResponseHandler {
 
   ~FakeResponseHandler() = default;
 
-  proxygen::MockHTTPTransaction* getTransaction() {
-    return &txn_;
-  }
+  proxygen::MockHTTPTransaction* getTransaction() { return &txn_; }
 
   std::unordered_map<std::string, std::string>* getHeaders();
 

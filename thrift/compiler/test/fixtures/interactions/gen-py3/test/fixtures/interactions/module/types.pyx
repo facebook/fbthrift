@@ -5,7 +5,6 @@
 #  @generated
 #
 cimport cython as __cython
-from cpython.bytes cimport PyBytes_AsStringAndSize
 from cpython.object cimport PyTypeObject, Py_LT, Py_LE, Py_EQ, Py_NE, Py_GT, Py_GE
 from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
@@ -45,7 +44,7 @@ from thrift.py3.types cimport (
 )
 cimport thrift.py3.std_libcpp as std_libcpp
 cimport thrift.py3.serializer as serializer
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.optional cimport cOptional
 from folly.memory cimport to_shared_ptr as __to_shared_ptr
 from folly.range cimport Range as __cRange
@@ -54,8 +53,126 @@ import sys
 from collections.abc import Sequence, Set, Mapping, Iterable
 import weakref as __weakref
 import builtins as _builtins
+import asyncio
+from folly.coro cimport bridgeCoroTaskWith
 
 cimport test.fixtures.interactions.module.types_reflection as _types_reflection
 
 
+
+@__cython.auto_pickle(False)
+cdef class CustomException(thrift.py3.exceptions.GeneratedError):
+    def __init__(CustomException self, *args, **kwargs):
+        self._cpp_obj = make_shared[cCustomException]()
+        self._fields_setter = _fbthrift_types_fields.__CustomException_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__( *args, **kwargs)
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("CustomException", {
+          "message": deref(self._cpp_obj).message_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef create(shared_ptr[cCustomException] cpp_obj):
+        __fbthrift_inst = <CustomException>CustomException.__new__(CustomException, (<bytes>deref(cpp_obj).what()).decode('utf-8'))
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        _builtins.Exception.__init__(__fbthrift_inst, *(v for _, v in __fbthrift_inst))
+        return __fbthrift_inst
+
+    @property
+    def message(self):
+
+        return (<bytes>deref(self._cpp_obj).message_ref().value()).decode('UTF-8')
+
+
+    def __hash__(CustomException self):
+        return  super().__hash__()
+
+    def __copy__(CustomException self):
+        cdef shared_ptr[cCustomException] cpp_obj = make_shared[cCustomException](
+            deref(self._cpp_obj)
+        )
+        return CustomException.create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cCustomException](
+            self._cpp_obj,
+            (<CustomException>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__CustomException()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        ExceptionMetadata[cCustomException].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.CustomException"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cCustomException](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
+
+
+
+
+cdef class ClientBufferedStream__bool(ClientBufferedStream):
+
+    @staticmethod
+    cdef create(cClientBufferedStream[cbool]& c_obj, __RpcOptions rpc_options):
+        __fbthrift_inst = ClientBufferedStream__bool(rpc_options)
+        __fbthrift_inst._gen = make_unique[cClientBufferedStreamWrapper[cbool]](c_obj)
+        return __fbthrift_inst
+
+    @staticmethod
+    cdef void callback(
+        cFollyTry[__cOptional[cbool]]&& result,
+        PyObject* userdata,
+    ):
+        cdef __cOptional[cbool] opt_val
+        cdef cbool _value
+        stream, pyfuture, rpc_options = <object> userdata
+        if result.hasException():
+            pyfuture.set_exception(
+                thrift.py3.exceptions.create_py_exception(result.exception(), <__RpcOptions>rpc_options)
+            )
+        else:
+            opt_val = result.value()
+            if opt_val.has_value():
+                try:
+                    _value = opt_val.value()
+                    pyfuture.set_result(<bint>_value)
+                except Exception as ex:
+                    pyfuture.set_exception(ex.with_trackback(None))
+            else:
+                pyfuture.set_exception(StopAsyncIteration())
+
+    def __anext__(self):
+        __loop = asyncio.get_event_loop()
+        __future = __loop.create_future()
+        # to avoid "Future exception was never retrieved" error at SIGINT
+        __future.add_done_callback(lambda x: x.exception())
+        __userdata = (self, __future, self._rpc_options)
+        bridgeCoroTaskWith[__cOptional[cbool]](
+            self._executor,
+            deref(self._gen).getNext(),
+            ClientBufferedStream__bool.callback,
+            <PyObject *>__userdata,
+        )
+        return asyncio.shield(__future)
+
+cdef class ServerStream__bool(ServerStream):
+    pass
 

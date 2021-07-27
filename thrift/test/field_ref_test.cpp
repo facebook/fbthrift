@@ -19,14 +19,16 @@
 #include <type_traits>
 
 #include <thrift/lib/cpp2/BadFieldAccess.h>
+#include <thrift/lib/cpp2/BoxedValuePtr.h>
 #include <thrift/lib/cpp2/FieldRef.h>
-#include <thrift/lib/cpp2/OptionalField.h>
 
 #include <folly/portability/GTest.h>
 
 using apache::thrift::bad_field_access;
 using apache::thrift::field_ref;
+using apache::thrift::optional_boxed_field_ref;
 using apache::thrift::optional_field_ref;
+using apache::thrift::detail::boxed_value_ptr;
 
 // A struct which is assignable but not constructible from int or other types
 // to test forwarding in field_ref::operator=.
@@ -56,13 +58,9 @@ struct Nested {
 
 class TestStruct {
  public:
-  field_ref<std::string&> name() {
-    return {name_, __isset.name};
-  }
+  field_ref<std::string&> name() { return {name_, __isset.name}; }
 
-  field_ref<const std::string&> name() const {
-    return {name_, __isset.name};
-  }
+  field_ref<const std::string&> name() const { return {name_, __isset.name}; }
 
   optional_field_ref<std::string&> opt_name() & {
     return {name_, __isset.name};
@@ -92,17 +90,11 @@ class TestStruct {
     return {ptr_, __isset.ptr};
   }
 
-  field_ref<int&> int_val() {
-    return {int_val_, __isset.int_val};
-  }
+  field_ref<int&> int_val() { return {int_val_, __isset.int_val}; }
 
-  optional_field_ref<int&> opt_int_val() {
-    return {int_val_, __isset.int_val};
-  }
+  optional_field_ref<int&> opt_int_val() { return {int_val_, __isset.int_val}; }
 
-  field_ref<std::unique_ptr<int>&> uptr() & {
-    return {uptr_, __isset.uptr};
-  }
+  field_ref<std::unique_ptr<int>&> uptr() & { return {uptr_, __isset.uptr}; }
 
   field_ref<std::unique_ptr<int>&&> uptr() && {
     return {std::move(uptr_), __isset.uptr};
@@ -116,9 +108,7 @@ class TestStruct {
     return {std::move(uptr_), __isset.uptr};
   }
 
-  field_ref<std::vector<bool>&> vec() & {
-    return {vec_, __isset.vec};
-  }
+  field_ref<std::vector<bool>&> vec() & { return {vec_, __isset.vec}; }
 
   optional_field_ref<Nested&> opt_nested() & {
     return {nested_, __isset.nested};
@@ -144,6 +134,61 @@ class TestStruct {
   } __isset = {};
 };
 
+class TestStructBoxedValuePtr {
+ public:
+  optional_boxed_field_ref<boxed_value_ptr<std::string>&> opt_name() & {
+    return {name_};
+  }
+
+  optional_boxed_field_ref<boxed_value_ptr<std::string>&&> opt_name() && {
+    return {std::move(name_)};
+  }
+
+  optional_boxed_field_ref<const boxed_value_ptr<std::string>&> opt_name()
+      const& {
+    return {name_};
+  }
+
+  optional_boxed_field_ref<const boxed_value_ptr<std::string>&&> opt_name()
+      const&& {
+    return {std::move(name_)};
+  }
+
+  optional_boxed_field_ref<boxed_value_ptr<IntAssignable>&> opt_int_assign() {
+    return {int_assign_};
+  }
+
+  optional_boxed_field_ref<boxed_value_ptr<std::shared_ptr<int>>&> ptr_ref() {
+    return {ptr_};
+  }
+
+  optional_boxed_field_ref<boxed_value_ptr<int>&> opt_int_val() {
+    return {int_val_};
+  }
+
+  optional_boxed_field_ref<boxed_value_ptr<std::unique_ptr<int>>&>
+  opt_uptr() & {
+    return {uptr_};
+  }
+
+  optional_boxed_field_ref<boxed_value_ptr<std::unique_ptr<int>>&&>
+  opt_uptr() && {
+    return {std::move(uptr_)};
+  }
+
+  optional_boxed_field_ref<boxed_value_ptr<Nested>&> opt_nested() & {
+    return {nested_};
+  }
+
+ private:
+  boxed_value_ptr<std::string> name_;
+  boxed_value_ptr<IntAssignable> int_assign_;
+  boxed_value_ptr<std::shared_ptr<int>> ptr_;
+  boxed_value_ptr<int> int_val_;
+  boxed_value_ptr<std::unique_ptr<int>> uptr_;
+  boxed_value_ptr<Nested> nested_;
+};
+
 TEST(field_ref_test, access_default_value) {
   auto s = TestStruct();
   EXPECT_EQ(*s.name(), "default");
@@ -151,9 +196,9 @@ TEST(field_ref_test, access_default_value) {
 
 TEST(field_ref_test, has_value) {
   auto s = TestStruct();
-  EXPECT_FALSE(s.name().has_value());
+  EXPECT_FALSE(s.name().is_set());
   s.name() = "foo";
-  EXPECT_TRUE(s.name().has_value());
+  EXPECT_TRUE(s.name().is_set());
 }
 
 TEST(field_ref_test, assign) {
@@ -263,9 +308,9 @@ TEST(field_ref_test, mutable_accessors) {
 TEST(field_ref_test, ensure) {
   TestStruct s;
   s.name().value() = "foo";
-  EXPECT_FALSE(s.name().has_value());
+  EXPECT_FALSE(s.name().is_set());
   s.name().ensure();
-  EXPECT_TRUE(s.name().has_value());
+  EXPECT_TRUE(s.name().is_set());
   EXPECT_EQ(s.name(), "foo");
 }
 
@@ -331,23 +376,33 @@ TEST(field_ref_test, subscript) {
   s.vec()[0] = true;
 }
 
+template <typename T>
+class optional_field_ref_typed_test : public testing::Test {
+ public:
+  using Struct = T;
+};
+
+using OptionalFieldRefTestTypes =
+    ::testing::Types<TestStruct, TestStructBoxedValuePtr>;
+TYPED_TEST_CASE(optional_field_ref_typed_test, OptionalFieldRefTestTypes);
+
 TEST(optional_field_ref_test, access_default_value) {
   auto s = TestStruct();
   EXPECT_THROW(*s.opt_name(), bad_field_access);
   EXPECT_EQ(s.opt_name().value_unchecked(), "default");
 }
 
-TEST(optional_field_ref_test, assign) {
-  auto s = TestStruct();
+TYPED_TEST(optional_field_ref_typed_test, assign) {
+  auto s = typename TestFixture::Struct();
   EXPECT_FALSE(s.opt_name().has_value());
   s.opt_name() = "foo";
   EXPECT_TRUE(s.opt_name().has_value());
   EXPECT_EQ(*s.opt_name(), "foo");
 }
 
-TEST(optional_field_ref_test, copy_from) {
-  auto s = TestStruct();
-  auto s2 = TestStruct();
+TYPED_TEST(optional_field_ref_typed_test, copy_from) {
+  auto s = typename TestFixture::Struct();
+  auto s2 = typename TestFixture::Struct();
   s.opt_name() = "foo";
   s.opt_name().copy_from(s2.opt_name());
   EXPECT_FALSE(s.opt_name().has_value());
@@ -357,9 +412,9 @@ TEST(optional_field_ref_test, copy_from) {
   EXPECT_EQ(*s.opt_name(), "foo");
 }
 
-TEST(optional_field_ref_test, copy_from_const) {
-  auto s = TestStruct();
-  auto s2 = TestStruct();
+TYPED_TEST(optional_field_ref_typed_test, copy_from_const) {
+  auto s = typename TestFixture::Struct();
+  auto s2 = typename TestFixture::Struct();
   const auto& s_const = s2;
   s2.opt_name() = "foo";
   s.opt_name().copy_from(s_const.opt_name());
@@ -367,18 +422,18 @@ TEST(optional_field_ref_test, copy_from_const) {
   EXPECT_EQ(*s.opt_name(), "foo");
 }
 
-TEST(optional_field_ref_test, copy_from_other_type) {
-  auto s = TestStruct();
-  auto s2 = TestStruct();
+TYPED_TEST(optional_field_ref_typed_test, copy_from_other_type) {
+  auto s = typename TestFixture::Struct();
+  auto s2 = typename TestFixture::Struct();
   s2.opt_int_val() = 42;
   s.opt_int_assign().copy_from(s2.opt_int_val());
   EXPECT_TRUE(s.opt_int_assign().has_value());
   EXPECT_EQ(s.opt_int_assign()->value, 42);
 }
 
-TEST(optional_field_ref_test, move_from) {
-  auto s = TestStruct();
-  auto s2 = TestStruct();
+TYPED_TEST(optional_field_ref_typed_test, move_from) {
+  auto s = typename TestFixture::Struct();
+  auto s2 = typename TestFixture::Struct();
   s.opt_name() = "foo";
   s.opt_name().move_from(s2.opt_name());
   EXPECT_FALSE(s.opt_name().has_value());
@@ -387,52 +442,24 @@ TEST(optional_field_ref_test, move_from) {
   s.opt_name().move_from(s2.opt_name());
   EXPECT_TRUE(s.opt_name().has_value());
   EXPECT_EQ(*s.opt_name(), "foo");
-  EXPECT_TRUE(s2.opt_name().has_value());
+  using is_optional_field_ref =
+      std::is_same<typename TestFixture::Struct, TestStruct>;
+  EXPECT_EQ(s2.opt_name().has_value(), is_optional_field_ref::value);
 }
 
-TEST(optional_field_ref_test, copy_to_folly_optional) {
-  auto s = TestStruct();
-  s.opt_name() = "foo";
-  EXPECT_EQ(*s.opt_name(), "foo");
-  auto f = apache::thrift::copyToFollyOptional(s.opt_name());
-  EXPECT_EQ(*f, "foo");
-  EXPECT_EQ(*s.opt_name(), "foo");
-}
-
-TEST(optional_field_ref_test, move_to_folly_optional) {
-  auto s = TestStruct();
-  s.opt_uptr() = std::make_unique<int>(1);
-  EXPECT_EQ(**s.opt_uptr(), 1);
-  {
-    auto f = apache::thrift::moveToFollyOptional(s.opt_uptr());
-    EXPECT_EQ(**f, 1);
-    EXPECT_EQ(*s.opt_uptr(), nullptr);
-  }
-  s.opt_uptr() = std::make_unique<int>(2);
-  EXPECT_EQ(**s.opt_uptr(), 2);
-  {
-    static_assert(std::is_same_v<
-                  decltype(std::move(s).opt_uptr()),
-                  optional_field_ref<std::unique_ptr<int>&&>>);
-    auto f = apache::thrift::moveToFollyOptional(std::move(s).opt_uptr());
-    EXPECT_EQ(**f, 2);
-    EXPECT_EQ(*s.opt_uptr(), nullptr);
-  }
-}
-
-TEST(optional_field_ref_test, is_assignable) {
+TYPED_TEST(optional_field_ref_typed_test, is_assignable) {
   check_is_assignable<optional_field_ref>();
 }
 
-TEST(optional_field_ref_test, assign_forwards) {
-  auto s = TestStruct();
+TYPED_TEST(optional_field_ref_typed_test, assign_forwards) {
+  auto s = typename TestFixture::Struct();
   s.opt_int_assign() = 42;
   EXPECT_TRUE(s.opt_int_assign().has_value());
   EXPECT_EQ(s.opt_int_assign()->value, 42);
 }
 
-TEST(optional_field_ref_test, reset) {
-  auto s = TestStruct();
+TYPED_TEST(optional_field_ref_typed_test, reset) {
+  auto s = typename TestFixture::Struct();
   EXPECT_FALSE(s.ptr_ref().has_value());
   s.ptr_ref().reset();
   EXPECT_FALSE(s.ptr_ref().has_value());
@@ -445,19 +472,19 @@ TEST(optional_field_ref_test, reset) {
   EXPECT_EQ(ptr.use_count(), 1);
 }
 
-TEST(optional_field_ref_test, construct_const_from_mutable) {
-  auto s = TestStruct();
+TYPED_TEST(optional_field_ref_typed_test, construct_const_from_mutable) {
+  auto s = typename TestFixture::Struct();
   s.opt_name() = "foo";
-  optional_field_ref<std::string&> name = s.opt_name();
-  optional_field_ref<const std::string&> const_name = name;
+  auto name = s.opt_name();
+  const auto const_name = name;
   EXPECT_TRUE(const_name.has_value());
   EXPECT_EQ(*const_name, "foo");
 }
 
-TEST(optional_field_ref_test, const_accessors) {
-  TestStruct s;
+TYPED_TEST(optional_field_ref_typed_test, const_accessors) {
+  typename TestFixture::Struct s;
   s.opt_name() = "bar";
-  optional_field_ref<const std::string&> name = s.opt_name();
+  auto name = std::as_const(s).opt_name();
   EXPECT_EQ(*name, "bar");
   EXPECT_EQ(name.value(), "bar");
   EXPECT_EQ(name->size(), 3);
@@ -468,10 +495,10 @@ TEST(optional_field_ref_test, const_accessors) {
   std::move(s).opt_uptr()->get();
 }
 
-TEST(optional_field_ref_test, mutable_accessors) {
-  TestStruct s;
+TYPED_TEST(optional_field_ref_typed_test, mutable_accessors) {
+  typename TestFixture::Struct s;
   s.opt_name() = "initial";
-  optional_field_ref<std::string&> name = s.opt_name();
+  auto name = s.opt_name();
   *name = "foo";
   EXPECT_EQ(*name, "foo");
   name.value() = "bar";
@@ -483,8 +510,8 @@ TEST(optional_field_ref_test, mutable_accessors) {
   EXPECT_TRUE(name.has_value());
 }
 
-TEST(optional_field_ref_test, value_or) {
-  TestStruct s;
+TYPED_TEST(optional_field_ref_typed_test, value_or) {
+  typename TestFixture::Struct s;
   EXPECT_EQ("foo", s.opt_name().value_or("foo"));
   s.opt_name() = "bar";
   EXPECT_EQ("bar", s.opt_name().value_or("foo"));
@@ -495,16 +522,16 @@ TEST(optional_field_ref_test, value_or) {
   EXPECT_EQ("", s.opt_name().value_or("foo"));
 }
 
-TEST(optional_field_ref_test, bad_field_access) {
-  TestStruct s;
-  optional_field_ref<std::string&> name = s.opt_name();
+TYPED_TEST(optional_field_ref_typed_test, bad_field_access) {
+  typename TestFixture::Struct s;
+  auto name = s.opt_name();
   EXPECT_THROW(*name = "foo", bad_field_access);
   EXPECT_THROW(name.value() = "bar", bad_field_access);
   EXPECT_THROW(name->assign("baz"), bad_field_access);
 }
 
-TEST(optional_field_ref_test, convert_to_bool) {
-  TestStruct s;
+TYPED_TEST(optional_field_ref_typed_test, convert_to_bool) {
+  typename TestFixture::Struct s;
   if (auto name = s.opt_name()) {
     EXPECT_TRUE(false);
   }
@@ -527,26 +554,65 @@ struct OptionalFieldRefConversionChecker {
       "inconsistent implicit conversion");
 };
 
-TEST(optional_field_ref_test, conversions) {
-  test_conversions<OptionalFieldRefConversionChecker>();
-  TestStruct s;
-  optional_field_ref<std::string&> lvalue_ref = s.opt_name();
-  EXPECT_FALSE(lvalue_ref);
-  optional_field_ref<std::string&&> rvalue_ref =
-      static_cast<optional_field_ref<std::string&&>>(lvalue_ref);
-  EXPECT_FALSE(rvalue_ref);
-  optional_field_ref<const std::string&&> crvalue_ref =
-      static_cast<optional_field_ref<const std::string&&>>(lvalue_ref);
-  EXPECT_FALSE(crvalue_ref);
+template <typename From, typename To>
+struct OptionalBoxedFieldRefConversionChecker {
+  static_assert(
+      std::is_convertible<From, To>::value ==
+          std::is_convertible<
+              optional_boxed_field_ref<From>,
+              optional_boxed_field_ref<To>>::value,
+      "inconsistent implicit conversion");
+};
+
+template <template <typename, typename> class F>
+void test_conversions_boxed_value_ptr() {
+  gen_pairs<
+      F,
+      boxed_value_ptr<int>&,
+      const boxed_value_ptr<int>&,
+      boxed_value_ptr<int>&&,
+      const boxed_value_ptr<int>&&>();
 }
 
-TEST(optional_field_ref_test, copy_list_initialization) {
-  TestStruct s;
+TEST(optional_field_ref_test, conversions) {
+  {
+    test_conversions<OptionalFieldRefConversionChecker>();
+    TestStruct s;
+    optional_field_ref<std::string&> lvalue_ref = s.opt_name();
+    EXPECT_FALSE(lvalue_ref);
+    optional_field_ref<std::string&&> rvalue_ref =
+        static_cast<optional_field_ref<std::string&&>>(lvalue_ref);
+    EXPECT_FALSE(rvalue_ref);
+    optional_field_ref<const std::string&&> crvalue_ref =
+        static_cast<optional_field_ref<const std::string&&>>(lvalue_ref);
+    EXPECT_FALSE(crvalue_ref);
+  }
+
+  {
+    test_conversions_boxed_value_ptr<OptionalBoxedFieldRefConversionChecker>();
+    TestStructBoxedValuePtr s;
+    optional_boxed_field_ref<boxed_value_ptr<std::string>&> lvalue_ref =
+        s.opt_name();
+    EXPECT_FALSE(lvalue_ref);
+    optional_boxed_field_ref<boxed_value_ptr<std::string>&&> rvalue_ref =
+        static_cast<optional_boxed_field_ref<boxed_value_ptr<std::string>&&>>(
+            lvalue_ref);
+    EXPECT_FALSE(rvalue_ref);
+    optional_boxed_field_ref<const boxed_value_ptr<std::string>&&> crvalue_ref =
+        static_cast<
+            optional_boxed_field_ref<const boxed_value_ptr<std::string>&&>>(
+            lvalue_ref);
+    EXPECT_FALSE(crvalue_ref);
+  }
+}
+
+TYPED_TEST(optional_field_ref_typed_test, copy_list_initialization) {
+  typename TestFixture::Struct s;
   s.opt_name() = {};
 }
 
-TEST(optional_field_ref_test, emplace) {
-  TestStruct s;
+TYPED_TEST(optional_field_ref_typed_test, emplace) {
+  typename TestFixture::Struct s;
   s.opt_name().emplace({'f', 'o', 'o'});
   EXPECT_EQ(s.opt_name().value(), "foo");
   s.opt_name().emplace({'b', 'a', 'r'});
@@ -555,8 +621,8 @@ TEST(optional_field_ref_test, emplace) {
   EXPECT_EQ(s.opt_name().value(), "baz");
 }
 
-TEST(optional_field_ref_test, move) {
-  TestStruct s;
+TYPED_TEST(optional_field_ref_typed_test, move) {
+  typename TestFixture::Struct s;
   s.opt_uptr() = std::make_unique<int>(42);
   auto rawp = s.opt_uptr()->get();
   std::unique_ptr<int> p = *std::move(s).opt_uptr();
@@ -564,8 +630,8 @@ TEST(optional_field_ref_test, move) {
   EXPECT_EQ(p.get(), rawp);
 }
 
-TEST(optional_field_ref_test, get_pointer) {
-  TestStruct s;
+TYPED_TEST(optional_field_ref_typed_test, get_pointer) {
+  typename TestFixture::Struct s;
   EXPECT_EQ(apache::thrift::get_pointer(s.opt_name()), nullptr);
   s.opt_name() = "foo";
   EXPECT_EQ(*apache::thrift::get_pointer(s.opt_name()), "foo");
@@ -575,8 +641,8 @@ TEST(optional_field_ref_test, get_pointer) {
   EXPECT_EQ(apache::thrift::get_pointer(s.opt_name()), nullptr);
 }
 
-TEST(optional_field_ref_test, ensure) {
-  TestStruct s;
+TYPED_TEST(optional_field_ref_typed_test, ensure) {
+  typename TestFixture::Struct s;
   EXPECT_FALSE(s.opt_name().has_value());
   EXPECT_EQ(s.opt_name().ensure(), "");
   EXPECT_TRUE(s.opt_name());
@@ -586,6 +652,13 @@ TEST(optional_field_ref_test, ensure_isset_unsafe) {
   TestStruct s;
   s.opt_name().value_unchecked() = "foo";
   apache::thrift::ensure_isset_unsafe(s.opt_name());
+  EXPECT_EQ(s.opt_name().value(), "foo");
+}
+
+TEST(optional_field_ref_test, ensure_isset_unsafe_deprecated) {
+  TestStruct s;
+  s.opt_name().value_unchecked() = "foo";
+  apache::thrift::ensure_isset_unsafe_deprecated(s.opt_name());
   EXPECT_EQ(s.opt_name().value(), "foo");
 }
 
@@ -605,8 +678,9 @@ TEST(optional_field_ref_test, alias) {
 }
 
 #ifdef THRIFT_HAS_OPTIONAL
-TEST(optional_field_ref_test, copy_from_optional) {
-  auto s = TestStruct();
+
+TYPED_TEST(optional_field_ref_typed_test, copy_from_optional) {
+  auto s = typename TestFixture::Struct();
   s.opt_name() = "foo";
   auto empty = std::optional<std::string>();
   s.opt_name().from_optional(empty);
@@ -617,8 +691,8 @@ TEST(optional_field_ref_test, copy_from_optional) {
   EXPECT_EQ(*s.opt_name(), "foo");
 }
 
-TEST(optional_field_ref_test, move_from_optional) {
-  auto s = TestStruct();
+TYPED_TEST(optional_field_ref_typed_test, move_from_optional) {
+  auto s = typename TestFixture::Struct();
   auto p = std::make_optional(std::make_unique<int>(42));
   auto rawp = p->get();
   s.opt_uptr().from_optional(std::move(p));
@@ -631,8 +705,8 @@ TEST(optional_field_ref_test, move_from_optional) {
   EXPECT_FALSE(s.opt_uptr().has_value());
 }
 
-TEST(optional_field_ref_test, to_optional) {
-  TestStruct s;
+TYPED_TEST(optional_field_ref_typed_test, to_optional) {
+  typename TestFixture::Struct s;
   std::optional<std::string> opt = s.opt_name().to_optional();
   EXPECT_FALSE(opt);
   s.opt_name() = "foo";
@@ -642,10 +716,11 @@ TEST(optional_field_ref_test, to_optional) {
 }
 #endif
 
-TEST(optional_field_ref_test, rvalue_ref_method) {
-  TestStruct s;
-  auto ref = std::move(s).uptr();
-  static_assert(std::is_rvalue_reference_v<decltype(ref)::reference_type>);
+TYPED_TEST(optional_field_ref_typed_test, rvalue_ref_method) {
+  typename TestFixture::Struct s;
+  auto ref = std::move(s).opt_uptr();
+  static_assert(
+      std::is_rvalue_reference_v<typename decltype(ref)::reference_type>);
   ref = std::make_unique<int>(10);
   EXPECT_EQ(**ref, 10);
   std::unique_ptr<int> p = *ref;

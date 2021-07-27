@@ -14,5 +14,5 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-}}{{#type:nonstandardCollection?}}crate::r#impl::read{{/type:nonstandardCollection?}}{{!
-}}{{^type:nonstandardCollection?}}::fbthrift::Deserialize::read{{/type:nonstandardCollection?}}
+}}{{#type:nonstandard?}}super::r#impl::read{{/type:nonstandard?}}{{!
+}}{{^type:nonstandard?}}::fbthrift::Deserialize::read{{/type:nonstandard?}}

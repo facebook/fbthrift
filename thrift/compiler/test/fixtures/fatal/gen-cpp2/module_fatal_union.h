@@ -19,80 +19,47 @@
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-namespace thrift_fatal_impl_detail {
-
-struct union1_Type_enum_traits {
+namespace __fbthrift_refl {
+namespace __fbthrift_refl_impl = ::apache::thrift::detail::reflection_impl;
+class union1_tenum_traits {
+ public:
   using type = ::test_cpp2::cpp_reflection::union1::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
-  struct Type__struct_unique_strings_list {
-    using ui = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui;
-    using ud = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud;
-    using us = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us;
-    using ue = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue;
-  };
-
-  struct Type__struct_enum_members_ui {
-    using name = Type__struct_unique_strings_list::ui;
+ private:
+  struct __fbthrift_value_ui {
+    using name = __fbthrift_strings_module::__fbthrift_hash_d3ef7de562f9a4a34a9a0b05a112955fdecdd0102c3faae5eeb03a195091a5e4;
     using value = std::integral_constant<type, type::ui>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_ud {
-    using name = Type__struct_unique_strings_list::ud;
+  struct __fbthrift_value_ud {
+    using name = __fbthrift_strings_module::__fbthrift_hash_f0a85e81a4cdc5b0ffa6b6bae7015c00d3cc730d040c955859d3b797aaba3ce9;
     using value = std::integral_constant<type, type::ud>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_us {
-    using name = Type__struct_unique_strings_list::us;
+  struct __fbthrift_value_us {
+    using name = __fbthrift_strings_module::__fbthrift_hash_79adb2a2fce5c6ba215fe5f27f532d4e7edbac4b6a5e09e1ef3a08084a904621;
     using value = std::integral_constant<type, type::us>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_ue {
-    using name = Type__struct_unique_strings_list::ue;
+  struct __fbthrift_value_ue {
+    using name = __fbthrift_strings_module::__fbthrift_hash_85acc813ca3f42681de514657891e97b6ebd7aa4bd2673d2b5f82694b40c6c8f;
     using value = std::integral_constant<type, type::ue>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members {
-    using ui = Type__struct_enum_members_ui;
-    using ud = Type__struct_enum_members_ud;
-    using us = Type__struct_enum_members_us;
-    using ue = Type__struct_enum_members_ue;
+  struct __fbthrift_member {
+    using ui = __fbthrift_value_ui;
+    using ud = __fbthrift_value_ud;
+    using us = __fbthrift_value_us;
+    using ue = __fbthrift_value_ue;
   };
 
-  using member = Type__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_module::Type;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::ui,
       member::ud,
@@ -100,13 +67,7 @@ struct union1_Type_enum_traits {
       member::ue
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -119,166 +80,137 @@ struct union1_Type_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union1_Type_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union1_Type_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
-  >
-);
-
-namespace thrift_fatal_impl_detail {
-
 class union1_variant_traits {
-  struct union1__struct_unique_identifiers_list {
+ private:
+  struct __fbthrift_ids {
     using ui = std::integral_constant<::test_cpp2::cpp_reflection::union1::Type, ::test_cpp2::cpp_reflection::union1::Type::ui>;
     using ud = std::integral_constant<::test_cpp2::cpp_reflection::union1::Type, ::test_cpp2::cpp_reflection::union1::Type::ud>;
     using us = std::integral_constant<::test_cpp2::cpp_reflection::union1::Type, ::test_cpp2::cpp_reflection::union1::Type::us>;
     using ue = std::integral_constant<::test_cpp2::cpp_reflection::union1::Type, ::test_cpp2::cpp_reflection::union1::Type::ue>;
   };
 
-  struct union1__struct_unique_getters_list {
-    struct ui {
-      decltype(auto) operator ()(union1 const &variant) const {
+  struct __fbthrift_member_ui {
+    using name = __fbthrift_strings_module::__fbthrift_hash_d3ef7de562f9a4a34a9a0b05a112955fdecdd0102c3faae5eeb03a195091a5e4;
+    static constexpr ::apache::thrift::field_id_t id = 1;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &variant, Args &&...args) const {
+        return variant.set_ui(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 const &variant) const {
         return variant.get_ui();
       }
-      decltype(auto) operator ()(union1 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &variant) const {
         return variant.mutable_ui();
       }
-      decltype(auto) operator ()(union1 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &&variant) const {
         return std::move(variant).move_ui();
       }
     };
-
-    struct ud {
-      decltype(auto) operator ()(union1 const &variant) const {
+  };
+  struct __fbthrift_member_ud {
+    using name = __fbthrift_strings_module::__fbthrift_hash_f0a85e81a4cdc5b0ffa6b6bae7015c00d3cc730d040c955859d3b797aaba3ce9;
+    static constexpr ::apache::thrift::field_id_t id = 3;
+    using type_class = ::apache::thrift::type_class::floating_point;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &variant, Args &&...args) const {
+        return variant.set_ud(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 const &variant) const {
         return variant.get_ud();
       }
-      decltype(auto) operator ()(union1 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &variant) const {
         return variant.mutable_ud();
       }
-      decltype(auto) operator ()(union1 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &&variant) const {
         return std::move(variant).move_ud();
       }
     };
-
-    struct us {
-      decltype(auto) operator ()(union1 const &variant) const {
+  };
+  struct __fbthrift_member_us {
+    using name = __fbthrift_strings_module::__fbthrift_hash_79adb2a2fce5c6ba215fe5f27f532d4e7edbac4b6a5e09e1ef3a08084a904621;
+    static constexpr ::apache::thrift::field_id_t id = 5;
+    using type_class = ::apache::thrift::type_class::string;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &variant, Args &&...args) const {
+        return variant.set_us(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 const &variant) const {
         return variant.get_us();
       }
-      decltype(auto) operator ()(union1 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &variant) const {
         return variant.mutable_us();
       }
-      decltype(auto) operator ()(union1 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &&variant) const {
         return std::move(variant).move_us();
       }
     };
-
-    struct ue {
-      decltype(auto) operator ()(union1 const &variant) const {
+  };
+  struct __fbthrift_member_ue {
+    using name = __fbthrift_strings_module::__fbthrift_hash_85acc813ca3f42681de514657891e97b6ebd7aa4bd2673d2b5f82694b40c6c8f;
+    static constexpr ::apache::thrift::field_id_t id = 7;
+    using type_class = ::apache::thrift::type_class::enumeration;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &variant, Args &&...args) const {
+        return variant.set_ue(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 const &variant) const {
         return variant.get_ue();
       }
-      decltype(auto) operator ()(union1 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &variant) const {
         return variant.mutable_ue();
       }
-      decltype(auto) operator ()(union1 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union1 &&variant) const {
         return std::move(variant).move_ue();
       }
     };
   };
 
-  struct union1__struct_unique_setters_list {
-    struct ui {
-      template <typename... Args>
-      decltype(auto) operator ()(union1 &variant, Args &&...args) const {
-        return variant.set_ui(std::forward<Args>(args)...);
-      }
-    };
-
-    struct ud {
-      template <typename... Args>
-      decltype(auto) operator ()(union1 &variant, Args &&...args) const {
-        return variant.set_ud(std::forward<Args>(args)...);
-      }
-    };
-
-    struct us {
-      template <typename... Args>
-      decltype(auto) operator ()(union1 &variant, Args &&...args) const {
-        return variant.set_us(std::forward<Args>(args)...);
-      }
-    };
-
-    struct ue {
-      template <typename... Args>
-      decltype(auto) operator ()(union1 &variant, Args &&...args) const {
-        return variant.set_ue(std::forward<Args>(args)...);
-      }
-    };
-  };
-
-  public:
+ public:
   using type = ::test_cpp2::cpp_reflection::union1;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union1;
+  using name = __fbthrift_strings_module::union1;
   using id = type::Type;
-  using ids = union1__struct_unique_identifiers_list;
+  using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union1__struct_unique_identifiers_list::ui,
-      union1__struct_unique_getters_list::ui,
-      union1__struct_unique_setters_list::ui,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui,
-        1,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      double,
-      union1__struct_unique_identifiers_list::ud,
-      union1__struct_unique_getters_list::ud,
-      union1__struct_unique_setters_list::ud,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud,
-        3,
-        ::apache::thrift::type_class::floating_point
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      ::std::string,
-      union1__struct_unique_identifiers_list::us,
-      union1__struct_unique_getters_list::us,
-      union1__struct_unique_setters_list::us,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us,
-        5,
-        ::apache::thrift::type_class::string
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-       ::test_cpp2::cpp_reflection::enum1,
-      union1__struct_unique_identifiers_list::ue,
-      union1__struct_unique_getters_list::ue,
-      union1__struct_unique_setters_list::ue,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue,
-        7,
-        ::apache::thrift::type_class::enumeration
-      >
-    >
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::ui,
+          __fbthrift_member_ui::getter,
+          __fbthrift_member_ui::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ui>>,
+      ::fatal::variant_member_descriptor<
+          double,
+           __fbthrift_ids::ud,
+          __fbthrift_member_ud::getter,
+          __fbthrift_member_ud::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ud>>,
+      ::fatal::variant_member_descriptor<
+          ::std::string,
+           __fbthrift_ids::us,
+          __fbthrift_member_us::getter,
+          __fbthrift_member_us::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_us>>,
+      ::fatal::variant_member_descriptor<
+          ::test_cpp2::cpp_reflection::enum1,
+           __fbthrift_ids::ue,
+          __fbthrift_member_ue::getter,
+          __fbthrift_member_ue::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ue>>
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static id get_id(type const &variant) {
     return variant.getType();
@@ -292,82 +224,45 @@ class union1_variant_traits {
     return variant.__clear();
   }
 };
-
-} // thrift_fatal_impl_detail
-namespace thrift_fatal_impl_detail {
-
-struct union2_Type_enum_traits {
+class union2_tenum_traits {
+ public:
   using type = ::test_cpp2::cpp_reflection::union2::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
-  struct Type__struct_unique_strings_list {
-    using ui_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_2;
-    using ud_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_2;
-    using us_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_2;
-    using ue_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_2;
-  };
-
-  struct Type__struct_enum_members_ui_2 {
-    using name = Type__struct_unique_strings_list::ui_2;
+ private:
+  struct __fbthrift_value_ui_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_497628310b36454ee3c06bb4744bfbf5c3cebf94d600e9a1620d67fd4b61d850;
     using value = std::integral_constant<type, type::ui_2>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_ud_2 {
-    using name = Type__struct_unique_strings_list::ud_2;
+  struct __fbthrift_value_ud_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_4cb122443fdcc93ce02d0854f1bcf045042abde666a2a2cb80ca70374f4a0930;
     using value = std::integral_constant<type, type::ud_2>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_us_2 {
-    using name = Type__struct_unique_strings_list::us_2;
+  struct __fbthrift_value_us_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_80bd95dcdc13bec67066fba5d2acd08024cc8ffd55f03138a4951bb85f354248;
     using value = std::integral_constant<type, type::us_2>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_ue_2 {
-    using name = Type__struct_unique_strings_list::ue_2;
+  struct __fbthrift_value_ue_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_13009491225878db05f406520b14390fe348bed9c4c2f8de4ef0a6f2932b6b74;
     using value = std::integral_constant<type, type::ue_2>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members {
-    using ui_2 = Type__struct_enum_members_ui_2;
-    using ud_2 = Type__struct_enum_members_ud_2;
-    using us_2 = Type__struct_enum_members_us_2;
-    using ue_2 = Type__struct_enum_members_ue_2;
+  struct __fbthrift_member {
+    using ui_2 = __fbthrift_value_ui_2;
+    using ud_2 = __fbthrift_value_ud_2;
+    using us_2 = __fbthrift_value_us_2;
+    using ue_2 = __fbthrift_value_ue_2;
   };
 
-  using member = Type__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_module::Type;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::ui_2,
       member::ud_2,
@@ -375,13 +270,7 @@ struct union2_Type_enum_traits {
       member::ue_2
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -394,166 +283,137 @@ struct union2_Type_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union2_Type_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union2_Type_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
-  >
-);
-
-namespace thrift_fatal_impl_detail {
-
 class union2_variant_traits {
-  struct union2__struct_unique_identifiers_list {
+ private:
+  struct __fbthrift_ids {
     using ui_2 = std::integral_constant<::test_cpp2::cpp_reflection::union2::Type, ::test_cpp2::cpp_reflection::union2::Type::ui_2>;
     using ud_2 = std::integral_constant<::test_cpp2::cpp_reflection::union2::Type, ::test_cpp2::cpp_reflection::union2::Type::ud_2>;
     using us_2 = std::integral_constant<::test_cpp2::cpp_reflection::union2::Type, ::test_cpp2::cpp_reflection::union2::Type::us_2>;
     using ue_2 = std::integral_constant<::test_cpp2::cpp_reflection::union2::Type, ::test_cpp2::cpp_reflection::union2::Type::ue_2>;
   };
 
-  struct union2__struct_unique_getters_list {
-    struct ui_2 {
-      decltype(auto) operator ()(union2 const &variant) const {
+  struct __fbthrift_member_ui_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_497628310b36454ee3c06bb4744bfbf5c3cebf94d600e9a1620d67fd4b61d850;
+    static constexpr ::apache::thrift::field_id_t id = 1;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &variant, Args &&...args) const {
+        return variant.set_ui_2(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 const &variant) const {
         return variant.get_ui_2();
       }
-      decltype(auto) operator ()(union2 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &variant) const {
         return variant.mutable_ui_2();
       }
-      decltype(auto) operator ()(union2 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &&variant) const {
         return std::move(variant).move_ui_2();
       }
     };
-
-    struct ud_2 {
-      decltype(auto) operator ()(union2 const &variant) const {
+  };
+  struct __fbthrift_member_ud_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_4cb122443fdcc93ce02d0854f1bcf045042abde666a2a2cb80ca70374f4a0930;
+    static constexpr ::apache::thrift::field_id_t id = 2;
+    using type_class = ::apache::thrift::type_class::floating_point;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &variant, Args &&...args) const {
+        return variant.set_ud_2(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 const &variant) const {
         return variant.get_ud_2();
       }
-      decltype(auto) operator ()(union2 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &variant) const {
         return variant.mutable_ud_2();
       }
-      decltype(auto) operator ()(union2 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &&variant) const {
         return std::move(variant).move_ud_2();
       }
     };
-
-    struct us_2 {
-      decltype(auto) operator ()(union2 const &variant) const {
+  };
+  struct __fbthrift_member_us_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_80bd95dcdc13bec67066fba5d2acd08024cc8ffd55f03138a4951bb85f354248;
+    static constexpr ::apache::thrift::field_id_t id = 3;
+    using type_class = ::apache::thrift::type_class::string;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &variant, Args &&...args) const {
+        return variant.set_us_2(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 const &variant) const {
         return variant.get_us_2();
       }
-      decltype(auto) operator ()(union2 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &variant) const {
         return variant.mutable_us_2();
       }
-      decltype(auto) operator ()(union2 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &&variant) const {
         return std::move(variant).move_us_2();
       }
     };
-
-    struct ue_2 {
-      decltype(auto) operator ()(union2 const &variant) const {
+  };
+  struct __fbthrift_member_ue_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_13009491225878db05f406520b14390fe348bed9c4c2f8de4ef0a6f2932b6b74;
+    static constexpr ::apache::thrift::field_id_t id = 4;
+    using type_class = ::apache::thrift::type_class::enumeration;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &variant, Args &&...args) const {
+        return variant.set_ue_2(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 const &variant) const {
         return variant.get_ue_2();
       }
-      decltype(auto) operator ()(union2 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &variant) const {
         return variant.mutable_ue_2();
       }
-      decltype(auto) operator ()(union2 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union2 &&variant) const {
         return std::move(variant).move_ue_2();
       }
     };
   };
 
-  struct union2__struct_unique_setters_list {
-    struct ui_2 {
-      template <typename... Args>
-      decltype(auto) operator ()(union2 &variant, Args &&...args) const {
-        return variant.set_ui_2(std::forward<Args>(args)...);
-      }
-    };
-
-    struct ud_2 {
-      template <typename... Args>
-      decltype(auto) operator ()(union2 &variant, Args &&...args) const {
-        return variant.set_ud_2(std::forward<Args>(args)...);
-      }
-    };
-
-    struct us_2 {
-      template <typename... Args>
-      decltype(auto) operator ()(union2 &variant, Args &&...args) const {
-        return variant.set_us_2(std::forward<Args>(args)...);
-      }
-    };
-
-    struct ue_2 {
-      template <typename... Args>
-      decltype(auto) operator ()(union2 &variant, Args &&...args) const {
-        return variant.set_ue_2(std::forward<Args>(args)...);
-      }
-    };
-  };
-
-  public:
+ public:
   using type = ::test_cpp2::cpp_reflection::union2;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union2;
+  using name = __fbthrift_strings_module::union2;
   using id = type::Type;
-  using ids = union2__struct_unique_identifiers_list;
+  using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union2__struct_unique_identifiers_list::ui_2,
-      union2__struct_unique_getters_list::ui_2,
-      union2__struct_unique_setters_list::ui_2,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_2,
-        1,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      double,
-      union2__struct_unique_identifiers_list::ud_2,
-      union2__struct_unique_getters_list::ud_2,
-      union2__struct_unique_setters_list::ud_2,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_2,
-        2,
-        ::apache::thrift::type_class::floating_point
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      ::std::string,
-      union2__struct_unique_identifiers_list::us_2,
-      union2__struct_unique_getters_list::us_2,
-      union2__struct_unique_setters_list::us_2,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_2,
-        3,
-        ::apache::thrift::type_class::string
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-       ::test_cpp2::cpp_reflection::enum1,
-      union2__struct_unique_identifiers_list::ue_2,
-      union2__struct_unique_getters_list::ue_2,
-      union2__struct_unique_setters_list::ue_2,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_2,
-        4,
-        ::apache::thrift::type_class::enumeration
-      >
-    >
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::ui_2,
+          __fbthrift_member_ui_2::getter,
+          __fbthrift_member_ui_2::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ui_2>>,
+      ::fatal::variant_member_descriptor<
+          double,
+           __fbthrift_ids::ud_2,
+          __fbthrift_member_ud_2::getter,
+          __fbthrift_member_ud_2::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ud_2>>,
+      ::fatal::variant_member_descriptor<
+          ::std::string,
+           __fbthrift_ids::us_2,
+          __fbthrift_member_us_2::getter,
+          __fbthrift_member_us_2::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_us_2>>,
+      ::fatal::variant_member_descriptor<
+          ::test_cpp2::cpp_reflection::enum1,
+           __fbthrift_ids::ue_2,
+          __fbthrift_member_ue_2::getter,
+          __fbthrift_member_ue_2::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ue_2>>
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static id get_id(type const &variant) {
     return variant.getType();
@@ -567,82 +427,45 @@ class union2_variant_traits {
     return variant.__clear();
   }
 };
-
-} // thrift_fatal_impl_detail
-namespace thrift_fatal_impl_detail {
-
-struct union3_Type_enum_traits {
+class union3_tenum_traits {
+ public:
   using type = ::test_cpp2::cpp_reflection::union3::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
-  struct Type__struct_unique_strings_list {
-    using ui_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_3;
-    using ud_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_3;
-    using us_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_3;
-    using ue_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_3;
-  };
-
-  struct Type__struct_enum_members_ui_3 {
-    using name = Type__struct_unique_strings_list::ui_3;
+ private:
+  struct __fbthrift_value_ui_3 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_d41376c43861639db2ca279ddb2f7954772a666a9606ce6eac17a6b243dd4876;
     using value = std::integral_constant<type, type::ui_3>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_ud_3 {
-    using name = Type__struct_unique_strings_list::ud_3;
+  struct __fbthrift_value_ud_3 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_7829368593e3b9447417533a3a4e6889f618e7f0b9d7d36f5757bd8a6f0197ed;
     using value = std::integral_constant<type, type::ud_3>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_us_3 {
-    using name = Type__struct_unique_strings_list::us_3;
+  struct __fbthrift_value_us_3 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_c33849b4e01fee9484569654c522b031dd13986d15225cd70e29ec883629fc30;
     using value = std::integral_constant<type, type::us_3>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_ue_3 {
-    using name = Type__struct_unique_strings_list::ue_3;
+  struct __fbthrift_value_ue_3 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_e5fec08b647c2ff2233c3b2beac96b38cd76a6d9baba07a35c27786104a69b58;
     using value = std::integral_constant<type, type::ue_3>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members {
-    using ui_3 = Type__struct_enum_members_ui_3;
-    using ud_3 = Type__struct_enum_members_ud_3;
-    using us_3 = Type__struct_enum_members_us_3;
-    using ue_3 = Type__struct_enum_members_ue_3;
+  struct __fbthrift_member {
+    using ui_3 = __fbthrift_value_ui_3;
+    using ud_3 = __fbthrift_value_ud_3;
+    using us_3 = __fbthrift_value_us_3;
+    using ue_3 = __fbthrift_value_ue_3;
   };
 
-  using member = Type__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_module::Type;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::ui_3,
       member::ud_3,
@@ -650,13 +473,7 @@ struct union3_Type_enum_traits {
       member::ue_3
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -669,166 +486,137 @@ struct union3_Type_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union3_Type_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union3_Type_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
-  >
-);
-
-namespace thrift_fatal_impl_detail {
-
 class union3_variant_traits {
-  struct union3__struct_unique_identifiers_list {
+ private:
+  struct __fbthrift_ids {
     using ui_3 = std::integral_constant<::test_cpp2::cpp_reflection::union3::Type, ::test_cpp2::cpp_reflection::union3::Type::ui_3>;
     using ud_3 = std::integral_constant<::test_cpp2::cpp_reflection::union3::Type, ::test_cpp2::cpp_reflection::union3::Type::ud_3>;
     using us_3 = std::integral_constant<::test_cpp2::cpp_reflection::union3::Type, ::test_cpp2::cpp_reflection::union3::Type::us_3>;
     using ue_3 = std::integral_constant<::test_cpp2::cpp_reflection::union3::Type, ::test_cpp2::cpp_reflection::union3::Type::ue_3>;
   };
 
-  struct union3__struct_unique_getters_list {
-    struct ui_3 {
-      decltype(auto) operator ()(union3 const &variant) const {
+  struct __fbthrift_member_ui_3 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_d41376c43861639db2ca279ddb2f7954772a666a9606ce6eac17a6b243dd4876;
+    static constexpr ::apache::thrift::field_id_t id = 1;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &variant, Args &&...args) const {
+        return variant.set_ui_3(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 const &variant) const {
         return variant.get_ui_3();
       }
-      decltype(auto) operator ()(union3 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &variant) const {
         return variant.mutable_ui_3();
       }
-      decltype(auto) operator ()(union3 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &&variant) const {
         return std::move(variant).move_ui_3();
       }
     };
-
-    struct ud_3 {
-      decltype(auto) operator ()(union3 const &variant) const {
+  };
+  struct __fbthrift_member_ud_3 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_7829368593e3b9447417533a3a4e6889f618e7f0b9d7d36f5757bd8a6f0197ed;
+    static constexpr ::apache::thrift::field_id_t id = 2;
+    using type_class = ::apache::thrift::type_class::floating_point;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &variant, Args &&...args) const {
+        return variant.set_ud_3(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 const &variant) const {
         return variant.get_ud_3();
       }
-      decltype(auto) operator ()(union3 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &variant) const {
         return variant.mutable_ud_3();
       }
-      decltype(auto) operator ()(union3 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &&variant) const {
         return std::move(variant).move_ud_3();
       }
     };
-
-    struct us_3 {
-      decltype(auto) operator ()(union3 const &variant) const {
+  };
+  struct __fbthrift_member_us_3 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_c33849b4e01fee9484569654c522b031dd13986d15225cd70e29ec883629fc30;
+    static constexpr ::apache::thrift::field_id_t id = 3;
+    using type_class = ::apache::thrift::type_class::string;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &variant, Args &&...args) const {
+        return variant.set_us_3(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 const &variant) const {
         return variant.get_us_3();
       }
-      decltype(auto) operator ()(union3 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &variant) const {
         return variant.mutable_us_3();
       }
-      decltype(auto) operator ()(union3 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &&variant) const {
         return std::move(variant).move_us_3();
       }
     };
-
-    struct ue_3 {
-      decltype(auto) operator ()(union3 const &variant) const {
+  };
+  struct __fbthrift_member_ue_3 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_e5fec08b647c2ff2233c3b2beac96b38cd76a6d9baba07a35c27786104a69b58;
+    static constexpr ::apache::thrift::field_id_t id = 4;
+    using type_class = ::apache::thrift::type_class::enumeration;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &variant, Args &&...args) const {
+        return variant.set_ue_3(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 const &variant) const {
         return variant.get_ue_3();
       }
-      decltype(auto) operator ()(union3 &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &variant) const {
         return variant.mutable_ue_3();
       }
-      decltype(auto) operator ()(union3 &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union3 &&variant) const {
         return std::move(variant).move_ue_3();
       }
     };
   };
 
-  struct union3__struct_unique_setters_list {
-    struct ui_3 {
-      template <typename... Args>
-      decltype(auto) operator ()(union3 &variant, Args &&...args) const {
-        return variant.set_ui_3(std::forward<Args>(args)...);
-      }
-    };
-
-    struct ud_3 {
-      template <typename... Args>
-      decltype(auto) operator ()(union3 &variant, Args &&...args) const {
-        return variant.set_ud_3(std::forward<Args>(args)...);
-      }
-    };
-
-    struct us_3 {
-      template <typename... Args>
-      decltype(auto) operator ()(union3 &variant, Args &&...args) const {
-        return variant.set_us_3(std::forward<Args>(args)...);
-      }
-    };
-
-    struct ue_3 {
-      template <typename... Args>
-      decltype(auto) operator ()(union3 &variant, Args &&...args) const {
-        return variant.set_ue_3(std::forward<Args>(args)...);
-      }
-    };
-  };
-
-  public:
+ public:
   using type = ::test_cpp2::cpp_reflection::union3;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union3;
+  using name = __fbthrift_strings_module::union3;
   using id = type::Type;
-  using ids = union3__struct_unique_identifiers_list;
+  using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union3__struct_unique_identifiers_list::ui_3,
-      union3__struct_unique_getters_list::ui_3,
-      union3__struct_unique_setters_list::ui_3,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ui_3,
-        1,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      double,
-      union3__struct_unique_identifiers_list::ud_3,
-      union3__struct_unique_getters_list::ud_3,
-      union3__struct_unique_setters_list::ud_3,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ud_3,
-        2,
-        ::apache::thrift::type_class::floating_point
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      ::std::string,
-      union3__struct_unique_identifiers_list::us_3,
-      union3__struct_unique_getters_list::us_3,
-      union3__struct_unique_setters_list::us_3,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::us_3,
-        3,
-        ::apache::thrift::type_class::string
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-       ::test_cpp2::cpp_reflection::enum1,
-      union3__struct_unique_identifiers_list::ue_3,
-      union3__struct_unique_getters_list::ue_3,
-      union3__struct_unique_setters_list::ue_3,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ue_3,
-        4,
-        ::apache::thrift::type_class::enumeration
-      >
-    >
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::ui_3,
+          __fbthrift_member_ui_3::getter,
+          __fbthrift_member_ui_3::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ui_3>>,
+      ::fatal::variant_member_descriptor<
+          double,
+           __fbthrift_ids::ud_3,
+          __fbthrift_member_ud_3::getter,
+          __fbthrift_member_ud_3::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ud_3>>,
+      ::fatal::variant_member_descriptor<
+          ::std::string,
+           __fbthrift_ids::us_3,
+          __fbthrift_member_us_3::getter,
+          __fbthrift_member_us_3::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_us_3>>,
+      ::fatal::variant_member_descriptor<
+          ::test_cpp2::cpp_reflection::enum1,
+           __fbthrift_ids::ue_3,
+          __fbthrift_member_ue_3::getter,
+          __fbthrift_member_ue_3::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ue_3>>
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static id get_id(type const &variant) {
     return variant.getType();
@@ -842,97 +630,52 @@ class union3_variant_traits {
     return variant.__clear();
   }
 };
-
-} // thrift_fatal_impl_detail
-namespace thrift_fatal_impl_detail {
-
-struct unionA_Type_enum_traits {
+class unionA_tenum_traits {
+ public:
   using type = ::test_cpp2::cpp_reflection::unionA::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
-  struct Type__struct_unique_strings_list {
-    using i = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::i;
-    using d = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d;
-    using s = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::s;
-    using e = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::e;
-    using a = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::a;
-  };
-
-  struct Type__struct_enum_members_i {
-    using name = Type__struct_unique_strings_list::i;
+ private:
+  struct __fbthrift_value_i {
+    using name = __fbthrift_strings_module::__fbthrift_hash_de7d1b721a1e0632b7cf04edf5032c8ecffa9f9a08492152b926f1a5a7e765d7;
     using value = std::integral_constant<type, type::i>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_d {
-    using name = Type__struct_unique_strings_list::d;
+  struct __fbthrift_value_d {
+    using name = __fbthrift_strings_module::__fbthrift_hash_18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4;
     using value = std::integral_constant<type, type::d>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_s {
-    using name = Type__struct_unique_strings_list::s;
+  struct __fbthrift_value_s {
+    using name = __fbthrift_strings_module::__fbthrift_hash_043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf89;
     using value = std::integral_constant<type, type::s>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_e {
-    using name = Type__struct_unique_strings_list::e;
+  struct __fbthrift_value_e {
+    using name = __fbthrift_strings_module::__fbthrift_hash_3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea;
     using value = std::integral_constant<type, type::e>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_a {
-    using name = Type__struct_unique_strings_list::a;
+  struct __fbthrift_value_a {
+    using name = __fbthrift_strings_module::__fbthrift_hash_ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb;
     using value = std::integral_constant<type, type::a>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members {
-    using i = Type__struct_enum_members_i;
-    using d = Type__struct_enum_members_d;
-    using s = Type__struct_enum_members_s;
-    using e = Type__struct_enum_members_e;
-    using a = Type__struct_enum_members_a;
+  struct __fbthrift_member {
+    using i = __fbthrift_value_i;
+    using d = __fbthrift_value_d;
+    using s = __fbthrift_value_s;
+    using e = __fbthrift_value_e;
+    using a = __fbthrift_value_a;
   };
 
-  using member = Type__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_module::Type;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::i,
       member::d,
@@ -941,13 +684,7 @@ struct unionA_Type_enum_traits {
       member::a
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -961,21 +698,9 @@ struct unionA_Type_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::unionA_Type_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::unionA_Type_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
-  >
-);
-
-namespace thrift_fatal_impl_detail {
-
 class unionA_variant_traits {
-  struct unionA__struct_unique_identifiers_list {
+ private:
+  struct __fbthrift_ids {
     using i = std::integral_constant<::test_cpp2::cpp_reflection::unionA::Type, ::test_cpp2::cpp_reflection::unionA::Type::i>;
     using d = std::integral_constant<::test_cpp2::cpp_reflection::unionA::Type, ::test_cpp2::cpp_reflection::unionA::Type::d>;
     using s = std::integral_constant<::test_cpp2::cpp_reflection::unionA::Type, ::test_cpp2::cpp_reflection::unionA::Type::s>;
@@ -983,194 +708,174 @@ class unionA_variant_traits {
     using a = std::integral_constant<::test_cpp2::cpp_reflection::unionA::Type, ::test_cpp2::cpp_reflection::unionA::Type::a>;
   };
 
-  struct unionA__struct_unique_getters_list {
-    struct i {
-      decltype(auto) operator ()(unionA const &variant) const {
+  struct __fbthrift_member_i {
+    using name = __fbthrift_strings_module::__fbthrift_hash_de7d1b721a1e0632b7cf04edf5032c8ecffa9f9a08492152b926f1a5a7e765d7;
+    static constexpr ::apache::thrift::field_id_t id = 1;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &variant, Args &&...args) const {
+        return variant.set_i(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA const &variant) const {
         return variant.get_i();
       }
-      decltype(auto) operator ()(unionA &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &variant) const {
         return variant.mutable_i();
       }
-      decltype(auto) operator ()(unionA &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &&variant) const {
         return std::move(variant).move_i();
       }
     };
-
-    struct d {
-      decltype(auto) operator ()(unionA const &variant) const {
+  };
+  struct __fbthrift_member_d {
+    using name = __fbthrift_strings_module::__fbthrift_hash_18ac3e7343f016890c510e93f935261169d9e3f565436429830faf0934f4f8e4;
+    static constexpr ::apache::thrift::field_id_t id = 2;
+    using type_class = ::apache::thrift::type_class::floating_point;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &variant, Args &&...args) const {
+        return variant.set_d(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA const &variant) const {
         return variant.get_d();
       }
-      decltype(auto) operator ()(unionA &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &variant) const {
         return variant.mutable_d();
       }
-      decltype(auto) operator ()(unionA &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &&variant) const {
         return std::move(variant).move_d();
       }
     };
-
-    struct s {
-      decltype(auto) operator ()(unionA const &variant) const {
+  };
+  struct __fbthrift_member_s {
+    using name = __fbthrift_strings_module::__fbthrift_hash_043a718774c572bd8a25adbeb1bfcd5c0256ae11cecf9f9c3f925d0e52beaf89;
+    static constexpr ::apache::thrift::field_id_t id = 3;
+    using type_class = ::apache::thrift::type_class::string;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &variant, Args &&...args) const {
+        return variant.set_s(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA const &variant) const {
         return variant.get_s();
       }
-      decltype(auto) operator ()(unionA &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &variant) const {
         return variant.mutable_s();
       }
-      decltype(auto) operator ()(unionA &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &&variant) const {
         return std::move(variant).move_s();
       }
     };
-
-    struct e {
-      decltype(auto) operator ()(unionA const &variant) const {
+  };
+  struct __fbthrift_member_e {
+    using name = __fbthrift_strings_module::__fbthrift_hash_3f79bb7b435b05321651daefd374cdc681dc06faa65e374e38337b88ca046dea;
+    static constexpr ::apache::thrift::field_id_t id = 4;
+    using type_class = ::apache::thrift::type_class::enumeration;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &variant, Args &&...args) const {
+        return variant.set_e(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA const &variant) const {
         return variant.get_e();
       }
-      decltype(auto) operator ()(unionA &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &variant) const {
         return variant.mutable_e();
       }
-      decltype(auto) operator ()(unionA &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &&variant) const {
         return std::move(variant).move_e();
       }
     };
-
-    struct a {
-      decltype(auto) operator ()(unionA const &variant) const {
+  };
+  struct __fbthrift_member_a {
+    using name = __fbthrift_strings_module::__fbthrift_hash_ca978112ca1bbdcafac231b39a23dc4da786eff8147c4e72b9807785afee48bb;
+    static constexpr ::apache::thrift::field_id_t id = 5;
+    using type_class = ::apache::thrift::type_class::structure;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &variant, Args &&...args) const {
+        return variant.set_a(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA const &variant) const {
         return variant.get_a();
       }
-      decltype(auto) operator ()(unionA &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &variant) const {
         return variant.mutable_a();
       }
-      decltype(auto) operator ()(unionA &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::unionA &&variant) const {
         return std::move(variant).move_a();
       }
     };
   };
 
-  struct unionA__struct_unique_setters_list {
-    struct i {
-      template <typename... Args>
-      decltype(auto) operator ()(unionA &variant, Args &&...args) const {
-        return variant.set_i(std::forward<Args>(args)...);
-      }
-    };
-
-    struct d {
-      template <typename... Args>
-      decltype(auto) operator ()(unionA &variant, Args &&...args) const {
-        return variant.set_d(std::forward<Args>(args)...);
-      }
-    };
-
-    struct s {
-      template <typename... Args>
-      decltype(auto) operator ()(unionA &variant, Args &&...args) const {
-        return variant.set_s(std::forward<Args>(args)...);
-      }
-    };
-
-    struct e {
-      template <typename... Args>
-      decltype(auto) operator ()(unionA &variant, Args &&...args) const {
-        return variant.set_e(std::forward<Args>(args)...);
-      }
-    };
-
-    struct a {
-      template <typename... Args>
-      decltype(auto) operator ()(unionA &variant, Args &&...args) const {
-        return variant.set_a(std::forward<Args>(args)...);
-      }
-    };
-  };
-
-  public:
+ public:
   using type = ::test_cpp2::cpp_reflection::unionA;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::unionA;
+  using name = __fbthrift_strings_module::unionA;
   using id = type::Type;
-  using ids = unionA__struct_unique_identifiers_list;
+  using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      unionA__struct_unique_identifiers_list::i,
-      unionA__struct_unique_getters_list::i,
-      unionA__struct_unique_setters_list::i,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::i,
-        1,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      double,
-      unionA__struct_unique_identifiers_list::d,
-      unionA__struct_unique_getters_list::d,
-      unionA__struct_unique_setters_list::d,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::d,
-        2,
-        ::apache::thrift::type_class::floating_point
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      ::std::string,
-      unionA__struct_unique_identifiers_list::s,
-      unionA__struct_unique_getters_list::s,
-      unionA__struct_unique_setters_list::s,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::s,
-        3,
-        ::apache::thrift::type_class::string
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-       ::test_cpp2::cpp_reflection::enum1,
-      unionA__struct_unique_identifiers_list::e,
-      unionA__struct_unique_getters_list::e,
-      unionA__struct_unique_setters_list::e,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::e,
-        4,
-        ::apache::thrift::type_class::enumeration
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-       ::test_cpp2::cpp_reflection::structA,
-      unionA__struct_unique_identifiers_list::a,
-      unionA__struct_unique_getters_list::a,
-      unionA__struct_unique_setters_list::a,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::a,
-        5,
-        ::apache::thrift::type_class::structure
-      >
-    >
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::i,
+          __fbthrift_member_i::getter,
+          __fbthrift_member_i::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_i>>,
+      ::fatal::variant_member_descriptor<
+          double,
+           __fbthrift_ids::d,
+          __fbthrift_member_d::getter,
+          __fbthrift_member_d::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_d>>,
+      ::fatal::variant_member_descriptor<
+          ::std::string,
+           __fbthrift_ids::s,
+          __fbthrift_member_s::getter,
+          __fbthrift_member_s::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_s>>,
+      ::fatal::variant_member_descriptor<
+          ::test_cpp2::cpp_reflection::enum1,
+           __fbthrift_ids::e,
+          __fbthrift_member_e::getter,
+          __fbthrift_member_e::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_e>>,
+      ::fatal::variant_member_descriptor<
+          ::test_cpp2::cpp_reflection::structA,
+           __fbthrift_ids::a,
+          __fbthrift_member_a::getter,
+          __fbthrift_member_a::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_a>>
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {
-      using another_annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::another_annotation;
-      using sample_annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sample_annotation;
+    struct __fbthrift_keys {
+      using another_annotation = __fbthrift_strings_module::another_annotation;
+      using sample_annotation = __fbthrift_strings_module::sample_annotation;
     };
 
-    struct annotations__unique_annotations_values {
+    struct __fbthrift_values {
       using another_annotation = ::fatal::sequence<char, 's', 'o', 'm', 'e', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't'>;
       using sample_annotation = ::fatal::sequence<char, 's', 'o', 'm', 'e', ' ', 't', 'e', 'x', 't', ' ', 'h', 'e', 'r', 'e'>;
     };
 
-    public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+   public:
+    using keys = __fbthrift_keys;
+    using values = __fbthrift_values;
     using map = ::fatal::list<
-      ::apache::thrift::annotation<
-        keys::another_annotation,
-        values::another_annotation
-      >,
-      ::apache::thrift::annotation<
-        keys::sample_annotation,
-        values::sample_annotation
-      >
+        ::apache::thrift::annotation<keys::another_annotation, values::another_annotation>,
+        ::apache::thrift::annotation<keys::sample_annotation, values::sample_annotation>
     >;
   };
-
 
   static id get_id(type const &variant) {
     return variant.getType();
@@ -1184,442 +889,213 @@ class unionA_variant_traits {
     return variant.__clear();
   }
 };
-
-} // thrift_fatal_impl_detail
-namespace thrift_fatal_impl_detail {
-
-struct union_with_special_names_Type_enum_traits {
+class union_with_special_names_tenum_traits {
+ public:
   using type = ::test_cpp2::cpp_reflection::union_with_special_names::Type;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::Type;
 
-  struct Type__struct_unique_strings_list {
-    using get = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get;
-    using getter = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter;
-    using lists = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::lists;
-    using maps = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::maps;
-    using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name;
-    using name_to_value = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name_to_value;
-    using names = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::names;
-    using prefix_tree = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::prefix_tree;
-    using sets = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sets;
-    using setter = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::setter;
-    using str = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::str;
-    using strings = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::strings;
-    using type = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::type;
-    using value = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value;
-    using value_to_name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value_to_name;
-    using values = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::values;
-    using id = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::id;
-    using ids = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ids;
-    using descriptor = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptor;
-    using descriptors = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptors;
-    using key = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::key;
-    using keys = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::keys;
-    using annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotation;
-    using annotations = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations;
-    using member = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member;
-    using members = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members;
-    using field = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field;
-    using fields = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fields;
-  };
-
-  struct Type__struct_enum_members_get {
-    using name = Type__struct_unique_strings_list::get;
+ private:
+  struct __fbthrift_value_get {
+    using name = __fbthrift_strings_module::__fbthrift_hash_2998b3232d29e8dc5a78d97a32ce83f556f3ed31b057077503df05641dd79158;
     using value = std::integral_constant<type, type::get>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_getter {
-    using name = Type__struct_unique_strings_list::getter;
+  struct __fbthrift_value_getter {
+    using name = __fbthrift_strings_module::__fbthrift_hash_d665a09c95ebbc703485c7ba5384857536ca16f6c11fdd054e61c7dd81780731;
     using value = std::integral_constant<type, type::getter>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_lists {
-    using name = Type__struct_unique_strings_list::lists;
+  struct __fbthrift_value_lists {
+    using name = __fbthrift_strings_module::__fbthrift_hash_4c14c4a453f98de4bd1c972fea7850adb52822c5823e5da287085165afcf2020;
     using value = std::integral_constant<type, type::lists>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_maps {
-    using name = Type__struct_unique_strings_list::maps;
+  struct __fbthrift_value_maps {
+    using name = __fbthrift_strings_module::__fbthrift_hash_325392e8dd2826a53a9a35b7a7f8d71683cd27ebc2c73fee85dab673bc909b67;
     using value = std::integral_constant<type, type::maps>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_name {
-    using name = Type__struct_unique_strings_list::name;
+  struct __fbthrift_value_name {
+    using name = __fbthrift_strings_module::__fbthrift_hash_82a3537ff0dbce7eec35d69edc3a189ee6f17d82f353a553f9aa96cb0be3ce89;
     using value = std::integral_constant<type, type::name>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_name_to_value {
-    using name = Type__struct_unique_strings_list::name_to_value;
+  struct __fbthrift_value_name_to_value {
+    using name = __fbthrift_strings_module::__fbthrift_hash_f1fe8005943a7730e9a95f7262952d9717a6f43a21d1b55daeb44de82fe4aac6;
     using value = std::integral_constant<type, type::name_to_value>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_names {
-    using name = Type__struct_unique_strings_list::names;
+  struct __fbthrift_value_names {
+    using name = __fbthrift_strings_module::__fbthrift_hash_aeb24056810d3d1f1e8afee61a0bc0028556eb0fb49a215ae5eb1b970cad0315;
     using value = std::integral_constant<type, type::names>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_prefix_tree {
-    using name = Type__struct_unique_strings_list::prefix_tree;
+  struct __fbthrift_value_prefix_tree {
+    using name = __fbthrift_strings_module::__fbthrift_hash_73e6f38f012472999e156878234ad5221469eb764ff0d39af613e045fdfe8c1e;
     using value = std::integral_constant<type, type::prefix_tree>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_sets {
-    using name = Type__struct_unique_strings_list::sets;
+  struct __fbthrift_value_sets {
+    using name = __fbthrift_strings_module::__fbthrift_hash_82c6db3dbf4ab47132dfd1d9d1bf8525edccb48512c8647b7a2067e0417537c0;
     using value = std::integral_constant<type, type::sets>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_setter {
-    using name = Type__struct_unique_strings_list::setter;
+  struct __fbthrift_value_setter {
+    using name = __fbthrift_strings_module::__fbthrift_hash_bab6f4cdfe399488eecf37176422c2f336b814c3b5f3d174987098ebb289f1fc;
     using value = std::integral_constant<type, type::setter>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_str {
-    using name = Type__struct_unique_strings_list::str;
+  struct __fbthrift_value_str {
+    using name = __fbthrift_strings_module::__fbthrift_hash_8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a;
     using value = std::integral_constant<type, type::str>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_strings {
-    using name = Type__struct_unique_strings_list::strings;
+  struct __fbthrift_value_strings {
+    using name = __fbthrift_strings_module::__fbthrift_hash_e967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6;
     using value = std::integral_constant<type, type::strings>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_type {
-    using name = Type__struct_unique_strings_list::type;
+  struct __fbthrift_value_type {
+    using name = __fbthrift_strings_module::__fbthrift_hash_1303c06b0b014d0ce7b988ab173a13f31227d417058ff4bbe6f8c222b4ad913c;
     using value = std::integral_constant<type, type::type>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_value {
-    using name = Type__struct_unique_strings_list::value;
+  struct __fbthrift_value_value {
+    using name = __fbthrift_strings_module::__fbthrift_hash_cd42404d52ad55ccfa9aca4adc828aa5800ad9d385a0671fbcbf724118320619;
     using value = std::integral_constant<type, type::value>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_value_to_name {
-    using name = Type__struct_unique_strings_list::value_to_name;
+  struct __fbthrift_value_value_to_name {
+    using name = __fbthrift_strings_module::__fbthrift_hash_144043bd95cdcc1f080ed3a117286f0b33b4738179cbcd0384c6ba14f086965e;
     using value = std::integral_constant<type, type::value_to_name>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_values {
-    using name = Type__struct_unique_strings_list::values;
+  struct __fbthrift_value_values {
+    using name = __fbthrift_strings_module::__fbthrift_hash_89445ea08b55421faa49919a5fd272e9a520f701b479d6084847e161ca5b7711;
     using value = std::integral_constant<type, type::values>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_id {
-    using name = Type__struct_unique_strings_list::id;
+  struct __fbthrift_value_id {
+    using name = __fbthrift_strings_module::__fbthrift_hash_a56145270ce6b3bebd1dd012b73948677dd618d496488bc608a3cb43ce3547dd;
     using value = std::integral_constant<type, type::id>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_ids {
-    using name = Type__struct_unique_strings_list::ids;
+  struct __fbthrift_value_ids {
+    using name = __fbthrift_strings_module::__fbthrift_hash_23466067f626bf8a3ae1a39cdf81f31303220b331b5064c6e00662dcc34deaaf;
     using value = std::integral_constant<type, type::ids>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_descriptor {
-    using name = Type__struct_unique_strings_list::descriptor;
+  struct __fbthrift_value_descriptor {
+    using name = __fbthrift_strings_module::__fbthrift_hash_194b520dc30384b3fc233e123778835e2adc362d91c6e33015ed3db2379d7ea1;
     using value = std::integral_constant<type, type::descriptor>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_descriptors {
-    using name = Type__struct_unique_strings_list::descriptors;
+  struct __fbthrift_value_descriptors {
+    using name = __fbthrift_strings_module::__fbthrift_hash_12b2fdc0a0ffd6ce4b7d74d080cd8dcb1c60b6e8f365fb46ac511c46cc31f1c1;
     using value = std::integral_constant<type, type::descriptors>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_key {
-    using name = Type__struct_unique_strings_list::key;
+  struct __fbthrift_value_key {
+    using name = __fbthrift_strings_module::__fbthrift_hash_2c70e12b7a0646f92279f427c7b38e7334d8e5389cff167a1dc30e73f826b683;
     using value = std::integral_constant<type, type::key>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_keys {
-    using name = Type__struct_unique_strings_list::keys;
+  struct __fbthrift_value_keys {
+    using name = __fbthrift_strings_module::__fbthrift_hash_48a53f0774c8ceff574a1fdcb0d470dbd382b3db273cff4344b6d39d5379c923;
     using value = std::integral_constant<type, type::keys>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_annotation {
-    using name = Type__struct_unique_strings_list::annotation;
+  struct __fbthrift_value_annotation {
+    using name = __fbthrift_strings_module::__fbthrift_hash_82264186375a8f31cd4bf73c2862777622f7616b039abfb62fb7c7eea19f9d07;
     using value = std::integral_constant<type, type::annotation>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_annotations {
-    using name = Type__struct_unique_strings_list::annotations;
+  struct __fbthrift_value_annotations {
+    using name = __fbthrift_strings_module::__fbthrift_hash_295df243c6a33994c30b6e16aea7ce6155a24b44514ec956d7a09ae0a4cb0411;
     using value = std::integral_constant<type, type::annotations>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_member {
-    using name = Type__struct_unique_strings_list::member;
+  struct __fbthrift_value_member {
+    using name = __fbthrift_strings_module::__fbthrift_hash_e31ab643c44f7a0ec824b59d1194d60dac334200d845e61d2d289daa0f087ea4;
     using value = std::integral_constant<type, type::member>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_members {
-    using name = Type__struct_unique_strings_list::members;
+  struct __fbthrift_value_members {
+    using name = __fbthrift_strings_module::__fbthrift_hash_17373ca1c7634a4be4a13861a891abd975ec916caab8f3dcf5142fa4997d0b96;
     using value = std::integral_constant<type, type::members>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_field {
-    using name = Type__struct_unique_strings_list::field;
+  struct __fbthrift_value_field {
+    using name = __fbthrift_strings_module::__fbthrift_hash_c0d2856b74d0df05b9d4456b177950351bd88e98b77f12574dfb7a911acee0d0;
     using value = std::integral_constant<type, type::field>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members_fields {
-    using name = Type__struct_unique_strings_list::fields;
+  struct __fbthrift_value_fields {
+    using name = __fbthrift_strings_module::__fbthrift_hash_bfe5d697162d90298c67c1933908741be8395838aa230408e04710909c576806;
     using value = std::integral_constant<type, type::fields>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct Type__struct_enum_members {
-    using get = Type__struct_enum_members_get;
-    using getter = Type__struct_enum_members_getter;
-    using lists = Type__struct_enum_members_lists;
-    using maps = Type__struct_enum_members_maps;
-    using name = Type__struct_enum_members_name;
-    using name_to_value = Type__struct_enum_members_name_to_value;
-    using names = Type__struct_enum_members_names;
-    using prefix_tree = Type__struct_enum_members_prefix_tree;
-    using sets = Type__struct_enum_members_sets;
-    using setter = Type__struct_enum_members_setter;
-    using str = Type__struct_enum_members_str;
-    using strings = Type__struct_enum_members_strings;
-    using type = Type__struct_enum_members_type;
-    using value = Type__struct_enum_members_value;
-    using value_to_name = Type__struct_enum_members_value_to_name;
-    using values = Type__struct_enum_members_values;
-    using id = Type__struct_enum_members_id;
-    using ids = Type__struct_enum_members_ids;
-    using descriptor = Type__struct_enum_members_descriptor;
-    using descriptors = Type__struct_enum_members_descriptors;
-    using key = Type__struct_enum_members_key;
-    using keys = Type__struct_enum_members_keys;
-    using annotation = Type__struct_enum_members_annotation;
-    using annotations = Type__struct_enum_members_annotations;
-    using member = Type__struct_enum_members_member;
-    using members = Type__struct_enum_members_members;
-    using field = Type__struct_enum_members_field;
-    using fields = Type__struct_enum_members_fields;
+  struct __fbthrift_member {
+    using get = __fbthrift_value_get;
+    using getter = __fbthrift_value_getter;
+    using lists = __fbthrift_value_lists;
+    using maps = __fbthrift_value_maps;
+    using name = __fbthrift_value_name;
+    using name_to_value = __fbthrift_value_name_to_value;
+    using names = __fbthrift_value_names;
+    using prefix_tree = __fbthrift_value_prefix_tree;
+    using sets = __fbthrift_value_sets;
+    using setter = __fbthrift_value_setter;
+    using str = __fbthrift_value_str;
+    using strings = __fbthrift_value_strings;
+    using type = __fbthrift_value_type;
+    using value = __fbthrift_value_value;
+    using value_to_name = __fbthrift_value_value_to_name;
+    using values = __fbthrift_value_values;
+    using id = __fbthrift_value_id;
+    using ids = __fbthrift_value_ids;
+    using descriptor = __fbthrift_value_descriptor;
+    using descriptors = __fbthrift_value_descriptors;
+    using key = __fbthrift_value_key;
+    using keys = __fbthrift_value_keys;
+    using annotation = __fbthrift_value_annotation;
+    using annotations = __fbthrift_value_annotations;
+    using member = __fbthrift_value_member;
+    using members = __fbthrift_value_members;
+    using field = __fbthrift_value_field;
+    using fields = __fbthrift_value_fields;
   };
 
-  using member = Type__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_module::Type;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::get,
       member::getter,
@@ -1651,13 +1127,7 @@ struct union_with_special_names_Type_enum_traits {
       member::fields
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -1694,21 +1164,9 @@ struct union_with_special_names_Type_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union_with_special_names_Type_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union_with_special_names_Type_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(0ull)
-  >
-);
-
-namespace thrift_fatal_impl_detail {
-
 class union_with_special_names_variant_traits {
-  struct union_with_special_names__struct_unique_identifiers_list {
+ private:
+  struct __fbthrift_ids {
     using get = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::get>;
     using getter = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::getter>;
     using lists = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::lists>;
@@ -1739,865 +1197,800 @@ class union_with_special_names_variant_traits {
     using fields = std::integral_constant<::test_cpp2::cpp_reflection::union_with_special_names::Type, ::test_cpp2::cpp_reflection::union_with_special_names::Type::fields>;
   };
 
-  struct union_with_special_names__struct_unique_getters_list {
-    struct get {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  struct __fbthrift_member_get {
+    using name = __fbthrift_strings_module::__fbthrift_hash_2998b3232d29e8dc5a78d97a32ce83f556f3ed31b057077503df05641dd79158;
+    static constexpr ::apache::thrift::field_id_t id = 1;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_get(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_get();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_get();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_get();
       }
     };
-
+  };
+  struct __fbthrift_member_getter {
+    using name = __fbthrift_strings_module::__fbthrift_hash_d665a09c95ebbc703485c7ba5384857536ca16f6c11fdd054e61c7dd81780731;
+    static constexpr ::apache::thrift::field_id_t id = 2;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_getter(std::forward<Args>(args)...);
+      }
+    };
     struct getter {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_getter();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_getter();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_getter();
       }
     };
-
-    struct lists {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_lists {
+    using name = __fbthrift_strings_module::__fbthrift_hash_4c14c4a453f98de4bd1c972fea7850adb52822c5823e5da287085165afcf2020;
+    static constexpr ::apache::thrift::field_id_t id = 3;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_lists(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_lists();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_lists();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_lists();
       }
     };
-
-    struct maps {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_maps {
+    using name = __fbthrift_strings_module::__fbthrift_hash_325392e8dd2826a53a9a35b7a7f8d71683cd27ebc2c73fee85dab673bc909b67;
+    static constexpr ::apache::thrift::field_id_t id = 4;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_maps(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_maps();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_maps();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_maps();
       }
     };
-
-    struct name {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_name {
+    using name = __fbthrift_strings_module::__fbthrift_hash_82a3537ff0dbce7eec35d69edc3a189ee6f17d82f353a553f9aa96cb0be3ce89;
+    static constexpr ::apache::thrift::field_id_t id = 5;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_name(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_name();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_name();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_name();
       }
     };
-
-    struct name_to_value {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_name_to_value {
+    using name = __fbthrift_strings_module::__fbthrift_hash_f1fe8005943a7730e9a95f7262952d9717a6f43a21d1b55daeb44de82fe4aac6;
+    static constexpr ::apache::thrift::field_id_t id = 6;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_name_to_value(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_name_to_value();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_name_to_value();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_name_to_value();
       }
     };
-
-    struct names {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_names {
+    using name = __fbthrift_strings_module::__fbthrift_hash_aeb24056810d3d1f1e8afee61a0bc0028556eb0fb49a215ae5eb1b970cad0315;
+    static constexpr ::apache::thrift::field_id_t id = 7;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_names(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_names();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_names();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_names();
       }
     };
-
-    struct prefix_tree {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_prefix_tree {
+    using name = __fbthrift_strings_module::__fbthrift_hash_73e6f38f012472999e156878234ad5221469eb764ff0d39af613e045fdfe8c1e;
+    static constexpr ::apache::thrift::field_id_t id = 8;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_prefix_tree(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_prefix_tree();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_prefix_tree();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_prefix_tree();
       }
     };
-
-    struct sets {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_sets {
+    using name = __fbthrift_strings_module::__fbthrift_hash_82c6db3dbf4ab47132dfd1d9d1bf8525edccb48512c8647b7a2067e0417537c0;
+    static constexpr ::apache::thrift::field_id_t id = 9;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_sets(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_sets();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_sets();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_sets();
       }
     };
-
+  };
+  struct __fbthrift_member_setter {
+    using name = __fbthrift_strings_module::__fbthrift_hash_bab6f4cdfe399488eecf37176422c2f336b814c3b5f3d174987098ebb289f1fc;
+    static constexpr ::apache::thrift::field_id_t id = 10;
+    using type_class = ::apache::thrift::type_class::integral;
     struct setter {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_setter(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_setter();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_setter();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_setter();
       }
     };
-
-    struct str {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_str {
+    using name = __fbthrift_strings_module::__fbthrift_hash_8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a;
+    static constexpr ::apache::thrift::field_id_t id = 11;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_str(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_str();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_str();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_str();
       }
     };
-
-    struct strings {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_strings {
+    using name = __fbthrift_strings_module::__fbthrift_hash_e967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6;
+    static constexpr ::apache::thrift::field_id_t id = 12;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_strings(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_strings();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_strings();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_strings();
       }
     };
-
-    struct type {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_type {
+    using name = __fbthrift_strings_module::__fbthrift_hash_1303c06b0b014d0ce7b988ab173a13f31227d417058ff4bbe6f8c222b4ad913c;
+    static constexpr ::apache::thrift::field_id_t id = 13;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_type(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_type();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_type();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_type();
       }
     };
-
-    struct value {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_value {
+    using name = __fbthrift_strings_module::__fbthrift_hash_cd42404d52ad55ccfa9aca4adc828aa5800ad9d385a0671fbcbf724118320619;
+    static constexpr ::apache::thrift::field_id_t id = 14;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_value(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_value();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_value();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_value();
       }
     };
-
-    struct value_to_name {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_value_to_name {
+    using name = __fbthrift_strings_module::__fbthrift_hash_144043bd95cdcc1f080ed3a117286f0b33b4738179cbcd0384c6ba14f086965e;
+    static constexpr ::apache::thrift::field_id_t id = 15;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_value_to_name(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_value_to_name();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_value_to_name();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_value_to_name();
       }
     };
-
-    struct values {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_values {
+    using name = __fbthrift_strings_module::__fbthrift_hash_89445ea08b55421faa49919a5fd272e9a520f701b479d6084847e161ca5b7711;
+    static constexpr ::apache::thrift::field_id_t id = 16;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_values(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_values();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_values();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_values();
       }
     };
-
-    struct id {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_id {
+    using name = __fbthrift_strings_module::__fbthrift_hash_a56145270ce6b3bebd1dd012b73948677dd618d496488bc608a3cb43ce3547dd;
+    static constexpr ::apache::thrift::field_id_t id = 17;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_id(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_id();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_id();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_id();
       }
     };
-
-    struct ids {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_ids {
+    using name = __fbthrift_strings_module::__fbthrift_hash_23466067f626bf8a3ae1a39cdf81f31303220b331b5064c6e00662dcc34deaaf;
+    static constexpr ::apache::thrift::field_id_t id = 18;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_ids(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_ids();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_ids();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_ids();
       }
     };
-
-    struct descriptor {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_descriptor {
+    using name = __fbthrift_strings_module::__fbthrift_hash_194b520dc30384b3fc233e123778835e2adc362d91c6e33015ed3db2379d7ea1;
+    static constexpr ::apache::thrift::field_id_t id = 19;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_descriptor(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_descriptor();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_descriptor();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_descriptor();
       }
     };
-
-    struct descriptors {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_descriptors {
+    using name = __fbthrift_strings_module::__fbthrift_hash_12b2fdc0a0ffd6ce4b7d74d080cd8dcb1c60b6e8f365fb46ac511c46cc31f1c1;
+    static constexpr ::apache::thrift::field_id_t id = 20;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_descriptors(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_descriptors();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_descriptors();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_descriptors();
       }
     };
-
-    struct key {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_key {
+    using name = __fbthrift_strings_module::__fbthrift_hash_2c70e12b7a0646f92279f427c7b38e7334d8e5389cff167a1dc30e73f826b683;
+    static constexpr ::apache::thrift::field_id_t id = 21;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_key(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_key();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_key();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_key();
       }
     };
-
-    struct keys {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_keys {
+    using name = __fbthrift_strings_module::__fbthrift_hash_48a53f0774c8ceff574a1fdcb0d470dbd382b3db273cff4344b6d39d5379c923;
+    static constexpr ::apache::thrift::field_id_t id = 22;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_keys(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_keys();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_keys();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_keys();
       }
     };
-
-    struct annotation {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_annotation {
+    using name = __fbthrift_strings_module::__fbthrift_hash_82264186375a8f31cd4bf73c2862777622f7616b039abfb62fb7c7eea19f9d07;
+    static constexpr ::apache::thrift::field_id_t id = 23;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_annotation(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_annotation();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_annotation();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_annotation();
       }
     };
-
-    struct annotations {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_annotations {
+    using name = __fbthrift_strings_module::__fbthrift_hash_295df243c6a33994c30b6e16aea7ce6155a24b44514ec956d7a09ae0a4cb0411;
+    static constexpr ::apache::thrift::field_id_t id = 24;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_annotations(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_annotations();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_annotations();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_annotations();
       }
     };
-
-    struct member {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_member {
+    using name = __fbthrift_strings_module::__fbthrift_hash_e31ab643c44f7a0ec824b59d1194d60dac334200d845e61d2d289daa0f087ea4;
+    static constexpr ::apache::thrift::field_id_t id = 25;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_member(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_member();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_member();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_member();
       }
     };
-
-    struct members {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_members {
+    using name = __fbthrift_strings_module::__fbthrift_hash_17373ca1c7634a4be4a13861a891abd975ec916caab8f3dcf5142fa4997d0b96;
+    static constexpr ::apache::thrift::field_id_t id = 26;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_members(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_members();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_members();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_members();
       }
     };
-
-    struct field {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_field {
+    using name = __fbthrift_strings_module::__fbthrift_hash_c0d2856b74d0df05b9d4456b177950351bd88e98b77f12574dfb7a911acee0d0;
+    static constexpr ::apache::thrift::field_id_t id = 27;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_field(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_field();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_field();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_field();
       }
     };
-
-    struct fields {
-      decltype(auto) operator ()(union_with_special_names const &variant) const {
+  };
+  struct __fbthrift_member_fields {
+    using name = __fbthrift_strings_module::__fbthrift_hash_bfe5d697162d90298c67c1933908741be8395838aa230408e04710909c576806;
+    static constexpr ::apache::thrift::field_id_t id = 28;
+    using type_class = ::apache::thrift::type_class::integral;
+    struct setter {
+      template <typename... Args>
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant, Args &&...args) const {
+        return variant.set_fields(std::forward<Args>(args)...);
+      }
+    };
+    struct getter {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names const &variant) const {
         return variant.get_fields();
       }
-      decltype(auto) operator ()(union_with_special_names &variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &variant) const {
         return variant.mutable_fields();
       }
-      decltype(auto) operator ()(union_with_special_names &&variant) const {
+      decltype(auto) operator ()(::test_cpp2::cpp_reflection::union_with_special_names &&variant) const {
         return std::move(variant).move_fields();
       }
     };
   };
 
-  struct union_with_special_names__struct_unique_setters_list {
-    struct get {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_get(std::forward<Args>(args)...);
-      }
-    };
-
-    struct getter {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_getter(std::forward<Args>(args)...);
-      }
-    };
-
-    struct lists {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_lists(std::forward<Args>(args)...);
-      }
-    };
-
-    struct maps {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_maps(std::forward<Args>(args)...);
-      }
-    };
-
-    struct name {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_name(std::forward<Args>(args)...);
-      }
-    };
-
-    struct name_to_value {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_name_to_value(std::forward<Args>(args)...);
-      }
-    };
-
-    struct names {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_names(std::forward<Args>(args)...);
-      }
-    };
-
-    struct prefix_tree {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_prefix_tree(std::forward<Args>(args)...);
-      }
-    };
-
-    struct sets {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_sets(std::forward<Args>(args)...);
-      }
-    };
-
-    struct setter {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_setter(std::forward<Args>(args)...);
-      }
-    };
-
-    struct str {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_str(std::forward<Args>(args)...);
-      }
-    };
-
-    struct strings {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_strings(std::forward<Args>(args)...);
-      }
-    };
-
-    struct type {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_type(std::forward<Args>(args)...);
-      }
-    };
-
-    struct value {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_value(std::forward<Args>(args)...);
-      }
-    };
-
-    struct value_to_name {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_value_to_name(std::forward<Args>(args)...);
-      }
-    };
-
-    struct values {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_values(std::forward<Args>(args)...);
-      }
-    };
-
-    struct id {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_id(std::forward<Args>(args)...);
-      }
-    };
-
-    struct ids {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_ids(std::forward<Args>(args)...);
-      }
-    };
-
-    struct descriptor {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_descriptor(std::forward<Args>(args)...);
-      }
-    };
-
-    struct descriptors {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_descriptors(std::forward<Args>(args)...);
-      }
-    };
-
-    struct key {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_key(std::forward<Args>(args)...);
-      }
-    };
-
-    struct keys {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_keys(std::forward<Args>(args)...);
-      }
-    };
-
-    struct annotation {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_annotation(std::forward<Args>(args)...);
-      }
-    };
-
-    struct annotations {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_annotations(std::forward<Args>(args)...);
-      }
-    };
-
-    struct member {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_member(std::forward<Args>(args)...);
-      }
-    };
-
-    struct members {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_members(std::forward<Args>(args)...);
-      }
-    };
-
-    struct field {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_field(std::forward<Args>(args)...);
-      }
-    };
-
-    struct fields {
-      template <typename... Args>
-      decltype(auto) operator ()(union_with_special_names &variant, Args &&...args) const {
-        return variant.set_fields(std::forward<Args>(args)...);
-      }
-    };
-  };
-
-  public:
+ public:
   using type = ::test_cpp2::cpp_reflection::union_with_special_names;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::union_with_special_names;
+  using name = __fbthrift_strings_module::union_with_special_names;
   using id = type::Type;
-  using ids = union_with_special_names__struct_unique_identifiers_list;
+  using ids = __fbthrift_ids;
   using descriptors = ::fatal::list<
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::get,
-      union_with_special_names__struct_unique_getters_list::get,
-      union_with_special_names__struct_unique_setters_list::get,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get,
-        1,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::getter,
-      union_with_special_names__struct_unique_getters_list::getter,
-      union_with_special_names__struct_unique_setters_list::getter,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter,
-        2,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::lists,
-      union_with_special_names__struct_unique_getters_list::lists,
-      union_with_special_names__struct_unique_setters_list::lists,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::lists,
-        3,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::maps,
-      union_with_special_names__struct_unique_getters_list::maps,
-      union_with_special_names__struct_unique_setters_list::maps,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::maps,
-        4,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::name,
-      union_with_special_names__struct_unique_getters_list::name,
-      union_with_special_names__struct_unique_setters_list::name,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name,
-        5,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::name_to_value,
-      union_with_special_names__struct_unique_getters_list::name_to_value,
-      union_with_special_names__struct_unique_setters_list::name_to_value,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name_to_value,
-        6,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::names,
-      union_with_special_names__struct_unique_getters_list::names,
-      union_with_special_names__struct_unique_setters_list::names,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::names,
-        7,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::prefix_tree,
-      union_with_special_names__struct_unique_getters_list::prefix_tree,
-      union_with_special_names__struct_unique_setters_list::prefix_tree,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::prefix_tree,
-        8,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::sets,
-      union_with_special_names__struct_unique_getters_list::sets,
-      union_with_special_names__struct_unique_setters_list::sets,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sets,
-        9,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::setter,
-      union_with_special_names__struct_unique_getters_list::setter,
-      union_with_special_names__struct_unique_setters_list::setter,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::setter,
-        10,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::str,
-      union_with_special_names__struct_unique_getters_list::str,
-      union_with_special_names__struct_unique_setters_list::str,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::str,
-        11,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::strings,
-      union_with_special_names__struct_unique_getters_list::strings,
-      union_with_special_names__struct_unique_setters_list::strings,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::strings,
-        12,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::type,
-      union_with_special_names__struct_unique_getters_list::type,
-      union_with_special_names__struct_unique_setters_list::type,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::type,
-        13,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::value,
-      union_with_special_names__struct_unique_getters_list::value,
-      union_with_special_names__struct_unique_setters_list::value,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value,
-        14,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::value_to_name,
-      union_with_special_names__struct_unique_getters_list::value_to_name,
-      union_with_special_names__struct_unique_setters_list::value_to_name,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value_to_name,
-        15,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::values,
-      union_with_special_names__struct_unique_getters_list::values,
-      union_with_special_names__struct_unique_setters_list::values,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::values,
-        16,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::id,
-      union_with_special_names__struct_unique_getters_list::id,
-      union_with_special_names__struct_unique_setters_list::id,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::id,
-        17,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::ids,
-      union_with_special_names__struct_unique_getters_list::ids,
-      union_with_special_names__struct_unique_setters_list::ids,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ids,
-        18,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::descriptor,
-      union_with_special_names__struct_unique_getters_list::descriptor,
-      union_with_special_names__struct_unique_setters_list::descriptor,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptor,
-        19,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::descriptors,
-      union_with_special_names__struct_unique_getters_list::descriptors,
-      union_with_special_names__struct_unique_setters_list::descriptors,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptors,
-        20,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::key,
-      union_with_special_names__struct_unique_getters_list::key,
-      union_with_special_names__struct_unique_setters_list::key,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::key,
-        21,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::keys,
-      union_with_special_names__struct_unique_getters_list::keys,
-      union_with_special_names__struct_unique_setters_list::keys,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::keys,
-        22,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::annotation,
-      union_with_special_names__struct_unique_getters_list::annotation,
-      union_with_special_names__struct_unique_setters_list::annotation,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotation,
-        23,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::annotations,
-      union_with_special_names__struct_unique_getters_list::annotations,
-      union_with_special_names__struct_unique_setters_list::annotations,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations,
-        24,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::member,
-      union_with_special_names__struct_unique_getters_list::member,
-      union_with_special_names__struct_unique_setters_list::member,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member,
-        25,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::members,
-      union_with_special_names__struct_unique_getters_list::members,
-      union_with_special_names__struct_unique_setters_list::members,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members,
-        26,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::field,
-      union_with_special_names__struct_unique_getters_list::field,
-      union_with_special_names__struct_unique_setters_list::field,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field,
-        27,
-        ::apache::thrift::type_class::integral
-      >
-    >,
-    ::fatal::variant_member_descriptor<
-      int32_t,
-      union_with_special_names__struct_unique_identifiers_list::fields,
-      union_with_special_names__struct_unique_getters_list::fields,
-      union_with_special_names__struct_unique_setters_list::fields,
-      ::apache::thrift::reflected_variant_member_metadata<
-        thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fields,
-        28,
-        ::apache::thrift::type_class::integral
-      >
-    >
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::get,
+          __fbthrift_member_get::getter,
+          __fbthrift_member_get::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_get>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::getter,
+          __fbthrift_member_getter::getter,
+          __fbthrift_member_getter::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_getter>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::lists,
+          __fbthrift_member_lists::getter,
+          __fbthrift_member_lists::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_lists>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::maps,
+          __fbthrift_member_maps::getter,
+          __fbthrift_member_maps::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_maps>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::name,
+          __fbthrift_member_name::getter,
+          __fbthrift_member_name::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_name>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::name_to_value,
+          __fbthrift_member_name_to_value::getter,
+          __fbthrift_member_name_to_value::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_name_to_value>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::names,
+          __fbthrift_member_names::getter,
+          __fbthrift_member_names::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_names>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::prefix_tree,
+          __fbthrift_member_prefix_tree::getter,
+          __fbthrift_member_prefix_tree::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_prefix_tree>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::sets,
+          __fbthrift_member_sets::getter,
+          __fbthrift_member_sets::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_sets>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::setter,
+          __fbthrift_member_setter::getter,
+          __fbthrift_member_setter::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_setter>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::str,
+          __fbthrift_member_str::getter,
+          __fbthrift_member_str::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_str>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::strings,
+          __fbthrift_member_strings::getter,
+          __fbthrift_member_strings::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_strings>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::type,
+          __fbthrift_member_type::getter,
+          __fbthrift_member_type::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_type>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::value,
+          __fbthrift_member_value::getter,
+          __fbthrift_member_value::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_value>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::value_to_name,
+          __fbthrift_member_value_to_name::getter,
+          __fbthrift_member_value_to_name::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_value_to_name>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::values,
+          __fbthrift_member_values::getter,
+          __fbthrift_member_values::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_values>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::id,
+          __fbthrift_member_id::getter,
+          __fbthrift_member_id::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_id>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::ids,
+          __fbthrift_member_ids::getter,
+          __fbthrift_member_ids::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_ids>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::descriptor,
+          __fbthrift_member_descriptor::getter,
+          __fbthrift_member_descriptor::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_descriptor>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::descriptors,
+          __fbthrift_member_descriptors::getter,
+          __fbthrift_member_descriptors::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_descriptors>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::key,
+          __fbthrift_member_key::getter,
+          __fbthrift_member_key::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_key>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::keys,
+          __fbthrift_member_keys::getter,
+          __fbthrift_member_keys::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_keys>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::annotation,
+          __fbthrift_member_annotation::getter,
+          __fbthrift_member_annotation::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_annotation>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::annotations,
+          __fbthrift_member_annotations::getter,
+          __fbthrift_member_annotations::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_annotations>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::member,
+          __fbthrift_member_member::getter,
+          __fbthrift_member_member::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_member>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::members,
+          __fbthrift_member_members::getter,
+          __fbthrift_member_members::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_members>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::field,
+          __fbthrift_member_field::getter,
+          __fbthrift_member_field::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_field>>,
+      ::fatal::variant_member_descriptor<
+          ::std::int32_t,
+           __fbthrift_ids::fields,
+          __fbthrift_member_fields::getter,
+          __fbthrift_member_fields::setter,
+          ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_fields>>
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static id get_id(type const &variant) {
     return variant.getType();
@@ -2611,46 +2004,86 @@ class union_with_special_names_variant_traits {
     return variant.__clear();
   }
 };
+} // __fbthrift_refl
 
-} // thrift_fatal_impl_detail
-FATAL_REGISTER_VARIANT_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits,
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::union1_tenum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union1_variant_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(7384876196182105420ull)
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::union1_tenum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
 FATAL_REGISTER_VARIANT_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union2_variant_traits,
+  __fbthrift_refl::union1_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union2_variant_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(16722894251049030828ull)
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::union1_variant_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(7384876196182105420ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::union2_tenum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::union2_tenum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
 FATAL_REGISTER_VARIANT_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union3_variant_traits,
+  __fbthrift_refl::union2_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union3_variant_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(12878995471701578764ull)
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::union2_variant_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(16722894251049030828ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::union3_tenum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::union3_tenum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
 FATAL_REGISTER_VARIANT_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::unionA_variant_traits,
+  __fbthrift_refl::union3_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::unionA_variant_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(7943717058393504940ull)
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::union3_variant_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(12878995471701578764ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::unionA_tenum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::unionA_tenum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(0ull)
   >
 );
 FATAL_REGISTER_VARIANT_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union_with_special_names_variant_traits,
+  __fbthrift_refl::unionA_variant_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::union_with_special_names_variant_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(7581402120603624460ull)
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::unionA_variant_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(7943717058393504940ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::union_with_special_names_tenum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::union_with_special_names_tenum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(0ull)
+  >
+);
+FATAL_REGISTER_VARIANT_TRAITS(
+  __fbthrift_refl::union_with_special_names_variant_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::union_with_special_names_variant_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(7581402120603624460ull)
   >
 );
 }} // test_cpp2::cpp_reflection

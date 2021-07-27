@@ -66,14 +66,15 @@ void ThriftClient::setHTTPUrl(const std::string& url) {
 
 void ThriftClient::sendRequestResponse(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
-  auto buf =
-      LegacySerializedRequest(
-          header->getProtocolId(), methodName, std::move(serializedRequest))
-          .buffer;
+  auto buf = LegacySerializedRequest(
+                 header->getProtocolId(),
+                 methodMetadata.name_view(),
+                 std::move(serializedRequest))
+                 .buffer;
 
   return sendRequestHelper(
       rpcOptions,
@@ -85,14 +86,15 @@ void ThriftClient::sendRequestResponse(
 
 void ThriftClient::sendRequestNoResponse(
     const RpcOptions& rpcOptions,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& serializedRequest,
     std::shared_ptr<THeader> header,
     RequestClientCallback::Ptr cb) {
-  auto buf =
-      LegacySerializedRequest(
-          header->getProtocolId(), methodName, std::move(serializedRequest))
-          .buffer;
+  auto buf = LegacySerializedRequest(
+                 header->getProtocolId(),
+                 methodMetadata.name_view(),
+                 std::move(serializedRequest))
+                 .buffer;
 
   sendRequestHelper(
       rpcOptions,
@@ -108,6 +110,7 @@ ThriftClient::createRequestMetadata(
     RpcKind kind,
     apache::thrift::ProtocolId protocolId,
     THeader* header) {
+  preprocessHeader(header);
   auto requestMetadata = std::make_unique<ThriftChannelIf::RequestMetadata>();
   auto& metadata = requestMetadata->requestRpcMetadata;
   metadata.protocol_ref() = protocolId;
@@ -121,7 +124,7 @@ ThriftClient::createRequestMetadata(
   if (rpcOptions.getTimeout() > std::chrono::milliseconds(0)) {
     metadata.clientTimeoutMs_ref() = rpcOptions.getTimeout().count();
   } else {
-    metadata.clientTimeoutMs_ref() = kDefaultRpcTimeout.count();
+    metadata.clientTimeoutMs_ref() = connection_->getTimeout();
   }
   if (rpcOptions.getQueueTimeout() > std::chrono::milliseconds(0)) {
     metadata.queueTimeoutMs_ref() = rpcOptions.getQueueTimeout().count();
@@ -135,8 +138,8 @@ ThriftClient::createRequestMetadata(
   }
   auto otherMetadata = metadata.otherMetadata_ref();
   otherMetadata = header->releaseWriteHeaders();
-  auto clientId = header->releaseClientId();
-  auto serviceTraceMeta = header->releaseServiceTraceMeta();
+  auto clientId = header->clientId();
+  auto serviceTraceMeta = header->serviceTraceMeta();
   if (clientId.has_value()) {
     (*otherMetadata)[transport::THeader::kClientId] = std::move(*clientId);
   }
@@ -154,8 +157,6 @@ ThriftClient::createRequestMetadata(
       (*otherMetadata)[entry.first] = entry.second;
     }
   }
-  auto& pwh = getPersistentWriteHeaders();
-  otherMetadata->insert(pwh.begin(), pwh.end());
   if (otherMetadata->empty()) {
     otherMetadata.reset();
   }

@@ -29,8 +29,8 @@ class Foo implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => int,
-    ?'b' => string,
+    ?'a' => ?int,
+    ?'b' => ?string,
   );
 
   const int STRUCTURAL_ID = 5526046231048010857;
@@ -45,55 +45,74 @@ class Foo implements \IThriftStruct {
    */
   public string $b;
 
-  <<__Rx>>
-  public function __construct(<<__Soft>> KeyedContainer<string, mixed> $vals = dict[]) {
-    $this->a = (int)(idx($vals, 'a') ?? 0);
-    $this->b = (string)(idx($vals, 'b') ?? '');
+  public function __construct(?int $a = null, ?string $b = null  )[] {
+    $this->a = $a ?? 0;
+    $this->b = $b ?? '';
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
-      Map {
-        'a' => Shapes::idx($shape, 'a'),
-        'b' => Shapes::idx($shape, 'b'),
-      },
+      Shapes::idx($shape, 'a'),
+      Shapes::idx($shape, 'b'),
     );
   }
 
-  <<__Rx>>
-  public static function fromMap_DEPRECATED(<<__Soft>> KeyedContainer<string, mixed> $map = dict[]): this {
-    return new static($map);
+  public static function fromMap_DEPRECATED(<<__Soft>> KeyedContainer<string, mixed> $map)[]: this {
+    return new static(
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'a'),
+      /* HH_FIXME[4110] For backwards compatibility with map's mixed values. */
+      idx($map, 'b'),
+    );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Foo';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Foo",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "a",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "b",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }

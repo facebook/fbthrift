@@ -106,13 +106,10 @@ enum class ExampleEnum {
 
 
 }}} // test::fixtures::tablebased
+
 namespace std {
-
-
-template<> struct hash<typename ::test::fixtures::tablebased::ExampleEnum> : public apache::thrift::detail::enum_hash<typename ::test::fixtures::tablebased::ExampleEnum> {};
-template<> struct equal_to<typename ::test::fixtures::tablebased::ExampleEnum> : public apache::thrift::detail::enum_equal_to<typename ::test::fixtures::tablebased::ExampleEnum> {};
-
-
+template<> struct hash<::test::fixtures::tablebased::ExampleEnum> :
+  ::apache::thrift::detail::enum_hash<::test::fixtures::tablebased::ExampleEnum> {};
 } // std
 
 namespace apache { namespace thrift {
@@ -163,7 +160,13 @@ typedef std::unique_ptr<folly::IOBuf> IOBufPtr;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace test { namespace fixtures { namespace tablebased {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class TrivialTypesStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -171,6 +174,7 @@ class TrivialTypesStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = TrivialTypesStruct;
@@ -181,35 +185,33 @@ class TrivialTypesStruct final  {
  public:
 
   TrivialTypesStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  TrivialTypesStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std::string fieldB__arg, ::std::string fieldC__arg,  ::test::fixtures::tablebased::IOBufPtr fieldD__arg,  ::test::fixtures::tablebased::ExampleEnum fieldE__arg);
+  TrivialTypesStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::std::string fieldC__arg, ::test::fixtures::tablebased::IOBufPtr fieldD__arg, ::test::fixtures::tablebased::ExampleEnum fieldE__arg);
 
-  TrivialTypesStruct(TrivialTypesStruct&&) = default;
+  TrivialTypesStruct(TrivialTypesStruct&&) noexcept;
   TrivialTypesStruct(const TrivialTypesStruct& src);
 
 
-  TrivialTypesStruct& operator=(TrivialTypesStruct&&) = default;
+  TrivialTypesStruct& operator=(TrivialTypesStruct&&) noexcept;
   TrivialTypesStruct& operator=(const TrivialTypesStruct& src);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
 
   ~TrivialTypesStruct();
 
  private:
-  int32_t fieldA;
+  ::std::int32_t fieldA;
  private:
   ::std::string fieldB;
  private:
   ::std::string fieldC;
  public:
-   ::test::fixtures::tablebased::IOBufPtr fieldD;
+  ::test::fixtures::tablebased::IOBufPtr fieldD;
  private:
-   ::test::fixtures::tablebased::ExampleEnum fieldE;
+  ::test::fixtures::tablebased::ExampleEnum fieldE;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -218,48 +220,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool fieldD;
     bool fieldE;
   } __isset = {};
-  bool operator==(const TrivialTypesStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const TrivialTypesStruct& __x, const TrivialTypesStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const TrivialTypesStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const TrivialTypesStruct& __x, const TrivialTypesStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const TrivialTypesStruct& __x, const TrivialTypesStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const TrivialTypesStruct& __x, const TrivialTypesStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+ public:
+
+  bool operator==(const TrivialTypesStruct&) const;
+  bool operator<(const TrivialTypesStruct&) const;
+
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> fieldA_ref() const&& {
     return {std::move(this->fieldA), __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> fieldA_ref() & {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> fieldB_ref() const& {
     return {this->fieldB, __isset.fieldB};
@@ -279,9 +265,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> fieldB_ref() && {
     return {std::move(this->fieldB), __isset.fieldB};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> fieldC_ref() const& {
     return {this->fieldC, __isset.fieldC};
@@ -301,66 +285,60 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> fieldC_ref() && {
     return {std::move(this->fieldC), __isset.fieldC};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::test::fixtures::tablebased::IOBufPtr>
+  template <typename..., typename T = ::test::fixtures::tablebased::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> fieldD_ref() const& {
     return {this->fieldD, __isset.fieldD};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::IOBufPtr>
+  template <typename..., typename T = ::test::fixtures::tablebased::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> fieldD_ref() const&& {
     return {std::move(this->fieldD), __isset.fieldD};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::IOBufPtr>
+  template <typename..., typename T = ::test::fixtures::tablebased::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> fieldD_ref() & {
     return {this->fieldD, __isset.fieldD};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::IOBufPtr>
+  template <typename..., typename T = ::test::fixtures::tablebased::IOBufPtr>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> fieldD_ref() && {
     return {std::move(this->fieldD), __isset.fieldD};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::test::fixtures::tablebased::ExampleEnum>
+  template <typename..., typename T = ::test::fixtures::tablebased::ExampleEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldE_ref() const& {
     return {this->fieldE, __isset.fieldE};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::ExampleEnum>
+  template <typename..., typename T = ::test::fixtures::tablebased::ExampleEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldE_ref() const&& {
     return {std::move(this->fieldE), __isset.fieldE};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::ExampleEnum>
+  template <typename..., typename T = ::test::fixtures::tablebased::ExampleEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldE_ref() & {
     return {this->fieldE, __isset.fieldE};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::ExampleEnum>
+  template <typename..., typename T = ::test::fixtures::tablebased::ExampleEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE_ref() && {
     return {std::move(this->fieldE), __isset.fieldE};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  const int32_t* get_fieldA() const& {
+  const ::std::int32_t* get_fieldA() const& {
     return fieldA_ref() ? std::addressof(fieldA) : nullptr;
   }
 
-  int32_t* get_fieldA() & {
+  ::std::int32_t* get_fieldA() & {
     return fieldA_ref() ? std::addressof(fieldA) : nullptr;
   }
-  int32_t* get_fieldA() && = delete;
+  ::std::int32_t* get_fieldA() && = delete;
 
-  int32_t& set_fieldA(int32_t fieldA_) {
+  [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
+  ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldA;
   }
 
@@ -374,11 +352,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::std::string* get_fieldB() && = delete;
 
   template <typename T_TrivialTypesStruct_fieldB_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
   ::std::string& set_fieldB(T_TrivialTypesStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_TrivialTypesStruct_fieldB_struct_setter>(fieldB_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldB = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldB;
   }
 
@@ -392,41 +369,38 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::std::string* get_fieldC() && = delete;
 
   template <typename T_TrivialTypesStruct_fieldC_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
   ::std::string& set_fieldC(T_TrivialTypesStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_TrivialTypesStruct_fieldC_struct_setter>(fieldC_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldC = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldC;
   }
 
-  const  ::test::fixtures::tablebased::IOBufPtr* get_fieldD() const& {
+  const ::test::fixtures::tablebased::IOBufPtr* get_fieldD() const& {
     return fieldD_ref() ? std::addressof(fieldD) : nullptr;
   }
 
-   ::test::fixtures::tablebased::IOBufPtr* get_fieldD() & {
+  ::test::fixtures::tablebased::IOBufPtr* get_fieldD() & {
     return fieldD_ref() ? std::addressof(fieldD) : nullptr;
   }
-   ::test::fixtures::tablebased::IOBufPtr* get_fieldD() && = delete;
+  ::test::fixtures::tablebased::IOBufPtr* get_fieldD() && = delete;
 
-  template <typename T_TrivialTypesStruct_fieldD_struct_setter =  ::test::fixtures::tablebased::IOBufPtr>
-   ::test::fixtures::tablebased::IOBufPtr& set_fieldD(T_TrivialTypesStruct_fieldD_struct_setter&& fieldD_) {
+  template <typename T_TrivialTypesStruct_fieldD_struct_setter = ::test::fixtures::tablebased::IOBufPtr>
+  [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
+  ::test::fixtures::tablebased::IOBufPtr& set_fieldD(T_TrivialTypesStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_TrivialTypesStruct_fieldD_struct_setter>(fieldD_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldD = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldD;
   }
 
-   ::test::fixtures::tablebased::ExampleEnum get_fieldE() const {
+  ::test::fixtures::tablebased::ExampleEnum get_fieldE() const {
     return fieldE;
   }
 
-   ::test::fixtures::tablebased::ExampleEnum& set_fieldE( ::test::fixtures::tablebased::ExampleEnum fieldE_) {
+  [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
+  ::test::fixtures::tablebased::ExampleEnum& set_fieldE(::test::fixtures::tablebased::ExampleEnum fieldE_) {
     fieldE = fieldE_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldE = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldE;
   }
 
@@ -443,7 +417,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< TrivialTypesStruct >;
+  friend class ::apache::thrift::Cpp2Ops<TrivialTypesStruct>;
   friend void swap(TrivialTypesStruct& a, TrivialTypesStruct& b);
   friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<TrivialTypesStruct>)(std::int16_t fieldIndex);
   friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<TrivialTypesStruct>)(std::int16_t fieldIndex);
@@ -458,6 +432,11 @@ uint32_t TrivialTypesStruct::read(Protocol_* iprot) {
 
 }}} // test::fixtures::tablebased
 namespace test { namespace fixtures { namespace tablebased {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class ContainerStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -465,6 +444,7 @@ class ContainerStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = ContainerStruct;
@@ -475,43 +455,40 @@ class ContainerStruct final  {
  public:
 
   ContainerStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, ::std::string> fieldG__arg, ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct> fieldH__arg);
+  ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, folly::sorted_vector_set<::std::int32_t> fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> fieldH__arg);
 
-  ContainerStruct(ContainerStruct&&) = default;
+  ContainerStruct(ContainerStruct&&) noexcept;
 
-  ContainerStruct(const ContainerStruct&) = default;
+  ContainerStruct(const ContainerStruct& src);
 
 
-  ContainerStruct& operator=(ContainerStruct&&) = default;
-
-  ContainerStruct& operator=(const ContainerStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  ContainerStruct& operator=(ContainerStruct&&) noexcept;
+  ContainerStruct& operator=(const ContainerStruct& src);
   void __clear();
 
   ~ContainerStruct();
 
  private:
-  ::std::vector<int32_t> fieldA;
+  ::std::vector<::std::int32_t> fieldA;
  private:
-  std::list<int32_t> fieldB;
+  std::list<::std::int32_t> fieldB;
  private:
-  std::deque<int32_t> fieldC;
+  std::deque<::std::int32_t> fieldC;
  private:
-  folly::fbvector<int32_t> fieldD;
+  folly::fbvector<::std::int32_t> fieldD;
  private:
-  folly::small_vector<int32_t> fieldE;
+  folly::small_vector<::std::int32_t> fieldE;
  private:
-  folly::sorted_vector_set<int32_t> fieldF;
+  folly::sorted_vector_set<::std::int32_t> fieldF;
  private:
-  folly::sorted_vector_map<int32_t, ::std::string> fieldG;
+  folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG;
  private:
-  ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct> fieldH;
+  ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> fieldH;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
@@ -523,286 +500,249 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool fieldG;
     bool fieldH;
   } __isset = {};
-  bool operator==(const ContainerStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ContainerStruct& __x, const ContainerStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const ContainerStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ContainerStruct& __x, const ContainerStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ContainerStruct& __x, const ContainerStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ContainerStruct& __x, const ContainerStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector<int32_t>>
+ public:
+
+  bool operator==(const ContainerStruct&) const;
+  bool operator<(const ContainerStruct&) const;
+
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA_ref() const&& {
     return {std::move(this->fieldA), __isset.fieldA};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA_ref() & {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = ::std::vector<int32_t>>
+  template <typename..., typename T = ::std::vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldB_ref() const& {
     return {this->fieldB, __isset.fieldB};
   }
 
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldB_ref() const&& {
     return {std::move(this->fieldB), __isset.fieldB};
   }
 
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldB_ref() & {
     return {this->fieldB, __isset.fieldB};
   }
 
-  template <typename..., typename T = std::list<int32_t>>
+  template <typename..., typename T = std::list<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldB_ref() && {
     return {std::move(this->fieldB), __isset.fieldB};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = std::deque<int32_t>>
+  template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldC_ref() const& {
     return {this->fieldC, __isset.fieldC};
   }
 
-  template <typename..., typename T = std::deque<int32_t>>
+  template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldC_ref() const&& {
     return {std::move(this->fieldC), __isset.fieldC};
   }
 
-  template <typename..., typename T = std::deque<int32_t>>
+  template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldC_ref() & {
     return {this->fieldC, __isset.fieldC};
   }
 
-  template <typename..., typename T = std::deque<int32_t>>
+  template <typename..., typename T = std::deque<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldC_ref() && {
     return {std::move(this->fieldC), __isset.fieldC};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = folly::fbvector<int32_t>>
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldD_ref() const& {
     return {this->fieldD, __isset.fieldD};
   }
 
-  template <typename..., typename T = folly::fbvector<int32_t>>
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldD_ref() const&& {
     return {std::move(this->fieldD), __isset.fieldD};
   }
 
-  template <typename..., typename T = folly::fbvector<int32_t>>
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldD_ref() & {
     return {this->fieldD, __isset.fieldD};
   }
 
-  template <typename..., typename T = folly::fbvector<int32_t>>
+  template <typename..., typename T = folly::fbvector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldD_ref() && {
     return {std::move(this->fieldD), __isset.fieldD};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = folly::small_vector<int32_t>>
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldE_ref() const& {
     return {this->fieldE, __isset.fieldE};
   }
 
-  template <typename..., typename T = folly::small_vector<int32_t>>
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldE_ref() const&& {
     return {std::move(this->fieldE), __isset.fieldE};
   }
 
-  template <typename..., typename T = folly::small_vector<int32_t>>
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldE_ref() & {
     return {this->fieldE, __isset.fieldE};
   }
 
-  template <typename..., typename T = folly::small_vector<int32_t>>
+  template <typename..., typename T = folly::small_vector<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldE_ref() && {
     return {std::move(this->fieldE), __isset.fieldE};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = folly::sorted_vector_set<int32_t>>
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldF_ref() const& {
     return {this->fieldF, __isset.fieldF};
   }
 
-  template <typename..., typename T = folly::sorted_vector_set<int32_t>>
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldF_ref() const&& {
     return {std::move(this->fieldF), __isset.fieldF};
   }
 
-  template <typename..., typename T = folly::sorted_vector_set<int32_t>>
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldF_ref() & {
     return {this->fieldF, __isset.fieldF};
   }
 
-  template <typename..., typename T = folly::sorted_vector_set<int32_t>>
+  template <typename..., typename T = folly::sorted_vector_set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldF_ref() && {
     return {std::move(this->fieldF), __isset.fieldF};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = folly::sorted_vector_map<int32_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldG_ref() const& {
     return {this->fieldG, __isset.fieldG};
   }
 
-  template <typename..., typename T = folly::sorted_vector_map<int32_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldG_ref() const&& {
     return {std::move(this->fieldG), __isset.fieldG};
   }
 
-  template <typename..., typename T = folly::sorted_vector_map<int32_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldG_ref() & {
     return {this->fieldG, __isset.fieldG};
   }
 
-  template <typename..., typename T = folly::sorted_vector_map<int32_t, ::std::string>>
+  template <typename..., typename T = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldG_ref() && {
     return {std::move(this->fieldG), __isset.fieldG};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>>
+  template <typename..., typename T = ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldH_ref() const& {
     return {this->fieldH, __isset.fieldH};
   }
 
-  template <typename..., typename T = ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>>
+  template <typename..., typename T = ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldH_ref() const&& {
     return {std::move(this->fieldH), __isset.fieldH};
   }
 
-  template <typename..., typename T = ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>>
+  template <typename..., typename T = ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldH_ref() & {
     return {this->fieldH, __isset.fieldH};
   }
 
-  template <typename..., typename T = ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>>
+  template <typename..., typename T = ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldH_ref() && {
     return {std::move(this->fieldH), __isset.fieldH};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  const ::std::vector<int32_t>& get_fieldA() const&;
-  ::std::vector<int32_t> get_fieldA() &&;
+  const ::std::vector<::std::int32_t>& get_fieldA() const&;
+  ::std::vector<::std::int32_t> get_fieldA() &&;
 
-  template <typename T_ContainerStruct_fieldA_struct_setter = ::std::vector<int32_t>>
-  ::std::vector<int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
+  template <typename T_ContainerStruct_fieldA_struct_setter = ::std::vector<::std::int32_t>>
+  [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
+  ::std::vector<::std::int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
     fieldA = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldA;
   }
-  const std::list<int32_t>& get_fieldB() const&;
-  std::list<int32_t> get_fieldB() &&;
+  const std::list<::std::int32_t>& get_fieldB() const&;
+  std::list<::std::int32_t> get_fieldB() &&;
 
-  template <typename T_ContainerStruct_fieldB_struct_setter = std::list<int32_t>>
-  std::list<int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
+  template <typename T_ContainerStruct_fieldB_struct_setter = std::list<::std::int32_t>>
+  [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
+  std::list<::std::int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_ContainerStruct_fieldB_struct_setter>(fieldB_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldB = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldB;
   }
-  const std::deque<int32_t>& get_fieldC() const&;
-  std::deque<int32_t> get_fieldC() &&;
+  const std::deque<::std::int32_t>& get_fieldC() const&;
+  std::deque<::std::int32_t> get_fieldC() &&;
 
-  template <typename T_ContainerStruct_fieldC_struct_setter = std::deque<int32_t>>
-  std::deque<int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
+  template <typename T_ContainerStruct_fieldC_struct_setter = std::deque<::std::int32_t>>
+  [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
+  std::deque<::std::int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_ContainerStruct_fieldC_struct_setter>(fieldC_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldC = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldC;
   }
-  const folly::fbvector<int32_t>& get_fieldD() const&;
-  folly::fbvector<int32_t> get_fieldD() &&;
+  const folly::fbvector<::std::int32_t>& get_fieldD() const&;
+  folly::fbvector<::std::int32_t> get_fieldD() &&;
 
-  template <typename T_ContainerStruct_fieldD_struct_setter = folly::fbvector<int32_t>>
-  folly::fbvector<int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
+  template <typename T_ContainerStruct_fieldD_struct_setter = folly::fbvector<::std::int32_t>>
+  [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
+  folly::fbvector<::std::int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_ContainerStruct_fieldD_struct_setter>(fieldD_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldD = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldD;
   }
-  const folly::small_vector<int32_t>& get_fieldE() const&;
-  folly::small_vector<int32_t> get_fieldE() &&;
+  const folly::small_vector<::std::int32_t>& get_fieldE() const&;
+  folly::small_vector<::std::int32_t> get_fieldE() &&;
 
-  template <typename T_ContainerStruct_fieldE_struct_setter = folly::small_vector<int32_t>>
-  folly::small_vector<int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
+  template <typename T_ContainerStruct_fieldE_struct_setter = folly::small_vector<::std::int32_t>>
+  [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
+  folly::small_vector<::std::int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_ContainerStruct_fieldE_struct_setter>(fieldE_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldE = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldE;
   }
-  const folly::sorted_vector_set<int32_t>& get_fieldF() const&;
-  folly::sorted_vector_set<int32_t> get_fieldF() &&;
+  const folly::sorted_vector_set<::std::int32_t>& get_fieldF() const&;
+  folly::sorted_vector_set<::std::int32_t> get_fieldF() &&;
 
-  template <typename T_ContainerStruct_fieldF_struct_setter = folly::sorted_vector_set<int32_t>>
-  folly::sorted_vector_set<int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
+  template <typename T_ContainerStruct_fieldF_struct_setter = folly::sorted_vector_set<::std::int32_t>>
+  [[deprecated("Use `FOO.fieldF_ref() = BAR;` instead of `FOO.set_fieldF(BAR);`")]]
+  folly::sorted_vector_set<::std::int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_ContainerStruct_fieldF_struct_setter>(fieldF_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldF = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldF;
   }
-  const folly::sorted_vector_map<int32_t, ::std::string>& get_fieldG() const&;
-  folly::sorted_vector_map<int32_t, ::std::string> get_fieldG() &&;
+  const folly::sorted_vector_map<::std::int32_t, ::std::string>& get_fieldG() const&;
+  folly::sorted_vector_map<::std::int32_t, ::std::string> get_fieldG() &&;
 
-  template <typename T_ContainerStruct_fieldG_struct_setter = folly::sorted_vector_map<int32_t, ::std::string>>
-  folly::sorted_vector_map<int32_t, ::std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
+  template <typename T_ContainerStruct_fieldG_struct_setter = folly::sorted_vector_map<::std::int32_t, ::std::string>>
+  [[deprecated("Use `FOO.fieldG_ref() = BAR;` instead of `FOO.set_fieldG(BAR);`")]]
+  folly::sorted_vector_map<::std::int32_t, ::std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldG = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldG;
   }
-  const ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>& get_fieldH() const&;
-  ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct> get_fieldH() &&;
+  const ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>& get_fieldH() const&;
+  ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> get_fieldH() &&;
 
-  template <typename T_ContainerStruct_fieldH_struct_setter = ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>>
-  ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>& set_fieldH(T_ContainerStruct_fieldH_struct_setter&& fieldH_) {
+  template <typename T_ContainerStruct_fieldH_struct_setter = ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>
+  [[deprecated("Use `FOO.fieldH_ref() = BAR;` instead of `FOO.set_fieldH(BAR);`")]]
+  ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>& set_fieldH(T_ContainerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_ContainerStruct_fieldH_struct_setter>(fieldH_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldH = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldH;
   }
 
@@ -819,7 +759,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ContainerStruct >;
+  friend class ::apache::thrift::Cpp2Ops<ContainerStruct>;
   friend void swap(ContainerStruct& a, ContainerStruct& b);
   friend constexpr ptrdiff_t (::apache::thrift::detail::fieldOffset<ContainerStruct>)(std::int16_t fieldIndex);
   friend constexpr ptrdiff_t (::apache::thrift::detail::issetOffset<ContainerStruct>)(std::int16_t fieldIndex);
@@ -834,6 +774,11 @@ uint32_t ContainerStruct::read(Protocol_* iprot) {
 
 }}} // test::fixtures::tablebased
 namespace test { namespace fixtures { namespace tablebased {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class ExampleUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -841,6 +786,7 @@ class ExampleUnion final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = ExampleUnion;
@@ -858,7 +804,7 @@ class ExampleUnion final  {
   ExampleUnion()
       : type_(Type::__EMPTY__) {}
 
-  ExampleUnion(ExampleUnion&& rhs)
+  ExampleUnion(ExampleUnion&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -905,7 +851,7 @@ class ExampleUnion final  {
     }
   }
 
-  ExampleUnion& operator=(ExampleUnion&& rhs) {
+  ExampleUnion& operator=(ExampleUnion&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -959,138 +905,127 @@ class ExampleUnion final  {
     __clear();
   }
   union storage_type {
-     ::test::fixtures::tablebased::ContainerStruct fieldA;
-     ::test::fixtures::tablebased::TrivialTypesStruct fieldB;
+    ::test::fixtures::tablebased::ContainerStruct fieldA;
+    ::test::fixtures::tablebased::TrivialTypesStruct fieldB;
 
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const ExampleUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ExampleUnion& __x, const ExampleUnion& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const ExampleUnion& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ExampleUnion& __x, const ExampleUnion& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ExampleUnion& __x, const ExampleUnion& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ExampleUnion& __x, const ExampleUnion& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-   ::test::fixtures::tablebased::ContainerStruct& set_fieldA( ::test::fixtures::tablebased::ContainerStruct const &t) {
+  bool operator==(const ExampleUnion&) const;
+  bool operator<(const ExampleUnion&) const;
+
+  ::test::fixtures::tablebased::ContainerStruct& set_fieldA(::test::fixtures::tablebased::ContainerStruct const &t) {
     __clear();
     type_ = Type::fieldA;
-    ::new (std::addressof(value_.fieldA))  ::test::fixtures::tablebased::ContainerStruct(t);
+    ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(t);
     return value_.fieldA;
   }
 
-   ::test::fixtures::tablebased::ContainerStruct& set_fieldA( ::test::fixtures::tablebased::ContainerStruct&& t) {
+  ::test::fixtures::tablebased::ContainerStruct& set_fieldA(::test::fixtures::tablebased::ContainerStruct&& t) {
     __clear();
     type_ = Type::fieldA;
-    ::new (std::addressof(value_.fieldA))  ::test::fixtures::tablebased::ContainerStruct(std::move(t));
+    ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(std::move(t));
     return value_.fieldA;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::test::fixtures::tablebased::ContainerStruct, T...>>  ::test::fixtures::tablebased::ContainerStruct& set_fieldA(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::tablebased::ContainerStruct, T...>> ::test::fixtures::tablebased::ContainerStruct& set_fieldA(T&&... t) {
     __clear();
     type_ = Type::fieldA;
-    ::new (std::addressof(value_.fieldA))  ::test::fixtures::tablebased::ContainerStruct(std::forward<T>(t)...);
+    ::new (std::addressof(value_.fieldA)) ::test::fixtures::tablebased::ContainerStruct(std::forward<T>(t)...);
     return value_.fieldA;
   }
 
-   ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB( ::test::fixtures::tablebased::TrivialTypesStruct const &t) {
+  ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(::test::fixtures::tablebased::TrivialTypesStruct const &t) {
     __clear();
     type_ = Type::fieldB;
-    ::new (std::addressof(value_.fieldB))  ::test::fixtures::tablebased::TrivialTypesStruct(t);
+    ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(t);
     return value_.fieldB;
   }
 
-   ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB( ::test::fixtures::tablebased::TrivialTypesStruct&& t) {
+  ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(::test::fixtures::tablebased::TrivialTypesStruct&& t) {
     __clear();
     type_ = Type::fieldB;
-    ::new (std::addressof(value_.fieldB))  ::test::fixtures::tablebased::TrivialTypesStruct(std::move(t));
+    ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(std::move(t));
     return value_.fieldB;
   }
 
-  template<typename... T, typename = ::apache::thrift::safe_overload_t< ::test::fixtures::tablebased::TrivialTypesStruct, T...>>  ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(T&&... t) {
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::test::fixtures::tablebased::TrivialTypesStruct, T...>> ::test::fixtures::tablebased::TrivialTypesStruct& set_fieldB(T&&... t) {
     __clear();
     type_ = Type::fieldB;
-    ::new (std::addressof(value_.fieldB))  ::test::fixtures::tablebased::TrivialTypesStruct(std::forward<T>(t)...);
+    ::new (std::addressof(value_.fieldB)) ::test::fixtures::tablebased::TrivialTypesStruct(std::forward<T>(t)...);
     return value_.fieldB;
   }
 
-   ::test::fixtures::tablebased::ContainerStruct const & get_fieldA() const {
+  ::test::fixtures::tablebased::ContainerStruct const& get_fieldA() const {
+    if (type_ != Type::fieldA) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.fieldA;
+  }
+
+  ::test::fixtures::tablebased::TrivialTypesStruct const& get_fieldB() const {
+    if (type_ != Type::fieldB) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.fieldB;
+  }
+
+  ::test::fixtures::tablebased::ContainerStruct& mutable_fieldA() {
     assert(type_ == Type::fieldA);
     return value_.fieldA;
   }
 
-   ::test::fixtures::tablebased::TrivialTypesStruct const & get_fieldB() const {
+  ::test::fixtures::tablebased::TrivialTypesStruct& mutable_fieldB() {
     assert(type_ == Type::fieldB);
     return value_.fieldB;
   }
 
-   ::test::fixtures::tablebased::ContainerStruct & mutable_fieldA() {
-    assert(type_ == Type::fieldA);
-    return value_.fieldA;
-  }
-
-   ::test::fixtures::tablebased::TrivialTypesStruct & mutable_fieldB() {
-    assert(type_ == Type::fieldB);
-    return value_.fieldB;
-  }
-
-   ::test::fixtures::tablebased::ContainerStruct move_fieldA() {
+  ::test::fixtures::tablebased::ContainerStruct move_fieldA() {
     assert(type_ == Type::fieldA);
     return std::move(value_.fieldA);
   }
 
-   ::test::fixtures::tablebased::TrivialTypesStruct move_fieldB() {
+  ::test::fixtures::tablebased::TrivialTypesStruct move_fieldB() {
     assert(type_ == Type::fieldB);
     return std::move(value_.fieldB);
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::ContainerStruct>
+  template <typename..., typename T = ::test::fixtures::tablebased::ContainerStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> fieldA_ref() const& {
     return {value_.fieldA, type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::ContainerStruct>
+  template <typename..., typename T = ::test::fixtures::tablebased::ContainerStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> fieldA_ref() const&& {
     return {std::move(value_.fieldA), type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::ContainerStruct>
+  template <typename..., typename T = ::test::fixtures::tablebased::ContainerStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> fieldA_ref() & {
     return {value_.fieldA, type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::ContainerStruct>
+  template <typename..., typename T = ::test::fixtures::tablebased::ContainerStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> fieldA_ref() && {
     return {std::move(value_.fieldA), type_, fieldA, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
-  template <typename..., typename T =  ::test::fixtures::tablebased::TrivialTypesStruct>
+  template <typename..., typename T = ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> fieldB_ref() const& {
     return {value_.fieldB, type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::TrivialTypesStruct>
+  template <typename..., typename T = ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> fieldB_ref() const&& {
     return {std::move(value_.fieldB), type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::TrivialTypesStruct>
+  template <typename..., typename T = ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&> fieldB_ref() & {
     return {value_.fieldB, type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
 
-  template <typename..., typename T =  ::test::fixtures::tablebased::TrivialTypesStruct>
+  template <typename..., typename T = ::test::fixtures::tablebased::TrivialTypesStruct>
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> fieldB_ref() && {
     return {std::move(value_.fieldB), type_, fieldB, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
@@ -1117,7 +1052,7 @@ class ExampleUnion final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ExampleUnion >;
+  friend class ::apache::thrift::Cpp2Ops<ExampleUnion>;
   friend void swap(ExampleUnion& a, ExampleUnion& b);
   friend constexpr ptrdiff_t (::apache::thrift::detail::unionTypeOffset<ExampleUnion>)();
 };
@@ -1130,6 +1065,7 @@ uint32_t ExampleUnion::read(Protocol_* iprot) {
 }
 
 }}} // test::fixtures::tablebased
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

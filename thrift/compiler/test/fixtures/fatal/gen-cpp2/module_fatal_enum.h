@@ -15,78 +15,48 @@
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-namespace thrift_fatal_impl_detail {
+namespace __fbthrift_refl {
+namespace __fbthrift_refl_impl = ::apache::thrift::detail::reflection_impl;
 
-struct enum1_enum_traits {
+class enum1_enum_traits {
+ public:
   using type = ::test_cpp2::cpp_reflection::enum1;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum1;
 
-  struct enum1__struct_unique_strings_list {
-    using field0 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0;
-    using field1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1;
-    using field2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2;
-  };
-
-  struct enum1__struct_enum_members_field0 {
-    using name = enum1__struct_unique_strings_list::field0;
+ private:
+  struct __fbthrift_value_field0 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_a10609471500bbd1ea553c7c52359c10f98a225667900b5959e20513935074e9;
     using value = std::integral_constant<type, type::field0>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum1__struct_enum_members_field1 {
-    using name = enum1__struct_unique_strings_list::field1;
+  struct __fbthrift_value_field1 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_c6860db74ab2c01bef741314b0a5f12527840b703a81e93f11d7dbf4775086fa;
     using value = std::integral_constant<type, type::field1>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum1__struct_enum_members_field2 {
-    using name = enum1__struct_unique_strings_list::field2;
+  struct __fbthrift_value_field2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_859fcbf6d2d71ed300fa058619ed428a255580a9b1467395fcea973bf9ff3cee;
     using value = std::integral_constant<type, type::field2>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum1__struct_enum_members {
-    using field0 = enum1__struct_enum_members_field0;
-    using field1 = enum1__struct_enum_members_field1;
-    using field2 = enum1__struct_enum_members_field2;
+  struct __fbthrift_member {
+    using field0 = __fbthrift_value_field0;
+    using field1 = __fbthrift_value_field1;
+    using field2 = __fbthrift_value_field2;
   };
 
-  using member = enum1__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_module::enum1;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::field0,
       member::field1,
       member::field2
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -98,88 +68,45 @@ struct enum1_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum1_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum1_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(4992076682252594856ull)
-  >
-);
-namespace thrift_fatal_impl_detail {
-
-struct enum2_enum_traits {
+class enum2_enum_traits {
+ public:
   using type = ::test_cpp2::cpp_reflection::enum2;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum2;
 
-  struct enum2__struct_unique_strings_list {
-    using field0_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_2;
-    using field1_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_2;
-    using field2_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field2_2;
-  };
-
-  struct enum2__struct_enum_members_field0_2 {
-    using name = enum2__struct_unique_strings_list::field0_2;
+ private:
+  struct __fbthrift_value_field0_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_16660941460027f94468b82213f3fcc07225e46e88b6aa2b65f59212f086250c;
     using value = std::integral_constant<type, type::field0_2>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum2__struct_enum_members_field1_2 {
-    using name = enum2__struct_unique_strings_list::field1_2;
+  struct __fbthrift_value_field1_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_dc9768b7a6782334501adac488a8ece7aa62fc6dc559b27817d4a72dc13b818e;
     using value = std::integral_constant<type, type::field1_2>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum2__struct_enum_members_field2_2 {
-    using name = enum2__struct_unique_strings_list::field2_2;
+  struct __fbthrift_value_field2_2 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_a45fbb9137f93ac661f724228d1bbdd9ed2d5ab13d29b40a21a6b43813eb1463;
     using value = std::integral_constant<type, type::field2_2>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum2__struct_enum_members {
-    using field0_2 = enum2__struct_enum_members_field0_2;
-    using field1_2 = enum2__struct_enum_members_field1_2;
-    using field2_2 = enum2__struct_enum_members_field2_2;
+  struct __fbthrift_member {
+    using field0_2 = __fbthrift_value_field0_2;
+    using field1_2 = __fbthrift_value_field1_2;
+    using field2_2 = __fbthrift_value_field2_2;
   };
 
-  using member = enum2__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_module::enum2;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::field0_2,
       member::field1_2,
       member::field2_2
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -191,89 +118,60 @@ struct enum2_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum2_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum2_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(6888467747342894920ull)
-  >
-);
-namespace thrift_fatal_impl_detail {
-
-struct enum3_enum_traits {
+class enum3_enum_traits {
+ public:
   using type = ::test_cpp2::cpp_reflection::enum3;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum3;
 
-  struct enum3__struct_unique_strings_list {
-    using field0_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field0_3;
-    using field1_3 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field1_3;
-  };
-
-  struct enum3__struct_enum_members_field0_3 {
-    using name = enum3__struct_unique_strings_list::field0_3;
+ private:
+  struct __fbthrift_value_field0_3 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_e9c3e4e32969bb7516eeedd14823e86dd42831bf5d78259841df4fec18219998;
     using value = std::integral_constant<type, type::field0_3>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum3__struct_enum_members_field1_3 {
-    using name = enum3__struct_unique_strings_list::field1_3;
+  struct __fbthrift_value_field1_3 {
+    using name = __fbthrift_strings_module::__fbthrift_hash_17077c52034434f78be6854473ea471e8beaf774b570e98314cff5da93610a61;
     using value = std::integral_constant<type, type::field1_3>;
-
     class annotations {
-      struct annotations__unique_annotations_keys {
-        using field_annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field_annotation;
+      struct __fbthrift_keys {
+        using field_annotation = __fbthrift_strings_module::field_annotation;
       };
-
-      struct annotations__unique_annotations_values {
+      struct __fbthrift_values {
         using field_annotation = ::fatal::sequence<char, 'f', 'i', 'e', 'l', 'd', ' ', 'a', 'n', 'n', 'o', 't', 'a', 't', 'e', 'd'>;
       };
-
-      public:
-      using keys = annotations__unique_annotations_keys;
-      using values = annotations__unique_annotations_values;
+     public:
+      using keys = __fbthrift_keys;
+      using values = __fbthrift_values;
       using map = ::fatal::list<
-        ::apache::thrift::annotation<
-          keys::field_annotation,
-          values::field_annotation
-        >
+        ::apache::thrift::annotation<keys::field_annotation, values::field_annotation>
       >;
     };
-
   };
 
-  struct enum3__struct_enum_members {
-    using field0_3 = enum3__struct_enum_members_field0_3;
-    using field1_3 = enum3__struct_enum_members_field1_3;
+  struct __fbthrift_member {
+    using field0_3 = __fbthrift_value_field0_3;
+    using field1_3 = __fbthrift_value_field1_3;
   };
 
-  using member = enum3__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_module::enum3;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::field0_3,
       member::field1_3
   >;
 
   class annotations {
-    struct annotations__unique_annotations_keys {
-      using _now_with_an_underscore = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::_now_with_an_underscore;
-      using another_there = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::another_there;
-      using duplicate_id_annotation_1 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::duplicate_id_annotation_1;
-      using duplicate_id_annotation_2 = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::duplicate_id_annotation_2;
-      using one_here = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::one_here;
-      using yet_another = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::yet_another;
+    struct __fbthrift_keys {
+      using _now_with_an_underscore = __fbthrift_strings_module::_now_with_an_underscore;
+      using another_there = __fbthrift_strings_module::another_there;
+      using duplicate_id_annotation_1 = __fbthrift_strings_module::duplicate_id_annotation_1;
+      using duplicate_id_annotation_2 = __fbthrift_strings_module::duplicate_id_annotation_2;
+      using one_here = __fbthrift_strings_module::one_here;
+      using yet_another = __fbthrift_strings_module::yet_another;
     };
 
-    struct annotations__unique_annotations_values {
+    struct __fbthrift_values {
       using _now_with_an_underscore = ::fatal::sequence<char, '_', 'n', 'o', 'w', '.', 'w', 'i', 't', 'h', '.', 'a', 'n', '.', 'u', 'n', 'd', 'e', 'r', 's', 'c', 'o', 'r', 'e'>;
       using another_there = ::fatal::sequence<char, '.'>;
       using duplicate_id_annotation_1 = ::fatal::sequence<char, 'd', 'u', 'p', 'l', 'i', 'c', 'a', 't', 'e', ' ', 'i', 'd', ' ', 'a', 'n', 'n', 'o', 't', 'a', 't', 'i', 'o', 'n'>;
@@ -282,37 +180,18 @@ struct enum3_enum_traits {
       using yet_another = ::fatal::sequence<char, 'a', 'n', 'd', ' ', 'y', 'e', 't', ' ', 'm', 'o', 'r', 'e', ' ', 't', 'e', 'x', 't', ' ', '-', ' ', 'i', 't', '\'', 's', ' ', 't', 'h', 'a', 't', ' ', 'e', 'a', 's', 'y'>;
     };
 
-    public:
-    using keys = annotations__unique_annotations_keys;
-    using values = annotations__unique_annotations_values;
+   public:
+    using keys = __fbthrift_keys;
+    using values = __fbthrift_values;
     using map = ::fatal::list<
-      ::apache::thrift::annotation<
-        keys::_now_with_an_underscore,
-        values::_now_with_an_underscore
-      >,
-      ::apache::thrift::annotation<
-        keys::another_there,
-        values::another_there
-      >,
-      ::apache::thrift::annotation<
-        keys::duplicate_id_annotation_1,
-        values::duplicate_id_annotation_1
-      >,
-      ::apache::thrift::annotation<
-        keys::duplicate_id_annotation_2,
-        values::duplicate_id_annotation_2
-      >,
-      ::apache::thrift::annotation<
-        keys::one_here,
-        values::one_here
-      >,
-      ::apache::thrift::annotation<
-        keys::yet_another,
-        values::yet_another
-      >
+      ::apache::thrift::annotation<keys::_now_with_an_underscore, values::_now_with_an_underscore>,
+      ::apache::thrift::annotation<keys::another_there, values::another_there>,
+      ::apache::thrift::annotation<keys::duplicate_id_annotation_1, values::duplicate_id_annotation_1>,
+      ::apache::thrift::annotation<keys::duplicate_id_annotation_2, values::duplicate_id_annotation_2>,
+      ::apache::thrift::annotation<keys::one_here, values::one_here>,
+      ::apache::thrift::annotation<keys::yet_another, values::yet_another>
     >;
   };
-
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -323,450 +202,213 @@ struct enum3_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
-
-FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum3_enum_traits,
-  ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum3_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(4626344424889780008ull)
-  >
-);
-namespace thrift_fatal_impl_detail {
-
-struct enum_with_special_names_enum_traits {
+class enum_with_special_names_enum_traits {
+ public:
   using type = ::test_cpp2::cpp_reflection::enum_with_special_names;
-  using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::enum_with_special_names;
 
-  struct enum_with_special_names__struct_unique_strings_list {
-    using get = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::get;
-    using getter = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::getter;
-    using lists = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::lists;
-    using maps = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::maps;
-    using name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name;
-    using name_to_value = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::name_to_value;
-    using names = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::names;
-    using prefix_tree = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::prefix_tree;
-    using sets = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::sets;
-    using setter = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::setter;
-    using str = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::str;
-    using strings = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::strings;
-    using type = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::type;
-    using value = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value;
-    using value_to_name = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::value_to_name;
-    using values = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::values;
-    using id = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::id;
-    using ids = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::ids;
-    using descriptor = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptor;
-    using descriptors = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::descriptors;
-    using key = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::key;
-    using keys = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::keys;
-    using annotation = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotation;
-    using annotations = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::annotations;
-    using member = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::member;
-    using members = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::members;
-    using field = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::field;
-    using fields = thrift_fatal_impl_detail::test_cpp2_cpp_reflection_module__unique_strings_list::fields;
-  };
-
-  struct enum_with_special_names__struct_enum_members_get {
-    using name = enum_with_special_names__struct_unique_strings_list::get;
+ private:
+  struct __fbthrift_value_get {
+    using name = __fbthrift_strings_module::__fbthrift_hash_2998b3232d29e8dc5a78d97a32ce83f556f3ed31b057077503df05641dd79158;
     using value = std::integral_constant<type, type::get>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_getter {
-    using name = enum_with_special_names__struct_unique_strings_list::getter;
+  struct __fbthrift_value_getter {
+    using name = __fbthrift_strings_module::__fbthrift_hash_d665a09c95ebbc703485c7ba5384857536ca16f6c11fdd054e61c7dd81780731;
     using value = std::integral_constant<type, type::getter>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_lists {
-    using name = enum_with_special_names__struct_unique_strings_list::lists;
+  struct __fbthrift_value_lists {
+    using name = __fbthrift_strings_module::__fbthrift_hash_4c14c4a453f98de4bd1c972fea7850adb52822c5823e5da287085165afcf2020;
     using value = std::integral_constant<type, type::lists>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_maps {
-    using name = enum_with_special_names__struct_unique_strings_list::maps;
+  struct __fbthrift_value_maps {
+    using name = __fbthrift_strings_module::__fbthrift_hash_325392e8dd2826a53a9a35b7a7f8d71683cd27ebc2c73fee85dab673bc909b67;
     using value = std::integral_constant<type, type::maps>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_name {
-    using name = enum_with_special_names__struct_unique_strings_list::name;
+  struct __fbthrift_value_name {
+    using name = __fbthrift_strings_module::__fbthrift_hash_82a3537ff0dbce7eec35d69edc3a189ee6f17d82f353a553f9aa96cb0be3ce89;
     using value = std::integral_constant<type, type::name>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_name_to_value {
-    using name = enum_with_special_names__struct_unique_strings_list::name_to_value;
+  struct __fbthrift_value_name_to_value {
+    using name = __fbthrift_strings_module::__fbthrift_hash_f1fe8005943a7730e9a95f7262952d9717a6f43a21d1b55daeb44de82fe4aac6;
     using value = std::integral_constant<type, type::name_to_value>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_names {
-    using name = enum_with_special_names__struct_unique_strings_list::names;
+  struct __fbthrift_value_names {
+    using name = __fbthrift_strings_module::__fbthrift_hash_aeb24056810d3d1f1e8afee61a0bc0028556eb0fb49a215ae5eb1b970cad0315;
     using value = std::integral_constant<type, type::names>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_prefix_tree {
-    using name = enum_with_special_names__struct_unique_strings_list::prefix_tree;
+  struct __fbthrift_value_prefix_tree {
+    using name = __fbthrift_strings_module::__fbthrift_hash_73e6f38f012472999e156878234ad5221469eb764ff0d39af613e045fdfe8c1e;
     using value = std::integral_constant<type, type::prefix_tree>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_sets {
-    using name = enum_with_special_names__struct_unique_strings_list::sets;
+  struct __fbthrift_value_sets {
+    using name = __fbthrift_strings_module::__fbthrift_hash_82c6db3dbf4ab47132dfd1d9d1bf8525edccb48512c8647b7a2067e0417537c0;
     using value = std::integral_constant<type, type::sets>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_setter {
-    using name = enum_with_special_names__struct_unique_strings_list::setter;
+  struct __fbthrift_value_setter {
+    using name = __fbthrift_strings_module::__fbthrift_hash_bab6f4cdfe399488eecf37176422c2f336b814c3b5f3d174987098ebb289f1fc;
     using value = std::integral_constant<type, type::setter>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_str {
-    using name = enum_with_special_names__struct_unique_strings_list::str;
+  struct __fbthrift_value_str {
+    using name = __fbthrift_strings_module::__fbthrift_hash_8c25cb3686462e9a86d2883c5688a22fe738b0bbc85f458d2d2b5f3f667c6d5a;
     using value = std::integral_constant<type, type::str>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_strings {
-    using name = enum_with_special_names__struct_unique_strings_list::strings;
+  struct __fbthrift_value_strings {
+    using name = __fbthrift_strings_module::__fbthrift_hash_e967d16dae74a49b5e0e051225c5dac0d76e5e38f13dd1628028cbce108c25b6;
     using value = std::integral_constant<type, type::strings>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_type {
-    using name = enum_with_special_names__struct_unique_strings_list::type;
+  struct __fbthrift_value_type {
+    using name = __fbthrift_strings_module::__fbthrift_hash_1303c06b0b014d0ce7b988ab173a13f31227d417058ff4bbe6f8c222b4ad913c;
     using value = std::integral_constant<type, type::type>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_value {
-    using name = enum_with_special_names__struct_unique_strings_list::value;
+  struct __fbthrift_value_value {
+    using name = __fbthrift_strings_module::__fbthrift_hash_cd42404d52ad55ccfa9aca4adc828aa5800ad9d385a0671fbcbf724118320619;
     using value = std::integral_constant<type, type::value>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_value_to_name {
-    using name = enum_with_special_names__struct_unique_strings_list::value_to_name;
+  struct __fbthrift_value_value_to_name {
+    using name = __fbthrift_strings_module::__fbthrift_hash_144043bd95cdcc1f080ed3a117286f0b33b4738179cbcd0384c6ba14f086965e;
     using value = std::integral_constant<type, type::value_to_name>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_values {
-    using name = enum_with_special_names__struct_unique_strings_list::values;
+  struct __fbthrift_value_values {
+    using name = __fbthrift_strings_module::__fbthrift_hash_89445ea08b55421faa49919a5fd272e9a520f701b479d6084847e161ca5b7711;
     using value = std::integral_constant<type, type::values>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_id {
-    using name = enum_with_special_names__struct_unique_strings_list::id;
+  struct __fbthrift_value_id {
+    using name = __fbthrift_strings_module::__fbthrift_hash_a56145270ce6b3bebd1dd012b73948677dd618d496488bc608a3cb43ce3547dd;
     using value = std::integral_constant<type, type::id>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_ids {
-    using name = enum_with_special_names__struct_unique_strings_list::ids;
+  struct __fbthrift_value_ids {
+    using name = __fbthrift_strings_module::__fbthrift_hash_23466067f626bf8a3ae1a39cdf81f31303220b331b5064c6e00662dcc34deaaf;
     using value = std::integral_constant<type, type::ids>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_descriptor {
-    using name = enum_with_special_names__struct_unique_strings_list::descriptor;
+  struct __fbthrift_value_descriptor {
+    using name = __fbthrift_strings_module::__fbthrift_hash_194b520dc30384b3fc233e123778835e2adc362d91c6e33015ed3db2379d7ea1;
     using value = std::integral_constant<type, type::descriptor>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_descriptors {
-    using name = enum_with_special_names__struct_unique_strings_list::descriptors;
+  struct __fbthrift_value_descriptors {
+    using name = __fbthrift_strings_module::__fbthrift_hash_12b2fdc0a0ffd6ce4b7d74d080cd8dcb1c60b6e8f365fb46ac511c46cc31f1c1;
     using value = std::integral_constant<type, type::descriptors>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_key {
-    using name = enum_with_special_names__struct_unique_strings_list::key;
+  struct __fbthrift_value_key {
+    using name = __fbthrift_strings_module::__fbthrift_hash_2c70e12b7a0646f92279f427c7b38e7334d8e5389cff167a1dc30e73f826b683;
     using value = std::integral_constant<type, type::key>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_keys {
-    using name = enum_with_special_names__struct_unique_strings_list::keys;
+  struct __fbthrift_value_keys {
+    using name = __fbthrift_strings_module::__fbthrift_hash_48a53f0774c8ceff574a1fdcb0d470dbd382b3db273cff4344b6d39d5379c923;
     using value = std::integral_constant<type, type::keys>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_annotation {
-    using name = enum_with_special_names__struct_unique_strings_list::annotation;
+  struct __fbthrift_value_annotation {
+    using name = __fbthrift_strings_module::__fbthrift_hash_82264186375a8f31cd4bf73c2862777622f7616b039abfb62fb7c7eea19f9d07;
     using value = std::integral_constant<type, type::annotation>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_annotations {
-    using name = enum_with_special_names__struct_unique_strings_list::annotations;
+  struct __fbthrift_value_annotations {
+    using name = __fbthrift_strings_module::__fbthrift_hash_295df243c6a33994c30b6e16aea7ce6155a24b44514ec956d7a09ae0a4cb0411;
     using value = std::integral_constant<type, type::annotations>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_member {
-    using name = enum_with_special_names__struct_unique_strings_list::member;
+  struct __fbthrift_value_member {
+    using name = __fbthrift_strings_module::__fbthrift_hash_e31ab643c44f7a0ec824b59d1194d60dac334200d845e61d2d289daa0f087ea4;
     using value = std::integral_constant<type, type::member>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_members {
-    using name = enum_with_special_names__struct_unique_strings_list::members;
+  struct __fbthrift_value_members {
+    using name = __fbthrift_strings_module::__fbthrift_hash_17373ca1c7634a4be4a13861a891abd975ec916caab8f3dcf5142fa4997d0b96;
     using value = std::integral_constant<type, type::members>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_field {
-    using name = enum_with_special_names__struct_unique_strings_list::field;
+  struct __fbthrift_value_field {
+    using name = __fbthrift_strings_module::__fbthrift_hash_c0d2856b74d0df05b9d4456b177950351bd88e98b77f12574dfb7a911acee0d0;
     using value = std::integral_constant<type, type::field>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members_fields {
-    using name = enum_with_special_names__struct_unique_strings_list::fields;
+  struct __fbthrift_value_fields {
+    using name = __fbthrift_strings_module::__fbthrift_hash_bfe5d697162d90298c67c1933908741be8395838aa230408e04710909c576806;
     using value = std::integral_constant<type, type::fields>;
-
-    class annotations {
-      public:
-      using keys = void;
-      using values = void;
-      using map = ::fatal::list<
-      >;
-    };
+    using annotations = __fbthrift_refl_impl::no_annotations;
   };
 
-  struct enum_with_special_names__struct_enum_members {
-    using get = enum_with_special_names__struct_enum_members_get;
-    using getter = enum_with_special_names__struct_enum_members_getter;
-    using lists = enum_with_special_names__struct_enum_members_lists;
-    using maps = enum_with_special_names__struct_enum_members_maps;
-    using name = enum_with_special_names__struct_enum_members_name;
-    using name_to_value = enum_with_special_names__struct_enum_members_name_to_value;
-    using names = enum_with_special_names__struct_enum_members_names;
-    using prefix_tree = enum_with_special_names__struct_enum_members_prefix_tree;
-    using sets = enum_with_special_names__struct_enum_members_sets;
-    using setter = enum_with_special_names__struct_enum_members_setter;
-    using str = enum_with_special_names__struct_enum_members_str;
-    using strings = enum_with_special_names__struct_enum_members_strings;
-    using type = enum_with_special_names__struct_enum_members_type;
-    using value = enum_with_special_names__struct_enum_members_value;
-    using value_to_name = enum_with_special_names__struct_enum_members_value_to_name;
-    using values = enum_with_special_names__struct_enum_members_values;
-    using id = enum_with_special_names__struct_enum_members_id;
-    using ids = enum_with_special_names__struct_enum_members_ids;
-    using descriptor = enum_with_special_names__struct_enum_members_descriptor;
-    using descriptors = enum_with_special_names__struct_enum_members_descriptors;
-    using key = enum_with_special_names__struct_enum_members_key;
-    using keys = enum_with_special_names__struct_enum_members_keys;
-    using annotation = enum_with_special_names__struct_enum_members_annotation;
-    using annotations = enum_with_special_names__struct_enum_members_annotations;
-    using member = enum_with_special_names__struct_enum_members_member;
-    using members = enum_with_special_names__struct_enum_members_members;
-    using field = enum_with_special_names__struct_enum_members_field;
-    using fields = enum_with_special_names__struct_enum_members_fields;
+  struct __fbthrift_member {
+    using get = __fbthrift_value_get;
+    using getter = __fbthrift_value_getter;
+    using lists = __fbthrift_value_lists;
+    using maps = __fbthrift_value_maps;
+    using name = __fbthrift_value_name;
+    using name_to_value = __fbthrift_value_name_to_value;
+    using names = __fbthrift_value_names;
+    using prefix_tree = __fbthrift_value_prefix_tree;
+    using sets = __fbthrift_value_sets;
+    using setter = __fbthrift_value_setter;
+    using str = __fbthrift_value_str;
+    using strings = __fbthrift_value_strings;
+    using type = __fbthrift_value_type;
+    using value = __fbthrift_value_value;
+    using value_to_name = __fbthrift_value_value_to_name;
+    using values = __fbthrift_value_values;
+    using id = __fbthrift_value_id;
+    using ids = __fbthrift_value_ids;
+    using descriptor = __fbthrift_value_descriptor;
+    using descriptors = __fbthrift_value_descriptors;
+    using key = __fbthrift_value_key;
+    using keys = __fbthrift_value_keys;
+    using annotation = __fbthrift_value_annotation;
+    using annotations = __fbthrift_value_annotations;
+    using member = __fbthrift_value_member;
+    using members = __fbthrift_value_members;
+    using field = __fbthrift_value_field;
+    using fields = __fbthrift_value_fields;
   };
 
-  using member = enum_with_special_names__struct_enum_members;
-
+ public:
+  using name = __fbthrift_strings_module::enum_with_special_names;
+  using member = __fbthrift_member;
   using fields = ::fatal::list<
       member::get,
       member::getter,
@@ -798,13 +440,7 @@ struct enum_with_special_names_enum_traits {
       member::fields
   >;
 
-  class annotations {
-    public:
-    using keys = void;
-    using values = void;
-    using map = ::fatal::list<
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static char const *to_string(type e, char const *fallback) {
     switch (e) {
@@ -841,14 +477,38 @@ struct enum_with_special_names_enum_traits {
   }
 };
 
-} // thrift_fatal_impl_detail
+} // __fbthrift_refl
 
 FATAL_REGISTER_ENUM_TRAITS(
-  ::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum_with_special_names_enum_traits,
+  __fbthrift_refl::enum1_enum_traits,
   ::apache::thrift::detail::type_common_metadata_impl<
-    module_tags::module,
-    ::apache::thrift::reflected_annotations<::test_cpp2::cpp_reflection::thrift_fatal_impl_detail::enum_with_special_names_enum_traits::annotations>,
-    static_cast<::apache::thrift::legacy_type_id_t>(958943865626138984ull)
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::enum1_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(4992076682252594856ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::enum2_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::enum2_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(6888467747342894920ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::enum3_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::enum3_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(4626344424889780008ull)
+  >
+);
+FATAL_REGISTER_ENUM_TRAITS(
+  __fbthrift_refl::enum_with_special_names_enum_traits,
+  ::apache::thrift::detail::type_common_metadata_impl<
+      module_tags::module,
+      ::apache::thrift::reflected_annotations<__fbthrift_refl::enum_with_special_names_enum_traits::annotations>,
+      static_cast<::apache::thrift::legacy_type_id_t>(958943865626138984ull)
   >
 );
 }} // test_cpp2::cpp_reflection

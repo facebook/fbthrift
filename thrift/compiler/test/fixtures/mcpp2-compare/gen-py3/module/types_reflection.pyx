@@ -6,7 +6,7 @@
 #
 
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3.reflection cimport (
     NumberType as __NumberType,
@@ -34,7 +34,7 @@ cdef __StructSpec get_reflection__Empty():
         name="Empty",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move_ctor""": """1""",        },
+        },
     )
     return spec
 cdef __StructSpec get_reflection__ASimpleStruct():
@@ -72,7 +72,7 @@ cdef __StructSpec get_reflection__ASimpleStructNoexcept():
         name="ASimpleStructNoexcept",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move_ctor""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -97,7 +97,7 @@ cdef __StructSpec get_reflection__MyStruct():
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move_ctor""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -1450,7 +1450,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         name="AnnotatedStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.declare_equal_to""": """1""",            """cpp.declare_hash""": """1""",            """cpp.virtual""": """1""",            """cpp2.methods""": """void foo(const std::string& bar) {}""",            """cpp2.noexcept_move_ctor""": """1""",            """cpp2.noncopyable""": """1""",        },
+            """cpp.declare_equal_to""": """1""",            """cpp.declare_hash""": """1""",            """cpp.virtual""": """1""",            """cpp2.methods""": """void foo(const std::string& bar) {}""",            """cpp2.noncopyable""": """1""",        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -1744,7 +1744,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         __FieldSpec.create(
             id=25,
             name="iobuf_type",
-            type=__iobuf.IOBuf,
+            type=_fbthrift_iobuf.IOBuf,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -1756,7 +1756,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         __FieldSpec.create(
             id=26,
             name="iobuf_ptr",
-            type=__iobuf.IOBuf,
+            type=_fbthrift_iobuf.IOBuf,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=None,
@@ -1900,7 +1900,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         __FieldSpec.create(
             id=38,
             name="iobuf_type_val",
-            type=__iobuf.IOBuf,
+            type=_fbthrift_iobuf.IOBuf,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=defaults.iobuf_type_val,
@@ -1912,7 +1912,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         __FieldSpec.create(
             id=39,
             name="iobuf_ptr_val",
-            type=__iobuf.IOBuf,
+            type=_fbthrift_iobuf.IOBuf,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
             default=defaults.iobuf_ptr_val,
@@ -2049,7 +2049,7 @@ cdef __StructSpec get_reflection__AllRequiredNoExceptMoveCtrStruct():
         name="AllRequiredNoExceptMoveCtrStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move_ctor""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -2392,7 +2392,7 @@ cdef __MapSpec get_reflection__Map__string_folly_IOBuf__binary():
     return __MapSpec.create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
-        value=__iobuf.IOBuf,
+        value=_fbthrift_iobuf.IOBuf,
         value_kind=__NumberType.NOT_A_NUMBER,
     )
 
@@ -2400,7 +2400,7 @@ cdef __MapSpec get_reflection__Map__string_std_unique_ptr_folly_IOBuf__binary():
     return __MapSpec.create(
         key=str,
         key_kind=__NumberType.NOT_A_NUMBER,
-        value=__iobuf.IOBuf,
+        value=_fbthrift_iobuf.IOBuf,
         value_kind=__NumberType.NOT_A_NUMBER,
     )
 

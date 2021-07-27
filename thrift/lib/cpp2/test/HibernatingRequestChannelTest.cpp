@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/async/HibernatingRequestChannel.h>
+
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
@@ -32,7 +33,7 @@ using folly::AsyncSocket;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
-  MOCK_METHOD1(echoInt, int32_t(int32_t));
+  MOCK_METHOD(int32_t, echoInt, (int32_t));
 };
 
 class HibernatingRequestChannelTest : public Test {

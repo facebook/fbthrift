@@ -48,9 +48,7 @@ class TFDTransport : public TVirtualTransport<TFDTransport> {
     }
   }
 
-  bool isOpen() override {
-    return fd_ >= 0;
-  }
+  bool isOpen() override { return fd_ >= 0; }
 
   void open() override {}
 
@@ -60,12 +58,8 @@ class TFDTransport : public TVirtualTransport<TFDTransport> {
 
   void write(const uint8_t* buf, uint32_t len);
 
-  void setFD(int fd) {
-    fd_ = fd;
-  }
-  int getFD() {
-    return fd_;
-  }
+  void setFD(int fd) { fd_ = fd; }
+  int getFD() { return fd_; }
 
  protected:
   int fd_;

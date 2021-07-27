@@ -71,25 +71,17 @@ class Client {
 
   void runSynchronously(double rps, std::chrono::duration<double> duration);
 
-  uint64_t getResponseCount() const {
-    return stats_.responseCount;
-  }
+  uint64_t getResponseCount() const { return stats_.responseCount; }
 
-  uint64_t getSuccess() const {
-    return stats_.success;
-  }
+  uint64_t getSuccess() const { return stats_.success; }
 
-  uint64_t getError() const {
-    return stats_.errors;
-  }
+  uint64_t getError() const { return stats_.errors; }
 
   double getLatencyPercentile(double p) {
     return stats_.getPercentileEstimate(p);
   }
 
-  void clearStats() {
-    stats_.clear();
-  }
+  void clearStats() { stats_.clear(); }
 
  private:
   folly::ScopedEventBaseThread scopedEventBaseThread_{"ClientIO"};

@@ -69,9 +69,7 @@ class Monitor {
    * Get current QPS.
    *
    */
-  virtual uint64_t getCurrentQps() {
-    return 0;
-  }
+  virtual uint64_t getCurrentQps() { return 0; }
 };
 
 } // namespace loadgen

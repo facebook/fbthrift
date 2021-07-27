@@ -20,9 +20,9 @@
         {{#service:extends}}
         pub parent: {{service:package}}::mock::{{service:name}}<'mock>,
         {{/service:extends}}
-        {{#service:rustFunctions}}{{^function:returns_streams?}}
-        pub {{function:name}}: r#impl::{{service:snake}}::{{function:name}}<'mock>,
-        {{/function:returns_streams?}}{{/service:rustFunctions}}
+        {{#service:rustFunctions}}
+        pub {{function:rust_name}}: r#impl::{{service:snake}}::{{function:rust_name}}<'mock>,
+        {{/service:rustFunctions}}
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
 
@@ -30,12 +30,12 @@
         pub fn mock<'mock>() -> {{service:name}}<'mock> {
             {{service:name}} {
                 {{#service:extends}}
-                parent: {{service:package}}::client::{{service:name}}::mock(),
+                parent: <dyn {{service:package}}::client::{{service:name}}>::mock(),
                 {{/service:extends}}
-                {{#service:rustFunctions}}{{^function:returns_streams?}}
-                {{function:name}}: {{!
-                    }}r#impl::{{service:snake}}::{{function:name}}::unimplemented(),
-                {{/function:returns_streams?}}{{/service:rustFunctions}}
+                {{#service:rustFunctions}}
+                {{function:rust_name}}: {{!
+                    }}r#impl::{{service:snake}}::{{function:rust_name}}::unimplemented(),
+                {{/service:rustFunctions}}
                 _marker: ::std::marker::PhantomData,
             }
         }
@@ -43,17 +43,17 @@
 
     #[::async_trait::async_trait]
     impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
-        }}{{#service:rustFunctions}}{{^function:returns_streams?}}
-        fn {{function:name}}(
+        }}{{#service:rustFunctions}}
+        fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
             arg_{{field:name}}: {{>lib/arg}},{{!
             }}{{/function:args}}
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>> {
-            let mut closure = self.{{function:name}}.closure.lock().unwrap();
+            let mut closure = self.{{function:rust_name}}.closure.lock().unwrap();
             let closure: &mut dyn ::std::ops::FnMut({{!
                 }}{{#function:args}}{{!
                 }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
@@ -73,7 +73,7 @@
                 }}{{/function:args}}{{!
             }})))
         }{{!
-        }}{{/function:returns_streams?}}{{/service:rustFunctions}}
+        }}{{/service:rustFunctions}}
     }
 
     {{#service:extendedServices}}
@@ -97,9 +97,9 @@
     }}{{#program:services}}
         pub mod {{service:snake}} {{>lib/block}}{{!
 
-            }}{{#service:rustFunctions}}{{^function:returns_streams?}}
+            }}{{#service:rustFunctions}}
 
-            pub struct {{function:name}}<'mock> {
+            pub struct {{function:rust_name}}<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
                     dyn ::std::ops::FnMut({{!
                         }}{{#function:args}}{{!
@@ -107,15 +107,15 @@
                         }}{{^last?}}, {{/last?}}{{!
                         }}{{/function:args}}{{!
                     }}) -> ::std::result::Result<
-                        {{#function:returnType}}{{>lib/type}}{{/function:returnType}},
+                        {{#function:return_type}}{{>lib/type}}{{/function:return_type}},
                         {{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 >>,
             }
 
-            impl<'mock> {{function:name}}<'mock> {
+            impl<'mock> {{function:rust_name}}<'mock> {
                 pub fn unimplemented() -> Self {
-                    {{function:name}} {
+                    {{function:rust_name}} {
                         closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|{{!
                             }}{{#function:args}}{{!
                             }}_: {{#field:type}}{{>lib/type}}{{/field:type}}{{!
@@ -131,14 +131,18 @@
 
                 pub fn ret({{!
                     }}&self, {{!
-                    }}value: {{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+                    }}{{#function:returns_stream?}}_{{/function:returns_stream?}}value: {{#function:return_type}}{{>lib/type}}{{/function:return_type}}{{!
                 }}) {
+                    {{#function:returns_stream?}}
+                    unimplemented!("Mocking streams is not yet implemented, as value isn't cloneable")
+                    {{/function:returns_stream?}}{{^function:returns_stream?}}
                     self.mock(move |{{!
                         }}{{#function:args}}{{!
                         }}_: {{#field:type}}{{>lib/type}}{{/field:type}}{{!
                         }}{{^last?}}, {{/last?}}{{!
                         }}{{/function:args}}{{!
                     }}| value.clone());
+                    {{/function:returns_stream?}}
                 }
 
                 pub fn mock(&self, mut mock: impl ::std::ops::FnMut({{!
@@ -146,7 +150,7 @@
                     }}{{#field:type}}{{>lib/type}}{{/field:type}}{{!
                     }}{{^last?}}, {{/last?}}{{!
                     }}{{/function:args}}{{!
-                }}) -> {{#function:returnType}}{{>lib/type}}{{/function:returnType}}{{!
+                }}) -> {{#function:return_type}}{{>lib/type}}{{/function:return_type}}{{!
                     }} + ::std::marker::Send + ::std::marker::Sync + 'mock) {{!
                 }}{
                     let mut closure = self.closure.lock().unwrap();
@@ -169,7 +173,7 @@
                     }}{{^last?}}, {{/last?}}{{!
                     }}{{/function:args}}{{!
                 }}) -> ::std::result::Result<{{!
-                        }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+                        }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
                         }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error>{{!
                     }} + ::std::marker::Send + ::std::marker::Sync + 'mock) {{!
                 }}{
@@ -201,7 +205,7 @@
                     }}| ::std::result::Result::Err(exception.clone().into()));
                 }
             }{{!
-            }}{{/function:returns_streams?}}{{/service:rustFunctions}}
+            }}{{/service:rustFunctions}}
         }{{!
     }}{{/program:services}}
     }

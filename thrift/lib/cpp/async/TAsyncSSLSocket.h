@@ -32,8 +32,7 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
   typedef std::unique_ptr<TAsyncSSLSocket, Destructor> UniquePtr;
 
   explicit TAsyncSSLSocket(
-      const std::shared_ptr<folly::SSLContext>& ctx,
-      folly::EventBase* evb)
+      const std::shared_ptr<folly::SSLContext>& ctx, folly::EventBase* evb)
       : folly::AsyncSSLSocket(ctx, evb) {}
 
   TAsyncSSLSocket(
@@ -46,23 +45,29 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
       folly::EventBase* evb,
       folly::NetworkSocket fd,
       bool server = true,
-      bool deferSecurityNegotiation = false)
-      : folly::AsyncSSLSocket(ctx, evb, fd, server, deferSecurityNegotiation) {}
+      bool deferSecurityNegotiation = false,
+      const folly::SocketAddress* peerAddress = nullptr)
+      : folly::AsyncSSLSocket(
+            ctx, evb, fd, server, deferSecurityNegotiation, peerAddress) {}
 
-  static std::shared_ptr<TAsyncSSLSocket> newSocket(
+  TAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
-      folly::EventBase* evb) {
-    return std::shared_ptr<TAsyncSSLSocket>(
-        new TAsyncSSLSocket(ctx, evb), Destructor());
+      folly::EventBase* evb,
+      folly::AsyncSSLSocket::Options&& options)
+      : folly::AsyncSSLSocket(ctx, evb, std::move(options)) {}
+
+  static TAsyncSSLSocket::UniquePtr newSocket(
+      const std::shared_ptr<folly::SSLContext>& ctx, folly::EventBase* evb) {
+    return TAsyncSSLSocket::UniquePtr(new TAsyncSSLSocket(ctx, evb));
   }
 
-  static std::shared_ptr<TAsyncSSLSocket> newSocket(
+  static TAsyncSSLSocket::UniquePtr newSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* evb,
       folly::NetworkSocket fd,
       bool server = true) {
-    return std::shared_ptr<TAsyncSSLSocket>(
-        new TAsyncSSLSocket(ctx, evb, fd, server), Destructor());
+    return TAsyncSSLSocket::UniquePtr(
+        new TAsyncSSLSocket(ctx, evb, fd, server));
   }
 
 #if OPENSSL_VERSION_NUMBER >= 0x1000105fL && !defined(OPENSSL_NO_TLSEXT)
@@ -79,12 +84,12 @@ class TAsyncSSLSocket : public folly::AsyncSSLSocket {
       const std::string& serverName)
       : folly::AsyncSSLSocket(ctx, evb, fd, serverName) {}
 
-  static std::shared_ptr<TAsyncSSLSocket> newSocket(
+  static TAsyncSSLSocket::UniquePtr newSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* evb,
       const std::string& serverName) {
-    return std::shared_ptr<TAsyncSSLSocket>(
-        new TAsyncSSLSocket(ctx, evb, serverName), Destructor());
+    return TAsyncSSLSocket::UniquePtr(
+        new TAsyncSSLSocket(ctx, evb, serverName));
   }
 #endif
 };

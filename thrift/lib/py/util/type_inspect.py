@@ -230,10 +230,10 @@ class ThriftStructSpec(ThriftPyTypeSpec):
         return required_value == 0
 
     def _init_subelements(self):
-        # For a TType.STRUCT, the spec_args is a triple
-        # (py thrift type, py thrift type spec, kind),
+        # For a TType.STRUCT, the spec_args is a tuple
+        # (py thrift type, py thrift type spec, kind, [adapter name]),
         # where kind is True for a union and False otherwise
-        self.type_class, self.type_spec, self.is_union = self.spec_args
+        self.type_class, self.type_spec, self.is_union = self.spec_args[:3]
 
         self.subtypes = {}
         self.subtype_requiredness = {}

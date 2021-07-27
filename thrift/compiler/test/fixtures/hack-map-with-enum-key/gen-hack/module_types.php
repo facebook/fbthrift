@@ -15,6 +15,28 @@ enum FooEnum: int {
   BAZ = 1;
 }
 
+class FooEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.FooEnum",
+        "elements" => dict[
+          0 => "BAR",
+          1 => "BAZ",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift struct:-
  * BarStruct
@@ -55,8 +77,8 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'e' => Map<FooEnum, FooEnum>,
-    ?'s' => Set<FooEnum>,
+    ?'e' => ?Map<FooEnum, FooEnum>,
+    ?'s' => ?Set<FooEnum>,
   );
 
   const type TShape = shape(
@@ -76,63 +98,111 @@ class BarStruct implements \IThriftStruct, \IThriftShapishStruct {
    */
   public Set<FooEnum> $s;
 
-  <<__Rx>>
-  public function __construct(?Map<FooEnum, FooEnum> $e = null, ?Set<FooEnum> $s = null  ) {
+  public function __construct(?Map<FooEnum, FooEnum> $e = null, ?Set<FooEnum> $s = null  )[] {
     $this->e = $e ?? Map {};
     $this->s = $s ?? Set {};
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'e'),
       Shapes::idx($shape, 's'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'BarStruct';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.BarStruct",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_enum" => tmeta_ThriftEnumType::fromShape(
+                            shape(
+                              "name" => "module.FooEnum",
+                            )
+                          ),
+                        )
+                      ),
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_enum" => tmeta_ThriftEnumType::fromShape(
+                            shape(
+                              "name" => "module.FooEnum",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "e",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_set" => tmeta_ThriftSetType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_enum" => tmeta_ThriftEnumType::fromShape(
+                            shape(
+                              "name" => "module.FooEnum",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "s",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'e' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        's' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      (new Map($shape['e'])),
+      new Set(Keyset\keys($shape['s'])),
+    );
   }
 
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->e = (new Map($shape['e']));
-    $me->s = new Set(Keyset\keys($shape['s']));
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
-      'e' => ThriftUtil::toDArray($this->e),
-      's' => ThriftUtil::toDArray(Dict\fill_keys($this->s->toValuesArray(), true)),
+      'e' => ThriftUtil::toDArray($this->e, static::class),
+      's' => ThriftUtil::toDArray(Dict\fill_keys($this->s->toValuesArray(), true), static::class),
     );
   }
 }

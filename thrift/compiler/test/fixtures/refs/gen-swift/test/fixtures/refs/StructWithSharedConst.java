@@ -23,15 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="StructWithSharedConst", builder=StructWithSharedConst.Builder.class)
-public final class StructWithSharedConst {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="StructWithSharedConst", builder=StructWithSharedConst.Builder.class)
+public final class StructWithSharedConst implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public StructWithSharedConst(
-        @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optSharedConst,
-        @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField sharedConst,
-        @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.MyField reqSharedConst
+        @com.facebook.swift.codec.ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL) final test.fixtures.refs.MyField optSharedConst,
+        @com.facebook.swift.codec.ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField sharedConst,
+        @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED) final test.fixtures.refs.MyField reqSharedConst
     ) {
         this.optSharedConst = optSharedConst;
         this.sharedConst = sharedConst;
@@ -46,13 +45,12 @@ public final class StructWithSharedConst {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.refs.MyField optSharedConst = null;
         private test.fixtures.refs.MyField sharedConst = null;
         private test.fixtures.refs.MyField reqSharedConst = null;
     
-        @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
+        @com.facebook.swift.codec.ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
         public Builder setOptSharedConst(test.fixtures.refs.MyField optSharedConst) {
             this.optSharedConst = optSharedConst;
             return this;
@@ -60,7 +58,7 @@ public final class StructWithSharedConst {
     
         public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
     
-            @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
         public Builder setSharedConst(test.fixtures.refs.MyField sharedConst) {
             this.sharedConst = sharedConst;
             return this;
@@ -68,7 +66,7 @@ public final class StructWithSharedConst {
     
         public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
     
-            @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
+            @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
         public Builder setReqSharedConst(test.fixtures.refs.MyField reqSharedConst) {
             this.reqSharedConst = reqSharedConst;
             return this;
@@ -90,7 +88,6 @@ public final class StructWithSharedConst {
                 this.sharedConst,
                 this.reqSharedConst
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -116,34 +113,16 @@ public final class StructWithSharedConst {
       FIELD_METADATA.put(3, REQ_SHARED_CONST_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=1, name="opt_shared_const", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.refs.MyField getOptSharedConst() { return optSharedConst; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetOptSharedConst() {
-        return this.optSharedConst != null;
-    }
     
     
-    @ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="shared_const", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getSharedConst() { return sharedConst; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetSharedConst() {
-        return this.sharedConst != null;
-    }
     
     
-    @ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=3, name="req_shared_const", requiredness=Requiredness.REQUIRED)
     public test.fixtures.refs.MyField getReqSharedConst() { return reqSharedConst; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetReqSharedConst() {
-        return this.reqSharedConst != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -181,6 +160,10 @@ public final class StructWithSharedConst {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<StructWithSharedConst> asReader() {
+      return StructWithSharedConst::read0;
+    }
     
     public static StructWithSharedConst read0(TProtocol oprot) throws TException {
       TField __field;
@@ -245,4 +228,11 @@ public final class StructWithSharedConst {
       oprot.writeStructEnd();
     }
     
+    private static class _StructWithSharedConstLazy {
+        private static final StructWithSharedConst _DEFAULT = new StructWithSharedConst.Builder().build();
+    }
+    
+    public static StructWithSharedConst defaultInstance() {
+        return  _StructWithSharedConstLazy._DEFAULT;
+    }
 }

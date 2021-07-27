@@ -220,8 +220,7 @@ auto bigMap = [] {
   return bigMap;
 }();
 std::map<std::string, std::pair<std::string, std::string>> bigHashMap(
-    bigMap.begin(),
-    bigMap.end());
+    bigMap.begin(), bigMap.end());
 
 BENCHMARK(FreezeBigMap, iters) {
   int k = 0;

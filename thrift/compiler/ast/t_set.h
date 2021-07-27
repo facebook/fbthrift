@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef T_SET_H
-#define T_SET_H
+#pragma once
 
 #include <thrift/compiler/ast/t_container.h>
 
@@ -27,36 +26,28 @@ namespace compiler {
  * A set is a lightweight container type that just wraps another data type.
  *
  */
-class t_set : public t_container {
+class t_set final : public t_container {
  public:
-  t_set(t_type* elem_type) : elem_type_(elem_type) {}
+  explicit t_set(t_type_ref elem_type) : elem_type_(std::move(elem_type)) {}
 
-  t_type* get_elem_type() const {
-    return elem_type_;
-  }
+  const t_type_ref& elem_type() const { return elem_type_; }
 
-  bool is_set() const override {
-    return true;
-  }
-
+  type container_type() const override { return type::t_set; }
   std::string get_full_name() const override {
     return "set<" + elem_type_->get_full_name() + ">";
   }
 
-  std::string get_impl_full_name() const override {
-    return "set<" + elem_type_->get_impl_full_name() + ">";
-  }
-
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_SET;
-  }
-
  private:
-  t_type* elem_type_;
+  t_type_ref elem_type_;
+
+  // TODO(afuller): Delete everything below here. It is only provided for
+  // backwards compatibility.
+ public:
+  explicit t_set(const t_type* elem_type)
+      : t_set(t_type_ref::from_req_ptr(elem_type)) {}
+  const t_type* get_elem_type() const { return elem_type().get_type(); }
 };
 
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif

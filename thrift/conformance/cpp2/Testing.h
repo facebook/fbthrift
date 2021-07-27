@@ -94,9 +94,7 @@ class Number1Serializer
  public:
   static const Protocol kProtocol;
 
-  const Protocol& getProtocol() const override {
-    return kProtocol;
-  }
+  const Protocol& getProtocol() const override { return kProtocol; }
 
   using Base::encode;
   void encode(const int&, folly::io::QueueAppender&& appender) const {
@@ -105,9 +103,9 @@ class Number1Serializer
   }
 
   using Base::decode;
-  int decode(folly::io::Cursor& cursor) const {
+  void decode(folly::io::Cursor& cursor, int& value) const {
     cursor.readFixedString(10);
-    return 1;
+    value = 1;
   }
 };
 
@@ -129,8 +127,8 @@ class FollyToStringSerializer
     appender.push(reinterpret_cast<const uint8_t*>(data.data()), data.size());
   }
   using Base::decode;
-  T decode(folly::io::Cursor& cursor) const {
-    return folly::to<T>(cursor.readFixedString(cursor.totalLength()));
+  void decode(folly::io::Cursor& cursor, T& value) const {
+    value = folly::to<T>(cursor.readFixedString(cursor.totalLength()));
   }
 };
 
@@ -151,8 +149,8 @@ class MultiSerializer : public AnySerializer {
   const Protocol& getProtocol() const override {
     return kFollyToStringProtocol;
   }
-  void encode(any_ref value, folly::io::QueueAppender&& appender)
-      const override;
+  void encode(
+      any_ref value, folly::io::QueueAppender&& appender) const override;
   void decode(
       const std::type_info& typeInfo,
       folly::io::Cursor& cursor,
@@ -204,7 +202,9 @@ inline constexpr bool is_trivial_compat_v = Type <= CtorType::Trivial;
 // combine.
 template <CtorType Ctor, CtorType Dtor>
 inline constexpr CtorType ctor_type_v =
-    Ctor == CtorType::Delete ? CtorType::Delete : Ctor > Dtor ? Ctor : Dtor;
+    Ctor == CtorType::Delete ? CtorType::Delete
+    : Ctor > Dtor            ? Ctor
+                             : Dtor;
 
 // An empty struct with the given traits.
 template <
@@ -396,13 +396,9 @@ namespace test {
 #define _THRIFT_ASSIGN_Delete _THRIFT_CON_Delete
 #define _THRIFT_ASSIGN_Trivial _THRIFT_CON_Trivial
 #define _THRIFT_ASSIGN_NoThrow \
-  noexcept(true) {             \
-    return *this;              \
-  }
+  noexcept(true) { return *this; }
 #define _THRIFT_ASSIGN_Throw \
-  noexcept(false) {          \
-    return *this;            \
-  }
+  noexcept(false) { return *this; }
 
 #define _THRIFT_CON(type) _THRIFT_CON_##type
 #define _THRIFT_ASSIGN(type) _THRIFT_ASSIGN_##type

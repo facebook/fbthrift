@@ -23,9 +23,11 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "\nFunctions:")
   fmt.Fprintln(os.Stderr, "  void ping()")
   fmt.Fprintln(os.Stderr, "  string getRandomData()")
+  fmt.Fprintln(os.Stderr, "  void sink(i64 sink)")
+  fmt.Fprintln(os.Stderr, "  void putDataById(i64 id, string data)")
   fmt.Fprintln(os.Stderr, "  bool hasDataById(i64 id)")
   fmt.Fprintln(os.Stderr, "  string getDataById(i64 id)")
-  fmt.Fprintln(os.Stderr, "  void putDataById(i64 id, string data)")
+  fmt.Fprintln(os.Stderr, "  void deleteDataById(i64 id)")
   fmt.Fprintln(os.Stderr, "  void lobDataById(i64 id, string data)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
@@ -137,13 +139,43 @@ func main() {
     fmt.Print(client.GetRandomData())
     fmt.Print("\n")
     break
+  case "sink":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "Sink requires 1 args")
+      flag.Usage()
+    }
+    argvalue0, err2 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err2 != nil {
+      Usage()
+      return
+    }
+    value0 := argvalue0
+    fmt.Print(client.Sink(value0))
+    fmt.Print("\n")
+    break
+  case "putDataById":
+    if flag.NArg() - 1 != 2 {
+      fmt.Fprintln(os.Stderr, "PutDataById requires 2 args")
+      flag.Usage()
+    }
+    argvalue0, err3 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err3 != nil {
+      Usage()
+      return
+    }
+    value0 := argvalue0
+    argvalue1 := flag.Arg(2)
+    value1 := argvalue1
+    fmt.Print(client.PutDataById(value0, value1))
+    fmt.Print("\n")
+    break
   case "hasDataById":
     if flag.NArg() - 1 != 1 {
       fmt.Fprintln(os.Stderr, "HasDataById requires 1 args")
       flag.Usage()
     }
-    argvalue0, err2 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err2 != nil {
+    argvalue0, err5 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err5 != nil {
       Usage()
       return
     }
@@ -156,8 +188,8 @@ func main() {
       fmt.Fprintln(os.Stderr, "GetDataById requires 1 args")
       flag.Usage()
     }
-    argvalue0, err3 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err3 != nil {
+    argvalue0, err6 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err6 != nil {
       Usage()
       return
     }
@@ -165,20 +197,18 @@ func main() {
     fmt.Print(client.GetDataById(value0))
     fmt.Print("\n")
     break
-  case "putDataById":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "PutDataById requires 2 args")
+  case "deleteDataById":
+    if flag.NArg() - 1 != 1 {
+      fmt.Fprintln(os.Stderr, "DeleteDataById requires 1 args")
       flag.Usage()
     }
-    argvalue0, err4 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err4 != nil {
+    argvalue0, err7 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err7 != nil {
       Usage()
       return
     }
     value0 := argvalue0
-    argvalue1 := flag.Arg(2)
-    value1 := argvalue1
-    fmt.Print(client.PutDataById(value0, value1))
+    fmt.Print(client.DeleteDataById(value0))
     fmt.Print("\n")
     break
   case "lobDataById":
@@ -186,8 +216,8 @@ func main() {
       fmt.Fprintln(os.Stderr, "LobDataById requires 2 args")
       flag.Usage()
     }
-    argvalue0, err6 := (strconv.ParseInt(flag.Arg(1), 10, 64))
-    if err6 != nil {
+    argvalue0, err8 := (strconv.ParseInt(flag.Arg(1), 10, 64))
+    if err8 != nil {
       Usage()
       return
     }

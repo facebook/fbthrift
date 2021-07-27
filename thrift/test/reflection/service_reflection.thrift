@@ -19,7 +19,7 @@ namespace cpp2 service_reflection.cpp2
 enum enum1 {
   e1field1 = 0,
   e1field2 = 1,
-  e1field3 = -4
+  e1field3 = -4,
 }
 
 enum enum2 {
@@ -29,10 +29,10 @@ enum enum2 {
 }
 
 struct struct1 {
-  1: i32 field1
-  2: double field2
-  3: enum1 field3
-  4: enum2 field4
+  1: i32 field1;
+  2: double field2;
+  3: enum1 field3;
+  4: enum2 field4;
 }
 
 service service_1 {

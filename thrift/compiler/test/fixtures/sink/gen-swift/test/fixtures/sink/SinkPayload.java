@@ -23,13 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="SinkPayload", builder=SinkPayload.Builder.class)
-public final class SinkPayload {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="SinkPayload", builder=SinkPayload.Builder.class)
+public final class SinkPayload implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public SinkPayload(
-        @ThriftField(value=1, name="content", requiredness=Requiredness.NONE) final String content
+        @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE) final String content
     ) {
         this.content = content;
     }
@@ -40,11 +39,10 @@ public final class SinkPayload {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String content = null;
     
-        @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
         public Builder setContent(String content) {
             this.content = content;
             return this;
@@ -62,7 +60,6 @@ public final class SinkPayload {
             SinkPayload result = new SinkPayload (
                 this.content
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -78,14 +75,8 @@ public final class SinkPayload {
       FIELD_METADATA.put(1, CONTENT_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
     public String getContent() { return content; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetContent() {
-        return this.content != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -117,6 +108,10 @@ public final class SinkPayload {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<SinkPayload> asReader() {
+      return SinkPayload::read0;
+    }
     
     public static SinkPayload read0(TProtocol oprot) throws TException {
       TField __field;
@@ -155,4 +150,11 @@ public final class SinkPayload {
       oprot.writeStructEnd();
     }
     
+    private static class _SinkPayloadLazy {
+        private static final SinkPayload _DEFAULT = new SinkPayload.Builder().build();
+    }
+    
+    public static SinkPayload defaultInstance() {
+        return  _SinkPayloadLazy._DEFAULT;
+    }
 }

@@ -14,9 +14,13 @@
  * limitations under the License.
  */
 
+use bytes::Bytes;
 use fbthrift::{serialize, CompactProtocol, Deserialize, Protocol, Serialize, ThriftEnum};
 use indexmap::{IndexMap, IndexSet};
-use interface::{NonstandardCollectionTypes, TestEnum, TestEnumEmpty, TestSkipV1, TestSkipV2};
+use interface::{
+    NonstandardCollectionTypes, TestBytesShared, TestEnum, TestEnumEmpty, TestSkipV1, TestSkipV2,
+};
+use smallvec::SmallVec;
 use std::collections::{BTreeMap, BTreeSet, HashMap, HashSet};
 use std::fmt::Debug;
 use std::io::Cursor;
@@ -36,6 +40,8 @@ fn test_nonstandard_collection_types() {
         indexmap_a: make_indexmap(),
         indexmap_b: make_indexmap(),
         indexmap_c: IndexMap::new(),
+        bin_smallvec: SmallVec::from(&b"smallvec"[..]),
+        bin_bytes: Bytes::from(&b"bytes"[..]),
     });
 }
 
@@ -124,4 +130,22 @@ fn test_deserialize_skip_seq() {
     let mut deserializer = <CompactProtocol>::deserializer(Cursor::new(bytes));
     let v1: TestSkipV1 = Deserialize::read(&mut deserializer).unwrap();
     assert_eq!(v1, TestSkipV1::default());
+}
+
+#[test]
+fn test_bytes_shared() {
+    // Test that when using `Bytes` for `binary` types and for the buffer the
+    // data is deserialized from, the deserialized structs share data with the
+    // buffer.  Do this by deserializing the same `Bytes`-backed buffer twice
+    // and checking both deserialized copies have the same address.  This
+    // should be somewhere within the serialized buffer.
+    let original = TestBytesShared {
+        b: Bytes::from(&b"data"[..]),
+    };
+    let bytes = serialize!(CompactProtocol, |w| Serialize::write(&original, w));
+    let mut deserializer1 = <CompactProtocol>::deserializer(Cursor::new(bytes.clone()));
+    let shared1: TestBytesShared = Deserialize::read(&mut deserializer1).unwrap();
+    let mut deserializer2 = <CompactProtocol>::deserializer(Cursor::new(bytes));
+    let shared2: TestBytesShared = Deserialize::read(&mut deserializer2).unwrap();
+    assert_eq!(shared1.b.as_ptr() as usize, shared2.b.as_ptr() as usize);
 }

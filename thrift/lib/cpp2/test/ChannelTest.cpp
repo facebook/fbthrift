@@ -34,8 +34,10 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/async/MessageChannel.h>
+#include <thrift/lib/cpp2/async/RequestCallback.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
+#include <thrift/lib/cpp2/async/RpcTypes.h>
 
 using namespace apache::thrift;
 using namespace apache::thrift::async;
@@ -81,12 +83,21 @@ SerializedRequest makeTestSerializedRequest(size_t len) {
              << len;
 }
 
+size_t lengthWithEnvelope(const ClientReceiveState& state) {
+  return LegacySerializedResponse(
+             state.protocolId(),
+             0,
+             state.messageType(),
+             "test",
+             SerializedResponse(state.serializedResponse().buffer->clone()))
+      .buffer->computeChainDataLength();
+}
+
 class EventBaseAborter : public folly::AsyncTimeout {
  public:
   EventBaseAborter(folly::EventBase* eventBase, uint32_t timeoutMS)
       : folly::AsyncTimeout(
-            eventBase,
-            folly::AsyncTimeout::InternalEnum::INTERNAL),
+            eventBase, folly::AsyncTimeout::InternalEnum::INTERNAL),
         eventBase_(eventBase) {
     scheduleTimeout(timeoutMS);
   }
@@ -153,14 +164,22 @@ class TestFramingHandler : public FramingHandler {
 
 template <typename Channel>
 unique_ptr<Channel, folly::DelayedDestruction::Destructor> createChannel(
-    const shared_ptr<folly::AsyncTransport>& transport) {
-  return Channel::newChannel(transport);
+    folly::AsyncTransport::UniquePtr transport) {
+  return Channel::newChannel(std::move(transport));
 }
 
 template <>
 unique_ptr<Cpp2Channel, folly::DelayedDestruction::Destructor> createChannel(
-    const shared_ptr<folly::AsyncTransport>& transport) {
-  return Cpp2Channel::newChannel(transport, make_unique<TestFramingHandler>());
+    folly::AsyncTransport::UniquePtr transport) {
+  return Cpp2Channel::newChannel(
+      std::move(transport), make_unique<TestFramingHandler>());
+}
+
+template <>
+HeaderClientChannel::LegacyPtr createChannel(
+    folly::AsyncTransport::UniquePtr transport) {
+  return HeaderClientChannel::newChannel(
+      HeaderClientChannel::WithoutRocketUpgrade{}, std::move(transport));
 }
 
 template <typename Channel1, typename Channel2>
@@ -173,25 +192,28 @@ class SocketPairTest {
   SocketPairTest(Config config = Config()) : eventBase_() {
     folly::SocketPair socketPair;
 
+    folly::AsyncSocket::UniquePtr socket0, socket1;
     if (config.ssl) {
       auto clientCtx = std::make_shared<folly::SSLContext>();
       auto serverCtx = std::make_shared<folly::SSLContext>();
       getctx(clientCtx, serverCtx);
-      socket0_ = TAsyncSSLSocket::newSocket(
+      socket0 = TAsyncSSLSocket::newSocket(
           clientCtx, &eventBase_, socketPair.extractNetworkSocket0(), false);
-      socket1_ = TAsyncSSLSocket::newSocket(
+      socket1 = TAsyncSSLSocket::newSocket(
           serverCtx, &eventBase_, socketPair.extractNetworkSocket1(), true);
-      dynamic_cast<folly::AsyncSSLSocket*>(socket0_.get())->sslConn(nullptr);
-      dynamic_cast<folly::AsyncSSLSocket*>(socket1_.get())->sslAccept(nullptr);
+      dynamic_cast<folly::AsyncSSLSocket*>(socket0.get())->sslConn(nullptr);
+      dynamic_cast<folly::AsyncSSLSocket*>(socket1.get())->sslAccept(nullptr);
     } else {
-      socket0_ = folly::AsyncSocket::newSocket(
+      socket0 = folly::AsyncSocket::newSocket(
           &eventBase_, socketPair.extractNetworkSocket0());
-      socket1_ = folly::AsyncSocket::newSocket(
+      socket1 = folly::AsyncSocket::newSocket(
           &eventBase_, socketPair.extractNetworkSocket1());
     }
+    socket0_ = socket0.get();
+    socket1_ = socket1.get();
 
-    channel0_ = createChannel<Channel1>(socket0_);
-    channel1_ = createChannel<Channel2>(socket1_);
+    channel0_ = createChannel<Channel1>(std::move(socket0));
+    channel1_ = createChannel<Channel2>(std::move(socket1));
   }
   virtual ~SocketPairTest() {}
 
@@ -200,9 +222,7 @@ class SocketPairTest {
     eventBase_.loop();
   }
 
-  void run() {
-    runWithTimeout();
-  }
+  void run() { runWithTimeout(); }
 
   void getctx(
       std::shared_ptr<folly::SSLContext> clientCtx,
@@ -214,21 +234,13 @@ class SocketPairTest {
     serverCtx->loadPrivateKey(folly::kTestKey);
   }
 
-  int getFd0() {
-    return socket0_->getNetworkSocket().toFd();
-  }
+  int getFd0() { return socket0_->getNetworkSocket().toFd(); }
 
-  int getFd1() {
-    return socket1_->getNetworkSocket().toFd();
-  }
+  int getFd1() { return socket1_->getNetworkSocket().toFd(); }
 
-  shared_ptr<folly::AsyncSocket> getSocket0() {
-    return socket0_;
-  }
+  folly::AsyncSocket* getSocket0() { return socket0_; }
 
-  shared_ptr<folly::AsyncSocket> getSocket1() {
-    return socket1_;
-  }
+  folly::AsyncSocket* getSocket1() { return socket1_; }
 
   void runWithTimeout(uint32_t timeoutMS = 6000) {
     preLoop();
@@ -241,8 +253,8 @@ class SocketPairTest {
 
  protected:
   folly::EventBase eventBase_;
-  shared_ptr<folly::AsyncSocket> socket0_;
-  shared_ptr<folly::AsyncSocket> socket1_;
+  folly::AsyncSocket* socket0_;
+  folly::AsyncSocket* socket1_;
   unique_ptr<Channel1, folly::DelayedDestruction::Destructor> channel0_;
   unique_ptr<Channel2, folly::DelayedDestruction::Destructor> channel1_;
 };
@@ -260,21 +272,15 @@ class MessageCallback : public MessageChannel::SendCallback,
 
   void sendQueued() override {}
 
-  void messageSent() override {
-    sent_++;
-  }
-  void messageSendError(folly::exception_wrapper&&) override {
-    sendError_++;
-  }
+  void messageSent() override { sent_++; }
+  void messageSendError(folly::exception_wrapper&&) override { sendError_++; }
 
-  void messageReceived(unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&&)
-      override {
+  void messageReceived(
+      unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&&) override {
     recv_++;
     recvBytes_ += buf->computeChainDataLength();
   }
-  void messageChannelEOF() override {
-    recvEOF_++;
-  }
+  void messageChannelEOF() override { recvEOF_++; }
   void messageReceiveErrorWrapped(folly::exception_wrapper&&) override {
     sendError_++;
   }
@@ -299,7 +305,7 @@ class TestRequestCallback : public RequestClientCallback, public CloseCallback {
 
   void onResponse(ClientReceiveState&& state) noexcept override {
     reply_++;
-    replyBytes_ += state.buf()->computeChainDataLength();
+    replyBytes_ += lengthWithEnvelope(state);
     delete this;
   }
 
@@ -309,9 +315,7 @@ class TestRequestCallback : public RequestClientCallback, public CloseCallback {
     delete this;
   }
 
-  void channelClosed() override {
-    closed_ = true;
-  }
+  void channelClosed() override { closed_ = true; }
 
   static void reset() {
     closed_ = false;
@@ -345,7 +349,7 @@ class ResponseCallback : public HeaderServerChannel::Callback {
     if (req->isOneway()) {
       oneway_++;
     } else {
-      req->sendReply(req->extractBuf());
+      req->sendReply(ResponsePayload::create(req->extractBuf()));
     }
   }
 
@@ -379,8 +383,8 @@ class MessageTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>,
     EXPECT_EQ(recvBytes_, len_);
   }
 
-  void messageReceived(unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header)
-      override {
+  void messageReceived(
+      unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header) override {
     MessageCallback::messageReceived(std::move(buf), std::move(header));
     channel1_->setReceiveCallback(nullptr);
   }
@@ -415,7 +419,7 @@ class MessageCloseTest : public SocketPairTest<Cpp2Channel, Cpp2Channel>,
         &sendCallback_, makeTestBuf(1024 * 1024), header_.get());
     // Close the other socket after delay
     this->eventBase_.runInLoop(
-        std::bind(&folly::AsyncSocket::close, this->socket1_.get()));
+        std::bind(&folly::AsyncSocket::close, this->socket1_));
     channel1_->setReceiveCallback(this);
   }
 
@@ -550,9 +554,7 @@ class HeaderChannelClosedTest
    public:
     explicit Callback(HeaderChannelClosedTest* c) : c_(c) {}
 
-    ~Callback() override {
-      c_->callbackDtor_ = true;
-    }
+    ~Callback() override { c_->callbackDtor_ = true; }
 
     void onResponse(ClientReceiveState&&) noexcept override {
       FAIL() << "should not recv reply from closed channel";
@@ -616,19 +618,23 @@ class InOrderTest
       if (reply_ == 1) {
         c_->channel1_->setCallback(nullptr);
         // Verify that they came back in the same order
-        EXPECT_EQ(state.buf()->computeChainDataLength(), c_->len_ + 1);
+        EXPECT_EQ(lengthWithEnvelope(state), c_->len_ + 1);
       }
       TestRequestCallback::onResponse(std::move(state));
     }
 
-    void requestReceived(ResponseChannelRequest::UniquePtr req) {
+    void requestReceived(ResponseChannelRequest::UniquePtr rcr) {
+      auto req = dynamic_cast<HeaderServerChannel::HeaderRequest*>(rcr.get());
       c_->request_++;
       c_->requestBytes_ += req->getBuf()->computeChainDataLength();
       if (c_->firstbuf_) {
-        req->sendReply(req->extractBuf());
-        c_->firstbuf_->sendReply(c_->firstbuf_->extractBuf());
+        req->sendReply(ResponsePayload::create(req->extractBuf()));
+        auto firstbuf = dynamic_cast<HeaderServerChannel::HeaderRequest*>(
+            c_->firstbuf_.get());
+        c_->firstbuf_->sendReply(
+            ResponsePayload::create(firstbuf->extractBuf()));
       } else {
-        c_->firstbuf_ = std::move(req);
+        c_->firstbuf_ = std::move(rcr);
       }
     }
 
@@ -638,7 +644,6 @@ class InOrderTest
 
   void preLoop() override {
     TestRequestCallback::reset();
-    channel0_->setFlags(0); // turn off out of order
     channel1_->setCallback(this);
     RpcOptions options;
     channel0_->sendRequestResponse(
@@ -715,7 +720,7 @@ class BadSeqIdTest
     header->setSequenceNumber(-1);
     HeaderServerChannel::HeaderRequest r(
         channel1_.get(), req->extractBuf(), std::move(header), {});
-    r.sendReply(r.extractBuf());
+    r.sendReply(ResponsePayload::create(r.extractBuf()));
   }
 
   void preLoop() override {
@@ -1152,52 +1157,26 @@ class DestroyAsyncTransport : public folly::AsyncTransport {
   void closeNow() override {}
   void shutdownWrite() override {}
   void shutdownWriteNow() override {}
-  bool good() const override {
-    return true;
-  }
-  bool readable() const override {
-    return false;
-  }
-  bool connecting() const override {
-    return false;
-  }
-  bool error() const override {
-    return false;
-  }
+  bool good() const override { return true; }
+  bool readable() const override { return false; }
+  bool connecting() const override { return false; }
+  bool error() const override { return false; }
   void attachEventBase(folly::EventBase*) override {}
   void detachEventBase() override {}
-  bool isDetachable() const override {
-    return true;
-  }
-  folly::EventBase* getEventBase() const override {
-    return nullptr;
-  }
+  bool isDetachable() const override { return true; }
+  folly::EventBase* getEventBase() const override { return nullptr; }
   void setSendTimeout(uint32_t /* ms */) override {}
-  uint32_t getSendTimeout() const override {
-    return 0;
-  }
+  uint32_t getSendTimeout() const override { return 0; }
   void getLocalAddress(folly::SocketAddress*) const override {}
   void getPeerAddress(folly::SocketAddress*) const override {}
-  size_t getAppBytesWritten() const override {
-    return 0;
-  }
-  size_t getRawBytesWritten() const override {
-    return 0;
-  }
-  size_t getAppBytesReceived() const override {
-    return 0;
-  }
-  size_t getRawBytesReceived() const override {
-    return 0;
-  }
+  size_t getAppBytesWritten() const override { return 0; }
+  size_t getRawBytesWritten() const override { return 0; }
+  size_t getAppBytesReceived() const override { return 0; }
+  size_t getRawBytesReceived() const override { return 0; }
   void setEorTracking(bool /* track */) override {}
-  bool isEorTrackingEnabled() const override {
-    return false;
-  }
+  bool isEorTrackingEnabled() const override { return false; }
 
-  void invokeEOF() {
-    cb_->readEOF();
-  }
+  void invokeEOF() { cb_->readEOF(); }
 
  private:
   folly::AsyncTransport::ReadCallback* cb_;
@@ -1227,9 +1206,9 @@ class DestroyRecvCallback : public MessageChannel::RecvCallback {
 };
 
 TEST(Channel, DestroyInEOF) {
-  auto t = new DestroyAsyncTransport;
-  std::shared_ptr<folly::AsyncTransport> transport(t);
-  auto channel = createChannel<Cpp2Channel>(transport);
+  auto t = new DestroyAsyncTransport();
+  auto transport = folly::AsyncTransport::UniquePtr(t);
+  auto channel = createChannel<Cpp2Channel>(std::move(transport));
   DestroyRecvCallback drc(std::move(channel));
   t->invokeEOF();
 }
@@ -1238,24 +1217,3 @@ class NullCloseCallback : public CloseCallback {
  public:
   void channelClosed() override {}
 };
-
-TEST(Channel, SetKeepRegisteredForClose) {
-  int lfd = socket(PF_INET, SOCK_STREAM, 0);
-  int rc = listen(lfd, 10);
-  CHECK(rc == 0);
-  struct sockaddr_in addr;
-  socklen_t addrlen = sizeof(addr);
-  rc = getsockname(lfd, (struct sockaddr*)&addr, &addrlen);
-
-  folly::EventBase base;
-  auto transport = folly::AsyncSocket::newSocket(
-      &base, "127.0.0.1", folly::Endian::big(addr.sin_port));
-  auto channel = createChannel<HeaderClientChannel>(std::move(transport));
-  NullCloseCallback ncc;
-  channel->setCloseCallback(&ncc);
-  channel->setKeepRegisteredForClose(false);
-
-  EXPECT_TRUE(base.loop());
-
-  close(lfd);
-}

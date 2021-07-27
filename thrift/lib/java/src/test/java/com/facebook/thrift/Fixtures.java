@@ -20,11 +20,11 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import thrift.test.Bonk;
-import thrift.test.CompactProtoTestStruct;
-import thrift.test.HolyMoley;
-import thrift.test.Nesting;
-import thrift.test.OneOfEach;
+import thrift.test.proto.Bonk;
+import thrift.test.proto.CompactProtoTestStruct;
+import thrift.test.proto.HolyMoley;
+import thrift.test.proto.Nesting;
+import thrift.test.proto.OneOfEach;
 
 public class Fixtures {
 
@@ -119,7 +119,7 @@ public class Fixtures {
       holyMoley.bonks.put("poe", stage2);
 
       // superhuge compact proto test struct
-      compactProtoTestStruct = new CompactProtoTestStruct(thrift.test.Constants.COMPACT_TEST);
+      compactProtoTestStruct = new CompactProtoTestStruct(thrift.test.proto.Constants.COMPACT_TEST);
       compactProtoTestStruct.a_binary = new byte[] {0, 1, 2, 3, 4, 5, 6, 7, 8};
     } catch (Exception e) {
       throw new RuntimeException(e);

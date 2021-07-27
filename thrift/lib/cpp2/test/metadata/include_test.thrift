@@ -39,8 +39,8 @@ struct Example {
   5: CoolString coolString;
 }
 
-service IncludeTestService extends
-  simple_structs_test.SimpleStructsTestService {
-  Example getExample(1: Animal animal) throws
-  (1: exception_test.RuntimeException ex);
+service IncludeTestService extends simple_structs_test.SimpleStructsTestService {
+  Example getExample(1: Animal animal) throws (
+    1: exception_test.RuntimeException ex,
+  );
 }

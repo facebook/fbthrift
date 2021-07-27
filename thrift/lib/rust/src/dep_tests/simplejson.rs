@@ -16,9 +16,13 @@
 
 use anyhow::Result;
 use fbthrift::simplejson_protocol::{deserialize, serialize};
-use fbthrift_test_if::{Basic, En, MainStruct, MainStructNoBinary, Small, SubStruct, Un, UnOne};
+use fbthrift::{simplejson_protocol::SimpleJsonProtocolDeserializer, Deserialize};
+use fbthrift_test_if::{
+    Basic, Containers, En, MainStruct, MainStructNoBinary, Small, SubStruct, Un, UnOne,
+};
 use std::collections::BTreeMap;
 use std::default::Default;
+use std::io::Cursor;
 
 #[test]
 fn test_large_roundtrip() -> Result<()> {
@@ -60,7 +64,7 @@ fn test_large_roundtrip() -> Result<()> {
         "foo":"foo",
         "m":{"m1":1,"m2":2},
         "bar":"test",
-        "s":{"opt_def":"IAMOPT","req_def":"IAMREQ","bin":""},
+        "s":{"optDef":"IAMOPT","req_def":"IAMREQ","bin":""},
         "l":[{"num":1,"two":2},{"num":2,"two":3}],
         "u":{"un1":{"one":1}},
         "e":2,
@@ -96,7 +100,7 @@ fn test_struct_key() -> Result<()> {
         key_map: Some(h),
         // In rust we need to specify optionals with defaults as None
         // instead of relying on ..Default::default()
-        opt_def: None,
+        optDef: None,
         ..Default::default()
     };
 
@@ -125,14 +129,14 @@ fn test_weird_text() -> Result<()> {
     // See the `weirdText` test in cpp_compat_test
 
     let mut sub = SubStruct {
-        opt_def: Some("stuff\twith\nescape\\characters'...\"lots{of}fun</xml>".to_string()),
+        optDef: Some("stuff\twith\nescape\\characters'...\"lots{of}fun</xml>".to_string()),
         bin: "1234".as_bytes().to_vec(),
         ..Default::default()
     };
 
     let s = String::from_utf8(serialize(&sub).to_vec()).unwrap();
     let expected_string = r#"{
-        "opt_def":"stuff\twith\nescape\\characters'...\"lots{of}fun</xml>",
+        "optDef":"stuff\twith\nescape\\characters'...\"lots{of}fun</xml>",
         "req_def":"IAMREQ",
         "bin":"MTIzNA"
     }"#
@@ -143,11 +147,11 @@ fn test_weird_text() -> Result<()> {
     assert_eq!(sub, deserialize(s).unwrap());
 
     // Unicode escaping
-    sub.opt_def = Some("UNICODE\u{1F60A}UH OH".to_string());
+    sub.optDef = Some("UNICODE\u{1F60A}UH OH".to_string());
 
     let s = String::from_utf8(serialize(&sub).to_vec()).unwrap();
     let expected_string = r#"{
-        "opt_def":"UNICODE😊UH OH",
+        "optDef":"UNICODE😊UH OH",
         "req_def":"IAMREQ",
         "bin":"MTIzNA"
     }"#
@@ -166,17 +170,18 @@ fn test_skip_complex() -> Result<()> {
     // See the `skipComplex` test in cpp_compat_test
 
     let sub = SubStruct {
-        opt_def: Some("thing".to_string()),
+        optDef: Some("thing".to_string()),
         bin: "1234".as_bytes().to_vec(),
         ..Default::default()
     };
 
     let input = r#"{
-        "opt_def":"thing",
+        "optDef":"thing",
         "req_def":"IAMREQ",
-        "bin":"MTIzNA"
+        "bin":"MTIzNA",
         "extra":[1,{"thing":"thing2"}],
-        "extra_map":{"thing":null,"thing2":2}
+        "extra_map":{"thing":null,"thing2":2},
+        "extra_bool":true
     }"#
     .replace(" ", "")
     .replace("\n", "");
@@ -187,17 +192,72 @@ fn test_skip_complex() -> Result<()> {
 }
 
 #[test]
+fn test_need_commas() -> Result<()> {
+    // See the `needCommas` test in cpp_compat_test
+
+    // Note the missing commas
+
+    let input = r#"{
+        "num":1
+        "two":2
+    }"#
+    .replace(" ", "")
+    .replace("\n", "");
+    assert!(deserialize::<Small, _>(input).is_err());
+
+    // even when skipping
+    let input2 = r#"{
+        "num":1,
+        "two":2,
+        "extra_map":{"thing":null,"thing2":2}
+        "extra_bool":true
+    }"#
+    .replace(" ", "")
+    .replace("\n", "");
+    assert!(deserialize::<Small, _>(input2).is_err());
+
+    Ok(())
+}
+
+#[test]
+fn test_need_commas_containers() -> Result<()> {
+    // See the `needCommasContainers` test in cpp_compat_test
+
+    let goodinput = r#"{
+        "m":{"m1":"m1","m2":"m2"}
+    }"#;
+    // Note the missing comma
+    let badinput = r#"{
+        "m":{"m1":"m1""m2":"m2"}
+    }"#;
+    assert!(deserialize::<Containers, _>(goodinput).is_ok());
+    assert!(deserialize::<Containers, _>(badinput).is_err());
+
+    let goodinput2 = r#"{
+        "l":["l1","l2"]
+    }"#;
+    // Note the missing comma
+    let badinput2 = r#"{
+        "l":["l1""l2"]
+    }"#;
+    assert!(deserialize::<Containers, _>(goodinput2).is_ok());
+    assert!(deserialize::<Containers, _>(badinput2).is_err());
+
+    Ok(())
+}
+
+#[test]
 fn test_null_stuff() -> Result<()> {
     // See the `nullStuff` test in cpp_compat_test
 
     let sub = SubStruct {
-        opt_def: None,
+        optDef: None,
         bin: "1234".as_bytes().to_vec(),
         ..Default::default()
     };
 
     let input = r#"{
-        "opt_def":null,
+        "optDef":null,
         "req_def":"IAMREQ",
         "bin":"MTIzNA"
     }"#
@@ -242,7 +302,7 @@ fn infinite_spaces() -> Result<()> {
          "foo"  :  "foo" ,
           "m" : { "m1" :  1   , "m2" : 2 }  ,
         "bar":"test",
-        "s":{"opt_def":  "IAMOPT"  ,"req_def":  "IAMREQ","bin": ""  },
+        "s":{"optDef":  "IAMOPT"  ,"req_def":  "IAMREQ","bin": ""  },
         "l":[{"num":1,"two":2},{"num"  :2 ," two" : 3 } ],
         "u":{"un1":{"one":  1  } },
         "e":  2  ,
@@ -305,5 +365,99 @@ fn test_serde_compat() -> Result<()> {
     // but passing between them should work
     assert_eq!(r, serde_json::from_str(&fbthrift_s).unwrap());
     assert_eq!(r, deserialize(&serde_s).unwrap());
+    Ok(())
+}
+
+#[test]
+fn test_multiple_deser() -> Result<()> {
+    // Tests that we don't too eagerly advance the buffer
+    let b1 = Basic {
+        b: true,
+        b2: false,
+        ..Default::default()
+    };
+    let b2 = Basic {
+        b: true,
+        b2: true,
+        ..Default::default()
+    };
+    // serialize it and assert that it serializes correctly
+    let s1 = String::from_utf8(serialize(&b1).to_vec()).unwrap();
+    let s2 = String::from_utf8(serialize(&b2).to_vec()).unwrap();
+    let to_check = format!("{} {}", s1, s2);
+
+    let mut deserializer = SimpleJsonProtocolDeserializer::new(Cursor::new(to_check.as_bytes()));
+    // Assert that deserialize builts the exact same struct
+    assert_eq!(b1, Basic::read(&mut deserializer)?);
+    assert_eq!(b2, Basic::read(&mut deserializer)?);
+
+    Ok(())
+}
+
+#[test]
+fn test_not_enough() -> Result<()> {
+    // Tests that we can deserialize until
+    // we run out, and don't panic
+    let b1 = Basic {
+        b: true,
+        b2: false,
+        ..Default::default()
+    };
+    let b2 = Basic {
+        b: true,
+        b2: true,
+        ..Default::default()
+    };
+    // serialize it and assert that it serializes correctly
+    let s1 = String::from_utf8(serialize(&b1).to_vec()).unwrap();
+    let s2 = String::from_utf8(serialize(&b2).to_vec()).unwrap();
+    let to_check = format!("{} {}", s1, s2);
+
+    let mut deserializer = SimpleJsonProtocolDeserializer::new(Cursor::new(
+        // 6 should cover the } and a `true` value
+        &to_check.as_bytes()[..to_check.as_bytes().len() - 6],
+    ));
+    // Assert that deserialize builts the exact same struct
+    assert_eq!(b1, Basic::read(&mut deserializer)?);
+    assert!(Basic::read(&mut deserializer).is_err());
+
+    Ok(())
+}
+
+#[test]
+fn test_unknown_union() -> Result<()> {
+    // See unknownUnion
+
+    // Build the empty union
+    let u = Un::default();
+
+    let s = String::from_utf8(serialize(&u).to_vec()).unwrap();
+    let expected_string = "{}";
+    assert_eq!(expected_string, s);
+
+    // Assert that deserialize builts the exact same struct
+    assert_eq!(u, deserialize(s).unwrap());
+
+    // ...
+    // extra weirdness
+    // Build an explicit unknown
+    let explicit_unknown = Un::UnknownField(100);
+    let s2 = String::from_utf8(serialize(&explicit_unknown).to_vec()).unwrap();
+    let expected_string = "{}";
+    assert_eq!(expected_string, s2);
+
+    // Deserializes to the default -1 case, this matches the other
+    // protocols behavior
+    assert_eq!(u, deserialize(s2).unwrap());
+
+    // backwards compat test
+    let old_output = r#"{
+        "UnknownField":-1
+    }"#
+    .replace(" ", "")
+    .replace("\n", "");
+
+    assert_eq!(u, deserialize(old_output).unwrap());
+
     Ok(())
 }

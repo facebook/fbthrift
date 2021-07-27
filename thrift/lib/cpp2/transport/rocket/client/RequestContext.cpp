@@ -55,6 +55,7 @@ folly::Try<void> RequestContext::waitForWriteToCompleteResult() {
       }
       return {};
 
+    case State::DEFERRED_INIT:
     case State::WRITE_NOT_SCHEDULED:
     case State::WRITE_SCHEDULED:
     case State::WRITE_SENDING:
@@ -103,6 +104,7 @@ folly::Try<Payload> RequestContext::getResponse() && {
     case State::COMPLETE:
       return std::move(responsePayload_);
 
+    case State::DEFERRED_INIT:
     case State::WRITE_NOT_SCHEDULED:
     case State::WRITE_SCHEDULED:
       LOG(FATAL) << fmt::format(

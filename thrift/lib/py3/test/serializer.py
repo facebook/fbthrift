@@ -13,12 +13,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 import asyncio
 import pickle
 import unittest
-from typing import AbstractSet, Any, Mapping, Sequence, Union
+from typing import Mapping, Union, Hashable
 
 from testing.types import (
     Digits,
@@ -132,7 +130,7 @@ class SerializerTests(unittest.TestCase):
 
     def pickle_round_robin(
         self,
-        control: Union[Struct, Mapping[Any, Any], Sequence[Any], AbstractSet[Any]],
+        control: Union[Struct, Hashable],
     ) -> None:
         encoded = pickle.dumps(control, protocol=pickle.HIGHEST_PROTOCOL)
         decoded = pickle.loads(encoded)

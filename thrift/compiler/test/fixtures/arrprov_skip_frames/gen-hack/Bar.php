@@ -149,7 +149,7 @@ trait BarClientBase {
           inout $mtype,
           inout $rseqid,
         );
-        if ($mtype == \TMessageType::EXCEPTION) {
+        if ($mtype === \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
@@ -158,7 +158,7 @@ trait BarClientBase {
         $result = Bar_baz_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
           throw new \TProtocolException("baz failed: sequence id is out of order");
         }
       }
@@ -205,6 +205,10 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    */
   <<__ProvenanceSkipFrame>>
   public async function baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -233,6 +237,10 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    */
   <<__ProvenanceSkipFrame>>
   public async function baz__LEGACY_ARRAYS(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -266,6 +274,10 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    */
   <<__ProvenanceSkipFrame>>
   public async function baz(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -294,6 +306,10 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    */
   <<__ProvenanceSkipFrame>>
   public async function baz__LEGACY_ARRAYS(darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -335,6 +351,10 @@ class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcO
    */
   <<__ProvenanceSkipFrame>>
   public async function baz(\RpcOptions $rpc_options, darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -363,6 +383,10 @@ class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcO
    */
   <<__ProvenanceSkipFrame>>
   public async function baz__LEGACY_ARRAYS(\RpcOptions $rpc_options, darray<int, bool> $a, KeyedContainer<int, KeyedContainer<int, darray<string, bool>>> $b, ?Foo $d, int $e, KeyedContainer<int, Foo> $f): Awaitable<varray<Foo>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("Bar", "baz");
     $currentseqid = $this->sendImpl_baz($a, $b, $d, $e, $f);
     $channel = $this->channel_;
@@ -449,11 +473,11 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => darray<int, bool>,
-    ?'b' => varray<darray<int, darray<string, bool>>>,
+    ?'a' => ?darray<int, bool>,
+    ?'b' => ?varray<darray<int, darray<string, bool>>>,
     ?'d' => ?Foo,
-    ?'e' => int,
-    ?'f' => varray<Foo>,
+    ?'e' => ?int,
+    ?'f' => ?varray<Foo>,
   );
 
   const type TShape = shape(
@@ -470,8 +494,8 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
   public int $e;
   public varray<Foo> $f;
 
-  <<__Rx, __ProvenanceSkipFrame>>
-  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?Foo $d = null, ?int $e = null, ?varray<Foo> $f = null  ) {
+  <<__ProvenanceSkipFrame>>
+  public function __construct(?darray<int, bool> $a = null, ?varray<darray<int, darray<string, bool>>> $b = null, ?Foo $d = null, ?int $e = null, ?varray<Foo> $f = null  )[] {
     $this->a = $a ?? darray[];
     $this->b = $b ?? varray[];
     $this->d = $d;
@@ -479,13 +503,13 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     $this->f = $f ?? varray[];
   }
 
-  <<__Rx, __ProvenanceSkipFrame>>
-  public static function withDefaultValues(): this {
+  <<__ProvenanceSkipFrame>>
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __ProvenanceSkipFrame>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  <<__ProvenanceSkipFrame>>
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
       Shapes::idx($shape, 'b'),
@@ -495,63 +519,155 @@ class Bar_baz_args implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Bar_baz_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.baz_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_set" => tmeta_ThriftSetType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "a",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_map" => tmeta_ThriftMapType::fromShape(
+                            shape(
+                              "keyType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_set" => tmeta_ThriftSetType::fromShape(
+                                    shape(
+                                      "valueType" => tmeta_ThriftType::fromShape(
+                                        shape(
+                                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                        )
+                                      ),
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "b",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.Foo",
+                    )
+                  ),
+                )
+              ),
+              "name" => "d",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "e",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.Foo",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "f",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'b' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'd' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'e' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'f' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  <<__ProvenanceSkipFrame>>
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['a'],
+      $shape['b'],
+      Shapes::idx($shape, 'd') === null ? null : (Foo::__fromShape($shape['d'])),
+      $shape['e'],
+      $shape['f']
+        |> Vec\map(
+          $$,
+          $_val0 ==> $_val0
+            |> Foo::__fromShape($$),
+        ) |> varray($$),
+    );
   }
 
-  <<__Rx, __ProvenanceSkipFrame>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->a = $shape['a'];
-    $me->b = $shape['b'];
-    if (Shapes::idx($shape, 'd') !== null) {
-      $me->d = Foo::__fromShape($shape['d']);
-    }
-    $me->e = $shape['e'];
-    $me->f = $shape['f']
-      |> Vec\map(
-        $$,
-        $_val0 ==> $_val0
-          |> Foo::__fromShape($$),
-      ) |> varray($$);
-    return $me;
-  }
-
-  <<__Rx, __ProvenanceSkipFrame>>
-  public function __toShape(): self::TShape {
+  <<__ProvenanceSkipFrame>>
+  public function __toShape()[]: self::TShape {
     return shape(
       'a' => $this->a,
       'b' => $this->b,
@@ -588,57 +704,253 @@ class Bar_baz_result implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'success' => varray<Foo>,
+    ?'success' => ?varray<Foo>,
   );
 
   const int STRUCTURAL_ID = 5594803499509360192;
   public ?varray<Foo> $success;
 
-  <<__Rx, __ProvenanceSkipFrame>>
-  public function __construct(?varray<Foo> $success = null  ) {
+  <<__ProvenanceSkipFrame>>
+  public function __construct(?varray<Foo> $success = null  )[] {
   }
 
-  <<__Rx, __ProvenanceSkipFrame>>
-  public static function withDefaultValues(): this {
+  <<__ProvenanceSkipFrame>>
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx, __ProvenanceSkipFrame>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  <<__ProvenanceSkipFrame>>
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'success'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Bar_baz_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'success' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Bar_baz_result",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.Foo",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
 
 class BarStaticMetadata implements \IThriftServiceStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+  public static function getServiceMetadata()[]: \tmeta_ThriftService {
+    return tmeta_ThriftService::fromShape(
+      shape(
+        "name" => "module.Bar",
+        "functions" => vec[
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "baz",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.Foo",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_set" => tmeta_ThriftSetType::fromShape(
+                          shape(
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "a",
+                  )
+                ),
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 2,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_list" => tmeta_ThriftListType::fromShape(
+                          shape(
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_map" => tmeta_ThriftMapType::fromShape(
+                                  shape(
+                                    "keyType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_set" => tmeta_ThriftSetType::fromShape(
+                                          shape(
+                                            "valueType" => tmeta_ThriftType::fromShape(
+                                              shape(
+                                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                              )
+                                            ),
+                                          )
+                                        ),
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "b",
+                  )
+                ),
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 3,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_struct" => tmeta_ThriftStructType::fromShape(
+                          shape(
+                            "name" => "module.Foo",
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "d",
+                  )
+                ),
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 4,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                      )
+                    ),
+                    "name" => "e",
+                  )
+                ),
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 5,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_list" => tmeta_ThriftListType::fromShape(
+                          shape(
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_struct" => tmeta_ThriftStructType::fromShape(
+                                  shape(
+                                    "name" => "module.Foo",
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "f",
+                  )
+                ),
+              ],
+            )
+          ),
+        ],
+      )
+    );
+  }
+
+  public static function getServiceMetadataResponse()[]: \tmeta_ThriftServiceMetadataResponse {
+    return \tmeta_ThriftServiceMetadataResponse::fromShape(
+      shape(
+        'context' => \tmeta_ThriftServiceContext::fromShape(
+          shape(
+            'service_info' => self::getServiceMetadata(),
+            'module' => \tmeta_ThriftModuleContext::fromShape(
+              shape(
+                'name' => 'module',
+              )
+            ),
+          )
+        ),
+        'metadata' => \tmeta_ThriftMetadata::fromShape(
+          shape(
+            'enums' => dict[
+            ],
+            'structs' => dict[
+              'module.Foo' => Foo::getStructMetadata(),
+            ],
+            'exceptions' => dict[
+            ],
+            'services' => dict[
+            ],
+          )
+        ),
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'baz' => dict[],
       ],
     );
   }

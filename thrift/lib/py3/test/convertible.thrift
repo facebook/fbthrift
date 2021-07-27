@@ -22,25 +22,32 @@ enum Color {
 }
 
 struct Simple {
-  1: i32 intField,
-  2: string strField,
-  3: list<i32> intList,
-  4: set<string> strSet,
-  5: map<string, i64> strToIntMap,
-  6: Color color,
-  7: string name (py3.name = "name_"),
+  1: i32 intField;
+  2: string strField;
+  3: list<i32> intList;
+  4: set<string> strSet;
+  5: map<string, i64> strToIntMap;
+  6: Color color;
+  7: string name (py3.name = "name_");
 }
 
 struct Nested {
-  1: Simple simpleField,
-  2: list<Simple> simpleList,
-  3: map<Color, Simple> colorToSimpleMap,
+  1: Simple simpleField;
+  2: list<Simple> simpleList;
+  3: map<Color, Simple> colorToSimpleMap;
 }
 
 union Union {
-  1: i32 intField,
-  2: string strField,
-  3: list<i32> intList,
-  4: Simple simpleField,
-  5: string name (py3.name = "name_"),
+  1: i32 intField;
+  2: string strField;
+  3: list<i32> intList;
+  4: Simple simpleField (py3.name = "simple_");
+  5: string name (py3.name = "name_");
+}
+
+struct OptionalDefaultsStruct {
+  // @lint-ignore FBTHRIFTSANITY
+  1: optional string sillyString = "default string";
+  // @lint-ignore FBTHRIFTSANITY
+  2: optional Color sillyColor = Color.RED;
 }

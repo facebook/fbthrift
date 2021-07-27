@@ -24,9 +24,26 @@ import tempfile
 import traceback
 import unittest
 
+FIXTURE_ROOT = "."
+THRIFT_REL = "thrift/compiler/thrift"
 
-thrift = os.getenv("THRIFT_COMPILER_BIN")
-fixtures_root_dir = os.getenv("THRIFT_FIXTURES_DIR")
+
+def ascend_find_exe(path, target):
+    if not os.path.isdir(path):
+        path = os.path.dirname(path)
+    while True:
+        test = os.path.join(path, target)
+        if os.access(test, os.X_OK):
+            return test
+        parent = os.path.dirname(path)
+        if os.path.samefile(parent, path):
+            return None
+        path = parent
+
+
+exe = os.path.join(os.getcwd(), sys.argv[0])
+thrift = ascend_find_exe(exe, THRIFT_REL)
+fixtures_root_dir = os.path.join(FIXTURE_ROOT, "thrift/compiler/test/fixtures")
 
 
 def read_file(path):
@@ -92,10 +109,10 @@ class CompilerTest(unittest.TestCase):
 
                 msg = ["Difference found in " + gen + ":"]
                 for line in difflib.unified_diff(
-                    geng.splitlines(),
                     genf.splitlines(),
-                    geng_path,
+                    geng.splitlines(),
                     genf_path,
+                    geng_path,
                     lineterm="",
                 ):
                     msg.append(line)
@@ -140,6 +157,8 @@ class CompilerTest(unittest.TestCase):
             args = [
                 thrift,
                 "-r",
+                "--allow-experimental-features",
+                "all",
                 "--gen",
                 args[0],
                 *args[1:],

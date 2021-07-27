@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp/EventHandlerBase.h>
 #include <algorithm>
+#include <thrift/lib/cpp/EventHandlerBase.h>
 
 using std::remove;
 using std::shared_ptr;

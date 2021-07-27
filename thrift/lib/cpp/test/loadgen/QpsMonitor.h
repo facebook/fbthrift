@@ -17,6 +17,8 @@
 #ifndef THRIFT_TEST_LOADGEN_QPSMONITOR_H_
 #define THRIFT_TEST_LOADGEN_QPSMONITOR_H_ 1
 
+#include <chrono>
+
 #include <thrift/lib/cpp/test/loadgen/OpEnabledState.h>
 #include <thrift/lib/cpp/test/loadgen/QpsScoreBoard.h>
 #include <thrift/lib/cpp/test/loadgen/TerminalMonitor.h>
@@ -41,24 +43,18 @@ class QpsMonitor : public TerminalMonitor {
   uint32_t printInfo(uint64_t intervalUsec) override;
   uint64_t getCurrentQps() override;
 
-  OpEnabledState* getEnabledState() {
-    return &enabledState_;
-  }
+  OpEnabledState* getEnabledState() { return &enabledState_; }
 
-  const OpEnabledState* getEnabledState() const {
-    return &enabledState_;
-  }
+  const OpEnabledState* getEnabledState() const { return &enabledState_; }
 
-  void printAllTimeQps(bool enabled) {
-    printAllTime_ = enabled;
-  }
+  void printAllTimeQps(bool enabled) { printAllTime_ = enabled; }
 
  private:
   typedef std::vector<std::shared_ptr<QpsScoreBoard>> ScoreBoardVector;
 
   void computeAggregate(QpsScoreBoard* scoreboard);
 
-  int64_t initialTime_;
+  std::chrono::steady_clock::time_point initialTime_;
   uint64_t initialSum_;
 
   bool printAllTime_;

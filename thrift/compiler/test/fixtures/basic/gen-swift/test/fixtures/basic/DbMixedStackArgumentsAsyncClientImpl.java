@@ -11,7 +11,8 @@ import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
-import com.facebook.swift.transport.client.*;
+import com.facebook.thrift.client.*;
+import com.facebook.thrift.util.FutureUtil;
 import com.google.common.util.concurrent.ListenableFuture;
 import java.io.*;
 import java.lang.reflect.Method;
@@ -81,8 +82,22 @@ public class DbMixedStackArgumentsAsyncClientImpl extends AbstractThriftClient i
     @java.lang.Override
     public ListenableFuture<byte[]> getDataByKey0(
         String key) {
+        return getDataByKey0(key, RpcOptions.EMPTY);
+    }
+
+    @java.lang.Override
+    public ListenableFuture<byte[]> getDataByKey0(
+        String key,
+        RpcOptions rpcOptions) {
+        return FutureUtil.transform(getDataByKey0Wrapper(key, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<byte[]>> getDataByKey0Wrapper(
+        String key,
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<byte[]>) execute(getDataByKey0MethodHandler, getDataByKey0Exceptions, key);
+          return executeWrapperWithOptions(getDataByKey0MethodHandler, getDataByKey0Exceptions, rpcOptions, key);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }
@@ -91,29 +106,22 @@ public class DbMixedStackArgumentsAsyncClientImpl extends AbstractThriftClient i
     @java.lang.Override
     public ListenableFuture<byte[]> getDataByKey1(
         String key) {
-        try {
-          return (ListenableFuture<byte[]>) execute(getDataByKey1MethodHandler, getDataByKey1Exceptions, key);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
+        return getDataByKey1(key, RpcOptions.EMPTY);
     }
 
-
-    public ListenableFuture<byte[]> getDataByKey0(
-        String key,
-        RpcOptions rpcOptions) {
-        try {
-          return (ListenableFuture<byte[]>) executeWithOptions(getDataByKey0MethodHandler, getDataByKey0Exceptions, rpcOptions, key);
-        } catch (Throwable t) {
-          throw new RuntimeTException(t.getMessage(), t);
-        }
-    }
-
+    @java.lang.Override
     public ListenableFuture<byte[]> getDataByKey1(
         String key,
         RpcOptions rpcOptions) {
+        return FutureUtil.transform(getDataByKey1Wrapper(key, rpcOptions));
+    }
+
+    @java.lang.Override
+    public ListenableFuture<ResponseWrapper<byte[]>> getDataByKey1Wrapper(
+        String key,
+        RpcOptions rpcOptions) {
         try {
-          return (ListenableFuture<byte[]>) executeWithOptions(getDataByKey1MethodHandler, getDataByKey1Exceptions, rpcOptions, key);
+          return executeWrapperWithOptions(getDataByKey1MethodHandler, getDataByKey1Exceptions, rpcOptions, key);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

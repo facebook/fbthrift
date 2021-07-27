@@ -25,7 +25,7 @@ from thrift.py3.reflection cimport (
   NumberType as __NumberType,
 )
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 {{#program:includeNamespaces}}
 {{#hasTypes?}}
@@ -64,15 +64,15 @@ cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients):
                 ),
                 {{/function:args}}
             ),
-            result={{#function:returnType}}{{!
+            result={{#function:return_type}}{{!
                 }}{{#type:void?}}None{{/type:void?}}{{!
                 }}{{#type:streamresponse?}}{{!
                     }}{{> clients/StreamResponseClassName}} if for_clients else {{!
                     }}{{> services/StreamResponseClassName}}{{!
                 }}{{/type:streamresponse?}}{{!
                 }}{{^type:void?}}{{> types/PythonType}}{{/type:void?}}{{!
-                }}{{/function:returnType}},
-            result_kind={{#function:returnType}}{{> types/ThriftNumberType}}{{/function:returnType}},
+                }}{{/function:return_type}},
+            result_kind={{#function:return_type}}{{> types/ThriftNumberType}}{{/function:return_type}},
             exceptions=(
                 {{#function:exceptions}}
                 {{#field:type}}{{> types/PythonType}}{{/field:type}},

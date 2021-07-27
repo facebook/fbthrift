@@ -23,6 +23,7 @@
 
 #include <stdio.h>
 #include <string.h>
+#include <chrono>
 
 using namespace boost;
 using namespace apache::thrift::concurrency;
@@ -36,7 +37,7 @@ enum {
 };
 
 QpsMonitor::QpsMonitor(const std::shared_ptr<LoadConfig>& config)
-    : initialTime_(0),
+    : initialTime_(),
       initialSum_(0),
       printAllTime_(true),
       enabledState_(config->getNumOpTypes()),
@@ -60,7 +61,7 @@ void QpsMonitor::initializeInfo() {
 
   // Record the start time and initial totals,
   // so we can use it for printing an all-time QPS rate.
-  initialTime_ = Util::currentTimeUsec();
+  initialTime_ = std::chrono::steady_clock::now();
   initialSum_ = aggregateScoreBoard_.computeTotalCount();
 
   // Call our parent's initializeInfo() method
@@ -146,10 +147,11 @@ uint32_t QpsMonitor::printInfo(uint64_t intervalUsec) {
 
   // Print the all-time queries per second
   if (printAllTime_) {
-    int64_t now = Util::currentTimeUsec();
-    uint64_t allTimeQps =
-        ((US_PER_S * (currentSum - initialSum_)) / (now - initialTime_));
-    printf("%10" PRIu64, allTimeQps);
+    auto now = std::chrono::steady_clock::now();
+    auto allTimeQps =
+        ((currentSum - initialSum_) /
+         std::chrono::duration<double>(now - initialTime_).count());
+    printf("%10lf", allTimeQps);
   }
 
   printf("\n");

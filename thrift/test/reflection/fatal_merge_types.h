@@ -30,12 +30,8 @@ struct CppHasANumber : private boost::totally_ordered<CppHasANumber> {
   std::int32_t number{};
   CppHasANumber() {}
   /* implicit */ CppHasANumber(std::int32_t number_) : number(number_) {}
-  bool operator==(CppHasANumber that) const {
-    return number == that.number;
-  }
-  bool operator<(CppHasANumber that) const {
-    return number < that.number;
-  }
+  bool operator==(CppHasANumber that) const { return number == that.number; }
+  bool operator<(CppHasANumber that) const { return number < that.number; }
 };
 } // namespace test
 } // namespace thrift

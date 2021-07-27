@@ -29,8 +29,8 @@ struct Automobile {
   3: optional Plate first_plate = "0000";
   4: Year year;
   5: Drivers drivers;
-  6: list<Accessory> Accessories
-  7: map<i32, PartName> PartNames
+  6: list<Accessory> Accessories;
+  7: map<i32, PartName> PartNames;
 }
 
 // Test structs as map keys
@@ -46,14 +46,11 @@ struct MapContainer {
 typedef Automobile Car
 
 service Finder {
-  Automobile byPlate(
-    1: Plate plate);
+  Automobile byPlate(1: Plate plate);
 
-  Car aliasByPlate(
-    1: Plate plate);
+  Car aliasByPlate(1: Plate plate);
 
-  Plate previousPlate(
-    1: Plate plate);
+  Plate previousPlate(1: Plate plate);
 }
 
 struct Pair {

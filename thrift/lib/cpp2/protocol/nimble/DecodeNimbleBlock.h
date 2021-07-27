@@ -72,9 +72,7 @@ extern const std::array<NimbleBlockVectorDecodeData, 256>
 // from the input stream.
 template <ChunkRepr repr, bool tryVectorize = true>
 int decodeNimbleBlock(
-    std::uint8_t control,
-    folly::ByteRange data,
-    std::uint32_t chunksOut[4]) {
+    std::uint8_t control, folly::ByteRange data, std::uint32_t chunksOut[4]) {
   DCHECK(data.size() >= 16);
 #if APACHE_THRIFT_DETAIL_NIMBLE_CAN_VECTORIZE
   static_assert(

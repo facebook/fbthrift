@@ -23,6 +23,12 @@
 
 namespace apache {
 namespace thrift {
+
+struct BufferOptions {
+  int32_t chunkSize{100};
+  size_t memSize{0};
+};
+
 namespace detail {
 
 class ClientStreamConsumer {
@@ -61,8 +67,7 @@ class ClientStreamBridge : public TwoWayBridge<
    public:
     virtual ~FirstResponseCallback() = default;
     virtual void onFirstResponse(
-        FirstResponsePayload&&,
-        ClientPtr clientStreamBridge) = 0;
+        FirstResponsePayload&&, ClientPtr clientStreamBridge) = 0;
     virtual void onFirstResponseError(folly::exception_wrapper) = 0;
   };
 
@@ -97,6 +102,8 @@ class ClientStreamBridge : public TwoWayBridge<
   void onStreamError(folly::exception_wrapper ew) override;
 
   void onStreamComplete() override;
+
+  bool onStreamHeaders(HeadersPayload&& payload) override;
 
   void resetServerCallback(StreamServerCallback& serverCallback) override;
 

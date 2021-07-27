@@ -12,9 +12,11 @@ cdef class MyServiceInterface(ServiceInterface):
     # these are to avoid weird Cython multiple inheritance issue
     cdef bint _for_cython_ping
     cdef bint _for_cython_getRandomData
+    cdef bint _for_cython_sink
+    cdef bint _for_cython_putDataById
     cdef bint _for_cython_hasDataById
     cdef bint _for_cython_getDataById
-    cdef bint _for_cython_putDataById
+    cdef bint _for_cython_deleteDataById
     cdef bint _for_cython_lobDataById
     pass
 

@@ -14,7 +14,8 @@
  * limitations under the License.
  */
 
-use crate::bufext::BufMutExt;
+use crate::binary_type::CopyFromBuf;
+use crate::bufext::{BufExt, BufMutExt, DeserializeSource};
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
 use crate::framing::Framing;
@@ -25,9 +26,9 @@ use crate::ttype::TType;
 use crate::varint;
 use crate::Result;
 use bufsize::SizeCounter;
-use bytes::{Buf, Bytes, BytesMut};
+use bytes::{Bytes, BytesMut};
 use ghost::phantom;
-use std::{cmp, convert::TryFrom, io::Cursor};
+use std::convert::TryFrom;
 
 const COMPACT_PROTOCOL_VERSION: u8 = 0x02;
 const PROTOCOL_ID: u8 = 0x82;
@@ -132,7 +133,7 @@ impl From<bool> for CType {
 /// ```ignore
 /// let protocol = CompactProtocol;
 /// let transport = HttpClient::new(ENDPOINT)?;
-/// let client = BuckGraphService::new(protocol, transport);
+/// let client = <dyn BuckGraphService>::new(protocol, transport);
 /// ```
 ///
 /// The type parameter is the Framing expected by the transport on which this
@@ -493,7 +494,7 @@ impl<B: BufMutExt> ProtocolWriter for CompactProtocolSerializer<B> {
     }
 }
 
-impl<B: Buf> CompactProtocolDeserializer<B> {
+impl<B: BufExt> CompactProtocolDeserializer<B> {
     pub fn new(buffer: B) -> Self {
         CompactProtocolDeserializer {
             state: EncState::new(),
@@ -509,34 +510,11 @@ impl<B: Buf> CompactProtocolDeserializer<B> {
     }
 
     fn peek_bytes(&self, len: usize) -> Option<&[u8]> {
-        if self.buffer.bytes().len() >= len {
-            Some(&self.buffer.bytes()[..len])
+        if self.buffer.chunk().len() >= len {
+            Some(&self.buffer.chunk()[..len])
         } else {
             None
         }
-    }
-
-    fn read_bytes_into<'a>(&mut self, len: usize, result: &'a mut Vec<u8>) -> Result<()> {
-        ensure_err!(
-            self.buffer.remaining() >= len,
-            ProtocolError::InvalidDataLength
-        );
-
-        let mut remaining = len;
-
-        while remaining > 0 {
-            let length = {
-                let buffer = self.buffer.bytes();
-                let length = cmp::min(remaining, buffer.len());
-                result.extend_from_slice(&buffer[..length]);
-                length
-            };
-
-            remaining -= length;
-            self.buffer.advance(length);
-        }
-
-        Ok(())
     }
 
     fn read_varint_u64(&mut self) -> Result<u64> {
@@ -558,7 +536,7 @@ impl<B: Buf> CompactProtocolDeserializer<B> {
     }
 }
 
-impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
+impl<B: BufExt> ProtocolReader for CompactProtocolDeserializer<B> {
     fn read_message_begin<F, T>(&mut self, msgfn: F) -> Result<(T, MessageType, u32)>
     where
         F: FnOnce(&[u8]) -> T,
@@ -584,8 +562,11 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
                     let namebuf = self.peek_bytes(len).unwrap();
                     (namebuf.len(), msgfn(namebuf))
                 } else {
-                    let mut namebuf = Vec::new();
-                    self.read_bytes_into(len, &mut namebuf)?;
+                    ensure_err!(
+                        self.buffer.remaining() >= len,
+                        ProtocolError::InvalidDataLength
+                    );
+                    let namebuf: Vec<u8> = Vec::copy_from_buf(&mut self.buffer, len);
                     (0, msgfn(namebuf.as_slice()))
                 }
             };
@@ -775,12 +756,12 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
     }
 
     fn read_string(&mut self) -> Result<String> {
-        let vec = self.read_binary()?;
+        let vec = self.read_binary::<Vec<u8>>()?;
 
         Ok(String::from_utf8(vec)?)
     }
 
-    fn read_binary(&mut self) -> Result<Vec<u8>> {
+    fn read_binary<V: CopyFromBuf>(&mut self) -> Result<V> {
         let received_len = self.read_varint_u64()? as usize;
         ensure_err!(
             self.string_limit.map_or(true, |lim| received_len < lim),
@@ -788,11 +769,7 @@ impl<B: Buf> ProtocolReader for CompactProtocolDeserializer<B> {
         );
         ensure_err!(self.buffer.remaining() >= received_len, ProtocolError::EOF);
 
-        let mut bytes = Vec::with_capacity(received_len);
-
-        self.read_bytes_into(received_len, &mut bytes)?;
-
-        Ok(bytes)
+        Ok(V::copy_from_buf(&mut self.buffer, received_len))
     }
 }
 
@@ -842,12 +819,13 @@ where
 }
 
 /// Deserialize a Thrift blob using the compact protocol.
-pub fn deserialize<T, B>(b: B) -> Result<T>
+pub fn deserialize<T, B, C>(b: B) -> Result<T>
 where
-    B: AsRef<[u8]>,
-    for<'a> T: Deserialize<CompactProtocolDeserializer<Cursor<&'a [u8]>>>,
+    B: Into<DeserializeSource<C>>,
+    C: BufExt,
+    T: Deserialize<CompactProtocolDeserializer<C>>,
 {
-    let b = b.as_ref();
-    let mut deser = CompactProtocolDeserializer::new(Cursor::new(b));
+    let source: DeserializeSource<C> = b.into();
+    let mut deser = CompactProtocolDeserializer::new(source.0);
     Ok(T::read(&mut deser)?)
 }

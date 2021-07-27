@@ -11,3 +11,7 @@ from thrift.py3.reflection cimport (
 
 
 cdef __InterfaceSpec get_reflection__NestedContainers(bint for_clients)
+
+cdef extern from "src/gen-cpp2/NestedContainers.h" namespace "::cpp2":
+    cdef cppclass cNestedContainersSvIf "::cpp2::NestedContainersSvIf":
+        pass

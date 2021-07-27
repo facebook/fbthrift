@@ -23,7 +23,7 @@ struct Small {
 
 struct SubStruct {
   // @lint-ignore FBTHRIFTSANITY6
-  1: optional string opt_def = "IAMOPT";
+  1: optional string optDef = "IAMOPT";
   2: required string req_def = "IAMREQ";
   // @lint-ignore FBTHRIFTSANITY4
   3: optional map<Small, i32> key_map;
@@ -38,7 +38,7 @@ struct UnTwo {
 }
 union Un {
   1: UnOne un1;
-  2: UnTwo un2
+  2: UnTwo un2;
 }
 
 enum En {
@@ -73,4 +73,17 @@ struct Basic {
   1: bool b;
   // skip a field id
   3: bool b2;
+}
+
+struct Containers {
+  1: map<string, string> m;
+  2: list<string> l;
+}
+
+exception TestException {
+  1: string message;
+}
+
+service TestService {
+  void method1(1: string req) throws (1: TestException ex);
 }

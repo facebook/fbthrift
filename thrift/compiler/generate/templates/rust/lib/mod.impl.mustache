@@ -22,6 +22,7 @@
     #[repr(transparent)]
     pub(crate) struct LocalImpl<T>(T);
 
+    #[allow(unused)]
     pub(crate) fn write<T, P>(value: &T, p: &mut P)
     where
         LocalImpl<T>: ::fbthrift::Serialize<P>,
@@ -30,36 +31,37 @@
         ::fbthrift::Serialize::write(LocalImpl::ref_cast(value), p);
     }
 
+    #[allow(unused)]
     pub(crate) fn read<T, P>(p: &mut P) -> ::anyhow::Result<T>
     where
         LocalImpl<T>: ::fbthrift::Deserialize<P>,
         P: ::fbthrift::ProtocolReader,
     {
         let value: LocalImpl<T> = ::fbthrift::Deserialize::read(p)?;
-        Ok(value.0)
+        ::std::result::Result::Ok(value.0)
     }{{!
 
-}}{{#program:nonstandardCollections}}{{!
+}}{{#program:nonstandardTypes}}{{!
     }}{{#type:set?}}
 
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/type}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/rawtype}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
         fn write(&self, p: &mut P) {
             p.write_set_begin(
-                <{{#type:setElemType}}{{>lib/type}}{{/type:setElemType}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#type:set_elem_type}}{{>lib/type}}{{/type:set_elem_type}} as ::fbthrift::GetTType>::TTYPE,
                 self.0.len(),
             );
             for v in &self.0 {
                 p.write_set_value_begin();
-                {{#type:setElemType}}{{>lib/write}}{{/type:setElemType}}(v, p);
+                {{#type:set_elem_type}}{{>lib/write}}{{/type:set_elem_type}}(v, p);
             }
             p.write_set_end();
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{>lib/type}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{>lib/rawtype}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
@@ -77,7 +79,7 @@
                 if !more {
                     break;
                 }
-                {{#type:setElemType}}let v: {{>lib/type}} = {{>lib/read}}(p){{/type:setElemType}}?;
+                {{#type:set_elem_type}}let v: {{>lib/type}} = {{>lib/read}}(p){{/type:set_elem_type}}?;
                 p.read_set_value_end()?;
                 set.insert(v);
 
@@ -87,34 +89,34 @@
                 }
             }
             p.read_set_end()?;
-            Ok(LocalImpl(set))
+            ::std::result::Result::Ok(LocalImpl(set))
         }
     }{{!
     }}{{/type:set?}}{{!
 
     }}{{#type:map?}}
 
-    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/type}}>
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/rawtype}}>
     where
         P: ::fbthrift::ProtocolWriter,
     {
         fn write(&self, p: &mut P) {
             p.write_map_begin(
-                <{{#type:keyType}}{{>lib/type}}{{/type:keyType}} as ::fbthrift::GetTType>::TTYPE,
-                <{{#type:valueType}}{{>lib/type}}{{/type:valueType}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#type:key_type}}{{>lib/type}}{{/type:key_type}} as ::fbthrift::GetTType>::TTYPE,
+                <{{#type:value_type}}{{>lib/type}}{{/type:value_type}} as ::fbthrift::GetTType>::TTYPE,
                 self.0.len(),
             );
             for (k, v) in &self.0 {
                 p.write_map_key_begin();
-                {{#type:keyType}}{{>lib/write}}{{/type:keyType}}(k, p);
+                {{#type:key_type}}{{>lib/write}}{{/type:key_type}}(k, p);
                 p.write_map_value_begin();
-                {{#type:valueType}}{{>lib/write}}{{/type:valueType}}(v, p);
+                {{#type:value_type}}{{>lib/write}}{{/type:value_type}}(v, p);
             }
             p.write_map_end();
         }
     }
 
-    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{>lib/type}}>
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{>lib/rawtype}}>
     where
         P: ::fbthrift::ProtocolReader,
     {
@@ -132,9 +134,9 @@
                 if !more {
                     break;
                 }
-                {{#type:keyType}}let k: {{>lib/type}} = {{>lib/read}}(p){{/type:keyType}}?;
+                {{#type:key_type}}let k: {{>lib/type}} = {{>lib/read}}(p){{/type:key_type}}?;
                 p.read_map_value_begin()?;
-                {{#type:valueType}}let v: {{>lib/type}} = {{>lib/read}}(p){{/type:valueType}}?;
+                {{#type:value_type}}let v: {{>lib/type}} = {{>lib/read}}(p){{/type:value_type}}?;
                 p.read_map_value_end()?;
                 map.insert(k, v);
 
@@ -144,9 +146,42 @@
                 }
             }
             p.read_map_end()?;
-            Ok(LocalImpl(map))
+            ::std::result::Result::Ok(LocalImpl(map))
         }
     }{{!
     }}{{/type:map?}}{{!
-}}{{/program:nonstandardCollections}}
+
+    }}{{#type:binary?}}
+
+    impl<P> ::fbthrift::Serialize<P> for LocalImpl<{{>lib/rawtype}}>
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            self.0.as_slice().write(p)
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for LocalImpl<{{>lib/rawtype}}>
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            p.read_binary()
+        }
+    }
+
+    impl ::fbthrift::binary_type::BinaryType for LocalImpl<{{>lib/rawtype}}> {
+        fn with_capacity(capacity: usize) -> Self {
+            LocalImpl(<{{>lib/rawtype}}>::with_capacity(capacity))
+        }
+        fn extend_from_slice(&mut self, other: &[u8]) {
+            self.0.extend_from_slice(other)
+        }
+        fn from_vec(vec: ::std::vec::Vec<u8>) -> Self {
+            LocalImpl(::std::convert::Into::into(vec))
+        }
+    }{{!
+    }}{{/type:binary?}}{{!
+}}{{/program:nonstandardTypes}}
 {{!newline}}

@@ -104,15 +104,19 @@ enum class format_adherence {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename T>
+template <typename TC, typename T>
 void to_dynamic(folly::dynamic& out, T&& input, dynamic_format format) {
-  using impl = apache::thrift::detail::dynamic_converter_impl<
-      reflect_type_class<folly::remove_cvref_t<T>>>;
+  using impl = apache::thrift::detail::dynamic_converter_impl<TC>;
 
   static_assert(
       fatal::is_complete<impl>::value, "to_dynamic: unsupported type");
 
   impl::to(out, std::forward<T>(input), format);
+}
+template <typename T>
+void to_dynamic(folly::dynamic& out, T&& input, dynamic_format format) {
+  using TC = reflect_type_class_of_thrift_class<folly::remove_cvref_t<T>>;
+  return to_dynamic<TC>(out, std::forward<T>(input), format);
 }
 
 /**
@@ -124,6 +128,14 @@ void to_dynamic(folly::dynamic& out, T&& input, dynamic_format format) {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
+template <typename TC, typename T>
+folly::dynamic to_dynamic(T&& input, dynamic_format format) {
+  folly::dynamic result(folly::dynamic::object);
+
+  to_dynamic<TC>(result, std::forward<T>(input), format);
+
+  return result;
+}
 template <typename T>
 folly::dynamic to_dynamic(T&& input, dynamic_format format) {
   folly::dynamic result(folly::dynamic::object);
@@ -144,20 +156,34 @@ folly::dynamic to_dynamic(T&& input, dynamic_format format) {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
-template <typename T>
+template <typename TC, typename T>
 void from_dynamic(
     T& out,
     folly::dynamic const& input,
     dynamic_format format,
     format_adherence adherence = format_adherence::STRICT) {
-  using impl = apache::thrift::detail::dynamic_converter_impl<
-      reflect_type_class<folly::remove_cvref_t<T>>>;
+  using impl = apache::thrift::detail::dynamic_converter_impl<TC>;
 
   static_assert(
       fatal::is_complete<impl>::value, "from_dynamic: unsupported type");
 
   impl::from(out, input, format, adherence);
 }
+template <typename T>
+void from_dynamic(
+    T& out,
+    folly::dynamic const& input,
+    dynamic_format format,
+    format_adherence adherence = format_adherence::STRICT) {
+  using TC = reflect_type_class_of_thrift_class<folly::remove_cvref_t<T>>;
+  from_dynamic<TC>(out, input, format, adherence);
+}
+template <typename TC, typename T>
+void from_dynamic(
+    T& out,
+    folly::StringPiece input,
+    dynamic_format format,
+    format_adherence adherence = format_adherence::STRICT) = delete;
 template <typename T>
 void from_dynamic(
     T& out,
@@ -174,6 +200,17 @@ void from_dynamic(
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
+template <typename TC, typename T>
+T from_dynamic(
+    folly::dynamic const& input,
+    dynamic_format format,
+    format_adherence adherence = format_adherence::STRICT) {
+  T result;
+
+  from_dynamic<TC>(result, input, format, adherence);
+
+  return result;
+}
 template <typename T>
 T from_dynamic(
     folly::dynamic const& input,
@@ -185,6 +222,11 @@ T from_dynamic(
 
   return result;
 }
+template <typename TC, typename T>
+T from_dynamic(
+    folly::StringPiece input,
+    dynamic_format format,
+    format_adherence adherence = format_adherence::STRICT) = delete;
 template <typename T>
 T from_dynamic(
     folly::StringPiece input,

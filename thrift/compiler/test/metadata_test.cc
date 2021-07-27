@@ -45,8 +45,8 @@ class MetadataCodegenTest : public testing::Test {
     }
     return ret;
   }
-  ThriftType
-  checkField(const ThriftField& field, int key, const std::string& name) {
+  ThriftType checkField(
+      const ThriftField& field, int key, const std::string& name) {
     EXPECT_EQ(*field.name_ref(), name);
     EXPECT_EQ(*field.id_ref(), key);
     return getResolvedType(*field.type_ref());
@@ -61,8 +61,8 @@ class MetadataCodegenTest : public testing::Test {
     EXPECT_EQ(*field.is_optional_ref(), optional);
     EXPECT_EQ(*type.get_t_union().name_ref(), typeName);
   }
-  void
-  checkFieldString(const ThriftField& field, int key, const std::string& name) {
+  void checkFieldString(
+      const ThriftField& field, int key, const std::string& name) {
     auto type = checkField(field, key, name);
     EXPECT_FALSE(*field.is_optional_ref());
     EXPECT_EQ(type.get_t_primitive(), ThriftPrimitiveType::THRIFT_STRING_TYPE);
@@ -87,8 +87,6 @@ TEST_F(MetadataCodegenTest, structTest) {
   EXPECT_EQ(e.elements_ref()->at(8), "THRIFT_BINARY_TYPE");
   EXPECT_EQ(e.elements_ref()->at(9), "THRIFT_STRING_TYPE");
   EXPECT_EQ(e.elements_ref()->at(10), "THRIFT_VOID_TYPE");
-
-  EXPECT_EQ(metadata_.structs_ref()->size(), 11);
 
   ThriftStruct s;
   s = getStruct("metadata.ThriftListType");

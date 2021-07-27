@@ -30,11 +30,9 @@ from thrift.protocol.TProtocol import TProtocolBase
 
 __property__ = property  # sometimes `property` is used as a field name
 
-{{#program:includeNamespaces}}
-{{#hasTypes?}}
-import {{#includeNamespace}}{{value}}.{{/includeNamespace}}ttypes
-{{/hasTypes?}}
-{{/program:includeNamespaces}}
+{{#program:importModules}}
+import {{.}}
+{{/program:importModules}}
 
 UTF8STRINGS: bool
 {{#program:enums}}
@@ -95,9 +93,9 @@ class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exceptio
     def read(self, iprot: TProtocolBase) -> None: ...
     {{#program:json?}}
     @__T.overload
-    def readFromJson(self, json: __T.Dict[str, __T.Any], is_text: bool = ...) -> None: ...
+    def readFromJson(self, json: __T.Dict[str, __T.Any], is_text: bool = ..., **kwargs: __T.Any) -> None: ...
     @__T.overload
-    def readFromJson(self, json: str, is_text: bool = ...) -> None: ...
+    def readFromJson(self, json: str, is_text: bool = ..., **kwargs: __T.Any) -> None: ...
     {{/program:json?}}
     def write(self, oprot: TProtocolBase) -> None: ...
     def __eq__(self, other: __T.Any) -> bool: ...
@@ -106,5 +104,5 @@ class {{struct:name}}{{#struct:exception?}}(Thrift.TException){{/struct:exceptio
 
 
 {{#program:typedefs}}
-{{typedef:symbolic}} = {{#typedef:type}}{{> common/FieldType}}{{/typedef:type}}
+{{typedef:name}} = {{#typedef:type}}{{> common/FieldType}}{{/typedef:type}}
 {{/program:typedefs}}

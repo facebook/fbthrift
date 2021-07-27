@@ -17,10 +17,12 @@
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 
 #include <folly/Portability.h>
+#include <folly/Random.h>
 #include <folly/Singleton.h>
 #include <folly/Synchronized.h>
 #include <folly/io/async/AsyncSSLSocket.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace apache {
 namespace thrift {
@@ -42,6 +44,11 @@ class DefaultLoggingEventRegistry : public LoggingEventRegistry {
     static auto* handler = new ApplicationEventHandler();
     return *handler;
   }
+  ServerTrackerHandler& getServerTrackerHandler(
+      std::string_view) const override {
+    static auto* handler = new ServerTrackerHandler();
+    return *handler;
+  }
 };
 
 THRIFT_PLUGGABLE_FUNC_REGISTER(
@@ -54,9 +61,7 @@ class Registry {
  public:
   Registry() : reg_(THRIFT_PLUGGABLE_FUNC(makeLoggingEventRegistry)()) {}
 
-  LoggingEventRegistry& getRegistry() const {
-    return *reg_.get();
-  }
+  LoggingEventRegistry& getRegistry() const { return *reg_.get(); }
 
  private:
   std::unique_ptr<LoggingEventRegistry> reg_;
@@ -67,35 +72,19 @@ folly::LeakySingleton<Registry, RegistryTag> registryStorage;
 
 } // namespace
 
+bool LoggingSampler::shouldSample(SamplingRate samplingRate) {
+  if (samplingRate <= 0) {
+    return false;
+  }
+  return folly::Random::rand64(samplingRate) == 0;
+}
+
 void useMockLoggingEventRegistry() {
   folly::LeakySingleton<Registry, RegistryTag>::make_mock();
 }
 
 const LoggingEventRegistry& getLoggingEventRegistry() {
   return registryStorage.get().getRegistry();
-}
-
-void logSetupConnectionEventsOnce(
-    folly::once_flag& flag,
-    std::string_view methodName,
-    const Cpp2Worker& worker,
-    const folly::AsyncTransport& transport) {
-  static_cast<void>(folly::try_call_once(flag, [&]() noexcept {
-    if (methodName == "getCounters" || methodName == "getStatus" ||
-        methodName == "getRegexCounters") {
-      return false;
-    }
-    try {
-      if (!transport.getUnderlyingTransport<folly::AsyncSSLSocket>()) {
-        THRIFT_CONNECTION_EVENT(non_tls).log(worker, transport);
-      }
-    } catch (...) {
-      LOG(ERROR)
-          << "Exception thrown during Thrift server connection events logging: "
-          << folly::exceptionStr(std::current_exception());
-    }
-    return true;
-  }));
 }
 
 } // namespace thrift

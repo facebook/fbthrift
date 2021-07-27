@@ -6,7 +6,6 @@
 #
 
 from __future__ import absolute_import
-import six
 import sys
 from thrift.util.Recursive import fix_spec
 from thrift.Thrift import TType, TMessageType, TPriority, TRequestContext, TProcessorEventHandler, TServerInterface, TProcessor, TException, TApplicationException, UnimplementedTypedef
@@ -56,6 +55,9 @@ class MyStruct:
    - MyStringField
    - MyDataField
    - myEnum
+   - oneway
+   - readonly
+   - idempotent
   """
 
   thrift_spec = None
@@ -99,6 +101,21 @@ class MyStruct:
           self.myEnum = iprot.readI32()
         else:
           iprot.skip(ftype)
+      elif fid == 5:
+        if ftype == TType.BOOL:
+          self.oneway = iprot.readBool()
+        else:
+          iprot.skip(ftype)
+      elif fid == 6:
+        if ftype == TType.BOOL:
+          self.readonly = iprot.readBool()
+        else:
+          iprot.skip(ftype)
+      elif fid == 7:
+        if ftype == TType.BOOL:
+          self.idempotent = iprot.readBool()
+        else:
+          iprot.skip(ftype)
       else:
         iprot.skip(ftype)
       iprot.readFieldEnd()
@@ -127,6 +144,18 @@ class MyStruct:
     if self.myEnum != None:
       oprot.writeFieldBegin('myEnum', TType.I32, 4)
       oprot.writeI32(self.myEnum)
+      oprot.writeFieldEnd()
+    if self.oneway != None:
+      oprot.writeFieldBegin('oneway', TType.BOOL, 5)
+      oprot.writeBool(self.oneway)
+      oprot.writeFieldEnd()
+    if self.readonly != None:
+      oprot.writeFieldBegin('readonly', TType.BOOL, 6)
+      oprot.writeBool(self.readonly)
+      oprot.writeFieldEnd()
+    if self.idempotent != None:
+      oprot.writeFieldBegin('idempotent', TType.BOOL, 7)
+      oprot.writeBool(self.idempotent)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -158,6 +187,12 @@ class MyStruct:
             warnings.warn(msg)
         else:
             raise TProtocolException(TProtocolException.INVALID_DATA, msg)
+    if 'oneway' in json_obj and json_obj['oneway'] is not None:
+      self.oneway = json_obj['oneway']
+    if 'readonly' in json_obj and json_obj['readonly'] is not None:
+      self.readonly = json_obj['readonly']
+    if 'idempotent' in json_obj and json_obj['idempotent'] is not None:
+      self.idempotent = json_obj['idempotent']
 
   def __repr__(self):
     L = []
@@ -178,6 +213,18 @@ class MyStruct:
       value = pprint.pformat(self.myEnum, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    myEnum=%s' % (value))
+    if self.oneway is not None:
+      value = pprint.pformat(self.oneway, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    oneway=%s' % (value))
+    if self.readonly is not None:
+      value = pprint.pformat(self.readonly, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    readonly=%s' % (value))
+    if self.idempotent is not None:
+      value = pprint.pformat(self.idempotent, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    idempotent=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -190,8 +237,7 @@ class MyStruct:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class MyDataItem:
 
@@ -258,8 +304,7 @@ class MyDataItem:
     return not (self == other)
 
   # Override the __hash__ function for Python3 - t10434117
-  if not six.PY2:
-    __hash__ = object.__hash__
+  __hash__ = object.__hash__
 
 class MyUnion(object):
   """
@@ -445,6 +490,9 @@ MyStruct.thrift_spec = (
   (2, TType.STRING, 'MyStringField', True, None, 2, ), # 2
   (3, TType.STRUCT, 'MyDataField', [MyDataItem, MyDataItem.thrift_spec, False], None, 2, ), # 3
   (4, TType.I32, 'myEnum', MyEnum, None, 2, ), # 4
+  (5, TType.BOOL, 'oneway', None, None, 2, ), # 5
+  (6, TType.BOOL, 'readonly', None, None, 2, ), # 6
+  (7, TType.BOOL, 'idempotent', None, None, 2, ), # 7
 )
 
 MyStruct.thrift_struct_annotations = {
@@ -452,11 +500,14 @@ MyStruct.thrift_struct_annotations = {
 MyStruct.thrift_field_annotations = {
 }
 
-def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, myEnum=None,):
+def MyStruct__init__(self, MyIntField=None, MyStringField=None, MyDataField=None, myEnum=None, oneway=None, readonly=None, idempotent=None,):
   self.MyIntField = MyIntField
   self.MyStringField = MyStringField
   self.MyDataField = MyDataField
   self.myEnum = myEnum
+  self.oneway = oneway
+  self.readonly = readonly
+  self.idempotent = idempotent
 
 MyStruct.__init__ = MyStruct__init__
 
@@ -465,6 +516,9 @@ def MyStruct__setstate__(self, state):
   state.setdefault('MyStringField', None)
   state.setdefault('MyDataField', None)
   state.setdefault('myEnum', None)
+  state.setdefault('oneway', None)
+  state.setdefault('readonly', None)
+  state.setdefault('idempotent', None)
   self.__dict__ = state
 
 MyStruct.__getstate__ = lambda self: self.__dict__.copy()

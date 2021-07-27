@@ -30,9 +30,7 @@ namespace json thrift.test.doc
 # the new unix comment
 
 /** Some doc text goes here.  Wow I am [nesting these] (no more nesting.) */
-enum Numberz
-{
-
+enum Numberz {
   /** This is how to document a parameter */
   ONE = 1,
 
@@ -42,106 +40,97 @@ enum Numberz
   THREE = 3,
   FIVE = 5,
   SIX = 6,
-  EIGHT = 8
+  EIGHT = 8,
 }
 
 /** This is how you would do a typedef doc */
 typedef i64 UserId
 
 /** And this is where you would document a struct */
-struct Xtruct
-{
-
+struct Xtruct {
   /** And the members of a struct */
-  1:  string string_thing
+  1: string string_thing;
 
   /** doct text goes before a comma */
-  4:  byte   byte_thing,
+  4: byte byte_thing;
 
-  9:  i32    i32_thing,
-  11: i64    i64_thing
+  9: i32 i32_thing;
+  11: i64 i64_thing;
 }
 
 /**
  * You can document constants now too.  Yeehaw!
  */
-const i32 INT32CONSTANT = 9853
-const i16 INT16CONSTANT = 1616
+const i32 INT32CONSTANT = 9853;
+const i16 INT16CONSTANT = 1616;
 /** Everyone get in on the docu-action! */
-const map<string,string> MAPCONSTANT = {'hello':'world', 'goodnight':'moon'}
+const map<string, string> MAPCONSTANT = {'hello': 'world', 'goodnight': 'moon'};
 
-struct Xtruct2
-{
-  1: byte   byte_thing,
-  2: Xtruct struct_thing,
-  3: i32    i32_thing
+struct Xtruct2 {
+  1: byte byte_thing;
+  2: Xtruct struct_thing;
+  3: i32 i32_thing;
 }
 
 /** Struct insanity */
-struct Insanity
-{
-
+struct Insanity {
   /** This is doc for field 1 */
-  1: map<Numberz, UserId> userMap,
+  1: map<Numberz, UserId> userMap;
 
   /** And this is doc for field 2 */
-  2: list<Xtruct> xtructs
+  2: list<Xtruct> xtructs;
 }
 
 exception Xception {
-  1: i32 errorCode,
-  2: string message
+  1: i32 errorCode;
+  2: string message;
 }
 
 exception Xception2 {
-  1: i32 errorCode,
-  2: Xtruct struct_thing
+  1: i32 errorCode;
+  2: Xtruct struct_thing;
 }
 
 /* C1 */
 /** Doc */
 /* C2 */
 /* C3 */
-struct EmptyStruct {}
+struct EmptyStruct {
+}
 
 struct OneField {
-  1: EmptyStruct field
+  1: EmptyStruct field;
 }
 
 /** This is where you would document a Service */
-service ThriftTest
-{
-
+service ThriftTest {
   /** And this is how you would document functions in a service */
-  void         testVoid(),
-  string       testString(1: string thing),
-  byte         testByte(1: byte thing),
-  i32          testI32(1: i32 thing),
+  void testVoid();
+  string testString(1: string thing);
+  byte testByte(1: byte thing);
+  i32 testI32(1: i32 thing);
 
   /** Like this one */
-  i64          testI64(1: i64 thing),
-  double       testDouble(1: double thing),
-  Xtruct       testStruct(1: Xtruct thing),
-  Xtruct2      testNest(1: Xtruct2 thing),
-  map<i32,i32> testMap(1: map<i32,i32> thing),
-  set<i32>     testSet(1: set<i32> thing),
-  list<i32>    testList(1: list<i32> thing),
+  i64 testI64(1: i64 thing);
+  double testDouble(1: double thing);
+  Xtruct testStruct(1: Xtruct thing);
+  Xtruct2 testNest(1: Xtruct2 thing);
+  map<i32, i32> testMap(1: map<i32, i32> thing);
+  set<i32> testSet(1: set<i32> thing);
+  list<i32> testList(1: list<i32> thing);
 
   /** This is an example of a function with params documented */
-  Numberz      testEnum(
-
+  Numberz testEnum(
     /** This param is a thing */
-    1: Numberz thing
+    1: Numberz thing,
+  );
 
-  ),
+  UserId testTypedef(1: UserId thing);
 
-  UserId       testTypedef(1: UserId thing),
-
-  map<i32,map<i32,i32>> testMapMap(1: i32 hello),
+  map<i32, map<i32, i32>> testMapMap(1: i32 hello);
 
   /* So you think you've got this all worked, out eh? */
-  map<UserId, map<Numberz,Insanity>> testInsanity(1: Insanity argument),
-
+  map<UserId, map<Numberz, Insanity>> testInsanity(1: Insanity argument);
 }
 
 /// This style of Doxy-comment doesn't work.
@@ -179,7 +168,6 @@ typedef i32 IndentedTitle
  */
 typedef i32 FirstLineIndent
 
-
 /**
  * void code_in_comment() {
  *   printf("hooray code!");
@@ -187,7 +175,7 @@ typedef i32 FirstLineIndent
  */
 typedef i32 CodeInComment
 
-    /**
+/**
      * Indented Docstring.
      * This whole docstring is indented.
      *   This line is indented further.
@@ -241,5 +229,4 @@ typedef i32 BigDog
 *
 */
 typedef i32 TotallyDegenerate
-
 /* THE END */

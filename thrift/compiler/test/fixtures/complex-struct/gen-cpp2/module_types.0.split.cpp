@@ -69,7 +69,29 @@ void TccStructTraits<::cpp2::MyStructFloatFieldThrowExp>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(apache::thrift::FragileConstructor, int64_t myLongField__arg, int8_t MyByteField__arg, ::std::string myStringField__arg, float myFloatField__arg) :
+MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(const MyStructFloatFieldThrowExp&) = default;
+MyStructFloatFieldThrowExp& MyStructFloatFieldThrowExp::operator=(const MyStructFloatFieldThrowExp&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(MyStructFloatFieldThrowExp&& other) noexcept  :
+    myLongField(std::move(other.myLongField)),
+    MyByteField(std::move(other.MyByteField)),
+    myStringField(std::move(other.myStringField)),
+    myFloatField(std::move(other.myFloatField)),
+    __isset(other.__isset) {}
+MyStructFloatFieldThrowExp& MyStructFloatFieldThrowExp::operator=(FOLLY_MAYBE_UNUSED MyStructFloatFieldThrowExp&& other) noexcept {
+    this->myLongField = std::move(other.myLongField);
+    this->MyByteField = std::move(other.MyByteField);
+    this->myStringField = std::move(other.myStringField);
+    this->myFloatField = std::move(other.myFloatField);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::int8_t MyByteField__arg, ::std::string myStringField__arg, float myFloatField__arg) :
     myLongField(std::move(myLongField__arg)),
     MyByteField(std::move(MyByteField__arg)),
     myStringField(std::move(myStringField__arg)),
@@ -80,12 +102,13 @@ MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(apache::thrift::FragileCo
   __isset.myFloatField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStructFloatFieldThrowExp::__clear() {
   // clear all fields
-  myLongField = 0;
-  MyByteField = 0;
-  myStringField = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  myFloatField = 0;
+  this->myLongField = 0;
+  this->MyByteField = 0;
+  this->myStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myFloatField = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -95,16 +118,16 @@ bool MyStructFloatFieldThrowExp::operator==(const MyStructFloatFieldThrowExp& rh
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongField == rhs.myLongField)) {
+  if (!(lhs.myLongField_ref() == rhs.myLongField_ref())) {
     return false;
   }
-  if (!(lhs.MyByteField == rhs.MyByteField)) {
+  if (!(lhs.MyByteField_ref() == rhs.MyByteField_ref())) {
     return false;
   }
-  if (!(lhs.myStringField == rhs.myStringField)) {
+  if (!(lhs.myStringField_ref() == rhs.myStringField_ref())) {
     return false;
   }
-  if (!(lhs.myFloatField == rhs.myFloatField)) {
+  if (!(lhs.myFloatField_ref() == rhs.myFloatField_ref())) {
     return false;
   }
   return true;
@@ -114,17 +137,17 @@ bool MyStructFloatFieldThrowExp::operator<(const MyStructFloatFieldThrowExp& rhs
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongField == rhs.myLongField)) {
-    return lhs.myLongField < rhs.myLongField;
+  if (!(lhs.myLongField_ref() == rhs.myLongField_ref())) {
+    return lhs.myLongField_ref() < rhs.myLongField_ref();
   }
-  if (!(lhs.MyByteField == rhs.MyByteField)) {
-    return lhs.MyByteField < rhs.MyByteField;
+  if (!(lhs.MyByteField_ref() == rhs.MyByteField_ref())) {
+    return lhs.MyByteField_ref() < rhs.MyByteField_ref();
   }
-  if (!(lhs.myStringField == rhs.myStringField)) {
-    return lhs.myStringField < rhs.myStringField;
+  if (!(lhs.myStringField_ref() == rhs.myStringField_ref())) {
+    return lhs.myStringField_ref() < rhs.myStringField_ref();
   }
-  if (!(lhs.myFloatField == rhs.myFloatField)) {
-    return lhs.myFloatField < rhs.myFloatField;
+  if (!(lhs.myFloatField_ref() == rhs.myFloatField_ref())) {
+    return lhs.myFloatField_ref() < rhs.myFloatField_ref();
   }
   return false;
 }
@@ -178,17 +201,36 @@ void TccStructTraits<::cpp2::SimpleStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, int64_t age__arg, ::std::string name__arg) :
+SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
+SimpleStruct& SimpleStruct::operator=(const SimpleStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
+    age(std::move(other.age)),
+    name(std::move(other.name)),
+    __isset(other.__isset) {}
+SimpleStruct& SimpleStruct::operator=(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept {
+    this->age = std::move(other.age);
+    this->name = std::move(other.name);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t age__arg, ::std::string name__arg) :
     age(std::move(age__arg)),
     name(std::move(name__arg)) {
   __isset.age = true;
   __isset.name = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void SimpleStruct::__clear() {
   // clear all fields
-  age = 60LL;
-  name = apache::thrift::StringTraits< std::string>::fromStringLiteral("Batman");
+  this->age = 60LL;
+  this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -198,10 +240,10 @@ bool SimpleStruct::operator==(const SimpleStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.age == rhs.age)) {
+  if (!(lhs.age_ref() == rhs.age_ref())) {
     return false;
   }
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
   return true;
@@ -211,11 +253,11 @@ bool SimpleStruct::operator<(const SimpleStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.age == rhs.age)) {
-    return lhs.age < rhs.age;
+  if (!(lhs.age_ref() == rhs.age_ref())) {
+    return lhs.age_ref() < rhs.age_ref();
   }
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
   return false;
 }
@@ -266,9 +308,11 @@ void TccStructTraits<::cpp2::MyDataItem>::translateFieldName(
 
 namespace cpp2 {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyDataItem::MyDataItem(apache::thrift::FragileConstructor) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyDataItem::__clear() {
   // clear all fields
 }
@@ -331,14 +375,65 @@ void TccStructTraits<::cpp2::ComplexNestedStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ComplexNestedStruct::ComplexNestedStruct() {}
+ComplexNestedStruct::ComplexNestedStruct(const ComplexNestedStruct&) = default;
+ComplexNestedStruct& ComplexNestedStruct::operator=(const ComplexNestedStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexNestedStruct::ComplexNestedStruct() {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ComplexNestedStruct::~ComplexNestedStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::std::set<::std::set<int32_t>> setOfSetOfInt__arg, ::std::vector<::std::vector<::std::vector<::std::vector< ::cpp2::MyEnum>>>> listofListOfListOfListOfEnum__arg, ::std::vector<::std::vector< ::cpp2::MyStruct>> listOfListOfMyStruct__arg, ::std::set<::std::vector<::std::vector<int64_t>>> setOfListOfListOfLong__arg, ::std::set<::std::set<::std::set<int64_t>>> setOfSetOfsetOfLong__arg, ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>> mapStructListOfListOfLong__arg, ::std::map< ::cpp2::MyStruct, int32_t> mKeyStructValInt__arg, ::std::vector<::std::map<int32_t, int32_t>> listOfMapKeyIntValInt__arg, ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>> listOfMapKeyStrValList__arg, ::std::map<::std::set<int32_t>, int64_t> mapKeySetValLong__arg, ::std::map<::std::vector<::std::string>, int32_t> mapKeyListValLong__arg, ::std::map<::std::map<int32_t, ::std::string>, ::std::map<int32_t, ::std::string>> mapKeyMapValMap__arg, ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> mapKeySetValMap__arg, ::std::map<::std::map<::std::map<int32_t, ::std::string>, ::std::string>, ::std::map<int32_t, ::std::string>> NestedMaps__arg, ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>> mapKeyIntValList__arg, ::std::map<int32_t, ::std::set<bool>> mapKeyIntValSet__arg, ::std::map<::std::set<bool>,  ::cpp2::MyEnum> mapKeySetValInt__arg, ::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::string>>> mapKeyListValSet__arg) :
+ComplexNestedStruct::ComplexNestedStruct(ComplexNestedStruct&& other) noexcept  :
+    setOfSetOfInt(std::move(other.setOfSetOfInt)),
+    listofListOfListOfListOfEnum(std::move(other.listofListOfListOfListOfEnum)),
+    listOfListOfMyStruct(std::move(other.listOfListOfMyStruct)),
+    setOfListOfListOfLong(std::move(other.setOfListOfListOfLong)),
+    setOfSetOfsetOfLong(std::move(other.setOfSetOfsetOfLong)),
+    mapStructListOfListOfLong(std::move(other.mapStructListOfListOfLong)),
+    mKeyStructValInt(std::move(other.mKeyStructValInt)),
+    listOfMapKeyIntValInt(std::move(other.listOfMapKeyIntValInt)),
+    listOfMapKeyStrValList(std::move(other.listOfMapKeyStrValList)),
+    mapKeySetValLong(std::move(other.mapKeySetValLong)),
+    mapKeyListValLong(std::move(other.mapKeyListValLong)),
+    mapKeyMapValMap(std::move(other.mapKeyMapValMap)),
+    mapKeySetValMap(std::move(other.mapKeySetValMap)),
+    NestedMaps(std::move(other.NestedMaps)),
+    mapKeyIntValList(std::move(other.mapKeyIntValList)),
+    mapKeyIntValSet(std::move(other.mapKeyIntValSet)),
+    mapKeySetValInt(std::move(other.mapKeySetValInt)),
+    mapKeyListValSet(std::move(other.mapKeyListValSet)),
+    __isset(other.__isset) {}
+ComplexNestedStruct& ComplexNestedStruct::operator=(FOLLY_MAYBE_UNUSED ComplexNestedStruct&& other) noexcept {
+    this->setOfSetOfInt = std::move(other.setOfSetOfInt);
+    this->listofListOfListOfListOfEnum = std::move(other.listofListOfListOfListOfEnum);
+    this->listOfListOfMyStruct = std::move(other.listOfListOfMyStruct);
+    this->setOfListOfListOfLong = std::move(other.setOfListOfListOfLong);
+    this->setOfSetOfsetOfLong = std::move(other.setOfSetOfsetOfLong);
+    this->mapStructListOfListOfLong = std::move(other.mapStructListOfListOfLong);
+    this->mKeyStructValInt = std::move(other.mKeyStructValInt);
+    this->listOfMapKeyIntValInt = std::move(other.listOfMapKeyIntValInt);
+    this->listOfMapKeyStrValList = std::move(other.listOfMapKeyStrValList);
+    this->mapKeySetValLong = std::move(other.mapKeySetValLong);
+    this->mapKeyListValLong = std::move(other.mapKeyListValLong);
+    this->mapKeyMapValMap = std::move(other.mapKeyMapValMap);
+    this->mapKeySetValMap = std::move(other.mapKeySetValMap);
+    this->NestedMaps = std::move(other.NestedMaps);
+    this->mapKeyIntValList = std::move(other.mapKeyIntValList);
+    this->mapKeyIntValSet = std::move(other.mapKeyIntValSet);
+    this->mapKeySetValInt = std::move(other.mapKeySetValInt);
+    this->mapKeyListValSet = std::move(other.mapKeyListValSet);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::std::set<::std::set<::std::int32_t>> setOfSetOfInt__arg, ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>> listofListOfListOfListOfEnum__arg, ::std::vector<::std::vector<::cpp2::MyStruct>> listOfListOfMyStruct__arg, ::std::set<::std::vector<::std::vector<::std::int64_t>>> setOfListOfListOfLong__arg, ::std::set<::std::set<::std::set<::std::int64_t>>> setOfSetOfsetOfLong__arg, ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>> mapStructListOfListOfLong__arg, ::std::map<::cpp2::MyStruct, ::std::int32_t> mKeyStructValInt__arg, ::std::vector<::std::map<::std::int32_t, ::std::int32_t>> listOfMapKeyIntValInt__arg, ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>> listOfMapKeyStrValList__arg, ::std::map<::std::set<::std::int32_t>, ::std::int64_t> mapKeySetValLong__arg, ::std::map<::std::vector<::std::string>, ::std::int32_t> mapKeyListValLong__arg, ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>> mapKeyMapValMap__arg, ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> mapKeySetValMap__arg, ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>> NestedMaps__arg, ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>> mapKeyIntValList__arg, ::std::map<::std::int32_t, ::std::set<bool>> mapKeyIntValSet__arg, ::std::map<::std::set<bool>, ::cpp2::MyEnum> mapKeySetValInt__arg, ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>> mapKeyListValSet__arg) :
     setOfSetOfInt(std::move(setOfSetOfInt__arg)),
     listofListOfListOfListOfEnum(std::move(listofListOfListOfListOfEnum__arg)),
     listOfListOfMyStruct(std::move(listOfListOfMyStruct__arg)),
@@ -377,26 +472,27 @@ ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::s
   __isset.mapKeyListValSet = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ComplexNestedStruct::__clear() {
   // clear all fields
-  setOfSetOfInt.clear();
-  listofListOfListOfListOfEnum.clear();
-  listOfListOfMyStruct.clear();
-  setOfListOfListOfLong.clear();
-  setOfSetOfsetOfLong.clear();
-  mapStructListOfListOfLong.clear();
-  mKeyStructValInt.clear();
-  listOfMapKeyIntValInt.clear();
-  listOfMapKeyStrValList.clear();
-  mapKeySetValLong.clear();
-  mapKeyListValLong.clear();
-  mapKeyMapValMap.clear();
-  mapKeySetValMap.clear();
-  NestedMaps.clear();
-  mapKeyIntValList.clear();
-  mapKeyIntValSet.clear();
-  mapKeySetValInt.clear();
-  mapKeyListValSet.clear();
+  this->setOfSetOfInt.clear();
+  this->listofListOfListOfListOfEnum.clear();
+  this->listOfListOfMyStruct.clear();
+  this->setOfListOfListOfLong.clear();
+  this->setOfSetOfsetOfLong.clear();
+  this->mapStructListOfListOfLong.clear();
+  this->mKeyStructValInt.clear();
+  this->listOfMapKeyIntValInt.clear();
+  this->listOfMapKeyStrValList.clear();
+  this->mapKeySetValLong.clear();
+  this->mapKeyListValLong.clear();
+  this->mapKeyMapValMap.clear();
+  this->mapKeySetValMap.clear();
+  this->NestedMaps.clear();
+  this->mapKeyIntValList.clear();
+  this->mapKeyIntValSet.clear();
+  this->mapKeySetValInt.clear();
+  this->mapKeyListValSet.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -406,58 +502,58 @@ bool ComplexNestedStruct::operator==(const ComplexNestedStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.setOfSetOfInt == rhs.setOfSetOfInt)) {
+  if (!(lhs.setOfSetOfInt_ref() == rhs.setOfSetOfInt_ref())) {
     return false;
   }
-  if (!(lhs.listofListOfListOfListOfEnum == rhs.listofListOfListOfListOfEnum)) {
+  if (!(lhs.listofListOfListOfListOfEnum_ref() == rhs.listofListOfListOfListOfEnum_ref())) {
     return false;
   }
-  if (!(lhs.listOfListOfMyStruct == rhs.listOfListOfMyStruct)) {
+  if (!(lhs.listOfListOfMyStruct_ref() == rhs.listOfListOfMyStruct_ref())) {
     return false;
   }
-  if (!(lhs.setOfListOfListOfLong == rhs.setOfListOfListOfLong)) {
+  if (!(lhs.setOfListOfListOfLong_ref() == rhs.setOfListOfListOfLong_ref())) {
     return false;
   }
-  if (!(lhs.setOfSetOfsetOfLong == rhs.setOfSetOfsetOfLong)) {
+  if (!(lhs.setOfSetOfsetOfLong_ref() == rhs.setOfSetOfsetOfLong_ref())) {
     return false;
   }
-  if (!(lhs.mapStructListOfListOfLong == rhs.mapStructListOfListOfLong)) {
+  if (!(lhs.mapStructListOfListOfLong_ref() == rhs.mapStructListOfListOfLong_ref())) {
     return false;
   }
-  if (!(lhs.mKeyStructValInt == rhs.mKeyStructValInt)) {
+  if (!(lhs.mKeyStructValInt_ref() == rhs.mKeyStructValInt_ref())) {
     return false;
   }
-  if (!(lhs.listOfMapKeyIntValInt == rhs.listOfMapKeyIntValInt)) {
+  if (!(lhs.listOfMapKeyIntValInt_ref() == rhs.listOfMapKeyIntValInt_ref())) {
     return false;
   }
-  if (!(lhs.listOfMapKeyStrValList == rhs.listOfMapKeyStrValList)) {
+  if (!(lhs.listOfMapKeyStrValList_ref() == rhs.listOfMapKeyStrValList_ref())) {
     return false;
   }
-  if (!(lhs.mapKeySetValLong == rhs.mapKeySetValLong)) {
+  if (!(lhs.mapKeySetValLong_ref() == rhs.mapKeySetValLong_ref())) {
     return false;
   }
-  if (!(lhs.mapKeyListValLong == rhs.mapKeyListValLong)) {
+  if (!(lhs.mapKeyListValLong_ref() == rhs.mapKeyListValLong_ref())) {
     return false;
   }
-  if (!(lhs.mapKeyMapValMap == rhs.mapKeyMapValMap)) {
+  if (!(lhs.mapKeyMapValMap_ref() == rhs.mapKeyMapValMap_ref())) {
     return false;
   }
-  if (!(lhs.mapKeySetValMap == rhs.mapKeySetValMap)) {
+  if (!(lhs.mapKeySetValMap_ref() == rhs.mapKeySetValMap_ref())) {
     return false;
   }
-  if (!(lhs.NestedMaps == rhs.NestedMaps)) {
+  if (!(lhs.NestedMaps_ref() == rhs.NestedMaps_ref())) {
     return false;
   }
-  if (!(lhs.mapKeyIntValList == rhs.mapKeyIntValList)) {
+  if (!(lhs.mapKeyIntValList_ref() == rhs.mapKeyIntValList_ref())) {
     return false;
   }
-  if (!(lhs.mapKeyIntValSet == rhs.mapKeyIntValSet)) {
+  if (!(lhs.mapKeyIntValSet_ref() == rhs.mapKeyIntValSet_ref())) {
     return false;
   }
-  if (!(lhs.mapKeySetValInt == rhs.mapKeySetValInt)) {
+  if (!(lhs.mapKeySetValInt_ref() == rhs.mapKeySetValInt_ref())) {
     return false;
   }
-  if (!(lhs.mapKeyListValSet == rhs.mapKeyListValSet)) {
+  if (!(lhs.mapKeyListValSet_ref() == rhs.mapKeyListValSet_ref())) {
     return false;
   }
   return true;
@@ -467,204 +563,204 @@ bool ComplexNestedStruct::operator<(const ComplexNestedStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.setOfSetOfInt == rhs.setOfSetOfInt)) {
-    return lhs.setOfSetOfInt < rhs.setOfSetOfInt;
+  if (!(lhs.setOfSetOfInt_ref() == rhs.setOfSetOfInt_ref())) {
+    return lhs.setOfSetOfInt_ref() < rhs.setOfSetOfInt_ref();
   }
-  if (!(lhs.listofListOfListOfListOfEnum == rhs.listofListOfListOfListOfEnum)) {
-    return lhs.listofListOfListOfListOfEnum < rhs.listofListOfListOfListOfEnum;
+  if (!(lhs.listofListOfListOfListOfEnum_ref() == rhs.listofListOfListOfListOfEnum_ref())) {
+    return lhs.listofListOfListOfListOfEnum_ref() < rhs.listofListOfListOfListOfEnum_ref();
   }
-  if (!(lhs.listOfListOfMyStruct == rhs.listOfListOfMyStruct)) {
-    return lhs.listOfListOfMyStruct < rhs.listOfListOfMyStruct;
+  if (!(lhs.listOfListOfMyStruct_ref() == rhs.listOfListOfMyStruct_ref())) {
+    return lhs.listOfListOfMyStruct_ref() < rhs.listOfListOfMyStruct_ref();
   }
-  if (!(lhs.setOfListOfListOfLong == rhs.setOfListOfListOfLong)) {
-    return lhs.setOfListOfListOfLong < rhs.setOfListOfListOfLong;
+  if (!(lhs.setOfListOfListOfLong_ref() == rhs.setOfListOfListOfLong_ref())) {
+    return lhs.setOfListOfListOfLong_ref() < rhs.setOfListOfListOfLong_ref();
   }
-  if (!(lhs.setOfSetOfsetOfLong == rhs.setOfSetOfsetOfLong)) {
-    return lhs.setOfSetOfsetOfLong < rhs.setOfSetOfsetOfLong;
+  if (!(lhs.setOfSetOfsetOfLong_ref() == rhs.setOfSetOfsetOfLong_ref())) {
+    return lhs.setOfSetOfsetOfLong_ref() < rhs.setOfSetOfsetOfLong_ref();
   }
-  if (!(lhs.mapStructListOfListOfLong == rhs.mapStructListOfListOfLong)) {
-    return lhs.mapStructListOfListOfLong < rhs.mapStructListOfListOfLong;
+  if (!(lhs.mapStructListOfListOfLong_ref() == rhs.mapStructListOfListOfLong_ref())) {
+    return lhs.mapStructListOfListOfLong_ref() < rhs.mapStructListOfListOfLong_ref();
   }
-  if (!(lhs.mKeyStructValInt == rhs.mKeyStructValInt)) {
-    return lhs.mKeyStructValInt < rhs.mKeyStructValInt;
+  if (!(lhs.mKeyStructValInt_ref() == rhs.mKeyStructValInt_ref())) {
+    return lhs.mKeyStructValInt_ref() < rhs.mKeyStructValInt_ref();
   }
-  if (!(lhs.listOfMapKeyIntValInt == rhs.listOfMapKeyIntValInt)) {
-    return lhs.listOfMapKeyIntValInt < rhs.listOfMapKeyIntValInt;
+  if (!(lhs.listOfMapKeyIntValInt_ref() == rhs.listOfMapKeyIntValInt_ref())) {
+    return lhs.listOfMapKeyIntValInt_ref() < rhs.listOfMapKeyIntValInt_ref();
   }
-  if (!(lhs.listOfMapKeyStrValList == rhs.listOfMapKeyStrValList)) {
-    return lhs.listOfMapKeyStrValList < rhs.listOfMapKeyStrValList;
+  if (!(lhs.listOfMapKeyStrValList_ref() == rhs.listOfMapKeyStrValList_ref())) {
+    return lhs.listOfMapKeyStrValList_ref() < rhs.listOfMapKeyStrValList_ref();
   }
-  if (!(lhs.mapKeySetValLong == rhs.mapKeySetValLong)) {
-    return lhs.mapKeySetValLong < rhs.mapKeySetValLong;
+  if (!(lhs.mapKeySetValLong_ref() == rhs.mapKeySetValLong_ref())) {
+    return lhs.mapKeySetValLong_ref() < rhs.mapKeySetValLong_ref();
   }
-  if (!(lhs.mapKeyListValLong == rhs.mapKeyListValLong)) {
-    return lhs.mapKeyListValLong < rhs.mapKeyListValLong;
+  if (!(lhs.mapKeyListValLong_ref() == rhs.mapKeyListValLong_ref())) {
+    return lhs.mapKeyListValLong_ref() < rhs.mapKeyListValLong_ref();
   }
-  if (!(lhs.mapKeyMapValMap == rhs.mapKeyMapValMap)) {
-    return lhs.mapKeyMapValMap < rhs.mapKeyMapValMap;
+  if (!(lhs.mapKeyMapValMap_ref() == rhs.mapKeyMapValMap_ref())) {
+    return lhs.mapKeyMapValMap_ref() < rhs.mapKeyMapValMap_ref();
   }
-  if (!(lhs.mapKeySetValMap == rhs.mapKeySetValMap)) {
-    return lhs.mapKeySetValMap < rhs.mapKeySetValMap;
+  if (!(lhs.mapKeySetValMap_ref() == rhs.mapKeySetValMap_ref())) {
+    return lhs.mapKeySetValMap_ref() < rhs.mapKeySetValMap_ref();
   }
-  if (!(lhs.NestedMaps == rhs.NestedMaps)) {
-    return lhs.NestedMaps < rhs.NestedMaps;
+  if (!(lhs.NestedMaps_ref() == rhs.NestedMaps_ref())) {
+    return lhs.NestedMaps_ref() < rhs.NestedMaps_ref();
   }
-  if (!(lhs.mapKeyIntValList == rhs.mapKeyIntValList)) {
-    return lhs.mapKeyIntValList < rhs.mapKeyIntValList;
+  if (!(lhs.mapKeyIntValList_ref() == rhs.mapKeyIntValList_ref())) {
+    return lhs.mapKeyIntValList_ref() < rhs.mapKeyIntValList_ref();
   }
-  if (!(lhs.mapKeyIntValSet == rhs.mapKeyIntValSet)) {
-    return lhs.mapKeyIntValSet < rhs.mapKeyIntValSet;
+  if (!(lhs.mapKeyIntValSet_ref() == rhs.mapKeyIntValSet_ref())) {
+    return lhs.mapKeyIntValSet_ref() < rhs.mapKeyIntValSet_ref();
   }
-  if (!(lhs.mapKeySetValInt == rhs.mapKeySetValInt)) {
-    return lhs.mapKeySetValInt < rhs.mapKeySetValInt;
+  if (!(lhs.mapKeySetValInt_ref() == rhs.mapKeySetValInt_ref())) {
+    return lhs.mapKeySetValInt_ref() < rhs.mapKeySetValInt_ref();
   }
-  if (!(lhs.mapKeyListValSet == rhs.mapKeyListValSet)) {
-    return lhs.mapKeyListValSet < rhs.mapKeyListValSet;
+  if (!(lhs.mapKeyListValSet_ref() == rhs.mapKeyListValSet_ref())) {
+    return lhs.mapKeyListValSet_ref() < rhs.mapKeyListValSet_ref();
   }
   return false;
 }
 
-const ::std::set<::std::set<int32_t>>& ComplexNestedStruct::get_setOfSetOfInt() const& {
+const ::std::set<::std::set<::std::int32_t>>& ComplexNestedStruct::get_setOfSetOfInt() const& {
   return setOfSetOfInt;
 }
 
-::std::set<::std::set<int32_t>> ComplexNestedStruct::get_setOfSetOfInt() && {
+::std::set<::std::set<::std::int32_t>> ComplexNestedStruct::get_setOfSetOfInt() && {
   return std::move(setOfSetOfInt);
 }
 
-const ::std::vector<::std::vector<::std::vector<::std::vector< ::cpp2::MyEnum>>>>& ComplexNestedStruct::get_listofListOfListOfListOfEnum() const& {
+const ::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>>& ComplexNestedStruct::get_listofListOfListOfListOfEnum() const& {
   return listofListOfListOfListOfEnum;
 }
 
-::std::vector<::std::vector<::std::vector<::std::vector< ::cpp2::MyEnum>>>> ComplexNestedStruct::get_listofListOfListOfListOfEnum() && {
+::std::vector<::std::vector<::std::vector<::std::vector<::cpp2::MyEnum>>>> ComplexNestedStruct::get_listofListOfListOfListOfEnum() && {
   return std::move(listofListOfListOfListOfEnum);
 }
 
-const ::std::vector<::std::vector< ::cpp2::MyStruct>>& ComplexNestedStruct::get_listOfListOfMyStruct() const& {
+const ::std::vector<::std::vector<::cpp2::MyStruct>>& ComplexNestedStruct::get_listOfListOfMyStruct() const& {
   return listOfListOfMyStruct;
 }
 
-::std::vector<::std::vector< ::cpp2::MyStruct>> ComplexNestedStruct::get_listOfListOfMyStruct() && {
+::std::vector<::std::vector<::cpp2::MyStruct>> ComplexNestedStruct::get_listOfListOfMyStruct() && {
   return std::move(listOfListOfMyStruct);
 }
 
-const ::std::set<::std::vector<::std::vector<int64_t>>>& ComplexNestedStruct::get_setOfListOfListOfLong() const& {
+const ::std::set<::std::vector<::std::vector<::std::int64_t>>>& ComplexNestedStruct::get_setOfListOfListOfLong() const& {
   return setOfListOfListOfLong;
 }
 
-::std::set<::std::vector<::std::vector<int64_t>>> ComplexNestedStruct::get_setOfListOfListOfLong() && {
+::std::set<::std::vector<::std::vector<::std::int64_t>>> ComplexNestedStruct::get_setOfListOfListOfLong() && {
   return std::move(setOfListOfListOfLong);
 }
 
-const ::std::set<::std::set<::std::set<int64_t>>>& ComplexNestedStruct::get_setOfSetOfsetOfLong() const& {
+const ::std::set<::std::set<::std::set<::std::int64_t>>>& ComplexNestedStruct::get_setOfSetOfsetOfLong() const& {
   return setOfSetOfsetOfLong;
 }
 
-::std::set<::std::set<::std::set<int64_t>>> ComplexNestedStruct::get_setOfSetOfsetOfLong() && {
+::std::set<::std::set<::std::set<::std::int64_t>>> ComplexNestedStruct::get_setOfSetOfsetOfLong() && {
   return std::move(setOfSetOfsetOfLong);
 }
 
-const ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>>& ComplexNestedStruct::get_mapStructListOfListOfLong() const& {
+const ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>& ComplexNestedStruct::get_mapStructListOfListOfLong() const& {
   return mapStructListOfListOfLong;
 }
 
-::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>> ComplexNestedStruct::get_mapStructListOfListOfLong() && {
+::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>> ComplexNestedStruct::get_mapStructListOfListOfLong() && {
   return std::move(mapStructListOfListOfLong);
 }
 
-const ::std::map< ::cpp2::MyStruct, int32_t>& ComplexNestedStruct::get_mKeyStructValInt() const& {
+const ::std::map<::cpp2::MyStruct, ::std::int32_t>& ComplexNestedStruct::get_mKeyStructValInt() const& {
   return mKeyStructValInt;
 }
 
-::std::map< ::cpp2::MyStruct, int32_t> ComplexNestedStruct::get_mKeyStructValInt() && {
+::std::map<::cpp2::MyStruct, ::std::int32_t> ComplexNestedStruct::get_mKeyStructValInt() && {
   return std::move(mKeyStructValInt);
 }
 
-const ::std::vector<::std::map<int32_t, int32_t>>& ComplexNestedStruct::get_listOfMapKeyIntValInt() const& {
+const ::std::vector<::std::map<::std::int32_t, ::std::int32_t>>& ComplexNestedStruct::get_listOfMapKeyIntValInt() const& {
   return listOfMapKeyIntValInt;
 }
 
-::std::vector<::std::map<int32_t, int32_t>> ComplexNestedStruct::get_listOfMapKeyIntValInt() && {
+::std::vector<::std::map<::std::int32_t, ::std::int32_t>> ComplexNestedStruct::get_listOfMapKeyIntValInt() && {
   return std::move(listOfMapKeyIntValInt);
 }
 
-const ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>>& ComplexNestedStruct::get_listOfMapKeyStrValList() const& {
+const ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>& ComplexNestedStruct::get_listOfMapKeyStrValList() const& {
   return listOfMapKeyStrValList;
 }
 
-::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>> ComplexNestedStruct::get_listOfMapKeyStrValList() && {
+::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>> ComplexNestedStruct::get_listOfMapKeyStrValList() && {
   return std::move(listOfMapKeyStrValList);
 }
 
-const ::std::map<::std::set<int32_t>, int64_t>& ComplexNestedStruct::get_mapKeySetValLong() const& {
+const ::std::map<::std::set<::std::int32_t>, ::std::int64_t>& ComplexNestedStruct::get_mapKeySetValLong() const& {
   return mapKeySetValLong;
 }
 
-::std::map<::std::set<int32_t>, int64_t> ComplexNestedStruct::get_mapKeySetValLong() && {
+::std::map<::std::set<::std::int32_t>, ::std::int64_t> ComplexNestedStruct::get_mapKeySetValLong() && {
   return std::move(mapKeySetValLong);
 }
 
-const ::std::map<::std::vector<::std::string>, int32_t>& ComplexNestedStruct::get_mapKeyListValLong() const& {
+const ::std::map<::std::vector<::std::string>, ::std::int32_t>& ComplexNestedStruct::get_mapKeyListValLong() const& {
   return mapKeyListValLong;
 }
 
-::std::map<::std::vector<::std::string>, int32_t> ComplexNestedStruct::get_mapKeyListValLong() && {
+::std::map<::std::vector<::std::string>, ::std::int32_t> ComplexNestedStruct::get_mapKeyListValLong() && {
   return std::move(mapKeyListValLong);
 }
 
-const ::std::map<::std::map<int32_t, ::std::string>, ::std::map<int32_t, ::std::string>>& ComplexNestedStruct::get_mapKeyMapValMap() const& {
+const ::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>>& ComplexNestedStruct::get_mapKeyMapValMap() const& {
   return mapKeyMapValMap;
 }
 
-::std::map<::std::map<int32_t, ::std::string>, ::std::map<int32_t, ::std::string>> ComplexNestedStruct::get_mapKeyMapValMap() && {
+::std::map<::std::map<::std::int32_t, ::std::string>, ::std::map<::std::int32_t, ::std::string>> ComplexNestedStruct::get_mapKeyMapValMap() && {
   return std::move(mapKeyMapValMap);
 }
 
-const ::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& ComplexNestedStruct::get_mapKeySetValMap() const& {
+const ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& ComplexNestedStruct::get_mapKeySetValMap() const& {
   return mapKeySetValMap;
 }
 
-::std::map<::std::set<::std::vector<int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> ComplexNestedStruct::get_mapKeySetValMap() && {
+::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> ComplexNestedStruct::get_mapKeySetValMap() && {
   return std::move(mapKeySetValMap);
 }
 
-const ::std::map<::std::map<::std::map<int32_t, ::std::string>, ::std::string>, ::std::map<int32_t, ::std::string>>& ComplexNestedStruct::get_NestedMaps() const& {
+const ::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>>& ComplexNestedStruct::get_NestedMaps() const& {
   return NestedMaps;
 }
 
-::std::map<::std::map<::std::map<int32_t, ::std::string>, ::std::string>, ::std::map<int32_t, ::std::string>> ComplexNestedStruct::get_NestedMaps() && {
+::std::map<::std::map<::std::map<::std::int32_t, ::std::string>, ::std::string>, ::std::map<::std::int32_t, ::std::string>> ComplexNestedStruct::get_NestedMaps() && {
   return std::move(NestedMaps);
 }
 
-const ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>>& ComplexNestedStruct::get_mapKeyIntValList() const& {
+const ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>& ComplexNestedStruct::get_mapKeyIntValList() const& {
   return mapKeyIntValList;
 }
 
-::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>> ComplexNestedStruct::get_mapKeyIntValList() && {
+::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>> ComplexNestedStruct::get_mapKeyIntValList() && {
   return std::move(mapKeyIntValList);
 }
 
-const ::std::map<int32_t, ::std::set<bool>>& ComplexNestedStruct::get_mapKeyIntValSet() const& {
+const ::std::map<::std::int32_t, ::std::set<bool>>& ComplexNestedStruct::get_mapKeyIntValSet() const& {
   return mapKeyIntValSet;
 }
 
-::std::map<int32_t, ::std::set<bool>> ComplexNestedStruct::get_mapKeyIntValSet() && {
+::std::map<::std::int32_t, ::std::set<bool>> ComplexNestedStruct::get_mapKeyIntValSet() && {
   return std::move(mapKeyIntValSet);
 }
 
-const ::std::map<::std::set<bool>,  ::cpp2::MyEnum>& ComplexNestedStruct::get_mapKeySetValInt() const& {
+const ::std::map<::std::set<bool>, ::cpp2::MyEnum>& ComplexNestedStruct::get_mapKeySetValInt() const& {
   return mapKeySetValInt;
 }
 
-::std::map<::std::set<bool>,  ::cpp2::MyEnum> ComplexNestedStruct::get_mapKeySetValInt() && {
+::std::map<::std::set<bool>, ::cpp2::MyEnum> ComplexNestedStruct::get_mapKeySetValInt() && {
   return std::move(mapKeySetValInt);
 }
 
-const ::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::string>>>& ComplexNestedStruct::get_mapKeyListValSet() const& {
+const ::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>>& ComplexNestedStruct::get_mapKeyListValSet() const& {
   return mapKeyListValSet;
 }
 
-::std::map<::std::vector<int32_t>, ::std::set<::std::map<double, ::std::string>>> ComplexNestedStruct::get_mapKeyListValSet() && {
+::std::map<::std::vector<::std::int32_t>, ::std::set<::std::map<double, ::std::string>>> ComplexNestedStruct::get_mapKeyListValSet() && {
   return std::move(mapKeyListValSet);
 }
 
@@ -707,62 +803,62 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::vector<::std::vector< ::cpp2::MyStruct>>>,
+        ::std::vector<::std::vector<::cpp2::MyStruct>>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>>>,
+        ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map< ::cpp2::MyStruct, int32_t>>,
+        ::std::map<::cpp2::MyStruct, ::std::int32_t>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>>>,
+        ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>>>,
+        ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::vector<::std::vector< ::cpp2::MyStruct>>>,
+        ::std::vector<::std::vector<::cpp2::MyStruct>>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::MyStruct>>>>,
+        ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::MyStruct>>>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map< ::cpp2::MyStruct, int32_t>>,
+        ::std::map<::cpp2::MyStruct, ::std::int32_t>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>>,
-        ::std::vector<::std::map<::std::string, ::std::vector< ::cpp2::MyStruct>>>>,
+        ::std::vector<::std::map<::std::string, ::std::vector<::cpp2::MyStruct>>>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ComplexNestedStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::map<int32_t, ::std::vector< ::cpp2::MyStruct>>>,
+        ::std::map<::std::int32_t, ::std::vector<::cpp2::MyStruct>>>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -791,24 +887,51 @@ void TccStructTraits<::cpp2::reqXcep>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg, int32_t errorCode__arg) :
+reqXcep::reqXcep(const reqXcep&) = default;
+reqXcep& reqXcep::operator=(const reqXcep&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+reqXcep::reqXcep() :
+      errorCode(0) {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+reqXcep::~reqXcep() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+reqXcep::reqXcep(reqXcep&& other) noexcept  :
+    message(std::move(other.message)),
+    errorCode(std::move(other.errorCode)) {}
+
+reqXcep& reqXcep::operator=(FOLLY_MAYBE_UNUSED reqXcep&& other) noexcept {
+    this->message = std::move(other.message);
+    this->errorCode = std::move(other.errorCode);
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg) :
     message(std::move(message__arg)),
     errorCode(std::move(errorCode__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void reqXcep::__clear() {
   // clear all fields
-  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  errorCode = 0;
+  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->errorCode = 0;
 }
 
 bool reqXcep::operator==(const reqXcep& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
-  if (!(lhs.errorCode == rhs.errorCode)) {
+  if (!(lhs.errorCode_ref() == rhs.errorCode_ref())) {
     return false;
   }
   return true;
@@ -818,11 +941,11 @@ bool reqXcep::operator<(const reqXcep& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.message == rhs.message)) {
-    return lhs.message < rhs.message;
+  if (!(lhs.message_ref() == rhs.message_ref())) {
+    return lhs.message_ref() < rhs.message_ref();
   }
-  if (!(lhs.errorCode == rhs.errorCode)) {
-    return lhs.errorCode < rhs.errorCode;
+  if (!(lhs.errorCode_ref() == rhs.errorCode_ref())) {
+    return lhs.errorCode_ref() < rhs.errorCode_ref();
   }
   return false;
 }

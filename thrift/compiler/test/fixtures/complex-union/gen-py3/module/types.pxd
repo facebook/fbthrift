@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,9 +31,15 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -43,6 +48,14 @@ cdef extern from "src/gen-py3/module/types.h":
 
 
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
     cdef enum cComplexUnion__type "::cpp2::ComplexUnion::Type":
         cComplexUnion__type___EMPTY__ "::cpp2::ComplexUnion::Type::__EMPTY__",
@@ -116,10 +129,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const string& get_stringData() const
         string& set_stringData(const string&)
 
-    cdef cppclass cVal__isset "::cpp2::Val::__isset":
-        bint strVal
-        bint intVal
-        bint typedefValue
 
     cdef cppclass cVal "::cpp2::Val":
         cVal() except +
@@ -131,12 +140,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator<=(cVal&)
         bint operator>=(cVal&)
         __field_ref[string] strVal_ref()
-        string strVal
         __field_ref[cint32_t] intVal_ref()
-        cint32_t intVal
         __field_ref[cmap[cint16_t,string]] typedefValue_ref()
+        string strVal
+        cint32_t intVal
         cmap[cint16_t,string] typedefValue
-        cVal__isset __isset
 
     cdef enum cValUnion__type "::cpp2::ValUnion::Type":
         cValUnion__type___EMPTY__ "::cpp2::ValUnion::Type::__EMPTY__",
@@ -178,8 +186,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         const string& get_thingTwo() const
         string& set_thingTwo(const string&)
 
-    cdef cppclass cNonCopyableStruct__isset "::cpp2::NonCopyableStruct::__isset":
-        bint num
 
     cdef cppclass cNonCopyableStruct "::cpp2::NonCopyableStruct":
         cNonCopyableStruct() except +
@@ -191,7 +197,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cNonCopyableStruct&)
         __field_ref[cint64_t] num_ref()
         cint64_t num
-        cNonCopyableStruct__isset __isset
 
     cdef enum cNonCopyableUnion__type "::cpp2::NonCopyableUnion::Type":
         cNonCopyableUnion__type___EMPTY__ "::cpp2::NonCopyableUnion::Type::__EMPTY__",
@@ -284,8 +289,8 @@ cdef class DataUnion(thrift.py3.types.Union):
 
 cdef class Val(thrift.py3.types.Struct):
     cdef shared_ptr[cVal] _cpp_obj
-    cdef __fbthrift_types_fields.__Val_FieldsSetter _fields_setter
-    cdef Map__i16_string __field_typedefValue
+    cdef _fbthrift_types_fields.__Val_FieldsSetter _fields_setter
+    cdef Map__i16_string __fbthrift_cached_typedefValue
 
     @staticmethod
     cdef create(shared_ptr[cVal])
@@ -338,7 +343,7 @@ cdef class VirtualComplexUnion(thrift.py3.types.Union):
 
 cdef class NonCopyableStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cNonCopyableStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__NonCopyableStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__NonCopyableStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cNonCopyableStruct])

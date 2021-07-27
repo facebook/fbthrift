@@ -22,6 +22,7 @@
 
 #include <folly/Conv.h>
 #include <folly/Range.h>
+#include <folly/Traits.h>
 #include <folly/dynamic.h>
 #include <folly/io/Cursor.h>
 #include <folly/io/IOBuf.h>
@@ -34,8 +35,12 @@ namespace apache {
 namespace thrift {
 
 namespace detail {
-template <typename Str>
-using is_string = std::is_same<typename Str::value_type, char>;
+
+template <typename T>
+using value_type_of = typename T::value_type;
+
+template <typename T>
+using is_string = std::is_same<char, folly::detected_t<value_type_of, T>>;
 
 namespace json {
 constexpr uint8_t kJSONObjectStart = '{';
@@ -88,9 +93,7 @@ class JSONProtocolWriterCommon {
 
   //  These writers are common to both json and simple-json protocols.
   inline uint32_t writeMessageBegin(
-      const std::string& name,
-      MessageType messageType,
-      int32_t seqid);
+      const std::string& name, MessageType messageType, int32_t seqid);
   inline uint32_t writeMessageEnd();
   inline uint32_t writeByte(int8_t byte);
   inline uint32_t writeI16(int16_t i16);
@@ -103,8 +106,6 @@ class JSONProtocolWriterCommon {
   inline uint32_t writeBinary(folly::ByteRange v);
   inline uint32_t writeBinary(const std::unique_ptr<folly::IOBuf>& str);
   inline uint32_t writeBinary(const folly::IOBuf& str);
-  inline uint32_t writeSerializedData(
-      const std::unique_ptr<folly::IOBuf>& data);
 
   //  These sizes are common to both json and simple-json protocols.
   inline uint32_t serializedSizeByte(int8_t = 0) const;
@@ -124,8 +125,6 @@ class JSONProtocolWriterCommon {
   inline uint32_t serializedSizeZCBinary(
       const std::unique_ptr<folly::IOBuf>& /*v*/) const;
   inline uint32_t serializedSizeZCBinary(const folly::IOBuf& /*v*/) const;
-  inline uint32_t serializedSizeSerializedData(
-      const std::unique_ptr<folly::IOBuf>& data) const;
 
  protected:
   enum class ContextType { MAP, ARRAY };
@@ -162,6 +161,7 @@ class JSONProtocolWriterCommon {
 
  private:
   uint32_t writeJSONDoubleInternal(double dbl);
+  uint32_t writeJSONDoubleInternal(float flt);
   uint32_t writeJSONIntInternal(int64_t num);
 };
 
@@ -170,9 +170,7 @@ class JSONProtocolReaderCommon {
   explicit JSONProtocolReaderCommon(
       ExternalBufferSharing /*sharing*/ = COPY_EXTERNAL_BUFFER /* ignored */) {}
 
-  inline void setAllowDecodeUTF8(bool val) {
-    allowDecodeUTF8_ = val;
-  }
+  inline void setAllowDecodeUTF8(bool val) { allowDecodeUTF8_ = val; }
 
   /**
    * The IOBuf itself is managed by the caller.
@@ -180,15 +178,11 @@ class JSONProtocolReaderCommon {
    * or until the output is reset with setOutput/Input(NULL), or
    * set to some other buffer.
    */
-  void setInput(const folly::io::Cursor& cursor) {
-    in_ = cursor;
-  }
-  void setInput(const folly::IOBuf* buf) {
-    in_.reset(buf);
-  }
+  void setInput(const folly::io::Cursor& cursor) { in_ = cursor; }
+  void setInput(const folly::IOBuf* buf) { in_.reset(buf); }
 
-  inline void
-  readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
+  inline void readMessageBegin(
+      std::string& name, MessageType& messageType, int32_t& seqid);
   inline void readMessageEnd();
   inline void readByte(int8_t& byte);
   inline void readI16(int16_t& i16);
@@ -203,23 +197,18 @@ class JSONProtocolReaderCommon {
   inline void readBinary(std::unique_ptr<folly::IOBuf>& str);
   inline void readBinary(folly::IOBuf& str);
 
-  const folly::io::Cursor& getCursor() const {
-    return in_;
-  }
+  const folly::io::Cursor& getCursor() const { return in_; }
 
-  size_t getCursorPosition() const {
-    return in_.getCurrentPosition();
-  }
+  size_t getCursorPosition() const { return in_.getCurrentPosition(); }
 
   inline uint32_t readFromPositionAndAppend(
-      folly::io::Cursor& cursor,
-      std::unique_ptr<folly::IOBuf>& ser);
+      folly::io::Cursor& cursor, std::unique_ptr<folly::IOBuf>& ser);
+
+  static constexpr std::size_t fixedSizeInContainer(TType) { return 0; }
+  void skipBytes(size_t bytes) { in_.skip(bytes); }
 
  protected:
   enum class ContextType { MAP, ARRAY };
-
-  template <typename Str>
-  using is_string = std::is_same<typename Str::value_type, char>;
 
   // skip over whitespace so that we can peek, and store number of bytes
   // skipped
@@ -243,8 +232,6 @@ class JSONProtocolReaderCommon {
   static T castIntegral(folly::StringPiece val);
   template <typename T>
   void readInContext(T& val);
-  inline void readJSONKey(std::string& key);
-  inline void readJSONKey(folly::fbstring& key);
   inline void readJSONKey(bool& key);
   template <typename T>
   void readJSONKey(T& key);
@@ -255,8 +242,9 @@ class JSONProtocolReaderCommon {
   inline void readJSONVal(int16_t& val);
   inline void readJSONVal(int32_t& val);
   inline void readJSONVal(int64_t& val);
-  inline void readJSONVal(double& val);
-  inline void readJSONVal(float& val);
+  template <typename Floating>
+  inline typename std::enable_if<std::is_floating_point<Floating>::value>::type
+  readJSONVal(Floating& val);
   template <typename Str>
   inline typename std::enable_if<
       apache::thrift::detail::is_string<Str>::value>::type
@@ -274,9 +262,7 @@ class JSONProtocolReaderCommon {
   // This string's characters must match up with the elements in kEscapeCharVals
   // I don't have '/' on this list even though it appears on www.json.org --
   // it is not in the RFC
-  static constexpr folly::StringPiece kEscapeChars() {
-    return "\"\\/bfnrt";
-  }
+  static constexpr folly::StringPiece kEscapeChars() { return "\"\\/bfnrt"; }
 
   static const uint8_t kEscapeCharVals[8];
   static inline uint8_t hexVal(uint8_t ch);
@@ -294,13 +280,11 @@ class JSONProtocolReaderCommon {
   [[noreturn]] static void throwBadVersion();
   [[noreturn]] static void throwUnrecognizableAsBoolean(std::string const& s);
   [[noreturn]] static void throwUnrecognizableAsIntegral(
-      folly::StringPiece s,
-      folly::StringPiece typeName);
+      folly::StringPiece s, folly::StringPiece typeName);
   [[noreturn]] static void throwUnrecognizableAsFloatingPoint(
       std::string const& s);
   [[noreturn]] static void throwUnrecognizableAsString(
-      std::string const& s,
-      std::exception const& e);
+      std::string const& s, std::exception const& e);
   [[noreturn]] static void throwUnrecognizableAsAny(std::string const& s);
   [[noreturn]] static void throwInvalidFieldStart(char ch);
   [[noreturn]] static void throwUnexpectedChar(char ch, char expected);

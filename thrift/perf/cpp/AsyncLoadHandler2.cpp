@@ -44,8 +44,7 @@ void AsyncLoadHandler2::async_eb_asyncNoop(
 }
 
 void AsyncLoadHandler2::async_eb_sleep(
-    std::unique_ptr<HandlerCallback<void>> callback,
-    int64_t microseconds) {
+    std::unique_ptr<HandlerCallback<void>> callback, int64_t microseconds) {
   // May leak if task never finishes
   HandlerCallback<void>* callbackp = callback.release();
   callbackp->getEventBase()->runInEventBaseThread([=]() {
@@ -59,8 +58,7 @@ void AsyncLoadHandler2::async_eb_sleep(
 }
 
 void AsyncLoadHandler2::async_eb_onewaySleep(
-    std::unique_ptr<HandlerCallbackBase> callback,
-    int64_t microseconds) {
+    std::unique_ptr<HandlerCallbackBase> callback, int64_t microseconds) {
   auto callbackp = callback.release();
   // May leak if task never finishes
   auto eb = callbackp->getEventBase();
@@ -73,11 +71,11 @@ void AsyncLoadHandler2::async_eb_onewaySleep(
 void AsyncLoadHandler2::sync_burn(int64_t microseconds) {
   // Slightly different from thrift1, this happens in a
   // thread pool.
-  int64_t start = Util::currentTimeUsec();
-  int64_t end = start + microseconds;
-  int64_t now;
+  auto start = std::chrono::steady_clock::now();
+  auto end = start + std::chrono::microseconds(microseconds);
+  auto now = start;
   do {
-    now = Util::currentTimeUsec();
+    now = std::chrono::steady_clock::now();
   } while (now < end);
 }
 
@@ -108,31 +106,27 @@ folly::Future<folly::Unit> AsyncLoadHandler2::future_onewayBurn(
 }
 
 void AsyncLoadHandler2::async_eb_badSleep(
-    std::unique_ptr<HandlerCallback<void>> callback,
-    int64_t microseconds) {
+    std::unique_ptr<HandlerCallback<void>> callback, int64_t microseconds) {
   usleep(microseconds);
   callback->done();
 }
 
 void AsyncLoadHandler2::async_eb_badBurn(
-    std::unique_ptr<HandlerCallback<void>> callback,
-    int64_t microseconds) {
+    std::unique_ptr<HandlerCallback<void>> callback, int64_t microseconds) {
   // This is a true (bad) async call.
   sync_burn(microseconds);
   callback->done();
 }
 
 void AsyncLoadHandler2::async_eb_throwError(
-    std::unique_ptr<HandlerCallback<void>> callback,
-    int32_t code) {
+    std::unique_ptr<HandlerCallback<void>> callback, int32_t code) {
   LoadError error;
   *error.code_ref() = code;
   callback->exception(error);
 }
 
 void AsyncLoadHandler2::async_eb_throwUnexpected(
-    std::unique_ptr<HandlerCallback<void>> callback,
-    int32_t /* code */) {
+    std::unique_ptr<HandlerCallback<void>> callback, int32_t /* code */) {
   // FIXME: it isn't possible to implement this behavior with the async code
   //
   // Actually throwing an exception from the handler is bad, and EventBase
@@ -141,8 +135,7 @@ void AsyncLoadHandler2::async_eb_throwUnexpected(
 }
 
 void AsyncLoadHandler2::async_eb_onewayThrow(
-    std::unique_ptr<HandlerCallbackBase> callback,
-    int32_t code) {
+    std::unique_ptr<HandlerCallbackBase> callback, int32_t code) {
   LoadError error;
   *error.code_ref() = code;
   callback->exception(error);
@@ -218,9 +211,7 @@ void AsyncLoadHandler2::async_eb_iterAllFields(
 }
 
 void AsyncLoadHandler2::async_eb_add(
-    std::unique_ptr<HandlerCallback<int64_t>> callback,
-    int64_t a,
-    int64_t b) {
+    std::unique_ptr<HandlerCallback<int64_t>> callback, int64_t a, int64_t b) {
   callback->result(a + b);
 }
 

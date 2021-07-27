@@ -66,15 +66,39 @@ class RequestContextQueue {
 
   void timeOutSendingRequest(RequestContext& req) noexcept;
   void abortSentRequest(
-      RequestContext& req,
-      transport::TTransportException ex) noexcept;
+      RequestContext& req, transport::TTransportException ex) noexcept;
 
   void markAsResponded(RequestContext& req) noexcept;
 
-  void failAllScheduledWrites(transport::TTransportException ex);
-  void failAllSentWrites(transport::TTransportException ex);
+  void failAllScheduledWrites(folly::exception_wrapper ew);
+  void failAllSentWrites(folly::exception_wrapper ew);
 
   RequestContext* getRequestResponseContext(StreamId streamId);
+
+  bool startBufferingRequests() {
+    if (!writeBufferQueue_) {
+      writeBufferQueue_.reset(new RequestContext::Queue());
+      return true;
+    }
+    return false;
+  }
+
+  bool resolveWriteBuffer(uint32_t serverVersion) {
+    if (!writeBufferQueue_) {
+      return false;
+    }
+    auto queue = std::move(writeBufferQueue_);
+    if (queue->empty()) {
+      return false;
+    }
+    while (!queue->empty()) {
+      auto& req = queue->front();
+      queue->pop_front();
+      req.initWithVersion(serverVersion);
+      enqueueScheduledWrite(req);
+    }
+    return true;
+  }
 
  private:
   using RequestResponseSet = RequestContext::UnorderedSet;
@@ -87,12 +111,12 @@ class RequestContextQueue {
   // Allows response payloads to be matched with requests. (Streams have a
   // different mechanism for doing this, since there are potentially many
   // response payloads per initiating REQUEST_STREAM context.)
-  RequestResponseSet requestResponseContexts_{
-      RequestResponseSet::bucket_traits{rrContextBuckets_.data(),
-                                        rrContextBuckets_.size()}};
+  RequestResponseSet requestResponseContexts_{RequestResponseSet::bucket_traits{
+      rrContextBuckets_.data(), rrContextBuckets_.size()}};
 
   using State = RequestContext::State;
 
+  std::unique_ptr<RequestContext::Queue> writeBufferQueue_;
   // Requests for which AsyncSocket::writev() has not been called yet
   RequestContext::Queue writeScheduledQueue_;
   // Requests for which AsyncSocket::writev() has been called but completion
@@ -105,9 +129,7 @@ class RequestContextQueue {
   // writeSuccess() or writeErr() was called.
   RequestContext::Queue writeSentQueue_;
 
-  void failQueue(
-      RequestContext::Queue& queue,
-      transport::TTransportException ex);
+  void failQueue(RequestContext::Queue& queue, folly::exception_wrapper ew);
 
   void removeFromWriteSendingQueue(RequestContext& req) noexcept;
 

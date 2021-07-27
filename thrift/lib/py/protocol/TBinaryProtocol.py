@@ -240,6 +240,7 @@ class TBinaryProtocol(TProtocolBase):
 
 class TBinaryProtocolFactory:
     def __init__(self, strictRead=False, strictWrite=True):
+        # type: (bool, bool) -> None
         self.strictRead = strictRead
         self.strictWrite = strictWrite
 

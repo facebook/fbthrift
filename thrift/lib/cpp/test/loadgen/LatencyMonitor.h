@@ -21,6 +21,8 @@
 #include <thrift/lib/cpp/test/loadgen/OpEnabledState.h>
 #include <thrift/lib/cpp/test/loadgen/TerminalMonitor.h>
 
+#include <chrono>
+
 namespace apache {
 namespace thrift {
 namespace loadgen {
@@ -118,7 +120,7 @@ class LatencyMonitor : public TerminalMonitor {
   /// The fields to print for the aggregate information over all operations
   FieldInfoVector totalFields_;
 
-  int64_t initialTime_;
+  std::chrono::steady_clock::time_point initialTime_;
   LatencyScoreBoard initialScoreBoard_;
 
   /// A scoreboard with information aggregated across all of the workers

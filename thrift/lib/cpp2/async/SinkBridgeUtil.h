@@ -36,19 +36,19 @@ using ServerMessage = boost::variant<folly::Try<StreamPayload>, SinkComplete>;
 
 class CoroConsumer {
  public:
-  void consume() {
-    baton_.post();
-  }
+  void consume() { baton_.post(); }
 
-  [[noreturn]] void canceled() {
-    folly::assume_unreachable();
-  }
+  void canceled() { baton_.post(); }
 
-  folly::coro::Task<void> wait() {
-    co_await baton_;
-  }
+  folly::coro::Task<void> wait() { return waitImpl(baton_); }
 
  private:
+  // TODO(T88629984): This is implemented as a static function because
+  // clang-9 + member function coroutines + ASAN == ICE. Revert D27688850
+  // once everything using thrift sink is past clang-9.
+  static folly::coro::Task<void> waitImpl(folly::coro::Baton& baton) {
+    co_await baton;
+  }
   folly::coro::Baton baton_;
 };
 

@@ -55,9 +55,8 @@ TEST(ExceptionThrowingTest, Thrift2Client) {
   EventBase eb;
   auto serverThread = createThriftServer();
   auto* serverAddr = serverThread->getAddress();
-  std::shared_ptr<folly::AsyncSocket> socket(
-      folly::AsyncSocket::newSocket(&eb, *serverAddr));
-  auto channel = HeaderClientChannel::newChannel(socket);
+  auto socket = folly::AsyncSocket::newSocket(&eb, *serverAddr);
+  auto channel = HeaderClientChannel::newChannel(std::move(socket));
   ExceptionThrowingServiceAsyncClient client(std::move(channel));
 
   // Verify that recv_echo works

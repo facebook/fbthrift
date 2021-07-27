@@ -42,8 +42,8 @@ using CSR = ClientReceiveState;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
-  MOCK_METHOD1(noResponse, void(int64_t));
-  MOCK_METHOD0(voidResponse, void());
+  MOCK_METHOD(void, noResponse, (int64_t), (override));
+  MOCK_METHOD(void, voidResponse, (), (override));
 };
 
 class FunctionSendRecvRequestCallbackTest : public Test {
@@ -55,8 +55,9 @@ class FunctionSendRecvRequestCallbackTest : public Test {
   ScopedServerInterfaceThread runner{handler};
 
   unique_ptr<TestServiceAsyncClient> newClient(SocketAddress const& addr) {
-    return make_unique<TestServiceAsyncClient>(
-        HeaderClientChannel::newChannel(AsyncSocket::newSocket(eb, addr)));
+    return make_unique<TestServiceAsyncClient>(HeaderClientChannel::newChannel(
+        HeaderClientChannel::WithoutRocketUpgrade{},
+        AsyncSocket::newSocket(eb, addr)));
   }
 
   exception_wrapper ew;
@@ -77,7 +78,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 1w_send_failure) {
     EXPECT_EQ(TTransportException::UNKNOWN, ex.getType());
     EXPECT_STREQ("transport is closed in write()", ex.what());
   }));
-  EXPECT_EQ(nullptr, state.buf());
+  EXPECT_FALSE(state.hasResponseBuffer());
 }
 
 TEST_F(FunctionSendRecvRequestCallbackTest, 1w_send_success) {
@@ -85,7 +86,7 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 1w_send_success) {
   client->noResponse(newCallback(), 68 /* a random number */);
   eb->loop();
   EXPECT_FALSE(bool(ew));
-  EXPECT_EQ(nullptr, state.buf());
+  EXPECT_FALSE(state.hasResponseBuffer());
 }
 
 TEST_F(FunctionSendRecvRequestCallbackTest, 2w_send_failure) {
@@ -95,17 +96,15 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_send_failure) {
   EXPECT_TRUE(ew.with_exception([](TTransportException const& ex) {
     EXPECT_EQ(TTransportException::NOT_OPEN, ex.getType());
   }));
-  EXPECT_EQ(nullptr, state.buf());
+  EXPECT_FALSE(state.hasResponseBuffer());
 }
 
 TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
   auto client = newClient(runner.getAddress());
   RpcOptions opts;
-  opts.setTimeout(milliseconds(1));
+  opts.setTimeout(milliseconds(20));
   auto done = make_shared<Baton<>>();
-  SCOPE_EXIT {
-    done->post();
-  };
+  SCOPE_EXIT { done->post(); };
   EXPECT_CALL(*handler, voidResponse()).WillOnce(Invoke([done] {
     EXPECT_TRUE(done->try_wait_for(seconds(1)));
   }));
@@ -116,28 +115,29 @@ TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_failure) {
   EXPECT_TRUE(ew.with_exception([](TTransportException const& ex) {
     EXPECT_EQ(TTransportException::TIMED_OUT, ex.getType());
   }));
-  EXPECT_EQ(nullptr, state.buf());
+  EXPECT_FALSE(state.hasResponseBuffer());
 }
 
 TEST_F(FunctionSendRecvRequestCallbackTest, 2w_recv_success) {
   auto client = newClient(runner.getAddress());
   RpcOptions opts;
-  opts.setTimeout(milliseconds(1));
+  opts.setTimeout(milliseconds(20));
   EXPECT_CALL(*handler, voidResponse());
   client->voidResponse(opts, newCallback());
   eb->loop();
   EXPECT_FALSE(bool(ew));
   ew = std::move(state.exception());
   EXPECT_FALSE(bool(ew));
-  EXPECT_NE(nullptr, state.buf());
+  EXPECT_TRUE(state.hasResponseBuffer());
 }
 
 class FunctionSendCallbackTest : public Test {
  public:
   unique_ptr<TestServiceAsyncClient> getClient(
       const folly::SocketAddress& addr) {
-    return make_unique<TestServiceAsyncClient>(
-        HeaderClientChannel::newChannel(AsyncSocket::newSocket(&eb, addr)));
+    return make_unique<TestServiceAsyncClient>(HeaderClientChannel::newChannel(
+        HeaderClientChannel::WithoutRocketUpgrade{},
+        AsyncSocket::newSocket(&eb, addr)));
   }
   void sendOnewayMessage(
       const folly::SocketAddress& addr,

@@ -44,9 +44,11 @@ from thrift.remote import Remote
 FUNCTIONS = {
     'ping': Function('ping', 'MyService', 'void', []),
     'getRandomData': Function('getRandomData', 'MyService', 'string', []),
+    'sink': Function('sink', 'MyService', 'void', [('i64', 'sink', 'i64')]),
+    'putDataById': Function('putDataById', 'MyService', 'void', [('i64', 'id', 'i64'), ('string', 'data', 'string')]),
     'hasDataById': Function('hasDataById', 'MyService', 'bool', [('i64', 'id', 'i64')]),
     'getDataById': Function('getDataById', 'MyService', 'string', [('i64', 'id', 'i64')]),
-    'putDataById': Function('putDataById', 'MyService', 'void', [('i64', 'id', 'i64'), ('string', 'data', 'string')]),
+    'deleteDataById': Function('deleteDataById', 'MyService', 'void', [('i64', 'id', 'i64')]),
     'lobDataById': Function('lobDataById', 'MyService', None, [('i64', 'id', 'i64'), ('string', 'data', 'string')]),
 }
 

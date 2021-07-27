@@ -12,6 +12,9 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "MyStringField", self.MyStringField
         yield "MyDataField", self.MyDataField
         yield "myEnum", self.myEnum
+        yield "oneway", self.oneway
+        yield "readonly", self.readonly
+        yield "idempotent", self.idempotent
 
 cdef class MyDataItem_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.MyDataItem

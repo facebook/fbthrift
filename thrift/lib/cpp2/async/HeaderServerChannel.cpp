@@ -22,6 +22,7 @@
 #include <folly/String.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 
 using folly::IOBuf;
@@ -44,8 +45,7 @@ std::atomic<uint32_t> HeaderServerChannel::sample_(0);
 HeaderServerChannel::HeaderServerChannel(
     const std::shared_ptr<folly::AsyncTransport>& transport)
     : HeaderServerChannel(std::shared_ptr<Cpp2Channel>(Cpp2Channel::newChannel(
-          transport,
-          make_unique<ServerFramingHandler>(*this)))) {}
+          transport, make_unique<ServerFramingHandler>(*this)))) {}
 
 HeaderServerChannel::HeaderServerChannel(
     const std::shared_ptr<Cpp2Channel>& cpp2Channel)
@@ -71,16 +71,14 @@ void HeaderServerChannel::destroy() {
 
 // Header framing
 unique_ptr<IOBuf> HeaderServerChannel::ServerFramingHandler::addFrame(
-    unique_ptr<IOBuf> buf,
-    THeader* header) {
-  channel_.updateClientType(header->getClientType());
-
+    unique_ptr<IOBuf> buf, THeader* header) {
   // Note: This THeader function may throw.  However, we don't want to catch
   // it here, because this would send an empty message out on the wire.
   // Instead we have to catch it at sendMessage
+  THeader::StringToStringMap persistentWriteHeaders;
   return header->addHeader(
       std::move(buf),
-      channel_.getPersistentWriteHeaders(),
+      persistentWriteHeaders,
       false /* Data already transformed in AsyncProcessor.h */);
 }
 
@@ -97,8 +95,7 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   std::unique_ptr<folly::IOBuf> buf;
   size_t remaining = 0;
   try {
-    buf =
-        header->removeHeader(q, remaining, channel_.getPersistentReadHeaders());
+    buf = header->removeHeader(q, remaining, channel_.persistentReadHeaders_);
   } catch (const std::exception& e) {
     LOG(ERROR) << "Received invalid request from client: "
                << folly::exceptionStr(e) << " "
@@ -110,9 +107,9 @@ HeaderServerChannel::ServerFramingHandler::removeFrame(IOBufQueue* q) {
   }
 
   CLIENT_TYPE ct = header->getClientType();
-  if (!channel_.isSupportedClient(ct)) {
+  if (!HeaderChannelTrait::isSupportedClient(ct)) {
     LOG(ERROR) << "Server rejecting unsupported client type " << ct;
-    channel_.checkSupportedClient(ct);
+    HeaderChannelTrait::checkSupportedClient(ct);
   }
 
   // Check if protocol used in the buffer is consistent with the protocol
@@ -191,7 +188,6 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
     const SamplingStatus& samplingStatus)
     : channel_(channel),
       header_(std::move(header)),
-      active_(true),
       samplingStatus_(samplingStatus) {
   this->buf_ = std::move(buf);
 }
@@ -207,24 +203,24 @@ HeaderServerChannel::HeaderRequest::HeaderRequest(
  *
  */
 void HeaderServerChannel::HeaderRequest::sendReply(
-    unique_ptr<IOBuf>&& buf,
+    ResponsePayload&& response,
     MessageChannel::SendCallback* cb,
     folly::Optional<uint32_t>) {
-  // This method is only called and active_ is only touched in evb, so
-  // it is safe to use this flag from both timeout and normal responses.
-  auto& header = active_ ? header_ : timeoutHeader_;
+  // timeoutHeader_ is set in ::sendTimeoutResponse below
+  auto& header = timeoutHeader_ ? timeoutHeader_ : header_;
   if (!channel_->outOfOrder_.value()) {
     // In order processing, make sure the ordering is correct.
     if (InOrderRecvSeqId_ != channel_->lastWrittenSeqId_ + 1) {
       // Save it until we can send it in order.
       channel_->inOrderRequests_[InOrderRecvSeqId_] =
-          std::make_tuple(cb, std::move(buf), std::move(header));
+          std::make_tuple(cb, std::move(response).buffer(), std::move(header));
     } else {
       // Send it now, and send any subsequent requests in order.
-      channel_->sendCatchupRequests(std::move(buf), cb, header.get());
+      channel_->sendCatchupRequests(
+          std::move(response).buffer(), cb, header.get());
     }
   } else {
-    if (!buf) {
+    if (!response) {
       if (cb) {
         cb->messageSent();
       }
@@ -232,7 +228,7 @@ void HeaderServerChannel::HeaderRequest::sendReply(
     }
     try {
       // out of order, send as soon as it is done.
-      channel_->sendMessage(cb, std::move(buf), header.get());
+      channel_->sendMessage(cb, std::move(response).buffer(), header.get());
     } catch (const std::exception& e) {
       LOG(ERROR) << "Failed to send message: " << e.what();
     }
@@ -246,22 +242,26 @@ void HeaderServerChannel::HeaderRequest::serializeAndSendError(
     int32_t protoSeqId,
     MessageChannel::SendCallback* cb) {
   if (isOneway()) {
-    sendReply(std::unique_ptr<folly::IOBuf>(), cb);
+    sendReply(ResponsePayload{}, cb);
     return;
   }
 
   std::unique_ptr<folly::IOBuf> exbuf;
   uint16_t proto = header.getProtocolId();
   try {
-    exbuf = serializeError(proto, tae, methodName, protoSeqId);
+    exbuf = serializeError</*includeEnvelope=*/true>(
+        proto, tae, methodName, protoSeqId);
   } catch (const TProtocolException& pe) {
     LOG(ERROR) << "serializeError failed. type=" << pe.getType()
                << " what()=" << pe.what();
     channel_->closeNow();
     return;
   }
-  exbuf = THeader::transform(std::move(exbuf), header.getWriteTransforms());
-  sendReply(std::move(exbuf), cb);
+  LegacySerializedResponse response{std::move(exbuf)};
+  auto [_, responsePayload] =
+      std::move(response).extractPayload(/*includeEnvelope=*/true, proto);
+  responsePayload.transform(header_->getWriteTransforms());
+  sendException(std::move(responsePayload), cb);
 }
 
 /**
@@ -270,8 +270,7 @@ void HeaderServerChannel::HeaderRequest::serializeAndSendError(
  * an error flag in the header.
  */
 void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
-    folly::exception_wrapper ew,
-    std::string exCode) {
+    folly::exception_wrapper ew, std::string exCode) {
   // Other types are unimplemented.
   DCHECK(ew.is_compatible_with<TApplicationException>());
 
@@ -280,15 +279,22 @@ void HeaderServerChannel::HeaderRequest::sendErrorWrapped(
     std::unique_ptr<folly::IOBuf> exbuf;
     uint16_t proto = header_->getProtocolId();
     try {
-      exbuf = serializeError(proto, tae, getBuf());
+      exbuf = serializeError</*includeEnvelope=*/true>(proto, tae, getBuf());
     } catch (const TProtocolException& pe) {
       LOG(ERROR) << "serializeError failed. type=" << pe.getType()
                  << " what()=" << pe.what();
       channel_->closeNow();
       return;
     }
-    exbuf = THeader::transform(std::move(exbuf), header_->getWriteTransforms());
-    sendReply(std::move(exbuf), nullptr);
+    LegacySerializedResponse response{std::move(exbuf)};
+    auto [mtype, responsePayload] =
+        std::move(response).extractPayload(/*includeEnvelope=*/true, proto);
+    responsePayload.transform(header_->getWriteTransforms());
+    if (mtype == MessageType::T_EXCEPTION) {
+      sendException(std::move(responsePayload), nullptr);
+    } else {
+      sendReply(std::move(responsePayload), nullptr);
+    }
   });
 }
 
@@ -311,7 +317,7 @@ void HeaderServerChannel::HeaderRequest::sendTimeoutResponse(
     const std::string& methodName,
     int32_t protoSeqId,
     MessageChannel::SendCallback* cb,
-    const std::map<std::string, std::string>& headers,
+    const transport::THeader::StringToStringMap& headers,
     TimeoutResponseType responseType) {
   // Sending timeout response always happens on eb thread, while normal
   // request handling might still be work-in-progress on tm thread and
@@ -381,8 +387,7 @@ TServerObserver::SamplingStatus HeaderServerChannel::shouldSample(
 
 // Interface from MessageChannel::RecvCallback
 void HeaderServerChannel::messageReceived(
-    unique_ptr<IOBuf>&& buf,
-    unique_ptr<THeader>&& header) {
+    unique_ptr<IOBuf>&& buf, unique_ptr<THeader>&& header) {
   DestructorGuard dg(this);
 
   bool outOfOrder = (header->getFlags() & HEADER_FLAG_SUPPORT_OUT_OF_ORDER);
@@ -420,7 +425,7 @@ void HeaderServerChannel::messageReceived(
       }
     }
 
-    auto ew = folly::try_and_catch<std::exception>(
+    auto ew = folly::try_and_catch(
         [&]() { callback_->requestReceived(std::move(request)); });
     if (ew) {
       LOG(WARNING) << "Could not parse request: " << ew.what();

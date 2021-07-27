@@ -23,14 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="SimpleStruct", builder=SimpleStruct.Builder.class)
-public final class SimpleStruct {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="SimpleStruct", builder=SimpleStruct.Builder.class)
+public final class SimpleStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public SimpleStruct(
-        @ThriftField(value=1, name="age", requiredness=Requiredness.NONE) final long age,
-        @ThriftField(value=2, name="name", requiredness=Requiredness.NONE) final String name
+        @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE) final long age,
+        @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE) final String name
     ) {
         this.age = age;
         this.name = name;
@@ -38,17 +37,16 @@ public final class SimpleStruct {
     
     @ThriftConstructor
     protected SimpleStruct() {
-      this.age = 0L;
-      this.name = null;
+      this.age = 60L;
+      this.name = "Batman";
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long age = 60L;
         private String name = "Batman";
     
-        @ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
         public Builder setAge(long age) {
             this.age = age;
             return this;
@@ -56,7 +54,7 @@ public final class SimpleStruct {
     
         public long getAge() { return age; }
     
-            @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
         public Builder setName(String name) {
             this.name = name;
             return this;
@@ -76,7 +74,6 @@ public final class SimpleStruct {
                 this.age,
                 this.name
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -97,24 +94,12 @@ public final class SimpleStruct {
       FIELD_METADATA.put(2, NAME_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="age", requiredness=Requiredness.NONE)
     public long getAge() { return age; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetAge() {
-        return __isset_bit_vector.get(_AGE);
-    }
     
     
-    @ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="name", requiredness=Requiredness.NONE)
     public String getName() { return name; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetName() {
-        return this.name != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -149,6 +134,10 @@ public final class SimpleStruct {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<SimpleStruct> asReader() {
+      return SimpleStruct::read0;
+    }
     
     public static SimpleStruct read0(TProtocol oprot) throws TException {
       TField __field;
@@ -198,4 +187,11 @@ public final class SimpleStruct {
       oprot.writeStructEnd();
     }
     
+    private static class _SimpleStructLazy {
+        private static final SimpleStruct _DEFAULT = new SimpleStruct.Builder().build();
+    }
+    
+    public static SimpleStruct defaultInstance() {
+        return  _SimpleStructLazy._DEFAULT;
+    }
 }

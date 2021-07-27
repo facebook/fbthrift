@@ -41,7 +41,7 @@ exception exception1 {
 }
 
 enum enum1 {
-   field1 = 1
+  field1 = 1,
 }
 
 struct struct2 {

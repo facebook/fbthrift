@@ -32,7 +32,7 @@ multi line string.
    * list<map<string, i32>> states
    */
   <<__Memoize>>
-  public static function states(): ConstVector<ConstMap<string, int>>{
+  public static function states()[]: ConstVector<ConstMap<string, int>>{
     return ImmVector {
       ImmMap {
         "San Diego" => 3211000,
@@ -99,7 +99,7 @@ multi line string.
    * map<string, string> mymap
    */
   <<__Memoize>>
-  public static function mymap(): ConstMap<string, string>{
+  public static function mymap()[]: ConstMap<string, string>{
     return ImmMap {
       "keys" => "values",
     };
@@ -110,12 +110,13 @@ multi line string.
    * struct module.Internship instagram
    */
   <<__Memoize>>
-  public static function instagram(): Internship{
+  public static function instagram()[]: Internship{
     return Internship::fromShape(
       shape(
         "weeks" => 12,
         "title" => "Software Engineer",
         "employer" => Company::INSTAGRAM,
+        "compensation" => 1200.0,
       )
     );
   }
@@ -125,7 +126,7 @@ multi line string.
    * struct module.Internship partial_const
    */
   <<__Memoize>>
-  public static function partial_const(): Internship{
+  public static function partial_const()[]: Internship{
     return Internship::fromShape(
       shape(
         "weeks" => 8,
@@ -139,7 +140,7 @@ multi line string.
    * list<struct module.Range> kRanges
    */
   <<__Memoize>>
-  public static function kRanges(): ConstVector<Range>{
+  public static function kRanges()[]: ConstVector<Range>{
     return ImmVector {
       Range::fromShape(
         shape(
@@ -161,13 +162,14 @@ multi line string.
    * list<struct module.Internship> internList
    */
   <<__Memoize>>
-  public static function internList(): ConstVector<Internship>{
+  public static function internList()[]: ConstVector<Internship>{
     return ImmVector {
       Internship::fromShape(
         shape(
           "weeks" => 12,
           "title" => "Software Engineer",
           "employer" => Company::INSTAGRAM,
+          "compensation" => 1200.0,
         )
       ),
       Internship::fromShape(
@@ -175,6 +177,7 @@ multi line string.
           "weeks" => 10,
           "title" => "Sales Intern",
           "employer" => Company::FACEBOOK,
+          "compensation" => 1000.0,
         )
       ),
     };
@@ -185,7 +188,7 @@ multi line string.
    * struct module.struct1 pod_0
    */
   <<__Memoize>>
-  public static function pod_0(): struct1{
+  public static function pod_0()[]: struct1{
     return struct1::fromShape(
       shape(
       )
@@ -197,7 +200,7 @@ multi line string.
    * struct module.struct1 pod_s_0
    */
   <<__Memoize>>
-  public static function pod_s_0(): struct1{
+  public static function pod_s_0()[]: struct1{
     return struct1::fromShape(
       shape(
       )
@@ -209,7 +212,7 @@ multi line string.
    * struct module.struct1 pod_1
    */
   <<__Memoize>>
-  public static function pod_1(): struct1{
+  public static function pod_1()[]: struct1{
     return struct1::fromShape(
       shape(
         "a" => 10,
@@ -223,7 +226,7 @@ multi line string.
    * struct module.struct1 pod_s_1
    */
   <<__Memoize>>
-  public static function pod_s_1(): struct1{
+  public static function pod_s_1()[]: struct1{
     return struct1::fromShape(
       shape(
         "a" => 10,
@@ -237,7 +240,7 @@ multi line string.
    * struct module.struct2 pod_2
    */
   <<__Memoize>>
-  public static function pod_2(): struct2{
+  public static function pod_2()[]: struct2{
     return struct2::fromShape(
       shape(
         "a" => 98,
@@ -262,7 +265,7 @@ multi line string.
    * struct module.struct2 pod_trailing_commas
    */
   <<__Memoize>>
-  public static function pod_trailing_commas(): struct2{
+  public static function pod_trailing_commas()[]: struct2{
     return struct2::fromShape(
       shape(
         "a" => 98,
@@ -287,7 +290,7 @@ multi line string.
    * struct module.struct2 pod_s_2
    */
   <<__Memoize>>
-  public static function pod_s_2(): struct2{
+  public static function pod_s_2()[]: struct2{
     return struct2::fromShape(
       shape(
         "a" => 98,
@@ -312,7 +315,7 @@ multi line string.
    * struct module.struct3 pod_3
    */
   <<__Memoize>>
-  public static function pod_3(): struct3{
+  public static function pod_3()[]: struct3{
     return struct3::fromShape(
       shape(
         "a" => "abc",
@@ -341,7 +344,7 @@ multi line string.
    * struct module.struct3 pod_s_3
    */
   <<__Memoize>>
-  public static function pod_s_3(): struct3{
+  public static function pod_s_3()[]: struct3{
     return struct3::fromShape(
       shape(
         "a" => "abc",
@@ -370,7 +373,7 @@ multi line string.
    * struct module.struct4 pod_4
    */
   <<__Memoize>>
-  public static function pod_4(): struct4{
+  public static function pod_4()[]: struct4{
     return struct4::fromShape(
       shape(
         "a" => 1234,
@@ -385,7 +388,7 @@ multi line string.
    * struct module.union1 u_1_1
    */
   <<__Memoize>>
-  public static function u_1_1(): union1{
+  public static function u_1_1()[]: union1{
     return union1::fromShape(
       shape(
         "i" => 97,
@@ -398,7 +401,7 @@ multi line string.
    * struct module.union1 u_1_2
    */
   <<__Memoize>>
-  public static function u_1_2(): union1{
+  public static function u_1_2()[]: union1{
     return union1::fromShape(
       shape(
         "d" => 5.6,
@@ -411,7 +414,7 @@ multi line string.
    * struct module.union1 u_1_3
    */
   <<__Memoize>>
-  public static function u_1_3(): union1{
+  public static function u_1_3()[]: union1{
     return union1::fromShape(
       shape(
       )
@@ -423,7 +426,7 @@ multi line string.
    * struct module.union2 u_2_1
    */
   <<__Memoize>>
-  public static function u_2_1(): union2{
+  public static function u_2_1()[]: union2{
     return union2::fromShape(
       shape(
         "i" => 51,
@@ -436,7 +439,7 @@ multi line string.
    * struct module.union2 u_2_2
    */
   <<__Memoize>>
-  public static function u_2_2(): union2{
+  public static function u_2_2()[]: union2{
     return union2::fromShape(
       shape(
         "d" => 6.7,
@@ -449,7 +452,7 @@ multi line string.
    * struct module.union2 u_2_3
    */
   <<__Memoize>>
-  public static function u_2_3(): union2{
+  public static function u_2_3()[]: union2{
     return union2::fromShape(
       shape(
         "s" => struct1::fromShape(
@@ -467,7 +470,7 @@ multi line string.
    * struct module.union2 u_2_4
    */
   <<__Memoize>>
-  public static function u_2_4(): union2{
+  public static function u_2_4()[]: union2{
     return union2::fromShape(
       shape(
         "u" => union1::fromShape(
@@ -484,7 +487,7 @@ multi line string.
    * struct module.union2 u_2_5
    */
   <<__Memoize>>
-  public static function u_2_5(): union2{
+  public static function u_2_5()[]: union2{
     return union2::fromShape(
       shape(
         "u" => union1::fromShape(
@@ -501,7 +504,7 @@ multi line string.
    * struct module.union2 u_2_6
    */
   <<__Memoize>>
-  public static function u_2_6(): union2{
+  public static function u_2_6()[]: union2{
     return union2::fromShape(
       shape(
         "u" => union1::fromShape(
@@ -547,7 +550,7 @@ multi line string.
    * map<string, i32> char2ascii
    */
   <<__Memoize>>
-  public static function char2ascii(): ConstMap<string, int>{
+  public static function char2ascii()[]: ConstMap<string, int>{
     return ImmMap {
       "'" => 39,
       "\"" => 34,
@@ -561,7 +564,7 @@ multi line string.
    * list<string> escaped_strings
    */
   <<__Memoize>>
-  public static function escaped_strings(): ConstVector<string>{
+  public static function escaped_strings()[]: ConstVector<string>{
     return ImmVector {
       "\x61",
       "\xab",
@@ -635,7 +638,7 @@ multi line string.
    * list<i32> empty_int_list
    */
   <<__Memoize>>
-  public static function empty_int_list(): ConstVector<int>{
+  public static function empty_int_list()[]: ConstVector<int>{
     return ImmVector {
     };
   }
@@ -645,7 +648,7 @@ multi line string.
    * list<string> empty_string_list
    */
   <<__Memoize>>
-  public static function empty_string_list(): ConstVector<string>{
+  public static function empty_string_list()[]: ConstVector<string>{
     return ImmVector {
     };
   }
@@ -655,7 +658,7 @@ multi line string.
    * set<i32> empty_int_set
    */
   <<__Memoize>>
-  public static function empty_int_set(): ConstSet<int>{
+  public static function empty_int_set()[]: ConstSet<int>{
     return ImmSet {
     };
   }
@@ -665,7 +668,7 @@ multi line string.
    * set<string> empty_string_set
    */
   <<__Memoize>>
-  public static function empty_string_set(): ConstSet<string>{
+  public static function empty_string_set()[]: ConstSet<string>{
     return ImmSet {
     };
   }
@@ -675,7 +678,7 @@ multi line string.
    * map<i32, i32> empty_int_int_map
    */
   <<__Memoize>>
-  public static function empty_int_int_map(): ConstMap<int, int>{
+  public static function empty_int_int_map()[]: ConstMap<int, int>{
     return ImmMap {
     };
   }
@@ -685,7 +688,7 @@ multi line string.
    * map<i32, string> empty_int_string_map
    */
   <<__Memoize>>
-  public static function empty_int_string_map(): ConstMap<int, string>{
+  public static function empty_int_string_map()[]: ConstMap<int, string>{
     return ImmMap {
     };
   }
@@ -695,7 +698,7 @@ multi line string.
    * map<string, i32> empty_string_int_map
    */
   <<__Memoize>>
-  public static function empty_string_int_map(): ConstMap<string, int>{
+  public static function empty_string_int_map()[]: ConstMap<string, int>{
     return ImmMap {
     };
   }
@@ -705,73 +708,14 @@ multi line string.
    * map<string, string> empty_string_string_map
    */
   <<__Memoize>>
-  public static function empty_string_string_map(): ConstMap<string, string>{
+  public static function empty_string_string_map()[]: ConstMap<string, string>{
     return ImmMap {
     };
   }
 
 
-  public static function getAllStructuredAnnotations(): dict<string, dict<string, \IThriftStruct>> {
+  public static function getAllStructuredAnnotations()[]: dict<string, dict<string, \IThriftStruct>> {
     return dict[
-      'myInt' => dict[],
-      'name' => dict[],
-      'multi_line_string' => dict[],
-      'states' => dict[],
-      'x' => dict[],
-      'y' => dict[],
-      'z' => dict[],
-      'zeroDoubleValue' => dict[],
-      'longDoubleValue' => dict[],
-      'my_company' => dict[],
-      'foo' => dict[],
-      'bar' => dict[],
-      'mymap' => dict[],
-      'instagram' => dict[],
-      'partial_const' => dict[],
-      'kRanges' => dict[],
-      'internList' => dict[],
-      'pod_0' => dict[],
-      'pod_s_0' => dict[],
-      'pod_1' => dict[],
-      'pod_s_1' => dict[],
-      'pod_2' => dict[],
-      'pod_trailing_commas' => dict[],
-      'pod_s_2' => dict[],
-      'pod_3' => dict[],
-      'pod_s_3' => dict[],
-      'pod_4' => dict[],
-      'u_1_1' => dict[],
-      'u_1_2' => dict[],
-      'u_1_3' => dict[],
-      'u_2_1' => dict[],
-      'u_2_2' => dict[],
-      'u_2_3' => dict[],
-      'u_2_4' => dict[],
-      'u_2_5' => dict[],
-      'u_2_6' => dict[],
-      'apostrophe' => dict[],
-      'tripleApostrophe' => dict[],
-      'quotationMark' => dict[],
-      'backslash' => dict[],
-      'escaped_a' => dict[],
-      'char2ascii' => dict[],
-      'escaped_strings' => dict[],
-      'false_c' => dict[],
-      'true_c' => dict[],
-      'zero_byte' => dict[],
-      'zero16' => dict[],
-      'zero32' => dict[],
-      'zero64' => dict[],
-      'zero_dot_zero' => dict[],
-      'empty_string' => dict[],
-      'empty_int_list' => dict[],
-      'empty_string_list' => dict[],
-      'empty_int_set' => dict[],
-      'empty_string_set' => dict[],
-      'empty_int_int_map' => dict[],
-      'empty_int_string_map' => dict[],
-      'empty_string_int_map' => dict[],
-      'empty_string_string_map' => dict[],
     ];
   }
 }

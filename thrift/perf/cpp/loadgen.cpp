@@ -18,7 +18,9 @@
 
 #include <signal.h>
 
+#include <folly/Random.h>
 #include <folly/init/Init.h>
+
 #include <thrift/lib/cpp/test/loadgen/QpsMonitor.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 #include <thrift/perf/cpp/AsyncClientWorker2.h>
@@ -44,9 +46,7 @@ int main(int argc, char* argv[]) {
     return 1;
   }
 
-  // Use the current time to seed the RNGs
-  // Not a great source of randomness, but good enough for load testing
-  loadgen::RNG::setGlobalSeed(concurrency::Util::currentTimeUsec());
+  loadgen::RNG::setGlobalSeed(folly::Random::rand64());
 
   std::shared_ptr<ClientLoadConfig> config(new ClientLoadConfig);
   if (config->useAsync()) {

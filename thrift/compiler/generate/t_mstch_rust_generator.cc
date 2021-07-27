@@ -22,6 +22,7 @@
 #include <boost/algorithm/string/predicate.hpp>
 #include <boost/algorithm/string/replace.hpp>
 
+#include <thrift/compiler/ast/t_struct.h>
 #include <thrift/compiler/generate/t_mstch_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
 
@@ -33,21 +34,40 @@ namespace compiler {
 
 namespace {
 std::string mangle(const std::string& name) {
-  static const char* keywords[] = {
-      "abstract", "alignof", "as",      "async",    "await",  "become",
-      "box",      "break",   "const",   "continue", "crate",  "do",
-      "else",     "enum",    "extern",  "false",    "final",  "fn",
-      "for",      "if",      "impl",    "in",       "let",    "loop",
-      "macro",    "match",   "mod",     "move",     "mut",    "offsetof",
-      "override", "priv",    "proc",    "pub",      "pure",   "ref",
-      "return",   "Self",    "self",    "sizeof",   "static", "struct",
-      "super",    "trait",   "true",    "type",     "typeof", "unsafe",
-      "unsized",  "use",     "virtual", "where",    "while",  "yield",
+  static const char* raw_identifiable_keywords[] = {
+      "abstract", "alignof", "as",      "async",    "await",    "become",
+      "box",      "break",   "const",   "continue", "do",       "else",
+      "enum",     "extern",  "false",   "final",    "fn",       "for",
+      "if",       "impl",    "in",      "let",      "loop",     "macro",
+      "match",    "mod",     "move",    "mut",      "offsetof", "override",
+      "priv",     "proc",    "pub",     "pure",     "ref",      "return",
+      "sizeof",   "static",  "struct",  "trait",    "true",     "type",
+      "typeof",   "unsafe",  "unsized", "use",      "virtual",  "where",
+      "while",    "yield",
   };
 
-  for (auto s : keywords) {
+  static const char* keywords_that_participate_in_name_resolution[] = {
+      "crate",
+      "super",
+      "self",
+      "Self",
+  };
+
+  constexpr const char* keyword_error_message = R"ERROR(
+    Found a rust keyword that participates in name resolution.
+    Please use the `rust.name` annotation to create an alias for)ERROR";
+
+  for (auto& s : keywords_that_participate_in_name_resolution) {
     if (name == s) {
-      return name + '_';
+      std::ostringstream error_message;
+      error_message << keyword_error_message << " " << name;
+      throw std::runtime_error(error_message.str());
+    }
+  }
+
+  for (auto& s : raw_identifiable_keywords) {
+    if (name == s) {
+      return "r#" + name;
     }
   }
 
@@ -146,12 +166,27 @@ std::string quote(const std::string& data) {
     } else if (ch < '\x7f') {
       quoted << ch;
     } else {
-      throw "Non-ASCII string literal not implemented";
+      throw std::runtime_error("Non-ASCII string literal not implemented");
     }
   }
 
   quoted << '"';
   return quoted.str();
+}
+
+std::string quoted_rust_doc(const t_node* node) {
+  const std::string doc = node->get_doc();
+
+  // strip leading/trailing whitespace
+  static const std::string whitespace = "\n\r\t ";
+  const auto first = doc.find_first_not_of(whitespace);
+  if (first == std::string::npos) {
+    // empty string
+    return "\"\"";
+  }
+
+  const auto last = doc.find_last_not_of(whitespace);
+  return quote(doc.substr(first, last - first + 1));
 }
 
 bool can_derive_ord(const t_type* type) {
@@ -161,7 +196,7 @@ bool can_derive_ord(const t_type* type) {
       type->is_enum() || type->is_void()) {
     return true;
   }
-  if (type->annotations_.count("rust.ord")) {
+  if (type->has_annotation("rust.ord")) {
     return true;
   }
   if (type->is_list()) {
@@ -187,19 +222,21 @@ struct rust_codegen_options {
   // True if we are generating a submodule rather than the whole crate.
   bool multifile_mode = false;
 
+  // List of extra sources to include at top-level of the crate.
+  std::vector<std::string> include_srcs;
+
   // The current program being generated and its Rust module path.
   const t_program* current_program;
   std::string current_crate;
 };
 
 std::string get_import_name(
-    const t_program* program,
-    const rust_codegen_options& options) {
+    const t_program* program, const rust_codegen_options& options) {
   if (program == options.current_program) {
     return options.current_crate;
   }
 
-  auto program_name = program->get_name();
+  auto program_name = program->name();
   auto crate_name = options.cratemap.find(program_name);
   if (crate_name != options.cratemap.end()) {
     return crate_name->second;
@@ -209,11 +246,11 @@ std::string get_import_name(
 
 enum class FieldKind { Box, Arc, Inline };
 
-FieldKind field_kind(const std::map<std::string, std::string>& annotations) {
-  if (annotations.count("rust.arc") != 0) {
+FieldKind field_kind(const t_named& node) {
+  if (node.has_annotation("rust.arc")) {
     return FieldKind::Arc;
   }
-  if (annotations.count("rust.box") != 0) {
+  if (node.has_annotation("rust.box")) {
     return FieldKind::Box;
   }
   return FieldKind::Inline;
@@ -225,9 +262,7 @@ FieldKind field_kind(const std::map<std::string, std::string>& annotations) {
 // fbthrift Rust runtime library and instead that logic will need to be emitted
 // into the generated crate.
 bool has_nonstandard_type_annotation(const t_type* type) {
-  auto rust_type = type->annotations_.find("rust.type");
-  return rust_type != type->annotations_.end() &&
-      rust_type->second.find("::") != string::npos;
+  return type->get_annotation("rust.type").find("::") != string::npos;
 }
 } // namespace
 
@@ -252,8 +287,21 @@ class t_mstch_rust_generator : public t_mstch_generator {
       program->set_include_prefix(include_prefix_flag->second);
     }
 
+    auto include_srcs = parsed_options.find("include_srcs");
+    if (include_srcs != parsed_options.end()) {
+      auto paths = include_srcs->second;
+
+      string::size_type pos = 0;
+      while (pos != string::npos && pos < paths.size()) {
+        string::size_type next_pos = paths.find(':', pos);
+        auto path = paths.substr(pos, next_pos - pos);
+        options_.include_srcs.push_back(path);
+        pos = ((next_pos == string::npos) ? next_pos : next_pos + 1);
+      }
+    }
+
     if (options_.multifile_mode) {
-      options_.current_crate = "crate::" + mangle(program->get_name());
+      options_.current_crate = "crate::" + mangle(program->name());
     } else {
       options_.current_crate = "crate";
     }
@@ -294,38 +342,33 @@ class mstch_rust_program : public mstch_program {
             {"program:includes", &mstch_rust_program::rust_includes},
             {"program:anyServiceWithoutParent?",
              &mstch_rust_program::rust_any_service_without_parent},
-            {"program:nonstandardCollections?",
-             &mstch_rust_program::rust_has_nonstandard_collections},
-            {"program:nonstandardCollections",
-             &mstch_rust_program::rust_nonstandard_collections},
+            {"program:nonstandardTypes?",
+             &mstch_rust_program::rust_has_nonstandard_types},
+            {"program:nonstandardTypes",
+             &mstch_rust_program::rust_nonstandard_types},
+            {"program:docs?", &mstch_rust_program::rust_has_docs},
+            {"program:docs", &mstch_rust_program::rust_docs},
+            {"program:include_srcs", &mstch_rust_program::rust_include_srcs},
         });
   }
   mstch::node rust_has_types() {
-    return !program_->get_structs().empty() || !program_->get_enums().empty() ||
-        !program_->get_typedefs().empty() || !program_->get_xceptions().empty();
+    return !program_->structs().empty() || !program_->enums().empty() ||
+        !program_->typedefs().empty() || !program_->xceptions().empty();
   }
   mstch::node rust_structs_or_enums() {
-    return !program_->get_structs().empty() || !program_->get_enums().empty() ||
-        !program_->get_xceptions().empty();
+    return !program_->structs().empty() || !program_->enums().empty() ||
+        !program_->xceptions().empty();
   }
-  mstch::node rust_serde() {
-    return options_.serde;
-  }
-  mstch::node rust_server() {
-    return !options_.noserver;
-  }
-  mstch::node rust_multifile() {
-    return options_.multifile_mode;
-  }
+  mstch::node rust_serde() { return options_.serde; }
+  mstch::node rust_server() { return !options_.noserver; }
+  mstch::node rust_multifile() { return options_.multifile_mode; }
   mstch::node rust_crate() {
     if (options_.multifile_mode) {
-      return "crate::" + mangle(program_->get_name());
+      return "crate::" + mangle(program_->name());
     }
     return std::string("crate");
   }
-  mstch::node rust_package() {
-    return get_import_name(program_, options_);
-  }
+  mstch::node rust_package() { return get_import_name(program_, options_); }
   mstch::node rust_includes() {
     mstch::array includes;
     for (auto* program : program_->get_included_programs()) {
@@ -335,7 +378,7 @@ class mstch_rust_program : public mstch_program {
     return includes;
   }
   mstch::node rust_any_service_without_parent() {
-    for (const t_service* service : program_->get_services()) {
+    for (const t_service* service : program_->services()) {
       if (service->get_extends() == nullptr) {
         return true;
       }
@@ -344,50 +387,64 @@ class mstch_rust_program : public mstch_program {
   }
   template <typename F>
   void foreach_type(F&& f) const {
-    for (auto strct : program_->get_structs()) {
-      for (auto field : strct->get_members()) {
-        f(field->get_type());
+    for (const auto* strct : program_->structs()) {
+      for (const auto& field : strct->fields()) {
+        f(field.get_type());
       }
     }
-    for (auto service : program_->get_services()) {
-      for (auto function : service->get_functions()) {
-        for (auto arg : function->get_arglist()->get_members()) {
-          f(arg->get_type());
+    for (const auto* service : program_->services()) {
+      for (const auto& function : service->functions()) {
+        for (const auto& param : function.get_paramlist()->fields()) {
+          f(param.get_type());
         }
-        f(function->get_returntype());
+        f(function.get_returntype());
       }
+    }
+    for (auto typedf : program_->typedefs()) {
+      f(typedf);
     }
   }
-  mstch::node rust_has_nonstandard_collections() {
-    bool has_nonstandard_collection = false;
-    foreach_type([&](t_type* type) {
+  mstch::node rust_has_nonstandard_types() {
+    bool has_nonstandard_types = false;
+    foreach_type([&](const t_type* type) {
       if (has_nonstandard_type_annotation(type)) {
-        has_nonstandard_collection = true;
+        has_nonstandard_types = true;
       }
     });
-    return has_nonstandard_collection;
+    return has_nonstandard_types;
   }
-  mstch::node rust_nonstandard_collections() {
+  mstch::node rust_nonstandard_types() {
     // Sort/deduplicate by value of `rust.type` annotation.
     struct rust_type_less {
       bool operator()(const t_type* lhs, const t_type* rhs) const {
-        auto& lhs_annotation = lhs->annotations_.at("rust.type");
-        auto& rhs_annotation = rhs->annotations_.at("rust.type");
+        auto& lhs_annotation = lhs->get_annotation("rust.type");
+        auto& rhs_annotation = rhs->get_annotation("rust.type");
         if (lhs_annotation != rhs_annotation) {
           return lhs_annotation < rhs_annotation;
         }
         return lhs->get_full_name() < rhs->get_full_name();
       }
     };
-    std::set<const t_type*, rust_type_less> nonstandard_collections;
-    foreach_type([&](t_type* type) {
+    std::set<const t_type*, rust_type_less> nonstandard_types;
+    foreach_type([&](const t_type* type) {
       if (has_nonstandard_type_annotation(type)) {
-        nonstandard_collections.insert(type);
+        nonstandard_types.insert(type);
       }
     });
     std::vector<const t_type*> elements(
-        nonstandard_collections.begin(), nonstandard_collections.end());
+        nonstandard_types.begin(), nonstandard_types.end());
     return generate_types(elements);
+  }
+  mstch::node rust_has_docs() { return program_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(program_); }
+  mstch::node rust_include_srcs() {
+    mstch::array elements;
+    for (auto elem : options_.include_srcs) {
+      mstch::map node;
+      node["program:include_src"] = elem;
+      elements.push_back(node);
+    }
+    return elements;
   }
 
  private:
@@ -411,35 +468,40 @@ class mstch_rust_struct : public mstch_struct {
             {"struct:ord?", &mstch_rust_struct::rust_is_ord},
             {"struct:copy?", &mstch_rust_struct::rust_is_copy},
             {"struct:fields_by_name", &mstch_rust_struct::rust_fields_by_name},
+            {"struct:docs?", &mstch_rust_struct::rust_has_doc},
+            {"struct:docs", &mstch_rust_struct::rust_doc},
         });
   }
   mstch::node rust_name() {
-    return mangle_type(strct_->get_name());
+    if (!strct_->has_annotation("rust.name")) {
+      return mangle_type(strct_->get_name());
+    }
+    return strct_->get_annotation("rust.name");
   }
   mstch::node rust_package() {
-    return get_import_name(strct_->get_program(), options_);
+    return get_import_name(strct_->program(), options_);
   }
   mstch::node rust_is_ord() {
-    if (strct_->annotations_.count("rust.ord")) {
+    if (strct_->has_annotation("rust.ord")) {
       return true;
     }
-    for (const auto& member : strct_->get_members()) {
-      if (!can_derive_ord(member->get_type())) {
+    for (const auto& field : strct_->fields()) {
+      if (!can_derive_ord(field.get_type())) {
         return false;
       }
     }
     return true;
   }
-  mstch::node rust_is_copy() {
-    return strct_->annotations_.count("rust.copy") != 0;
-  }
+  mstch::node rust_is_copy() { return strct_->has_annotation("rust.copy"); }
   mstch::node rust_fields_by_name() {
-    std::vector<t_field*> fields = strct_->get_members();
+    auto fields = strct_->fields().copy();
     std::sort(fields.begin(), fields.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
     return generate_fields(fields);
   }
+  mstch::node rust_has_doc() { return strct_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(strct_); }
 
  private:
   const rust_codegen_options& options_;
@@ -461,42 +523,41 @@ class mstch_rust_service : public mstch_service {
         this,
         {
             {"service:rustFunctions", &mstch_rust_service::rust_functions},
+            {"service:rust_exceptions",
+             &mstch_rust_service::rust_all_exceptions},
             {"service:package", &mstch_rust_service::rust_package},
             {"service:snake", &mstch_rust_service::rust_snake},
             {"service:requestContext?",
              &mstch_rust_service::rust_request_context},
             {"service:extendedServices",
              &mstch_rust_service::rust_extended_services},
+            {"service:docs?", &mstch_rust_service::rust_has_doc},
+            {"service:docs", &mstch_rust_service::rust_doc},
         });
   }
   mstch::node rust_functions();
   mstch::node rust_package() {
-    return get_import_name(service_->get_program(), options_);
+    return get_import_name(service_->program(), options_);
   }
   mstch::node rust_snake() {
-    auto module_name = service_->annotations_.find("rust.mod");
-    if (module_name != service_->annotations_.end()) {
-      return module_name->second;
-    }
-    return mangle_type(snakecase(service_->get_name()));
+    return service_->get_annotation(
+        "rust.mod", mangle_type(snakecase(service_->get_name())));
   }
   mstch::node rust_request_context() {
-    return service_->annotations_.count("rust.request_context") > 0;
+    return service_->has_annotation("rust.request_context");
   }
   mstch::node rust_extended_services() {
     mstch::array extended_services;
     const t_service* service = service_;
-    std::string type_prefix =
-        get_import_name(service_->get_program(), options_);
+    std::string type_prefix = get_import_name(service_->program(), options_);
     std::string as_ref_impl = "&self.parent";
     while (true) {
       const t_service* parent_service = service->get_extends();
       if (parent_service == nullptr) {
         break;
       }
-      if (parent_service->get_program() != service->get_program()) {
-        type_prefix +=
-            "::dependencies::" + parent_service->get_program()->get_name();
+      if (parent_service->program() != service->program()) {
+        type_prefix += "::dependencies::" + parent_service->program()->name();
       }
       mstch::map node;
       node["extendedService:packagePrefix"] = type_prefix;
@@ -509,6 +570,10 @@ class mstch_rust_service : public mstch_service {
     }
     return extended_services;
   }
+
+  mstch::node rust_all_exceptions();
+  mstch::node rust_has_doc() { return service_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(service_); }
 
  private:
   std::unordered_multiset<std::string> function_upcamel_names_;
@@ -531,15 +596,26 @@ class mstch_rust_function : public mstch_function {
     register_methods(
         this,
         {
+            {"function:rust_name", &mstch_rust_function::rust_name},
             {"function:upcamel", &mstch_rust_function::rust_upcamel},
             {"function:index", &mstch_rust_function::rust_index},
             {"function:void?", &mstch_rust_function::rust_void},
             {"function:uniqueExceptions",
              &mstch_rust_function::rust_unique_exceptions},
+            {"function:uniqueStreamExceptions",
+             &mstch_rust_function::rust_unique_stream_exceptions},
             {"function:args_by_name", &mstch_rust_function::rust_args_by_name},
             {"function:returns_by_name",
              &mstch_rust_function::rust_returns_by_name},
+            {"function:docs?", &mstch_rust_function::rust_has_doc},
+            {"function:docs", &mstch_rust_function::rust_doc},
         });
+  }
+  mstch::node rust_name() {
+    if (!function_->has_annotation("rust.name")) {
+      return mangle(function_->get_name());
+    }
+    return function_->get_annotation("rust.name");
   }
   mstch::node rust_upcamel() {
     auto upcamel_name = camelcase(function_->get_name());
@@ -552,49 +628,51 @@ class mstch_rust_function : public mstch_function {
     }
     return upcamel_name;
   }
-  mstch::node rust_index() {
-    return index_;
-  }
-  mstch::node rust_void() {
-    return function_->get_returntype()->is_void();
-  }
+  mstch::node rust_index() { return index_; }
+  mstch::node rust_void() { return function_->get_returntype()->is_void(); }
   mstch::node rust_unique_exceptions() {
+    return rust_make_unique_exceptions(function_->get_xceptions());
+  }
+  mstch::node rust_unique_stream_exceptions() {
+    return rust_make_unique_exceptions(function_->get_stream_xceptions());
+  }
+  mstch::node rust_make_unique_exceptions(const t_struct* a) {
     // When generating From<> impls for an error type, we must not generate one
     // where more than one variant contains the same type of exception. Find
     // only those exceptions that map uniquely to a variant.
 
-    std::map<t_type*, unsigned> type_count;
-    for (const auto& field : function_->get_xceptions()->get_members()) {
-      type_count[field->get_type()] += 1;
+    const auto& exceptions = a->fields();
+    std::map<const t_type*, unsigned> type_count;
+    for (const auto& x : exceptions) {
+      type_count[x.get_type()] += 1;
     }
 
-    std::vector<t_field*> unique_exceptions;
-    const auto& fields = function_->get_xceptions()->get_members();
-    std::copy_if(
-        fields.cbegin(),
-        fields.cend(),
-        std::back_inserter(unique_exceptions),
-        [&type_count](const auto& field) {
-          return type_count.at(field->get_type()) == 1;
-        });
+    std::vector<const t_field*> unique_exceptions;
+    for (const auto& x : exceptions) {
+      if (type_count.at(x.get_type()) == 1) {
+        unique_exceptions.emplace_back(&x);
+      }
+    }
 
     return generate_fields(unique_exceptions);
   }
   mstch::node rust_args_by_name() {
-    std::vector<t_field*> args = function_->get_arglist()->get_members();
-    std::sort(args.begin(), args.end(), [](auto a, auto b) {
+    auto params = function_->get_paramlist()->fields().copy();
+    std::sort(params.begin(), params.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
-    return generate_fields(args);
+    return generate_fields(params);
   }
   mstch::node rust_returns_by_name() {
-    std::vector<t_field*> returns = function_->get_xceptions()->get_members();
+    auto returns = function_->get_xceptions()->fields().copy();
     returns.push_back(&success_return);
     std::sort(returns.begin(), returns.end(), [](auto a, auto b) {
       return a->get_name() < b->get_name();
     });
     return generate_fields(returns);
   }
+  mstch::node rust_has_doc() { return function_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(function_); }
 
  private:
   int32_t index_;
@@ -614,11 +692,18 @@ class mstch_rust_enum_value : public mstch_enum_value {
         this,
         {
             {"enumValue:rust_name", &mstch_rust_enum_value::rust_name},
+            {"enumValue:docs?", &mstch_rust_enum_value::rust_has_doc},
+            {"enumValue:docs", &mstch_rust_enum_value::rust_doc},
         });
   }
   mstch::node rust_name() {
-    return mangle(enm_value_->get_name());
+    if (!enm_value_->has_annotation("rust.name")) {
+      return mangle(enm_value_->get_name());
+    }
+    return enm_value_->get_annotation("rust.name");
   }
+  mstch::node rust_has_doc() { return enm_value_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(enm_value_); }
 };
 
 class mstch_rust_enum : public mstch_enum {
@@ -637,13 +722,18 @@ class mstch_rust_enum : public mstch_enum {
             {"enum:package", &mstch_rust_enum::rust_package},
             {"enum:variants_by_name", &mstch_rust_enum::variants_by_name},
             {"enum:variants_by_number", &mstch_rust_enum::variants_by_number},
+            {"enum:docs?", &mstch_rust_enum::rust_has_doc},
+            {"enum:docs", &mstch_rust_enum::rust_doc},
         });
   }
   mstch::node rust_name() {
-    return mangle_type(enm_->get_name());
+    if (!enm_->has_annotation("rust.name")) {
+      return mangle_type(enm_->get_name());
+    }
+    return enm_->get_annotation("rust.name");
   }
   mstch::node rust_package() {
-    return get_import_name(enm_->get_program(), options_);
+    return get_import_name(enm_->program(), options_);
   }
   mstch::node variants_by_name() {
     std::vector<t_enum_value*> variants = enm_->get_enum_values();
@@ -659,6 +749,8 @@ class mstch_rust_enum : public mstch_enum {
     });
     return generate_enum_values(variants);
   }
+  mstch::node rust_has_doc() { return enm_->has_doc(); }
+  mstch::node rust_doc() { return quoted_rust_doc(enm_); }
 
  private:
   const rust_codegen_options& options_;
@@ -677,31 +769,34 @@ class mstch_rust_type : public mstch_type {
         this,
         {
             {"type:rust_name", &mstch_rust_type::rust_name},
+            {"type:rust_name_snake", &mstch_rust_type::rust_name_snake},
             {"type:package", &mstch_rust_type::rust_package},
             {"type:rust", &mstch_rust_type::rust_type},
-            {"type:nonstandardCollection?",
-             &mstch_rust_type::rust_nonstandard_collection},
+            {"type:nonstandard?", &mstch_rust_type::rust_nonstandard},
         });
   }
   mstch::node rust_name() {
-    return mangle_type(type_->get_name());
+    if (!type_->has_annotation("rust.name")) {
+      return mangle_type(type_->get_name());
+    }
+    return type_->get_annotation("rust.name");
+  }
+  mstch::node rust_name_snake() {
+    return snakecase(mangle_type(type_->get_name()));
   }
   mstch::node rust_package() {
-    return get_import_name(type_->get_program(), options_);
+    return get_import_name(type_->program(), options_);
   }
   mstch::node rust_type() {
-    auto rust_type = type_->annotations_.find("rust.type");
-    if (rust_type != type_->annotations_.end()) {
-      if (rust_type->second.find("::") == std::string::npos) {
-        return "std::collections::" + rust_type->second;
-      } else {
-        return rust_type->second;
-      }
+    const std::string& rust_type = type_->get_annotation("rust.type");
+    if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
+      return "fbthrift::builtin_types::" + rust_type;
     }
-    return nullptr;
+    return rust_type;
   }
-  mstch::node rust_nonstandard_collection() {
-    return has_nonstandard_type_annotation(type_);
+  mstch::node rust_nonstandard() {
+    return has_nonstandard_type_annotation(type_) &&
+        !(type_->is_typedef() && type_->has_annotation("rust.newtype"));
   }
 
  private:
@@ -725,8 +820,7 @@ class mstch_rust_value : public mstch_base {
         depth_(depth),
         options_(options) {
     // Step through any non-newtype typedefs.
-    while (type_->is_typedef() &&
-           type_->annotations_.count("rust.newtype") == 0) {
+    while (type_->is_typedef() && !type_->has_annotation("rust.newtype")) {
       auto typedef_type = dynamic_cast<const t_typedef*>(type_);
       if (!typedef_type) {
         break;
@@ -741,9 +835,9 @@ class mstch_rust_value : public mstch_base {
             {"value:newtype?", &mstch_rust_value::is_newtype},
             {"value:inner", &mstch_rust_value::inner},
             {"value:bool?", &mstch_rust_value::is_bool},
-            {"value:boolValue", &mstch_rust_value::bool_value},
+            {"value:bool_value", &mstch_rust_value::bool_value},
             {"value:integer?", &mstch_rust_value::is_integer},
-            {"value:integerValue", &mstch_rust_value::integer_value},
+            {"value:integer_value", &mstch_rust_value::integer_value},
             {"value:floatingPoint?", &mstch_rust_value::is_floating_point},
             {"value:floatingPointValue",
              &mstch_rust_value::floating_point_value},
@@ -751,7 +845,7 @@ class mstch_rust_value : public mstch_base {
             {"value:binary?", &mstch_rust_value::is_binary},
             {"value:quoted", &mstch_rust_value::string_quoted},
             {"value:list?", &mstch_rust_value::is_list},
-            {"value:listElements", &mstch_rust_value::list_elements},
+            {"value:list_elements", &mstch_rust_value::list_elements},
             {"value:set?", &mstch_rust_value::is_set},
             {"value:setMembers", &mstch_rust_value::set_members},
             {"value:map?", &mstch_rust_value::is_map},
@@ -774,8 +868,7 @@ class mstch_rust_value : public mstch_base {
         type_, generators_, cache_, pos_, options_);
   }
   mstch::node is_newtype() {
-    return type_->is_typedef() &&
-        type_->annotations_.count("rust.newtype") != 0;
+    return type_->is_typedef() && type_->has_annotation("rust.newtype");
   }
   mstch::node inner() {
     auto typedef_type = dynamic_cast<const t_typedef*>(type_);
@@ -792,9 +885,7 @@ class mstch_rust_value : public mstch_base {
     }
     return mstch::node();
   }
-  mstch::node is_bool() {
-    return type_->is_bool();
-  }
+  mstch::node is_bool() { return type_->is_bool(); }
   mstch::node bool_value() {
     if (const_value_->get_type() == value_type::CV_INTEGER) {
       return const_value_->get_integer() != 0;
@@ -823,15 +914,9 @@ class mstch_rust_value : public mstch_base {
     }
     return digits;
   }
-  mstch::node is_string() {
-    return type_->is_string();
-  }
-  mstch::node is_binary() {
-    return type_->is_binary();
-  }
-  mstch::node string_quoted() {
-    return quote(const_value_->get_string());
-  }
+  mstch::node is_string() { return type_->is_string(); }
+  mstch::node is_binary() { return type_->is_binary(); }
+  mstch::node string_quoted() { return quote(const_value_->get_string()); }
   mstch::node is_list() {
     return type_->is_list() &&
         (const_value_->get_type() == value_type::CV_LIST ||
@@ -867,9 +952,7 @@ class mstch_rust_value : public mstch_base {
          (const_value_->get_type() == value_type::CV_MAP &&
           const_value_->get_map().empty()));
   }
-  mstch::node set_members() {
-    return list_elements();
-  }
+  mstch::node set_members() { return list_elements(); }
   mstch::node is_map() {
     return type_->is_map() &&
         (const_value_->get_type() == value_type::CV_MAP ||
@@ -910,11 +993,11 @@ class mstch_rust_value : public mstch_base {
     auto variant = entry.first->get_string();
     auto content = entry.second;
 
-    for (const auto& member : struct_type->get_members()) {
-      if (member->get_name() == variant) {
+    for (auto&& field : struct_type->fields()) {
+      if (field.name() == variant) {
         return std::make_shared<mstch_rust_value>(
             content,
-            member->get_type(),
+            field.get_type(),
             depth_ + 1,
             generators_,
             cache_,
@@ -924,12 +1007,10 @@ class mstch_rust_value : public mstch_base {
     }
     return mstch::node();
   }
-  mstch::node is_enum() {
-    return type_->is_enum();
-  }
+  mstch::node is_enum() { return type_->is_enum(); }
   mstch::node enum_package() {
     if (const_value_->is_enum()) {
-      return get_import_name(const_value_->get_enum()->get_program(), options_);
+      return get_import_name(const_value_->get_enum()->program(), options_);
     }
     return mstch::node();
   }
@@ -961,9 +1042,7 @@ class mstch_rust_value : public mstch_base {
     }
     return false;
   }
-  mstch::node indent() {
-    return std::string(4 * depth_, ' ');
-  }
+  mstch::node indent() { return std::string(4 * depth_, ' '); }
 
  private:
   const t_const_value* const_value_;
@@ -1040,13 +1119,18 @@ class mstch_rust_struct_field : public mstch_base {
             {"field:type", &mstch_rust_struct_field::type},
             {"field:box?", &mstch_rust_struct_field::is_boxed},
             {"field:arc?", &mstch_rust_struct_field::is_arc},
+            {"field:docs?", &mstch_rust_struct_field::rust_has_docs},
+            {"field:docs", &mstch_rust_struct_field::rust_docs},
         });
   }
   mstch::node rust_name() {
-    return mangle(field_->get_name());
+    if (!field_->has_annotation("rust.name")) {
+      return mangle(field_->get_name());
+    }
+    return field_->get_annotation("rust.name");
   }
   mstch::node is_optional() {
-    return field_->get_req() == t_field::e_req::T_OPTIONAL;
+    return field_->get_req() == t_field::e_req::optional;
   }
   mstch::node value() {
     if (value_) {
@@ -1061,12 +1145,10 @@ class mstch_rust_struct_field : public mstch_base {
     return std::make_shared<mstch_rust_type>(
         type, generators_, cache_, pos_, options_);
   }
-  mstch::node is_boxed() {
-    return field_kind(field_->annotations_) == FieldKind::Box;
-  }
-  mstch::node is_arc() {
-    return field_kind(field_->annotations_) == FieldKind::Arc;
-  }
+  mstch::node is_boxed() { return field_kind(*field_) == FieldKind::Box; }
+  mstch::node is_arc() { return field_kind(*field_) == FieldKind::Arc; }
+  mstch::node rust_has_docs() { return field_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(field_); }
 
  private:
   const t_field* field_;
@@ -1114,13 +1196,13 @@ mstch::node mstch_rust_value::struct_fields() {
   }
 
   mstch::array fields;
-  for (const auto& member : struct_type->get_members()) {
-    auto value = map_entries[member->get_name()];
+  for (auto&& field : struct_type->fields()) {
+    auto value = map_entries[field.name()];
     if (!value) {
-      value = member->get_value();
+      value = field.default_value();
     }
     fields.push_back(std::make_shared<mstch_rust_struct_field>(
-        member, value, depth_ + 1, generators_, cache_, pos_, options_));
+        &field, value, depth_ + 1, generators_, cache_, pos_, options_));
   }
   return fields;
 }
@@ -1153,6 +1235,8 @@ class mstch_rust_const : public mstch_const {
             {"constant:package", &mstch_rust_const::rust_package},
             {"constant:lazy?", &mstch_rust_const::rust_lazy},
             {"constant:rust", &mstch_rust_const::rust_typed_value},
+            {"constant:docs?", &mstch_rust_const::rust_has_docs},
+            {"constant:docs", &mstch_rust_const::rust_docs},
         });
   }
   mstch::node rust_package() {
@@ -1174,6 +1258,8 @@ class mstch_rust_const : public mstch_const {
         pos_,
         options_);
   }
+  mstch::node rust_has_docs() { return cnst_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(cnst_); }
 
  private:
   const rust_codegen_options& options_;
@@ -1198,10 +1284,15 @@ class mstch_rust_field : public mstch_field {
             {"field:default", &mstch_rust_field::rust_default},
             {"field:box?", &mstch_rust_field::rust_is_boxed},
             {"field:arc?", &mstch_rust_field::rust_is_arc},
+            {"field:docs?", &mstch_rust_field::rust_has_docs},
+            {"field:docs", &mstch_rust_field::rust_docs},
         });
   }
   mstch::node rust_name() {
-    return mangle(field_->get_name());
+    if (!field_->has_annotation("rust.name")) {
+      return mangle(field_->get_name());
+    }
+    return field_->get_annotation("rust.name");
   }
   mstch::node rust_primitive() {
     auto type = field_->get_type();
@@ -1220,12 +1311,10 @@ class mstch_rust_field : public mstch_field {
     }
     return mstch::node();
   }
-  mstch::node rust_is_boxed() {
-    return field_kind(field_->annotations_) == FieldKind::Box;
-  }
-  mstch::node rust_is_arc() {
-    return field_kind(field_->annotations_) == FieldKind::Arc;
-  }
+  mstch::node rust_is_boxed() { return field_kind(*field_) == FieldKind::Box; }
+  mstch::node rust_is_arc() { return field_kind(*field_) == FieldKind::Arc; }
+  mstch::node rust_has_docs() { return field_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(field_); }
 
  private:
   const rust_codegen_options& options_;
@@ -1246,16 +1335,28 @@ class mstch_rust_typedef : public mstch_typedef {
             {"typedef:newtype?", &mstch_rust_typedef::rust_newtype},
             {"typedef:ord?", &mstch_rust_typedef::rust_ord},
             {"typedef:copy?", &mstch_rust_typedef::rust_copy},
+            {"typedef:rust_type", &mstch_rust_typedef::rust_type},
+            {"typedef:nonstandard?", &mstch_rust_typedef::rust_nonstandard},
+            {"typedef:docs?", &mstch_rust_typedef::rust_has_docs},
+            {"typedef:docs", &mstch_rust_typedef::rust_docs},
         });
   }
   mstch::node rust_name() {
-    return mangle_type(typedf_->get_symbolic());
+    if (!typedf_->has_annotation("rust.name")) {
+      return mangle_type(typedf_->name());
+    }
+    return typedf_->get_annotation("rust.name");
   }
-  mstch::node rust_newtype() {
-    return typedf_->annotations_.count("rust.newtype") != 0;
+  mstch::node rust_newtype() { return typedf_->has_annotation("rust.newtype"); }
+  mstch::node rust_type() {
+    const std::string& rust_type = typedf_->get_annotation("rust.type");
+    if (!rust_type.empty() && rust_type.find("::") == std::string::npos) {
+      return "fbthrift::builtin_types::" + rust_type;
+    }
+    return rust_type;
   }
   mstch::node rust_ord() {
-    return typedf_->annotations_.count("rust.ord") != 0 ||
+    return typedf_->has_annotation("rust.ord") ||
         can_derive_ord(typedf_->get_type());
   }
   mstch::node rust_copy() {
@@ -1265,11 +1366,16 @@ class mstch_rust_typedef : public mstch_typedef {
         inner->is_void()) {
       return true;
     }
-    if (typedf_->annotations_.count("rust.copy")) {
+    if (typedf_->has_annotation("rust.copy")) {
       return true;
     }
     return false;
   }
+  mstch::node rust_nonstandard() {
+    return typedf_->get_annotation("rust.type").find("::") != string::npos;
+  }
+  mstch::node rust_has_docs() { return typedf_->has_doc(); }
+  mstch::node rust_docs() { return quoted_rust_doc(typedf_); }
 };
 
 class mstch_rust_annotation : public mstch_annotation {
@@ -1281,8 +1387,8 @@ class mstch_rust_annotation : public mstch_annotation {
       ELEMENT_POSITION pos,
       int32_t index)
       : mstch_annotation(
-            annotation.key,
-            annotation.val,
+            annotation.first,
+            annotation.second,
             generators,
             cache,
             pos,
@@ -1295,15 +1401,11 @@ class mstch_rust_annotation : public mstch_annotation {
             {"annotation:rust_value", &mstch_rust_annotation::rust_value},
         });
   }
-  mstch::node rust_has_value() {
-    return !val_.empty();
-  }
+  mstch::node rust_has_value() { return !val_.value.empty(); }
   mstch::node rust_name() {
     return boost::algorithm::replace_all_copy(key_, ".", "_");
   }
-  mstch::node rust_value() {
-    return quote(val_);
-  }
+  mstch::node rust_value() { return quote(val_.value); }
 };
 
 class program_rust_generator : public program_generator {
@@ -1456,6 +1558,44 @@ class type_rust_generator : public type_generator {
   const rust_codegen_options& options_;
 };
 
+mstch::node mstch_rust_service::rust_all_exceptions() {
+  std::map<const t_type*, std::vector<const t_function*>> function_map;
+  std::map<const t_type*, std::vector<const t_field*>> field_map;
+  for (const auto& fun : service_->functions()) {
+    for (const auto& fld : fun.get_xceptions()->fields()) {
+      function_map[fld.type()->get_true_type()].push_back(&fun);
+      field_map[fld.type()->get_true_type()].push_back(&fld);
+    }
+  }
+
+  mstch::array output;
+  for (const auto& funcs : function_map) {
+    mstch::map data;
+    type_rust_generator gen(options_);
+    data["rust_exception:type"] = gen.generate(
+        funcs.first, generators_, cache_, ELEMENT_POSITION::NONE, 0);
+
+    function_rust_generator function_generator;
+
+    auto functions = generate_elements(
+        funcs.second, &function_generator, function_upcamel_names_);
+    auto fields = generate_fields(field_map[funcs.first]);
+
+    mstch::array function_data;
+    for (size_t i = 0; i < fields.size(); i++) {
+      mstch::map inner;
+      inner["rust_exception_function:function"] = std::move(functions[i]);
+      inner["rust_exception_function:field"] = std::move(fields[i]);
+      function_data.push_back(std::move(inner));
+    }
+
+    data["rust_exception:functions"] = std::move(function_data);
+    output.push_back(data);
+  }
+
+  return output;
+}
+
 class const_rust_generator : public const_generator {
  public:
   explicit const_rust_generator(const rust_codegen_options& options)
@@ -1601,14 +1741,13 @@ class annotation_validator : public validator {
 };
 
 bool annotation_validator::visit(t_struct* s) {
-  for (auto* member : s->get_members()) {
-    bool box = member->annotations_.count("rust.box") != 0;
-    bool arc = member->annotations_.count("rust.arc") != 0;
+  for (auto& field : s->fields()) {
+    bool box = field.has_annotation("rust.box");
+    bool arc = field.has_annotation("rust.arc");
     if (box && arc) {
       add_error(
-          member->get_lineno(),
-          "Field `" + member->get_name() +
-              "` cannot be both Box'ed and Arc'ed");
+          field.lineno(),
+          "Field `" + field.name() + "` cannot be both Box'ed and Arc'ed");
     }
   }
   return true;
@@ -1619,8 +1758,14 @@ void t_mstch_rust_generator::fill_validator_list(validator_list& l) const {
   l.add<annotation_validator>();
 }
 
-THRIFT_REGISTER_GENERATOR(mstch_rust, "Rust", "");
-
+THRIFT_REGISTER_GENERATOR(
+    mstch_rust,
+    "Rust",
+    "    serde:           Derive serde Serialize/Deserialize traits for types\n"
+    "    noserver:        Don't emit server code\n"
+    "    include_prefix=: Set program:include_prefix.\n"
+    "    include_srcs=:   Additional Rust source file to include in output, `:` separated\n"
+    "    cratemap=map:    Mapping file from services to crate names\n");
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

@@ -30,9 +30,7 @@ template <typename ServerCallback>
 class TimeoutCallback : public folly::HHWheelTimer::Callback {
  public:
   explicit TimeoutCallback(ServerCallback& parent) : parent_(parent) {}
-  void timeoutExpired() noexcept override {
-    parent_.timeoutExpired();
-  }
+  void timeoutExpired() noexcept override { parent_.timeoutExpired(); }
 
  private:
   ServerCallback& parent_;
@@ -47,14 +45,16 @@ void RocketStreamServerCallback::onStreamCancel() {
   client_.cancelStream(streamId_);
 }
 bool RocketStreamServerCallback::onSinkHeaders(HeadersPayload&& payload) {
-  return client_.sendExtHeaders(streamId_, std::move(payload));
+  return client_.sendHeadersPush(streamId_, std::move(payload));
 }
 
-void RocketStreamServerCallback::onInitialPayload(
-    FirstResponsePayload&& payload,
-    folly::EventBase* evb) {
-  std::ignore = clientCallback_->onFirstResponse(std::move(payload), evb, this);
+StreamChannelStatus RocketStreamServerCallback::onInitialPayload(
+    FirstResponsePayload&& payload, folly::EventBase* evb) {
+  return clientCallback_->onFirstResponse(std::move(payload), evb, this)
+      ? StreamChannelStatus::Alive
+      : StreamChannelStatus::Complete;
 }
+
 void RocketStreamServerCallback::onInitialError(folly::exception_wrapper ew) {
   clientCallback_->onFirstResponseError(std::move(ew));
   client_.cancelStream(streamId_);
@@ -88,8 +88,13 @@ StreamChannelStatus RocketStreamServerCallback::onStreamError(
     folly::exception_wrapper ew) {
   ew.handle(
       [&](RocketException& ex) {
-        clientCallback_->onStreamError(
-            thrift::detail::EncodedError(ex.moveErrorData()));
+        if (client_.getServerVersion() >= 8) {
+          clientCallback_->onStreamError(
+              thrift::detail::EncodedStreamRpcError(ex.moveErrorData()));
+        } else {
+          clientCallback_->onStreamError(
+              thrift::detail::EncodedError(ex.moveErrorData()));
+        }
       },
       [&](...) {
         clientCallback_->onStreamError(std::move(ew));
@@ -127,13 +132,13 @@ bool RocketStreamServerCallbackWithChunkTimeout::onStreamRequestN(
   return RocketStreamServerCallback::onStreamRequestN(tokens);
 }
 
-void RocketStreamServerCallbackWithChunkTimeout::onInitialPayload(
-    FirstResponsePayload&& payload,
-    folly::EventBase* evb) {
+StreamChannelStatus
+RocketStreamServerCallbackWithChunkTimeout::onInitialPayload(
+    FirstResponsePayload&& payload, folly::EventBase* evb) {
   if (credits_ > 0) {
     scheduleTimeout();
   }
-  RocketStreamServerCallback::onInitialPayload(std::move(payload), evb);
+  return RocketStreamServerCallback::onInitialPayload(std::move(payload), evb);
 }
 
 StreamChannelStatus RocketStreamServerCallbackWithChunkTimeout::onStreamPayload(
@@ -164,147 +169,6 @@ void RocketStreamServerCallbackWithChunkTimeout::cancelTimeout() {
   timeout_.reset();
 }
 
-// RocketChannelServerCallback
-void RocketChannelServerCallback::onStreamRequestN(uint64_t tokens) {
-  DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
-  std::ignore = client_.sendRequestN(streamId_, tokens);
-}
-void RocketChannelServerCallback::onStreamCancel() {
-  DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
-  client_.cancelStream(streamId_);
-}
-void RocketChannelServerCallback::onSinkNext(StreamPayload&& payload) {
-  DCHECK(state_ == State::BothOpen || state_ == State::SinkOpen);
-  client_.sendPayload(
-      streamId_, std::move(payload), rocket::Flags::none().next(true));
-}
-void RocketChannelServerCallback::onSinkError(folly::exception_wrapper ew) {
-  DCHECK(state_ == State::BothOpen || state_ == State::SinkOpen);
-  ew.handle(
-      [&](rocket::RocketException& rex) {
-        client_.sendError(
-            streamId_,
-            rocket::RocketException(
-                rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
-      },
-      [&](...) {
-        client_.sendError(
-            streamId_,
-            rocket::RocketException(
-                rocket::ErrorCode::APPLICATION_ERROR, ew.what()));
-      });
-}
-void RocketChannelServerCallback::onSinkComplete() {
-  DCHECK(state_ == State::BothOpen || state_ == State::SinkOpen);
-  if (state_ == State::BothOpen) {
-    client_.sendComplete(streamId_, false);
-    state_ = State::StreamOpen;
-    return;
-  }
-  client_.sendComplete(streamId_, true);
-}
-
-void RocketChannelServerCallback::onInitialPayload(
-    FirstResponsePayload&& payload,
-    folly::EventBase* evb) {
-  clientCallback_.onFirstResponse(std::move(payload), evb, this);
-}
-void RocketChannelServerCallback::onInitialError(folly::exception_wrapper ew) {
-  clientCallback_.onFirstResponseError(std::move(ew));
-  client_.cancelStream(streamId_);
-}
-void RocketChannelServerCallback::onStreamTransportError(
-    folly::exception_wrapper ew) {
-  switch (state_) {
-    case State::BothOpen:
-    case State::StreamOpen:
-      clientCallback_.onStreamError(std::move(ew));
-      return;
-    case State::SinkOpen:
-      clientCallback_.onSinkCancel();
-      return;
-    default:
-      folly::assume_unreachable();
-  };
-}
-StreamChannelStatus RocketChannelServerCallback::onStreamPayload(
-    StreamPayload&& payload) {
-  switch (state_) {
-    case State::BothOpen:
-    case State::StreamOpen:
-      clientCallback_.onStreamNext(std::move(payload));
-      return StreamChannelStatus::Alive;
-    case State::SinkOpen:
-      clientCallback_.onSinkCancel();
-      return StreamChannelStatus::ContractViolation;
-    default:
-      folly::assume_unreachable();
-  }
-}
-StreamChannelStatus RocketChannelServerCallback::onStreamFinalPayload(
-    StreamPayload&& payload) {
-  auto& client = client_;
-  auto streamId = streamId_;
-  onStreamPayload(std::move(payload));
-  // It's possible that stream was canceled from the client callback. This
-  // object may be already destroyed.
-  if (client.streamExists(streamId)) {
-    return onStreamComplete();
-  }
-  return StreamChannelStatus::Alive;
-}
-StreamChannelStatus RocketChannelServerCallback::onStreamComplete() {
-  switch (state_) {
-    case State::BothOpen:
-      state_ = State::SinkOpen;
-      clientCallback_.onStreamComplete();
-      return StreamChannelStatus::Alive;
-    case State::StreamOpen:
-      clientCallback_.onStreamComplete();
-      return StreamChannelStatus::Complete;
-    case State::SinkOpen:
-      clientCallback_.onSinkCancel();
-      return StreamChannelStatus::ContractViolation;
-    default:
-      folly::assume_unreachable();
-  }
-}
-StreamChannelStatus RocketChannelServerCallback::onStreamError(
-    folly::exception_wrapper ew) {
-  clientCallback_.onStreamError(std::move(ew));
-  return StreamChannelStatus::Complete;
-}
-void RocketChannelServerCallback::onStreamHeaders(HeadersPayload&&) {}
-StreamChannelStatus RocketChannelServerCallback::onSinkRequestN(
-    uint64_t tokens) {
-  switch (state_) {
-    case State::BothOpen:
-    case State::SinkOpen:
-      clientCallback_.onSinkRequestN(tokens);
-      return StreamChannelStatus::Alive;
-    case State::StreamOpen:
-      return StreamChannelStatus::Alive;
-    default:
-      folly::assume_unreachable();
-  }
-}
-StreamChannelStatus RocketChannelServerCallback::onSinkCancel() {
-  switch (state_) {
-    case State::BothOpen:
-    case State::SinkOpen:
-      clientCallback_.onSinkCancel();
-      return StreamChannelStatus::Complete;
-    case State::StreamOpen:
-      clientCallback_.onStreamError(folly::make_exception_wrapper<
-                                    transport::TTransportException>(
-          transport::TTransportException::TTransportExceptionType::INTERRUPTED,
-          "channel closed via onSinkCancel"));
-      return StreamChannelStatus::Complete;
-    default:
-      folly::assume_unreachable();
-  }
-}
-
 // RocketSinkServerCallback
 bool RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
   DCHECK(state_ == State::BothOpen);
@@ -330,10 +194,16 @@ void RocketSinkServerCallback::onSinkError(folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen);
   ew.handle(
       [&](rocket::RocketException& rex) {
-        client_.sendError(
-            streamId_,
-            rocket::RocketException(
-                rocket::ErrorCode::APPLICATION_ERROR, rex.moveErrorData()));
+        client_.sendError(streamId_, std::move(rex));
+      },
+      [this](::apache::thrift::detail::EncodedStreamError& err) {
+        if (compressionConfig_) {
+          apache::thrift::rocket::detail::setCompressionCodec(
+              *compressionConfig_,
+              err.encoded.metadata,
+              err.encoded.payload->computeChainDataLength());
+        }
+        std::ignore = client_.sendSinkError(streamId_, std::move(err.encoded));
       },
       [&](...) {
         client_.sendError(
@@ -349,10 +219,11 @@ bool RocketSinkServerCallback::onSinkComplete() {
   return true;
 }
 
-void RocketSinkServerCallback::onInitialPayload(
-    FirstResponsePayload&& payload,
-    folly::EventBase* evb) {
-  std::ignore = clientCallback_->onFirstResponse(std::move(payload), evb, this);
+StreamChannelStatus RocketSinkServerCallback::onInitialPayload(
+    FirstResponsePayload&& payload, folly::EventBase* evb) {
+  return clientCallback_->onFirstResponse(std::move(payload), evb, this)
+      ? StreamChannelStatus::Alive
+      : StreamChannelStatus::Complete;
 }
 void RocketSinkServerCallback::onInitialError(folly::exception_wrapper ew) {
   clientCallback_->onFirstResponseError(std::move(ew));
@@ -388,8 +259,13 @@ StreamChannelStatus RocketSinkServerCallback::onStreamError(
     folly::exception_wrapper ew) {
   ew.handle(
       [&](RocketException& ex) {
-        clientCallback_->onFinalResponseError(
-            thrift::detail::EncodedError(ex.moveErrorData()));
+        if (client_.getServerVersion() >= 8) {
+          clientCallback_->onFinalResponseError(
+              thrift::detail::EncodedStreamRpcError(ex.moveErrorData()));
+        } else {
+          clientCallback_->onFinalResponseError(
+              thrift::detail::EncodedError(ex.moveErrorData()));
+        }
       },
       [&](...) { clientCallback_->onFinalResponseError(std::move(ew)); });
   return StreamChannelStatus::Complete;

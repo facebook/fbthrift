@@ -32,14 +32,14 @@ class TestServiceMock : public TestServiceSvIf {
   using EmptyArgs = apache::thrift::ThriftPresult<false>;
   using EmptyResult = apache::thrift::ThriftPresult<true>;
 
-  MOCK_METHOD2(sumTwoNumbers_, int32_t(int32_t, int32_t));
-  MOCK_METHOD1(add_, int32_t(int32_t));
-  MOCK_METHOD2(addAfterDelay_, void(int32_t, int32_t));
-  MOCK_METHOD1(onewayThrowsUnexpectedException_, void(int32_t));
-  MOCK_METHOD1(hello_, std::string(const std::string&));
-  MOCK_METHOD1(checkPort_, void(int32_t));
-  MOCK_METHOD1(echo_, std::string(folly::IOBuf));
-  MOCK_METHOD1(onewayLogBlob_, void(folly::IOBuf));
+  MOCK_METHOD(int32_t, sumTwoNumbers_, (int32_t, int32_t));
+  MOCK_METHOD(int32_t, add_, (int32_t));
+  MOCK_METHOD(void, addAfterDelay_, (int32_t, int32_t));
+  MOCK_METHOD(void, onewayThrowsUnexpectedException_, (int32_t));
+  MOCK_METHOD(std::string, hello_, (const std::string&));
+  MOCK_METHOD(void, checkPort_, (int32_t));
+  MOCK_METHOD(std::string, echo_, (folly::IOBuf));
+  MOCK_METHOD(void, onewayLogBlob_, (folly::IOBuf));
 
   int32_t sumTwoNumbers(int32_t x, int32_t y) override;
 

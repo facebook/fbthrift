@@ -17,26 +17,33 @@
 #include <thrift/lib/cpp2/transport/core/testutil/CoreTestFixture.h>
 
 #include <string>
+#include <utility>
 
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
 namespace apache {
 namespace thrift {
 
 using namespace testutil::testservice;
 
-CoreTestFixture::CoreTestFixture()
-    : threadManager_(std::make_shared<FakeThreadManager>()),
-      processor_(serverConfigs_) {
+CoreTestFixture::CoreTestFixture() : processor_(server_) {
   threadManager_->start();
-  processor_.setThreadManager(threadManager_.get());
-  processor_.setCpp2Processor(service_.getProcessor());
+  server_.setThreadManager(threadManager_);
+  server_.setProcessorFactory(service_);
+  server_.setup();
   channel_ = std::make_shared<FakeChannel>(&eventBase_);
+  worker_ = Cpp2Worker::createDummy(&eventBase_);
 }
 
 CoreTestFixture::~CoreTestFixture() {
   threadManager_->join();
+}
+
+std::unique_ptr<Cpp2ConnContext> CoreTestFixture::newCpp2ConnContext() {
+  return std::make_unique<Cpp2ConnContext>(
+      nullptr, nullptr, nullptr, nullptr, nullptr, nullptr, worker_.get());
 }
 
 void CoreTestFixture::runInEventBaseThread(folly::Function<void()> test) {
@@ -68,7 +75,6 @@ void CoreTestFixture::serializeSumTwoNumbers(
     metadata->name_ref() = "sumTwoNumbers";
   }
   metadata->kind_ref() = RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE;
-  metadata->seqId_ref() = 0;
 }
 
 int32_t CoreTestFixture::deserializeSumTwoNumbers(folly::IOBuf* buf) {
@@ -86,19 +92,17 @@ int32_t CoreTestFixture::deserializeSumTwoNumbers(folly::IOBuf* buf) {
   return result;
 }
 
-RequestRpcMetadata
-CoreTestFixture::makeMetadata(std::string name, int32_t seqId, RpcKind kind) {
+RequestRpcMetadata CoreTestFixture::makeMetadata(
+    std::string name, RpcKind kind) {
   RequestRpcMetadata metadata;
   metadata.protocol_ref() = ProtocolId::COMPACT;
-  metadata.name_ref() = name;
-  metadata.seqId_ref() = seqId;
+  metadata.name_ref() = std::move(name);
   metadata.kind_ref() = kind;
   return metadata;
 }
 
 bool CoreTestFixture::deserializeException(
-    folly::IOBuf* buf,
-    TApplicationException* tae) {
+    folly::IOBuf* buf, TApplicationException* tae) {
   try {
     auto reader = std::make_unique<apache::thrift::CompactProtocolReader>();
     std::string fname;
@@ -106,7 +110,7 @@ bool CoreTestFixture::deserializeException(
     int32_t protoSeqId;
     reader->setInput(buf);
     reader->readMessageBegin(fname, mtype, protoSeqId);
-    EXPECT_EQ(T_EXCEPTION, mtype);
+    EXPECT_TRUE(MessageType::T_EXCEPTION == mtype);
     tae->read(reader.get());
     return true;
   } catch (...) {

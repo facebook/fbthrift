@@ -19,6 +19,8 @@
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp2/protocol/Protocol.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -28,6 +30,28 @@ struct SerializedRequest {
       : buffer(std::move(buffer_)) {}
 
   std::unique_ptr<folly::IOBuf> buffer;
+};
+
+class SerializedCompressedRequest {
+ public:
+  explicit SerializedCompressedRequest(
+      std::unique_ptr<folly::IOBuf> buffer,
+      CompressionAlgorithm compression = CompressionAlgorithm::NONE)
+      : buffer_(std::move(buffer)), compression_(compression) {}
+
+  explicit SerializedCompressedRequest(SerializedRequest&& request)
+      : buffer_(std::move(request.buffer)),
+        compression_(CompressionAlgorithm::NONE) {}
+
+  SerializedRequest uncompress() &&;
+
+  SerializedCompressedRequest clone() const;
+
+  CompressionAlgorithm getCompressionAlgorithm() const { return compression_; }
+
+ private:
+  std::unique_ptr<folly::IOBuf> buffer_;
+  CompressionAlgorithm compression_;
 };
 
 struct LegacySerializedRequest {
@@ -48,15 +72,56 @@ struct LegacySerializedRequest {
   std::unique_ptr<folly::IOBuf> buffer;
 };
 
+struct ResponsePayload {
+  ResponsePayload() = default;
+
+  std::unique_ptr<folly::IOBuf> buffer() && { return std::move(buffer_); }
+
+  const folly::IOBuf* buffer() const& { return buffer_.get(); }
+
+  void transform(
+      std::vector<uint16_t>& writeTrans, size_t minCompressBytes = 0);
+
+  explicit operator bool() const { return static_cast<bool>(buffer_); }
+
+  std::size_t length() const { return buffer_->computeChainDataLength(); }
+
+  static ResponsePayload create(std::unique_ptr<folly::IOBuf>&& buffer) {
+    return ResponsePayload{std::move(buffer)};
+  }
+
+  // We will make this private after landing all changes to no longer require
+  // it.
+  /* implicit */ ResponsePayload(std::unique_ptr<folly::IOBuf> buffer)
+      : buffer_(std::move(buffer)) {}
+
+ private:
+  friend struct SerializedResponse;
+  friend struct LegacySerializedResponse;
+
+  std::unique_ptr<folly::IOBuf> buffer_;
+};
+
 struct SerializedResponse {
-  explicit SerializedResponse(std::unique_ptr<folly::IOBuf> buffer_)
+  explicit SerializedResponse(
+      std::unique_ptr<folly::IOBuf> buffer_ = std::unique_ptr<folly::IOBuf>{})
       : buffer(std::move(buffer_)) {}
+
+  ResponsePayload extractPayload(
+      bool includeEnvelope,
+      int16_t protocolId,
+      int32_t seqId,
+      MessageType mtype,
+      folly::StringPiece methodName) &&;
+
+  ResponsePayload extractPayload(bool includeEnvelope) &&;
 
   std::unique_ptr<folly::IOBuf> buffer;
 };
 
 struct LegacySerializedResponse {
-  /* implicit */ LegacySerializedResponse(std::unique_ptr<folly::IOBuf> buffer_)
+  explicit LegacySerializedResponse(
+      std::unique_ptr<folly::IOBuf> buffer_ = std::unique_ptr<folly::IOBuf>{})
       : buffer(std::move(buffer_)) {}
 
   LegacySerializedResponse(
@@ -80,6 +145,23 @@ struct LegacySerializedResponse {
       int32_t seqid,
       folly::StringPiece methodName,
       const TApplicationException& ex);
+
+  LegacySerializedResponse(
+      uint16_t protocolId,
+      int32_t seqid,
+      MessageType mtype,
+      folly::StringPiece methodName,
+      SerializedResponse&& serializedResponse);
+
+  // The sequence Id is only overridden if a non-zero value is supplied
+  std::pair<MessageType, ResponsePayload> extractPayload(
+      bool includeEnvelope, int16_t protocolId, int32_t seqId = 0) &&;
+
+  static std::unique_ptr<folly::IOBuf> envelope(
+      uint16_t protocolId,
+      MessageType mtype,
+      int32_t seqid,
+      folly::StringPiece methodName);
 
   std::unique_ptr<folly::IOBuf> buffer;
 };

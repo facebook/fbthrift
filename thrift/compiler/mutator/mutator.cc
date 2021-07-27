@@ -67,44 +67,54 @@ static void fill_mutators(mutator_list& ms) {
   // add more mutators here ...
 }
 
-static t_type* resolve_type(t_type* type) {
+static const t_type* resolve_type(const t_type* type) {
   while (type->is_typedef()) {
-    type = dynamic_cast<t_typedef*>(type)->get_type();
+    type = dynamic_cast<const t_typedef*>(type)->get_type();
   }
   return type;
 }
 
 static void match_type_with_const_value(
+    t_node* node,
     t_program* program,
-    t_type* long_type,
+    const t_type* long_type,
     t_const_value* value) {
-  t_type* type = resolve_type(long_type);
-  value->set_ttype(type);
+  const t_type* type = resolve_type(long_type);
+  value->set_ttype(t_type_ref::from_req_ptr(type));
   if (type->is_list()) {
     auto* elem_type = dynamic_cast<const t_list*>(type)->get_elem_type();
     for (auto list_val : value->get_list()) {
-      match_type_with_const_value(program, elem_type, list_val);
+      match_type_with_const_value(node, program, elem_type, list_val);
     }
   }
   if (type->is_set()) {
     auto* elem_type = dynamic_cast<const t_set*>(type)->get_elem_type();
     for (auto set_val : value->get_list()) {
-      match_type_with_const_value(program, elem_type, set_val);
+      match_type_with_const_value(node, program, elem_type, set_val);
     }
   }
   if (type->is_map()) {
     auto* key_type = dynamic_cast<const t_map*>(type)->get_key_type();
     auto* val_type = dynamic_cast<const t_map*>(type)->get_val_type();
     for (auto map_val : value->get_map()) {
-      match_type_with_const_value(program, key_type, map_val.first);
-      match_type_with_const_value(program, val_type, map_val.second);
+      match_type_with_const_value(node, program, key_type, map_val.first);
+      match_type_with_const_value(node, program, val_type, map_val.second);
     }
   }
   if (type->is_struct()) {
     auto* struct_type = dynamic_cast<const t_struct*>(type);
     for (auto map_val : value->get_map()) {
-      auto tfield = struct_type->get_member(map_val.first->get_string());
-      match_type_with_const_value(program, tfield->get_type(), map_val.second);
+      auto name = map_val.first->get_string();
+      auto tfield = struct_type->get_field_by_name(name);
+      if (!tfield) {
+        throw MutatorException(
+            {diagnostic_level::failure,
+             "field `" + name + "` does not exist.",
+             node,
+             program});
+      }
+      match_type_with_const_value(
+          node, program, tfield->get_type(), map_val.second);
     }
   }
   // Set constant value types as enums when they are declared with integers
@@ -120,7 +130,7 @@ static void match_type_with_const_value(
       auto str = value->get_string();
       auto constant = program->scope()->get_constant(str);
       if (!constant) {
-        auto full_str = program->get_name() + "." + str;
+        auto full_str = program->name() + "." + str;
         constant = program->scope()->get_constant(full_str);
       }
       if (!constant) {
@@ -150,7 +160,7 @@ bool field_type_to_const_value::visit(t_program* const program) {
 bool field_type_to_const_value::visit(t_field* const tfield) {
   if (tfield->get_type() && tfield->get_value()) {
     match_type_with_const_value(
-        program_, tfield->get_type(), tfield->get_value());
+        tfield, program_, tfield->get_type(), tfield->get_value());
   }
   return true;
 }
@@ -165,7 +175,7 @@ bool const_type_to_const_value::visit(t_program* const program) {
 bool const_type_to_const_value::visit(t_const* const tconst) {
   if (tconst->get_type() && tconst->get_value()) {
     match_type_with_const_value(
-        program_, tconst->get_type(), tconst->get_value());
+        tconst, program_, tconst->get_type(), tconst->get_value());
   }
   return true;
 }

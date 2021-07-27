@@ -37,12 +37,12 @@ namespace thrift {
 }
 
 void CompactProtocolReader::readFieldBeginWithStateMediumSlow(
-    StructReadState& state,
-    int16_t prevFieldId) {
+    StructReadState& state, int16_t prevFieldId) {
   auto byte = *in_.data();
   in_.skipNoAdvance(1);
 
   readFieldBeginWithStateImpl(state, prevFieldId, byte);
 }
+
 } // namespace thrift
 } // namespace apache

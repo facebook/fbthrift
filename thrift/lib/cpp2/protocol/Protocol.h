@@ -73,7 +73,12 @@ typedef apache::thrift::protocol::PROTOCOL_TYPES ProtocolType;
  * Enumerated definition of the message types that the Thrift protocol
  * supports.
  */
-enum MessageType { T_CALL = 1, T_REPLY = 2, T_EXCEPTION = 3, T_ONEWAY = 4 };
+enum class MessageType {
+  T_CALL = 1,
+  T_REPLY = 2,
+  T_EXCEPTION = 3,
+  T_ONEWAY = 4,
+};
 
 namespace detail {
 struct SkipNoopString {
@@ -81,6 +86,31 @@ struct SkipNoopString {
   void clear() {}
   void reserve(size_t) {}
 };
+
+// Checks if bool hold a valid value (true or false) and throws exception
+// otherwise. Without the check we may produce undeserializable data.
+inline bool validate_bool(uint8_t value) {
+#if defined(__x86_64__) && defined(__GNUC__)
+  // An optimized version that avoid extra load/store.
+  asm volatile goto(
+      "cmpb $1, %0\n"
+      "ja %l1"
+      : // no outputs.
+      : "r"(value)
+      : "cc"
+      : invalid);
+  return value;
+invalid:
+  CHECK(false) << "invalid bool value";
+#else
+  // Store in a volatile variable to prevent the compiler from optimizing the
+  // check away.
+  volatile uint8_t volatileByte = value;
+  uint8_t byte = volatileByte;
+  CHECK(byte == 0 || byte == 1) << "invalid bool value";
+  return byte != 0;
+#endif
+}
 } // namespace detail
 
 /* forward declaration */
@@ -208,9 +238,19 @@ inline bool canReadNElements(
  */
 template <class Protocol_, class WireType>
 void skip_n(
-    Protocol_& prot,
-    uint32_t n,
-    std::initializer_list<WireType> types) {
+    Protocol_& prot, uint32_t n, std::initializer_list<WireType> types) {
+  size_t sum = 0;
+  bool allFixedSizes = true;
+  for (auto type : types) {
+    auto size = prot.fixedSizeInContainer(type);
+    sum += size;
+    allFixedSizes = allFixedSizes && size;
+  }
+  if (allFixedSizes) {
+    prot.skipBytes(sum * n);
+    return;
+  }
+
   for (uint32_t i = 0; i < n; i++) {
     for (auto type : types) {
       apache::thrift::skip(prot, type);
@@ -220,13 +260,9 @@ void skip_n(
 
 template <class StrType>
 struct StringTraits {
-  static StrType fromStringLiteral(const char* str) {
-    return StrType(str);
-  }
+  static StrType fromStringLiteral(const char* str) { return StrType(str); }
 
-  static bool isEmpty(const StrType& str) {
-    return str.empty();
-  }
+  static bool isEmpty(const StrType& str) { return str.empty(); }
 
   static bool isEqual(const StrType& lhs, const StrType& rhs) {
     return lhs == rhs;
@@ -244,9 +280,7 @@ struct StringTraits<folly::IOBuf> {
     return folly::IOBuf::wrapBufferAsValue(str, strlen(str));
   }
 
-  static bool isEmpty(const folly::IOBuf& str) {
-    return str.empty();
-  }
+  static bool isEmpty(const folly::IOBuf& str) { return str.empty(); }
 
   static bool isEqual(const folly::IOBuf& lhs, const folly::IOBuf& rhs) {
     return folly::IOBufEqualTo{}(lhs, rhs);

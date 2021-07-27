@@ -16,13 +16,19 @@
 
 }}{{#program:services}}
 
+    {{#service:docs?}}
+    #[doc = {{service:docs}}]
+    {{/service:docs?}}
     #[::async_trait::async_trait]
     pub trait {{service:name}}: ::std::marker::Send + ::std::marker::Sync + 'static {{>lib/block}}{{!
     }}{{#service:requestContext?}}
         type RequestContext: ::std::marker::Sync;{{!
     }}{{/service:requestContext?}}
     {{#service:rustFunctions}}{{^function:returns_streams?}}
-        async fn {{function:name}}(
+        {{#function:docs?}}
+        #[doc = {{function:docs}}]
+        {{/function:docs?}}
+        async fn {{function:rust_name}}(
             &self,{{!
             }}{{#service:requestContext?}}
             _request_context: &Self::RequestContext,{{!
@@ -31,7 +37,7 @@
             _{{field:name}}: {{#field:type}}{{>lib/type}}{{/field:type}},{{!
             }}{{/function:args}}
         ) -> ::std::result::Result<{{!
-            }}{{#function:returnType}}{{>lib/type}}{{/function:returnType}}, {{!
+            }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn{{!
         }}> {
             ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(
@@ -41,9 +47,12 @@
                 ),
             ))
         }
+    {{/function:returns_streams?}}{{#function:returns_streams?}}
+        // {{function:rust_name}}: server-side streaming not yet implemented
     {{/function:returns_streams?}}{{/service:rustFunctions}}
     }
 
+    /// Processor for {{service:name}}'s methods.
     #[derive(Clone, Debug)]
     pub struct {{service:name}}Processor<P, H, R{{!
         }}{{#service:extends?}}, SS{{/service:extends?}}{{!
@@ -138,7 +147,7 @@
             }
             p.read_struct_end()?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
-            let res = self.service.{{function:name}}({{!
+            let res = self.service.{{function:rust_name}}({{!
                 }}{{#service:requestContext?}}
                 req_ctxt,{{!
                 }}{{/service:requestContext?}}{{!
@@ -156,16 +165,20 @@
                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res)
                 }
                 ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(_)) => {
                     panic!(
                         "{} attempted to return success via error",
-                        "{{function:name}}",
+                        "{{function:rust_name}}",
                     )
                 }
                 {{#function:exceptions?}}
-                ::std::result::Result::Err(exn) => exn,
+                ::std::result::Result::Err(exn) => {
+                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
+                    exn
+                }
                 {{/function:exceptions?}}
             };
             ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
@@ -300,6 +313,10 @@
         }
     }
 
+    /// Construct a new instance of a {{service:name}} service.
+    ///
+    /// This is called when a new instance of a Thrift service Processor
+    /// is needed for a particular Thrift protocol.
     pub fn make_{{service:name}}_server<F, H, R{{!
         }}{{#service:extends?}}, SMAKE, SS{{/service:extends?}}{{!
     }}>(

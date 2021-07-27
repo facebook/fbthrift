@@ -11,21 +11,61 @@
           "type_enum" : "STRUCT",
           "spec_args" : "includes.Included",
           "required" : true,
-          "default_value" : { "MyIntField" : 2, "MyTransitiveField" : { "a" : 2 } }
+          "default_value" : { "MyIntField" : 2, "MyTransitiveField" : { "a" : 2 } },
+          "source_range" : {
+            "begin" : {
+              "line" : 81,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 81,
+              "column" : 67
+            }
+          }
         },
         "MyOtherIncludedField" : {
           "type_enum" : "STRUCT",
           "spec_args" : "includes.Included",
-          "required" : true
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 82,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 82,
+              "column" : 45
+            }
+          }
         },
         "MyIncludedInt" : {
           "type_enum" : "TYPEDEF",
           "spec_args" : "includes.IncludedInt64",
           "required" : true,
-          "default_value" : 42
+          "default_value" : 42,
+          "source_range" : {
+            "begin" : {
+              "line" : 83,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 83,
+              "column" : 71
+            }
+          }
         }
       },
-      "annotation_last_lineno" : -1
+      "annotation_last_lineno" : -1,
+      "source_range" : {
+        "begin" : {
+          "line" : 80,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 84,
+          "column" : 2
+        }
+      }
     }
   }
 }

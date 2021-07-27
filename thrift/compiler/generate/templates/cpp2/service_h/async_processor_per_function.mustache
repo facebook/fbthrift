@@ -14,25 +14,25 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#function:returnType%><%^function:starts_interaction?%>
+%><%#function:return_type%><%^function:starts_interaction?%>
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void setUpAndProcess_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void setUpAndProcess_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
   template <typename ProtocolIn_, typename ProtocolOut_>
-  void process_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
+  void process_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx,folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm);
 <%^function:oneway?%>
   template <class ProtocolIn_, class ProtocolOut_>
 <%#type:void?%>
-  static folly::IOBufQueue return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
+  static apache::thrift::LegacySerializedResponse return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx);
 <%/type:void?%>
 <%^type:void?%>
   <%^type:streamresponse?%><%^type:sink?%>
-  static folly::IOBufQueue return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <% > types/type%> const& _return);
+  static apache::thrift::LegacySerializedResponse return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <%type:cpp_type%> const& _return);
   <%/type:sink?%><%/type:streamresponse?%>
   <%#type:streamresponse?%>
-  static apache::thrift::ResponseAndServerStreamFactory return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <% > types/type%> _return);
+  static apache::thrift::ResponseAndServerStreamFactory return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <%type:cpp_type%>&& _return);
   <%/type:streamresponse?%>
   <%#type:sink?%>
-  static std::pair<folly::IOBufQueue, apache::thrift::detail::SinkConsumerImpl> return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, <% > types/type%>&& _return, folly::Executor::KeepAlive<> executor);
+  static std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, <%type:cpp_type%>&& _return, folly::Executor::KeepAlive<> executor);
   <%/type:sink?%>
 <%/type:void?%>
   template <class ProtocolIn_, class ProtocolOut_>
@@ -42,4 +42,4 @@
   std::unique_ptr<apache::thrift::Tile> <%function:cpp_name%>() {
     return iface_-><%function:cpp_name%>();
   }
-<%/function:starts_interaction?%><%/function:returnType%>
+<%/function:starts_interaction?%><%/function:return_type%>

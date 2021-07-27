@@ -20,7 +20,7 @@ MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
 
 void MyServiceWrapper::async_tm_ping(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -38,7 +38,7 @@ void MyServiceWrapper::async_tm_ping(
 }
 void MyServiceWrapper::async_tm_getRandomData(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -54,11 +54,58 @@ void MyServiceWrapper::async_tm_getRandomData(
         });
     });
 }
+void MyServiceWrapper::async_tm_sink(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , int64_t sink
+) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback),
+sink    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+        call_cy_MyService_sink(
+            this->if_object,
+            ctx,
+            std::move(promise),
+            sink        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
+void MyServiceWrapper::async_tm_putDataById(
+  std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
+    , int64_t id
+    , std::unique_ptr<std::string> data
+) {
+  auto ctx = callback->getRequestContext();
+  folly::via(
+    this->executor,
+    [this, ctx,
+     callback = std::move(callback),
+id,
+data = std::move(data)    ]() mutable {
+        auto [promise, future] = folly::makePromiseContract<folly::Unit>();
+        call_cy_MyService_putDataById(
+            this->if_object,
+            ctx,
+            std::move(promise),
+            id,
+            std::move(data)        );
+        std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
+          (void)t;
+          callback->complete(std::move(t));
+        });
+    });
+}
 void MyServiceWrapper::async_tm_hasDataById(
   std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
     , int64_t id
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -80,7 +127,7 @@ void MyServiceWrapper::async_tm_getDataById(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
     , int64_t id
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -98,25 +145,22 @@ id    ]() mutable {
         });
     });
 }
-void MyServiceWrapper::async_tm_putDataById(
+void MyServiceWrapper::async_tm_deleteDataById(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , int64_t id
-    , std::unique_ptr<std::string> data
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
      callback = std::move(callback),
-id,
-data = std::move(data)    ]() mutable {
+id    ]() mutable {
         auto [promise, future] = folly::makePromiseContract<folly::Unit>();
-        call_cy_MyService_putDataById(
+        call_cy_MyService_deleteDataById(
             this->if_object,
             ctx,
             std::move(promise),
-            id,
-            std::move(data)        );
+            id        );
         std::move(future).via(this->executor).thenTry([callback = std::move(callback)](folly::Try<folly::Unit>&& t) {
           (void)t;
           callback->complete(std::move(t));
@@ -128,7 +172,7 @@ void MyServiceWrapper::async_tm_lobDataById(
     , int64_t id
     , std::unique_ptr<std::string> data
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -164,7 +208,7 @@ void DbMixedStackArgumentsWrapper::async_tm_getDataByKey0(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
     , std::unique_ptr<std::string> key
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -186,7 +230,7 @@ void DbMixedStackArgumentsWrapper::async_tm_getDataByKey1(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
     , std::unique_ptr<std::string> key
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,

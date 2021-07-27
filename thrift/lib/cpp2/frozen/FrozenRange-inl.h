@@ -162,8 +162,8 @@ struct ArrayLayout : public LayoutBase {
     typedef typename Layout<Item>::View ItemView;
     class Iterator;
 
-    static ViewPosition
-    indexPosition(const byte* start, size_t i, const LayoutBase& itemLayout) {
+    static ViewPosition indexPosition(
+        const byte* start, size_t i, const LayoutBase& itemLayout) {
       if (itemLayout.size) {
         return ViewPosition{start + itemLayout.size * i, 0};
       } else {
@@ -206,24 +206,14 @@ struct ArrayLayout : public LayoutBase {
       return (*this)[size() - 1];
     }
 
-    const_iterator begin() const {
-      return const_iterator(*this, 0);
-    }
+    const_iterator begin() const { return const_iterator(*this, 0); }
 
-    const_iterator end() const {
-      return const_iterator(*this);
-    }
+    const_iterator end() const { return const_iterator(*this); }
 
-    size_t count() const {
-      return count_;
-    }
+    size_t count() const { return count_; }
 
-    bool empty() const {
-      return !count_;
-    }
-    size_t size() const {
-      return count_;
-    }
+    bool empty() const { return !count_; }
+    size_t size() const { return count_; }
 
     folly::Range<const Item*> range() const {
       static_assert(
@@ -240,9 +230,9 @@ struct ArrayLayout : public LayoutBase {
     class Iterator {
      public:
       using difference_type = ptrdiff_t;
-      using value_type = const ItemView;
-      using pointer = value_type*;
-      using reference = value_type&;
+      using value_type = ItemView;
+      using pointer = const value_type*;
+      using reference = const value_type&;
       using iterator_category = std::random_access_iterator_tag;
 
       Iterator() {}
@@ -254,12 +244,8 @@ struct ArrayLayout : public LayoutBase {
       explicit Iterator(const View& outer)
           : outer_(outer), index_(outer.count_) {}
 
-      const ItemView& operator*() const {
-        return item_;
-      }
-      const ItemView* operator->() const {
-        return &item_;
-      }
+      const ItemView& operator*() const { return item_; }
+      const ItemView* operator->() const { return &item_; }
 
       Item thaw() const {
         Item item;
@@ -316,9 +302,7 @@ struct ArrayLayout : public LayoutBase {
         return index_ == other.index_;
       }
 
-      bool operator!=(const Iterator& other) const {
-        return !(*this == other);
-      }
+      bool operator!=(const Iterator& other) const { return !(*this == other); }
 
       bool operator<(const Iterator& other) const {
         return index_ < other.index_;
@@ -357,9 +341,7 @@ struct ArrayLayout : public LayoutBase {
     size_t count_{0};
   };
 
-  View view(ViewPosition self) const {
-    return View(this, self);
-  }
+  View view(ViewPosition self) const { return View(this, self); }
 };
 
 } // namespace detail

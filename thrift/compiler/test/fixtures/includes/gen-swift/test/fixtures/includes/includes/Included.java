@@ -23,14 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Included", builder=Included.Builder.class)
-public final class Included {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="Included", builder=Included.Builder.class)
+public final class Included implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Included(
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
-        @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE) final test.fixtures.includes.transitive.Foo myTransitiveField
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE) final long myIntField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE) final test.fixtures.includes.transitive.Foo myTransitiveField
     ) {
         this.myIntField = myIntField;
         this.myTransitiveField = myTransitiveField;
@@ -39,16 +38,15 @@ public final class Included {
     @ThriftConstructor
     protected Included() {
       this.myIntField = 0L;
-      this.myTransitiveField = null;
+      this.myTransitiveField = new test.fixtures.includes.transitive.Foo.Builder().setA(2L).build();
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long myIntField = 0L;
         private test.fixtures.includes.transitive.Foo myTransitiveField = new test.fixtures.includes.transitive.Foo.Builder().setA(2L).build();
     
-        @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
         public Builder setMyIntField(long myIntField) {
             this.myIntField = myIntField;
             return this;
@@ -56,7 +54,7 @@ public final class Included {
     
         public long getMyIntField() { return myIntField; }
     
-            @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
         public Builder setMyTransitiveField(test.fixtures.includes.transitive.Foo myTransitiveField) {
             this.myTransitiveField = myTransitiveField;
             return this;
@@ -76,7 +74,6 @@ public final class Included {
                 this.myIntField,
                 this.myTransitiveField
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -97,24 +94,12 @@ public final class Included {
       FIELD_METADATA.put(2, MY_TRANSITIVE_FIELD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="MyIntField", requiredness=Requiredness.NONE)
     public long getMyIntField() { return myIntField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIntField() {
-        return __isset_bit_vector.get(_MYINTFIELD);
-    }
     
     
-    @ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="MyTransitiveField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.transitive.Foo getMyTransitiveField() { return myTransitiveField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyTransitiveField() {
-        return this.myTransitiveField != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -149,6 +134,10 @@ public final class Included {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Included> asReader() {
+      return Included::read0;
+    }
     
     public static Included read0(TProtocol oprot) throws TException {
       TField __field;
@@ -198,4 +187,11 @@ public final class Included {
       oprot.writeStructEnd();
     }
     
+    private static class _IncludedLazy {
+        private static final Included _DEFAULT = new Included.Builder().build();
+    }
+    
+    public static Included defaultInstance() {
+        return  _IncludedLazy._DEFAULT;
+    }
 }

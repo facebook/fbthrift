@@ -30,9 +30,7 @@ struct ViewHelper {
   using ViewType = ViewT;
   using ObjectType = decltype(std::declval<ViewT>().thaw());
 
-  static ObjectType thaw(ViewType v) {
-    return v.thaw();
-  }
+  static ObjectType thaw(ViewType v) { return v.thaw(); }
 };
 
 template <typename ViewT>
@@ -43,9 +41,7 @@ struct ViewHelper<
   using ViewType = ViewT;
   using ObjectType = ViewT;
 
-  static ObjectType thaw(ViewType v) {
-    return v;
-  }
+  static ObjectType thaw(ViewType v) { return v; }
 };
 
 template <>
@@ -53,9 +49,7 @@ struct ViewHelper<folly::Range<const char*>> {
   using ViewType = folly::Range<const char*>;
   using ObjectType = std::string;
 
-  static ObjectType thaw(ViewType v) {
-    return std::string(v.begin(), v.end());
-  }
+  static ObjectType thaw(ViewType v) { return std::string(v.begin(), v.end()); }
 };
 } // namespace frozen
 } // namespace thrift

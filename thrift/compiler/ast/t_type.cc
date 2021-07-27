@@ -15,22 +15,49 @@
  */
 
 #include <thrift/compiler/ast/t_type.h>
-#include <thrift/compiler/ast/t_typedef.h>
 
+#include <array>
 #include <sstream>
+#include <stdexcept>
 #include <string>
 
 #include <openssl/sha.h>
 
 #include <thrift/compiler/ast/endianness.h>
 #include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_typedef.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-constexpr size_t t_types::kTypeBits;
-constexpr uint64_t t_types::kTypeMask;
+constexpr size_t t_type::kTypeBits;
+constexpr uint64_t t_type::kTypeMask;
+
+const std::string& t_type::type_name(type t) {
+  static const auto& kTypeNames =
+      *new std::array<std::string, t_type::kTypeCount>(
+          {{"void",
+            "string",
+            "bool",
+            "byte",
+            "i16",
+            "i32",
+            "i64",
+            "double",
+            "enum",
+            "list",
+            "set",
+            "map",
+            "struct",
+            "service",
+            "program",
+            "float",
+            "sink",
+            "stream",
+            "binary"}});
+  return kTypeNames.at(static_cast<size_t>(t));
+}
 
 uint64_t t_type::get_type_id() const {
   // This union allows the conversion of the SHA char buffer to a 64bit uint
@@ -43,27 +70,37 @@ uint64_t t_type::get_type_id() const {
   SHA1(reinterpret_cast<const unsigned char*>(name.data()), name.size(), u.buf);
   const auto hash =
       apache::thrift::compiler::bswap_host_to_little_endian(u.val);
-  TypeValue tv = get_type_value();
+  type tv = get_type_value();
 
-  return (hash & ~t_types::kTypeMask) | int(tv);
+  return (hash & ~t_type::kTypeMask) | int(tv);
 }
 
-std::string t_type::make_full_name(const char* prefix) const {
+std::string t_type::get_scoped_name() const {
   std::ostringstream os;
-  os << prefix << " ";
   if (program_) {
-    os << program_->get_name() << ".";
+    os << program_->name() << ".";
   }
   os << name_;
   return os.str();
 }
 
+std::string t_type::make_full_name(const char* prefix) const {
+  return std::string(prefix) + " " + get_scoped_name();
+}
+
 const t_type* t_type::get_true_type() const {
-  const t_type* type = this;
-  while (type->is_typedef()) {
-    type = static_cast<const t_typedef*>(type)->get_type();
+  return t_typedef::find_type_if(
+      this, [](const t_type* type) { return !type->is_typedef(); });
+}
+
+const t_type& t_type_ref::deref() const {
+  if (type_ == nullptr) {
+    throw std::runtime_error("t_type_ref has no type.");
   }
-  return type;
+  if (auto ph = dynamic_cast<const t_placeholder_typedef*>(type_)) {
+    return ph->type().deref();
+  }
+  return *type_;
 }
 
 } // namespace compiler

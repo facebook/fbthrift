@@ -17,6 +17,6 @@
 include "b.thrift"
 
 struct A {
-    1: list<b.B> b,
-    2: b.B other,
+  1: list<b.B> b;
+  2: b.B other;
 }

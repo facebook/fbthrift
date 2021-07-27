@@ -15,6 +15,48 @@ enum MyEnum: int {
   ONE = 1;
 }
 
+class MyEnum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.MyEnum",
+        "elements" => dict[
+          0 => "UNKNOWN",
+          1 => "ONE",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[
+        'structured_annotation_inline' => structured_annotation_inline::fromShape(
+          shape(
+            "count" => 4,
+          )
+        ),
+      ],
+      'constants' => dict[
+        'UNKNOWN' => dict[
+          'structured_annotation_with_default' => structured_annotation_with_default::fromShape(
+            shape(
+              "name" => "unknown",
+            )
+          ),
+        ],
+        'ONE' => dict[
+          'structured_annotation_with_default' => structured_annotation_with_default::fromShape(
+            shape(
+              "name" => "one",
+            )
+          ),
+        ],
+      ],
+    );
+  }
+}
+
 /**
  * Original thrift struct:-
  * structured_annotation_inline
@@ -38,8 +80,8 @@ class structured_annotation_inline implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'count' => int,
-    ?'name' => string,
+    ?'count' => ?int,
+    ?'name' => ?string,
   );
 
   const int STRUCTURAL_ID = 4972386806027895704;
@@ -54,48 +96,65 @@ class structured_annotation_inline implements \IThriftStruct {
    */
   public string $name;
 
-  <<__Rx>>
-  public function __construct(?int $count = null, ?string $name = null  ) {
+  public function __construct(?int $count = null, ?string $name = null  )[] {
     $this->count = $count ?? 0;
     $this->name = $name ?? "abacaba";
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'count'),
       Shapes::idx($shape, 'name'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'structured_annotation_inline';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'count' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.structured_annotation_inline",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "count",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -118,7 +177,7 @@ class structured_annotation_with_default implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'name' => string,
+    ?'name' => ?string,
   );
 
   const int STRUCTURAL_ID = 2593878277785201336;
@@ -128,42 +187,52 @@ class structured_annotation_with_default implements \IThriftStruct {
    */
   public string $name;
 
-  <<__Rx>>
-  public function __construct(?string $name = null  ) {
+  public function __construct(?string $name = null  )[] {
     $this->name = $name ?? "abacabadabacaba";
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'structured_annotation_with_default';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.structured_annotation_with_default",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -198,7 +267,7 @@ class structured_annotation_recursive implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'name' => string,
+    ?'name' => ?string,
     ?'recurse' => ?structured_annotation_recursive,
     ?'forward' => ?structured_annotation_forward,
   );
@@ -220,20 +289,17 @@ class structured_annotation_recursive implements \IThriftStruct {
    */
   public ?structured_annotation_forward $forward;
 
-  <<__Rx>>
-  public function __construct(?string $name = null, ?structured_annotation_recursive $recurse = null, ?structured_annotation_forward $forward = null  ) {
+  public function __construct(?string $name = null, ?structured_annotation_recursive $recurse = null, ?structured_annotation_forward $forward = null  )[] {
     $this->name = $name ?? '';
     $this->recurse = $recurse;
     $this->forward = $forward;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
       Shapes::idx($shape, 'recurse'),
@@ -241,33 +307,86 @@ class structured_annotation_recursive implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'structured_annotation_recursive';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'recurse' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'forward' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.structured_annotation_recursive",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.structured_annotation_recursive",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.structured_annotation_recursive",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "recurse",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.structured_annotation_forward",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.structured_annotation_forward",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "forward",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -290,7 +409,7 @@ class structured_annotation_forward implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'count' => int,
+    ?'count' => ?int,
   );
 
   const int STRUCTURAL_ID = 6887469671700782815;
@@ -300,42 +419,52 @@ class structured_annotation_forward implements \IThriftStruct {
    */
   public int $count;
 
-  <<__Rx>>
-  public function __construct(?int $count = null  ) {
+  public function __construct(?int $count = null  )[] {
     $this->count = $count ?? 0;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'count'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'structured_annotation_forward';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'count' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.structured_annotation_forward",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "count",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -364,7 +493,7 @@ class structured_annotation_nested implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'name' => string,
+    ?'name' => ?string,
     ?'nest' => ?structured_annotation_with_default,
   );
 
@@ -380,48 +509,69 @@ class structured_annotation_nested implements \IThriftStruct {
    */
   public ?structured_annotation_with_default $nest;
 
-  <<__Rx>>
-  public function __construct(?string $name = null, ?structured_annotation_with_default $nest = null  ) {
+  public function __construct(?string $name = null, ?structured_annotation_with_default $nest = null  )[] {
     $this->name = $name ?? '';
     $this->nest = $nest;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'name'),
       Shapes::idx($shape, 'nest'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'structured_annotation_nested';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'name' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'nest' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.structured_annotation_nested",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "name",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.structured_annotation_with_default",
+                    )
+                  ),
+                )
+              ),
+              "name" => "nest",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -459,10 +609,10 @@ class MyStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'annotated_field' => int,
-    ?'annotated_type' => string,
-    ?'annotated_recursive' => string,
-    ?'annotated_nested' => int,
+    ?'annotated_field' => ?int,
+    ?'annotated_type' => ?string,
+    ?'annotated_recursive' => ?string,
+    ?'annotated_nested' => ?int,
   );
 
   const int STRUCTURAL_ID = 3348150936040517721;
@@ -487,21 +637,18 @@ class MyStruct implements \IThriftStruct {
    */
   public int $annotated_nested;
 
-  <<__Rx>>
-  public function __construct(?int $annotated_field = null, ?string $annotated_type = null, ?string $annotated_recursive = null, ?int $annotated_nested = null  ) {
+  public function __construct(?int $annotated_field = null, ?string $annotated_type = null, ?string $annotated_recursive = null, ?int $annotated_nested = null  )[] {
     $this->annotated_field = $annotated_field ?? 0;
     $this->annotated_type = $annotated_type ?? '';
     $this->annotated_recursive = $annotated_recursive ?? '';
     $this->annotated_nested = $annotated_nested ?? 0;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'annotated_field'),
       Shapes::idx($shape, 'annotated_type'),
@@ -510,11 +657,75 @@ class MyStruct implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyStruct';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyStruct",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "annotated_field",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.annotated_inline_string",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "annotated_type",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "annotated_recursive",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "annotated_nested",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         'structured_annotation_inline' => structured_annotation_inline::fromShape(
@@ -534,6 +745,16 @@ class MyStruct implements \IThriftStruct {
                 "name" => "dcdbdcdadcdbdcd",
               )
             ),
+          )
+        ),
+        'structured_annotation_included' => structured_annotation_included::fromShape(
+          shape(
+            "name" => "aba",
+          )
+        ),
+        '\test\namespace\structured_annotation_with_namespace' => \test\namespace\structured_annotation_with_namespace::fromShape(
+          shape(
+            "name" => "bac",
           )
         ),
       ],
@@ -598,11 +819,6 @@ class MyStruct implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
 }
 
 /**
@@ -623,7 +839,7 @@ class MyException extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'context' => string,
+    ?'context' => ?string,
   );
 
   const int STRUCTURAL_ID = 4527164319056566576;
@@ -633,29 +849,47 @@ class MyException extends \TException implements \IThriftStruct {
    */
   public string $context;
 
-  <<__Rx>>
-  public function __construct(?string $context = null  ) {
+  public function __construct(?string $context = null  )[] {
     parent::__construct();
     $this->context = $context ?? '';
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'context'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyException';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.MyException",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "context",
+            )
+          ),
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         'structured_annotation_nested' => structured_annotation_nested::fromShape(
@@ -676,11 +910,6 @@ class MyException extends \TException implements \IThriftStruct {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }
@@ -733,8 +962,7 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
   public ?int $second;
   protected MyUnionEnum $_type = MyUnionEnum::_EMPTY_;
 
-  <<__Rx>>
-  public function __construct(?string $first = null, ?int $second = null  ) {
+  public function __construct(?string $first = null, ?int $second = null  )[] {
     $this->_type = MyUnionEnum::_EMPTY_;
     if ($first !== null) {
       $this->first = $first;
@@ -746,28 +974,26 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     }
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'first'),
       Shapes::idx($shape, 'second'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'MyUnion';
   }
 
-  public function getType(): MyUnionEnum {
+  public function getType()[]: MyUnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case MyUnionEnum::first:
         $this->first = null;
@@ -781,14 +1007,22 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     $this->_type = MyUnionEnum::_EMPTY_;
 }
 
-  public function set_first(string $first): this {
+  public function set_first(string $first)[write_props]: this {
+    return $this->setx_first($first);
+   }
+
+  public function setx_first(string $first)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::first;
     $this->first = $first;
     return $this;
   }
 
-  public function get_first(): string {
+  public function get_first()[]: string {
+    return $this->getx_first();
+  }
+
+  public function getx_first()[]: string {
     invariant(
       $this->_type === MyUnionEnum::first,
       'get_first called on an instance of MyUnion whose current type is %s',
@@ -797,14 +1031,22 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     return $this->first as nonnull;
   }
 
-  public function set_second(int $second): this {
+  public function set_second(int $second)[write_props]: this {
+    return $this->setx_second($second);
+   }
+
+  public function setx_second(int $second)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::second;
     $this->second = $second;
     return $this;
   }
 
-  public function get_second(): int {
+  public function get_second()[]: int {
+    return $this->getx_second();
+  }
+
+  public function getx_second()[]: int {
     invariant(
       $this->_type === MyUnionEnum::second,
       'get_second called on an instance of MyUnion whose current type is %s',
@@ -813,7 +1055,58 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
     return $this->second as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyUnion",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.annotated_inline_string",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "first",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.annotated_inline_i64",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "second",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[
         'structured_annotation_nested' => structured_annotation_nested::fromShape(
@@ -865,11 +1158,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
         ),
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }

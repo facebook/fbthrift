@@ -69,7 +69,6 @@ class RocketTestClient {
 
   folly::Try<ClientBufferedStream<Payload>> sendRequestStreamSync(
       Payload request);
-  void sendRequestChannel(ChannelClientCallback* callback, Payload request);
   void sendRequestSink(SinkClientCallback* callback, Payload request);
 
   rocket::SetupFrame makeTestSetupFrame(
@@ -81,17 +80,11 @@ class RocketTestClient {
   void connect();
   void disconnect();
 
-  RocketClient& getRawClient() {
-    return *client_;
-  }
+  RocketClient& getRawClient() { return *client_; }
 
-  folly::EventBase& getEventBase() {
-    return evb_;
-  }
+  folly::EventBase& getEventBase() { return evb_; }
 
-  void wait() {
-    b_.wait();
-  }
+  void verifyVersion();
 
  private:
   folly::ScopedEventBaseThread evbThread_;
@@ -99,7 +92,6 @@ class RocketTestClient {
   folly::fibers::FiberManager& fm_;
   std::unique_ptr<RocketClient, folly::DelayedDestruction::Destructor> client_;
   const folly::SocketAddress serverAddr_;
-  folly::fibers::Baton b_;
 };
 
 class RocketTestServer {

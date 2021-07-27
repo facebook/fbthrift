@@ -14,7 +14,7 @@
 
 from typing import Any, Type
 
-from thrift.py3.reflection import MapSpec, StructType, inspect
+from thrift.py3.reflection import MapSpec, StructType, inspect, Qualifier
 from thrift.py3.types import CompiledEnum, Container, Struct
 
 
@@ -26,6 +26,16 @@ def extract_name(field_spec):
     return field_spec.annotations.get("py3.name") or field_spec.name
 
 
+def ignore_field(obj, field_spec):
+    dft = field_spec.default
+    if not (field_spec.qualifier == Qualifier.OPTIONAL and dft is not None):
+        return False
+
+    typ = field_spec.type
+    val = getattr(obj, field_spec.name)
+    casted = val if not issubclass(typ, CompiledEnum) else typ(val)
+    return casted == dft
+
 cdef object _to_py3_struct(object cls, object obj):
     struct_spec = inspect(cls)
     if struct_spec.kind == StructType.STRUCT:
@@ -35,6 +45,7 @@ cdef object _to_py3_struct(object cls, object obj):
                     field_spec.type, getattr(obj, field_spec.name)
                 )
                 for field_spec in struct_spec.fields
+                if not ignore_field(obj, field_spec)
             }
         )
     elif struct_spec.kind == StructType.UNION:

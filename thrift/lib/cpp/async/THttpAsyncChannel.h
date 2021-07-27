@@ -52,8 +52,7 @@ class THttpACWriteRequest
 
   void writeSuccess() noexcept;
   void writeError(
-      size_t bytesWritten,
-      const transport::TTransportException& ex) noexcept;
+      size_t bytesWritten, const transport::TTransportException& ex) noexcept;
 
  private:
   THttpAsyncChannel* channel_;
@@ -74,17 +73,11 @@ class THttpACReadState {
     parser_->setDataBuffer(buffer);
   }
 
-  void unsetCallbackBuffer() {
-    parser_->unsetDataBuffer();
-  }
+  void unsetCallbackBuffer() { parser_->unsetDataBuffer(); }
 
-  bool hasReadAheadData() {
-    return parser_->hasReadAheadData();
-  }
+  bool hasReadAheadData() { return parser_->hasReadAheadData(); }
 
-  bool hasPartialMessage() {
-    return parser_->hasPartialMessage();
-  }
+  bool hasPartialMessage() { return parser_->hasPartialMessage(); }
 
   void getReadBuffer(void** bufReturn, size_t* lenReturn);
   bool readDataAvailable(size_t len);
@@ -137,13 +130,9 @@ class THttpAsyncChannel
   }
 
   /// size in bytes beyond which we'll reject a given http size.
-  void setMaxHttpSize(uint32_t size) {
-    parser_->setMaxSize(size);
-  }
+  void setMaxHttpSize(uint32_t size) { parser_->setMaxSize(size); }
 
-  uint32_t getMaxHttpSize() const {
-    return parser_->getMaxSize();
-  }
+  uint32_t getMaxHttpSize() const { return parser_->getMaxSize(); }
 
   void setParser(std::shared_ptr<apache::thrift::util::THttpParser> parser) {
     parser_ = parser;
@@ -173,17 +162,11 @@ class THttpAsyncChannelFactory : public TStreamAsyncChannelFactory {
   THttpAsyncChannelFactory()
       : maxHttpSize_(0x7fffffff), recvTimeout_(0), sendTimeout_(0) {}
 
-  void setMaxHttpSize(uint32_t bytes) {
-    maxHttpSize_ = bytes;
-  }
+  void setMaxHttpSize(uint32_t bytes) { maxHttpSize_ = bytes; }
 
-  void setRecvTimeout(uint32_t milliseconds) {
-    recvTimeout_ = milliseconds;
-  }
+  void setRecvTimeout(uint32_t milliseconds) { recvTimeout_ = milliseconds; }
 
-  void setSendTimeout(uint32_t milliseconds) {
-    sendTimeout_ = milliseconds;
-  }
+  void setSendTimeout(uint32_t milliseconds) { sendTimeout_ = milliseconds; }
 
   std::shared_ptr<TAsyncEventChannel> newChannel(
       const std::shared_ptr<folly::AsyncTransport>& transport) override {

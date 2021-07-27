@@ -12,8 +12,6 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 import ipaddress
 import os
 from enum import Enum
@@ -36,7 +34,7 @@ from thrift.py3.ssl import SSLContext
 
 IPAddress = Union[ipaddress.IPv4Address, ipaddress.IPv6Address]
 Path = Union[str, bytes, os.PathLike[str], os.PathLike[bytes]]
-cT = TypeVar("cT", bound="Client")
+TClient = TypeVar("TClient", bound="Client")
 
 class ClientType(Enum):
     THRIFT_HEADER_CLIENT_TYPE: ClientType = ...
@@ -52,17 +50,17 @@ class ClientType(Enum):
 
 class Client:
     def set_persistent_header(self, key: str, value: str) -> None: ...
-    async def __aenter__(self: cT) -> cT: ...
+    async def __aenter__(self: TClient) -> TClient: ...
     async def __aexit__(
-        self: cT,
+        self,
         exc_type: Optional[Type[BaseException]],
-        exc_value: Optional[Exception],
+        exc_value: Optional[BaseException],
         traceback: Optional[TracebackType],
     ) -> Optional[bool]: ...
     annotations: ClassVar[Mapping[str, str]] = ...
 
 def get_client(
-    clientKlass: Type[cT],
+    clientKlass: Type[TClient],
     *,
     host: Union[IPAddress, str] = ...,
     port: int = ...,
@@ -73,10 +71,13 @@ def get_client(
     protocol: Protocol = ...,
     ssl_context: Optional[SSLContext] = ...,
     ssl_timeout: float = ...,
-) -> cT: ...
+) -> TClient: ...
 def install_proxy_factory(
-    factory: Optional[Callable[[Type[Client]], Callable[[cT], Any]]],
+    # pyre-ignore[2] : it may return anything
+    factory: Optional[Callable[[Type[TClient]], Callable[[TClient], Any]]],
 ) -> None: ...
+
+# pyre-ignore[3] : it may return anything
 def get_proxy_factory() -> Optional[
     Callable[[Type[Client]], Callable[[Client], Any]]
 ]: ...

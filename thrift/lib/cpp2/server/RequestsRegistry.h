@@ -16,19 +16,43 @@
 
 #pragma once
 
+#include <array>
+#include <chrono>
 #include <fmt/core.h>
 #include <folly/IntrusiveList.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
-#include <chrono>
+#include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
+#include <thrift/lib/cpp2/transport/rocket/Types.h>
 
 namespace apache {
 namespace thrift {
 
 class Cpp2RequestContext;
 class ResponseChannelRequest;
+
+// Helper class to track recently received request counts
+class RecentRequestCounter {
+ public:
+  static inline constexpr uint64_t kBuckets = 512ul;
+  using ArrivalCount = int32_t;
+  using ActiveCount = int32_t;
+  using Values = std::array<std::pair<ArrivalCount, ActiveCount>, kBuckets>;
+
+  void increment();
+  void decrement();
+  Values get() const;
+
+ private:
+  uint64_t getCurrentBucket() const;
+
+  mutable uint64_t currentBucket_{};
+  mutable uint64_t lastTick_{};
+  mutable Values counts_{};
+  mutable uint64_t currActiveCount_{};
+};
 
 /**
  * Stores a list of request stubs in memory.
@@ -42,43 +66,6 @@ class ResponseChannelRequest;
  * corresponding registry belongs to, as a task.
  */
 class RequestsRegistry {
-  /**
-   * A wrapper class for request payload we are tracking, to encapsulate the
-   * details of processing and storing the real request buffer.
-   */
-  class DebugPayload {
-   public:
-    DebugPayload(std::unique_ptr<folly::IOBuf> data) : data_(std::move(data)) {}
-    DebugPayload(const DebugPayload&) = delete;
-    DebugPayload& operator=(const DebugPayload&) = delete;
-    bool hasData() const {
-      return data_ != nullptr;
-    }
-    std::unique_ptr<folly::IOBuf> cloneData() const {
-      if (!data_) {
-        return std::make_unique<folly::IOBuf>();
-      }
-      return data_->clone();
-    }
-    size_t dataSize() const {
-      if (!data_) {
-        return 0;
-      }
-      return data_->computeChainDataLength();
-    }
-    /**
-     * User must call hasData() to ensure the underlying buffer is present
-     * before releasing the buffer.
-     */
-    void releaseData() {
-      DCHECK(data_);
-      folly::IOBuf::destroy(std::move(data_));
-    }
-
-   private:
-    std::unique_ptr<folly::IOBuf> data_;
-  };
-
  public:
   /**
    * A small piece of information associated with those thrift requests that
@@ -96,23 +83,25 @@ class RequestsRegistry {
    */
   class DebugStub {
     friend class RequestsRegistry;
+    friend class Cpp2Worker;
 
    public:
     DebugStub(
         RequestsRegistry& reqRegistry,
-        const ResponseChannelRequest& req,
+        ResponseChannelRequest& req,
         const Cpp2RequestContext& reqContext,
         std::shared_ptr<folly::RequestContext> rctx,
         protocol::PROTOCOL_TYPES protoId,
-        std::unique_ptr<folly::IOBuf> payload)
+        rocket::Payload&& debugPayload,
+        RequestStateMachine& stateMachine)
         : req_(&req),
           reqContext_(&reqContext),
           rctx_(std::move(rctx)),
           protoId_(protoId),
-          payload_(std::move(payload)),
-          timestamp_(std::chrono::steady_clock::now()),
+          payload_(std::move(debugPayload)),
           registry_(&reqRegistry),
-          rootRequestContextId_(rctx_->getRootId()) {
+          rootRequestContextId_(rctx_->getRootId()),
+          stateMachine_(stateMachine) {
       reqRegistry.registerStub(*this);
     }
 
@@ -127,31 +116,28 @@ class RequestsRegistry {
       }
     }
 
-    const ResponseChannelRequest& getRequest() const {
-      return *req_;
-    }
+    const ResponseChannelRequest* getRequest() const { return req_; }
 
-    const Cpp2RequestContext& getCpp2RequestContext() const {
-      return *reqContext_;
+    const Cpp2RequestContext* getCpp2RequestContext() const {
+      return reqContext_;
     }
 
     std::chrono::steady_clock::time_point getTimestamp() const {
-      return timestamp_;
+      return stateMachine_.started();
     }
 
     std::chrono::steady_clock::time_point getFinished() const {
       return finished_;
     }
 
-    intptr_t getRootRequestContextId() const {
-      return rootRequestContextId_;
-    }
+    intptr_t getRootRequestContextId() const { return rootRequestContextId_; }
 
     std::shared_ptr<folly::RequestContext> getRequestContext() const {
       return rctx_;
     }
 
     const std::string& getMethodName() const;
+    const folly::SocketAddress* getLocalAddress() const;
     const folly::SocketAddress* getPeerAddress() const;
 
     /**
@@ -161,21 +147,17 @@ class RequestsRegistry {
      * this should be called from the IO worker which also owns the same
      * RequestsRegistry.
      */
-    std::unique_ptr<folly::IOBuf> clonePayload() const {
-      return payload_.cloneData();
-    }
+    rocket::Payload clonePayload() const { return payload_.clone(); }
 
-    protocol::PROTOCOL_TYPES getProtoId() const {
-      return protoId_;
+    protocol::PROTOCOL_TYPES getProtoId() const { return protoId_; }
+
+    bool getStartedProcessing() const {
+      return stateMachine_.getStartedProcessing();
     }
 
    private:
-    uint64_t getPayloadSize() const {
-      return payload_.dataSize();
-    }
-    void releasePayload() {
-      payload_.releaseData();
-    }
+    uint64_t getPayloadSize() const { return payload_.dataSize(); }
+    void releasePayload() { payload_ = rocket::Payload(); }
 
     void prepareAsFinished();
 
@@ -184,12 +166,12 @@ class RequestsRegistry {
 
     std::string methodNameIfFinished_;
     folly::SocketAddress peerAddressIfFinished_;
-    const ResponseChannelRequest* req_;
+    folly::SocketAddress localAddressIfFinished_;
+    ResponseChannelRequest* req_;
     const Cpp2RequestContext* reqContext_;
     std::shared_ptr<folly::RequestContext> rctx_;
     const protocol::PROTOCOL_TYPES protoId_;
-    DebugPayload payload_;
-    std::chrono::steady_clock::time_point timestamp_;
+    rocket::Payload payload_;
     std::chrono::steady_clock::time_point finished_{
         std::chrono::steady_clock::duration::zero()};
     RequestsRegistry* registry_;
@@ -197,6 +179,7 @@ class RequestsRegistry {
     folly::IntrusiveListHook activeRequestsPayloadHook_;
     folly::IntrusiveListHook activeRequestsRegistryHook_;
     size_t refCount_{1};
+    RequestStateMachine& stateMachine_;
   };
 
   class Deleter {
@@ -239,6 +222,7 @@ class RequestsRegistry {
   }
 
   intptr_t genRootId();
+  static bool isThriftRootId(intptr_t) noexcept;
   static std::string getRequestId(intptr_t rootid);
 
   using ActiveRequestDebugStubList =
@@ -252,24 +236,14 @@ class RequestsRegistry {
       uint16_t finishedRequestsLimit);
   ~RequestsRegistry();
 
-  const ActiveRequestDebugStubList& getActive() {
-    return reqActiveList_;
-  }
+  const ActiveRequestDebugStubList& getActive() { return reqActiveList_; }
 
-  const ActiveRequestDebugStubList& getFinished() {
-    return reqFinishedList_;
-  }
+  const ActiveRequestDebugStubList& getFinished() { return reqFinishedList_; }
 
-  void registerStub(DebugStub& req) {
-    uint64_t payloadSize = req.getPayloadSize();
-    reqActiveList_.push_back(req);
-    if (payloadSize > payloadMemoryLimitPerRequest_) {
-      req.releasePayload();
-      return;
-    }
-    reqPayloadList_.push_back(req);
-    payloadMemoryUsage_ += payloadSize;
-    evictStubPayloads();
+  void registerStub(DebugStub& req);
+
+  const RecentRequestCounter& getRequestCounter() const {
+    return requestCounter_;
   }
 
  private:
@@ -284,9 +258,7 @@ class RequestsRegistry {
       stub.releasePayload();
     }
   }
-  DebugStub& nextStubToEvict() {
-    return reqPayloadList_.front();
-  }
+  DebugStub& nextStubToEvict() { return reqPayloadList_.front(); }
   void onStubPayloadUnlinked(const DebugStub& stub) {
     uint64_t payloadSize = stub.getPayloadSize();
     DCHECK(payloadMemoryUsage_ >= payloadSize);
@@ -302,6 +274,7 @@ class RequestsRegistry {
   ActiveRequestDebugStubList reqFinishedList_;
   uint16_t finishedRequestsCount_{0};
   uint16_t finishedRequestsLimit_;
+  RecentRequestCounter requestCounter_;
 };
 
 } // namespace thrift

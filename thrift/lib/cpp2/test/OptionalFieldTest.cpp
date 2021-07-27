@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include <thrift/lib/cpp2/OptionalField.h>
 #include <folly/Portability.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/FieldRefHash.h>
@@ -149,25 +148,21 @@ TEST(RequiredFieldRefTest, HeterogeneousComparisons) {
 struct Tag {};
 
 namespace std {
-// @lint-ignore HOWTOEVEN CLANGTIDY
+// @lint-ignore CLANGTIDY
 template <>
 struct hash<Tag> {
   explicit hash(size_t i) : i(i) {}
-  size_t operator()(Tag) const {
-    return i;
-  }
+  size_t operator()(Tag) const { return i; }
   size_t i;
 };
 } // namespace std
 
 namespace folly {
-// @lint-ignore HOWTOEVEN CLANGTIDY
+// @lint-ignore CLANGTIDY
 template <>
 struct hasher<Tag> {
   explicit hasher(size_t i) : i(i) {}
-  size_t operator()(Tag) const {
-    return i;
-  }
+  size_t operator()(Tag) const { return i; }
   size_t i;
 };
 } // namespace folly

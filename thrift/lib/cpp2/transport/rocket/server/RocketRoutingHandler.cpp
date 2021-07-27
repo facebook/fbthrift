@@ -37,29 +37,35 @@
 namespace apache {
 namespace thrift {
 namespace {
-THRIFT_PLUGGABLE_FUNC_REGISTER(
-    std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>,
-    createRocketDebugSetupFrameHandler,
-    apache::thrift::ThriftServer&) {
-  return {};
-}
-THRIFT_PLUGGABLE_FUNC_REGISTER(
-    std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>,
-    createRocketMonitoringSetupFrameHandler,
-    apache::thrift::ThriftServer&) {
-  return nullptr;
-}
+
+#define REGISTER_SERVER_EXTENSION_DEFAULT(FUNC)                   \
+  THRIFT_PLUGGABLE_FUNC_REGISTER(                                 \
+      std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>, \
+      FUNC,                                                       \
+      apache::thrift::ThriftServer&) {                            \
+    return {};                                                    \
+  }
+
+REGISTER_SERVER_EXTENSION_DEFAULT(createRocketDebugSetupFrameHandler)
+REGISTER_SERVER_EXTENSION_DEFAULT(createRocketMonitoringSetupFrameHandler)
+REGISTER_SERVER_EXTENSION_DEFAULT(createRocketProfilingSetupFrameHandler)
+
+#undef REGISTER_SERVER_EXTENSION_DEFAULT
+
 } // namespace
 
 RocketRoutingHandler::RocketRoutingHandler(ThriftServer& server) {
-  if (auto debugSetupFrameHandler =
-          THRIFT_PLUGGABLE_FUNC(createRocketDebugSetupFrameHandler)(server)) {
-    setupFrameHandlers_.push_back(std::move(debugSetupFrameHandler));
-  }
-  if (auto monitoringSetupFrameHandler = THRIFT_PLUGGABLE_FUNC(
-          createRocketMonitoringSetupFrameHandler)(server)) {
-    setupFrameHandlers_.push_back(std::move(monitoringSetupFrameHandler));
-  }
+  auto addSetupFramehandler = [&](auto&& handlerFactory) {
+    if (auto handler = handlerFactory(server)) {
+      setupFrameHandlers_.push_back(std::move(handler));
+    }
+  };
+  addSetupFramehandler(
+      THRIFT_PLUGGABLE_FUNC(createRocketDebugSetupFrameHandler));
+  addSetupFramehandler(
+      THRIFT_PLUGGABLE_FUNC(createRocketMonitoringSetupFrameHandler));
+  addSetupFramehandler(
+      THRIFT_PLUGGABLE_FUNC(createRocketProfilingSetupFrameHandler));
 }
 
 RocketRoutingHandler::~RocketRoutingHandler() {
@@ -117,23 +123,27 @@ void RocketRoutingHandler::handleConnection(
     return;
   }
 
-  auto* const sockPtr = sock.get();
   auto* const server = worker->getServer();
+
+  rocket::RocketServerConnection::Config cfg;
+  cfg.socketWriteTimeout = server->getSocketWriteTimeout();
+  cfg.streamStarvationTimeout = server->getStreamExpireTime();
+  cfg.writeBatchingInterval = server->getWriteBatchingInterval();
+  cfg.writeBatchingSize = server->getWriteBatchingSize();
+  cfg.egressBufferBackpressureThreshold =
+      server->getEgressBufferBackpressureThreshold();
+  cfg.egressBufferBackpressureRecoveryFactor =
+      server->getEgressBufferRecoveryFactor();
+
+  auto* const sockPtr = sock.get();
   auto* const connection = new rocket::RocketServerConnection(
       std::move(sock),
       std::make_unique<rocket::ThriftRocketServerHandler>(
           worker, *address, sockPtr, setupFrameHandlers_),
-      server->getStreamExpireTime(),
-      server->getWriteBatchingInterval(),
-      server->getWriteBatchingSize());
+      worker->getIngressMemoryTracker(),
+      worker->getEgressMemoryTracker(),
+      cfg);
   onConnection(*connection);
-  // set negotiated compression algorithm on this connection
-  auto compression = static_cast<FizzPeeker*>(worker->getFizzPeeker())
-                         ->getNegotiatedParameters()
-                         .compression;
-  if (compression != CompressionAlgorithm::NONE) {
-    connection->setNegotiatedCompressionAlgorithm(compression);
-  }
   connectionManager->addConnection(connection);
 
   if (auto* observer = server->getObserver()) {

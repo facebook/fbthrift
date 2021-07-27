@@ -16,10 +16,10 @@
 
 #pragma once
 
-#include <boost/algorithm/string/predicate.hpp>
-#include <boost/algorithm/string/replace.hpp>
 #include <sstream>
 #include <string>
+#include <boost/algorithm/string/predicate.hpp>
+#include <boost/algorithm/string/replace.hpp>
 
 namespace apache {
 namespace thrift {

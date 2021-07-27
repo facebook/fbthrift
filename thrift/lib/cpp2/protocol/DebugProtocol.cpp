@@ -19,12 +19,20 @@
 #include <folly/Conv.h>
 #include <folly/String.h>
 
+DEFINE_bool(
+    thrift_cpp2_debug_skip_list_indices,
+    false,
+    "Wether to skip indices when debug-printing lists (unless overridden)");
+DEFINE_int64(
+    thrift_cpp2_debug_string_limit,
+    256,
+    "Limit on string size when debug-printing thrift, 0 is no limit");
+
 namespace apache {
 namespace thrift {
 
 DebugProtocolWriter::DebugProtocolWriter(
-    ExternalBufferSharing /*sharing*/,
-    Options options)
+    ExternalBufferSharing /*sharing*/, Options options)
     : out_(nullptr, 0), options_(options) {}
 
 namespace {
@@ -112,10 +120,10 @@ void DebugProtocolWriter::startItem() {
       writePlain(" -> ");
       break;
     case LIST:
-      if (options_.printListIndices) {
-        writeIndented("[{}] = ", ws.index);
-      } else {
+      if (options_.skipListIndices) {
         writeIndent();
+      } else {
+        writeIndented("[{}] = ", ws.index);
       }
       break;
   }
@@ -143,8 +151,7 @@ void DebugProtocolWriter::endItem() {
 }
 
 void DebugProtocolWriter::setOutput(
-    folly::IOBufQueue* storage,
-    size_t maxGrowth) {
+    folly::IOBufQueue* storage, size_t maxGrowth) {
   // Allocate 16KB at a time; leave some room for the IOBuf overhead
   constexpr size_t kDesiredGrowth = (1 << 14) - 64;
   out_.reset(storage, std::min(kDesiredGrowth, maxGrowth));
@@ -155,21 +162,19 @@ void DebugProtocolWriter::setOutput(folly::io::QueueAppender&& output) {
 }
 
 uint32_t DebugProtocolWriter::writeMessageBegin(
-    const std::string& name,
-    MessageType messageType,
-    int32_t /*seqid*/) {
+    const std::string& name, MessageType messageType, int32_t /*seqid*/) {
   std::string mtype;
   switch (messageType) {
-    case T_CALL:
+    case MessageType::T_CALL:
       mtype = "call";
       break;
-    case T_REPLY:
+    case MessageType::T_REPLY:
       mtype = "reply";
       break;
-    case T_EXCEPTION:
+    case MessageType::T_EXCEPTION:
       mtype = "exn";
       break;
-    case T_ONEWAY:
+    case MessageType::T_ONEWAY:
       mtype = "oneway";
       break;
   }
@@ -200,9 +205,7 @@ uint32_t DebugProtocolWriter::writeStructEnd() {
 }
 
 uint32_t DebugProtocolWriter::writeFieldBegin(
-    const char* name,
-    TType fieldType,
-    int16_t fieldId) {
+    const char* name, TType fieldType, int16_t fieldId) {
   writeIndented("{:0d}: {} ({}) = ", fieldId, name, fieldTypeName(fieldType));
   return 0;
 }
@@ -215,9 +218,7 @@ uint32_t DebugProtocolWriter::writeFieldStop() {
 }
 
 uint32_t DebugProtocolWriter::writeMapBegin(
-    TType keyType,
-    TType valueType,
-    uint32_t size) {
+    TType keyType, TType valueType, uint32_t size) {
   startItem();
   writePlain(
       "map<{},{}>[{}] {{\n",
@@ -330,9 +331,7 @@ uint32_t DebugProtocolWriter::serializedMessageSize(
 }
 
 uint32_t DebugProtocolWriter::serializedFieldSize(
-    const char* /*name*/,
-    TType /*fieldName*/,
-    int16_t /*fieldId*/) {
+    const char* /*name*/, TType /*fieldName*/, int16_t /*fieldId*/) {
   return 0;
 }
 
@@ -341,9 +340,7 @@ uint32_t DebugProtocolWriter::serializedStructSize(const char* /*name*/) {
 }
 
 uint32_t DebugProtocolWriter::serializedSizeMapBegin(
-    TType /*keyType*/,
-    TType /*valType*/,
-    uint32_t /*size*/) {
+    TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) {
   return 0;
 }
 
@@ -352,8 +349,7 @@ uint32_t DebugProtocolWriter::serializedSizeMapEnd() {
 }
 
 uint32_t DebugProtocolWriter::serializedSizeListBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) {
+    TType /*elemType*/, uint32_t /*size*/) {
   return 0;
 }
 
@@ -362,8 +358,7 @@ uint32_t DebugProtocolWriter::serializedSizeListEnd() {
 }
 
 uint32_t DebugProtocolWriter::serializedSizeSetBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) {
+    TType /*elemType*/, uint32_t /*size*/) {
   return 0;
 }
 
@@ -442,17 +437,20 @@ uint32_t DebugProtocolWriter::serializedSizeZCBinary(const folly::IOBuf&) {
 }
 
 void DebugProtocolWriter::writeByteRange(folly::ByteRange v) {
-  static constexpr size_t kStringLimit = 256;
   static constexpr size_t kStringPrefixSize = 128;
+  const size_t limit = options_.stringLengthLimit;
 
   auto str = folly::StringPiece(v);
-  std::string toShow = str.str();
-  if (toShow.length() > kStringLimit) {
-    toShow = str.subpiece(0, kStringPrefixSize).str();
-    folly::toAppend("[...](", str.size(), ")", &toShow);
+
+  folly::StringPiece toShow = limit != 0 && str.size() > limit
+      ? str.subpiece(0, std::min(kStringPrefixSize, limit))
+      : str;
+  std::string printed = folly::cEscape<std::string>(toShow);
+  if (toShow.size() < str.size()) {
+    folly::toAppend("[...](", str.size(), ")", &printed);
   }
 
-  writeItem("\"{}\"", folly::cEscape<std::string>(toShow));
+  writeItem("\"{}\"", printed);
 }
 
 } // namespace thrift

@@ -92,8 +92,11 @@ void fillStruct(TestStruct* dest, CTestStruct* source) {
   *dest->f_string_ref() = std::string(source->f_string);
   *dest->f_set_ref() =
       std::set<int8_t>(source->f_set, source->f_set + source->f_set_len);
-  dest->o_i32_ref() = source->o_i32;
-  dest->__isset.o_i32 = source->o_isset;
+  if (source->o_isset) {
+    dest->o_i32_ref() = source->o_i32;
+  } else {
+    dest->o_i32_ref().reset();
+  }
   *dest->foo_ref() = Foo(*source->foo);
 }
 
@@ -126,7 +129,7 @@ void readStruct(CTestStruct* dest, TestStruct* source) {
     j++;
   }
   dest->o_i32 = *source->o_i32_ref();
-  dest->o_isset = source->__isset.o_i32;
+  dest->o_isset = source->o_i32_ref().has_value();
   dest->foo = &(*source->foo_ref());
 }
 

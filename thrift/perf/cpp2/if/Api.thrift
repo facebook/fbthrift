@@ -19,8 +19,8 @@ include "thrift/perf/cpp2/if/ApiBase.thrift"
 namespace cpp2 facebook.thrift.benchmarks
 
 service Benchmark {
-  void noop() (thread="eb");
-  oneway void onewayNoop() (thread="eb");
-  ApiBase.TwoInts sum(1: ApiBase.TwoInts input) (thread="eb");
+  void noop() (thread = "eb");
+  oneway void onewayNoop() (thread = "eb");
+  ApiBase.TwoInts sum(1: ApiBase.TwoInts input) (thread = "eb");
   void timeout();
 }

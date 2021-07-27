@@ -125,8 +125,7 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   protected ?string $stringRef;
   protected ComplexUnionEnum $_type = ComplexUnionEnum::_EMPTY_;
 
-  <<__Rx>>
-  public function __construct(?int $intValue = null, ?string $stringValue = null, ?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null, ?Map<int, string> $typedefValue = null, ?string $stringRef = null  ) {
+  public function __construct(?int $intValue = null, ?string $stringValue = null, ?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null, ?Map<int, string> $typedefValue = null, ?string $stringRef = null  )[] {
     $this->_type = ComplexUnionEnum::_EMPTY_;
     if ($intValue !== null) {
       $this->intValue = $intValue;
@@ -154,13 +153,11 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     }
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'intValue'),
       Shapes::idx($shape, 'stringValue'),
@@ -171,15 +168,15 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'ComplexUnion';
   }
 
-  public function getType(): ComplexUnionEnum {
+  public function getType()[]: ComplexUnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case ComplexUnionEnum::intValue:
         $this->intValue = null;
@@ -205,14 +202,22 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     $this->_type = ComplexUnionEnum::_EMPTY_;
 }
 
-  public function set_intValue(int $intValue): this {
+  public function set_intValue(int $intValue)[write_props]: this {
+    return $this->setx_intValue($intValue);
+   }
+
+  public function setx_intValue(int $intValue)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::intValue;
     $this->intValue = $intValue;
     return $this;
   }
 
-  public function get_intValue(): int {
+  public function get_intValue()[]: int {
+    return $this->getx_intValue();
+  }
+
+  public function getx_intValue()[]: int {
     invariant(
       $this->_type === ComplexUnionEnum::intValue,
       'get_intValue called on an instance of ComplexUnion whose current type is %s',
@@ -221,14 +226,22 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this->intValue as nonnull;
   }
 
-  public function set_stringValue(string $stringValue): this {
+  public function set_stringValue(string $stringValue)[write_props]: this {
+    return $this->setx_stringValue($stringValue);
+   }
+
+  public function setx_stringValue(string $stringValue)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::stringValue;
     $this->stringValue = $stringValue;
     return $this;
   }
 
-  public function get_stringValue(): string {
+  public function get_stringValue()[]: string {
+    return $this->getx_stringValue();
+  }
+
+  public function getx_stringValue()[]: string {
     invariant(
       $this->_type === ComplexUnionEnum::stringValue,
       'get_stringValue called on an instance of ComplexUnion whose current type is %s',
@@ -237,14 +250,22 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this->stringValue as nonnull;
   }
 
-  public function set_intListValue(Vector<int> $intListValue): this {
+  public function set_intListValue(Vector<int> $intListValue)[write_props]: this {
+    return $this->setx_intListValue($intListValue);
+   }
+
+  public function setx_intListValue(Vector<int> $intListValue)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::intListValue;
     $this->intListValue = $intListValue;
     return $this;
   }
 
-  public function get_intListValue(): Vector<int> {
+  public function get_intListValue()[]: Vector<int> {
+    return $this->getx_intListValue();
+  }
+
+  public function getx_intListValue()[]: Vector<int> {
     invariant(
       $this->_type === ComplexUnionEnum::intListValue,
       'get_intListValue called on an instance of ComplexUnion whose current type is %s',
@@ -253,14 +274,22 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this->intListValue as nonnull;
   }
 
-  public function set_stringListValue(Vector<string> $stringListValue): this {
+  public function set_stringListValue(Vector<string> $stringListValue)[write_props]: this {
+    return $this->setx_stringListValue($stringListValue);
+   }
+
+  public function setx_stringListValue(Vector<string> $stringListValue)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::stringListValue;
     $this->stringListValue = $stringListValue;
     return $this;
   }
 
-  public function get_stringListValue(): Vector<string> {
+  public function get_stringListValue()[]: Vector<string> {
+    return $this->getx_stringListValue();
+  }
+
+  public function getx_stringListValue()[]: Vector<string> {
     invariant(
       $this->_type === ComplexUnionEnum::stringListValue,
       'get_stringListValue called on an instance of ComplexUnion whose current type is %s',
@@ -269,14 +298,22 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this->stringListValue as nonnull;
   }
 
-  public function set_typedefValue(Map<int, string> $typedefValue): this {
+  public function set_typedefValue(Map<int, string> $typedefValue)[write_props]: this {
+    return $this->setx_typedefValue($typedefValue);
+   }
+
+  public function setx_typedefValue(Map<int, string> $typedefValue)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::typedefValue;
     $this->typedefValue = $typedefValue;
     return $this;
   }
 
-  public function get_typedefValue(): Map<int, string> {
+  public function get_typedefValue()[]: Map<int, string> {
+    return $this->getx_typedefValue();
+  }
+
+  public function getx_typedefValue()[]: Map<int, string> {
     invariant(
       $this->_type === ComplexUnionEnum::typedefValue,
       'get_typedefValue called on an instance of ComplexUnion whose current type is %s',
@@ -285,14 +322,22 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this->typedefValue as nonnull;
   }
 
-  public function set_stringRef(string $stringRef): this {
+  public function set_stringRef(string $stringRef)[write_props]: this {
+    return $this->setx_stringRef($stringRef);
+   }
+
+  public function setx_stringRef(string $stringRef)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::stringRef;
     $this->stringRef = $stringRef;
     return $this;
   }
 
-  public function get_stringRef(): string {
+  public function get_stringRef()[]: string {
+    return $this->getx_stringRef();
+  }
+
+  public function getx_stringRef()[]: string {
     invariant(
       $this->_type === ComplexUnionEnum::stringRef,
       'get_stringRef called on an instance of ComplexUnion whose current type is %s',
@@ -301,41 +346,127 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
     return $this->stringRef as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'intValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'intListValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringListValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'typedefValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringRef' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.ComplexUnion",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "intValue",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "stringValue",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "intListValue",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "stringListValue",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 9,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.containerTypedef",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_map" => tmeta_ThriftMapType::fromShape(
+                            shape(
+                              "keyType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                                )
+                              ),
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "typedefValue",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 14,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "stringRef",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
   public function readFromJson(string $jsonText): void {
@@ -453,8 +584,7 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
   protected ?Vector<string> $stringListValue;
   protected ListUnionEnum $_type = ListUnionEnum::_EMPTY_;
 
-  <<__Rx>>
-  public function __construct(?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null  ) {
+  public function __construct(?Vector<int> $intListValue = null, ?Vector<string> $stringListValue = null  )[] {
     $this->_type = ListUnionEnum::_EMPTY_;
     if ($intListValue !== null) {
       $this->intListValue = $intListValue;
@@ -466,28 +596,26 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     }
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'intListValue'),
       Shapes::idx($shape, 'stringListValue'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'ListUnion';
   }
 
-  public function getType(): ListUnionEnum {
+  public function getType()[]: ListUnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case ListUnionEnum::intListValue:
         $this->intListValue = null;
@@ -501,14 +629,22 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     $this->_type = ListUnionEnum::_EMPTY_;
 }
 
-  public function set_intListValue(Vector<int> $intListValue): this {
+  public function set_intListValue(Vector<int> $intListValue)[write_props]: this {
+    return $this->setx_intListValue($intListValue);
+   }
+
+  public function setx_intListValue(Vector<int> $intListValue)[write_props]: this {
     $this->reset();
     $this->_type = ListUnionEnum::intListValue;
     $this->intListValue = $intListValue;
     return $this;
   }
 
-  public function get_intListValue(): Vector<int> {
+  public function get_intListValue()[]: Vector<int> {
+    return $this->getx_intListValue();
+  }
+
+  public function getx_intListValue()[]: Vector<int> {
     invariant(
       $this->_type === ListUnionEnum::intListValue,
       'get_intListValue called on an instance of ListUnion whose current type is %s',
@@ -517,14 +653,22 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     return $this->intListValue as nonnull;
   }
 
-  public function set_stringListValue(Vector<string> $stringListValue): this {
+  public function set_stringListValue(Vector<string> $stringListValue)[write_props]: this {
+    return $this->setx_stringListValue($stringListValue);
+   }
+
+  public function setx_stringListValue(Vector<string> $stringListValue)[write_props]: this {
     $this->reset();
     $this->_type = ListUnionEnum::stringListValue;
     $this->stringListValue = $stringListValue;
     return $this;
   }
 
-  public function get_stringListValue(): Vector<string> {
+  public function get_stringListValue()[]: Vector<string> {
+    return $this->getx_stringListValue();
+  }
+
+  public function getx_stringListValue()[]: Vector<string> {
     invariant(
       $this->_type === ListUnionEnum::stringListValue,
       'get_stringListValue called on an instance of ListUnion whose current type is %s',
@@ -533,25 +677,61 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
     return $this->stringListValue as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'intListValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringListValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.ListUnion",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "intListValue",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "stringListValue",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
   public function readFromJson(string $jsonText): void {
@@ -636,8 +816,7 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
   protected ?string $stringData;
   protected DataUnionEnum $_type = DataUnionEnum::_EMPTY_;
 
-  <<__Rx>>
-  public function __construct(?string $binaryData = null, ?string $stringData = null  ) {
+  public function __construct(?string $binaryData = null, ?string $stringData = null  )[] {
     $this->_type = DataUnionEnum::_EMPTY_;
     if ($binaryData !== null) {
       $this->binaryData = $binaryData;
@@ -649,28 +828,26 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     }
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'binaryData'),
       Shapes::idx($shape, 'stringData'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'DataUnion';
   }
 
-  public function getType(): DataUnionEnum {
+  public function getType()[]: DataUnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case DataUnionEnum::binaryData:
         $this->binaryData = null;
@@ -684,14 +861,22 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     $this->_type = DataUnionEnum::_EMPTY_;
 }
 
-  public function set_binaryData(string $binaryData): this {
+  public function set_binaryData(string $binaryData)[write_props]: this {
+    return $this->setx_binaryData($binaryData);
+   }
+
+  public function setx_binaryData(string $binaryData)[write_props]: this {
     $this->reset();
     $this->_type = DataUnionEnum::binaryData;
     $this->binaryData = $binaryData;
     return $this;
   }
 
-  public function get_binaryData(): string {
+  public function get_binaryData()[]: string {
+    return $this->getx_binaryData();
+  }
+
+  public function getx_binaryData()[]: string {
     invariant(
       $this->_type === DataUnionEnum::binaryData,
       'get_binaryData called on an instance of DataUnion whose current type is %s',
@@ -700,14 +885,22 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     return $this->binaryData as nonnull;
   }
 
-  public function set_stringData(string $stringData): this {
+  public function set_stringData(string $stringData)[write_props]: this {
+    return $this->setx_stringData($stringData);
+   }
+
+  public function setx_stringData(string $stringData)[write_props]: this {
     $this->reset();
     $this->_type = DataUnionEnum::stringData;
     $this->stringData = $stringData;
     return $this;
   }
 
-  public function get_stringData(): string {
+  public function get_stringData()[]: string {
+    return $this->getx_stringData();
+  }
+
+  public function getx_stringData()[]: string {
     invariant(
       $this->_type === DataUnionEnum::stringData,
       'get_stringData called on an instance of DataUnion whose current type is %s',
@@ -716,25 +909,45 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
     return $this->stringData as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'binaryData' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringData' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.DataUnion",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BINARY_TYPE,
+                )
+              ),
+              "name" => "binaryData",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "stringData",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
   public function readFromJson(string $jsonText): void {
@@ -794,9 +1007,9 @@ class Val implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'strVal' => string,
-    ?'intVal' => int,
-    ?'typedefValue' => Map<int, string>,
+    ?'strVal' => ?string,
+    ?'intVal' => ?int,
+    ?'typedefValue' => ?Map<int, string>,
   );
 
   const int STRUCTURAL_ID = 7250696402099336501;
@@ -816,20 +1029,17 @@ class Val implements \IThriftStruct {
    */
   public Map<int, string> $typedefValue;
 
-  <<__Rx>>
-  public function __construct(?string $strVal = null, ?int $intVal = null, ?Map<int, string> $typedefValue = null  ) {
+  public function __construct(?string $strVal = null, ?int $intVal = null, ?Map<int, string> $typedefValue = null  )[] {
     $this->strVal = $strVal ?? '';
     $this->intVal = $intVal ?? 0;
     $this->typedefValue = $typedefValue ?? Map {};
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'strVal'),
       Shapes::idx($shape, 'intVal'),
@@ -837,33 +1047,82 @@ class Val implements \IThriftStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Val';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'strVal' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'intVal' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'typedefValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Val",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "strVal",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "intVal",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 9,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_typedef" => tmeta_ThriftTypedefType::fromShape(
+                    shape(
+                      "name" => "module.containerTypedef",
+                      "underlyingType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_map" => tmeta_ThriftMapType::fromShape(
+                            shape(
+                              "keyType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I16_TYPE,
+                                )
+                              ),
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "typedefValue",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
   public function readFromJson(string $jsonText): void {
@@ -948,8 +1207,7 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
   protected ?Val $v2;
   protected ValUnionEnum $_type = ValUnionEnum::_EMPTY_;
 
-  <<__Rx>>
-  public function __construct(?Val $v1 = null, ?Val $v2 = null  ) {
+  public function __construct(?Val $v1 = null, ?Val $v2 = null  )[] {
     $this->_type = ValUnionEnum::_EMPTY_;
     if ($v1 !== null) {
       $this->v1 = $v1;
@@ -961,28 +1219,26 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     }
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'v1'),
       Shapes::idx($shape, 'v2'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'ValUnion';
   }
 
-  public function getType(): ValUnionEnum {
+  public function getType()[]: ValUnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case ValUnionEnum::v1:
         $this->v1 = null;
@@ -996,14 +1252,22 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     $this->_type = ValUnionEnum::_EMPTY_;
 }
 
-  public function set_v1(Val $v1): this {
+  public function set_v1(Val $v1)[write_props]: this {
+    return $this->setx_v1($v1);
+   }
+
+  public function setx_v1(Val $v1)[write_props]: this {
     $this->reset();
     $this->_type = ValUnionEnum::v1;
     $this->v1 = $v1;
     return $this;
   }
 
-  public function get_v1(): Val {
+  public function get_v1()[]: Val {
+    return $this->getx_v1();
+  }
+
+  public function getx_v1()[]: Val {
     invariant(
       $this->_type === ValUnionEnum::v1,
       'get_v1 called on an instance of ValUnion whose current type is %s',
@@ -1012,14 +1276,22 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     return $this->v1 as nonnull;
   }
 
-  public function set_v2(Val $v2): this {
+  public function set_v2(Val $v2)[write_props]: this {
+    return $this->setx_v2($v2);
+   }
+
+  public function setx_v2(Val $v2)[write_props]: this {
     $this->reset();
     $this->_type = ValUnionEnum::v2;
     $this->v2 = $v2;
     return $this;
   }
 
-  public function get_v2(): Val {
+  public function get_v2()[]: Val {
+    return $this->getx_v2();
+  }
+
+  public function getx_v2()[]: Val {
     invariant(
       $this->_type === ValUnionEnum::v2,
       'get_v2 called on an instance of ValUnion whose current type is %s',
@@ -1028,25 +1300,53 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
     return $this->v2 as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'v1' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'v2' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.ValUnion",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.Val",
+                    )
+                  ),
+                )
+              ),
+              "name" => "v1",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.Val",
+                    )
+                  ),
+                )
+              ),
+              "name" => "v2",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
   public function readFromJson(string $jsonText): void {
@@ -1123,8 +1423,7 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   protected ?string $thingTwo;
   protected VirtualComplexUnionEnum $_type = VirtualComplexUnionEnum::_EMPTY_;
 
-  <<__Rx>>
-  public function __construct(?string $thingOne = null, ?string $thingTwo = null  ) {
+  public function __construct(?string $thingOne = null, ?string $thingTwo = null  )[] {
     $this->_type = VirtualComplexUnionEnum::_EMPTY_;
     if ($thingOne !== null) {
       $this->thingOne = $thingOne;
@@ -1136,28 +1435,26 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     }
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'thingOne'),
       Shapes::idx($shape, 'thingTwo'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'VirtualComplexUnion';
   }
 
-  public function getType(): VirtualComplexUnionEnum {
+  public function getType()[]: VirtualComplexUnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case VirtualComplexUnionEnum::thingOne:
         $this->thingOne = null;
@@ -1171,14 +1468,22 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     $this->_type = VirtualComplexUnionEnum::_EMPTY_;
 }
 
-  public function set_thingOne(string $thingOne): this {
+  public function set_thingOne(string $thingOne)[write_props]: this {
+    return $this->setx_thingOne($thingOne);
+   }
+
+  public function setx_thingOne(string $thingOne)[write_props]: this {
     $this->reset();
     $this->_type = VirtualComplexUnionEnum::thingOne;
     $this->thingOne = $thingOne;
     return $this;
   }
 
-  public function get_thingOne(): string {
+  public function get_thingOne()[]: string {
+    return $this->getx_thingOne();
+  }
+
+  public function getx_thingOne()[]: string {
     invariant(
       $this->_type === VirtualComplexUnionEnum::thingOne,
       'get_thingOne called on an instance of VirtualComplexUnion whose current type is %s',
@@ -1187,14 +1492,22 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     return $this->thingOne as nonnull;
   }
 
-  public function set_thingTwo(string $thingTwo): this {
+  public function set_thingTwo(string $thingTwo)[write_props]: this {
+    return $this->setx_thingTwo($thingTwo);
+   }
+
+  public function setx_thingTwo(string $thingTwo)[write_props]: this {
     $this->reset();
     $this->_type = VirtualComplexUnionEnum::thingTwo;
     $this->thingTwo = $thingTwo;
     return $this;
   }
 
-  public function get_thingTwo(): string {
+  public function get_thingTwo()[]: string {
+    return $this->getx_thingTwo();
+  }
+
+  public function getx_thingTwo()[]: string {
     invariant(
       $this->_type === VirtualComplexUnionEnum::thingTwo,
       'get_thingTwo called on an instance of VirtualComplexUnion whose current type is %s',
@@ -1203,26 +1516,45 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
     return $this->thingTwo as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'thingOne' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'thingTwo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.VirtualComplexUnion",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "thingOne",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "thingTwo",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-      'cpp.virtual' => "1",
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
   public function readFromJson(string $jsonText): void {
@@ -1263,7 +1595,7 @@ class NonCopyableStruct implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'num' => int,
+    ?'num' => ?int,
   );
 
   const int STRUCTURAL_ID = 7064950569513307469;
@@ -1273,43 +1605,52 @@ class NonCopyableStruct implements \IThriftStruct {
    */
   public int $num;
 
-  <<__Rx>>
-  public function __construct(?int $num = null  ) {
+  public function __construct(?int $num = null  )[] {
     $this->num = $num ?? 0;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'num'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NonCopyableStruct';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'num' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.NonCopyableStruct",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "num",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-      'cpp2.noncopyable' => "1",
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
   public function readFromJson(string $jsonText): void {
@@ -1362,8 +1703,7 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
   protected ?NonCopyableStruct $s;
   protected NonCopyableUnionEnum $_type = NonCopyableUnionEnum::_EMPTY_;
 
-  <<__Rx>>
-  public function __construct(?NonCopyableStruct $s = null  ) {
+  public function __construct(?NonCopyableStruct $s = null  )[] {
     $this->_type = NonCopyableUnionEnum::_EMPTY_;
     if ($s !== null) {
       $this->s = $s;
@@ -1371,27 +1711,25 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
     }
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 's'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NonCopyableUnion';
   }
 
-  public function getType(): NonCopyableUnionEnum {
+  public function getType()[]: NonCopyableUnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case NonCopyableUnionEnum::s:
         $this->s = null;
@@ -1402,14 +1740,22 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
     $this->_type = NonCopyableUnionEnum::_EMPTY_;
 }
 
-  public function set_s(NonCopyableStruct $s): this {
+  public function set_s(NonCopyableStruct $s)[write_props]: this {
+    return $this->setx_s($s);
+   }
+
+  public function setx_s(NonCopyableStruct $s)[write_props]: this {
     $this->reset();
     $this->_type = NonCopyableUnionEnum::s;
     $this->s = $s;
     return $this;
   }
 
-  public function get_s(): NonCopyableStruct {
+  public function get_s()[]: NonCopyableStruct {
+    return $this->getx_s();
+  }
+
+  public function getx_s()[]: NonCopyableStruct {
     invariant(
       $this->_type === NonCopyableUnionEnum::s,
       'get_s called on an instance of NonCopyableUnion whose current type is %s',
@@ -1418,22 +1764,38 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
     return $this->s as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        's' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.NonCopyableUnion",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.NonCopyableStruct",
+                    )
+                  ),
+                )
+              ),
+              "name" => "s",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-      'cpp2.noncopyable' => "1",
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
   public function readFromJson(string $jsonText): void {

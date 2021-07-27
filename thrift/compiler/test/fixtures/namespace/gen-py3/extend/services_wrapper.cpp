@@ -21,7 +21,7 @@ void ExtendTestServiceWrapper::async_tm_check(
   std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
     , std::unique_ptr<::cpp2::HsFoo> struct1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,

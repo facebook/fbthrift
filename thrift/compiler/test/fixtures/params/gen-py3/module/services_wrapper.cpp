@@ -22,7 +22,7 @@ void NestedContainersWrapper::async_tm_mapList(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , std::unique_ptr<std::map<int32_t,std::vector<int32_t>>> foo
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -44,7 +44,7 @@ void NestedContainersWrapper::async_tm_mapSet(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , std::unique_ptr<std::map<int32_t,std::set<int32_t>>> foo
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -66,7 +66,7 @@ void NestedContainersWrapper::async_tm_listMap(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , std::unique_ptr<std::vector<std::map<int32_t,int32_t>>> foo
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -88,7 +88,7 @@ void NestedContainersWrapper::async_tm_listSet(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , std::unique_ptr<std::vector<std::set<int32_t>>> foo
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -110,7 +110,7 @@ void NestedContainersWrapper::async_tm_turtles(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , std::unique_ptr<std::vector<std::vector<std::map<int32_t,std::map<int32_t,std::set<int32_t>>>>>> foo
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,

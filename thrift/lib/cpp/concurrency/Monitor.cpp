@@ -45,27 +45,17 @@ class Monitor::Impl {
     init(ownedMutex_.get());
   }
 
-  Impl(Mutex* mutex) : mutex_(nullptr), condInitialized_(false) {
-    init(mutex);
-  }
+  Impl(Mutex* mutex) : mutex_(nullptr), condInitialized_(false) { init(mutex); }
 
   Impl(Monitor* monitor) : mutex_(nullptr), condInitialized_(false) {
     init(&(monitor->mutex()));
   }
 
-  ~Impl() {
-    cleanup();
-  }
+  ~Impl() { cleanup(); }
 
-  Mutex& mutex() {
-    return *mutex_;
-  }
-  void lock() {
-    mutex().lock();
-  }
-  void unlock() {
-    mutex().unlock();
-  }
+  Mutex& mutex() { return *mutex_; }
+  void lock() { mutex().lock(); }
+  void unlock() { mutex().unlock(); }
 
   /**
    * Exception-throwing version of waitForTimeRelative(), called simply
@@ -107,10 +97,9 @@ class Monitor::Impl {
   int waitForTime(const timespec* abstime) const {
     // The caller must lock the mutex before calling waitForTime()
     assert(mutex_);
-    assert(mutex_->isLocked());
+    assert(mutexIsLocked());
 
-    pthread_mutex_t* mutexImpl =
-        reinterpret_cast<pthread_mutex_t*>(mutex_->getUnderlyingImpl());
+    pthread_mutex_t* mutexImpl = mutexGetUnderlying();
     assert(mutexImpl);
 
     return pthread_cond_timedwait(&pthread_cond_, mutexImpl, abstime);
@@ -123,17 +112,16 @@ class Monitor::Impl {
   int waitForever() const {
     // The caller must lock the mutex before calling waitForever()
     assert(mutex_);
-    assert(mutex_->isLocked());
+    assert(mutexIsLocked());
 
-    pthread_mutex_t* mutexImpl =
-        reinterpret_cast<pthread_mutex_t*>(mutex_->getUnderlyingImpl());
+    pthread_mutex_t* mutexImpl = mutexGetUnderlying();
     assert(mutexImpl);
     return pthread_cond_wait(&pthread_cond_, mutexImpl);
   }
 
   void notify() {
     // The caller must lock the mutex before calling notify()
-    assert(mutex_ && mutex_->isLocked());
+    assert(mutex_ && mutexIsLocked());
 
     int iret = pthread_cond_signal(&pthread_cond_);
     DCHECK(iret == 0);
@@ -141,7 +129,7 @@ class Monitor::Impl {
 
   void notifyAll() {
     // The caller must lock the mutex before calling notify()
-    assert(mutex_ && mutex_->isLocked());
+    assert(mutex_ && mutexIsLocked());
 
     int iret = pthread_cond_broadcast(&pthread_cond_);
     DCHECK(iret == 0);
@@ -167,6 +155,20 @@ class Monitor::Impl {
       int iret = pthread_cond_destroy(&pthread_cond_);
       DCHECK(iret == 0);
     }
+  }
+
+  FOLLY_MAYBE_UNUSED bool mutexIsLocked() const {
+    assert(mutex_);
+    auto value = mutex_->trylock();
+    if (value) {
+      mutex_->unlock();
+    }
+    return !value;
+  }
+
+  pthread_mutex_t* mutexGetUnderlying() const {
+    assert(mutex_);
+    return reinterpret_cast<std::shared_ptr<pthread_mutex_t>&>(*mutex_).get();
   }
 
   scoped_ptr<Mutex> ownedMutex_;

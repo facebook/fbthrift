@@ -23,9 +23,8 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyMutableStruct") @com.foo.Enabled 
-public final class MyMutableStruct {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct("MyMutableStruct") @com.foo.Enabled 
+public final class MyMutableStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyMutableStruct() {
@@ -34,12 +33,11 @@ public final class MyMutableStruct {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long intField = 0L;
         private String stringField = null;
     
-        @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(long intField) {
             this.intField = intField;
             return this;
@@ -47,7 +45,7 @@ public final class MyMutableStruct {
     
         public long getIntField() { return intField; }
     
-            @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
         public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
@@ -66,7 +64,6 @@ public final class MyMutableStruct {
             MyMutableStruct result = new MyMutableStruct();
             result.intField = this.intField;
             result.stringField = this.stringField;
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -87,45 +84,25 @@ static {
       FIELD_METADATA.put(2, STRING_FIELD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyMutableStruct setIntField(long intField) {
         this.intField = intField;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetIntField() {
-        return __isset_bit_vector.get(_INTFIELD);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetIntField() {
-        __isset_bit_vector.clear(_INTFIELD);
-    }
     
-    @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyMutableStruct setStringField(String stringField) {
         this.stringField = stringField;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetStringField() {
-        return this.stringField != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetStringField() {
-        this.stringField = null;
-    }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -159,6 +136,10 @@ static {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyMutableStruct> asReader() {
+      return MyMutableStruct::read0;
+    }
     
     public static MyMutableStruct read0(TProtocol oprot) throws TException {
       TField __field;
@@ -208,4 +189,5 @@ static {
       oprot.writeStructEnd();
     }
     
+
 }

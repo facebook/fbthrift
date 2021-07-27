@@ -28,7 +28,7 @@ from thrift.transport.THeaderTransport import THeaderTransport, MAX_BIG_FRAME_SI
 from thrift.transport.TTransport import TMemoryBuffer
 
 from thrift.server.CppServerWrapper import CppServerWrapper, CppContextData, \
-    SSLPolicy, SSLVerifyPeerEnum, SSLVersion, CallbackWrapper, CallTimestamps
+    SSLPolicy, VerifyClientCertificate, SSLVersion, CallbackWrapper, CallTimestamps
 
 from concurrent.futures import Future
 from functools import partial
@@ -184,7 +184,7 @@ class TSSLConfig(object):
         self.key_pw_path = ''
         self.client_ca_path = ''
         self.ecc_curve_name = ''
-        self.verify = SSLVerifyPeerEnum.VERIFY
+        self.verify = VerifyClientCertificate.IF_PRESENTED
         self.ssl_policy = SSLPolicy.PERMITTED
         self.ticket_file_path = ''
         self.session_context = None
@@ -216,7 +216,7 @@ class TSSLConfig(object):
 
     @verify.setter
     def verify(self, val):
-        if not isinstance(val, SSLVerifyPeerEnum):
+        if not isinstance(val, VerifyClientCertificate):
             raise ValueError("{} is an invalid value".format(val))
         self._verify = val
 

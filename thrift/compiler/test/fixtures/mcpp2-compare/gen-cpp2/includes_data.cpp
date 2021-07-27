@@ -12,20 +12,34 @@
 namespace apache {
 namespace thrift {
 
+const std::array<::a::different::ns::AnEnum, 2> TEnumDataStorage<::a::different::ns::AnEnum>::values = {{
+  type::FIELDA,
+  type::FIELDB,
+}};
+const std::array<folly::StringPiece, 2> TEnumDataStorage<::a::different::ns::AnEnum>::names = {{
+  "FIELDA",
+  "FIELDB",
+}};
 
-constexpr const std::size_t TEnumDataStorage<::a::different::ns::AnEnum>::size;
-constexpr const std::array<::a::different::ns::AnEnum, 2> TEnumDataStorage<::a::different::ns::AnEnum>::values;
-constexpr const std::array<folly::StringPiece, 2> TEnumDataStorage<::a::different::ns::AnEnum>::names;
+const std::array<folly::StringPiece, 1> TStructDataStorage<::a::different::ns::AStruct>::fields_names = {{
+  "FieldA",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::a::different::ns::AStruct>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::a::different::ns::AStruct>::fields_types = {{
+  TType::T_I32,
+}};
 
-
-constexpr const std::size_t TStructDataStorage<::a::different::ns::AStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::a::different::ns::AStruct>::fields_size> TStructDataStorage<::a::different::ns::AStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::a::different::ns::AStruct>::fields_size> TStructDataStorage<::a::different::ns::AStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::a::different::ns::AStruct>::fields_size> TStructDataStorage<::a::different::ns::AStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::a::different::ns::AStructB>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::a::different::ns::AStructB>::fields_size> TStructDataStorage<::a::different::ns::AStructB>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::a::different::ns::AStructB>::fields_size> TStructDataStorage<::a::different::ns::AStructB>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::a::different::ns::AStructB>::fields_size> TStructDataStorage<::a::different::ns::AStructB>::fields_types;
+const std::array<folly::StringPiece, 1> TStructDataStorage<::a::different::ns::AStructB>::fields_names = {{
+  "FieldA",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::a::different::ns::AStructB>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::a::different::ns::AStructB>::fields_types = {{
+  TType::T_STRUCT,
+}};
 
 } // namespace thrift
 } // namespace apache

@@ -17,24 +17,24 @@
 namespace hack test.fixtures.jsenum
 
 enum MyThriftEnum {
-  foo = 1;
-  bar = 2;
-  baz = 3;
-} (hack.attributes="ApiEnum, JSEnum")
+  foo = 1,
+  bar = 2,
+  baz = 3,
+} (hack.attributes = "ApiEnum, JSEnum")
 
 struct MyThriftStruct {
-  1: string foo (hack.attributes="FieldAttribute"),
-  2: string bar,
-  3: string baz,
-} (hack.attributes="ClassAttribute")
+  1: string foo (hack.attributes = "FieldAttribute");
+  2: string bar;
+  3: string baz;
+} (hack.attributes = "ClassAttribute")
 
 struct MySecondThriftStruct {
-  1: MyThriftEnum foo,
-  2: MyThriftStruct bar,
-  3: i64 baz,
+  1: MyThriftEnum foo;
+  2: MyThriftStruct bar;
+  3: i64 baz;
 }
 
 union UnionTesting {
-  1: string foo,
-  3: i64 bar,
-} (hack.union_enum_attributes="EnumAttributes")
+  1: string foo;
+  3: i64 bar;
+} (hack.union_enum_attributes = "EnumAttributes")

@@ -36,28 +36,31 @@ using namespace apache::thrift::rocket;
 using namespace apache::thrift::rocket::test;
 
 namespace {
-constexpr StreamId kTestStreamId{178};
+constexpr StreamId kTestStreamId{179};
 constexpr folly::StringPiece kMetadata{"metadata"};
 constexpr folly::StringPiece kData{"data"};
 
 template <class Frame>
-Frame serializeAndDeserialize(Frame&& frame) {
+std::unique_ptr<folly::IOBuf> serialize(Frame frame) {
   Serializer writer;
-  std::forward<Frame>(frame).serialize(writer);
+  std::move(frame).serialize(writer);
   auto serializedFrameData = std::move(writer).move();
   serializedFrameData->coalesce();
+  return serializedFrameData;
+}
+
+template <class Frame>
+Frame serializeAndDeserialize(Frame frame) {
+  auto serializedFrameData = serialize(std::move(frame));
+  EXPECT_TRUE(isMaybeRocketFrame(*serializedFrameData));
   // Skip past frame length
   serializedFrameData->trimStart(Serializer::kBytesForFrameOrMetadataLength);
   return Frame(std::move(serializedFrameData));
 }
 
 template <class Frame>
-Frame serializeAndDeserializeFragmented(Frame&& frame) {
-  Serializer writer;
-  std::forward<Frame>(frame).serialize(writer);
-  auto serializedFrameData = std::move(writer).move();
-  serializedFrameData->coalesce();
-
+Frame serializeAndDeserializeFragmented(Frame frame) {
+  auto serializedFrameData = serialize(std::move(frame));
   folly::Optional<Frame> returnFrame;
   folly::io::Cursor cursor(serializedFrameData.get());
   bool hitSplitLogic = false;
@@ -135,6 +138,31 @@ TEST(FrameSerialization, RequestResponseSanity) {
 
   validate(frame);
   validate(serializeAndDeserialize(std::move(frame)));
+}
+
+TEST(FrameSerialization, RequestResponseNoHeadroomWriteForSharedBuf) {
+  // Verify headroom write not attampted on shared IOBufs
+  const std::string str = "12345678901234567890abcdef";
+  auto dt = folly::IOBuf::wrapBuffer(str.data(), str.size());
+  auto md = dt->clone();
+  // share the same underlying buffer, but leave enough headroom for
+  // frame header, if it was attempted to be written to the headroom
+  md->trimStart(20);
+  RequestResponseFrame frame(
+      kTestStreamId,
+      Payload::makeFromMetadataAndData(std::move(md), std::move(dt)));
+
+  auto serialBuf = std::move(frame).serialize();
+  // deserialize
+  serialBuf->coalesce();
+  serialBuf->trimStart(Serializer::kBytesForFrameOrMetadataLength);
+  RequestResponseFrame frame2(std::move(serialBuf));
+
+  auto dataAndMetadata = splitMetadataAndData(frame2.payload());
+  // Explicitly check copies in comparison, in case of erroneous write
+  // to headroom original input data would be overwritten.
+  EXPECT_EQ("abcdef", getRange(*dataAndMetadata.first));
+  EXPECT_EQ("12345678901234567890abcdef", getRange(*dataAndMetadata.second));
 }
 
 TEST(FrameSerialization, RequestFnfSanity) {
@@ -341,6 +369,27 @@ TEST(FrameSerialization, KeepAliveSanity) {
 
   validate(makeKeepAliveFrame());
   validate(serializeAndDeserialize(makeKeepAliveFrame()));
+}
+
+TEST(FrameSerialization, KeepAliveSanityEmptyPayload) {
+  constexpr folly::StringPiece kKeepAliveData = folly::StringPiece();
+
+  auto makeKeepAliveFrame = [&] {
+    return KeepAliveFrame(
+        Flags::none().respond(true), folly::IOBuf::copyBuffer(kKeepAliveData));
+  };
+
+  auto validate = [=](KeepAliveFrame&& f) {
+    EXPECT_TRUE(f.hasRespondFlag());
+    EXPECT_EQ(kKeepAliveData, getRange(*std::move(f).data()));
+  };
+  auto validateSerialized = [=](KeepAliveFrame&& f) {
+    EXPECT_TRUE(f.hasRespondFlag());
+    EXPECT_EQ(nullptr, std::move(f).data());
+  };
+
+  validate(makeKeepAliveFrame());
+  validateSerialized(serializeAndDeserialize(makeKeepAliveFrame()));
 }
 
 TEST(FrameSerialization, PayloadLargeMetadata) {

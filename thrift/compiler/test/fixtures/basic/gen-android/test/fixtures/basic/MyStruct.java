@@ -30,6 +30,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
   private static final TField MY_STRING_FIELD_FIELD_DESC = new TField("MyStringField", TType.STRING, (short)2);
   private static final TField MY_DATA_FIELD_FIELD_DESC = new TField("MyDataField", TType.STRUCT, (short)3);
   private static final TField MY_ENUM_FIELD_DESC = new TField("myEnum", TType.I32, (short)4);
+  private static final TField ONEWAY_FIELD_DESC = new TField("oneway", TType.BOOL, (short)5);
+  private static final TField READONLY_FIELD_DESC = new TField("readonly", TType.BOOL, (short)6);
+  private static final TField IDEMPOTENT_FIELD_DESC = new TField("idempotent", TType.BOOL, (short)7);
 
   public final Long MyIntField;
   public final String MyStringField;
@@ -39,20 +42,32 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
    * @see MyEnum
    */
   public final MyEnum myEnum;
+  public final Boolean oneway;
+  public final Boolean readonly;
+  public final Boolean idempotent;
   public static final int MYINTFIELD = 1;
   public static final int MYSTRINGFIELD = 2;
   public static final int MYDATAFIELD = 3;
   public static final int MYENUM = 4;
+  public static final int ONEWAY = 5;
+  public static final int READONLY = 6;
+  public static final int IDEMPOTENT = 7;
 
   public MyStruct(
       Long MyIntField,
       String MyStringField,
       MyDataItem MyDataField,
-      MyEnum myEnum) {
+      MyEnum myEnum,
+      Boolean oneway,
+      Boolean readonly,
+      Boolean idempotent) {
     this.MyIntField = MyIntField;
     this.MyStringField = MyStringField;
     this.MyDataField = MyDataField;
     this.myEnum = myEnum;
+    this.oneway = oneway;
+    this.readonly = readonly;
+    this.idempotent = idempotent;
   }
 
   /**
@@ -78,6 +93,21 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       this.myEnum = TBaseHelper.deepCopy(other.myEnum);
     } else {
       this.myEnum = null;
+    }
+    if (other.isSetOneway()) {
+      this.oneway = TBaseHelper.deepCopy(other.oneway);
+    } else {
+      this.oneway = null;
+    }
+    if (other.isSetReadonly()) {
+      this.readonly = TBaseHelper.deepCopy(other.readonly);
+    } else {
+      this.readonly = null;
+    }
+    if (other.isSetIdempotent()) {
+      this.idempotent = TBaseHelper.deepCopy(other.idempotent);
+    } else {
+      this.idempotent = null;
     }
   }
 
@@ -125,6 +155,33 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     return this.myEnum != null;
   }
 
+  public Boolean isOneway() {
+    return this.oneway;
+  }
+
+  // Returns true if field oneway is set (has been assigned a value) and false otherwise
+  public boolean isSetOneway() {
+    return this.oneway != null;
+  }
+
+  public Boolean isReadonly() {
+    return this.readonly;
+  }
+
+  // Returns true if field readonly is set (has been assigned a value) and false otherwise
+  public boolean isSetReadonly() {
+    return this.readonly != null;
+  }
+
+  public Boolean isIdempotent() {
+    return this.idempotent;
+  }
+
+  // Returns true if field idempotent is set (has been assigned a value) and false otherwise
+  public boolean isSetIdempotent() {
+    return this.idempotent != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -143,12 +200,18 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetMyEnum(), that.isSetMyEnum(), this.myEnum, that.myEnum)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetOneway(), that.isSetOneway(), this.oneway, that.oneway)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetReadonly(), that.isSetReadonly(), this.readonly, that.readonly)) { return false; }
+
+    if (!TBaseHelper.equalsNobinary(this.isSetIdempotent(), that.isSetIdempotent(), this.idempotent, that.idempotent)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum});
+    return Arrays.deepHashCode(new Object[] {MyIntField, MyStringField, MyDataField, myEnum, oneway, readonly, idempotent});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -161,6 +224,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     String tmp_MyStringField = null;
     MyDataItem tmp_MyDataField = null;
     MyEnum tmp_myEnum = null;
+    Boolean tmp_oneway = null;
+    Boolean tmp_readonly = null;
+    Boolean tmp_idempotent = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -199,6 +265,27 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case ONEWAY:
+          if (__field.type == TType.BOOL) {
+            tmp_oneway = iprot.readBool();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case READONLY:
+          if (__field.type == TType.BOOL) {
+            tmp_readonly = iprot.readBool();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
+        case IDEMPOTENT:
+          if (__field.type == TType.BOOL) {
+            tmp_idempotent = iprot.readBool();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -213,6 +300,9 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
       ,tmp_MyStringField
       ,tmp_MyDataField
       ,tmp_myEnum
+      ,tmp_oneway
+      ,tmp_readonly
+      ,tmp_idempotent
     );
     _that.validate();
     return _that;
@@ -240,6 +330,21 @@ public class MyStruct implements TBase, java.io.Serializable, Cloneable {
     if (this.myEnum != null) {
       oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
       oprot.writeI32(this.myEnum == null ? 0 : this.myEnum.getValue());
+      oprot.writeFieldEnd();
+    }
+    if (this.oneway != null) {
+      oprot.writeFieldBegin(ONEWAY_FIELD_DESC);
+      oprot.writeBool(this.oneway);
+      oprot.writeFieldEnd();
+    }
+    if (this.readonly != null) {
+      oprot.writeFieldBegin(READONLY_FIELD_DESC);
+      oprot.writeBool(this.readonly);
+      oprot.writeFieldEnd();
+    }
+    if (this.idempotent != null) {
+      oprot.writeFieldBegin(IDEMPOTENT_FIELD_DESC);
+      oprot.writeBool(this.idempotent);
       oprot.writeFieldEnd();
     }
     oprot.writeFieldStop();

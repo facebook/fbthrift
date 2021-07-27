@@ -21,11 +21,10 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("SinkException1")
-public final class SinkException1 extends java.lang.Exception {
+@com.facebook.swift.codec.ThriftStruct("SinkException1")
+public final class SinkException1 extends java.lang.Exception implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
-    private BitSet __isset_bit_vector = new BitSet();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -37,7 +36,7 @@ public final class SinkException1 extends java.lang.Exception {
 
     @ThriftConstructor
     public SinkException1(
-        @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE) final String reason
+        @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE) final String reason
     ) {
         this.reason = reason;
     }
@@ -48,11 +47,10 @@ public final class SinkException1 extends java.lang.Exception {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String reason = null;
     
-        @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
         public Builder setReason(String reason) {
             this.reason = reason;
             return this;
@@ -70,15 +68,18 @@ public final class SinkException1 extends java.lang.Exception {
             SinkException1 result = new SinkException1 (
                 this.reason
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
     
     
-    @ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="reason", requiredness=Requiredness.NONE)
     public String getReason() { return reason; }
     
+    
+    public static com.facebook.thrift.payload.Reader<SinkException1> asReader() {
+      return SinkException1::read0;
+    }
     
     public static SinkException1 read0(TProtocol oprot) throws TException {
       TField __field;

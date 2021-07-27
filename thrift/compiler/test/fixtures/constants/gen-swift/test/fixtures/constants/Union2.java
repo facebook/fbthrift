@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("union2")
-public final class Union2 {
+public final class Union2 implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("union2");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -110,7 +110,7 @@ public final class Union2 {
     }
     
 
-    @ThriftField(value=1, name="i", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="i", requiredness=Requiredness.NONE)
     public int getI() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a i element!");
@@ -122,7 +122,7 @@ public final class Union2 {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="d", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="d", requiredness=Requiredness.NONE)
     public double getD() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a d element!");
@@ -134,7 +134,7 @@ public final class Union2 {
         return this.id == 2;
     }
 
-    @ThriftField(value=3, name="s", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="s", requiredness=Requiredness.NONE)
     public test.fixtures.constants.Struct1 getS() {
         if (this.id != 3) {
             throw new IllegalStateException("Not a s element!");
@@ -146,7 +146,7 @@ public final class Union2 {
         return this.id == 3;
     }
 
-    @ThriftField(value=4, name="u", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="u", requiredness=Requiredness.NONE)
     public test.fixtures.constants.Union1 getU() {
         if (this.id != 4) {
             throw new IllegalStateException("Not a u element!");
@@ -232,10 +232,10 @@ public final class Union2 {
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
       if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+         return;
       }
+      oprot.writeStructBegin(STRUCT_DESC);
       switch (this.id) {
       case _I: {
         oprot.writeFieldBegin(I_FIELD_DESC);
@@ -270,6 +270,11 @@ public final class Union2 {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<Union2> asReader() {
+      return Union2::read0;
     }
     
     public static Union2 read0(TProtocol oprot) throws TException {

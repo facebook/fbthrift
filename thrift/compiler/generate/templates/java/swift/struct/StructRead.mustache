@@ -16,6 +16,10 @@
 
 }}
 
+public static com.facebook.thrift.payload.Reader<{{struct:javaCapitalName}}> asReader() {
+  return {{struct:javaCapitalName}}::read0;
+}
+
 public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TException {
   TField __field;
   oprot.readStructBegin({{struct:javaCapitalName}}.NAMES_TO_IDS, {{struct:javaCapitalName}}.FIELD_METADATA);

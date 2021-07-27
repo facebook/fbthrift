@@ -7,6 +7,7 @@
 cimport cython as __cython
 from cython.operator cimport dereference as deref
 from libcpp.memory cimport make_unique, unique_ptr, shared_ptr
+from thrift.py3.types cimport assign_unique_ptr, assign_shared_ptr, assign_shared_const_ptr
 
 cimport thrift.py3.types
 from thrift.py3.types cimport (
@@ -28,6 +29,9 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"MyStringField")] = __MyStruct_FieldsSetter._set_field_1
         __fbthrift_inst._setters[__cstring_view(<const char*>"MyDataField")] = __MyStruct_FieldsSetter._set_field_2
         __fbthrift_inst._setters[__cstring_view(<const char*>"myEnum")] = __MyStruct_FieldsSetter._set_field_3
+        __fbthrift_inst._setters[__cstring_view(<const char*>"oneway")] = __MyStruct_FieldsSetter._set_field_4
+        __fbthrift_inst._setters[__cstring_view(<const char*>"readonly")] = __MyStruct_FieldsSetter._set_field_5
+        __fbthrift_inst._setters[__cstring_view(<const char*>"idempotent")] = __MyStruct_FieldsSetter._set_field_6
         return __fbthrift_inst
 
     cdef void set_field(__MyStruct_FieldsSetter self, const char* name, object value) except *:
@@ -37,46 +41,69 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
             raise TypeError(f"invalid field name {name.decode('utf-8')}")
         deref(found).second(self, value)
 
-    cdef void _set_field_0(self, __fbthrift_value) except *:
+    cdef void _set_field_0(self, _fbthrift_value) except *:
         # for field MyIntField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 0)
             return
-        if not isinstance(__fbthrift_value, int):
+        if not isinstance(_fbthrift_value, int):
             raise TypeError(f'MyIntField is not a { int !r}.')
-        __fbthrift_value = <cint64_t> __fbthrift_value
-        deref(self._struct_cpp_obj).MyIntField_ref().assign(__fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.MyIntField = True
+        _fbthrift_value = <cint64_t> _fbthrift_value
+        deref(self._struct_cpp_obj).MyIntField_ref().assign(_fbthrift_value)
 
-    cdef void _set_field_1(self, __fbthrift_value) except *:
+    cdef void _set_field_1(self, _fbthrift_value) except *:
         # for field MyStringField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 1)
             return
-        if not isinstance(__fbthrift_value, str):
+        if not isinstance(_fbthrift_value, str):
             raise TypeError(f'MyStringField is not a { str !r}.')
-        deref(self._struct_cpp_obj).MyStringField_ref().assign(cmove(bytes_to_string(__fbthrift_value.encode('utf-8'))))
-        deref(self._struct_cpp_obj).__isset.MyStringField = True
+        deref(self._struct_cpp_obj).MyStringField_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
 
-    cdef void _set_field_2(self, __fbthrift_value) except *:
+    cdef void _set_field_2(self, _fbthrift_value) except *:
         # for field MyDataField
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 2)
             return
-        if not isinstance(__fbthrift_value, _module_types.MyDataItem):
+        if not isinstance(_fbthrift_value, _module_types.MyDataItem):
             raise TypeError(f'MyDataField is not a { _module_types.MyDataItem !r}.')
-        deref(self._struct_cpp_obj).MyDataField_ref().assign(deref((<_module_types.MyDataItem?> __fbthrift_value)._cpp_obj))
-        deref(self._struct_cpp_obj).__isset.MyDataField = True
+        deref(self._struct_cpp_obj).MyDataField_ref().assign(deref((<_module_types.MyDataItem?> _fbthrift_value)._cpp_obj))
 
-    cdef void _set_field_3(self, __fbthrift_value) except *:
+    cdef void _set_field_3(self, _fbthrift_value) except *:
         # for field myEnum
-        if __fbthrift_value is None:
+        if _fbthrift_value is None:
             __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 3)
             return
-        if not isinstance(__fbthrift_value, _module_types.MyEnum):
-            raise TypeError(f'field myEnum value: {repr(__fbthrift_value)} is not of the enum type { _module_types.MyEnum }.')
-        deref(self._struct_cpp_obj).myEnum_ref().assign(<_module_types.cMyEnum><int>__fbthrift_value)
-        deref(self._struct_cpp_obj).__isset.myEnum = True
+        if not isinstance(_fbthrift_value, _module_types.MyEnum):
+            raise TypeError(f'field myEnum value: {repr(_fbthrift_value)} is not of the enum type { _module_types.MyEnum }.')
+        deref(self._struct_cpp_obj).myEnum_ref().assign(<_module_types.cMyEnum><int>_fbthrift_value)
+
+    cdef void _set_field_4(self, _fbthrift_value) except *:
+        # for field oneway
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 4)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'oneway is not a { bool !r}.')
+        deref(self._struct_cpp_obj).oneway_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_5(self, _fbthrift_value) except *:
+        # for field readonly
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 5)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'readonly is not a { bool !r}.')
+        deref(self._struct_cpp_obj).readonly_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_6(self, _fbthrift_value) except *:
+        # for field idempotent
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 6)
+            return
+        if not isinstance(_fbthrift_value, bool):
+            raise TypeError(f'idempotent is not a { bool !r}.')
+        deref(self._struct_cpp_obj).idempotent_ref().assign(_fbthrift_value)
 
 
 @__cython.auto_pickle(False)

@@ -26,6 +26,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> <%service:name%>SvIf::getProcess
   return std::make_unique<<%service:name%>AsyncProcessor>(this);
 }
 
+<%service:name%>SvIf::CreateMethodMetadataResult <%service:name%>SvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<<%service:name%>AsyncProcessor>();
+}
+
 <% > service_cpp/service_interface_impl%>
 
 <% > service_cpp/service_null_impl%>
@@ -42,17 +46,15 @@ void <%service:name%>AsyncProcessor::getServiceMetadata(apache::thrift::metadata
   ::apache::thrift::detail::md::ServiceMetadata<<%service:name%>SvIf>::gen(*response.metadata_ref(), *response.context_ref());
 }
 
-void <%service:name%>AsyncProcessor::processSerializedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void <%service:name%>AsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> <%service:name%>AsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
+void <%service:name%>AsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
-<% > service_cpp/binary_processmap%>
-
-<% > service_cpp/compact_processmap%>
+<% > service_cpp/processmap%>
 
 <%#service:interactions?%>
 <% > service_cpp/interaction_constructor_map%>

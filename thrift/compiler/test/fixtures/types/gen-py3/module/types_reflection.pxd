@@ -60,6 +60,10 @@ cdef __StructSpec get_reflection__AllocatorAware()
 
 cdef __StructSpec get_reflection__AllocatorAware2()
 
+cdef __StructSpec get_reflection__TypedefStruct()
+
+cdef __StructSpec get_reflection__StructWithDoubleUnderscores()
+
 cdef __MapSpec get_reflection__std_unordered_map__Map__i32_string()
 
 cdef __ListSpec get_reflection__List__i64()

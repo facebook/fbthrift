@@ -15,7 +15,7 @@
  */
 
 enum Enum {
-  ENUM = 1;
+  ENUM = 1,
 }
 
 struct A {
@@ -56,19 +56,22 @@ struct C {
   6: optional map<string, A> map_of_string_to_A;
   7: optional map<string, B> map_of_string_to_self;
   8: optional map<string, list<A>> map_of_string_to_list_of_A;
-  9: optional map<string, map<string, i32>> map_of_string_to_map_of_string_to_i32;
+  9: optional map<
+    string,
+    map<string, i32>
+  > map_of_string_to_map_of_string_to_i32;
   10: optional map<string, map<string, A>> map_of_string_to_map_of_string_to_A;
-  11: optional map<string, list<i32>>  map_of_string_to_list_of_i32;
-  12: optional map<string, set<i32>>  map_of_string_to_set_of_i32;
+  11: optional map<string, list<i32>> map_of_string_to_list_of_i32;
+  12: optional map<string, set<i32>> map_of_string_to_set_of_i32;
 
   13: optional list<string> list_of_string;
   14: optional list<map<string, A>> list_of_map_of_string_to_A;
   15: optional list<B> list_of_self;
   16: optional list<list<B>> list_of_list_of_self;
   17: optional list<map<string, list<A>>> list_of_map_of_string_to_list_of_A;
-  18: optional list<i32>  list_of_i32;
+  18: optional list<i32> list_of_i32;
   19: optional map<string, list<string>> map_of_string_to_list_of_string;
 
-  20: optional set<i32>  set_of_i32;
+  20: optional set<i32> set_of_i32;
   21: optional set<string> set_of_string;
 }

@@ -31,9 +31,7 @@ struct TrivialLayout : public LayoutBase {
   typedef LayoutBase Base;
   TrivialLayout() : LayoutBase(typeid(T)) {}
 
-  FieldPosition maximize() {
-    return FieldPosition(sizeof(T), 0);
-  }
+  FieldPosition maximize() { return FieldPosition(sizeof(T), 0); }
 
   FieldPosition layout(LayoutRoot&, const T&, LayoutPosition /* start */) {
     return maximize();
@@ -67,9 +65,7 @@ struct TrivialLayout : public LayoutBase {
     return v;
   }
 
-  static size_t hash(const T& value) {
-    return std::hash<T>()(value);
-  }
+  static size_t hash(const T& value) { return std::hash<T>()(value); }
 };
 
 template <class T>

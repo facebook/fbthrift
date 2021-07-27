@@ -23,7 +23,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
@@ -51,9 +51,10 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __Internship_FieldsSetter create(_module_types.cInternship* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
 
 
 ctypedef void (*__Range_FieldsSetterFunc)(__Range_FieldsSetter, object) except *
@@ -64,8 +65,8 @@ cdef class __Range_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __Range_FieldsSetter create(_module_types.cRange* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
 
 
 ctypedef void (*__struct1_FieldsSetterFunc)(__struct1_FieldsSetter, object) except *
@@ -76,8 +77,8 @@ cdef class __struct1_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __struct1_FieldsSetter create(_module_types.cstruct1* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
 
 
 ctypedef void (*__struct2_FieldsSetterFunc)(__struct2_FieldsSetter, object) except *
@@ -88,10 +89,10 @@ cdef class __struct2_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __struct2_FieldsSetter create(_module_types.cstruct2* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
-    cdef void _set_field_3(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
 
 
 ctypedef void (*__struct3_FieldsSetterFunc)(__struct3_FieldsSetter, object) except *
@@ -102,9 +103,9 @@ cdef class __struct3_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __struct3_FieldsSetter create(_module_types.cstruct3* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
 
 
 ctypedef void (*__struct4_FieldsSetterFunc)(__struct4_FieldsSetter, object) except *
@@ -115,7 +116,7 @@ cdef class __struct4_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __struct4_FieldsSetter create(_module_types.cstruct4* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
 

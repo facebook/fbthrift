@@ -23,13 +23,12 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="InitialResponse", builder=InitialResponse.Builder.class)
-public final class InitialResponse {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="InitialResponse", builder=InitialResponse.Builder.class)
+public final class InitialResponse implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public InitialResponse(
-        @ThriftField(value=1, name="content", requiredness=Requiredness.NONE) final String content
+        @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE) final String content
     ) {
         this.content = content;
     }
@@ -40,11 +39,10 @@ public final class InitialResponse {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String content = null;
     
-        @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
         public Builder setContent(String content) {
             this.content = content;
             return this;
@@ -62,7 +60,6 @@ public final class InitialResponse {
             InitialResponse result = new InitialResponse (
                 this.content
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -78,14 +75,8 @@ public final class InitialResponse {
       FIELD_METADATA.put(1, CONTENT_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="content", requiredness=Requiredness.NONE)
     public String getContent() { return content; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetContent() {
-        return this.content != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -117,6 +108,10 @@ public final class InitialResponse {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<InitialResponse> asReader() {
+      return InitialResponse::read0;
+    }
     
     public static InitialResponse read0(TProtocol oprot) throws TException {
       TField __field;
@@ -155,4 +150,11 @@ public final class InitialResponse {
       oprot.writeStructEnd();
     }
     
+    private static class _InitialResponseLazy {
+        private static final InitialResponse _DEFAULT = new InitialResponse.Builder().build();
+    }
+    
+    public static InitialResponse defaultInstance() {
+        return  _InitialResponseLazy._DEFAULT;
+    }
 }

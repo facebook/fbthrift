@@ -16,11 +16,19 @@
 
 #pragma once
 
+#include <optional>
+
 #include <folly/io/async/AsyncTransport.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
+
+struct ClientHostMetadata {
+  std::optional<std::string> hostname;
+  std::optional<std::map<std::string, std::string>> otherMetadata;
+};
 
 /**
  * Interface for Thrift Client channels
@@ -68,9 +76,7 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
     onDetachable_ = std::move(onDetachable);
   }
 
-  virtual void unsetOnDetachable() {
-    onDetachable_ = nullptr;
-  }
+  virtual void unsetOnDetachable() { onDetachable_ = nullptr; }
 
  protected:
   // This should be called by the implementation to notify observer (if any)
@@ -83,6 +89,8 @@ class ClientChannel : public RequestChannel, public HeaderChannel {
     }
     onDetachable_();
   }
+
+  static const std::optional<ClientHostMetadata>& getHostMetadata();
 
  private:
   folly::Function<void()> onDetachable_;

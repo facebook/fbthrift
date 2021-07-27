@@ -13,6 +13,7 @@
 #include <thrift/lib/py3/enums.h>
 #include "src/gen-cpp2/a_data.h"
 #include "src/gen-cpp2/a_types.h"
+#include "src/gen-cpp2/a_metadata.h"
 namespace thrift {
 namespace py3 {
 

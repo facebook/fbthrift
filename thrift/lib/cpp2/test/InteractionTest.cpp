@@ -18,6 +18,7 @@
 
 #include <folly/experimental/coro/BlockingWait.h>
 #include <folly/experimental/coro/Collect.h>
+#include <folly/experimental/coro/Sleep.h>
 #include <folly/experimental/coro/Task.h>
 #include <folly/portability/GMock.h>
 #include <folly/portability/GTest.h>
@@ -36,11 +37,7 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     int acc_{0};
     Point pacc_;
 
-    folly::SemiFuture<folly::Unit> semifuture_accumulatePrimitive(
-        int32_t a) override {
-      acc_ += a;
-      return folly::makeSemiFuture();
-    }
+    void accumulatePrimitive(int32_t a) override { acc_ += a; }
     folly::SemiFuture<folly::Unit> semifuture_noop() override {
       return folly::makeSemiFuture();
     }
@@ -50,9 +47,7 @@ struct SemiCalculatorHandler : CalculatorSvIf {
       *pacc_.y_ref() += *a->y_ref();
       return folly::makeSemiFuture();
     }
-    folly::SemiFuture<int32_t> semifuture_getPrimitive() override {
-      return acc_;
-    }
+    int32_t getPrimitive() override { return acc_; }
     folly::SemiFuture<std::unique_ptr<::apache::thrift::test::Point>>
     semifuture_getPoint() override {
       return folly::copy_to_unique_ptr(pacc_);
@@ -62,9 +57,15 @@ struct SemiCalculatorHandler : CalculatorSvIf {
   std::unique_ptr<AdditionIf> createAddition() override {
     return std::make_unique<SemiAdditionHandler>();
   }
+  std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+    std::terminate();
+  }
+  std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+    std::terminate();
+  }
 
-  folly::SemiFuture<int32_t> semifuture_addPrimitive(int32_t a, int32_t b)
-      override {
+  folly::SemiFuture<int32_t> semifuture_addPrimitive(
+      int32_t a, int32_t b) override {
     return a + b;
   }
 };
@@ -114,10 +115,8 @@ TEST(InteractionTest, TerminateWithoutSetup) {
 
 TEST(InteractionTest, TerminateUsedPRC) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
   adder.semifuture_noop().get();
@@ -125,10 +124,8 @@ TEST(InteractionTest, TerminateUsedPRC) {
 
 TEST(InteractionTest, TerminateUnusedPRC) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   client->sync_addPrimitive(0, 0); // sends setup frame
   auto adder = client->createAddition();
@@ -136,10 +133,8 @@ TEST(InteractionTest, TerminateUnusedPRC) {
 
 TEST(InteractionTest, TerminateWithoutSetupPRC) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
 }
@@ -169,6 +164,39 @@ TEST(InteractionTest, IsDetachable) {
   EXPECT_TRUE(detached);
 }
 
+TEST(InteractionTest, QueueTimeout) {
+  struct SlowCalculatorHandler : CalculatorSvIf {
+    struct SemiAdditionHandler : CalculatorSvIf::AdditionIf {
+      folly::SemiFuture<int32_t> semifuture_getPrimitive() override {
+        /* sleep override: testing timeout */
+        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+        return 0;
+      }
+    };
+
+    std::unique_ptr<AdditionIf> createAddition() override {
+      return std::make_unique<SemiAdditionHandler>();
+    }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
+  };
+
+  ScopedServerInterfaceThread runner{std::make_shared<SlowCalculatorHandler>()};
+  runner.getThriftServer().setQueueTimeout(std::chrono::milliseconds(50));
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
+
+  auto adder = client->createAddition();
+  auto f1 = adder.semifuture_getPrimitive(),
+       f2 = adder.semifuture_getPrimitive();
+  EXPECT_FALSE(std::move(f1).getTry().hasException());
+  EXPECT_TRUE(std::move(f2).getTry().hasException());
+}
+
 struct CalculatorHandler : CalculatorSvIf {
   struct AdditionHandler : CalculatorSvIf::AdditionIf {
     int acc_{0};
@@ -179,18 +207,14 @@ struct CalculatorHandler : CalculatorSvIf {
       acc_ += a;
       co_return;
     }
-    folly::coro::Task<void> co_noop() override {
-      co_return;
-    }
+    folly::coro::Task<void> co_noop() override { co_return; }
     folly::coro::Task<void> co_accumulatePoint(
         std::unique_ptr<::apache::thrift::test::Point> a) override {
       *pacc_.x_ref() += *a->x_ref();
       *pacc_.y_ref() += *a->y_ref();
       co_return;
     }
-    folly::coro::Task<int32_t> co_getPrimitive() override {
-      co_return acc_;
-    }
+    folly::coro::Task<int32_t> co_getPrimitive() override { co_return acc_; }
     folly::coro::Task<std::unique_ptr<::apache::thrift::test::Point>>
     co_getPoint() override {
       co_return folly::copy_to_unique_ptr(pacc_);
@@ -201,19 +225,23 @@ struct CalculatorHandler : CalculatorSvIf {
   std::unique_ptr<AdditionIf> createAddition() override {
     return std::make_unique<AdditionHandler>();
   }
+  std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+    std::terminate();
+  }
+  std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+    std::terminate();
+  }
 
-  folly::SemiFuture<int32_t> semifuture_addPrimitive(int32_t a, int32_t b)
-      override {
+  folly::SemiFuture<int32_t> semifuture_addPrimitive(
+      int32_t a, int32_t b) override {
     return a + b;
   }
 };
 
 TEST(InteractionCodegenTest, Basic) {
   ScopedServerInterfaceThread runner{std::make_shared<CalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
 #if FOLLY_HAS_COROUTINES
@@ -239,12 +267,40 @@ TEST(InteractionCodegenTest, Basic) {
 #endif
 }
 
+TEST(InteractionCodegenTest, RpcOptions) {
+  ScopedServerInterfaceThread runner{std::make_shared<CalculatorHandler>()};
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
+
+  RpcOptions rpcOptions;
+  auto adder = client->createAddition();
+#if FOLLY_HAS_COROUTINES
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    co_await adder.co_accumulatePrimitive(rpcOptions, 1);
+    co_await adder.semifuture_accumulatePrimitive(rpcOptions, 2);
+    co_await adder.co_noop(rpcOptions);
+    auto acc = co_await adder.co_getPrimitive(rpcOptions);
+    EXPECT_EQ(acc, 3);
+
+    auto sum = co_await client->co_addPrimitive(rpcOptions, 20, 22);
+    EXPECT_EQ(sum, 42);
+
+    Point p;
+    p.x_ref() = 1;
+    co_await adder.co_accumulatePoint(rpcOptions, p);
+    p.y_ref() = 2;
+    co_await adder.co_accumulatePoint(rpcOptions, p);
+    auto pacc = co_await adder.co_getPoint(rpcOptions);
+    EXPECT_EQ(*pacc.x_ref(), 2);
+    EXPECT_EQ(*pacc.y_ref(), 2);
+  }());
+#endif
+}
+
 TEST(InteractionCodegenTest, BasicSemiFuture) {
   ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
   adder.semifuture_accumulatePrimitive(1).get();
@@ -266,18 +322,48 @@ TEST(InteractionCodegenTest, BasicSemiFuture) {
   EXPECT_EQ(*pacc.y_ref(), 2);
 }
 
+TEST(InteractionCodegenTest, BasicSync) {
+  ScopedServerInterfaceThread runner{std::make_shared<SemiCalculatorHandler>()};
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
+
+  auto adder = client->createAddition();
+  adder.sync_accumulatePrimitive(1);
+  adder.sync_accumulatePrimitive(2);
+  adder.sync_noop();
+  auto acc = adder.sync_getPrimitive();
+  EXPECT_EQ(acc, 3);
+
+  auto sum = client->sync_addPrimitive(20, 22);
+  EXPECT_EQ(sum, 42);
+
+  Point p;
+  p.x_ref() = 1;
+  adder.sync_accumulatePoint(p);
+  p.y_ref() = 2;
+  adder.sync_accumulatePoint(p);
+  Point pacc;
+  adder.sync_getPoint(pacc);
+  EXPECT_EQ(*pacc.x_ref(), 2);
+  EXPECT_EQ(*pacc.y_ref(), 2);
+}
+
 TEST(InteractionCodegenTest, Error) {
   struct BrokenCalculatorHandler : CalculatorHandler {
     std::unique_ptr<AdditionIf> createAddition() override {
       throw std::runtime_error("Plus key is broken");
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
   };
   ScopedServerInterfaceThread runner{
       std::make_shared<BrokenCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   const char* kExpectedErr =
       "apache::thrift::TApplicationException:"
@@ -313,14 +399,18 @@ TEST(InteractionCodegenTest, MethodException) {
     std::unique_ptr<AdditionIf> createAddition() override {
       return std::make_unique<AdditionHandler>();
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
   };
 
   ScopedServerInterfaceThread runner{
       std::make_shared<ExceptionCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   const char* kExpectedErr =
       "apache::thrift::TApplicationException: std::runtime_error: Not Implemented Yet";
@@ -340,15 +430,19 @@ TEST(InteractionCodegenTest, SlowConstructor) {
       b.wait();
       return std::make_unique<AdditionHandler>();
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
 
     folly::Baton<> b;
   };
   auto handler = std::make_shared<SlowCalculatorHandler>();
   ScopedServerInterfaceThread runner{handler};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
   folly::EventBase eb;
@@ -368,12 +462,9 @@ TEST(InteractionCodegenTest, FastTermination) {
     struct SlowAdditionHandler : AdditionHandler {
       folly::coro::Baton &baton_, &destroyed_;
       SlowAdditionHandler(
-          folly::coro::Baton& baton,
-          folly::coro::Baton& destroyed)
+          folly::coro::Baton& baton, folly::coro::Baton& destroyed)
           : baton_(baton), destroyed_(destroyed) {}
-      ~SlowAdditionHandler() override {
-        destroyed_.post();
-      }
+      ~SlowAdditionHandler() override { destroyed_.post(); }
 
       folly::coro::Task<int32_t> co_getPrimitive() override {
         co_await baton_;
@@ -388,15 +479,19 @@ TEST(InteractionCodegenTest, FastTermination) {
     std::unique_ptr<AdditionIf> createAddition() override {
       return std::make_unique<SlowAdditionHandler>(baton, destroyed);
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
 
     folly::coro::Baton baton, destroyed;
   };
   auto handler = std::make_shared<SlowCalculatorHandler>();
   ScopedServerInterfaceThread runner{handler};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = folly::copy_to_unique_ptr(client->createAddition());
   folly::EventBase eb;
@@ -417,12 +512,9 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteraction) {
     struct SlowAdditionHandler : AdditionHandler {
       folly::coro::Baton &baton_, &destroyed_;
       SlowAdditionHandler(
-          folly::coro::Baton& baton,
-          folly::coro::Baton& destroyed)
+          folly::coro::Baton& baton, folly::coro::Baton& destroyed)
           : baton_(baton), destroyed_(destroyed) {}
-      ~SlowAdditionHandler() override {
-        destroyed_.post();
-      }
+      ~SlowAdditionHandler() override { destroyed_.post(); }
 
       folly::coro::Task<void> co_noop() override {
         co_await baton_;
@@ -432,6 +524,12 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteraction) {
 
     std::unique_ptr<AdditionIf> createAddition() override {
       return std::make_unique<SlowAdditionHandler>(baton, destroyed);
+    }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
     }
 
     folly::coro::Baton baton, destroyed;
@@ -464,9 +562,7 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteractionConstructor) {
           folly::coro::Baton& destroyed,
           bool& executed)
           : baton_(baton), destroyed_(destroyed), executed_(executed) {}
-      ~SlowAdditionHandler() override {
-        destroyed_.post();
-      }
+      ~SlowAdditionHandler() override { destroyed_.post(); }
 
       folly::coro::Task<void> co_noop() override {
         executed_ = true;
@@ -477,6 +573,12 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteractionConstructor) {
     std::unique_ptr<AdditionIf> createAddition() override {
       folly::coro::blockingWait(baton);
       return std::make_unique<SlowAdditionHandler>(baton, destroyed, executed);
+    }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
     }
 
     folly::coro::Baton baton, destroyed;
@@ -497,7 +599,7 @@ TEST(InteractionCodegenTest, ClientCrashDuringInteractionConstructor) {
   handler->baton.post();
   fut.waitVia(&eb);
   folly::coro::blockingWait(handler->destroyed);
-  EXPECT_FALSE(handler->executed);
+  EXPECT_TRUE(handler->executed);
 #endif
 }
 
@@ -510,6 +612,12 @@ TEST(InteractionCodegenTest, ReuseIdDuringConstructor) {
         b2.wait();
       }
       return std::make_unique<AdditionHandler>();
+    }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
     }
 
     folly::Baton<> b1, b2;
@@ -546,15 +654,19 @@ TEST(InteractionCodegenTest, ConstructorExceptionPropagated) {
       b.wait();
       throw std::runtime_error("Custom exception");
     }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
 
     folly::Baton<> b;
   };
   auto handler = std::make_shared<SlowCalculatorHandler>();
   ScopedServerInterfaceThread runner{handler};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAddition();
   // only release constructor once interaction methods are queued
@@ -572,14 +684,110 @@ TEST(InteractionCodegenTest, ConstructorExceptionPropagated) {
   EXPECT_TRUE(std::move(fut3).getTry().hasException());
 }
 
+TEST(InteractionCodegenTest, SerialInteraction) {
+#if FOLLY_HAS_COROUTINES
+  struct SerialCalculatorHandler : CalculatorHandler {
+    struct SerialAdditionHandler : CalculatorSvIf::SerialAdditionIf {
+      int acc_{0};
+      folly::coro::Baton &baton2_, &baton3_;
+      SerialAdditionHandler(
+          folly::coro::Baton& baton2, folly::coro::Baton& baton3)
+          : baton2_(baton2), baton3_(baton3) {}
+
+      folly::coro::Task<void> co_accumulatePrimitive(int a) override {
+        co_await baton2_;
+        acc_ += a;
+      }
+      folly::coro::Task<int32_t> co_getPrimitive() override {
+        co_await baton3_;
+        co_return acc_;
+      }
+      folly::coro::Task<apache::thrift::ServerStream<int32_t>>
+      co_waitForCancel() override {
+        co_return []() -> folly::coro::AsyncGenerator<int32_t&&> {
+          folly::coro::Baton b;
+          folly::CancellationCallback cb{
+              co_await folly::coro::co_current_cancellation_token,
+              [&] { b.post(); }};
+          co_await b;
+        }();
+      }
+    };
+
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      folly::coro::blockingWait(baton1);
+      return std::make_unique<SerialAdditionHandler>(baton2, baton3);
+    }
+    std::unique_ptr<AdditionFastIf> createAdditionFast() override {
+      std::terminate();
+    }
+    std::unique_ptr<AdditionIf> createAddition() override { std::terminate(); }
+
+    folly::coro::Baton baton1, baton2, baton3;
+  };
+  auto handler = std::make_shared<SerialCalculatorHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
+
+  auto adder = client->createSerialAddition();
+  folly::EventBase eb;
+  // keep a stream alive for the rest of the test (0th serial method)
+  auto stream = adder.semifuture_waitForCancel();
+  auto accSemi = adder.co_accumulatePrimitive(1).scheduleOn(&eb).start();
+  auto getSemi = adder.co_getPrimitive().scheduleOn(&eb).start();
+
+  // blocked on baton1 in constructor, blocks TM worker
+  auto semi = client->semifuture_addPrimitive(0, 0);
+  EXPECT_FALSE(accSemi.isReady());
+  EXPECT_FALSE(getSemi.isReady());
+  handler->baton1.post();
+  std::move(semi).via(&eb).getVia(&eb);
+  // blocked on baton2 in first serial method, sole TM worker is free
+  client->co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
+  EXPECT_FALSE(accSemi.isReady());
+  EXPECT_FALSE(getSemi.isReady());
+
+  // blocked on baton3 in second method, first method completes
+  handler->baton2.post();
+  client->co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
+  std::move(accSemi).via(&eb).getVia(&eb);
+  EXPECT_FALSE(getSemi.isReady());
+
+  // third method is blocked on second method completing
+  accSemi = adder.co_accumulatePrimitive(1).scheduleOn(&eb).start();
+  client->co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
+  EXPECT_FALSE(accSemi.isReady());
+  EXPECT_FALSE(getSemi.isReady());
+
+  // both methods complete
+  handler->baton3.post();
+  client->co_addPrimitive(0, 0).semi().via(&eb).getVia(&eb);
+  std::move(accSemi).via(&eb).getVia(&eb);
+
+  // second accumulate happens after get
+  EXPECT_EQ(std::move(getSemi).via(&eb).getVia(&eb), 1);
+#endif
+}
+
 TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
 #if FOLLY_HAS_COROUTINES
   struct StreamingHandler : StreamerSvIf {
-    StreamingHandler() : publisherPair(ServerStream<int>::createPublisher()) {}
+    StreamingHandler()
+        : publisherPair(ServerStream<int>::createPublisher([&] {
+            streamBaton.post();
+            EXPECT_FALSE(
+                tileBaton2.try_wait_for(std::chrono::milliseconds(100)));
+          })) {}
     struct StreamTile : StreamerSvIf::StreamingIf {
       folly::coro::Task<ServerStream<int>> co_generatorStream() override {
         co_return folly::coro::co_invoke(
-            []() -> folly::coro::AsyncGenerator<int&&> {
+            [&]() -> folly::coro::AsyncGenerator<int&&> {
+              SCOPE_EXIT {
+                streamBaton.post();
+                EXPECT_FALSE(
+                    tileBaton2.try_wait_for(std::chrono::milliseconds(100)));
+              };
               while (true) {
                 co_yield 0;
               }
@@ -593,7 +801,12 @@ TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
       folly::coro::Task<apache::thrift::SinkConsumer<int32_t, int8_t>>
       co__sink() override {
         SinkConsumer<int32_t, int8_t> sink;
-        sink.consumer = [](auto gen) -> folly::coro::Task<int8_t> {
+        sink.consumer = [&](auto gen) -> folly::coro::Task<int8_t> {
+          SCOPE_EXIT {
+            streamBaton.post();
+            EXPECT_FALSE(
+                tileBaton2.try_wait_for(std::chrono::milliseconds(100)));
+          };
           co_await gen.next();
           co_return 0;
         };
@@ -602,27 +815,38 @@ TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
         co_return sink;
       }
 
-      StreamTile(folly::Baton<>& baton, ServerStream<int>& publisherStream)
-          : batonRef(baton), publisherStreamRef(publisherStream) {}
+      StreamTile(
+          folly::Baton<>& tileBaton_,
+          folly::Baton<>& tileBaton2_,
+          folly::Baton<>& streamBaton_,
+          ServerStream<int>& publisherStream)
+          : tileBaton(tileBaton_),
+            tileBaton2(tileBaton2_),
+            streamBaton(streamBaton_),
+            publisherStreamRef(publisherStream) {}
 
       ~StreamTile() {
-        batonRef.post();
+        tileBaton.post();
+        tileBaton2.post();
+        EXPECT_TRUE(streamBaton.try_wait_for(std::chrono::milliseconds(100)));
       }
 
-      folly::Baton<>& batonRef;
+      folly::Baton<>&tileBaton, &tileBaton2, &streamBaton;
       ServerStream<int>& publisherStreamRef;
     };
 
     std::unique_ptr<StreamingIf> createStreaming() override {
-      return std::make_unique<StreamTile>(baton, publisherPair.first);
+      return std::make_unique<StreamTile>(
+          tileBaton, tileBaton2, streamBaton, publisherPair.first);
     }
 
-    folly::Baton<> baton;
+    folly::Baton<> tileBaton, tileBaton2, streamBaton;
     std::pair<ServerStream<int>, ServerStreamPublisher<int>> publisherPair;
   };
 
   auto handler = std::make_shared<StreamingHandler>();
   ScopedServerInterfaceThread runner{handler};
+  runner.getThriftServer().getThreadManager()->addWorker();
   auto client = runner.newClient<StreamerAsyncClient>(nullptr, [](auto socket) {
     return RocketClientChannel::newChannel(std::move(socket));
   });
@@ -632,50 +856,92 @@ TEST(InteractionCodegenTest, StreamExtendsInteractionLifetime) {
     auto handle = folly::copy_to_unique_ptr(client->createStreaming());
     auto stream = handle->semifuture_generatorStream().get();
     // both stream and interaction handle are alive
-    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
-    handler->baton.reset();
+    EXPECT_FALSE(
+        handler->tileBaton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->tileBaton.reset();
     handle.reset();
     // stream keeps interaction alive after handle destroyed
-    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
-    handler->baton.reset();
+    EXPECT_FALSE(
+        handler->tileBaton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->tileBaton.reset();
   }
   // both stream and handle destroyed
-  EXPECT_TRUE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
-  handler->baton.reset();
+  EXPECT_TRUE(handler->tileBaton.try_wait_for(std::chrono::milliseconds(300)));
+  handler->tileBaton.reset();
+  handler->tileBaton2.reset();
+  handler->streamBaton.reset();
 
   // Publisher test
   {
     auto handle = folly::copy_to_unique_ptr(client->createStreaming());
     auto stream = handle->semifuture_publisherStream().get();
     // both stream and interaction handle are alive
-    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
-    handler->baton.reset();
+    EXPECT_FALSE(
+        handler->tileBaton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->tileBaton.reset();
     handle.reset();
     // stream keeps interaction alive after handle destroyed
-    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
-    handler->baton.reset();
+    EXPECT_FALSE(
+        handler->tileBaton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->tileBaton.reset();
   }
   // both stream and handle destroyed
   std::move(handler->publisherPair.second).complete();
-  EXPECT_TRUE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
-  handler->baton.reset();
+  EXPECT_TRUE(handler->tileBaton.try_wait_for(std::chrono::milliseconds(300)));
+  handler->tileBaton.reset();
+  handler->tileBaton2.reset();
+  handler->streamBaton.reset();
 
   // Sink test
   {
     auto handle = folly::copy_to_unique_ptr(client->createStreaming());
     auto sink = handle->co__sink().semi().get();
     // both sink and interaction handle are alive
-    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
-    handler->baton.reset();
+    EXPECT_FALSE(
+        handler->tileBaton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->tileBaton.reset();
     handle.reset();
     // sink keeps interaction alive after handle destroyed
-    EXPECT_FALSE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
-    handler->baton.reset();
+    EXPECT_FALSE(
+        handler->tileBaton.try_wait_for(std::chrono::milliseconds(100)));
+    handler->tileBaton.reset();
   }
   // both sink and handle destroyed
-  EXPECT_TRUE(handler->baton.try_wait_for(std::chrono::milliseconds(100)));
-  handler->baton.reset();
+  EXPECT_TRUE(handler->tileBaton.try_wait_for(std::chrono::milliseconds(300)));
+  handler->tileBaton.reset();
+  handler->tileBaton2.reset();
+  handler->streamBaton.reset();
 
+#endif
+}
+
+TEST(InteractionCodegenTest, ShutdownDuringStreamTeardown) {
+#if FOLLY_HAS_COROUTINES
+  struct StreamingHandler : StreamerSvIf {
+    struct StreamTile : StreamerSvIf::StreamingIf {
+      folly::coro::Task<ServerStream<int>> co_generatorStream() override {
+        co_return folly::coro::co_invoke(
+            [&]() -> folly::coro::AsyncGenerator<int&&> {
+              while (true) {
+                co_yield 0;
+                co_await folly::coro::sleep(std::chrono::milliseconds(100));
+              }
+            });
+      }
+    };
+
+    std::unique_ptr<StreamingIf> createStreaming() override {
+      return std::make_unique<StreamTile>();
+    }
+  };
+
+  auto handler = std::make_shared<StreamingHandler>();
+  ScopedServerInterfaceThread runner{handler};
+  auto client = runner.newClient<StreamerAsyncClient>(nullptr, [](auto socket) {
+    return RocketClientChannel::newChannel(std::move(socket));
+  });
+
+  folly::coro::blockingWait(client->createStreaming().co_generatorStream());
 #endif
 }
 
@@ -684,8 +950,7 @@ TEST(InteractionCodegenTest, BasicEB) {
     struct AdditionHandler : CalculatorSvIf::AdditionFastIf {
       int acc_{0};
       void async_eb_accumulatePrimitive(
-          std::unique_ptr<HandlerCallback<void>> cb,
-          int32_t a) override {
+          std::unique_ptr<HandlerCallback<void>> cb, int32_t a) override {
         acc_ += a;
         cb->exception(std::runtime_error("Not Implemented Yet"));
       }
@@ -697,14 +962,16 @@ TEST(InteractionCodegenTest, BasicEB) {
     std::unique_ptr<AdditionFastIf> createAdditionFast() override {
       return std::make_unique<AdditionHandler>();
     }
+    std::unique_ptr<AdditionIf> createAddition() override { std::terminate(); }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
   };
 
   ScopedServerInterfaceThread runner{
       std::make_shared<ExceptionCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAdditionFast();
 #if FOLLY_HAS_COROUTINES
@@ -722,14 +989,16 @@ TEST(InteractionCodegenTest, ErrorEB) {
     std::unique_ptr<AdditionFastIf> createAdditionFast() override {
       throw std::runtime_error("Unimplemented");
     }
+    std::unique_ptr<AdditionIf> createAddition() override { std::terminate(); }
+    std::unique_ptr<SerialAdditionIf> createSerialAddition() override {
+      std::terminate();
+    }
   };
 
   ScopedServerInterfaceThread runner{
       std::make_shared<ExceptionCalculatorHandler>()};
-  auto client =
-      runner.newClient<CalculatorAsyncClient>(nullptr, [](auto socket) {
-        return RocketClientChannel::newChannel(std::move(socket));
-      });
+  auto client = runner.newClient<CalculatorAsyncClient>(
+      nullptr, RocketClientChannel::newChannel);
 
   auto adder = client->createAdditionFast();
 #if FOLLY_HAS_COROUTINES

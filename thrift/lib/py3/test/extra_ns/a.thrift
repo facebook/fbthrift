@@ -15,5 +15,5 @@
  */
 
 struct StructA {
-  1: i32 val
+  1: i32 val;
 }

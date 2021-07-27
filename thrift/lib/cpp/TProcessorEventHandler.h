@@ -51,8 +51,7 @@ class TProcessorEventHandler {
     return getContext(fn_name, connectionContext);
   }
   virtual void* getContext(
-      const char* /*fn_name*/,
-      TConnectionContext* /*connectionContext*/) {
+      const char* /*fn_name*/, TConnectionContext* /*connectionContext*/) {
     return nullptr;
   }
 
@@ -111,22 +110,15 @@ class TProcessorEventHandler {
   /**
    * Called after writing the response.
    */
-  virtual void
-  postWrite(void* /*ctx*/, const char* /*fn_name*/, uint32_t /*bytes*/) {}
-
-  /**
-   * Called when an async function call completes successfully.
-   */
-  virtual void asyncComplete(void* /*ctx*/, const char* /*fn_name*/) {}
+  virtual void postWrite(
+      void* /*ctx*/, const char* /*fn_name*/, uint32_t /*bytes*/) {}
 
   /**
    * Called if the handler throws an undeclared exception.
    */
   virtual void handlerError(void* /*ctx*/, const char* /*fn_name*/) {}
   virtual void handlerErrorWrapped(
-      void* ctx,
-      const char* fn_name,
-      const folly::exception_wrapper& /*ew*/) {
+      void* ctx, const char* fn_name, const folly::exception_wrapper& /*ew*/) {
     handlerError(ctx, fn_name);
   }
 

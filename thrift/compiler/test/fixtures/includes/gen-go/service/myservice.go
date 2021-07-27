@@ -205,13 +205,72 @@ func (p *MyServiceThreadsafeClient) recvHasArgDocs() (err error) {
 }
 
 
+//This is a service-level docblock
+type MyServiceChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *MyServiceChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyServiceChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyServiceChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyServiceChannelClient(channel thrift.RequestChannel) *MyServiceChannelClient {
+  return &MyServiceChannelClient{RequestChannel: channel}
+}
+
+// This is a function-level docblock
+// 
+// Parameters:
+//  - S
+//  - I
+func (p *MyServiceChannelClient) Query(ctx context.Context, s *module0.MyStruct, i *includes1.Included) (err error) {
+  args := MyServiceQueryArgs{
+    S : s,
+    I : i,
+  }
+  var result MyServiceQueryResult
+  err = p.RequestChannel.Call(ctx, "query", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+// Parameters:
+//  - S
+//  - I: arg doc
+func (p *MyServiceChannelClient) HasArgDocs(ctx context.Context, s *module0.MyStruct, i *includes1.Included) (err error) {
+  args := MyServiceHasArgDocsArgs{
+    S : s,
+    I : i,
+  }
+  var result MyServiceHasArgDocsResult
+  err = p.RequestChannel.Call(ctx, "has_arg_docs", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyServiceProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler MyService
 }
 
 func (p *MyServiceProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *MyServiceProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *MyServiceProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -225,15 +284,26 @@ func (p *MyServiceProcessor) ProcessorMap() map[string]thrift.ProcessorFunction 
   return p.processorMap
 }
 
+func (p *MyServiceProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewMyServiceProcessor(handler MyService) *MyServiceProcessor {
-  self2 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self2 := &MyServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self2.processorMap["query"] = &myServiceProcessorQuery{handler:handler}
   self2.processorMap["has_arg_docs"] = &myServiceProcessorHasArgDocs{handler:handler}
+  self2.functionServiceMap["query"] = "MyService"
+  self2.functionServiceMap["has_arg_docs"] = "MyService"
   return self2
 }
 
 type myServiceProcessorQuery struct {
   handler MyService
+}
+
+func (p *MyServiceQueryResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *myServiceProcessorQuery) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -282,6 +352,11 @@ func (p *myServiceProcessorQuery) Run(argStruct thrift.Struct) (thrift.WritableS
 
 type myServiceProcessorHasArgDocs struct {
   handler MyService
+}
+
+func (p *MyServiceHasArgDocsResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *myServiceProcessorHasArgDocs) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -342,10 +417,9 @@ type MyServiceQueryArgs struct {
 
 func NewMyServiceQueryArgs() *MyServiceQueryArgs {
   return &MyServiceQueryArgs{
-S: module0.NewMyStruct(),
-
-I: includes1.NewIncluded(),
-}
+    S: module0.NewMyStruct(),
+    I: includes1.NewIncluded(),
+  }
 }
 
 var MyServiceQueryArgs_S_DEFAULT *module0.MyStruct
@@ -368,6 +442,43 @@ func (p *MyServiceQueryArgs) IsSetS() bool {
 
 func (p *MyServiceQueryArgs) IsSetI() bool {
   return p != nil && p.I != nil
+}
+
+type MyServiceQueryArgsBuilder struct {
+  obj *MyServiceQueryArgs
+}
+
+func NewMyServiceQueryArgsBuilder() *MyServiceQueryArgsBuilder{
+  return &MyServiceQueryArgsBuilder{
+    obj: NewMyServiceQueryArgs(),
+  }
+}
+
+func (p MyServiceQueryArgsBuilder) Emit() *MyServiceQueryArgs{
+  return &MyServiceQueryArgs{
+    S: p.obj.S,
+    I: p.obj.I,
+  }
+}
+
+func (m *MyServiceQueryArgsBuilder) S(s *module0.MyStruct) *MyServiceQueryArgsBuilder {
+  m.obj.S = s
+  return m
+}
+
+func (m *MyServiceQueryArgsBuilder) I(i *includes1.Included) *MyServiceQueryArgsBuilder {
+  m.obj.I = i
+  return m
+}
+
+func (m *MyServiceQueryArgs) SetS(s *module0.MyStruct) *MyServiceQueryArgs {
+  m.S = s
+  return m
+}
+
+func (m *MyServiceQueryArgs) SetI(i *includes1.Included) *MyServiceQueryArgs {
+  m.I = i
+  return m
 }
 
 func (p *MyServiceQueryArgs) Read(iprot thrift.Protocol) error {
@@ -484,6 +595,21 @@ func NewMyServiceQueryResult() *MyServiceQueryResult {
   return &MyServiceQueryResult{}
 }
 
+type MyServiceQueryResultBuilder struct {
+  obj *MyServiceQueryResult
+}
+
+func NewMyServiceQueryResultBuilder() *MyServiceQueryResultBuilder{
+  return &MyServiceQueryResultBuilder{
+    obj: NewMyServiceQueryResult(),
+  }
+}
+
+func (p MyServiceQueryResultBuilder) Emit() *MyServiceQueryResult{
+  return &MyServiceQueryResult{
+  }
+}
+
 func (p *MyServiceQueryResult) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -538,10 +664,9 @@ type MyServiceHasArgDocsArgs struct {
 
 func NewMyServiceHasArgDocsArgs() *MyServiceHasArgDocsArgs {
   return &MyServiceHasArgDocsArgs{
-S: module0.NewMyStruct(),
-
-I: includes1.NewIncluded(),
-}
+    S: module0.NewMyStruct(),
+    I: includes1.NewIncluded(),
+  }
 }
 
 var MyServiceHasArgDocsArgs_S_DEFAULT *module0.MyStruct
@@ -564,6 +689,43 @@ func (p *MyServiceHasArgDocsArgs) IsSetS() bool {
 
 func (p *MyServiceHasArgDocsArgs) IsSetI() bool {
   return p != nil && p.I != nil
+}
+
+type MyServiceHasArgDocsArgsBuilder struct {
+  obj *MyServiceHasArgDocsArgs
+}
+
+func NewMyServiceHasArgDocsArgsBuilder() *MyServiceHasArgDocsArgsBuilder{
+  return &MyServiceHasArgDocsArgsBuilder{
+    obj: NewMyServiceHasArgDocsArgs(),
+  }
+}
+
+func (p MyServiceHasArgDocsArgsBuilder) Emit() *MyServiceHasArgDocsArgs{
+  return &MyServiceHasArgDocsArgs{
+    S: p.obj.S,
+    I: p.obj.I,
+  }
+}
+
+func (m *MyServiceHasArgDocsArgsBuilder) S(s *module0.MyStruct) *MyServiceHasArgDocsArgsBuilder {
+  m.obj.S = s
+  return m
+}
+
+func (m *MyServiceHasArgDocsArgsBuilder) I(i *includes1.Included) *MyServiceHasArgDocsArgsBuilder {
+  m.obj.I = i
+  return m
+}
+
+func (m *MyServiceHasArgDocsArgs) SetS(s *module0.MyStruct) *MyServiceHasArgDocsArgs {
+  m.S = s
+  return m
+}
+
+func (m *MyServiceHasArgDocsArgs) SetI(i *includes1.Included) *MyServiceHasArgDocsArgs {
+  m.I = i
+  return m
 }
 
 func (p *MyServiceHasArgDocsArgs) Read(iprot thrift.Protocol) error {
@@ -678,6 +840,21 @@ type MyServiceHasArgDocsResult struct {
 
 func NewMyServiceHasArgDocsResult() *MyServiceHasArgDocsResult {
   return &MyServiceHasArgDocsResult{}
+}
+
+type MyServiceHasArgDocsResultBuilder struct {
+  obj *MyServiceHasArgDocsResult
+}
+
+func NewMyServiceHasArgDocsResultBuilder() *MyServiceHasArgDocsResultBuilder{
+  return &MyServiceHasArgDocsResultBuilder{
+    obj: NewMyServiceHasArgDocsResult(),
+  }
+}
+
+func (p MyServiceHasArgDocsResultBuilder) Emit() *MyServiceHasArgDocsResult{
+  return &MyServiceHasArgDocsResult{
+  }
 }
 
 func (p *MyServiceHasArgDocsResult) Read(iprot thrift.Protocol) error {

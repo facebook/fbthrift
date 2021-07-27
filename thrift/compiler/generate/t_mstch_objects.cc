@@ -76,7 +76,7 @@ std::shared_ptr<mstch_base> const_value_generator::generate(
     ELEMENT_POSITION pos,
     int32_t index,
     t_const const* current_const,
-    std::pair<t_type*, t_type*> const& expected_types) const {
+    std::pair<const t_type*, const t_type*> const& expected_types) const {
   return std::make_shared<mstch_const_value_key_mapped_pair>(
       value_pair, current_const, expected_types, generators, cache, pos, index);
 }
@@ -106,7 +106,17 @@ std::shared_ptr<mstch_base> annotation_generator::generate(
     ELEMENT_POSITION pos,
     int32_t index) const {
   return std::make_shared<mstch_annotation>(
-      annotation.key, annotation.val, generators, cache, pos, index);
+      annotation.first, annotation.second, generators, cache, pos, index);
+}
+
+std::shared_ptr<mstch_base> structured_annotation_generator::generate(
+    const t_const* annotValue,
+    std::shared_ptr<mstch_generators const> generators,
+    std::shared_ptr<mstch_cache> cache,
+    ELEMENT_POSITION pos,
+    int32_t index) const {
+  return std::make_shared<mstch_structured_annotation>(
+      *annotValue, generators, cache, pos, index);
 }
 
 std::shared_ptr<mstch_base> struct_generator::generate(
@@ -180,8 +190,8 @@ mstch::node mstch_enum::values() {
 
 mstch::node mstch_type::get_struct() {
   if (type_->is_struct() || type_->is_xception()) {
-    std::string id = type_->get_program()->get_name() +
-        get_type_namespace(type_->get_program());
+    std::string id =
+        type_->program()->name() + get_type_namespace(type_->program());
     return generate_elements_cached(
         std::vector<t_struct const*>{dynamic_cast<t_struct const*>(type_)},
         generators_->struct_generator_.get(),
@@ -193,8 +203,8 @@ mstch::node mstch_type::get_struct() {
 
 mstch::node mstch_type::get_enum() {
   if (resolved_type_->is_enum()) {
-    std::string id = type_->get_program()->get_name() +
-        get_type_namespace(type_->get_program());
+    std::string id =
+        type_->program()->name() + get_type_namespace(type_->program());
     return generate_elements_cached(
         std::vector<t_enum const*>{dynamic_cast<t_enum const*>(resolved_type_)},
         generators_->enum_generator_.get(),
@@ -424,7 +434,7 @@ mstch::node mstch_const_value::string_value() {
 
 mstch::node mstch_const_value::list_elems() {
   if (type_ == cv::CV_LIST) {
-    t_type* expected_type = nullptr;
+    const t_type* expected_type = nullptr;
     if (expected_type_) {
       if (expected_type_->is_list()) {
         expected_type =
@@ -442,7 +452,7 @@ mstch::node mstch_const_value::list_elems() {
 
 mstch::node mstch_const_value::map_elems() {
   if (type_ == cv::CV_MAP) {
-    std::pair<t_type*, t_type*> expected_types;
+    std::pair<const t_type*, const t_type*> expected_types;
     if (expected_type_ && expected_type_->is_map()) {
       const auto* m = dynamic_cast<const t_map*>(expected_type_);
       expected_types = {m->get_key_type(), m->get_val_type()};
@@ -453,18 +463,39 @@ mstch::node mstch_const_value::map_elems() {
   return mstch::node();
 }
 
+mstch::node mstch_const_value::is_const_struct() {
+  if (!const_value_->ttype()) {
+    return false;
+  }
+  const auto* type = const_value_->ttype()->deref().get_true_type();
+  return type->is_struct() || type->is_xception();
+}
+
+mstch::node mstch_const_value::const_struct_type() {
+  if (!const_value_->ttype()) {
+    return {};
+  }
+
+  const auto* type = const_value_->ttype()->deref().get_true_type();
+  if (type->is_struct() || type->is_xception()) {
+    return generators_->type_generator_->generate(type, generators_, cache_);
+  }
+
+  return {};
+}
+
 mstch::node mstch_const_value::const_struct() {
   std::vector<t_const*> constants;
   std::vector<int32_t> idx;
   std::vector<std::string> field_names;
   mstch::array a;
 
-  if (const_value_->get_ttype()->is_struct() ||
-      const_value_->get_ttype()->is_xception()) {
-    auto const* strct =
-        dynamic_cast<t_struct const*>(const_value_->get_ttype());
+  const auto* type = const_value_->ttype()->deref().get_true_type();
+  if (type->is_struct() || type->is_xception()) {
+    auto const* strct = dynamic_cast<t_struct const*>(type);
     for (auto member : const_value_->get_map()) {
-      auto const field = strct->get_member(member.first->get_string());
+      auto const* field = strct->get_field_by_name(member.first->get_string());
+      assert(field != nullptr);
       constants.push_back(new t_const(
           nullptr,
           field->get_type(),
@@ -505,11 +536,61 @@ mstch::node mstch_struct::fields() {
 }
 
 mstch::node mstch_struct::thrift_uri() {
-  auto itr = strct_->annotations_.find("thrift.uri");
-  if (itr != strct_->annotations_.end()) {
-    return itr->second;
+  return strct_->get_annotation("thrift.uri");
+}
+
+mstch::node mstch_struct::exception_safety() {
+  if (!strct_->is_xception()) {
+    return std::string("");
   }
-  return std::string();
+
+  const auto* t_ex_ptr = dynamic_cast<const t_exception*>(strct_);
+  auto s = t_ex_ptr->safety();
+
+  switch (s) {
+    case t_error_safety::safe:
+      return std::string("SAFE");
+    default:
+      return std::string("UNSPECIFIED");
+  }
+}
+
+mstch::node mstch_struct::exception_blame() {
+  if (!strct_->is_xception()) {
+    return std::string("");
+  }
+
+  const auto* t_ex_ptr = dynamic_cast<const t_exception*>(strct_);
+  auto s = t_ex_ptr->blame();
+
+  switch (s) {
+    case t_error_blame::server:
+      return std::string("SERVER");
+    case t_error_blame::client:
+      return std::string("CLIENT");
+    default:
+      return std::string("UNSPECIFIED");
+  }
+}
+
+mstch::node mstch_struct::exception_kind() {
+  if (!strct_->is_xception()) {
+    return std::string("");
+  }
+
+  const auto* t_ex_ptr = dynamic_cast<const t_exception*>(strct_);
+  auto s = t_ex_ptr->kind();
+
+  switch (s) {
+    case t_error_kind::transient:
+      return std::string("TRANSIENT");
+    case t_error_kind::stateful:
+      return std::string("STATEFUL");
+    case t_error_kind::permanent:
+      return std::string("PERMANENT");
+    default:
+      return std::string("UNSPECIFIED");
+  }
 }
 
 mstch::node mstch_function::return_type() {
@@ -535,7 +616,7 @@ mstch::node mstch_function::sink_final_response_exceptions() {
 }
 
 mstch::node mstch_function::arg_list() {
-  return generate_fields(function_->get_arglist()->get_members());
+  return generate_fields(function_->get_paramlist()->get_members());
 }
 
 mstch::node mstch_function::returns_stream() {
@@ -556,8 +637,8 @@ mstch::node mstch_service::extends() {
 
 mstch::node mstch_service::generate_cached_extended_service(
     const t_service* service) {
-  std::string id = service->get_program()->get_name() +
-      get_service_namespace(service->get_program());
+  std::string id =
+      service->program()->name() + get_service_namespace(service->program());
   size_t element_index = 0;
   size_t element_count = 1;
   return generate_element_cached(
@@ -590,8 +671,8 @@ mstch::node mstch_const::program() {
 }
 
 mstch::node mstch_program::has_thrift_uris() {
-  for (const auto& strct : program_->get_structs()) {
-    if (strct->annotations_.find("thrift.uri") != strct->annotations_.end()) {
+  for (const auto& strct : program_->structs()) {
+    if (strct->has_annotation("thrift.uri")) {
       return true;
     }
   }
@@ -599,7 +680,7 @@ mstch::node mstch_program::has_thrift_uris() {
 }
 
 mstch::node mstch_program::structs() {
-  std::string id = program_->get_name() + get_program_namespace(program_);
+  std::string id = program_->name() + get_program_namespace(program_);
   return generate_elements_cached(
       get_program_objects(),
       generators_->struct_generator_.get(),
@@ -608,7 +689,7 @@ mstch::node mstch_program::structs() {
 }
 
 mstch::node mstch_program::enums() {
-  std::string id = program_->get_name() + get_program_namespace(program_);
+  std::string id = program_->name() + get_program_namespace(program_);
   return generate_elements_cached(
       get_program_enums(),
       generators_->enum_generator_.get(),
@@ -617,21 +698,21 @@ mstch::node mstch_program::enums() {
 }
 
 mstch::node mstch_program::services() {
-  std::string id = program_->get_name() + get_program_namespace(program_);
+  std::string id = program_->name() + get_program_namespace(program_);
   return generate_elements_cached(
-      program_->get_services(),
+      program_->services(),
       generators_->service_generator_.get(),
       cache_->services_,
       id);
 }
 
 mstch::node mstch_program::typedefs() {
-  return generate_typedefs(program_->get_typedefs());
+  return generate_typedefs(program_->typedefs());
 }
 
 mstch::node mstch_program::constants() {
   mstch::array a;
-  const auto& container = program_->get_consts();
+  const auto& container = program_->consts();
   for (size_t i = 0; i < container.size(); ++i) {
     auto pos = element_position(i, container.size());
     a.push_back(generators_->const_generator_->generate(
@@ -647,10 +728,10 @@ mstch::node mstch_program::constants() {
 }
 
 const std::vector<t_struct*>& mstch_program::get_program_objects() {
-  return program_->get_objects();
+  return program_->objects();
 }
 const std::vector<t_enum*>& mstch_program::get_program_enums() {
-  return program_->get_enums();
+  return program_->enums();
 }
 
 } // namespace compiler

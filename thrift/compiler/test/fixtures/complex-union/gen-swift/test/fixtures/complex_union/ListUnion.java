@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("ListUnion")
-public final class ListUnion {
+public final class ListUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("ListUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -59,20 +59,20 @@ public final class ListUnion {
         return res;
     }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setIntListValue(final List<Long> intListValue) {
         this.value = intListValue;
         this.id = 2;
     }
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     @Deprecated
     public void setStringListValue(final List<String> stringListValue) {
         this.value = stringListValue;
         this.id = 3;
     }
 
-    @ThriftField(value=2, name="intListValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="intListValue", requiredness=Requiredness.NONE)
     public List<Long> getIntListValue() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a intListValue element!");
@@ -84,7 +84,7 @@ public final class ListUnion {
         return this.id == 2;
     }
 
-    @ThriftField(value=3, name="stringListValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="stringListValue", requiredness=Requiredness.NONE)
     public List<String> getStringListValue() {
         if (this.id != 3) {
             throw new IllegalStateException("Not a stringListValue element!");
@@ -160,10 +160,10 @@ public final class ListUnion {
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
       if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+         return;
       }
+      oprot.writeStructBegin(STRUCT_DESC);
       switch (this.id) {
       case _INTLISTVALUE: {
         oprot.writeFieldBegin(INT_LIST_VALUE_FIELD_DESC);
@@ -192,6 +192,11 @@ public final class ListUnion {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<ListUnion> asReader() {
+      return ListUnion::read0;
     }
     
     public static ListUnion read0(TProtocol oprot) throws TException {

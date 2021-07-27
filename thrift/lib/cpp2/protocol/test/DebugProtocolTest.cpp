@@ -59,7 +59,7 @@ TEST(DebugProtocolTest, NoIndices) {
   list.resize(100);
   std::iota(list.begin(), list.end(), 0);
   DebugProtocolWriter::Options options;
-  options.printListIndices = false;
+  options.skipListIndices = true;
   auto debug1 = debugString(debugList, options);
   list.erase(list.begin() + 1);
   auto debug2 = debugString(debugList, options);

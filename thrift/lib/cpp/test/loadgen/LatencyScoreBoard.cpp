@@ -85,8 +85,7 @@ double LatencyScoreBoard::OpData::getLatencyPct(double pct) const {
 }
 
 double LatencyScoreBoard::OpData::getLatencyPctSince(
-    double pct,
-    const OpData* other) const {
+    double pct, const OpData* other) const {
   if (other->count_ >= count_) {
     return 0;
   }
@@ -136,14 +135,16 @@ double LatencyScoreBoard::OpData::getLatencyStdDevSince(
  */
 
 void LatencyScoreBoard::opStarted(uint32_t /* opType */) {
-  startTime_ = concurrency::Util::currentTimeUsec();
+  startTime_ = std::chrono::steady_clock::now();
 }
 
 void LatencyScoreBoard::opSucceeded(uint32_t opType) {
   OpData* data = opData_.getOpData(opType);
 
-  uint64_t latency = (concurrency::Util::currentTimeUsec() - startTime_);
-  data->addDataPoint(latency);
+  auto now = std::chrono::steady_clock::now();
+  auto latency =
+      std::chrono::duration_cast<std::chrono::microseconds>(now - startTime_);
+  data->addDataPoint(latency.count());
 }
 
 void LatencyScoreBoard::opFailed(uint32_t /* opType */) {}

@@ -31,18 +31,19 @@ cdef __EnumData __{{enum:name}}_enum_data  = __EnumData.create(thrift.py3.types.
 @__cython.internal
 @__cython.auto_pickle(False)
 cdef class __{{enum:name}}Meta(thrift.py3.types.EnumMeta):
-
-    def __get_by_name(cls, str name):
-        return __{{enum:name}}_enum_data.get_by_name(name)
-
-    def __get_by_value(cls, int value):
+    def _fbthrift_get_by_value(cls, int value):
         return __{{enum:name}}_enum_data.get_by_value(value)
 
-    def __get_all_names(cls):
+    def _fbthrift_get_all_names(cls):
         return __{{enum:name}}_enum_data.get_all_names()
 
     def __len__(cls):
         return __{{enum:name}}_enum_data.size()
+
+    def __getattribute__(cls, str name not None):
+        if name.startswith("__") or name.startswith("_fbthrift_") or name == "mro":
+            return super().__getattribute__(name)
+        return __{{enum:name}}_enum_data.get_by_name(name)
 
 
 @__cython.final
@@ -56,6 +57,16 @@ cdef class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}CompiledEnum{{/enum:fl
     def __invert__(self):
         return __{{enum:name}}_enum_data.get_invert(self.value)
     {{/enum:flags?}}
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        EnumMetadata[c{{enum:name}}].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "{{program:name}}.{{enum:name}}"
 
 
 __SetMetaClass(<PyTypeObject*> {{enum:name}}, <PyTypeObject*> __{{enum:name}}Meta)

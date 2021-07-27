@@ -75,9 +75,7 @@ class BufferingNimbleDecoder {
     controlCursor_ = cursor;
   }
 
-  void setDataInput(const folly::io::Cursor& cursor) {
-    dataCursor_ = cursor;
-  }
+  void setDataInput(const folly::io::Cursor& cursor) { dataCursor_ = cursor; }
 
   BufferingNimbleDecoderState borrowState() {
     if (folly::kIsDebug) {
@@ -129,7 +127,7 @@ class BufferingNimbleDecoder {
     // bytes. Instead, we check that we didn't overflow manually, in the slow
     // path below.
     if (!controlCursor_.canAdvance(1)) {
-      protocol::TProtocolException::throwExceededSizeLimit();
+      protocol::TProtocolException::throwTruncatedData();
     }
     while (maxChunkFilled_ < kChunksToBuffer && controlCursor_.canAdvance(1)) {
       ssize_t minControlBytes = controlCursor_.length();
@@ -156,7 +154,7 @@ class BufferingNimbleDecoder {
           size_t bytesDecoded = decodeNimbleBlock<repr>(
               controlByte, folly::ByteRange(buf), &chunks_[maxChunkFilled_]);
           if (bytesDecoded > bytesPulled) {
-            protocol::TProtocolException::throwExceededSizeLimit();
+            protocol::TProtocolException::throwTruncatedData();
           }
           dataCursor_.retreat(bytesPulled - bytesDecoded);
           maxChunkFilled_ += kChunksPerBlock;

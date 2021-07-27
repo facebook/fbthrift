@@ -23,15 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="StructWithUnion", builder=StructWithUnion.Builder.class)
-public final class StructWithUnion {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="StructWithUnion", builder=StructWithUnion.Builder.class)
+public final class StructWithUnion implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public StructWithUnion(
-        @ThriftField(value=1, name="u", requiredness=Requiredness.NONE) final test.fixtures.refs.MyUnion u,
-        @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE) final double aDouble,
-        @ThriftField(value=3, name="f", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField f
+        @com.facebook.swift.codec.ThriftField(value=1, name="u", requiredness=Requiredness.NONE) final test.fixtures.refs.MyUnion u,
+        @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE) final double aDouble,
+        @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE) final test.fixtures.refs.MyField f
     ) {
         this.u = u;
         this.aDouble = aDouble;
@@ -46,13 +45,12 @@ public final class StructWithUnion {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.refs.MyUnion u = null;
         private double aDouble = 0.;
         private test.fixtures.refs.MyField f = null;
     
-        @ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
         public Builder setU(test.fixtures.refs.MyUnion u) {
             this.u = u;
             return this;
@@ -60,7 +58,7 @@ public final class StructWithUnion {
     
         public test.fixtures.refs.MyUnion getU() { return u; }
     
-            @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
         public Builder setADouble(double aDouble) {
             this.aDouble = aDouble;
             return this;
@@ -68,7 +66,7 @@ public final class StructWithUnion {
     
         public double getADouble() { return aDouble; }
     
-            @ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
         public Builder setF(test.fixtures.refs.MyField f) {
             this.f = f;
             return this;
@@ -90,7 +88,6 @@ public final class StructWithUnion {
                 this.aDouble,
                 this.f
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -116,34 +113,16 @@ public final class StructWithUnion {
       FIELD_METADATA.put(3, F_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="u", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyUnion getU() { return u; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetU() {
-        return this.u != null;
-    }
     
     
-    @ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="aDouble", requiredness=Requiredness.NONE)
     public double getADouble() { return aDouble; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetADouble() {
-        return __isset_bit_vector.get(_ADOUBLE);
-    }
     
     
-    @ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="f", requiredness=Requiredness.NONE)
     public test.fixtures.refs.MyField getF() { return f; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetF() {
-        return this.f != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -181,6 +160,10 @@ public final class StructWithUnion {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<StructWithUnion> asReader() {
+      return StructWithUnion::read0;
+    }
     
     public static StructWithUnion read0(TProtocol oprot) throws TException {
       TField __field;
@@ -243,4 +226,11 @@ public final class StructWithUnion {
       oprot.writeStructEnd();
     }
     
+    private static class _StructWithUnionLazy {
+        private static final StructWithUnion _DEFAULT = new StructWithUnion.Builder().build();
+    }
+    
+    public static StructWithUnion defaultInstance() {
+        return  _StructWithUnionLazy._DEFAULT;
+    }
 }

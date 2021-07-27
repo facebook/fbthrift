@@ -85,19 +85,19 @@ void visitor::visit_and_recurse(t_const* const tconst) {
 }
 
 void visitor::recurse(t_program* const program) {
-  for (auto* const service : program->get_services()) {
+  for (auto* const service : program->services()) {
     visit_and_recurse(service);
   }
-  for (auto* const tenum : program->get_enums()) {
+  for (auto* const tenum : program->enums()) {
     visit_and_recurse(tenum);
   }
-  for (auto* tstruct : program->get_structs()) {
+  for (auto* tstruct : program->structs()) {
     visit_and_recurse(tstruct);
   }
-  for (auto* txception : program->get_xceptions()) {
-    visit_and_recurse(txception);
+  for (auto* texception : program->exceptions()) {
+    visit_and_recurse(texception);
   }
-  for (auto* tconst : program->get_consts()) {
+  for (auto* tconst : program->consts()) {
     visit_and_recurse(tconst);
   }
 }

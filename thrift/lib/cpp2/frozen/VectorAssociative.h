@@ -38,12 +38,8 @@ class VectorAsSet : public std::vector<V> {
   /**
    * Insert value into the set at unspecified location.
    */
-  void insert(const V& value) {
-    this->push_back(value);
-  }
-  void insert(V&& value) {
-    this->push_back(std::move(value));
-  }
+  void insert(const V& value) { this->push_back(value); }
+  void insert(V&& value) { this->push_back(std::move(value)); }
 
   template <class Iterator>
   void insert(Iterator begin, Iterator end) {
@@ -106,10 +102,8 @@ class VectorAsHashMap : public VectorAsMap<K, V> {
 } // namespace apache
 
 THRIFT_DECLARE_TRAIT_TEMPLATE(
-    IsHashMap,
-    apache::thrift::frozen::VectorAsHashMap)
+    IsHashMap, apache::thrift::frozen::VectorAsHashMap)
 THRIFT_DECLARE_TRAIT_TEMPLATE(
-    IsHashSet,
-    apache::thrift::frozen::VectorAsHashSet)
+    IsHashSet, apache::thrift::frozen::VectorAsHashSet)
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedMap, apache::thrift::frozen::VectorAsMap)
 THRIFT_DECLARE_TRAIT_TEMPLATE(IsOrderedSet, apache::thrift::frozen::VectorAsSet)

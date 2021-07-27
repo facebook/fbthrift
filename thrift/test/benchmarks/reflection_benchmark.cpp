@@ -16,10 +16,10 @@
 
 #include <string_view>
 
+#include <glog/logging.h>
 #include <folly/Benchmark.h>
 #include <folly/init/Init.h>
 #include <folly/lang/Pretty.h>
-#include <glog/logging.h>
 #include <thrift/test/testset/gen-cpp2/testset_fatal_all.h>
 #include <thrift/test/testset/gen-cpp2/testset_for_each_field.h>
 
@@ -116,7 +116,6 @@ void addReflectionBenchmarks() {
   add_benchmark<testset::struct_string>();
   add_benchmark<testset::struct_optional_string>();
   add_benchmark<testset::struct_required_string>();
-  add_benchmark<testset::struct_optional_string_cpp_ref>();
   add_benchmark<testset::union_string>();
 }
 

@@ -39,16 +39,16 @@ def thrift_compile(vector[string] argv):
     result = compile(argv)
 
     py_messages = []
-    it = result.diagnostics.const_begin()
-    end = result.diagnostics.const_end()
+    it = result.detail.diagnostics().const_begin()
+    end = result.detail.diagnostics().const_end()
     while it != end:
         py_messages.append(
             DiagnosticMessage(
-                DiagnosticLevel(<uint32_t>(deref(it).level)),
-                deref(it).filename,
-                deref(it).lineno,
-                deref(it).last_token,
-                deref(it).message,
+                DiagnosticLevel(<uint32_t>(deref(it).level())),
+                deref(it).file(),
+                deref(it).lineno(),
+                deref(it).token(),
+                deref(it).message(),
             )
         )
         inc(it)

@@ -16,12 +16,13 @@
 
 #include <thrift/lib/cpp2/async/AsyncClient.h>
 
+#include <string_view>
+
 namespace apache {
 namespace thrift {
 namespace {
 static InteractionId createInteraction(
-    RequestChannel& channel,
-    folly::StringPiece methodName) {
+    RequestChannel& channel, std::string_view methodName) {
   DCHECK(
       !channel.getEventBase() || channel.getEventBase()->isInEventBaseThread());
   return channel.createInteraction(methodName);
@@ -33,16 +34,14 @@ GeneratedAsyncClient::GeneratedAsyncClient(
     : channel_(std::move(channel)) {}
 
 InteractionHandle::InteractionHandle(
-    std::shared_ptr<RequestChannel> channel,
-    folly::StringPiece methodName)
+    std::shared_ptr<RequestChannel> channel, folly::StringPiece methodName)
     : GeneratedAsyncClient(channel),
       interactionId_(createInteraction(*channel, methodName)) {
   DCHECK(interactionId_);
 }
 
 InteractionHandle::InteractionHandle(
-    std::shared_ptr<RequestChannel> channel,
-    InteractionId id)
+    std::shared_ptr<RequestChannel> channel, InteractionId id)
     : GeneratedAsyncClient(channel), interactionId_(std::move(id)) {
   DCHECK(interactionId_);
 }
@@ -61,7 +60,13 @@ InteractionHandle& InteractionHandle::operator=(InteractionHandle&& other) {
 
 void InteractionHandle::setInteraction(RpcOptions& rpcOptions) {
   DCHECK(interactionId_);
+  DCHECK(rpcOptions.getInteractionId() == 0);
   rpcOptions.setInteractionId(interactionId_);
+}
+
+const InteractionId& InteractionHandle::getInteractionId() {
+  DCHECK(interactionId_);
+  return interactionId_;
 }
 
 void InteractionHandle::terminate() {

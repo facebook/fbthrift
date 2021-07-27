@@ -6,7 +6,7 @@
 #
 from cpython cimport bool as pbool, int as pint, float as pfloat
 
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 

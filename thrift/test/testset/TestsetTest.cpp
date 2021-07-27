@@ -15,6 +15,8 @@
  */
 
 #include <thrift/test/testset/Testset.h>
+
+#include <folly/Traits.h>
 #include <folly/portability/GTest.h>
 #include <thrift/conformance/cpp2/ThriftTypes.h>
 
@@ -34,16 +36,16 @@ TEST(TestsetTest, StructWith) {
       struct_optional_float,
       struct_with<float_t, FieldModifier::Optional>>();
   SameType<
-      struct_optional_string_cpp_ref,
+      struct_optional_list_bool_cpp_ref,
       struct_with<
-          string_t,
+          list<bool_t>,
           FieldModifier::Optional,
           FieldModifier::Reference>>();
   // Order of field modifiers doesn't matter.
   SameType<
-      struct_optional_string_cpp_ref,
+      struct_optional_list_bool_cpp_ref,
       struct_with<
-          string_t,
+          list<bool_t>,
           FieldModifier::Reference,
           FieldModifier::Optional>>();
 }
@@ -54,25 +56,32 @@ TEST(TestsetTest, ExceptionWith) {
       exception_optional_float,
       exception_with<float_t, FieldModifier::Optional>>();
   SameType<
-      exception_optional_string_cpp_ref,
+      exception_optional_list_bool_cpp_ref,
       exception_with<
-          string_t,
+          list<bool_t>,
           FieldModifier::Optional,
           FieldModifier::Reference>>();
   // Order of field modifiers doesn't matter.
   SameType<
-      exception_optional_string_cpp_ref,
+      exception_optional_list_bool_cpp_ref,
       exception_with<
-          string_t,
+          list<bool_t>,
           FieldModifier::Reference,
           FieldModifier::Optional>>();
 }
 
 TEST(TestsetTest, UnionWith) {
-  SameType<union_set_binary, union_with<set<binary_t>>>();
+  SameType<union_set_string, union_with<set<string_t>>>();
   SameType<
       union_map_string_binary_cpp_ref,
       union_with<map<string_t, binary_t>, FieldModifier::Reference>>();
+}
+
+TEST(TestsetTest, CppRef) {
+  struct_optional_list_bool_cpp_ref s;
+  static_assert(std::is_same_v<
+                folly::remove_cvref_t<decltype(s.field_1_ref())>,
+                std::unique_ptr<std::vector<bool>>>);
 }
 
 } // namespace

@@ -19,9 +19,10 @@ namespace thrift {
 namespace detail {
 
 #if FOLLY_HAS_COROUTINES
-template <typename T>
+template <bool WithHeader, typename T>
 ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
-    folly::coro::AsyncGenerator<T&&>&& gen) {
+    folly::coro::AsyncGenerator<
+        std::conditional_t<WithHeader, PayloadAndHeader<T>, T>&&>&& gen) {
   return [gen = std::move(gen)](
              folly::Executor::KeepAlive<> serverExecutor,
              folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
@@ -31,7 +32,7 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
                                    FirstResponsePayload&& payload,
                                    StreamClientCallback* callback,
                                    folly::EventBase* clientEb,
-                                   Tile* interaction) mutable {
+                                   TilePtr&& interaction) mutable {
       DCHECK(clientEb->isInEventBaseThread());
       auto stream = new ServerGeneratorStream(callback, clientEb);
       auto streamPtr = stream->copy();
@@ -39,33 +40,26 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
           [stream = std::move(streamPtr),
            encode,
            gen = std::move(gen),
-           interaction]() mutable -> folly::coro::Task<void> {
+           interaction = TileStreamGuard::transferFrom(
+               std::move(interaction))]() mutable -> folly::coro::Task<void> {
+            bool pauseStream = false;
             int64_t credits = 0;
             class ReadyCallback
                 : public apache::thrift::detail::ServerStreamConsumer {
              public:
-              void consume() override {
-                baton.post();
-              }
+              void consume() override { baton.post(); }
 
-              void canceled() override {
-                std::terminate();
-              }
+              void canceled() override { std::terminate(); }
 
               folly::coro::Baton baton;
             };
-            SCOPE_EXIT {
-              if (interaction) {
-                stream->clientEventBase_->add(
-                    [interaction, eb = stream->clientEventBase_] {
-                      interaction->__fbthrift_releaseRef(*eb);
-                    });
-              }
-              stream->serverClose();
-            };
+            SCOPE_EXIT { stream->serverClose(); };
+
+            // Make sure the generator is destroyed before the interaction.
+            auto gen_ = std::move(gen);
 
             while (true) {
-              if (credits == 0) {
+              if (credits == 0 || pauseStream) {
                 ReadyCallback ready;
                 if (stream->wait(&ready)) {
                   co_await ready.baton;
@@ -77,30 +71,57 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
                 while (!queue.empty()) {
                   auto next = queue.front();
                   queue.pop();
-                  if (next == -1) {
-                    co_return;
+                  switch (next) {
+                    case detail::StreamControl::CANCEL:
+                      co_return;
+                    case detail::StreamControl::PAUSE:
+                      pauseStream = true;
+                      break;
+                    case detail::StreamControl::RESUME:
+                      pauseStream = false;
+                      break;
+                    default:
+                      credits += next;
+                      break;
                   }
-                  credits += next;
                 }
               }
 
-              try {
-                auto&& next = co_await folly::coro::co_withCancellation(
-                    stream->cancelSource_.getToken(), gen.next());
-                if (next) {
-                  stream->publish(encode(folly::Try<T>(std::move(*next))));
-                  --credits;
-                  continue;
-                }
-                stream->publish({});
-              } catch (const std::exception& e) {
-                stream->publish(encode(folly::Try<T>(
-                    folly::exception_wrapper(std::current_exception(), e))));
-              } catch (...) {
-                stream->publish(encode(folly::Try<T>(
-                    folly::exception_wrapper(std::current_exception()))));
+              if (UNLIKELY(pauseStream || credits == 0)) {
+                continue;
               }
-              co_return;
+
+              auto next = co_await folly::coro::co_awaitTry(
+                  folly::coro::co_withCancellation(
+                      stream->cancelSource_.getToken(), gen_.next()));
+              if (next.hasException()) {
+                stream->publish(
+                    encode(folly::Try<T>(std::move(next.exception()))));
+                co_return;
+              }
+              if (!next->has_value()) {
+                stream->publish({});
+                co_return;
+              }
+
+              auto&& item = **next;
+              if constexpr (WithHeader) {
+                if (!item.payload) {
+                  StreamPayloadMetadata md;
+                  md.otherMetadata_ref() = std::move(item.metadata);
+                  stream->publish(folly::Try<StreamPayload>(
+                      folly::in_place, nullptr, std::move(md)));
+                } else {
+                  StreamPayload sp =
+                      *encode(folly::Try<T>(*std::move(item.payload)));
+                  sp.metadata.otherMetadata_ref() = std::move(item.metadata);
+                  stream->publish(folly::Try<StreamPayload>(std::move(sp)));
+                  --credits;
+                }
+              } else {
+                stream->publish(encode(folly::Try<T>(std::move(item))));
+                --credits;
+              }
             }
           })
           .scheduleOn(std::move(serverExecutor))

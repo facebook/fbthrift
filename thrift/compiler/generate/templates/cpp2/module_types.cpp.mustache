@@ -20,23 +20,12 @@
 
 #include <thrift/lib/cpp2/gen/module_types_cpp.h>
 <%#program:any?%>
-<%#program:thrift_uris?%>
 #include <thrift/conformance/cpp2/AnyRegistry.h>
-<%/program:thrift_uris?%>
 <%/program:any?%>
 
 #include "<%program:include_prefix%><%program:name%>_data.h"
 
 <%#program:any?%>
-<%#program:thrift_uris?%>
-namespace {
-apache::thrift::conformance::ThriftTypeInfo typeFor(std::string uri) {
-    apache::thrift::conformance::ThriftTypeInfo type;
-    type.set_uri(std::move(uri));
-    return type;
-}
-} // namespace
-
 <% > common/namespace_cpp2_begin%>
 
 // Static-init time registration for dynamically-linked libraries.
@@ -45,19 +34,19 @@ apache::thrift::conformance::ThriftTypeInfo typeFor(std::string uri) {
 // `<%program:name%>_sinit.cpp`.
 FOLLY_EXPORT bool __fbthrift_static_init_<%program:name%> = (
 <%#program:structs%>
+<%#struct:thrift_uri%>
     apache::thrift::conformance::detail::registerGeneratedStruct<
         <%struct:name%>,
 <%#program:json?%>
         apache::thrift::conformance::StandardProtocol::SimpleJson,
 <%/program:json?%>
         apache::thrift::conformance::StandardProtocol::Compact,
-        apache::thrift::conformance::StandardProtocol::Binary>(
-        typeFor("<%struct:thrift_uri%>")),
+        apache::thrift::conformance::StandardProtocol::Binary>(),
+<%/struct:thrift_uri%>
 <%/program:structs%>
     true);
 <% > common/namespace_cpp2_end%>
 
-<%/program:thrift_uris?%>
 <%/program:any?%>
 <% > module_types_cpp/declare_enums%>
 <%#program:tablebased?%>
@@ -73,7 +62,7 @@ constexpr ptrdiff_t fieldOffset<<% > common/namespace_cpp2 %><%struct:name%>>(st
   constexpr ptrdiff_t offsets[] = {
     <%#struct:fields_in_key_order%>
     offsetof(<% > common/namespace_cpp2 %><%struct:name%>, <%field:name%>)<%!
-    %><% > common/comma_newline %><%/struct:fields_in_key_order%>};
+    %><% > common/comma_newline%><%/struct:fields_in_key_order%>};
   return offsets[fieldIndex];
 }
 
@@ -85,7 +74,7 @@ constexpr ptrdiff_t issetOffset<<% > common/namespace_cpp2 %><%struct:name%>>(st
     %>offsetof(<% > common/namespace_cpp2 %><%struct:name%>, __isset.<%field:name%>)<%!
     %><%/field:has_isset?%><%!
     %><%^field:has_isset?%><%!
-    %>0<%/field:has_isset?%><% > common/comma_newline %><%/struct:fields_in_key_order%>};
+    %>0<%/field:has_isset?%><% > common/comma_newline%><%/struct:fields_in_key_order%>};
   return offsets[fieldIndex];
 }
 <%/struct:union?%>
@@ -112,16 +101,30 @@ FOLLY_POP_WARNING
 <% > common/namespace_cpp2_begin%>
 
 
+<%#struct:thrift_uri%>
+const char* <%struct:name%>::__fbthrift_cpp2_gen_thrift_uri() {
+  return "<%struct:thrift_uri%>";
+}
+
+<%/struct:thrift_uri%>
 <%^struct:union?%>
 <%^struct:cpp_noncopyable%>
-<%#struct:fields_contain_cpp_ref_unique_either?%>
+<%^struct:nondefault_copy_ctor_and_assignment?%>
+<%^struct:is_eligible_for_constexpr?%>
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+<%struct:name%>::<%struct:name%>(const <%struct:name%>&) = default;
+<%struct:name%>& <%struct:name%>::operator=(const <%struct:name%>&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+<%/struct:is_eligible_for_constexpr?%>
+<%/struct:nondefault_copy_ctor_and_assignment?%>
+<%#struct:nondefault_copy_ctor_and_assignment?%>
 <% > module_types_cpp/copy_ctor%>
 
 
 <% > module_types_cpp/assign_overload%>
 
 
-<%/struct:fields_contain_cpp_ref_unique_either?%>
+<%/struct:nondefault_copy_ctor_and_assignment?%>
 <%/struct:cpp_noncopyable%>
 <% > module_types_cpp/declare_members%>
 
@@ -183,7 +186,7 @@ constexpr ::apache::thrift::detail::UnionExtN<<%struct:fields_size%>> <%struct:n
   /* .clear */ ::apache::thrift::detail::clearUnion<<% > common/namespace_cpp2 %><%struct:name%>>,
   /* .unionTypeOffset */ ::apache::thrift::detail::unionTypeOffset<<% > common/namespace_cpp2 %><%struct:name%>>(),
   /* .initMember */ {
-  <%#struct:fields_in_key_order%><%#field:type%>::apache::thrift::detail::placementNewUnionValue<<% > types/ref_type %>><% > common/comma_newline %><%!
+  <%#struct:fields_in_key_order%><%#field:type%>::apache::thrift::detail::placementNewUnionValue<<%field:cpp_storage_type%>><% > common/comma_newline%><%!
 %><%/field:type%><%/struct:fields_in_key_order%>},
 };
 <%/struct:union?%>
@@ -200,7 +203,7 @@ constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthri
 <%#struct:fields_in_key_order%>
   {
     /* .id */ <%field:key%>,
-    /* .isUnqualified */ <%#field:optInReqOut?%>true<%/field:optInReqOut?%><%^field:optInReqOut?%>false<%/field:optInReqOut?%>,
+    /* .isUnqualified */ <%#field:opt_in_req_out?%>true<%/field:opt_in_req_out?%><%^field:opt_in_req_out?%>false<%/field:opt_in_req_out?%>,
     /* .name */ "<%field:name%>",
     /* .memberOffset */ <%!
     %><%#struct:union?%>0<%/struct:union?%><%!
@@ -211,9 +214,9 @@ constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthri
     %><%#struct:union?%>
     /* .issetOffset */ 0,<%!
     %><%/struct:union?%><%#field:type%>
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<<% > common/type_class %>, <% > types/ref_type %>>::typeInfo,<%!
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<<% > common/type_class%>, <%field:cpp_storage_type%>>::typeInfo,<%!
     %><%/field:type%>
-  }<% > common/comma_newline %><%!
+  }<% > common/comma_newline%><%!
   %><%/struct:fields_in_key_order%>}
 };
 <%/program:tablebased?%>
@@ -225,8 +228,8 @@ constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthri
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         <%struct:name%>,
-        <%type:fatal_type_class%>,
-        <% > types/type%>>,
+        <%type:type_class%>,
+        <%type:cpp_type%>>,
     "inconsistent use of json option");
 <%/type:transitively_refers_to_struct?%>
 <%/field:type%>
@@ -240,8 +243,8 @@ static_assert(
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         <%struct:name%>,
-        <%type:fatal_type_class%>,
-        <% > types/type%>>,
+        <%type:type_class%>,
+        <%type:cpp_type%>>,
     "inconsistent use of nimble option");
 <%/type:transitively_refers_to_struct?%>
 <%/field:type%>
@@ -261,8 +264,8 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
     apache::thrift::type_class::enumeration,
     <% > common/namespace_cpp2%><%enum:name%>>::typeInfo = {
   /* .type */ apache::thrift::protocol::TType::T_I32,
+  /* .get */ get<std::int32_t, <% > common/namespace_cpp2%><%enum:name%>>,
   /* .set */ reinterpret_cast<VoidFuncPtr>(set<<% > common/namespace_cpp2%><%enum:name%>, std::int32_t>),
-  /* .get */ reinterpret_cast<VoidFuncPtr>(get<std::int32_t, <% > common/namespace_cpp2%><%enum:name%>>),
   /* .typeExt */ nullptr,
 };
 <%/program:enums%>
@@ -271,8 +274,8 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
   ::apache::thrift::type_class::<%#struct:union?%>variant<%/struct:union?%><%^struct:union?%>structure<%/struct:union?%>,
   <% > common/namespace_cpp2 %><%struct:name%>>::typeInfo = {
   /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
-  /* .set */ nullptr,
   /* .get */ nullptr,
+  /* .set */ nullptr,
   /* .typeExt */ &<% > common/namespace_cpp2 %>__fbthrift_struct_info_<%struct:name%>,
 };
 <%/program:structs%>

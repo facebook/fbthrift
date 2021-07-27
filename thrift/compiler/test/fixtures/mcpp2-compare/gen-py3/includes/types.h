@@ -13,6 +13,7 @@
 #include <thrift/lib/py3/enums.h>
 #include "gen-cpp2/includes_data.h"
 #include "gen-cpp2/includes_types.h"
+#include "gen-cpp2/includes_metadata.h"
 namespace thrift {
 namespace py3 {
 
@@ -44,7 +45,7 @@ void reset_field<::a::different::ns::AStructB>(
     ::a::different::ns::AStructB& obj, uint16_t index) {
   switch (index) {
     case 0:
-      obj.FieldA.reset();
+      obj.FieldA_ref().reset();
       return;
   }
 }

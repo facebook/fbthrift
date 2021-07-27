@@ -1,4 +1,4 @@
-android_lite src/module.thrift
+android src/module.thrift
 go src/module.thrift
 java src/module.thrift
 mstch_cpp2 src/module.thrift

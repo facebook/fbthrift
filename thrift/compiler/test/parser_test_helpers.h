@@ -34,10 +34,9 @@
  */
 template <typename T>
 std::unique_ptr<t_function> create_fake_function(
-    std::string name,
-    t_program* program = nullptr) {
+    std::string name, t_program* program = nullptr) {
   using signature = func_signature<T>;
-  std::unique_ptr<t_struct> args(new t_struct(program, "args"));
+  std::unique_ptr<t_paramlist> args(new t_paramlist(program));
 
   std::size_t index = 0;
   for (auto& arg : signature::args_types()) {
@@ -45,28 +44,22 @@ std::unique_ptr<t_function> create_fake_function(
         arg.release(), "arg_" + boost::lexical_cast<std::string>(index++)));
   }
 
-  return std::unique_ptr<t_function>(new t_function(
-      signature::return_type().release(), std::move(name), std::move(args)));
+  return std::make_unique<t_function>(
+      signature::return_type().release(), std::move(name), std::move(args));
 }
 
 /**
  * Helper function to instantiate fake t_services
  */
 std::unique_ptr<t_service> create_fake_service(
-    std::string name,
-    t_program* program = nullptr) {
-  std::unique_ptr<t_service> service(new t_service(program));
-  service->set_name(std::move(name));
-  return service;
+    std::string name, t_program* program = nullptr) {
+  return std::make_unique<t_service>(program, std::move(name));
 }
 
 /**
  * Helper function to instantiate fake t_enums
  */
 std::unique_ptr<t_enum> create_fake_enum(
-    std::string name,
-    t_program* program = nullptr) {
-  std::unique_ptr<t_enum> tenum(new t_enum(program));
-  tenum->set_name(std::move(name));
-  return tenum;
+    std::string name, t_program* program = nullptr) {
+  return std::make_unique<t_enum>(program, std::move(name));
 }

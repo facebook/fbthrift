@@ -23,9 +23,8 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct("MyStruct3")
-public final class MyStruct3 {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct("MyStruct3")
+public final class MyStruct3 implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStruct3() {
@@ -35,30 +34,33 @@ public final class MyStruct3 {
       this.myString = "foo";
       this.myBool = true;
       this.myDouble = (double)42.42;
-      this.mySet = ImmutableSet.<String>builder()
+      this.mySet = com.google.common.collect.Sets.newHashSet(ImmutableSet.<String>builder()
         .add("foo")
         .add("bar")
         .add("baz")
-        .build();
+        .build());
       this.myDataItem = new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build();
-      this.myList = ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+      this.myList = com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(31).setField2(32).build())
-        .build();
-      this.myMapList = ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
-        .put(1, ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build());
+      this.myMapList = com.google.common.collect.Maps.newHashMap(ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
+        .put(1, com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(31).setField2(32).build())
-        .build())
-        .put(2, ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build()))
+        .put(2, com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(33).setField2(34).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(35).setField2(36).build())
-        .build())
-        .build();
+        .build()))
+        .build());
+      this.myEmptyList = com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build());
+      this.myEmptyMapList = com.google.common.collect.Maps.newHashMap(ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
+        .build());
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private short myInt16 = (short)42;
         private int myInt32 = 422;
@@ -66,28 +68,32 @@ public final class MyStruct3 {
         private String myString = "foo";
         private boolean myBool = true;
         private double myDouble = (double)42.42;
-        private Set<String> mySet = ImmutableSet.<String>builder()
+        private Set<String> mySet = com.google.common.collect.Sets.newHashSet(ImmutableSet.<String>builder()
         .add("foo")
         .add("bar")
         .add("baz")
-        .build();
+        .build());
         private test.fixtures.basic_swift_bean.MyDataItem myDataItem = new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build();
-        private List<test.fixtures.basic_swift_bean.MyDataItem> myList = ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        private List<test.fixtures.basic_swift_bean.MyDataItem> myList = com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(31).setField2(32).build())
-        .build();
-        private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList = ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
-        .put(1, ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build());
+        private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList = com.google.common.collect.Maps.newHashMap(ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
+        .put(1, com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(29).setField2(30).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(31).setField2(32).build())
-        .build())
-        .put(2, ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build()))
+        .put(2, com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(33).setField2(34).build())
         .add(new test.fixtures.basic_swift_bean.MyDataItem.Builder().setField1(35).setField2(36).build())
-        .build())
-        .build();
+        .build()))
+        .build());
+        private List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList = com.google.common.collect.Lists.newArrayList(ImmutableList.<test.fixtures.basic_swift_bean.MyDataItem>builder()
+        .build());
+        private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList = com.google.common.collect.Maps.newHashMap(ImmutableMap.<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>builder()
+        .build());
     
-        @ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
         public Builder setMyInt16(short myInt16) {
             this.myInt16 = myInt16;
             return this;
@@ -95,7 +101,7 @@ public final class MyStruct3 {
     
         public short getMyInt16() { return myInt16; }
     
-            @ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
         public Builder setMyInt32(int myInt32) {
             this.myInt32 = myInt32;
             return this;
@@ -103,7 +109,7 @@ public final class MyStruct3 {
     
         public int getMyInt32() { return myInt32; }
     
-            @ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
         public Builder setMyInt64(long myInt64) {
             this.myInt64 = myInt64;
             return this;
@@ -111,7 +117,7 @@ public final class MyStruct3 {
     
         public long getMyInt64() { return myInt64; }
     
-            @ThriftField(value=4, name="myString", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="myString", requiredness=Requiredness.NONE)
         public Builder setMyString(String myString) {
             this.myString = myString;
             return this;
@@ -119,7 +125,7 @@ public final class MyStruct3 {
     
         public String getMyString() { return myString; }
     
-            @ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
         public Builder setMyBool(boolean myBool) {
             this.myBool = myBool;
             return this;
@@ -127,7 +133,7 @@ public final class MyStruct3 {
     
         public boolean isMyBool() { return myBool; }
     
-            @ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
         public Builder setMyDouble(double myDouble) {
             this.myDouble = myDouble;
             return this;
@@ -135,7 +141,7 @@ public final class MyStruct3 {
     
         public double getMyDouble() { return myDouble; }
     
-            @ThriftField(value=7, name="mySet", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=7, name="mySet", requiredness=Requiredness.NONE)
         public Builder setMySet(Set<String> mySet) {
             this.mySet = mySet;
             return this;
@@ -143,7 +149,7 @@ public final class MyStruct3 {
     
         public Set<String> getMySet() { return mySet; }
     
-            @ThriftField(value=8, name="MyDataItem", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=8, name="MyDataItem", requiredness=Requiredness.NONE)
         public Builder setMyDataItem(test.fixtures.basic_swift_bean.MyDataItem myDataItem) {
             this.myDataItem = myDataItem;
             return this;
@@ -151,7 +157,7 @@ public final class MyStruct3 {
     
         public test.fixtures.basic_swift_bean.MyDataItem getMyDataItem() { return myDataItem; }
     
-            @ThriftField(value=9, name="myList", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=9, name="myList", requiredness=Requiredness.NONE)
         public Builder setMyList(List<test.fixtures.basic_swift_bean.MyDataItem> myList) {
             this.myList = myList;
             return this;
@@ -159,13 +165,29 @@ public final class MyStruct3 {
     
         public List<test.fixtures.basic_swift_bean.MyDataItem> getMyList() { return myList; }
     
-            @ThriftField(value=10, name="myMapList", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=10, name="myMapList", requiredness=Requiredness.NONE)
         public Builder setMyMapList(Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList) {
             this.myMapList = myMapList;
             return this;
         }
     
         public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyMapList() { return myMapList; }
+    
+            @com.facebook.swift.codec.ThriftField(value=11, name="myEmptyList", requiredness=Requiredness.NONE)
+        public Builder setMyEmptyList(List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList) {
+            this.myEmptyList = myEmptyList;
+            return this;
+        }
+    
+        public List<test.fixtures.basic_swift_bean.MyDataItem> getMyEmptyList() { return myEmptyList; }
+    
+            @com.facebook.swift.codec.ThriftField(value=12, name="myEmptyMapList", requiredness=Requiredness.NONE)
+        public Builder setMyEmptyMapList(Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList) {
+            this.myEmptyMapList = myEmptyMapList;
+            return this;
+        }
+    
+        public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyEmptyMapList() { return myEmptyMapList; }
     
         public Builder() { }
         public Builder(MyStruct3 other) {
@@ -179,6 +201,8 @@ public final class MyStruct3 {
             this.myDataItem = other.myDataItem;
             this.myList = other.myList;
             this.myMapList = other.myMapList;
+            this.myEmptyList = other.myEmptyList;
+            this.myEmptyMapList = other.myEmptyMapList;
         }
     
         @ThriftConstructor
@@ -194,7 +218,8 @@ public final class MyStruct3 {
             result.myDataItem = this.myDataItem;
             result.myList = this.myList;
             result.myMapList = this.myMapList;
-            result.__isset_bit_vector.or(__optional_isset);
+            result.myEmptyList = this.myEmptyList;
+            result.myEmptyMapList = this.myEmptyMapList;
             return result;
         }
     }
@@ -232,6 +257,12 @@ public final class MyStruct3 {
     private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList;
     public static final int _MYMAPLIST = 10;
     private static final TField MY_MAP_LIST_FIELD_DESC = new TField("myMapList", TType.MAP, (short)10);
+    private List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList;
+    public static final int _MYEMPTYLIST = 11;
+    private static final TField MY_EMPTY_LIST_FIELD_DESC = new TField("myEmptyList", TType.LIST, (short)11);
+    private Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList;
+    public static final int _MYEMPTYMAPLIST = 12;
+    private static final TField MY_EMPTY_MAP_LIST_FIELD_DESC = new TField("myEmptyMapList", TType.MAP, (short)12);
 static {
       NAMES_TO_IDS.put("myInt16", 1);
       FIELD_METADATA.put(1, MY_INT16_FIELD_DESC);
@@ -253,207 +284,131 @@ static {
       FIELD_METADATA.put(9, MY_LIST_FIELD_DESC);
       NAMES_TO_IDS.put("myMapList", 10);
       FIELD_METADATA.put(10, MY_MAP_LIST_FIELD_DESC);
+      NAMES_TO_IDS.put("myEmptyList", 11);
+      FIELD_METADATA.put(11, MY_EMPTY_LIST_FIELD_DESC);
+      NAMES_TO_IDS.put("myEmptyMapList", 12);
+      FIELD_METADATA.put(12, MY_EMPTY_MAP_LIST_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myInt16", requiredness=Requiredness.NONE)
     public short getMyInt16() { return myInt16; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct3 setMyInt16(short myInt16) {
         this.myInt16 = myInt16;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyInt16() {
-        return __isset_bit_vector.get(_MYINT16);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyInt16() {
-        __isset_bit_vector.clear(_MYINT16);
-    }
     
-    @ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=2, name="myInt32", requiredness=Requiredness.NONE)
     public int getMyInt32() { return myInt32; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct3 setMyInt32(int myInt32) {
         this.myInt32 = myInt32;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyInt32() {
-        return __isset_bit_vector.get(_MYINT32);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyInt32() {
-        __isset_bit_vector.clear(_MYINT32);
-    }
     
-    @ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=3, name="myInt64", requiredness=Requiredness.NONE)
     public long getMyInt64() { return myInt64; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct3 setMyInt64(long myInt64) {
         this.myInt64 = myInt64;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyInt64() {
-        return __isset_bit_vector.get(_MYINT64);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyInt64() {
-        __isset_bit_vector.clear(_MYINT64);
-    }
     
-    @ThriftField(value=4, name="myString", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=4, name="myString", requiredness=Requiredness.NONE)
     public String getMyString() { return myString; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct3 setMyString(String myString) {
         this.myString = myString;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyString() {
-        return this.myString != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyString() {
-        this.myString = null;
-    }
     
-    @ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=5, name="myBool", requiredness=Requiredness.NONE)
     public boolean isMyBool() { return myBool; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct3 setMyBool(boolean myBool) {
         this.myBool = myBool;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyBool() {
-        return __isset_bit_vector.get(_MYBOOL);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyBool() {
-        __isset_bit_vector.clear(_MYBOOL);
-    }
     
-    @ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=6, name="myDouble", requiredness=Requiredness.NONE)
     public double getMyDouble() { return myDouble; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct3 setMyDouble(double myDouble) {
         this.myDouble = myDouble;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDouble() {
-        return __isset_bit_vector.get(_MYDOUBLE);
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDouble() {
-        __isset_bit_vector.clear(_MYDOUBLE);
-    }
     
-    @ThriftField(value=7, name="mySet", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=7, name="mySet", requiredness=Requiredness.NONE)
     public Set<String> getMySet() { return mySet; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct3 setMySet(Set<String> mySet) {
         this.mySet = mySet;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMySet() {
-        return this.mySet != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMySet() {
-        this.mySet = null;
-    }
     
-    @ThriftField(value=8, name="MyDataItem", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=8, name="MyDataItem", requiredness=Requiredness.NONE)
     public test.fixtures.basic_swift_bean.MyDataItem getMyDataItem() { return myDataItem; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct3 setMyDataItem(test.fixtures.basic_swift_bean.MyDataItem myDataItem) {
         this.myDataItem = myDataItem;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyDataItem() {
-        return this.myDataItem != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyDataItem() {
-        this.myDataItem = null;
-    }
     
-    @ThriftField(value=9, name="myList", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=9, name="myList", requiredness=Requiredness.NONE)
     public List<test.fixtures.basic_swift_bean.MyDataItem> getMyList() { return myList; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct3 setMyList(List<test.fixtures.basic_swift_bean.MyDataItem> myList) {
         this.myList = myList;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyList() {
-        return this.myList != null;
-    }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyList() {
-        this.myList = null;
-    }
     
-    @ThriftField(value=10, name="myMapList", requiredness=Requiredness.NONE)
+    
+    @com.facebook.swift.codec.ThriftField(value=10, name="myMapList", requiredness=Requiredness.NONE)
     public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyMapList() { return myMapList; }
     
-    @ThriftField
+    @com.facebook.swift.codec.ThriftField
     public MyStruct3 setMyMapList(Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myMapList) {
         this.myMapList = myMapList;
         return this;
     }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyMapList() {
-        return this.myMapList != null;
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=11, name="myEmptyList", requiredness=Requiredness.NONE)
+    public List<test.fixtures.basic_swift_bean.MyDataItem> getMyEmptyList() { return myEmptyList; }
+    
+    @com.facebook.swift.codec.ThriftField
+    public MyStruct3 setMyEmptyList(List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList) {
+        this.myEmptyList = myEmptyList;
+        return this;
     }
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public void unsetMyMapList() {
-        this.myMapList = null;
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=12, name="myEmptyMapList", requiredness=Requiredness.NONE)
+    public Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> getMyEmptyMapList() { return myEmptyMapList; }
+    
+    @com.facebook.swift.codec.ThriftField
+    public MyStruct3 setMyEmptyMapList(Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList) {
+        this.myEmptyMapList = myEmptyMapList;
+        return this;
     }
+    
     @java.lang.Override
     public String toString() {
         ToStringHelper helper = toStringHelper(this);
@@ -467,6 +422,8 @@ static {
         helper.add("myDataItem", myDataItem);
         helper.add("myList", myList);
         helper.add("myMapList", myMapList);
+        helper.add("myEmptyList", myEmptyList);
+        helper.add("myEmptyMapList", myEmptyMapList);
         return helper.toString();
     }
     
@@ -492,6 +449,8 @@ static {
             Objects.equals(myDataItem, other.myDataItem) &&
             Objects.equals(myList, other.myList) &&
             Objects.equals(myMapList, other.myMapList) &&
+            Objects.equals(myEmptyList, other.myEmptyList) &&
+            Objects.equals(myEmptyMapList, other.myEmptyMapList) &&
             true;
     }
     
@@ -507,10 +466,16 @@ static {
             mySet,
             myDataItem,
             myList,
-            myMapList
+            myMapList,
+            myEmptyList,
+            myEmptyMapList
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStruct3> asReader() {
+      return MyStruct3::read0;
+    }
     
     public static MyStruct3 read0(TProtocol oprot) throws TException {
       TField __field;
@@ -645,6 +610,57 @@ static {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _MYEMPTYLIST:
+          if (__field.type == TType.LIST) {
+            List<test.fixtures.basic_swift_bean.MyDataItem> myEmptyList;
+            {
+            TList _list = oprot.readListBegin();
+            myEmptyList = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list.size));
+            for (int _i = 0; (_list.size < 0) ? oprot.peekList() : (_i < _list.size); _i++) {
+                
+                test.fixtures.basic_swift_bean.MyDataItem _value1 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                myEmptyList.add(_value1);
+            }
+            oprot.readListEnd();
+            }
+            builder.setMyEmptyList(myEmptyList);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
+        case _MYEMPTYMAPLIST:
+          if (__field.type == TType.MAP) {
+            Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> myEmptyMapList;
+            {
+            TMap _map = oprot.readMapBegin();
+            myEmptyMapList = new HashMap<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>>(Math.max(0, _map.size));
+            for (int _i = 0; (_map.size < 0) ? oprot.peekMap() : (_i < _map.size); _i++) {
+                
+                int _key1 = oprot.readI32();
+                List<test.fixtures.basic_swift_bean.MyDataItem> _value1;
+                            {
+                            TList _list1 = oprot.readListBegin();
+                            _value1 = new ArrayList<test.fixtures.basic_swift_bean.MyDataItem>(Math.max(0, _list1.size));
+                            for (int _i1 = 0; (_list1.size < 0) ? oprot.peekList() : (_i1 < _list1.size); _i1++) {
+                                
+                                
+                                test.fixtures.basic_swift_bean.MyDataItem _value2 = test.fixtures.basic_swift_bean.MyDataItem.read0(oprot);
+                                
+                                
+                                _value1.add(_value2);
+                                
+                            }
+                            oprot.readListEnd();
+                            }
+                                myEmptyMapList.put(_key1, _value1);
+            }
+            }
+            oprot.readMapEnd();
+            builder.setMyEmptyMapList(myEmptyMapList);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -718,8 +734,35 @@ static {
         oprot.writeMapEnd();
         oprot.writeFieldEnd();
       }
+      if (this.myEmptyList != null) {
+        oprot.writeFieldBegin(MY_EMPTY_LIST_FIELD_DESC);
+        List<test.fixtures.basic_swift_bean.MyDataItem> _iter0 = this.myEmptyList;
+        oprot.writeListBegin(new TList(TType.STRUCT, _iter0.size()));
+        for (test.fixtures.basic_swift_bean.MyDataItem _iter1 : _iter0) {
+          _iter1.write0(oprot);
+        }
+        oprot.writeListEnd();
+        oprot.writeFieldEnd();
+      }
+      if (this.myEmptyMapList != null) {
+        oprot.writeFieldBegin(MY_EMPTY_MAP_LIST_FIELD_DESC);
+        Map<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter0 = this.myEmptyMapList;
+        oprot.writeMapBegin(new TMap(TType.I32, TType.LIST, _iter0.size()));
+        for (Map.Entry<Integer, List<test.fixtures.basic_swift_bean.MyDataItem>> _iter1 : _iter0.entrySet()) {
+          oprot.writeI32(_iter1.getKey());
+          
+          oprot.writeListBegin(new TList(TType.STRUCT, _iter1.getValue().size()));
+        for (test.fixtures.basic_swift_bean.MyDataItem _iter2 : _iter1.getValue()) {
+          _iter2.write0(oprot);
+        }
+        oprot.writeListEnd();
+        }
+        oprot.writeMapEnd();
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
     
+
 }

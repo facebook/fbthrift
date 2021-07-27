@@ -17,14 +17,37 @@
 }}
 
     {{#program:services}}
+    /// Errors for {{service:name}} functions.
     pub mod {{service:snake}} {
 
-        {{#service:rustFunctions}}{{^function:returns_streams?}}
+        {{#service:rust_exceptions}}
+        pub trait As{{#rust_exception:type}}{{type:rust_name}}{{/rust_exception:type}} {
+            fn as_{{#rust_exception:type}}{{type:rust_name_snake}}{{/rust_exception:type}}(&self) -> Option<&{{#rust_exception:type}}{{>lib/type}}{{/rust_exception:type}}>;
+        }
+
+        impl As{{#rust_exception:type}}{{type:rust_name}}{{/rust_exception:type}} for ::anyhow::Error {
+            fn as_{{#rust_exception:type}}{{type:rust_name_snake}}{{/rust_exception:type}}(&self) -> Option<&{{#rust_exception:type}}{{>lib/type}}{{/rust_exception:type}}> {
+                for cause in self.chain() {
+                {{#rust_exception:functions}}
+                {{#rust_exception_function:function}}
+                    if let Some({{function:upcamel}}Error::{{#rust_exception_function:field}}{{field:rust_name}}{{/rust_exception_function:field}}(e)) = cause.downcast_ref::<{{function:upcamel}}Error>() {
+                        return Some(e);
+                    }
+                {{/rust_exception_function:function}}
+                {{/rust_exception:functions}}
+                }
+                None
+            }
+        }
+
+        {{/service:rust_exceptions}}
+        {{#service:rustFunctions}}
         {{#function:exceptions?}}
+        /// Errors for {{function:rust_name}}.
         #[derive(Debug, ::thiserror::Error)]
         pub enum {{function:upcamel}}Error {
             {{#function:exceptions}}
-            #[error("{{service:name}}::{{function:name}} failed with {0:?}")]
+            #[error("{{service:name}}::{{function:rust_name}} failed with {0:?}")]
             {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),
             {{/function:exceptions}}
             #[error("Application exception: {0:?}")]
@@ -37,6 +60,15 @@
         impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}Error {
             fn from(e: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
                 {{function:upcamel}}Error::{{field:rust_name}}(e)
+            }
+        }
+
+        impl As{{#field:type}}{{type:rust_name}}{{/field:type}} for {{function:upcamel}}Error {
+            fn as_{{#field:type}}{{type:rust_name_snake}}{{/field:type}}(&self) -> Option<&{{#field:type}}{{>lib/type}}{{/field:type}}> {
+                match self {
+                    {{function:upcamel}}Error::{{field:rust_name}}(inner) => Some(inner),
+                    _ => None,
+                }
             }
         }
 
@@ -57,7 +89,43 @@
         pub type {{function:upcamel}}Error = ::fbthrift::NonthrowingFunctionError;
         {{/function:exceptions?}}
 
-        {{/function:returns_streams?}}{{/service:rustFunctions}}
+        {{#function:returns_stream?}}{{#function:stream_exceptions?}}
+        #[derive(Debug, ::thiserror::Error)]
+        pub enum {{function:upcamel}}StreamError {
+            {{#function:stream_exceptions}}
+            #[error("{{service:name}}::{{function:rust_name}} stream failed with {0:?}")]
+            {{field:rust_name}}({{#field:type}}{{>lib/type}}{{/field:type}}),
+            {{/function:stream_exceptions}}
+            #[error("Application exception: {0:?}")]
+            ApplicationException(::fbthrift::types::ApplicationException),
+            #[error("{0}")]
+            ThriftError(::anyhow::Error),
+        }
+
+        {{#function:uniqueStreamExceptions}}
+        impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}StreamError {
+            fn from(e: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
+                {{function:upcamel}}StreamError::{{field:rust_name}}(e)
+            }
+        }
+
+        {{/function:uniqueStreamExceptions}}
+        impl ::std::convert::From<::anyhow::Error> for {{function:upcamel}}StreamError {
+            fn from(err: ::anyhow::Error) -> Self {
+                {{function:upcamel}}StreamError::ThriftError(err)
+            }
+        }
+
+        impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}StreamError {
+            fn from(ae: ::fbthrift::ApplicationException) -> Self {
+                {{function:upcamel}}StreamError::ApplicationException(ae)
+            }
+        }
+        {{/function:stream_exceptions?}}
+        {{^function:stream_exceptions?}}
+        pub type {{function:upcamel}}StreamError = ::fbthrift::NonthrowingFunctionError;
+        {{/function:stream_exceptions?}}{{/function:returns_stream?}}
+        {{/service:rustFunctions}}
     }
 
     {{/program:services}}

@@ -16,9 +16,9 @@
 
 #pragma once
 
+#include <utility>
 #include <folly/Portability.h>
 #include <folly/Try.h>
-#include <utility>
 
 namespace apache {
 namespace thrift {

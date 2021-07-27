@@ -16,34 +16,28 @@
 
 #include <thrift/lib/cpp2/async/HeaderChannelTrait.h>
 
+#include <folly/Indestructible.h>
+
 #include <thrift/lib/cpp/TApplicationException.h>
 
 namespace apache {
 namespace thrift {
 
-void HeaderChannelTrait::updateClientType(CLIENT_TYPE ct) {
-  if (prevClientType_ != ct) {
-    prevClientType_ = ct;
-  }
-}
-
-void HeaderChannelTrait::setClientType(CLIENT_TYPE ct) {
-  checkSupportedClient(ct);
-  clientType_ = ct;
-}
-
-void HeaderChannelTrait::setSupportedClients(
-    std::bitset<CLIENT_TYPES_LEN> const* clients) {
-  if (clients) {
-    supported_clients = *clients;
-    supported_clients[THRIFT_HEADER_CLIENT_TYPE] = true;
-
-    setClientType(THRIFT_HEADER_CLIENT_TYPE);
-  }
-}
-
 bool HeaderChannelTrait::isSupportedClient(CLIENT_TYPE ct) {
-  return supported_clients[ct];
+  static folly::Indestructible<std::bitset<CLIENT_TYPES_LEN>> supportedClients(
+      [] {
+        std::bitset<CLIENT_TYPES_LEN> clients;
+        clients[THRIFT_UNFRAMED_DEPRECATED] = true;
+        clients[THRIFT_UNFRAMED_COMPACT_DEPRECATED] = true;
+        clients[THRIFT_FRAMED_DEPRECATED] = true;
+        clients[THRIFT_HTTP_SERVER_TYPE] = true;
+        clients[THRIFT_HTTP_CLIENT_TYPE] = true;
+        clients[THRIFT_HEADER_CLIENT_TYPE] = true;
+        clients[THRIFT_FRAMED_COMPACT] = true;
+        return clients;
+      }());
+
+  return (*supportedClients)[ct];
 }
 
 void HeaderChannelTrait::checkSupportedClient(CLIENT_TYPE ct) {
@@ -52,20 +46,6 @@ void HeaderChannelTrait::checkSupportedClient(CLIENT_TYPE ct) {
         TApplicationException::UNSUPPORTED_CLIENT_TYPE,
         "Transport does not support this client type");
   }
-}
-
-HeaderChannelTrait::HeaderChannelTrait() {
-  std::bitset<CLIENT_TYPES_LEN> clients;
-
-  clients[THRIFT_UNFRAMED_DEPRECATED] = true;
-  clients[THRIFT_UNFRAMED_COMPACT_DEPRECATED] = true;
-  clients[THRIFT_FRAMED_DEPRECATED] = true;
-  clients[THRIFT_HTTP_SERVER_TYPE] = true;
-  clients[THRIFT_HTTP_CLIENT_TYPE] = true;
-  clients[THRIFT_HEADER_CLIENT_TYPE] = true;
-  clients[THRIFT_FRAMED_COMPACT] = true;
-
-  setSupportedClients(&clients);
 }
 } // namespace thrift
 } // namespace apache

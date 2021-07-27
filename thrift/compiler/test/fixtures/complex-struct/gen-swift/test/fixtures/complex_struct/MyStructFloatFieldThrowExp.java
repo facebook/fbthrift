@@ -23,16 +23,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStructFloatFieldThrowExp", builder=MyStructFloatFieldThrowExp.Builder.class)
-public final class MyStructFloatFieldThrowExp {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="MyStructFloatFieldThrowExp", builder=MyStructFloatFieldThrowExp.Builder.class)
+public final class MyStructFloatFieldThrowExp implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStructFloatFieldThrowExp(
-        @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
-        @ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE) final byte myByteField,
-        @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE) final String myStringField,
-        @ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE) final float myFloatField
+        @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE) final byte myByteField,
+        @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE) final String myStringField,
+        @com.facebook.swift.codec.ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE) final float myFloatField
     ) {
         this.myLongField = myLongField;
         this.myByteField = myByteField;
@@ -49,14 +48,13 @@ public final class MyStructFloatFieldThrowExp {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long myLongField = 0L;
         private byte myByteField = 0;
         private String myStringField = null;
         private float myFloatField = 0.f;
     
-        @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
         public Builder setMyLongField(long myLongField) {
             this.myLongField = myLongField;
             return this;
@@ -64,7 +62,7 @@ public final class MyStructFloatFieldThrowExp {
     
         public long getMyLongField() { return myLongField; }
     
-            @ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)
         public Builder setMyByteField(byte myByteField) {
             this.myByteField = myByteField;
             return this;
@@ -72,7 +70,7 @@ public final class MyStructFloatFieldThrowExp {
     
         public byte getMyByteField() { return myByteField; }
     
-            @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
@@ -80,7 +78,7 @@ public final class MyStructFloatFieldThrowExp {
     
         public String getMyStringField() { return myStringField; }
     
-            @ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)
         public Builder setMyFloatField(float myFloatField) {
             this.myFloatField = myFloatField;
             return this;
@@ -104,7 +102,6 @@ public final class MyStructFloatFieldThrowExp {
                 this.myStringField,
                 this.myFloatField
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -135,44 +132,20 @@ public final class MyStructFloatFieldThrowExp {
       FIELD_METADATA.put(4, MY_FLOAT_FIELD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyLongField() {
-        return __isset_bit_vector.get(_MYLONGFIELD);
-    }
     
     
-    @ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="MyByteField", requiredness=Requiredness.NONE)
     public byte getMyByteField() { return myByteField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyByteField() {
-        return __isset_bit_vector.get(_MYBYTEFIELD);
-    }
     
     
-    @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyStringField() {
-        return this.myStringField != null;
-    }
     
     
-    @ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="myFloatField", requiredness=Requiredness.NONE)
     public float getMyFloatField() { return myFloatField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyFloatField() {
-        return __isset_bit_vector.get(_MYFLOATFIELD);
-    }
     
     @java.lang.Override
     public String toString() {
@@ -213,6 +186,10 @@ public final class MyStructFloatFieldThrowExp {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStructFloatFieldThrowExp> asReader() {
+      return MyStructFloatFieldThrowExp::read0;
+    }
     
     public static MyStructFloatFieldThrowExp read0(TProtocol oprot) throws TException {
       TField __field;
@@ -284,4 +261,11 @@ public final class MyStructFloatFieldThrowExp {
       oprot.writeStructEnd();
     }
     
+    private static class _MyStructFloatFieldThrowExpLazy {
+        private static final MyStructFloatFieldThrowExp _DEFAULT = new MyStructFloatFieldThrowExp.Builder().build();
+    }
+    
+    public static MyStructFloatFieldThrowExp defaultInstance() {
+        return  _MyStructFloatFieldThrowExpLazy._DEFAULT;
+    }
 }

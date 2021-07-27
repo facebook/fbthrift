@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-#ifndef T_BASE_TYPE_H
-#define T_BASE_TYPE_H
+#pragma once
 
 #include <cstdlib>
 #include <vector>
@@ -34,132 +33,106 @@ namespace compiler {
 class t_base_type : public t_type {
  public:
   /**
-   * Enumeration of thrift base types
+   * The subset of t_type::type that are base types.
    */
-  enum t_base {
-    TYPE_VOID = int(TypeValue::TYPE_VOID),
-    TYPE_STRING = int(TypeValue::TYPE_STRING),
-    TYPE_BOOL = int(TypeValue::TYPE_BOOL),
-    TYPE_BYTE = int(TypeValue::TYPE_BYTE),
-    TYPE_I16 = int(TypeValue::TYPE_I16),
-    TYPE_I32 = int(TypeValue::TYPE_I32),
-    TYPE_I64 = int(TypeValue::TYPE_I64),
-    TYPE_DOUBLE = int(TypeValue::TYPE_DOUBLE),
-    TYPE_FLOAT = int(TypeValue::TYPE_FLOAT),
-    TYPE_BINARY = int(TypeValue::TYPE_BINARY),
+  enum class type {
+    t_void = int(t_type::type::t_void),
+    t_string = int(t_type::type::t_string),
+    t_bool = int(t_type::type::t_bool),
+    t_byte = int(t_type::type::t_byte),
+    t_i16 = int(t_type::type::t_i16),
+    t_i32 = int(t_type::type::t_i32),
+    t_i64 = int(t_type::type::t_i64),
+    t_double = int(t_type::type::t_double),
+    t_float = int(t_type::type::t_float),
+    t_binary = int(t_type::type::t_binary),
   };
 
-  t_base_type(std::string name, t_base base) : t_type(name), base_(base) {}
+  // A singleton per type.
+  static const t_base_type& t_void();
+  static const t_base_type& t_string();
+  static const t_base_type& t_binary();
+  static const t_base_type& t_bool();
+  static const t_base_type& t_byte();
+  static const t_base_type& t_i16();
+  static const t_base_type& t_i32();
+  static const t_base_type& t_i64();
+  static const t_base_type& t_double();
+  static const t_base_type& t_float();
 
-  t_base get_base() const {
-    return base_;
+  // Returns the name for the given type.
+  using t_type::type_name;
+  static const std::string& type_name(type base_type) {
+    return type_name(static_cast<t_type::type>(base_type));
   }
 
-  bool is_void() const override {
-    return base_ == TYPE_VOID;
-  }
+  type base_type() const { return base_type_; }
 
-  bool is_string() const override {
-    return base_ == TYPE_STRING;
-  }
+  // TODO(afuller): Disable copy constructor, and use
+  // 'anonymous' typdefs instead.
+  // t_base_type(const t_base_type&) = delete;
 
-  bool is_bool() const override {
-    return base_ == TYPE_BOOL;
-  }
+  std::string get_full_name() const override { return type_name(base_type_); }
 
-  bool is_byte() const override {
-    return base_ == TYPE_BYTE;
-  }
+ private:
+  type base_type_;
 
-  bool is_i16() const override {
-    return base_ == TYPE_I16;
-  }
+  t_base_type(std::string name, type base_type)
+      : t_type(std::move(name)), base_type_(base_type) {}
 
-  bool is_i32() const override {
-    return base_ == TYPE_I32;
-  }
+  // TODO(afuller): Remove everything below here. It is provided only for
+  // backwards compatibility.
+ public:
+  using t_base = type;
+  constexpr static t_base TYPE_VOID = type::t_void;
+  constexpr static t_base TYPE_STRING = type::t_string;
+  constexpr static t_base TYPE_BOOL = type::t_bool;
+  constexpr static t_base TYPE_BYTE = type::t_byte;
+  constexpr static t_base TYPE_I16 = type::t_i16;
+  constexpr static t_base TYPE_I32 = type::t_i32;
+  constexpr static t_base TYPE_I64 = type::t_i64;
+  constexpr static t_base TYPE_DOUBLE = type::t_double;
+  constexpr static t_base TYPE_FLOAT = type::t_float;
+  constexpr static t_base TYPE_BINARY = type::t_binary;
 
-  bool is_i64() const override {
-    return base_ == TYPE_I64;
-  }
+  static std::string t_base_name(t_base t) { return type_name(t); }
 
-  bool is_any_int() const override {
-    return is_i16() || is_i32() || is_i64();
-  }
+  t_base get_base() const { return base_type(); }
 
-  bool is_float() const override {
-    return base_ == TYPE_FLOAT;
-  }
+  /**
+   * t_type overrides
+   */
+  bool is_void() const override { return base_type_ == type::t_void; }
 
-  bool is_double() const override {
-    return base_ == TYPE_DOUBLE;
-  }
+  bool is_bool() const override { return base_type_ == type::t_bool; }
 
-  bool is_floating_point() const override {
-    return base_ == TYPE_DOUBLE || base_ == TYPE_FLOAT;
-  }
+  bool is_byte() const override { return base_type_ == type::t_byte; }
 
-  bool is_binary() const override {
-    return base_ == TYPE_BINARY;
-  }
+  bool is_i16() const override { return base_type_ == type::t_i16; }
 
-  bool is_string_or_binary() const override {
-    return base_ == TYPE_STRING || base_ == TYPE_BINARY;
-  }
+  bool is_i32() const override { return base_type_ == type::t_i32; }
 
-  bool is_base_type() const override {
-    return true;
-  }
+  bool is_i64() const override { return base_type_ == type::t_i64; }
 
-  static std::string t_base_name(t_base tbase) {
-    switch (tbase) {
-      case TYPE_VOID:
-        return "void";
-      case TYPE_STRING:
-        return "string";
-      case TYPE_BOOL:
-        return "bool";
-      case TYPE_BYTE:
-        return "byte";
-      case TYPE_I16:
-        return "i16";
-      case TYPE_I32:
-        return "i32";
-      case TYPE_I64:
-        return "i64";
-      case TYPE_DOUBLE:
-        return "double";
-      case TYPE_FLOAT:
-        return "float";
-      case TYPE_BINARY:
-        return "binary";
-      default:
-        return "(unknown)";
-    }
-  }
+  bool is_float() const override { return base_type_ == type::t_float; }
 
-  std::string get_full_name() const override {
-    return t_base_name(base_);
-  }
+  bool is_double() const override { return base_type_ == type::t_double; }
 
-  std::string get_impl_full_name() const override {
-    return t_base_name(base_);
-  }
+  bool is_string() const override { return base_type_ == type::t_string; }
 
-  TypeValue get_type_value() const override {
-    return static_cast<TypeValue>(base_);
+  bool is_binary() const override { return base_type_ == type::t_binary; }
+
+  bool is_base_type() const override { return true; }
+
+  t_type::type get_type_value() const override {
+    return static_cast<t_type::type>(base_type_);
   }
 
   uint64_t get_type_id() const override {
-    return base_;
+    return static_cast<uint64_t>(base_type_);
   }
-
- private:
-  t_base base_;
 };
 
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif

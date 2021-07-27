@@ -38,3 +38,22 @@ class IOBuf;
 class IOBufQueue;
 
 } // namespace folly
+
+namespace apache {
+namespace thrift {
+namespace detail {
+namespace si {
+
+enum class InvocationType {
+  AsyncTm,
+  Future,
+  SemiFuture,
+  Sync,
+  CoroParam,
+  Coro,
+};
+
+}
+} // namespace detail
+} // namespace thrift
+} // namespace apache

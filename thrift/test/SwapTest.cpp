@@ -69,7 +69,7 @@ void check_simple(
   EXPECT_EQ(*s1.im_default_ref(), *s2.im_default_ref());
   EXPECT_EQ(s1.im_required, s2.im_required);
   EXPECT_EQ(s1.im_optional_ref(), s2.im_optional_ref());
-  EXPECT_EQ(s1.__isset.im_default, s2.__isset.im_default);
+  EXPECT_EQ(s1.im_default_ref().has_value(), s2.im_default_ref().has_value());
 }
 
 TEST(SwapTest, test_swap_optional) {
@@ -83,28 +83,28 @@ TEST(SwapTest, test_swap_optional) {
   *simple1.im_default_ref() = 1;
   simple1.im_required = 1;
   simple1.im_optional_ref() = 1;
-  simple1.__isset.im_default = true;
+  simple1.im_default_ref().ensure();
 
   Simple simple2;
   *simple2.im_default_ref() = 2;
   simple2.im_required = 2;
   simple2.im_optional_ref() = 2;
-  simple2.__isset.im_default = false;
+  apache::thrift::unset_unsafe(simple2.im_default_ref());
 
   Simple simple3;
   *simple3.im_default_ref() = 3;
   simple3.im_required = 3;
   simple3.im_optional_ref() = 3;
-  simple3.__isset.im_default = true;
+  simple3.im_default_ref().ensure();
 
   Simple simple4;
   *simple4.im_default_ref() = 4;
   simple4.im_required = 4;
   simple4.im_optional_ref() = 4;
-  simple4.__isset.im_default = false;
+  apache::thrift::unset_unsafe(simple4.im_default_ref());
 
   *comp1.cp_default_ref() = 5;
-  comp1.__isset.cp_default = true;
+  comp1.cp_default_ref().ensure();
   comp1.cp_required = 0x7fff;
   comp1.cp_optional_ref() = 50;
   comp1.the_map_ref()->insert(make_pair(1, simple1));
@@ -114,7 +114,7 @@ TEST(SwapTest, test_swap_optional) {
   comp1.opt_simp_ref().reset();
 
   *comp2.cp_default_ref() = -7;
-  comp2.__isset.cp_default = false;
+  apache::thrift::unset_unsafe(comp2.cp_default_ref());
   comp2.cp_required = 0;
   comp2.cp_optional_ref().reset();
   comp2.the_map_ref()->insert(make_pair(6, simple2));
@@ -124,7 +124,7 @@ TEST(SwapTest, test_swap_optional) {
   swap(comp1, comp2);
 
   EXPECT_EQ(*comp1.cp_default_ref(), -7);
-  EXPECT_EQ(comp1.__isset.cp_default, false);
+  EXPECT_EQ(comp1.cp_default_ref().has_value(), false);
   EXPECT_EQ(comp1.cp_required, 0);
   EXPECT_FALSE(comp1.cp_optional_ref().has_value());
   EXPECT_EQ(comp1.the_map_ref()->size(), 1);
@@ -133,7 +133,7 @@ TEST(SwapTest, test_swap_optional) {
   check_simple(*comp1.opt_simp_ref(), simple3);
 
   EXPECT_EQ(*comp2.cp_default_ref(), 5);
-  EXPECT_EQ(comp2.__isset.cp_default, true);
+  EXPECT_EQ(comp2.cp_default_ref().has_value(), true);
   EXPECT_EQ(comp2.cp_required, 0x7fff);
   EXPECT_EQ(*comp2.cp_optional_ref(), 50);
   EXPECT_EQ(comp2.the_map_ref()->size(), 3);
@@ -141,5 +141,5 @@ TEST(SwapTest, test_swap_optional) {
   check_simple(comp2.the_map_ref()[99], simple2);
   check_simple(comp2.the_map_ref()[-7], simple3);
   check_simple(comp2.req_simp, simple4);
-  EXPECT_EQ(comp2.__isset.opt_simp, false);
+  EXPECT_EQ(comp2.opt_simp_ref().has_value(), false);
 }

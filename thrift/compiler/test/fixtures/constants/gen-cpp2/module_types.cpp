@@ -135,19 +135,45 @@ void TccStructTraits<::cpp2::Internship>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Internship::Internship(apache::thrift::FragileConstructor, int32_t weeks__arg, ::std::string title__arg,  ::cpp2::Company employer__arg) :
-    weeks(std::move(weeks__arg)),
-    title(std::move(title__arg)),
-    employer(std::move(employer__arg)) {
-  __isset.title = true;
-  __isset.employer = true;
+Internship::Internship(const Internship&) = default;
+Internship& Internship::operator=(const Internship&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Internship::Internship(Internship&& other) noexcept  :
+    weeks(std::move(other.weeks)),
+    title(std::move(other.title)),
+    employer(std::move(other.employer)),
+    compensation(std::move(other.compensation)),
+    __isset(other.__isset) {}
+Internship& Internship::operator=(FOLLY_MAYBE_UNUSED Internship&& other) noexcept {
+    this->weeks = std::move(other.weeks);
+    this->title = std::move(other.title);
+    this->employer = std::move(other.employer);
+    this->compensation = std::move(other.compensation);
+    __isset = other.__isset;
+    return *this;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg) :
+    weeks(std::move(weeks__arg)),
+    title(std::move(title__arg)),
+    employer(std::move(employer__arg)),
+    compensation(std::move(compensation__arg)) {
+  __isset.title = true;
+  __isset.employer = true;
+  __isset.compensation = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Internship::__clear() {
   // clear all fields
-  weeks = 0;
-  title = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  employer =  ::cpp2::Company::FACEBOOK;
+  this->weeks = 0;
+  this->title = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->employer =  ::cpp2::Company::FACEBOOK;
+  this->compensation = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -157,13 +183,16 @@ bool Internship::operator==(const Internship& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.weeks == rhs.weeks)) {
+  if (!(lhs.weeks_ref() == rhs.weeks_ref())) {
     return false;
   }
-  if (!(lhs.title == rhs.title)) {
+  if (!(lhs.title_ref() == rhs.title_ref())) {
     return false;
   }
-  if (lhs.employer_ref() != rhs.employer_ref()) {
+  if (!(lhs.employer_ref() == rhs.employer_ref())) {
+    return false;
+  }
+  if (!(lhs.compensation_ref() == rhs.compensation_ref())) {
     return false;
   }
   return true;
@@ -173,14 +202,17 @@ bool Internship::operator<(const Internship& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.weeks == rhs.weeks)) {
-    return lhs.weeks < rhs.weeks;
+  if (!(lhs.weeks_ref() == rhs.weeks_ref())) {
+    return lhs.weeks_ref() < rhs.weeks_ref();
   }
-  if (!(lhs.title == rhs.title)) {
-    return lhs.title < rhs.title;
+  if (!(lhs.title_ref() == rhs.title_ref())) {
+    return lhs.title_ref() < rhs.title_ref();
   }
-  if (lhs.employer_ref() != rhs.employer_ref()) {
+  if (!(lhs.employer_ref() == rhs.employer_ref())) {
     return lhs.employer_ref() < rhs.employer_ref();
+  }
+  if (!(lhs.compensation_ref() == rhs.compensation_ref())) {
+    return lhs.compensation_ref() < rhs.compensation_ref();
   }
   return false;
 }
@@ -191,6 +223,7 @@ void swap(Internship& a, Internship& b) {
   swap(a.weeks_ref().value(), b.weeks_ref().value());
   swap(a.title_ref().value(), b.title_ref().value());
   swap(a.employer_ref().value_unchecked(), b.employer_ref().value_unchecked());
+  swap(a.compensation_ref().value_unchecked(), b.compensation_ref().value_unchecked());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -232,25 +265,27 @@ void TccStructTraits<::cpp2::Range>::translateFieldName(
 
 namespace cpp2 {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Range::Range(apache::thrift::FragileConstructor, int32_t min__arg, int32_t max__arg) :
+Range::Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std::int32_t max__arg) :
     min(std::move(min__arg)),
     max(std::move(max__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Range::__clear() {
   // clear all fields
-  min = 0;
-  max = 0;
+  this->min = 0;
+  this->max = 0;
 }
 
 bool Range::operator==(const Range& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.min == rhs.min)) {
+  if (!(lhs.min_ref() == rhs.min_ref())) {
     return false;
   }
-  if (!(lhs.max == rhs.max)) {
+  if (!(lhs.max_ref() == rhs.max_ref())) {
     return false;
   }
   return true;
@@ -260,11 +295,11 @@ bool Range::operator<(const Range& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.min == rhs.min)) {
-    return lhs.min < rhs.min;
+  if (!(lhs.min_ref() == rhs.min_ref())) {
+    return lhs.min_ref() < rhs.min_ref();
   }
-  if (!(lhs.max == rhs.max)) {
-    return lhs.max < rhs.max;
+  if (!(lhs.max_ref() == rhs.max_ref())) {
+    return lhs.max_ref() < rhs.max_ref();
   }
   return false;
 }
@@ -313,17 +348,36 @@ void TccStructTraits<::cpp2::struct1>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct1::struct1(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg) :
+struct1::struct1(const struct1&) = default;
+struct1& struct1::operator=(const struct1&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct1::struct1(struct1&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    __isset(other.__isset) {}
+struct1& struct1::operator=(FOLLY_MAYBE_UNUSED struct1&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
   __isset.b = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct1::__clear() {
   // clear all fields
-  a = 1234567;
-  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("<uninitialized>");
+  this->a = 1234567;
+  this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -333,10 +387,10 @@ bool struct1::operator==(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
   return true;
@@ -346,11 +400,11 @@ bool struct1::operator<(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
   return false;
 }
@@ -402,7 +456,29 @@ void TccStructTraits<::cpp2::struct2>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct2::struct2(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg,  ::cpp2::struct1 c__arg, ::std::vector<int32_t> d__arg) :
+struct2::struct2(const struct2&) = default;
+struct2& struct2::operator=(const struct2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct2::struct2(struct2&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    c(std::move(other.c)),
+    d(std::move(other.d)),
+    __isset(other.__isset) {}
+struct2& struct2::operator=(FOLLY_MAYBE_UNUSED struct2&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    this->c = std::move(other.c);
+    this->d = std::move(other.d);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, ::cpp2::struct1 c__arg, ::std::vector<::std::int32_t> d__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)),
@@ -413,12 +489,13 @@ struct2::struct2(apache::thrift::FragileConstructor, int32_t a__arg, ::std::stri
   __isset.d = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct2::__clear() {
   // clear all fields
-  a = 0;
-  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  c.__clear();
-  d.clear();
+  this->a = 0;
+  this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->c.__clear();
+  this->d.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -428,16 +505,16 @@ bool struct2::operator==(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
-  if (!(lhs.d == rhs.d)) {
+  if (!(lhs.d_ref() == rhs.d_ref())) {
     return false;
   }
   return true;
@@ -447,34 +524,34 @@ bool struct2::operator<(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
-  if (!(lhs.d == rhs.d)) {
-    return lhs.d < rhs.d;
+  if (!(lhs.d_ref() == rhs.d_ref())) {
+    return lhs.d_ref() < rhs.d_ref();
   }
   return false;
 }
 
-const  ::cpp2::struct1& struct2::get_c() const& {
+const ::cpp2::struct1& struct2::get_c() const& {
   return c;
 }
 
- ::cpp2::struct1 struct2::get_c() && {
+::cpp2::struct1 struct2::get_c() && {
   return std::move(c);
 }
 
-const ::std::vector<int32_t>& struct2::get_d() const& {
+const ::std::vector<::std::int32_t>& struct2::get_d() const& {
   return d;
 }
 
-::std::vector<int32_t> struct2::get_d() && {
+::std::vector<::std::int32_t> struct2::get_d() && {
   return std::move(d);
 }
 
@@ -503,14 +580,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct1>,
+        ::cpp2::struct1>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct1>,
+        ::cpp2::struct1>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -539,7 +616,27 @@ void TccStructTraits<::cpp2::struct3>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, int32_t b__arg,  ::cpp2::struct2 c__arg) :
+struct3::struct3(const struct3&) = default;
+struct3& struct3::operator=(const struct3&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct3::struct3(struct3&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    c(std::move(other.c)),
+    __isset(other.__isset) {}
+struct3& struct3::operator=(FOLLY_MAYBE_UNUSED struct3&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    this->c = std::move(other.c);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::int32_t b__arg, ::cpp2::struct2 c__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)) {
@@ -548,11 +645,12 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, int32
   __isset.c = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct3::__clear() {
   // clear all fields
-  a = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  b = 0;
-  c.__clear();
+  this->a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->b = 0;
+  this->c.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -562,13 +660,13 @@ bool struct3::operator==(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
   return true;
@@ -578,23 +676,23 @@ bool struct3::operator<(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
   return false;
 }
 
-const  ::cpp2::struct2& struct3::get_c() const& {
+const ::cpp2::struct2& struct3::get_c() const& {
   return c;
 }
 
- ::cpp2::struct2 struct3::get_c() && {
+::cpp2::struct2 struct3::get_c() && {
   return std::move(c);
 }
 
@@ -622,14 +720,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct2>,
+        ::cpp2::struct2>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct2>,
+        ::cpp2::struct2>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -658,7 +756,27 @@ void TccStructTraits<::cpp2::struct4>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct4::struct4(apache::thrift::FragileConstructor, int32_t a__arg, double b__arg, int8_t c__arg) :
+struct4::struct4(const struct4&) = default;
+struct4& struct4::operator=(const struct4&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct4::struct4(struct4&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    c(std::move(other.c)),
+    __isset(other.__isset) {}
+struct4& struct4::operator=(FOLLY_MAYBE_UNUSED struct4&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    this->c = std::move(other.c);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, double b__arg, ::std::int8_t c__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)) {
@@ -667,11 +785,12 @@ struct4::struct4(apache::thrift::FragileConstructor, int32_t a__arg, double b__a
   __isset.c = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct4::__clear() {
   // clear all fields
-  a = 0;
-  b = 0;
-  c = 0;
+  this->a = 0;
+  this->b = 0;
+  this->c = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -681,13 +800,13 @@ bool struct4::operator==(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (lhs.b_ref() != rhs.b_ref()) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (lhs.c_ref() != rhs.c_ref()) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
   return true;
@@ -697,13 +816,13 @@ bool struct4::operator<(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (lhs.b_ref() != rhs.b_ref()) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return lhs.b_ref() < rhs.b_ref();
   }
-  if (lhs.c_ref() != rhs.c_ref()) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return lhs.c_ref() < rhs.c_ref();
   }
   return false;
@@ -967,26 +1086,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         union2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct1>,
+        ::cpp2::struct1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         union2,
         ::apache::thrift::type_class::variant,
-         ::cpp2::union1>,
+        ::cpp2::union1>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         union2,
         ::apache::thrift::type_class::structure,
-         ::cpp2::struct1>,
+        ::cpp2::struct1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         union2,
         ::apache::thrift::type_class::variant,
-         ::cpp2::union1>,
+        ::cpp2::union1>,
     "inconsistent use of nimble option");
 
 } // cpp2

@@ -597,13 +597,179 @@ func (p *GetEntityThreadsafeClient) recvGetLegacyStuff() (value int32, err error
 }
 
 
+type GetEntityChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *GetEntityChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *GetEntityChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *GetEntityChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewGetEntityChannelClient(channel thrift.RequestChannel) *GetEntityChannelClient {
+  return &GetEntityChannelClient{RequestChannel: channel}
+}
+
+// Parameters:
+//  - R
+func (p *GetEntityChannelClient) GetEntity(ctx context.Context, r *GetEntityRequest) (_r *GetEntityResponse, err error) {
+  args := GetEntityGetEntityArgs{
+    R : r,
+  }
+  var result GetEntityGetEntityResult
+  err = p.RequestChannel.Call(ctx, "getEntity", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetBool(ctx context.Context) (_r bool, err error) {
+  args := GetEntityGetBoolArgs{
+  }
+  var result GetEntityGetBoolResult
+  err = p.RequestChannel.Call(ctx, "getBool", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetByte(ctx context.Context) (_r int8, err error) {
+  args := GetEntityGetByteArgs{
+  }
+  var result GetEntityGetByteResult
+  err = p.RequestChannel.Call(ctx, "getByte", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetI16(ctx context.Context) (_r int16, err error) {
+  args := GetEntityGetI16Args{
+  }
+  var result GetEntityGetI16Result
+  err = p.RequestChannel.Call(ctx, "getI16", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetI32(ctx context.Context) (_r int32, err error) {
+  args := GetEntityGetI32Args{
+  }
+  var result GetEntityGetI32Result
+  err = p.RequestChannel.Call(ctx, "getI32", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetI64(ctx context.Context) (_r int64, err error) {
+  args := GetEntityGetI64Args{
+  }
+  var result GetEntityGetI64Result
+  err = p.RequestChannel.Call(ctx, "getI64", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetDouble(ctx context.Context) (_r float64, err error) {
+  args := GetEntityGetDoubleArgs{
+  }
+  var result GetEntityGetDoubleResult
+  err = p.RequestChannel.Call(ctx, "getDouble", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetString(ctx context.Context) (_r string, err error) {
+  args := GetEntityGetStringArgs{
+  }
+  var result GetEntityGetStringResult
+  err = p.RequestChannel.Call(ctx, "getString", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetBinary(ctx context.Context) (_r []byte, err error) {
+  args := GetEntityGetBinaryArgs{
+  }
+  var result GetEntityGetBinaryResult
+  err = p.RequestChannel.Call(ctx, "getBinary", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetMap(ctx context.Context) (_r map[string]string, err error) {
+  args := GetEntityGetMapArgs{
+  }
+  var result GetEntityGetMapResult
+  err = p.RequestChannel.Call(ctx, "getMap", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetSet(ctx context.Context) (_r []string, err error) {
+  args := GetEntityGetSetArgs{
+  }
+  var result GetEntityGetSetResult
+  err = p.RequestChannel.Call(ctx, "getSet", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+func (p *GetEntityChannelClient) GetList(ctx context.Context) (_r []string, err error) {
+  args := GetEntityGetListArgs{
+  }
+  var result GetEntityGetListResult
+  err = p.RequestChannel.Call(ctx, "getList", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+// Parameters:
+//  - NumPos
+//  - NumNeg1
+//  - NumNeg2
+func (p *GetEntityChannelClient) GetLegacyStuff(ctx context.Context, numPos int64, numNeg1 int64, numNeg2 int64) (_r int32, err error) {
+  args := GetEntityGetLegacyStuffArgs{
+    NumPos : numPos,
+    NumNeg1 : numNeg1,
+    NumNeg2 : numNeg2,
+  }
+  var result GetEntityGetLegacyStuffResult
+  err = p.RequestChannel.Call(ctx, "getLegacyStuff", &args, &result)
+  if err != nil { return }
+
+  return result.GetSuccess(), nil
+}
+
+
 type GetEntityProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler GetEntity
 }
 
 func (p *GetEntityProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *GetEntityProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *GetEntityProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -617,8 +783,12 @@ func (p *GetEntityProcessor) ProcessorMap() map[string]thrift.ProcessorFunction 
   return p.processorMap
 }
 
+func (p *GetEntityProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewGetEntityProcessor(handler GetEntity) *GetEntityProcessor {
-  self0 := &GetEntityProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self0 := &GetEntityProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self0.processorMap["getEntity"] = &getEntityProcessorGetEntity{handler:handler}
   self0.processorMap["getBool"] = &getEntityProcessorGetBool{handler:handler}
   self0.processorMap["getByte"] = &getEntityProcessorGetByte{handler:handler}
@@ -632,11 +802,29 @@ func NewGetEntityProcessor(handler GetEntity) *GetEntityProcessor {
   self0.processorMap["getSet"] = &getEntityProcessorGetSet{handler:handler}
   self0.processorMap["getList"] = &getEntityProcessorGetList{handler:handler}
   self0.processorMap["getLegacyStuff"] = &getEntityProcessorGetLegacyStuff{handler:handler}
+  self0.functionServiceMap["getEntity"] = "GetEntity"
+  self0.functionServiceMap["getBool"] = "GetEntity"
+  self0.functionServiceMap["getByte"] = "GetEntity"
+  self0.functionServiceMap["getI16"] = "GetEntity"
+  self0.functionServiceMap["getI32"] = "GetEntity"
+  self0.functionServiceMap["getI64"] = "GetEntity"
+  self0.functionServiceMap["getDouble"] = "GetEntity"
+  self0.functionServiceMap["getString"] = "GetEntity"
+  self0.functionServiceMap["getBinary"] = "GetEntity"
+  self0.functionServiceMap["getMap"] = "GetEntity"
+  self0.functionServiceMap["getSet"] = "GetEntity"
+  self0.functionServiceMap["getList"] = "GetEntity"
+  self0.functionServiceMap["getLegacyStuff"] = "GetEntity"
   return self0
 }
 
 type getEntityProcessorGetEntity struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetEntityResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetEntity) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -689,6 +877,11 @@ type getEntityProcessorGetBool struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetBoolResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetBool) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetBoolArgs{}
   if err := args.Read(iprot); err != nil {
@@ -736,6 +929,11 @@ func (p *getEntityProcessorGetBool) Run(argStruct thrift.Struct) (thrift.Writabl
 
 type getEntityProcessorGetByte struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetByteResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetByte) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -787,6 +985,11 @@ type getEntityProcessorGetI16 struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetI16Result) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetI16) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetI16Args{}
   if err := args.Read(iprot); err != nil {
@@ -834,6 +1037,11 @@ func (p *getEntityProcessorGetI16) Run(argStruct thrift.Struct) (thrift.Writable
 
 type getEntityProcessorGetI32 struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetI32Result) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetI32) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -885,6 +1093,11 @@ type getEntityProcessorGetI64 struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetI64Result) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetI64) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetI64Args{}
   if err := args.Read(iprot); err != nil {
@@ -932,6 +1145,11 @@ func (p *getEntityProcessorGetI64) Run(argStruct thrift.Struct) (thrift.Writable
 
 type getEntityProcessorGetDouble struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetDoubleResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetDouble) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -983,6 +1201,11 @@ type getEntityProcessorGetString struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetStringResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetString) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetStringArgs{}
   if err := args.Read(iprot); err != nil {
@@ -1030,6 +1253,11 @@ func (p *getEntityProcessorGetString) Run(argStruct thrift.Struct) (thrift.Writa
 
 type getEntityProcessorGetBinary struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetBinaryResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetBinary) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1081,6 +1309,11 @@ type getEntityProcessorGetMap struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetMapResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetMap) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetMapArgs{}
   if err := args.Read(iprot); err != nil {
@@ -1128,6 +1361,11 @@ func (p *getEntityProcessorGetMap) Run(argStruct thrift.Struct) (thrift.Writable
 
 type getEntityProcessorGetSet struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetSetResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetSet) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1179,6 +1417,11 @@ type getEntityProcessorGetList struct {
   handler GetEntity
 }
 
+func (p *GetEntityGetListResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
+}
+
 func (p *getEntityProcessorGetList) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
   args := GetEntityGetListArgs{}
   if err := args.Read(iprot); err != nil {
@@ -1226,6 +1469,11 @@ func (p *getEntityProcessorGetList) Run(argStruct thrift.Struct) (thrift.Writabl
 
 type getEntityProcessorGetLegacyStuff struct {
   handler GetEntity
+}
+
+func (p *GetEntityGetLegacyStuffResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *getEntityProcessorGetLegacyStuff) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -1286,8 +1534,8 @@ type GetEntityGetEntityArgs struct {
 
 func NewGetEntityGetEntityArgs() *GetEntityGetEntityArgs {
   return &GetEntityGetEntityArgs{
-R: NewGetEntityRequest(),
-}
+    R: NewGetEntityRequest(),
+  }
 }
 
 var GetEntityGetEntityArgs_R_DEFAULT *GetEntityRequest
@@ -1299,6 +1547,32 @@ return p.R
 }
 func (p *GetEntityGetEntityArgs) IsSetR() bool {
   return p != nil && p.R != nil
+}
+
+type GetEntityGetEntityArgsBuilder struct {
+  obj *GetEntityGetEntityArgs
+}
+
+func NewGetEntityGetEntityArgsBuilder() *GetEntityGetEntityArgsBuilder{
+  return &GetEntityGetEntityArgsBuilder{
+    obj: NewGetEntityGetEntityArgs(),
+  }
+}
+
+func (p GetEntityGetEntityArgsBuilder) Emit() *GetEntityGetEntityArgs{
+  return &GetEntityGetEntityArgs{
+    R: p.obj.R,
+  }
+}
+
+func (g *GetEntityGetEntityArgsBuilder) R(r *GetEntityRequest) *GetEntityGetEntityArgsBuilder {
+  g.obj.R = r
+  return g
+}
+
+func (g *GetEntityGetEntityArgs) SetR(r *GetEntityRequest) *GetEntityGetEntityArgs {
+  g.R = r
+  return g
 }
 
 func (p *GetEntityGetEntityArgs) Read(iprot thrift.Protocol) error {
@@ -1381,7 +1655,7 @@ func (p *GetEntityGetEntityArgs) String() string {
 //  - Success
 type GetEntityGetEntityResult struct {
   thrift.IResponse
-  Success *GetEntityResponse `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *GetEntityResponse `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetEntityResult() *GetEntityGetEntityResult {
@@ -1397,6 +1671,32 @@ return p.Success
 }
 func (p *GetEntityGetEntityResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetEntityResultBuilder struct {
+  obj *GetEntityGetEntityResult
+}
+
+func NewGetEntityGetEntityResultBuilder() *GetEntityGetEntityResultBuilder{
+  return &GetEntityGetEntityResultBuilder{
+    obj: NewGetEntityGetEntityResult(),
+  }
+}
+
+func (p GetEntityGetEntityResultBuilder) Emit() *GetEntityGetEntityResult{
+  return &GetEntityGetEntityResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetEntityResultBuilder) Success(success *GetEntityResponse) *GetEntityGetEntityResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetEntityResult) SetSuccess(success *GetEntityResponse) *GetEntityGetEntityResult {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetEntityResult) Read(iprot thrift.Protocol) error {
@@ -1485,6 +1785,21 @@ func NewGetEntityGetBoolArgs() *GetEntityGetBoolArgs {
   return &GetEntityGetBoolArgs{}
 }
 
+type GetEntityGetBoolArgsBuilder struct {
+  obj *GetEntityGetBoolArgs
+}
+
+func NewGetEntityGetBoolArgsBuilder() *GetEntityGetBoolArgsBuilder{
+  return &GetEntityGetBoolArgsBuilder{
+    obj: NewGetEntityGetBoolArgs(),
+  }
+}
+
+func (p GetEntityGetBoolArgsBuilder) Emit() *GetEntityGetBoolArgs{
+  return &GetEntityGetBoolArgs{
+  }
+}
+
 func (p *GetEntityGetBoolArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1532,7 +1847,7 @@ func (p *GetEntityGetBoolArgs) String() string {
 //  - Success
 type GetEntityGetBoolResult struct {
   thrift.IResponse
-  Success *bool `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *bool `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetBoolResult() *GetEntityGetBoolResult {
@@ -1548,6 +1863,32 @@ return *p.Success
 }
 func (p *GetEntityGetBoolResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetBoolResultBuilder struct {
+  obj *GetEntityGetBoolResult
+}
+
+func NewGetEntityGetBoolResultBuilder() *GetEntityGetBoolResultBuilder{
+  return &GetEntityGetBoolResultBuilder{
+    obj: NewGetEntityGetBoolResult(),
+  }
+}
+
+func (p GetEntityGetBoolResultBuilder) Emit() *GetEntityGetBoolResult{
+  return &GetEntityGetBoolResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetBoolResultBuilder) Success(success *bool) *GetEntityGetBoolResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetBoolResult) SetSuccess(success *bool) *GetEntityGetBoolResult {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetBoolResult) Read(iprot thrift.Protocol) error {
@@ -1584,10 +1925,10 @@ func (p *GetEntityGetBoolResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetBoolResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBool(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -1634,6 +1975,21 @@ type GetEntityGetByteArgs struct {
 
 func NewGetEntityGetByteArgs() *GetEntityGetByteArgs {
   return &GetEntityGetByteArgs{}
+}
+
+type GetEntityGetByteArgsBuilder struct {
+  obj *GetEntityGetByteArgs
+}
+
+func NewGetEntityGetByteArgsBuilder() *GetEntityGetByteArgsBuilder{
+  return &GetEntityGetByteArgsBuilder{
+    obj: NewGetEntityGetByteArgs(),
+  }
+}
+
+func (p GetEntityGetByteArgsBuilder) Emit() *GetEntityGetByteArgs{
+  return &GetEntityGetByteArgs{
+  }
 }
 
 func (p *GetEntityGetByteArgs) Read(iprot thrift.Protocol) error {
@@ -1683,7 +2039,7 @@ func (p *GetEntityGetByteArgs) String() string {
 //  - Success
 type GetEntityGetByteResult struct {
   thrift.IResponse
-  Success *int8 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int8 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetByteResult() *GetEntityGetByteResult {
@@ -1699,6 +2055,32 @@ return *p.Success
 }
 func (p *GetEntityGetByteResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetByteResultBuilder struct {
+  obj *GetEntityGetByteResult
+}
+
+func NewGetEntityGetByteResultBuilder() *GetEntityGetByteResultBuilder{
+  return &GetEntityGetByteResultBuilder{
+    obj: NewGetEntityGetByteResult(),
+  }
+}
+
+func (p GetEntityGetByteResultBuilder) Emit() *GetEntityGetByteResult{
+  return &GetEntityGetByteResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetByteResultBuilder) Success(success *int8) *GetEntityGetByteResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetByteResult) SetSuccess(success *int8) *GetEntityGetByteResult {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetByteResult) Read(iprot thrift.Protocol) error {
@@ -1735,11 +2117,11 @@ func (p *GetEntityGetByteResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetByteResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadByte(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  temp := int8(v)
-  p.Success = &temp
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    temp := int8(v)
+    p.Success = &temp
+  }
   return nil
 }
 
@@ -1786,6 +2168,21 @@ type GetEntityGetI16Args struct {
 
 func NewGetEntityGetI16Args() *GetEntityGetI16Args {
   return &GetEntityGetI16Args{}
+}
+
+type GetEntityGetI16ArgsBuilder struct {
+  obj *GetEntityGetI16Args
+}
+
+func NewGetEntityGetI16ArgsBuilder() *GetEntityGetI16ArgsBuilder{
+  return &GetEntityGetI16ArgsBuilder{
+    obj: NewGetEntityGetI16Args(),
+  }
+}
+
+func (p GetEntityGetI16ArgsBuilder) Emit() *GetEntityGetI16Args{
+  return &GetEntityGetI16Args{
+  }
 }
 
 func (p *GetEntityGetI16Args) Read(iprot thrift.Protocol) error {
@@ -1835,7 +2232,7 @@ func (p *GetEntityGetI16Args) String() string {
 //  - Success
 type GetEntityGetI16Result struct {
   thrift.IResponse
-  Success *int16 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int16 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetI16Result() *GetEntityGetI16Result {
@@ -1851,6 +2248,32 @@ return *p.Success
 }
 func (p *GetEntityGetI16Result) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetI16ResultBuilder struct {
+  obj *GetEntityGetI16Result
+}
+
+func NewGetEntityGetI16ResultBuilder() *GetEntityGetI16ResultBuilder{
+  return &GetEntityGetI16ResultBuilder{
+    obj: NewGetEntityGetI16Result(),
+  }
+}
+
+func (p GetEntityGetI16ResultBuilder) Emit() *GetEntityGetI16Result{
+  return &GetEntityGetI16Result{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetI16ResultBuilder) Success(success *int16) *GetEntityGetI16ResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetI16Result) SetSuccess(success *int16) *GetEntityGetI16Result {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetI16Result) Read(iprot thrift.Protocol) error {
@@ -1887,10 +2310,10 @@ func (p *GetEntityGetI16Result) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetI16Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI16(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -1937,6 +2360,21 @@ type GetEntityGetI32Args struct {
 
 func NewGetEntityGetI32Args() *GetEntityGetI32Args {
   return &GetEntityGetI32Args{}
+}
+
+type GetEntityGetI32ArgsBuilder struct {
+  obj *GetEntityGetI32Args
+}
+
+func NewGetEntityGetI32ArgsBuilder() *GetEntityGetI32ArgsBuilder{
+  return &GetEntityGetI32ArgsBuilder{
+    obj: NewGetEntityGetI32Args(),
+  }
+}
+
+func (p GetEntityGetI32ArgsBuilder) Emit() *GetEntityGetI32Args{
+  return &GetEntityGetI32Args{
+  }
 }
 
 func (p *GetEntityGetI32Args) Read(iprot thrift.Protocol) error {
@@ -1986,7 +2424,7 @@ func (p *GetEntityGetI32Args) String() string {
 //  - Success
 type GetEntityGetI32Result struct {
   thrift.IResponse
-  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int32 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetI32Result() *GetEntityGetI32Result {
@@ -2002,6 +2440,32 @@ return *p.Success
 }
 func (p *GetEntityGetI32Result) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetI32ResultBuilder struct {
+  obj *GetEntityGetI32Result
+}
+
+func NewGetEntityGetI32ResultBuilder() *GetEntityGetI32ResultBuilder{
+  return &GetEntityGetI32ResultBuilder{
+    obj: NewGetEntityGetI32Result(),
+  }
+}
+
+func (p GetEntityGetI32ResultBuilder) Emit() *GetEntityGetI32Result{
+  return &GetEntityGetI32Result{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetI32ResultBuilder) Success(success *int32) *GetEntityGetI32ResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetI32Result) SetSuccess(success *int32) *GetEntityGetI32Result {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetI32Result) Read(iprot thrift.Protocol) error {
@@ -2038,10 +2502,10 @@ func (p *GetEntityGetI32Result) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetI32Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -2088,6 +2552,21 @@ type GetEntityGetI64Args struct {
 
 func NewGetEntityGetI64Args() *GetEntityGetI64Args {
   return &GetEntityGetI64Args{}
+}
+
+type GetEntityGetI64ArgsBuilder struct {
+  obj *GetEntityGetI64Args
+}
+
+func NewGetEntityGetI64ArgsBuilder() *GetEntityGetI64ArgsBuilder{
+  return &GetEntityGetI64ArgsBuilder{
+    obj: NewGetEntityGetI64Args(),
+  }
+}
+
+func (p GetEntityGetI64ArgsBuilder) Emit() *GetEntityGetI64Args{
+  return &GetEntityGetI64Args{
+  }
 }
 
 func (p *GetEntityGetI64Args) Read(iprot thrift.Protocol) error {
@@ -2137,7 +2616,7 @@ func (p *GetEntityGetI64Args) String() string {
 //  - Success
 type GetEntityGetI64Result struct {
   thrift.IResponse
-  Success *int64 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int64 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetI64Result() *GetEntityGetI64Result {
@@ -2153,6 +2632,32 @@ return *p.Success
 }
 func (p *GetEntityGetI64Result) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetI64ResultBuilder struct {
+  obj *GetEntityGetI64Result
+}
+
+func NewGetEntityGetI64ResultBuilder() *GetEntityGetI64ResultBuilder{
+  return &GetEntityGetI64ResultBuilder{
+    obj: NewGetEntityGetI64Result(),
+  }
+}
+
+func (p GetEntityGetI64ResultBuilder) Emit() *GetEntityGetI64Result{
+  return &GetEntityGetI64Result{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetI64ResultBuilder) Success(success *int64) *GetEntityGetI64ResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetI64Result) SetSuccess(success *int64) *GetEntityGetI64Result {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetI64Result) Read(iprot thrift.Protocol) error {
@@ -2189,10 +2694,10 @@ func (p *GetEntityGetI64Result) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetI64Result)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -2239,6 +2744,21 @@ type GetEntityGetDoubleArgs struct {
 
 func NewGetEntityGetDoubleArgs() *GetEntityGetDoubleArgs {
   return &GetEntityGetDoubleArgs{}
+}
+
+type GetEntityGetDoubleArgsBuilder struct {
+  obj *GetEntityGetDoubleArgs
+}
+
+func NewGetEntityGetDoubleArgsBuilder() *GetEntityGetDoubleArgsBuilder{
+  return &GetEntityGetDoubleArgsBuilder{
+    obj: NewGetEntityGetDoubleArgs(),
+  }
+}
+
+func (p GetEntityGetDoubleArgsBuilder) Emit() *GetEntityGetDoubleArgs{
+  return &GetEntityGetDoubleArgs{
+  }
 }
 
 func (p *GetEntityGetDoubleArgs) Read(iprot thrift.Protocol) error {
@@ -2288,7 +2808,7 @@ func (p *GetEntityGetDoubleArgs) String() string {
 //  - Success
 type GetEntityGetDoubleResult struct {
   thrift.IResponse
-  Success *float64 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *float64 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetDoubleResult() *GetEntityGetDoubleResult {
@@ -2304,6 +2824,32 @@ return *p.Success
 }
 func (p *GetEntityGetDoubleResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetDoubleResultBuilder struct {
+  obj *GetEntityGetDoubleResult
+}
+
+func NewGetEntityGetDoubleResultBuilder() *GetEntityGetDoubleResultBuilder{
+  return &GetEntityGetDoubleResultBuilder{
+    obj: NewGetEntityGetDoubleResult(),
+  }
+}
+
+func (p GetEntityGetDoubleResultBuilder) Emit() *GetEntityGetDoubleResult{
+  return &GetEntityGetDoubleResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetDoubleResultBuilder) Success(success *float64) *GetEntityGetDoubleResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetDoubleResult) SetSuccess(success *float64) *GetEntityGetDoubleResult {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetDoubleResult) Read(iprot thrift.Protocol) error {
@@ -2340,10 +2886,10 @@ func (p *GetEntityGetDoubleResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetDoubleResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadDouble(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -2390,6 +2936,21 @@ type GetEntityGetStringArgs struct {
 
 func NewGetEntityGetStringArgs() *GetEntityGetStringArgs {
   return &GetEntityGetStringArgs{}
+}
+
+type GetEntityGetStringArgsBuilder struct {
+  obj *GetEntityGetStringArgs
+}
+
+func NewGetEntityGetStringArgsBuilder() *GetEntityGetStringArgsBuilder{
+  return &GetEntityGetStringArgsBuilder{
+    obj: NewGetEntityGetStringArgs(),
+  }
+}
+
+func (p GetEntityGetStringArgsBuilder) Emit() *GetEntityGetStringArgs{
+  return &GetEntityGetStringArgs{
+  }
 }
 
 func (p *GetEntityGetStringArgs) Read(iprot thrift.Protocol) error {
@@ -2439,7 +3000,7 @@ func (p *GetEntityGetStringArgs) String() string {
 //  - Success
 type GetEntityGetStringResult struct {
   thrift.IResponse
-  Success *string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *string `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetStringResult() *GetEntityGetStringResult {
@@ -2455,6 +3016,32 @@ return *p.Success
 }
 func (p *GetEntityGetStringResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetStringResultBuilder struct {
+  obj *GetEntityGetStringResult
+}
+
+func NewGetEntityGetStringResultBuilder() *GetEntityGetStringResultBuilder{
+  return &GetEntityGetStringResultBuilder{
+    obj: NewGetEntityGetStringResult(),
+  }
+}
+
+func (p GetEntityGetStringResultBuilder) Emit() *GetEntityGetStringResult{
+  return &GetEntityGetStringResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetStringResultBuilder) Success(success *string) *GetEntityGetStringResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetStringResult) SetSuccess(success *string) *GetEntityGetStringResult {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetStringResult) Read(iprot thrift.Protocol) error {
@@ -2491,10 +3078,10 @@ func (p *GetEntityGetStringResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetStringResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 
@@ -2541,6 +3128,21 @@ type GetEntityGetBinaryArgs struct {
 
 func NewGetEntityGetBinaryArgs() *GetEntityGetBinaryArgs {
   return &GetEntityGetBinaryArgs{}
+}
+
+type GetEntityGetBinaryArgsBuilder struct {
+  obj *GetEntityGetBinaryArgs
+}
+
+func NewGetEntityGetBinaryArgsBuilder() *GetEntityGetBinaryArgsBuilder{
+  return &GetEntityGetBinaryArgsBuilder{
+    obj: NewGetEntityGetBinaryArgs(),
+  }
+}
+
+func (p GetEntityGetBinaryArgsBuilder) Emit() *GetEntityGetBinaryArgs{
+  return &GetEntityGetBinaryArgs{
+  }
 }
 
 func (p *GetEntityGetBinaryArgs) Read(iprot thrift.Protocol) error {
@@ -2590,7 +3192,7 @@ func (p *GetEntityGetBinaryArgs) String() string {
 //  - Success
 type GetEntityGetBinaryResult struct {
   thrift.IResponse
-  Success []byte `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success []byte `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetBinaryResult() *GetEntityGetBinaryResult {
@@ -2604,6 +3206,32 @@ func (p *GetEntityGetBinaryResult) GetSuccess() []byte {
 }
 func (p *GetEntityGetBinaryResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetBinaryResultBuilder struct {
+  obj *GetEntityGetBinaryResult
+}
+
+func NewGetEntityGetBinaryResultBuilder() *GetEntityGetBinaryResultBuilder{
+  return &GetEntityGetBinaryResultBuilder{
+    obj: NewGetEntityGetBinaryResult(),
+  }
+}
+
+func (p GetEntityGetBinaryResultBuilder) Emit() *GetEntityGetBinaryResult{
+  return &GetEntityGetBinaryResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetBinaryResultBuilder) Success(success []byte) *GetEntityGetBinaryResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetBinaryResult) SetSuccess(success []byte) *GetEntityGetBinaryResult {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetBinaryResult) Read(iprot thrift.Protocol) error {
@@ -2640,10 +3268,10 @@ func (p *GetEntityGetBinaryResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetBinaryResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBinary(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = v
+  }
   return nil
 }
 
@@ -2685,6 +3313,21 @@ type GetEntityGetMapArgs struct {
 
 func NewGetEntityGetMapArgs() *GetEntityGetMapArgs {
   return &GetEntityGetMapArgs{}
+}
+
+type GetEntityGetMapArgsBuilder struct {
+  obj *GetEntityGetMapArgs
+}
+
+func NewGetEntityGetMapArgsBuilder() *GetEntityGetMapArgsBuilder{
+  return &GetEntityGetMapArgsBuilder{
+    obj: NewGetEntityGetMapArgs(),
+  }
+}
+
+func (p GetEntityGetMapArgsBuilder) Emit() *GetEntityGetMapArgs{
+  return &GetEntityGetMapArgs{
+  }
 }
 
 func (p *GetEntityGetMapArgs) Read(iprot thrift.Protocol) error {
@@ -2734,7 +3377,7 @@ func (p *GetEntityGetMapArgs) String() string {
 //  - Success
 type GetEntityGetMapResult struct {
   thrift.IResponse
-  Success map[string]string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success map[string]string `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetMapResult() *GetEntityGetMapResult {
@@ -2748,6 +3391,32 @@ func (p *GetEntityGetMapResult) GetSuccess() map[string]string {
 }
 func (p *GetEntityGetMapResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetMapResultBuilder struct {
+  obj *GetEntityGetMapResult
+}
+
+func NewGetEntityGetMapResultBuilder() *GetEntityGetMapResultBuilder{
+  return &GetEntityGetMapResultBuilder{
+    obj: NewGetEntityGetMapResult(),
+  }
+}
+
+func (p GetEntityGetMapResultBuilder) Emit() *GetEntityGetMapResult{
+  return &GetEntityGetMapResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetMapResultBuilder) Success(success map[string]string) *GetEntityGetMapResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetMapResult) SetSuccess(success map[string]string) *GetEntityGetMapResult {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetMapResult) Read(iprot thrift.Protocol) error {
@@ -2790,18 +3459,18 @@ func (p *GetEntityGetMapResult)  ReadField0(iprot thrift.Protocol) error {
   tMap := make(map[string]string, size)
   p.Success =  tMap
   for i := 0; i < size; i ++ {
-var _key2 string
+    var _key2 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key2 = v
-}
-var _val3 string
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key2 = v
+    }
+    var _val3 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val3 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val3 = v
+    }
     p.Success[_key2] = _val3
   }
   if err := iprot.ReadMapEnd(); err != nil {
@@ -2860,6 +3529,21 @@ func NewGetEntityGetSetArgs() *GetEntityGetSetArgs {
   return &GetEntityGetSetArgs{}
 }
 
+type GetEntityGetSetArgsBuilder struct {
+  obj *GetEntityGetSetArgs
+}
+
+func NewGetEntityGetSetArgsBuilder() *GetEntityGetSetArgsBuilder{
+  return &GetEntityGetSetArgsBuilder{
+    obj: NewGetEntityGetSetArgs(),
+  }
+}
+
+func (p GetEntityGetSetArgsBuilder) Emit() *GetEntityGetSetArgs{
+  return &GetEntityGetSetArgs{
+  }
+}
+
 func (p *GetEntityGetSetArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -2907,7 +3591,7 @@ func (p *GetEntityGetSetArgs) String() string {
 //  - Success
 type GetEntityGetSetResult struct {
   thrift.IResponse
-  Success []string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success []string `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetSetResult() *GetEntityGetSetResult {
@@ -2921,6 +3605,32 @@ func (p *GetEntityGetSetResult) GetSuccess() []string {
 }
 func (p *GetEntityGetSetResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetSetResultBuilder struct {
+  obj *GetEntityGetSetResult
+}
+
+func NewGetEntityGetSetResultBuilder() *GetEntityGetSetResultBuilder{
+  return &GetEntityGetSetResultBuilder{
+    obj: NewGetEntityGetSetResult(),
+  }
+}
+
+func (p GetEntityGetSetResultBuilder) Emit() *GetEntityGetSetResult{
+  return &GetEntityGetSetResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetSetResultBuilder) Success(success []string) *GetEntityGetSetResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetSetResult) SetSuccess(success []string) *GetEntityGetSetResult {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetSetResult) Read(iprot thrift.Protocol) error {
@@ -2963,12 +3673,12 @@ func (p *GetEntityGetSetResult)  ReadField0(iprot thrift.Protocol) error {
   tSet := make([]string, 0, size)
   p.Success =  tSet
   for i := 0; i < size; i ++ {
-var _elem4 string
+    var _elem4 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem4 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem4 = v
+    }
     p.Success = append(p.Success, _elem4)
   }
   if err := iprot.ReadSetEnd(); err != nil {
@@ -3032,6 +3742,21 @@ func NewGetEntityGetListArgs() *GetEntityGetListArgs {
   return &GetEntityGetListArgs{}
 }
 
+type GetEntityGetListArgsBuilder struct {
+  obj *GetEntityGetListArgs
+}
+
+func NewGetEntityGetListArgsBuilder() *GetEntityGetListArgsBuilder{
+  return &GetEntityGetListArgsBuilder{
+    obj: NewGetEntityGetListArgs(),
+  }
+}
+
+func (p GetEntityGetListArgsBuilder) Emit() *GetEntityGetListArgs{
+  return &GetEntityGetListArgs{
+  }
+}
+
 func (p *GetEntityGetListArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3079,7 +3804,7 @@ func (p *GetEntityGetListArgs) String() string {
 //  - Success
 type GetEntityGetListResult struct {
   thrift.IResponse
-  Success []string `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success []string `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetListResult() *GetEntityGetListResult {
@@ -3093,6 +3818,32 @@ func (p *GetEntityGetListResult) GetSuccess() []string {
 }
 func (p *GetEntityGetListResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetListResultBuilder struct {
+  obj *GetEntityGetListResult
+}
+
+func NewGetEntityGetListResultBuilder() *GetEntityGetListResultBuilder{
+  return &GetEntityGetListResultBuilder{
+    obj: NewGetEntityGetListResult(),
+  }
+}
+
+func (p GetEntityGetListResultBuilder) Emit() *GetEntityGetListResult{
+  return &GetEntityGetListResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetListResultBuilder) Success(success []string) *GetEntityGetListResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetListResult) SetSuccess(success []string) *GetEntityGetListResult {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetListResult) Read(iprot thrift.Protocol) error {
@@ -3135,12 +3886,12 @@ func (p *GetEntityGetListResult)  ReadField0(iprot thrift.Protocol) error {
   tSlice := make([]string, 0, size)
   p.Success =  tSlice
   for i := 0; i < size; i ++ {
-var _elem5 string
+    var _elem5 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem5 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem5 = v
+    }
     p.Success = append(p.Success, _elem5)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -3216,6 +3967,54 @@ func (p *GetEntityGetLegacyStuffArgs) GetNumNeg1() int64 {
 func (p *GetEntityGetLegacyStuffArgs) GetNumNeg2() int64 {
   return p.NumNeg2
 }
+type GetEntityGetLegacyStuffArgsBuilder struct {
+  obj *GetEntityGetLegacyStuffArgs
+}
+
+func NewGetEntityGetLegacyStuffArgsBuilder() *GetEntityGetLegacyStuffArgsBuilder{
+  return &GetEntityGetLegacyStuffArgsBuilder{
+    obj: NewGetEntityGetLegacyStuffArgs(),
+  }
+}
+
+func (p GetEntityGetLegacyStuffArgsBuilder) Emit() *GetEntityGetLegacyStuffArgs{
+  return &GetEntityGetLegacyStuffArgs{
+    NumPos: p.obj.NumPos,
+    NumNeg1: p.obj.NumNeg1,
+    NumNeg2: p.obj.NumNeg2,
+  }
+}
+
+func (g *GetEntityGetLegacyStuffArgsBuilder) NumPos(numPos int64) *GetEntityGetLegacyStuffArgsBuilder {
+  g.obj.NumPos = numPos
+  return g
+}
+
+func (g *GetEntityGetLegacyStuffArgsBuilder) NumNeg1(numNeg1 int64) *GetEntityGetLegacyStuffArgsBuilder {
+  g.obj.NumNeg1 = numNeg1
+  return g
+}
+
+func (g *GetEntityGetLegacyStuffArgsBuilder) NumNeg2(numNeg2 int64) *GetEntityGetLegacyStuffArgsBuilder {
+  g.obj.NumNeg2 = numNeg2
+  return g
+}
+
+func (g *GetEntityGetLegacyStuffArgs) SetNumPos(numPos int64) *GetEntityGetLegacyStuffArgs {
+  g.NumPos = numPos
+  return g
+}
+
+func (g *GetEntityGetLegacyStuffArgs) SetNumNeg1(numNeg1 int64) *GetEntityGetLegacyStuffArgs {
+  g.NumNeg1 = numNeg1
+  return g
+}
+
+func (g *GetEntityGetLegacyStuffArgs) SetNumNeg2(numNeg2 int64) *GetEntityGetLegacyStuffArgs {
+  g.NumNeg2 = numNeg2
+  return g
+}
+
 func (p *GetEntityGetLegacyStuffArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -3258,28 +4057,28 @@ func (p *GetEntityGetLegacyStuffArgs) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetLegacyStuffArgs)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.NumPos = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.NumPos = v
+  }
   return nil
 }
 
 func (p *GetEntityGetLegacyStuffArgs)  ReadField_1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field -1: ", err)
-} else {
-  p.NumNeg1 = v
-}
+    return thrift.PrependError("error reading field -1: ", err)
+  } else {
+    p.NumNeg1 = v
+  }
   return nil
 }
 
 func (p *GetEntityGetLegacyStuffArgs)  ReadField_2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field -2: ", err)
-} else {
-  p.NumNeg2 = v
-}
+    return thrift.PrependError("error reading field -2: ", err)
+  } else {
+    p.NumNeg2 = v
+  }
   return nil
 }
 
@@ -3341,7 +4140,7 @@ func (p *GetEntityGetLegacyStuffArgs) String() string {
 //  - Success
 type GetEntityGetLegacyStuffResult struct {
   thrift.IResponse
-  Success *int32 `thrift:"success,0" db:"success" json:"success,omitempty"`
+  Success *int32 `thrift:"success,0,optional" db:"success" json:"success,omitempty"`
 }
 
 func NewGetEntityGetLegacyStuffResult() *GetEntityGetLegacyStuffResult {
@@ -3357,6 +4156,32 @@ return *p.Success
 }
 func (p *GetEntityGetLegacyStuffResult) IsSetSuccess() bool {
   return p != nil && p.Success != nil
+}
+
+type GetEntityGetLegacyStuffResultBuilder struct {
+  obj *GetEntityGetLegacyStuffResult
+}
+
+func NewGetEntityGetLegacyStuffResultBuilder() *GetEntityGetLegacyStuffResultBuilder{
+  return &GetEntityGetLegacyStuffResultBuilder{
+    obj: NewGetEntityGetLegacyStuffResult(),
+  }
+}
+
+func (p GetEntityGetLegacyStuffResultBuilder) Emit() *GetEntityGetLegacyStuffResult{
+  return &GetEntityGetLegacyStuffResult{
+    Success: p.obj.Success,
+  }
+}
+
+func (g *GetEntityGetLegacyStuffResultBuilder) Success(success *int32) *GetEntityGetLegacyStuffResultBuilder {
+  g.obj.Success = success
+  return g
+}
+
+func (g *GetEntityGetLegacyStuffResult) SetSuccess(success *int32) *GetEntityGetLegacyStuffResult {
+  g.Success = success
+  return g
 }
 
 func (p *GetEntityGetLegacyStuffResult) Read(iprot thrift.Protocol) error {
@@ -3393,10 +4218,10 @@ func (p *GetEntityGetLegacyStuffResult) Read(iprot thrift.Protocol) error {
 
 func (p *GetEntityGetLegacyStuffResult)  ReadField0(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 0: ", err)
-} else {
-  p.Success = &v
-}
+    return thrift.PrependError("error reading field 0: ", err)
+  } else {
+    p.Success = &v
+  }
   return nil
 }
 

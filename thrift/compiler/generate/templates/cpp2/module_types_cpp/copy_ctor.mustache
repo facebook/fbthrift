@@ -15,17 +15,23 @@
   limitations under the License.
 
 %><%struct:name%>::<%struct:name%>(const <%struct:name%>& srcObj) {
+<%#struct:lazy_fields?%>
+  std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
+  __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
+  __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
+<%/struct:lazy_fields?%>
 <%#struct:fields%><%#field:type%>
-<%^field:cpp_ref_unique_either?%>
+<%#field:lazy?%>
+  __fbthrift_isDeserialized_.<%field:cpp_name%>.store(srcObj.__fbthrift_isDeserialized_.<%field:cpp_name%>.load(std::memory_order::memory_order_relaxed),
+                                                      std::memory_order::memory_order_relaxed);
+<%/field:lazy?%>
+<%^field:transitively_refers_to_unique?%>
   <%field:cpp_name%> = srcObj.<%field:cpp_name%>;
-<%/field:cpp_ref_unique_either?%>
-<%#field:cpp_ref_unique_either?%>
-  if (srcObj.<%field:cpp_name%>) <%#field:cpp_ref_unique?%><%!
-    %><%field:cpp_name%>.reset(new <% > types/type%>(*srcObj.<%field:cpp_name%>));
-<%/field:cpp_ref_unique?%><%^field:cpp_ref_unique?%><%!
-    %><%field:cpp_name%> = srcObj.<%field:cpp_name%>->clone();
-<%/field:cpp_ref_unique?%>
-<%/field:cpp_ref_unique_either?%>
+<%/field:transitively_refers_to_unique?%>
+<%#field:transitively_refers_to_unique?%>
+  <%field:cpp_name%> = ::apache::thrift::detail::st::copy_field<
+        <%type:type_class%>>(srcObj.<%field:cpp_name%>);
+<%/field:transitively_refers_to_unique?%>
 <%^field:cpp_ref?%><%^field:required?%>
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.<%field:cpp_name%> = srcObj.__isset.<%field:cpp_name%>;

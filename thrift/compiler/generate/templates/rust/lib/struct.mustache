@@ -22,14 +22,19 @@
         }}{{#struct:ord?}}, Eq, PartialOrd, Ord, Hash{{/struct:ord?}}{{!
         }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
     }})]
-{{^struct:union?}}
+    {{#struct:docs?}}
+    #[doc = {{struct:docs}}]
+    {{/struct:docs?}}{{!
+}}{{^struct:union?}}
     pub struct {{struct:rust_name}} {{>lib/block}}{{!
     }}{{#struct:fields}}{{!
         }}{{#program:serde?}}{{#field:rename?}}
         #[serde(rename = "{{field:name}}")]{{!
         }}{{/field:rename?}}{{^field:optional?}}
         #[serde(default)]{{!
-        }}{{/field:optional?}}{{/program:serde?}}
+        }}{{/field:optional?}}{{/program:serde?}}{{#field:docs?}}
+        #[doc = {{field:docs}}]{{!
+        }}{{/field:docs?}}
         pub {{field:rust_name}}: {{>lib/fieldtype}},{{!
     }}{{/struct:fields}}
     }
@@ -37,6 +42,9 @@
 {{#struct:union?}}
     pub enum {{struct:rust_name}} {{>lib/block}}{{!
     }}{{#struct:fields}}
+        {{#field:docs?}}
+        #[doc = {{field:docs}}]
+        {{/field:docs?}}
         {{field:rust_name}}({{>lib/fieldtype}}),{{!
     }}{{/struct:fields}}
         UnknownField(::std::primitive::i32),

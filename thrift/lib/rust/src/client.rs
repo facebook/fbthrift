@@ -15,6 +15,8 @@
  */
 
 use crate::{Framing, FramingDecoded, FramingEncodedFinal, Protocol};
+use futures::stream::Stream;
+use futures::{future, FutureExt};
 use std::future::Future;
 use std::pin::Pin;
 use std::sync::Arc;
@@ -25,12 +27,46 @@ pub trait ClientFactory {
     fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
     where
         P: Protocol<Frame = T> + 'static,
-        T: Transport + Sync;
+        T: Transport + Sync,
+        P::Deserializer: Send;
 }
 
 pub trait Transport: Framing + Send + 'static {
     fn call(
         &self,
+        service_name: const_cstr::ConstCStr,
+        fn_name: const_cstr::ConstCStr,
         req: FramingEncodedFinal<Self>,
     ) -> Pin<Box<dyn Future<Output = Result<FramingDecoded<Self>, anyhow::Error>> + Send + 'static>>;
+
+    fn call_stream(
+        &self,
+        _service_name: const_cstr::ConstCStr,
+        _fn_name: const_cstr::ConstCStr,
+        _req: FramingEncodedFinal<Self>,
+    ) -> Pin<
+        Box<
+            dyn Future<
+                    Output = Result<
+                        (
+                            FramingDecoded<Self>,
+                            Pin<
+                                Box<
+                                    dyn Stream<Item = Result<FramingDecoded<Self>, anyhow::Error>>
+                                        + Send
+                                        + 'static,
+                                >,
+                            >,
+                        ),
+                        anyhow::Error,
+                    >,
+                > + Send
+                + 'static,
+        >,
+    > {
+        future::err(anyhow::Error::msg(
+            "Streaming is not supported by this transport",
+        ))
+        .boxed()
+    }
 }

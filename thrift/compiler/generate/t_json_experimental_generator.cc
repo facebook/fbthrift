@@ -49,11 +49,7 @@ t_json_experimental_generator::t_json_experimental_generator(
     const std::map<std::string, std::string>& parsed_options,
     const std::string& /*option_string*/)
     : t_mstch_generator(
-          program,
-          std::move(context),
-          "json",
-          parsed_options,
-          true) {
+          program, std::move(context), "json", parsed_options, true) {
   out_dir_base_ = "gen-json_experimental";
 }
 
@@ -70,7 +66,7 @@ class json_experimental_program : public mstch_program {
         {
             {"program:py_namespace",
              &json_experimental_program::get_py_namespace},
-            {"program:namespaces", &json_experimental_program::get_namespaces},
+            {"program:namespaces", &json_experimental_program::namespaces},
             {"program:namespaces?", &json_experimental_program::has_namespaces},
             {"program:docstring?", &json_experimental_program::has_docstring},
             {"program:docstring", &json_experimental_program::get_docstring},
@@ -78,30 +74,22 @@ class json_experimental_program : public mstch_program {
              &json_experimental_program::include_prefix},
         });
   }
-  mstch::node get_py_namespace() {
-    return program_->get_namespace("py");
-  }
-  mstch::node get_namespaces() {
+  mstch::node get_py_namespace() { return program_->get_namespace("py"); }
+  mstch::node namespaces() {
     mstch::array result;
-    auto last = program_->get_namespaces().size();
-    for (auto it : program_->get_namespaces()) {
+    auto last = program_->namespaces().size();
+    for (auto it : program_->namespaces()) {
       result.push_back(mstch::map{
           {"key", it.first}, {"value", it.second}, {"last?", (--last) == 0}});
     }
     return result;
   }
-  mstch::node has_namespaces() {
-    return !program_->get_namespaces().empty();
-  }
-  mstch::node has_docstring() {
-    return !program_->get_doc().empty();
-  }
-  mstch::node get_docstring() {
-    return json_quote_ascii(program_->get_doc());
-  }
+  mstch::node has_namespaces() { return !program_->namespaces().empty(); }
+  mstch::node has_docstring() { return !program_->get_doc().empty(); }
+  mstch::node get_docstring() { return json_quote_ascii(program_->get_doc()); }
 
   mstch::node include_prefix() {
-    auto prefix = program_->get_include_prefix();
+    auto prefix = program_->include_prefix();
     if (!prefix.empty()) {
       if (boost::filesystem::path(prefix).has_root_directory()) {
         return cache_->parsed_options_["include_prefix"];
@@ -144,18 +132,10 @@ class json_experimental_enum : public mstch_enum {
             {"enum:docstring", &json_experimental_enum::get_docstring},
         });
   }
-  mstch::node is_empty() {
-    return enm_->get_enum_values().empty();
-  }
-  mstch::node get_lineno() {
-    return enm_->get_lineno();
-  }
-  mstch::node has_docstring() {
-    return enm_->has_doc();
-  }
-  mstch::node get_docstring() {
-    return json_quote_ascii(enm_->get_doc());
-  }
+  mstch::node is_empty() { return enm_->get_enum_values().empty(); }
+  mstch::node get_lineno() { return enm_->get_lineno(); }
+  mstch::node has_docstring() { return enm_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(enm_->get_doc()); }
 };
 
 class enum_json_experimental_generator : public enum_generator {
@@ -191,12 +171,8 @@ class json_experimental_enum_value : public mstch_enum_value {
              &json_experimental_enum_value::get_docstring},
         });
   }
-  mstch::node get_lineno() {
-    return enm_value_->get_lineno();
-  }
-  mstch::node has_docstring() {
-    return enm_value_->has_doc();
-  }
+  mstch::node get_lineno() { return enm_value_->get_lineno(); }
+  mstch::node has_docstring() { return enm_value_->has_doc(); }
   mstch::node get_docstring() {
     return json_quote_ascii(enm_value_->get_doc());
   }
@@ -241,7 +217,12 @@ static inline std::string to_string(t_const_value const* value) {
   auto stringify_map = [](const auto& value) {
     std::string result;
     for (const auto& v : value) {
-      result += to_string(v.first) + ": " + to_string(v.second) + ", ";
+      auto key = to_string(v.first);
+      if (v.first->get_type() != mstch_const_value::cv::CV_STRING) {
+        // map keys must be strings
+        key = json_quote_ascii(key);
+      }
+      result += key + ": " + to_string(v.second) + ", ";
     }
     rtrim(result);
     return "{" + result + "}";
@@ -293,12 +274,8 @@ class json_experimental_const_value : public mstch_const_value {
             {"value:docstring", &json_experimental_const_value::get_docstring},
         });
   }
-  mstch::node get_lineno() {
-    return current_const_->get_lineno();
-  }
-  mstch::node has_docstring() {
-    return current_const_->has_doc();
-  }
+  mstch::node get_lineno() { return current_const_->get_lineno(); }
+  mstch::node has_docstring() { return current_const_->has_doc(); }
   mstch::node get_docstring() {
     return json_quote_ascii(current_const_->get_doc());
   }
@@ -307,9 +284,7 @@ class json_experimental_const_value : public mstch_const_value {
     return current_const_->get_type()->get_true_type()->get_full_name();
   }
 
-  mstch::node string_value_any() {
-    return to_string(const_value_);
-  }
+  mstch::node string_value_any() { return to_string(const_value_); }
 };
 
 class const_value_json_experimental_generator : public const_value_generator {
@@ -351,15 +326,9 @@ class json_experimental_struct : public mstch_struct {
             {"struct:docstring", &json_experimental_struct::get_docstring},
         });
   }
-  mstch::node get_lineno() {
-    return strct_->get_lineno();
-  }
-  mstch::node has_docstring() {
-    return strct_->has_doc();
-  }
-  mstch::node get_docstring() {
-    return json_quote_ascii(strct_->get_doc());
-  }
+  mstch::node get_lineno() { return strct_->get_lineno(); }
+  mstch::node has_docstring() { return strct_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(strct_->get_doc()); }
 };
 
 class struct_json_experimental_generator : public struct_generator {
@@ -393,15 +362,9 @@ class json_experimental_service : public mstch_service {
             {"service:docstring", &json_experimental_service::get_docstring},
         });
   }
-  mstch::node get_lineno() {
-    return service_->get_lineno();
-  }
-  mstch::node has_docstring() {
-    return service_->has_doc();
-  }
-  mstch::node get_docstring() {
-    return json_quote_ascii(service_->get_doc());
-  }
+  mstch::node get_lineno() { return service_->get_lineno(); }
+  mstch::node has_docstring() { return service_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(service_->get_doc()); }
 };
 
 class service_json_experimental_generator : public service_generator {
@@ -436,17 +399,11 @@ class json_experimental_function : public mstch_function {
             {"function:args?", &json_experimental_function::has_args},
         });
   }
-  mstch::node get_lineno() {
-    return function_->get_lineno();
-  }
-  mstch::node has_docstring() {
-    return function_->has_doc();
-  }
-  mstch::node get_docstring() {
-    return json_quote_ascii(function_->get_doc());
-  }
+  mstch::node get_lineno() { return function_->get_lineno(); }
+  mstch::node has_docstring() { return function_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(function_->get_doc()); }
   mstch::node has_args() {
-    return !function_->get_arglist()->get_members().empty();
+    return !function_->get_paramlist()->get_members().empty();
   }
 };
 
@@ -482,15 +439,9 @@ class json_experimental_field : public mstch_field {
             {"field:docstring", &json_experimental_field::get_docstring},
         });
   }
-  mstch::node get_lineno() {
-    return field_->get_lineno();
-  }
-  mstch::node has_docstring() {
-    return field_->has_doc();
-  }
-  mstch::node get_docstring() {
-    return json_quote_ascii(field_->get_doc());
-  }
+  mstch::node get_lineno() { return field_->get_lineno(); }
+  mstch::node has_docstring() { return field_->has_doc(); }
+  mstch::node get_docstring() { return json_quote_ascii(field_->get_doc()); }
 };
 
 class field_json_experimental_generator : public field_generator {
@@ -511,7 +462,7 @@ class field_json_experimental_generator : public field_generator {
 void t_json_experimental_generator::generate_program() {
   auto const* program = get_program();
   set_mstch_generators();
-  std::string fname = program->get_name();
+  std::string fname = program->name();
   fname += ".json";
   auto output =
       generators_->program_generator_->generate(program, generators_, cache_);

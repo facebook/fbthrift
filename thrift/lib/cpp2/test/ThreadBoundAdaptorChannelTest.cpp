@@ -15,11 +15,12 @@
  */
 
 #include <thrift/lib/cpp2/async/ThreadBoundAdaptorChannel.h>
+
+#include <gtest/gtest.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/io/async/test/ScopedBoundPort.h>
-#include <gtest/gtest.h>
 #include <thrift/lib/cpp2/async/PooledRequestChannel.h>
 #include <thrift/lib/cpp2/async/RetryingRequestChannel.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
@@ -37,17 +38,18 @@ using folly::AsyncSocket;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
-  MOCK_METHOD1(echoInt, int32_t(int32_t));
-  MOCK_METHOD1(
+  MOCK_METHOD(int32_t, echoInt, (int32_t), (override));
+  MOCK_METHOD(
+      folly::SemiFuture<std::unique_ptr<std::string>>,
       semifuture_echoRequest,
-      folly::SemiFuture<std::unique_ptr<std::string>>(
-          std::unique_ptr<std::string>));
+      (std::unique_ptr<std::string>),
+      (override));
 
-  MOCK_METHOD2(
+  MOCK_METHOD(
+      folly::SemiFuture<ServerStream<int8_t>>,
       semifuture_echoIOBufAsByteStream,
-      folly::SemiFuture<ServerStream<int8_t>>(
-          std::unique_ptr<folly::IOBuf>,
-          int32_t));
+      (std::unique_ptr<folly::IOBuf>, int32_t),
+      (override));
 };
 
 class ThreadBoundAdaptorChannelTest : public Test {

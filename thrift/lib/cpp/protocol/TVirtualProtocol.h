@@ -42,9 +42,7 @@ class TProtocolDefaults : public TProtocol {
         "this protocol does not support setVersion (yet)");
   }
 
-  ::apache::thrift::reflection::Schema* getSchema() {
-    return nullptr;
-  }
+  ::apache::thrift::reflection::Schema* getSchema() { return nullptr; }
 
   [[noreturn]] uint32_t readMessageBegin(
       std::string& /*name*/,
@@ -80,9 +78,7 @@ class TProtocolDefaults : public TProtocol {
   }
 
   [[noreturn]] uint32_t readFieldBegin(
-      std::string& /*name*/,
-      TType& /*fieldType*/,
-      int16_t& /*fieldId*/) {
+      std::string& /*name*/, TType& /*fieldType*/, int16_t& /*fieldId*/) {
     throw TProtocolException(
         TProtocolException::NOT_IMPLEMENTED,
         "this protocol does not support reading (yet).");
@@ -117,9 +113,7 @@ class TProtocolDefaults : public TProtocol {
   }
 
   [[noreturn]] uint32_t readListBegin(
-      TType& /*elemType*/,
-      uint32_t& /*size*/,
-      bool& /*sizeUnknown*/) {
+      TType& /*elemType*/, uint32_t& /*size*/, bool& /*sizeUnknown*/) {
     throw TProtocolException(
         TProtocolException::NOT_IMPLEMENTED,
         "this protocol does not support reading (yet).");
@@ -137,8 +131,8 @@ class TProtocolDefaults : public TProtocol {
         "this protocol does not support reading (yet).");
   }
 
-  [[noreturn]] uint32_t
-  readSetBegin(TType& /*elemType*/, uint32_t& /*size*/, bool& /*sizeUnknown*/) {
+  [[noreturn]] uint32_t readSetBegin(
+      TType& /*elemType*/, uint32_t& /*size*/, bool& /*sizeUnknown*/) {
     throw TProtocolException(
         TProtocolException::NOT_IMPLEMENTED,
         "this protocol does not support reading (yet).");
@@ -280,8 +274,7 @@ class TProtocolDefaults : public TProtocol {
   }
 
   [[noreturn]] uint32_t writeListBegin(
-      const TType /*elemType*/,
-      const uint32_t /*size*/) {
+      const TType /*elemType*/, const uint32_t /*size*/) {
     throw TProtocolException(
         TProtocolException::NOT_IMPLEMENTED,
         "this protocol does not support writing (yet).");
@@ -294,8 +287,7 @@ class TProtocolDefaults : public TProtocol {
   }
 
   [[noreturn]] uint32_t writeSetBegin(
-      const TType /*elemType*/,
-      const uint32_t /*size*/) {
+      const TType /*elemType*/, const uint32_t /*size*/) {
     throw TProtocolException(
         TProtocolException::NOT_IMPLEMENTED,
         "this protocol does not support writing (yet).");
@@ -416,9 +408,7 @@ class TVirtualProtocol : public Super_ {
   }
 
   uint32_t writeFieldBegin_virt(
-      const char* name,
-      const TType fieldType,
-      const int16_t fieldId) override {
+      const char* name, const TType fieldType, const int16_t fieldId) override {
     return static_cast<Protocol_*>(this)->writeFieldBegin(
         name, fieldType, fieldId);
   }
@@ -432,9 +422,7 @@ class TVirtualProtocol : public Super_ {
   }
 
   uint32_t writeMapBegin_virt(
-      const TType keyType,
-      const TType valType,
-      const uint32_t size) override {
+      const TType keyType, const TType valType, const uint32_t size) override {
     return static_cast<Protocol_*>(this)->writeMapBegin(keyType, valType, size);
   }
 
@@ -442,8 +430,8 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->writeMapEnd();
   }
 
-  uint32_t writeListBegin_virt(const TType elemType, const uint32_t size)
-      override {
+  uint32_t writeListBegin_virt(
+      const TType elemType, const uint32_t size) override {
     return static_cast<Protocol_*>(this)->writeListBegin(elemType, size);
   }
 
@@ -451,8 +439,8 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->writeListEnd();
   }
 
-  uint32_t writeSetBegin_virt(const TType elemType, const uint32_t size)
-      override {
+  uint32_t writeSetBegin_virt(
+      const TType elemType, const uint32_t size) override {
     return static_cast<Protocol_*>(this)->writeSetBegin(elemType, size);
   }
 
@@ -501,9 +489,7 @@ class TVirtualProtocol : public Super_ {
    */
 
   uint32_t readMessageBegin_virt(
-      std::string& name,
-      TMessageType& messageType,
-      int32_t& seqid) override {
+      std::string& name, TMessageType& messageType, int32_t& seqid) override {
     return static_cast<Protocol_*>(this)->readMessageBegin(
         name, messageType, seqid);
   }
@@ -525,9 +511,7 @@ class TVirtualProtocol : public Super_ {
   }
 
   uint32_t readFieldBegin_virt(
-      std::string& name,
-      TType& fieldType,
-      int16_t& fieldId) override {
+      std::string& name, TType& fieldType, int16_t& fieldId) override {
     return static_cast<Protocol_*>(this)->readFieldBegin(
         name, fieldType, fieldId);
   }
@@ -553,8 +537,8 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->readMapEnd();
   }
 
-  uint32_t readListBegin_virt(TType& elemType, uint32_t& size, bool& sizeUnkown)
-      override {
+  uint32_t readListBegin_virt(
+      TType& elemType, uint32_t& size, bool& sizeUnkown) override {
     return static_cast<Protocol_*>(this)->readListBegin(
         elemType, size, sizeUnkown);
   }
@@ -567,8 +551,8 @@ class TVirtualProtocol : public Super_ {
     return static_cast<Protocol_*>(this)->readListEnd();
   }
 
-  uint32_t readSetBegin_virt(TType& elemType, uint32_t& size, bool& sizeUnknown)
-      override {
+  uint32_t readSetBegin_virt(
+      TType& elemType, uint32_t& size, bool& sizeUnknown) override {
     return static_cast<Protocol_*>(this)->readSetBegin(
         elemType, size, sizeUnknown);
   }

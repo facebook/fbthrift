@@ -96,7 +96,7 @@ class EvbStreamCallback final : public StreamClientCallback,
     serverEvb_ = folly::Executor::getKeepAliveToken(serverEvb);
     setServerCallback(serverCallback);
 
-    eventBaseRunHelper(evb_, [&, fr = std::move(firstResponse)]() mutable {
+    eventBaseRunHelper(evb_, [this, fr = std::move(firstResponse)]() mutable {
       DCHECK(clientCallback_);
       std::ignore =
           clientCallback_->onFirstResponse(std::move(fr), evb_.get(), this);
@@ -106,7 +106,7 @@ class EvbStreamCallback final : public StreamClientCallback,
 
   // Terminating callback. Clean up the client callback stored.
   void onFirstResponseError(folly::exception_wrapper ew) noexcept override {
-    eventBaseRunHelper(evb_, [&, ewr = std::move(ew)]() mutable {
+    eventBaseRunHelper(evb_, [this, ewr = std::move(ew)]() mutable {
       DCHECK(clientCallback_);
       clientCallback_->onFirstResponseError(std::move(ewr));
       setClientCallback(nullptr);
@@ -114,7 +114,7 @@ class EvbStreamCallback final : public StreamClientCallback,
   }
 
   bool onStreamNext(StreamPayload&& payload) noexcept override {
-    eventBaseRunHelper(evb_, [&, pl = std::move(payload)]() mutable {
+    eventBaseRunHelper(evb_, [this, pl = std::move(payload)]() mutable {
       if (clientCallback_) {
         std::ignore = clientCallback_->onStreamNext(std::move(pl));
       }
@@ -124,7 +124,7 @@ class EvbStreamCallback final : public StreamClientCallback,
 
   // Terminating callback. Clean up the client and server callbacks stored.
   void onStreamError(folly::exception_wrapper ew) noexcept override {
-    eventBaseRunHelper(evb_, [&, ewr = std::move(ew)]() mutable {
+    eventBaseRunHelper(evb_, [this, ewr = std::move(ew)]() mutable {
       if (clientCallback_) {
         clientCallback_->onStreamError(std::move(ewr));
         setClientCallback(nullptr);
@@ -135,7 +135,7 @@ class EvbStreamCallback final : public StreamClientCallback,
 
   // Terminating callback. Clean up the client and server callbacks stored.
   void onStreamComplete() noexcept override {
-    eventBaseRunHelper(evb_, [&]() mutable {
+    eventBaseRunHelper(evb_, [this]() mutable {
       if (clientCallback_) {
         clientCallback_->onStreamComplete();
         setClientCallback(nullptr);
@@ -154,7 +154,7 @@ class EvbStreamCallback final : public StreamClientCallback,
   // StreamServerCallback
   // Terminating callback. Clean up the client and server callbacks stored.
   void onStreamCancel() noexcept override {
-    eventBaseRunHelper(serverEvb_, [&]() mutable {
+    eventBaseRunHelper(serverEvb_, [this]() mutable {
       if (serverCallback_) {
         serverCallback_->onStreamCancel();
         setServerCallback(nullptr);
@@ -164,7 +164,7 @@ class EvbStreamCallback final : public StreamClientCallback,
   }
 
   bool onStreamRequestN(uint64_t num) noexcept override {
-    eventBaseRunHelper(serverEvb_, [&]() mutable {
+    eventBaseRunHelper(serverEvb_, [this, num]() mutable {
       if (serverCallback_) {
         std::ignore = serverCallback_->onStreamRequestN(num);
       }
@@ -184,12 +184,13 @@ class EvbStreamCallback final : public StreamClientCallback,
   // as soon as the eventbase scope is done.
   template <typename F>
   void eventBaseRunHelper(
-      folly::Executor::KeepAlive<folly::EventBase> runEvb,
-      F&& fn) {
+      folly::Executor::KeepAlive<folly::EventBase> runEvb, F&& fn) {
     incRef();
+    // cannot call folly::makeGuard inside the lambda captures below, because it
+    // triggers a GCC 8 bug (https://fburl.com/e0kv48hu)
+    auto guard = folly::makeGuard([this] { decRef(); });
     runEvb->runInEventBaseThread(
-        [f = std::forward<F>(fn),
-         g = folly::makeGuard([&] { decRef(); })]() mutable { f(); });
+        [f = std::forward<F>(fn), g = std::move(guard)]() mutable { f(); });
   }
 
   void setServerCallback(StreamServerCallback* serverCallback) {
@@ -210,9 +211,7 @@ class EvbStreamCallback final : public StreamClientCallback,
     }
   }
 
-  void incRef() {
-    refCount_.fetch_add(1, std::memory_order_relaxed);
-  }
+  void incRef() { refCount_.fetch_add(1, std::memory_order_relaxed); }
 
   void decRef() {
     if (refCount_.fetch_sub(1, std::memory_order_acq_rel) == 1) {
@@ -233,15 +232,14 @@ class EvbStreamCallback final : public StreamClientCallback,
 } // namespace
 
 ThreadBoundAdaptorChannel::ThreadBoundAdaptorChannel(
-    folly::EventBase* evb,
-    std::shared_ptr<RequestChannel> threadSafeChannel)
+    folly::EventBase* evb, std::shared_ptr<RequestChannel> threadSafeChannel)
     : threadSafeChannel_(std::move(threadSafeChannel)), evb_(evb) {
   DCHECK(threadSafeChannel_->getEventBase() == nullptr);
 }
 
 void ThreadBoundAdaptorChannel::sendRequestResponse(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
@@ -250,7 +248,7 @@ void ThreadBoundAdaptorChannel::sendRequestResponse(
 
   threadSafeChannel_->sendRequestResponse(
       options,
-      methodName,
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       std::move(cob));
@@ -258,7 +256,7 @@ void ThreadBoundAdaptorChannel::sendRequestResponse(
 
 void ThreadBoundAdaptorChannel::sendRequestNoResponse(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
@@ -267,7 +265,7 @@ void ThreadBoundAdaptorChannel::sendRequestNoResponse(
 
   threadSafeChannel_->sendRequestNoResponse(
       options,
-      methodName,
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       std::move(cob));
@@ -275,7 +273,7 @@ void ThreadBoundAdaptorChannel::sendRequestNoResponse(
 
 void ThreadBoundAdaptorChannel::sendRequestStream(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     StreamClientCallback* cob) {
@@ -283,7 +281,7 @@ void ThreadBoundAdaptorChannel::sendRequestStream(
 
   threadSafeChannel_->sendRequestStream(
       options,
-      methodName,
+      std::move(methodMetadata),
       std::move(request),
       std::move(header),
       std::move(cob));
@@ -291,7 +289,7 @@ void ThreadBoundAdaptorChannel::sendRequestStream(
 
 void ThreadBoundAdaptorChannel::sendRequestSink(
     const RpcOptions& /* options */,
-    folly::StringPiece /* methodName */,
+    MethodMetadata&& /* methodName */,
     SerializedRequest&& /* request */,
     std::shared_ptr<transport::THeader> /* header */,
     SinkClientCallback* /* cob */) {
@@ -312,8 +310,8 @@ uint16_t ThreadBoundAdaptorChannel::getProtocolId() {
 }
 
 InteractionId ThreadBoundAdaptorChannel::createInteraction(
-    folly::StringPiece name) {
-  return threadSafeChannel_->createInteraction(name);
+    ManagedStringView&& name) {
+  return threadSafeChannel_->createInteraction(std::move(name));
 }
 
 void ThreadBoundAdaptorChannel::terminateInteraction(InteractionId idWrapper) {

@@ -68,10 +68,10 @@ class Cpp2Channel
   void setTransport(const std::shared_ptr<folly::AsyncTransport>& transport) {
     transport_ = transport;
     transportHandler_->setTransport(transport);
+    // swapped transports must be attached to same EventBase
+    DCHECK(!transport_ || evb_ == transport->getEventBase());
   }
-  folly::AsyncTransport* getTransport() {
-    return transport_.get();
-  }
+  folly::AsyncTransport* getTransport() { return transport_.get(); }
 
   // Return a shared_ptr of the AsyncTransport
   std::shared_ptr<folly::AsyncTransport> getTransportShared() {
@@ -139,6 +139,7 @@ class Cpp2Channel
 
  private:
   std::shared_ptr<folly::AsyncTransport> transport_;
+  folly::EventBase* evb_;
   std::deque<SendCallback*> sendCallbacks_;
 
   RecvCallback* recvCallback_;

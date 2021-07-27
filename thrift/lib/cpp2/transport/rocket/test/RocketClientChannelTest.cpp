@@ -37,6 +37,7 @@
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
+#include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
 using namespace apache::thrift;
@@ -73,8 +74,7 @@ class Handler : public test::TestServiceSvIf {
   }
 
   ServerStream<int8_t> echoIOBufAsByteStream(
-      std::unique_ptr<folly::IOBuf> iobuf,
-      int32_t delayMs) final {
+      std::unique_ptr<folly::IOBuf> iobuf, int32_t delayMs) final {
     auto [stream, publisher] = ServerStream<int8_t>::createPublisher();
     std::ignore = folly::makeSemiFuture()
                       .delayed(std::chrono::milliseconds(delayMs))
@@ -91,12 +91,8 @@ class Handler : public test::TestServiceSvIf {
     return std::move(stream);
   }
 
-  int32_t getLastTimeoutMsec() const {
-    return lastTimeoutMsec_;
-  }
-  void setSleepDelayMs(int32_t delay) {
-    sleepDelayMsec_ = delay;
-  }
+  int32_t getLastTimeoutMsec() const { return lastTimeoutMsec_; }
+  void setSleepDelayMs(int32_t delay) { sleepDelayMsec_ = delay; }
 
  private:
   int32_t lastTimeoutMsec_{-1};
@@ -105,10 +101,18 @@ class Handler : public test::TestServiceSvIf {
 
 class RocketClientChannelTest : public testing::Test {
  public:
-  test::TestServiceAsyncClient makeClient(folly::EventBase& evb) {
-    return test::TestServiceAsyncClient(
+  template <typename F>
+  test::TestServiceAsyncClient makeClient(
+      folly::EventBase& evb, F&& configureChannel) {
+    auto channel =
         RocketClientChannel::newChannel(folly::AsyncSocket::UniquePtr(
-            new folly::AsyncSocket(&evb, runner_.getAddress()))));
+            new folly::AsyncSocket(&evb, runner_.getAddress())));
+    configureChannel(*channel);
+    return test::TestServiceAsyncClient(std::move(channel));
+  }
+
+  test::TestServiceAsyncClient makeClient(folly::EventBase& evb) {
+    return makeClient(evb, [](auto&) {});
   }
 
  protected:
@@ -180,10 +184,10 @@ TEST_F(RocketClientChannelTest, SyncThreadCheckTimeoutPropagated) {
   RpcOptions opts;
   std::string response;
   // Ensure that normally, the timeout value gets propagated.
-  opts.setTimeout(std::chrono::milliseconds(20));
+  opts.setTimeout(std::chrono::milliseconds(100));
   client.sync_sendResponse(opts, response, 123);
   EXPECT_EQ("123", response);
-  EXPECT_EQ(20, handler_->getLastTimeoutMsec());
+  EXPECT_EQ(100, handler_->getLastTimeoutMsec());
   // And when we set client-only, it's not propagated.
   opts.setClientOnlyTimeouts(true);
   client.sync_sendResponse(opts, response, 456);
@@ -191,10 +195,18 @@ TEST_F(RocketClientChannelTest, SyncThreadCheckTimeoutPropagated) {
   EXPECT_EQ(0, handler_->getLastTimeoutMsec());
 
   // Double-check that client enforces the timeouts in both cases.
-  handler_->setSleepDelayMs(50);
+  handler_->setSleepDelayMs(200);
   ASSERT_ANY_THROW(client.sync_sendResponse(opts, response, 456));
   opts.setClientOnlyTimeouts(false);
   ASSERT_ANY_THROW(client.sync_sendResponse(opts, response, 456));
+
+  // Ensure that a 0 timeout is actually infinite
+  auto infiniteTimeoutClient =
+      makeClient(evb, [](auto& channel) { channel.setTimeout(0); });
+  opts.setTimeout(std::chrono::milliseconds::zero());
+  handler_->setSleepDelayMs(300);
+  infiniteTimeoutClient.sync_sendResponse(opts, response, 456);
+  EXPECT_EQ("456", response);
 }
 
 TEST_F(RocketClientChannelTest, ThriftClientLifetime) {
@@ -218,90 +230,25 @@ TEST_F(RocketClientChannelTest, ThriftClientLifetime) {
   std::move(future).getVia(&evb);
 }
 
+TEST_F(RocketClientChannelTest, LargeRequestResponse) {
+  // send and receive large IOBufs to test rocket parser correctness in handling
+  // large (larger than kMaxBufferSize) payloads
+  folly::EventBase evb;
+  auto client = makeClient(evb);
+
+  auto orig = std::string(1024 * 1024, 'x');
+  auto iobuf = folly::IOBuf::copyBuffer(orig);
+
+  test::IOBufPtr response;
+  client.sync_echoIOBuf(
+      RpcOptions().setTimeout(std::chrono::seconds(30)), response, *iobuf);
+  EXPECT_EQ(
+      response->computeChainDataLength(), iobuf->computeChainDataLength());
+  auto res = response->moveToFbString();
+  EXPECT_EQ(orig, res);
+}
+
 namespace {
-class SlowWritingSocket : public folly::AsyncSocket {
- public:
-  SlowWritingSocket(folly::EventBase* evb, const folly::SocketAddress& address)
-      : folly::AsyncSocket(evb, address) {}
-
-  void delayWritingAfterFirstNBytes(size_t nbytes) {
-    ASSERT_TRUE(bufferedWrites_.empty())
-        << "Can only be called on socket without buffered writes";
-    ASSERT_EQ(
-        std::numeric_limits<size_t>::max(),
-        bytesRemainingBeforeDelayingWrites_);
-
-    bytesRemainingBeforeDelayingWrites_ = nbytes;
-  }
-
-  void flushBufferedWrites() {
-    while (!bufferedWrites_.empty()) {
-      auto bufferedWrite = std::move(bufferedWrites_.front());
-      bufferedWrites_.pop_front();
-      folly::AsyncSocket::writeChain(
-          bufferedWrite.callback, std::move(bufferedWrite.iobuf));
-    }
-  }
-
-  void errorOutBufferedWrites(
-      folly::Optional<size_t> failRequestWithNBytesWritten) {
-    while (!bufferedWrites_.empty()) {
-      auto bufferedWrite = std::move(bufferedWrites_.front());
-      bufferedWrites_.pop_front();
-      bufferedWrite.callback->writeErr(
-          failRequestWithNBytesWritten ? *failRequestWithNBytesWritten
-                                       : bufferedWrite.bytesWritten,
-          folly::AsyncSocketException(
-              folly::AsyncSocketException::INTERRUPTED, "Write failed"));
-    }
-  }
-
-  void writeChain(
-      WriteCallback* callback,
-      std::unique_ptr<folly::IOBuf>&& buf,
-      folly::WriteFlags flags = folly::WriteFlags::NONE) override {
-    ASSERT_EQ(folly::WriteFlags::NONE, flags) << "Write flags not supported";
-
-    std::unique_ptr<folly::IOBuf> writeNow;
-    folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
-    queue.append(std::move(buf));
-    if (bytesRemainingBeforeDelayingWrites_ != 0) {
-      writeNow = queue.splitAtMost(bytesRemainingBeforeDelayingWrites_);
-      bytesRemainingBeforeDelayingWrites_ -= writeNow->computeChainDataLength();
-    }
-
-    if (!queue.empty()) {
-      bufferedWrites_.emplace_back(
-          queue.move(),
-          callback,
-          writeNow ? writeNow->computeChainDataLength() : 0);
-      if (writeNow) {
-        folly::AsyncSocket::writeChain(nullptr, std::move(writeNow), flags);
-      }
-    } else if (!writeNow->empty()) {
-      folly::AsyncSocket::writeChain(callback, std::move(writeNow), flags);
-    }
-  }
-
- private:
-  struct BufferedWrite {
-    BufferedWrite(
-        std::unique_ptr<folly::IOBuf> _iobuf,
-        WriteCallback* _callback,
-        size_t _bytesWritten)
-        : iobuf(std::move(_iobuf)),
-          callback(_callback),
-          bytesWritten(_bytesWritten) {}
-
-    std::unique_ptr<folly::IOBuf> iobuf;
-    WriteCallback* callback;
-    size_t bytesWritten;
-  };
-
-  std::deque<BufferedWrite> bufferedWrites_;
-  size_t bytesRemainingBeforeDelayingWrites_{
-      std::numeric_limits<size_t>::max()};
-};
 
 folly::SemiFuture<std::unique_ptr<folly::IOBuf>> echoSync(
     test::TestServiceAsyncClient& client,
@@ -333,8 +280,7 @@ folly::SemiFuture<std::unique_ptr<folly::IOBuf>> echoSemiFuture(
 }
 
 folly::SemiFuture<folly::Unit> noResponseIOBufSync(
-    test::TestServiceAsyncClient& client,
-    size_t nbytes) {
+    test::TestServiceAsyncClient& client, size_t nbytes) {
   auto& fm =
       folly::fibers::getFiberManager(*client.getChannel()->getEventBase());
   return fm.addTaskFuture([&, nbytes] {
@@ -345,8 +291,7 @@ folly::SemiFuture<folly::Unit> noResponseIOBufSync(
 }
 
 folly::SemiFuture<folly::Unit> noResponseIOBufSemiFuture(
-    test::TestServiceAsyncClient& client,
-    size_t nbytes) {
+    test::TestServiceAsyncClient& client, size_t nbytes) {
   return folly::makeSemiFutureWith([&] {
     auto iobuf = folly::IOBuf::copyBuffer(std::string(nbytes, 'x'));
     auto options = RpcOptions().setTimeout(std::chrono::seconds(30));
@@ -355,8 +300,7 @@ folly::SemiFuture<folly::Unit> noResponseIOBufSemiFuture(
 }
 
 folly::SemiFuture<ClientBufferedStream<int8_t>> echoIOBufAsByteStreamSync(
-    test::TestServiceAsyncClient& client,
-    size_t nbytes) {
+    test::TestServiceAsyncClient& client, size_t nbytes) {
   auto& fm =
       folly::fibers::getFiberManager(*client.getChannel()->getEventBase());
   return fm.addTaskFuture([&, nbytes] {
@@ -369,8 +313,7 @@ folly::SemiFuture<ClientBufferedStream<int8_t>> echoIOBufAsByteStreamSync(
 }
 
 folly::SemiFuture<ClientBufferedStream<int8_t>> echoIOBufAsByteStreamSemiFuture(
-    test::TestServiceAsyncClient& client,
-    size_t nbytes) {
+    test::TestServiceAsyncClient& client, size_t nbytes) {
   return folly::makeSemiFutureWith([&] {
     auto iobuf = folly::IOBuf::copyBuffer(std::string(nbytes, 'x'));
     auto options = RpcOptions().setTimeout(std::chrono::seconds(30));
@@ -522,7 +465,7 @@ void doFailLastRequestsInBatchFiber(
     futures.push_back(std::move(sf));
 
     sf = noResponseIOBufSync(client, 25).via(&evb).thenTry([](auto&& response) {
-      EXPECT_TRUE(response.hasValue());
+      EXPECT_FALSE(response.hasValue());
     });
     futures.push_back(std::move(sf));
 
@@ -651,8 +594,7 @@ TEST_F(RocketClientChannelTest, FailLastRequestWithZeroBytesWrittenSemiFuture) {
 }
 
 TEST_F(
-    RocketClientChannelTest,
-    BatchedWriteRequestResponseWithFastClientTimeout) {
+    RocketClientChannelTest, BatchedWriteRequestResponseWithFastClientTimeout) {
   folly::EventBase evb;
   auto* slowWritingSocket = new SlowWritingSocket(&evb, runner_.getAddress());
   test::TestServiceAsyncClient client(RocketClientChannel::newChannel(

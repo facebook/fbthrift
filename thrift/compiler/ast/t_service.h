@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
-#ifndef T_SERVICE_H
-#define T_SERVICE_H
+#pragma once
 
-#include <algorithm>
+#include <memory>
+#include <string>
 #include <vector>
 
-#include <thrift/compiler/ast/t_function.h>
+#include <thrift/compiler/ast/t_interface.h>
 
 namespace apache {
 namespace thrift {
@@ -30,65 +30,31 @@ class t_program;
 
 /**
  * A service consists of a set of functions.
- *
  */
-class t_service : public t_type {
+class t_service : public t_interface {
  public:
-  explicit t_service(t_program* program) : t_type(program), extends_(nullptr) {}
+  explicit t_service(
+      t_program* program, std::string name, const t_service* extends = nullptr)
+      : t_interface(program, std::move(name)), extends_(extends) {}
 
-  bool is_service() const override {
-    return true;
-  }
-
-  void set_extends(t_service* extends) {
-    extends_ = extends;
-  }
-
-  void add_function(std::unique_ptr<t_function> func) {
-    functions_raw_.push_back(func.get());
-    functions_.push_back(std::move(func));
-  }
-
-  const std::vector<t_function*>& get_functions() const {
-    return functions_raw_;
-  }
-
-  t_service* get_extends() const {
-    return extends_;
-  }
-
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_SERVICE;
-  }
+  const t_service* extends() const { return extends_; }
 
   std::string get_full_name() const override {
     return make_full_name("service");
   }
 
-  std::string get_impl_full_name() const override {
-    return make_full_name("service");
-  }
-
-  bool is_interaction() const {
-    return is_interaction_;
-  }
-
-  void set_is_interaction() {
-    is_interaction_ = true;
-  }
-
  private:
-  std::vector<std::unique_ptr<t_function>> functions_;
+  const t_service* extends_ = nullptr;
 
-  std::vector<t_function*> functions_raw_;
-
-  t_service* extends_;
-
-  bool is_interaction_{false};
+  // TODO(afuller): Remove everything below this comment. It is only provided
+  // for backwards compatibility.
+ public:
+  const t_service* get_extends() const { return extends_; }
+  void set_extends(const t_service* extends) { extends_ = extends; }
+  type get_type_value() const override { return type::t_service; }
+  bool is_service() const override { return true; }
 };
 
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif

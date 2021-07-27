@@ -14,6 +14,10 @@ std::unique_ptr<apache::thrift::AsyncProcessor> ReturnServiceSvIf::getProcessor(
   return std::make_unique<ReturnServiceAsyncProcessor>(this);
 }
 
+ReturnServiceSvIf::CreateMethodMetadataResult ReturnServiceSvIf::createMethodMetadata() {
+  return ::apache::thrift::detail::ap::createMethodMetadataMap<ReturnServiceAsyncProcessor>();
+}
+
 
 void ReturnServiceSvIf::async_eb_noReturn(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   callback->exception(apache::thrift::TApplicationException("Function noReturn is unimplemented"));
@@ -24,79 +28,227 @@ bool ReturnServiceSvIf::boolReturn() {
 }
 
 folly::SemiFuture<bool> ReturnServiceSvIf::semifuture_boolReturn() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return boolReturn();
-  });
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_boolReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return boolReturn();
 }
 
 folly::Future<bool> ReturnServiceSvIf::future_boolReturn() {
-  return apache::thrift::detail::si::future(semifuture_boolReturn(), getThreadManager());
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_boolReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_boolReturn(), getInternalKeepAlive());
 }
 
 void ReturnServiceSvIf::async_tm_boolReturn(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_boolReturn();
-  });
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_boolReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_boolReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_boolReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_boolReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(boolReturn());
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
-int16_t ReturnServiceSvIf::i16Return() {
+::std::int16_t ReturnServiceSvIf::i16Return() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("i16Return");
 }
 
-folly::SemiFuture<int16_t> ReturnServiceSvIf::semifuture_i16Return() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return i16Return();
-  });
+folly::SemiFuture<::std::int16_t> ReturnServiceSvIf::semifuture_i16Return() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_i16Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return i16Return();
 }
 
-folly::Future<int16_t> ReturnServiceSvIf::future_i16Return() {
-  return apache::thrift::detail::si::future(semifuture_i16Return(), getThreadManager());
+folly::Future<::std::int16_t> ReturnServiceSvIf::future_i16Return() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_i16Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_i16Return(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_i16Return(std::unique_ptr<apache::thrift::HandlerCallback<int16_t>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_i16Return();
-  });
+void ReturnServiceSvIf::async_tm_i16Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_i16Return.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_i16Return.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_i16Return();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_i16Return();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(i16Return());
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
-int32_t ReturnServiceSvIf::i32Return() {
+::std::int32_t ReturnServiceSvIf::i32Return() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("i32Return");
 }
 
-folly::SemiFuture<int32_t> ReturnServiceSvIf::semifuture_i32Return() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return i32Return();
-  });
+folly::SemiFuture<::std::int32_t> ReturnServiceSvIf::semifuture_i32Return() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_i32Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return i32Return();
 }
 
-folly::Future<int32_t> ReturnServiceSvIf::future_i32Return() {
-  return apache::thrift::detail::si::future(semifuture_i32Return(), getThreadManager());
+folly::Future<::std::int32_t> ReturnServiceSvIf::future_i32Return() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_i32Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_i32Return(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_i32Return(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_i32Return();
-  });
+void ReturnServiceSvIf::async_tm_i32Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_i32Return.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_i32Return.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_i32Return();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_i32Return();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(i32Return());
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
-int64_t ReturnServiceSvIf::i64Return() {
+::std::int64_t ReturnServiceSvIf::i64Return() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("i64Return");
 }
 
-folly::SemiFuture<int64_t> ReturnServiceSvIf::semifuture_i64Return() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return i64Return();
-  });
+folly::SemiFuture<::std::int64_t> ReturnServiceSvIf::semifuture_i64Return() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_i64Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return i64Return();
 }
 
-folly::Future<int64_t> ReturnServiceSvIf::future_i64Return() {
-  return apache::thrift::detail::si::future(semifuture_i64Return(), getThreadManager());
+folly::Future<::std::int64_t> ReturnServiceSvIf::future_i64Return() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_i64Return.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_i64Return(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_i64Return(std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_i64Return();
-  });
+void ReturnServiceSvIf::async_tm_i64Return(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_i64Return.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_i64Return.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_i64Return();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_i64Return();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(i64Return());
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
 float ReturnServiceSvIf::floatReturn() {
@@ -104,19 +256,56 @@ float ReturnServiceSvIf::floatReturn() {
 }
 
 folly::SemiFuture<float> ReturnServiceSvIf::semifuture_floatReturn() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return floatReturn();
-  });
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_floatReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return floatReturn();
 }
 
 folly::Future<float> ReturnServiceSvIf::future_floatReturn() {
-  return apache::thrift::detail::si::future(semifuture_floatReturn(), getThreadManager());
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_floatReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_floatReturn(), getInternalKeepAlive());
 }
 
 void ReturnServiceSvIf::async_tm_floatReturn(std::unique_ptr<apache::thrift::HandlerCallback<float>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_floatReturn();
-  });
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_floatReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_floatReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_floatReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_floatReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(floatReturn());
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
 double ReturnServiceSvIf::doubleReturn() {
@@ -124,19 +313,56 @@ double ReturnServiceSvIf::doubleReturn() {
 }
 
 folly::SemiFuture<double> ReturnServiceSvIf::semifuture_doubleReturn() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return doubleReturn();
-  });
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_doubleReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return doubleReturn();
 }
 
 folly::Future<double> ReturnServiceSvIf::future_doubleReturn() {
-  return apache::thrift::detail::si::future(semifuture_doubleReturn(), getThreadManager());
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_doubleReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_doubleReturn(), getInternalKeepAlive());
 }
 
 void ReturnServiceSvIf::async_tm_doubleReturn(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_doubleReturn();
-  });
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_doubleReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_doubleReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_doubleReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_doubleReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(doubleReturn());
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
 void ReturnServiceSvIf::async_eb_stringReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
@@ -148,194 +374,575 @@ void ReturnServiceSvIf::binaryReturn(::std::string& /*_return*/) {
 }
 
 folly::SemiFuture<std::unique_ptr<::std::string>> ReturnServiceSvIf::semifuture_binaryReturn() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::string& _return) { binaryReturn(_return); });
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_binaryReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  auto ret = std::make_unique<::std::string>();
+  binaryReturn(*ret);
+  return folly::makeSemiFuture(std::move(ret));
 }
 
 folly::Future<std::unique_ptr<::std::string>> ReturnServiceSvIf::future_binaryReturn() {
-  return apache::thrift::detail::si::future(semifuture_binaryReturn(), getThreadManager());
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_binaryReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_binaryReturn(), getInternalKeepAlive());
 }
 
 void ReturnServiceSvIf::async_tm_binaryReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_binaryReturn();
-  });
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_binaryReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_binaryReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_binaryReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_binaryReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        ::std::string _return;
+        binaryReturn(_return);
+        callback->result(_return);
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
-void ReturnServiceSvIf::mapReturn(::std::map<::std::string, int64_t>& /*_return*/) {
+void ReturnServiceSvIf::mapReturn(::std::map<::std::string, ::std::int64_t>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("mapReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::map<::std::string, int64_t>>> ReturnServiceSvIf::semifuture_mapReturn() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::map<::std::string, int64_t>& _return) { mapReturn(_return); });
+folly::SemiFuture<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> ReturnServiceSvIf::semifuture_mapReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_mapReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  auto ret = std::make_unique<::std::map<::std::string, ::std::int64_t>>();
+  mapReturn(*ret);
+  return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::map<::std::string, int64_t>>> ReturnServiceSvIf::future_mapReturn() {
-  return apache::thrift::detail::si::future(semifuture_mapReturn(), getThreadManager());
+folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>> ReturnServiceSvIf::future_mapReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_mapReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_mapReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, int64_t>>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_mapReturn();
-  });
+void ReturnServiceSvIf::async_tm_mapReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int64_t>>>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_mapReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_mapReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_mapReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_mapReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        ::std::map<::std::string, ::std::int64_t> _return;
+        mapReturn(_return);
+        callback->result(_return);
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
- ::some::valid::ns::simpleTypeDef ReturnServiceSvIf::simpleTypedefReturn() {
+::some::valid::ns::simpleTypeDef ReturnServiceSvIf::simpleTypedefReturn() {
   apache::thrift::detail::si::throw_app_exn_unimplemented("simpleTypedefReturn");
 }
 
-folly::SemiFuture< ::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::semifuture_simpleTypedefReturn() {
-  return apache::thrift::detail::si::semifuture([&] {
-    return simpleTypedefReturn();
-  });
+folly::SemiFuture<::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::semifuture_simpleTypedefReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_simpleTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  return simpleTypedefReturn();
 }
 
-folly::Future< ::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::future_simpleTypedefReturn() {
-  return apache::thrift::detail::si::future(semifuture_simpleTypedefReturn(), getThreadManager());
+folly::Future<::some::valid::ns::simpleTypeDef> ReturnServiceSvIf::future_simpleTypedefReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_simpleTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_simpleTypedefReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_simpleTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::simpleTypeDef>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_simpleTypedefReturn();
-  });
+void ReturnServiceSvIf::async_tm_simpleTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::simpleTypeDef>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_simpleTypedefReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_simpleTypedefReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_simpleTypedefReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_simpleTypedefReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        callback->result(simpleTypedefReturn());
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
-void ReturnServiceSvIf::complexTypedefReturn( ::some::valid::ns::complexStructTypeDef& /*_return*/) {
+void ReturnServiceSvIf::complexTypedefReturn(::some::valid::ns::complexStructTypeDef& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("complexTypedefReturn");
 }
 
-folly::SemiFuture<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>> ReturnServiceSvIf::semifuture_complexTypedefReturn() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::some::valid::ns::complexStructTypeDef& _return) { complexTypedefReturn(_return); });
+folly::SemiFuture<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> ReturnServiceSvIf::semifuture_complexTypedefReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_complexTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  auto ret = std::make_unique<::some::valid::ns::complexStructTypeDef>();
+  complexTypedefReturn(*ret);
+  return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>> ReturnServiceSvIf::future_complexTypedefReturn() {
-  return apache::thrift::detail::si::future(semifuture_complexTypedefReturn(), getThreadManager());
+folly::Future<std::unique_ptr<::some::valid::ns::complexStructTypeDef>> ReturnServiceSvIf::future_complexTypedefReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_complexTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_complexTypedefReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_complexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::complexStructTypeDef>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_complexTypedefReturn();
-  });
+void ReturnServiceSvIf::async_tm_complexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::complexStructTypeDef>>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_complexTypedefReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_complexTypedefReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_complexTypedefReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_complexTypedefReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        ::some::valid::ns::complexStructTypeDef _return;
+        complexTypedefReturn(_return);
+        callback->result(_return);
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
-void ReturnServiceSvIf::list_mostComplexTypedefReturn(::std::vector< ::some::valid::ns::mostComplexTypeDef>& /*_return*/) {
+void ReturnServiceSvIf::list_mostComplexTypedefReturn(::std::vector<::some::valid::ns::mostComplexTypeDef>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_mostComplexTypedefReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::mostComplexTypeDef>>> ReturnServiceSvIf::semifuture_list_mostComplexTypedefReturn() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::vector< ::some::valid::ns::mostComplexTypeDef>& _return) { list_mostComplexTypedefReturn(_return); });
+folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> ReturnServiceSvIf::semifuture_list_mostComplexTypedefReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_list_mostComplexTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  auto ret = std::make_unique<::std::vector<::some::valid::ns::mostComplexTypeDef>>();
+  list_mostComplexTypedefReturn(*ret);
+  return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::mostComplexTypeDef>>> ReturnServiceSvIf::future_list_mostComplexTypedefReturn() {
-  return apache::thrift::detail::si::future(semifuture_list_mostComplexTypedefReturn(), getThreadManager());
+folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>> ReturnServiceSvIf::future_list_mostComplexTypedefReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_list_mostComplexTypedefReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_list_mostComplexTypedefReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::mostComplexTypeDef>>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_list_mostComplexTypedefReturn();
-  });
+void ReturnServiceSvIf::async_tm_list_mostComplexTypedefReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::mostComplexTypeDef>>>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_list_mostComplexTypedefReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_list_mostComplexTypedefReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_list_mostComplexTypedefReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_list_mostComplexTypedefReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        ::std::vector<::some::valid::ns::mostComplexTypeDef> _return;
+        list_mostComplexTypedefReturn(_return);
+        callback->result(_return);
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
-void ReturnServiceSvIf::async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback< ::some::valid::ns::MyEnumA>> callback) {
+void ReturnServiceSvIf::async_eb_enumReturn(std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback) {
   callback->exception(apache::thrift::TApplicationException("Function enumReturn is unimplemented"));
 }
 
-void ReturnServiceSvIf::async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::MyEnumA>>>> callback) {
+void ReturnServiceSvIf::async_eb_list_EnumReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::MyEnumA>>>> callback) {
   callback->exception(apache::thrift::TApplicationException("Function list_EnumReturn is unimplemented"));
 }
 
-void ReturnServiceSvIf::structReturn( ::some::valid::ns::MyStruct& /*_return*/) {
+void ReturnServiceSvIf::structReturn(::some::valid::ns::MyStruct& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("structReturn");
 }
 
-folly::SemiFuture<std::unique_ptr< ::some::valid::ns::MyStruct>> ReturnServiceSvIf::semifuture_structReturn() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::some::valid::ns::MyStruct& _return) { structReturn(_return); });
+folly::SemiFuture<std::unique_ptr<::some::valid::ns::MyStruct>> ReturnServiceSvIf::semifuture_structReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_structReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  auto ret = std::make_unique<::some::valid::ns::MyStruct>();
+  structReturn(*ret);
+  return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr< ::some::valid::ns::MyStruct>> ReturnServiceSvIf::future_structReturn() {
-  return apache::thrift::detail::si::future(semifuture_structReturn(), getThreadManager());
+folly::Future<std::unique_ptr<::some::valid::ns::MyStruct>> ReturnServiceSvIf::future_structReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_structReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_structReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_structReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::MyStruct>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_structReturn();
-  });
+void ReturnServiceSvIf::async_tm_structReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_structReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_structReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_structReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_structReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        ::some::valid::ns::MyStruct _return;
+        structReturn(_return);
+        callback->result(_return);
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
-void ReturnServiceSvIf::set_StructReturn(::std::set< ::some::valid::ns::MyStruct>& /*_return*/) {
+void ReturnServiceSvIf::set_StructReturn(::std::set<::some::valid::ns::MyStruct>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("set_StructReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> ReturnServiceSvIf::semifuture_set_StructReturn() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::set< ::some::valid::ns::MyStruct>& _return) { set_StructReturn(_return); });
+folly::SemiFuture<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> ReturnServiceSvIf::semifuture_set_StructReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_set_StructReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  auto ret = std::make_unique<::std::set<::some::valid::ns::MyStruct>>();
+  set_StructReturn(*ret);
+  return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>> ReturnServiceSvIf::future_set_StructReturn() {
-  return apache::thrift::detail::si::future(semifuture_set_StructReturn(), getThreadManager());
+folly::Future<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>> ReturnServiceSvIf::future_set_StructReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_set_StructReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_set_StructReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set< ::some::valid::ns::MyStruct>>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_set_StructReturn();
-  });
+void ReturnServiceSvIf::async_tm_set_StructReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::some::valid::ns::MyStruct>>>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_set_StructReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_set_StructReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_set_StructReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_set_StructReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        ::std::set<::some::valid::ns::MyStruct> _return;
+        set_StructReturn(_return);
+        callback->result(_return);
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
-void ReturnServiceSvIf::async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::ComplexUnion>>> callback) {
+void ReturnServiceSvIf::async_eb_unionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback) {
   callback->exception(apache::thrift::TApplicationException("Function unionReturn is unimplemented"));
 }
 
-void ReturnServiceSvIf::list_UnionReturn(::std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/) {
+void ReturnServiceSvIf::list_UnionReturn(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("list_UnionReturn");
 }
 
-folly::SemiFuture<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> ReturnServiceSvIf::semifuture_list_UnionReturn() {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&](::std::vector< ::some::valid::ns::ComplexUnion>& _return) { list_UnionReturn(_return); });
+folly::SemiFuture<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> ReturnServiceSvIf::semifuture_list_UnionReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_list_UnionReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  auto ret = std::make_unique<::std::vector<::some::valid::ns::ComplexUnion>>();
+  list_UnionReturn(*ret);
+  return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>> ReturnServiceSvIf::future_list_UnionReturn() {
-  return apache::thrift::detail::si::future(semifuture_list_UnionReturn(), getThreadManager());
+folly::Future<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>> ReturnServiceSvIf::future_list_UnionReturn() {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_list_UnionReturn.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_list_UnionReturn(), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector< ::some::valid::ns::ComplexUnion>>>> callback) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_list_UnionReturn();
-  });
+void ReturnServiceSvIf::async_tm_list_UnionReturn(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::some::valid::ns::ComplexUnion>>>> callback) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_list_UnionReturn.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_list_UnionReturn.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_list_UnionReturn();
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_list_UnionReturn();
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        ::std::vector<::some::valid::ns::ComplexUnion> _return;
+        list_UnionReturn(_return);
+        callback->result(_return);
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
-void ReturnServiceSvIf::async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBuf>>> callback, int64_t /*size*/) {
+void ReturnServiceSvIf::async_eb_readDataEb(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBuf>>> callback, ::std::int64_t /*size*/) {
   callback->exception(apache::thrift::TApplicationException("Function readDataEb is unimplemented"));
 }
 
-void ReturnServiceSvIf::readData( ::some::valid::ns::IOBufPtr& /*_return*/, int64_t /*size*/) {
+void ReturnServiceSvIf::readData(::some::valid::ns::IOBufPtr& /*_return*/, ::std::int64_t /*size*/) {
   apache::thrift::detail::si::throw_app_exn_unimplemented("readData");
 }
 
-folly::SemiFuture<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::semifuture_readData(int64_t size) {
-  return apache::thrift::detail::si::semifuture_returning_uptr([&]( ::some::valid::ns::IOBufPtr& _return) { readData(_return, size); });
+folly::SemiFuture<std::unique_ptr<::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::semifuture_readData(::std::int64_t p_size) {
+  auto expected{apache::thrift::detail::si::InvocationType::SemiFuture};
+  __fbthrift_invocation_readData.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::Sync, std::memory_order_relaxed);
+  auto ret = std::make_unique<::some::valid::ns::IOBufPtr>();
+  readData(*ret, p_size);
+  return folly::makeSemiFuture(std::move(ret));
 }
 
-folly::Future<std::unique_ptr< ::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::future_readData(int64_t size) {
-  return apache::thrift::detail::si::future(semifuture_readData(size), getThreadManager());
+folly::Future<std::unique_ptr<::some::valid::ns::IOBufPtr>> ReturnServiceSvIf::future_readData(::std::int64_t p_size) {
+  auto expected{apache::thrift::detail::si::InvocationType::Future};
+  __fbthrift_invocation_readData.compare_exchange_strong(expected, apache::thrift::detail::si::InvocationType::SemiFuture, std::memory_order_relaxed);
+  return apache::thrift::detail::si::future(semifuture_readData(p_size), getInternalKeepAlive());
 }
 
-void ReturnServiceSvIf::async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr< ::some::valid::ns::IOBufPtr>>> callback, int64_t size) {
-  apache::thrift::detail::si::async_tm(this, std::move(callback), [&] {
-    return future_readData(size);
-  });
+void ReturnServiceSvIf::async_tm_readData(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::IOBufPtr>>> callback, ::std::int64_t p_size) {
+  // It's possible the coroutine versions will delegate to a future-based
+  // version. If that happens, we need the RequestParams arguments to be
+  // available to the future through the thread-local backchannel, so we set that up
+  // for all cases.
+  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  auto invocationType = __fbthrift_invocation_readData.load(std::memory_order_relaxed);
+  try {
+    switch (invocationType) {
+      case apache::thrift::detail::si::InvocationType::AsyncTm:
+      {
+        __fbthrift_invocation_readData.compare_exchange_strong(invocationType, apache::thrift::detail::si::InvocationType::Future, std::memory_order_relaxed);
+        FOLLY_FALLTHROUGH;
+      }
+      case apache::thrift::detail::si::InvocationType::Future:
+      {
+        auto fut = future_readData(p_size);
+        apache::thrift::detail::si::async_tm_future(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::SemiFuture:
+      {
+        auto fut = semifuture_readData(p_size);
+        apache::thrift::detail::si::async_tm_semifuture(std::move(callback), std::move(fut));
+        return;
+      }
+      case apache::thrift::detail::si::InvocationType::Sync:
+      {
+        ::some::valid::ns::IOBufPtr _return;
+        readData(_return, p_size);
+        callback->result(_return);
+        return;
+      }
+      default:
+      {
+        folly::assume_unreachable();
+      }
+    }
+  } catch (...) {
+    callback->exception(std::current_exception());
+  }
 }
 
 bool ReturnServiceSvNull::boolReturn() {
   return 0;
 }
 
-int16_t ReturnServiceSvNull::i16Return() {
+::std::int16_t ReturnServiceSvNull::i16Return() {
   return 0;
 }
 
-int32_t ReturnServiceSvNull::i32Return() {
+::std::int32_t ReturnServiceSvNull::i32Return() {
   return 0;
 }
 
-int64_t ReturnServiceSvNull::i64Return() {
+::std::int64_t ReturnServiceSvNull::i64Return() {
   return 0;
 }
 
@@ -349,23 +956,23 @@ double ReturnServiceSvNull::doubleReturn() {
 
 void ReturnServiceSvNull::binaryReturn(::std::string& /*_return*/) {}
 
-void ReturnServiceSvNull::mapReturn(::std::map<::std::string, int64_t>& /*_return*/) {}
+void ReturnServiceSvNull::mapReturn(::std::map<::std::string, ::std::int64_t>& /*_return*/) {}
 
- ::some::valid::ns::simpleTypeDef ReturnServiceSvNull::simpleTypedefReturn() {
+::some::valid::ns::simpleTypeDef ReturnServiceSvNull::simpleTypedefReturn() {
   return 0;
 }
 
-void ReturnServiceSvNull::complexTypedefReturn( ::some::valid::ns::complexStructTypeDef& /*_return*/) {}
+void ReturnServiceSvNull::complexTypedefReturn(::some::valid::ns::complexStructTypeDef& /*_return*/) {}
 
-void ReturnServiceSvNull::list_mostComplexTypedefReturn(::std::vector< ::some::valid::ns::mostComplexTypeDef>& /*_return*/) {}
+void ReturnServiceSvNull::list_mostComplexTypedefReturn(::std::vector<::some::valid::ns::mostComplexTypeDef>& /*_return*/) {}
 
-void ReturnServiceSvNull::structReturn( ::some::valid::ns::MyStruct& /*_return*/) {}
+void ReturnServiceSvNull::structReturn(::some::valid::ns::MyStruct& /*_return*/) {}
 
-void ReturnServiceSvNull::set_StructReturn(::std::set< ::some::valid::ns::MyStruct>& /*_return*/) {}
+void ReturnServiceSvNull::set_StructReturn(::std::set<::some::valid::ns::MyStruct>& /*_return*/) {}
 
-void ReturnServiceSvNull::list_UnionReturn(::std::vector< ::some::valid::ns::ComplexUnion>& /*_return*/) {}
+void ReturnServiceSvNull::list_UnionReturn(::std::vector<::some::valid::ns::ComplexUnion>& /*_return*/) {}
 
-void ReturnServiceSvNull::readData( ::some::valid::ns::IOBufPtr& /*_return*/, int64_t /*size*/) {}
+void ReturnServiceSvNull::readData(::some::valid::ns::IOBufPtr& /*_return*/, ::std::int64_t /*size*/) {}
 
 
 
@@ -377,68 +984,40 @@ void ReturnServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::T
   ::apache::thrift::detail::md::ServiceMetadata<ReturnServiceSvIf>::gen(*response.metadata_ref(), *response.context_ref());
 }
 
-void ReturnServiceAsyncProcessor::processSerializedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+void ReturnServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
   apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), protType, context, eb, tm);
 }
 
-std::shared_ptr<folly::RequestContext> ReturnServiceAsyncProcessor::getBaseContextForRequest() {
-  return iface_->getBaseContextForRequest();
+void ReturnServiceAsyncProcessor::processSerializedCompressedRequestWithMetadata(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, const apache::thrift::AsyncProcessorFactory::MethodMetadata& methodMetadata, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
+  apache::thrift::detail::ap::process(this, std::move(req), std::move(serializedRequest), methodMetadata, protType, context, eb, tm);
 }
 
-const ReturnServiceAsyncProcessor::ProcessMap& ReturnServiceAsyncProcessor::getBinaryProtocolProcessMap() {
-  return binaryProcessMap_;
+const ReturnServiceAsyncProcessor::ProcessMap& ReturnServiceAsyncProcessor::getOwnProcessMap() {
+  return kOwnProcessMap_;
 }
 
-const ReturnServiceAsyncProcessor::ProcessMap ReturnServiceAsyncProcessor::binaryProcessMap_ {
-  {"noReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_noReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"boolReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"i16Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i16Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"i32Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i32Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"i64Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i64Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"floatReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"doubleReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"stringReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"binaryReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"mapReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"simpleTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"complexTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"list_mostComplexTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"enumReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"list_EnumReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"structReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_structReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"set_StructReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"unionReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"list_UnionReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"readDataEb", &ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-  {"readData", &ReturnServiceAsyncProcessor::setUpAndProcess_readData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>},
-};
-
-const ReturnServiceAsyncProcessor::ProcessMap& ReturnServiceAsyncProcessor::getCompactProtocolProcessMap() {
-  return compactProcessMap_;
-}
-
-const ReturnServiceAsyncProcessor::ProcessMap ReturnServiceAsyncProcessor::compactProcessMap_ {
-  {"noReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_noReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"boolReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"i16Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i16Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"i32Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i32Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"i64Return", &ReturnServiceAsyncProcessor::setUpAndProcess_i64Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"floatReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"doubleReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"stringReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"binaryReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"mapReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"simpleTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"complexTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"list_mostComplexTypedefReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"enumReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"list_EnumReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"structReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_structReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"set_StructReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"unionReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"list_UnionReturn", &ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"readDataEb", &ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
-  {"readData", &ReturnServiceAsyncProcessor::setUpAndProcess_readData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>},
+const ReturnServiceAsyncProcessor::ProcessMap ReturnServiceAsyncProcessor::kOwnProcessMap_ {
+  {"noReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_noReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_noReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"boolReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_boolReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"i16Return", {&ReturnServiceAsyncProcessor::setUpAndProcess_i16Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_i16Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"i32Return", {&ReturnServiceAsyncProcessor::setUpAndProcess_i32Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_i32Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"i64Return", {&ReturnServiceAsyncProcessor::setUpAndProcess_i64Return<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_i64Return<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"floatReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_floatReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"doubleReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_doubleReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"stringReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_stringReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"binaryReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_binaryReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"mapReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_mapReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"simpleTypedefReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_simpleTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"complexTypedefReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_complexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"list_mostComplexTypedefReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_list_mostComplexTypedefReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"enumReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_enumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"list_EnumReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_list_EnumReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"structReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_structReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_structReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"set_StructReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_set_StructReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"unionReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_unionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"list_UnionReturn", {&ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_list_UnionReturn<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"readDataEb", {&ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_readDataEb<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
+  {"readData", {&ReturnServiceAsyncProcessor::setUpAndProcess_readData<apache::thrift::CompactProtocolReader, apache::thrift::CompactProtocolWriter>, &ReturnServiceAsyncProcessor::setUpAndProcess_readData<apache::thrift::BinaryProtocolReader, apache::thrift::BinaryProtocolWriter>}},
 };
 
 }}} // some::valid::ns

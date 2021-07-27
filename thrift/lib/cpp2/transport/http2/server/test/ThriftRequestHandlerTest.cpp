@@ -23,7 +23,8 @@
 #include <folly/io/async/EventBaseManager.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
-#include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/common/SingleRpcChannel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeProcessors.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
@@ -51,15 +52,14 @@ class ThriftRequestHandlerTest : public testing::Test {
   // Sets up for a test.
   // TODO: Parameterize for different channel implementations.
   ThriftRequestHandlerTest() {
-    eventBase_ = std::make_unique<EventBase>();
     EventBaseManager::get()->setEventBase(eventBase_.get(), true);
     responseHandler_ = std::make_unique<FakeResponseHandler>(eventBase_.get());
     processor_ = std::make_unique<EchoProcessor>(
-        serverConfigs_, "extrakey", "extravalue", "<eom>", eventBase_.get());
+        "extrakey", "extravalue", "<eom>", eventBase_.get());
     // This test assumes metadata is passed in the header, so we need
     // to use SingleRpcChannel.  The second parameter 1 enables this.
     // requestHandler_ deletes itself.
-    requestHandler_ = new ThriftRequestHandler(processor_.get());
+    requestHandler_ = new ThriftRequestHandler(processor_.get(), worker_);
     responseHandler_->getTransaction()->setHandler(requestHandler_);
   }
 
@@ -70,7 +70,7 @@ class ThriftRequestHandlerTest : public testing::Test {
     auto queue = std::make_unique<IOBufQueue>();
     CompactProtocolWriter writer;
     writer.setOutput(queue.get());
-    writer.writeMessageBegin("dummy", T_CALL, 0);
+    writer.writeMessageBegin("dummy", MessageType::T_CALL, 0);
     queue->append("payload");
     return queue->move();
   }
@@ -82,8 +82,11 @@ class ThriftRequestHandlerTest : public testing::Test {
   }
 
  protected:
-  apache::thrift::server::ServerConfigsMock serverConfigs_;
-  std::unique_ptr<folly::EventBase> eventBase_;
+  std::unique_ptr<folly::EventBase> eventBase_{
+      std::make_unique<folly::EventBase>()};
+  apache::thrift::ThriftServer server_;
+  std::shared_ptr<apache::thrift::Cpp2Worker> worker_{
+      apache::thrift::Cpp2Worker::create(&server_, nullptr, eventBase_.get())};
   std::unique_ptr<FakeResponseHandler> responseHandler_;
   std::unique_ptr<EchoProcessor> processor_;
   ThriftRequestHandler* requestHandler_;
@@ -96,9 +99,11 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelNoErrors) {
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
-  requestHandler_->onHeadersComplete(std::move(msg));
-  requestHandler_->onBody(makeBody());
-  requestHandler_->onEOM();
+  eventBase_->runInEventBaseThread([&] {
+    requestHandler_->onHeadersComplete(std::move(msg));
+    requestHandler_->onBody(makeBody());
+    requestHandler_->onEOM();
+  });
   eventBase_->loopOnce();
   requestHandler_->detachTransaction();
   auto outputHeaders = responseHandler_->getHeaders();
@@ -118,9 +123,11 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorAtEnd) {
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
-  requestHandler_->onHeadersComplete(std::move(msg));
-  requestHandler_->onBody(makeBody());
-  requestHandler_->onEOM();
+  eventBase_->runInEventBaseThread([&] {
+    requestHandler_->onHeadersComplete(std::move(msg));
+    requestHandler_->onBody(makeBody());
+    requestHandler_->onEOM();
+  });
   eventBase_->loopOnce();
   onError(proxygen::kErrorUnknown);
   auto outputHeaders = responseHandler_->getHeaders();
@@ -140,10 +147,12 @@ TEST_F(ThriftRequestHandlerTest, SingleRpcChannelErrorBeforeCallbacks) {
   auto& headers = msg->getHeaders();
   headers.rawSet("key1", "value1");
   headers.rawSet("key2", "value2");
-  requestHandler_->onHeadersComplete(std::move(msg));
-  requestHandler_->onBody(makeBody());
-  requestHandler_->onEOM();
-  onError(proxygen::kErrorUnknown);
+  eventBase_->runInEventBaseThread([&] {
+    requestHandler_->onHeadersComplete(std::move(msg));
+    requestHandler_->onBody(makeBody());
+    requestHandler_->onEOM();
+    onError(proxygen::kErrorUnknown);
+  });
   eventBase_->loopOnce();
   auto outputHeaders = responseHandler_->getHeaders();
   auto outputPayload = responseHandler_->getBody();

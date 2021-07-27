@@ -17,92 +17,96 @@
 %><%#struct:is_large?%>
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%struct:name%>::<% > module_types_h/base_ctor%>
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+<%#struct:message%>
 
-<%#struct:cpp_noexcept_move_ctor%>
-<%#struct:fields?%>
-<% > module_types_cpp/move_ctor%>
-<%/struct:fields?%>
-<%/struct:cpp_noexcept_move_ctor%>
+<%struct:name%>::<%struct:name%>(std::string __message) : <%struct:name%>() {
+  <%struct:message%> = std::move(__message);
+}
+<%/struct:message%>
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 <%struct:name%>::~<%struct:name%>() {}
 
 <%/struct:is_large?%>
+<%^struct:is_eligible_for_constexpr?%>
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+<%struct:name%>::<% > module_types_cpp/move_ctor%>
+<%struct:name%>& <%struct:name%>::operator=(FOLLY_MAYBE_UNUSED <%struct:name%>&& other) noexcept {
+<%#struct:lazy_fields?%>
+    const auto relaxed = std::memory_order::memory_order_relaxed;
+    __fbthrift_protocol_ = other.__fbthrift_protocol_;
+    __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
+<%/struct:lazy_fields?%>
+<%#struct:fields_in_layout_order%>
+    this-><%field:cpp_name%> = std::move(other.<%field:cpp_name%>);
+<%#field:lazy?%>
+    __fbthrift_isDeserialized_.<%field:cpp_name%>.store(other.__fbthrift_isDeserialized_.<%field:cpp_name%>.exchange(true), relaxed);
+<%/field:lazy?%>
+<%/struct:fields_in_layout_order%>
+<%#struct:isset_fields?%>
+    __isset = other.__isset;
+<%/struct:isset_fields?%>
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+<%/struct:is_eligible_for_constexpr?%>
+
 <% > module_types_cpp/fragile_ctor%>
+
+<% > module_types_cpp/lazy_deserialization%>
 
 void <%struct:name%>::__clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%>
 <%#type:resolves_to_base_or_enum?%>
-<%#field:value%>
-<%^type:enum?%>
-  <% > types/apply_indirection_pre%><%field:cpp_name%><% > types/apply_indirection_post%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
-<%/type:enum?%>
-<%#type:enum?%>
-<%#value:enum?%>
-  <% > types/apply_indirection_pre%><%field:cpp_name%><% > types/apply_indirection_post%> = <% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%>;
-<%/value:enum?%>
-<%^value:enum?%><%#field:enum_has_value%>
-  <% > types/apply_indirection_pre%><%field:cpp_name%><% > types/apply_indirection_post%> = <% > common/type_namespace_cpp2%><%type:name%>::<%enumValue:cpp_name%>;
-<%/field:enum_has_value%><%/value:enum?%>
-<%^value:enum?%><%^field:enum_has_value%>
-  <% > types/apply_indirection_pre%><%field:cpp_name%><% > types/apply_indirection_post%> = static_cast<<% > common/type_namespace_cpp2%><%type:name%>>(<% > common/const_value%>);
-<%/field:enum_has_value%><%/value:enum?%>
-<%/type:enum?%>
-<%/field:value%>
-<%^field:value%>
-  <% > types/apply_indirection_pre%><%field:cpp_name%><% > types/apply_indirection_post%> = <% > module_types_cpp/unset_values%>;
-<%/field:value%>
+  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <% > field/default%>;
 <%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container?%>
 <%#field:cpp_ref?%>
 <%^field:optional?%>
-<%^field:cpp_ref_shared_or_shared_const?%>
-  <%field:cpp_name%>.reset(new typename decltype(<%field:cpp_name%>)::element_type());
-<%/field:cpp_ref_shared_or_shared_const?%>
-<%#field:cpp_ref_shared_or_shared_const?%>
-  <%field:cpp_name%> = std::make_shared<<% > types/type%>>();
-<%/field:cpp_ref_shared_or_shared_const?%>
+  <% > field/member%> = ::apache::thrift::detail::make_mutable_smart_ptr<<%field:cpp_storage_type%>>();
 <%/field:optional?%>
 <%#field:optional?%>
-  <%field:cpp_name%>.reset();
+  <% > field/member%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref?%>
 <%^field:cpp_ref?%>
-  <%field:cpp_name%>.clear();
+  <% > field/member%>.clear();
 <%/field:cpp_ref?%>
 <%/type:resolves_to_container?%>
 <%#type:non_empty_struct?%>
 <%^field:cpp_ref?%>
-  <%field:cpp_name%>.__clear();
+  <% > field/member%>.__clear();
 <%/field:cpp_ref?%>
 <%#field:cpp_ref_unique?%>
 <%^field:optional?%>
-  if (<%field:cpp_name%>) <%field:cpp_name%>->__clear();
+  if (<% > field/member%>) <% > field/member%>->__clear();
 <%/field:optional?%>
 <%#field:optional?%>
-  <%field:cpp_name%>.reset();
+  <% > field/member%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref_unique?%>
 <%#field:cpp_ref_shared?%>
 <%^field:optional?%>
-  if (<%field:cpp_name%>) <%field:cpp_name%>->__clear();
+  if (<% > field/member%>) <% > field/member%>->__clear();
 <%/field:optional?%>
 <%#field:optional?%>
-  <%field:cpp_name%>.reset();
+  <% > field/member%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref_shared?%>
 <%#field:cpp_ref_shared_const?%>
 <%^field:optional?%>
 <%^field:cpp_ref_shared_or_shared_const?%>
-  if (<%field:cpp_name%>) <%field:cpp_name%>.reset(new typename decltype(<%field:cpp_name%>)::element_type());
+  if (<% > field/member%>) <% > field/member%>.reset(new typename decltype(<% > field/member%>)::element_type());
 <%/field:cpp_ref_shared_or_shared_const?%>
 <%#field:cpp_ref_shared_or_shared_const?%>
-  if (<%field:cpp_name%>) <%field:cpp_name%> = std::make_shared<<% > types/type%>>();
+  if (<% > field/member%>) <% > field/member%> = std::make_shared<<%type:cpp_type%>>();
 <%/field:cpp_ref_shared_or_shared_const?%>
 <%/field:optional?%>
 <%#field:optional?%>
-  <%field:cpp_name%>.reset();
+  <% > field/member%>.reset();
 <%/field:optional?%>
 <%/field:cpp_ref_shared_const?%>
 <%/type:non_empty_struct?%>

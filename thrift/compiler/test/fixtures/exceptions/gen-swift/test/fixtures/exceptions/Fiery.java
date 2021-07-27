@@ -21,11 +21,10 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("Fiery")
-public final class Fiery extends java.lang.RuntimeException {
+@com.facebook.swift.codec.ThriftStruct("Fiery")
+public final class Fiery extends java.lang.RuntimeException implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
-    private BitSet __isset_bit_vector = new BitSet();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -37,7 +36,7 @@ public final class Fiery extends java.lang.RuntimeException {
 
     @ThriftConstructor
     public Fiery(
-        @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED) final String message
+        @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED) final String message
     ) {
         this.message = message;
     }
@@ -48,11 +47,10 @@ public final class Fiery extends java.lang.RuntimeException {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String message = null;
     
-        @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
+        @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
         public Builder setMessage(String message) {
             this.message = message;
             return this;
@@ -70,15 +68,18 @@ public final class Fiery extends java.lang.RuntimeException {
             Fiery result = new Fiery (
                 this.message
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
     
     
-    @ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.REQUIRED)
     public String getMessage() { return message; }
     
+    
+    public static com.facebook.thrift.payload.Reader<Fiery> asReader() {
+      return Fiery::read0;
+    }
     
     public static Fiery read0(TProtocol oprot) throws TException {
       TField __field;

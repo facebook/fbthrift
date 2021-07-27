@@ -20,8 +20,9 @@ from libcpp.string cimport string
 from libcpp.vector cimport vector
 
 from folly cimport cFollyFuture, cFollyTry, cFollyUnit
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
+from thrift.py3.client cimport cClientWrapper
 
 cimport module.types as _module_types
 
@@ -51,13 +52,17 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
 
     cFollyFuture[cFollyUnit] ping(cRpcOptions, )
     cFollyFuture[string] getRandomData(cRpcOptions, )
+    cFollyFuture[cFollyUnit] sink(cRpcOptions, 
+      cint64_t arg_sink,)
+    cFollyFuture[cFollyUnit] putDataById(cRpcOptions, 
+      cint64_t arg_id,
+      string arg_data,)
     cFollyFuture[cbool] hasDataById(cRpcOptions, 
       cint64_t arg_id,)
     cFollyFuture[string] getDataById(cRpcOptions, 
       cint64_t arg_id,)
-    cFollyFuture[cFollyUnit] putDataById(cRpcOptions, 
-      cint64_t arg_id,
-      string arg_data,)
+    cFollyFuture[cFollyUnit] deleteDataById(cRpcOptions, 
+      cint64_t arg_id,)
     cFollyFuture[cFollyUnit] lobDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)

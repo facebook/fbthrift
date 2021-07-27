@@ -18,7 +18,8 @@
 
 #include <string>
 
-#include <thrift/compiler/ast/t_annotated.h>
+#include <thrift/compiler/ast/node_list.h>
+#include <thrift/compiler/ast/t_named.h>
 
 namespace apache {
 namespace thrift {
@@ -32,53 +33,38 @@ namespace compiler {
  * with them.
  *
  */
-class t_enum_value : public t_annotated {
+class t_enum_value : public t_named {
  public:
-  /**
-   * Constructor for t_enum_value
-   *
-   * @param name  - The symbolic name of the enum constant
-   */
-  explicit t_enum_value(std::string name) : name_(std::move(name)) {}
-
-  /**
-   * Constructor for t_enum_value
-   *
-   * @param name  - The symbolic name of the enum constant
-   * @param value - The value of the enum constant. Defaults to 0
-   */
+  explicit t_enum_value(std::string name) : t_named(std::move(name)) {}
   t_enum_value(std::string name, int32_t value)
-      : name_(std::move(name)), value_(value), has_value_(true) {}
-
-  virtual ~t_enum_value() {}
+      : t_named(std::move(name)), value_(value), has_value_(true) {}
 
   /**
    * t_enum_value setters
    */
   void set_value(int32_t value) {
     value_ = value;
+    has_value_ = true;
+  }
+
+  void set_implicit_value(int32_t value) {
+    value_ = value;
+    has_value_ = false;
   }
 
   /**
    * t_enum_value getters
    */
-  const std::string& get_name() const {
-    return name_;
-  }
+  int32_t get_value() const { return value_; }
 
-  int32_t get_value() const {
-    return value_;
-  }
-
-  bool has_value() {
-    return has_value_;
-  }
+  bool has_value() const { return has_value_; }
 
  private:
-  std::string name_;
   int32_t value_{0};
   bool has_value_{false};
 };
+
+using t_enum_value_list = node_list<t_enum_value>;
 
 } // namespace compiler
 } // namespace thrift

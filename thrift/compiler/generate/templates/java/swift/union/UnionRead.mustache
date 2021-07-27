@@ -15,6 +15,11 @@
   limitations under the License.
 
 }}
+
+public static com.facebook.thrift.payload.Reader<{{struct:javaCapitalName}}> asReader() {
+  return {{struct:javaCapitalName}}::read0;
+}
+
 public static {{struct:javaCapitalName}} read0(TProtocol oprot) throws TException {
   {{struct:javaCapitalName}} res = new {{struct:javaCapitalName}}();
   res.value = null;

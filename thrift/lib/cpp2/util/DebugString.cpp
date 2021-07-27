@@ -15,12 +15,13 @@
  */
 
 #include <thrift/lib/cpp2/util/DebugString.h>
+
+#include <unordered_map>
 #include <fmt/core.h>
 #include <folly/MapUtil.h>
 #include <folly/String.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
-#include <unordered_map>
 
 namespace apache {
 namespace thrift {
@@ -82,20 +83,21 @@ TType parseSimpleTypeLabel(folly::StringPiece label) {
   // if type is "map<K, V>", shorten to "map" for the lookup.
   label = label.subpiece(0, label.find('<'));
   static const std::unordered_map<folly::StringPiece, TType, folly::Hash>
-      kTable = {{"stop", TType::T_STOP},
-                {"bool", TType::T_BOOL},
-                {"byte", TType::T_BYTE},
-                {"i16", TType::T_I16},
-                {"i32", TType::T_I32},
-                {"i64", TType::T_I64},
-                {"double", TType::T_DOUBLE},
-                {"float", TType::T_FLOAT},
-                {"string", TType::T_STRING},
-                {"utf8", TType::T_UTF8},
-                {"struct", TType::T_STRUCT},
-                {"list", TType::T_LIST},
-                {"set", TType::T_SET},
-                {"map", TType::T_MAP}};
+      kTable = {
+          {"stop", TType::T_STOP},
+          {"bool", TType::T_BOOL},
+          {"byte", TType::T_BYTE},
+          {"i16", TType::T_I16},
+          {"i32", TType::T_I32},
+          {"i64", TType::T_I64},
+          {"double", TType::T_DOUBLE},
+          {"float", TType::T_FLOAT},
+          {"string", TType::T_STRING},
+          {"utf8", TType::T_UTF8},
+          {"struct", TType::T_STRUCT},
+          {"list", TType::T_LIST},
+          {"set", TType::T_SET},
+          {"map", TType::T_MAP}};
   return folly::get_default(kTable, label, TType::T_STOP);
 }
 
@@ -715,8 +717,7 @@ void parseField(
 
 template <class ProtocolReader>
 std::string toDebugString(
-    ProtocolReader& inProtoReader,
-    DebugStringParams params) {
+    ProtocolReader& inProtoReader, DebugStringParams params) {
   RenderState rs;
   rs.params = params;
   std::string outType, outVal;
@@ -735,17 +736,13 @@ void fromDebugString(folly::StringPiece text, ProtocolWriter& outProtoWriter) {
 // Currently, we instantiate Compact and Binary, but we could instantiate
 // others if it makes sense.
 template std::string toDebugString<CompactProtocolReader>(
-    CompactProtocolReader& inProtoReader,
-    DebugStringParams p = {});
+    CompactProtocolReader& inProtoReader, DebugStringParams p);
 template std::string toDebugString<BinaryProtocolReader>(
-    BinaryProtocolReader& inProtoReader,
-    DebugStringParams p = {});
+    BinaryProtocolReader& inProtoReader, DebugStringParams p);
 template void fromDebugString<class CompactProtocolWriter>(
-    folly::StringPiece text,
-    CompactProtocolWriter& outProtoWriter);
+    folly::StringPiece text, CompactProtocolWriter& outProtoWriter);
 template void fromDebugString<class BinaryProtocolWriter>(
-    folly::StringPiece text,
-    BinaryProtocolWriter& outProtoWriter);
+    folly::StringPiece text, BinaryProtocolWriter& outProtoWriter);
 
 } // namespace thrift
 } // namespace apache

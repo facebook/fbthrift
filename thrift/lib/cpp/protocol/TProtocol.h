@@ -18,7 +18,6 @@
 #define THRIFT_PROTOCOL_TPROTOCOL_H_ 1
 
 #include <folly/Conv.h>
-#include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp/transport/TTransport.h>
@@ -172,74 +171,6 @@ uint32_t skip(Protocol_& prot, TType arg_type) {
   }
 }
 
-// TODO(denplusplus): remove.
-// DO NOT USE.
-template <typename Protocol_, typename T>
-uint32_t readIntegral(Protocol_& prot, TType arg_type, T& value) {
-  switch (arg_type) {
-    case TType::T_BOOL: {
-      bool boolv;
-      auto res = prot.readBool(boolv);
-      value = static_cast<T>(boolv);
-      return res;
-    }
-    case TType::T_BYTE: {
-      int8_t bytev;
-      auto res = prot.readByte(bytev);
-      value = static_cast<T>(bytev);
-      return res;
-    }
-    case TType::T_I16: {
-      int16_t i16;
-      auto res = prot.readI16(i16);
-      value = static_cast<T>(i16);
-      return res;
-    }
-    case TType::T_I32: {
-      int32_t i32;
-      auto res = prot.readI32(i32);
-      value = static_cast<T>(i32);
-      return res;
-    }
-    case TType::T_I64: {
-      int64_t i64;
-      auto res = prot.readI64(i64);
-      value = static_cast<T>(i64);
-      return res;
-    }
-    default: {
-      throw TProtocolException(
-          std::string("Cannot parse integral number of ") +
-          folly::to<std::string>(arg_type) + " type");
-    }
-  }
-}
-
-// TODO(denplusplus): remove.
-// DO NOT USE.
-template <typename Protocol_, typename T>
-uint32_t readFloatingPoint(Protocol_& prot, TType arg_type, T& value) {
-  switch (arg_type) {
-    case TType::T_DOUBLE: {
-      double dub;
-      auto res = prot.readDouble(dub);
-      value = static_cast<T>(dub);
-      return res;
-    }
-    case TType::T_FLOAT: {
-      float flt;
-      auto res = prot.readFloat(flt);
-      value = static_cast<T>(flt);
-      return res;
-    }
-    default: {
-      throw TProtocolException(
-          std::string("Cannot parse floating number of ") +
-          folly::to<std::string>(arg_type) + " type");
-    }
-  }
-}
-
 /**
  * Abstract class for a thrift protocol driver. These are all the methods that
  * a protocol must implement. Essentially, there must be some way of reading
@@ -260,15 +191,11 @@ class TProtocol {
 
   virtual void setVersion_virt(const int8_t version) = 0;
 
-  void setVersion(const int8_t version) {
-    return setVersion_virt(version);
-  }
+  void setVersion(const int8_t version) { return setVersion_virt(version); }
 
   virtual ::apache::thrift::reflection::Schema* getSchema_virt() = 0;
 
-  ::apache::thrift::reflection::Schema* getSchema() {
-    return getSchema_virt();
-  }
+  ::apache::thrift::reflection::Schema* getSchema() { return getSchema_virt(); }
 
   /**
    * Writing functions.
@@ -286,30 +213,24 @@ class TProtocol {
   virtual uint32_t writeStructEnd_virt() = 0;
 
   virtual uint32_t writeFieldBegin_virt(
-      const char* name,
-      const TType fieldType,
-      const int16_t fieldId) = 0;
+      const char* name, const TType fieldType, const int16_t fieldId) = 0;
 
   virtual uint32_t writeFieldEnd_virt() = 0;
 
   virtual uint32_t writeFieldStop_virt() = 0;
 
   virtual uint32_t writeMapBegin_virt(
-      const TType keyType,
-      const TType valType,
-      const uint32_t size) = 0;
+      const TType keyType, const TType valType, const uint32_t size) = 0;
 
   virtual uint32_t writeMapEnd_virt() = 0;
 
   virtual uint32_t writeListBegin_virt(
-      const TType elemType,
-      const uint32_t size) = 0;
+      const TType elemType, const uint32_t size) = 0;
 
   virtual uint32_t writeListEnd_virt() = 0;
 
   virtual uint32_t writeSetBegin_virt(
-      const TType elemType,
-      const uint32_t size) = 0;
+      const TType elemType, const uint32_t size) = 0;
 
   virtual uint32_t writeSetEnd_virt() = 0;
 
@@ -338,97 +259,63 @@ class TProtocol {
     return writeMessageBegin_virt(name, messageType, seqid);
   }
 
-  uint32_t writeMessageEnd() {
-    return writeMessageEnd_virt();
-  }
+  uint32_t writeMessageEnd() { return writeMessageEnd_virt(); }
 
   uint32_t writeStructBegin(const char* name) {
     return writeStructBegin_virt(name);
   }
 
-  uint32_t writeStructEnd() {
-    return writeStructEnd_virt();
-  }
+  uint32_t writeStructEnd() { return writeStructEnd_virt(); }
 
   uint32_t writeFieldBegin(
-      const char* name,
-      const TType fieldType,
-      const int16_t fieldId) {
+      const char* name, const TType fieldType, const int16_t fieldId) {
     return writeFieldBegin_virt(name, fieldType, fieldId);
   }
 
-  uint32_t writeFieldEnd() {
-    return writeFieldEnd_virt();
-  }
+  uint32_t writeFieldEnd() { return writeFieldEnd_virt(); }
 
-  uint32_t writeFieldStop() {
-    return writeFieldStop_virt();
-  }
+  uint32_t writeFieldStop() { return writeFieldStop_virt(); }
 
-  uint32_t
-  writeMapBegin(const TType keyType, const TType valType, const uint32_t size) {
+  uint32_t writeMapBegin(
+      const TType keyType, const TType valType, const uint32_t size) {
     return writeMapBegin_virt(keyType, valType, size);
   }
 
-  uint32_t writeMapEnd() {
-    return writeMapEnd_virt();
-  }
+  uint32_t writeMapEnd() { return writeMapEnd_virt(); }
 
   uint32_t writeListBegin(const TType elemType, const uint32_t size) {
     return writeListBegin_virt(elemType, size);
   }
 
-  uint32_t writeListEnd() {
-    return writeListEnd_virt();
-  }
+  uint32_t writeListEnd() { return writeListEnd_virt(); }
 
   uint32_t writeSetBegin(const TType elemType, const uint32_t size) {
     return writeSetBegin_virt(elemType, size);
   }
 
-  uint32_t writeSetEnd() {
-    return writeSetEnd_virt();
-  }
+  uint32_t writeSetEnd() { return writeSetEnd_virt(); }
 
-  uint32_t writeBool(const bool value) {
-    return writeBool_virt(value);
-  }
+  uint32_t writeBool(const bool value) { return writeBool_virt(value); }
 
-  uint32_t writeByte(const int8_t byte) {
-    return writeByte_virt(byte);
-  }
+  uint32_t writeByte(const int8_t byte) { return writeByte_virt(byte); }
 
-  uint32_t writeI16(const int16_t i16) {
-    return writeI16_virt(i16);
-  }
+  uint32_t writeI16(const int16_t i16) { return writeI16_virt(i16); }
 
-  uint32_t writeI32(const int32_t i32) {
-    return writeI32_virt(i32);
-  }
+  uint32_t writeI32(const int32_t i32) { return writeI32_virt(i32); }
 
-  uint32_t writeI64(const int64_t i64) {
-    return writeI64_virt(i64);
-  }
+  uint32_t writeI64(const int64_t i64) { return writeI64_virt(i64); }
 
-  uint32_t writeDouble(const double dub) {
-    return writeDouble_virt(dub);
-  }
+  uint32_t writeDouble(const double dub) { return writeDouble_virt(dub); }
 
-  uint32_t writeFloat(const float flt) {
-    return writeFloat_virt(flt);
-  }
+  uint32_t writeFloat(const float flt) { return writeFloat_virt(flt); }
 
-  uint32_t writeString(const std::string& str) {
-    return writeString_virt(str);
-  }
+  uint32_t writeString(const std::string& str) { return writeString_virt(str); }
 
   uint32_t writeString(const folly::fbstring& str) {
     return writeString_virt(str.toStdString());
   }
 
-  uint32_t writeBinary(const std::string& str) {
-    return writeBinary_virt(str);
-  }
+  uint32_t writeBinary(const std::string& str) { return writeBinary_virt(str); }
 
   uint32_t writeBinary(const folly::fbstring& str) {
     return writeBinary_virt(str.toStdString());
@@ -439,9 +326,7 @@ class TProtocol {
    */
 
   virtual uint32_t readMessageBegin_virt(
-      std::string& name,
-      TMessageType& messageType,
-      int32_t& seqid) = 0;
+      std::string& name, TMessageType& messageType, int32_t& seqid) = 0;
 
   virtual uint32_t readMessageEnd_virt() = 0;
 
@@ -452,31 +337,26 @@ class TProtocol {
   virtual uint32_t readStructEnd_virt() = 0;
 
   virtual uint32_t readFieldBegin_virt(
-      std::string& name,
-      TType& fieldType,
-      int16_t& fieldId) = 0;
+      std::string& name, TType& fieldType, int16_t& fieldId) = 0;
 
   virtual uint32_t readFieldEnd_virt() = 0;
 
   virtual uint32_t readMapBegin_virt(
-      TType& keyType,
-      TType& valType,
-      uint32_t& size,
-      bool& sizeUnknown) = 0;
+      TType& keyType, TType& valType, uint32_t& size, bool& sizeUnknown) = 0;
 
   virtual bool peekMap_virt() = 0;
 
   virtual uint32_t readMapEnd_virt() = 0;
 
-  virtual uint32_t
-  readListBegin_virt(TType& elemType, uint32_t& size, bool& sizeUnknown) = 0;
+  virtual uint32_t readListBegin_virt(
+      TType& elemType, uint32_t& size, bool& sizeUnknown) = 0;
 
   virtual bool peekList_virt() = 0;
 
   virtual uint32_t readListEnd_virt() = 0;
 
-  virtual uint32_t
-  readSetBegin_virt(TType& elemType, uint32_t& size, bool& sizeUnknown) = 0;
+  virtual uint32_t readSetBegin_virt(
+      TType& elemType, uint32_t& size, bool& sizeUnknown) = 0;
 
   virtual bool peekSet_virt() = 0;
 
@@ -503,15 +383,11 @@ class TProtocol {
   virtual uint32_t readBinary_virt(std::string& str) = 0;
 
   uint32_t readMessageBegin(
-      std::string& name,
-      TMessageType& messageType,
-      int32_t& seqid) {
+      std::string& name, TMessageType& messageType, int32_t& seqid) {
     return readMessageBegin_virt(name, messageType, seqid);
   }
 
-  uint32_t readMessageEnd() {
-    return readMessageEnd_virt();
-  }
+  uint32_t readMessageEnd() { return readMessageEnd_virt(); }
 
   void setNextStructType(uint64_t reflection_id) {
     return setNextStructType_virt(reflection_id);
@@ -521,90 +397,55 @@ class TProtocol {
     return readStructBegin_virt(name);
   }
 
-  uint32_t readStructEnd() {
-    return readStructEnd_virt();
-  }
+  uint32_t readStructEnd() { return readStructEnd_virt(); }
 
-  uint32_t
-  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId) {
+  uint32_t readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId) {
     return readFieldBegin_virt(name, fieldType, fieldId);
   }
 
-  uint32_t readFieldEnd() {
-    return readFieldEnd_virt();
-  }
+  uint32_t readFieldEnd() { return readFieldEnd_virt(); }
 
   uint32_t readMapBegin(
-      TType& keyType,
-      TType& valType,
-      uint32_t& size,
-      bool& sizeUnknown) {
+      TType& keyType, TType& valType, uint32_t& size, bool& sizeUnknown) {
     return readMapBegin_virt(keyType, valType, size, sizeUnknown);
   }
 
-  bool peekMap() {
-    return peekMap_virt();
-  }
+  bool peekMap() { return peekMap_virt(); }
 
-  uint32_t readMapEnd() {
-    return readMapEnd_virt();
-  }
+  uint32_t readMapEnd() { return readMapEnd_virt(); }
 
   uint32_t readListBegin(TType& elemType, uint32_t& size, bool& sizeUnknown) {
     return readListBegin_virt(elemType, size, sizeUnknown);
   }
 
-  bool peekList() {
-    return peekList_virt();
-  }
+  bool peekList() { return peekList_virt(); }
 
-  uint32_t readListEnd() {
-    return readListEnd_virt();
-  }
+  uint32_t readListEnd() { return readListEnd_virt(); }
 
   uint32_t readSetBegin(TType& elemType, uint32_t& size, bool& sizeUnknown) {
     return readSetBegin_virt(elemType, size, sizeUnknown);
   }
 
-  bool peekSet() {
-    return peekSet_virt();
-  }
+  bool peekSet() { return peekSet_virt(); }
 
-  uint32_t readSetEnd() {
-    return readSetEnd_virt();
-  }
+  uint32_t readSetEnd() { return readSetEnd_virt(); }
 
-  uint32_t readBool(bool& value) {
-    return readBool_virt(value);
-  }
+  uint32_t readBool(bool& value) { return readBool_virt(value); }
 
-  uint32_t readByte(int8_t& byte) {
-    return readByte_virt(byte);
-  }
+  uint32_t readByte(int8_t& byte) { return readByte_virt(byte); }
 
-  uint32_t readI16(int16_t& i16) {
-    return readI16_virt(i16);
-  }
+  uint32_t readI16(int16_t& i16) { return readI16_virt(i16); }
 
-  uint32_t readI32(int32_t& i32) {
-    return readI32_virt(i32);
-  }
+  uint32_t readI32(int32_t& i32) { return readI32_virt(i32); }
 
-  uint32_t readI64(int64_t& i64) {
-    return readI64_virt(i64);
-  }
+  uint32_t readI64(int64_t& i64) { return readI64_virt(i64); }
 
-  uint32_t readDouble(double& dub) {
-    return readDouble_virt(dub);
-  }
+  uint32_t readDouble(double& dub) { return readDouble_virt(dub); }
 
-  uint32_t readFloat(float& flt) {
-    return readFloat_virt(flt);
-  }
+  uint32_t readFloat(float& flt) { return readFloat_virt(flt); }
 
-  uint32_t readString(std::string& str) {
-    return readString_virt(str);
-  }
+  uint32_t readString(std::string& str) { return readString_virt(str); }
 
   uint32_t readString(folly::fbstring& str) {
     std::string data;
@@ -613,9 +454,7 @@ class TProtocol {
     return ret;
   }
 
-  uint32_t readBinary(std::string& str) {
-    return readBinary_virt(str);
-  }
+  uint32_t readBinary(std::string& str) { return readBinary_virt(str); }
 
   uint32_t readBinary(folly::fbstring& str) {
     std::string data;
@@ -644,25 +483,17 @@ class TProtocol {
   /**
    * Method to arbitrarily skip over data.
    */
-  uint32_t skip(TType type) {
-    return skip_virt(type);
-  }
+  uint32_t skip(TType type) { return skip_virt(type); }
   virtual uint32_t skip_virt(TType type) {
     return ::apache::thrift::protocol::skip(*this, type);
   }
 
-  inline std::shared_ptr<TTransport> getTransport() {
-    return ptrans_;
-  }
+  inline std::shared_ptr<TTransport> getTransport() { return ptrans_; }
 
   // TODO: remove these two calls, they are for backwards
   // compatibility
-  inline std::shared_ptr<TTransport> getInputTransport() {
-    return ptrans_;
-  }
-  inline std::shared_ptr<TTransport> getOutputTransport() {
-    return ptrans_;
-  }
+  inline std::shared_ptr<TTransport> getInputTransport() { return ptrans_; }
+  inline std::shared_ptr<TTransport> getOutputTransport() { return ptrans_; }
 
  protected:
   explicit TProtocol(std::shared_ptr<TTransport> ptrans) : ptrans_(ptrans) {}
@@ -729,9 +560,7 @@ class TDuplexProtocolFactory {
 template <class Factory_>
 class TSingleProtocolFactory : public TDuplexProtocolFactory {
  public:
-  TSingleProtocolFactory() {
-    factory_.reset(new Factory_());
-  }
+  TSingleProtocolFactory() { factory_.reset(new Factory_()); }
 
   explicit TSingleProtocolFactory(std::shared_ptr<Factory_> factory)
       : factory_(factory) {}

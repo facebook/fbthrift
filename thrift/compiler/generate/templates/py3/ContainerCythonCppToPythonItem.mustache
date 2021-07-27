@@ -18,17 +18,17 @@
 
 Usually included in places where a container item is being processed. You have
 access to a C object and need to return or convert it to a Python object. The
-type in this case is probably a type:listElemType, type:setElemType,
-type:keyType, or type:valueType.
+type in this case is probably a type:list_elem_type, type:set_elem_type,
+type:key_type, or type:value_type.
 
 By convention, it assumes the c++ structure that is being manipulated is named
 citem.
 
 }}{{#type:iobuf?}}{{!
-  }}__iobuf.IOBuf.create(citem.get(), self){{!
+  }}_fbthrift_iobuf.IOBuf.create(citem.get(), self){{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
-  }}__iobuf.IOBuf.create(citem.get().get(), self){{!
+  }}_fbthrift_iobuf.IOBuf.create(citem.get().get(), self){{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
   }}(<const char*>citem.data())[:citem.size()]{{!

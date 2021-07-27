@@ -90,5 +90,30 @@ folly::Optional<std::string> Cpp2ConnContext::PeerCred::getError() const {
   }
 }
 
+std::optional<std::string_view> ClientMetadataRef::getAgent() {
+  if (!md_.agent_ref()) {
+    return {};
+  }
+  return std::string_view{*md_.agent_ref()};
+}
+
+std::optional<std::string_view> ClientMetadataRef::getHostname() {
+  if (!md_.hostname_ref()) {
+    return {};
+  }
+  return std::string_view{*md_.hostname_ref()};
+}
+
+std::optional<std::string_view> ClientMetadataRef::getOtherMetadataField(
+    std::string_view key) {
+  if (const auto& otherMetadata = md_.otherMetadata_ref()) {
+    if (auto* value = folly::get_ptr(*otherMetadata, std::string{key})) {
+      return std::string_view{*value};
+    }
+    return {};
+  }
+  return {};
+}
+
 } // namespace thrift
 } // namespace apache

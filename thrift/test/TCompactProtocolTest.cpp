@@ -31,9 +31,7 @@ namespace thrift {
 class TCompactProtocolTest : public testing::Test {};
 
 void testTMessageWriteAndRead(
-    const std::string& name,
-    TMessageType msgType,
-    int32_t seqId) {
+    const std::string& name, TMessageType msgType, int32_t seqId) {
   TMemoryBuffer buffer;
   TCompactProtocolT protocol(&buffer);
   protocol.writeMessageBegin(name, msgType, seqId);

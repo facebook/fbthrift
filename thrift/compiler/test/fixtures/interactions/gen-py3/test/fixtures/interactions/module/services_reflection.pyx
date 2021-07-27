@@ -11,7 +11,7 @@ from thrift.py3.reflection cimport (
   NumberType as __NumberType,
 )
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 
 cimport test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types

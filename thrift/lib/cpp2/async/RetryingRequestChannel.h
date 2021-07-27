@@ -32,28 +32,35 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
   using UniquePtr = std::
       unique_ptr<RetryingRequestChannel, folly::DelayedDestruction::Destructor>;
 
-  static UniquePtr
-  newChannel(folly::EventBase& evb, int numRetries, ImplPtr impl) {
+  static UniquePtr newChannel(
+      folly::EventBase& evb, int numRetries, ImplPtr impl) {
     return {new RetryingRequestChannel(evb, numRetries, std::move(impl)), {}};
   }
 
   void sendRequestStream(
       const apache::thrift::RpcOptions& rpcOptions,
-      folly::StringPiece methodName,
+      MethodMetadata&& methodMetadata,
       apache::thrift::SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       apache::thrift::StreamClientCallback* clientCallback) override;
 
   void sendRequestResponse(
       const apache::thrift::RpcOptions& options,
-      folly::StringPiece methodName,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<apache::thrift::transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
+  void sendRequestSink(
+      const apache::thrift::RpcOptions& rpcOptions,
+      apache::thrift::MethodMetadata&& methodMetadata,
+      SerializedRequest&& request,
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      apache::thrift::SinkClientCallback* cb) override;
+
   void sendRequestNoResponse(
       const apache::thrift::RpcOptions&,
-      folly::StringPiece,
+      MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override {
@@ -64,13 +71,9 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
     LOG(FATAL) << "Not supported";
   }
 
-  folly::EventBase* getEventBase() const override {
-    return &evb_;
-  }
+  folly::EventBase* getEventBase() const override { return &evb_; }
 
-  uint16_t getProtocolId() override {
-    return impl_->getProtocolId();
-  }
+  uint16_t getProtocolId() override { return impl_->getProtocolId(); }
 
  protected:
   ~RetryingRequestChannel() override = default;
@@ -81,6 +84,7 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
   class RequestCallbackBase;
   class RequestCallback;
   class StreamCallback;
+  class SinkCallback;
 
   ImplPtr impl_;
   int numRetries_;

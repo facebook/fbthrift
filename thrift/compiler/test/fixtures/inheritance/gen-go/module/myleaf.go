@@ -124,6 +124,37 @@ func (p *MyLeafThreadsafeClient) recvDoLeaf() (err error) {
 }
 
 
+type MyLeafChannelClient struct {
+  *MyNodeChannelClient
+}
+
+func (c *MyLeafChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyLeafChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyLeafChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyLeafChannelClient(channel thrift.RequestChannel) *MyLeafChannelClient {
+  return &MyLeafChannelClient{MyNodeChannelClient: NewMyNodeChannelClient(channel)}
+}
+
+func (p *MyLeafChannelClient) DoLeaf(ctx context.Context) (err error) {
+  args := MyLeafDoLeafArgs{
+  }
+  var result MyLeafDoLeafResult
+  err = p.RequestChannel.Call(ctx, "do_leaf", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyLeafProcessor struct {
   *MyNodeProcessor
 }
@@ -131,11 +162,17 @@ type MyLeafProcessor struct {
 func NewMyLeafProcessor(handler MyLeaf) *MyLeafProcessor {
   self3 := &MyLeafProcessor{NewMyNodeProcessor(handler)}
   self3.AddToProcessorMap("do_leaf", &myLeafProcessorDoLeaf{handler:handler})
+  self3.AddToFunctionServiceMap("do_leaf", "MyLeaf")
   return self3
 }
 
 type myLeafProcessorDoLeaf struct {
   handler MyLeaf
+}
+
+func (p *MyLeafDoLeafResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *myLeafProcessorDoLeaf) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -192,6 +229,21 @@ func NewMyLeafDoLeafArgs() *MyLeafDoLeafArgs {
   return &MyLeafDoLeafArgs{}
 }
 
+type MyLeafDoLeafArgsBuilder struct {
+  obj *MyLeafDoLeafArgs
+}
+
+func NewMyLeafDoLeafArgsBuilder() *MyLeafDoLeafArgsBuilder{
+  return &MyLeafDoLeafArgsBuilder{
+    obj: NewMyLeafDoLeafArgs(),
+  }
+}
+
+func (p MyLeafDoLeafArgsBuilder) Emit() *MyLeafDoLeafArgs{
+  return &MyLeafDoLeafArgs{
+  }
+}
+
 func (p *MyLeafDoLeafArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -241,6 +293,21 @@ type MyLeafDoLeafResult struct {
 
 func NewMyLeafDoLeafResult() *MyLeafDoLeafResult {
   return &MyLeafDoLeafResult{}
+}
+
+type MyLeafDoLeafResultBuilder struct {
+  obj *MyLeafDoLeafResult
+}
+
+func NewMyLeafDoLeafResultBuilder() *MyLeafDoLeafResultBuilder{
+  return &MyLeafDoLeafResultBuilder{
+    obj: NewMyLeafDoLeafResult(),
+  }
+}
+
+func (p MyLeafDoLeafResultBuilder) Emit() *MyLeafDoLeafResult{
+  return &MyLeafDoLeafResult{
+  }
 }
 
 func (p *MyLeafDoLeafResult) Read(iprot thrift.Protocol) error {

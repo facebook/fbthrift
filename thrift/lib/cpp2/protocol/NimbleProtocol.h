@@ -40,14 +40,12 @@ class NimbleProtocolWriter {
  public:
   using ProtocolReader = NimbleProtocolReader;
 
-  static constexpr bool kSortKeys() {
-    return false;
-  }
+  static constexpr bool kSortKeys() { return false; }
+
+  static constexpr bool kHasIndexSupport() { return false; }
 
   uint32_t writeMessageBegin(
-      const std::string& name,
-      MessageType messageType,
-      int32_t seqid);
+      const std::string& name, MessageType messageType, int32_t seqid);
   uint32_t writeMessageEnd();
   uint32_t writeStructBegin(const char* name);
   uint32_t writeStructEnd();
@@ -80,11 +78,11 @@ class NimbleProtocolWriter {
    */
 
   uint32_t serializedMessageSize(const std::string& name) const;
-  uint32_t
-  serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) const;
+  uint32_t serializedFieldSize(
+      const char* name, TType fieldType, int16_t fieldId) const;
   uint32_t serializedStructSize(const char* name) const;
-  uint32_t serializedSizeMapBegin(TType keyType, TType valType, uint32_t size)
-      const;
+  uint32_t serializedSizeMapBegin(
+      TType keyType, TType valType, uint32_t size) const;
   uint32_t serializedSizeMapEnd() const;
   uint32_t serializedSizeListBegin(TType elemType, uint32_t size) const;
   uint32_t serializedSizeListEnd() const;
@@ -111,9 +109,7 @@ class NimbleProtocolWriter {
   uint32_t serializedSizeSerializedData(
       std::unique_ptr<folly::IOBuf> const& /*data*/) const;
 
-  std::unique_ptr<folly::IOBuf> finalize() {
-    return encoder_.finalize();
-  }
+  std::unique_ptr<folly::IOBuf> finalize() { return encoder_.finalize(); }
 
  private:
   /*
@@ -142,28 +138,24 @@ class NimbleProtocolReader {
     }
   }
 
-  static constexpr bool kUsesFieldNames() {
-    return false;
-  }
+  static constexpr bool kUsesFieldNames() { return false; }
 
-  static constexpr bool kOmitsContainerSizes() {
-    return false;
-  }
+  static constexpr bool kOmitsContainerSizes() { return false; }
 
-  void setInput(const folly::io::Cursor& cursor) {
-    decoder_.setInput(cursor);
-  }
+  static constexpr bool kHasDeferredRead() { return false; }
+
+  void setInput(const folly::io::Cursor& cursor) { decoder_.setInput(cursor); }
 
   /**
    * Reading functions
    */
-  void
-  readMessageBegin(std::string& name, MessageType& messageType, int32_t& seqid);
+  void readMessageBegin(
+      std::string& name, MessageType& messageType, int32_t& seqid);
   void readMessageEnd();
   void readStructBegin(const std::string& name);
   void readStructEnd();
-  void
-  readFieldBegin(std::string& name, NimbleType& fieldType, int16_t& fieldId);
+  void readFieldBegin(
+      std::string& name, NimbleType& fieldType, int16_t& fieldId);
   void readFieldEnd();
   void readMapBegin(NimbleType& keyType, NimbleType& valType, uint32_t& size);
   void readMapEnd();
@@ -196,32 +188,22 @@ class NimbleProtocolReader {
   void readBinaryWithContext(StrType& str, StructReadState& readState);
   void readBinary(std::unique_ptr<folly::IOBuf>& str);
   void readBinaryWithContext(
-      std::unique_ptr<folly::IOBuf>& str,
-      StructReadState& readState);
+      std::unique_ptr<folly::IOBuf>& str, StructReadState& readState);
   void readBinary(folly::IOBuf& str);
   void readBinaryWithContext(folly::IOBuf& str, StructReadState& readState);
-  bool peekMap() {
-    return false;
-  }
-  bool peekSet() {
-    return false;
-  }
-  bool peekList() {
-    return false;
-  }
+  bool peekMap() { return false; }
+  bool peekSet() { return false; }
+  bool peekList() { return false; }
 
   const Cursor& getCursor() const {
     throw std::logic_error(
         "NimbleProtocolReader doesn't expose the underlying cursor.");
   }
 
-  size_t getCursorPosition() const {
-    return 0;
-  }
+  size_t getCursorPosition() const { return 0; }
 
   void skip_n(
-      std::uint32_t n,
-      std::initializer_list<detail::nimble::NimbleType> types);
+      std::uint32_t n, std::initializer_list<detail::nimble::NimbleType> types);
 
   struct StructReadState {
     StructReadState() = default;
@@ -318,8 +300,7 @@ class NimbleProtocolReader {
     }
 
     FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
-        NimbleProtocolReader* iprot,
-        TType expectedFieldType) {
+        NimbleProtocolReader* iprot, TType expectedFieldType) {
       return iprot->isCompatibleWithType(expectedFieldType, *this);
     }
 
@@ -335,14 +316,21 @@ class NimbleProtocolReader {
     void fillFieldTraitsFromName() {
       throw std::logic_error("NimbleProtocol doesn't support field names");
     }
+
+    folly::Optional<folly::IOBuf> tryFastSkip(
+        NimbleProtocolReader* /*iprot*/,
+        int16_t /*fieldId*/,
+        TType /*fieldType*/,
+        bool /*fixedCostSkip*/) {
+      return {};
+    }
   };
 
  protected:
   void advanceToNextFieldSlow(StructReadState& state);
 
   FOLLY_ALWAYS_INLINE bool isCompatibleWithType(
-      TType expectedFieldType,
-      StructReadState& state);
+      TType expectedFieldType, StructReadState& state);
   /* The actual method that does skip when there is a mismatch */
   StructReadState skip(StructReadState state);
 
@@ -374,9 +362,7 @@ struct ProtocolReaderWireTypeInfo<NimbleProtocolReader> {
     return nimble::ttypeToNimbleType(ttype);
   }
 
-  static WireType defaultValue() {
-    return nimble::NimbleType::STOP;
-  }
+  static WireType defaultValue() { return nimble::NimbleType::STOP; }
 };
 
 } // namespace detail

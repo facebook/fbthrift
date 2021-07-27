@@ -7,7 +7,7 @@
 
 import typing as _typing
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
 import include.types as _include_types
@@ -182,6 +182,20 @@ class AllocatorAware_Builder(thrift.py3.builder.StructBuilder):
 
 class AllocatorAware2_Builder(thrift.py3.builder.StructBuilder):
     not_a_container: _typing.Optional[int]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class TypedefStruct_Builder(thrift.py3.builder.StructBuilder):
+    i32_field: _typing.Optional[int]
+    IntTypedef_field: _typing.Optional[int]
+    UintTypedef_field: _typing.Optional[int]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
+
+
+class StructWithDoubleUnderscores_Builder(thrift.py3.builder.StructBuilder):
+    __field: _typing.Optional[int]
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

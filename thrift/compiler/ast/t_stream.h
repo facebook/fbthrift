@@ -16,70 +16,80 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
+#include <utility>
 
+#include <thrift/compiler/ast/t_throws.h>
 #include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-class t_stream_response : public t_type {
+class t_stream_response : public t_templated_type {
  public:
-  explicit t_stream_response(t_type* elem_type, t_struct* throws = nullptr)
-      : elem_type_(elem_type), throws_(throws) {}
+  explicit t_stream_response(t_type_ref elem_type)
+      : elem_type_(std::move(elem_type)) {}
 
-  t_type* get_elem_type() const {
-    return elem_type_;
+  const t_type_ref& elem_type() const { return elem_type_; }
+
+  // Returns nullptr when the throws clause is absent.
+  t_throws* exceptions() { return exceptions_.get(); }
+  const t_throws* exceptions() const { return exceptions_.get(); }
+  // Use nullptr to indicate an absent throws clause.
+  void set_exceptions(std::unique_ptr<t_throws> exceptions) {
+    exceptions_ = std::move(exceptions);
   }
 
-  t_type* get_first_response_type() const {
+  void set_first_response_type(
+      boost::optional<t_type_ref> first_response_type) {
+    first_response_type_ = std::move(first_response_type);
+  }
+
+  const boost::optional<t_type_ref>& first_response_type() const {
     return first_response_type_;
   }
 
-  void set_first_response_type(t_type* first_response_type) {
-    first_response_type_ = first_response_type;
-  }
-
-  bool is_streamresponse() const override {
-    return true;
-  }
-
-  bool has_first_response() const {
-    return (bool)(first_response_type_);
-  }
-
   std::string get_full_name() const override {
-    if (has_first_response()) {
-      return first_response_type_->get_full_name() + ", stream<" +
-          elem_type_->get_full_name() + ">";
+    std::string result = "stream<" + elem_type_->get_full_name() + ">";
+    if (first_response_type_ != boost::none) {
+      result = first_response_type_->deref().get_full_name() + ", " + result;
     }
-    return "stream<" + elem_type_->get_full_name() + ">";
-  }
-
-  std::string get_impl_full_name() const override {
-    if (has_first_response()) {
-      return first_response_type_->get_impl_full_name() + ", stream<" +
-          elem_type_->get_impl_full_name() + ">";
-    }
-    return "stream<" + elem_type_->get_impl_full_name() + ">";
-  }
-
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_STREAM;
-  }
-
-  t_struct* get_throws_struct() const {
-    return throws_;
-  }
-  bool has_throws_struct() const {
-    return (bool)throws_;
+    return result;
   }
 
  private:
-  t_type* first_response_type_{nullptr};
-  t_type* elem_type_;
-  t_struct* throws_;
+  t_type_ref elem_type_;
+  std::unique_ptr<t_throws> exceptions_;
+  boost::optional<t_type_ref> first_response_type_;
+
+  // TODO(afuller): Remove everything below here. It is provided only for
+  // backwards compatibility.
+ public:
+  explicit t_stream_response(
+      const t_type* elem_type, std::unique_ptr<t_throws> throws = nullptr)
+      : t_stream_response(t_type_ref::from_req_ptr(elem_type)) {
+    set_exceptions(std::move(throws));
+  }
+
+  void set_first_response_type(const t_type* first_response_type) {
+    set_first_response_type(t_type_ref::from_ptr(first_response_type));
+  }
+  const t_type* get_elem_type() const { return elem_type().get_type(); }
+  const t_type* get_first_response_type() const {
+    return first_response_type() == boost::none
+        ? nullptr
+        : first_response_type()->get_type();
+  }
+  bool has_first_response() const {
+    return first_response_type_ != boost::none;
+  }
+  t_throws* get_throws_struct() const { return exceptions_.get(); }
+  bool has_throws_struct() const { return exceptions_ == nullptr; }
+
+  bool is_streamresponse() const override { return true; }
+  type get_type_value() const override { return type::t_stream; }
 };
 
 } // namespace compiler

@@ -37,7 +37,13 @@ class ReflectionStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class ReflectionStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -45,6 +51,7 @@ class ReflectionStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = ReflectionStruct;
@@ -54,12 +61,12 @@ class ReflectionStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ReflectionStruct() :
-      fieldA(5) {}
+      fieldA(5) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  ReflectionStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg);
+  ReflectionStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg);
 
   ReflectionStruct(ReflectionStruct&&) = default;
 
@@ -69,66 +76,49 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   ReflectionStruct& operator=(ReflectionStruct&&) = default;
 
   ReflectionStruct& operator=(const ReflectionStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t fieldA;
+  ::std::int32_t fieldA;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool fieldA;
   } __isset = {};
-  bool operator==(const ReflectionStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const ReflectionStruct& __x, const ReflectionStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const ReflectionStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const ReflectionStruct& __x, const ReflectionStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const ReflectionStruct& __x, const ReflectionStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const ReflectionStruct& __x, const ReflectionStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+ public:
+
+  bool operator==(const ReflectionStruct&) const;
+  bool operator<(const ReflectionStruct&) const;
+
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fieldA_ref() const& {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fieldA_ref() const&& {
     return {std::move(this->fieldA), __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fieldA_ref() & {
     return {this->fieldA, __isset.fieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fieldA_ref() && {
     return {std::move(this->fieldA), __isset.fieldA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_fieldA() const {
+  ::std::int32_t get_fieldA() const {
     return fieldA;
   }
 
-  int32_t& set_fieldA(int32_t fieldA_) {
+  [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
+  ::std::int32_t& set_fieldA(::std::int32_t fieldA_) {
     fieldA = fieldA_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.fieldA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return fieldA;
   }
 
@@ -145,7 +135,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< ReflectionStruct >;
+  friend class ::apache::thrift::Cpp2Ops<ReflectionStruct>;
   friend void swap(ReflectionStruct& a, ReflectionStruct& b);
 };
 
@@ -157,3 +147,4 @@ uint32_t ReflectionStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

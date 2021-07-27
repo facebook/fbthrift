@@ -22,29 +22,51 @@
 
 namespace apache {
 namespace thrift {
-
 <%#program:enums%>
 
-constexpr const std::size_t TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::size;
-constexpr const std::array<<% > common/namespace_cpp2%><%enum:name%>, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::values;
-constexpr const std::array<folly::StringPiece, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::names;
-
+const std::array<<% > common/namespace_cpp2%><%enum:name%>, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::values = {{
+<%#enum:values%><%!
+%>  type::<%enumValue:cpp_name%>,
+<%/enum:values%>
+}};
+const std::array<folly::StringPiece, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::names = {{
+<%#enum:values%><%!
+%>  "<%enumValue:name%>",
+<%/enum:values%>
+}};
 <%/program:enums%>
 <%#program:structs%>
 <%#struct:union?%>
 
-constexpr const std::size_t TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>::Type>::size;
-constexpr const std::array<<% > common/namespace_cpp2%><%struct:name%>::Type, <%struct:num_union_members%>> TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>::Type>::values;
-constexpr const std::array<folly::StringPiece, <%struct:num_union_members%>> TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>::Type>::names;
-
+const std::array<<% > common/namespace_cpp2%><%struct:name%>::Type, <%struct:num_union_members%>> TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>::Type>::values = {{
+<%#struct:fields%><%!
+%>  type::<%field:cpp_name%>,
+<%/struct:fields%>
+}};
+const std::array<folly::StringPiece, <%struct:num_union_members%>> TEnumDataStorage<<% > common/namespace_cpp2%><%struct:name%>::Type>::names = {{
+<%#struct:fields%><%!
+%>  "<%field:name%>",
+<%/struct:fields%>
+}};
 <%/struct:union?%>
 <%/program:structs%>
-
 <%#program:structs%>
-constexpr const std::size_t TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_size> TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_size> TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_size> TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_types;
+
+const std::array<folly::StringPiece, <%struct:fields_size%>> TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_names = {{
+  <%#struct:fields%>
+  "<%field:name%>",
+  <%/struct:fields%>
+}};
+const std::array<int16_t, <%struct:fields_size%>> TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_ids = {{
+  <%#struct:fields%>
+  <%field:key%>,
+  <%/struct:fields%>
+}};
+const std::array<protocol::TType, <%struct:fields_size%>> TStructDataStorage<<% > common/namespace_cpp2%><%struct:name%>>::fields_types = {{
+  <%#struct:fields%><%#field:type%>
+  TType::<% > module_types_tcc/struct_type%>,
+  <%/field:type%><%/struct:fields%>
+}};
 <%/program:structs%>
 
 } // namespace thrift

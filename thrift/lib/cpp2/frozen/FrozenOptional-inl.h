@@ -25,9 +25,7 @@ namespace frozen {
 template <typename T>
 class OptionalFieldView : private folly::Optional<T> {
  private:
-  const folly::Optional<T>& toFolly() const {
-    return *this;
-  }
+  const folly::Optional<T>& toFolly() const { return *this; }
 
  public:
   using folly::Optional<T>::operator->;
@@ -41,12 +39,10 @@ class OptionalFieldView : private folly::Optional<T> {
 
   template <typename L, typename R>
   friend bool operator==(
-      const OptionalFieldView<L>& lhs,
-      const OptionalFieldView<R>& rhs);
+      const OptionalFieldView<L>& lhs, const OptionalFieldView<R>& rhs);
   template <typename L, typename R>
   friend bool operator!=(
-      const OptionalFieldView<L>& lhs,
-      const OptionalFieldView<R>& rhs);
+      const OptionalFieldView<L>& lhs, const OptionalFieldView<R>& rhs);
 
   template <typename L, typename R>
   friend bool operator==(const L& lhs, const OptionalFieldView<R>& rhs);
@@ -59,24 +55,20 @@ class OptionalFieldView : private folly::Optional<T> {
 
   template <typename U>
   friend bool operator==(
-      const OptionalFieldView<U>& lhs,
-      const folly::Optional<U>& rhs);
+      const OptionalFieldView<U>& lhs, const folly::Optional<U>& rhs);
   template <typename U>
   friend bool operator==(
-      const folly::Optional<U>& lhs,
-      const OptionalFieldView<U>& rhs);
+      const folly::Optional<U>& lhs, const OptionalFieldView<U>& rhs);
 };
 
 template <typename L, typename R>
 bool operator==(
-    const OptionalFieldView<L>& lhs,
-    const OptionalFieldView<R>& rhs) {
+    const OptionalFieldView<L>& lhs, const OptionalFieldView<R>& rhs) {
   return lhs.toFolly() == rhs.toFolly();
 }
 template <typename L, typename R>
 bool operator!=(
-    const OptionalFieldView<L>& lhs,
-    const OptionalFieldView<R>& rhs) {
+    const OptionalFieldView<L>& lhs, const OptionalFieldView<R>& rhs) {
   return lhs.toFolly() != rhs.toFolly();
 }
 
@@ -99,14 +91,12 @@ bool operator!=(const OptionalFieldView<L>& lhs, const R& rhs) {
 
 template <typename U>
 [[deprecated("comparison with folly::Optional is deprecated")]] bool operator==(
-    const OptionalFieldView<U>& lhs,
-    const folly::Optional<U>& rhs) {
+    const OptionalFieldView<U>& lhs, const folly::Optional<U>& rhs) {
   return lhs.toFolly() == rhs;
 }
 template <typename U>
 [[deprecated("comparison with folly::Optional is deprecated")]] bool operator==(
-    const folly::Optional<U>& lhs,
-    const OptionalFieldView<U>& rhs) {
+    const folly::Optional<U>& lhs, const OptionalFieldView<U>& rhs) {
   return lhs == rhs.toFolly();
 }
 
@@ -132,8 +122,8 @@ struct OptionalLayout : public LayoutBase {
     return pos;
   }
 
-  FieldPosition
-  layout(LayoutRoot& root, const folly::Optional<T>& o, LayoutPosition self) {
+  FieldPosition layout(
+      LayoutRoot& root, const folly::Optional<T>& o, LayoutPosition self) {
     FieldPosition pos = startFieldPosition();
     pos = root.layoutField(self, pos, issetField, o.hasValue());
     if (o) {

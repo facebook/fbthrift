@@ -37,13 +37,11 @@ uint8_t JSONProtocolWriterCommon::hexChar(uint8_t val) {
  */
 
 uint32_t JSONProtocolWriterCommon::writeMessageBegin(
-    const std::string& name,
-    MessageType messageType,
-    int32_t seqid) {
+    const std::string& name, MessageType messageType, int32_t seqid) {
   auto ret = beginContext(ContextType::ARRAY);
   ret += writeI32(apache::thrift::detail::json::kThriftVersion1);
   ret += writeString(name);
-  ret += writeI32(messageType);
+  ret += writeI32(static_cast<int32_t>(messageType));
   ret += writeI32(seqid);
   return ret;
 }
@@ -111,15 +109,6 @@ uint32_t JSONProtocolWriterCommon::writeBinary(const folly::IOBuf& str) {
   return ret + writeJSONBase64(str.clone()->coalesce());
 }
 
-uint32_t JSONProtocolWriterCommon::writeSerializedData(
-    const std::unique_ptr<folly::IOBuf>& buf) {
-  if (!buf) {
-    return 0;
-  }
-  out_.insert(buf->clone());
-  return folly::to_narrow(buf->computeChainDataLength());
-}
-
 uint32_t JSONProtocolWriterCommon::serializedSizeByte(int8_t /*val*/) const {
   // 3 bytes for serialized, plus it might be a key, plus context
   return 6;
@@ -168,8 +157,9 @@ uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
 uint32_t JSONProtocolWriterCommon::serializedSizeBinary(
     folly::IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
-  if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    TProtocolException::throwExceededSizeLimit();
+  uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
+  if (size > limit) {
+    TProtocolException::throwExceededSizeLimit(size, limit);
   }
   return static_cast<uint32_t>(size) * 6 + 3;
 }
@@ -194,13 +184,6 @@ uint32_t JSONProtocolWriterCommon::serializedSizeZCBinary(
     folly::IOBuf const&) const {
   // size only
   return serializedSizeI32();
-}
-
-uint32_t JSONProtocolWriterCommon::serializedSizeSerializedData(
-    std::unique_ptr<folly::IOBuf> const& /*buf*/) const {
-  // writeSerializedData's implementation just chains IOBufs together. Thus
-  // we don't expect external buffer space for it.
-  return 0;
 }
 
 /**
@@ -371,9 +354,7 @@ uint32_t JSONProtocolWriterCommon::writeJSONDouble(T dbl) {
  */
 
 void JSONProtocolReaderCommon::readMessageBegin(
-    std::string& name,
-    MessageType& messageType,
-    int32_t& seqid) {
+    std::string& name, MessageType& messageType, int32_t& seqid) {
   ensureAndBeginContext(ContextType::ARRAY);
   int64_t tmpVal;
   readI64(tmpVal);
@@ -416,7 +397,9 @@ void JSONProtocolReaderCommon::readFloat(float& flt) {
 
 template <typename StrType>
 void JSONProtocolReaderCommon::readString(StrType& str) {
-  readInContext<StrType>(str);
+  bool keyish;
+  ensureAndReadContext(keyish);
+  readJSONString(str);
 }
 
 template <typename StrType>
@@ -443,8 +426,7 @@ void JSONProtocolReaderCommon::readBinary(folly::IOBuf& str) {
 }
 
 uint32_t JSONProtocolReaderCommon::readFromPositionAndAppend(
-    folly::io::Cursor& snapshot,
-    std::unique_ptr<folly::IOBuf>& ser) {
+    folly::io::Cursor& snapshot, std::unique_ptr<folly::IOBuf>& ser) {
   int32_t size =
       folly::to_narrow(folly::to_signed(folly::io::Cursor(in_) - snapshot));
 
@@ -590,6 +572,10 @@ T JSONProtocolReaderCommon::castIntegral(folly::StringPiece val) {
 
 template <typename T>
 void JSONProtocolReaderCommon::readInContext(T& val) {
+  static_assert(
+      !apache::thrift::detail::is_string<T>::value,
+      "Strings are strings in any context, use readJSONString");
+
   bool keyish;
   ensureAndReadContext(keyish);
   if (keyish) {
@@ -597,14 +583,6 @@ void JSONProtocolReaderCommon::readInContext(T& val) {
   } else {
     readJSONVal(val);
   }
-}
-
-void JSONProtocolReaderCommon::readJSONKey(std::string& key) {
-  readJSONString(key);
-}
-
-void JSONProtocolReaderCommon::readJSONKey(folly::fbstring& key) {
-  readJSONString(key);
 }
 
 void JSONProtocolReaderCommon::readJSONKey(bool& key) {
@@ -653,19 +631,25 @@ void JSONProtocolReaderCommon::readJSONVal(int64_t& val) {
   readJSONIntegral<int64_t>(val);
 }
 
-void JSONProtocolReaderCommon::readJSONVal(double& val) {
+template <typename Floating>
+typename std::enable_if<std::is_floating_point<Floating>::value>::type
+JSONProtocolReaderCommon::readJSONVal(Floating& val) {
+  static_assert(
+      std::numeric_limits<Floating>::is_iec559,
+      "Parameter type must fulfill IEEE 754 floating-point standard");
+
   readWhitespace();
   if (peekCharSafe() == apache::thrift::detail::json::kJSONStringDelimiter) {
     std::string str;
     readJSONString(str);
     if (str == apache::thrift::detail::json::kThriftNan) {
-      val = HUGE_VAL / HUGE_VAL; // generates NaN
+      val = std::numeric_limits<Floating>::quiet_NaN();
     } else if (str == apache::thrift::detail::json::kThriftNegativeNan) {
-      val = -NAN;
+      val = -std::numeric_limits<Floating>::quiet_NaN();
     } else if (str == apache::thrift::detail::json::kThriftInfinity) {
-      val = HUGE_VAL;
+      val = std::numeric_limits<Floating>::infinity();
     } else if (str == apache::thrift::detail::json::kThriftNegativeInfinity) {
-      val = -HUGE_VAL;
+      val = -std::numeric_limits<Floating>::infinity();
     } else {
       throwUnrecognizableAsFloatingPoint(str);
     }
@@ -674,16 +658,10 @@ void JSONProtocolReaderCommon::readJSONVal(double& val) {
   std::string s;
   readNumericalChars(s);
   try {
-    val = folly::to<double>(s);
+    val = folly::to<Floating>(s);
   } catch (const std::exception&) {
     throwUnrecognizableAsFloatingPoint(s);
   }
-}
-
-void JSONProtocolReaderCommon::readJSONVal(float& val) {
-  double d;
-  readJSONVal(d);
-  val = float(d);
 }
 
 template <typename Str>
@@ -819,8 +797,7 @@ uint8_t JSONProtocolReaderCommon::hexVal(uint8_t ch) {
 
 template <class Predicate>
 uint32_t JSONProtocolReaderCommon::readWhile(
-    const Predicate& pred,
-    std::string& out) {
+    const Predicate& pred, std::string& out) {
   uint32_t ret = 0;
   for (auto peek = in_.peekBytes(); !peek.empty(); peek = in_.peekBytes()) {
     uint32_t size = 0;

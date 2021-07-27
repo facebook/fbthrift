@@ -26,14 +26,15 @@ using proxygen::HTTPMessage;
 using proxygen::ProxygenError;
 using proxygen::UpgradeProtocol;
 
-ThriftRequestHandler::ThriftRequestHandler(ThriftProcessor* processor)
-    : processor_(processor) {}
+ThriftRequestHandler::ThriftRequestHandler(
+    ThriftProcessor* processor, std::shared_ptr<Cpp2Worker> worker)
+    : processor_(processor), worker_(std::move(worker)) {}
 
 ThriftRequestHandler::~ThriftRequestHandler() {}
 
 void ThriftRequestHandler::onHeadersComplete(
     std::unique_ptr<HTTPMessage> headers) noexcept {
-  channel_ = std::make_shared<SingleRpcChannel>(txn_, processor_);
+  channel_ = std::make_shared<SingleRpcChannel>(txn_, processor_, worker_);
   channel_->onH2StreamBegin(std::move(headers));
 }
 

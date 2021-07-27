@@ -19,11 +19,6 @@ namespace detail {
 namespace md {
 
 template <>
-class StructMetadata<::cpp2::Banal> {
- public:
-  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
-};
-template <>
 class StructMetadata<::cpp2::Fiery> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
@@ -44,9 +39,14 @@ class StructMetadata<::cpp2::CustomFieldNames> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
-class ExceptionMetadata<::cpp2::Banal> {
+class StructMetadata<::cpp2::ExceptionWithPrimitiveField> {
  public:
-  static void gen(ThriftMetadata& metadata);
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
+class StructMetadata<::cpp2::Banal> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
 class ExceptionMetadata<::cpp2::Fiery> {
@@ -65,6 +65,16 @@ class ExceptionMetadata<::cpp2::ComplexFieldNames> {
 };
 template <>
 class ExceptionMetadata<::cpp2::CustomFieldNames> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::ExceptionWithPrimitiveField> {
+ public:
+  static void gen(ThriftMetadata& metadata);
+};
+template <>
+class ExceptionMetadata<::cpp2::Banal> {
  public:
   static void gen(ThriftMetadata& metadata);
 };

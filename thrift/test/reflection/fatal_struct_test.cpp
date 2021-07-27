@@ -610,7 +610,7 @@ TEST(fatal_struct, field_ref_getter) {
       "");
 
   def_field::field_ref_getter def;
-  EXPECT_FALSE(def(a).has_value());
+  EXPECT_FALSE(def(a).is_set());
   def(a) = enum1::field1;
   EXPECT_EQ(a.field2_ref(), enum1::field1);
   a.field2_ref() = enum1::field2;
@@ -627,6 +627,13 @@ TEST(fatal_struct, field_ref_getter) {
   EXPECT_EQ(ref(a)->a_ref(), 2);
   static_assert(
       std::is_same<std::unique_ptr<structA>&, decltype(ref(a))>::value, "");
+}
+
+TEST(fatal_struct, renamed_field) {
+  using meta = apache::thrift::reflect_struct<struct_with_renamed_field>;
+  using fmeta = meta::member::boring_cxx_name;
+  auto fname = fatal::to_instance<std::string, fmeta::name>();
+  EXPECT_EQ("fancy.idl.name", fname);
 }
 
 } // namespace cpp_reflection

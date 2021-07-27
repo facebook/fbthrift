@@ -14,13 +14,13 @@
  * limitations under the License.
  */
 
+#include <cstdlib>
+#include <ctime>
 #include <folly/Benchmark.h>
 #include <folly/portability/GFlags.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include <cstdlib>
-#include <ctime>
 
 #include <thrift/test/gen-cpp2/ThriftTest.h>
 
@@ -29,10 +29,7 @@ using namespace apache::thrift::transport;
 using namespace thrift::test;
 
 void testMessage(
-    uint8_t flag,
-    int iters,
-    bool easyMessage,
-    bool binary = false) {
+    uint8_t flag, int iters, bool easyMessage, bool binary = false) {
   Bonk b;
   Bonk bin;
   *b.message_ref() = "";
@@ -74,7 +71,7 @@ void testMessage(
 
 void testChainedCompression(uint8_t flag, int iters) {
   THeader header;
-  std::map<std::string, std::string> persistentHeaders;
+  transport::THeader::StringToStringMap persistentHeaders;
   if (flag) {
     header.setTransform(flag);
   }
@@ -122,10 +119,6 @@ BENCHMARK(BM_Zlib, iters) {
   testMessage(0x01, iters, true);
 }
 
-BENCHMARK(BM_Snappy, iters) {
-  testMessage(3, iters, true);
-}
-
 BENCHMARK(BM_Zstd, iters) {
   testMessage(5, iters, true);
 }
@@ -144,10 +137,6 @@ BENCHMARK(BM_ZlibHard, iters) {
   testMessage(0x01, iters, false);
 }
 
-BENCHMARK(BM_SnappyHard, iters) {
-  testMessage(3, iters, false);
-}
-
 BENCHMARK(BM_ZstdHard, iters) {
   testMessage(5, iters, false);
 }
@@ -158,10 +147,6 @@ TEST(chained, none) {
 
 TEST(chained, zlib) {
   testChainedCompression(1, 1000);
-}
-
-TEST(chained, snappy) {
-  testChainedCompression(3, 1000);
 }
 
 TEST(chained, zstd) {

@@ -6,7 +6,7 @@
 #
 from cpython cimport bool as pbool, int as pint, float as pfloat
 
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 
@@ -139,5 +139,15 @@ cdef class AllocatorAware_Builder(thrift.py3.builder.StructBuilder):
 
 cdef class AllocatorAware2_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint not_a_container
+
+
+cdef class TypedefStruct_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pint i32_field
+    cdef public pint IntTypedef_field
+    cdef public pint UintTypedef_field
+
+
+cdef class StructWithDoubleUnderscores_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pint __field
 
 

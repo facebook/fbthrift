@@ -16,16 +16,22 @@
 
 #pragma once
 
+#include <random>
+#include <folly/Function.h>
 #include <folly/GLog.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/perf/cpp2/if/gen-cpp2/ApiBase_types.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
-#include <random>
 
 using apache::thrift::ClientReceiveState;
 using apache::thrift::RequestCallback;
 using facebook::thrift::benchmarks::QPSStats;
 using facebook::thrift::benchmarks::TwoInts;
+
+class RequestCallbackWithValidator : public RequestCallback {
+ public:
+  folly::Function<void(ClientReceiveState&)> validator;
+};
 
 template <typename AsyncClient>
 class Noop {
@@ -74,9 +80,7 @@ class Noop {
     stats_->add(error_);
   }
 
-  void onewaySent() {
-    stats_->add(op_name_);
-  }
+  void onewaySent() { stats_->add(op_name_); }
 
  private:
   QPSStats* stats_;
@@ -90,7 +94,6 @@ template <typename AsyncClient>
 class Sum {
  public:
   Sum(QPSStats* stats) : stats_(stats) {
-    // TODO: Perform different additions per call and verify correctness
     stats_->registerCounter(op_name_);
     stats_->registerCounter(timeout_);
     stats_->registerCounter(error_);
@@ -98,9 +101,25 @@ class Sum {
   }
   ~Sum() = default;
 
-  void async(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
+  void async(
+      AsyncClient* client, std::unique_ptr<RequestCallbackWithValidator> cb) {
     request_.x_ref() = gen_();
     request_.y_ref() = gen_();
+
+    cb->validator = [request = request_](ClientReceiveState& rstate) {
+      try {
+        TwoInts response;
+        AsyncClient::recv_sum(response, rstate);
+        CHECK_EQ(
+            static_cast<uint32_t>(*request.x_ref()) + *request.y_ref(),
+            *response.x_ref());
+        CHECK_EQ(
+            static_cast<uint32_t>(*request.x_ref()) - *request.y_ref(),
+            *response.y_ref());
+      } catch (...) {
+        // handled by asyncReceived
+      }
+    };
 
     client->sum(std::move(cb), request_);
   }
@@ -108,8 +127,7 @@ class Sum {
   void asyncReceived(AsyncClient* client, ClientReceiveState&& rstate) {
     try {
       client->recv_sum(response_, rstate);
-      CHECK_EQ(*request_.x_ref() + *request_.y_ref(), *response_.x_ref());
-      CHECK_EQ(*request_.x_ref() - *request_.y_ref(), *response_.y_ref());
+      // validated by callback
       stats_->add(op_name_);
     } catch (const apache::thrift::TApplicationException& ex) {
       if (ex.getType() ==
@@ -200,4 +218,121 @@ class Timeout {
   std::string fatal_ = "fatal";
   TwoInts request_;
   TwoInts response_;
+};
+
+template <typename AsyncClient>
+class SemiFutureSum {
+ public:
+  explicit SemiFutureSum(QPSStats* stats) : stats_(stats) {
+    stats_->registerCounter(op_name_);
+    stats_->registerCounter(timeout_);
+    stats_->registerCounter(error_);
+    stats_->registerCounter(fatal_);
+  }
+  ~SemiFutureSum() = default;
+
+  void async(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
+    request_.x_ref() = gen_();
+    request_.y_ref() = gen_();
+
+    client->semifuture_sum(request_)
+        .via(client->getChannel()->getEventBase())
+        .thenTry([this, cb = std::move(cb), request = request_](auto response) {
+          try {
+            CHECK_EQ(
+                static_cast<uint32_t>(*request.x_ref()) + *request.y_ref(),
+                *response->x_ref());
+            CHECK_EQ(
+                static_cast<uint32_t>(*request.x_ref()) - *request.y_ref(),
+                *response->y_ref());
+            stats_->add(op_name_);
+            cb->replyReceived({});
+          } catch (const apache::thrift::TApplicationException& ex) {
+            if (ex.getType() ==
+                apache::thrift::TApplicationException::
+                    TApplicationExceptionType::TIMEOUT) {
+              stats_->add(timeout_);
+            } else {
+              FB_LOG_EVERY_MS(ERROR, 1000)
+                  << "Error should have caused error() function to be called: "
+                  << ex.what();
+              stats_->add(error_);
+            }
+            cb->replyReceived({});
+          } catch (const std::exception& ex) {
+            FB_LOG_EVERY_MS(ERROR, 1000) << "Critical error: " << ex.what();
+            stats_->add(fatal_);
+            cb->requestError({});
+          }
+        });
+  }
+
+ private:
+  QPSStats* stats_;
+  std::string op_name_ = "semifuture_sum";
+  std::string timeout_ = "timeout";
+  std::string error_ = "error";
+  std::string fatal_ = "fatal";
+  TwoInts request_;
+  TwoInts response_;
+  std::mt19937 gen_{std::random_device()()};
+};
+
+template <typename AsyncClient>
+class CoSum {
+ public:
+  explicit CoSum(QPSStats* stats) : stats_(stats) {
+    stats_->registerCounter(op_name_);
+    stats_->registerCounter(timeout_);
+    stats_->registerCounter(error_);
+    stats_->registerCounter(fatal_);
+  }
+  ~CoSum() = default;
+
+  void async(AsyncClient* client, std::unique_ptr<RequestCallback> cb) {
+    request_.x_ref() = gen_();
+    request_.y_ref() = gen_();
+
+    client->co_sum(request_)
+        .scheduleOn(client->getChannel()->getEventBase())
+        .startInlineUnsafe([this, cb = std::move(cb), request = request_](
+                               auto response) {
+          try {
+            CHECK_EQ(
+                static_cast<uint32_t>(*request.x_ref()) + *request.y_ref(),
+                *response->x_ref());
+            CHECK_EQ(
+                static_cast<uint32_t>(*request.x_ref()) - *request.y_ref(),
+                *response->y_ref());
+            stats_->add(op_name_);
+            cb->replyReceived({});
+          } catch (const apache::thrift::TApplicationException& ex) {
+            if (ex.getType() ==
+                apache::thrift::TApplicationException::
+                    TApplicationExceptionType::TIMEOUT) {
+              stats_->add(timeout_);
+            } else {
+              FB_LOG_EVERY_MS(ERROR, 1000)
+                  << "Error should have caused error() function to be called: "
+                  << ex.what();
+              stats_->add(error_);
+            }
+            cb->replyReceived({});
+          } catch (const std::exception& ex) {
+            FB_LOG_EVERY_MS(ERROR, 1000) << "Critical error: " << ex.what();
+            stats_->add(fatal_);
+            cb->requestError({});
+          }
+        });
+  }
+
+ private:
+  QPSStats* stats_;
+  std::string op_name_ = "co_sum";
+  std::string timeout_ = "timeout";
+  std::string error_ = "error";
+  std::string fatal_ = "fatal";
+  TwoInts request_;
+  TwoInts response_;
+  std::mt19937 gen_{std::random_device()()};
 };

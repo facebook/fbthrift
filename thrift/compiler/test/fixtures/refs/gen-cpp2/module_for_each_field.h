@@ -29,6 +29,9 @@ struct ForEachField<::cpp2::MyField> {
     f(0, static_cast<T&&>(t).opt_value_ref()...);
     f(1, static_cast<T&&>(t).value_ref()...);
     f(2, static_cast<T&&>(t).req_value_ref()...);
+    f(3, static_cast<T&&>(t).opt_enum_value_ref()...);
+    f(4, static_cast<T&&>(t).enum_value_ref()...);
+    f(5, static_cast<T&&>(t).req_enum_value_ref()...);
   }
 };
 

@@ -17,9 +17,9 @@
 #ifndef THRIFT_TEST_LOADGEN_LOADCONFIG_H_
 #define THRIFT_TEST_LOADGEN_LOADCONFIG_H_ 1
 
-#include <boost/random.hpp>
 #include <inttypes.h>
 #include <string>
+#include <boost/random.hpp>
 
 namespace apache {
 namespace thrift {
@@ -57,9 +57,7 @@ class LoadConfig {
    * @return Return the desired qps rate, or 0 if operations should be
    *         performed as fast as possible.
    */
-  virtual uint64_t getDesiredQPS() const {
-    return 0;
-  }
+  virtual uint64_t getDesiredQPS() const { return 0; }
 
   /**
    * Get the max number of worker threads to run.
@@ -67,9 +65,7 @@ class LoadConfig {
    * This enables loadgen to increase worker threads up to this number
    * in order to drive desired QPS.
    */
-  virtual uint32_t getMaxWorkerThreads() const {
-    return getNumWorkerThreads();
-  }
+  virtual uint32_t getMaxWorkerThreads() const { return getNumWorkerThreads(); }
 };
 
 } // namespace loadgen

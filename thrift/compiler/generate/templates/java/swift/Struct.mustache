@@ -36,13 +36,15 @@ import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
 {{#struct:asBean?}}
-@ThriftStruct("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
+@com.facebook.swift.codec.ThriftStruct("{{struct:name}}"){{> common/ObjectCustomAnnotation}}
 {{/struct:asBean?}}
 {{^struct:asBean?}}
-@ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{> common/ObjectCustomAnnotation}}
+@com.facebook.swift.codec.ThriftStruct(value="{{struct:name}}", builder={{struct:javaCapitalName}}.Builder.class){{> common/ObjectCustomAnnotation}}
 {{/struct:asBean?}}
-public final class {{struct:javaCapitalName}} {
+public final class {{struct:javaCapitalName}} implements com.facebook.thrift.payload.ThriftSerializable {
+    {{#struct:enableIsSet?}}
     private BitSet __isset_bit_vector = new BitSet();
+    {{/struct:enableIsSet?}}
 
     {{> struct/ThriftConstructor}}
 
@@ -54,12 +56,18 @@ public final class {{struct:javaCapitalName}} {
     {{#struct:fields}}{{!
 
     }}{{#struct:asBean?}}
+    {{#field:isSensitive?}}
+    @org.apache.thrift.annotations.Sensitive
+    {{/field:isSensitive?}}
     private {{> FieldType}} {{field:javaName}};
     public static final int _{{field:javaAllCapsName}} = {{field:key}};
     private static final TField {{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
     {{/struct:asBean?}}{{!
 
     }}{{^struct:asBean?}}
+    {{#field:isSensitive?}}
+    @org.apache.thrift.annotations.Sensitive
+    {{/field:isSensitive?}}
     {{#field:javaAnnotations?}}{{field:javaAnnotations}} {{/field:javaAnnotations?}}private {{^struct:isBigStruct?}}final {{/struct:isBigStruct?}}{{> FieldType}} {{field:javaName}};
     public static final int _{{field:javaAllCapsName}} = {{field:key}};
     private static final TField {{field:javaTFieldName}} = new TField("{{field:name}}", TType.{{#field:type}}{{> TType}}{{/field:type}}, (short){{field:key}});
@@ -81,7 +89,9 @@ public final class {{struct:javaCapitalName}} {
     {{> struct/FieldSetter}}
     {{/struct:asBean?}}{{!
     }}
-    {{> struct/FieldIsSet}}{{!
+    {{#struct:enableIsSet?}}
+    {{> struct/FieldIsSet}}
+    {{/struct:enableIsSet?}}{{!
     }}{{/struct:fields}}
 
     {{> struct/StructToString}}
@@ -93,5 +103,9 @@ public final class {{struct:javaCapitalName}} {
     {{> struct/StructRead}}
 
     {{> struct/StructWrite}}
+
+    {{^struct:asBean?}}
+    {{> Default}}
+    {{/struct:asBean?}}
 
 }

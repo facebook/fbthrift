@@ -137,5 +137,93 @@ struct protocol_type //
           protocol::TType,
           protocol_type_v<TypeClass, Type>> {};
 
+namespace detail {
+
+template <typename TypeClass>
+struct fixed_cost_skip_ {};
+
+template <>
+struct fixed_cost_skip_<type_class::integral> {
+  template <typename, typename>
+  static constexpr bool apply = true;
+};
+
+template <>
+struct fixed_cost_skip_<type_class::floating_point> {
+  template <typename, typename>
+  static constexpr bool apply = true;
+};
+
+template <>
+struct fixed_cost_skip_<type_class::binary> {
+  template <typename Protocol, typename>
+  static constexpr bool apply = !Protocol::kOmitsStringSizes();
+};
+
+template <>
+struct fixed_cost_skip_<type_class::string> {
+  template <typename Protocol, typename>
+  static constexpr bool apply = !Protocol::kOmitsStringSizes();
+};
+
+template <>
+struct fixed_cost_skip_<type_class::enumeration> {
+  template <typename, typename>
+  static constexpr bool apply = true;
+};
+
+template <>
+struct fixed_cost_skip_<type_class::structure> {
+  template <typename, typename>
+  static constexpr bool apply = false;
+};
+
+template <>
+struct fixed_cost_skip_<type_class::variant> {
+  template <typename, typename>
+  static constexpr bool apply = false;
+};
+
+template <typename ValueTypeClass>
+struct fixed_cost_skip_<type_class::list<ValueTypeClass>> {
+  template <typename Protocol, typename Type>
+  static constexpr bool apply = !Protocol::kOmitsContainerSizes() &&
+      Protocol::fixedSizeInContainer(
+          protocol_type_v<ValueTypeClass, typename Type::value_type>) > 0;
+};
+
+template <typename ValueTypeClass>
+struct fixed_cost_skip_<type_class::set<ValueTypeClass>> {
+  template <typename Protocol, typename Type>
+  static constexpr bool apply = !Protocol::kOmitsContainerSizes() &&
+      Protocol::fixedSizeInContainer(
+          protocol_type_v<ValueTypeClass, typename Type::value_type>) > 0;
+};
+
+template <typename KeyTypeClass, typename MappedTypeClass>
+struct fixed_cost_skip_<type_class::map<KeyTypeClass, MappedTypeClass>> {
+  template <typename Protocol, typename Type>
+  static constexpr bool apply = !Protocol::kOmitsContainerSizes() &&
+      Protocol::fixedSizeInContainer(
+          protocol_type_v<KeyTypeClass, typename Type::key_type>) > 0 &&
+      Protocol::fixedSizeInContainer(
+          protocol_type_v<MappedTypeClass, typename Type::mapped_type>) > 0;
+};
+} // namespace detail
+
+//  fixed_cost_skip_v
+//
+//  A trait variable reflecting whether the type has fixed cost to skip.
+//
+//  For example, list<i32> has fixed cost to skip under Binary Protocol since
+//  the list header includes the list length and since each list element has
+//  fixed size. However, it is not cheap to skip under Compact Protocol since
+//  list elements do not have fixed size. And it is not cheap to skip under
+//  SimpleJson Protocol since the list header does not include the list length.
+template <class Protocol, class TypeClass, class Type>
+FOLLY_INLINE_VARIABLE constexpr bool fixed_cost_skip_v =
+    ::apache::thrift::detail::fixed_cost_skip_<
+        TypeClass>::template apply<Protocol, Type>;
+
 } // namespace thrift
 } // namespace apache

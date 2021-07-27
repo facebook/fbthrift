@@ -23,15 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
-public final class MyStruct {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class)
+public final class MyStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myIncludedField,
-        @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myOtherIncludedField,
-        @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE) final long myIncludedInt
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myIncludedField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE) final test.fixtures.includes.includes.Included myOtherIncludedField,
+        @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE) final long myIncludedInt
     ) {
         this.myIncludedField = myIncludedField;
         this.myOtherIncludedField = myOtherIncludedField;
@@ -40,19 +39,18 @@ public final class MyStruct {
     
     @ThriftConstructor
     protected MyStruct() {
-      this.myIncludedField = null;
+      this.myIncludedField = new test.fixtures.includes.includes.Included.Builder().setMyIntField(2L).setMyTransitiveField(test.fixtures.includes.transitive.Constants.EXAMPLE_FOO).build();
       this.myOtherIncludedField = null;
-      this.myIncludedInt = 0L;
+      this.myIncludedInt = 42L;
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private test.fixtures.includes.includes.Included myIncludedField = new test.fixtures.includes.includes.Included.Builder().setMyIntField(2L).setMyTransitiveField(test.fixtures.includes.transitive.Constants.EXAMPLE_FOO).build();
         private test.fixtures.includes.includes.Included myOtherIncludedField = null;
         private long myIncludedInt = 42L;
     
-        @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
         public Builder setMyIncludedField(test.fixtures.includes.includes.Included myIncludedField) {
             this.myIncludedField = myIncludedField;
             return this;
@@ -60,7 +58,7 @@ public final class MyStruct {
     
         public test.fixtures.includes.includes.Included getMyIncludedField() { return myIncludedField; }
     
-            @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
         public Builder setMyOtherIncludedField(test.fixtures.includes.includes.Included myOtherIncludedField) {
             this.myOtherIncludedField = myOtherIncludedField;
             return this;
@@ -68,7 +66,7 @@ public final class MyStruct {
     
         public test.fixtures.includes.includes.Included getMyOtherIncludedField() { return myOtherIncludedField; }
     
-            @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
         public Builder setMyIncludedInt(long myIncludedInt) {
             this.myIncludedInt = myIncludedInt;
             return this;
@@ -90,7 +88,6 @@ public final class MyStruct {
                 this.myOtherIncludedField,
                 this.myIncludedInt
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -116,34 +113,16 @@ public final class MyStruct {
       FIELD_METADATA.put(3, MY_INCLUDED_INT_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="MyIncludedField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.includes.Included getMyIncludedField() { return myIncludedField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIncludedField() {
-        return this.myIncludedField != null;
-    }
     
     
-    @ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="MyOtherIncludedField", requiredness=Requiredness.NONE)
     public test.fixtures.includes.includes.Included getMyOtherIncludedField() { return myOtherIncludedField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyOtherIncludedField() {
-        return this.myOtherIncludedField != null;
-    }
     
     
-    @ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="MyIncludedInt", requiredness=Requiredness.NONE)
     public long getMyIncludedInt() { return myIncludedInt; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyIncludedInt() {
-        return __isset_bit_vector.get(_MYINCLUDEDINT);
-    }
     
     @java.lang.Override
     public String toString() {
@@ -181,6 +160,10 @@ public final class MyStruct {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
+      return MyStruct::read0;
+    }
     
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
@@ -243,4 +226,11 @@ public final class MyStruct {
       oprot.writeStructEnd();
     }
     
+    private static class _MyStructLazy {
+        private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
+    }
+    
+    public static MyStruct defaultInstance() {
+        return  _MyStructLazy._DEFAULT;
+    }
 }

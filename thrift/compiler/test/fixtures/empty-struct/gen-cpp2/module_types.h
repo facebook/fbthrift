@@ -33,7 +33,13 @@ class Nada;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class Empty final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -41,6 +47,7 @@ class Empty final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = Empty;
@@ -50,8 +57,8 @@ class Empty final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  Empty() {}
+  Empty() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   Empty(apache::thrift::FragileConstructor);
@@ -64,26 +71,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   Empty& operator=(Empty&&) = default;
 
   Empty& operator=(const Empty&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
-  bool operator==(const Empty& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Empty& __x, const Empty& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const Empty& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Empty& __x, const Empty& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Empty& __x, const Empty& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Empty& __x, const Empty& __y) {
-    return !(__x < __y);
-  }
-#endif
+
+ public:
+
+  bool operator==(const Empty&) const;
+  bool operator<(const Empty&) const;
 
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
@@ -98,7 +91,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Empty >;
+  friend class ::apache::thrift::Cpp2Ops<Empty>;
   friend void swap(Empty& a, Empty& b);
 };
 
@@ -111,6 +104,11 @@ uint32_t Empty::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class Nada final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -118,6 +116,7 @@ class Nada final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = Nada;
@@ -133,7 +132,7 @@ class Nada final  {
   Nada()
       : type_(Type::__EMPTY__) {}
 
-  Nada(Nada&& rhs)
+  Nada(Nada&& rhs) noexcept
       : type_(Type::__EMPTY__) {
     if (this == &rhs) { return; }
     if (rhs.type_ == Type::__EMPTY__) { return; }
@@ -160,7 +159,7 @@ class Nada final  {
     }
   }
 
-  Nada& operator=(Nada&& rhs) {
+  Nada& operator=(Nada&& rhs) noexcept {
     if (this == &rhs) { return *this; }
     __clear();
     if (rhs.type_ == Type::__EMPTY__) { return *this; }
@@ -198,24 +197,9 @@ class Nada final  {
     storage_type() {}
     ~storage_type() {}
   } ;
-  bool operator==(const Nada& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const Nada& __x, const Nada& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const Nada& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const Nada& __x, const Nada& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const Nada& __x, const Nada& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const Nada& __x, const Nada& __y) {
-    return !(__x < __y);
-  }
-#endif
+
+  bool operator==(const Nada&) const;
+  bool operator<(const Nada&) const;
 
   Type getType() const { return static_cast<Type>(type_); }
 
@@ -240,7 +224,7 @@ class Nada final  {
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< Nada >;
+  friend class ::apache::thrift::Cpp2Ops<Nada>;
   friend void swap(Nada& a, Nada& b);
 };
 
@@ -252,6 +236,7 @@ uint32_t Nada::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

@@ -21,10 +21,11 @@
 namespace apache {
 namespace thrift {
 /*
- * Takes an existing AsyncSocket pointer and creates a new socket with the same
+ * Takes an existing transport and creates a new socket with the same
  * underlying fd while trying to preserve as much information as possible. The
- * intended use case is to downgrade an SSL socket to a plaintext one.
+ * intended use case is to downgrade a secure transport to a plaintext one.
  */
-folly::AsyncSocket::UniquePtr moveToPlaintext(folly::AsyncSocket* socket);
+folly::AsyncSocket::UniquePtr moveToPlaintext(
+    folly::AsyncTransportWrapper* socket);
 } // namespace thrift
 } // namespace apache

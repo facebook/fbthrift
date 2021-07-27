@@ -12,12 +12,11 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# pyre-unsafe
-
 from typing import Any, Type, TypeVar
 
 from thrift.py3.types import Struct
 
 T = TypeVar("T", bound=Struct)
 
+# pyre-ignore[2]: it can be anything
 def to_py3_struct(cls: Type[T], obj: Any) -> T: ...

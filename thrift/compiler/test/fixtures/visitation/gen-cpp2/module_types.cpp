@@ -540,17 +540,36 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structA>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-structA::structA(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg) :
+structA::structA(const structA&) = default;
+structA& structA::operator=(const structA&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structA::structA(structA&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    __isset(other.__isset) {}
+structA& structA::operator=(FOLLY_MAYBE_UNUSED structA&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structA::structA(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
   __isset.a = true;
   __isset.b = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structA::__clear() {
   // clear all fields
-  a = 0;
-  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->a = 0;
+  this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -560,10 +579,10 @@ bool structA::operator==(const structA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
   return true;
@@ -573,11 +592,11 @@ bool structA::operator<(const structA& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
   return false;
 }
@@ -736,14 +755,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         unionA,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         unionA,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -771,6 +790,7 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structB>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structB::structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg) :
     c(std::move(c__arg)),
@@ -779,10 +799,11 @@ structB::structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg)
   __isset.d = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structB::__clear() {
   // clear all fields
-  c = 0;
-  d = 0;
+  this->c = 0;
+  this->d = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -792,10 +813,10 @@ bool structB::operator==(const structB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
-  if (!(lhs.d == rhs.d)) {
+  if (!(lhs.d_ref() == rhs.d_ref())) {
     return false;
   }
   return true;
@@ -805,11 +826,11 @@ bool structB::operator<(const structB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
-  if (!(lhs.d == rhs.d)) {
-    return lhs.d < rhs.d;
+  if (!(lhs.d_ref() == rhs.d_ref())) {
+    return lhs.d_ref() < rhs.d_ref();
   }
   return false;
 }
@@ -861,19 +882,94 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structC>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structC::structC(const structC&) = default;
+structC& structC::operator=(const structC&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC() :
       a(0),
       c(0),
       d(0),
       e( ::test_cpp2::cpp_reflection::enum1::field0),
-      f( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      f( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 structC::~structC() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-structC::structC(apache::thrift::FragileConstructor, int32_t a__arg, ::std::string b__arg, double c__arg, bool d__arg,  ::test_cpp2::cpp_reflection::enum1 e__arg,  ::test_cpp2::cpp_reflection::enum2 f__arg,  ::test_cpp2::cpp_reflection::union1 g__arg,  ::test_cpp2::cpp_reflection::unionA h__arg,  ::test_cpp2::cpp_reflection::unionA i__arg, ::std::vector<int32_t> j__arg, ::std::vector<int32_t> j1__arg, ::std::vector< ::test_cpp2::cpp_reflection::enum1> j2__arg, ::std::vector< ::test_cpp2::cpp_reflection::structA> j3__arg, ::std::set<int32_t> k__arg, ::std::set<int32_t> k1__arg, ::std::set< ::test_cpp2::cpp_reflection::enum2> k2__arg, ::std::set< ::test_cpp2::cpp_reflection::structB> k3__arg, ::std::map<int32_t, int32_t> l__arg, ::std::map<int32_t, int32_t> l1__arg, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> l2__arg, ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> l3__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> m1__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> m2__arg, ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> m3__arg, ::std::map<::std::string, int32_t> n1__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1> n2__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> n3__arg, ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t> o1__arg, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> o2__arg, ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> o3__arg) :
+structC::structC(structC&& other) noexcept  :
+    a(std::move(other.a)),
+    b(std::move(other.b)),
+    c(std::move(other.c)),
+    d(std::move(other.d)),
+    e(std::move(other.e)),
+    f(std::move(other.f)),
+    g(std::move(other.g)),
+    h(std::move(other.h)),
+    i(std::move(other.i)),
+    j(std::move(other.j)),
+    j1(std::move(other.j1)),
+    j2(std::move(other.j2)),
+    j3(std::move(other.j3)),
+    k(std::move(other.k)),
+    k1(std::move(other.k1)),
+    k2(std::move(other.k2)),
+    k3(std::move(other.k3)),
+    l(std::move(other.l)),
+    l1(std::move(other.l1)),
+    l2(std::move(other.l2)),
+    l3(std::move(other.l3)),
+    m1(std::move(other.m1)),
+    m2(std::move(other.m2)),
+    m3(std::move(other.m3)),
+    n1(std::move(other.n1)),
+    n2(std::move(other.n2)),
+    n3(std::move(other.n3)),
+    o1(std::move(other.o1)),
+    o2(std::move(other.o2)),
+    o3(std::move(other.o3)),
+    __isset(other.__isset) {}
+structC& structC::operator=(FOLLY_MAYBE_UNUSED structC&& other) noexcept {
+    this->a = std::move(other.a);
+    this->b = std::move(other.b);
+    this->c = std::move(other.c);
+    this->d = std::move(other.d);
+    this->e = std::move(other.e);
+    this->f = std::move(other.f);
+    this->g = std::move(other.g);
+    this->h = std::move(other.h);
+    this->i = std::move(other.i);
+    this->j = std::move(other.j);
+    this->j1 = std::move(other.j1);
+    this->j2 = std::move(other.j2);
+    this->j3 = std::move(other.j3);
+    this->k = std::move(other.k);
+    this->k1 = std::move(other.k1);
+    this->k2 = std::move(other.k2);
+    this->k3 = std::move(other.k3);
+    this->l = std::move(other.l);
+    this->l1 = std::move(other.l1);
+    this->l2 = std::move(other.l2);
+    this->l3 = std::move(other.l3);
+    this->m1 = std::move(other.m1);
+    this->m2 = std::move(other.m2);
+    this->m3 = std::move(other.m3);
+    this->n1 = std::move(other.n1);
+    this->n2 = std::move(other.n2);
+    this->n3 = std::move(other.n3);
+    this->o1 = std::move(other.o1);
+    this->o2 = std::move(other.o2);
+    this->o3 = std::move(other.o3);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+structC::structC(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg, double c__arg, bool d__arg, ::test_cpp2::cpp_reflection::enum1 e__arg, ::test_cpp2::cpp_reflection::enum2 f__arg, ::test_cpp2::cpp_reflection::union1 g__arg, ::test_cpp2::cpp_reflection::unionA h__arg, ::test_cpp2::cpp_reflection::unionA i__arg, ::std::vector<::std::int32_t> j__arg, ::std::vector<::std::int32_t> j1__arg, ::std::vector<::test_cpp2::cpp_reflection::enum1> j2__arg, ::std::vector<::test_cpp2::cpp_reflection::structA> j3__arg, ::std::set<::std::int32_t> k__arg, ::std::set<::std::int32_t> k1__arg, ::std::set<::test_cpp2::cpp_reflection::enum2> k2__arg, ::std::set<::test_cpp2::cpp_reflection::structB> k3__arg, ::std::map<::std::int32_t, ::std::int32_t> l__arg, ::std::map<::std::int32_t, ::std::int32_t> l1__arg, ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1> l2__arg, ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB> l3__arg, ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t> m1__arg, ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2> m2__arg, ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB> m3__arg, ::std::map<::std::string, ::std::int32_t> n1__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1> n2__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> n3__arg, ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t> o1__arg, ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1> o2__arg, ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB> o3__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)),
@@ -936,38 +1032,39 @@ structC::structC(apache::thrift::FragileConstructor, int32_t a__arg, ::std::stri
   __isset.o3 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void structC::__clear() {
   // clear all fields
-  a = 0;
-  b = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  c = 0;
-  d = 0;
-  e =  ::test_cpp2::cpp_reflection::enum1::field0;
-  f =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  g.__clear();
-  h.__clear();
-  i.__clear();
-  j.clear();
-  j1.clear();
-  j2.clear();
-  j3.clear();
-  k.clear();
-  k1.clear();
-  k2.clear();
-  k3.clear();
-  l.clear();
-  l1.clear();
-  l2.clear();
-  l3.clear();
-  m1.clear();
-  m2.clear();
-  m3.clear();
-  n1.clear();
-  n2.clear();
-  n3.clear();
-  o1.clear();
-  o2.clear();
-  o3.clear();
+  this->a = 0;
+  this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->c = 0;
+  this->d = 0;
+  this->e =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->f =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->g.__clear();
+  this->h.__clear();
+  this->i.__clear();
+  this->j.clear();
+  this->j1.clear();
+  this->j2.clear();
+  this->j3.clear();
+  this->k.clear();
+  this->k1.clear();
+  this->k2.clear();
+  this->k3.clear();
+  this->l.clear();
+  this->l1.clear();
+  this->l2.clear();
+  this->l3.clear();
+  this->m1.clear();
+  this->m2.clear();
+  this->m3.clear();
+  this->n1.clear();
+  this->n2.clear();
+  this->n3.clear();
+  this->o1.clear();
+  this->o2.clear();
+  this->o3.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -977,94 +1074,94 @@ bool structC::operator==(const structC& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
-  if (!(lhs.d == rhs.d)) {
+  if (!(lhs.d_ref() == rhs.d_ref())) {
     return false;
   }
-  if (!(lhs.e == rhs.e)) {
+  if (!(lhs.e_ref() == rhs.e_ref())) {
     return false;
   }
-  if (!(lhs.f == rhs.f)) {
+  if (!(lhs.f_ref() == rhs.f_ref())) {
     return false;
   }
-  if (!(lhs.g == rhs.g)) {
+  if (!(lhs.g_ref() == rhs.g_ref())) {
     return false;
   }
-  if (!(lhs.h == rhs.h)) {
+  if (!(lhs.h_ref() == rhs.h_ref())) {
     return false;
   }
-  if (!(lhs.i == rhs.i)) {
+  if (!(lhs.i_ref() == rhs.i_ref())) {
     return false;
   }
-  if (!(lhs.j == rhs.j)) {
+  if (!(lhs.j_ref() == rhs.j_ref())) {
     return false;
   }
-  if (!(lhs.j1 == rhs.j1)) {
+  if (!(lhs.j1_ref() == rhs.j1_ref())) {
     return false;
   }
-  if (!(lhs.j2 == rhs.j2)) {
+  if (!(lhs.j2_ref() == rhs.j2_ref())) {
     return false;
   }
-  if (!(lhs.j3 == rhs.j3)) {
+  if (!(lhs.j3_ref() == rhs.j3_ref())) {
     return false;
   }
-  if (!(lhs.k == rhs.k)) {
+  if (!(lhs.k_ref() == rhs.k_ref())) {
     return false;
   }
-  if (!(lhs.k1 == rhs.k1)) {
+  if (!(lhs.k1_ref() == rhs.k1_ref())) {
     return false;
   }
-  if (!(lhs.k2 == rhs.k2)) {
+  if (!(lhs.k2_ref() == rhs.k2_ref())) {
     return false;
   }
-  if (!(lhs.k3 == rhs.k3)) {
+  if (!(lhs.k3_ref() == rhs.k3_ref())) {
     return false;
   }
-  if (!(lhs.l == rhs.l)) {
+  if (!(lhs.l_ref() == rhs.l_ref())) {
     return false;
   }
-  if (!(lhs.l1 == rhs.l1)) {
+  if (!(lhs.l1_ref() == rhs.l1_ref())) {
     return false;
   }
-  if (!(lhs.l2 == rhs.l2)) {
+  if (!(lhs.l2_ref() == rhs.l2_ref())) {
     return false;
   }
-  if (!(lhs.l3 == rhs.l3)) {
+  if (!(lhs.l3_ref() == rhs.l3_ref())) {
     return false;
   }
-  if (!(lhs.m1 == rhs.m1)) {
+  if (!(lhs.m1_ref() == rhs.m1_ref())) {
     return false;
   }
-  if (!(lhs.m2 == rhs.m2)) {
+  if (!(lhs.m2_ref() == rhs.m2_ref())) {
     return false;
   }
-  if (!(lhs.m3 == rhs.m3)) {
+  if (!(lhs.m3_ref() == rhs.m3_ref())) {
     return false;
   }
-  if (!(lhs.n1 == rhs.n1)) {
+  if (!(lhs.n1_ref() == rhs.n1_ref())) {
     return false;
   }
-  if (!(lhs.n2 == rhs.n2)) {
+  if (!(lhs.n2_ref() == rhs.n2_ref())) {
     return false;
   }
-  if (!(lhs.n3 == rhs.n3)) {
+  if (!(lhs.n3_ref() == rhs.n3_ref())) {
     return false;
   }
-  if (!(lhs.o1 == rhs.o1)) {
+  if (!(lhs.o1_ref() == rhs.o1_ref())) {
     return false;
   }
-  if (!(lhs.o2 == rhs.o2)) {
+  if (!(lhs.o2_ref() == rhs.o2_ref())) {
     return false;
   }
-  if (!(lhs.o3 == rhs.o3)) {
+  if (!(lhs.o3_ref() == rhs.o3_ref())) {
     return false;
   }
   return true;
@@ -1074,288 +1171,288 @@ bool structC::operator<(const structC& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
-  if (!(lhs.d == rhs.d)) {
-    return lhs.d < rhs.d;
+  if (!(lhs.d_ref() == rhs.d_ref())) {
+    return lhs.d_ref() < rhs.d_ref();
   }
-  if (!(lhs.e == rhs.e)) {
-    return lhs.e < rhs.e;
+  if (!(lhs.e_ref() == rhs.e_ref())) {
+    return lhs.e_ref() < rhs.e_ref();
   }
-  if (!(lhs.f == rhs.f)) {
-    return lhs.f < rhs.f;
+  if (!(lhs.f_ref() == rhs.f_ref())) {
+    return lhs.f_ref() < rhs.f_ref();
   }
-  if (!(lhs.g == rhs.g)) {
-    return lhs.g < rhs.g;
+  if (!(lhs.g_ref() == rhs.g_ref())) {
+    return lhs.g_ref() < rhs.g_ref();
   }
-  if (!(lhs.h == rhs.h)) {
-    return lhs.h < rhs.h;
+  if (!(lhs.h_ref() == rhs.h_ref())) {
+    return lhs.h_ref() < rhs.h_ref();
   }
-  if (!(lhs.i == rhs.i)) {
-    return lhs.i < rhs.i;
+  if (!(lhs.i_ref() == rhs.i_ref())) {
+    return lhs.i_ref() < rhs.i_ref();
   }
-  if (!(lhs.j == rhs.j)) {
-    return lhs.j < rhs.j;
+  if (!(lhs.j_ref() == rhs.j_ref())) {
+    return lhs.j_ref() < rhs.j_ref();
   }
-  if (!(lhs.j1 == rhs.j1)) {
-    return lhs.j1 < rhs.j1;
+  if (!(lhs.j1_ref() == rhs.j1_ref())) {
+    return lhs.j1_ref() < rhs.j1_ref();
   }
-  if (!(lhs.j2 == rhs.j2)) {
-    return lhs.j2 < rhs.j2;
+  if (!(lhs.j2_ref() == rhs.j2_ref())) {
+    return lhs.j2_ref() < rhs.j2_ref();
   }
-  if (!(lhs.j3 == rhs.j3)) {
-    return lhs.j3 < rhs.j3;
+  if (!(lhs.j3_ref() == rhs.j3_ref())) {
+    return lhs.j3_ref() < rhs.j3_ref();
   }
-  if (!(lhs.k == rhs.k)) {
-    return lhs.k < rhs.k;
+  if (!(lhs.k_ref() == rhs.k_ref())) {
+    return lhs.k_ref() < rhs.k_ref();
   }
-  if (!(lhs.k1 == rhs.k1)) {
-    return lhs.k1 < rhs.k1;
+  if (!(lhs.k1_ref() == rhs.k1_ref())) {
+    return lhs.k1_ref() < rhs.k1_ref();
   }
-  if (!(lhs.k2 == rhs.k2)) {
-    return lhs.k2 < rhs.k2;
+  if (!(lhs.k2_ref() == rhs.k2_ref())) {
+    return lhs.k2_ref() < rhs.k2_ref();
   }
-  if (!(lhs.k3 == rhs.k3)) {
-    return lhs.k3 < rhs.k3;
+  if (!(lhs.k3_ref() == rhs.k3_ref())) {
+    return lhs.k3_ref() < rhs.k3_ref();
   }
-  if (!(lhs.l == rhs.l)) {
-    return lhs.l < rhs.l;
+  if (!(lhs.l_ref() == rhs.l_ref())) {
+    return lhs.l_ref() < rhs.l_ref();
   }
-  if (!(lhs.l1 == rhs.l1)) {
-    return lhs.l1 < rhs.l1;
+  if (!(lhs.l1_ref() == rhs.l1_ref())) {
+    return lhs.l1_ref() < rhs.l1_ref();
   }
-  if (!(lhs.l2 == rhs.l2)) {
-    return lhs.l2 < rhs.l2;
+  if (!(lhs.l2_ref() == rhs.l2_ref())) {
+    return lhs.l2_ref() < rhs.l2_ref();
   }
-  if (!(lhs.l3 == rhs.l3)) {
-    return lhs.l3 < rhs.l3;
+  if (!(lhs.l3_ref() == rhs.l3_ref())) {
+    return lhs.l3_ref() < rhs.l3_ref();
   }
-  if (!(lhs.m1 == rhs.m1)) {
-    return lhs.m1 < rhs.m1;
+  if (!(lhs.m1_ref() == rhs.m1_ref())) {
+    return lhs.m1_ref() < rhs.m1_ref();
   }
-  if (!(lhs.m2 == rhs.m2)) {
-    return lhs.m2 < rhs.m2;
+  if (!(lhs.m2_ref() == rhs.m2_ref())) {
+    return lhs.m2_ref() < rhs.m2_ref();
   }
-  if (!(lhs.m3 == rhs.m3)) {
-    return lhs.m3 < rhs.m3;
+  if (!(lhs.m3_ref() == rhs.m3_ref())) {
+    return lhs.m3_ref() < rhs.m3_ref();
   }
-  if (!(lhs.n1 == rhs.n1)) {
-    return lhs.n1 < rhs.n1;
+  if (!(lhs.n1_ref() == rhs.n1_ref())) {
+    return lhs.n1_ref() < rhs.n1_ref();
   }
-  if (!(lhs.n2 == rhs.n2)) {
-    return lhs.n2 < rhs.n2;
+  if (!(lhs.n2_ref() == rhs.n2_ref())) {
+    return lhs.n2_ref() < rhs.n2_ref();
   }
-  if (!(lhs.n3 == rhs.n3)) {
-    return lhs.n3 < rhs.n3;
+  if (!(lhs.n3_ref() == rhs.n3_ref())) {
+    return lhs.n3_ref() < rhs.n3_ref();
   }
-  if (!(lhs.o1 == rhs.o1)) {
-    return lhs.o1 < rhs.o1;
+  if (!(lhs.o1_ref() == rhs.o1_ref())) {
+    return lhs.o1_ref() < rhs.o1_ref();
   }
-  if (!(lhs.o2 == rhs.o2)) {
-    return lhs.o2 < rhs.o2;
+  if (!(lhs.o2_ref() == rhs.o2_ref())) {
+    return lhs.o2_ref() < rhs.o2_ref();
   }
-  if (!(lhs.o3 == rhs.o3)) {
-    return lhs.o3 < rhs.o3;
+  if (!(lhs.o3_ref() == rhs.o3_ref())) {
+    return lhs.o3_ref() < rhs.o3_ref();
   }
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::union1& structC::get_g() const& {
+const ::test_cpp2::cpp_reflection::union1& structC::get_g() const& {
   return g;
 }
 
- ::test_cpp2::cpp_reflection::union1 structC::get_g() && {
+::test_cpp2::cpp_reflection::union1 structC::get_g() && {
   return std::move(g);
 }
 
-const  ::test_cpp2::cpp_reflection::unionA& structC::get_h() const& {
+const ::test_cpp2::cpp_reflection::unionA& structC::get_h() const& {
   return h;
 }
 
- ::test_cpp2::cpp_reflection::unionA structC::get_h() && {
+::test_cpp2::cpp_reflection::unionA structC::get_h() && {
   return std::move(h);
 }
 
-const  ::test_cpp2::cpp_reflection::unionA& structC::get_i() const& {
+const ::test_cpp2::cpp_reflection::unionA& structC::get_i() const& {
   return i;
 }
 
- ::test_cpp2::cpp_reflection::unionA structC::get_i() && {
+::test_cpp2::cpp_reflection::unionA structC::get_i() && {
   return std::move(i);
 }
 
-const ::std::vector<int32_t>& structC::get_j() const& {
+const ::std::vector<::std::int32_t>& structC::get_j() const& {
   return j;
 }
 
-::std::vector<int32_t> structC::get_j() && {
+::std::vector<::std::int32_t> structC::get_j() && {
   return std::move(j);
 }
 
-const ::std::vector<int32_t>& structC::get_j1() const& {
+const ::std::vector<::std::int32_t>& structC::get_j1() const& {
   return j1;
 }
 
-::std::vector<int32_t> structC::get_j1() && {
+::std::vector<::std::int32_t> structC::get_j1() && {
   return std::move(j1);
 }
 
-const ::std::vector< ::test_cpp2::cpp_reflection::enum1>& structC::get_j2() const& {
+const ::std::vector<::test_cpp2::cpp_reflection::enum1>& structC::get_j2() const& {
   return j2;
 }
 
-::std::vector< ::test_cpp2::cpp_reflection::enum1> structC::get_j2() && {
+::std::vector<::test_cpp2::cpp_reflection::enum1> structC::get_j2() && {
   return std::move(j2);
 }
 
-const ::std::vector< ::test_cpp2::cpp_reflection::structA>& structC::get_j3() const& {
+const ::std::vector<::test_cpp2::cpp_reflection::structA>& structC::get_j3() const& {
   return j3;
 }
 
-::std::vector< ::test_cpp2::cpp_reflection::structA> structC::get_j3() && {
+::std::vector<::test_cpp2::cpp_reflection::structA> structC::get_j3() && {
   return std::move(j3);
 }
 
-const ::std::set<int32_t>& structC::get_k() const& {
+const ::std::set<::std::int32_t>& structC::get_k() const& {
   return k;
 }
 
-::std::set<int32_t> structC::get_k() && {
+::std::set<::std::int32_t> structC::get_k() && {
   return std::move(k);
 }
 
-const ::std::set<int32_t>& structC::get_k1() const& {
+const ::std::set<::std::int32_t>& structC::get_k1() const& {
   return k1;
 }
 
-::std::set<int32_t> structC::get_k1() && {
+::std::set<::std::int32_t> structC::get_k1() && {
   return std::move(k1);
 }
 
-const ::std::set< ::test_cpp2::cpp_reflection::enum2>& structC::get_k2() const& {
+const ::std::set<::test_cpp2::cpp_reflection::enum2>& structC::get_k2() const& {
   return k2;
 }
 
-::std::set< ::test_cpp2::cpp_reflection::enum2> structC::get_k2() && {
+::std::set<::test_cpp2::cpp_reflection::enum2> structC::get_k2() && {
   return std::move(k2);
 }
 
-const ::std::set< ::test_cpp2::cpp_reflection::structB>& structC::get_k3() const& {
+const ::std::set<::test_cpp2::cpp_reflection::structB>& structC::get_k3() const& {
   return k3;
 }
 
-::std::set< ::test_cpp2::cpp_reflection::structB> structC::get_k3() && {
+::std::set<::test_cpp2::cpp_reflection::structB> structC::get_k3() && {
   return std::move(k3);
 }
 
-const ::std::map<int32_t, int32_t>& structC::get_l() const& {
+const ::std::map<::std::int32_t, ::std::int32_t>& structC::get_l() const& {
   return l;
 }
 
-::std::map<int32_t, int32_t> structC::get_l() && {
+::std::map<::std::int32_t, ::std::int32_t> structC::get_l() && {
   return std::move(l);
 }
 
-const ::std::map<int32_t, int32_t>& structC::get_l1() const& {
+const ::std::map<::std::int32_t, ::std::int32_t>& structC::get_l1() const& {
   return l1;
 }
 
-::std::map<int32_t, int32_t> structC::get_l1() && {
+::std::map<::std::int32_t, ::std::int32_t> structC::get_l1() && {
   return std::move(l1);
 }
 
-const ::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1>& structC::get_l2() const& {
+const ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1>& structC::get_l2() const& {
   return l2;
 }
 
-::std::map<int32_t,  ::test_cpp2::cpp_reflection::enum1> structC::get_l2() && {
+::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::enum1> structC::get_l2() && {
   return std::move(l2);
 }
 
-const ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>& structC::get_l3() const& {
+const ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>& structC::get_l3() const& {
   return l3;
 }
 
-::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB> structC::get_l3() && {
+::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB> structC::get_l3() && {
   return std::move(l3);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t>& structC::get_m1() const& {
+const ::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t>& structC::get_m1() const& {
   return m1;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::enum1, int32_t> structC::get_m1() && {
+::std::map<::test_cpp2::cpp_reflection::enum1, ::std::int32_t> structC::get_m1() && {
   return std::move(m1);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2>& structC::get_m2() const& {
+const ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2>& structC::get_m2() const& {
   return m2;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::enum2> structC::get_m2() && {
+::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::enum2> structC::get_m2() && {
   return std::move(m2);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>& structC::get_m3() const& {
+const ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>& structC::get_m3() const& {
   return m3;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB> structC::get_m3() && {
+::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB> structC::get_m3() && {
   return std::move(m3);
 }
 
-const ::std::map<::std::string, int32_t>& structC::get_n1() const& {
+const ::std::map<::std::string, ::std::int32_t>& structC::get_n1() const& {
   return n1;
 }
 
-::std::map<::std::string, int32_t> structC::get_n1() && {
+::std::map<::std::string, ::std::int32_t> structC::get_n1() && {
   return std::move(n1);
 }
 
-const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1>& structC::get_n2() const& {
+const ::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1>& structC::get_n2() const& {
   return n2;
 }
 
-::std::map<::std::string,  ::test_cpp2::cpp_reflection::enum1> structC::get_n2() && {
+::std::map<::std::string, ::test_cpp2::cpp_reflection::enum1> structC::get_n2() && {
   return std::move(n2);
 }
 
-const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>& structC::get_n3() const& {
+const ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>& structC::get_n3() const& {
   return n3;
 }
 
-::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> structC::get_n3() && {
+::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> structC::get_n3() && {
   return std::move(n3);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>& structC::get_o1() const& {
+const ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>& structC::get_o1() const& {
   return o1;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::structA, int32_t> structC::get_o1() && {
+::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t> structC::get_o1() && {
   return std::move(o1);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>& structC::get_o2() const& {
+const ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>& structC::get_o2() const& {
   return o2;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1> structC::get_o2() && {
+::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1> structC::get_o2() && {
   return std::move(o2);
 }
 
-const ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>& structC::get_o3() const& {
+const ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>& structC::get_o3() const& {
   return o3;
 }
 
-::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB> structC::get_o3() && {
+::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB> structC::get_o3() && {
   return std::move(o3);
 }
 
@@ -1410,134 +1507,134 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::unionA>,
+        ::test_cpp2::cpp_reflection::unionA>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::unionA>,
+        ::test_cpp2::cpp_reflection::unionA>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::test_cpp2::cpp_reflection::structA>>,
+        ::std::vector<::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::test_cpp2::cpp_reflection::structB>>,
+        ::std::set<::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::structure>,
-        ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::structure>,
-        ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::enumeration>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::unionA>,
+        ::test_cpp2::cpp_reflection::unionA>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::unionA>,
+        ::test_cpp2::cpp_reflection::unionA>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::test_cpp2::cpp_reflection::structA>>,
+        ::std::vector<::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::test_cpp2::cpp_reflection::structB>>,
+        ::std::set<::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::structure>,
-        ::std::map<int32_t,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::int32_t, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::structure>,
-        ::std::map< ::test_cpp2::cpp_reflection::enum1,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::test_cpp2::cpp_reflection::enum1, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::integral>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA, int32_t>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::std::int32_t>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::enumeration>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::enum1>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::enum1>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         structC,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::structure, ::apache::thrift::type_class::structure>,
-        ::std::map< ::test_cpp2::cpp_reflection::structA,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::test_cpp2::cpp_reflection::structA, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -1566,17 +1663,44 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct1>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct1::struct1(const struct1&) = default;
+struct1& struct1::operator=(const struct1&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1() :
       field0(0),
       field2( ::test_cpp2::cpp_reflection::enum1::field0),
-      field3( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      field3( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct1::~struct1() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct1::struct1(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::enum2 field3__arg,  ::test_cpp2::cpp_reflection::union1 field4__arg,  ::test_cpp2::cpp_reflection::union2 field5__arg) :
+struct1::struct1(struct1&& other) noexcept  :
+    field0(std::move(other.field0)),
+    field1(std::move(other.field1)),
+    field2(std::move(other.field2)),
+    field3(std::move(other.field3)),
+    field4(std::move(other.field4)),
+    field5(std::move(other.field5)),
+    __isset(other.__isset) {}
+struct1& struct1::operator=(FOLLY_MAYBE_UNUSED struct1&& other) noexcept {
+    this->field0 = std::move(other.field0);
+    this->field1 = std::move(other.field1);
+    this->field2 = std::move(other.field2);
+    this->field3 = std::move(other.field3);
+    this->field4 = std::move(other.field4);
+    this->field5 = std::move(other.field5);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::test_cpp2::cpp_reflection::enum2 field3__arg, ::test_cpp2::cpp_reflection::union1 field4__arg, ::test_cpp2::cpp_reflection::union2 field5__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -1589,14 +1713,15 @@ struct1::struct1(apache::thrift::FragileConstructor, int32_t field0__arg, ::std:
   __isset.field5 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct1::__clear() {
   // clear all fields
-  field0 = 0;
-  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
-  field3 =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  field4.__clear();
-  field5.__clear();
+  this->field0 = 0;
+  this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->field3 =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->field4.__clear();
+  this->field5.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1606,22 +1731,22 @@ bool struct1::operator==(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return false;
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (!(lhs.field2 == rhs.field2)) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
-  if (lhs.field4_ref() != rhs.field4_ref()) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
-  if (!(lhs.field5 == rhs.field5)) {
+  if (!(lhs.field5_ref() == rhs.field5_ref())) {
     return false;
   }
   return true;
@@ -1631,40 +1756,40 @@ bool struct1::operator<(const struct1& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
-    return lhs.field0 < rhs.field0;
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
+    return lhs.field0_ref() < rhs.field0_ref();
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (!(lhs.field2 == rhs.field2)) {
-    return lhs.field2 < rhs.field2;
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
+    return lhs.field2_ref() < rhs.field2_ref();
   }
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
-  if (lhs.field4_ref() != rhs.field4_ref()) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return lhs.field4_ref() < rhs.field4_ref();
   }
-  if (!(lhs.field5 == rhs.field5)) {
-    return lhs.field5 < rhs.field5;
+  if (!(lhs.field5_ref() == rhs.field5_ref())) {
+    return lhs.field5_ref() < rhs.field5_ref();
   }
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::union1* struct1::get_field4() const& {
+const ::test_cpp2::cpp_reflection::union1* struct1::get_field4() const& {
   return field4_ref().has_value() ? std::addressof(field4) : nullptr;
 }
 
- ::test_cpp2::cpp_reflection::union1* struct1::get_field4() & {
+::test_cpp2::cpp_reflection::union1* struct1::get_field4() & {
   return field4_ref().has_value() ? std::addressof(field4) : nullptr;
 }
 
-const  ::test_cpp2::cpp_reflection::union2& struct1::get_field5() const& {
+const ::test_cpp2::cpp_reflection::union2& struct1::get_field5() const& {
   return field5;
 }
 
- ::test_cpp2::cpp_reflection::union2 struct1::get_field5() && {
+::test_cpp2::cpp_reflection::union2 struct1::get_field5() && {
   return std::move(field5);
 }
 
@@ -1695,26 +1820,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct1,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct1,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct1,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct1,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -1743,17 +1868,46 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct2>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct2::struct2(const struct2&) = default;
+struct2& struct2::operator=(const struct2&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2() :
       fieldA(0),
       fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
-      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct2::~struct2() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct2::struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
+struct2::struct2(struct2&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    fieldB(std::move(other.fieldB)),
+    fieldC(std::move(other.fieldC)),
+    fieldD(std::move(other.fieldD)),
+    fieldE(std::move(other.fieldE)),
+    fieldF(std::move(other.fieldF)),
+    fieldG(std::move(other.fieldG)),
+    __isset(other.__isset) {}
+struct2& struct2::operator=(FOLLY_MAYBE_UNUSED struct2&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    this->fieldB = std::move(other.fieldB);
+    this->fieldC = std::move(other.fieldC);
+    this->fieldD = std::move(other.fieldD);
+    this->fieldE = std::move(other.fieldE);
+    this->fieldF = std::move(other.fieldF);
+    this->fieldG = std::move(other.fieldG);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::test_cpp2::cpp_reflection::enum1 fieldC__arg, ::test_cpp2::cpp_reflection::enum2 fieldD__arg, ::test_cpp2::cpp_reflection::union1 fieldE__arg, ::test_cpp2::cpp_reflection::union2 fieldF__arg, ::test_cpp2::cpp_reflection::struct1 fieldG__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -1770,15 +1924,16 @@ struct2::struct2(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std:
   __isset.fieldG = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct2::__clear() {
   // clear all fields
-  fieldA = 0;
-  fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
-  fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  fieldE.__clear();
-  fieldF.__clear();
-  fieldG.__clear();
+  this->fieldA = 0;
+  this->fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->fieldE.__clear();
+  this->fieldF.__clear();
+  this->fieldG.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1788,25 +1943,25 @@ bool struct2::operator==(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
     return false;
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
     return false;
   }
   return true;
@@ -1816,51 +1971,51 @@ bool struct2::operator<(const struct2& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
-    return lhs.fieldA < rhs.fieldA;
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
+    return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
-    return lhs.fieldB < rhs.fieldB;
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
+    return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
-    return lhs.fieldC < rhs.fieldC;
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
+    return lhs.fieldC_ref() < rhs.fieldC_ref();
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
-    return lhs.fieldD < rhs.fieldD;
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
+    return lhs.fieldD_ref() < rhs.fieldD_ref();
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
-    return lhs.fieldE < rhs.fieldE;
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
+    return lhs.fieldE_ref() < rhs.fieldE_ref();
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
-    return lhs.fieldF < rhs.fieldF;
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
+    return lhs.fieldF_ref() < rhs.fieldF_ref();
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
-    return lhs.fieldG < rhs.fieldG;
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
+    return lhs.fieldG_ref() < rhs.fieldG_ref();
   }
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::union1& struct2::get_fieldE() const& {
+const ::test_cpp2::cpp_reflection::union1& struct2::get_fieldE() const& {
   return fieldE;
 }
 
- ::test_cpp2::cpp_reflection::union1 struct2::get_fieldE() && {
+::test_cpp2::cpp_reflection::union1 struct2::get_fieldE() && {
   return std::move(fieldE);
 }
 
-const  ::test_cpp2::cpp_reflection::union2& struct2::get_fieldF() const& {
+const ::test_cpp2::cpp_reflection::union2& struct2::get_fieldF() const& {
   return fieldF;
 }
 
- ::test_cpp2::cpp_reflection::union2 struct2::get_fieldF() && {
+::test_cpp2::cpp_reflection::union2 struct2::get_fieldF() && {
   return std::move(fieldF);
 }
 
-const  ::test_cpp2::cpp_reflection::struct1& struct2::get_fieldG() const& {
+const ::test_cpp2::cpp_reflection::struct1& struct2::get_fieldG() const& {
   return fieldG;
 }
 
- ::test_cpp2::cpp_reflection::struct1 struct2::get_fieldG() && {
+::test_cpp2::cpp_reflection::struct1 struct2::get_fieldG() && {
   return std::move(fieldG);
 }
 
@@ -1892,38 +2047,38 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct2,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct2,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct2,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::struct1>,
+        ::test_cpp2::cpp_reflection::struct1>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct2,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct2,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct2,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::struct1>,
+        ::test_cpp2::cpp_reflection::struct1>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -1952,17 +2107,68 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct3>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct3::struct3(const struct3&) = default;
+struct3& struct3::operator=(const struct3&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3() :
       fieldA(0),
       fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
-      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct3::~struct3() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct3::struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std::string fieldB__arg,  ::test_cpp2::cpp_reflection::enum1 fieldC__arg,  ::test_cpp2::cpp_reflection::enum2 fieldD__arg,  ::test_cpp2::cpp_reflection::union1 fieldE__arg,  ::test_cpp2::cpp_reflection::union2 fieldF__arg,  ::test_cpp2::cpp_reflection::struct1 fieldG__arg,  ::test_cpp2::cpp_reflection::union2 fieldH__arg, ::std::vector<int32_t> fieldI__arg, ::std::vector<::std::string> fieldJ__arg, ::std::vector<::std::string> fieldK__arg, ::std::vector< ::test_cpp2::cpp_reflection::structA> fieldL__arg, ::std::set<int32_t> fieldM__arg, ::std::set<::std::string> fieldN__arg, ::std::set<::std::string> fieldO__arg, ::std::set< ::test_cpp2::cpp_reflection::structB> fieldP__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA> fieldQ__arg, ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
+struct3::struct3(struct3&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    fieldB(std::move(other.fieldB)),
+    fieldC(std::move(other.fieldC)),
+    fieldD(std::move(other.fieldD)),
+    fieldE(std::move(other.fieldE)),
+    fieldF(std::move(other.fieldF)),
+    fieldG(std::move(other.fieldG)),
+    fieldH(std::move(other.fieldH)),
+    fieldI(std::move(other.fieldI)),
+    fieldJ(std::move(other.fieldJ)),
+    fieldK(std::move(other.fieldK)),
+    fieldL(std::move(other.fieldL)),
+    fieldM(std::move(other.fieldM)),
+    fieldN(std::move(other.fieldN)),
+    fieldO(std::move(other.fieldO)),
+    fieldP(std::move(other.fieldP)),
+    fieldQ(std::move(other.fieldQ)),
+    fieldR(std::move(other.fieldR)),
+    __isset(other.__isset) {}
+struct3& struct3::operator=(FOLLY_MAYBE_UNUSED struct3&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    this->fieldB = std::move(other.fieldB);
+    this->fieldC = std::move(other.fieldC);
+    this->fieldD = std::move(other.fieldD);
+    this->fieldE = std::move(other.fieldE);
+    this->fieldF = std::move(other.fieldF);
+    this->fieldG = std::move(other.fieldG);
+    this->fieldH = std::move(other.fieldH);
+    this->fieldI = std::move(other.fieldI);
+    this->fieldJ = std::move(other.fieldJ);
+    this->fieldK = std::move(other.fieldK);
+    this->fieldL = std::move(other.fieldL);
+    this->fieldM = std::move(other.fieldM);
+    this->fieldN = std::move(other.fieldN);
+    this->fieldO = std::move(other.fieldO);
+    this->fieldP = std::move(other.fieldP);
+    this->fieldQ = std::move(other.fieldQ);
+    this->fieldR = std::move(other.fieldR);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct3::struct3(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::test_cpp2::cpp_reflection::enum1 fieldC__arg, ::test_cpp2::cpp_reflection::enum2 fieldD__arg, ::test_cpp2::cpp_reflection::union1 fieldE__arg, ::test_cpp2::cpp_reflection::union2 fieldF__arg, ::test_cpp2::cpp_reflection::struct1 fieldG__arg, ::test_cpp2::cpp_reflection::union2 fieldH__arg, ::std::vector<::std::int32_t> fieldI__arg, ::std::vector<::std::string> fieldJ__arg, ::std::vector<::std::string> fieldK__arg, ::std::vector<::test_cpp2::cpp_reflection::structA> fieldL__arg, ::std::set<::std::int32_t> fieldM__arg, ::std::set<::std::string> fieldN__arg, ::std::set<::std::string> fieldO__arg, ::std::set<::test_cpp2::cpp_reflection::structB> fieldP__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA> fieldQ__arg, ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> fieldR__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -2001,26 +2207,27 @@ struct3::struct3(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std:
   __isset.fieldR = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct3::__clear() {
   // clear all fields
-  fieldA = 0;
-  fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
-  fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
-  fieldE.__clear();
-  fieldF.__clear();
-  fieldG.__clear();
-  fieldH.__clear();
-  fieldI.clear();
-  fieldJ.clear();
-  fieldK.clear();
-  fieldL.clear();
-  fieldM.clear();
-  fieldN.clear();
-  fieldO.clear();
-  fieldP.clear();
-  fieldQ.clear();
-  fieldR.clear();
+  this->fieldA = 0;
+  this->fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->fieldE.__clear();
+  this->fieldF.__clear();
+  this->fieldG.__clear();
+  this->fieldH.__clear();
+  this->fieldI.clear();
+  this->fieldJ.clear();
+  this->fieldK.clear();
+  this->fieldL.clear();
+  this->fieldM.clear();
+  this->fieldN.clear();
+  this->fieldO.clear();
+  this->fieldP.clear();
+  this->fieldQ.clear();
+  this->fieldR.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2030,58 +2237,58 @@ bool struct3::operator==(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
     return false;
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
     return false;
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
     return false;
   }
-  if (!(lhs.fieldI == rhs.fieldI)) {
+  if (!(lhs.fieldI_ref() == rhs.fieldI_ref())) {
     return false;
   }
-  if (!(lhs.fieldJ == rhs.fieldJ)) {
+  if (!(lhs.fieldJ_ref() == rhs.fieldJ_ref())) {
     return false;
   }
-  if (!(lhs.fieldK == rhs.fieldK)) {
+  if (!(lhs.fieldK_ref() == rhs.fieldK_ref())) {
     return false;
   }
-  if (!(lhs.fieldL == rhs.fieldL)) {
+  if (!(lhs.fieldL_ref() == rhs.fieldL_ref())) {
     return false;
   }
-  if (!(lhs.fieldM == rhs.fieldM)) {
+  if (!(lhs.fieldM_ref() == rhs.fieldM_ref())) {
     return false;
   }
-  if (!(lhs.fieldN == rhs.fieldN)) {
+  if (!(lhs.fieldN_ref() == rhs.fieldN_ref())) {
     return false;
   }
-  if (!(lhs.fieldO == rhs.fieldO)) {
+  if (!(lhs.fieldO_ref() == rhs.fieldO_ref())) {
     return false;
   }
-  if (!(lhs.fieldP == rhs.fieldP)) {
+  if (!(lhs.fieldP_ref() == rhs.fieldP_ref())) {
     return false;
   }
-  if (!(lhs.fieldQ == rhs.fieldQ)) {
+  if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
     return false;
   }
-  if (!(lhs.fieldR == rhs.fieldR)) {
+  if (!(lhs.fieldR_ref() == rhs.fieldR_ref())) {
     return false;
   }
   return true;
@@ -2091,100 +2298,100 @@ bool struct3::operator<(const struct3& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
-    return lhs.fieldA < rhs.fieldA;
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
+    return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
-    return lhs.fieldB < rhs.fieldB;
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
+    return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
-    return lhs.fieldC < rhs.fieldC;
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
+    return lhs.fieldC_ref() < rhs.fieldC_ref();
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
-    return lhs.fieldD < rhs.fieldD;
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
+    return lhs.fieldD_ref() < rhs.fieldD_ref();
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
-    return lhs.fieldE < rhs.fieldE;
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
+    return lhs.fieldE_ref() < rhs.fieldE_ref();
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
-    return lhs.fieldF < rhs.fieldF;
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
+    return lhs.fieldF_ref() < rhs.fieldF_ref();
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
-    return lhs.fieldG < rhs.fieldG;
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
+    return lhs.fieldG_ref() < rhs.fieldG_ref();
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
-    return lhs.fieldH < rhs.fieldH;
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
+    return lhs.fieldH_ref() < rhs.fieldH_ref();
   }
-  if (!(lhs.fieldI == rhs.fieldI)) {
-    return lhs.fieldI < rhs.fieldI;
+  if (!(lhs.fieldI_ref() == rhs.fieldI_ref())) {
+    return lhs.fieldI_ref() < rhs.fieldI_ref();
   }
-  if (!(lhs.fieldJ == rhs.fieldJ)) {
-    return lhs.fieldJ < rhs.fieldJ;
+  if (!(lhs.fieldJ_ref() == rhs.fieldJ_ref())) {
+    return lhs.fieldJ_ref() < rhs.fieldJ_ref();
   }
-  if (!(lhs.fieldK == rhs.fieldK)) {
-    return lhs.fieldK < rhs.fieldK;
+  if (!(lhs.fieldK_ref() == rhs.fieldK_ref())) {
+    return lhs.fieldK_ref() < rhs.fieldK_ref();
   }
-  if (!(lhs.fieldL == rhs.fieldL)) {
-    return lhs.fieldL < rhs.fieldL;
+  if (!(lhs.fieldL_ref() == rhs.fieldL_ref())) {
+    return lhs.fieldL_ref() < rhs.fieldL_ref();
   }
-  if (!(lhs.fieldM == rhs.fieldM)) {
-    return lhs.fieldM < rhs.fieldM;
+  if (!(lhs.fieldM_ref() == rhs.fieldM_ref())) {
+    return lhs.fieldM_ref() < rhs.fieldM_ref();
   }
-  if (!(lhs.fieldN == rhs.fieldN)) {
-    return lhs.fieldN < rhs.fieldN;
+  if (!(lhs.fieldN_ref() == rhs.fieldN_ref())) {
+    return lhs.fieldN_ref() < rhs.fieldN_ref();
   }
-  if (!(lhs.fieldO == rhs.fieldO)) {
-    return lhs.fieldO < rhs.fieldO;
+  if (!(lhs.fieldO_ref() == rhs.fieldO_ref())) {
+    return lhs.fieldO_ref() < rhs.fieldO_ref();
   }
-  if (!(lhs.fieldP == rhs.fieldP)) {
-    return lhs.fieldP < rhs.fieldP;
+  if (!(lhs.fieldP_ref() == rhs.fieldP_ref())) {
+    return lhs.fieldP_ref() < rhs.fieldP_ref();
   }
-  if (!(lhs.fieldQ == rhs.fieldQ)) {
-    return lhs.fieldQ < rhs.fieldQ;
+  if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
+    return lhs.fieldQ_ref() < rhs.fieldQ_ref();
   }
-  if (!(lhs.fieldR == rhs.fieldR)) {
-    return lhs.fieldR < rhs.fieldR;
+  if (!(lhs.fieldR_ref() == rhs.fieldR_ref())) {
+    return lhs.fieldR_ref() < rhs.fieldR_ref();
   }
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::union1& struct3::get_fieldE() const& {
+const ::test_cpp2::cpp_reflection::union1& struct3::get_fieldE() const& {
   return fieldE;
 }
 
- ::test_cpp2::cpp_reflection::union1 struct3::get_fieldE() && {
+::test_cpp2::cpp_reflection::union1 struct3::get_fieldE() && {
   return std::move(fieldE);
 }
 
-const  ::test_cpp2::cpp_reflection::union2& struct3::get_fieldF() const& {
+const ::test_cpp2::cpp_reflection::union2& struct3::get_fieldF() const& {
   return fieldF;
 }
 
- ::test_cpp2::cpp_reflection::union2 struct3::get_fieldF() && {
+::test_cpp2::cpp_reflection::union2 struct3::get_fieldF() && {
   return std::move(fieldF);
 }
 
-const  ::test_cpp2::cpp_reflection::struct1& struct3::get_fieldG() const& {
+const ::test_cpp2::cpp_reflection::struct1& struct3::get_fieldG() const& {
   return fieldG;
 }
 
- ::test_cpp2::cpp_reflection::struct1 struct3::get_fieldG() && {
+::test_cpp2::cpp_reflection::struct1 struct3::get_fieldG() && {
   return std::move(fieldG);
 }
 
-const  ::test_cpp2::cpp_reflection::union2& struct3::get_fieldH() const& {
+const ::test_cpp2::cpp_reflection::union2& struct3::get_fieldH() const& {
   return fieldH;
 }
 
- ::test_cpp2::cpp_reflection::union2 struct3::get_fieldH() && {
+::test_cpp2::cpp_reflection::union2 struct3::get_fieldH() && {
   return std::move(fieldH);
 }
 
-const ::std::vector<int32_t>& struct3::get_fieldI() const& {
+const ::std::vector<::std::int32_t>& struct3::get_fieldI() const& {
   return fieldI;
 }
 
-::std::vector<int32_t> struct3::get_fieldI() && {
+::std::vector<::std::int32_t> struct3::get_fieldI() && {
   return std::move(fieldI);
 }
 
@@ -2204,19 +2411,19 @@ const ::std::vector<::std::string>& struct3::get_fieldK() const& {
   return std::move(fieldK);
 }
 
-const ::std::vector< ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldL() const& {
+const ::std::vector<::test_cpp2::cpp_reflection::structA>& struct3::get_fieldL() const& {
   return fieldL;
 }
 
-::std::vector< ::test_cpp2::cpp_reflection::structA> struct3::get_fieldL() && {
+::std::vector<::test_cpp2::cpp_reflection::structA> struct3::get_fieldL() && {
   return std::move(fieldL);
 }
 
-const ::std::set<int32_t>& struct3::get_fieldM() const& {
+const ::std::set<::std::int32_t>& struct3::get_fieldM() const& {
   return fieldM;
 }
 
-::std::set<int32_t> struct3::get_fieldM() && {
+::std::set<::std::int32_t> struct3::get_fieldM() && {
   return std::move(fieldM);
 }
 
@@ -2236,27 +2443,27 @@ const ::std::set<::std::string>& struct3::get_fieldO() const& {
   return std::move(fieldO);
 }
 
-const ::std::set< ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldP() const& {
+const ::std::set<::test_cpp2::cpp_reflection::structB>& struct3::get_fieldP() const& {
   return fieldP;
 }
 
-::std::set< ::test_cpp2::cpp_reflection::structB> struct3::get_fieldP() && {
+::std::set<::test_cpp2::cpp_reflection::structB> struct3::get_fieldP() && {
   return std::move(fieldP);
 }
 
-const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldQ() const& {
+const ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>& struct3::get_fieldQ() const& {
   return fieldQ;
 }
 
-::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA> struct3::get_fieldQ() && {
+::std::map<::std::string, ::test_cpp2::cpp_reflection::structA> struct3::get_fieldQ() && {
   return std::move(fieldQ);
 }
 
-const ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldR() const& {
+const ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>& struct3::get_fieldR() const& {
   return fieldR;
 }
 
-::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB> struct3::get_fieldR() && {
+::std::map<::std::string, ::test_cpp2::cpp_reflection::structB> struct3::get_fieldR() && {
   return std::move(fieldR);
 }
 
@@ -2299,98 +2506,98 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::struct1>,
+        ::test_cpp2::cpp_reflection::struct1>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::test_cpp2::cpp_reflection::structA>>,
+        ::std::vector<::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::test_cpp2::cpp_reflection::structB>>,
+        ::std::set<::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct3,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union1>,
+        ::test_cpp2::cpp_reflection::union1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::struct1>,
+        ::test_cpp2::cpp_reflection::struct1>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::variant,
-         ::test_cpp2::cpp_reflection::union2>,
+        ::test_cpp2::cpp_reflection::union2>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::test_cpp2::cpp_reflection::structA>>,
+        ::std::vector<::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::set<::apache::thrift::type_class::structure>,
-        ::std::set< ::test_cpp2::cpp_reflection::structB>>,
+        ::std::set<::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structA>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structA>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct3,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::structure>,
-        ::std::map<::std::string,  ::test_cpp2::cpp_reflection::structB>>,
+        ::std::map<::std::string, ::test_cpp2::cpp_reflection::structB>>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -2428,7 +2635,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field2 = srcObj.__isset.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  if (srcObj.field3) field3.reset(new  ::test_cpp2::cpp_reflection::structA(*srcObj.field3));
+  field3 = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::structure>(srcObj.field3);
 }
 
 struct4& struct4::operator=(const struct4& src) {
@@ -2438,7 +2646,25 @@ struct4& struct4::operator=(const struct4& src) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct4::struct4(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg, std::unique_ptr< ::test_cpp2::cpp_reflection::structA> field3__arg) :
+struct4::struct4(struct4&& other) noexcept  :
+    field0(std::move(other.field0)),
+    field1(std::move(other.field1)),
+    field2(std::move(other.field2)),
+    field3(std::move(other.field3)),
+    __isset(other.__isset) {}
+struct4& struct4::operator=(FOLLY_MAYBE_UNUSED struct4&& other) noexcept {
+    this->field0 = std::move(other.field0);
+    this->field1 = std::move(other.field1);
+    this->field2 = std::move(other.field2);
+    this->field3 = std::move(other.field3);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::std::unique_ptr<::test_cpp2::cpp_reflection::structA> field3__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -2447,12 +2673,13 @@ struct4::struct4(apache::thrift::FragileConstructor, int32_t field0__arg, ::std:
   __isset.field2 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct4::__clear() {
   // clear all fields
-  field0 = 0;
-  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
-  if (field3) field3->__clear();
+  this->field0 = 0;
+  this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
+  if (this->field3) this->field3->__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2462,22 +2689,17 @@ bool struct4::operator==(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return false;
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (!(lhs.field2 == rhs.field2)) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if (!!lhs.field3 != !!rhs.field3) {
+  if ((lhs.field3 == nullptr) != (rhs.field3 == nullptr) || (lhs.field3 != nullptr && lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3))) {
     return false;
-  }
-  if (!!lhs.field3) {
-    if (lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3)) {
-      return false;
-    }
   }
   return true;
 }
@@ -2486,22 +2708,17 @@ bool struct4::operator<(const struct4& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
-    return lhs.field0 < rhs.field0;
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
+    return lhs.field0_ref() < rhs.field0_ref();
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (!(lhs.field2 == rhs.field2)) {
-    return lhs.field2 < rhs.field2;
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
+    return lhs.field2_ref() < rhs.field2_ref();
   }
-  if (!!lhs.field3 != !!rhs.field3) {
-    return !!lhs.field3 < !!rhs.field3;
-  }
-  if (!!lhs.field3) {
-    if (lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3)) {
-      return *lhs.field3 < *rhs.field3;
-    }
+  if ((lhs.field3 == nullptr) != (rhs.field3 == nullptr) || (lhs.field3 != nullptr && lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3))) {
+    return lhs.field3 == nullptr || (rhs.field3 != nullptr && *lhs.field3 < *rhs.field3);
   }
   return false;
 }
@@ -2531,14 +2748,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct4,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct4,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -2567,16 +2784,41 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct5>::translateFieldName(
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct5::struct5(const struct5&) = default;
+struct5& struct5::operator=(const struct5&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5() :
       field0(0),
-      field2( ::test_cpp2::cpp_reflection::enum1::field0) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      field2( ::test_cpp2::cpp_reflection::enum1::field0) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct5::~struct5() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct5::struct5(apache::thrift::FragileConstructor, int32_t field0__arg, ::std::string field1__arg,  ::test_cpp2::cpp_reflection::enum1 field2__arg,  ::test_cpp2::cpp_reflection::structA field3__arg,  ::test_cpp2::cpp_reflection::structB field4__arg) :
+struct5::struct5(struct5&& other) noexcept  :
+    field0(std::move(other.field0)),
+    field1(std::move(other.field1)),
+    field2(std::move(other.field2)),
+    field3(std::move(other.field3)),
+    field4(std::move(other.field4)),
+    __isset(other.__isset) {}
+struct5& struct5::operator=(FOLLY_MAYBE_UNUSED struct5&& other) noexcept {
+    this->field0 = std::move(other.field0);
+    this->field1 = std::move(other.field1);
+    this->field2 = std::move(other.field2);
+    this->field3 = std::move(other.field3);
+    this->field4 = std::move(other.field4);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct5::struct5(apache::thrift::FragileConstructor, ::std::int32_t field0__arg, ::std::string field1__arg, ::test_cpp2::cpp_reflection::enum1 field2__arg, ::test_cpp2::cpp_reflection::structA field3__arg, ::test_cpp2::cpp_reflection::structB field4__arg) :
     field0(std::move(field0__arg)),
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
@@ -2588,13 +2830,14 @@ struct5::struct5(apache::thrift::FragileConstructor, int32_t field0__arg, ::std:
   __isset.field4 = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct5::__clear() {
   // clear all fields
-  field0 = 0;
-  field1 = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
-  field3.__clear();
-  field4.__clear();
+  this->field0 = 0;
+  this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->field3.__clear();
+  this->field4.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2604,19 +2847,19 @@ bool struct5::operator==(const struct5& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
     return false;
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return false;
   }
-  if (!(lhs.field2 == rhs.field2)) {
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
-  if (!(lhs.field4 == rhs.field4)) {
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
     return false;
   }
   return true;
@@ -2626,37 +2869,37 @@ bool struct5::operator<(const struct5& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field0 == rhs.field0)) {
-    return lhs.field0 < rhs.field0;
+  if (!(lhs.field0_ref() == rhs.field0_ref())) {
+    return lhs.field0_ref() < rhs.field0_ref();
   }
-  if (lhs.field1_ref() != rhs.field1_ref()) {
+  if (!(lhs.field1_ref() == rhs.field1_ref())) {
     return lhs.field1_ref() < rhs.field1_ref();
   }
-  if (!(lhs.field2 == rhs.field2)) {
-    return lhs.field2 < rhs.field2;
+  if (!(lhs.field2_ref() == rhs.field2_ref())) {
+    return lhs.field2_ref() < rhs.field2_ref();
   }
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
-  if (!(lhs.field4 == rhs.field4)) {
-    return lhs.field4 < rhs.field4;
+  if (!(lhs.field4_ref() == rhs.field4_ref())) {
+    return lhs.field4_ref() < rhs.field4_ref();
   }
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::structA& struct5::get_field3() const& {
+const ::test_cpp2::cpp_reflection::structA& struct5::get_field3() const& {
   return field3;
 }
 
- ::test_cpp2::cpp_reflection::structA struct5::get_field3() && {
+::test_cpp2::cpp_reflection::structA struct5::get_field3() && {
   return std::move(field3);
 }
 
-const  ::test_cpp2::cpp_reflection::structB& struct5::get_field4() const& {
+const ::test_cpp2::cpp_reflection::structB& struct5::get_field4() const& {
   return field4;
 }
 
- ::test_cpp2::cpp_reflection::structB struct5::get_field4() && {
+::test_cpp2::cpp_reflection::structB struct5::get_field4() && {
   return std::move(field4);
 }
 
@@ -2686,26 +2929,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct5,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         struct5,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structB>,
+        ::test_cpp2::cpp_reflection::structB>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct5,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structA>,
+        ::test_cpp2::cpp_reflection::structA>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         struct5,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::structB>,
+        ::test_cpp2::cpp_reflection::structB>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -2734,14 +2977,31 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_binary>::translateField
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct_binary::struct_binary(const struct_binary&) = default;
+struct_binary& struct_binary::operator=(const struct_binary&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct_binary::struct_binary(struct_binary&& other) noexcept  :
+    bi(std::move(other.bi)),
+    __isset(other.__isset) {}
+struct_binary& struct_binary::operator=(FOLLY_MAYBE_UNUSED struct_binary&& other) noexcept {
+    this->bi = std::move(other.bi);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(apache::thrift::FragileConstructor, ::std::string bi__arg) :
     bi(std::move(bi__arg)) {
   __isset.bi = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct_binary::__clear() {
   // clear all fields
-  bi = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->bi = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2812,8 +3072,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::dep_A_struct>::translateFieldN
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg) :
+dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_reflection::dep_B_struct b__arg, ::test_cpp2::cpp_reflection::dep_C_struct c__arg, ::std::int32_t i_a__arg) :
     b(std::move(b__arg)),
     c(std::move(c__arg)),
     i_a(std::move(i_a__arg)) {
@@ -2822,11 +3083,12 @@ dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp
   __isset.i_a = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void dep_A_struct::__clear() {
   // clear all fields
-  b.__clear();
-  c.__clear();
-  i_a = 0;
+  this->b.__clear();
+  this->c.__clear();
+  this->i_a = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2836,13 +3098,13 @@ bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
-  if (!(lhs.i_a == rhs.i_a)) {
+  if (!(lhs.i_a_ref() == rhs.i_a_ref())) {
     return false;
   }
   return true;
@@ -2852,31 +3114,31 @@ bool dep_A_struct::operator<(const dep_A_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
-  if (!(lhs.i_a == rhs.i_a)) {
-    return lhs.i_a < rhs.i_a;
+  if (!(lhs.i_a_ref() == rhs.i_a_ref())) {
+    return lhs.i_a_ref() < rhs.i_a_ref();
   }
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::dep_B_struct& dep_A_struct::get_b() const& {
+const ::test_cpp2::cpp_reflection::dep_B_struct& dep_A_struct::get_b() const& {
   return b;
 }
 
- ::test_cpp2::cpp_reflection::dep_B_struct dep_A_struct::get_b() && {
+::test_cpp2::cpp_reflection::dep_B_struct dep_A_struct::get_b() && {
   return std::move(b);
 }
 
-const  ::test_cpp2::cpp_reflection::dep_C_struct& dep_A_struct::get_c() const& {
+const ::test_cpp2::cpp_reflection::dep_C_struct& dep_A_struct::get_c() const& {
   return c;
 }
 
- ::test_cpp2::cpp_reflection::dep_C_struct dep_A_struct::get_c() && {
+::test_cpp2::cpp_reflection::dep_C_struct dep_A_struct::get_c() && {
   return std::move(c);
 }
 
@@ -2904,26 +3166,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         dep_A_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_B_struct>,
+        ::test_cpp2::cpp_reflection::dep_B_struct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         dep_A_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_C_struct>,
+        ::test_cpp2::cpp_reflection::dep_C_struct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         dep_A_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_B_struct>,
+        ::test_cpp2::cpp_reflection::dep_B_struct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         dep_A_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_C_struct>,
+        ::test_cpp2::cpp_reflection::dep_C_struct>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -2951,8 +3213,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::dep_B_struct>::translateFieldN
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp_reflection::dep_B_struct b__arg,  ::test_cpp2::cpp_reflection::dep_C_struct c__arg, int32_t i_a__arg) :
+dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_reflection::dep_B_struct b__arg, ::test_cpp2::cpp_reflection::dep_C_struct c__arg, ::std::int32_t i_a__arg) :
     b(std::move(b__arg)),
     c(std::move(c__arg)),
     i_a(std::move(i_a__arg)) {
@@ -2961,11 +3224,12 @@ dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor,  ::test_cpp2::cpp
   __isset.i_a = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void dep_B_struct::__clear() {
   // clear all fields
-  b.__clear();
-  c.__clear();
-  i_a = 0;
+  this->b.__clear();
+  this->c.__clear();
+  this->i_a = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2975,13 +3239,13 @@ bool dep_B_struct::operator==(const dep_B_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.b == rhs.b)) {
+  if (!(lhs.b_ref() == rhs.b_ref())) {
     return false;
   }
-  if (!(lhs.c == rhs.c)) {
+  if (!(lhs.c_ref() == rhs.c_ref())) {
     return false;
   }
-  if (!(lhs.i_a == rhs.i_a)) {
+  if (!(lhs.i_a_ref() == rhs.i_a_ref())) {
     return false;
   }
   return true;
@@ -2991,31 +3255,31 @@ bool dep_B_struct::operator<(const dep_B_struct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.b == rhs.b)) {
-    return lhs.b < rhs.b;
+  if (!(lhs.b_ref() == rhs.b_ref())) {
+    return lhs.b_ref() < rhs.b_ref();
   }
-  if (!(lhs.c == rhs.c)) {
-    return lhs.c < rhs.c;
+  if (!(lhs.c_ref() == rhs.c_ref())) {
+    return lhs.c_ref() < rhs.c_ref();
   }
-  if (!(lhs.i_a == rhs.i_a)) {
-    return lhs.i_a < rhs.i_a;
+  if (!(lhs.i_a_ref() == rhs.i_a_ref())) {
+    return lhs.i_a_ref() < rhs.i_a_ref();
   }
   return false;
 }
 
-const  ::test_cpp2::cpp_reflection::dep_B_struct& dep_B_struct::get_b() const& {
+const ::test_cpp2::cpp_reflection::dep_B_struct& dep_B_struct::get_b() const& {
   return b;
 }
 
- ::test_cpp2::cpp_reflection::dep_B_struct dep_B_struct::get_b() && {
+::test_cpp2::cpp_reflection::dep_B_struct dep_B_struct::get_b() && {
   return std::move(b);
 }
 
-const  ::test_cpp2::cpp_reflection::dep_C_struct& dep_B_struct::get_c() const& {
+const ::test_cpp2::cpp_reflection::dep_C_struct& dep_B_struct::get_c() const& {
   return c;
 }
 
- ::test_cpp2::cpp_reflection::dep_C_struct dep_B_struct::get_c() && {
+::test_cpp2::cpp_reflection::dep_C_struct dep_B_struct::get_c() && {
   return std::move(c);
 }
 
@@ -3043,26 +3307,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         dep_B_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_B_struct>,
+        ::test_cpp2::cpp_reflection::dep_B_struct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         dep_B_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_C_struct>,
+        ::test_cpp2::cpp_reflection::dep_C_struct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         dep_B_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_B_struct>,
+        ::test_cpp2::cpp_reflection::dep_B_struct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         dep_B_struct,
         ::apache::thrift::type_class::structure,
-         ::test_cpp2::cpp_reflection::dep_C_struct>,
+        ::test_cpp2::cpp_reflection::dep_C_struct>,
     "inconsistent use of nimble option");
 
 }} // test_cpp2::cpp_reflection
@@ -3090,15 +3354,17 @@ void TccStructTraits<::test_cpp2::cpp_reflection::annotated>::translateFieldName
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-annotated::annotated(apache::thrift::FragileConstructor, int32_t a__arg) :
+annotated::annotated(apache::thrift::FragileConstructor, ::std::int32_t a__arg) :
     a(std::move(a__arg)) {
   __isset.a = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void annotated::__clear() {
   // clear all fields
-  a = 0;
+  this->a = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3108,7 +3374,7 @@ bool annotated::operator==(const annotated& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
+  if (!(lhs.a_ref() == rhs.a_ref())) {
     return false;
   }
   return true;
@@ -3118,8 +3384,8 @@ bool annotated::operator<(const annotated& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.a == rhs.a)) {
-    return lhs.a < rhs.a;
+  if (!(lhs.a_ref() == rhs.a_ref())) {
+    return lhs.a_ref() < rhs.a_ref();
   }
   return false;
 }
@@ -3461,8 +3727,9 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_with_special_names>::tr
 
 namespace test_cpp2 { namespace cpp_reflection {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct_with_special_names::struct_with_special_names(apache::thrift::FragileConstructor, int32_t get__arg, int32_t getter__arg, int32_t lists__arg, int32_t maps__arg, int32_t name__arg, int32_t name_to_value__arg, int32_t names__arg, int32_t prefix_tree__arg, int32_t sets__arg, int32_t setter__arg, int32_t str__arg, int32_t strings__arg, int32_t type__arg, int32_t value__arg, int32_t value_to_name__arg, int32_t values__arg, int32_t id__arg, int32_t ids__arg, int32_t descriptor__arg, int32_t descriptors__arg, int32_t key__arg, int32_t keys__arg, int32_t annotation__arg, int32_t annotations__arg, int32_t member__arg, int32_t members__arg, int32_t field__arg, int32_t fields__arg) :
+struct_with_special_names::struct_with_special_names(apache::thrift::FragileConstructor, ::std::int32_t get__arg, ::std::int32_t getter__arg, ::std::int32_t lists__arg, ::std::int32_t maps__arg, ::std::int32_t name__arg, ::std::int32_t name_to_value__arg, ::std::int32_t names__arg, ::std::int32_t prefix_tree__arg, ::std::int32_t sets__arg, ::std::int32_t setter__arg, ::std::int32_t str__arg, ::std::int32_t strings__arg, ::std::int32_t type__arg, ::std::int32_t value__arg, ::std::int32_t value_to_name__arg, ::std::int32_t values__arg, ::std::int32_t id__arg, ::std::int32_t ids__arg, ::std::int32_t descriptor__arg, ::std::int32_t descriptors__arg, ::std::int32_t key__arg, ::std::int32_t keys__arg, ::std::int32_t annotation__arg, ::std::int32_t annotations__arg, ::std::int32_t member__arg, ::std::int32_t members__arg, ::std::int32_t field__arg, ::std::int32_t fields__arg) :
     get(std::move(get__arg)),
     getter(std::move(getter__arg)),
     lists(std::move(lists__arg)),
@@ -3521,36 +3788,37 @@ struct_with_special_names::struct_with_special_names(apache::thrift::FragileCons
   __isset.fields = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct_with_special_names::__clear() {
   // clear all fields
-  get = 0;
-  getter = 0;
-  lists = 0;
-  maps = 0;
-  name = 0;
-  name_to_value = 0;
-  names = 0;
-  prefix_tree = 0;
-  sets = 0;
-  setter = 0;
-  str = 0;
-  strings = 0;
-  type = 0;
-  value = 0;
-  value_to_name = 0;
-  values = 0;
-  id = 0;
-  ids = 0;
-  descriptor = 0;
-  descriptors = 0;
-  key = 0;
-  keys = 0;
-  annotation = 0;
-  annotations = 0;
-  member = 0;
-  members = 0;
-  field = 0;
-  fields = 0;
+  this->get = 0;
+  this->getter = 0;
+  this->lists = 0;
+  this->maps = 0;
+  this->name = 0;
+  this->name_to_value = 0;
+  this->names = 0;
+  this->prefix_tree = 0;
+  this->sets = 0;
+  this->setter = 0;
+  this->str = 0;
+  this->strings = 0;
+  this->type = 0;
+  this->value = 0;
+  this->value_to_name = 0;
+  this->values = 0;
+  this->id = 0;
+  this->ids = 0;
+  this->descriptor = 0;
+  this->descriptors = 0;
+  this->key = 0;
+  this->keys = 0;
+  this->annotation = 0;
+  this->annotations = 0;
+  this->member = 0;
+  this->members = 0;
+  this->field = 0;
+  this->fields = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3560,88 +3828,88 @@ bool struct_with_special_names::operator==(const struct_with_special_names& rhs)
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.get == rhs.get)) {
+  if (!(lhs.get_ref() == rhs.get_ref())) {
     return false;
   }
-  if (!(lhs.getter == rhs.getter)) {
+  if (!(lhs.getter_ref() == rhs.getter_ref())) {
     return false;
   }
-  if (!(lhs.lists == rhs.lists)) {
+  if (!(lhs.lists_ref() == rhs.lists_ref())) {
     return false;
   }
-  if (!(lhs.maps == rhs.maps)) {
+  if (!(lhs.maps_ref() == rhs.maps_ref())) {
     return false;
   }
-  if (!(lhs.name == rhs.name)) {
+  if (!(lhs.name_ref() == rhs.name_ref())) {
     return false;
   }
-  if (!(lhs.name_to_value == rhs.name_to_value)) {
+  if (!(lhs.name_to_value_ref() == rhs.name_to_value_ref())) {
     return false;
   }
-  if (!(lhs.names == rhs.names)) {
+  if (!(lhs.names_ref() == rhs.names_ref())) {
     return false;
   }
-  if (!(lhs.prefix_tree == rhs.prefix_tree)) {
+  if (!(lhs.prefix_tree_ref() == rhs.prefix_tree_ref())) {
     return false;
   }
-  if (!(lhs.sets == rhs.sets)) {
+  if (!(lhs.sets_ref() == rhs.sets_ref())) {
     return false;
   }
-  if (!(lhs.setter == rhs.setter)) {
+  if (!(lhs.setter_ref() == rhs.setter_ref())) {
     return false;
   }
-  if (!(lhs.str == rhs.str)) {
+  if (!(lhs.str_ref() == rhs.str_ref())) {
     return false;
   }
-  if (!(lhs.strings == rhs.strings)) {
+  if (!(lhs.strings_ref() == rhs.strings_ref())) {
     return false;
   }
-  if (!(lhs.type == rhs.type)) {
+  if (!(lhs.type_ref() == rhs.type_ref())) {
     return false;
   }
-  if (!(lhs.value == rhs.value)) {
+  if (!(lhs.value_ref() == rhs.value_ref())) {
     return false;
   }
-  if (!(lhs.value_to_name == rhs.value_to_name)) {
+  if (!(lhs.value_to_name_ref() == rhs.value_to_name_ref())) {
     return false;
   }
-  if (!(lhs.values == rhs.values)) {
+  if (!(lhs.values_ref() == rhs.values_ref())) {
     return false;
   }
-  if (!(lhs.id == rhs.id)) {
+  if (!(lhs.id_ref() == rhs.id_ref())) {
     return false;
   }
-  if (!(lhs.ids == rhs.ids)) {
+  if (!(lhs.ids_ref() == rhs.ids_ref())) {
     return false;
   }
-  if (!(lhs.descriptor == rhs.descriptor)) {
+  if (!(lhs.descriptor_ref() == rhs.descriptor_ref())) {
     return false;
   }
-  if (!(lhs.descriptors == rhs.descriptors)) {
+  if (!(lhs.descriptors_ref() == rhs.descriptors_ref())) {
     return false;
   }
-  if (!(lhs.key == rhs.key)) {
+  if (!(lhs.key_ref() == rhs.key_ref())) {
     return false;
   }
-  if (!(lhs.keys == rhs.keys)) {
+  if (!(lhs.keys_ref() == rhs.keys_ref())) {
     return false;
   }
-  if (!(lhs.annotation == rhs.annotation)) {
+  if (!(lhs.annotation_ref() == rhs.annotation_ref())) {
     return false;
   }
-  if (!(lhs.annotations == rhs.annotations)) {
+  if (!(lhs.annotations_ref() == rhs.annotations_ref())) {
     return false;
   }
-  if (!(lhs.member == rhs.member)) {
+  if (!(lhs.member_ref() == rhs.member_ref())) {
     return false;
   }
-  if (!(lhs.members == rhs.members)) {
+  if (!(lhs.members_ref() == rhs.members_ref())) {
     return false;
   }
-  if (!(lhs.field == rhs.field)) {
+  if (!(lhs.field_ref() == rhs.field_ref())) {
     return false;
   }
-  if (!(lhs.fields == rhs.fields)) {
+  if (!(lhs.fields_ref() == rhs.fields_ref())) {
     return false;
   }
   return true;
@@ -3651,89 +3919,89 @@ bool struct_with_special_names::operator<(const struct_with_special_names& rhs) 
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.get == rhs.get)) {
-    return lhs.get < rhs.get;
+  if (!(lhs.get_ref() == rhs.get_ref())) {
+    return lhs.get_ref() < rhs.get_ref();
   }
-  if (!(lhs.getter == rhs.getter)) {
-    return lhs.getter < rhs.getter;
+  if (!(lhs.getter_ref() == rhs.getter_ref())) {
+    return lhs.getter_ref() < rhs.getter_ref();
   }
-  if (!(lhs.lists == rhs.lists)) {
-    return lhs.lists < rhs.lists;
+  if (!(lhs.lists_ref() == rhs.lists_ref())) {
+    return lhs.lists_ref() < rhs.lists_ref();
   }
-  if (!(lhs.maps == rhs.maps)) {
-    return lhs.maps < rhs.maps;
+  if (!(lhs.maps_ref() == rhs.maps_ref())) {
+    return lhs.maps_ref() < rhs.maps_ref();
   }
-  if (!(lhs.name == rhs.name)) {
-    return lhs.name < rhs.name;
+  if (!(lhs.name_ref() == rhs.name_ref())) {
+    return lhs.name_ref() < rhs.name_ref();
   }
-  if (!(lhs.name_to_value == rhs.name_to_value)) {
-    return lhs.name_to_value < rhs.name_to_value;
+  if (!(lhs.name_to_value_ref() == rhs.name_to_value_ref())) {
+    return lhs.name_to_value_ref() < rhs.name_to_value_ref();
   }
-  if (!(lhs.names == rhs.names)) {
-    return lhs.names < rhs.names;
+  if (!(lhs.names_ref() == rhs.names_ref())) {
+    return lhs.names_ref() < rhs.names_ref();
   }
-  if (!(lhs.prefix_tree == rhs.prefix_tree)) {
-    return lhs.prefix_tree < rhs.prefix_tree;
+  if (!(lhs.prefix_tree_ref() == rhs.prefix_tree_ref())) {
+    return lhs.prefix_tree_ref() < rhs.prefix_tree_ref();
   }
-  if (!(lhs.sets == rhs.sets)) {
-    return lhs.sets < rhs.sets;
+  if (!(lhs.sets_ref() == rhs.sets_ref())) {
+    return lhs.sets_ref() < rhs.sets_ref();
   }
-  if (!(lhs.setter == rhs.setter)) {
-    return lhs.setter < rhs.setter;
+  if (!(lhs.setter_ref() == rhs.setter_ref())) {
+    return lhs.setter_ref() < rhs.setter_ref();
   }
-  if (!(lhs.str == rhs.str)) {
-    return lhs.str < rhs.str;
+  if (!(lhs.str_ref() == rhs.str_ref())) {
+    return lhs.str_ref() < rhs.str_ref();
   }
-  if (!(lhs.strings == rhs.strings)) {
-    return lhs.strings < rhs.strings;
+  if (!(lhs.strings_ref() == rhs.strings_ref())) {
+    return lhs.strings_ref() < rhs.strings_ref();
   }
-  if (!(lhs.type == rhs.type)) {
-    return lhs.type < rhs.type;
+  if (!(lhs.type_ref() == rhs.type_ref())) {
+    return lhs.type_ref() < rhs.type_ref();
   }
-  if (!(lhs.value == rhs.value)) {
-    return lhs.value < rhs.value;
+  if (!(lhs.value_ref() == rhs.value_ref())) {
+    return lhs.value_ref() < rhs.value_ref();
   }
-  if (!(lhs.value_to_name == rhs.value_to_name)) {
-    return lhs.value_to_name < rhs.value_to_name;
+  if (!(lhs.value_to_name_ref() == rhs.value_to_name_ref())) {
+    return lhs.value_to_name_ref() < rhs.value_to_name_ref();
   }
-  if (!(lhs.values == rhs.values)) {
-    return lhs.values < rhs.values;
+  if (!(lhs.values_ref() == rhs.values_ref())) {
+    return lhs.values_ref() < rhs.values_ref();
   }
-  if (!(lhs.id == rhs.id)) {
-    return lhs.id < rhs.id;
+  if (!(lhs.id_ref() == rhs.id_ref())) {
+    return lhs.id_ref() < rhs.id_ref();
   }
-  if (!(lhs.ids == rhs.ids)) {
-    return lhs.ids < rhs.ids;
+  if (!(lhs.ids_ref() == rhs.ids_ref())) {
+    return lhs.ids_ref() < rhs.ids_ref();
   }
-  if (!(lhs.descriptor == rhs.descriptor)) {
-    return lhs.descriptor < rhs.descriptor;
+  if (!(lhs.descriptor_ref() == rhs.descriptor_ref())) {
+    return lhs.descriptor_ref() < rhs.descriptor_ref();
   }
-  if (!(lhs.descriptors == rhs.descriptors)) {
-    return lhs.descriptors < rhs.descriptors;
+  if (!(lhs.descriptors_ref() == rhs.descriptors_ref())) {
+    return lhs.descriptors_ref() < rhs.descriptors_ref();
   }
-  if (!(lhs.key == rhs.key)) {
-    return lhs.key < rhs.key;
+  if (!(lhs.key_ref() == rhs.key_ref())) {
+    return lhs.key_ref() < rhs.key_ref();
   }
-  if (!(lhs.keys == rhs.keys)) {
-    return lhs.keys < rhs.keys;
+  if (!(lhs.keys_ref() == rhs.keys_ref())) {
+    return lhs.keys_ref() < rhs.keys_ref();
   }
-  if (!(lhs.annotation == rhs.annotation)) {
-    return lhs.annotation < rhs.annotation;
+  if (!(lhs.annotation_ref() == rhs.annotation_ref())) {
+    return lhs.annotation_ref() < rhs.annotation_ref();
   }
-  if (!(lhs.annotations == rhs.annotations)) {
-    return lhs.annotations < rhs.annotations;
+  if (!(lhs.annotations_ref() == rhs.annotations_ref())) {
+    return lhs.annotations_ref() < rhs.annotations_ref();
   }
-  if (!(lhs.member == rhs.member)) {
-    return lhs.member < rhs.member;
+  if (!(lhs.member_ref() == rhs.member_ref())) {
+    return lhs.member_ref() < rhs.member_ref();
   }
-  if (!(lhs.members == rhs.members)) {
-    return lhs.members < rhs.members;
+  if (!(lhs.members_ref() == rhs.members_ref())) {
+    return lhs.members_ref() < rhs.members_ref();
   }
-  if (!(lhs.field == rhs.field)) {
-    return lhs.field < rhs.field;
+  if (!(lhs.field_ref() == rhs.field_ref())) {
+    return lhs.field_ref() < rhs.field_ref();
   }
-  if (!(lhs.fields == rhs.fields)) {
-    return lhs.fields < rhs.fields;
+  if (!(lhs.fields_ref() == rhs.fields_ref())) {
+    return lhs.fields_ref() < rhs.fields_ref();
   }
   return false;
 }
@@ -3811,18 +4079,43 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_with_indirections>::tra
 namespace test_cpp2 { namespace cpp_reflection {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct_with_indirections::struct_with_indirections(const struct_with_indirections&) = default;
+struct_with_indirections& struct_with_indirections::operator=(const struct_with_indirections&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections() :
       real(0),
       fake(0),
       number(0),
-      result(0) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      result(0) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct_with_indirections::~struct_with_indirections() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstructor, int32_t real__arg,  ::test_cpp2::cpp_reflection::FakeI32 fake__arg,  ::test_cpp2::cpp_reflection::HasANumber number__arg,  ::test_cpp2::cpp_reflection::HasAResult result__arg,  ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg) :
+struct_with_indirections::struct_with_indirections(struct_with_indirections&& other) noexcept  :
+    real(std::move(other.real)),
+    fake(std::move(other.fake)),
+    number(std::move(other.number)),
+    result(std::move(other.result)),
+    phrase(std::move(other.phrase)),
+    __isset(other.__isset) {}
+struct_with_indirections& struct_with_indirections::operator=(FOLLY_MAYBE_UNUSED struct_with_indirections&& other) noexcept {
+    this->real = std::move(other.real);
+    this->fake = std::move(other.fake);
+    this->number = std::move(other.number);
+    this->result = std::move(other.result);
+    this->phrase = std::move(other.phrase);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstructor, ::std::int32_t real__arg, ::test_cpp2::cpp_reflection::FakeI32 fake__arg, ::test_cpp2::cpp_reflection::HasANumber number__arg, ::test_cpp2::cpp_reflection::HasAResult result__arg, ::test_cpp2::cpp_reflection::HasAPhrase phrase__arg) :
     real(std::move(real__arg)),
     fake(std::move(fake__arg)),
     number(std::move(number__arg)),
@@ -3835,13 +4128,14 @@ struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstr
   __isset.phrase = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void struct_with_indirections::__clear() {
   // clear all fields
-  real = 0;
-  fake = 0;
-  ::apache::thrift::apply_indirection(number) = 0;
-  ::apache::thrift::apply_indirection(result) = 0;
-  ::apache::thrift::apply_indirection(phrase) = apache::thrift::StringTraits< ::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, CppHasAPhrase const&>>>::fromStringLiteral("");
+  this->real = 0;
+  this->fake = 0;
+  ::apache::thrift::apply_indirection(this->number) = 0;
+  ::apache::thrift::apply_indirection(this->result) = 0;
+  ::apache::thrift::apply_indirection(this->phrase) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, CppHasAPhrase const&>>>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3851,19 +4145,19 @@ bool struct_with_indirections::operator==(const struct_with_indirections& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.real == rhs.real)) {
+  if (!(lhs.real_ref() == rhs.real_ref())) {
     return false;
   }
-  if (!(lhs.fake == rhs.fake)) {
+  if (!(lhs.fake_ref() == rhs.fake_ref())) {
     return false;
   }
-  if (!(lhs.number == rhs.number)) {
+  if (!(lhs.number_ref() == rhs.number_ref())) {
     return false;
   }
-  if (!(lhs.result == rhs.result)) {
+  if (!(lhs.result_ref() == rhs.result_ref())) {
     return false;
   }
-  if (!(lhs.phrase == rhs.phrase)) {
+  if (!(lhs.phrase_ref() == rhs.phrase_ref())) {
     return false;
   }
   return true;
@@ -3873,20 +4167,20 @@ bool struct_with_indirections::operator<(const struct_with_indirections& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.real == rhs.real)) {
-    return lhs.real < rhs.real;
+  if (!(lhs.real_ref() == rhs.real_ref())) {
+    return lhs.real_ref() < rhs.real_ref();
   }
-  if (!(lhs.fake == rhs.fake)) {
-    return lhs.fake < rhs.fake;
+  if (!(lhs.fake_ref() == rhs.fake_ref())) {
+    return lhs.fake_ref() < rhs.fake_ref();
   }
-  if (!(lhs.number == rhs.number)) {
-    return lhs.number < rhs.number;
+  if (!(lhs.number_ref() == rhs.number_ref())) {
+    return lhs.number_ref() < rhs.number_ref();
   }
-  if (!(lhs.result == rhs.result)) {
-    return lhs.result < rhs.result;
+  if (!(lhs.result_ref() == rhs.result_ref())) {
+    return lhs.result_ref() < rhs.result_ref();
   }
-  if (!(lhs.phrase == rhs.phrase)) {
-    return lhs.phrase < rhs.phrase;
+  if (!(lhs.phrase_ref() == rhs.phrase_ref())) {
+    return lhs.phrase_ref() < rhs.phrase_ref();
   }
   return false;
 }

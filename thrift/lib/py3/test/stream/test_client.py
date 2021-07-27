@@ -15,13 +15,80 @@
 
 import asyncio
 import unittest
+from typing import AsyncGenerator, Tuple, Optional
 
 from thrift.py3.client import ClientType, get_client
 from thrift.py3.common import RpcOptions
+from thrift.py3.server import (
+    ServiceInterface,
+    SocketAddress,
+    ThriftServer,
+)
 from thrift.py3.test.included.included.types import Included
-from thrift.py3.test.server import TestServer
 from thrift.py3.test.stream.clients import StreamTestService
+from thrift.py3.test.stream.services import StreamTestServiceInterface
 from thrift.py3.test.stream.types import FuncEx, StreamEx
+
+
+class Handler(StreamTestServiceInterface):
+    async def returnstream(
+        self, i32_from: int, i32_to: int
+    ) -> AsyncGenerator[int, None]:
+        for i in range(i32_from, i32_to):
+            yield i
+
+    async def alwaysThrows(self) -> AsyncGenerator[int, None]:
+        raise StreamEx()
+        yield
+
+    async def stringstream(self) -> AsyncGenerator[str, None]:
+        stream, pub = self.createPublisher_stringstream()
+        pub.send("hi")
+        pub.send("hello")
+        pub.complete()
+        return stream
+
+    # Has to be set up this way because if there's a yield in
+    # this function then it transforms the whole function into a generator
+    async def streamthrows(self, t: bool) -> AsyncGenerator[int, None]:
+        if t:
+            raise FuncEx()
+        else:
+            return self.alwaysThrows()
+
+    async def returnresponseandstream(
+        self,
+        foo: Included,
+    ) -> Tuple[Included, AsyncGenerator[Included, None]]:
+        resp = Included(from_=100, to=200)
+
+        async def inner() -> AsyncGenerator[Included, None]:
+            for x in range(foo.from_, foo.to):
+                yield Included(from_=foo.from_, to=x)
+
+        return (resp, inner())
+
+
+# pyre-fixme[13]: Attribute `serve_task` is never initialized.
+class TestServer:
+    server: ThriftServer
+    serve_task: asyncio.Task
+
+    def __init__(
+        self,
+        ip: Optional[str] = None,
+        handler: ServiceInterface = Handler(),  # noqa: B008
+    ) -> None:
+        self.server = ThriftServer(handler, ip=ip)
+
+    async def __aenter__(self) -> SocketAddress:
+        self.serve_task = asyncio.get_event_loop().create_task(self.server.serve())
+        return await self.server.get_address()
+
+    # pyre-fixme[2]: Parameter must be annotated.
+    async def __aexit__(self, *exc_info) -> None:
+        self.server.stop()
+        await self.serve_task
 
 
 class StreamClientTest(unittest.TestCase):
@@ -41,6 +108,25 @@ class StreamClientTest(unittest.TestCase):
                     stream = await client.returnstream(10, 1024)
                     res = [n async for n in stream]
                     self.assertEqual(res, list(range(10, 1024)))
+
+        loop.run_until_complete(inner_test())
+
+    def test_stringstream(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(
+                    StreamTestService,
+                    host=ip,
+                    port=port,
+                    client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+                ) as client:
+                    stream = await client.stringstream()
+                    res = [n async for n in stream]
+                    self.assertEqual(res, ["hi", "hello"])
 
         loop.run_until_complete(inner_test())
 
@@ -66,6 +152,30 @@ class StreamClientTest(unittest.TestCase):
 
         loop.run_until_complete(inner_test())
 
+    def test_stream_cancel(self) -> None:
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(ip="::1") as sa:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(
+                    StreamTestService,
+                    host=ip,
+                    port=port,
+                    client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
+                ) as client:
+                    _ = await client.streamthrows(False)
+                    otherStream = await client.stringstream()
+                    async for val in otherStream:
+                        self.assertEqual(val, "hi")
+                        break
+                    thirdStream = await client.stringstream()
+                    res = [n async for n in thirdStream]
+                    self.assertEqual(res, ["hi", "hello"])
+
+        loop.run_until_complete(inner_test())
+
     def test_return_response_and_stream(self) -> None:
         loop = asyncio.get_event_loop()
 
@@ -79,7 +189,7 @@ class StreamClientTest(unittest.TestCase):
                     port=port,
                     client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
                 ) as client:
-                    # pyre-fixme[23]: may be a pyre bug?
+                    # pyre-fixme[23]: response and server stream aren't unpackable according to pyre
                     resp, stream = await client.returnresponseandstream(
                         Included(from_=39, to=42)
                     )

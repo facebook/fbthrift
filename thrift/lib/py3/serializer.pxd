@@ -31,7 +31,6 @@ cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift:
     cpdef enum Transform "apache::thrift::transport::THeader::TRANSFORMS":
         NONE,
         ZLIB_TRANSFORM,
-        SNAPPY_TRANSFORM,
         ZSTD_TRANSFORM,
 
     cdef cppclass cTHeader "apache::thrift::transport::THeader":

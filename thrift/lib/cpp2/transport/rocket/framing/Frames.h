@@ -44,9 +44,7 @@ class SetupFrame {
 
   explicit SetupFrame(Payload&& payload) : payload_(std::move(payload)) {}
 
-  static constexpr FrameType frameType() {
-    return FrameType::SETUP;
-  }
+  static constexpr FrameType frameType() { return FrameType::SETUP; }
 
   size_t frameHeaderSize() const {
     size_t frameSize = 20 + 2 * kMimeType.size();
@@ -61,16 +59,10 @@ class SetupFrame {
     return flags_.resumeToken();
   }
 
-  bool hasLease() const noexcept {
-    return flags_.lease();
-  }
+  bool hasLease() const noexcept { return flags_.lease(); }
 
-  const Payload& payload() const noexcept {
-    return payload_;
-  }
-  Payload& payload() noexcept {
-    return payload_;
-  }
+  const Payload& payload() const noexcept { return payload_; }
+  Payload& payload() noexcept { return payload_; }
 
   std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
@@ -97,31 +89,17 @@ class RequestResponseFrame {
   RequestResponseFrame(StreamId streamId, Payload&& payload)
       : streamId_(streamId), payload_(std::move(payload)) {}
 
-  static constexpr FrameType frameType() {
-    return FrameType::REQUEST_RESPONSE;
-  }
+  static constexpr FrameType frameType() { return FrameType::REQUEST_RESPONSE; }
 
-  static constexpr size_t frameHeaderSize() {
-    return 6;
-  }
+  static constexpr size_t frameHeaderSize() { return 6; }
 
-  StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  StreamId streamId() const noexcept { return streamId_; }
 
-  bool hasFollows() const noexcept {
-    return flags_.follows();
-  }
-  void setHasFollows(bool hasFollows) noexcept {
-    flags_.follows(hasFollows);
-  }
+  bool hasFollows() const noexcept { return flags_.follows(); }
+  void setHasFollows(bool hasFollows) noexcept { flags_.follows(hasFollows); }
 
-  const Payload& payload() const noexcept {
-    return payload_;
-  }
-  Payload& payload() noexcept {
-    return payload_;
-  }
+  const Payload& payload() const noexcept { return payload_; }
+  Payload& payload() noexcept { return payload_; }
 
   Flags flags() const noexcept {
     return Flags(flags_).metadata(payload().hasNonemptyMetadata());
@@ -152,31 +130,17 @@ class RequestFnfFrame {
   RequestFnfFrame(StreamId streamId, Payload&& payload)
       : streamId_(streamId), payload_(std::move(payload)) {}
 
-  static constexpr size_t frameHeaderSize() {
-    return 6;
-  }
+  static constexpr size_t frameHeaderSize() { return 6; }
 
-  static constexpr FrameType frameType() {
-    return FrameType::REQUEST_FNF;
-  }
+  static constexpr FrameType frameType() { return FrameType::REQUEST_FNF; }
 
-  StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  StreamId streamId() const noexcept { return streamId_; }
 
-  bool hasFollows() const noexcept {
-    return flags_.follows();
-  }
-  void setHasFollows(bool hasFollows) noexcept {
-    flags_.follows(hasFollows);
-  }
+  bool hasFollows() const noexcept { return flags_.follows(); }
+  void setHasFollows(bool hasFollows) noexcept { flags_.follows(hasFollows); }
 
-  const Payload& payload() const noexcept {
-    return payload_;
-  }
-  Payload& payload() noexcept {
-    return payload_;
-  }
+  const Payload& payload() const noexcept { return payload_; }
+  Payload& payload() noexcept { return payload_; }
 
   Flags flags() const noexcept {
     return Flags(flags_).metadata(payload().hasNonemptyMetadata());
@@ -205,9 +169,7 @@ class RequestStreamFrame {
       std::unique_ptr<folly::IOBuf> underlyingBuffer);
 
   RequestStreamFrame(
-      StreamId streamId,
-      Payload&& payload,
-      int32_t initialRequestN)
+      StreamId streamId, Payload&& payload, int32_t initialRequestN)
       : streamId_(streamId),
         initialRequestN_(initialRequestN),
         payload_(std::move(payload)) {
@@ -217,35 +179,19 @@ class RequestStreamFrame {
     }
   }
 
-  static constexpr FrameType frameType() {
-    return FrameType::REQUEST_STREAM;
-  }
+  static constexpr FrameType frameType() { return FrameType::REQUEST_STREAM; }
 
-  static constexpr size_t frameHeaderSize() {
-    return 10;
-  }
+  static constexpr size_t frameHeaderSize() { return 10; }
 
-  StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  StreamId streamId() const noexcept { return streamId_; }
 
-  bool hasFollows() const noexcept {
-    return flags_.follows();
-  }
-  void setHasFollows(bool hasFollows) noexcept {
-    flags_.follows(hasFollows);
-  }
+  bool hasFollows() const noexcept { return flags_.follows(); }
+  void setHasFollows(bool hasFollows) noexcept { flags_.follows(hasFollows); }
 
-  int32_t initialRequestN() const noexcept {
-    return initialRequestN_;
-  }
+  int32_t initialRequestN() const noexcept { return initialRequestN_; }
 
-  const Payload& payload() const noexcept {
-    return payload_;
-  }
-  Payload& payload() noexcept {
-    return payload_;
-  }
+  const Payload& payload() const noexcept { return payload_; }
+  Payload& payload() noexcept { return payload_; }
 
   Flags flags() const noexcept {
     return Flags(flags_).metadata(payload().hasNonemptyMetadata());
@@ -275,9 +221,7 @@ class RequestChannelFrame {
       std::unique_ptr<folly::IOBuf> underlyingBuffer);
 
   RequestChannelFrame(
-      StreamId streamId,
-      Payload&& payload,
-      int32_t initialRequestN)
+      StreamId streamId, Payload&& payload, int32_t initialRequestN)
       : streamId_(streamId),
         initialRequestN_(initialRequestN),
         payload_(std::move(payload)) {
@@ -287,44 +231,26 @@ class RequestChannelFrame {
     }
   }
 
-  static constexpr FrameType frameType() {
-    return FrameType::REQUEST_CHANNEL;
-  }
+  static constexpr FrameType frameType() { return FrameType::REQUEST_CHANNEL; }
 
-  static constexpr size_t frameHeaderSize() {
-    return 10;
-  }
+  static constexpr size_t frameHeaderSize() { return 10; }
 
-  StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  StreamId streamId() const noexcept { return streamId_; }
 
-  bool hasFollows() const noexcept {
-    return flags_.follows();
-  }
-  void setHasFollows(bool hasFollows) noexcept {
-    flags_.follows(hasFollows);
-  }
+  bool hasFollows() const noexcept { return flags_.follows(); }
+  void setHasFollows(bool hasFollows) noexcept { flags_.follows(hasFollows); }
 
-  bool hasComplete() const noexcept {
-    return flags_.complete();
-  }
+  bool hasComplete() const noexcept { return flags_.complete(); }
 
   void setHasComplete(bool hasComplete) noexcept {
     flags_.complete(hasComplete);
   }
 
-  int32_t initialRequestN() const noexcept {
-    return initialRequestN_;
-  }
+  int32_t initialRequestN() const noexcept { return initialRequestN_; }
 
-  const Payload& payload() const noexcept {
-    return payload_;
-  }
+  const Payload& payload() const noexcept { return payload_; }
 
-  Payload& payload() noexcept {
-    return payload_;
-  }
+  Payload& payload() noexcept { return payload_; }
 
   Flags flags() const noexcept {
     return Flags(flags_).metadata(payload().hasNonemptyMetadata());
@@ -356,21 +282,13 @@ class RequestNFrame {
     }
   }
 
-  static constexpr FrameType frameType() {
-    return FrameType::REQUEST_N;
-  }
+  static constexpr FrameType frameType() { return FrameType::REQUEST_N; }
 
-  static constexpr size_t frameHeaderSize() {
-    return 10;
-  }
+  static constexpr size_t frameHeaderSize() { return 10; }
 
-  StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  StreamId streamId() const noexcept { return streamId_; }
 
-  int32_t requestN() const noexcept {
-    return requestN_;
-  }
+  int32_t requestN() const noexcept { return requestN_; }
 
   std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
@@ -386,17 +304,11 @@ class CancelFrame {
 
   explicit CancelFrame(StreamId streamId) : streamId_(streamId) {}
 
-  static constexpr FrameType frameType() {
-    return FrameType::CANCEL;
-  }
+  static constexpr FrameType frameType() { return FrameType::CANCEL; }
 
-  static constexpr size_t frameHeaderSize() {
-    return 6;
-  }
+  static constexpr size_t frameHeaderSize() { return 6; }
 
-  StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  StreamId streamId() const noexcept { return streamId_; }
 
   std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
@@ -418,37 +330,19 @@ class PayloadFrame {
   PayloadFrame(StreamId streamId, Payload&& payload, Flags flags)
       : streamId_(streamId), flags_(flags), payload_(std::move(payload)) {}
 
-  static constexpr FrameType frameType() {
-    return FrameType::PAYLOAD;
-  }
+  static constexpr FrameType frameType() { return FrameType::PAYLOAD; }
 
-  static constexpr size_t frameHeaderSize() {
-    return 6;
-  }
+  static constexpr size_t frameHeaderSize() { return 6; }
 
-  StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  StreamId streamId() const noexcept { return streamId_; }
 
-  const Payload& payload() const noexcept {
-    return payload_;
-  }
-  Payload& payload() noexcept {
-    return payload_;
-  }
+  const Payload& payload() const noexcept { return payload_; }
+  Payload& payload() noexcept { return payload_; }
 
-  bool hasFollows() const noexcept {
-    return flags_.follows();
-  }
-  void setHasFollows(bool hasFollows) noexcept {
-    flags_.follows(hasFollows);
-  }
-  bool hasComplete() const noexcept {
-    return flags_.complete();
-  }
-  bool hasNext() const noexcept {
-    return flags_.next();
-  }
+  bool hasFollows() const noexcept { return flags_.follows(); }
+  void setHasFollows(bool hasFollows) noexcept { flags_.follows(hasFollows); }
+  bool hasComplete() const noexcept { return flags_.complete(); }
+  bool hasNext() const noexcept { return flags_.next(); }
 
   Flags flags() const noexcept {
     return Flags(flags_).metadata(payload().hasNonemptyMetadata());
@@ -482,28 +376,16 @@ class ErrorFrame {
             rocketException.getErrorCode(),
             Payload::makeFromData(rocketException.moveErrorData())) {}
 
-  static constexpr FrameType frameType() {
-    return FrameType::ERROR;
-  }
+  static constexpr FrameType frameType() { return FrameType::ERROR; }
 
-  static constexpr size_t frameHeaderSize() {
-    return 10;
-  }
+  static constexpr size_t frameHeaderSize() { return 10; }
 
-  StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  StreamId streamId() const noexcept { return streamId_; }
 
-  ErrorCode errorCode() const noexcept {
-    return errorCode_;
-  }
+  ErrorCode errorCode() const noexcept { return errorCode_; }
 
-  const Payload& payload() const noexcept {
-    return payload_;
-  }
-  Payload& payload() noexcept {
-    return payload_;
-  }
+  const Payload& payload() const noexcept { return payload_; }
+  Payload& payload() noexcept { return payload_; }
 
   std::unique_ptr<folly::IOBuf> serialize() &&;
   void serialize(Serializer& writer) &&;
@@ -522,21 +404,15 @@ class MetadataPushFrame {
     return MetadataPushFrame(std::move(metadata), FromMetadata{});
   }
 
-  static constexpr FrameType frameType() {
-    return FrameType::METADATA_PUSH;
-  }
+  static constexpr FrameType frameType() { return FrameType::METADATA_PUSH; }
 
-  static constexpr size_t frameHeaderSize() {
-    return 6;
-  }
+  static constexpr size_t frameHeaderSize() { return 6; }
 
-  std::unique_ptr<folly::IOBuf> metadata() && {
-    return std::move(metadata_);
-  }
+  constexpr StreamId streamId() const noexcept { return StreamId{0}; }
 
-  const folly::IOBuf* metadata() & {
-    return metadata_.get();
-  }
+  std::unique_ptr<folly::IOBuf> metadata() && { return std::move(metadata_); }
+
+  const folly::IOBuf* metadata() & { return metadata_.get(); }
 
   void serialize(Serializer& writer) &&;
   std::unique_ptr<folly::IOBuf> serialize() &&;
@@ -554,21 +430,13 @@ class KeepAliveFrame {
   KeepAliveFrame(Flags flags, std::unique_ptr<folly::IOBuf> data)
       : flags_(flags), data_(std::move(data)) {}
 
-  static constexpr FrameType frameType() {
-    return FrameType::KEEPALIVE;
-  }
+  static constexpr FrameType frameType() { return FrameType::KEEPALIVE; }
 
-  static constexpr size_t frameHeaderSize() {
-    return 14;
-  }
+  static constexpr size_t frameHeaderSize() { return 14; }
 
-  bool hasRespondFlag() const {
-    return flags_.respond();
-  }
+  bool hasRespondFlag() const { return flags_.respond(); }
 
-  std::unique_ptr<folly::IOBuf> data() && {
-    return std::move(data_);
-  }
+  std::unique_ptr<folly::IOBuf> data() && { return std::move(data_); }
 
   void serialize(Serializer& writer) &&;
   std::unique_ptr<folly::IOBuf> serialize() &&;
@@ -596,36 +464,22 @@ class ExtFrame {
         extFrameType_(extFrameType),
         payload_(std::move(payload)) {}
 
-  static constexpr FrameType frameType() {
-    return FrameType::EXT;
-  }
+  static constexpr FrameType frameType() { return FrameType::EXT; }
 
-  static constexpr size_t frameHeaderSize() {
-    return 10;
-  }
+  static constexpr size_t frameHeaderSize() { return 10; }
 
-  StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  StreamId streamId() const noexcept { return streamId_; }
 
-  const Payload& payload() const noexcept {
-    return payload_;
-  }
-  Payload& payload() noexcept {
-    return payload_;
-  }
+  const Payload& payload() const noexcept { return payload_; }
+  Payload& payload() noexcept { return payload_; }
 
-  bool hasIgnore() const noexcept {
-    return flags_.ignore();
-  }
+  bool hasIgnore() const noexcept { return flags_.ignore(); }
 
   Flags flags() const noexcept {
     return Flags(flags_).metadata(payload().hasNonemptyMetadata());
   }
 
-  ExtFrameType extFrameType() const noexcept {
-    return extFrameType_;
-  }
+  ExtFrameType extFrameType() const noexcept { return extFrameType_; }
 
   void serialize(Serializer& writer) &&;
   std::unique_ptr<folly::IOBuf> serialize() &&;

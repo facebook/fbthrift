@@ -15,11 +15,14 @@
  */
 
 namespace cpp2 testutil.testservice
-exception UserDefinedException {}
+exception UserDefinedException {
+}
 
 service TestStreamService {
   stream<i32> range(1: i32 from, 2: i32 to);
   stream<i32> rangeThrow(1: i32 from, 2: i32 to);
-  stream<i32 throws(1: UserDefinedException e)>
-    rangeThrowUDE(1: i32 from, 2: i32 to);
+  stream<i32 throws (1: UserDefinedException e)> rangeThrowUDE(
+    1: i32 from,
+    2: i32 to,
+  );
 }

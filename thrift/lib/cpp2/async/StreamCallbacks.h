@@ -20,16 +20,19 @@
 #include <utility>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/Utility.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
 
+#include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
 
 struct FirstResponsePayload {
-  FirstResponsePayload(std::unique_ptr<folly::IOBuf> p, ResponseRpcMetadata md)
+  FirstResponsePayload(
+      std::unique_ptr<folly::IOBuf> p, ResponseRpcMetadata&& md)
       : payload(std::move(p)), metadata(std::move(md)) {}
 
   std::unique_ptr<folly::IOBuf> payload;
@@ -37,7 +40,7 @@ struct FirstResponsePayload {
 };
 
 struct StreamPayload {
-  StreamPayload(std::unique_ptr<folly::IOBuf> p, StreamPayloadMetadata md)
+  StreamPayload(std::unique_ptr<folly::IOBuf> p, StreamPayloadMetadata&& md)
       : payload(std::move(p)), metadata(std::move(md)) {}
 
   std::unique_ptr<folly::IOBuf> payload;
@@ -45,16 +48,30 @@ struct StreamPayload {
 };
 
 struct HeadersPayload {
-  HeadersPayload(HeadersPayloadContent p, HeadersPayloadMetadata md)
+  HeadersPayload(HeadersPayloadContent&& p, HeadersPayloadMetadata&& md)
       : payload(std::move(p)), metadata(std::move(md)) {}
+
+  explicit HeadersPayload(HeadersPayloadContent&& p) : payload(std::move(p)) {}
+
+  explicit HeadersPayload(StreamPayloadMetadata&& sp) {
+    payload.otherMetadata_ref().copy_from(sp.otherMetadata_ref());
+    metadata.compression_ref().copy_from(sp.compression_ref());
+  }
 
   HeadersPayloadContent payload;
   HeadersPayloadMetadata metadata;
+
+  explicit operator StreamPayload() && {
+    StreamPayloadMetadata md;
+    md.otherMetadata_ref().copy_from(payload.otherMetadata_ref());
+    md.compression_ref().copy_from(metadata.compression_ref());
+    return StreamPayload(nullptr, std::move(md));
+  }
 };
 
 namespace detail {
 
-struct EncodedError : std::exception {
+struct FOLLY_EXPORT EncodedError : std::exception {
   explicit EncodedError(std::unique_ptr<folly::IOBuf> buf)
       : encoded(std::move(buf)) {}
 
@@ -69,15 +86,17 @@ struct EncodedError : std::exception {
   std::unique_ptr<folly::IOBuf> encoded;
 };
 
-struct EncodedFirstResponseError : std::exception {
-  explicit EncodedFirstResponseError(FirstResponsePayload payload)
+struct FOLLY_EXPORT EncodedFirstResponseError : std::exception {
+  explicit EncodedFirstResponseError(FirstResponsePayload&& payload)
       : encoded(std::move(payload)) {}
 
   EncodedFirstResponseError(const EncodedFirstResponseError& other)
-      : encoded(other.encoded.payload->clone(), other.encoded.metadata) {}
+      : encoded(
+            other.encoded.payload->clone(),
+            folly::copy(other.encoded.metadata)) {}
   EncodedFirstResponseError& operator=(const EncodedFirstResponseError& other) {
     encoded = FirstResponsePayload(
-        other.encoded.payload->clone(), other.encoded.metadata);
+        other.encoded.payload->clone(), folly::copy(other.encoded.metadata));
     return *this;
   }
   EncodedFirstResponseError(EncodedFirstResponseError&&) = default;
@@ -85,6 +104,45 @@ struct EncodedFirstResponseError : std::exception {
 
   FirstResponsePayload encoded;
 };
+
+struct FOLLY_EXPORT EncodedStreamError : std::exception {
+  explicit EncodedStreamError(StreamPayload&& payload)
+      : encoded(std::move(payload)) {}
+
+  EncodedStreamError(const EncodedStreamError& other)
+      : encoded(
+            other.encoded.payload->clone(),
+            folly::copy(other.encoded.metadata)) {}
+  EncodedStreamError& operator=(const EncodedStreamError& other) {
+    encoded = StreamPayload(
+        other.encoded.payload->clone(), folly::copy(other.encoded.metadata));
+    return *this;
+  }
+  EncodedStreamError(EncodedStreamError&&) = default;
+  EncodedStreamError& operator=(EncodedStreamError&&) = default;
+
+  StreamPayload encoded;
+};
+
+struct FOLLY_EXPORT EncodedStreamRpcError : std::exception {
+  explicit EncodedStreamRpcError(std::unique_ptr<folly::IOBuf> rpcError)
+      : encoded(std::move(rpcError)) {}
+  EncodedStreamRpcError(const EncodedStreamRpcError& oth)
+      : encoded(oth.encoded->clone()) {}
+  EncodedStreamRpcError& operator=(const EncodedStreamRpcError& oth) {
+    encoded = oth.encoded->clone();
+    return *this;
+  }
+  EncodedStreamRpcError(EncodedStreamRpcError&&) = default;
+  EncodedStreamRpcError& operator=(EncodedStreamRpcError&&) = default;
+  std::unique_ptr<folly::IOBuf> encoded;
+};
+
+inline bool hasException(const FirstResponsePayload& payload) {
+  auto payloadMetadataRef = payload.metadata.payloadMetadata_ref();
+  return payloadMetadataRef &&
+      payloadMetadataRef->getType() == PayloadMetadata::exceptionMetadata;
+}
 
 } // namespace detail
 
@@ -116,12 +174,13 @@ class StreamServerCallback {
   FOLLY_NODISCARD virtual bool onStreamRequestN(uint64_t) = 0;
   virtual void onStreamCancel() = 0;
 
-  FOLLY_NODISCARD virtual bool onSinkHeaders(HeadersPayload&&) {
-    return true;
-  }
+  FOLLY_NODISCARD virtual bool onSinkHeaders(HeadersPayload&&) { return true; }
 
   // not terminating
   virtual void resetClientCallback(StreamClientCallback&) = 0;
+
+  virtual void pauseStream() {}
+  virtual void resumeStream() {}
 };
 
 class StreamClientCallback {
@@ -131,9 +190,7 @@ class StreamClientCallback {
   // StreamClientCallback must remain alive until onFirstResponse or
   // onFirstResponseError callback runs.
   FOLLY_NODISCARD virtual bool onFirstResponse(
-      FirstResponsePayload&&,
-      folly::EventBase*,
-      StreamServerCallback*) = 0;
+      FirstResponsePayload&&, folly::EventBase*, StreamServerCallback*) = 0;
   virtual void onFirstResponseError(folly::exception_wrapper) = 0;
 
   FOLLY_NODISCARD virtual bool onStreamNext(StreamPayload&&) = 0;
@@ -193,9 +250,7 @@ class SinkClientCallback {
  public:
   virtual ~SinkClientCallback() = default;
   FOLLY_NODISCARD virtual bool onFirstResponse(
-      FirstResponsePayload&&,
-      folly::EventBase*,
-      SinkServerCallback*) = 0;
+      FirstResponsePayload&&, folly::EventBase*, SinkServerCallback*) = 0;
   virtual void onFirstResponseError(folly::exception_wrapper) = 0;
 
   virtual void onFinalResponse(StreamPayload&&) = 0;
@@ -207,43 +262,16 @@ class SinkClientCallback {
   virtual void resetServerCallback(SinkServerCallback&) = 0;
 };
 
-/**
- * The Channel contract is a flow-controlled bidirectional stream
- * Using it will make @andrii angrii
- * Currently unused
- */
-
-class ChannelServerCallback {
- public:
-  virtual ~ChannelServerCallback() = default;
-
-  virtual void onStreamRequestN(uint64_t) = 0;
-  virtual void onStreamCancel() = 0;
-
-  virtual void onSinkNext(StreamPayload&&) = 0;
-  virtual void onSinkError(folly::exception_wrapper) = 0;
-  virtual void onSinkComplete() = 0;
+struct SinkServerCallbackSendError {
+  void operator()(SinkServerCallback* sinkServerCallback) noexcept {
+    TApplicationException ex(
+        TApplicationException::TApplicationExceptionType::INTERRUPTION,
+        "Sink server callback canceled");
+    sinkServerCallback->onSinkError(std::move(ex));
+  }
 };
 
-class ChannelClientCallback {
- public:
-  virtual ~ChannelClientCallback() = default;
-
-  // ChannelClientCallback must remain alive until onFirstResponse or
-  // onFirstResponseError callback runs.
-  virtual void onFirstResponse(
-      FirstResponsePayload&&,
-      folly::EventBase*,
-      ChannelServerCallback*) = 0;
-  virtual void onFirstResponseError(folly::exception_wrapper) = 0;
-
-  virtual void onStreamNext(StreamPayload&&) = 0;
-  virtual void onStreamError(folly::exception_wrapper) = 0;
-  virtual void onStreamComplete() = 0;
-
-  virtual void onSinkRequestN(uint64_t) = 0;
-  virtual void onSinkCancel() = 0;
-};
-
+using SinkServerCallbackPtr =
+    std::unique_ptr<SinkServerCallback, SinkServerCallbackSendError>;
 } // namespace thrift
 } // namespace apache

@@ -397,7 +397,27 @@ void TccStructTraits<::cpp2::Val>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, int32_t intVal__arg,  ::cpp2::containerTypedef typedefValue__arg) :
+Val::Val(const Val&) = default;
+Val& Val::operator=(const Val&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Val::Val(Val&& other) noexcept  :
+    strVal(std::move(other.strVal)),
+    intVal(std::move(other.intVal)),
+    typedefValue(std::move(other.typedefValue)),
+    __isset(other.__isset) {}
+Val& Val::operator=(FOLLY_MAYBE_UNUSED Val&& other) noexcept {
+    this->strVal = std::move(other.strVal);
+    this->intVal = std::move(other.intVal);
+    this->typedefValue = std::move(other.typedefValue);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::int32_t intVal__arg, ::cpp2::containerTypedef typedefValue__arg) :
     strVal(std::move(strVal__arg)),
     intVal(std::move(intVal__arg)),
     typedefValue(std::move(typedefValue__arg)) {
@@ -406,11 +426,12 @@ Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, int32_t 
   __isset.typedefValue = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Val::__clear() {
   // clear all fields
-  strVal = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  intVal = 0;
-  typedefValue.clear();
+  this->strVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->intVal = 0;
+  this->typedefValue.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -420,13 +441,13 @@ bool Val::operator==(const Val& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.strVal == rhs.strVal)) {
+  if (!(lhs.strVal_ref() == rhs.strVal_ref())) {
     return false;
   }
-  if (!(lhs.intVal == rhs.intVal)) {
+  if (!(lhs.intVal_ref() == rhs.intVal_ref())) {
     return false;
   }
-  if (!(lhs.typedefValue == rhs.typedefValue)) {
+  if (!(lhs.typedefValue_ref() == rhs.typedefValue_ref())) {
     return false;
   }
   return true;
@@ -436,23 +457,23 @@ bool Val::operator<(const Val& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.strVal == rhs.strVal)) {
-    return lhs.strVal < rhs.strVal;
+  if (!(lhs.strVal_ref() == rhs.strVal_ref())) {
+    return lhs.strVal_ref() < rhs.strVal_ref();
   }
-  if (!(lhs.intVal == rhs.intVal)) {
-    return lhs.intVal < rhs.intVal;
+  if (!(lhs.intVal_ref() == rhs.intVal_ref())) {
+    return lhs.intVal_ref() < rhs.intVal_ref();
   }
-  if (!(lhs.typedefValue == rhs.typedefValue)) {
-    return lhs.typedefValue < rhs.typedefValue;
+  if (!(lhs.typedefValue_ref() == rhs.typedefValue_ref())) {
+    return lhs.typedefValue_ref() < rhs.typedefValue_ref();
   }
   return false;
 }
 
-const  ::cpp2::containerTypedef& Val::get_typedefValue() const& {
+const ::cpp2::containerTypedef& Val::get_typedefValue() const& {
   return typedefValue;
 }
 
- ::cpp2::containerTypedef Val::get_typedefValue() && {
+::cpp2::containerTypedef Val::get_typedefValue() && {
   return std::move(typedefValue);
 }
 
@@ -590,26 +611,26 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ValUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
+        ::cpp2::Val>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ValUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
+        ::cpp2::Val>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ValUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
+        ::cpp2::Val>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ValUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Val>,
+        ::cpp2::Val>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -747,15 +768,17 @@ void TccStructTraits<::cpp2::NonCopyableStruct>::translateFieldName(
 
 namespace cpp2 {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, int64_t num__arg) :
+NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg) :
     num(std::move(num__arg)) {
   __isset.num = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void NonCopyableStruct::__clear() {
   // clear all fields
-  num = 0;
+  this->num = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -765,7 +788,7 @@ bool NonCopyableStruct::operator==(const NonCopyableStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.num == rhs.num)) {
+  if (!(lhs.num_ref() == rhs.num_ref())) {
     return false;
   }
   return true;
@@ -775,8 +798,8 @@ bool NonCopyableStruct::operator<(const NonCopyableStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.num == rhs.num)) {
-    return lhs.num < rhs.num;
+  if (!(lhs.num_ref() == rhs.num_ref())) {
+    return lhs.num_ref() < rhs.num_ref();
   }
   return false;
 }
@@ -906,14 +929,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         NonCopyableUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::NonCopyableStruct>,
+        ::cpp2::NonCopyableStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         NonCopyableUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::NonCopyableStruct>,
+        ::cpp2::NonCopyableStruct>,
     "inconsistent use of nimble option");
 
 } // cpp2

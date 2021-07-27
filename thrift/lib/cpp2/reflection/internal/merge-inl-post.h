@@ -25,11 +25,26 @@ struct merge {
   using impl = merge_impl<TypeClass>;
 
   //  regular
-  static void go(const T& src, T& dst) {
-    impl::template go<T>(src, dst);
+  static void go(const T& src, T& dst) { impl::template go<T>(src, dst); }
+  static void go(T&& src, T& dst) { impl::template go<T>(std::move(src), dst); }
+
+  static void go(
+      const detail::boxed_value_ptr<T>& src, detail::boxed_value_ptr<T>& dst) {
+    if (!dst) {
+      dst = src;
+    } else if (src) {
+      go(*src, *dst);
+    }
   }
-  static void go(T&& src, T& dst) {
-    impl::template go<T>(std::move(src), dst);
+
+  static void go(
+      detail::boxed_value_ptr<T>&& src, detail::boxed_value_ptr<T>& dst) {
+    if (!dst) {
+      dst = std::move(src);
+    } else if (src) {
+      go(std::move(*src), *dst);
+      src.reset();
+    }
   }
 
   static void go(const std::unique_ptr<T>& src, std::unique_ptr<T>& dst) {
@@ -47,13 +62,11 @@ struct merge {
   }
 
   static void go(
-      const std::shared_ptr<const T>& src,
-      std::shared_ptr<const T>& dst) {
+      const std::shared_ptr<const T>& src, std::shared_ptr<const T>& dst) {
     dst = src;
   }
   static void go(
-      std::shared_ptr<const T>&& src,
-      std::shared_ptr<const T>& dst) {
+      std::shared_ptr<const T>&& src, std::shared_ptr<const T>& dst) {
     dst = std::move(src);
   }
 };
@@ -76,6 +89,8 @@ struct merge_impl<type_class::structure> {
   struct deref {
     using type = T;
   };
+  template <typename T>
+  struct deref<detail::boxed_value_ptr<T>> : deref<T> {};
   template <typename T, typename D>
   struct deref<std::unique_ptr<T, D>> : deref<T> {};
   template <typename T>
@@ -88,8 +103,8 @@ struct merge_impl<type_class::structure> {
     template <typename T>
     using Src = fatal::conditional<Move, T, const T>;
     template <typename MemberInfo, std::size_t Index, typename T>
-    void operator()(fatal::indexed<MemberInfo, Index>, Src<T>& src, T& dst)
-        const {
+    void operator()(
+        fatal::indexed<MemberInfo, Index>, Src<T>& src, T& dst) const {
       using mgetter = typename MemberInfo::getter;
       using mclass = typename MemberInfo::type_class;
       using mtype = folly::remove_cvref_t<decltype(mgetter{}(src))>;

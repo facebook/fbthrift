@@ -122,7 +122,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldC = srcObj.__isset.fieldC;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  if (srcObj.fieldD) fieldD = srcObj.fieldD->clone();
+  fieldD = ::apache::thrift::detail::st::copy_field<
+        ::apache::thrift::type_class::binary>(srcObj.fieldD);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.fieldD = srcObj.__isset.fieldD;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -141,14 +142,35 @@ TrivialTypesStruct& TrivialTypesStruct::operator=(const TrivialTypesStruct& src)
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TrivialTypesStruct::TrivialTypesStruct() :
       fieldA(0),
-      fieldE( ::test::fixtures::tablebased::ExampleEnum::ZERO) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+      fieldE( ::test::fixtures::tablebased::ExampleEnum::ZERO) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 TrivialTypesStruct::~TrivialTypesStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-TrivialTypesStruct::TrivialTypesStruct(apache::thrift::FragileConstructor, int32_t fieldA__arg, ::std::string fieldB__arg, ::std::string fieldC__arg,  ::test::fixtures::tablebased::IOBufPtr fieldD__arg,  ::test::fixtures::tablebased::ExampleEnum fieldE__arg) :
+TrivialTypesStruct::TrivialTypesStruct(TrivialTypesStruct&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    fieldB(std::move(other.fieldB)),
+    fieldC(std::move(other.fieldC)),
+    fieldD(std::move(other.fieldD)),
+    fieldE(std::move(other.fieldE)),
+    __isset(other.__isset) {}
+TrivialTypesStruct& TrivialTypesStruct::operator=(FOLLY_MAYBE_UNUSED TrivialTypesStruct&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    this->fieldB = std::move(other.fieldB);
+    this->fieldC = std::move(other.fieldC);
+    this->fieldD = std::move(other.fieldD);
+    this->fieldE = std::move(other.fieldE);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+TrivialTypesStruct::TrivialTypesStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg, ::std::string fieldB__arg, ::std::string fieldC__arg, ::test::fixtures::tablebased::IOBufPtr fieldD__arg, ::test::fixtures::tablebased::ExampleEnum fieldE__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -161,13 +183,14 @@ TrivialTypesStruct::TrivialTypesStruct(apache::thrift::FragileConstructor, int32
   __isset.fieldE = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void TrivialTypesStruct::__clear() {
   // clear all fields
-  fieldA = 0;
-  fieldB = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  fieldC = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  fieldD = apache::thrift::StringTraits< std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
-  fieldE =  ::test::fixtures::tablebased::ExampleEnum::ZERO;
+  this->fieldA = 0;
+  this->fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldC = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->fieldD = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
+  this->fieldE =  ::test::fixtures::tablebased::ExampleEnum::ZERO;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -177,29 +200,19 @@ bool TrivialTypesStruct::operator==(const TrivialTypesStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.fieldA_ref() != rhs.fieldA_ref()) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (lhs.fieldB_ref() != rhs.fieldB_ref()) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value()) {
+  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value() || (lhs.fieldC_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.fieldC, rhs.fieldC))) {
     return false;
   }
-  if (lhs.fieldC_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.fieldC, rhs.fieldC)) {
-      return false;
-    }
-  }
-  if (lhs.fieldD_ref().has_value() != rhs.fieldD_ref().has_value()) {
+  if (lhs.fieldD_ref().has_value() != rhs.fieldD_ref().has_value() || (lhs.fieldD_ref().has_value() && !apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.fieldD, rhs.fieldD))) {
     return false;
   }
-  if (lhs.fieldD_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.fieldD, rhs.fieldD)) {
-      return false;
-    }
-  }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
   return true;
@@ -209,30 +222,20 @@ bool TrivialTypesStruct::operator<(const TrivialTypesStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.fieldA_ref() != rhs.fieldA_ref()) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return lhs.fieldA_ref() < rhs.fieldA_ref();
   }
-  if (lhs.fieldB_ref() != rhs.fieldB_ref()) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return lhs.fieldB_ref() < rhs.fieldB_ref();
   }
-  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value()) {
-    return lhs.fieldC_ref().has_value() < rhs.fieldC_ref().has_value();
+  if (lhs.fieldC_ref().has_value() != rhs.fieldC_ref().has_value() || (lhs.fieldC_ref().has_value() && !apache::thrift::StringTraits<std::string>::isEqual(lhs.fieldC, rhs.fieldC))) {
+    return !lhs.fieldC_ref().has_value() || (rhs.fieldC_ref().has_value() && apache::thrift::StringTraits<std::string>::isLess(lhs.fieldC, rhs.fieldC));
   }
-  if (lhs.fieldC_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.fieldC, rhs.fieldC)) {
-      return apache::thrift::StringTraits<std::string>::isLess(lhs.fieldC, rhs.fieldC);
-    }
+  if (lhs.fieldD_ref().has_value() != rhs.fieldD_ref().has_value() || (lhs.fieldD_ref().has_value() && !apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.fieldD, rhs.fieldD))) {
+    return !lhs.fieldD_ref().has_value() || (rhs.fieldD_ref().has_value() && apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isLess(lhs.fieldD, rhs.fieldD));
   }
-  if (lhs.fieldD_ref().has_value() != rhs.fieldD_ref().has_value()) {
-    return lhs.fieldD_ref().has_value() < rhs.fieldD_ref().has_value();
-  }
-  if (lhs.fieldD_ref().has_value()) {
-    if (!apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isEqual(lhs.fieldD, rhs.fieldD)) {
-      return apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::isLess(lhs.fieldD, rhs.fieldD);
-    }
-  }
-  if (!(lhs.fieldE == rhs.fieldE)) {
-    return lhs.fieldE < rhs.fieldE;
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
+    return lhs.fieldE_ref() < rhs.fieldE_ref();
   }
   return false;
 }
@@ -274,7 +277,7 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
     /* .name */ "fieldA",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(0),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(0),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::integral, int32_t>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::integral, ::std::int32_t>::typeInfo,
   },
   {
     /* .id */ 2,
@@ -298,7 +301,7 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
     /* .name */ "fieldD",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(3),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(3),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::binary,  ::test::fixtures::tablebased::IOBufPtr>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::binary, ::test::fixtures::tablebased::IOBufPtr>::typeInfo,
   },
   {
     /* .id */ 5,
@@ -306,7 +309,7 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
     /* .name */ "fieldE",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct>(4),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(4),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::enumeration,  ::test::fixtures::tablebased::ExampleEnum>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::enumeration, ::test::fixtures::tablebased::ExampleEnum>::typeInfo,
   }}
 };
 
@@ -316,14 +319,45 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
 namespace test { namespace fixtures { namespace tablebased {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ContainerStruct::ContainerStruct() {}
+ContainerStruct::ContainerStruct(const ContainerStruct&) = default;
+ContainerStruct& ContainerStruct::operator=(const ContainerStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ContainerStruct::ContainerStruct() {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ContainerStruct::~ContainerStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<int32_t> fieldA__arg, std::list<int32_t> fieldB__arg, std::deque<int32_t> fieldC__arg, folly::fbvector<int32_t> fieldD__arg, folly::small_vector<int32_t> fieldE__arg, folly::sorted_vector_set<int32_t> fieldF__arg, folly::sorted_vector_map<int32_t, ::std::string> fieldG__arg, ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct> fieldH__arg) :
+ContainerStruct::ContainerStruct(ContainerStruct&& other) noexcept  :
+    fieldA(std::move(other.fieldA)),
+    fieldB(std::move(other.fieldB)),
+    fieldC(std::move(other.fieldC)),
+    fieldD(std::move(other.fieldD)),
+    fieldE(std::move(other.fieldE)),
+    fieldF(std::move(other.fieldF)),
+    fieldG(std::move(other.fieldG)),
+    fieldH(std::move(other.fieldH)),
+    __isset(other.__isset) {}
+ContainerStruct& ContainerStruct::operator=(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept {
+    this->fieldA = std::move(other.fieldA);
+    this->fieldB = std::move(other.fieldB);
+    this->fieldC = std::move(other.fieldC);
+    this->fieldD = std::move(other.fieldD);
+    this->fieldE = std::move(other.fieldE);
+    this->fieldF = std::move(other.fieldF);
+    this->fieldG = std::move(other.fieldG);
+    this->fieldH = std::move(other.fieldH);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vector<::std::int32_t> fieldA__arg, std::list<::std::int32_t> fieldB__arg, std::deque<::std::int32_t> fieldC__arg, folly::fbvector<::std::int32_t> fieldD__arg, folly::small_vector<::std::int32_t> fieldE__arg, folly::sorted_vector_set<::std::int32_t> fieldF__arg, folly::sorted_vector_map<::std::int32_t, ::std::string> fieldG__arg, ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> fieldH__arg) :
     fieldA(std::move(fieldA__arg)),
     fieldB(std::move(fieldB__arg)),
     fieldC(std::move(fieldC__arg)),
@@ -342,16 +376,17 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
   __isset.fieldH = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void ContainerStruct::__clear() {
   // clear all fields
-  fieldA.clear();
-  fieldB.clear();
-  fieldC.clear();
-  fieldD.clear();
-  fieldE.clear();
-  fieldF.clear();
-  fieldG.clear();
-  fieldH.clear();
+  this->fieldA.clear();
+  this->fieldB.clear();
+  this->fieldC.clear();
+  this->fieldD.clear();
+  this->fieldE.clear();
+  this->fieldF.clear();
+  this->fieldG.clear();
+  this->fieldH.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -361,94 +396,94 @@ bool ContainerStruct::operator==(const ContainerStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.fieldA == rhs.fieldA)) {
+  if (!(lhs.fieldA_ref() == rhs.fieldA_ref())) {
     return false;
   }
-  if (!(lhs.fieldB == rhs.fieldB)) {
+  if (!(lhs.fieldB_ref() == rhs.fieldB_ref())) {
     return false;
   }
-  if (!(lhs.fieldC == rhs.fieldC)) {
+  if (!(lhs.fieldC_ref() == rhs.fieldC_ref())) {
     return false;
   }
-  if (!(lhs.fieldD == rhs.fieldD)) {
+  if (!(lhs.fieldD_ref() == rhs.fieldD_ref())) {
     return false;
   }
-  if (!(lhs.fieldE == rhs.fieldE)) {
+  if (!(lhs.fieldE_ref() == rhs.fieldE_ref())) {
     return false;
   }
-  if (!(lhs.fieldF == rhs.fieldF)) {
+  if (!(lhs.fieldF_ref() == rhs.fieldF_ref())) {
     return false;
   }
-  if (!(lhs.fieldG == rhs.fieldG)) {
+  if (!(lhs.fieldG_ref() == rhs.fieldG_ref())) {
     return false;
   }
-  if (!(lhs.fieldH == rhs.fieldH)) {
+  if (!(lhs.fieldH_ref() == rhs.fieldH_ref())) {
     return false;
   }
   return true;
 }
 
-const ::std::vector<int32_t>& ContainerStruct::get_fieldA() const& {
+const ::std::vector<::std::int32_t>& ContainerStruct::get_fieldA() const& {
   return fieldA;
 }
 
-::std::vector<int32_t> ContainerStruct::get_fieldA() && {
+::std::vector<::std::int32_t> ContainerStruct::get_fieldA() && {
   return std::move(fieldA);
 }
 
-const std::list<int32_t>& ContainerStruct::get_fieldB() const& {
+const std::list<::std::int32_t>& ContainerStruct::get_fieldB() const& {
   return fieldB;
 }
 
-std::list<int32_t> ContainerStruct::get_fieldB() && {
+std::list<::std::int32_t> ContainerStruct::get_fieldB() && {
   return std::move(fieldB);
 }
 
-const std::deque<int32_t>& ContainerStruct::get_fieldC() const& {
+const std::deque<::std::int32_t>& ContainerStruct::get_fieldC() const& {
   return fieldC;
 }
 
-std::deque<int32_t> ContainerStruct::get_fieldC() && {
+std::deque<::std::int32_t> ContainerStruct::get_fieldC() && {
   return std::move(fieldC);
 }
 
-const folly::fbvector<int32_t>& ContainerStruct::get_fieldD() const& {
+const folly::fbvector<::std::int32_t>& ContainerStruct::get_fieldD() const& {
   return fieldD;
 }
 
-folly::fbvector<int32_t> ContainerStruct::get_fieldD() && {
+folly::fbvector<::std::int32_t> ContainerStruct::get_fieldD() && {
   return std::move(fieldD);
 }
 
-const folly::small_vector<int32_t>& ContainerStruct::get_fieldE() const& {
+const folly::small_vector<::std::int32_t>& ContainerStruct::get_fieldE() const& {
   return fieldE;
 }
 
-folly::small_vector<int32_t> ContainerStruct::get_fieldE() && {
+folly::small_vector<::std::int32_t> ContainerStruct::get_fieldE() && {
   return std::move(fieldE);
 }
 
-const folly::sorted_vector_set<int32_t>& ContainerStruct::get_fieldF() const& {
+const folly::sorted_vector_set<::std::int32_t>& ContainerStruct::get_fieldF() const& {
   return fieldF;
 }
 
-folly::sorted_vector_set<int32_t> ContainerStruct::get_fieldF() && {
+folly::sorted_vector_set<::std::int32_t> ContainerStruct::get_fieldF() && {
   return std::move(fieldF);
 }
 
-const folly::sorted_vector_map<int32_t, ::std::string>& ContainerStruct::get_fieldG() const& {
+const folly::sorted_vector_map<::std::int32_t, ::std::string>& ContainerStruct::get_fieldG() const& {
   return fieldG;
 }
 
-folly::sorted_vector_map<int32_t, ::std::string> ContainerStruct::get_fieldG() && {
+folly::sorted_vector_map<::std::int32_t, ::std::string> ContainerStruct::get_fieldG() && {
   return std::move(fieldG);
 }
 
-const ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>& ContainerStruct::get_fieldH() const& {
+const ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>& ContainerStruct::get_fieldH() const& {
   return fieldH;
 }
 
-::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct> ContainerStruct::get_fieldH() && {
+::std::vector<::test::fixtures::tablebased::TrivialTypesStruct> ContainerStruct::get_fieldH() && {
   return std::move(fieldH);
 }
 
@@ -492,7 +527,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
     /* .name */ "fieldB",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(0),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(0),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<int32_t>>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::list<::std::int32_t>>::typeInfo,
   },
   {
     /* .id */ 3,
@@ -500,7 +535,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
     /* .name */ "fieldC",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(1),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(1),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::deque<int32_t>>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, std::deque<::std::int32_t>>::typeInfo,
   },
   {
     /* .id */ 4,
@@ -508,7 +543,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
     /* .name */ "fieldD",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(2),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(2),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::fbvector<int32_t>>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::fbvector<::std::int32_t>>::typeInfo,
   },
   {
     /* .id */ 5,
@@ -516,7 +551,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
     /* .name */ "fieldE",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(3),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(3),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<int32_t>>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, folly::small_vector<::std::int32_t>>::typeInfo,
   },
   {
     /* .id */ 6,
@@ -524,7 +559,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
     /* .name */ "fieldF",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(4),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(4),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, folly::sorted_vector_set<int32_t>>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::set<::apache::thrift::type_class::integral>, folly::sorted_vector_set<::std::int32_t>>::typeInfo,
   },
   {
     /* .id */ 7,
@@ -532,7 +567,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
     /* .name */ "fieldG",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(5),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(5),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<int32_t, ::std::string>>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::string>, folly::sorted_vector_map<::std::int32_t, ::std::string>>::typeInfo,
   },
   {
     /* .id */ 8,
@@ -540,7 +575,7 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
     /* .name */ "fieldH",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(6),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(6),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::structure>, ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>::typeInfo,
   },
   {
     /* .id */ 12,
@@ -548,21 +583,21 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
     /* .name */ "fieldA",
     /* .memberOffset */ ::apache::thrift::detail::fieldOffset<::test::fixtures::tablebased::ContainerStruct>(7),
     /* .issetOffset */ ::apache::thrift::detail::issetOffset<::test::fixtures::tablebased::ContainerStruct>(7),
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<int32_t>>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::typeInfo,
   }}
 };
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ContainerStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>>,
+        ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ContainerStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::test::fixtures::tablebased::TrivialTypesStruct>>,
+        ::std::vector<::test::fixtures::tablebased::TrivialTypesStruct>>,
     "inconsistent use of nimble option");
 
 }}} // test::fixtures::tablebased
@@ -643,8 +678,8 @@ constexpr ::apache::thrift::detail::UnionExtN<2> ExampleUnion_unionExt = {
   /* .clear */ ::apache::thrift::detail::clearUnion<::test::fixtures::tablebased::ExampleUnion>,
   /* .unionTypeOffset */ ::apache::thrift::detail::unionTypeOffset<::test::fixtures::tablebased::ExampleUnion>(),
   /* .initMember */ {
-  ::apache::thrift::detail::placementNewUnionValue< ::test::fixtures::tablebased::ContainerStruct>,
-::apache::thrift::detail::placementNewUnionValue< ::test::fixtures::tablebased::TrivialTypesStruct>},
+  ::apache::thrift::detail::placementNewUnionValue<::test::fixtures::tablebased::ContainerStruct>,
+::apache::thrift::detail::placementNewUnionValue<::test::fixtures::tablebased::TrivialTypesStruct>},
 };
 constexpr ::apache::thrift::detail::StructInfoN<2> __fbthrift_struct_info_ExampleUnion = {
   /* .numFields */ 2,
@@ -657,7 +692,7 @@ constexpr ::apache::thrift::detail::StructInfoN<2> __fbthrift_struct_info_Exampl
     /* .name */ "fieldA",
     /* .memberOffset */ 0,
     /* .issetOffset */ 0,
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::structure,  ::test::fixtures::tablebased::ContainerStruct>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::structure, ::test::fixtures::tablebased::ContainerStruct>::typeInfo,
   },
   {
     /* .id */ 2,
@@ -665,33 +700,33 @@ constexpr ::apache::thrift::detail::StructInfoN<2> __fbthrift_struct_info_Exampl
     /* .name */ "fieldB",
     /* .memberOffset */ 0,
     /* .issetOffset */ 0,
-    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::structure,  ::test::fixtures::tablebased::TrivialTypesStruct>::typeInfo,
+    /* .typeInfo */ &::apache::thrift::detail::TypeToInfo<::apache::thrift::type_class::structure, ::test::fixtures::tablebased::TrivialTypesStruct>::typeInfo,
   }}
 };
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ExampleUnion,
         ::apache::thrift::type_class::structure,
-         ::test::fixtures::tablebased::ContainerStruct>,
+        ::test::fixtures::tablebased::ContainerStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         ExampleUnion,
         ::apache::thrift::type_class::structure,
-         ::test::fixtures::tablebased::TrivialTypesStruct>,
+        ::test::fixtures::tablebased::TrivialTypesStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ExampleUnion,
         ::apache::thrift::type_class::structure,
-         ::test::fixtures::tablebased::ContainerStruct>,
+        ::test::fixtures::tablebased::ContainerStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         ExampleUnion,
         ::apache::thrift::type_class::structure,
-         ::test::fixtures::tablebased::TrivialTypesStruct>,
+        ::test::fixtures::tablebased::TrivialTypesStruct>,
     "inconsistent use of nimble option");
 
 }}} // test::fixtures::tablebased
@@ -703,32 +738,32 @@ const ::apache::thrift::detail::TypeInfo TypeToInfo<
     apache::thrift::type_class::enumeration,
     ::test::fixtures::tablebased::ExampleEnum>::typeInfo = {
   /* .type */ apache::thrift::protocol::TType::T_I32,
+  /* .get */ get<std::int32_t, ::test::fixtures::tablebased::ExampleEnum>,
   /* .set */ reinterpret_cast<VoidFuncPtr>(set<::test::fixtures::tablebased::ExampleEnum, std::int32_t>),
-  /* .get */ reinterpret_cast<VoidFuncPtr>(get<std::int32_t, ::test::fixtures::tablebased::ExampleEnum>),
   /* .typeExt */ nullptr,
 };
 const ::apache::thrift::detail::TypeInfo TypeToInfo<
   ::apache::thrift::type_class::structure,
   ::test::fixtures::tablebased::TrivialTypesStruct>::typeInfo = {
   /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
-  /* .set */ nullptr,
   /* .get */ nullptr,
+  /* .set */ nullptr,
   /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info_TrivialTypesStruct,
 };
 const ::apache::thrift::detail::TypeInfo TypeToInfo<
   ::apache::thrift::type_class::structure,
   ::test::fixtures::tablebased::ContainerStruct>::typeInfo = {
   /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
-  /* .set */ nullptr,
   /* .get */ nullptr,
+  /* .set */ nullptr,
   /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info_ContainerStruct,
 };
 const ::apache::thrift::detail::TypeInfo TypeToInfo<
   ::apache::thrift::type_class::variant,
   ::test::fixtures::tablebased::ExampleUnion>::typeInfo = {
   /* .type */ ::apache::thrift::protocol::TType::T_STRUCT,
-  /* .set */ nullptr,
   /* .get */ nullptr,
+  /* .set */ nullptr,
   /* .typeExt */ &::test::fixtures::tablebased::__fbthrift_struct_info_ExampleUnion,
 };
 }}} // namespace apache::thrift::detail

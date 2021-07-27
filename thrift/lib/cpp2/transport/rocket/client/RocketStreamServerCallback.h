@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <boost/variant.hpp>
 #include <memory>
 #include <utility>
 
@@ -55,7 +54,8 @@ class RocketStreamServerCallback : public StreamServerCallback {
     clientCallback_ = &clientCallback;
   }
 
-  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+  StreamChannelStatus onInitialPayload(
+      FirstResponsePayload&&, folly::EventBase*);
   void onInitialError(folly::exception_wrapper ew);
   void onStreamTransportError(folly::exception_wrapper);
 
@@ -70,9 +70,7 @@ class RocketStreamServerCallback : public StreamServerCallback {
 
   void timeoutExpired() noexcept;
 
-  rocket::StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  rocket::StreamId streamId() const noexcept { return streamId_; }
 
  protected:
   rocket::RocketClient& client_;
@@ -97,7 +95,8 @@ class RocketStreamServerCallbackWithChunkTimeout
 
   bool onStreamRequestN(uint64_t tokens) override;
 
-  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+  StreamChannelStatus onInitialPayload(
+      FirstResponsePayload&&, folly::EventBase*);
 
   StreamChannelStatus onStreamPayload(StreamPayload&&);
 
@@ -110,46 +109,6 @@ class RocketStreamServerCallbackWithChunkTimeout
   const std::chrono::milliseconds chunkTimeout_;
   uint64_t credits_{0};
   std::unique_ptr<folly::HHWheelTimer::Callback> timeout_;
-};
-
-class RocketChannelServerCallback : public ChannelServerCallback {
- public:
-  RocketChannelServerCallback(
-      rocket::StreamId streamId,
-      rocket::RocketClient& client,
-      ChannelClientCallback& clientCallback)
-      : client_(client), clientCallback_(clientCallback), streamId_(streamId) {}
-
-  void onStreamRequestN(uint64_t tokens) override;
-  void onStreamCancel() override;
-
-  void onSinkNext(StreamPayload&&) override;
-  void onSinkError(folly::exception_wrapper) override;
-  void onSinkComplete() override;
-
-  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
-  void onInitialError(folly::exception_wrapper);
-  void onStreamTransportError(folly::exception_wrapper);
-
-  StreamChannelStatus onStreamPayload(StreamPayload&&);
-  StreamChannelStatus onStreamFinalPayload(StreamPayload&&);
-  StreamChannelStatus onStreamComplete();
-  StreamChannelStatus onStreamError(folly::exception_wrapper);
-  void onStreamHeaders(HeadersPayload&&);
-
-  StreamChannelStatus onSinkRequestN(uint64_t tokens);
-  StreamChannelStatus onSinkCancel();
-
-  rocket::StreamId streamId() const noexcept {
-    return streamId_;
-  }
-
- private:
-  rocket::RocketClient& client_;
-  ChannelClientCallback& clientCallback_;
-  rocket::StreamId streamId_;
-  enum class State { BothOpen, StreamOpen, SinkOpen };
-  State state_{State::BothOpen};
 };
 
 class RocketSinkServerCallback : public SinkServerCallback {
@@ -174,7 +133,8 @@ class RocketSinkServerCallback : public SinkServerCallback {
     clientCallback_ = &clientCallback;
   }
 
-  void onInitialPayload(FirstResponsePayload&&, folly::EventBase*);
+  StreamChannelStatus onInitialPayload(
+      FirstResponsePayload&&, folly::EventBase*);
   void onInitialError(folly::exception_wrapper);
   void onStreamTransportError(folly::exception_wrapper);
 
@@ -187,9 +147,7 @@ class RocketSinkServerCallback : public SinkServerCallback {
   StreamChannelStatus onSinkRequestN(uint64_t tokens);
   StreamChannelStatus onSinkCancel();
 
-  rocket::StreamId streamId() const noexcept {
-    return streamId_;
-  }
+  rocket::StreamId streamId() const noexcept { return streamId_; }
 
  private:
   rocket::RocketClient& client_;

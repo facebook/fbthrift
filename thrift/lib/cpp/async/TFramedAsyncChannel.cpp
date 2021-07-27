@@ -59,8 +59,7 @@ void TFramedACWriteRequest::writeSuccess() noexcept {
 }
 
 void TFramedACWriteRequest::writeError(
-    size_t bytesWritten,
-    const TTransportException& ex) noexcept {
+    size_t bytesWritten, const TTransportException& ex) noexcept {
   T_ERROR(
       "TFramedAC: write failed after writing %zu bytes: %s",
       bytesWritten,

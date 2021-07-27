@@ -20,7 +20,7 @@ MyServiceWrapper::MyServiceWrapper(PyObject *obj, folly::Executor* exc)
 
 void MyServiceWrapper::async_tm_foo(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -35,6 +35,15 @@ void MyServiceWrapper::async_tm_foo(
           callback->complete(std::move(t));
         });
     });
+}
+std::unique_ptr<MyServiceSvIf::MyInteractionIf> MyServiceWrapper::createMyInteraction() {
+  throw std::runtime_error("Py3 server doesn't support interactions.");
+}
+std::unique_ptr<MyServiceSvIf::MyInteractionFastIf> MyServiceWrapper::createMyInteractionFast() {
+  throw std::runtime_error("Py3 server doesn't support interactions.");
+}
+std::unique_ptr<MyServiceSvIf::SerialInteractionIf> MyServiceWrapper::createSerialInteraction() {
+  throw std::runtime_error("Py3 server doesn't support interactions.");
 }
 std::shared_ptr<apache::thrift::ServerInterface> MyServiceInterface(PyObject *if_object, folly::Executor *exc) {
   return std::make_shared<MyServiceWrapper>(if_object, exc);

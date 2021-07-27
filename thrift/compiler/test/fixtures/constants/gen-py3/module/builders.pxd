@@ -6,7 +6,7 @@
 #
 from cpython cimport bool as pbool, int as pint, float as pfloat
 
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 
 cimport thrift.py3.builder
 
@@ -17,6 +17,7 @@ cdef class Internship_Builder(thrift.py3.builder.StructBuilder):
     cdef public pint weeks
     cdef public str title
     cdef public _module_types.Company employer
+    cdef public pfloat compensation
 
 
 cdef class Range_Builder(thrift.py3.builder.StructBuilder):

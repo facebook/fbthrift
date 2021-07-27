@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <memory>
 #include <thrift/test/gen-cpp2/structs_terse_types.h>
 #include <thrift/test/gen-cpp2/structs_types.h>
 
@@ -30,27 +31,46 @@ TEST_F(StructTest, compilation_terse_writes_refs_shared) {
   (void)a;
 }
 
-TEST_F(StructTest, copy_ctor_refs_annot_cpp_noexcept_move_ctor) {
-  {
-    BasicRefsAnnotCppNoexceptMoveCtor a;
-    a.def_field = std::make_unique<HasInt>();
-    a.def_field->field = 3;
+TEST_F(StructTest, serialization_terse_writes_refs_shared) {
+  using apache::thrift::CompactSerializer;
 
-    BasicRefsAnnotCppNoexceptMoveCtor b(a);
-    EXPECT_EQ(3, b.def_field->field);
-  }
+  BasicRefsSharedTerseWrites a;
+
+  a.shared_field_ref() = std::make_shared<HasInt>();
+  a.shared_field_ref()->field_ref() = 3;
+
+  a.shared_fields_ref() = std::make_shared<std::vector<HasInt>>();
+  a.shared_fields_ref()->emplace_back();
+  a.shared_fields_ref()->back().field_ref() = 4;
+  a.shared_fields_ref()->emplace_back();
+  a.shared_fields_ref()->back().field_ref() = 5;
+  a.shared_fields_ref()->emplace_back();
+  a.shared_fields_ref()->back().field_ref() = 6;
+
+  a.shared_fields_const_ref() = std::make_shared<const std::vector<HasInt>>();
+
+  const std::string serialized = CompactSerializer::serialize<std::string>(a);
+
+  BasicRefsSharedTerseWrites b;
+  CompactSerializer::deserialize(serialized, b);
+
+  EXPECT_EQ(a, b);
 }
 
-TEST_F(StructTest, copy_assign_refs_annot_cpp_noexcept_move_ctor) {
-  {
-    BasicRefsAnnotCppNoexceptMoveCtor a;
-    a.def_field = std::make_unique<HasInt>();
-    a.def_field->field = 3;
+TEST_F(StructTest, serialization_terse_writes_default_values) {
+  using apache::thrift::CompactSerializer;
 
-    BasicRefsAnnotCppNoexceptMoveCtor b;
-    b = a;
-    EXPECT_EQ(3, b.def_field->field);
-  }
+  BasicRefsSharedTerseWrites empty;
+
+  BasicRefsSharedTerseWrites defaults;
+  defaults.shared_field_req_ref() = std::make_shared<HasInt>();
+  defaults.shared_fields_req_ref() = std::make_shared<std::vector<HasInt>>();
+
+  // This struct has terse writes enabled, so the default values set above
+  // should not be part of the serialization.
+  EXPECT_EQ(
+      CompactSerializer::serialize<std::string>(empty),
+      CompactSerializer::serialize<std::string>(defaults));
 }
 
 TEST_F(StructTest, equal_to) {
@@ -65,11 +85,11 @@ TEST_F(StructTest, equal_to) {
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.__isset.def_field = true;
+    a.def_field_ref().ensure();
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    b.__isset.def_field = true;
+    b.def_field_ref().ensure();
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
@@ -153,11 +173,11 @@ TEST_F(StructTest, equal_to_binary) {
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    a.__isset.def_field = true;
+    a.def_field_ref().ensure();
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
-    b.__isset.def_field = true;
+    b.def_field_ref().ensure();
     EXPECT_TRUE(op(a, b));
     EXPECT_TRUE(op(b, a));
 
@@ -325,11 +345,11 @@ TEST_F(StructTest, less) {
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.__isset.def_field = true;
+    b.def_field_ref().ensure();
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.__isset.def_field = true;
+    a.def_field_ref().ensure();
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
@@ -413,11 +433,11 @@ TEST_F(StructTest, less_binary) {
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    b.__isset.def_field = true;
+    b.def_field_ref().ensure();
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
-    a.__isset.def_field = true;
+    a.def_field_ref().ensure();
     EXPECT_FALSE(op(a, b));
     EXPECT_FALSE(op(b, a));
 
@@ -640,4 +660,27 @@ TEST_F(StructTest, BasicIndirection) {
   auto obj2 =
       ser.deserialize<BasicIndirection>(ser.serialize<std::string>(obj));
   EXPECT_EQ(obj.raw, obj2.raw);
+}
+
+TEST_F(StructTest, CppDataMethod) {
+  CppDataMethod obj;
+  obj.foo_ref() = 10;
+  EXPECT_EQ(obj._data().foo_ref(), 10);
+  obj._data().foo_ref() = 20;
+  EXPECT_EQ(obj._data().foo_ref(), 20);
+  EXPECT_EQ(std::as_const(obj)._data().foo_ref(), 20);
+  EXPECT_EQ(std::move(obj)._data().foo_ref(), 20);
+}
+
+template <class T>
+using DetectIsset = decltype(&T::__isset);
+static_assert(folly::is_detected_v<DetectIsset, PublicIsset>);
+static_assert(!folly::is_detected_v<DetectIsset, Basic>);
+
+TEST_F(StructTest, PublicIsset) {
+  PublicIsset obj;
+  ASSERT_EQ(sizeof(bool), sizeof(obj.__isset));
+  EXPECT_FALSE(reinterpret_cast<bool&>(obj.__isset));
+  obj.foo_ref() = 10;
+  EXPECT_TRUE(reinterpret_cast<bool&>(obj.__isset));
 }

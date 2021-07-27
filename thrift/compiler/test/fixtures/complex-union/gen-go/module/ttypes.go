@@ -33,15 +33,15 @@ func ContainerTypedefPtr(v ContainerTypedef) *ContainerTypedef { return &v }
 //  - TypedefValue
 //  - StringRef
 type ComplexUnion struct {
-  IntValue *int64 `thrift:"intValue,1" db:"intValue" json:"intValue,omitempty"`
-  IntListValue []int64 `thrift:"intListValue,2" db:"intListValue" json:"intListValue,omitempty"`
-  StringListValue []string `thrift:"stringListValue,3" db:"stringListValue" json:"stringListValue,omitempty"`
+  IntValue *int64 `thrift:"intValue,1,optional" db:"intValue" json:"intValue,omitempty"`
+  IntListValue []int64 `thrift:"intListValue,2,optional" db:"intListValue" json:"intListValue,omitempty"`
+  StringListValue []string `thrift:"stringListValue,3,optional" db:"stringListValue" json:"stringListValue,omitempty"`
   // unused field # 4
-  StringValue *string `thrift:"stringValue,5" db:"stringValue" json:"stringValue,omitempty"`
+  StringValue *string `thrift:"stringValue,5,optional" db:"stringValue" json:"stringValue,omitempty"`
   // unused fields # 6 to 8
-  TypedefValue ContainerTypedef `thrift:"typedefValue,9" db:"typedefValue" json:"typedefValue,omitempty"`
+  TypedefValue ContainerTypedef `thrift:"typedefValue,9,optional" db:"typedefValue" json:"typedefValue,omitempty"`
   // unused fields # 10 to 13
-  StringRef *string `thrift:"stringRef,14" db:"stringRef" json:"stringRef,omitempty"`
+  StringRef *string `thrift:"stringRef,14,optional" db:"stringRef" json:"stringRef,omitempty"`
 }
 
 func NewComplexUnion() *ComplexUnion {
@@ -132,6 +132,87 @@ func (p *ComplexUnion) IsSetStringRef() bool {
   return p != nil && p.StringRef != nil
 }
 
+type ComplexUnionBuilder struct {
+  obj *ComplexUnion
+}
+
+func NewComplexUnionBuilder() *ComplexUnionBuilder{
+  return &ComplexUnionBuilder{
+    obj: NewComplexUnion(),
+  }
+}
+
+func (p ComplexUnionBuilder) Emit() *ComplexUnion{
+  return &ComplexUnion{
+    IntValue: p.obj.IntValue,
+    StringValue: p.obj.StringValue,
+    IntListValue: p.obj.IntListValue,
+    StringListValue: p.obj.StringListValue,
+    TypedefValue: p.obj.TypedefValue,
+    StringRef: p.obj.StringRef,
+  }
+}
+
+func (c *ComplexUnionBuilder) IntValue(intValue *int64) *ComplexUnionBuilder {
+  c.obj.IntValue = intValue
+  return c
+}
+
+func (c *ComplexUnionBuilder) StringValue(stringValue *string) *ComplexUnionBuilder {
+  c.obj.StringValue = stringValue
+  return c
+}
+
+func (c *ComplexUnionBuilder) IntListValue(intListValue []int64) *ComplexUnionBuilder {
+  c.obj.IntListValue = intListValue
+  return c
+}
+
+func (c *ComplexUnionBuilder) StringListValue(stringListValue []string) *ComplexUnionBuilder {
+  c.obj.StringListValue = stringListValue
+  return c
+}
+
+func (c *ComplexUnionBuilder) TypedefValue(typedefValue ContainerTypedef) *ComplexUnionBuilder {
+  c.obj.TypedefValue = typedefValue
+  return c
+}
+
+func (c *ComplexUnionBuilder) StringRef(stringRef *string) *ComplexUnionBuilder {
+  c.obj.StringRef = stringRef
+  return c
+}
+
+func (c *ComplexUnion) SetIntValue(intValue *int64) *ComplexUnion {
+  c.IntValue = intValue
+  return c
+}
+
+func (c *ComplexUnion) SetStringValue(stringValue *string) *ComplexUnion {
+  c.StringValue = stringValue
+  return c
+}
+
+func (c *ComplexUnion) SetIntListValue(intListValue []int64) *ComplexUnion {
+  c.IntListValue = intListValue
+  return c
+}
+
+func (c *ComplexUnion) SetStringListValue(stringListValue []string) *ComplexUnion {
+  c.StringListValue = stringListValue
+  return c
+}
+
+func (c *ComplexUnion) SetTypedefValue(typedefValue ContainerTypedef) *ComplexUnion {
+  c.TypedefValue = typedefValue
+  return c
+}
+
+func (c *ComplexUnion) SetStringRef(stringRef *string) *ComplexUnion {
+  c.StringRef = stringRef
+  return c
+}
+
 func (p *ComplexUnion) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -186,19 +267,19 @@ func (p *ComplexUnion) Read(iprot thrift.Protocol) error {
 
 func (p *ComplexUnion)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.IntValue = &v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.IntValue = &v
+  }
   return nil
 }
 
 func (p *ComplexUnion)  ReadField5(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 5: ", err)
-} else {
-  p.StringValue = &v
-}
+    return thrift.PrependError("error reading field 5: ", err)
+  } else {
+    p.StringValue = &v
+  }
   return nil
 }
 
@@ -210,12 +291,12 @@ func (p *ComplexUnion)  ReadField2(iprot thrift.Protocol) error {
   tSlice := make([]int64, 0, size)
   p.IntListValue =  tSlice
   for i := 0; i < size; i ++ {
-var _elem0 int64
+    var _elem0 int64
     if v, err := iprot.ReadI64(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem0 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem0 = v
+    }
     p.IntListValue = append(p.IntListValue, _elem0)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -232,12 +313,12 @@ func (p *ComplexUnion)  ReadField3(iprot thrift.Protocol) error {
   tSlice := make([]string, 0, size)
   p.StringListValue =  tSlice
   for i := 0; i < size; i ++ {
-var _elem1 string
+    var _elem1 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem1 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem1 = v
+    }
     p.StringListValue = append(p.StringListValue, _elem1)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -254,18 +335,18 @@ func (p *ComplexUnion)  ReadField9(iprot thrift.Protocol) error {
   tMap := make(ContainerTypedef, size)
   p.TypedefValue =  tMap
   for i := 0; i < size; i ++ {
-var _key2 int16
+    var _key2 int16
     if v, err := iprot.ReadI16(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key2 = v
-}
-var _val3 string
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key2 = v
+    }
+    var _val3 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val3 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val3 = v
+    }
     p.TypedefValue[_key2] = _val3
   }
   if err := iprot.ReadMapEnd(); err != nil {
@@ -276,10 +357,10 @@ var _val3 string
 
 func (p *ComplexUnion)  ReadField14(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 14: ", err)
-} else {
-  p.StringRef = &v
-}
+    return thrift.PrependError("error reading field 14: ", err)
+  } else {
+    p.StringRef = &v
+  }
   return nil
 }
 
@@ -434,8 +515,8 @@ func (p *ComplexUnion) String() string {
 //  - StringListValue
 type ListUnion struct {
   // unused field # 1
-  IntListValue []int64 `thrift:"intListValue,2" db:"intListValue" json:"intListValue,omitempty"`
-  StringListValue []string `thrift:"stringListValue,3" db:"stringListValue" json:"stringListValue,omitempty"`
+  IntListValue []int64 `thrift:"intListValue,2,optional" db:"intListValue" json:"intListValue,omitempty"`
+  StringListValue []string `thrift:"stringListValue,3,optional" db:"stringListValue" json:"stringListValue,omitempty"`
 }
 
 func NewListUnion() *ListUnion {
@@ -458,6 +539,43 @@ func (p *ListUnion) IsSetIntListValue() bool {
 
 func (p *ListUnion) IsSetStringListValue() bool {
   return p != nil && p.StringListValue != nil
+}
+
+type ListUnionBuilder struct {
+  obj *ListUnion
+}
+
+func NewListUnionBuilder() *ListUnionBuilder{
+  return &ListUnionBuilder{
+    obj: NewListUnion(),
+  }
+}
+
+func (p ListUnionBuilder) Emit() *ListUnion{
+  return &ListUnion{
+    IntListValue: p.obj.IntListValue,
+    StringListValue: p.obj.StringListValue,
+  }
+}
+
+func (l *ListUnionBuilder) IntListValue(intListValue []int64) *ListUnionBuilder {
+  l.obj.IntListValue = intListValue
+  return l
+}
+
+func (l *ListUnionBuilder) StringListValue(stringListValue []string) *ListUnionBuilder {
+  l.obj.StringListValue = stringListValue
+  return l
+}
+
+func (l *ListUnion) SetIntListValue(intListValue []int64) *ListUnion {
+  l.IntListValue = intListValue
+  return l
+}
+
+func (l *ListUnion) SetStringListValue(stringListValue []string) *ListUnion {
+  l.StringListValue = stringListValue
+  return l
 }
 
 func (p *ListUnion) Read(iprot thrift.Protocol) error {
@@ -504,12 +622,12 @@ func (p *ListUnion)  ReadField2(iprot thrift.Protocol) error {
   tSlice := make([]int64, 0, size)
   p.IntListValue =  tSlice
   for i := 0; i < size; i ++ {
-var _elem4 int64
+    var _elem4 int64
     if v, err := iprot.ReadI64(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem4 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem4 = v
+    }
     p.IntListValue = append(p.IntListValue, _elem4)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -526,12 +644,12 @@ func (p *ListUnion)  ReadField3(iprot thrift.Protocol) error {
   tSlice := make([]string, 0, size)
   p.StringListValue =  tSlice
   for i := 0; i < size; i ++ {
-var _elem5 string
+    var _elem5 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _elem5 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _elem5 = v
+    }
     p.StringListValue = append(p.StringListValue, _elem5)
   }
   if err := iprot.ReadListEnd(); err != nil {
@@ -606,8 +724,8 @@ func (p *ListUnion) String() string {
 //  - BinaryData
 //  - StringData
 type DataUnion struct {
-  BinaryData []byte `thrift:"binaryData,1" db:"binaryData" json:"binaryData,omitempty"`
-  StringData *string `thrift:"stringData,2" db:"stringData" json:"stringData,omitempty"`
+  BinaryData []byte `thrift:"binaryData,1,optional" db:"binaryData" json:"binaryData,omitempty"`
+  StringData *string `thrift:"stringData,2,optional" db:"stringData" json:"stringData,omitempty"`
 }
 
 func NewDataUnion() *DataUnion {
@@ -644,6 +762,43 @@ func (p *DataUnion) IsSetBinaryData() bool {
 
 func (p *DataUnion) IsSetStringData() bool {
   return p != nil && p.StringData != nil
+}
+
+type DataUnionBuilder struct {
+  obj *DataUnion
+}
+
+func NewDataUnionBuilder() *DataUnionBuilder{
+  return &DataUnionBuilder{
+    obj: NewDataUnion(),
+  }
+}
+
+func (p DataUnionBuilder) Emit() *DataUnion{
+  return &DataUnion{
+    BinaryData: p.obj.BinaryData,
+    StringData: p.obj.StringData,
+  }
+}
+
+func (d *DataUnionBuilder) BinaryData(binaryData []byte) *DataUnionBuilder {
+  d.obj.BinaryData = binaryData
+  return d
+}
+
+func (d *DataUnionBuilder) StringData(stringData *string) *DataUnionBuilder {
+  d.obj.StringData = stringData
+  return d
+}
+
+func (d *DataUnion) SetBinaryData(binaryData []byte) *DataUnion {
+  d.BinaryData = binaryData
+  return d
+}
+
+func (d *DataUnion) SetStringData(stringData *string) *DataUnion {
+  d.StringData = stringData
+  return d
 }
 
 func (p *DataUnion) Read(iprot thrift.Protocol) error {
@@ -684,19 +839,19 @@ func (p *DataUnion) Read(iprot thrift.Protocol) error {
 
 func (p *DataUnion)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadBinary(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.BinaryData = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.BinaryData = v
+  }
   return nil
 }
 
 func (p *DataUnion)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.StringData = &v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.StringData = &v
+  }
   return nil
 }
 
@@ -781,6 +936,54 @@ func (p *Val) GetIntVal() int32 {
 func (p *Val) GetTypedefValue() ContainerTypedef {
   return p.TypedefValue
 }
+type ValBuilder struct {
+  obj *Val
+}
+
+func NewValBuilder() *ValBuilder{
+  return &ValBuilder{
+    obj: NewVal(),
+  }
+}
+
+func (p ValBuilder) Emit() *Val{
+  return &Val{
+    StrVal: p.obj.StrVal,
+    IntVal: p.obj.IntVal,
+    TypedefValue: p.obj.TypedefValue,
+  }
+}
+
+func (v *ValBuilder) StrVal(strVal string) *ValBuilder {
+  v.obj.StrVal = strVal
+  return v
+}
+
+func (v *ValBuilder) IntVal(intVal int32) *ValBuilder {
+  v.obj.IntVal = intVal
+  return v
+}
+
+func (v *ValBuilder) TypedefValue(typedefValue ContainerTypedef) *ValBuilder {
+  v.obj.TypedefValue = typedefValue
+  return v
+}
+
+func (v *Val) SetStrVal(strVal string) *Val {
+  v.StrVal = strVal
+  return v
+}
+
+func (v *Val) SetIntVal(intVal int32) *Val {
+  v.IntVal = intVal
+  return v
+}
+
+func (v *Val) SetTypedefValue(typedefValue ContainerTypedef) *Val {
+  v.TypedefValue = typedefValue
+  return v
+}
+
 func (p *Val) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -823,19 +1026,19 @@ func (p *Val) Read(iprot thrift.Protocol) error {
 
 func (p *Val)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.StrVal = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.StrVal = v
+  }
   return nil
 }
 
 func (p *Val)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI32(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.IntVal = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.IntVal = v
+  }
   return nil
 }
 
@@ -847,18 +1050,18 @@ func (p *Val)  ReadField9(iprot thrift.Protocol) error {
   tMap := make(ContainerTypedef, size)
   p.TypedefValue =  tMap
   for i := 0; i < size; i ++ {
-var _key6 int16
+    var _key6 int16
     if v, err := iprot.ReadI16(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _key6 = v
-}
-var _val7 string
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _key6 = v
+    }
+    var _val7 string
     if v, err := iprot.ReadString(); err != nil {
-    return thrift.PrependError("error reading field 0: ", err)
-} else {
-    _val7 = v
-}
+      return thrift.PrependError("error reading field 0: ", err)
+    } else {
+      _val7 = v
+    }
     p.TypedefValue[_key6] = _val7
   }
   if err := iprot.ReadMapEnd(); err != nil {
@@ -935,8 +1138,8 @@ func (p *Val) String() string {
 //  - V1
 //  - V2
 type ValUnion struct {
-  V1 *Val `thrift:"v1,1" db:"v1" json:"v1,omitempty"`
-  V2 *Val `thrift:"v2,2" db:"v2" json:"v2,omitempty"`
+  V1 *Val `thrift:"v1,1,optional" db:"v1" json:"v1,omitempty"`
+  V2 *Val `thrift:"v2,2,optional" db:"v2" json:"v2,omitempty"`
 }
 
 func NewValUnion() *ValUnion {
@@ -975,6 +1178,43 @@ func (p *ValUnion) IsSetV1() bool {
 
 func (p *ValUnion) IsSetV2() bool {
   return p != nil && p.V2 != nil
+}
+
+type ValUnionBuilder struct {
+  obj *ValUnion
+}
+
+func NewValUnionBuilder() *ValUnionBuilder{
+  return &ValUnionBuilder{
+    obj: NewValUnion(),
+  }
+}
+
+func (p ValUnionBuilder) Emit() *ValUnion{
+  return &ValUnion{
+    V1: p.obj.V1,
+    V2: p.obj.V2,
+  }
+}
+
+func (v *ValUnionBuilder) V1(v1 *Val) *ValUnionBuilder {
+  v.obj.V1 = v1
+  return v
+}
+
+func (v *ValUnionBuilder) V2(v2 *Val) *ValUnionBuilder {
+  v.obj.V2 = v2
+  return v
+}
+
+func (v *ValUnion) SetV1(v1 *Val) *ValUnion {
+  v.V1 = v1
+  return v
+}
+
+func (v *ValUnion) SetV2(v2 *Val) *ValUnion {
+  v.V2 = v2
+  return v
 }
 
 func (p *ValUnion) Read(iprot thrift.Protocol) error {
@@ -1094,8 +1334,8 @@ func (p *ValUnion) String() string {
 //  - ThingOne
 //  - ThingTwo
 type VirtualComplexUnion struct {
-  ThingOne *string `thrift:"thingOne,1" db:"thingOne" json:"thingOne,omitempty"`
-  ThingTwo *string `thrift:"thingTwo,2" db:"thingTwo" json:"thingTwo,omitempty"`
+  ThingOne *string `thrift:"thingOne,1,optional" db:"thingOne" json:"thingOne,omitempty"`
+  ThingTwo *string `thrift:"thingTwo,2,optional" db:"thingTwo" json:"thingTwo,omitempty"`
 }
 
 func NewVirtualComplexUnion() *VirtualComplexUnion {
@@ -1136,6 +1376,43 @@ func (p *VirtualComplexUnion) IsSetThingTwo() bool {
   return p != nil && p.ThingTwo != nil
 }
 
+type VirtualComplexUnionBuilder struct {
+  obj *VirtualComplexUnion
+}
+
+func NewVirtualComplexUnionBuilder() *VirtualComplexUnionBuilder{
+  return &VirtualComplexUnionBuilder{
+    obj: NewVirtualComplexUnion(),
+  }
+}
+
+func (p VirtualComplexUnionBuilder) Emit() *VirtualComplexUnion{
+  return &VirtualComplexUnion{
+    ThingOne: p.obj.ThingOne,
+    ThingTwo: p.obj.ThingTwo,
+  }
+}
+
+func (v *VirtualComplexUnionBuilder) ThingOne(thingOne *string) *VirtualComplexUnionBuilder {
+  v.obj.ThingOne = thingOne
+  return v
+}
+
+func (v *VirtualComplexUnionBuilder) ThingTwo(thingTwo *string) *VirtualComplexUnionBuilder {
+  v.obj.ThingTwo = thingTwo
+  return v
+}
+
+func (v *VirtualComplexUnion) SetThingOne(thingOne *string) *VirtualComplexUnion {
+  v.ThingOne = thingOne
+  return v
+}
+
+func (v *VirtualComplexUnion) SetThingTwo(thingTwo *string) *VirtualComplexUnion {
+  v.ThingTwo = thingTwo
+  return v
+}
+
 func (p *VirtualComplexUnion) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1174,19 +1451,19 @@ func (p *VirtualComplexUnion) Read(iprot thrift.Protocol) error {
 
 func (p *VirtualComplexUnion)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.ThingOne = &v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.ThingOne = &v
+  }
   return nil
 }
 
 func (p *VirtualComplexUnion)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.ThingTwo = &v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.ThingTwo = &v
+  }
   return nil
 }
 
@@ -1263,6 +1540,32 @@ func NewNonCopyableStruct() *NonCopyableStruct {
 func (p *NonCopyableStruct) GetNum() int64 {
   return p.Num
 }
+type NonCopyableStructBuilder struct {
+  obj *NonCopyableStruct
+}
+
+func NewNonCopyableStructBuilder() *NonCopyableStructBuilder{
+  return &NonCopyableStructBuilder{
+    obj: NewNonCopyableStruct(),
+  }
+}
+
+func (p NonCopyableStructBuilder) Emit() *NonCopyableStruct{
+  return &NonCopyableStruct{
+    Num: p.obj.Num,
+  }
+}
+
+func (n *NonCopyableStructBuilder) Num(num int64) *NonCopyableStructBuilder {
+  n.obj.Num = num
+  return n
+}
+
+func (n *NonCopyableStruct) SetNum(num int64) *NonCopyableStruct {
+  n.Num = num
+  return n
+}
+
 func (p *NonCopyableStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -1297,10 +1600,10 @@ func (p *NonCopyableStruct) Read(iprot thrift.Protocol) error {
 
 func (p *NonCopyableStruct)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Num = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Num = v
+  }
   return nil
 }
 
@@ -1337,7 +1640,7 @@ func (p *NonCopyableStruct) String() string {
 // Attributes:
 //  - S
 type NonCopyableUnion struct {
-  S *NonCopyableStruct `thrift:"s,1" db:"s" json:"s,omitempty"`
+  S *NonCopyableStruct `thrift:"s,1,optional" db:"s" json:"s,omitempty"`
 }
 
 func NewNonCopyableUnion() *NonCopyableUnion {
@@ -1362,6 +1665,32 @@ func (p *NonCopyableUnion) CountSetFieldsNonCopyableUnion() int {
 
 func (p *NonCopyableUnion) IsSetS() bool {
   return p != nil && p.S != nil
+}
+
+type NonCopyableUnionBuilder struct {
+  obj *NonCopyableUnion
+}
+
+func NewNonCopyableUnionBuilder() *NonCopyableUnionBuilder{
+  return &NonCopyableUnionBuilder{
+    obj: NewNonCopyableUnion(),
+  }
+}
+
+func (p NonCopyableUnionBuilder) Emit() *NonCopyableUnion{
+  return &NonCopyableUnion{
+    S: p.obj.S,
+  }
+}
+
+func (n *NonCopyableUnionBuilder) S(s *NonCopyableStruct) *NonCopyableUnionBuilder {
+  n.obj.S = s
+  return n
+}
+
+func (n *NonCopyableUnion) SetS(s *NonCopyableStruct) *NonCopyableUnion {
+  n.S = s
+  return n
 }
 
 func (p *NonCopyableUnion) Read(iprot thrift.Protocol) error {

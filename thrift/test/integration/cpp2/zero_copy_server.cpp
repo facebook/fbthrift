@@ -42,6 +42,16 @@ class ZeroCopyServiceImpl : public ZeroCopyServiceSvIf,
                 << ":" << data->computeChainDataLength()
                 << " ret = " << ret.countChainElements() << ":"
                 << ret.computeChainDataLength();
+
+      size_t i = 0;
+
+      IOBuf* current = data.get();
+      do {
+        LOG(INFO) << i << ":" << static_cast<const void*>(current->buffer())
+                  << ":" << current->length() << ":" << current->capacity();
+        current = current->next();
+        ++i;
+      } while (current != data.get());
     }
     num_++;
   }

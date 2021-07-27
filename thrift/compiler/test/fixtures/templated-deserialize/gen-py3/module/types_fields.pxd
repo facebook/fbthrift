@@ -23,7 +23,7 @@ from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.unordered_map cimport unordered_map as cumap
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
 from thrift.py3.common cimport Protocol as __Protocol
@@ -51,8 +51,8 @@ cdef class __SmallStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __SmallStruct_FieldsSetter create(_module_types.cSmallStruct* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
 
 
 ctypedef void (*__containerStruct_FieldsSetterFunc)(__containerStruct_FieldsSetter, object) except *
@@ -63,26 +63,26 @@ cdef class __containerStruct_FieldsSetter(__StructFieldsSetter):
 
     @staticmethod
     cdef __containerStruct_FieldsSetter create(_module_types.ccontainerStruct* struct_cpp_obj)
-    cdef void _set_field_0(self, __fbthrift_value) except *
-    cdef void _set_field_1(self, __fbthrift_value) except *
-    cdef void _set_field_2(self, __fbthrift_value) except *
-    cdef void _set_field_3(self, __fbthrift_value) except *
-    cdef void _set_field_4(self, __fbthrift_value) except *
-    cdef void _set_field_5(self, __fbthrift_value) except *
-    cdef void _set_field_6(self, __fbthrift_value) except *
-    cdef void _set_field_7(self, __fbthrift_value) except *
-    cdef void _set_field_8(self, __fbthrift_value) except *
-    cdef void _set_field_9(self, __fbthrift_value) except *
-    cdef void _set_field_10(self, __fbthrift_value) except *
-    cdef void _set_field_11(self, __fbthrift_value) except *
-    cdef void _set_field_12(self, __fbthrift_value) except *
-    cdef void _set_field_13(self, __fbthrift_value) except *
-    cdef void _set_field_14(self, __fbthrift_value) except *
-    cdef void _set_field_15(self, __fbthrift_value) except *
-    cdef void _set_field_16(self, __fbthrift_value) except *
-    cdef void _set_field_17(self, __fbthrift_value) except *
-    cdef void _set_field_18(self, __fbthrift_value) except *
-    cdef void _set_field_19(self, __fbthrift_value) except *
-    cdef void _set_field_20(self, __fbthrift_value) except *
-    cdef void _set_field_21(self, __fbthrift_value) except *
+    cdef void _set_field_0(self, _fbthrift_value) except *
+    cdef void _set_field_1(self, _fbthrift_value) except *
+    cdef void _set_field_2(self, _fbthrift_value) except *
+    cdef void _set_field_3(self, _fbthrift_value) except *
+    cdef void _set_field_4(self, _fbthrift_value) except *
+    cdef void _set_field_5(self, _fbthrift_value) except *
+    cdef void _set_field_6(self, _fbthrift_value) except *
+    cdef void _set_field_7(self, _fbthrift_value) except *
+    cdef void _set_field_8(self, _fbthrift_value) except *
+    cdef void _set_field_9(self, _fbthrift_value) except *
+    cdef void _set_field_10(self, _fbthrift_value) except *
+    cdef void _set_field_11(self, _fbthrift_value) except *
+    cdef void _set_field_12(self, _fbthrift_value) except *
+    cdef void _set_field_13(self, _fbthrift_value) except *
+    cdef void _set_field_14(self, _fbthrift_value) except *
+    cdef void _set_field_15(self, _fbthrift_value) except *
+    cdef void _set_field_16(self, _fbthrift_value) except *
+    cdef void _set_field_17(self, _fbthrift_value) except *
+    cdef void _set_field_18(self, _fbthrift_value) except *
+    cdef void _set_field_19(self, _fbthrift_value) except *
+    cdef void _set_field_20(self, _fbthrift_value) except *
+    cdef void _set_field_21(self, _fbthrift_value) except *
 

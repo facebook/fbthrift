@@ -15,11 +15,12 @@
  */
 
 #include <thrift/compiler/common.h>
-#include <thrift/compiler/parse/parsing_driver.h>
 
 #include <cstdarg>
 
 #include <boost/filesystem.hpp>
+
+#include <thrift/compiler/ast/diagnostic_context.h>
 
 namespace apache {
 namespace thrift {
@@ -120,52 +121,34 @@ void dump_docstrings(t_program* program) {
   if (!progdoc.empty()) {
     printf("Whole program doc:\n%s\n", progdoc.c_str());
   }
-  const std::vector<t_typedef*>& typedefs = program->get_typedefs();
-  std::vector<t_typedef*>::const_iterator t_iter;
-  for (t_iter = typedefs.begin(); t_iter != typedefs.end(); ++t_iter) {
-    t_typedef* td = *t_iter;
+  for (auto* td : program->typedefs()) {
     if (td->has_doc()) {
       printf(
           "typedef %s:\n%s\n", td->get_name().c_str(), td->get_doc().c_str());
     }
   }
-  const std::vector<t_enum*>& enums = program->get_enums();
-  std::vector<t_enum*>::const_iterator e_iter;
-  for (e_iter = enums.begin(); e_iter != enums.end(); ++e_iter) {
-    t_enum* en = *e_iter;
+  for (auto* en : program->enums()) {
     if (en->has_doc()) {
       printf("enum %s:\n%s\n", en->get_name().c_str(), en->get_doc().c_str());
     }
   }
-  const std::vector<t_const*>& consts = program->get_consts();
-  std::vector<t_const*>::const_iterator c_iter;
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    t_const* co = *c_iter;
+  for (auto* co : program->consts()) {
     if (co->has_doc()) {
       printf("const %s:\n%s\n", co->get_name().c_str(), co->get_doc().c_str());
     }
   }
-  const std::vector<t_struct*>& structs = program->get_structs();
-  std::vector<t_struct*>::const_iterator s_iter;
-  for (s_iter = structs.begin(); s_iter != structs.end(); ++s_iter) {
-    t_struct* st = *s_iter;
+  for (auto* st : program->structs()) {
     if (st->has_doc()) {
       printf("struct %s:\n%s\n", st->get_name().c_str(), st->get_doc().c_str());
     }
   }
-  const std::vector<t_struct*>& xceptions = program->get_xceptions();
-  std::vector<t_struct*>::const_iterator x_iter;
-  for (x_iter = xceptions.begin(); x_iter != xceptions.end(); ++x_iter) {
-    t_struct* xn = *x_iter;
+  for (auto* xn : program->xceptions()) {
     if (xn->has_doc()) {
       printf(
           "xception %s:\n%s\n", xn->get_name().c_str(), xn->get_doc().c_str());
     }
   }
-  const std::vector<t_service*>& services = program->get_services();
-  std::vector<t_service*>::const_iterator v_iter;
-  for (v_iter = services.begin(); v_iter != services.end(); ++v_iter) {
-    t_service* sv = *v_iter;
+  for (auto* sv : program->services()) {
     if (sv->has_doc()) {
       printf(
           "service %s:\n%s\n", sv->get_name().c_str(), sv->get_doc().c_str());
@@ -174,57 +157,54 @@ void dump_docstrings(t_program* program) {
 }
 
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
-    std::string path,
-    parsing_params params) {
-  parsing_driver driver{path, std::move(params)};
-
-  std::vector<diagnostic_message> diagnostic_messages;
-  auto program = driver.parse(diagnostic_messages);
-  dump_diagnostics(diagnostic_messages);
-
+    std::string path, parsing_params pparams, diagnostic_params dparams) {
+  diagnostic_results results;
+  diagnostic_context ctx{results, std::move(dparams)};
+  parsing_driver driver{ctx, std::move(path), std::move(pparams)};
+  auto program = driver.parse();
+  dump_diagnostics(results.diagnostics());
   return program;
 }
 
-void dump_diagnostics(
-    const std::vector<diagnostic_message>& diagnostic_messages) {
+void dump_diagnostics(const std::vector<diagnostic>& diagnostic_messages) {
   char lineno[16];
   for (auto const& message : diagnostic_messages) {
-    if (message.lineno > 0) {
-      sprintf(lineno, ":%d", message.lineno);
+    if (message.lineno() > 0) {
+      sprintf(lineno, ":%d", message.lineno());
     } else {
       *lineno = '\0';
     }
-    switch (message.level) {
-      case diagnostic_level::YY_ERROR:
+    switch (message.level()) {
+      case diagnostic_level::parse_error:
         fprintf(
             stderr,
             "[ERROR:%s%s] (last token was '%s')\n%s\n",
-            message.filename.c_str(),
+            message.file().c_str(),
             lineno,
-            message.last_token.c_str(),
-            message.message.c_str());
+            message.token().c_str(),
+            message.message().c_str());
         break;
-      case diagnostic_level::WARNING:
+      case diagnostic_level::warning:
         fprintf(
             stderr,
             "[WARNING:%s%s] %s\n",
-            message.filename.c_str(),
+            message.file().c_str(),
             lineno,
-            message.message.c_str());
+            message.message().c_str());
         break;
-      case diagnostic_level::VERBOSE:
-        fprintf(stderr, "%s", message.message.c_str());
+      case diagnostic_level::info:
+        fprintf(stderr, "%s", message.message().c_str());
         break;
-      case diagnostic_level::DBG:
-        fprintf(stderr, "[PARSE%s] %s\n", lineno, message.message.c_str());
+      case diagnostic_level::debug:
+        fprintf(stderr, "[PARSE%s] %s\n", lineno, message.message().c_str());
         break;
-      case diagnostic_level::FAILURE:
+      case diagnostic_level::failure:
         fprintf(
             stderr,
             "[FAILURE:%s%s] %s\n",
-            message.filename.c_str(),
+            message.file().c_str(),
             lineno,
-            message.message.c_str());
+            message.message().c_str());
         break;
     }
   }

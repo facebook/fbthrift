@@ -46,9 +46,7 @@ inline uint32_t NimbleProtocolWriter::writeStructEnd() {
 }
 
 inline uint32_t NimbleProtocolWriter::writeFieldBegin(
-    const char* /*name*/,
-    TType fieldType,
-    int16_t fieldId) {
+    const char* /*name*/, TType fieldType, int16_t fieldId) {
   FieldBytes info = fieldBeginBytes(ttypeToNimbleType(fieldType), fieldId);
   encoder_.encodeFieldBytes(info);
   return 0;
@@ -63,9 +61,7 @@ inline uint32_t NimbleProtocolWriter::writeFieldStop() {
 }
 
 inline uint32_t NimbleProtocolWriter::writeMapBegin(
-    TType keyType,
-    TType valType,
-    uint32_t size) {
+    TType keyType, TType valType, uint32_t size) {
   encoder_.encodeFieldBytes(
       mapBeginByte(ttypeToNimbleType(keyType), ttypeToNimbleType(valType)));
   encoder_.encodeSizeChunk(size);
@@ -77,16 +73,14 @@ inline uint32_t NimbleProtocolWriter::writeMapEnd() {
 }
 
 inline uint32_t NimbleProtocolWriter::writeCollectionBegin(
-    TType elemType,
-    uint32_t size) {
+    TType elemType, uint32_t size) {
   encoder_.encodeFieldBytes(listBeginByte(ttypeToNimbleType(elemType)));
   encoder_.encodeSizeChunk(size);
   return 0;
 }
 
 inline uint32_t NimbleProtocolWriter::writeListBegin(
-    TType elemType,
-    uint32_t size) {
+    TType elemType, uint32_t size) {
   return writeCollectionBegin(elemType, size);
 }
 
@@ -95,8 +89,7 @@ inline uint32_t NimbleProtocolWriter::writeListEnd() {
 }
 
 inline uint32_t NimbleProtocolWriter::writeSetBegin(
-    TType elemType,
-    uint32_t size) {
+    TType elemType, uint32_t size) {
   return writeCollectionBegin(elemType, size);
 }
 
@@ -187,9 +180,7 @@ inline uint32_t NimbleProtocolWriter::serializedMessageSize(
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::serializedFieldSize(
-    const char* /*name*/,
-    TType /*fieldType*/,
-    int16_t /*fieldId*/) const {
+    const char* /*name*/, TType /*fieldType*/, int16_t /*fieldId*/) const {
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::serializedStructSize(
@@ -197,25 +188,21 @@ inline uint32_t NimbleProtocolWriter::serializedStructSize(
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::serializedSizeMapBegin(
-    TType /*keyType*/,
-    TType /*valType*/,
-    uint32_t /*size*/) const {
+    TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) const {
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::serializedSizeMapEnd() const {
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::serializedSizeListBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) const {
+    TType /*elemType*/, uint32_t /*size*/) const {
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::serializedSizeListEnd() const {
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::serializedSizeSetBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) const {
+    TType /*elemType*/, uint32_t /*size*/) const {
   return 0;
 }
 inline uint32_t NimbleProtocolWriter::serializedSizeSetEnd() const {
@@ -291,9 +278,7 @@ inline uint32_t NimbleProtocolWriter::serializedSizeSerializedData(
  * Reading functions
  */
 inline void NimbleProtocolReader::readMessageBegin(
-    std::string& /*name*/,
-    MessageType& /*messageType*/,
-    int32_t& /*seqid*/) {}
+    std::string& /*name*/, MessageType& /*messageType*/, int32_t& /*seqid*/) {}
 
 inline void NimbleProtocolReader::readMessageEnd() {}
 
@@ -303,43 +288,37 @@ inline void NimbleProtocolReader::readStructBegin(const std::string& /*name*/) {
 inline void NimbleProtocolReader::readStructEnd() {}
 
 inline void NimbleProtocolReader::readFieldBegin(
-    std::string& /*name*/,
-    NimbleType& /*fieldType*/,
-    int16_t& /*fieldId*/) {}
+    std::string& /*name*/, NimbleType& /*fieldType*/, int16_t& /*fieldId*/) {}
 
 inline void NimbleProtocolReader::readFieldEnd() {}
 
 inline void NimbleProtocolReader::readMapBegin(
-    NimbleType& keyType,
-    NimbleType& valType,
-    uint32_t& size) {
+    NimbleType& keyType, NimbleType& valType, uint32_t& size) {
   std::uint8_t byte = decoder_.nextFieldByte();
   mapTypesFromByte(byte, keyType, valType);
 
   size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(container_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, container_limit_);
   }
 }
 
 inline void NimbleProtocolReader::readMapEnd() {}
 
 inline void NimbleProtocolReader::readListBegin(
-    NimbleType& elemType,
-    uint32_t& size) {
+    NimbleType& elemType, uint32_t& size) {
   std::uint8_t byte = decoder_.nextFieldByte();
   listTypeFromByte(byte, elemType);
   size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(container_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, container_limit_);
   }
 }
 
 inline void NimbleProtocolReader::readListEnd() {}
 
 inline void NimbleProtocolReader::readSetBegin(
-    NimbleType& elemType,
-    uint32_t& size) {
+    NimbleType& elemType, uint32_t& size) {
   readListBegin(elemType, size);
 }
 
@@ -352,8 +331,7 @@ inline void NimbleProtocolReader::readBool(bool& value) {
 }
 
 inline void NimbleProtocolReader::readBoolWithContext(
-    bool& value,
-    StructReadState& srs) {
+    bool& value, StructReadState& srs) {
   value = static_cast<bool>(decoder_.nextContentChunk(srs.decoderState));
 }
 
@@ -368,8 +346,7 @@ inline void NimbleProtocolReader::readByte(int8_t& byte) {
 }
 
 inline void NimbleProtocolReader::readByteWithContext(
-    int8_t& byte,
-    StructReadState& srs) {
+    int8_t& byte, StructReadState& srs) {
   byte = static_cast<int8_t>(decoder_.nextContentChunk(srs.decoderState));
 }
 
@@ -378,8 +355,7 @@ inline void NimbleProtocolReader::readI16(int16_t& i16) {
 }
 
 inline void NimbleProtocolReader::readI16WithContext(
-    int16_t& i16,
-    StructReadState& srs) {
+    int16_t& i16, StructReadState& srs) {
   i16 = static_cast<int16_t>(decoder_.nextContentChunk(srs.decoderState));
 }
 
@@ -388,8 +364,7 @@ inline void NimbleProtocolReader::readI32(int32_t& i32) {
 }
 
 inline void NimbleProtocolReader::readI32WithContext(
-    int32_t& i32,
-    StructReadState& srs) {
+    int32_t& i32, StructReadState& srs) {
   i32 = static_cast<int32_t>(decoder_.nextContentChunk(srs.decoderState));
 }
 
@@ -400,8 +375,7 @@ inline void NimbleProtocolReader::readI64(int64_t& i64) {
 }
 
 inline void NimbleProtocolReader::readI64WithContext(
-    int64_t& i64,
-    StructReadState& srs) {
+    int64_t& i64, StructReadState& srs) {
   auto lower = decoder_.nextContentChunk(srs.decoderState);
   auto higher = decoder_.nextContentChunk(srs.decoderState);
   i64 = static_cast<int64_t>(higher) << 32 | lower;
@@ -417,8 +391,7 @@ inline void NimbleProtocolReader::readDouble(double& dub) {
 }
 
 inline void NimbleProtocolReader::readDoubleWithContext(
-    double& dub,
-    StructReadState& srs) {
+    double& dub, StructReadState& srs) {
   static_assert(sizeof(double) == sizeof(uint64_t), "");
   static_assert(std::numeric_limits<double>::is_iec559, "");
 
@@ -436,8 +409,7 @@ inline void NimbleProtocolReader::readFloat(float& flt) {
 }
 
 inline void NimbleProtocolReader::readFloatWithContext(
-    float& flt,
-    StructReadState& srs) {
+    float& flt, StructReadState& srs) {
   static_assert(sizeof(float) == sizeof(uint32_t), "");
   static_assert(std::numeric_limits<float>::is_iec559, "");
 
@@ -449,7 +421,7 @@ template <typename StrType>
 inline void NimbleProtocolReader::readString(StrType& str) {
   uint32_t size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(string_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
 
   decoder_.nextBinary(str, size);
@@ -457,11 +429,10 @@ inline void NimbleProtocolReader::readString(StrType& str) {
 
 template <typename StrType>
 inline void NimbleProtocolReader::readStringWithContext(
-    StrType& str,
-    StructReadState& /* srs */) {
+    StrType& str, StructReadState& /* srs */) {
   uint32_t size = decoder_.nextSizeChunk();
   if (size > static_cast<uint32_t>(string_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
 
   decoder_.nextBinary(str, size);
@@ -474,8 +445,7 @@ inline void NimbleProtocolReader::readBinary(StrType& str) {
 
 template <typename StrType>
 inline void NimbleProtocolReader::readBinaryWithContext(
-    StrType& str,
-    StructReadState& /* srs */) {
+    StrType& str, StructReadState& /* srs */) {
   readString(str);
 }
 
@@ -488,8 +458,7 @@ inline void NimbleProtocolReader::readBinary(
 }
 
 inline void NimbleProtocolReader::readBinaryWithContext(
-    std::unique_ptr<folly::IOBuf>& str,
-    StructReadState& srs) {
+    std::unique_ptr<folly::IOBuf>& str, StructReadState& srs) {
   if (!str) {
     str = std::make_unique<folly::IOBuf>();
   }
@@ -500,25 +469,23 @@ inline void NimbleProtocolReader::readBinary(folly::IOBuf& str) {
   uint32_t size = decoder_.nextSizeChunk();
 
   if (size > static_cast<uint32_t>(string_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
   decoder_.nextBinary(str, size);
 }
 
 inline void NimbleProtocolReader::readBinaryWithContext(
-    folly::IOBuf& str,
-    StructReadState& /* srs */) {
+    folly::IOBuf& str, StructReadState& /* srs */) {
   uint32_t size = decoder_.nextSizeChunk();
 
   if (size > static_cast<uint32_t>(string_limit_)) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
   decoder_.nextBinary(str, size);
 }
 
 inline void NimbleProtocolReader::skip_n(
-    std::uint32_t n,
-    std::initializer_list<detail::nimble::NimbleType> types) {
+    std::uint32_t n, std::initializer_list<detail::nimble::NimbleType> types) {
   StructReadState state;
   state.borrowFieldPtrs(this);
   state.decoderState = borrowState();
@@ -631,8 +598,7 @@ inline void NimbleProtocolReader::returnState(
 }
 
 bool NimbleProtocolReader::isCompatibleWithType(
-    TType expectedFieldType,
-    StructReadState& state) {
+    TType expectedFieldType, StructReadState& state) {
   return ttypeToNimbleType(expectedFieldType) == state.nimbleType;
 }
 } // namespace thrift

@@ -15,11 +15,12 @@
  */
 
 #include <thrift/lib/cpp2/protocol/NimbleProtocol.h>
+
+#include <random>
 #include <folly/Random.h>
 #include <folly/container/Array.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/nimble/test/gen-cpp2/modules_types.h>
-#include <random>
 
 using namespace cpp2;
 
@@ -461,20 +462,21 @@ TEST(NimbleProtocolTest, StructOfStructsTest) {
   *containerTypes.myIntList_ref() = {1, 2, 312, 8773, -15};
   *containerTypes.myStringList_ref() = {
       "foooo", "$!someRandomeStringgg", "socialImpact^", "bar", "examples&1"};
-  *containerTypes.myListOfList_ref() = {{341.5, 0.00001, -12.3456},
-                                        {25.109, -0.111, 7129.00101},
-                                        {512.17171, 0.0100241, -42.32}};
+  *containerTypes.myListOfList_ref() = {
+      {341.5, 0.00001, -12.3456},
+      {25.109, -0.111, 7129.00101},
+      {512.17171, 0.0100241, -42.32}};
   *containerTypes.myI16Set_ref() = {1212, -332, 19, 0, -1, 6667};
   *containerTypes.myStringSet_ref() = {"slkje", "ye21!(&", "apps@", "avengers"};
-  *containerTypes.myListOfMap_ref() = {{{3, "yo"}, {50, "heh"}},
-                                       {{65, "yoyoyo"}, {189, "heh>!@$S666"}}};
+  *containerTypes.myListOfMap_ref() = {
+      {{3, "yo"}, {50, "heh"}}, {{65, "yoyoyo"}, {189, "heh>!@$S666"}}};
   StructOfStruct structOfStructs;
   *structOfStructs.basicTypes_ref() = basicTypes;
   *structOfStructs.strTypes_ref() = strTypes;
   *structOfStructs.containerTypes_ref() = containerTypes;
   *structOfStructs.myStr_ref() = "omg!#@#TTS1";
-  *structOfStructs.myMap_ref() = {{"so many tests", 3198099},
-                                  {"ohhahaha", -1992948}};
+  *structOfStructs.myMap_ref() = {
+      {"so many tests", 3198099}, {"ohhahaha", -1992948}};
 
   NimbleProtocolWriter writer;
   structOfStructs.write(&writer);

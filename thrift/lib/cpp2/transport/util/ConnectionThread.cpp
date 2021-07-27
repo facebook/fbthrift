@@ -16,8 +16,8 @@
 
 #include <thrift/lib/cpp2/transport/util/ConnectionThread.h>
 
-#include <folly/portability/GFlags.h>
 #include <glog/logging.h>
+#include <folly/portability/GFlags.h>
 
 #include <folly/Conv.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -39,8 +39,7 @@ ConnectionThread::~ConnectionThread() {
 }
 
 std::shared_ptr<ClientConnectionIf> ConnectionThread::getConnection(
-    const std::string& addr,
-    uint16_t port) {
+    const std::string& addr, uint16_t port) {
   std::string serverKey = folly::to<std::string>(addr, ":", port);
   getEventBase()->runInEventBaseThreadAndWait(
       [&]() { maybeCreateConnection(serverKey, addr, port); });
@@ -49,12 +48,9 @@ std::shared_ptr<ClientConnectionIf> ConnectionThread::getConnection(
 }
 
 void ConnectionThread::maybeCreateConnection(
-    const std::string& serverKey,
-    const std::string& addr,
-    uint16_t port) {
+    const std::string& serverKey, const std::string& addr, uint16_t port) {
   LOG_IF(FATAL, FLAGS_transport == "rocket")
-      << "Use RSocketClientChannel::newChannel() or"
-         " RocketClientChannel::newChannel()";
+      << "Use RocketClientChannel::newChannel()";
 
   connections_.withWLock([&, this](auto& connections) {
     std::shared_ptr<ClientConnectionIf>& connection = connections[serverKey];

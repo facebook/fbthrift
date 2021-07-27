@@ -26,5 +26,5 @@ const legacy_config example = {
   "socket-receive-timeout": "120",
   "transport-frame-size": "1024",
   "apply-compression": "1",
-  "log-sampling-rate": ".01"
-}
+  "log-sampling-rate": ".01",
+};

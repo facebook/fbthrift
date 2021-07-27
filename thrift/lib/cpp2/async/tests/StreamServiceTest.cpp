@@ -26,8 +26,10 @@ template <typename Service>
 class StreamServiceTest
     : public AsyncTestSetup<Service, TestStreamServiceAsyncClient> {};
 
-using TestTypes =
-    ::testing::Types<TestStreamGeneratorService, TestStreamPublisherService>;
+using TestTypes = ::testing::Types<
+    TestStreamGeneratorService,
+    TestStreamPublisherService,
+    TestStreamGeneratorWithHeaderService>;
 TYPED_TEST_CASE(StreamServiceTest, TestTypes);
 
 TYPED_TEST(StreamServiceTest, Basic) {
@@ -36,12 +38,10 @@ TYPED_TEST(StreamServiceTest, Basic) {
         auto gen = (co_await client.co_range(0, 100)).toAsyncGenerator();
         int i = 0;
         while (auto t = co_await gen.next()) {
-          if (i <= 100) {
-            EXPECT_EQ(i++, *t);
-          } else {
-            EXPECT_FALSE(t);
-          }
+          EXPECT_EQ(i, *t);
+          EXPECT_LE(++i, 101);
         }
+        EXPECT_EQ(i, 101);
       });
 }
 
@@ -53,7 +53,8 @@ TYPED_TEST(StreamServiceTest, Throw) {
           auto t = co_await gen.next();
           EXPECT_EQ(i, *t);
         }
-        EXPECT_ANY_THROW(co_await gen.next());
+        EXPECT_THROW(
+            co_await gen.next(), apache::thrift::TApplicationException);
       });
 }
 
@@ -66,7 +67,7 @@ TYPED_TEST(StreamServiceTest, ThrowUDE) {
           auto t = co_await gen.next();
           EXPECT_EQ(i, *t);
         }
-        EXPECT_ANY_THROW(co_await gen.next());
+        EXPECT_THROW(co_await gen.next(), UserDefinedException);
       });
 }
 
@@ -77,5 +78,42 @@ TYPED_TEST(StreamServiceTest, ServerTimeout) {
         auto gen = (co_await client.co_range(0, 100)).toAsyncGenerator();
         co_await folly::coro::sleep(std::chrono::milliseconds(100));
         EXPECT_THROW(while (co_await gen.next()){}, TApplicationException);
+      });
+}
+
+TYPED_TEST(StreamServiceTest, WithHeader) {
+  this->connectToServer(
+      [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto gen =
+            (co_await client.co_range(0, 100)).toAsyncGeneratorWithHeader();
+        int i = 0;
+        while (auto t = co_await gen.next()) {
+          EXPECT_EQ(i, *t->payload);
+          if (t->metadata.otherMetadata_ref()) {
+            EXPECT_EQ(
+                std::to_string(i), (*t->metadata.otherMetadata_ref())["val"]);
+            t = co_await gen.next();
+            EXPECT_FALSE(t->payload);
+            EXPECT_EQ(
+                std::to_string(i), (*t->metadata.otherMetadata_ref())["val"]);
+          }
+          EXPECT_LE(++i, 101);
+        }
+        EXPECT_EQ(i, 101);
+      });
+}
+
+TYPED_TEST(StreamServiceTest, WithSizeTarget) {
+  this->connectToServer(
+      [](TestStreamServiceAsyncClient& client) -> folly::coro::Task<void> {
+        auto gen = (co_await client.co_range(
+                        RpcOptions().setMemoryBufferSize(512, 10), 0, 100))
+                       .toAsyncGenerator();
+        int i = 0;
+        while (auto t = co_await gen.next()) {
+          EXPECT_EQ(i, *t);
+          EXPECT_LE(++i, 101);
+        }
+        EXPECT_EQ(i, 101);
       });
 }

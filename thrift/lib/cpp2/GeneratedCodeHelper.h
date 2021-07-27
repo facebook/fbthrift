@@ -18,6 +18,7 @@
 
 #include <type_traits>
 #include <utility>
+#include "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h"
 
 #include <folly/Portability.h>
 
@@ -26,10 +27,11 @@
 #include <folly/Utility.h>
 #include <folly/futures/Future.h>
 #include <folly/io/Cursor.h>
-#include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp/protocol/TBase64Utils.h>
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+#include <thrift/lib/cpp2/async/AsyncProcessorHelper.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
@@ -38,13 +40,13 @@
 #include <thrift/lib/cpp2/detail/meta.h>
 #include <thrift/lib/cpp2/frozen/Frozen.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
+#include <thrift/lib/cpp2/protocol/Traits.h>
+#include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
 
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/FutureUtil.h>
 #endif
-
-THRIFT_FLAG_DECLARE_bool(reschedule_handler_future_on_tm);
 
 namespace apache {
 namespace thrift {
@@ -65,9 +67,7 @@ struct ForEachImpl {
 };
 template <int Size, class F, class Tuple>
 struct ForEachImpl<Size, Size, F, Tuple> {
-  static uint32_t forEach(Tuple&& /*tuple*/, F&& /*f*/) {
-    return 0;
-  }
+  static uint32_t forEach(Tuple&& /*tuple*/, F&& /*f*/) { return 0; }
 };
 
 template <int N = 0, class F, class Tuple>
@@ -230,19 +230,13 @@ T& maybe_remove_pointer(T* x) {
 template <bool hasIsSet, size_t count>
 struct IsSetHelper {
   void setIsSet(size_t /*index*/, bool /*value*/ = true) {}
-  bool getIsSet(size_t /*index*/) const {
-    return true;
-  }
+  bool getIsSet(size_t /*index*/) const { return true; }
 };
 
 template <size_t count>
 struct IsSetHelper<true, count> {
-  void setIsSet(size_t index, bool value = true) {
-    isset_[index] = value;
-  }
-  bool getIsSet(size_t index) const {
-    return isset_[index];
-  }
+  void setIsSet(size_t index, bool value = true) { isset_[index] = value; }
+  bool getIsSet(size_t index) const { return isset_[index]; }
 
  private:
   std::array<bool, count> isset_ = {};
@@ -250,10 +244,11 @@ struct IsSetHelper<true, count> {
 
 } // namespace detail
 
-template <int16_t Fid, protocol::TType Ttype, typename T>
+template <int16_t Fid, typename TC, typename T>
 struct FieldData {
   static const constexpr int16_t fid = Fid;
-  static const constexpr protocol::TType ttype = Ttype;
+  static const constexpr protocol::TType ttype = protocol_type_v<TC, T>;
+  typedef TC type_class;
   typedef T type;
   typedef typename std::remove_pointer<T>::type ref_type;
   T value;
@@ -278,18 +273,10 @@ class ThriftPresult
  public:
   using size = std::tuple_size<Fields>;
 
-  CurIsSetHelper& isSet() {
-    return *this;
-  }
-  const CurIsSetHelper& isSet() const {
-    return *this;
-  }
-  Fields& fields() {
-    return *this;
-  }
-  const Fields& fields() const {
-    return *this;
-  }
+  CurIsSetHelper& isSet() { return *this; }
+  const CurIsSetHelper& isSet() const { return *this; }
+  Fields& fields() { return *this; }
+  const Fields& fields() const { return *this; }
 
   // returns lvalue ref to the appropriate FieldData
   template <size_t index>
@@ -395,9 +382,7 @@ template <bool hasIsSet, class... Args>
 class Cpp2Ops<ThriftPresult<hasIsSet, Args...>> {
  public:
   typedef ThriftPresult<hasIsSet, Args...> Presult;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_STRUCT;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_STRUCT; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Presult* value) {
     return value->write(prot);
@@ -420,6 +405,13 @@ class Cpp2Ops<ThriftPresult<hasIsSet, Args...>> {
 namespace detail {
 namespace ap {
 
+template <
+    typename Protocol,
+    typename PResult,
+    typename T,
+    typename ErrorMapFunc>
+folly::Try<StreamPayload> encode_stream_element(folly::Try<T>&& val);
+
 template <typename Protocol, typename PResult, typename T>
 folly::Try<T> decode_stream_element(
     folly::Try<apache::thrift::StreamPayload>&& payload);
@@ -427,7 +419,7 @@ folly::Try<T> decode_stream_element(
 template <typename Protocol, typename PResult, typename T>
 apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
     apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
-    int32_t bufferSize);
+    const BufferOptions& bufferOptions);
 
 template <typename Protocol, typename PResult, typename T>
 std::unique_ptr<folly::IOBuf> encode_stream_payload(T&& _item);
@@ -436,16 +428,14 @@ template <typename Protocol, typename PResult>
 std::unique_ptr<folly::IOBuf> encode_stream_payload(folly::IOBuf&& _item);
 
 template <typename Protocol, typename PResult, typename ErrorMapFunc>
-std::unique_ptr<folly::IOBuf> encode_stream_exception(
-    folly::exception_wrapper ew);
+EncodedStreamError encode_stream_exception(folly::exception_wrapper ew);
 
 template <typename Protocol, typename PResult, typename T>
 T decode_stream_payload_impl(folly::IOBuf& payload, folly::tag_t<T>);
 
 template <typename Protocol, typename PResult, typename T>
 folly::IOBuf decode_stream_payload_impl(
-    folly::IOBuf& payload,
-    folly::tag_t<folly::IOBuf>);
+    folly::IOBuf& payload, folly::tag_t<folly::IOBuf>);
 
 template <typename Protocol, typename PResult, typename T>
 T decode_stream_payload(folly::IOBuf& payload);
@@ -490,53 +480,44 @@ folly::exception_wrapper extract_exn(PResult& result) {
 
 template <typename Protocol, typename PResult>
 folly::exception_wrapper recv_wrapped_helper(
-    const char* method,
-    Protocol* prot,
-    ClientReceiveState& state,
-    PResult& result) {
+    Protocol* prot, ClientReceiveState& state, PResult& result) {
   ContextStack* ctx = state.ctx();
-  std::string fname;
-  int32_t protoSeqId = 0;
-  MessageType mtype;
-  ctx->preRead();
+  MessageType mtype = state.messageType();
+  if (ctx) {
+    ctx->preRead();
+  }
   try {
-    if (state.header() && state.header()->getCrc32c().has_value() &&
-        checksum::crc32c(*state.buf()) != *state.header()->getCrc32c()) {
-      return folly::make_exception_wrapper<TApplicationException>(
-          TApplicationException::TApplicationExceptionType::CHECKSUM_MISMATCH,
-          "corrupted response");
-    }
-    prot->readMessageBegin(fname, mtype, protoSeqId);
-    if (mtype == T_EXCEPTION) {
+    const folly::IOBuf& buffer = *state.serializedResponse().buffer;
+    // TODO: re-enable checksumming after we properly adjust checksum on the
+    // server to exclude the envelope.
+    // if (state.header() && state.header()->getCrc32c().has_value() &&
+    //     checksum::crc32c(buffer) != *state.header()->getCrc32c()) {
+    //   return folly::make_exception_wrapper<TApplicationException>(
+    //       TApplicationException::TApplicationExceptionType::CHECKSUM_MISMATCH,
+    //       "corrupted response");
+    // }
+    if (mtype == MessageType::T_EXCEPTION) {
       TApplicationException x;
       apache::thrift::detail::deserializeExceptionBody(prot, &x);
-      prot->readMessageEnd();
       return folly::exception_wrapper(std::move(x));
     }
-    if (mtype != T_REPLY) {
+    if (mtype != MessageType::T_REPLY) {
       prot->skip(protocol::T_STRUCT);
-      prot->readMessageEnd();
       return folly::make_exception_wrapper<TApplicationException>(
           TApplicationException::TApplicationExceptionType::
               INVALID_MESSAGE_TYPE);
     }
-    if (fname.compare(method) != 0) {
-      prot->skip(protocol::T_STRUCT);
-      prot->readMessageEnd();
-      return folly::make_exception_wrapper<TApplicationException>(
-          TApplicationException::TApplicationExceptionType::WRONG_METHOD_NAME,
-          folly::to<std::string>(
-              "expected method: ", method, ", actual method: ", fname));
-    }
     SerializedMessage smsg;
     smsg.protocolType = prot->protocolType();
-    smsg.buffer = state.buf();
-    ctx->onReadData(smsg);
+    smsg.buffer = &buffer;
+    if (ctx) {
+      ctx->onReadData(smsg);
+    }
     apache::thrift::detail::deserializeRequestBody(prot, &result);
-    prot->readMessageEnd();
-    ctx->postRead(
-        state.header(),
-        folly::to_narrow(state.buf()->computeChainDataLength()));
+    if (ctx) {
+      ctx->postRead(
+          state.header(), folly::to_narrow(buffer.computeChainDataLength()));
+    }
     return folly::exception_wrapper();
   } catch (std::exception const& e) {
     return folly::exception_wrapper(std::current_exception(), e);
@@ -547,11 +528,8 @@ folly::exception_wrapper recv_wrapped_helper(
 
 template <typename PResult, typename Protocol, typename... ReturnTs>
 folly::exception_wrapper recv_wrapped(
-    const char* method,
-    Protocol* prot,
-    ClientReceiveState& state,
-    ReturnTs&... _returns) {
-  prot->setInput(state.buf());
+    Protocol* prot, ClientReceiveState& state, ReturnTs&... _returns) {
+  prot->setInput(state.serializedResponse().buffer.get());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
   PResult result;
@@ -560,12 +538,12 @@ folly::exception_wrapper recv_wrapped(
         result.template get<index.value>().value = &obj;
       },
       _returns...);
-  auto ew = recv_wrapped_helper(method, prot, state, result);
+  auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
     constexpr auto const kHasReturnType = sizeof...(_returns) != 0;
     ew = apache::thrift::detail::ac::extract_exn<kHasReturnType>(result);
   }
-  if (ew) {
+  if (ctx && ew) {
     ctx->handlerErrorWrapped(ew);
   }
   return ew;
@@ -573,22 +551,21 @@ folly::exception_wrapper recv_wrapped(
 
 template <typename PResult, typename Protocol, typename Response, typename Item>
 folly::exception_wrapper recv_wrapped(
-    const char* method,
     Protocol* prot,
     ClientReceiveState& state,
     apache::thrift::ResponseAndClientBufferedStream<Response, Item>& _return) {
-  prot->setInput(state.buf());
+  prot->setInput(state.serializedResponse().buffer.get());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
 
   typename PResult::FieldsType result;
   result.template get<0>().value = &_return.response;
 
-  auto ew = recv_wrapped_helper(method, prot, state, result);
+  auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<true>(result);
   }
-  if (ew) {
+  if (ctx && ew) {
     ctx->handlerErrorWrapped(ew);
   }
 
@@ -596,28 +573,27 @@ folly::exception_wrapper recv_wrapped(
     _return.stream = apache::thrift::detail::ap::decode_client_buffered_stream<
         Protocol,
         typename PResult::StreamPResultType,
-        Item>(state.extractStreamBridge(), state.chunkBufferSize());
+        Item>(state.extractStreamBridge(), state.bufferOptions());
   }
   return ew;
 }
 
 template <typename PResult, typename Protocol, typename Item>
 folly::exception_wrapper recv_wrapped(
-    const char* method,
     Protocol* prot,
     ClientReceiveState& state,
     apache::thrift::ClientBufferedStream<Item>& _return) {
-  prot->setInput(state.buf());
+  prot->setInput(state.serializedResponse().buffer.get());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
 
   typename PResult::FieldsType result;
 
-  auto ew = recv_wrapped_helper(method, prot, state, result);
+  auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<false>(result);
   }
-  if (ew) {
+  if (ctx && ew) {
     ctx->handlerErrorWrapped(ew);
   }
 
@@ -625,7 +601,7 @@ folly::exception_wrapper recv_wrapped(
     _return = apache::thrift::detail::ap::decode_client_buffered_stream<
         Protocol,
         typename PResult::StreamPResultType,
-        Item>(state.extractStreamBridge(), state.chunkBufferSize());
+        Item>(state.extractStreamBridge(), state.bufferOptions());
   }
   return ew;
 }
@@ -644,17 +620,11 @@ ClientSink<SinkType, FinalResponseType> createSink(
     apache::thrift::detail::ClientSinkBridge::Ptr impl) {
   return ClientSink<SinkType, FinalResponseType>(
       std::move(impl),
-      [](folly::Try<SinkType>&& item) mutable {
-        if (item.hasValue()) {
-          return ap::encode_stream_payload<ProtocolWriter, SinkPResult>(
-              std::move(item).value());
-        } else {
-          return ap::encode_stream_exception<
-              ProtocolWriter,
-              SinkPResult,
-              std::decay_t<ErrorMapFunc>>(std::move(item).exception());
-        }
-      },
+      apache::thrift::detail::ap::encode_stream_element<
+          ProtocolWriter,
+          SinkPResult,
+          SinkType,
+          std::decay_t<ErrorMapFunc>>,
       apache::thrift::detail::ap::decode_stream_element<
           ProtocolReader,
           FinalResponsePResult,
@@ -671,25 +641,24 @@ template <
     typename Item,
     typename FinalResponse>
 folly::exception_wrapper recv_wrapped(
-    const char* method,
     ProtocolReader* prot,
     ClientReceiveState& state,
     apache::thrift::detail::ClientSinkBridge::Ptr impl,
     apache::thrift::ResponseAndClientSink<Response, Item, FinalResponse>&
         _return) {
 #if FOLLY_HAS_COROUTINES
-  prot->setInput(state.buf());
+  prot->setInput(state.serializedResponse().buffer.get());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
 
   typename PResult::FieldsType result;
   result.template get<0>().value = &_return.response;
 
-  auto ew = recv_wrapped_helper(method, prot, state, result);
+  auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<true>(result);
   }
-  if (ew) {
+  if (ctx && ew) {
     ctx->handlerErrorWrapped(ew);
   }
 
@@ -705,7 +674,6 @@ folly::exception_wrapper recv_wrapped(
   }
   return ew;
 #else
-  (void)method;
   (void)prot;
   (void)state;
   (void)impl;
@@ -722,23 +690,22 @@ template <
     typename Item,
     typename FinalResponse>
 folly::exception_wrapper recv_wrapped(
-    const char* method,
     ProtocolReader* prot,
     ClientReceiveState& state,
     apache::thrift::detail::ClientSinkBridge::Ptr impl,
     apache::thrift::ClientSink<Item, FinalResponse>& _return) {
 #if FOLLY_HAS_COROUTINES
-  prot->setInput(state.buf());
+  prot->setInput(state.serializedResponse().buffer.get());
   auto guard = folly::makeGuard([&] { prot->setInput(nullptr); });
   apache::thrift::ContextStack* ctx = state.ctx();
 
   typename PResult::FieldsType result;
 
-  auto ew = recv_wrapped_helper(method, prot, state, result);
+  auto ew = recv_wrapped_helper(prot, state, result);
   if (!ew) {
     ew = apache::thrift::detail::ac::extract_exn<false>(result);
   }
-  if (ew) {
+  if (ctx && ew) {
     ctx->handlerErrorWrapped(ew);
   }
 
@@ -754,7 +721,6 @@ folly::exception_wrapper recv_wrapped(
   }
   return ew;
 #else
-  (void)method;
   (void)prot;
   (void)state;
   (void)impl;
@@ -776,11 +742,22 @@ namespace ap {
 template <typename ProtocolReader, typename ProtocolWriter>
 struct helper {
   static std::unique_ptr<folly::IOBuf> write_exn(
+      bool includeEnvelope,
       const char* method,
       ProtocolWriter* prot,
       int32_t protoSeqId,
       ContextStack* ctx,
       const TApplicationException& x);
+
+  // Temporary for backwards compatibility
+  static std::unique_ptr<folly::IOBuf> write_exn(
+      const char* method,
+      ProtocolWriter* prot,
+      int32_t protoSeqId,
+      ContextStack* ctx,
+      const TApplicationException& x) {
+    return write_exn(true, method, prot, protoSeqId, ctx, x);
+  }
 
   static void process_exn(
       const char* func,
@@ -803,125 +780,171 @@ template <typename ProtocolWriter>
 using helper_w = helper<reader_of<ProtocolWriter>, ProtocolWriter>;
 
 template <typename T>
-using is_root_async_processor = std::is_void<typename T::BaseAsyncProcessor>;
+inline constexpr bool is_root_async_processor =
+    std::is_void_v<typename T::BaseAsyncProcessor>;
+
+template <typename Derived>
+GeneratedAsyncProcessor::ProcessFunc<Derived> getProcessFuncFromProtocol(
+    folly::tag_t<CompactProtocolReader> /* unused */,
+    const GeneratedAsyncProcessor::ProcessFuncs<Derived>& funcs) {
+  return funcs.compact;
+}
+template <typename Derived>
+GeneratedAsyncProcessor::ProcessFunc<Derived> getProcessFuncFromProtocol(
+    folly::tag_t<BinaryProtocolReader> /* unused */,
+    const GeneratedAsyncProcessor::ProcessFuncs<Derived>& funcs) {
+  return funcs.binary;
+}
+
+inline void nonRecursiveProcessMissing(
+    const std::string& methodName,
+    ResponseChannelRequest::UniquePtr req,
+    folly::EventBase* eb) {
+  if (req) {
+    eb->runInEventBaseThread([request = std::move(req),
+                              name = std::string{methodName}]() mutable {
+      AsyncProcessorHelper::sendUnknownMethodError(std::move(request), name);
+    });
+  }
+}
 
 template <class ProtocolReader, class Processor>
-typename std::enable_if<is_root_async_processor<Processor>::value>::type
-process_missing(
-    Processor*,
+void recursiveProcessMissing(
+    Processor* processor,
     const std::string& fname,
     ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedRequest&&,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
-    concurrency::ThreadManager*,
-    int32_t protoSeqId) {
-  using h = helper_r<ProtocolReader>;
-  const char* fn = "process";
-  auto type = TApplicationException::TApplicationExceptionType::UNKNOWN_METHOD;
-  const auto msg = fmt::format("Method name {} not found", fname);
-  return h::process_exn(fn, type, msg, std::move(req), ctx, eb, protoSeqId);
-}
+    concurrency::ThreadManager* tm);
 
 template <class ProtocolReader, class Processor>
-typename std::enable_if<!is_root_async_processor<Processor>::value>::type
-process_missing(
-    Processor* processor,
-    const std::string& /*fname*/,
-    ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedRequest&& serializedRequest,
-    Cpp2RequestContext* ctx,
-    folly::EventBase* eb,
-    concurrency::ThreadManager* tm,
-    int32_t /*protoSeqId*/) {
-  auto protType = ProtocolReader::protocolType();
-  processor->Processor::BaseAsyncProcessor::processSerializedRequest(
-      std::move(req), std::move(serializedRequest), protType, ctx, eb, tm);
-}
-
-struct MessageBegin {
-  MessageBegin() {}
-  MessageBegin(const MessageBegin&) = delete;
-  MessageBegin& operator=(const MessageBegin&) = delete;
-  MessageBegin(MessageBegin&&) = default;
-  MessageBegin& operator=(MessageBegin&&) = default;
-  bool isValid{true};
-  size_t size{0};
-  std::string methodName;
-  MessageType msgType;
-  int32_t seqId{0};
-  std::string errMessage;
-};
-
-bool setupRequestContextWithMessageBegin(
-    const MessageBegin& msgBegin,
-    protocol::PROTOCOL_TYPES protType,
-    ResponseChannelRequest::UniquePtr& req,
-    Cpp2RequestContext* ctx,
-    folly::EventBase* eb);
-
-MessageBegin deserializeMessageBegin(
-    const folly::IOBuf& buf,
-    protocol::PROTOCOL_TYPES protType);
-
-template <class ProtocolReader, class Processor>
-void process_pmap(
+void recursiveProcessPmap(
     Processor* proc,
-    const typename GeneratedAsyncProcessor::ProcessMap<
-        GeneratedAsyncProcessor::ProcessFunc<Processor>>& pmap,
+    const typename Processor::ProcessMap& pmap,
     ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedRequest&& serializedRequest,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
   const auto& fname = ctx->getMethodName();
-  auto pfn = pmap.find(fname);
-  if (pfn == pmap.end()) {
-    process_missing<ProtocolReader>(
-        proc,
-        fname,
+  auto processFuncs = pmap.find(fname);
+  if (processFuncs == pmap.end()) {
+    recursiveProcessMissing<ProtocolReader>(
+        proc, fname, std::move(req), std::move(serializedRequest), ctx, eb, tm);
+    return;
+  }
+
+  auto pfn = getProcessFuncFromProtocol(
+      folly::tag<ProtocolReader>, processFuncs->second);
+  (proc->*pfn)(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+template <class ProtocolReader, class Processor>
+void recursiveProcessMissing(
+    Processor* processor,
+    const std::string& fname,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  if constexpr (is_root_async_processor<Processor>) {
+    nonRecursiveProcessMissing(fname, std::move(req), eb);
+  } else {
+    using BaseAsyncProcessor = typename Processor::BaseAsyncProcessor;
+    recursiveProcessPmap<ProtocolReader, BaseAsyncProcessor>(
+        processor,
+        BaseAsyncProcessor::getOwnProcessMap(),
         std::move(req),
         std::move(serializedRequest),
         ctx,
         eb,
-        tm,
-        ctx->getProtoSeqId());
-    return;
+        tm);
   }
-
-  (proc->*(pfn->second))(
-      std::move(req), std::move(serializedRequest), ctx, eb, tm);
 }
 
-//  Generated AsyncProcessor::process just calls this.
+/**
+ * Recursive implementation of method resolution based on
+ * Processor::getOwnProcessMap(). This is the fallback/legacy implementation for
+ * generated AsyncProcessor::processSerializedCompressedRequest, which is called
+ * in the absence of MethodMetadata support.
+ *
+ * TODO(praihan): Remove this implementation once all services support
+ * MethodMetadata.
+ */
+template <class ProtocolReader, class Processor>
+void recursiveProcess(
+    Processor* processor,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  return recursiveProcessPmap<ProtocolReader>(
+      processor,
+      Processor::getOwnProcessMap(),
+      std::move(req),
+      std::move(serializedRequest),
+      ctx,
+      eb,
+      tm);
+}
+
+/**
+ * Non-recursive implementation of method resolution based on
+ * the passed-in MethodMetadata.
+ * See ServerInterface::GeneratedMethodMetadata.
+ */
+template <class ProtocolReader, class Processor>
+void nonRecursiveProcess(
+    Processor* processor,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    const apache::thrift::AsyncProcessor::MethodMetadata& untypedMethodMetadata,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
+  static_assert(std::is_final_v<Metadata>);
+  auto methodMetadata =
+      AsyncProcessorHelper::metadataOfType<Metadata>(untypedMethodMetadata);
+  DCHECK(methodMetadata != nullptr)
+      << "Received MethodMetadata of an unknown type";
+  auto pfn = getProcessFuncFromProtocol(
+      folly::tag<ProtocolReader>, methodMetadata->processFuncs);
+  (processor->*pfn)(std::move(req), std::move(serializedRequest), ctx, eb, tm);
+}
+
+// Generated AsyncProcessor::processSerializedCompressedRequestWithMetadata just
+// calls this
 template <class Processor>
 void process(
     Processor* processor,
     ResponseChannelRequest::UniquePtr req,
-    apache::thrift::SerializedRequest&& serializedRequest,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    const apache::thrift::AsyncProcessor::MethodMetadata& methodMetadata,
     protocol::PROTOCOL_TYPES protType,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm) {
   switch (protType) {
     case protocol::T_BINARY_PROTOCOL: {
-      const auto& pmap = processor->getBinaryProtocolProcessMap();
-      return process_pmap<BinaryProtocolReader>(
+      return nonRecursiveProcess<BinaryProtocolReader>(
           processor,
-          pmap,
           std::move(req),
           std::move(serializedRequest),
+          methodMetadata,
           ctx,
           eb,
           tm);
     }
     case protocol::T_COMPACT_PROTOCOL: {
-      const auto& pmap = processor->getCompactProtocolProcessMap();
-      return process_pmap<CompactProtocolReader>(
+      return nonRecursiveProcess<CompactProtocolReader>(
           processor,
-          pmap,
           std::move(req),
           std::move(serializedRequest),
+          methodMetadata,
           ctx,
           eb,
           tm);
@@ -930,6 +953,95 @@ void process(
       LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
       return;
   }
+}
+
+// Generated AsyncProcessor::processSerializedCompressedRequest just calls this
+template <class Processor>
+void process(
+    Processor* processor,
+    ResponseChannelRequest::UniquePtr req,
+    apache::thrift::SerializedCompressedRequest&& serializedRequest,
+    protocol::PROTOCOL_TYPES protType,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb,
+    concurrency::ThreadManager* tm) {
+  switch (protType) {
+    case protocol::T_BINARY_PROTOCOL: {
+      return recursiveProcess<BinaryProtocolReader>(
+          processor, std::move(req), std::move(serializedRequest), ctx, eb, tm);
+    }
+    case protocol::T_COMPACT_PROTOCOL: {
+      return recursiveProcess<CompactProtocolReader>(
+          processor, std::move(req), std::move(serializedRequest), ctx, eb, tm);
+    }
+    default:
+      LOG(ERROR) << "invalid protType: " << folly::to_underlying(protType);
+      return;
+  }
+}
+
+struct MessageBegin : folly::MoveOnly {
+  std::string methodName;
+  struct Metadata {
+    std::string errMessage;
+    size_t size{0};
+    int32_t seqId{0};
+    MessageType msgType{};
+    bool isValid{true};
+  } metadata;
+};
+
+bool setupRequestContextWithMessageBegin(
+    const MessageBegin::Metadata& msgBegin,
+    protocol::PROTOCOL_TYPES protType,
+    ResponseChannelRequest::UniquePtr& req,
+    Cpp2RequestContext* ctx,
+    folly::EventBase* eb);
+
+MessageBegin deserializeMessageBegin(
+    const folly::IOBuf& buf, protocol::PROTOCOL_TYPES protType);
+
+/**
+ * The function pointers themselves are contravariant on the Processor type but
+ * ProcessFuncs is not because templates are invariant. This function performs
+ * the conversion manually.
+ */
+template <class DerivedProcessor, class BaseProcessor>
+std::enable_if_t<
+    std::is_base_of_v<BaseProcessor, DerivedProcessor>,
+    GeneratedAsyncProcessor::ProcessFuncs<DerivedProcessor>>
+downcastProcessFuncs(
+    const GeneratedAsyncProcessor::ProcessFuncs<BaseProcessor>& processFuncs) {
+  return GeneratedAsyncProcessor::ProcessFuncs<DerivedProcessor>{
+      processFuncs.compact, processFuncs.binary};
+}
+
+template <
+    class MostDerivedProcessor,
+    class CurrentProcessor = MostDerivedProcessor>
+void populateMethodMetadataMap(AsyncProcessorFactory::MethodMetadataMap& map) {
+  for (const auto& [methodName, processFuncs] :
+       CurrentProcessor::getOwnProcessMap()) {
+    map.emplace(
+        methodName,
+        // Always create GeneratatedMethodMetadata<MostDerivedProcessor> so that
+        // all entries in the map are of the same type.
+        std::make_shared<
+            ServerInterface::GeneratedMethodMetadata<MostDerivedProcessor>>(
+            downcastProcessFuncs<MostDerivedProcessor>(processFuncs)));
+  }
+  if constexpr (!is_root_async_processor<CurrentProcessor>) {
+    populateMethodMetadataMap<
+        MostDerivedProcessor,
+        typename CurrentProcessor::BaseAsyncProcessor>(map);
+  }
+}
+
+template <class Processor>
+AsyncProcessorFactory::MethodMetadataMap createMethodMetadataMap() {
+  AsyncProcessorFactory::MethodMetadataMap result;
+  populateMethodMetadataMap<Processor>(result);
+  return result;
 }
 
 template <typename Protocol, typename PResult, typename T>
@@ -952,23 +1064,36 @@ std::unique_ptr<folly::IOBuf> encode_stream_payload(folly::IOBuf&& _item) {
 }
 
 template <typename Protocol, typename PResult, typename ErrorMapFunc>
-std::unique_ptr<folly::IOBuf> encode_stream_exception(
-    folly::exception_wrapper ew) {
+EncodedStreamError encode_stream_exception(folly::exception_wrapper ew) {
   ErrorMapFunc mapException;
   Protocol prot;
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   PResult res;
+
+  PayloadExceptionMetadata exceptionMetadata;
+  PayloadExceptionMetadataBase exceptionMetadataBase;
   if (mapException(res, ew)) {
     prot.setOutput(&queue, res.serializedSizeZC(&prot));
     res.write(&prot);
+    exceptionMetadata.set_declaredException(PayloadDeclaredExceptionMetadata());
   } else {
     constexpr size_t kQueueAppenderGrowth = 4096;
     prot.setOutput(&queue, kQueueAppenderGrowth);
     TApplicationException ex(ew.what().toStdString());
+    exceptionMetadataBase.what_utf8_ref() = ex.what();
     apache::thrift::detail::serializeExceptionBody(&prot, &ex);
+    PayloadAppUnknownExceptionMetdata aue;
+    aue.errorClassification_ref().ensure().blame_ref() = ErrorBlame::SERVER;
+    exceptionMetadata.set_appUnknownException(std::move(aue));
   }
 
-  return std::move(queue).move();
+  exceptionMetadataBase.metadata_ref() = std::move(exceptionMetadata);
+  StreamPayloadMetadata streamPayloadMetadata;
+  PayloadMetadata payloadMetadata;
+  payloadMetadata.set_exceptionMetadata(std::move(exceptionMetadataBase));
+  streamPayloadMetadata.payloadMetadata_ref() = std::move(payloadMetadata);
+  return EncodedStreamError(
+      StreamPayload(std::move(queue).move(), std::move(streamPayloadMetadata)));
 }
 
 template <
@@ -976,14 +1101,19 @@ template <
     typename PResult,
     typename T,
     typename ErrorMapFunc>
-folly::Try<StreamPayload> encode_server_stream_payload(folly::Try<T>&& val) {
+folly::Try<StreamPayload> encode_stream_element(folly::Try<T>&& val) {
   if (val.hasValue()) {
+    StreamPayloadMetadata streamPayloadMetadata;
+    PayloadMetadata payloadMetadata;
+    payloadMetadata.responseMetadata_ref().ensure();
+    streamPayloadMetadata.payloadMetadata_ref() = std::move(payloadMetadata);
     return folly::Try<StreamPayload>(
-        {encode_stream_payload<Protocol, PResult>(std::move(*val)), {}});
+        {encode_stream_payload<Protocol, PResult>(std::move(*val)),
+         std::move(streamPayloadMetadata)});
   } else if (val.hasException()) {
     return folly::Try<StreamPayload>(folly::exception_wrapper(
-        EncodedError(encode_stream_exception<Protocol, PResult, ErrorMapFunc>(
-            val.exception()))));
+        encode_stream_exception<Protocol, PResult, ErrorMapFunc>(
+            val.exception())));
   } else {
     return folly::Try<StreamPayload>();
   }
@@ -1003,8 +1133,7 @@ T decode_stream_payload_impl(folly::IOBuf& payload, folly::tag_t<T>) {
 
 template <typename Protocol, typename PResult, typename T>
 folly::IOBuf decode_stream_payload_impl(
-    folly::IOBuf& payload,
-    folly::tag_t<folly::IOBuf>) {
+    folly::IOBuf& payload, folly::tag_t<folly::IOBuf>) {
   return std::move(payload);
 }
 
@@ -1016,14 +1145,13 @@ T decode_stream_payload(folly::IOBuf& payload) {
 
 template <typename Protocol, typename PResult, typename T>
 folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
-  Protocol prot;
   folly::exception_wrapper hijacked;
-  ew.with_exception(
-      [&hijacked, &prot](apache::thrift::detail::EncodedError& err) {
+  ew.handle(
+      [&hijacked](apache::thrift::detail::EncodedError& err) {
         PResult result;
         T res{};
         result.template get<0>().value = &res;
-
+        Protocol prot;
         prot.setInput(err.encoded.get());
         result.read(&prot);
 
@@ -1043,12 +1171,66 @@ folly::exception_wrapper decode_stream_exception(folly::exception_wrapper ew) {
           apache::thrift::detail::deserializeExceptionBody(&prot, &x);
           hijacked = folly::exception_wrapper(std::move(x));
         }
-      });
+      },
+      [&hijacked](apache::thrift::detail::EncodedStreamError& err) {
+        auto& payload = err.encoded;
+        DCHECK_EQ(payload.metadata.payloadMetadata_ref().has_value(), true);
+        DCHECK_EQ(
+            payload.metadata.payloadMetadata_ref()->getType(),
+            PayloadMetadata::exceptionMetadata);
+        auto& exceptionMetadataBase =
+            payload.metadata.payloadMetadata_ref()->get_exceptionMetadata();
+        if (auto exceptionMetadataRef = exceptionMetadataBase.metadata_ref()) {
+          if (exceptionMetadataRef->getType() ==
+              PayloadExceptionMetadata::declaredException) {
+            PResult result;
+            T res{};
+            Protocol prot;
+            result.template get<0>().value = &res;
+            prot.setInput(payload.payload.get());
+            result.read(&prot);
+            CHECK(!result.getIsSet(0));
+            foreach_index<PResult::size::value - 1>([&](auto index) {
+              if (!hijacked && result.getIsSet(index.value + 1)) {
+                auto& fdata = result.template get<index.value + 1>();
+                hijacked = folly::exception_wrapper(std::move(fdata.ref()));
+              }
+            });
+
+            if (!hijacked) {
+              hijacked =
+                  TApplicationException("Failed to parse declared exception");
+            }
+          } else {
+            hijacked = TApplicationException(
+                exceptionMetadataBase.what_utf8_ref().value_or(""));
+          }
+        } else {
+          hijacked =
+              TApplicationException("Missing payload exception metadata");
+        }
+      },
+      [&hijacked](apache::thrift::detail::EncodedStreamRpcError& err) {
+        StreamRpcError streamRpcError;
+        CompactProtocolReader reader;
+        reader.setInput(err.encoded.get());
+        streamRpcError.read(&reader);
+        TApplicationException::TApplicationExceptionType exType{
+            TApplicationException::UNKNOWN};
+        auto code = streamRpcError.code_ref();
+        if (code &&
+            (code.value() == StreamRpcErrorCode::CREDIT_TIMEOUT ||
+             code.value() == StreamRpcErrorCode::CHUNK_TIMEOUT)) {
+          exType = TApplicationException::TIMEOUT;
+        }
+        hijacked = TApplicationException(
+            exType, streamRpcError.what_utf8_ref().value_or(""));
+      },
+      [](...) {});
 
   if (hijacked) {
     return hijacked;
   }
-
   return ew;
 }
 
@@ -1062,31 +1244,31 @@ ServerStreamFactory encode_server_stream(
     folly::Executor::KeepAlive<> serverExecutor) {
   return stream(
       std::move(serverExecutor),
-      encode_server_stream_payload<Protocol, PResult, T, ErrorMapFunc>);
+      encode_stream_element<Protocol, PResult, T, ErrorMapFunc>);
 }
 
 template <typename Protocol, typename PResult, typename T>
 folly::Try<T> decode_stream_element(
     folly::Try<apache::thrift::StreamPayload>&& payload) {
-  DCHECK(payload.hasValue() || payload.hasException());
-
   if (payload.hasValue()) {
     return folly::Try<T>(
         decode_stream_payload<Protocol, PResult, T>(*payload->payload));
-  } else {
+  } else if (payload.hasException()) {
     return folly::Try<T>(decode_stream_exception<Protocol, PResult, T>(
         std::move(payload).exception()));
+  } else {
+    return folly::Try<T>();
   }
 }
 
 template <typename Protocol, typename PResult, typename T>
 apache::thrift::ClientBufferedStream<T> decode_client_buffered_stream(
     apache::thrift::detail::ClientStreamBridge::ClientPtr streamBridge,
-    int32_t bufferSize) {
+    const BufferOptions& bufferOptions) {
   return apache::thrift::ClientBufferedStream<T>(
       std::move(streamBridge),
       decode_stream_element<Protocol, PResult, T>,
-      bufferSize);
+      bufferOptions);
 }
 
 template <
@@ -1112,37 +1294,28 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
               -> folly::coro::AsyncGenerator<SinkType&&> {
             while (auto item = co_await gen_.next()) {
               auto payload = std::move(*item);
-              if (payload.hasValue()) {
-                // if exception is thrown there, it will propagate to inner
-                // consumer which is intended
-                co_yield ap::decode_stream_payload<
-                    ProtocolReader,
-                    SinkPResult,
-                    SinkType>(*payload->payload);
-              } else {
-                ap::decode_stream_exception<
-                    ProtocolReader,
-                    SinkPResult,
-                    SinkType>(payload.exception())
-                    .throw_exception();
-              }
+              co_yield folly::coro::co_result(ap::decode_stream_element<
+                                              ProtocolReader,
+                                              SinkPResult,
+                                              SinkType>(std::move(payload)));
             }
           }(std::move(gen)));
       co_return folly::Try<StreamPayload>(StreamPayload(
           ap::encode_stream_payload<ProtocolWriter, FinalResponsePResult>(
               std::move(finalResponse)),
           {}));
+// This causes clang internal error on Windows.
+#if !(defined(_WIN32) && defined(__clang__))
     } catch (std::exception& e) {
       ew = folly::exception_wrapper(std::current_exception(), e);
+#endif
     } catch (...) {
       ew = folly::exception_wrapper(std::current_exception());
     }
-    co_return folly::Try<StreamPayload>(rocket::RocketException(
-        rocket::ErrorCode::APPLICATION_ERROR,
-        ap::encode_stream_exception<
-            ProtocolWriter,
-            FinalResponsePResult,
-            ErrorMapFunc>(std::move(ew))));
+    co_return folly::Try<StreamPayload>(ap::encode_stream_exception<
+                                        ProtocolWriter,
+                                        FinalResponsePResult,
+                                        ErrorMapFunc>(std::move(ew)));
   };
   return apache::thrift::detail::SinkConsumerImpl{
       std::move(consumer),
@@ -1160,141 +1333,94 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
 //  ServerInterface helpers
 namespace detail {
 namespace si {
-
-template <typename F>
-using ret = typename folly::invoke_result_t<F>;
-template <typename F>
-using ret_lift = typename folly::lift_unit<ret<F>>::type;
-template <typename F>
-using fut_ret = typename ret<F>::value_type;
-template <typename F>
-using fut_ret_drop = typename folly::drop_unit<fut_ret<F>>::type;
-template <typename T>
-struct action_traits_impl;
-template <typename C, typename A>
-struct action_traits_impl<void (C::*)(A&) const> {
-  using arg_type = A;
-};
-template <typename C, typename A>
-struct action_traits_impl<void (C::*)(A&)> {
-  using arg_type = A;
-};
-template <typename F>
-using action_traits = action_traits_impl<decltype(&F::operator())>;
-template <typename F>
-using arg = typename action_traits<F>::arg_type;
-
 template <typename T>
 folly::Future<T> future(
-    folly::SemiFuture<T>&& future,
-    folly::Executor* executor) {
+    folly::SemiFuture<T>&& future, folly::Executor::KeepAlive<> keepAlive) {
   if (future.isReady()) {
     return std::move(future).toUnsafeFuture();
   }
-  return std::move(future).via(executor);
-}
-
-template <class F>
-folly::SemiFuture<ret_lift<F>> semifuture(F&& f) {
-  return folly::makeSemiFutureWith(std::forward<F>(f));
-}
-
-template <class F>
-arg<F> returning(F&& f) {
-  arg<F> ret;
-  f(ret);
-  return ret;
-}
-
-template <class F>
-folly::SemiFuture<arg<F>> semifuture_returning(F&& f) {
-  return semifuture([&]() { return returning(std::forward<F>(f)); });
-}
-
-template <class F>
-std::unique_ptr<arg<F>> returning_uptr(F&& f) {
-  auto ret = std::make_unique<arg<F>>();
-  f(*ret);
-  return ret;
-}
-
-template <class F>
-folly::SemiFuture<std::unique_ptr<arg<F>>> semifuture_returning_uptr(F&& f) {
-  return semifuture([&]() { return returning_uptr(std::forward<F>(f)); });
+  return std::move(future).via(keepAlive);
 }
 
 using CallbackBase = HandlerCallbackBase;
 using CallbackBasePtr = std::unique_ptr<CallbackBase>;
-template <class R>
-using Callback = HandlerCallback<fut_ret_drop<R>>;
-template <class R>
-using CallbackPtr = std::unique_ptr<Callback<R>>;
+template <typename T>
+using Callback = HandlerCallback<T>;
+template <typename T>
+using CallbackPtr = std::unique_ptr<Callback<T>>;
 
 inline void async_tm_prep(ServerInterface* si, CallbackBase* callback) {
   si->setEventBase(callback->getEventBase());
   si->setThreadManager(callback->getThreadManager());
-  si->setConnectionContext(callback->getConnectionContext());
+  si->setRequestContext(callback->getRequestContext());
 }
 
-template <class F>
-auto makeFutureWithAndMaybeReschedule(concurrency::ThreadManager* tm, F&& f) {
-  auto fut = folly::makeFutureWith(std::forward<F>(f));
-  if (fut.isReady()) {
-    return fut;
-  }
-  return std::move(fut).via(tm);
-}
-
-template <class F>
-void async_tm_oneway(ServerInterface* si, CallbackBasePtr callback, F&& f) {
-  async_tm_prep(si, callback.get());
-  if (THRIFT_FLAG(reschedule_handler_future_on_tm)) {
-    auto tm = callback->getThreadManager();
-    makeFutureWithAndMaybeReschedule(tm, std::forward<F>(f))
+inline void async_tm_future_oneway(
+    CallbackBasePtr callback, folly::Future<folly::Unit>&& fut) {
+  if (!fut.isReady()) {
+    auto ka = callback->getInternalKeepAlive();
+    std::move(fut)
+        .via(std::move(ka))
         .thenValueInline([cb = std::move(callback)](auto&&) {});
-  } else {
-    folly::makeFutureWith(std::forward<F>(f))
-        .thenValue([cb = std::move(callback)](auto&&) {});
   }
 }
 
-template <class F>
-void async_tm(ServerInterface* si, CallbackPtr<F> callback, F&& f) {
-  async_tm_prep(si, callback.get());
-  if (THRIFT_FLAG(reschedule_handler_future_on_tm)) {
-    auto tm = callback->getThreadManager();
-    makeFutureWithAndMaybeReschedule(tm, std::forward<F>(f))
-        .thenTryInline(
-            [cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) {
-              cb->complete(std::move(_ret));
-            });
-  } else {
-    folly::makeFutureWith(std::forward<F>(f))
-        .thenTry([cb = std::move(callback)](folly::Try<fut_ret<F>>&& _ret) {
-          cb->complete(std::move(_ret));
+template <typename T>
+void async_tm_future(
+    CallbackPtr<T> callback, folly::Future<folly::lift_unit_t<T>>&& fut) {
+  if (!fut.isReady()) {
+    auto ka = callback->getInternalKeepAlive();
+    std::move(fut)
+        .via(std::move(ka))
+        .thenTryInline([cb = std::move(callback)](
+                           folly::Try<folly::lift_unit_t<T>>&& ret) {
+          cb->complete(std::move(ret));
         });
+  } else {
+    callback->complete(std::move(fut).result());
+  }
+}
+
+inline void async_tm_semifuture_oneway(
+    CallbackBasePtr callback, folly::SemiFuture<folly::Unit>&& fut) {
+  if (!fut.isReady()) {
+    auto ka = callback->getInternalKeepAlive();
+    std::move(fut)
+        .via(std::move(ka))
+        .thenValueInline([cb = std::move(callback)](auto&&) {});
+  }
+}
+
+template <typename T>
+void async_tm_semifuture(
+    CallbackPtr<T> callback, folly::SemiFuture<folly::lift_unit_t<T>>&& fut) {
+  if (!fut.isReady()) {
+    auto ka = callback->getInternalKeepAlive();
+    std::move(fut)
+        .via(std::move(ka))
+        .thenTryInline([cb = std::move(callback)](
+                           folly::Try<folly::lift_unit_t<T>>&& ret) {
+          cb->complete(std::move(ret));
+        });
+  } else {
+    callback->complete(std::move(fut).result());
   }
 }
 
 #if FOLLY_HAS_COROUTINES
-template <typename T>
-void async_tm_oneway_coro_start(
-    folly::coro::Task<T>&& task,
-    folly::Executor::KeepAlive<> executor,
-    CallbackBasePtr&& callback) {
+inline void async_tm_coro_oneway(
+    CallbackBasePtr callback, folly::coro::Task<void>&& task) {
+  auto ka = callback->getInternalKeepAlive();
   std::move(task)
-      .scheduleOn(std::move(executor))
-      .startInlineUnsafe([callback = std::move(callback)](
-                             folly::Try<folly::lift_unit_t<T>>&&) mutable {});
+      .scheduleOn(std::move(ka))
+      .startInlineUnsafe([callback = std::move(callback)](auto&&) {});
 }
 
 template <typename T>
-void async_tm_coro_start(
-    folly::coro::Task<T>&& task,
-    folly::Executor::KeepAlive<> executor,
-    std::unique_ptr<apache::thrift::HandlerCallback<T>>&& callback) {
+void async_tm_coro(CallbackPtr<T> callback, folly::coro::Task<T>&& task) {
+  auto ka = callback->getInternalKeepAlive();
   std::move(task)
-      .scheduleOn(std::move(executor))
+      .scheduleOn(std::move(ka))
       .startInlineUnsafe([callback = std::move(callback)](
                              folly::Try<folly::lift_unit_t<T>>&& tryResult) {
         callback->complete(std::move(tryResult));
@@ -1305,6 +1431,90 @@ void async_tm_coro_start(
 [[noreturn]] void throw_app_exn_unimplemented(char const* name);
 } // namespace si
 } // namespace detail
+
+namespace util {
+
+namespace detail {
+
+constexpr ErrorKind fromExceptionKind(ExceptionKind kind) {
+  switch (kind) {
+    case ExceptionKind::TRANSIENT:
+      return ErrorKind::TRANSIENT;
+
+    case ExceptionKind::STATEFUL:
+      return ErrorKind::STATEFUL;
+
+    case ExceptionKind::PERMANENT:
+      return ErrorKind::PERMANENT;
+
+    default:
+      return ErrorKind::UNSPECIFIED;
+  }
+}
+
+constexpr ErrorBlame fromExceptionBlame(ExceptionBlame blame) {
+  switch (blame) {
+    case ExceptionBlame::SERVER:
+      return ErrorBlame::SERVER;
+
+    case ExceptionBlame::CLIENT:
+      return ErrorBlame::CLIENT;
+
+    default:
+      return ErrorBlame::UNSPECIFIED;
+  }
+}
+
+constexpr ErrorSafety fromExceptionSafety(ExceptionSafety safety) {
+  switch (safety) {
+    case ExceptionSafety::SAFE:
+      return ErrorSafety::SAFE;
+
+    default:
+      return ErrorSafety::UNSPECIFIED;
+  }
+}
+
+template <typename T>
+std::string serializeExceptionMeta() {
+  ErrorClassification errorClassification;
+
+  constexpr auto errorKind = apache::thrift::detail::st::struct_private_access::
+      __fbthrift_cpp2_gen_exception_kind<T>();
+  errorClassification.kind_ref() = fromExceptionKind(errorKind);
+  constexpr auto errorBlame = apache::thrift::detail::st::
+      struct_private_access::__fbthrift_cpp2_gen_exception_blame<T>();
+  errorClassification.blame_ref() = fromExceptionBlame(errorBlame);
+  constexpr auto errorSafety = apache::thrift::detail::st::
+      struct_private_access::__fbthrift_cpp2_gen_exception_safety<T>();
+  errorClassification.safety_ref() = fromExceptionSafety(errorSafety);
+
+  return apache::thrift::detail::serializeErrorClassification(
+      errorClassification);
+}
+
+} // namespace detail
+
+void appendExceptionToHeader(
+    const folly::exception_wrapper& ew, Cpp2RequestContext& ctx);
+
+template <typename T>
+void appendErrorClassificationToHeader(Cpp2RequestContext& ctx) {
+  auto header = ctx.getHeader();
+  if (!header) {
+    return;
+  }
+  auto exMeta = detail::serializeExceptionMeta<T>();
+  header->setHeader(
+      std::string(apache::thrift::detail::kHeaderExMeta), std::move(exMeta));
+}
+
+TApplicationException toTApplicationException(
+    const folly::exception_wrapper& ew);
+
+bool includeInRecentRequestsCount(const std::string_view methodName);
+
+} // namespace util
 
 } // namespace thrift
 } // namespace apache

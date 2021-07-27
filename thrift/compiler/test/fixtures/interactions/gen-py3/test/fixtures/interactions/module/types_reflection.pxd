@@ -13,3 +13,5 @@ from thrift.py3.reflection cimport (
     MapSpec as __MapSpec,
     FieldSpec as __FieldSpec,
 )
+
+cdef __StructSpec get_reflection__CustomException()

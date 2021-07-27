@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+#include <memory>
 #include <common/gtest/gtest_extensions.h>
 #include <gmock/gmock.h>
 #include <gtest/gtest.h>
-#include <memory>
 
 #include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
@@ -47,7 +47,7 @@ TEST(JsonTest, structKey) {
 
 TEST(JsonTest, weirdText) {
   azw::SubStruct stru;
-  stru.opt_def_ref() = "stuff\twith\nescape\\characters'...\"lots{of}fun</xml>";
+  stru.optDef_ref() = "stuff\twith\nescape\\characters'...\"lots{of}fun</xml>";
   stru.bin_ref() = "1234";
 
   SubStruct outStruct;
@@ -55,17 +55,17 @@ TEST(JsonTest, weirdText) {
   auto t = apache::thrift::SimpleJSONSerializer::serialize<std::string>(stru);
   ASSERT_EQ(
       t,
-      "{\"opt_def\":\"stuff\\twith\\nescape\\\\characters'...\\\"lots{of}fun</xml>\","
+      "{\"optDef\":\"stuff\\twith\\nescape\\\\characters'...\\\"lots{of}fun</xml>\","
       "\"req_def\":\"IAMREQ\",\"bin\":\"MTIzNA\"}");
 
   apache::thrift::SimpleJSONSerializer::deserialize(t, outStruct);
   ASSERT_EQ(stru, outStruct);
 
-  stru.opt_def_ref() = "UNICODE\U0001F60AUH OH";
+  stru.optDef_ref() = "UNICODE\U0001F60AUH OH";
   t = apache::thrift::SimpleJSONSerializer::serialize<std::string>(stru);
   ASSERT_EQ(
       t,
-      "{\"opt_def\":\"UNICODE\xf0\x9f\x98\x8aUH OH\","
+      "{\"optDef\":\"UNICODE\xf0\x9f\x98\x8aUH OH\","
       "\"req_def\":\"IAMREQ\",\"bin\":\"MTIzNA\"}");
 
   apache::thrift::SimpleJSONSerializer::deserialize(t, outStruct);
@@ -74,19 +74,67 @@ TEST(JsonTest, weirdText) {
 
 TEST(JsonTest, skipComplex) {
   azw::SubStruct stru;
-  stru.opt_def_ref() = "thing";
+  stru.optDef_ref() = "thing";
   stru.bin_ref() = "1234";
 
   SubStruct outStruct;
 
   std::string input(
-      "{\"opt_def\":\"thing\","
+      "{\"optDef\":\"thing\","
       "\"req_def\":\"IAMREQ\",\"bin\":\"MTIzNA\","
       "\"extra\":[1, {\"thing\":\"thing2\"}],"
-      "\"extra_map\":{\"thing\":null,\"thing2\":2}}");
+      "\"extra_map\":{\"thing\":null,\"thing2\":2},"
+      "\"extra_bool\":true}");
 
   apache::thrift::SimpleJSONSerializer::deserialize(input, outStruct);
   ASSERT_EQ(stru, outStruct);
+}
+
+TEST(JsonTest, needCommas) {
+  azw::Small outStruct;
+
+  // Note the missing commas
+
+  std::string input(
+      "{\"num\":1"
+      "\"two\":2}");
+
+  EXPECT_THROW(
+      apache::thrift::SimpleJSONSerializer::deserialize(input, outStruct),
+      std::exception);
+
+  // even when skipping
+  std::string input2(
+      "{\"num\":1,"
+      "\"two\":2,"
+      "\"extra_map\":{\"thing\":null,\"thing2\":2}"
+      "\"extra_bool\":true}");
+
+  EXPECT_THROW(
+      apache::thrift::SimpleJSONSerializer::deserialize(input2, outStruct),
+      std::exception);
+}
+
+TEST(JsonTest, needCommasContainers) {
+  azw::Containers outStruct;
+
+  std::string goodinput("{\"m\":{\"m1\":\"m1\",\"m2\":\"m2\"}}");
+  // Note the missing comma
+  std::string badinput("{\"m\":{\"m1\":\"m1\"\"m2\":\"m2\"}}");
+  // we can serialize the good input
+  apache::thrift::SimpleJSONSerializer::deserialize(goodinput, outStruct);
+  EXPECT_THROW(
+      apache::thrift::SimpleJSONSerializer::deserialize(badinput, outStruct),
+      std::exception);
+
+  std::string goodinput2("{\"l\":[\"l1\",\"l2\"]}");
+  // Note the missing comma
+  std::string badinput2("{\"l\":[\"l1\"\"l2\"]}");
+  // we can serialize the good input
+  apache::thrift::SimpleJSONSerializer::deserialize(goodinput2, outStruct);
+  EXPECT_THROW(
+      apache::thrift::SimpleJSONSerializer::deserialize(badinput2, outStruct),
+      std::exception);
 }
 
 TEST(JsonTest, nullStuff) {
@@ -96,11 +144,18 @@ TEST(JsonTest, nullStuff) {
   SubStruct outStruct;
 
   std::string input(
-      "{\"opt_def\":null,"
+      "{\"optDef\":null,"
       "\"req_def\":\"IAMREQ\",\"bin\":\"MTIzNA\"}");
 
   apache::thrift::SimpleJSONSerializer::deserialize(input, outStruct);
   ASSERT_EQ(stru, outStruct);
+}
+
+TEST(JsonTest, unknownUnion) {
+  azw::Un u;
+
+  auto t = apache::thrift::SimpleJSONSerializer::serialize<std::string>(u);
+  ASSERT_EQ(t, "{}");
 }
 
 } // namespace azw

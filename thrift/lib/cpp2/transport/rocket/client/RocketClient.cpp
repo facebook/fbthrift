@@ -51,6 +51,8 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
+THRIFT_FLAG_DEFINE_int64(rocket_server_version_timeout_ms, 500);
+
 namespace {
 folly::exception_wrapper err(folly::Try<void> t) {
   return t.hasException() ? std::move(t.exception())
@@ -69,26 +71,34 @@ transport::TTransportException toTransportException(
 }
 } // namespace
 
+folly::EventBaseLocal<RocketClient::FlushManager>&
+RocketClient::getEventBaseLocal() {
+  static folly::Indestructible<
+      folly::EventBaseLocal<RocketClient::FlushManager>>
+      evbLocal;
+  return *evbLocal;
+}
+
 RocketClient::RocketClient(
     folly::EventBase& evb,
     folly::AsyncTransport::UniquePtr socket,
-    std::unique_ptr<SetupFrame> setupFrame,
-    folly::Function<void(MetadataPushFrame&&)> onMetadataPush)
+    std::unique_ptr<SetupFrame> setupFrame)
     : evb_(&evb),
-      socket_(std::move(socket)),
-      setupFrame_(std::move(setupFrame)),
-      parser_(*this),
       writeLoopCallback_(*this),
+      socket_(std::move(socket)),
+      parser_(*this),
       detachableLoopCallback_(*this),
       closeLoopCallback_(*this),
       eventBaseDestructionCallback_(*this),
-      onMetadataPush_(std::move(onMetadataPush)) {
+      setupFrame_(std::move(setupFrame)) {
   DCHECK(socket_ != nullptr);
   socket_->setReadCB(&parser_);
   if (auto socket = dynamic_cast<folly::AsyncSocket*>(socket_.get())) {
     socket->setCloseOnFailedWrite(false);
   }
   evb_->runOnDestruction(eventBaseDestructionCallback_);
+  // Get or create flush manager from EventBaseLocal
+  flushManager_ = &FlushManager::getInstance(*evb_);
 }
 
 RocketClient::~RocketClient() {
@@ -103,13 +113,8 @@ RocketClient::~RocketClient() {
 RocketClient::Ptr RocketClient::create(
     folly::EventBase& evb,
     folly::AsyncTransport::UniquePtr socket,
-    std::unique_ptr<SetupFrame> setupFrame,
-    folly::Function<void(MetadataPushFrame&&)> onMetadataPush) {
-  return Ptr(new RocketClient(
-      evb,
-      std::move(socket),
-      std::move(setupFrame),
-      std::move(onMetadataPush)));
+    std::unique_ptr<SetupFrame> setupFrame) {
+  return Ptr(new RocketClient(evb, std::move(socket), std::move(setupFrame)));
 }
 
 void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
@@ -123,28 +128,60 @@ void RocketClient::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
 
   if (UNLIKELY(frameType == FrameType::ERROR && streamId == StreamId{0})) {
     ErrorFrame errorFrame(std::move(frame));
-    switch (errorFrame.errorCode()) {
-      case ErrorCode::CONNECTION_DRAIN_COMPLETE: {
-        auto drainEx = transport::TTransportException(
-            apache::thrift::transport::TTransportException::NOT_OPEN,
-            "Server shutdown.");
-        if (state_ == ConnectionState::ERROR) {
-          error_ = std::move(drainEx);
-        } else {
-          close(drainEx);
-        }
-      } break;
-      default:
-        return close(transport::TTransportException(
-            apache::thrift::transport::TTransportException::END_OF_FILE,
-            "Unhandled error frame on control stream."));
-    }
+    handleError(RocketException(
+        errorFrame.errorCode(), std::move(errorFrame.payload()).data()));
+    return;
   }
   if (frameType == FrameType::METADATA_PUSH && streamId == StreamId{0}) {
-    // constructing the METADATA_PUSH frame for validation
     MetadataPushFrame mdPushFrame(std::move(frame));
-    if (onMetadataPush_) {
-      onMetadataPush_(std::move(mdPushFrame));
+    if (!mdPushFrame.metadata()) {
+      return;
+    }
+    ServerPushMetadata serverMeta;
+    try {
+      unpackCompact(serverMeta, std::move(mdPushFrame.metadata()));
+    } catch (...) {
+      close(transport::TTransportException(
+          transport::TTransportException::CORRUPTED_DATA,
+          "Failed to deserialize metadata push frame"));
+      return;
+    }
+    switch (serverMeta.getType()) {
+      case ServerPushMetadata::setupResponse: {
+        setServerVersion(std::min(
+            serverMeta.setupResponse_ref()->version_ref().value_or(0),
+            (int32_t)std::numeric_limits<int16_t>::max()));
+        break;
+      }
+      case ServerPushMetadata::streamHeadersPush: {
+        DCHECK(serverVersion_ == -1 || serverVersion_ >= 7);
+        StreamId sid(
+            serverMeta.streamHeadersPush_ref()->streamId_ref().value_or(0));
+        auto it = streams_.find(sid);
+        if (it != streams_.end()) {
+          it->match([&](auto* serverCallbackPtr) {
+            serverCallbackPtr->onStreamHeaders(
+                HeadersPayload(serverMeta.streamHeadersPush_ref()
+                                   ->headersPayloadContent_ref()
+                                   .value_or({})));
+          });
+        }
+        return;
+      }
+      case ServerPushMetadata::drainCompletePush: {
+        DCHECK(serverVersion_ == -1 || serverVersion_ >= 7);
+        auto drainCode =
+            serverMeta.drainCompletePush_ref()->drainCompleteCode_ref();
+        if (drainCode &&
+            *drainCode == DrainCompleteCode::EXCEEDED_INGRESS_MEM_LIMIT) {
+          handleError(RocketException(ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT));
+        } else {
+          handleError(RocketException(ErrorCode::CONNECTION_DRAIN_COMPLETE));
+        }
+        return;
+      }
+      default:
+        break;
     }
     return;
   }
@@ -245,8 +282,7 @@ void RocketClient::handleStreamChannelFrame(
 
 template <typename CallbackType>
 StreamChannelStatus RocketClient::handlePayloadFrame(
-    CallbackType& serverCallback,
-    std::unique_ptr<folly::IOBuf> frame) {
+    CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
   PayloadFrame payloadFrame{std::move(frame)};
   const auto streamId = payloadFrame.streamId();
   // Note that if the payload frame arrives in fragments, we rely on the
@@ -254,8 +290,8 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
   const bool next = payloadFrame.hasNext();
   const bool complete = payloadFrame.hasComplete();
   if (auto fullPayload = bufferOrGetFullPayload(std::move(payloadFrame))) {
-    if (firstResponseTimeouts_.count(streamId)) {
-      firstResponseTimeouts_.erase(streamId);
+    if (isFirstResponse(streamId)) {
+      acknowledgeFirstResponse(streamId);
       if (!next) {
         serverCallback.onInitialError(
             folly::make_exception_wrapper<transport::TTransportException>(
@@ -270,12 +306,13 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
         serverCallback.onInitialError(std::move(firstResponse.exception()));
         return StreamChannelStatus::Complete;
       }
-      serverCallback.onInitialPayload(std::move(*firstResponse), evb_);
+      auto status =
+          serverCallback.onInitialPayload(std::move(*firstResponse), evb_);
+      if (status != StreamChannelStatus::Alive) {
+        return status;
+      }
       if (complete) {
-        // onInitialPayload could have resulted in canceling the stream.
-        if (streams_.find(streamId) != streams_.end()) {
-          return serverCallback.onStreamComplete();
-        }
+        return serverCallback.onStreamComplete();
       }
       return StreamChannelStatus::Alive;
     }
@@ -284,6 +321,13 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
       if (streamPayload.hasException()) {
         return serverCallback.onStreamError(
             std::move(streamPayload.exception()));
+      }
+      auto payloadMetadataRef = streamPayload->metadata.payloadMetadata_ref();
+      if (payloadMetadataRef &&
+          payloadMetadataRef->getType() == PayloadMetadata::exceptionMetadata) {
+        return serverCallback.onStreamError(
+            apache::thrift::detail::EncodedStreamError(
+                std::move(streamPayload.value())));
       }
       if (complete) {
         return serverCallback.onStreamFinalPayload(std::move(*streamPayload));
@@ -305,14 +349,13 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
 
 template <typename CallbackType>
 StreamChannelStatus RocketClient::handleErrorFrame(
-    CallbackType& serverCallback,
-    std::unique_ptr<folly::IOBuf> frame) {
+    CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
   ErrorFrame errorFrame{std::move(frame)};
   const auto streamId = errorFrame.streamId();
   auto ew = folly::make_exception_wrapper<RocketException>(
       errorFrame.errorCode(), std::move(errorFrame.payload()).data());
-  if (firstResponseTimeouts_.count(streamId)) {
-    firstResponseTimeouts_.erase(streamId);
+  if (isFirstResponse(streamId)) {
+    acknowledgeFirstResponse(streamId);
     serverCallback.onInitialError(std::move(ew));
     return StreamChannelStatus::Complete;
   }
@@ -321,10 +364,9 @@ StreamChannelStatus RocketClient::handleErrorFrame(
 
 template <typename CallbackType>
 StreamChannelStatus RocketClient::handleRequestNFrame(
-    CallbackType& serverCallback,
-    std::unique_ptr<folly::IOBuf> frame) {
+    CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
   RequestNFrame requestNFrame{std::move(frame)};
-  if (firstResponseTimeouts_.count(requestNFrame.streamId())) {
+  if (isFirstResponse(requestNFrame.streamId())) {
     serverCallback.onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
@@ -337,10 +379,9 @@ StreamChannelStatus RocketClient::handleRequestNFrame(
 
 template <typename CallbackType>
 StreamChannelStatus RocketClient::handleCancelFrame(
-    CallbackType& serverCallback,
-    std::unique_ptr<folly::IOBuf> frame) {
+    CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
   CancelFrame cancelFrame{std::move(frame)};
-  if (firstResponseTimeouts_.count(cancelFrame.streamId())) {
+  if (isFirstResponse(cancelFrame.streamId())) {
     serverCallback.onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
@@ -353,10 +394,9 @@ StreamChannelStatus RocketClient::handleCancelFrame(
 
 template <typename CallbackType>
 StreamChannelStatus RocketClient::handleExtFrame(
-    CallbackType& serverCallback,
-    std::unique_ptr<folly::IOBuf> frame) {
+    CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
   ExtFrame extFrame{std::move(frame)};
-  if (firstResponseTimeouts_.count(extFrame.streamId())) {
+  if (isFirstResponse(extFrame.streamId())) {
     serverCallback.onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
@@ -366,6 +406,7 @@ StreamChannelStatus RocketClient::handleExtFrame(
   }
 
   if (extFrame.extFrameType() == ExtFrameType::HEADERS_PUSH) {
+    DCHECK(serverVersion_ == -1 || serverVersion_ >= 7);
     auto headersPayload = unpack<HeadersPayload>(std::move(extFrame.payload()));
     if (headersPayload.hasException()) {
       return serverCallback.onStreamError(
@@ -379,12 +420,71 @@ StreamChannelStatus RocketClient::handleExtFrame(
     return StreamChannelStatus::Alive;
   }
 
-  serverCallback.onStreamError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          transport::TTransportException::TTransportExceptionType::
-              STREAMING_CONTRACT_VIOLATION,
-          "Unsupported frame type: handleExtFrame"));
+  close(transport::TTransportException(
+      transport::TTransportException::TTransportExceptionType::NOT_SUPPORTED,
+      fmt::format(
+          "Received unhandleable ext frame type ({}) without ignore flag",
+          static_cast<uint32_t>(extFrame.extFrameType()))));
   return StreamChannelStatus::ContractViolation;
+}
+
+void RocketClient::handleError(RocketException&& rex) {
+  auto enrichMsg = [](const char* msg, RocketException& rex) {
+    if (auto errorData = rex.moveErrorData()) {
+      return fmt::format(
+          "{}: {} [{}]",
+          msg,
+          folly::StringPiece(errorData->coalesce()),
+          toString(rex.getErrorCode()));
+    }
+    return fmt::format("{} [{}]", msg, toString(rex.getErrorCode()));
+  };
+  folly::exception_wrapper ew;
+  switch (rex.getErrorCode()) {
+    case ErrorCode::CONNECTION_CLOSE: {
+      if (clientState_.connState != ConnectionState::CONNECTED) {
+        return;
+      }
+
+      clientState_.connState = ConnectionState::CLOSING;
+
+      writeLoopCallback_.cancelLoopCallback();
+      queue_.failAllScheduledWrites(transport::TTransportException(
+          transport::TTransportException::NOT_OPEN,
+          "Connection closed by server"));
+
+      notifyIfDetachable();
+
+      return;
+    }
+    case ErrorCode::INVALID_SETUP: {
+      ew = transport::TTransportException(
+          transport::TTransportException::NOT_OPEN,
+          enrichMsg("Connection setup failed", rex));
+      break;
+    }
+    case ErrorCode::CONNECTION_DRAIN_COMPLETE: {
+      ew = transport::TTransportException(
+          transport::TTransportException::NOT_OPEN,
+          enrichMsg("Server shutdown", rex));
+      break;
+    }
+    case ErrorCode::EXCEEDED_INGRESS_MEM_LIMIT: {
+      ew = std::move(rex);
+      break;
+    }
+    default: {
+      close(transport::TTransportException(
+          transport::TTransportException::END_OF_FILE,
+          enrichMsg("Unhandled error frame on control stream", rex)));
+      return;
+    }
+  }
+  if (clientState_.connState == ConnectionState::ERROR) {
+    error_ = std::move(ew);
+  } else {
+    close(std::move(ew));
+  }
 }
 
 folly::Try<Payload> RocketClient::sendRequestResponseSync(
@@ -392,8 +492,8 @@ folly::Try<Payload> RocketClient::sendRequestResponseSync(
     std::chrono::milliseconds timeout,
     WriteSuccessCallback* writeSuccessCallback) {
   DestructorGuard dg(this);
-  auto g = makeRequestCountGuard();
-  auto setupFrame = std::move(setupFrame_);
+  auto g = makeRequestCountGuard(RequestType::CLIENT);
+  auto setupFrame = moveOutSetupFrame();
   RequestContext ctx(
       RequestResponseFrame(makeStreamId(), std::move(request)),
       queue_,
@@ -409,14 +509,14 @@ void RocketClient::sendRequestResponse(
     Payload&& request,
     std::chrono::milliseconds timeout,
     std::unique_ptr<RequestResponseCallback> callback) {
-  auto setupFrame = std::move(setupFrame_);
+  auto setupFrame = moveOutSetupFrame();
   auto rctx = std::make_unique<RequestContext>(
       RequestResponseFrame(makeStreamId(), std::move(request)),
       queue_,
       setupFrame.get(),
       callback.get());
   auto callbackWithGuard = [dg = DestructorGuard(this),
-                            g = makeRequestCountGuard(),
+                            g = makeRequestCountGuard(RequestType::CLIENT),
                             callback =
                                 std::move(callback)](auto&& response) mutable {
     callback->onResponsePayload(std::move(response));
@@ -431,9 +531,7 @@ void RocketClient::sendRequestResponse(
 
     void send(RocketClient& client, std::chrono::milliseconds timeout) && {
       if (auto ew = err(client.scheduleWrite(*rctx_))) {
-        SCOPE_EXIT {
-          delete this;
-        };
+        SCOPE_EXIT { delete this; };
         return callback_(folly::Try<rocket::Payload>(std::move(ew)));
       }
       rctx_->setTimeoutInfo(client.evb_->timer(), *this, timeout);
@@ -450,17 +548,13 @@ void RocketClient::sendRequestResponse(
       // On the timeout path, post() will be called once more in
       // abortSentRequest() within getResponse(). Avoid recursive misbehavior.
       if (auto rctx = std::move(rctx_)) {
-        SCOPE_EXIT {
-          delete this;
-        };
+        SCOPE_EXIT { delete this; };
         cancelTimeout();
         callback_(std::move(*rctx).getResponse());
       }
     }
 
-    void timeoutExpired() noexcept override {
-      post();
-    }
+    void timeoutExpired() noexcept override { post(); }
   };
 
   auto* context = new Context(std::move(rctx), std::move(callbackWithGuard));
@@ -470,8 +564,8 @@ void RocketClient::sendRequestResponse(
 folly::Try<void> RocketClient::sendRequestFnfSync(Payload&& request) {
   CHECK(folly::fibers::onFiber());
   DestructorGuard dg(this);
-  auto g = makeRequestCountGuard();
-  auto setupFrame = std::move(setupFrame_);
+  auto g = makeRequestCountGuard(RequestType::CLIENT);
+  auto setupFrame = moveOutSetupFrame();
   RequestContext ctx(
       RequestFnfFrame(makeStreamId(), std::move(request)),
       queue_,
@@ -483,16 +577,15 @@ folly::Try<void> RocketClient::sendRequestFnfSync(Payload&& request) {
 }
 
 void RocketClient::sendRequestFnf(
-    Payload&& request,
-    std::unique_ptr<RequestFnfCallback> callback) {
-  auto setupFrame = std::move(setupFrame_);
+    Payload&& request, std::unique_ptr<RequestFnfCallback> callback) {
+  auto setupFrame = moveOutSetupFrame();
   auto rctx = std::make_unique<RequestContext>(
       RequestFnfFrame(makeStreamId(), std::move(request)),
       queue_,
       setupFrame.get());
   auto callbackWithGuard =
       [dg = DestructorGuard(this),
-       g = makeRequestCountGuard(),
+       g = makeRequestCountGuard(RequestType::CLIENT),
        callback = std::move(callback)](auto&& writeResult) mutable {
         callback->onWrite(std::move(writeResult));
       };
@@ -505,9 +598,7 @@ void RocketClient::sendRequestFnf(
 
     void send(RocketClient& client) && {
       if (auto ew = err(client.scheduleWrite(*rctx_))) {
-        SCOPE_EXIT {
-          delete this;
-        };
+        SCOPE_EXIT { delete this; };
         return callback_(folly::Try<void>(std::move(ew)));
       }
       rctx_->waitForWriteToCompleteSchedule(this);
@@ -520,9 +611,7 @@ void RocketClient::sendRequestFnf(
     std::unique_ptr<RequestContext> rctx_;
 
     void post() override {
-      SCOPE_EXIT {
-        delete this;
-      };
+      SCOPE_EXIT { delete this; };
       callback_(rctx_->waitForWriteToCompleteResult());
     }
   };
@@ -558,21 +647,6 @@ void RocketClient::sendRequestStream(
         initialRequestN,
         std::move(serverCallback));
   }
-}
-
-void RocketClient::sendRequestChannel(
-    Payload&& request,
-    std::chrono::milliseconds firstResponseTimeout,
-    ChannelClientCallback* clientCallback) {
-  const auto streamId = makeStreamId();
-  auto serverCallback = std::make_unique<RocketChannelServerCallback>(
-      streamId, *this, *clientCallback);
-  sendRequestStreamChannel(
-      streamId,
-      std::move(request),
-      firstResponseTimeout,
-      0,
-      std::move(serverCallback));
 }
 
 void RocketClient::sendRequestSink(
@@ -654,7 +728,7 @@ void RocketClient::sendRequestStreamChannel(
         return self->serverCallback_.onInitialError(std::move(ew));
       }
 
-      self->client_.scheduleFirstResponseTimeout(
+      self->client_.maybeScheduleFirstResponseTimeout(
           self->streamId_, firstResponseTimeout);
       auto& ctx = self->ctx_;
       ctx.waitForWriteToCompleteSchedule(self.release());
@@ -662,16 +736,13 @@ void RocketClient::sendRequestStreamChannel(
 
    private:
     void post() override {
-      SCOPE_EXIT {
-        delete this;
-      };
+      SCOPE_EXIT { delete this; };
 
       auto writeCompleted = ctx_.waitForWriteToCompleteResult();
       // If the write failed, check that the stream has not already received the
       // first response. The writeErr() callback for a batch of requests may
       // fire after the initial payload/error has already been processed.
-      if (writeCompleted.hasException() &&
-          client_.firstResponseTimeouts_.count(streamId_)) {
+      if (writeCompleted.hasException() && client_.isFirstResponse(streamId_)) {
         return serverCallback_.onInitialError(
             std::move(writeCompleted.exception()));
       }
@@ -693,57 +764,88 @@ void RocketClient::sendRequestStreamChannel(
       std::make_unique<Context>(
           *this,
           streamId,
-          std::move(setupFrame_),
+          moveOutSetupFrame(),
           Frame(streamId, std::move(request), initialRequestN),
           queue_,
           *serverCallbackPtr),
       firstResponseTimeout);
 }
 
+template <class OnError>
+class RocketClient::SendFrameContext : public folly::fibers::Baton::Waiter {
+ public:
+  template <class Frame>
+  SendFrameContext(RocketClient& client, Frame&& frame, OnError&& onError)
+      : client_(client),
+        ctx_(std::forward<Frame>(frame), client_.queue_),
+        onError_(std::forward<OnError>(onError)) {}
+
+  template <class InitFunc>
+  SendFrameContext(
+      RocketClient& client,
+      InitFunc&& initFunc,
+      StreamId streamId,
+      OnError&& onError)
+      : client_(client),
+        ctx_(
+            std::forward<InitFunc>(initFunc),
+            client_.serverVersion_,
+            streamId,
+            client_.queue_),
+        onError_(std::forward<OnError>(onError)) {
+    // if server version is not yet available, start buffering requests
+    if (UNLIKELY(ctx_.state() == RequestContext::State::DEFERRED_INIT)) {
+      client_.onServerVersionRequired();
+    }
+  }
+
+  FOLLY_NODISCARD static bool run(std::unique_ptr<SendFrameContext> self) {
+    if (auto ew = err(self->client_.scheduleWrite(self->ctx_))) {
+      self->onError_(toTransportException(std::move(ew)));
+      return false;
+    }
+    auto& ctx = self->ctx_;
+    ctx.waitForWriteToCompleteSchedule(self.release());
+    return true;
+  }
+
+ private:
+  void post() override {
+    std::unique_ptr<SendFrameContext> self(this);
+    auto writeCompleted = ctx_.waitForWriteToCompleteResult();
+    if (writeCompleted.hasException()) {
+      self->onError_(
+          toTransportException(std::move(writeCompleted.exception())));
+    }
+  }
+
+  RocketClient& client_;
+  RequestContext ctx_;
+  std::decay_t<OnError> onError_;
+};
+
 template <typename Frame, typename OnError>
 bool RocketClient::sendFrame(Frame&& frame, OnError&& onError) {
-  class Context : public folly::fibers::Baton::Waiter {
-   public:
-    Context(RocketClient& client, Frame&& frame, OnError&& onError)
-        : client_(client),
-          ctx_(std::forward<Frame>(frame), client_.queue_),
-          onError_(std::forward<OnError>(onError)) {}
-
-    FOLLY_NODISCARD static bool run(std::unique_ptr<Context> self) {
-      if (auto ew = err(self->client_.scheduleWrite(self->ctx_))) {
-        self->onError_(toTransportException(std::move(ew)));
-        return false;
-      }
-
-      auto& ctx = self->ctx_;
-      ctx.waitForWriteToCompleteSchedule(self.release());
-
-      return true;
-    }
-
-   private:
-    void post() override {
-      std::unique_ptr<Context> self(this);
-
-      auto writeCompleted = ctx_.waitForWriteToCompleteResult();
-      if (writeCompleted.hasException()) {
-        self->onError_(
-            toTransportException(std::move(writeCompleted.exception())));
-      }
-    }
-
-    RocketClient& client_;
-    RequestContext ctx_;
-    std::decay_t<OnError> onError_;
-  };
-
+  using Context = SendFrameContext<OnError>;
   auto ctx = std::make_unique<Context>(
       *this, std::forward<Frame>(frame), std::forward<OnError>(onError));
   return Context::run(std::move(ctx));
 }
 
+template <typename DeferredInitFunc, typename OnError>
+bool RocketClient::sendVersionDependentFrame(
+    DeferredInitFunc&& deferredInit, StreamId streamId, OnError&& onError) {
+  using Context = SendFrameContext<OnError>;
+  auto ctx = std::make_unique<Context>(
+      *this,
+      std::forward<DeferredInitFunc>(deferredInit),
+      streamId,
+      std::forward<OnError>(onError));
+  return Context::run(std::move(ctx));
+}
+
 bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
-  auto g = makeRequestCountGuard();
+  auto g = makeRequestCountGuard(RequestType::INTERNAL);
   if (UNLIKELY(n <= 0)) {
     return true;
   }
@@ -761,7 +863,7 @@ bool RocketClient::sendRequestN(StreamId streamId, int32_t n) {
 }
 
 void RocketClient::cancelStream(StreamId streamId) {
-  auto g = makeRequestCountGuard();
+  auto g = makeRequestCountGuard(RequestType::INTERNAL);
   freeStream(streamId);
   std::ignore = sendFrame(
       CancelFrame(streamId),
@@ -774,12 +876,12 @@ void RocketClient::cancelStream(StreamId streamId) {
 }
 
 void RocketClient::sendPayload(
-    StreamId streamId,
-    StreamPayload&& payload,
-    Flags flags) {
+    StreamId streamId, StreamPayload&& payload, Flags flags) {
   std::ignore = sendFrame(
       PayloadFrame(streamId, pack(std::move(payload)), flags),
-      [this, dg = DestructorGuard(this), g = makeRequestCountGuard()](
+      [this,
+       dg = DestructorGuard(this),
+       g = makeRequestCountGuard(RequestType::INTERNAL)](
           transport::TTransportException ex) {
         FB_LOG_EVERY_MS(ERROR, 1000)
             << "sendPayload failed, closing now: " << ex.what();
@@ -791,7 +893,9 @@ void RocketClient::sendError(StreamId streamId, RocketException&& rex) {
   freeStream(streamId);
   std::ignore = sendFrame(
       ErrorFrame(streamId, std::move(rex)),
-      [this, dg = DestructorGuard(this), g = makeRequestCountGuard()](
+      [this,
+       dg = DestructorGuard(this),
+       g = makeRequestCountGuard(RequestType::INTERNAL)](
           transport::TTransportException ex) {
         FB_LOG_EVERY_MS(ERROR, 1000)
             << "sendError failed, closing now: " << ex.what();
@@ -800,7 +904,7 @@ void RocketClient::sendError(StreamId streamId, RocketException&& rex) {
 }
 
 void RocketClient::sendComplete(StreamId streamId, bool closeStream) {
-  auto g = makeRequestCountGuard();
+  auto g = makeRequestCountGuard(RequestType::INTERNAL);
   if (closeStream) {
     freeStream(streamId);
   }
@@ -810,28 +914,80 @@ void RocketClient::sendComplete(StreamId streamId, bool closeStream) {
       rocket::Flags::none().complete(true));
 }
 
-bool RocketClient::sendExtHeaders(StreamId streamId, HeadersPayload&& payload) {
-  auto g = makeRequestCountGuard();
+bool RocketClient::sendHeadersPush(
+    StreamId streamId, HeadersPayload&& payload) {
+  auto g = makeRequestCountGuard(RequestType::INTERNAL);
   auto onError = [dg = DestructorGuard(this), this, g = std::move(g)](
                      transport::TTransportException ex) {
     FB_LOG_EVERY_MS(ERROR, 1000)
-        << "sendExtHeaders failed, closing now: " << ex.what();
+        << "sendHeadersPush failed, closing now: " << ex.what();
     close(std::move(ex));
   };
-  return sendFrame(
-      ExtFrame(
-          streamId,
-          pack(std::move(payload)),
-          rocket::Flags::none().ignore(true),
-          ExtFrameType::HEADERS_PUSH),
+  return sendVersionDependentFrame(
+      [=, payload = std::move(payload)](int32_t serverVersion) mutable {
+        if (serverVersion >= 7) {
+          ClientPushMetadata clientMeta;
+          clientMeta.streamHeadersPush_ref().ensure().streamId_ref() =
+              static_cast<uint32_t>(streamId);
+          clientMeta.streamHeadersPush_ref()->headersPayloadContent_ref() =
+              std::move(payload.payload);
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              MetadataPushFrame::makeFromMetadata(
+                  packCompact(std::move(clientMeta)))
+                  .serialize(),
+              FrameType::METADATA_PUSH);
+        } else {
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              ExtFrame(
+                  streamId,
+                  pack(std::move(payload)),
+                  rocket::Flags::none().ignore(true),
+                  ExtFrameType::HEADERS_PUSH)
+                  .serialize(),
+              FrameType::EXT);
+        }
+      },
+      streamId,
+      std::move(onError));
+}
+
+bool RocketClient::sendSinkError(StreamId streamId, StreamPayload&& payload) {
+  freeStream(streamId);
+  auto g = makeRequestCountGuard(RequestType::INTERNAL);
+  auto onError = [dg = DestructorGuard(this), this, g = std::move(g)](
+                     transport::TTransportException ex) {
+    FB_LOG_EVERY_MS(ERROR, 1000)
+        << "sendSinkError failed, closing now: " << ex.what();
+    close(std::move(ex));
+  };
+  return sendVersionDependentFrame(
+      [streamId = streamId,
+       payload = std::move(payload)](int32_t serverVersion) mutable {
+        if (serverVersion >= 8) {
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              PayloadFrame(
+                  streamId,
+                  pack(std::move(payload)),
+                  Flags::none().next(true).complete(true))
+                  .serialize(),
+              FrameType::PAYLOAD);
+        } else {
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              ErrorFrame(
+                  streamId,
+                  RocketException(
+                      ErrorCode::APPLICATION_ERROR, std::move(payload.payload)))
+                  .serialize(),
+              FrameType::ERROR);
+        }
+      },
+      streamId,
       std::move(onError));
 }
 
 void RocketClient::sendExtAlignedPage(
-    StreamId streamId,
-    std::unique_ptr<folly::IOBuf> payload,
-    Flags flags) {
-  auto g = makeRequestCountGuard();
+    StreamId streamId, std::unique_ptr<folly::IOBuf> payload, Flags flags) {
+  auto g = makeRequestCountGuard(RequestType::INTERNAL);
   auto onError = [dg = DestructorGuard(this), this, g = std::move(g)](
                      transport::TTransportException ex) {
     FB_LOG_EVERY_MS(ERROR, 1000)
@@ -856,7 +1012,7 @@ folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {
         "Cannot send requests on a detached client"));
   }
 
-  if (state_ != ConnectionState::CONNECTED) {
+  if (clientState_.connState != ConnectionState::CONNECTED) {
     return folly::Try<void>(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::NOT_OPEN,
@@ -864,13 +1020,7 @@ folly::Try<void> RocketClient::scheduleWrite(RequestContext& ctx) {
   }
 
   queue_.enqueueScheduledWrite(ctx);
-  if (!writeLoopCallback_.isLoopCallbackScheduled()) {
-    if (flushList_) {
-      flushList_->push_back(writeLoopCallback_);
-    } else {
-      evb_->runInLoop(&writeLoopCallback_);
-    }
-  }
+  scheduleWriteLoopCallback();
   return {};
 }
 
@@ -879,28 +1029,58 @@ StreamId RocketClient::makeStreamId() {
   do {
     id = nextStreamId_;
     nextStreamId_ += 2;
-  } while (hitMaxStreamId_ && streams_.contains(id));
+  } while (clientState_.hitMaxStreamId && streams_.contains(id));
 
   if (UNLIKELY(id == StreamId::maxClientStreamId())) {
     nextStreamId_ = StreamId(1);
-    hitMaxStreamId_ = true;
+    clientState_.hitMaxStreamId = true;
   }
   return id;
 }
 
-void RocketClient::WriteLoopCallback::runLoopCallback() noexcept {
-  if (!client_.flushList_ && !std::exchange(rescheduled_, true)) {
-    client_.evb_->runInLoop(this, true /* thisIteration */);
+void RocketClient::FlushManager::runLoopCallback() noexcept {
+  // always reschedule until the end of event loop.
+  if (!std::exchange(rescheduled_, true)) {
+    evb_.runInLoop(this, true /* thisIteration */);
     return;
   }
   rescheduled_ = false;
+
+  auto cbs = std::move(flushList_);
+  while (!cbs.empty()) {
+    auto callback = &cbs.front();
+    cbs.pop_front();
+    callback->runLoopCallback();
+  }
+}
+
+void RocketClient::FlushManager::enqueueFlush(RocketClient& client) {
+  // add write callback to flush list and schedule flush manager callback
+  flushList_.push_back(client.writeLoopCallback_);
+  if (!isLoopCallbackScheduled()) {
+    evb_.runInLoop(this);
+  }
+}
+
+void RocketClient::WriteLoopCallback::runLoopCallback() noexcept {
   client_.writeScheduledRequestsToSocket();
+}
+
+void RocketClient::scheduleWriteLoopCallback() {
+  if (!writeLoopCallback_.isLoopCallbackScheduled()) {
+    if (flushList_) {
+      flushList_->push_back(writeLoopCallback_);
+    } else {
+      // use FlushManager to handle scheduling
+      flushManager_->enqueueFlush(*this);
+    }
+  }
 }
 
 void RocketClient::writeScheduledRequestsToSocket() noexcept {
   DestructorGuard dg(this);
 
-  if (state_ == ConnectionState::CONNECTED) {
+  if (clientState_.connState == ConnectionState::CONNECTED) {
     auto buf = queue_.getNextScheduledWritesBatch();
 
     if (buf) {
@@ -913,7 +1093,7 @@ void RocketClient::writeScheduledRequestsToSocket() noexcept {
 
 void RocketClient::writeSuccess() noexcept {
   DestructorGuard dg(this);
-  DCHECK(state_ != ConnectionState::CLOSED);
+  DCHECK(clientState_.connState != ConnectionState::CLOSED);
 
   queue_.markNextSendingBatchAsSent([&](auto& req) {
     req.onWriteSuccess();
@@ -924,10 +1104,9 @@ void RocketClient::writeSuccess() noexcept {
 }
 
 void RocketClient::writeErr(
-    size_t bytesWritten,
-    const folly::AsyncSocketException& ex) noexcept {
+    size_t bytesWritten, const folly::AsyncSocketException& ex) noexcept {
   DestructorGuard dg(this);
-  DCHECK(state_ != ConnectionState::CLOSED);
+  DCHECK(clientState_.connState != ConnectionState::CLOSED);
 
   queue_.markNextSendingBatchAsSent([&](auto& req) {
     if (bytesWritten == 0) {
@@ -954,7 +1133,7 @@ void RocketClient::writeErr(
 void RocketClient::closeNow(transport::TTransportException ex) noexcept {
   DestructorGuard dg(this);
 
-  if (state_ == ConnectionState::CLOSED) {
+  if (clientState_.connState == ConnectionState::CLOSED) {
     return;
   }
 
@@ -963,28 +1142,28 @@ void RocketClient::closeNow(transport::TTransportException ex) noexcept {
   closeNowImpl();
 }
 
-void RocketClient::close(transport::TTransportException ex) noexcept {
+void RocketClient::close(folly::exception_wrapper ew) noexcept {
   DestructorGuard dg(this);
 
-  if (state_ != ConnectionState::CONNECTED) {
+  if (clientState_.connState != ConnectionState::CONNECTED &&
+      clientState_.connState != ConnectionState::CLOSING) {
     return;
   }
 
-  error_ = std::move(ex);
-  state_ = ConnectionState::ERROR;
+  error_ = std::move(ew);
+  clientState_.connState = ConnectionState::ERROR;
 
   writeLoopCallback_.cancelLoopCallback();
   queue_.failAllScheduledWrites(error_);
 
   if (evb_) {
-    socket_->setReadCB(&closeLoopCallback_);
     evb_->runInLoop(&closeLoopCallback_);
   }
 }
 
 void RocketClient::closeNowImpl() noexcept {
   DestructorGuard dg(this);
-  DCHECK(state_ == ConnectionState::ERROR);
+  DCHECK(clientState_.connState == ConnectionState::ERROR);
 
   DCHECK(socket_);
   socket_->closeNow();
@@ -995,7 +1174,7 @@ void RocketClient::closeNowImpl() noexcept {
   socket_->setReadCB(nullptr);
   socket_.reset();
 
-  state_ = ConnectionState::CLOSED;
+  clientState_.connState = ConnectionState::CLOSED;
   if (auto closeCallback = std::move(closeCallback_)) {
     closeCallback();
   }
@@ -1009,7 +1188,7 @@ void RocketClient::closeNowImpl() noexcept {
   auto streams = std::move(streams_);
   for (const auto& callback : streams) {
     callback.match([&](auto* serverCallback) {
-      if (firstResponseTimeouts_.count(serverCallback->streamId())) {
+      if (isFirstResponse(serverCallback->streamId())) {
         serverCallback->onInitialError(error_);
       } else {
         serverCallback->onStreamTransportError(error_);
@@ -1060,11 +1239,15 @@ folly::Optional<Payload> RocketClient::bufferOrGetFullPayload(
   return fullPayload;
 }
 
-void RocketClient::scheduleFirstResponseTimeout(
-    StreamId streamId,
-    std::chrono::milliseconds timeout) {
+void RocketClient::maybeScheduleFirstResponseTimeout(
+    StreamId streamId, std::chrono::milliseconds timeout) {
   DCHECK(evb_);
   DCHECK(firstResponseTimeouts_.find(streamId) == firstResponseTimeouts_.end());
+
+  if (timeout == std::chrono::milliseconds::zero()) {
+    firstResponseTimeouts_.emplace(streamId, nullptr);
+    return;
+  }
 
   auto firstResponseTimeout =
       std::make_unique<FirstResponseTimeout>(*this, streamId);
@@ -1072,7 +1255,19 @@ void RocketClient::scheduleFirstResponseTimeout(
   firstResponseTimeouts_.emplace(streamId, std::move(firstResponseTimeout));
 }
 
+bool RocketClient::isFirstResponse(StreamId streamId) const {
+  return firstResponseTimeouts_.count(streamId) > 0;
+}
+
+void RocketClient::acknowledgeFirstResponse(StreamId streamId) {
+  firstResponseTimeouts_.erase(streamId);
+}
+
 void RocketClient::FirstResponseTimeout::timeoutExpired() noexcept {
+  // remove ourselves from the timeout set to avoid being freed prematurely by
+  // the callback below
+  auto ptr = std::move(client_.firstResponseTimeouts_.at(streamId_));
+
   const auto streamIt = client_.streams_.find(streamId_);
   CHECK(streamIt != client_.streams_.end());
 
@@ -1094,6 +1289,7 @@ void RocketClient::attachEventBase(folly::EventBase& evb) {
   evb_ = &evb;
   socket_->attachEventBase(evb_);
   evb_->runOnDestruction(eventBaseDestructionCallback_);
+  flushManager_ = &FlushManager::getInstance(*evb_);
 }
 
 void RocketClient::detachEventBase() {
@@ -1102,14 +1298,17 @@ void RocketClient::detachEventBase() {
   evb_->dcheckIsInEventBaseThread();
   DCHECK(!writeLoopCallback_.isLoopCallbackScheduled());
 
-  // trigger the buffer resize timeout ensure rocket client not holding extra
-  // buffer when detaching
-  parser_.cancelTimeout();
-  parser_.timeoutExpired();
+  if (!parser_.getNewBufferLogicEnabled()) {
+    // trigger the buffer resize timeout ensure rocket client not holding extra
+    // buffer when detaching
+    parser_.cancelTimeout();
+    parser_.timeoutExpired();
+  }
 
   eventBaseDestructionCallback_.cancel();
   detachableLoopCallback_.cancelLoopCallback();
   socket_->detachEventBase();
+  flushManager_ = nullptr;
   evb_ = nullptr;
   flushList_ = nullptr;
 }
@@ -1121,38 +1320,15 @@ void RocketClient::DetachableLoopCallback::runLoopCallback() noexcept {
 }
 
 void RocketClient::CloseLoopCallback::runLoopCallback() noexcept {
-  if (std::exchange(reschedule_, false)) {
-    client_.evb_->runInLoop(this);
-    return;
-  }
   client_.closeNowImpl();
-}
-
-void RocketClient::CloseLoopCallback::getReadBuffer(
-    void** bufout,
-    size_t* lenout) {
-  client_.parser_.getReadBuffer(bufout, lenout);
-}
-
-void RocketClient::CloseLoopCallback::readDataAvailable(
-    size_t nbytes) noexcept {
-  reschedule_ = true;
-  client_.parser_.readDataAvailable(nbytes);
-}
-
-void RocketClient::CloseLoopCallback::readEOF() noexcept {
-  reschedule_ = false;
-  client_.parser_.readEOF();
-}
-
-void RocketClient::CloseLoopCallback::readErr(
-    const folly::AsyncSocketException& ex) noexcept {
-  reschedule_ = false;
-  client_.parser_.readErr(ex);
 }
 
 void RocketClient::OnEventBaseDestructionCallback::
     onEventBaseDestruction() noexcept {
+  // Make sure we never run RocketClient destructor inline from
+  // OnEventBaseDestructionCallback, since it will try to deregister itself from
+  // the EventBase and deadlock.
+  client_.evb_->runInLoop([dg = DestructorGuard(&client_)] {});
   client_.closeNow(transport::TTransportException("Destroying EventBase"));
 }
 
@@ -1168,20 +1344,71 @@ void RocketClient::terminateInteraction(int64_t id) {
     return;
   }
 
-  InteractionTerminate term;
-  term.set_interactionId(id);
-  std::ignore = sendFrame(
-      ExtFrame(
-          StreamId(),
-          Payload::makeFromData(packCompact(std::move(term))),
-          Flags::none(),
-          ExtFrameType::INTERACTION_TERMINATE),
+  auto onError =
       [dg = DestructorGuard(this),
+       this,
        guard = std::move(guard),
        ka = folly::getKeepAliveToken(evb_)](transport::TTransportException ex) {
-        FB_LOG_EVERY_MS(WARNING, 1000)
-            << "terminateInteraction failed: " << ex.what();
-      });
+        close(std::move(ex));
+      };
+
+  std::ignore = sendVersionDependentFrame(
+      [id](int32_t serverVersion) {
+        InteractionTerminate term;
+        term.interactionId_ref() = id;
+        if (serverVersion >= 7) {
+          ClientPushMetadata clientMeta;
+          clientMeta.interactionTerminate_ref() = std::move(term);
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              MetadataPushFrame::makeFromMetadata(
+                  packCompact(std::move(clientMeta)))
+                  .serialize(),
+              FrameType::METADATA_PUSH);
+        } else {
+          return std::make_pair<std::unique_ptr<folly::IOBuf>, FrameType>(
+              ExtFrame(
+                  StreamId(),
+                  Payload::makeFromData(packCompact(std::move(term))),
+                  Flags::none(),
+                  ExtFrameType::INTERACTION_TERMINATE)
+                  .serialize(),
+              FrameType::EXT);
+        }
+      },
+      StreamId(),
+      std::move(onError));
+}
+
+void RocketClient::onServerVersionRequired() {
+  // if a version dependent frame is scheduled but server setup response has
+  // not been received, buffer all other requests until server version is
+  // known
+  DCHECK(serverVersion_ == -1);
+  if (!queue_.startBufferingRequests()) {
+    return; // already buffering
+  }
+  // include a timeout to close the connection if server does not respond
+  serverVersionTimeout_.reset(new ServerVersionTimeout(*this));
+  evb_->timer().scheduleTimeout(
+      serverVersionTimeout_.get(),
+      std::chrono::milliseconds(THRIFT_FLAG(rocket_server_version_timeout_ms)));
+}
+
+void RocketClient::setServerVersion(int32_t serverVersion) {
+  // set server version, cancel timeout and resolve any buffered requests
+  serverVersion_ = serverVersion;
+  serverVersionTimeout_.reset();
+  if (queue_.resolveWriteBuffer(serverVersion)) {
+    scheduleWriteLoopCallback();
+  }
+}
+
+std::unique_ptr<SetupFrame> RocketClient::moveOutSetupFrame() {
+  if (UNLIKELY(clientState_.hasPendingSetupFrame)) {
+    clientState_.hasPendingSetupFrame = false;
+    return std::move(setupFrame_);
+  }
+  return nullptr;
 }
 
 } // namespace rocket

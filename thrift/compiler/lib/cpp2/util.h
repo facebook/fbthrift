@@ -16,24 +16,36 @@
 
 #pragma once
 
+#include <initializer_list>
 #include <map>
 #include <string>
 #include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
+#include <thrift/compiler/ast/t_base_type.h>
+#include <thrift/compiler/ast/t_container.h>
+#include <thrift/compiler/ast/t_field.h>
 #include <thrift/compiler/ast/t_function.h>
 #include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_stream.h>
 #include <thrift/compiler/ast/t_type.h>
+#include <thrift/compiler/gen/cpp/namespace_resolver.h>
+#include <thrift/compiler/gen/cpp/reference_type.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 namespace cpp2 {
 
-std::vector<std::string> get_gen_namespace_components(t_program const& program);
+inline std::vector<std::string> get_gen_namespace_components(
+    t_program const& program) {
+  return gen::cpp::namespace_resolver::gen_namespace_components(&program);
+}
 
-std::string get_gen_namespace(t_program const& program);
+inline std::string get_gen_namespace(t_program const& program) {
+  return gen::cpp::namespace_resolver::gen_namespace(&program);
+}
 
 /*
  * This determines if a type can be ordered.
@@ -47,21 +59,94 @@ bool is_orderable(
 bool is_orderable(t_type const& type);
 
 /**
+ * Return the cpp.type/cpp2.type attribute or empty string if nothing set.
+ */
+// TODO(afuller): Replace with type_resolver::get_type_name.
+std::string const& get_type(const t_type* type);
+
+/**
  * If the cpp_type is std::unique_ptr<folly::IOBuf> the C++ compiler implicitly
  * assumes this is optional.
  */
 bool is_implicit_ref(const t_type* type);
 
 /**
- * Return the cpp.type/cpp2.type attribute or empty string if nothing set.
+ * If the field has cpp.ref/cpp2.ref/cpp.ref_type/cpp2.ref_type.
  */
-std::string const& get_cpp_type(const t_type* type);
+// TODO(afuller): Remove by actually inlining function.
+inline bool is_explicit_ref(const t_field* f) {
+  return gen::cpp::find_ref_type(*f) != gen::cpp::reference_type::none;
+}
+
+inline bool is_ref(const t_field* f) {
+  return is_explicit_ref(f) || is_implicit_ref(f->get_type());
+}
+
+inline bool is_lazy(const t_field* field) {
+  return field->has_annotation("cpp.experimental.lazy");
+}
+
+bool field_transitively_refers_to_unique(const t_field* field);
 
 /**
- * Does the field have cpp.ref/cpp2.ref/cpp.ref_type/cpp2.ref_type or is an
- * implicit ref (see @is_implicit_ref).
+ * Determines if the operations on the C++ representation of type can be
+ * constexpr and, in particular, if the move constructor and assignment
+ * operator can be defined as
+ *   constexpr T(T&&) = default;
+ *   constexpr T& operator=(T&&) = default;
  */
-bool is_cpp_ref(const t_field* f);
+class is_eligible_for_constexpr {
+ public:
+  bool operator()(const t_type* type);
+
+ private:
+  std::unordered_map<const t_type*, bool> cache_;
+};
+
+// Invokes f on each field of s and nested structs. The traversal is performed
+// transitively in a depth-first order and interrupted if f returns false.
+template <typename F>
+void for_each_transitive_field(const t_struct* s, F f) {
+  struct field_info {
+    const t_struct* owner;
+    size_t index;
+  };
+  auto fields = std::vector<field_info>{1, {s, 0}};
+  while (!fields.empty()) {
+    auto& fi = fields.back();
+    if (fi.index == fi.owner->fields().size()) {
+      fields.pop_back();
+      continue;
+    }
+    const t_field* field = fi.owner->get_field(fi.index);
+    if (!f(field)) {
+      return;
+    }
+    ++fi.index;
+    if (const auto* sub = dynamic_cast<const t_struct*>(field->get_type())) {
+      fields.push_back({sub, 0});
+    }
+  }
+}
+
+/**
+ * The value of cpp.ref_type/cpp2.ref_type.
+ */
+// TODO(afuller): Replace with type_resolver::find_ref_type.
+std::string const& get_ref_type(const t_field* f);
+
+/**
+ * If the field has cpp.ref/cpp2.ref or cpp.ref_type/cpp2.ref_type == "unique".
+ */
+// TODO(afuller): Remove by actually inlining function.
+inline bool is_unique_ref(const t_field* f) {
+  return gen::cpp::find_ref_type(*f) == gen::cpp::reference_type::unique;
+}
+
+template <typename Node>
+const std::string& get_name(const Node* node) {
+  return node->get_annotation("cpp.name", &node->get_name());
+}
 
 bool is_stack_arguments(
     std::map<std::string, std::string> const& options,
@@ -71,9 +156,11 @@ int32_t get_split_count(std::map<std::string, std::string> const& options);
 
 bool is_mixin(const t_field& field);
 
+bool has_ref_annotation(const t_field& f);
+
 struct mixin_member {
-  t_field* mixin;
-  t_field* member;
+  const t_field* mixin;
+  const t_field* member;
 };
 
 /**
@@ -91,6 +178,19 @@ struct mixin_member {
  * this returns {{.mixin="f1", .member="m1"}, {.mixin="f2", .member="m2"}}
  */
 std::vector<mixin_member> get_mixins_and_members(const t_struct& strct);
+
+//  get_gen_type_class
+//  get_gen_type_class_with_indirection
+//
+//  Returns a string with the fully-qualified name of the C++ type class type
+//  representing the given type.
+//
+//  The _with_indirection variant intersperses indirection_tag wherever the
+//  annotation cpp.indirection appears in the corresponding definitions.
+std::string get_gen_type_class(t_type const& type);
+std::string get_gen_type_class_with_indirection(t_type const& type);
+
+std::string sha256_hex(std::string const& in);
 
 } // namespace cpp2
 } // namespace compiler

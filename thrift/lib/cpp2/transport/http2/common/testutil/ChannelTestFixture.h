@@ -24,7 +24,9 @@
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
-#include <thrift/lib/cpp2/transport/core/ThriftProcessor.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
+#include <thrift/lib/cpp2/server/ThriftProcessor.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/common/H2Channel.h>
 #include <thrift/lib/cpp2/transport/http2/common/testutil/FakeResponseHandler.h>
 
@@ -59,7 +61,11 @@ class ChannelTestFixture : public testing::Test {
       bool omitEnvelope = false);
 
  protected:
-  std::unique_ptr<folly::EventBase> eventBase_;
+  std::unique_ptr<folly::EventBase> eventBase_{
+      std::make_unique<folly::EventBase>()};
+  apache::thrift::ThriftServer server_;
+  std::shared_ptr<apache::thrift::Cpp2Worker> worker_{
+      apache::thrift::Cpp2Worker::create(&server_, nullptr, eventBase_.get())};
   std::unique_ptr<FakeResponseHandler> responseHandler_;
 
   std::string toString(folly::IOBuf* buf);

@@ -43,10 +43,9 @@ struct ForEachField {
  * @param f a callable that will be called for each thrift field
  */
 template <typename T, typename F>
-void for_each_field(T&& t, F&& f) {
+void for_each_field(T&& t, F f) {
   apache::thrift::detail::ForEachField<folly::remove_cvref_t<T>>()(
-      detail::MetadataForwarder<T, F&&>{static_cast<F&&>(f)},
-      static_cast<T&&>(t));
+      detail::MetadataForwarder<T, F>{std::move(f)}, static_cast<T&&>(t));
 }
 
 /**
@@ -64,7 +63,7 @@ void for_each_field(T1&& t1, T2&& t2, F f) {
       std::is_same<folly::remove_cvref_t<T1>, folly::remove_cvref_t<T2>>::value,
       "type mismatch");
   apache::thrift::detail::ForEachField<folly::remove_cvref_t<T1>>()(
-      detail::MetadataForwarder<T1, F&&>{static_cast<F&&>(f)},
+      detail::MetadataForwarder<T1, F>{std::move(f)},
       static_cast<T1&&>(t1),
       static_cast<T2&&>(t2));
 }

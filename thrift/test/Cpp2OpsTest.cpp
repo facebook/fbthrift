@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include <folly/portability/GTest.h>
 #include <glog/logging.h>
+#include <folly/portability/GTest.h>
 
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>

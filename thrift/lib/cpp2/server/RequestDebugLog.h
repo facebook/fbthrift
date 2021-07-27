@@ -19,6 +19,7 @@
 #include <string>
 #include <vector>
 
+#include <folly/portability/GFlags.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 
 DECLARE_uint32(thrift_server_request_debug_log_entries_max);
@@ -28,6 +29,8 @@ namespace thrift {
 
 void appendRequestDebugLog(std::string&&);
 void appendRequestDebugLog(const std::string&);
+std::vector<std::string> collectRequestDebugLog(
+    std::shared_ptr<folly::RequestContext>);
 std::vector<std::string> collectRequestDebugLog(
     const RequestsRegistry::DebugStub&);
 

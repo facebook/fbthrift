@@ -57,9 +57,7 @@ Controller::Controller(
       threadFactory_(threadFactory) {}
 
 void Controller::run(
-    uint32_t numThreads,
-    uint32_t maxThreads,
-    double monitorInterval) {
+    uint32_t numThreads, uint32_t maxThreads, double monitorInterval) {
   maxThreads_ = maxThreads;
 
   // start all of the worker threads

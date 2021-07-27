@@ -23,7 +23,7 @@ This template should always mirror builder.pyx but for python typing
 
 import typing as _typing
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
 {{#program:includeNamespaces}}
@@ -38,7 +38,7 @@ import {{#program:py3Namespaces}}{{value}}.{{/program:py3Namespaces}}{{program:n
 
 {{#program:structs}}
 class {{struct:name}}_Builder(thrift.py3.builder.StructBuilder):
-    {{#struct:fields}}
+    {{#struct:py3_fields}}
     {{field:py_name}}: {{#field:type}}{{!
         }}{{#type:list?}}_typing.Optional[list]{{/type:list?}}{{!
         }}{{#type:map?}}_typing.Optional[dict]{{/type:map?}}{{!
@@ -50,7 +50,7 @@ class {{struct:name}}_Builder(thrift.py3.builder.StructBuilder):
         }}{{/type:struct?}}{{/type:cythonTypeNoneable?}}{{!
         }}{{#type:struct?}}_typing.Any{{/type:struct?}}{{!
         }}{{/field:type}}
-    {{/struct:fields}}
+    {{/struct:py3_fields}}
 
     def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 

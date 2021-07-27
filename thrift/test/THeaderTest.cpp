@@ -39,7 +39,7 @@ TEST(THeaderTest, removeBadHeaderStringSize) {
   // Try to remove the bad header
   THeader header;
   size_t needed;
-  std::map<std::string, std::string> persistentHeaders;
+  THeader::StringToStringMap persistentHeaders;
   EXPECT_THROW(
       auto buf = header.removeHeader(&queue, needed, persistentHeaders),
       TTransportException);

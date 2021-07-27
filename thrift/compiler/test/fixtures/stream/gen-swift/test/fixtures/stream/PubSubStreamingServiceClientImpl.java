@@ -11,7 +11,8 @@ import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
-import com.facebook.swift.transport.client.*;
+import com.facebook.thrift.client.*;
+import com.facebook.thrift.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -20,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class PubSubStreamingServiceClientImpl extends AbstractThriftClient implements PubSubStreamingService {
-
 
     // Method Handlers
 
@@ -66,6 +66,5 @@ public class PubSubStreamingServiceClientImpl extends AbstractThriftClient imple
     public void close() {
         super.close();
     }
-
 
 }

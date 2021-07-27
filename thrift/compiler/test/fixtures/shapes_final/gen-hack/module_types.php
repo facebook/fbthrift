@@ -16,6 +16,27 @@ enum Enum: int {
   ENUM = 1;
 }
 
+class Enum_TEnumStaticMetadata implements \IThriftEnumStaticMetadata {
+  public static function getEnumMetadata()[]: \tmeta_ThriftEnum {
+    return \tmeta_ThriftEnum::fromShape(
+      shape(
+        "name" => "module.Enum",
+        "elements" => dict[
+          1 => "ENUM",
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TEnumAnnotations {
+    return shape(
+      'enum' => dict[],
+      'constants' => dict[
+      ],
+    );
+  }
+}
+
 enum UnionEnum: int {
   _EMPTY_ = 0;
   intValue = 1;
@@ -68,8 +89,7 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
   public ?string $stringValue;
   protected \test\fixtures\UnionEnum $_type = \test\fixtures\UnionEnum::_EMPTY_;
 
-  <<__Rx>>
-  public function __construct(?int $intValue = null, ?string $stringValue = null  ) {
+  public function __construct(?int $intValue = null, ?string $stringValue = null  )[] {
     $this->_type = \test\fixtures\UnionEnum::_EMPTY_;
     if ($intValue !== null) {
       $this->intValue = $intValue;
@@ -81,28 +101,26 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     }
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'intValue'),
       Shapes::idx($shape, 'stringValue'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Union';
   }
 
-  public function getType(): \test\fixtures\UnionEnum {
+  public function getType()[]: \test\fixtures\UnionEnum {
     return $this->_type;
   }
 
-  public function reset(): void {
+  public function reset()[write_props]: void {
     switch ($this->_type) {
       case \test\fixtures\UnionEnum::intValue:
         $this->intValue = null;
@@ -116,14 +134,22 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     $this->_type = \test\fixtures\UnionEnum::_EMPTY_;
 }
 
-  public function set_intValue(int $intValue): this {
+  public function set_intValue(int $intValue)[write_props]: this {
+    return $this->setx_intValue($intValue);
+   }
+
+  public function setx_intValue(int $intValue)[write_props]: this {
     $this->reset();
     $this->_type = \test\fixtures\UnionEnum::intValue;
     $this->intValue = $intValue;
     return $this;
   }
 
-  public function get_intValue(): int {
+  public function get_intValue()[]: int {
+    return $this->getx_intValue();
+  }
+
+  public function getx_intValue()[]: int {
     invariant(
       $this->_type === \test\fixtures\UnionEnum::intValue,
       'get_intValue called on an instance of Union whose current type is %s',
@@ -132,14 +158,22 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     return $this->intValue as nonnull;
   }
 
-  public function set_stringValue(string $stringValue): this {
+  public function set_stringValue(string $stringValue)[write_props]: this {
+    return $this->setx_stringValue($stringValue);
+   }
+
+  public function setx_stringValue(string $stringValue)[write_props]: this {
     $this->reset();
     $this->_type = \test\fixtures\UnionEnum::stringValue;
     $this->stringValue = $stringValue;
     return $this;
   }
 
-  public function get_stringValue(): string {
+  public function get_stringValue()[]: string {
+    return $this->getx_stringValue();
+  }
+
+  public function getx_stringValue()[]: string {
     invariant(
       $this->_type === \test\fixtures\UnionEnum::stringValue,
       'get_stringValue called on an instance of Union whose current type is %s',
@@ -148,44 +182,55 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
     return $this->stringValue as nonnull;
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Union",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I64_TYPE,
+                )
+              ),
+              "name" => "intValue",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "stringValue",
+            )
+          ),
+        ],
+        "is_union" => true,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'intValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'stringValue' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'intValue'),
+      Shapes::idx($shape, 'stringValue'),
+    );
   }
 
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->_type = \test\fixtures\UnionEnum::_EMPTY_;
-    if (Shapes::idx($shape, 'intValue') !== null) {
-      $me->intValue = $shape['intValue'];
-      $me->_type = \test\fixtures\UnionEnum::intValue;
-    }
-    if (Shapes::idx($shape, 'stringValue') !== null) {
-      $me->stringValue = $shape['stringValue'];
-      $me->_type = \test\fixtures\UnionEnum::stringValue;
-    }
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'intValue' => $this->intValue,
       'stringValue' => $this->stringValue,
@@ -211,7 +256,7 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => string,
+    ?'a' => ?string,
   );
 
   const type TShape = shape(
@@ -224,53 +269,61 @@ class A implements \IThriftStruct, \IThriftShapishStruct {
    */
   public string $a;
 
-  <<__Rx>>
-  public function __construct(?string $a = null  ) {
+  public function __construct(?string $a = null  )[] {
     $this->a = $a ?? '';
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'a'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'A';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.A",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "a",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'a' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['a'],
+    );
   }
 
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->a = $shape['a'];
-    return $me;
-  }
-
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'a' => $this->a,
     );
@@ -774,21 +827,21 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
 
   const type TConstructorShape = shape(
     ?'just_an_A' => ?\test\fixtures\A,
-    ?'set_of_i32' => Set<int>,
-    ?'list_of_i32' => Vector<int>,
-    ?'list_of_string' => Vector<string>,
-    ?'map_of_string_to_i32' => Map<string, int>,
-    ?'map_of_string_to_A' => Map<string, \test\fixtures\A>,
-    ?'map_of_string_to_list_of_i32' => Map<string, Vector<int>>,
-    ?'map_of_string_to_list_of_A' => Map<string, Vector<\test\fixtures\A>>,
-    ?'map_of_string_to_set_of_i32' => Map<string, Set<int>>,
-    ?'map_of_string_to_map_of_string_to_i32' => Map<string, Map<string, int>>,
-    ?'map_of_string_to_map_of_string_to_A' => Map<string, Map<string, \test\fixtures\A>>,
-    ?'list_of_set_of_i32' => Vector<Set<int>>,
-    ?'list_of_map_of_string_to_list_of_A' => Vector<Map<string, Vector<\test\fixtures\A>>>,
-    ?'list_of_map_of_string_to_A' => Vector<Map<string, \test\fixtures\A>>,
-    ?'list_of_self' => Vector<\test\fixtures\B>,
-    ?'map_of_string_to_self' => Map<string, \test\fixtures\B>,
+    ?'set_of_i32' => ?Set<int>,
+    ?'list_of_i32' => ?Vector<int>,
+    ?'list_of_string' => ?Vector<string>,
+    ?'map_of_string_to_i32' => ?Map<string, int>,
+    ?'map_of_string_to_A' => ?Map<string, \test\fixtures\A>,
+    ?'map_of_string_to_list_of_i32' => ?Map<string, Vector<int>>,
+    ?'map_of_string_to_list_of_A' => ?Map<string, Vector<\test\fixtures\A>>,
+    ?'map_of_string_to_set_of_i32' => ?Map<string, Set<int>>,
+    ?'map_of_string_to_map_of_string_to_i32' => ?Map<string, Map<string, int>>,
+    ?'map_of_string_to_map_of_string_to_A' => ?Map<string, Map<string, \test\fixtures\A>>,
+    ?'list_of_set_of_i32' => ?Vector<Set<int>>,
+    ?'list_of_map_of_string_to_list_of_A' => ?Vector<Map<string, Vector<\test\fixtures\A>>>,
+    ?'list_of_map_of_string_to_A' => ?Vector<Map<string, \test\fixtures\A>>,
+    ?'list_of_self' => ?Vector<\test\fixtures\B>,
+    ?'map_of_string_to_self' => ?Map<string, \test\fixtures\B>,
     ?'just_an_enum' => ?\test\fixtures\Enum,
     ?'just_a_union' => ?\test\fixtures\Union,
     ?'optional_just_an_A' => ?\test\fixtures\A,
@@ -801,16 +854,16 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     ?'optional_map_of_string_to_list_of_A' => ?Map<string, Vector<\test\fixtures\A>>,
     ?'optional_map_of_string_to_set_of_i32' => ?Map<string, Set<int>>,
     ?'optional_enum' => ?\test\fixtures\Enum,
-    ?'required_enum_with_default' => \test\fixtures\Enum,
-    ?'string_with_default_value' => string,
-    ?'i32_with_default_value' => int,
-    ?'double_with_default_value' => float,
+    ?'required_enum_with_default' => ?\test\fixtures\Enum,
+    ?'string_with_default_value' => ?string,
+    ?'i32_with_default_value' => ?int,
+    ?'double_with_default_value' => ?float,
     ?'enum_with_default_value' => ?\test\fixtures\Enum,
     ?'A_with_default_value' => ?\test\fixtures\A,
-    ?'set_of_i32_with_default_value' => Set<int>,
-    ?'map_of_i32_to_string_with_default_value' => Map<int, string>,
-    ?'list_of_string_with_default_value' => Vector<string>,
-    ?'map_of_string_to_list_of_i32_with_default_value' => Map<string, Vector<int>>,
+    ?'set_of_i32_with_default_value' => ?Set<int>,
+    ?'map_of_i32_to_string_with_default_value' => ?Map<int, string>,
+    ?'list_of_string_with_default_value' => ?Vector<string>,
+    ?'map_of_string_to_list_of_i32_with_default_value' => ?Map<string, Vector<int>>,
   );
 
   const type TShape = shape(
@@ -1045,8 +1098,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
    */
   public Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value;
 
-  <<__Rx>>
-  public function __construct(?\test\fixtures\A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A = null, ?Vector<\test\fixtures\B> $list_of_self = null, ?Map<string, \test\fixtures\B> $map_of_string_to_self = null, ?\test\fixtures\Enum $just_an_enum = null, ?\test\fixtures\Union $just_a_union = null, ?\test\fixtures\A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null, ?\test\fixtures\Enum $optional_enum = null, ?\test\fixtures\Enum $required_enum_with_default = null, ?string $string_with_default_value = null, ?int $i32_with_default_value = null, ?float $double_with_default_value = null, ?\test\fixtures\Enum $enum_with_default_value = null, ?\test\fixtures\A $A_with_default_value = null, ?Set<int> $set_of_i32_with_default_value = null, ?Map<int, string> $map_of_i32_to_string_with_default_value = null, ?Vector<string> $list_of_string_with_default_value = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value = null  ) {
+  public function __construct(?\test\fixtures\A $just_an_A = null, ?Set<int> $set_of_i32 = null, ?Vector<int> $list_of_i32 = null, ?Vector<string> $list_of_string = null, ?Map<string, int> $map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $map_of_string_to_A = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $map_of_string_to_set_of_i32 = null, ?Map<string, Map<string, int>> $map_of_string_to_map_of_string_to_i32 = null, ?Map<string, Map<string, \test\fixtures\A>> $map_of_string_to_map_of_string_to_A = null, ?Vector<Set<int>> $list_of_set_of_i32 = null, ?Vector<Map<string, Vector<\test\fixtures\A>>> $list_of_map_of_string_to_list_of_A = null, ?Vector<Map<string, \test\fixtures\A>> $list_of_map_of_string_to_A = null, ?Vector<\test\fixtures\B> $list_of_self = null, ?Map<string, \test\fixtures\B> $map_of_string_to_self = null, ?\test\fixtures\Enum $just_an_enum = null, ?\test\fixtures\Union $just_a_union = null, ?\test\fixtures\A $optional_just_an_A = null, ?Set<int> $optional_set_of_i32 = null, ?Vector<int> $optional_list_of_i32 = null, ?Vector<string> $optional_list_of_string = null, ?Map<string, int> $optional_map_of_string_to_i32 = null, ?Map<string, \test\fixtures\A> $optional_map_of_string_to_A = null, ?Map<string, Vector<int>> $optional_map_of_string_to_list_of_i32 = null, ?Map<string, Vector<\test\fixtures\A>> $optional_map_of_string_to_list_of_A = null, ?Map<string, Set<int>> $optional_map_of_string_to_set_of_i32 = null, ?\test\fixtures\Enum $optional_enum = null, ?\test\fixtures\Enum $required_enum_with_default = null, ?string $string_with_default_value = null, ?int $i32_with_default_value = null, ?float $double_with_default_value = null, ?\test\fixtures\Enum $enum_with_default_value = null, ?\test\fixtures\A $A_with_default_value = null, ?Set<int> $set_of_i32_with_default_value = null, ?Map<int, string> $map_of_i32_to_string_with_default_value = null, ?Vector<string> $list_of_string_with_default_value = null, ?Map<string, Vector<int>> $map_of_string_to_list_of_i32_with_default_value = null  )[] {
     $this->just_an_A = $just_an_A;
     $this->set_of_i32 = $set_of_i32 ?? Set {};
     $this->list_of_i32 = $list_of_i32 ?? Vector {};
@@ -1108,13 +1160,11 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     };
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'just_an_A'),
       Shapes::idx($shape, 'set_of_i32'),
@@ -1157,298 +1207,1049 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'B';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return \tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.B",
+        "fields" => vec[
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.A",
+                    )
+                  ),
+                )
+              ),
+              "name" => "just_an_A",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_set" => \tmeta_ThriftSetType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "set_of_i32",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "list_of_i32",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "list_of_string",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_string_to_i32",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 6,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.A",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_string_to_A",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 7,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_list" => \tmeta_ThriftListType::fromShape(
+                            shape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_string_to_list_of_i32",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 8,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_list" => \tmeta_ThriftListType::fromShape(
+                            shape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                                    shape(
+                                      "name" => "module.A",
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_string_to_list_of_A",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 9,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_set" => \tmeta_ThriftSetType::fromShape(
+                            shape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_string_to_set_of_i32",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 10,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_map" => \tmeta_ThriftMapType::fromShape(
+                            shape(
+                              "keyType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_string_to_map_of_string_to_i32",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 11,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_map" => \tmeta_ThriftMapType::fromShape(
+                            shape(
+                              "keyType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                                    shape(
+                                      "name" => "module.A",
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_string_to_map_of_string_to_A",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 12,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_set" => \tmeta_ThriftSetType::fromShape(
+                            shape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "list_of_set_of_i32",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 13,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_map" => \tmeta_ThriftMapType::fromShape(
+                            shape(
+                              "keyType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_list" => \tmeta_ThriftListType::fromShape(
+                                    shape(
+                                      "valueType" => \tmeta_ThriftType::fromShape(
+                                        shape(
+                                          "t_struct" => \tmeta_ThriftStructType::fromShape(
+                                            shape(
+                                              "name" => "module.A",
+                                            )
+                                          ),
+                                        )
+                                      ),
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "list_of_map_of_string_to_list_of_A",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 14,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_map" => \tmeta_ThriftMapType::fromShape(
+                            shape(
+                              "keyType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                                    shape(
+                                      "name" => "module.A",
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "list_of_map_of_string_to_A",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 15,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                            shape(
+                              "name" => "module.B",
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                                    shape(
+                                      "name" => "module.B",
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "list_of_self",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 16,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_typedef" => \tmeta_ThriftTypedefType::fromShape(
+                            shape(
+                              "name" => "module.B",
+                              "underlyingType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                                    shape(
+                                      "name" => "module.B",
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_string_to_self",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 17,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => \tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.Enum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "just_an_enum",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 18,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.Union",
+                    )
+                  ),
+                )
+              ),
+              "name" => "just_a_union",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 51,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.A",
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_just_an_A",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 52,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_set" => \tmeta_ThriftSetType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_set_of_i32",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 53,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_list_of_i32",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 54,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_list_of_string",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 55,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_map_of_string_to_i32",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 56,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_struct" => \tmeta_ThriftStructType::fromShape(
+                            shape(
+                              "name" => "module.A",
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_map_of_string_to_A",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 57,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_list" => \tmeta_ThriftListType::fromShape(
+                            shape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_map_of_string_to_list_of_i32",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 58,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_list" => \tmeta_ThriftListType::fromShape(
+                            shape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                                    shape(
+                                      "name" => "module.A",
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_map_of_string_to_list_of_A",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 59,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_set" => \tmeta_ThriftSetType::fromShape(
+                            shape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_map_of_string_to_set_of_i32",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 60,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => \tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.Enum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_enum",
+              "is_optional" => true,
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 70,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => \tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.Enum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "required_enum_with_default",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 80,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "string_with_default_value",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 81,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "i32_with_default_value",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 82,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_DOUBLE_TYPE,
+                )
+              ),
+              "name" => "double_with_default_value",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 83,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_enum" => \tmeta_ThriftEnumType::fromShape(
+                    shape(
+                      "name" => "module.Enum",
+                    )
+                  ),
+                )
+              ),
+              "name" => "enum_with_default_value",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 84,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_struct" => \tmeta_ThriftStructType::fromShape(
+                    shape(
+                      "name" => "module.A",
+                    )
+                  ),
+                )
+              ),
+              "name" => "A_with_default_value",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 85,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_set" => \tmeta_ThriftSetType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "set_of_i32_with_default_value",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 86,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_i32_to_string_with_default_value",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 87,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => \tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "list_of_string_with_default_value",
+            )
+          ),
+          \tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 88,
+              "type" => \tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => \tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => \tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_list" => \tmeta_ThriftListType::fromShape(
+                            shape(
+                              "valueType" => \tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => \tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_string_to_list_of_i32_with_default_value",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'just_an_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'set_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_string' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_list_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_list_of_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_set_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_map_of_string_to_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_map_of_string_to_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_set_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_map_of_string_to_list_of_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_map_of_string_to_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_self' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_self' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'just_an_enum' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'just_a_union' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_just_an_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_set_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_list_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_list_of_string' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_string_to_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_string_to_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_string_to_list_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_string_to_list_of_A' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_string_to_set_of_i32' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_enum' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'required_enum_with_default' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'string_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'i32_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'double_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'enum_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'A_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'set_of_i32_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_i32_to_string_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_string_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_string_to_list_of_i32_with_default_value' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    if (Shapes::idx($shape, 'just_an_A') !== null) {
-      $me->just_an_A = \test\fixtures\A::__fromShape($shape['just_an_A']);
-    }
-    $me->set_of_i32 = new Set(Keyset\keys($shape['set_of_i32']));
-    $me->list_of_i32 = (new Vector($shape['list_of_i32']));
-    $me->list_of_string = (new Vector($shape['list_of_string']));
-    $me->map_of_string_to_i32 = (new Map($shape['map_of_string_to_i32']));
-    $me->map_of_string_to_A = (new Map($shape['map_of_string_to_A']))->map(
-      $val0 ==> \test\fixtures\A::__fromShape($val0),
-    );
-    $me->map_of_string_to_list_of_i32 = (new Map($shape['map_of_string_to_list_of_i32']))->map(
-      $val1 ==> (new Vector($val1)),
-    );
-    $me->map_of_string_to_list_of_A = (new Map($shape['map_of_string_to_list_of_A']))->map(
-      $val2 ==> (new Vector($val2))->map(
-        $val3 ==> \test\fixtures\A::__fromShape($val3),
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'just_an_A') === null ? null : (\test\fixtures\A::__fromShape($shape['just_an_A'])),
+      new Set(Keyset\keys($shape['set_of_i32'])),
+      (new Vector($shape['list_of_i32'])),
+      (new Vector($shape['list_of_string'])),
+      (new Map($shape['map_of_string_to_i32'])),
+      (new Map($shape['map_of_string_to_A']))->map(
+        $val0 ==> \test\fixtures\A::__fromShape($val0),
       ),
-    );
-    $me->map_of_string_to_set_of_i32 = (new Map($shape['map_of_string_to_set_of_i32']))->map(
-      $val4 ==> new Set(Keyset\keys($val4)),
-    );
-    $me->map_of_string_to_map_of_string_to_i32 = (new Map($shape['map_of_string_to_map_of_string_to_i32']))->map(
-      $val5 ==> (new Map($val5)),
-    );
-    $me->map_of_string_to_map_of_string_to_A = (new Map($shape['map_of_string_to_map_of_string_to_A']))->map(
-      $val6 ==> (new Map($val6))->map(
-        $val7 ==> \test\fixtures\A::__fromShape($val7),
+      (new Map($shape['map_of_string_to_list_of_i32']))->map(
+        $val1 ==> (new Vector($val1)),
       ),
-    );
-    $me->list_of_set_of_i32 = (new Vector($shape['list_of_set_of_i32']))->map(
-      $val8 ==> new Set(Keyset\keys($val8)),
-    );
-    $me->list_of_map_of_string_to_list_of_A = (new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
-      $val9 ==> (new Map($val9))->map(
-        $val10 ==> (new Vector($val10))->map(
-          $val11 ==> \test\fixtures\A::__fromShape($val11),
+      (new Map($shape['map_of_string_to_list_of_A']))->map(
+        $val2 ==> (new Vector($val2))->map(
+          $val3 ==> \test\fixtures\A::__fromShape($val3),
         ),
       ),
-    );
-    $me->list_of_map_of_string_to_A = (new Vector($shape['list_of_map_of_string_to_A']))->map(
-      $val12 ==> (new Map($val12))->map(
-        $val13 ==> \test\fixtures\A::__fromShape($val13),
+      (new Map($shape['map_of_string_to_set_of_i32']))->map(
+        $val4 ==> new Set(Keyset\keys($val4)),
       ),
-    );
-    $me->list_of_self = (new Vector($shape['list_of_self']))->map(
-      $val14 ==> \test\fixtures\B::__fromShape($val14),
-    );
-    $me->map_of_string_to_self = (new Map($shape['map_of_string_to_self']))->map(
-      $val15 ==> \test\fixtures\B::__fromShape($val15),
-    );
-    if (Shapes::idx($shape, 'just_an_enum') !== null) {
-      $me->just_an_enum = $shape['just_an_enum'];
-    }
-    if (Shapes::idx($shape, 'just_a_union') !== null) {
-      $me->just_a_union = \test\fixtures\Union::__fromShape($shape['just_a_union']);
-    }
-    if (Shapes::idx($shape, 'optional_just_an_A') !== null) {
-      $me->optional_just_an_A = \test\fixtures\A::__fromShape($shape['optional_just_an_A']);
-    }
-    if (Shapes::idx($shape, 'optional_set_of_i32') !== null) {
-      $me->optional_set_of_i32 = new Set(Keyset\keys($shape['optional_set_of_i32']));
-    }
-    if (Shapes::idx($shape, 'optional_list_of_i32') !== null) {
-      $me->optional_list_of_i32 = (new Vector($shape['optional_list_of_i32']));
-    }
-    if (Shapes::idx($shape, 'optional_list_of_string') !== null) {
-      $me->optional_list_of_string = (new Vector($shape['optional_list_of_string']));
-    }
-    if (Shapes::idx($shape, 'optional_map_of_string_to_i32') !== null) {
-      $me->optional_map_of_string_to_i32 = (new Map($shape['optional_map_of_string_to_i32']));
-    }
-    if (Shapes::idx($shape, 'optional_map_of_string_to_A') !== null) {
-      $me->optional_map_of_string_to_A = (new Map($shape['optional_map_of_string_to_A']))->map(
+      (new Map($shape['map_of_string_to_map_of_string_to_i32']))->map(
+        $val5 ==> (new Map($val5)),
+      ),
+      (new Map($shape['map_of_string_to_map_of_string_to_A']))->map(
+        $val6 ==> (new Map($val6))->map(
+          $val7 ==> \test\fixtures\A::__fromShape($val7),
+        ),
+      ),
+      (new Vector($shape['list_of_set_of_i32']))->map(
+        $val8 ==> new Set(Keyset\keys($val8)),
+      ),
+      (new Vector($shape['list_of_map_of_string_to_list_of_A']))->map(
+        $val9 ==> (new Map($val9))->map(
+          $val10 ==> (new Vector($val10))->map(
+            $val11 ==> \test\fixtures\A::__fromShape($val11),
+          ),
+        ),
+      ),
+      (new Vector($shape['list_of_map_of_string_to_A']))->map(
+        $val12 ==> (new Map($val12))->map(
+          $val13 ==> \test\fixtures\A::__fromShape($val13),
+        ),
+      ),
+      (new Vector($shape['list_of_self']))->map(
+        $val14 ==> \test\fixtures\B::__fromShape($val14),
+      ),
+      (new Map($shape['map_of_string_to_self']))->map(
+        $val15 ==> \test\fixtures\B::__fromShape($val15),
+      ),
+      Shapes::idx($shape, 'just_an_enum'),
+      Shapes::idx($shape, 'just_a_union') === null ? null : (\test\fixtures\Union::__fromShape($shape['just_a_union'])),
+      Shapes::idx($shape, 'optional_just_an_A') === null ? null : (\test\fixtures\A::__fromShape($shape['optional_just_an_A'])),
+      Shapes::idx($shape, 'optional_set_of_i32') === null ? null : (new Set(Keyset\keys($shape['optional_set_of_i32']))),
+      Shapes::idx($shape, 'optional_list_of_i32') === null ? null : ((new Vector($shape['optional_list_of_i32']))),
+      Shapes::idx($shape, 'optional_list_of_string') === null ? null : ((new Vector($shape['optional_list_of_string']))),
+      Shapes::idx($shape, 'optional_map_of_string_to_i32') === null ? null : ((new Map($shape['optional_map_of_string_to_i32']))),
+      Shapes::idx($shape, 'optional_map_of_string_to_A') === null ? null : ((new Map($shape['optional_map_of_string_to_A']))->map(
         $val16 ==> \test\fixtures\A::__fromShape($val16),
-      );
-    }
-    if (Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32') !== null) {
-      $me->optional_map_of_string_to_list_of_i32 = (new Map($shape['optional_map_of_string_to_list_of_i32']))->map(
+      )),
+      Shapes::idx($shape, 'optional_map_of_string_to_list_of_i32') === null ? null : ((new Map($shape['optional_map_of_string_to_list_of_i32']))->map(
         $val17 ==> (new Vector($val17)),
-      );
-    }
-    if (Shapes::idx($shape, 'optional_map_of_string_to_list_of_A') !== null) {
-      $me->optional_map_of_string_to_list_of_A = (new Map($shape['optional_map_of_string_to_list_of_A']))->map(
+      )),
+      Shapes::idx($shape, 'optional_map_of_string_to_list_of_A') === null ? null : ((new Map($shape['optional_map_of_string_to_list_of_A']))->map(
         $val18 ==> (new Vector($val18))->map(
           $val19 ==> \test\fixtures\A::__fromShape($val19),
         ),
-      );
-    }
-    if (Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') !== null) {
-      $me->optional_map_of_string_to_set_of_i32 = (new Map($shape['optional_map_of_string_to_set_of_i32']))->map(
+      )),
+      Shapes::idx($shape, 'optional_map_of_string_to_set_of_i32') === null ? null : ((new Map($shape['optional_map_of_string_to_set_of_i32']))->map(
         $val20 ==> new Set(Keyset\keys($val20)),
-      );
-    }
-    if (Shapes::idx($shape, 'optional_enum') !== null) {
-      $me->optional_enum = $shape['optional_enum'];
-    }
-    $me->required_enum_with_default = $shape['required_enum_with_default'];
-    $me->string_with_default_value = $shape['string_with_default_value'];
-    $me->i32_with_default_value = $shape['i32_with_default_value'];
-    $me->double_with_default_value = $shape['double_with_default_value'];
-    if (Shapes::idx($shape, 'enum_with_default_value') !== null) {
-      $me->enum_with_default_value = $shape['enum_with_default_value'];
-    }
-    if (Shapes::idx($shape, 'A_with_default_value') !== null) {
-      $me->A_with_default_value = \test\fixtures\A::__fromShape($shape['A_with_default_value']);
-    }
-    $me->set_of_i32_with_default_value = new Set(Keyset\keys($shape['set_of_i32_with_default_value']));
-    $me->map_of_i32_to_string_with_default_value = (new Map($shape['map_of_i32_to_string_with_default_value']));
-    $me->list_of_string_with_default_value = (new Vector($shape['list_of_string_with_default_value']));
-    $me->map_of_string_to_list_of_i32_with_default_value = (new Map($shape['map_of_string_to_list_of_i32_with_default_value']))->map(
-      $val21 ==> (new Vector($val21)),
+      )),
+      Shapes::idx($shape, 'optional_enum'),
+      $shape['required_enum_with_default'],
+      $shape['string_with_default_value'],
+      $shape['i32_with_default_value'],
+      $shape['double_with_default_value'],
+      Shapes::idx($shape, 'enum_with_default_value'),
+      Shapes::idx($shape, 'A_with_default_value') === null ? null : (\test\fixtures\A::__fromShape($shape['A_with_default_value'])),
+      new Set(Keyset\keys($shape['set_of_i32_with_default_value'])),
+      (new Map($shape['map_of_i32_to_string_with_default_value'])),
+      (new Vector($shape['list_of_string_with_default_value'])),
+      (new Map($shape['map_of_string_to_list_of_i32_with_default_value']))->map(
+        $val21 ==> (new Vector($val21)),
+      ),
     );
-    return $me;
   }
 
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'just_an_A' => $this->just_an_A?->__toShape(),
-      'set_of_i32' => ThriftUtil::toDArray(Dict\fill_keys($this->set_of_i32->toValuesArray(), true)),
+      'set_of_i32' => ThriftUtil::toDArray(Dict\fill_keys($this->set_of_i32->toValuesArray(), true), static::class),
       'list_of_i32' => vec($this->list_of_i32),
       'list_of_string' => vec($this->list_of_string),
       'map_of_string_to_i32' => dict($this->map_of_string_to_i32),
@@ -1468,7 +2269,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       )
         |> dict($$),
       'map_of_string_to_set_of_i32' => $this->map_of_string_to_set_of_i32->map(
-        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true), static::class),
       )
         |> dict($$),
       'map_of_string_to_map_of_string_to_i32' => $this->map_of_string_to_map_of_string_to_i32->map(
@@ -1483,7 +2284,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       )
         |> dict($$),
       'list_of_set_of_i32' => $this->list_of_set_of_i32->map(
-        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true), static::class),
       )
         |> vec($$),
       'list_of_map_of_string_to_list_of_A' => $this->list_of_map_of_string_to_list_of_A->map(
@@ -1515,7 +2316,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'just_a_union' => $this->just_a_union?->__toShape(),
       'optional_just_an_A' => $this->optional_just_an_A?->__toShape(),
       'optional_set_of_i32' => $this->optional_set_of_i32
-        |> $$ === null ? null : ThriftUtil::toDArray(Dict\fill_keys($$->toValuesArray(), true)),
+        |> $$ === null ? null : ThriftUtil::toDArray(Dict\fill_keys($$->toValuesArray(), true), static::class),
       'optional_list_of_i32' => $this->optional_list_of_i32
         |> $$ === null ? null : vec($$),
       'optional_list_of_string' => $this->optional_list_of_string
@@ -1538,7 +2339,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       )
         |> $$ === null ? null : dict($$),
       'optional_map_of_string_to_set_of_i32' => $this->optional_map_of_string_to_set_of_i32?->map(
-        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true), static::class),
       )
         |> $$ === null ? null : dict($$),
       'optional_enum' => $this->optional_enum,
@@ -1548,7 +2349,7 @@ class B implements \IThriftStruct, \IThriftShapishStruct {
       'double_with_default_value' => $this->double_with_default_value,
       'enum_with_default_value' => $this->enum_with_default_value,
       'A_with_default_value' => $this->A_with_default_value?->__toShape(),
-      'set_of_i32_with_default_value' => ThriftUtil::toDArray(Dict\fill_keys($this->set_of_i32_with_default_value->toValuesArray(), true)),
+      'set_of_i32_with_default_value' => ThriftUtil::toDArray(Dict\fill_keys($this->set_of_i32_with_default_value->toValuesArray(), true), static::class),
       'map_of_i32_to_string_with_default_value' => dict($this->map_of_i32_to_string_with_default_value),
       'list_of_string_with_default_value' => vec($this->list_of_string_with_default_value),
       'map_of_string_to_list_of_i32_with_default_value' => $this->map_of_string_to_list_of_i32_with_default_value->map(

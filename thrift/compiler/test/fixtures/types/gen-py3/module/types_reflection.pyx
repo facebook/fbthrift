@@ -6,7 +6,7 @@
 #
 
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 
 from thrift.py3.reflection cimport (
     NumberType as __NumberType,
@@ -969,6 +969,80 @@ cdef __StructSpec get_reflection__AllocatorAware2():
         __FieldSpec.create(
             id=1,
             name="not_a_container",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__TypedefStruct():
+    cdef _module_types.TypedefStruct defaults = _module_types.TypedefStruct.create(
+        constant_shared_ptr[_module_types.cTypedefStruct](
+            default_inst[_module_types.cTypedefStruct]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="TypedefStruct",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=1,
+            name="i32_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=2,
+            name="IntTypedef_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=3,
+            name="UintTypedef_field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
+cdef __StructSpec get_reflection__StructWithDoubleUnderscores():
+    cdef _module_types.StructWithDoubleUnderscores defaults = _module_types.StructWithDoubleUnderscores.create(
+        constant_shared_ptr[_module_types.cStructWithDoubleUnderscores](
+            default_inst[_module_types.cStructWithDoubleUnderscores]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="StructWithDoubleUnderscores",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=1,
+            name="__field",
             type=int,
             kind=__NumberType.I32,
             qualifier=__Qualifier.UNQUALIFIED,

@@ -16,13 +16,13 @@
 
 #pragma once
 
-#include <folly/ThreadCachedInt.h>
-#include <glog/logging.h>
-#include <thrift/perf/cpp2/util/Counter.h>
 #include <algorithm>
 #include <map>
 #include <string>
 #include <utility>
+#include <glog/logging.h>
+#include <folly/ThreadCachedInt.h>
+#include <thrift/perf/cpp2/util/Counter.h>
 
 namespace facebook {
 namespace thrift {
@@ -48,13 +48,9 @@ class QPSStats {
     counters_.emplace(name, std::make_unique<Counter>(name));
   }
 
-  void add(std::string& name) {
-    ++(*counters_[name]);
-  }
+  void add(std::string& name) { ++(*counters_[name]); }
 
-  void add(std::string& name, uint32_t sz) {
-    (*counters_[name]) += sz;
-  }
+  void add(std::string& name, uint32_t sz) { (*counters_[name]) += sz; }
 
  private:
   std::map<std::string, std::unique_ptr<Counter>> counters_;

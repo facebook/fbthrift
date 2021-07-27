@@ -47,9 +47,7 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
 
   FakeServerObserver() : TServerObserver(1) {}
 
-  void connAccepted() override {
-    ++connAccepted_;
-  }
+  void connAccepted() override { ++connAccepted_; }
 
   void connClosed() override {
     ++connClosed_;
@@ -58,13 +56,9 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
     }
   }
 
-  void connDropped() override {
-    ++connDropped_;
-  }
+  void connDropped() override { ++connDropped_; }
 
-  void connRejected() override {
-    ++connRejected_;
-  }
+  void connRejected() override { ++connRejected_; }
 
   void activeConnections(int32_t numConnections) override {
     activeConns_ = numConnections;
@@ -83,34 +77,24 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
     ++taskKilled_;
   }
 
-  void taskTimeout() override {
-    ++taskTimeout_;
-  }
+  void taskTimeout() override { ++taskTimeout_; }
 
   void serverOverloaded() override {
     // TODO: T24439936 - Implement LOADSHEDDING
     ++serverOverloaded_;
   }
 
-  void receivedRequest() override {
-    ++receivedRequest_;
-  }
+  void receivedRequest() override { ++receivedRequest_; }
 
   void queuedRequests(int32_t numRequests) override {
     queuedRequests_ = numRequests;
   }
 
-  void queueTimeout() override {
-    ++queueTimeout_;
-  }
+  void queueTimeout() override { ++queueTimeout_; }
 
-  void shadowQueueTimeout() override {
-    ++shadowQueueTimeout_;
-  }
+  void shadowQueueTimeout() override { ++shadowQueueTimeout_; }
 
-  void sentReply() override {
-    ++sentReply_;
-  }
+  void sentReply() override { ++sentReply_; }
 
   void activeRequests(int32_t numRequests) override {
     activeRequests_ = numRequests;
@@ -120,9 +104,7 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
     ++callCompleted_;
   }
 
-  void protocolError() override {
-    ++protocolError_;
-  }
+  void protocolError() override { ++protocolError_; }
 
   void tlsWithClientCert() override {}
 };

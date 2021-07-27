@@ -11,3 +11,7 @@ from thrift.py3.reflection cimport (
 
 
 cdef __InterfaceSpec get_reflection__SinkService(bint for_clients)
+
+cdef extern from "src/gen-cpp2/SinkService.h" namespace "::cpp2":
+    cdef cppclass cSinkServiceSvIf "::cpp2::SinkServiceSvIf":
+        pass

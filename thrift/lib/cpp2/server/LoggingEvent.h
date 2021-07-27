@@ -21,7 +21,10 @@
 #include <string_view>
 #include <utility>
 
+#include <folly/Function.h>
+#include <folly/dynamic.h>
 #include <folly/io/async/AsyncTransport.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
 namespace thrift {
@@ -44,28 +47,76 @@ namespace thrift {
 
 class ThriftServer;
 class Cpp2Worker;
+class Cpp2ConnContext;
+
+namespace instrumentation {
+class ServerTracker;
+} // namespace instrumentation
+
+class LoggingSampler {
+ public:
+  using SamplingRate = int64_t;
+  explicit LoggingSampler(SamplingRate samplingRate)
+      : samplingRate_{samplingRate}, isSampled_{shouldSample(samplingRate)} {}
+
+  SamplingRate getSamplingRate() const { return samplingRate_; }
+
+  bool isSampled() const { return isSampled_; }
+  explicit operator bool() const { return isSampled(); }
+
+  static bool shouldSample(SamplingRate);
+
+ private:
+  SamplingRate samplingRate_;
+  bool isSampled_;
+};
 
 class LoggingEventHandler {
  public:
+  using DynamicFieldsCallback = folly::FunctionRef<folly::dynamic()>;
+  using LoggingSampler = apache::thrift::LoggingSampler;
+  using SamplingRate = LoggingSampler::SamplingRate;
   virtual ~LoggingEventHandler() {}
 };
 
 class ServerEventHandler : public LoggingEventHandler {
  public:
-  virtual void log(const ThriftServer&) {}
+  virtual void log(const ThriftServer&, DynamicFieldsCallback = {}) {}
   virtual ~ServerEventHandler() {}
 };
 
+using ConnectionLoggingContext = Cpp2ConnContext;
 class ConnectionEventHandler : public LoggingEventHandler {
  public:
-  virtual void log(const Cpp2Worker&, const folly::AsyncTransport&) {}
   virtual ~ConnectionEventHandler() {}
+
+  virtual void log(
+      const ConnectionLoggingContext&, DynamicFieldsCallback = {}) {}
+
+  virtual void logSampled(
+      const ConnectionLoggingContext&,
+      SamplingRate /* presampledRate */,
+      DynamicFieldsCallback = {}) {}
+  void logSampled(
+      const ConnectionLoggingContext& context,
+      const LoggingSampler& loggingSampler,
+      DynamicFieldsCallback callback = {}) {
+    DCHECK(loggingSampler.isSampled())
+        << "logSampled should not be called if sampling did not pass";
+    logSampled(context, loggingSampler.getSamplingRate(), std::move(callback));
+  }
 };
 
 class ApplicationEventHandler : public LoggingEventHandler {
  public:
-  virtual void log() {}
+  virtual void log(DynamicFieldsCallback = {}) {}
   virtual ~ApplicationEventHandler() {}
+};
+
+class ServerTrackerHandler {
+ public:
+  virtual void log(const instrumentation::ServerTracker&) {}
+  virtual ~ServerTrackerHandler() {}
 };
 
 class LoggingEventRegistry {
@@ -76,18 +127,15 @@ class LoggingEventRegistry {
       std::string_view eventKey) const = 0;
   virtual ApplicationEventHandler& getApplicationEventHandler(
       std::string_view eventKey) const = 0;
+  virtual ServerTrackerHandler& getServerTrackerHandler(
+      std::string_view trackerKey) const = 0;
+
   virtual ~LoggingEventRegistry() {}
 };
 
 const LoggingEventRegistry& getLoggingEventRegistry();
 
 void useMockLoggingEventRegistry();
-
-void logSetupConnectionEventsOnce(
-    folly::once_flag& flag,
-    std::string_view methodName,
-    const Cpp2Worker& worker,
-    const folly::AsyncTransport& transport);
 
 } // namespace thrift
 } // namespace apache

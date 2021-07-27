@@ -18,22 +18,16 @@
 
 #include <chrono>
 #include <memory>
-#include <string>
-#include <unordered_map>
 #include <utility>
 
-#include <glog/logging.h>
-
 #include <folly/ExceptionWrapper.h>
-#include <folly/Overload.h>
-#include <folly/ScopeGuard.h>
-#include <folly/SocketAddress.h>
 #include <folly/Try.h>
 #include <folly/container/F14Set.h>
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/DelayedDestruction.h>
 #include <folly/io/async/EventBase.h>
+#include <folly/io/async/EventBaseLocal.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -55,7 +49,7 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
-class RocketClient : public folly::DelayedDestruction,
+class RocketClient : public virtual folly::DelayedDestruction,
                      private folly::AsyncTransport::WriteCallback {
  public:
   using FlushList = boost::intrusive::list<
@@ -74,8 +68,7 @@ class RocketClient : public folly::DelayedDestruction,
   static Ptr create(
       folly::EventBase& evb,
       folly::AsyncTransport::UniquePtr socket,
-      std::unique_ptr<SetupFrame> setupFrame,
-      folly::Function<void(MetadataPushFrame&&)> onMetadataPush);
+      std::unique_ptr<SetupFrame> setupFrame);
 
   using WriteSuccessCallback = RequestContext::WriteSuccessCallback;
   class RequestResponseCallback : public WriteSuccessCallback {
@@ -103,8 +96,7 @@ class RocketClient : public folly::DelayedDestruction,
   FOLLY_NODISCARD folly::Try<void> sendRequestFnfSync(Payload&& request);
 
   void sendRequestFnf(
-      Payload&& request,
-      std::unique_ptr<RequestFnfCallback> callback);
+      Payload&& request, std::unique_ptr<RequestFnfCallback> callback);
 
   void sendRequestStream(
       Payload&& request,
@@ -112,11 +104,6 @@ class RocketClient : public folly::DelayedDestruction,
       std::chrono::milliseconds chunkTimeout,
       int32_t initialRequestN,
       StreamClientCallback* clientCallback);
-
-  void sendRequestChannel(
-      Payload&& request,
-      std::chrono::milliseconds firstResponseTimeout,
-      ChannelClientCallback* clientCallback);
 
   void sendRequestSink(
       Payload&& request,
@@ -131,12 +118,12 @@ class RocketClient : public folly::DelayedDestruction,
   void sendError(StreamId streamId, RocketException&& rex);
   void sendComplete(StreamId streamId, bool closeStream);
   void sendExtAlignedPage(
-      StreamId streamId,
-      std::unique_ptr<folly::IOBuf> payload,
-      Flags flags);
-  FOLLY_NODISCARD bool sendExtHeaders(
-      StreamId streamId,
-      HeadersPayload&& payload);
+      StreamId streamId, std::unique_ptr<folly::IOBuf> payload, Flags flags);
+  FOLLY_NODISCARD bool sendHeadersPush(
+      StreamId streamId, HeadersPayload&& payload);
+  // sink error can use different frames depends on server version
+  FOLLY_NODISCARD bool sendSinkError(
+      StreamId streamId, StreamPayload&& payload);
 
   bool streamExists(StreamId streamId) const;
 
@@ -151,24 +138,20 @@ class RocketClient : public folly::DelayedDestruction,
   }
 
   bool isAlive() const {
-    return state_ == ConnectionState::CONNECTED;
+    return clientState_.connState == ConnectionState::CONNECTED;
   }
 
-  const transport::TTransportException& getLastTransportError() const {
-    return error_;
-  }
+  const folly::exception_wrapper& getLastError() const { return error_; }
 
-  size_t streams() const {
-    return streams_.size();
-  }
+  size_t streams() const { return streams_.size(); }
+
+  size_t requests() const { return clientRequests_; }
 
   const folly::AsyncTransport* getTransportWrapper() const {
     return socket_.get();
   }
 
-  folly::AsyncTransport* getTransportWrapper() {
-    return socket_.get();
-  }
+  folly::AsyncTransport* getTransportWrapper() { return socket_.get(); }
 
   bool isDetachable() const {
     if (!evb_) {
@@ -181,7 +164,7 @@ class RocketClient : public folly::DelayedDestruction,
     // inflight writes of its own.
     return !writeLoopCallback_.isLoopCallbackScheduled() && !requests_ &&
         streams_.empty() && (!socket_ || socket_->isDetachable()) &&
-        parser_.getReadBuffer().empty() && !interactions_;
+        parser_.getReadBufLength() == 0 && !interactions_;
   }
 
   void attachEventBase(folly::EventBase& evb);
@@ -191,12 +174,13 @@ class RocketClient : public folly::DelayedDestruction,
     onDetachable_ = std::move(onDetachable);
   }
 
-  void setOnMetadataPush(
-      folly::Function<void(MetadataPushFrame&&)> onMetadataPush) {
-    onMetadataPush_ = std::move(onMetadataPush);
-  }
-
   void notifyIfDetachable() {
+    if (clientState_.connState == ConnectionState::CLOSING && !requests_ &&
+        streams_.empty()) {
+      close(transport::TTransportException(
+          transport::TTransportException::END_OF_FILE,
+          "Connection closed by server"));
+    }
     if (!onDetachable_ || !isDetachable()) {
       return;
     }
@@ -219,9 +203,25 @@ class RocketClient : public folly::DelayedDestruction,
    *
    * Note2: call to detachEventBase() would reset the list back to nullptr.
    */
-  void setFlushList(FlushList* flushList) {
-    flushList_ = flushList;
-  }
+  void setFlushList(FlushList* flushList) { flushList_ = flushList; }
+
+  class FlushManager : private folly::EventBase::LoopCallback {
+   public:
+    explicit FlushManager(folly::EventBase& evb) : evb_(evb) {}
+    static FlushManager& getInstance(folly::EventBase& evb) {
+      return getEventBaseLocal().try_emplace(evb, evb);
+    }
+    void enqueueFlush(RocketClient& client);
+    // has time complexity linear to number of elements in flush list
+    size_t getNumPendingClients() const { return flushList_.size(); }
+
+   private:
+    void runLoopCallback() noexcept override final;
+
+    folly::EventBase& evb_;
+    FlushList flushList_;
+    bool rescheduled_{false};
+  };
 
   void scheduleTimeout(
       folly::HHWheelTimer::Callback* callback,
@@ -231,58 +231,49 @@ class RocketClient : public folly::DelayedDestruction,
     }
   }
 
-  // RocketClient needs to know the negotiated compression algorithm in order to
-  // send compressed requests (e.g. sink)
-  void setNegotiatedCompressionAlgorithm(CompressionAlgorithm compressionAlgo) {
-    negotiatedCompressionAlgo_ = compressionAlgo;
-  }
-
-  void setAutoCompressSizeLimit(int32_t size) {
-    autoCompressSizeLimit_ = size;
-  }
-
-  void addInteraction() {
-    ++interactions_;
-  }
+  void addInteraction() { ++interactions_; }
   void terminateInteraction(int64_t id);
 
   // Request connection close and fail all the requests.
-  void close(apache::thrift::transport::TTransportException ex) noexcept;
+  void close(folly::exception_wrapper ex) noexcept;
+
+  bool incMemoryUsage(uint32_t) { return true; }
+
+  void decMemoryUsage(uint32_t) {}
+
+  int32_t getServerVersion() const { return serverVersion_; }
+
+  folly::EventBase* getEventBase() { return evb_; }
 
  private:
-  folly::EventBase* evb_;
-  folly::AsyncTransport::UniquePtr socket_;
-  folly::Function<void()> onDetachable_;
-  size_t requests_{0};
-  size_t interactions_{0};
-  StreamId nextStreamId_{1};
-  bool hitMaxStreamId_{false};
-  std::unique_ptr<SetupFrame> setupFrame_;
-  folly::Optional<CompressionAlgorithm> negotiatedCompressionAlgo_;
-  int32_t autoCompressSizeLimit_{0};
-  FlushList* flushList_{nullptr};
   enum class ConnectionState : uint8_t {
-    CONNECTED,
-    CLOSED,
-    ERROR,
+    CONNECTED, // New requests are allowed
+    CLOSING, // New requests are not allowed, there are active requests or close
+             // callback is scheduled.
+    CLOSED, // New requests are not allowed, there are no active requests.
+    ERROR, // New requests are not allowed, error is stored in error_, close
+           // callback is scheduled.
   };
-  // Client must be constructed with an already open socket
-  ConnectionState state_{ConnectionState::CONNECTED};
-  transport::TTransportException error_;
 
-  RequestContextQueue queue_;
+  struct ClientState {
+    ConnectionState connState : 2;
+    bool hitMaxStreamId : 1;
+    bool hasPendingSetupFrame : 1;
 
-  class FirstResponseTimeout : public folly::HHWheelTimer::Callback {
-   public:
-    FirstResponseTimeout(RocketClient& client, StreamId streamId)
-        : client_(client), streamId_(streamId) {}
+    ClientState() {
+      // Client must be constructed with an already open socket
+      connState = ConnectionState::CONNECTED;
+      hitMaxStreamId = false;
+      hasPendingSetupFrame = true;
+    }
+  } clientState_;
+  int16_t serverVersion_{-1};
+  StreamId nextStreamId_{1};
 
-    void timeoutExpired() noexcept override;
-
-   private:
-    RocketClient& client_;
-    StreamId streamId_;
-  };
+  // Client requests + internal requests (requestN, cancel, etc).
+  uint32_t requests_{0};
+  // Client facing requests (singleRequest(Single|No)Response)
+  uint32_t clientRequests_{0};
 
   struct ServerCallbackUniquePtr {
     explicit ServerCallbackUniquePtr(
@@ -296,11 +287,6 @@ class RocketClient : public folly::DelayedDestruction,
         : storage_(
               reinterpret_cast<intptr_t>(ptr.release()) |
               static_cast<intptr_t>(CallbackType::STREAM_WITH_CHUNK_TIMEOUT)) {}
-    explicit ServerCallbackUniquePtr(
-        std::unique_ptr<RocketChannelServerCallback> ptr) noexcept
-        : storage_(
-              reinterpret_cast<intptr_t>(ptr.release()) |
-              static_cast<intptr_t>(CallbackType::CHANNEL)) {}
     explicit ServerCallbackUniquePtr(
         std::unique_ptr<RocketSinkServerCallback> ptr) noexcept
         : storage_(
@@ -320,9 +306,6 @@ class RocketClient : public folly::DelayedDestruction,
           return f(
               reinterpret_cast<RocketStreamServerCallbackWithChunkTimeout*>(
                   storage_ & kPointerMask));
-        case CallbackType::CHANNEL:
-          return f(reinterpret_cast<RocketChannelServerCallback*>(
-              storage_ & kPointerMask));
         case CallbackType::SINK:
           return f(reinterpret_cast<RocketSinkServerCallback*>(
               storage_ & kPointerMask));
@@ -347,7 +330,6 @@ class RocketClient : public folly::DelayedDestruction,
     enum class CallbackType {
       STREAM,
       STREAM_WITH_CHUNK_TIMEOUT,
-      CHANNEL,
       SINK,
     };
 
@@ -356,47 +338,28 @@ class RocketClient : public folly::DelayedDestruction,
 
     intptr_t storage_;
   };
-  struct StreamIdResolver {
-    StreamId operator()(StreamId streamId) const {
-      return streamId;
-    }
-
-    StreamId operator()(const ServerCallbackUniquePtr& callbackVariant) const {
-      return callbackVariant.match(
-          [](const auto* callback) { return callback->streamId(); });
-    }
-  };
   struct StreamMapHasher : private folly::f14::DefaultHasher<StreamId> {
     template <typename K>
     size_t operator()(const K& key) const {
-      return folly::f14::DefaultHasher<StreamId>::operator()(
-          streamIdResolver_(key));
+      StreamIdResolver resolver;
+      return folly::f14::DefaultHasher<StreamId>::operator()(resolver(key));
     }
-
-   private:
-    StreamIdResolver streamIdResolver_;
   };
   struct StreamMapEquals {
     template <typename A, typename B>
     bool operator()(const A& a, const B& b) const {
-      return streamIdResolver_(a) == streamIdResolver_(b);
+      StreamIdResolver resolver;
+      return resolver(a) == resolver(b);
     }
-
-   private:
-    StreamIdResolver streamIdResolver_;
   };
+
   using StreamMap = folly::F14FastSet<
       ServerCallbackUniquePtr,
       folly::transparent<StreamMapHasher>,
       folly::transparent<StreamMapEquals>>;
   StreamMap streams_;
-
-  folly::F14FastMap<StreamId, Payload> bufferedFragments_;
-  using FirstResponseTimeoutMap =
-      folly::F14FastMap<StreamId, std::unique_ptr<FirstResponseTimeout>>;
-  FirstResponseTimeoutMap firstResponseTimeouts_;
-
-  Parser<RocketClient> parser_;
+  folly::EventBase* evb_;
+  RequestContextQueue queue_;
 
   class WriteLoopCallback : public folly::EventBase::LoopCallback {
    public:
@@ -406,9 +369,47 @@ class RocketClient : public folly::DelayedDestruction,
 
    private:
     RocketClient& client_;
-    bool rescheduled_{false};
   };
   WriteLoopCallback writeLoopCallback_;
+  void scheduleWriteLoopCallback();
+  FlushList* flushList_{nullptr};
+
+  FlushManager* flushManager_{nullptr};
+  static folly::EventBaseLocal<FlushManager>& getEventBaseLocal();
+
+  folly::AsyncTransport::UniquePtr socket_;
+  folly::Function<void()> onDetachable_;
+  folly::exception_wrapper error_;
+
+  class FirstResponseTimeout : public folly::HHWheelTimer::Callback {
+   public:
+    FirstResponseTimeout(RocketClient& client, StreamId streamId)
+        : client_(client), streamId_(streamId) {}
+
+    void timeoutExpired() noexcept override;
+
+   private:
+    RocketClient& client_;
+    RocketClient::DestructorGuard clientDg_{&client_};
+    StreamId streamId_;
+  };
+
+  struct StreamIdResolver {
+    StreamId operator()(StreamId streamId) const { return streamId; }
+
+    StreamId operator()(const ServerCallbackUniquePtr& callbackVariant) const {
+      return callbackVariant.match(
+          [](const auto* callback) { return callback->streamId(); });
+    }
+  };
+
+  folly::F14FastMap<StreamId, Payload> bufferedFragments_;
+  using FirstResponseTimeoutMap =
+      folly::F14FastMap<StreamId, std::unique_ptr<FirstResponseTimeout>>;
+  FirstResponseTimeoutMap firstResponseTimeouts_;
+
+  Parser<RocketClient> parser_;
+
   class DetachableLoopCallback : public folly::EventBase::LoopCallback {
    public:
     explicit DetachableLoopCallback(RocketClient& client) : client_(client) {}
@@ -418,21 +419,13 @@ class RocketClient : public folly::DelayedDestruction,
     RocketClient& client_;
   };
   DetachableLoopCallback detachableLoopCallback_;
-  class CloseLoopCallback : public folly::EventBase::LoopCallback,
-                            public folly::AsyncTransport::ReadCallback {
+  class CloseLoopCallback : public folly::EventBase::LoopCallback {
    public:
     explicit CloseLoopCallback(RocketClient& client) : client_(client) {}
     void runLoopCallback() noexcept override;
 
-    // AsyncTransport::ReadCallback implementation
-    void getReadBuffer(void** bufout, size_t* lenout) override;
-    void readDataAvailable(size_t nbytes) noexcept override;
-    void readEOF() noexcept override;
-    void readErr(const folly::AsyncSocketException&) noexcept override;
-
    private:
     RocketClient& client_;
-    bool reschedule_{false};
   };
   CloseLoopCallback closeLoopCallback_;
   class OnEventBaseDestructionCallback
@@ -448,16 +441,26 @@ class RocketClient : public folly::DelayedDestruction,
   };
   OnEventBaseDestructionCallback eventBaseDestructionCallback_;
   folly::Function<void()> closeCallback_;
-  folly::Function<void(MetadataPushFrame&&)> onMetadataPush_;
 
+  size_t interactions_{0};
+  std::unique_ptr<SetupFrame> setupFrame_;
+
+ protected:
   RocketClient(
       folly::EventBase& evb,
       folly::AsyncTransport::UniquePtr socket,
-      std::unique_ptr<SetupFrame> setupFrame,
-      folly::Function<void(MetadataPushFrame&&)> onMetadataPush);
+      std::unique_ptr<SetupFrame> setupFrame);
+
+ private:
+  template <class OnError>
+  class SendFrameContext;
 
   template <typename Frame, typename OnError>
   FOLLY_NODISCARD bool sendFrame(Frame&& frame, OnError&& onError);
+
+  template <typename InitFunc, typename OnError>
+  FOLLY_NODISCARD bool sendVersionDependentFrame(
+      InitFunc&& initFunc, StreamId streamId, OnError&& onError);
 
   FOLLY_NODISCARD folly::Try<void> scheduleWrite(RequestContext& ctx);
 
@@ -485,51 +488,78 @@ class RocketClient : public folly::DelayedDestruction,
 
   template <typename CallbackType>
   StreamChannelStatus handlePayloadFrame(
-      CallbackType& serverCallback,
-      std::unique_ptr<folly::IOBuf> frame);
+      CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
   StreamChannelStatus handleErrorFrame(
-      CallbackType& serverCallback,
-      std::unique_ptr<folly::IOBuf> frame);
+      CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
   StreamChannelStatus handleRequestNFrame(
-      CallbackType& serverCallback,
-      std::unique_ptr<folly::IOBuf> frame);
+      CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
   StreamChannelStatus handleCancelFrame(
-      CallbackType& serverCallback,
-      std::unique_ptr<folly::IOBuf> frame);
+      CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
   StreamChannelStatus handleExtFrame(
-      CallbackType& serverCallback,
-      std::unique_ptr<folly::IOBuf> frame);
+      CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
+
+  void handleError(RocketException&& rex);
 
   void writeScheduledRequestsToSocket() noexcept;
 
-  void scheduleFirstResponseTimeout(
-      StreamId streamId,
-      std::chrono::milliseconds timeout);
+  void maybeScheduleFirstResponseTimeout(
+      StreamId streamId, std::chrono::milliseconds timeout);
   folly::Optional<Payload> bufferOrGetFullPayload(PayloadFrame&& payloadFrame);
 
-  FOLLY_NODISCARD auto makeRequestCountGuard() {
+  bool isFirstResponse(StreamId streamId) const;
+  void acknowledgeFirstResponse(StreamId);
+
+  enum class RequestType { INTERNAL, CLIENT };
+
+  FOLLY_NODISCARD auto makeRequestCountGuard(RequestType type) {
     ++requests_;
-    return folly::makeGuard([this] {
+    if (type == RequestType::CLIENT) {
+      ++clientRequests_;
+    }
+    return folly::makeGuard([this, type] {
+      if (type == RequestType::CLIENT) {
+        --clientRequests_;
+      }
       if (!--requests_) {
         notifyIfDetachable();
       }
     });
   }
 
+  class ServerVersionTimeout : public folly::HHWheelTimer::Callback {
+   public:
+    explicit ServerVersionTimeout(RocketClient& client) : client_(client) {}
+
+    void timeoutExpired() noexcept override {
+      client_.close(transport::TTransportException(
+          apache::thrift::transport::TTransportException::TIMED_OUT,
+          "Server version not reported"));
+    }
+
+   private:
+    RocketClient& client_;
+  };
+  std::unique_ptr<ServerVersionTimeout> serverVersionTimeout_;
+  void onServerVersionRequired();
+  void setServerVersion(int32_t serverVersion);
+
+ protected:
   // Close the connection and fail all the requests *inline*. This should not be
   // called inline from any of the callbacks triggered by RocketClient.
   void closeNow(apache::thrift::transport::TTransportException ex) noexcept;
 
+ private:
   bool setError(apache::thrift::transport::TTransportException ex) noexcept;
   void closeNowImpl() noexcept;
+  std::unique_ptr<SetupFrame> moveOutSetupFrame();
 
   template <class T>
   friend class Parser;

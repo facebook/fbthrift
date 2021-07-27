@@ -58,9 +58,7 @@ class TTransportDefaults : public Super_ {
   const uint8_t* borrow(uint8_t* buf, uint32_t* len) {
     return this->TTransport::borrow_virt(buf, len);
   }
-  void consume(uint32_t len) {
-    this->TTransport::consume_virt(len);
-  }
+  void consume(uint32_t len) { this->TTransport::consume_virt(len); }
 
  protected:
   TTransportDefaults() {}

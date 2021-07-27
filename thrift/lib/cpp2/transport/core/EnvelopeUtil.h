@@ -27,7 +27,8 @@ namespace thrift {
 class EnvelopeUtil {
  public:
   struct Envelope {
-    int16_t protocolId;
+    protocol::PROTOCOL_TYPES protocolId;
+    MessageType messageType;
     std::string methodName;
   };
 
@@ -38,6 +39,15 @@ class EnvelopeUtil {
   // deprecated.
   static folly::Optional<std::pair<Envelope, std::unique_ptr<folly::IOBuf>>>
   stripRequestEnvelope(std::unique_ptr<folly::IOBuf>&& payload) noexcept {
+    auto ret = stripEnvelope(std::move(payload));
+    if (ret) {
+      DCHECK(MessageType::T_CALL == ret->first.messageType);
+    }
+    return ret;
+  }
+
+  static folly::Optional<std::pair<Envelope, std::unique_ptr<folly::IOBuf>>>
+  stripEnvelope(std::unique_ptr<folly::IOBuf>&& payload) noexcept {
     uint64_t sz;
     while (payload->length() == 0) {
       if (payload->next() != payload.get()) {
@@ -49,7 +59,6 @@ class EnvelopeUtil {
     }
     Envelope envelope;
     try {
-      MessageType mtype;
       // Sequence id is always 0 in the envelope.  So we ignore it.
       int32_t seqId;
       auto protByte = payload->data()[0];
@@ -58,7 +67,8 @@ class EnvelopeUtil {
           BinaryProtocolReader reader;
           envelope.protocolId = protocol::T_BINARY_PROTOCOL;
           reader.setInput(payload.get());
-          reader.readMessageBegin(envelope.methodName, mtype, seqId);
+          reader.readMessageBegin(
+              envelope.methodName, envelope.messageType, seqId);
           sz = reader.getCursorPosition();
           break;
         }
@@ -66,7 +76,8 @@ class EnvelopeUtil {
           envelope.protocolId = protocol::T_COMPACT_PROTOCOL;
           CompactProtocolReader reader;
           reader.setInput(payload.get());
-          reader.readMessageBegin(envelope.methodName, mtype, seqId);
+          reader.readMessageBegin(
+              envelope.methodName, envelope.messageType, seqId);
           sz = reader.getCursorPosition();
           break;
         }
@@ -75,7 +86,6 @@ class EnvelopeUtil {
           LOG(ERROR) << "Unknown protocol: " << protByte;
           return folly::none;
       }
-      DCHECK_EQ(T_CALL, mtype);
     } catch (const TException& ex) {
       LOG(ERROR) << "Invalid envelope: " << ex.what();
       return folly::none;

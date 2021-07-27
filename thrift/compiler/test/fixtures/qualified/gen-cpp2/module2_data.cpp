@@ -12,15 +12,31 @@
 namespace apache {
 namespace thrift {
 
+const std::array<folly::StringPiece, 2> TStructDataStorage<::module2::Struct>::fields_names = {{
+  "first",
+  "second",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::module2::Struct>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::module2::Struct>::fields_types = {{
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
 
-constexpr const std::size_t TStructDataStorage<::module2::Struct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::module2::Struct>::fields_size> TStructDataStorage<::module2::Struct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::module2::Struct>::fields_size> TStructDataStorage<::module2::Struct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::module2::Struct>::fields_size> TStructDataStorage<::module2::Struct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::module2::BigStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::module2::BigStruct>::fields_size> TStructDataStorage<::module2::BigStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::module2::BigStruct>::fields_size> TStructDataStorage<::module2::BigStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::module2::BigStruct>::fields_size> TStructDataStorage<::module2::BigStruct>::fields_types;
+const std::array<folly::StringPiece, 2> TStructDataStorage<::module2::BigStruct>::fields_names = {{
+  "s",
+  "id",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::module2::BigStruct>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::module2::BigStruct>::fields_types = {{
+  TType::T_STRUCT,
+  TType::T_I32,
+}};
 
 } // namespace thrift
 } // namespace apache

@@ -133,12 +133,12 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'just_int' => int,
-    ?'list_of_strings' => Vector<string>,
-    ?'set_of_ints' => darray<int, bool>,
-    ?'map_of_list_of_strings' => Map<string, Vector<string>>,
-    ?'map_of_set_of_strings' => Map<string, darray<string, bool>>,
-    ?'map_of_strings_to_map_of_string_ints' => Map<string, Map<string, int>>,
+    ?'just_int' => ?int,
+    ?'list_of_strings' => ?Vector<string>,
+    ?'set_of_ints' => ?darray<int, bool>,
+    ?'map_of_list_of_strings' => ?Map<string, Vector<string>>,
+    ?'map_of_set_of_strings' => ?Map<string, darray<string, bool>>,
+    ?'map_of_strings_to_map_of_string_ints' => ?Map<string, Map<string, int>>,
     ?'optional_map_of_map_of_sets' => ?Map<int, Map<int, darray<string, bool>>>,
   );
 
@@ -189,118 +189,270 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
    */
   public ?Map<int, Map<int, darray<string, bool>>> $optional_map_of_map_of_sets;
 
-  <<__Rx>>
-  public function __construct(@KeyedContainer<string, mixed> $vals = darray[]) {
-    $this->just_int = (int)(idx($vals, 'just_int') ?? 0);
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->list_of_strings = idx($vals, 'list_of_strings') ?? Vector {};
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->set_of_ints = idx($vals, 'set_of_ints') ?? darray[];
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->map_of_list_of_strings = idx($vals, 'map_of_list_of_strings') ?? Map {};
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->map_of_set_of_strings = idx($vals, 'map_of_set_of_strings') ?? Map {};
-    /* HH_FIXME[4110] previously hidden by unsafe */
-    $this->map_of_strings_to_map_of_string_ints = idx($vals, 'map_of_strings_to_map_of_string_ints') ?? Map {};
-    if (idx($vals, 'optional_map_of_map_of_sets') !== null) {
-      /* HH_FIXME[4110] previously hidden by unsafe */
-      $this->optional_map_of_map_of_sets = idx($vals, 'optional_map_of_map_of_sets');
-    }
+  public function __construct(?int $just_int = null, ?Vector<string> $list_of_strings = null, ?darray<int, bool> $set_of_ints = null, ?Map<string, Vector<string>> $map_of_list_of_strings = null, ?Map<string, darray<string, bool>> $map_of_set_of_strings = null, ?Map<string, Map<string, int>> $map_of_strings_to_map_of_string_ints = null, ?Map<int, Map<int, darray<string, bool>>> $optional_map_of_map_of_sets = null  )[] {
+    $this->just_int = $just_int ?? 0;
+    $this->list_of_strings = $list_of_strings ?? Vector {};
+    $this->set_of_ints = $set_of_ints ?? darray[];
+    $this->map_of_list_of_strings = $map_of_list_of_strings ?? Map {};
+    $this->map_of_set_of_strings = $map_of_set_of_strings ?? Map {};
+    $this->map_of_strings_to_map_of_string_ints = $map_of_strings_to_map_of_string_ints ?? Map {};
+    $this->optional_map_of_map_of_sets = $optional_map_of_map_of_sets;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
-      Map {
-        'just_int' => Shapes::idx($shape, 'just_int'),
-        'list_of_strings' => Shapes::idx($shape, 'list_of_strings'),
-        'set_of_ints' => Shapes::idx($shape, 'set_of_ints'),
-        'map_of_list_of_strings' => Shapes::idx($shape, 'map_of_list_of_strings'),
-        'map_of_set_of_strings' => Shapes::idx($shape, 'map_of_set_of_strings'),
-        'map_of_strings_to_map_of_string_ints' => Shapes::idx($shape, 'map_of_strings_to_map_of_string_ints'),
-        'optional_map_of_map_of_sets' => Shapes::idx($shape, 'optional_map_of_map_of_sets'),
-      },
+      Shapes::idx($shape, 'just_int'),
+      Shapes::idx($shape, 'list_of_strings'),
+      Shapes::idx($shape, 'set_of_ints'),
+      Shapes::idx($shape, 'map_of_list_of_strings'),
+      Shapes::idx($shape, 'map_of_set_of_strings'),
+      Shapes::idx($shape, 'map_of_strings_to_map_of_string_ints'),
+      Shapes::idx($shape, 'optional_map_of_map_of_sets'),
     );
   }
 
-  <<__Rx>>
-  public static function fromMap_DEPRECATED(@KeyedContainer<string, mixed> $map = darray[]): this {
-    return new static($map);
-  }
-
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Foo';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.Foo",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "just_int",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "list_of_strings",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_set" => tmeta_ThriftSetType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "set_of_ints",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 4,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_list" => tmeta_ThriftListType::fromShape(
+                            shape(
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_list_of_strings",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_set" => tmeta_ThriftSetType::fromShape(
+                            shape(
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_set_of_strings",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 6,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                        )
+                      ),
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_map" => tmeta_ThriftMapType::fromShape(
+                            shape(
+                              "keyType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                )
+                              ),
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "map_of_strings_to_map_of_string_ints",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 7,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_map" => tmeta_ThriftMapType::fromShape(
+                            shape(
+                              "keyType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_set" => tmeta_ThriftSetType::fromShape(
+                                    shape(
+                                      "valueType" => tmeta_ThriftType::fromShape(
+                                        shape(
+                                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                                        )
+                                      ),
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "optional_map_of_map_of_sets",
+              "is_optional" => true,
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'just_int' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'list_of_strings' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'set_of_ints' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_list_of_strings' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_set_of_strings' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'map_of_strings_to_map_of_string_ints' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'optional_map_of_map_of_sets' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->just_int = $shape['just_int'];
-    $me->list_of_strings = (new Vector($shape['list_of_strings']));
-    $me->set_of_ints = $shape['set_of_ints'];
-    $me->map_of_list_of_strings = (new Map($shape['map_of_list_of_strings']))->map(
-      $val0 ==> (new Vector($val0)),
-    );
-    $me->map_of_set_of_strings = (new Map($shape['map_of_set_of_strings']));
-    $me->map_of_strings_to_map_of_string_ints = (new Map($shape['map_of_strings_to_map_of_string_ints']))->map(
-      $val1 ==> (new Map($val1)),
-    );
-    if (Shapes::idx($shape, 'optional_map_of_map_of_sets') !== null) {
-      $me->optional_map_of_map_of_sets = (new Map($shape['optional_map_of_map_of_sets']))->map(
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      $shape['just_int'],
+      (new Vector($shape['list_of_strings'])),
+      $shape['set_of_ints'],
+      (new Map($shape['map_of_list_of_strings']))->map(
+        $val0 ==> (new Vector($val0)),
+      ),
+      (new Map($shape['map_of_set_of_strings'])),
+      (new Map($shape['map_of_strings_to_map_of_string_ints']))->map(
+        $val1 ==> (new Map($val1)),
+      ),
+      Shapes::idx($shape, 'optional_map_of_map_of_sets') === null ? null : ((new Map($shape['optional_map_of_map_of_sets']))->map(
         $val2 ==> (new Map($val2)),
-      );
-    }
-    return $me;
+      )),
+    );
   }
 
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'just_int' => $this->just_int,
       'list_of_strings' => varray($this->list_of_strings),
@@ -308,22 +460,22 @@ class Foo implements \IThriftStruct, \IThriftShapishStruct {
       'map_of_list_of_strings' => $this->map_of_list_of_strings->map(
         ($_val0) ==> varray($_val0),
       )
-        |> ThriftUtil::toDArray($$),
+        |> ThriftUtil::toDArray($$, static::class),
       'map_of_set_of_strings' => $this->map_of_set_of_strings->map(
         ($_val0) ==> darray($_val0),
       )
-        |> ThriftUtil::toDArray($$),
+        |> ThriftUtil::toDArray($$, static::class),
       'map_of_strings_to_map_of_string_ints' => $this->map_of_strings_to_map_of_string_ints->map(
-        ($_val0) ==> ThriftUtil::toDArray($_val0),
+        ($_val0) ==> ThriftUtil::toDArray($_val0, static::class),
       )
-        |> ThriftUtil::toDArray($$),
+        |> ThriftUtil::toDArray($$, static::class),
       'optional_map_of_map_of_sets' => $this->optional_map_of_map_of_sets?->map(
         ($_val0) ==> $_val0->map(
           ($_val1) ==> darray($_val1),
         )
-          |> ThriftUtil::toDArray($$),
+          |> ThriftUtil::toDArray($$, static::class),
       )
-        |> $$ === null ? null : ThriftUtil::toDArray($$),
+        |> $$ === null ? null : ThriftUtil::toDArray($$, static::class),
     );
   }
 }

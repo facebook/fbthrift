@@ -42,10 +42,7 @@ class t_android_generator : public t_java_generator {
       const std::map<std::string, std::string>& parsed_options,
       const std::string& option_string)
       : t_java_generator(
-            program,
-            std::move(context),
-            parsed_options,
-            option_string) {
+            program, std::move(context), parsed_options, option_string) {
     generate_field_metadata_ = false;
     generate_immutable_structs_ = true;
     generate_boxed_primitive = true;
@@ -59,13 +56,11 @@ class t_android_generator : public t_java_generator {
    */
   void init_generator() override;
 
-  bool has_bit_vector(t_struct* /*tstruct*/) override {
-    return false;
-  }
+  bool has_bit_vector(const t_struct* /*tstruct*/) override { return false; }
 
   bool is_comparable(
-      t_type* /*type*/,
-      std::vector<t_type*>* /*enclosing*/ = nullptr) override {
+      const t_type* /*type*/,
+      std::vector<const t_type*>* /*enclosing*/ = nullptr) override {
     return false;
   }
 };

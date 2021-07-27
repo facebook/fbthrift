@@ -40,9 +40,7 @@ class BufferingNimbleEncoder {
     controlBuf_ = controlBuf;
   }
 
-  void setDataOutput(folly::IOBufQueue* dataBuf) {
-    dataBuf_ = dataBuf;
-  }
+  void setDataOutput(folly::IOBufQueue* dataBuf) { dataBuf_ = dataBuf; }
 
   // TODO: We will eventually want a way to "reserve" chunks in the output
   // stream. That is to say, we should be able to decide up-front that we'll

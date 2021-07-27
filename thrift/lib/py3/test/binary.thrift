@@ -22,23 +22,23 @@ typedef binary (cpp2.type = "folly::fbstring") fbstring_type
 typedef binary (cpp2.type = "test::Buffer") Buffer
 
 union BinaryUnion {
-  1: IOBuf iobuf_val
+  1: IOBuf iobuf_val;
 } (cpp2.noncomparable)
 
 struct Binaries {
-  1: binary no_special_type
-  2: IOBuf iobuf_val
-  3: IOBufPtr iobuf_ptr
-  4: fbstring_type fbstring
-  5: Buffer nonstandard_type
+  1: binary no_special_type;
+  2: IOBuf iobuf_val;
+  3: IOBufPtr iobuf_ptr;
+  4: fbstring_type fbstring;
+  5: Buffer nonstandard_type;
 }
 
 service BinaryService {
-  Binaries sendRecvBinaries(1: Binaries val)
-  binary sendRecvBinary(1: binary val)
-  IOBuf sendRecvIOBuf(1: IOBuf val)
-  IOBufPtr sendRecvIOBufPtr(1: IOBufPtr val)
-  fbstring_type sendRecvFbstring(1: fbstring_type val)
-  Buffer sendRecvBuffer(1: Buffer val)
-  BinaryUnion sendRecBinaryUnion(1: BinaryUnion val)
+  Binaries sendRecvBinaries(1: Binaries val);
+  binary sendRecvBinary(1: binary val);
+  IOBuf sendRecvIOBuf(1: IOBuf val);
+  IOBufPtr sendRecvIOBufPtr(1: IOBufPtr val);
+  fbstring_type sendRecvFbstring(1: fbstring_type val);
+  Buffer sendRecvBuffer(1: Buffer val);
+  BinaryUnion sendRecBinaryUnion(1: BinaryUnion val);
 }

@@ -23,7 +23,7 @@ void MyServiceWrapper::async_tm_query(
     , std::unique_ptr<::cpp2::MyStruct> s
     , std::unique_ptr<::cpp2::Included> i
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -48,7 +48,7 @@ void MyServiceWrapper::async_tm_has_arg_docs(
     , std::unique_ptr<::cpp2::MyStruct> s
     , std::unique_ptr<::cpp2::Included> i
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,

@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp/util/VarintUtils.h>
+
 #include <thrift/lib/cpp/TApplicationException.h>
 
 #include <stdint.h>
@@ -27,8 +28,8 @@ namespace util {
  * Read an i16 from the wire as a varint. The MSB of each byte is set
  * if there is another byte to follow. This can read up to 3 bytes.
  */
-uint32_t
-readVarint16(uint8_t const* ptr, int16_t* i16, uint8_t const* boundary) {
+uint32_t readVarint16(
+    uint8_t const* ptr, int16_t* i16, uint8_t const* boundary) {
   int64_t val;
   uint32_t rsize = readVarint64(ptr, &val, boundary);
   *i16 = (int16_t)val;
@@ -39,8 +40,8 @@ readVarint16(uint8_t const* ptr, int16_t* i16, uint8_t const* boundary) {
  * Read an i32 from the wire as a varint. The MSB of each byte is set
  * if there is another byte to follow. This can read up to 5 bytes.
  */
-uint32_t
-readVarint32(uint8_t const* ptr, int32_t* i32, uint8_t const* boundary) {
+uint32_t readVarint32(
+    uint8_t const* ptr, int32_t* i32, uint8_t const* boundary) {
   int64_t val;
   uint32_t rsize = readVarint64(ptr, &val, boundary);
   *i32 = (int32_t)val;
@@ -52,8 +53,8 @@ readVarint32(uint8_t const* ptr, int32_t* i32, uint8_t const* boundary) {
  * if there is another byte to follow. This can read up to 10 bytes.
  * Caller is responsible for advancing ptr after call.
  */
-uint32_t
-readVarint64(uint8_t const* ptr, int64_t* i64, uint8_t const* boundary) {
+uint32_t readVarint64(
+    uint8_t const* ptr, int64_t* i64, uint8_t const* boundary) {
   uint32_t rsize = 0;
   uint64_t val = 0;
   int shift = 0;
@@ -98,10 +99,6 @@ uint32_t writeVarint32(uint32_t n, uint8_t* pkt) {
   }
 
   return wsize;
-}
-
-uint32_t writeVarint16(uint16_t n, uint8_t* pkt) {
-  return writeVarint32(n, pkt);
 }
 
 namespace detail {

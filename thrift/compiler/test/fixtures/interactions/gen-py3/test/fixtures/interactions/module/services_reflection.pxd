@@ -11,3 +11,7 @@ from thrift.py3.reflection cimport (
 
 
 cdef __InterfaceSpec get_reflection__MyService(bint for_clients)
+
+cdef extern from "src/gen-cpp2/MyService.h" namespace "::cpp2":
+    cdef cppclass cMyServiceSvIf "::cpp2::MyServiceSvIf":
+        pass

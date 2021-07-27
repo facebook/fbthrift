@@ -25,17 +25,17 @@ enum some_enum {
 }
 
 struct simple_struct {
-  1: i32 i32_data
-  2: i16 i16_data
-  3: double double_data
-  4: string string_data
+  1: i32 i32_data;
+  2: i16 i16_data;
+  3: double double_data;
+  4: string string_data;
 }
 
 union simple_variant {
-  1: i32 i32_data
-  2: i16 i16_data
-  3: double double_data
-  4: string string_data
+  1: i32 i32_data;
+  2: i16 i16_data;
+  3: double double_data;
+  4: string string_data;
 }
 
 struct flat_struct {
@@ -61,16 +61,10 @@ struct nested_struct {
   8: some_variant variant_field;
 }
 
-const flat_struct example_1 = {
-  "the_int": 42,
-  "the_enum": some_enum.field2
-};
+const flat_struct example_1 = {"the_int": 42, "the_enum": some_enum.field2};
 
 const some_variant example_2 = {
-  "struct_data": {
-    "the_int": 56,
-    "the_enum": some_enum.field0
-  }
+  "struct_data": {"the_int": 56, "the_enum": some_enum.field0},
 };
 
 const nested_struct example_3 = {
@@ -79,27 +73,11 @@ const nested_struct example_3 = {
   "fp_field": 7.2,
   "string_field": "HELLO, WORLD",
   "struct_list_field": [
-    {
-      "the_int": 0,
-      "the_enum": some_enum.field0
-    },
-    {
-      "the_int": 1,
-      "the_enum": some_enum.field1
-    },
-    {
-      "the_int": 2,
-      "the_enum": some_enum.field2
-    }
+    {"the_int": 0, "the_enum": some_enum.field0},
+    {"the_int": 1, "the_enum": some_enum.field1},
+    {"the_int": 2, "the_enum": some_enum.field2},
   ],
-  "map_field": {
-    "works": 1,
-    "hard": 0,
-    "worth it": 1
-  },
-  "set_field": [
-  ],
-  "variant_field": {
-    "fp_data": 0.5
-  }
+  "map_field": {"works": 1, "hard": 0, "worth it": 1},
+  "set_field": [],
+  "variant_field": {"fp_data": 0.5},
 };

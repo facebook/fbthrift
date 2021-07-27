@@ -95,9 +95,7 @@ class Worker : public WorkerIf {
 
   ~Worker() override {}
 
-  int getID() const {
-    return id_;
-  }
+  int getID() const { return id_; }
 
   /**
    * Create a new connection to the server.
@@ -112,8 +110,7 @@ class Worker : public WorkerIf {
    * Subclasses must implement this method.
    */
   virtual void performOperation(
-      const std::shared_ptr<ClientT>& client,
-      uint32_t opType) = 0;
+      const std::shared_ptr<ClientT>& client, uint32_t opType) = 0;
 
   /**
    * Determine how to handle an exception raised by createConnection().
@@ -154,9 +151,7 @@ class Worker : public WorkerIf {
    * store a subclass of LoadConfig, and retrieve it without having to cast it
    * back to the subclass type.)
    */
-  const std::shared_ptr<ConfigT>& getConfig() const {
-    return config_;
-  }
+  const std::shared_ptr<ConfigT>& getConfig() const { return config_; }
 
   /**
    * The main worker method.
@@ -238,9 +233,7 @@ class Worker : public WorkerIf {
     alive_ = false;
   }
 
-  bool isAlive() const override {
-    return alive_;
-  }
+  bool isAlive() const override { return alive_; }
 
  protected:
   // Methods needed for overriding ::run
@@ -248,9 +241,7 @@ class Worker : public WorkerIf {
     return scoreboard_;
   }
 
-  void stopWorker() {
-    alive_ = false;
-  }
+  void stopWorker() { alive_ = false; }
 
  private:
   int id_;

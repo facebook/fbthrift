@@ -91,6 +91,12 @@ T reading_cpp2(StringPiece input, function<T(R&)>&& f) {
   return reading_cpp2(ByteRange(input), std::forward<F>(f));
 }
 
+template <typename TInput>
+struct ProtocolWriteTestCase {
+  TInput input;
+  string expected;
+};
+
 } // namespace
 
 TEST_F(JSONProtocolTest, writeBool_false) {
@@ -124,13 +130,65 @@ TEST_F(JSONProtocolTest, writeI64) {
 }
 
 TEST_F(JSONProtocolTest, writeDouble) {
-  auto expected = "5.25";
-  EXPECT_EQ(expected, writing_cpp2([](W& p) { p.writeDouble(5.25); }));
+  const vector<ProtocolWriteTestCase<double>> kTests = {
+      {5.25, "5.25"},
+      {3.142, "3.142"},
+      {3.1415, "3.1415"},
+      {3.14159, "3.14159"},
+      {3.141593, "3.141593"},
+      {3.1415927, "3.1415927"},
+      {3.14159265, "3.14159265"},
+      {3.141592653, "3.141592653"},
+      {0.0, "0"},
+      {-0.0, "-0"},
+      {123.0, "123"},
+      {-1234.0, "-1234"},
+      {1234567.0, "1234567"},
+      {numeric_limits<double>::max(), "1.7976931348623157E308"},
+      {nextafter(numeric_limits<double>::max(), 0.0), "1.7976931348623155E308"},
+      {numeric_limits<double>::lowest(), "-1.7976931348623157E308"},
+      {numeric_limits<double>::quiet_NaN(), "\"NaN\""},
+      {-numeric_limits<double>::quiet_NaN(), "\"NaN\""},
+      {numeric_limits<double>::infinity(), "\"Infinity\""},
+      {-numeric_limits<double>::infinity(), "\"-Infinity\""},
+  };
+
+  for (const auto& test : kTests) {
+    EXPECT_EQ(test.expected, writing_cpp2([&test](W& p) {
+                p.writeDouble(test.input);
+              }));
+  }
 }
 
 TEST_F(JSONProtocolTest, writeFloat) {
-  auto expected = "5.25";
-  EXPECT_EQ(expected, writing_cpp2([](W& p) { p.writeFloat(5.25f); }));
+  const vector<ProtocolWriteTestCase<float>> kTests = {
+      {5.25f, "5.25"},
+      {3.142f, "3.142"},
+      {3.1415f, "3.1415"},
+      {3.14159f, "3.14159"},
+      {3.141593f, "3.141593"},
+      {3.1415927f, "3.1415927"},
+      {3.14159265f, "3.1415927"},
+      {3.141592653f, "3.1415927"},
+      {0.f, "0"},
+      {-0.f, "-0"},
+      {123.f, "123"},
+      {-1234.f, "-1234"},
+      {1234567.f, "1234567"},
+      {numeric_limits<float>::max(), "3.4028235E38"},
+      {nextafter(numeric_limits<float>::max(), 0.f), "3.4028233E38"},
+      {numeric_limits<float>::lowest(), "-3.4028235E38"},
+      {numeric_limits<float>::quiet_NaN(), "\"NaN\""},
+      {-numeric_limits<float>::quiet_NaN(), "\"NaN\""},
+      {numeric_limits<float>::infinity(), "\"Infinity\""},
+      {-numeric_limits<float>::infinity(), "\"-Infinity\""},
+  };
+
+  for (const auto& test : kTests) {
+    EXPECT_EQ(test.expected, writing_cpp2([&test](W& p) {
+                p.writeFloat(test.input);
+              }));
+  }
 }
 
 TEST_F(JSONProtocolTest, writeString) {
@@ -152,14 +210,6 @@ TEST_F(JSONProtocolTest, writeBinary) {
       expected, writing_cpp2([](W& p) {
         p.writeBinary(*IOBuf::wrapBuffer(ByteRange(StringPiece("foobar"))));
       }));
-}
-
-TEST_F(JSONProtocolTest, writeSerializedData) {
-  auto expected = "foobar";
-  EXPECT_EQ(expected, writing_cpp2([](W& p) {
-              p.writeSerializedData(
-                  IOBuf::wrapBuffer(ByteRange(StringPiece("foobar"))));
-            }));
 }
 
 TEST_F(JSONProtocolTest, writeMessage) {
@@ -364,6 +414,39 @@ TEST_F(JSONProtocolTest, readFloat) {
             }));
 }
 
+TEST_F(JSONProtocolTest, readFloat_numeric_limits) {
+  EXPECT_EQ(
+      numeric_limits<float>::infinity(),
+      reading_cpp2<float>("3.4028236E38", [](R& p) {
+        return returning([&](float& _) { p.readFloat(_); });
+      }));
+  EXPECT_EQ(
+      numeric_limits<float>::max(),
+      reading_cpp2<float>("3.4028235E38", [](R& p) {
+        return returning([&](float& _) { p.readFloat(_); });
+      }));
+  EXPECT_EQ(
+      numeric_limits<float>::max(),
+      reading_cpp2<float>("3.4028234E38", [](R& p) {
+        return returning([&](float& _) { p.readFloat(_); });
+      }));
+  EXPECT_EQ(
+      -numeric_limits<float>::infinity(),
+      reading_cpp2<float>("-3.4028236E38", [](R& p) {
+        return returning([&](float& _) { p.readFloat(_); });
+      }));
+  EXPECT_EQ(
+      numeric_limits<float>::lowest(),
+      reading_cpp2<float>("-3.4028235E38", [](R& p) {
+        return returning([&](float& _) { p.readFloat(_); });
+      }));
+  EXPECT_EQ(
+      numeric_limits<float>::lowest(),
+      reading_cpp2<float>("-3.4028234E38", [](R& p) {
+        return returning([&](float& _) { p.readFloat(_); });
+      }));
+}
+
 TEST_F(JSONProtocolTest, readString) {
   auto input = R"("foobar")";
   auto expected = "foobar";
@@ -525,9 +608,7 @@ TEST_F(JSONProtocolTest, readStruct) {
 TEST_F(JSONProtocolTest, readMessage) {
   auto input = R"([1,"foobar",1,3])";
   struct Unit {
-    bool operator==(Unit) const {
-      return true;
-    }
+    bool operator==(Unit) const { return true; }
   };
   auto expected = Unit{};
   EXPECT_EQ(expected, reading_cpp2<Unit>(input, [](R& p) {

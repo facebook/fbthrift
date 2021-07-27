@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
+#include <algorithm>
 #include <thrift/perf/cpp2/if/gen-cpp2/StreamBenchmark.h>
 #include <thrift/perf/cpp2/util/Operation.h>
 #include <thrift/perf/cpp2/util/QPSStats.h>
 #include <thrift/perf/cpp2/util/Runner.h>
 #include <thrift/perf/cpp2/util/Util.h>
-#include <algorithm>
 
 using facebook::thrift::benchmarks::StreamBenchmarkAsyncClient;
 
@@ -29,7 +29,7 @@ DEFINE_int32(port, 7777, "Server port");
 
 // Client Settings
 DEFINE_int32(num_clients, 0, "Number of clients to use. (Default: 1 per core)");
-DEFINE_string(transport, "header", "Transport to use: header, rsocket, http2");
+DEFINE_string(transport, "header", "Transport to use: header, rocket, http2");
 
 // General Settings
 DEFINE_int32(stats_interval_sec, 1, "Seconds between stats");
@@ -47,6 +47,8 @@ DEFINE_int32(timeout_weight, 0, "Test for timeout functionality");
 DEFINE_int32(download_weight, 0, "Test for download functionality");
 DEFINE_int32(upload_weight, 0, "Test for upload functionality");
 DEFINE_int32(stream_weight, 0, "Test stream download functionality");
+DEFINE_int32(semifuture_sum_weight, 0, "Test with a semifuture_sum operation");
+DEFINE_int32(co_sum_weight, 0, "Test with a co_sum operation");
 
 DEFINE_uint32(chunk_size, 1024, "Number of bytes per chunk");
 DEFINE_uint32(batch_size, 16, "Flow control batch size");
@@ -79,13 +81,17 @@ int main(int argc, char** argv) {
       // be updated. Otherwise, it will never be chosen.
       auto ops = std::make_unique<Operation<StreamBenchmarkAsyncClient>>(
           std::move(client), &stats);
-      auto weights = std::vector<int32_t>{FLAGS_noop_weight,
-                                          FLAGS_noop_oneway_weight,
-                                          FLAGS_sum_weight,
-                                          FLAGS_timeout_weight,
-                                          FLAGS_download_weight,
-                                          FLAGS_upload_weight,
-                                          FLAGS_stream_weight};
+      auto weights = std::vector<int32_t>{
+          FLAGS_noop_weight,
+          FLAGS_noop_oneway_weight,
+          FLAGS_sum_weight,
+          FLAGS_timeout_weight,
+          FLAGS_download_weight,
+          FLAGS_upload_weight,
+          FLAGS_stream_weight,
+          FLAGS_semifuture_sum_weight,
+          FLAGS_co_sum_weight,
+      };
       int32_t sum = std::accumulate(weights.begin(), weights.end(), 0);
       if (sum == 0) {
         weights[0] = 1;

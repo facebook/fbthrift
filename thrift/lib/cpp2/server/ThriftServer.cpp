@@ -22,24 +22,33 @@
 #include <iostream>
 #include <random>
 
+#include <glog/logging.h>
 #include <folly/Conv.h>
 #include <folly/Memory.h>
 #include <folly/ScopeGuard.h>
+#include <folly/executors/CPUThreadPoolExecutor.h>
+#include <folly/executors/IOThreadPoolDeadlockDetectorObserver.h>
+#include <folly/experimental/coro/BlockingWait.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/portability/Sockets.h>
-#include <glog/logging.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
+#include <thrift/lib/cpp2/server/ThriftProcessor.h>
+#include <thrift/lib/cpp2/transport/core/ManagedConnectionIf.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
 #include <wangle/acceptor/FizzConfigUtil.h>
 #include <wangle/acceptor/SharedSSLContextManager.h>
+
+using namespace std::literals::chrono_literals;
 
 DEFINE_bool(
     thrift_abort_if_exceeds_shutdown_deadline,
@@ -47,9 +56,7 @@ DEFINE_bool(
     "Abort the server if failed to drain active requests within deadline");
 
 DEFINE_string(
-    thrift_ssl_policy,
-    "disabled",
-    "SSL required / permitted / disabled");
+    thrift_ssl_policy, "disabled", "SSL required / permitted / disabled");
 
 DEFINE_string(
     service_identity,
@@ -59,6 +66,23 @@ DEFINE_string(
 THRIFT_FLAG_DEFINE_bool(server_alpn_prefer_rocket, true);
 THRIFT_FLAG_DEFINE_bool(server_enable_stoptls, false);
 THRIFT_FLAG_DEFINE_bool(ssl_policy_default_required, false);
+
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    apache::thrift::ThriftServer::DumpSnapshotOnLongShutdownResult,
+    dumpSnapshotOnLongShutdown) {
+  return {folly::makeSemiFuture(folly::unit), 0ms};
+}
+
+namespace {
+
+[[noreturn]] void try_quick_exit(int code) {
+#if defined(_GLIBCXX_HAVE_AT_QUICK_EXIT)
+  std::quick_exit(code);
+#else
+  std::exit(code);
+#endif
+}
+} // namespace
 
 namespace apache {
 namespace thrift {
@@ -79,6 +103,14 @@ using RequestSnapshot = ThriftServer::RequestSnapshot;
 using std::shared_ptr;
 using wangle::TLSCredProcessor;
 
+TLSCredentialWatcher::TLSCredentialWatcher(ThriftServer* server)
+    : credProcessor_() {
+  credProcessor_.addCertCallback([server] { server->updateTLSCert(); });
+  credProcessor_.addTicketCallback([server](wangle::TLSTicketKeySeeds seeds) {
+    server->updateTicketSeeds(std::move(seeds));
+  });
+}
+
 ThriftServer::ThriftServer()
     : BaseThriftServer(),
       wShutdownSocketSet_(folly::tryGetShutdownSocketSet()),
@@ -90,7 +122,6 @@ ThriftServer::ThriftServer()
     sslPolicy_ = SSLPolicy::PERMITTED;
   }
   metadata().wrapper = "ThriftServer-cpp";
-  ServerInstrumentation::registerServer(*this);
 }
 
 ThriftServer::ThriftServer(
@@ -102,7 +133,7 @@ ThriftServer::ThriftServer(
 }
 
 ThriftServer::~ThriftServer() {
-  ServerInstrumentation::removeServer(*this);
+  tracker_.reset();
   if (duplexWorker_) {
     // usually ServerBootstrap::stop drains the workers, but ServerBootstrap
     // doesn't know about duplexWorker_
@@ -137,6 +168,13 @@ SSLPolicy ThriftServer::getSSLPolicy() const {
   // to. We can use ThriftFlags to opt-out services.
   return THRIFT_FLAG(ssl_policy_default_required) ? SSLPolicy::REQUIRED
                                                   : SSLPolicy::PERMITTED;
+}
+
+void ThriftServer::setProcessorFactory(
+    std::shared_ptr<AsyncProcessorFactory> pFac) {
+  CHECK(configMutable());
+  BaseThriftServer::setProcessorFactory(pFac);
+  thriftProcessor_.reset(new ThriftProcessor(*this));
 }
 
 void ThriftServer::useExistingSocket(
@@ -196,18 +234,15 @@ ThriftServer::IdleServerAction::IdleServerAction(
 void ThriftServer::IdleServerAction::timeoutExpired() noexcept {
   try {
     auto const lastRequestTime = server_.lastRequestTime();
-    if (lastRequestTime.time_since_epoch() !=
-        std::chrono::steady_clock::duration::zero()) {
-      auto const elapsed = std::chrono::steady_clock::now() - lastRequestTime;
-      if (elapsed >= timeout_) {
-        LOG(INFO) << "shutting down server due to inactivity after "
-                  << std::chrono::duration_cast<std::chrono::milliseconds>(
-                         elapsed)
-                         .count()
-                  << "ms";
-        server_.stop();
-        return;
-      }
+    auto const elapsed = std::chrono::steady_clock::now() - lastRequestTime;
+    if (elapsed >= timeout_) {
+      LOG(INFO) << "shutting down server due to inactivity after "
+                << std::chrono::duration_cast<std::chrono::milliseconds>(
+                       elapsed)
+                       .count()
+                << "ms";
+      server_.stop();
+      return;
     }
 
     timer_.scheduleTimeout(this, timeout_);
@@ -216,22 +251,24 @@ void ThriftServer::IdleServerAction::timeoutExpired() noexcept {
   }
 }
 
-std::chrono::steady_clock::time_point ThriftServer::lastRequestTime() const
-    noexcept {
+std::chrono::steady_clock::time_point ThriftServer::lastRequestTime()
+    const noexcept {
   return std::chrono::steady_clock::time_point(
       std::chrono::steady_clock::duration(
-          lastRequestTime_.load(std::memory_order_acquire)));
+          lastRequestTime_.load(std::memory_order_relaxed)));
 }
 
 void ThriftServer::touchRequestTimestamp() noexcept {
   if (idleServer_.has_value()) {
     lastRequestTime_.store(
         std::chrono::steady_clock::now().time_since_epoch().count(),
-        std::memory_order_release);
+        std::memory_order_relaxed);
   }
 }
 
 void ThriftServer::setup() {
+  THRIFT_SERVER_EVENT(serve).log(*this);
+
   DCHECK(getProcessorFactory().get());
   auto nWorkers = getNumIOWorkerThreads();
   DCHECK_GT(nWorkers, 0u);
@@ -241,15 +278,15 @@ void ThriftServer::setup() {
   addRoutingHandler(
       std::make_unique<apache::thrift::RocketRoutingHandler>(*this));
 
-  // Initialize event base for this thread, ensure event_init() is called
-  serveEventBase_ = eventBaseManager_->getEventBase();
+  // Initialize event base for this thread
+  auto serveEventBase = eventBaseManager_->getEventBase();
+  serveEventBase_ = serveEventBase;
   if (idleServerTimeout_.count() > 0) {
-    idleServer_.emplace(
-        *this, serveEventBase_.load()->timer(), idleServerTimeout_);
+    idleServer_.emplace(*this, serveEventBase->timer(), idleServerTimeout_);
   }
   // Print some libevent stats
   VLOG(1) << "libevent " << folly::EventBase::getLibeventVersion() << " method "
-          << folly::EventBase::getLibeventMethod();
+          << serveEventBase->getLibeventMethod();
 
   try {
 #ifndef _WIN32
@@ -292,10 +329,6 @@ void ThriftServer::setup() {
         }
       }
     });
-    if (thriftProcessor_) {
-      thriftProcessor_->setThreadManager(threadManager_.get());
-      thriftProcessor_->setCpp2Processor(getCpp2Processor());
-    }
 
     if (!serverChannel_) {
       ServerBootstrap::socketConfig.acceptBacklog = getListenBacklog();
@@ -309,6 +342,10 @@ void ThriftServer::setup() {
         ServerBootstrap::socketConfig.fastOpenQueueSize = fastOpenQueueSize_;
       }
 
+      ioThreadPool_->addObserver(
+          folly::IOThreadPoolDeadlockDetectorObserver::create(
+              ioThreadPool_->getName()));
+
       // Resize the IO pool
       ioThreadPool_->setNumThreads(nWorkers);
       if (!acceptPool_) {
@@ -316,11 +353,6 @@ void ThriftServer::setup() {
             nAcceptors_,
             std::make_shared<folly::NamedThreadFactory>("Acceptor Thread"));
       }
-
-      // Resize the SSL handshake pool
-      size_t nSSLHandshakeWorkers = getNumSSLHandshakeWorkerThreads();
-      VLOG(1) << "Using " << nSSLHandshakeWorkers << " SSL handshake threads";
-      sslHandshakePool_->setNumThreads(nSSLHandshakeWorkers);
 
       auto acceptorFactory = acceptorFactory_
           ? acceptorFactory_
@@ -337,7 +369,7 @@ void ThriftServer::setup() {
       }
       if (socket_) {
         ServerBootstrap::bind(std::move(socket_));
-      } else if (port_ != -1) {
+      } else if (!getAddress().isInitialized()) {
         ServerBootstrap::bind(port_);
       } else {
         for (auto& address : addresses_) {
@@ -349,6 +381,14 @@ void ThriftServer::setup() {
       // address_'s port was set to 0, so an ephemeral port was chosen by
       // the kernel.)
       ServerBootstrap::getSockets()[0]->getAddress(&addresses_.at(0));
+
+      // THRIFT_PORT_OUT should be set with value of length 5. After thrift
+      // server setup the env var will contain the port.
+      if (auto portOutput = getenv("THRIFT_PORT_OUT")) {
+        if (strlen(portOutput) == 5) {
+          snprintf(portOutput, 6, "%05d", addresses_.at(0).getPort());
+        }
+      }
 
       // we enable zerocopy for the server socket if the
       // zeroCopyEnableFunc_ is valid
@@ -363,19 +403,35 @@ void ThriftServer::setup() {
 
           try {
             socket->setTosReflect(tosReflect_);
+            socket->setListenerTos(listenerTos_);
           } catch (std::exception const& ex) {
-            LOG(ERROR) << "Got exception setting up TOS reflect: "
+            LOG(ERROR) << "Got exception setting up TOS settings: "
                        << folly::exceptionStr(ex);
           }
         });
       }
-
-      // Notify handler of the preServe event
-      if (eventHandler_ != nullptr) {
-        eventHandler_->preServe(&addresses_.at(0));
-      }
     } else {
       startDuplex();
+    }
+
+    // Notify handler of the preStart event
+    for (const auto& eventHandler : getEventHandlersUnsafe()) {
+      eventHandler->preStart(&addresses_.at(0));
+    }
+
+    stoppedListening_ = false;
+#if FOLLY_HAS_COROUTINES
+    asyncScope_ = std::make_unique<folly::coro::CancellableAsyncScope>();
+#endif
+
+    // Called after setup
+    callOnStartServing();
+
+    started_.store(true, std::memory_order_release);
+
+    // Notify handler of the preServe event
+    for (const auto& eventHandler : getEventHandlersUnsafe()) {
+      eventHandler->preServe(&addresses_.at(0));
     }
 
     // Do not allow setters to be called past this point until the IO worker
@@ -396,7 +452,7 @@ void ThriftServer::setupThreadManager() {
   if (!threadManager_) {
     std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager(
         PriorityThreadManager::newPriorityThreadManager(
-            getNumCPUWorkerThreads(), true /*stats*/));
+            getNumCPUWorkerThreads()));
     threadManager->enableCodel(getEnableCodel());
     // If a thread factory has been specified, use it.
     if (threadFactory_) {
@@ -452,21 +508,22 @@ void ThriftServer::serve() {
     // since it reuses the client's EB
     return;
   }
-  THRIFT_SERVER_EVENT(serve).log(*this);
-  SCOPE_EXIT {
-    this->cleanUp();
-  };
+  SCOPE_EXIT { this->cleanUp(); };
+
+  auto sslContextConfigCallbackHandle = sslContextObserver_
+      ? getSSLCallbackHandle()
+      : folly::observer::CallbackHandle{};
+
+  tracker_.emplace(instrumentation::kThriftServerTrackerKey, *this);
   eventBaseManager_->getEventBase()->loopForever();
 }
 
 void ThriftServer::cleanUp() {
   DCHECK(!serverChannel_);
 
-  // tlsCredProcessor_ uses a background thread that needs to be joined prior
+  // tlsCredWatcher_ uses a background thread that needs to be joined prior
   // to any further writes to ThriftServer members.
-  if (tlsCredProcessor_) {
-    tlsCredProcessor_.reset();
-  }
+  tlsCredWatcher_.withWLock([](auto& credWatcher) { credWatcher.reset(); });
 
   // It is users duty to make sure that setup() call
   // should have returned before doing this cleanup
@@ -506,12 +563,23 @@ void ThriftServer::stop() {
 }
 
 void ThriftServer::stopListening() {
+  // We have to make sure stopListening() is not called twice when both
+  // stopListening() and cleanUp() are called
+  if (stoppedListening_.exchange(true)) {
+    // stopListening() was called earlier
+    return;
+  }
+  // Called before cleanUp
+  callOnStopServing();
+
+#if FOLLY_HAS_COROUTINES
+  asyncScope_->requestCancellation();
+#endif
+
   {
     auto sockets = getSockets();
     folly::Baton<> done;
-    SCOPE_EXIT {
-      done.wait();
-    };
+    SCOPE_EXIT { done.wait(); };
     std::shared_ptr<folly::Baton<>> doneGuard(
         &done, [](folly::Baton<>* done) { done->post(); });
 
@@ -537,7 +605,6 @@ void ThriftServer::stopWorkers() {
   DCHECK(!duplexWorker_);
   ServerBootstrap::stop();
   ServerBootstrap::join();
-  sslHandshakePool_->join();
   configMutable_ = true;
 }
 
@@ -550,14 +617,15 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
       worker->requestStop();
     }
   });
+  // tlsCredWatcher_ uses a background thread that needs to be joined prior
+  // to any further writes to ThriftServer members.
+  tlsCredWatcher_.withWLock([](auto& credWatcher) { credWatcher.reset(); });
   sharedSSLContextManager_ = nullptr;
 
   {
     auto sockets = getSockets();
     folly::Baton<> done;
-    SCOPE_EXIT {
-      done.wait();
-    };
+    SCOPE_EXIT { done.wait(); };
     std::shared_ptr<folly::Baton<>> doneGuard(
         &done, [](folly::Baton<>* done) { done->post(); });
 
@@ -572,21 +640,81 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
     }
   }
 
-  auto deadline = std::chrono::system_clock::now() + workersJoinTimeout_;
+  auto joinDeadline =
+      std::chrono::steady_clock::now() + getWorkersJoinTimeout();
+
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
-      if (!worker->waitForStop(deadline)) {
+      if (!worker->waitForStop(joinDeadline)) {
+        // Before we crash, let's dump a snapshot of the server.
+        folly::CPUThreadPoolExecutor dumpSnapshotExecutor{1};
+        // The IO threads may be deadlocked in which case we won't be able to
+        // dump snapshots. It still shouldn't block shutdown indefinitely.
+        auto dumpSnapshotResult =
+            THRIFT_PLUGGABLE_FUNC(dumpSnapshotOnLongShutdown)();
+        try {
+          std::move(dumpSnapshotResult.task)
+              .via(folly::getKeepAliveToken(dumpSnapshotExecutor))
+              .get(dumpSnapshotResult.timeout);
+        } catch (...) {
+          LOG(ERROR) << "Failed to dump server snapshot on long shutdown: "
+                     << folly::exceptionStr(std::current_exception());
+        }
+
+        auto msgTemplate =
+            "Could not drain active requests within allotted deadline. "
+            "Deadline value: {} secs. {} because undefined behavior is possible. "
+            "Underlying reasons could be either requests that have never "
+            "terminated, long running requests, or long queues that could "
+            "not be fully processed.";
+        if (quickExitOnShutdownTimeout_) {
+          LOG(ERROR) << fmt::format(
+              msgTemplate,
+              getWorkersJoinTimeout().count(),
+              "quick_exiting (no coredump)");
+          // similar to abort but without generating a coredump
+          try_quick_exit(124);
+        }
         if (FLAGS_thrift_abort_if_exceeds_shutdown_deadline) {
-          LOG(FATAL)
-              << "Could not drain active requests within allotted deadline. "
-              << "Abort because undefined behavior is possible.";
+          LOG(FATAL) << fmt::format(
+              msgTemplate, getWorkersJoinTimeout().count(), "Aborting");
         }
       }
     }
   });
+
+  started_.store(false, std::memory_order_relaxed);
+}
+
+void ThriftServer::callOnStartServing() {
+  auto handlerList = getProcessorFactory()->getServiceHandlers();
+  std::vector<folly::SemiFuture<folly::Unit>> futures;
+  futures.reserve(handlerList.size());
+  for (auto handler : handlerList) {
+    futures.emplace_back(handler->semifuture_onStartServing());
+  }
+  folly::collectAll(futures.begin(), futures.end())
+      .via(getThreadManager().get())
+      .get();
+}
+
+void ThriftServer::callOnStopServing() {
+  auto handlerList = getProcessorFactory()->getServiceHandlers();
+  std::vector<folly::SemiFuture<folly::Unit>> futures;
+  futures.reserve(handlerList.size());
+  for (auto handler : handlerList) {
+    futures.emplace_back(handler->semifuture_onStopServing());
+  }
+  folly::collectAll(futures.begin(), futures.end())
+      .via(getThreadManager().get())
+      .get();
 }
 
 void ThriftServer::stopCPUWorkers() {
+#if FOLLY_HAS_COROUTINES
+  // Wait for tasks running on AsyncScope to join
+  folly::coro::blockingWait(asyncScope_->joinAsync());
+#endif
   // Wait for any tasks currently running on the task queue workers to
   // finish, then stop the task queue workers. Have to do this now, so
   // there aren't tasks completing and trying to write to i/o thread
@@ -652,42 +780,31 @@ void ThriftServer::updateCertsToWatch() {
     }
     certPaths.insert(sslContext.clientCAFile);
   }
-  auto& processor = getCredProcessor();
-  processor.setCertPathsToWatch(std::move(certPaths));
-}
-
-void ThriftServer::watchTicketPathForChanges(
-    const std::string& ticketPath,
-    bool initializeTickets) {
-  if (initializeTickets) {
-    auto seeds = TLSCredProcessor::processTLSTickets(ticketPath);
-    if (seeds) {
-      setTicketSeeds(std::move(*seeds));
+  tlsCredWatcher_.withWLock([this, &certPaths](auto& credWatcher) {
+    if (!credWatcher) {
+      credWatcher.emplace(this);
     }
-  }
-  auto& processor = getCredProcessor();
-  processor.setTicketPathToWatch(ticketPath);
+    credWatcher->setCertPathsToWatch(std::move(certPaths));
+  });
 }
 
-TLSCredProcessor& ThriftServer::getCredProcessor() {
-  if (!tlsCredProcessor_) {
-    tlsCredProcessor_ = std::make_unique<TLSCredProcessor>();
-    // setup callbacks once.  These will not be fired unless files are being
-    // watched and modified.
-    tlsCredProcessor_->addTicketCallback(
-        [this](wangle::TLSTicketKeySeeds seeds) {
-          updateTicketSeeds(std::move(seeds));
-        });
-    tlsCredProcessor_->addCertCallback([this] { updateTLSCert(); });
+void ThriftServer::watchTicketPathForChanges(const std::string& ticketPath) {
+  auto seeds = TLSCredProcessor::processTLSTickets(ticketPath);
+  if (seeds) {
+    setTicketSeeds(std::move(*seeds));
   }
-  return *tlsCredProcessor_;
+  tlsCredWatcher_.withWLock([this, &ticketPath](auto& credWatcher) {
+    if (!credWatcher) {
+      credWatcher.emplace(this);
+    }
+    credWatcher->setTicketPathToWatch(ticketPath);
+  });
 }
 
 PreprocessResult ThriftServer::preprocess(
-    const transport::THeader::StringToStringMap* readHeaders,
-    const std::string* method) const {
+    const PreprocessParams& params) const {
   if (preprocess_) {
-    return preprocess_(readHeaders, method);
+    return preprocess_(params);
   }
   return {};
 }
@@ -735,40 +852,100 @@ void ThriftServer::replaceShutdownSocketSet(
   wShutdownSocketSet_ = newSSS;
 }
 
-folly::SemiFuture<std::vector<RequestSnapshot>>
-ThriftServer::snapshotActiveRequests() {
-  std::vector<folly::SemiFuture<std::vector<RequestSnapshot>>> tasks;
+folly::SemiFuture<ThriftServer::ServerSnapshot> ThriftServer::getServerSnapshot(
+    const SnapshotOptions& options) {
+  // WorkerSnapshots look the same as the server, except they are unaggregated
+  using WorkerSnapshot = ServerSnapshot;
+  std::vector<folly::SemiFuture<WorkerSnapshot>> tasks;
+  const auto snapshotTime = std::chrono::steady_clock::now();
 
-  forEachWorker([&tasks](wangle::Acceptor* acceptor) {
+  forEachWorker([&tasks, snapshotTime, options](wangle::Acceptor* acceptor) {
     auto worker = dynamic_cast<Cpp2Worker*>(acceptor);
     if (!worker) {
       return;
     }
-    auto fut = folly::via(worker->getEventBase(), [worker]() {
-      std::vector<RequestSnapshot> reqSnapshots;
-      auto reqRegistry = worker->getRequestsRegistry();
-      DCHECK(reqRegistry);
-      if (reqRegistry != nullptr) {
-        for (const auto& stub : reqRegistry->getActive()) {
-          reqSnapshots.emplace_back(stub);
-        }
-        for (const auto& stub : reqRegistry->getFinished()) {
-          reqSnapshots.emplace_back(stub);
-        }
-      }
-      return reqSnapshots;
-    });
+    auto fut =
+        folly::via(worker->getEventBase(), [worker, snapshotTime, options]() {
+          auto reqRegistry = worker->getRequestsRegistry();
+          DCHECK(reqRegistry);
+          RequestSnapshots requestSnapshots;
+          if (reqRegistry != nullptr) {
+            for (const auto& stub : reqRegistry->getActive()) {
+              requestSnapshots.emplace_back(stub);
+            }
+            for (const auto& stub : reqRegistry->getFinished()) {
+              requestSnapshots.emplace_back(stub);
+            }
+          }
+
+          std::unordered_map<folly::SocketAddress, ConnectionSnapshot>
+              connectionSnapshots;
+          worker->getConnectionManager()->forEachConnection(
+              [&](wangle::ManagedConnection* wangleConnection) {
+                if (auto managedConnection =
+                        dynamic_cast<ManagedConnectionIf*>(wangleConnection)) {
+                  auto numActiveRequests =
+                      managedConnection->getNumActiveRequests();
+                  auto numPendingWrites =
+                      managedConnection->getNumPendingWrites();
+                  auto creationTime = managedConnection->getCreationTime();
+                  auto minCreationTime =
+                      snapshotTime - options.connectionsAgeMax;
+                  if (numActiveRequests > 0 || numPendingWrites > 0 ||
+                      creationTime > minCreationTime) {
+                    connectionSnapshots.emplace(
+                        managedConnection->getPeerAddress(),
+                        ConnectionSnapshot{
+                            numActiveRequests, numPendingWrites, creationTime});
+                  }
+                }
+              });
+          return WorkerSnapshot{
+              worker->getRequestsRegistry()->getRequestCounter().get(),
+              std::move(requestSnapshots),
+              std::move(connectionSnapshots)};
+        });
     tasks.emplace_back(std::move(fut));
   });
 
   return folly::collect(tasks.begin(), tasks.end())
-      .deferValue([](std::vector<std::vector<RequestSnapshot>> results) {
-        std::vector<RequestSnapshot> flat_result;
-        for (auto& vec : results) {
-          std::move(vec.begin(), vec.end(), std::back_inserter(flat_result));
-        }
-        return flat_result;
-      });
+      .deferValue(
+          [](std::vector<WorkerSnapshot> workerSnapshots) -> ServerSnapshot {
+            ServerSnapshot ret{};
+
+            // Sum all request and connection counts
+            size_t numRequests = 0;
+            size_t numConnections = 0;
+            for (const auto& workerSnapshot : workerSnapshots) {
+              for (uint64_t i = 0; i < ret.recentCounters.size(); ++i) {
+                ret.recentCounters[i].first +=
+                    workerSnapshot.recentCounters[i].first;
+                ret.recentCounters[i].second +=
+                    workerSnapshot.recentCounters[i].second;
+              }
+              numRequests += workerSnapshot.requests.size();
+              numConnections += workerSnapshot.connections.size();
+            }
+
+            // Move all RequestSnapshots and ConnectionSnapshots to
+            // ServerSnapshot
+            ret.requests.reserve(numRequests);
+            ret.connections.reserve(numConnections);
+            for (auto& workerSnapshot : workerSnapshots) {
+              auto& requests = workerSnapshot.requests;
+              std::move(
+                  requests.begin(),
+                  requests.end(),
+                  std::back_inserter(ret.requests));
+
+              auto& connections = workerSnapshot.connections;
+              std::move(
+                  connections.begin(),
+                  connections.end(),
+                  std::inserter(ret.connections, ret.connections.end()));
+            }
+            return ret;
+          });
 }
 
 folly::observer::Observer<std::list<std::string>>
@@ -800,6 +977,30 @@ ThriftServer::defaultNextProtocols() {
 
 folly::observer::Observer<bool> ThriftServer::enableStopTLS() {
   return THRIFT_FLAG_OBSERVE(server_enable_stoptls);
+}
+
+folly::observer::CallbackHandle ThriftServer::getSSLCallbackHandle() {
+  return sslContextObserver_->addCallback([&](auto ssl) {
+    if (sharedSSLContextManager_) {
+      sharedSSLContextManager_->updateSSLConfigAndReloadContexts(*ssl);
+    } else {
+      // "this" needed due to
+      // https://gcc.gnu.org/bugzilla/show_bug.cgi?id=67274
+      this->forEachWorker([&](wangle::Acceptor* acceptor) {
+        auto evb = acceptor->getEventBase();
+        if (!evb) {
+          return;
+        }
+        evb->runInEventBaseThread([acceptor, ssl] {
+          for (auto& sslContext : acceptor->getConfig().sslContextConfigs) {
+            sslContext = *ssl;
+          }
+          acceptor->resetSSLContextConfigs();
+        });
+      });
+    }
+    this->updateCertsToWatch();
+  });
 }
 } // namespace thrift
 } // namespace apache

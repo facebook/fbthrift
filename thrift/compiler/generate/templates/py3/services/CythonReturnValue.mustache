@@ -22,11 +22,11 @@ to the client.
 
 }}{{#type:iobuf?}}{{!
   }}{{#function:stack_arguments?}}deref{{/function:stack_arguments?}}{{!
-  }}((<__iobuf.IOBuf>result).c_clone()){{!
+  }}((<_fbthrift_iobuf.IOBuf>result).c_clone()){{!
 }}{{/type:iobuf?}}{{!
 }}{{#type:iobufRef?}}{{!
-  }}{{^function:stack_arguments?}}make_unique[unique_ptr[__iobuf.cIOBuf]]({{/function:stack_arguments?}}{{!
-    }}((<__iobuf.IOBuf>result).c_clone()){{!
+  }}{{^function:stack_arguments?}}make_unique[unique_ptr[_fbthrift_iobuf.cIOBuf]]({{/function:stack_arguments?}}{{!
+    }}((<_fbthrift_iobuf.IOBuf>result).c_clone()){{!
   }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:iobufRef?}}{{!
 }}{{#type:flexibleBinary?}}{{!
@@ -58,15 +58,14 @@ to the client.
   }}{{^function:stack_arguments?}}){{/function:stack_arguments?}}{{!
 }}{{/type:struct}}{{!
 }}{{#type:streamresponse?}}{{!
-  }}{{#type:streamHasFirstResponse?}}createEmptyResponseAndServerStream[{{!
-  }}{{#type:streamFirstResponseType}}{{ >types/CythonCppType}}{{/type:streamFirstResponseType}},{{!
-  }}{{#type:streamElemType}}{{ >types/CythonCppType}}{{/type:streamElemType}}]{{!
-  }}{{/type:streamHasFirstResponse?}}{{!
-  }}{{^type:streamHasFirstResponse?}}cServerStream[{{!
-  }}{{#type:streamElemType}}{{ >types/CythonCppType}}{{/type:streamElemType}}].createEmpty{{!
-  }}{{/type:streamHasFirstResponse?}}{{!
-  }}() # server streaming support is not implemented yet
-{{/type:streamresponse?}}{{!
+  }}{{#type:stream_has_first_response?}}createResponseAndServerStream[{{!
+  }}{{#type:stream_first_response_type}}{{ >types/CythonCppType}}{{/type:stream_first_response_type}},{{!
+  }}{{#type:stream_elem_type}}{{ >types/CythonCppType}}{{/type:stream_elem_type}}]({{!
+  }}{{#type:stream_first_response_type}}(<{{> types/CythonCppType}}?> {{> CythonPythonToCppItem}}){{/type:stream_first_response_type}}, {{!
+  }}{{/type:stream_has_first_response?}}{{!
+  }}cmove(deref((<ServerStream_{{#type:stream_elem_type}}{{ >types/CythonCppTypeIdent}}{{/type:stream_elem_type}}?>result).cStream)){{!
+  }}{{#type:stream_has_first_response?}}){{/type:stream_has_first_response?}}{{!
+}}{{/type:streamresponse?}}{{!
 }}{{#type:container?}}{{!
   }}{{^function:stack_arguments?}}make_unique[{{> types/CythonCppType}}]({{/function:stack_arguments?}}{{!
     }}deref((<{{> types/CythonPythonType}}?> result)._cpp_obj){{!

@@ -34,15 +34,12 @@ enum <%^enum:cpp_is_unscoped%>class <%/enum:cpp_is_unscoped%><%enum:name%><%#enu
 
 <% > common/namespace_cpp2_end%>
 
+
 namespace std {
-
 <%#program:enums%>
-
-template<> struct hash<typename <% > common/namespace_cpp2%><%enum:name%>> : public apache::thrift::detail::enum_hash<typename <% > common/namespace_cpp2%><%enum:name%>> {};
-template<> struct equal_to<typename <% > common/namespace_cpp2%><%enum:name%>> : public apache::thrift::detail::enum_equal_to<typename <% > common/namespace_cpp2%><%enum:name%>> {};
-
+template<> struct hash<<% > common/namespace_cpp2%><%enum:name%>> :
+  ::apache::thrift::detail::enum_hash<<% > common/namespace_cpp2%><%enum:name%>> {};
 <%/program:enums%>
-
 } // std
 
 namespace apache { namespace thrift {

@@ -28,9 +28,7 @@ class TestClientEventHandler : public apache::thrift::TProcessorEventHandler {
     preWriteCalled_ = true;
   }
 
-  bool preWriteCalled() const {
-    return preWriteCalled_;
-  }
+  bool preWriteCalled() const { return preWriteCalled_; }
 
  private:
   bool preWriteCalled_ = false;

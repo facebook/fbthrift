@@ -153,13 +153,59 @@ func (p *MyServicePrioParentThreadsafeClient) recvPong() (err error) {
 }
 
 
+type MyServicePrioParentChannelClient struct {
+  RequestChannel thrift.RequestChannel
+}
+
+func (c *MyServicePrioParentChannelClient) Close() error {
+  return c.RequestChannel.Close()
+}
+
+func (c *MyServicePrioParentChannelClient) IsOpen() bool {
+  return c.RequestChannel.IsOpen()
+}
+
+func (c *MyServicePrioParentChannelClient) Open() error {
+  return c.RequestChannel.Open()
+}
+
+func NewMyServicePrioParentChannelClient(channel thrift.RequestChannel) *MyServicePrioParentChannelClient {
+  return &MyServicePrioParentChannelClient{RequestChannel: channel}
+}
+
+func (p *MyServicePrioParentChannelClient) Ping(ctx context.Context) (err error) {
+  args := MyServicePrioParentPingArgs{
+  }
+  var result MyServicePrioParentPingResult
+  err = p.RequestChannel.Call(ctx, "ping", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+func (p *MyServicePrioParentChannelClient) Pong(ctx context.Context) (err error) {
+  args := MyServicePrioParentPongArgs{
+  }
+  var result MyServicePrioParentPongResult
+  err = p.RequestChannel.Call(ctx, "pong", &args, &result)
+  if err != nil { return }
+
+  return nil
+}
+
+
 type MyServicePrioParentProcessor struct {
   processorMap map[string]thrift.ProcessorFunction
+  functionServiceMap map[string]string
   handler MyServicePrioParent
 }
 
 func (p *MyServicePrioParentProcessor) AddToProcessorMap(key string, processor thrift.ProcessorFunction) {
   p.processorMap[key] = processor
+}
+
+func (p *MyServicePrioParentProcessor) AddToFunctionServiceMap(key, service string) {
+  p.functionServiceMap[key] = service
 }
 
 func (p *MyServicePrioParentProcessor) GetProcessorFunction(key string) (processor thrift.ProcessorFunction, err error) {
@@ -173,15 +219,26 @@ func (p *MyServicePrioParentProcessor) ProcessorMap() map[string]thrift.Processo
   return p.processorMap
 }
 
+func (p *MyServicePrioParentProcessor) FunctionServiceMap() map[string]string {
+  return p.functionServiceMap
+}
+
 func NewMyServicePrioParentProcessor(handler MyServicePrioParent) *MyServicePrioParentProcessor {
-  self8 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction)}
+  self8 := &MyServicePrioParentProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
   self8.processorMap["ping"] = &myServicePrioParentProcessorPing{handler:handler}
   self8.processorMap["pong"] = &myServicePrioParentProcessorPong{handler:handler}
+  self8.functionServiceMap["ping"] = "MyServicePrioParent"
+  self8.functionServiceMap["pong"] = "MyServicePrioParent"
   return self8
 }
 
 type myServicePrioParentProcessorPing struct {
   handler MyServicePrioParent
+}
+
+func (p *MyServicePrioParentPingResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *myServicePrioParentProcessorPing) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -229,6 +286,11 @@ func (p *myServicePrioParentProcessorPing) Run(argStruct thrift.Struct) (thrift.
 
 type myServicePrioParentProcessorPong struct {
   handler MyServicePrioParent
+}
+
+func (p *MyServicePrioParentPongResult) Exception() thrift.WritableException {
+  if p == nil { return nil }
+  return nil
 }
 
 func (p *myServicePrioParentProcessorPong) Read(iprot thrift.Protocol) (thrift.Struct, thrift.Exception) {
@@ -285,6 +347,21 @@ func NewMyServicePrioParentPingArgs() *MyServicePrioParentPingArgs {
   return &MyServicePrioParentPingArgs{}
 }
 
+type MyServicePrioParentPingArgsBuilder struct {
+  obj *MyServicePrioParentPingArgs
+}
+
+func NewMyServicePrioParentPingArgsBuilder() *MyServicePrioParentPingArgsBuilder{
+  return &MyServicePrioParentPingArgsBuilder{
+    obj: NewMyServicePrioParentPingArgs(),
+  }
+}
+
+func (p MyServicePrioParentPingArgsBuilder) Emit() *MyServicePrioParentPingArgs{
+  return &MyServicePrioParentPingArgs{
+  }
+}
+
 func (p *MyServicePrioParentPingArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -334,6 +411,21 @@ type MyServicePrioParentPingResult struct {
 
 func NewMyServicePrioParentPingResult() *MyServicePrioParentPingResult {
   return &MyServicePrioParentPingResult{}
+}
+
+type MyServicePrioParentPingResultBuilder struct {
+  obj *MyServicePrioParentPingResult
+}
+
+func NewMyServicePrioParentPingResultBuilder() *MyServicePrioParentPingResultBuilder{
+  return &MyServicePrioParentPingResultBuilder{
+    obj: NewMyServicePrioParentPingResult(),
+  }
+}
+
+func (p MyServicePrioParentPingResultBuilder) Emit() *MyServicePrioParentPingResult{
+  return &MyServicePrioParentPingResult{
+  }
 }
 
 func (p *MyServicePrioParentPingResult) Read(iprot thrift.Protocol) error {
@@ -387,6 +479,21 @@ func NewMyServicePrioParentPongArgs() *MyServicePrioParentPongArgs {
   return &MyServicePrioParentPongArgs{}
 }
 
+type MyServicePrioParentPongArgsBuilder struct {
+  obj *MyServicePrioParentPongArgs
+}
+
+func NewMyServicePrioParentPongArgsBuilder() *MyServicePrioParentPongArgsBuilder{
+  return &MyServicePrioParentPongArgsBuilder{
+    obj: NewMyServicePrioParentPongArgs(),
+  }
+}
+
+func (p MyServicePrioParentPongArgsBuilder) Emit() *MyServicePrioParentPongArgs{
+  return &MyServicePrioParentPongArgs{
+  }
+}
+
 func (p *MyServicePrioParentPongArgs) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -436,6 +543,21 @@ type MyServicePrioParentPongResult struct {
 
 func NewMyServicePrioParentPongResult() *MyServicePrioParentPongResult {
   return &MyServicePrioParentPongResult{}
+}
+
+type MyServicePrioParentPongResultBuilder struct {
+  obj *MyServicePrioParentPongResult
+}
+
+func NewMyServicePrioParentPongResultBuilder() *MyServicePrioParentPongResultBuilder{
+  return &MyServicePrioParentPongResultBuilder{
+    obj: NewMyServicePrioParentPongResult(),
+  }
+}
+
+func (p MyServicePrioParentPongResultBuilder) Emit() *MyServicePrioParentPongResult{
+  return &MyServicePrioParentPongResult{
+  }
 }
 
 func (p *MyServicePrioParentPongResult) Read(iprot thrift.Protocol) error {

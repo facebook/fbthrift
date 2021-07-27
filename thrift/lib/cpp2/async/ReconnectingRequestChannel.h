@@ -59,32 +59,37 @@ class ReconnectingRequestChannel : public RequestChannel {
 
   void sendRequestResponse(
       const RpcOptions& options,
-      folly::StringPiece methodName,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       const RpcOptions&,
-      folly::StringPiece methodName,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader>,
       RequestClientCallback::Ptr) override;
 
   void sendRequestStream(
       const RpcOptions&,
-      folly::StringPiece methodName,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&& request,
       std::shared_ptr<transport::THeader>,
       StreamClientCallback*) override;
+
+  void sendRequestSink(
+      const apache::thrift::RpcOptions& rpcOptions,
+      MethodMetadata&& methodMetadata,
+      SerializedRequest&& request,
+      std::shared_ptr<apache::thrift::transport::THeader> header,
+      apache::thrift::SinkClientCallback* cb) override;
 
   void setCloseCallback(CloseCallback*) override {
     LOG(FATAL) << "Not supported";
   }
 
-  folly::EventBase* getEventBase() const override {
-    return &evb_;
-  }
+  folly::EventBase* getEventBase() const override { return &evb_; }
 
   uint16_t getProtocolId() override {
     reconnectIfNeeded();

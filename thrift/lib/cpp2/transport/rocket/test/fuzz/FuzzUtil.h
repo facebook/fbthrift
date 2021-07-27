@@ -38,15 +38,13 @@ class FakeTransport final : public folly::AsyncTransport {
  public:
   explicit FakeTransport(folly::EventBase* e) : eventBase_(e) {}
   void setReadCB(ReadCallback*) override {}
-  ReadCallback* getReadCallback() const override {
-    return nullptr;
-  }
-  void write(WriteCallback* cb, const void*, size_t, folly::WriteFlags)
-      override {
+  ReadCallback* getReadCallback() const override { return nullptr; }
+  void write(
+      WriteCallback* cb, const void*, size_t, folly::WriteFlags) override {
     cb->writeSuccess();
   }
-  void writev(WriteCallback* cb, const iovec*, size_t, folly::WriteFlags)
-      override {
+  void writev(
+      WriteCallback* cb, const iovec*, size_t, folly::WriteFlags) override {
     cb->writeSuccess();
   }
   void writeChain(
@@ -55,53 +53,29 @@ class FakeTransport final : public folly::AsyncTransport {
       folly::WriteFlags) override {
     cb->writeSuccess();
   }
-  folly::EventBase* getEventBase() const override {
-    return eventBase_;
-  }
+  folly::EventBase* getEventBase() const override { return eventBase_; }
   void getAddress(folly::SocketAddress*) const override {}
   void close() override {}
   void closeNow() override {}
   void shutdownWrite() override {}
   void shutdownWriteNow() override {}
-  bool good() const override {
-    return true;
-  }
-  bool readable() const override {
-    return true;
-  }
-  bool connecting() const override {
-    return true;
-  }
-  bool error() const override {
-    return true;
-  }
+  bool good() const override { return true; }
+  bool readable() const override { return true; }
+  bool connecting() const override { return true; }
+  bool error() const override { return true; }
   void attachEventBase(folly::EventBase*) override {}
   void detachEventBase() override {}
-  bool isDetachable() const override {
-    return true;
-  }
+  bool isDetachable() const override { return true; }
   void setSendTimeout(uint32_t) override {}
-  uint32_t getSendTimeout() const override {
-    return 0u;
-  }
+  uint32_t getSendTimeout() const override { return 0u; }
   void getLocalAddress(folly::SocketAddress*) const override {}
   void getPeerAddress(folly::SocketAddress*) const override {}
-  bool isEorTrackingEnabled() const override {
-    return true;
-  }
+  bool isEorTrackingEnabled() const override { return true; }
   void setEorTracking(bool) override {}
-  size_t getAppBytesWritten() const override {
-    return 0u;
-  }
-  size_t getRawBytesWritten() const override {
-    return 0u;
-  }
-  size_t getAppBytesReceived() const override {
-    return 0u;
-  }
-  size_t getRawBytesReceived() const override {
-    return 0u;
-  }
+  size_t getAppBytesWritten() const override { return 0u; }
+  size_t getRawBytesWritten() const override { return 0u; }
+  size_t getAppBytesReceived() const override { return 0u; }
+  size_t getRawBytesReceived() const override { return 0u; }
 
  private:
   folly::EventBase* eventBase_;
@@ -131,6 +105,10 @@ class FakeProcessorFactory final
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
     return std::make_unique<FakeProcessor>();
   }
+
+  std::vector<apache::thrift::ServiceHandler*> getServiceHandlers() override {
+    return {};
+  }
 };
 
 void testServerOneInput(const uint8_t* Data, size_t Size) {
@@ -143,11 +121,16 @@ void testServerOneInput(const uint8_t* Data, size_t Size) {
   auto worker = apache::thrift::Cpp2Worker::create(&server, nullptr, &evb);
   std::vector<std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>> v;
   folly::SocketAddress address;
+  MemoryTracker memoryTracker;
+
   auto connection = new apache::thrift::rocket::RocketServerConnection(
       std::move(sock),
       std::make_unique<apache::thrift::rocket::ThriftRocketServerHandler>(
           worker, address, sockPtr, v),
-      std::chrono::milliseconds::zero());
+      memoryTracker, // (ingress)
+      memoryTracker // (egress)
+  );
+
   folly::DelayedDestruction::DestructorGuard dg(connection);
   apache::thrift::rocket::Parser<apache::thrift::rocket::RocketServerConnection>
       p(*connection);
@@ -182,9 +165,7 @@ void testClientOneInput(const uint8_t* Data, size_t Size) {
   class SyncCallback : public apache::thrift::ClientSyncCallback<false> {
    public:
     using ClientSyncCallback::ClientSyncCallback;
-    void onRequestSent() noexcept override {
-      sentBaton_.post();
-    }
+    void onRequestSent() noexcept override { sentBaton_.post(); }
     void waitUntilSent(folly::EventBase* evb) {
       if (evb) {
         if (!evb->inRunningEventBaseThread() || !folly::fibers::onFiber()) {

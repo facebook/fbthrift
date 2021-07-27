@@ -11,7 +11,8 @@ import com.facebook.nifty.client.RequestChannel;
 import com.facebook.swift.codec.*;
 import com.facebook.swift.service.*;
 import com.facebook.swift.service.metadata.*;
-import com.facebook.swift.transport.client.*;
+import com.facebook.thrift.client.*;
+import com.facebook.thrift.util.FutureUtil;
 import java.io.*;
 import java.lang.reflect.Method;
 import java.util.*;
@@ -20,7 +21,6 @@ import reactor.core.publisher.Mono;
 
 @SwiftGenerated
 public class MyServicePrioParentClientImpl extends AbstractThriftClient implements MyServicePrioParent {
-
 
     // Method Handlers
     private ThriftMethodHandler pingMethodHandler;
@@ -80,8 +80,20 @@ public class MyServicePrioParentClientImpl extends AbstractThriftClient implemen
 
     @java.lang.Override
     public void ping() throws org.apache.thrift.TException {
+      pingWrapper(RpcOptions.EMPTY).getData();
+    }
+
+    @java.lang.Override
+    public void ping(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      pingWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> pingWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        execute(pingMethodHandler, pingExceptions);
+        return FutureUtil.get(executeWrapperWithOptions(pingMethodHandler, pingExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;
@@ -92,33 +104,20 @@ public class MyServicePrioParentClientImpl extends AbstractThriftClient implemen
 
     @java.lang.Override
     public void pong() throws org.apache.thrift.TException {
-      try {
-        execute(pongMethodHandler, pongExceptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
+      pongWrapper(RpcOptions.EMPTY).getData();
     }
 
-
-    public void ping(
-        RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      try {
-        executeWithOptions(pingMethodHandler, pingExceptions, rpcOptions);
-      } catch (Throwable t) {
-        if (t instanceof org.apache.thrift.TException) {
-          throw (org.apache.thrift.TException) t;
-        }
-        throw new org.apache.thrift.TException(t);
-      }
-    }
-
+    @java.lang.Override
     public void pong(
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
+      pongWrapper(rpcOptions).getData();
+    }
+
+    @java.lang.Override
+    public ResponseWrapper<Void> pongWrapper(
+        RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        executeWithOptions(pongMethodHandler, pongExceptions, rpcOptions);
+        return FutureUtil.get(executeWrapperWithOptions(pongMethodHandler, pongExceptions, rpcOptions));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

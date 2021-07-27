@@ -23,15 +23,14 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Internship", builder=Internship.Builder.class)
-public final class Internship {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="Internship", builder=Internship.Builder.class)
+public final class Internship implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Internship(
-        @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED) final int weeks,
-        @ThriftField(value=2, name="title", requiredness=Requiredness.NONE) final String title,
-        @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL) final test.fixtures.lazy_constants.Company employer
+        @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED) final int weeks,
+        @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE) final String title,
+        @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL) final test.fixtures.lazy_constants.Company employer
     ) {
         this.weeks = weeks;
         this.title = title;
@@ -46,13 +45,12 @@ public final class Internship {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private int weeks = 0;
         private String title = null;
         private test.fixtures.lazy_constants.Company employer = null;
     
-        @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
+        @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
         public Builder setWeeks(int weeks) {
             this.weeks = weeks;
             return this;
@@ -60,7 +58,7 @@ public final class Internship {
     
         public int getWeeks() { return weeks; }
     
-            @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
         public Builder setTitle(String title) {
             this.title = title;
             return this;
@@ -68,7 +66,7 @@ public final class Internship {
     
         public String getTitle() { return title; }
     
-            @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
         public Builder setEmployer(test.fixtures.lazy_constants.Company employer) {
             this.employer = employer;
             return this;
@@ -90,7 +88,6 @@ public final class Internship {
                 this.title,
                 this.employer
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -116,34 +113,16 @@ public final class Internship {
       FIELD_METADATA.put(3, EMPLOYER_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=1, name="weeks", requiredness=Requiredness.REQUIRED)
     public int getWeeks() { return weeks; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetWeeks() {
-        return __isset_bit_vector.get(_WEEKS);
-    }
     
     
-    @ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="title", requiredness=Requiredness.NONE)
     public String getTitle() { return title; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetTitle() {
-        return this.title != null;
-    }
     
     
-    @ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=3, name="employer", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.lazy_constants.Company getEmployer() { return employer; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetEmployer() {
-        return this.employer != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -181,6 +160,10 @@ public final class Internship {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Internship> asReader() {
+      return Internship::read0;
+    }
     
     public static Internship read0(TProtocol oprot) throws TException {
       TField __field;
@@ -243,4 +226,11 @@ public final class Internship {
       oprot.writeStructEnd();
     }
     
+    private static class _InternshipLazy {
+        private static final Internship _DEFAULT = new Internship.Builder().build();
+    }
+    
+    public static Internship defaultInstance() {
+        return  _InternshipLazy._DEFAULT;
+    }
 }

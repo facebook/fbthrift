@@ -9,9 +9,4 @@
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/reflection_types.h"
 
 namespace cpp2 {
-
-namespace thrift_fatal_impl_detail {
-
-} // thrift_fatal_impl_detail
-
 } // cpp2

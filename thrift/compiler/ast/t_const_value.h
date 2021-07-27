@@ -25,7 +25,10 @@
 #include <utility>
 #include <vector>
 
-#include <thrift/compiler/ast/t_doc.h>
+#include <boost/optional.hpp>
+
+#include <thrift/compiler/ast/t_node.h>
+#include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
@@ -34,7 +37,6 @@ namespace compiler {
 class t_const;
 class t_enum;
 class t_enum_value;
-class t_type;
 
 /**
  * A const value is something parsed that could be a map, set, list, struct
@@ -52,15 +54,11 @@ class t_const_value {
     CV_LIST
   };
 
-  t_const_value() {}
+  t_const_value() = default;
 
-  explicit t_const_value(int64_t val) {
-    set_integer(val);
-  }
+  explicit t_const_value(int64_t val) noexcept { set_integer(val); }
 
-  explicit t_const_value(std::string val) {
-    set_string(val);
-  }
+  explicit t_const_value(std::string val) { set_string(std::move(val)); }
 
   t_const_value(const t_const_value&) = delete;
   t_const_value(t_const_value&&) = delete;
@@ -68,7 +66,6 @@ class t_const_value {
 
   std::unique_ptr<t_const_value> clone() const {
     auto clone = std::make_unique<t_const_value>();
-
     switch (get_type()) {
       case CV_BOOL:
         clone->set_bool(get_bool());
@@ -97,7 +94,7 @@ class t_const_value {
     }
 
     clone->set_owner(get_owner());
-    clone->set_ttype(get_ttype());
+    clone->set_ttype(ttype());
     clone->set_is_enum(is_enum());
     clone->set_enum(get_enum());
     clone->set_enum_value(get_enum_value());
@@ -105,13 +102,11 @@ class t_const_value {
     return clone;
   }
 
-  void assign(t_const_value&& value) {
-    *this = std::move(value);
-  }
+  void assign(t_const_value&& value) { *this = std::move(value); }
 
   void set_string(std::string val) {
     valType_ = CV_STRING;
-    stringVal_ = val;
+    stringVal_ = std::move(val);
   }
 
   const std::string& get_string() const {
@@ -152,13 +147,10 @@ class t_const_value {
     return boolVal_;
   }
 
-  void set_map() {
-    valType_ = CV_MAP;
-  }
+  void set_map() { valType_ = CV_MAP; }
 
   void add_map(
-      std::unique_ptr<t_const_value> key,
-      std::unique_ptr<t_const_value> val) {
+      std::unique_ptr<t_const_value> key, std::unique_ptr<t_const_value> val) {
     mapVal_raw_.emplace_back(key.get(), val.get());
     mapVal_.emplace_back(std::move(key), std::move(val));
   }
@@ -168,22 +160,16 @@ class t_const_value {
     return mapVal_raw_;
   }
 
-  void set_list() {
-    valType_ = CV_LIST;
-  }
+  void set_list() { valType_ = CV_LIST; }
 
   void add_list(std::unique_ptr<t_const_value> val) {
     listVal_raw_.push_back(val.get());
     listVal_.push_back(std::move(val));
   }
 
-  const std::vector<t_const_value*>& get_list() const {
-    return listVal_raw_;
-  }
+  const std::vector<t_const_value*>& get_list() const { return listVal_raw_; }
 
-  t_const_value_type get_type() const {
-    return valType_;
-  }
+  t_const_value_type get_type() const { return valType_; }
 
   bool is_empty() const {
     switch (valType_) {
@@ -199,45 +185,24 @@ class t_const_value {
     return false;
   }
 
-  void set_owner(t_const* owner) {
-    owner_ = owner;
-  }
+  void set_owner(t_const* owner) { owner_ = owner; }
 
-  t_const* get_owner() const {
-    return owner_;
-  }
+  t_const* get_owner() const { return owner_; }
 
-  void set_ttype(t_type* type) {
-    type_ = type;
-  }
+  const boost::optional<t_type_ref>& ttype() const { return ttype_; }
+  void set_ttype(boost::optional<t_type_ref> type) { ttype_ = std::move(type); }
 
-  t_type* get_ttype() const {
-    return type_;
-  }
+  void set_is_enum(bool value = true) { is_enum_ = value; }
 
-  void set_is_enum(bool value = true) {
-    is_enum_ = value;
-  }
+  bool is_enum() const { return is_enum_; }
 
-  bool is_enum() const {
-    return is_enum_;
-  }
+  void set_enum(t_enum const* tenum) { tenum_ = tenum; }
 
-  void set_enum(t_enum const* tenum) {
-    tenum_ = tenum;
-  }
+  const t_enum* get_enum() const { return tenum_; }
 
-  const t_enum* get_enum() const {
-    return tenum_;
-  }
+  void set_enum_value(t_enum_value const* tenum_val) { tenum_val_ = tenum_val; }
 
-  void set_enum_value(t_enum_value const* tenum_val) {
-    tenum_val_ = tenum_val;
-  }
-
-  const t_enum_value* get_enum_value() const {
-    return tenum_val_;
-  }
+  const t_enum_value* get_enum_value() const { return tenum_val_; }
 
  private:
   // Use a vector of pairs to store the contents of the map so that we
@@ -256,13 +221,20 @@ class t_const_value {
 
   t_const_value_type valType_ = CV_BOOL;
   t_const* owner_ = nullptr;
-  t_type* type_ = nullptr;
+  boost::optional<t_type_ref> ttype_;
 
   bool is_enum_ = false;
   t_enum const* tenum_ = nullptr;
   t_enum_value const* tenum_val_ = nullptr;
 
   t_const_value& operator=(t_const_value&&) = default;
+
+ public:
+  // TODO(afuller): Delete everything below here. It is only provided for
+  // backwards compatibility.
+  const t_type* get_ttype() const {
+    return ttype() == boost::none ? nullptr : ttype()->get_type();
+  }
 };
 
 } // namespace compiler

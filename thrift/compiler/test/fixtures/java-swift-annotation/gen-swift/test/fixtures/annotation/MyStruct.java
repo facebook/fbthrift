@@ -23,23 +23,24 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class) @com.foo.Enabled @com.bar.AnotherAnnotation(val = 1) 
-public final class MyStruct {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="MyStruct", builder=MyStruct.Builder.class) @com.foo.Enabled @com.bar.AnotherAnnotation(val = 1) 
+public final class MyStruct implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStruct(
-        @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE) final long intField,
-        @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE) final String stringField,
-        @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) final String detailField,
-        @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) final com.foo.FastIntLongMap detailMap,
-        @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE) final String toto
+        @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE) final long intField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE) final String stringField,
+        @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE) final String detailField,
+        @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE) final com.foo.FastIntLongMap detailMap,
+        @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE) final String toto,
+        @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE) final String password
     ) {
         this.intField = intField;
         this.stringField = stringField;
         this.detailField = detailField;
         this.detailMap = detailMap;
         this.toto = toto;
+        this.password = password;
     }
     
     @ThriftConstructor
@@ -49,18 +50,19 @@ public final class MyStruct {
       this.detailField = null;
       this.detailMap = null;
       this.toto = null;
+      this.password = null;
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long intField = 0L;
         private String stringField = null;
         private String detailField = null;
         private com.foo.FastIntLongMap detailMap = null;
         private String toto = null;
+        private String password = null;
     
-        @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
         public Builder setIntField(long intField) {
             this.intField = intField;
             return this;
@@ -68,7 +70,7 @@ public final class MyStruct {
     
         public long getIntField() { return intField; }
     
-            @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
         public Builder setStringField(String stringField) {
             this.stringField = stringField;
             return this;
@@ -76,7 +78,7 @@ public final class MyStruct {
     
         public String getStringField() { return stringField; }
     
-            @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
         public Builder setDetailField(String detailField) {
             this.detailField = detailField;
             return this;
@@ -84,7 +86,7 @@ public final class MyStruct {
     
         public String getDetailField() { return detailField; }
     
-            @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
         public Builder setDetailMap(com.foo.FastIntLongMap detailMap) {
             this.detailMap = detailMap;
             return this;
@@ -92,13 +94,22 @@ public final class MyStruct {
     
         public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
     
-            @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
         public Builder setToto(String toto) {
             this.toto = toto;
             return this;
         }
     
         public String getToto() { return toto; }
+    
+            @org.apache.thrift.annotations.Sensitive
+        @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE)
+        public Builder setPassword(String password) {
+            this.password = password;
+            return this;
+        }
+    
+        public String getPassword() { return password; }
     
         public Builder() { }
         public Builder(MyStruct other) {
@@ -107,6 +118,7 @@ public final class MyStruct {
             this.detailField = other.detailField;
             this.detailMap = other.detailMap;
             this.toto = other.toto;
+            this.password = other.password;
         }
     
         @ThriftConstructor
@@ -116,9 +128,9 @@ public final class MyStruct {
                 this.stringField,
                 this.detailField,
                 this.detailMap,
-                this.toto
+                this.toto,
+                this.password
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -141,6 +153,10 @@ public final class MyStruct {
         private final String toto;
     public static final int _TITI = 5;
     private static final TField TITI_FIELD_DESC = new TField("titi", TType.STRING, (short)5);
+        @org.apache.thrift.annotations.Sensitive
+    private final String password;
+    public static final int _PASSWORD = 6;
+    private static final TField PASSWORD_FIELD_DESC = new TField("password", TType.STRING, (short)6);
     static {
       NAMES_TO_IDS.put("intField", 1);
       FIELD_METADATA.put(1, INT_FIELD_FIELD_DESC);
@@ -152,56 +168,32 @@ public final class MyStruct {
       FIELD_METADATA.put(4, DETAIL_MAP_FIELD_DESC);
       NAMES_TO_IDS.put("toto", 5);
       FIELD_METADATA.put(5, TITI_FIELD_DESC);
+      NAMES_TO_IDS.put("password", 6);
+      FIELD_METADATA.put(6, PASSWORD_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="intField", requiredness=Requiredness.NONE)
     public long getIntField() { return intField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetIntField() {
-        return __isset_bit_vector.get(_INTFIELD);
-    }
     
     
-    @ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="stringField", requiredness=Requiredness.NONE)
     public String getStringField() { return stringField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetStringField() {
-        return this.stringField != null;
-    }
     
     
-    @ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="detailField", requiredness=Requiredness.NONE)
     public String getDetailField() { return detailField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetDetailField() {
-        return this.detailField != null;
-    }
     
     
-    @ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="detailMap", requiredness=Requiredness.NONE)
     public com.foo.FastIntLongMap getDetailMap() { return detailMap; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetDetailMap() {
-        return this.detailMap != null;
-    }
     
     
-    @ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="titi", requiredness=Requiredness.NONE)
     public String getToto() { return toto; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetToto() {
-        return this.toto != null;
-    }
+    
+    
+    @com.facebook.swift.codec.ThriftField(value=6, name="password", requiredness=Requiredness.NONE)
+    public String getPassword() { return password; }
     
     @java.lang.Override
     public String toString() {
@@ -211,6 +203,7 @@ public final class MyStruct {
         helper.add("detailField", detailField);
         helper.add("detailMap", detailMap);
         helper.add("toto", toto);
+        helper.add("password", "<SENSITIVE FIELD>");
         return helper.toString();
     }
     
@@ -231,6 +224,7 @@ public final class MyStruct {
             Objects.equals(detailField, other.detailField) &&
             Objects.equals(detailMap, other.detailMap) &&
             Objects.equals(toto, other.toto) &&
+            Objects.equals(password, other.password) &&
             true;
     }
     
@@ -241,10 +235,15 @@ public final class MyStruct {
             stringField,
             detailField,
             detailMap,
-            toto
+            toto,
+            password
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStruct> asReader() {
+      return MyStruct::read0;
+    }
     
     public static MyStruct read0(TProtocol oprot) throws TException {
       TField __field;
@@ -305,6 +304,14 @@ public final class MyStruct {
             TProtocolUtil.skip(oprot, __field.type);
           }
           break;
+        case _PASSWORD:
+          if (__field.type == TType.STRING) {
+            String password = oprot.readString();
+            builder.setPassword(password);
+          } else {
+            TProtocolUtil.skip(oprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(oprot, __field.type);
           break;
@@ -346,8 +353,20 @@ public final class MyStruct {
         oprot.writeString(this.toto);
         oprot.writeFieldEnd();
       }
+      if (this.password != null) {
+        oprot.writeFieldBegin(PASSWORD_FIELD_DESC);
+        oprot.writeString(this.password);
+        oprot.writeFieldEnd();
+      }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
     }
     
+    private static class _MyStructLazy {
+        private static final MyStruct _DEFAULT = new MyStruct.Builder().build();
+    }
+    
+    public static MyStruct defaultInstance() {
+        return  _MyStructLazy._DEFAULT;
+    }
 }

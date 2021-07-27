@@ -5,7 +5,7 @@
 #  @generated
 #
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.types
 import thrift.py3.exceptions
 from thrift.py3.types import __NotSet, NOTSET
@@ -24,7 +24,7 @@ class MyEnum(thrift.py3.types.Enum):
     MyValue2: MyEnum = ...
 
 
-class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typing.Tuple[str, _typing.Any]]):
+class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
     class __fbthrift_IsSet:
         MyIntField: bool
         MyStringField: bool
@@ -47,7 +47,6 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable, _typing.Iterable[_typi
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
-    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
     def __hash__(self) -> int: ...
     def __lt__(self, other: 'MyStruct') -> bool: ...
     def __gt__(self, other: 'MyStruct') -> bool: ...

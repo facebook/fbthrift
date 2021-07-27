@@ -27,12 +27,10 @@
 #include <thrift/lib/cpp2/transport/core/ThriftClient.h>
 #include <thrift/lib/cpp2/transport/core/testutil/ServerConfigsMock.h>
 #include <thrift/lib/cpp2/transport/http2/client/H2ClientConnection.h>
-#include <thrift/lib/cpp2/transport/inmemory/InMemoryConnection.h>
 
 using apache::thrift::ClientConnectionIf;
 using apache::thrift::H2ClientConnection;
 using apache::thrift::HeaderClientChannel;
-using apache::thrift::InMemoryConnection;
 using apache::thrift::RocketClientChannel;
 using apache::thrift::ThriftClient;
 using apache::thrift::ThriftServerAsyncProcessorFactory;
@@ -54,19 +52,15 @@ folly::AsyncSocket::UniquePtr getSocket(
 
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newHeaderClient(
-    folly::EventBase* evb,
-    folly::SocketAddress const& addr) {
+    folly::EventBase* evb, folly::SocketAddress const& addr) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, false);
   auto chan = HeaderClientChannel::newChannel(std::move(sock));
-  chan->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   return std::make_unique<AsyncClient>(std::move(chan));
 }
 
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newHTTP2Client(
-    folly::EventBase* evb,
-    folly::SocketAddress const& addr,
-    bool encrypted) {
+    folly::EventBase* evb, folly::SocketAddress const& addr, bool encrypted) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"h2"});
   std::shared_ptr<ClientConnectionIf> conn =
       H2ClientConnection::newHTTP2Connection(std::move(sock));
@@ -78,28 +72,11 @@ static std::unique_ptr<AsyncClient> newHTTP2Client(
 
 template <typename AsyncClient>
 static std::unique_ptr<AsyncClient> newRocketClient(
-    folly::EventBase* evb,
-    folly::SocketAddress const& addr,
-    bool encrypted) {
+    folly::EventBase* evb, folly::SocketAddress const& addr, bool encrypted) {
   auto sock = apache::thrift::perf::getSocket(evb, addr, encrypted, {"rs2"});
   RocketClientChannel::Ptr channel =
       RocketClientChannel::newChannel(std::move(sock));
-  channel->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
   return std::make_unique<AsyncClient>(std::move(channel));
-}
-
-template <typename AsyncClient, typename ServiceHandler>
-static std::unique_ptr<AsyncClient> newInMemoryClient(
-    folly::EventBase* evb,
-    std::shared_ptr<ServiceHandler> handler,
-    ServerConfigsMock& serverConfigs) {
-  auto pFac =
-      std::make_shared<ThriftServerAsyncProcessorFactory<ServiceHandler>>(
-          handler);
-  auto conn = std::make_shared<InMemoryConnection>(evb, pFac, serverConfigs);
-  auto client = ThriftClient::Ptr(new ThriftClient(conn));
-  client->setProtocolId(apache::thrift::protocol::T_COMPACT_PROTOCOL);
-  return std::make_unique<AsyncClient>(std::move(client));
 }
 
 template <typename AsyncClient>

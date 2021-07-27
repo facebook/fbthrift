@@ -23,16 +23,15 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Color", builder=Color.Builder.class)
-public final class Color {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="Color", builder=Color.Builder.class)
+public final class Color implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Color(
-        @ThriftField(value=1, name="red", requiredness=Requiredness.NONE) final double red,
-        @ThriftField(value=2, name="green", requiredness=Requiredness.NONE) final double green,
-        @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE) final double blue,
-        @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE) final double alpha
+        @com.facebook.swift.codec.ThriftField(value=1, name="red", requiredness=Requiredness.NONE) final double red,
+        @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE) final double green,
+        @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE) final double blue,
+        @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE) final double alpha
     ) {
         this.red = red;
         this.green = green;
@@ -49,14 +48,13 @@ public final class Color {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private double red = 0.;
         private double green = 0.;
         private double blue = 0.;
         private double alpha = 0.;
     
-        @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
         public Builder setRed(double red) {
             this.red = red;
             return this;
@@ -64,7 +62,7 @@ public final class Color {
     
         public double getRed() { return red; }
     
-            @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
         public Builder setGreen(double green) {
             this.green = green;
             return this;
@@ -72,7 +70,7 @@ public final class Color {
     
         public double getGreen() { return green; }
     
-            @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
         public Builder setBlue(double blue) {
             this.blue = blue;
             return this;
@@ -80,7 +78,7 @@ public final class Color {
     
         public double getBlue() { return blue; }
     
-            @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
         public Builder setAlpha(double alpha) {
             this.alpha = alpha;
             return this;
@@ -104,7 +102,6 @@ public final class Color {
                 this.blue,
                 this.alpha
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -135,44 +132,20 @@ public final class Color {
       FIELD_METADATA.put(4, ALPHA_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="red", requiredness=Requiredness.NONE)
     public double getRed() { return red; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetRed() {
-        return __isset_bit_vector.get(_RED);
-    }
     
     
-    @ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="green", requiredness=Requiredness.NONE)
     public double getGreen() { return green; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetGreen() {
-        return __isset_bit_vector.get(_GREEN);
-    }
     
     
-    @ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="blue", requiredness=Requiredness.NONE)
     public double getBlue() { return blue; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetBlue() {
-        return __isset_bit_vector.get(_BLUE);
-    }
     
     
-    @ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="alpha", requiredness=Requiredness.NONE)
     public double getAlpha() { return alpha; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetAlpha() {
-        return __isset_bit_vector.get(_ALPHA);
-    }
     
     @java.lang.Override
     public String toString() {
@@ -213,6 +186,10 @@ public final class Color {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Color> asReader() {
+      return Color::read0;
+    }
     
     public static Color read0(TProtocol oprot) throws TException {
       TField __field;
@@ -282,4 +259,11 @@ public final class Color {
       oprot.writeStructEnd();
     }
     
+    private static class _ColorLazy {
+        private static final Color _DEFAULT = new Color.Builder().build();
+    }
+    
+    public static Color defaultInstance() {
+        return  _ColorLazy._DEFAULT;
+    }
 }

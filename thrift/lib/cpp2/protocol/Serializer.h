@@ -38,6 +38,10 @@ struct Serializer {
       const folly::io::Cursor& cursor,
       T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    if /*constexpr*/ (!is_thrift_class_v<T>) {
+      FB_LOG_ONCE(ERROR)
+          << "Thrift serialization is only defined for structs and unions, not containers thereof";
+    }
     Reader reader(sharing);
     reader.setInput(cursor);
 
@@ -123,6 +127,10 @@ struct Serializer {
       const T& obj,
       folly::IOBufQueue* out,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
+    if /*constexpr*/ (!is_thrift_class_v<T>) {
+      FB_LOG_ONCE(ERROR)
+          << "Thrift serialization is only defined for structs and unions, not containers thereof";
+    }
     Writer writer(sharing);
     writer.setOutput(out);
 
@@ -216,57 +224,115 @@ typedef Serializer<SimpleJSONProtocolReader, SimpleJSONProtocolWriter>
 typedef Serializer<NimbleProtocolReader, NimbleProtocolWriter> NimbleSerializer;
 
 // Serialization code specific to handling errors
-template <typename ProtIn, typename ProtOut>
+template <typename ProtIn, typename ProtOut, bool includeEnvelope = true>
 std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
-    const TApplicationException& obj,
-    folly::IOBuf* req) {
-  ProtIn iprot;
-  std::string fname;
-  apache::thrift::MessageType mtype;
-  int32_t protoSeqId = 0;
-  iprot.setInput(req);
-  iprot.readMessageBegin(fname, mtype, protoSeqId);
-
+    const TApplicationException& obj, folly::IOBuf* req) {
   ProtOut prot;
-  size_t bufSize = obj.serializedSizeZC(&prot);
-  bufSize += prot.serializedMessageSize(fname);
   folly::IOBufQueue queue;
-  prot.setOutput(&queue, bufSize);
-  prot.writeMessageBegin(fname, apache::thrift::T_EXCEPTION, protoSeqId);
+  size_t objSize = obj.serializedSizeZC(&prot);
+  if /*constexpr*/ (includeEnvelope) {
+    ProtIn iprot;
+    std::string fname;
+    apache::thrift::MessageType mtype;
+    int32_t protoSeqId = 0;
+    iprot.setInput(req);
+    iprot.readMessageBegin(fname, mtype, protoSeqId);
+    prot.setOutput(&queue, objSize + prot.serializedMessageSize(fname));
+    prot.writeMessageBegin(fname, MessageType::T_EXCEPTION, protoSeqId);
+  } else {
+    prot.setOutput(&queue, objSize);
+  }
   obj.write(&prot);
   prot.writeMessageEnd();
   return queue.move();
 }
 
-template <typename ProtOut>
+template <typename ProtOut, bool includeEnvelope = true>
 std::unique_ptr<folly::IOBuf> serializeErrorProtocol(
     const TApplicationException& obj,
     const std::string& fname,
     int32_t protoSeqId) {
   ProtOut prot;
-  size_t bufSize = obj.serializedSizeZC(&prot);
-  bufSize += prot.serializedMessageSize(fname);
   folly::IOBufQueue queue;
-  prot.setOutput(&queue, bufSize);
-  prot.writeMessageBegin(fname, apache::thrift::T_EXCEPTION, protoSeqId);
+  std::size_t objSize = obj.serializedSizeZC(&prot);
+  if /*constexpr*/ (includeEnvelope) {
+    prot.setOutput(&queue, objSize + prot.serializedMessageSize(fname));
+    prot.writeMessageBegin(fname, MessageType::T_EXCEPTION, protoSeqId);
+  } else {
+    prot.setOutput(&queue, objSize);
+  }
   obj.write(&prot);
   prot.writeMessageEnd();
   return queue.move();
 }
 
-std::unique_ptr<folly::IOBuf>
-serializeError(int protId, const TApplicationException& obj, folly::IOBuf* buf);
+template <bool includeEnvelope = true>
+std::unique_ptr<folly::IOBuf> serializeError(
+    int protId, const TApplicationException& obj, folly::IOBuf* buf) {
+  switch (protId) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL: {
+      return serializeErrorProtocol<
+          BinaryProtocolReader,
+          BinaryProtocolWriter,
+          includeEnvelope>(obj, buf);
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL: {
+      return serializeErrorProtocol<
+          CompactProtocolReader,
+          CompactProtocolWriter,
+          includeEnvelope>(obj, buf);
+    }
+    default: {
+      LOG(ERROR) << "Invalid protocol from client";
+    }
+  }
 
+  return nullptr;
+}
+
+template <bool includeEnvelope = true>
 std::unique_ptr<folly::IOBuf> serializeError(
     int protId,
     const TApplicationException& obj,
     const std::string& fname,
-    int32_t protoSeqId);
+    int32_t protoSeqId) {
+  switch (protId) {
+    case apache::thrift::protocol::T_BINARY_PROTOCOL: {
+      return serializeErrorProtocol<BinaryProtocolWriter, includeEnvelope>(
+          obj, fname, protoSeqId);
+    }
+    case apache::thrift::protocol::T_COMPACT_PROTOCOL: {
+      return serializeErrorProtocol<CompactProtocolWriter, includeEnvelope>(
+          obj, fname, protoSeqId);
+    }
+    default: {
+      LOG(ERROR) << "Invalid protocol from client";
+    }
+  }
+
+  return nullptr;
+}
+
+// For places where we can't currently invoke the templated version directly,
+inline std::unique_ptr<folly::IOBuf> serializeErrorWithEnvelope(
+    int protId,
+    const TApplicationException& obj,
+    const std::string& fname,
+    int32_t protoSeqId) {
+  return serializeError<true>(protId, obj, fname, protoSeqId);
+}
+
+inline std::unique_ptr<folly::IOBuf> serializeErrorWithoutEnvelope(
+    int protId,
+    const TApplicationException& obj,
+    const std::string& fname,
+    int32_t protoSeqId) {
+  return serializeError<false>(protId, obj, fname, protoSeqId);
+}
 
 // serialize TApplicationException without a protocol message envelop
 std::unique_ptr<folly::IOBuf> serializeErrorStruct(
-    protocol::PROTOCOL_TYPES protId,
-    const TApplicationException& obj);
+    protocol::PROTOCOL_TYPES protId, const TApplicationException& obj);
 
 } // namespace thrift
 } // namespace apache

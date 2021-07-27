@@ -23,21 +23,20 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyStructTypeDef", builder=MyStructTypeDef.Builder.class)
-public final class MyStructTypeDef {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="MyStructTypeDef", builder=MyStructTypeDef.Builder.class)
+public final class MyStructTypeDef implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyStructTypeDef(
-        @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
-        @ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE) final long myLongTypeDef,
-        @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE) final String myStringField,
-        @ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE) final String myStringTypedef,
-        @ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE) final Map<Short, String> myMapField,
-        @ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE) final Map<Short, String> myMapTypedef,
-        @ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE) final List<Double> myListField,
-        @ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE) final List<Double> myListTypedef,
-        @ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE) final Map<Short, List<List<Double>>> myMapListOfTypeDef
+        @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE) final long myLongField,
+        @com.facebook.swift.codec.ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE) final long myLongTypeDef,
+        @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE) final String myStringField,
+        @com.facebook.swift.codec.ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE) final String myStringTypedef,
+        @com.facebook.swift.codec.ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE) final Map<Short, String> myMapField,
+        @com.facebook.swift.codec.ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE) final Map<Short, String> myMapTypedef,
+        @com.facebook.swift.codec.ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE) final List<Double> myListField,
+        @com.facebook.swift.codec.ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE) final List<Double> myListTypedef,
+        @com.facebook.swift.codec.ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE) final Map<Short, List<List<Double>>> myMapListOfTypeDef
     ) {
         this.myLongField = myLongField;
         this.myLongTypeDef = myLongTypeDef;
@@ -64,7 +63,6 @@ public final class MyStructTypeDef {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long myLongField = 0L;
         private long myLongTypeDef = 0L;
@@ -76,7 +74,7 @@ public final class MyStructTypeDef {
         private List<Double> myListTypedef = null;
         private Map<Short, List<List<Double>>> myMapListOfTypeDef = null;
     
-        @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
         public Builder setMyLongField(long myLongField) {
             this.myLongField = myLongField;
             return this;
@@ -84,7 +82,7 @@ public final class MyStructTypeDef {
     
         public long getMyLongField() { return myLongField; }
     
-            @ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)
         public Builder setMyLongTypeDef(long myLongTypeDef) {
             this.myLongTypeDef = myLongTypeDef;
             return this;
@@ -92,7 +90,7 @@ public final class MyStructTypeDef {
     
         public long getMyLongTypeDef() { return myLongTypeDef; }
     
-            @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
         public Builder setMyStringField(String myStringField) {
             this.myStringField = myStringField;
             return this;
@@ -100,7 +98,7 @@ public final class MyStructTypeDef {
     
         public String getMyStringField() { return myStringField; }
     
-            @ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE)
         public Builder setMyStringTypedef(String myStringTypedef) {
             this.myStringTypedef = myStringTypedef;
             return this;
@@ -108,7 +106,7 @@ public final class MyStructTypeDef {
     
         public String getMyStringTypedef() { return myStringTypedef; }
     
-            @ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE)
         public Builder setMyMapField(Map<Short, String> myMapField) {
             this.myMapField = myMapField;
             return this;
@@ -116,7 +114,7 @@ public final class MyStructTypeDef {
     
         public Map<Short, String> getMyMapField() { return myMapField; }
     
-            @ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE)
         public Builder setMyMapTypedef(Map<Short, String> myMapTypedef) {
             this.myMapTypedef = myMapTypedef;
             return this;
@@ -124,7 +122,7 @@ public final class MyStructTypeDef {
     
         public Map<Short, String> getMyMapTypedef() { return myMapTypedef; }
     
-            @ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE)
         public Builder setMyListField(List<Double> myListField) {
             this.myListField = myListField;
             return this;
@@ -132,7 +130,7 @@ public final class MyStructTypeDef {
     
         public List<Double> getMyListField() { return myListField; }
     
-            @ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE)
         public Builder setMyListTypedef(List<Double> myListTypedef) {
             this.myListTypedef = myListTypedef;
             return this;
@@ -140,7 +138,7 @@ public final class MyStructTypeDef {
     
         public List<Double> getMyListTypedef() { return myListTypedef; }
     
-            @ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE)
         public Builder setMyMapListOfTypeDef(Map<Short, List<List<Double>>> myMapListOfTypeDef) {
             this.myMapListOfTypeDef = myMapListOfTypeDef;
             return this;
@@ -174,7 +172,6 @@ public final class MyStructTypeDef {
                 this.myListTypedef,
                 this.myMapListOfTypeDef
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -230,94 +227,40 @@ public final class MyStructTypeDef {
       FIELD_METADATA.put(9, MY_MAP_LIST_OF_TYPE_DEF_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myLongField", requiredness=Requiredness.NONE)
     public long getMyLongField() { return myLongField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyLongField() {
-        return __isset_bit_vector.get(_MYLONGFIELD);
-    }
     
     
-    @ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="myLongTypeDef", requiredness=Requiredness.NONE)
     public long getMyLongTypeDef() { return myLongTypeDef; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyLongTypeDef() {
-        return __isset_bit_vector.get(_MYLONGTYPEDEF);
-    }
     
     
-    @ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="myStringField", requiredness=Requiredness.NONE)
     public String getMyStringField() { return myStringField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyStringField() {
-        return this.myStringField != null;
-    }
     
     
-    @ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="myStringTypedef", requiredness=Requiredness.NONE)
     public String getMyStringTypedef() { return myStringTypedef; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyStringTypedef() {
-        return this.myStringTypedef != null;
-    }
     
     
-    @ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="myMapField", requiredness=Requiredness.NONE)
     public Map<Short, String> getMyMapField() { return myMapField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyMapField() {
-        return this.myMapField != null;
-    }
     
     
-    @ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=6, name="myMapTypedef", requiredness=Requiredness.NONE)
     public Map<Short, String> getMyMapTypedef() { return myMapTypedef; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyMapTypedef() {
-        return this.myMapTypedef != null;
-    }
     
     
-    @ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=7, name="myListField", requiredness=Requiredness.NONE)
     public List<Double> getMyListField() { return myListField; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyListField() {
-        return this.myListField != null;
-    }
     
     
-    @ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=8, name="myListTypedef", requiredness=Requiredness.NONE)
     public List<Double> getMyListTypedef() { return myListTypedef; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyListTypedef() {
-        return this.myListTypedef != null;
-    }
     
     
-    @ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=9, name="myMapListOfTypeDef", requiredness=Requiredness.NONE)
     public Map<Short, List<List<Double>>> getMyMapListOfTypeDef() { return myMapListOfTypeDef; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMyMapListOfTypeDef() {
-        return this.myMapListOfTypeDef != null;
-    }
     
     @java.lang.Override
     public String toString() {
@@ -373,6 +316,10 @@ public final class MyStructTypeDef {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<MyStructTypeDef> asReader() {
+      return MyStructTypeDef::read0;
+    }
     
     public static MyStructTypeDef read0(TProtocol oprot) throws TException {
       TField __field;
@@ -628,4 +575,11 @@ public final class MyStructTypeDef {
       oprot.writeStructEnd();
     }
     
+    private static class _MyStructTypeDefLazy {
+        private static final MyStructTypeDef _DEFAULT = new MyStructTypeDef.Builder().build();
+    }
+    
+    public static MyStructTypeDef defaultInstance() {
+        return  _MyStructTypeDefLazy._DEFAULT;
+    }
 }

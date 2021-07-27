@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include <future>
+#include <atomic>
 
 #include <folly/executors/IOExecutor.h>
 #include <folly/io/async/EventBaseLocal.h>
@@ -38,11 +38,11 @@ class PooledRequestChannel : public RequestChannel {
   static std::
       unique_ptr<PooledRequestChannel, folly::DelayedDestruction::Destructor>
       newSyncChannel(
-          std::weak_ptr<folly::IOExecutor> executor,
-          ImplCreator implCreator) {
-    return {new PooledRequestChannel(
-                nullptr, std::move(executor), std::move(implCreator)),
-            {}};
+          std::weak_ptr<folly::IOExecutor> executor, ImplCreator implCreator) {
+    return {
+        new PooledRequestChannel(
+            nullptr, std::move(executor), std::move(implCreator)),
+        {}};
   }
 
   static std::
@@ -51,35 +51,36 @@ class PooledRequestChannel : public RequestChannel {
           folly::Executor* callbackExecutor,
           std::weak_ptr<folly::IOExecutor> executor,
           ImplCreator implCreator) {
-    return {new PooledRequestChannel(
-                callbackExecutor, std::move(executor), std::move(implCreator)),
-            {}};
+    return {
+        new PooledRequestChannel(
+            callbackExecutor, std::move(executor), std::move(implCreator)),
+        {}};
   }
 
   void sendRequestResponse(
       const RpcOptions& options,
-      folly::StringPiece,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestNoResponse(
       const RpcOptions& options,
-      folly::StringPiece,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       RequestClientCallback::Ptr cob) override;
 
   void sendRequestStream(
       const RpcOptions& options,
-      folly::StringPiece,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       StreamClientCallback* cob) override;
 
   void sendRequestSink(
       const RpcOptions& options,
-      folly::StringPiece,
+      MethodMetadata&& methodMetadata,
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* cob) override;
@@ -93,9 +94,7 @@ class PooledRequestChannel : public RequestChannel {
     LOG(FATAL) << "Not supported";
   }
 
-  folly::EventBase* getEventBase() const override {
-    return nullptr;
-  }
+  folly::EventBase* getEventBase() const override { return nullptr; }
 
   uint16_t getProtocolId() override;
 
@@ -103,7 +102,7 @@ class PooledRequestChannel : public RequestChannel {
   void terminateInteraction(InteractionId id) override;
 
   // may be called from any thread
-  InteractionId createInteraction(folly::StringPiece name) override;
+  InteractionId createInteraction(ManagedStringView&& name) override;
 
  protected:
   template <typename SendFunc>
@@ -117,7 +116,7 @@ class PooledRequestChannel : public RequestChannel {
       : implCreator_(std::move(implCreator)),
         callbackExecutor_(callbackExecutor),
         executor_(std::move(executor)),
-        impl_(std::make_shared<folly::EventBaseLocal<Impl>>()) {}
+        impl_(std::make_shared<folly::EventBaseLocal<ImplPtr>>()) {}
 
   Impl& impl(folly::EventBase& evb);
 
@@ -128,10 +127,9 @@ class PooledRequestChannel : public RequestChannel {
   folly::Executor* callbackExecutor_{nullptr};
   std::weak_ptr<folly::IOExecutor> executor_;
 
-  std::shared_ptr<folly::EventBaseLocal<Impl>> impl_;
+  std::shared_ptr<folly::EventBaseLocal<ImplPtr>> impl_;
 
-  folly::once_flag protocolIdInitFlag_;
-  uint16_t protocolId_;
+  std::atomic<uint16_t> protocolId_{0};
 };
 } // namespace thrift
 } // namespace apache

@@ -43,6 +43,7 @@
 
 #include <folly/Traits.h>
 
+#include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/reflection/internal/pretty_print-inl-pre.h>
 
 namespace apache {
@@ -57,17 +58,30 @@ namespace thrift {
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
+template <typename TC, typename OutputStream, typename T>
+void pretty_print(
+    OutputStream&& out,
+    T&& what,
+    std::string indentation = "  ",
+    std::string margin = std::string()) {
+  using impl = apache::thrift::detail::pretty_print_impl<TC>;
+  auto indenter = make_indenter(out, std::move(indentation), std::move(margin));
+  impl::print(indenter, std::forward<T>(what));
+}
 template <typename OutputStream, typename T>
 void pretty_print(
     OutputStream&& out,
     T&& what,
     std::string indentation = "  ",
     std::string margin = std::string()) {
-  using impl = apache::thrift::detail::pretty_print_impl<
-      reflect_type_class<folly::remove_cvref_t<T>>>;
-
-  auto indenter = make_indenter(out, std::move(indentation), std::move(margin));
-  impl::print(indenter, std::forward<T>(what));
+  using TV = folly::remove_cvref_t<T>;
+  using TC = type_class_of_thrift_class_enum_t<TV>;
+  static_assert(!std::is_void_v<TC>);
+  pretty_print<TC>(
+      std::forward<OutputStream>(out),
+      std::forward<T>(what),
+      std::move(indentation),
+      std::move(margin));
 }
 
 /**
@@ -78,6 +92,12 @@ void pretty_print(
  *
  * @author: Marcelo Juchem <marcelo@fb.com>
  */
+template <typename TC, typename... Args>
+std::string pretty_string(Args&&... args) {
+  std::ostringstream out;
+  pretty_print<TC>(out, std::forward<Args>(args)...);
+  return out.str();
+}
 template <typename... Args>
 std::string pretty_string(Args&&... args) {
   std::ostringstream out;

@@ -12,16 +12,37 @@
 namespace apache {
 namespace thrift {
 
+const std::array<::cpp2::Metasyntactic, 4> TEnumDataStorage<::cpp2::Metasyntactic>::values = {{
+  type::FOO,
+  type::BAR,
+  type::BAZ,
+  type::BAX,
+}};
+const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::Metasyntactic>::names = {{
+  "FOO",
+  "BAR",
+  "BAZ",
+  "BAX",
+}};
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::Metasyntactic>::size;
-constexpr const std::array<::cpp2::Metasyntactic, 4> TEnumDataStorage<::cpp2::Metasyntactic>::values;
-constexpr const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::Metasyntactic>::names;
-
-
-constexpr const std::size_t TStructDataStorage<::cpp2::SomeStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SomeStruct>::fields_size> TStructDataStorage<::cpp2::SomeStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::SomeStruct>::fields_size> TStructDataStorage<::cpp2::SomeStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SomeStruct>::fields_size> TStructDataStorage<::cpp2::SomeStruct>::fields_types;
+const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::SomeStruct>::fields_names = {{
+  "reasonable",
+  "fine",
+  "questionable",
+  "tags",
+}};
+const std::array<int16_t, 4> TStructDataStorage<::cpp2::SomeStruct>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+}};
+const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::SomeStruct>::fields_types = {{
+  TType::T_I32,
+  TType::T_I32,
+  TType::T_I32,
+  TType::T_SET,
+}};
 
 } // namespace thrift
 } // namespace apache

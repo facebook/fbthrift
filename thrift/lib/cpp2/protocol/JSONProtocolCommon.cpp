@@ -34,18 +34,14 @@ class WrappedIOBufQueueAppender {
     length_ += n;
   }
 
-  void push_back(const char c) {
-    append(&c, 1);
-  }
+  void push_back(const char c) { append(&c, 1); }
 
   WrappedIOBufQueueAppender& operator+=(const char c) {
     push_back(c);
     return *this;
   }
 
-  size_t size() const {
-    return length_;
-  }
+  size_t size() const { return length_; }
 
  private:
   folly::io::QueueAppender& out_;
@@ -94,6 +90,16 @@ uint32_t JSONProtocolWriterCommon::writeJSONDoubleInternal(double dbl) {
   return appender.size();
 }
 
+uint32_t JSONProtocolWriterCommon::writeJSONDoubleInternal(float flt) {
+  WrappedIOBufQueueAppender appender(out_);
+  folly::toAppend(
+      flt,
+      &appender,
+      double_conversion::DoubleToStringConverter::SHORTEST_SINGLE,
+      0);
+  return appender.size();
+}
+
 uint32_t JSONProtocolWriterCommon::writeJSONIntInternal(int64_t num) {
   WrappedIOBufQueueAppender appender(out_);
   if (!context.empty() && context.back().type == ContextType::MAP &&
@@ -121,8 +127,7 @@ static inline folly::StringPiece sp(char const& ch) {
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwUnrecognizableAsIntegral(
-    folly::StringPiece s,
-    folly::StringPiece typeName) {
+    folly::StringPiece s, folly::StringPiece typeName) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA,
       folly::to<std::string>(s, " is not a valid ", typeName));
@@ -135,8 +140,7 @@ static inline folly::StringPiece sp(char const& ch) {
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwUnrecognizableAsString(
-    std::string const& s,
-    std::exception const& e) {
+    std::string const& s, std::exception const& e) {
   throw TProtocolException(
       TProtocolException::INVALID_DATA,
       s + " is not a valid JSON string: " + e.what());
@@ -156,8 +160,7 @@ static inline folly::StringPiece sp(char const& ch) {
 }
 
 [[noreturn]] void JSONProtocolReaderCommon::throwUnexpectedChar(
-    char const ch,
-    char const expected) {
+    char const ch, char const expected) {
   auto const msg = fmt::format(
       "expected '{0}' (hex {0:#02x}), read '{1}' (hex {1:#02x})", expected, ch);
   throw TProtocolException(TProtocolException::INVALID_DATA, msg);

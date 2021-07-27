@@ -17,6 +17,7 @@
 #include <exception>
 
 #include <folly/experimental/coro/BlockingWait.h>
+#include <folly/experimental/coro/Coroutine.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
 #include <folly/portability/GTest.h>
 
@@ -44,8 +45,7 @@ static int voidReturnValue;
 class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
  public:
   void computeSumNoCoro(
-      SumResponse& response,
-      std::unique_ptr<SumRequest> request) override {
+      SumResponse& response, std::unique_ptr<SumRequest> request) override {
     *response.sum_ref() = *request->x_ref() + *request->y_ref();
   }
 
@@ -56,8 +56,8 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
     co_return response;
   }
 
-  folly::coro::Task<int32_t> co_computeSumPrimitive(int32_t x, int32_t y)
-      override {
+  folly::coro::Task<int32_t> co_computeSumPrimitive(
+      int32_t x, int32_t y) override {
     co_return x + y;
   }
 
@@ -68,13 +68,13 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
 
   folly::coro::Task<std::unique_ptr<SumResponse>> co_computeSumThrows(
       std::unique_ptr<SumRequest> /* request */) override {
-    co_await std::experimental::suspend_never{};
+    co_await folly::coro::suspend_never{};
     throw std::runtime_error("Not implemented");
   }
 
-  folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(int32_t, int32_t)
-      override {
-    co_await std::experimental::suspend_never{};
+  folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(
+      int32_t, int32_t) override {
+    co_await folly::coro::suspend_never{};
     throw std::runtime_error("Not implemented");
   }
 
@@ -117,8 +117,7 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
   }
 
   folly::coro::Task<int32_t> co_computeSumThrowsUserExPrimitive(
-      int32_t,
-      int32_t) override {
+      int32_t, int32_t) override {
     throw Ex();
   }
 
@@ -130,8 +129,7 @@ class CoroutineServiceHandlerCoro : virtual public CoroutineSvIf {
 class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
  public:
   void computeSumNoCoro(
-      SumResponse& response,
-      std::unique_ptr<SumRequest> request) override {
+      SumResponse& response, std::unique_ptr<SumRequest> request) override {
     *response.sum_ref() = *request->x_ref() + *request->y_ref();
   }
 
@@ -142,13 +140,13 @@ class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
     return folly::makeFuture(std::move(response));
   }
 
-  folly::Future<int32_t> future_computeSumPrimitive(int32_t x, int32_t y)
-      override {
+  folly::Future<int32_t> future_computeSumPrimitive(
+      int32_t x, int32_t y) override {
     return folly::makeFuture(x + y);
   }
 
-  folly::Future<folly::Unit> future_computeSumVoid(int32_t x, int32_t y)
-      override {
+  folly::Future<folly::Unit> future_computeSumVoid(
+      int32_t x, int32_t y) override {
     voidReturnValue = x + y;
     return folly::makeFuture(folly::Unit{});
   }
@@ -160,8 +158,8 @@ class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
             folly::in_place, std::runtime_error("Not implemented")));
   }
 
-  folly::Future<int32_t> future_computeSumThrowsPrimitive(int32_t, int32_t)
-      override {
+  folly::Future<int32_t> future_computeSumThrowsPrimitive(
+      int32_t, int32_t) override {
     return folly::makeFuture<int32_t>(folly::exception_wrapper(
         folly::in_place, std::runtime_error("Not implemented")));
   }
@@ -199,8 +197,7 @@ class CoroutineServiceHandlerFuture : virtual public CoroutineSvIf {
   }
 
   folly::Future<int32_t> future_computeSumThrowsUserExPrimitive(
-      int32_t,
-      int32_t) override {
+      int32_t, int32_t) override {
     return folly::makeFuture<int32_t>(
         folly::exception_wrapper(folly::in_place, Ex()));
   }
@@ -515,7 +512,7 @@ TEST_F(CoroutineClientTest, SumUnimplementedCoroClient) {
       .via(&eventBase_)
       .then([&](folly::Try<SumResponse> response) {
         EXPECT_THROW(
-            response.throwIfFailed(), apache::thrift::TApplicationException);
+            response.throwUnlessValue(), apache::thrift::TApplicationException);
       })
       .getVia(&eventBase_);
 }
@@ -526,7 +523,7 @@ TEST_F(CoroutineClientTest, SumUnimplementedPrimitiveCoroClient) {
       .via(&eventBase_)
       .then([&](folly::Try<int32_t> response) {
         EXPECT_THROW(
-            response.throwIfFailed(), apache::thrift::TApplicationException);
+            response.throwUnlessValue(), apache::thrift::TApplicationException);
       })
       .getVia(&eventBase_);
 }
@@ -539,7 +536,7 @@ TEST_F(CoroutineClientTest, SumThrowsCoroClient) {
       .semi()
       .via(&eventBase_)
       .then([&](folly::Try<SumResponse> response) {
-        EXPECT_THROW(response.throwIfFailed(), std::exception);
+        EXPECT_THROW(response.throwUnlessValue(), std::exception);
       })
       .getVia(&eventBase_);
 }
@@ -549,7 +546,7 @@ TEST_F(CoroutineClientTest, SumThrowsPrimitiveCoroClient) {
       .semi()
       .via(&eventBase_)
       .then([&](folly::Try<int32_t> response) {
-        EXPECT_THROW(response.throwIfFailed(), std::exception);
+        EXPECT_THROW(response.throwUnlessValue(), std::exception);
       })
       .getVia(&eventBase_);
 }
@@ -592,6 +589,49 @@ TEST_F(CoroutineClientTest, takesRequestParamsCoroClient) {
       .getVia(&eventBase_);
 }
 
+TEST_F(CoroutineClientTest, rpcOptionsCoroClient) {
+  apache::thrift::RpcOptions opts;
+  client_->co_computeSumPrimitive(opts, 12, 408)
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) { EXPECT_EQ(420, *result); })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, rpcOptionsCancellableCoroClient) {
+  folly::CancellationSource source;
+  apache::thrift::RpcOptions opts;
+  folly::coro::co_withCancellation(
+      source.getToken(), client_->co_computeSumPrimitive(opts, 12, 408))
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) { EXPECT_EQ(420, *result); })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, cancellableCoroClient) {
+  folly::CancellationSource source;
+  folly::coro::co_withCancellation(
+      source.getToken(), client_->co_computeSumPrimitive(12, 408))
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) { EXPECT_EQ(420, *result); })
+      .getVia(&eventBase_);
+}
+
+TEST_F(CoroutineClientTest, cancelCoroClient) {
+  folly::CancellationSource source;
+  source.requestCancellation();
+  folly::coro::co_withCancellation(
+      source.getToken(), client_->co_computeSumPrimitive(12, 408))
+      .semi()
+      .via(&eventBase_)
+      .then([&](folly::Try<int32_t> result) {
+        EXPECT_TRUE(result.hasException<folly::OperationCancelled>());
+      })
+      .getVia(&eventBase_);
+}
+
 TEST(CoroutineExceptionTest, completesHandlerCallback) {
   class CoroutineServiceHandlerThrowing : virtual public CoroutineSvIf {
    public:
@@ -600,8 +640,8 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
       throw std::runtime_error("Not implemented");
     }
 
-    folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(int32_t, int32_t)
-        override {
+    folly::coro::Task<int32_t> co_computeSumThrowsPrimitive(
+        int32_t, int32_t) override {
       throw std::runtime_error("Not implemented");
     }
 
@@ -613,8 +653,9 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
   CoroutineServiceHandlerThrowing handler;
 
   folly::ScopedEventBaseThread ebt;
-  auto tm = ThreadManager::newSimpleThreadManager(1, true);
+  auto tm = ThreadManager::newSimpleThreadManager(1);
 
+  apache::thrift::Cpp2RequestContext cpp2reqCtx(nullptr);
   auto cb = std::make_unique<
       apache::thrift::HandlerCallback<std::unique_ptr<SumResponse>>>(
       nullptr,
@@ -624,7 +665,7 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
       0,
       ebt.getEventBase(),
       tm.get(),
-      nullptr);
+      &cpp2reqCtx);
   handler.async_tm_computeSumThrows(std::move(cb), nullptr);
 
   auto cb2 = std::make_unique<apache::thrift::HandlerCallback<int32_t>>(
@@ -635,11 +676,11 @@ TEST(CoroutineExceptionTest, completesHandlerCallback) {
       0,
       ebt.getEventBase(),
       tm.get(),
-      nullptr);
+      &cpp2reqCtx);
   handler.async_tm_computeSumThrowsPrimitive(std::move(cb2), 0, 0);
 
   auto cb3 = std::make_unique<apache::thrift::HandlerCallbackBase>(
-      nullptr, nullptr, nullptr, ebt.getEventBase(), tm.get(), nullptr);
+      nullptr, nullptr, nullptr, ebt.getEventBase(), tm.get(), &cpp2reqCtx);
   handler.async_tm_onewayRequest(std::move(cb3), 0);
 }
 
@@ -672,11 +713,11 @@ TEST(CoroutineHeaderTest, customHeaderTest) {
   SumRequest sumRequest;
   sumRequest.x_ref() = 42;
   sumRequest.y_ref() = 123;
-  auto result = folly::coro::blockingWait(
-      client->header_co_computeSum(rpcOptions, sumRequest));
-  auto ptr = folly::get_ptr(result.second->getHeaders(), "header_from_server");
+  auto result =
+      folly::coro::blockingWait(client->co_computeSum(rpcOptions, sumRequest));
+  auto ptr = folly::get_ptr(rpcOptions.getReadHeaders(), "header_from_server");
   EXPECT_NE(nullptr, ptr);
   EXPECT_EQ("1", *ptr);
-  EXPECT_EQ(165, *result.first.sum_ref());
+  EXPECT_EQ(165, *result.sum_ref());
 }
 #endif

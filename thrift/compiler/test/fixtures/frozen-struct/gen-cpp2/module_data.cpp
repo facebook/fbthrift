@@ -12,20 +12,50 @@
 namespace apache {
 namespace thrift {
 
+const std::array<::some::ns::EnumB, 1> TEnumDataStorage<::some::ns::EnumB>::values = {{
+  type::EMPTY,
+}};
+const std::array<folly::StringPiece, 1> TEnumDataStorage<::some::ns::EnumB>::names = {{
+  "EMPTY",
+}};
 
-constexpr const std::size_t TEnumDataStorage<::some::ns::EnumB>::size;
-constexpr const std::array<::some::ns::EnumB, 1> TEnumDataStorage<::some::ns::EnumB>::values;
-constexpr const std::array<folly::StringPiece, 1> TEnumDataStorage<::some::ns::EnumB>::names;
+const std::array<folly::StringPiece, 6> TStructDataStorage<::some::ns::ModuleA>::fields_names = {{
+  "i32Field",
+  "strField",
+  "listField",
+  "mapField",
+  "inclAField",
+  "inclBField",
+}};
+const std::array<int16_t, 6> TStructDataStorage<::some::ns::ModuleA>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+}};
+const std::array<protocol::TType, 6> TStructDataStorage<::some::ns::ModuleA>::fields_types = {{
+  TType::T_I32,
+  TType::T_STRING,
+  TType::T_LIST,
+  TType::T_MAP,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
 
-
-constexpr const std::size_t TStructDataStorage<::some::ns::ModuleA>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::ns::ModuleA>::fields_size> TStructDataStorage<::some::ns::ModuleA>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::some::ns::ModuleA>::fields_size> TStructDataStorage<::some::ns::ModuleA>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::ns::ModuleA>::fields_size> TStructDataStorage<::some::ns::ModuleA>::fields_types;
-constexpr const std::size_t TStructDataStorage<::some::ns::ModuleB>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::some::ns::ModuleB>::fields_size> TStructDataStorage<::some::ns::ModuleB>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::some::ns::ModuleB>::fields_size> TStructDataStorage<::some::ns::ModuleB>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::some::ns::ModuleB>::fields_size> TStructDataStorage<::some::ns::ModuleB>::fields_types;
+const std::array<folly::StringPiece, 2> TStructDataStorage<::some::ns::ModuleB>::fields_names = {{
+  "i32Field",
+  "inclEnumB",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::some::ns::ModuleB>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::some::ns::ModuleB>::fields_types = {{
+  TType::T_I32,
+  TType::T_I32,
+}};
 
 } // namespace thrift
 } // namespace apache

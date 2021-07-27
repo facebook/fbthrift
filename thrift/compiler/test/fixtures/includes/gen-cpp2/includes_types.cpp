@@ -35,18 +35,20 @@ void TccStructTraits<::cpp2::Included>::translateFieldName(
 
 namespace cpp2 {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Included::Included(apache::thrift::FragileConstructor, int64_t MyIntField__arg,  ::cpp2::Foo MyTransitiveField__arg) :
+Included::Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::cpp2::Foo MyTransitiveField__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyTransitiveField(std::move(MyTransitiveField__arg)) {
   __isset.MyIntField = true;
   __isset.MyTransitiveField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Included::__clear() {
   // clear all fields
-  MyIntField = 0LL;
-  MyTransitiveField.__clear();
+  this->MyIntField = 0LL;
+  this->MyTransitiveField.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -56,10 +58,10 @@ bool Included::operator==(const Included& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
     return false;
   }
-  if (!(lhs.MyTransitiveField == rhs.MyTransitiveField)) {
+  if (!(lhs.MyTransitiveField_ref() == rhs.MyTransitiveField_ref())) {
     return false;
   }
   return true;
@@ -69,20 +71,20 @@ bool Included::operator<(const Included& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.MyIntField == rhs.MyIntField)) {
-    return lhs.MyIntField < rhs.MyIntField;
+  if (!(lhs.MyIntField_ref() == rhs.MyIntField_ref())) {
+    return lhs.MyIntField_ref() < rhs.MyIntField_ref();
   }
-  if (!(lhs.MyTransitiveField == rhs.MyTransitiveField)) {
-    return lhs.MyTransitiveField < rhs.MyTransitiveField;
+  if (!(lhs.MyTransitiveField_ref() == rhs.MyTransitiveField_ref())) {
+    return lhs.MyTransitiveField_ref() < rhs.MyTransitiveField_ref();
   }
   return false;
 }
 
-const  ::cpp2::Foo& Included::get_MyTransitiveField() const& {
+const ::cpp2::Foo& Included::get_MyTransitiveField() const& {
   return MyTransitiveField;
 }
 
- ::cpp2::Foo Included::get_MyTransitiveField() && {
+::cpp2::Foo Included::get_MyTransitiveField() && {
   return std::move(MyTransitiveField);
 }
 
@@ -109,14 +111,14 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         Included,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Foo>,
+        ::cpp2::Foo>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         Included,
         ::apache::thrift::type_class::structure,
-         ::cpp2::Foo>,
+        ::cpp2::Foo>,
     "inconsistent use of nimble option");
 
 } // cpp2

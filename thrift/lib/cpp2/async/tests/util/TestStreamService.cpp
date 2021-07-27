@@ -20,43 +20,30 @@ namespace testutil {
 namespace testservice {
 
 apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::range(
-    int32_t from,
-    int32_t to) {
-  return folly::coro::
-      co_invoke([=]() -> folly::coro::AsyncGenerator<int32_t&&> {
-        for (int i = from; i <= to; i++) {
-          co_yield std::move(i);
-        }
-      });
+    int32_t from, int32_t to) {
+  for (int i = from; i <= to; i++) {
+    co_yield std::move(i);
+  }
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::rangeThrow(
-    int32_t from,
-    int32_t to) {
-  return folly::coro::
-      co_invoke([=]() -> folly::coro::AsyncGenerator<int32_t&&> {
-        for (int i = from; i <= to; i++) {
-          co_yield std::move(i);
-        }
-        throw std::runtime_error("I am a search bar");
-      });
+    int32_t from, int32_t to) {
+  for (int i = from; i <= to; i++) {
+    co_yield std::move(i);
+  }
+  throw std::runtime_error("I am a search bar");
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamGeneratorService::rangeThrowUDE(
-    int32_t from,
-    int32_t to) {
-  return folly::coro::
-      co_invoke([=]() -> folly::coro::AsyncGenerator<int32_t&&> {
-        for (int i = from; i <= to; i++) {
-          co_yield std::move(i);
-        }
-        throw UserDefinedException();
-      });
+    int32_t from, int32_t to) {
+  for (int i = from; i <= to; i++) {
+    co_yield std::move(i);
+  }
+  throw UserDefinedException();
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamPublisherService::range(
-    int32_t from,
-    int32_t to) {
+    int32_t from, int32_t to) {
   auto [stream, publisher] =
       apache::thrift::ServerStream<int32_t>::createPublisher([] {});
 
@@ -69,8 +56,7 @@ apache::thrift::ServerStream<int32_t> TestStreamPublisherService::range(
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrow(
-    int32_t from,
-    int32_t to) {
+    int32_t from, int32_t to) {
   auto [stream, publisher] =
       apache::thrift::ServerStream<int32_t>::createPublisher([] {});
 
@@ -83,8 +69,7 @@ apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrow(
 }
 
 apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrowUDE(
-    int32_t from,
-    int32_t to) {
+    int32_t from, int32_t to) {
   auto [stream, publisher] =
       apache::thrift::ServerStream<int32_t>::createPublisher([] {});
 
@@ -94,6 +79,40 @@ apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrowUDE(
   std::move(publisher).complete(UserDefinedException());
 
   return std::move(stream);
+}
+
+using Pair = apache::thrift::ServerStream<int32_t>::PayloadAndHeader;
+
+apache::thrift::ServerStream<int32_t>
+TestStreamGeneratorWithHeaderService::range(int32_t from, int32_t to) {
+  return folly::coro::co_invoke([=]() -> folly::coro::AsyncGenerator<Pair&&> {
+    for (int i = from; i <= to; i++) {
+      co_yield Pair{i, {{"val", std::to_string(i)}}};
+      co_yield Pair{std::nullopt, {{"val", std::to_string(i)}}};
+    }
+  });
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamGeneratorWithHeaderService::rangeThrow(int32_t from, int32_t to) {
+  return folly::coro::co_invoke([=]() -> folly::coro::AsyncGenerator<Pair&&> {
+    for (int i = from; i <= to; i++) {
+      co_yield Pair{i, {{"val", std::to_string(i)}}};
+      co_yield Pair{std::nullopt, {{"val", std::to_string(i)}}};
+    }
+    throw std::runtime_error("I am a search bar");
+  });
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamGeneratorWithHeaderService::rangeThrowUDE(int32_t from, int32_t to) {
+  return folly::coro::co_invoke([=]() -> folly::coro::AsyncGenerator<Pair&&> {
+    for (int i = from; i <= to; i++) {
+      co_yield Pair{i, {{"val", std::to_string(i)}}};
+      co_yield Pair{std::nullopt, {{"val", std::to_string(i)}}};
+    }
+    throw UserDefinedException();
+  });
 }
 
 } // namespace testservice

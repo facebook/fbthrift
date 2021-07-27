@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("NonCopyableUnion")
-public final class NonCopyableUnion {
+public final class NonCopyableUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("NonCopyableUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -56,7 +56,7 @@ public final class NonCopyableUnion {
     }
     
 
-    @ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="s", requiredness=Requiredness.NONE)
     public test.fixtures.complex_union.NonCopyableStruct getS() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a s element!");
@@ -127,10 +127,10 @@ public final class NonCopyableUnion {
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
       if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+         return;
       }
+      oprot.writeStructBegin(STRUCT_DESC);
       switch (this.id) {
       case _S: {
         oprot.writeFieldBegin(S_FIELD_DESC);
@@ -144,6 +144,11 @@ public final class NonCopyableUnion {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<NonCopyableUnion> asReader() {
+      return NonCopyableUnion::read0;
     }
     
     public static NonCopyableUnion read0(TProtocol oprot) throws TException {

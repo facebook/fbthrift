@@ -26,23 +26,14 @@ const string backslash = "\\";
 const string escaped_a = "\x61";
 
 const map<string, string> escapeChars = {
-  "apostrophe" : "'",
-  "quotationMark" : '"',
-  "backslash" : "\\",
-  "escaped_a" : "\x61",
+  "apostrophe": "'",
+  "quotationMark": '"',
+  "backslash": "\\",
+  "escaped_a": "\x61",
 };
 
-const map<string, i32> char2ascii = {
-  "'" : 39,
-  '"' : 34,
-  "\\" : 92,
-  "\x61" : 97,
-};
+const map<string, i32> char2ascii = {"'": 39, '"': 34, "\\": 92, "\x61": 97};
 
 const map<string, constants_include.Foo> str2struct = {
-  "foo": {
-    "bar": {
-      "baz": "qux",
-    },
-  }
-}
+  "foo": {"bar": {"baz": "qux"}},
+};

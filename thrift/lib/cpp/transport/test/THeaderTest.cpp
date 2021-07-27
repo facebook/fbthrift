@@ -17,10 +17,10 @@
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp/util/THttpParser.h>
 
+#include <memory>
 #include <folly/Random.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/IOBufQueue.h>
-#include <memory>
 
 #include <folly/portability/GTest.h>
 
@@ -47,7 +47,7 @@ TEST(THeaderTest, largetransform) {
   }
   buf->append(buf_size);
 
-  std::map<std::string, std::string> persistentHeaders;
+  THeader::StringToStringMap persistentHeaders;
   buf = header.addHeader(std::move(buf), persistentHeaders);
   buf_size = buf->computeChainDataLength();
   buf->gather(buf_size);
@@ -76,7 +76,7 @@ TEST(THeaderTest, http_clear_header) {
 
   size_t buf_size = 1000000;
   std::unique_ptr<IOBuf> buf(IOBuf::create(buf_size));
-  std::map<std::string, std::string> persistentHeaders;
+  THeader::StringToStringMap persistentHeaders;
   buf = header.addHeader(std::move(buf), persistentHeaders);
 
   EXPECT_TRUE(header.isWriteHeadersEmpty());
@@ -118,7 +118,7 @@ TEST(THeaderTest, explicitTimeoutAndPriority) {
   header.setClientTimeout(std::chrono::milliseconds(100));
   header.setClientQueueTimeout(std::chrono::milliseconds(200));
   header.setCallPriority(concurrency::PRIORITY::IMPORTANT);
-  std::map<std::string, std::string> headerMap;
+  THeader::StringToStringMap headerMap;
   headerMap[THeader::CLIENT_TIMEOUT_HEADER] = "10";
   headerMap[THeader::QUEUE_TIMEOUT_HEADER] = "20";
   headerMap[THeader::PRIORITY_HEADER] = "3";
@@ -130,7 +130,7 @@ TEST(THeaderTest, explicitTimeoutAndPriority) {
 
 TEST(THeaderTest, headerTimeoutAndPriority) {
   THeader header;
-  std::map<std::string, std::string> headerMap;
+  THeader::StringToStringMap headerMap;
   headerMap[THeader::CLIENT_TIMEOUT_HEADER] = "10";
   headerMap[THeader::QUEUE_TIMEOUT_HEADER] = "20";
   headerMap[THeader::PRIORITY_HEADER] = "3";
@@ -149,7 +149,7 @@ TEST(THeaderTest, defaultTimeoutAndPriority) {
 
 void testAsciiHeaderData(const std::string& data, const std::string& expected) {
   auto buf = folly::IOBuf::copyBuffer(data);
-  std::map<std::string, std::string> persistentHeaders;
+  THeader::StringToStringMap persistentHeaders;
   THeader header;
   std::unique_ptr<IOBufQueue> queue(new IOBufQueue);
   queue->append(std::move(buf));

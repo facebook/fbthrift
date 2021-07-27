@@ -28,17 +28,11 @@ class FakeClock {
   typedef std::chrono::duration<rep, period> duration;
   typedef std::chrono::time_point<FakeClock> time_point;
 
-  static void advance(duration const& d) noexcept {
-    now_us_ += d;
-  }
+  static void advance(duration const& d) noexcept { now_us_ += d; }
 
-  static void reset_to_epoch() noexcept {
-    now_us_ -= (now_us_ - time_point());
-  }
+  static void reset_to_epoch() noexcept { now_us_ -= (now_us_ - time_point()); }
 
-  static time_point now() noexcept {
-    return now_us_;
-  }
+  static time_point now() noexcept { return now_us_; }
 
   static constexpr bool is_steady = true;
 

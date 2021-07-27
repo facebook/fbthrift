@@ -42,7 +42,9 @@
 #include <folly/hash/Hash.h>
 #include <folly/lang/Bits.h>
 #include <folly/sorted_vector_types.h>
+#include <thrift/lib/cpp2/frozen/FixedSizeStringHash.h>
 #include <thrift/lib/cpp2/frozen/FrozenMacros.h>
+#include <thrift/lib/cpp2/frozen/HintTypes.h>
 #include <thrift/lib/cpp2/frozen/Traits.h>
 #include <thrift/lib/cpp2/frozen/schema/MemorySchema.h>
 #include <thrift/lib/thrift/gen-cpp2/frozen_types.h>
@@ -170,9 +172,7 @@ struct ViewPosition {
     return {start + f.offset, bitOffset + f.bitOffset};
   }
 
-  ViewPosition operator()(int64_t bytes) const {
-    return {start + bytes, 0};
-  }
+  ViewPosition operator()(int64_t bytes) const { return {start + bytes, 0}; }
 
   int64_t toBits() const noexcept {
     return reinterpret_cast<int64_t>(start) * 8 + bitOffset;
@@ -239,9 +239,7 @@ struct LayoutBase {
    * Indicates that this layout requires no storage, so saving and freezing may
    * be skipped
    */
-  bool empty() const {
-    return !size && !bits;
-  }
+  bool empty() const { return !size && !bits; }
 
   virtual ~LayoutBase() {}
 
@@ -364,9 +362,7 @@ struct Field final : public FieldBase {
   /**
    * Clears this subtree's layout, changing the layout to 0 bytes.
    */
-  void clear() override {
-    layout.clear();
-  }
+  void clear() override { layout.clear(); }
 
   /**
    * Populates the layout information for this field from the description of
@@ -426,25 +422,15 @@ class FieldView {
 
   explicit FieldView(T value) : value_(value) {}
 
-  bool is_set() const noexcept {
-    return true;
-  }
+  bool is_set() const noexcept { return true; }
 
-  bool has_value() const noexcept {
-    return true;
-  }
+  bool has_value() const noexcept { return true; }
 
-  T value() const noexcept {
-    return value_;
-  }
+  T value() const noexcept { return value_; }
 
-  const T& operator*() const noexcept {
-    return value_;
-  }
+  const T& operator*() const noexcept { return value_; }
 
-  const T* operator->() const noexcept {
-    return &value_;
-  }
+  const T* operator->() const noexcept { return &value_; }
 
  private:
   T value_;
@@ -482,9 +468,7 @@ class ViewBase {
     return position_.start && !layout_->empty();
   }
 
-  ViewPosition getPosition() {
-    return position_;
-  }
+  ViewPosition getPosition() const { return position_; }
 
   /**
    * thaw this object back into its original, mutable representation.
@@ -567,9 +551,7 @@ class FieldCycleHolder {
  public:
   template <class T, class D>
   Field<T>* pushCycle(
-      std::unique_ptr<Field<T>, D>& owned,
-      int32_t key,
-      const char* name) {
+      std::unique_ptr<Field<T>, D>& owned, int32_t key, const char* name) {
     auto& slot = cyclicFields_[typeid(T)];
     if (slot.refCount++ == 0) {
       if (!owned) {
@@ -594,8 +576,8 @@ class FieldCycleHolder {
   }
 
   template <class T>
-  Field<T>*
-  pushCycle(std::shared_ptr<Field<T>>& owned, int32_t key, const char* name) {
+  Field<T>* pushCycle(
+      std::shared_ptr<Field<T>>& owned, int32_t key, const char* name) {
     auto& slot = cyclicFields_[typeid(T)];
     if (slot.refCount++ == 0) {
       if (!owned) {
@@ -689,8 +671,8 @@ class LayoutRoot : public FieldCycleHolder {
    * bound storage size estimate and indication of whether the layout changed.
    */
   template <class T>
-  static void
-  layout(const T& root, Layout<T>& layout, bool& layoutChanged, size_t& size) {
+  static void layout(
+      const T& root, Layout<T>& layout, bool& layoutChanged, size_t& size) {
     LayoutRoot layoutRoot;
     size_t resizes;
     size = layoutRoot.doLayout(root, layout, resizes);
@@ -747,7 +729,7 @@ class LayoutRoot : public FieldCycleHolder {
       LayoutPosition self,
       FieldPosition fieldPos,
       Field<folly::Optional<T>, Layout>& field,
-      apache::thrift::optional_field_ref<const T&> ref) {
+      optional_field_ref<const T&> ref) {
     return layoutField(
         self, fieldPos, field, ref ? folly::make_optional(*ref) : folly::none);
   }
@@ -812,7 +794,7 @@ class LayoutRoot : public FieldCycleHolder {
  * LayoutException is thrown if freezing is attempted without a sufficient
  * layout
  */
-class LayoutException : public std::length_error {
+class FOLLY_EXPORT LayoutException : public std::length_error {
  public:
   LayoutException()
       : std::length_error("Existing layouts insufficient for this object") {}
@@ -823,11 +805,10 @@ class LayoutException : public std::length_error {
  * type specified in a schema. This may be relaxed by setting
  * 'schema.relaxTypeChecks'.
  */
-class LayoutTypeMismatchException : public std::logic_error {
+class FOLLY_EXPORT LayoutTypeMismatchException : public std::logic_error {
  public:
   LayoutTypeMismatchException(
-      const std::string& expected,
-      const std::string& actual)
+      const std::string& expected, const std::string& actual)
       : std::logic_error(
             "Layout for '" + expected + "' loaded from layout of '" + actual +
             "'") {}
@@ -861,9 +842,7 @@ class FreezeRoot {
    */
   template <class T, class Layout, class Arg>
   void freezeField(
-      FreezePosition self,
-      const Field<T, Layout>& field,
-      const Arg& value) {
+      FreezePosition self, const Field<T, Layout>& field, const Arg& value) {
     field.layout.freeze(*this, value, self(field.pos));
   }
 
@@ -871,7 +850,7 @@ class FreezeRoot {
   void freezeOptionalField(
       FreezePosition self,
       const Field<folly::Optional<T>, Layout>& field,
-      apache::thrift::optional_field_ref<const T&> ref) {
+      optional_field_ref<const T&> ref) {
     freezeField(self, field, ref ? folly::make_optional(*ref) : folly::none);
   }
 
@@ -929,9 +908,7 @@ class ByteRangeFreezer final : public FreezeRoot {
  public:
   template <class T>
   static typename Layout<T>::View freeze(
-      const Layout<T>& layout,
-      const T& root,
-      folly::MutableByteRange& write) {
+      const Layout<T>& layout, const T& root, folly::MutableByteRange& write) {
     ByteRangeFreezer freezer(write);
     auto view = freezer.doFreeze(layout, root);
     return view;
@@ -1058,13 +1035,22 @@ template <class T>
 void thawField(
     ViewPosition self,
     const Field<folly::Optional<T>>& f,
-    apache::thrift::optional_field_ref<T&> out) {
+    optional_field_ref<T&> ref) {
   folly::Optional<T> opt;
   f.layout.thaw(self(f.pos), opt);
   if (opt) {
-    out = opt.value();
+    ref = opt.value();
   } else {
-    out.reset();
+    ref.reset();
+  }
+}
+
+template <class T>
+void thawField(ViewPosition self, const Field<T>& f, field_ref<T&> ref) {
+  if (f.layout.empty()) {
+    unset_unsafe(ref);
+  } else {
+    f.layout.thaw(self(f.pos), ref.ensure());
   }
 }
 
@@ -1105,6 +1091,7 @@ using View = typename Layout<T>::View;
 } // namespace thrift
 } // namespace apache
 
+#include <thrift/lib/cpp2/frozen/FrozenFixedSizeString-inl.h> // @nolint
 #include <thrift/lib/cpp2/frozen/FrozenTrivial-inl.h> // @nolint
 // depends on Trivial
 #include <thrift/lib/cpp2/frozen/FrozenBool-inl.h> // @nolint

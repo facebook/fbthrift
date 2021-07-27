@@ -48,6 +48,7 @@ enum class FieldModifier {{
   Optional = 1,
   Required,
   Reference,
+  Lazy,
 }};
 
 namespace detail {{
@@ -90,6 +91,11 @@ PRIMITIVE_TYPES = (
     "double",
     "binary",
     "string",
+)
+
+KEY_TYPES = (
+    "string",
+    "i64",
 )
 
 CPP2_TYPE_NS = "conformance::type"
@@ -150,8 +156,14 @@ REQUIRED_TRANSFORM: Dict[Target, str] = {
 
 CPP_REF_TRANSFORM: Dict[Target, str] = {
     Target.NAME: "{}_cpp_ref",
-    Target.THRIFT: "{} (cpp.ref = 'true')",
+    Target.THRIFT: "{}|cpp.ref",
     Target.CPP2: "{}|FieldModifier::Reference",
+}
+
+LAZY_TRANSFORM: Dict[Target, str] = {
+    Target.NAME: "{}_lazy",
+    Target.THRIFT: "{}|cpp.experimental.lazy",
+    Target.CPP2: "{}|FieldModifier::Lazy",
 }
 
 
@@ -206,19 +218,42 @@ def gen_cpp_ref(target: Target, values: Dict[str, str]) -> Dict[str, str]:
     return _gen_unary_tramsform(CPP_REF_TRANSFORM, target, values)
 
 
-def gen_union_fields(target: Target) -> Dict[str, str]:
+def gen_lazy(target: Target, values: Dict[str, str]) -> Dict[str, str]:
+    return _gen_unary_tramsform(LAZY_TRANSFORM, target, values)
+
+
+def gen_container_fields(target: Target) -> Dict[str, str]:
     """Generates field name -> type that are appropriate for use in unions."""
-    ret = gen_primatives(target, PRIMITIVE_TYPES)
-    ret.update(gen_sets(target, ret))
-    ret.update(gen_maps(target, gen_primatives(target, ["string"]), ret))
+    prims = gen_primatives(target, PRIMITIVE_TYPES)
+    keys = gen_primatives(target, KEY_TYPES)
+
+    lists = gen_lists(target, prims)
+    sets = gen_sets(target, keys)
+    maps = gen_maps(target, keys, prims)
+
+    maps_to_sets = gen_maps(target, keys, sets)
+
+    return {**lists, **sets, **maps, **maps_to_sets}
+
+
+def gen_union_fields(target: Target) -> Dict[str, str]:
+    ret = gen_container_fields(target)
     ret.update(gen_cpp_ref(target, ret))
+    ret.update(gen_primatives(target, PRIMITIVE_TYPES))
     return ret
+
+
+def gen_lazy_fields(target: Target) -> Dict[str, str]:
+    fields = gen_container_fields(target)
+    fields.update(gen_primatives(target, ["string"]))
+    return gen_lazy(target, fields)
 
 
 def gen_struct_fields(target: Target) -> Dict[str, str]:
     """Generates field name -> type that are appropriate for use in structs."""
     ret = gen_union_fields(target)
     ret.update(**gen_optional(target, ret), **gen_required(target, ret))
+    ret.update(**gen_lazy_fields(target))
     return ret
 
 
@@ -226,17 +261,24 @@ def gen_thrift_def(
     transform: Dict[Target, str], name: str, field_types: List[str]
 ) -> str:
     """Generate thrift struct from types
-    >>> print(gen_thrift_def(STRUCT_TRANSFORM, "Foo", ["i64", "optional string", "set<i32> (cpp.ref = 'true')"]))
+    >>> print(gen_thrift_def(STRUCT_TRANSFORM, "Foo", ["i64", "optional string", "set<i32>|cpp.ref"]))
     struct Foo {
       1: i64 field_1;
       2: optional string field_2;
-      3: set<i32> (cpp.ref = 'true') field_3;
+      3: set<i32> field_3 (cpp.ref);
     } (thrift.uri="facebook.com/thrift/test/testset/Foo")
     """
     decl = transform[Target.THRIFT].format(name)
     lines = [f"{decl} {{"]
     for idx, field_type in enumerate(field_types):
-        lines.append("  {0}: {1} field_{0};".format(idx + 1, field_type))
+        annotations = ""
+        if "|" in field_type:
+            v = field_type.split("|")
+            field_type = v[0]
+            annotations = " (" + ", ".join(v[1:]) + ")"
+        lines.append(
+            "  {0}: {1} field_{0}{2};".format(idx + 1, field_type, annotations)
+        )
     lines.append(f'}} (thrift.uri="facebook.com/thrift/test/testset/{name}")')
     return "\n".join(lines)
 
@@ -277,9 +319,9 @@ def gen_thrift(path: str) -> None:
             print_thrift_defs(UNION_TRANSFORM, union_fields, count=2, file=file)
         )
 
-        # Generate a union of all defined structs and unions.
-        all_name = UNION_TRANSFORM[Target.NAME].format("all")
-        print(gen_thrift_def(UNION_TRANSFORM, all_name, classes), file=file)
+        # Generate a struct of all defined structs and unions.
+        all_struct_name = STRUCT_TRANSFORM[Target.NAME].format("all")
+        print(gen_thrift_def(STRUCT_TRANSFORM, all_struct_name, classes), file=file)
 
 
 CPP2_SPECIALIZE_TEMPLATE = """template <>

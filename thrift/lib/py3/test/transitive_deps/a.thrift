@@ -19,6 +19,6 @@ namespace py3 transitive_deps
 include "thrift/lib/py3/test/transitive_deps/b.thrift"
 
 struct A {
-    1: list<b.B> b,
-    2: b.B other,
+  1: list<b.B> b;
+  2: b.B other;
 }

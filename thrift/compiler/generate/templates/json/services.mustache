@@ -34,9 +34,9 @@
             {{#field:optional?}}
             "required" : "optional",
             {{/field:optional?}}
-            {{#field:optInReqOut?}}
+            {{#field:opt_in_req_out?}}
             "required" : "opt-in-req-out"
-            {{/field:optInReqOut?}}
+            {{/field:opt_in_req_out?}}
           }{{^last?}},{{/last?}}
           {{/function:args}}
         },
@@ -51,11 +51,11 @@
           {{/function:exceptions}}
         },
         {{/function:exceptions?}}
-        "returnType" : {{#function:returnType}}{{> Types}}{{/function:returnType}},
+        "returnType" : {{#function:return_type}}{{> Types}}{{/function:return_type}},
         "lineno" : {{function:lineno}}
       }{{^last?}},{{/last?}}
       {{/service:functions}}
       {{/service:functions?}}
-    }{{^last?}},{{/last?}}
+    }
   }{{^last?}},{{/last?}}
 {{/program:services}}

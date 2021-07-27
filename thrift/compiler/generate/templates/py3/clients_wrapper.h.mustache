@@ -59,10 +59,30 @@ class {{service:name}}ClientWrapper : {{!
     }}{{^service:extends?}}::thrift::py3::ClientWrapper::ClientWrapper{{/service:extends?}};
 
 {{#service:supportedFunctions}}
-    folly::Future<{{#function:returnType}}{{> clients/CppReturnType}}{{/function:returnType}}> {{function:cppName}}(
+    folly::Future<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}> {{function:cppName}}(
       apache::thrift::RpcOptions& rpcOptions{{#function:args}},
       {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}});
 {{/service:supportedFunctions}}
+{{#service:interactions}}
+
+    class {{service:name}}InteractionWrapper : public {{!
+    }}{{#service:extends}}{{service:name}}{{/service:extends}}ClientWrapper {
+      public:
+        {{service:name}}InteractionWrapper(
+          std::unique_ptr<apache::thrift::GeneratedAsyncClient> async_client,
+           std::shared_ptr<apache::thrift::RequestChannel> channel)
+           : ClientWrapper(std::move(async_client), channel) {}
+
+        {{#service:supportedFunctions}}
+        folly::Future<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}> {{function:cppName}}(
+          apache::thrift::RpcOptions& rpcOptions{{#function:args}},
+          {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}});
+        {{/service:supportedFunctions}}
+    };
+{{/service:interactions}}
+{{#service:interactions}}
+    folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>> create{{service:name}}();
+{{/service:interactions}}
 };
 
 

@@ -57,6 +57,10 @@ template <>
 class StructMetadata<<% > common/namespace_cpp2%><%struct:name%>> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+ <%#program:unstructured_annotations_in_metadata?%>
+ private:
+  static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
+ <%/program:unstructured_annotations_in_metadata?%>
 };
 <%/program:no_metadata?%>
 <%#program:no_metadata?%>

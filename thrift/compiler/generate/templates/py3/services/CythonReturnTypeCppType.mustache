@@ -15,14 +15,14 @@
   limitations under the License.
 
 }}{{!
-Cython type for returnType in services
+Cython type for return_type in services
 }}{{#type:streamresponse?}}{{!
-  }}{{#type:streamHasFirstResponse?}}cResponseAndServerStream[{{!
-  }}{{#type:streamFirstResponseType}}{{ >types/CythonCppType}}{{/type:streamFirstResponseType}},{{!
-  }}{{/type:streamHasFirstResponse?}}{{!
-  }}{{^type:streamHasFirstResponse?}}cServerStream[{{!
-  }}{{/type:streamHasFirstResponse?}}{{!
-  }}{{#type:streamElemType}}{{ >types/CythonCppType}}{{/type:streamElemType}}]{{!
+  }}{{#type:stream_has_first_response?}}cResponseAndServerStream[{{!
+  }}{{#type:stream_first_response_type}}{{ >types/CythonCppType}}{{/type:stream_first_response_type}},{{!
+  }}{{/type:stream_has_first_response?}}{{!
+  }}{{^type:stream_has_first_response?}}cServerStream[{{!
+  }}{{/type:stream_has_first_response?}}{{!
+  }}{{#type:stream_elem_type}}{{ >types/CythonCppType}}{{/type:stream_elem_type}}]{{!
 }}{{/type:streamresponse?}}{{!
 }}{{^type:streamresponse?}}{{!
 }}{{^function:stack_arguments?}}{{> services/CythonFieldType}}{{/function:stack_arguments?}}{{!

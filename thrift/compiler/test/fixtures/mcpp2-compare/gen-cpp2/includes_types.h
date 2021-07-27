@@ -42,13 +42,10 @@ enum class AnEnum {
 
 
 }}} // a::different::ns
+
 namespace std {
-
-
-template<> struct hash<typename ::a::different::ns::AnEnum> : public apache::thrift::detail::enum_hash<typename ::a::different::ns::AnEnum> {};
-template<> struct equal_to<typename ::a::different::ns::AnEnum> : public apache::thrift::detail::enum_equal_to<typename ::a::different::ns::AnEnum> {};
-
-
+template<> struct hash<::a::different::ns::AnEnum> :
+  ::apache::thrift::detail::enum_hash<::a::different::ns::AnEnum> {};
 } // std
 
 namespace apache { namespace thrift {
@@ -92,13 +89,19 @@ class AStructB;
 // END forward_declare
 // BEGIN typedefs
 namespace a { namespace different { namespace ns {
-typedef int64_t IncludedInt64;
+typedef ::std::int64_t IncludedInt64;
 
 }}} // a::different::ns
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace a { namespace different { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class AStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -106,6 +109,7 @@ class AStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = AStruct;
@@ -115,12 +119,12 @@ class AStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStruct() :
-      FieldA(0) {}
+      FieldA(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AStruct(apache::thrift::FragileConstructor, int32_t FieldA__arg);
+  AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg);
 
   AStruct(AStruct&&) = default;
 
@@ -130,66 +134,49 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStruct& operator=(AStruct&&) = default;
 
   AStruct& operator=(const AStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-  int32_t FieldA;
+  ::std::int32_t FieldA;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool FieldA;
   } __isset = {};
-  bool operator==(const AStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AStruct& __x, const AStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const AStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AStruct& __x, const AStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AStruct& __x, const AStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AStruct& __x, const AStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int32_t>
+ public:
+
+  bool operator==(const AStruct&) const;
+  bool operator<(const AStruct&) const;
+
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> FieldA_ref() const& {
     return {this->FieldA, __isset.FieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> FieldA_ref() const&& {
     return {std::move(this->FieldA), __isset.FieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> FieldA_ref() & {
     return {this->FieldA, __isset.FieldA};
   }
 
-  template <typename..., typename T = int32_t>
+  template <typename..., typename T = ::std::int32_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> FieldA_ref() && {
     return {std::move(this->FieldA), __isset.FieldA};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int32_t get_FieldA() const {
+  ::std::int32_t get_FieldA() const {
     return FieldA;
   }
 
-  int32_t& set_FieldA(int32_t FieldA_) {
+  [[deprecated("Use `FOO.FieldA_ref() = BAR;` instead of `FOO.set_FieldA(BAR);`")]]
+  ::std::int32_t& set_FieldA(::std::int32_t FieldA_) {
     FieldA = FieldA_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.FieldA = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return FieldA;
   }
 
@@ -206,7 +193,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AStruct >;
+  friend class ::apache::thrift::Cpp2Ops<AStruct>;
   friend void swap(AStruct& a, AStruct& b);
 };
 
@@ -219,6 +206,11 @@ uint32_t AStruct::read(Protocol_* iprot) {
 
 }}} // a::different::ns
 namespace a { namespace different { namespace ns {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class AStructB final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -226,6 +218,7 @@ class AStructB final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = true;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = AStructB;
@@ -235,55 +228,40 @@ class AStructB final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   AStructB() :
-      FieldA(std::make_shared< ::a::different::ns::AStruct>()) {}
+      FieldA(std::make_shared<::a::different::ns::AStruct>()) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AStructB(apache::thrift::FragileConstructor, std::shared_ptr<const  ::a::different::ns::AStruct> FieldA__arg);
+  AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg);
 
-  AStructB(AStructB&&) = default;
+  AStructB(AStructB&&) noexcept;
 
-  AStructB(const AStructB&) = default;
+  AStructB(const AStructB& src);
 
 
-  AStructB& operator=(AStructB&&) = default;
-
-  AStructB& operator=(const AStructB&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  AStructB& operator=(AStructB&&) noexcept;
+  AStructB& operator=(const AStructB& src);
   void __clear();
  public:
-  std::shared_ptr<const  ::a::different::ns::AStruct> FieldA;
+  ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA;
+
+ private:
 
  public:
-  bool operator==(const AStructB& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const AStructB& __x, const AStructB& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const AStructB& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const AStructB& __x, const AStructB& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const AStructB& __x, const AStructB& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const AStructB& __x, const AStructB& __y) {
-    return !(__x < __y);
-  }
-#endif
-  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+
+  bool operator==(const AStructB&) const;
+  bool operator<(const AStructB&) const;
+  template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE T& FieldA_ref() & { return FieldA; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE const T& FieldA_ref() const& { return FieldA; }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE T&& FieldA_ref() && { return std::move(FieldA); }
 
-  template <typename ..., typename T = std::shared_ptr<const  ::a::different::ns::AStruct>>
+  template <typename ..., typename T = ::std::shared_ptr<const ::a::different::ns::AStruct>>
   FOLLY_ERASE const T&& FieldA_ref() const&& { return std::move(FieldA); }
 
   template <class Protocol_>
@@ -299,7 +277,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< AStructB >;
+  friend class ::apache::thrift::Cpp2Ops<AStructB>;
   friend void swap(AStructB& a, AStructB& b);
 };
 
@@ -311,3 +289,4 @@ uint32_t AStructB::read(Protocol_* iprot) {
 }
 
 }}} // a::different::ns
+THRIFT_IGNORE_ISSET_USE_WARNING_END

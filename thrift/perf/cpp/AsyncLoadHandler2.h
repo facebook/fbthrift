@@ -46,14 +46,11 @@ class AsyncLoadHandler2 : public test::LoadTestSvIf {
       std::unique_ptr<HandlerCallback<void>> callback,
       int64_t microseconds) override;
   void async_eb_throwError(
-      std::unique_ptr<HandlerCallback<void>> callback,
-      int32_t code) override;
+      std::unique_ptr<HandlerCallback<void>> callback, int32_t code) override;
   void async_eb_throwUnexpected(
-      std::unique_ptr<HandlerCallback<void>> callback,
-      int32_t code) override;
+      std::unique_ptr<HandlerCallback<void>> callback, int32_t code) override;
   void async_eb_onewayThrow(
-      std::unique_ptr<HandlerCallbackBase> callback,
-      int32_t code) override;
+      std::unique_ptr<HandlerCallbackBase> callback, int32_t code) override;
   void async_eb_send(
       std::unique_ptr<HandlerCallback<void>> callback,
       std::unique_ptr<std::string> data) override;
@@ -71,9 +68,7 @@ class AsyncLoadHandler2 : public test::LoadTestSvIf {
   folly::Future<std::unique_ptr<std::string>> future_echo(
       std::unique_ptr<std::string> data) override;
   void async_eb_add(
-      std::unique_ptr<HandlerCallback<int64_t>>,
-      int64_t a,
-      int64_t b) override;
+      std::unique_ptr<HandlerCallback<int64_t>>, int64_t a, int64_t b) override;
   void async_eb_largeContainer(
       std::unique_ptr<HandlerCallback<void>> callback,
       std::unique_ptr<std::vector<test::BigStruct>> items) override;

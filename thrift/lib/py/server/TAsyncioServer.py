@@ -23,7 +23,7 @@ from thrift.Thrift import (
     TException,
     TProcessor,
 )
-from thrift.util.async_common import (
+from thrift.async_common import (
     AsyncioRpcConnectionContext,
     FramedProtocol,
     THeaderProtocol,

@@ -18,6 +18,7 @@
 
 #include <thrift/perf/cpp/AsyncClientWorker2.h>
 
+#include <queue>
 #include <folly/io/async/AsyncSocket.h>
 #include <proxygen/lib/http/codec/HTTP2Codec.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
@@ -27,7 +28,6 @@
 #include <thrift/lib/cpp2/async/HeaderClientChannel.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 #include <thrift/perf/cpp/ClientLoadConfig.h>
-#include <queue>
 
 using namespace apache::thrift::test;
 using namespace apache::thrift::async;
@@ -57,9 +57,7 @@ class LoopTerminator {
  public:
   explicit LoopTerminator(folly::EventBase* base) : ops_(0), base_(base) {}
 
-  void incr() {
-    ops_++;
-  }
+  void incr() { ops_++; }
   void decr() {
     ops_--;
     if (ops_ == 0) {
@@ -107,9 +105,7 @@ class AsyncRunner2 {
 
  private:
   void genericCob(
-      LoadTestAsyncClient* client,
-      ClientReceiveState&& rstate,
-      OpData* opData);
+      LoadTestAsyncClient* client, ClientReceiveState&& rstate, OpData* opData);
 
   void performAsyncOperation();
 
@@ -128,9 +124,7 @@ class LoadCallback : public RequestCallback {
   LoadCallback(AsyncRunner2* r, LoadTestAsyncClient* client)
       : r_(r), client_(client), oneway_(false) {}
 
-  void setOneway() {
-    oneway_ = true;
-  }
+  void setOneway() { oneway_ = true; }
 
   void requestSent() override {
     if (oneway_) {
@@ -158,18 +152,18 @@ class LoadCallback : public RequestCallback {
 LoadTestClientPtr AsyncClientWorker2::createConnection() {
   const std::shared_ptr<apache::thrift::test::ClientLoadConfig>& config =
       getConfig();
-  std::shared_ptr<folly::AsyncSocket> socket;
+  folly::AsyncSocket::UniquePtr socket;
   if (config->useSSL()) {
     auto sslSocket = TAsyncSSLSocket::newSocket(sslContext_, &eb_);
     if (session_) {
-      sslSocket->setSSLSessionV2(session_);
+      sslSocket->setSSLSession(session_);
     }
     sslSocket->connect(nullptr, *config->getAddress(), kTimeout);
     // Loop until connection is established and TLS handshake completes.
     // Unlike a regular AsyncSocket which is usable even before TCP handshke
     // completes, an SSL socket reports !good() until TLS handshake completes.
     eb_.loop();
-    auto session = sslSocket->getSSLSessionV2();
+    auto session = sslSocket->getSSLSession();
     if (config->useTickets() && session) {
       session_ = session;
     }
@@ -179,17 +173,18 @@ LoadTestClientPtr AsyncClientWorker2::createConnection() {
         folly::AsyncSocket::newSocket(&eb_, *config->getAddress(), kTimeout);
   }
 
-  std::unique_ptr<
-      apache::thrift::HeaderClientChannel,
-      folly::DelayedDestruction::Destructor>
-      channel(HeaderClientChannel::newChannel(socket));
+  HeaderClientChannel::Options options;
+  if (!config->useHeaderProtocol()) {
+    options.setClientType(THRIFT_FRAMED_DEPRECATED);
+  }
+  auto channel =
+      HeaderClientChannel::newChannel(std::move(socket), std::move(options));
   channel->setTimeout(kTimeout);
   // For testing equality, make sure to use binary
-  if (!config->useHeaderProtocol()) {
-    channel->setClientType(THRIFT_FRAMED_DEPRECATED);
-  }
   if (config->zlib()) {
-    channel->setTransform(THeader::ZLIB_TRANSFORM);
+    apache::thrift::CompressionConfig compressionConfig;
+    compressionConfig.codecConfig_ref().ensure().set_zlibConfig();
+    channel->setDesiredCompressionConfig(compressionConfig);
   }
 
   return std::make_shared<LoadTestAsyncClient>(std::move(channel));
@@ -377,9 +372,7 @@ void AsyncRunner2::performAsyncOperation() {
 }
 
 void AsyncRunner2::genericCob(
-    LoadTestAsyncClient* client,
-    ClientReceiveState&& rstate,
-    OpData* opData) {
+    LoadTestAsyncClient* client, ClientReceiveState&& rstate, OpData* opData) {
   int64_t int64_result;
   std::string string_result;
   std::vector<BigStruct> container_result;

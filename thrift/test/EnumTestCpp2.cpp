@@ -19,6 +19,7 @@
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp/util/EnumUtils.h>
+#include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/test/gen-cpp2/EnumTest_types.h>
 
 using apache::thrift::TEnumTraits;
@@ -115,6 +116,19 @@ TEST(EnumTestCpp2, test_enum_forward_reference) {
   MyStructWithForwardRefEnum obj;
   EXPECT_EQ(MyForwardRefEnum::NONZERO, *obj.a_ref());
   EXPECT_EQ(MyForwardRefEnum::NONZERO, *obj.b_ref());
+}
+
+TEST(EnumTestCpp2, test_enum_invalid) {
+  MyStruct ms;
+  ms.me1_t1_ref() = static_cast<MyEnum1>(42); // out of range
+  ms.me1_nodefault_ref() = static_cast<MyEnum1>(42);
+  ms.me1_optional_ref() = static_cast<MyEnum1>(42);
+  auto str = apache::thrift::CompactSerializer::serialize<std::string>(ms);
+  auto ms2 = apache::thrift::CompactSerializer::deserialize<MyStruct>(str);
+  EXPECT_EQ(*ms2.me1_t1_ref(), static_cast<MyEnum1>(42));
+  EXPECT_EQ(*ms2.me1_nodefault_ref(), static_cast<MyEnum1>(42));
+  EXPECT_TRUE(ms2.me1_optional_ref().has_value());
+  EXPECT_EQ(*ms2.me1_optional_ref(), static_cast<MyEnum1>(42));
 }
 
 namespace {

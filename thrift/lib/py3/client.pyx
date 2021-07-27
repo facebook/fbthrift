@@ -82,6 +82,12 @@ cdef class Client:
             print(f'thrift-py3 client: {self!r} was not cleaned up, use the async context manager', file=sys.stderr)
         self._client.reset()
 
+    def __enter__(Client self):
+        raise asyncio.InvalidStateError('Use an async context for thrift clients and interactions')
+
+    def __exit__(Client self):
+        raise NotImplementedError()
+
     async def __aenter__(Client self):
         await asyncio.shield(self._connect_future)
         if self._context_entered:
@@ -107,6 +113,14 @@ cdef class Client:
         badfuture.set_exception(asyncio.InvalidStateError('Client Out of Context'))
         badfuture.exception()
         self._connect_future = badfuture
+
+    @staticmethod
+    def __get_metadata__():
+        raise NotImplementedError()
+
+    @staticmethod
+    def __get_thrift_name__():
+        raise NotImplementedError()
 
 
 async def _no_op():
@@ -203,7 +217,7 @@ def get_client(
         fspath = os.fsencode(path)
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
-            createThriftChannelUnix(move_string(fspath), _timeout_ms, client_type, protocol),
+            createThriftChannelUnix(move[string](fspath), _timeout_ms, client_type, protocol),
             requestchannel_callback,
             <PyObject *> client
         )
@@ -213,13 +227,13 @@ def get_client(
             (<Client>client)._executor,
             thrift_ssl.createThriftChannelTCP(
                 ssl_context._cpp_obj,
-                move_string(cstr),
+                move[string](cstr),
                 port,
                 _timeout_ms,
                 _ssl_timeout_ms,
                 client_type,
                 protocol,
-                move_string(endpoint)
+                move[string](endpoint)
             ),
             requestchannel_callback,
             <PyObject *> client
@@ -229,12 +243,12 @@ def get_client(
         bridgeFutureWith[cRequestChannel_ptr](
             (<Client>client)._executor,
             createThriftChannelTCP(
-                move_string(cstr),
+                move[string](cstr),
                 port,
                 _timeout_ms,
                 client_type,
                 protocol,
-                move_string(endpoint)
+                move[string](endpoint)
             ),
             requestchannel_callback,
             <PyObject *> client
@@ -247,6 +261,17 @@ def get_client(
     proxy = factory(clientKlass) if factory else None
     return proxy(client) if proxy else client
 
+cdef void interactions_callback(
+    cFollyTry[unique_ptr[cClientWrapper]]&& result,
+    PyObject* userData,
+):
+    cdef Client client = <object> userData
+    future = client._connect_future
+    if result.hasException():
+        future.set_exception(create_py_exception(result.exception(), None))
+    else:
+        client._client = move(result.value())
+        future.set_result(None)
 
 cdef void requestchannel_callback(
     cFollyTry[cRequestChannel_ptr]&& result,

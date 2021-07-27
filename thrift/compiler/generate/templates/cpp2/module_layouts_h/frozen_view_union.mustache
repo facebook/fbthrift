@@ -36,15 +36,7 @@
     <% > common/namespace_cpp2%><%struct:name%>::Type getType() {return type_;}
 
 <%#struct:fields%><%#field:type%>
-<%#field:cpp_ref_unique?%>
-    typename Layout<std::unique_ptr<<% > types/type%>>>::View get_<%field:cpp_name%>() const {
-<%/field:cpp_ref_unique?%>
-<%#field:cpp_ref_shared?%>
-    typename Layout<std::shared_ptr<<% > types/type%>>>::View get_<%field:cpp_name%>() const {
-<%/field:cpp_ref_shared?%>
-<%^field:cpp_ref_unique?%><%^field:cpp_ref_shared?%>
-    typename Layout<<% > types/type%>>::View get_<%field:cpp_name%>() const {
-<%/field:cpp_ref_shared?%><%/field:cpp_ref_unique?%>
+    auto get_<%field:cpp_name%>() const {
       assert(type_ == <% > common/namespace_cpp2%><%struct:name%>::Type::<%field:cpp_name%>);
       return this->layout_-><%field:cpp_name%>Field.layout.view(
           this->position_(this->layout_-><%field:cpp_name%>Field.pos));

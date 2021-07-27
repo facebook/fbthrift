@@ -16,11 +16,7 @@
 
 cpp_include "<list>"
 
-typedef list<i32> ( cpp.template = "std::list" ) int_linked_list
-
-struct bar {
-  1: int_linked_list zar;
-}
+typedef list<i32> (cpp.template = "std::list") int_linked_list
 
 struct foo {
   1: i32 bar;
@@ -32,8 +28,7 @@ struct foo {
   python.type = "DenseFoo",
   java.final = "",
   cpp2.methods = "public: void manuallyDefinedDummyMethod() {}",
-  policy = bar{"zar": [11, 22, 33]},
 )
 
-typedef string ( unicode.encoding = "UTF-16" ) non_latin_string
-typedef list< double ( cpp.fixed_point = "16" ) > tiny_float_list
+typedef string (unicode.encoding = "UTF-16") non_latin_string
+typedef list<double (cpp.fixed_point = "16")> tiny_float_list

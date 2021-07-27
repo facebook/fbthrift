@@ -16,23 +16,20 @@
 
 namespace py thrift.test.py.PythonReservedKeywords
 
-enum from
-{
-  from = 1
+enum from {
+  from = 1,
 }
 
 typedef i64 and
 
-struct except
-{
-  1: string except
+struct except {
+  1: string except;
 }
 
 exception pass {
-  1: string pass
+  1: string pass;
 }
 
-service return
-{
-  list<from> return(1: list<from> thing, 2:except except)
+service return {
+  list<from> return(1: list<from> thing, 2: except except);
 }

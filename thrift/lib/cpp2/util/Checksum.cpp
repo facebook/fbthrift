@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/util/Checksum.h>
+
 #include <folly/hash/Checksum.h>
 
 namespace apache {

@@ -64,6 +64,11 @@ class ConnectHandler : public folly::AsyncSocket::ConnectCallback,
     return promise_.getFuture();
   }
 
+  void setSupportedApplicationProtocols(
+      const std::vector<std::string>& protocols) {
+    socket_->setSupportedApplicationProtocols(protocols);
+  }
+
   void connectSuccess() noexcept override {
     UniquePtr p(this);
     promise_.setValue([this]() mutable -> RequestChannel_ptr {
@@ -73,15 +78,8 @@ class ConnectHandler : public folly::AsyncSocket::ConnectCallback,
         chan->setProtocolId(proto_);
         return chan;
       }
-      auto chan = configureClientChannel(
-          apache::thrift::HeaderClientChannel::newChannel(
-              std::shared_ptr<folly::AsyncSocket>{std::move(socket_)}),
-          client_t_,
-          proto_);
-      if (client_t_ == THRIFT_HTTP_CLIENT_TYPE) {
-        chan->useAsHttpClient(host_, endpoint_);
-      }
-      return chan;
+      return createHeaderChannel(
+          std::move(socket_), client_t_, proto_, host_, endpoint_);
     }());
   }
 
@@ -118,9 +116,6 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
   auto eb = folly::getEventBase();
   return folly::via(
       eb, [=, host{std::move(host)}, endpoint{std::move(endpoint)}]() mutable {
-        if (client_t == CLIENT_TYPE::THRIFT_ROCKET_CLIENT_TYPE) {
-          ctx->setAdvertisedNextProtocols({"rs"});
-        }
         ConnectHandler::UniquePtr handler{new ConnectHandler(
             ctx,
             eb,
@@ -131,6 +126,10 @@ folly::Future<RequestChannel_ptr> createThriftChannelTCP(
             client_t,
             proto,
             std::move(endpoint))};
+
+        if (client_t == CLIENT_TYPE::THRIFT_ROCKET_CLIENT_TYPE) {
+          handler->setSupportedApplicationProtocols({"rs"});
+        }
         auto future = handler->connect();
         handler.release();
         return future;

@@ -21,11 +21,10 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("complexException")
-public final class ComplexException extends java.lang.Exception {
+@com.facebook.swift.codec.ThriftStruct("complexException")
+public final class ComplexException extends java.lang.Exception implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
-    private BitSet __isset_bit_vector = new BitSet();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -52,12 +51,12 @@ public final class ComplexException extends java.lang.Exception {
 
     @ThriftConstructor
     public ComplexException(
-        @ThriftField(value=1, name="message", requiredness=Requiredness.NONE) final String message,
-        @ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE) final List<String> listStrings,
-        @ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE) final test.fixtures.complex_struct.MyEnum errorEnum,
-        @ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL) final test.fixtures.complex_struct.MyUnion unionError,
-        @ThriftField(value=5, name="structError", requiredness=Requiredness.NONE) final test.fixtures.complex_struct.MyStruct structError,
-        @ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE) final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap
+        @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE) final String message,
+        @com.facebook.swift.codec.ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE) final List<String> listStrings,
+        @com.facebook.swift.codec.ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE) final test.fixtures.complex_struct.MyEnum errorEnum,
+        @com.facebook.swift.codec.ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL) final test.fixtures.complex_struct.MyUnion unionError,
+        @com.facebook.swift.codec.ThriftField(value=5, name="structError", requiredness=Requiredness.NONE) final test.fixtures.complex_struct.MyStruct structError,
+        @com.facebook.swift.codec.ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE) final it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap
     ) {
         this.message = message;
         this.listStrings = listStrings;
@@ -71,23 +70,22 @@ public final class ComplexException extends java.lang.Exception {
     protected ComplexException() {
       this.message = null;
       this.listStrings = null;
-      this.errorEnum = null;
+      this.errorEnum = test.fixtures.complex_struct.MyEnum.fromInteger(0);
       this.unionError = null;
       this.structError = null;
       this.lsMap = null;
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private String message = null;
         private List<String> listStrings = null;
-        private test.fixtures.complex_struct.MyEnum errorEnum = null;
+        private test.fixtures.complex_struct.MyEnum errorEnum = test.fixtures.complex_struct.MyEnum.fromInteger(0);
         private test.fixtures.complex_struct.MyUnion unionError = null;
         private test.fixtures.complex_struct.MyStruct structError = null;
         private it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap = null;
     
-        @ThriftField(value=1, name="message", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE)
         public Builder setMessage(String message) {
             this.message = message;
             return this;
@@ -95,7 +93,7 @@ public final class ComplexException extends java.lang.Exception {
     
         public String getMessage() { return message; }
     
-            @ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE)
         public Builder setListStrings(List<String> listStrings) {
             this.listStrings = listStrings;
             return this;
@@ -103,7 +101,7 @@ public final class ComplexException extends java.lang.Exception {
     
         public List<String> getListStrings() { return listStrings; }
     
-            @ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE)
         public Builder setErrorEnum(test.fixtures.complex_struct.MyEnum errorEnum) {
             this.errorEnum = errorEnum;
             return this;
@@ -111,7 +109,7 @@ public final class ComplexException extends java.lang.Exception {
     
         public test.fixtures.complex_struct.MyEnum getErrorEnum() { return errorEnum; }
     
-            @ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL)
+            @com.facebook.swift.codec.ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL)
         public Builder setUnionError(test.fixtures.complex_struct.MyUnion unionError) {
             this.unionError = unionError;
             return this;
@@ -119,7 +117,7 @@ public final class ComplexException extends java.lang.Exception {
     
         public test.fixtures.complex_struct.MyUnion getUnionError() { return unionError; }
     
-            @ThriftField(value=5, name="structError", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=5, name="structError", requiredness=Requiredness.NONE)
         public Builder setStructError(test.fixtures.complex_struct.MyStruct structError) {
             this.structError = structError;
             return this;
@@ -127,7 +125,7 @@ public final class ComplexException extends java.lang.Exception {
     
         public test.fixtures.complex_struct.MyStruct getStructError() { return structError; }
     
-            @ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
+            @com.facebook.swift.codec.ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
         public Builder setLsMap(it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> lsMap) {
             this.lsMap = lsMap;
             return this;
@@ -155,30 +153,33 @@ public final class ComplexException extends java.lang.Exception {
                 this.structError,
                 this.lsMap
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
     
     
-    @ThriftField(value=1, name="message", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="message", requiredness=Requiredness.NONE)
     public String getMessage() { return message; }
         
-    @ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="listStrings", requiredness=Requiredness.NONE)
     public List<String> getListStrings() { return listStrings; }
         
-    @ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="errorEnum", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyEnum getErrorEnum() { return errorEnum; }
         
-    @ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL)
+    @com.facebook.swift.codec.ThriftField(value=4, name="unionError", requiredness=Requiredness.OPTIONAL)
     public test.fixtures.complex_struct.MyUnion getUnionError() { return unionError; }
         
-    @ThriftField(value=5, name="structError", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="structError", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyStruct getStructError() { return structError; }
         
-    @ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=6, name="lsMap", requiredness=Requiredness.NONE)
     public it.unimi.dsi.fastutil.longs.Long2ObjectArrayMap<String> getLsMap() { return lsMap; }
     
+    
+    public static com.facebook.thrift.payload.Reader<ComplexException> asReader() {
+      return ComplexException::read0;
+    }
     
     public static ComplexException read0(TProtocol oprot) throws TException {
       TField __field;

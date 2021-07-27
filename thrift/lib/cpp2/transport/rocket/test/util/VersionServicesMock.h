@@ -29,9 +29,7 @@ class OldServiceMock : public OldVersionSvIf {
  public:
   OldServiceMock() {}
 
-  int32_t AddOne(int32_t i) override {
-    return i + 1;
-  }
+  int32_t AddOne(int32_t i) override { return i + 1; }
 
   void DeletedMethod() {}
 
@@ -44,8 +42,8 @@ class OldServiceMock : public OldVersionSvIf {
     return {{}, apache::thrift::ServerStream<Message>::createEmpty()};
   }
 
-  apache::thrift::ServerStream<int32_t> Range(int32_t from, int32_t length)
-      override {
+  apache::thrift::ServerStream<int32_t> Range(
+      int32_t from, int32_t length) override {
     auto [stream, publisher] =
         apache::thrift::ServerStream<int32_t>::createPublisher();
     for (int i = from; i < from + length; ++i) {
@@ -55,8 +53,8 @@ class OldServiceMock : public OldVersionSvIf {
     return std::move(stream);
   }
 
-  apache::thrift::ResponseAndServerStream<int32_t, int32_t>
-  RangeAndAddOne(int32_t from, int32_t length, int32_t number) override {
+  apache::thrift::ResponseAndServerStream<int32_t, int32_t> RangeAndAddOne(
+      int32_t from, int32_t length, int32_t number) override {
     return {number + 1, Range(from, length)};
   }
 
@@ -68,19 +66,20 @@ class OldServiceMock : public OldVersionSvIf {
   ResponseandStreamToRequestResponse() override {
     Message response;
     *response.message_ref() = "Message";
-    response.__isset.message = true;
-    return {std::move(response),
-            apache::thrift::ServerStream<Message>::createEmpty()};
+    response.message_ref().ensure();
+    return {
+        std::move(response),
+        apache::thrift::ServerStream<Message>::createEmpty()};
   }
 
   void RequestResponseToStream(Message& response) override {
     *response.message_ref() = "Message";
-    response.__isset.message = true;
+    response.message_ref().ensure();
   }
 
   void RequestResponseToResponseandStream(Message& response) override {
     *response.message_ref() = "Message";
-    response.__isset.message = true;
+    response.message_ref().ensure();
   }
 
  protected:
@@ -91,12 +90,10 @@ class NewServiceMock : public NewVersionSvIf {
  public:
   NewServiceMock() {}
 
-  int32_t AddOne(int32_t i) override {
-    return i + 1;
-  }
+  int32_t AddOne(int32_t i) override { return i + 1; }
 
-  apache::thrift::ServerStream<int32_t> Range(int32_t from, int32_t length)
-      override {
+  apache::thrift::ServerStream<int32_t> Range(
+      int32_t from, int32_t length) override {
     auto [stream, publisher] =
         apache::thrift::ServerStream<int32_t>::createPublisher();
     for (int i = from; i < from + length; ++i) {
@@ -106,8 +103,8 @@ class NewServiceMock : public NewVersionSvIf {
     return std::move(stream);
   }
 
-  apache::thrift::ResponseAndServerStream<int32_t, int32_t>
-  RangeAndAddOne(int32_t from, int32_t length, int32_t number) override {
+  apache::thrift::ResponseAndServerStream<int32_t, int32_t> RangeAndAddOne(
+      int32_t from, int32_t length, int32_t number) override {
     return {number + 1, Range(from, length)};
   }
 

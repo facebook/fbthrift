@@ -17,21 +17,22 @@
 namespace cpp2 metadata.test.services
 
 include "thrift/lib/cpp2/test/metadata/typedef_test.thrift"
+include "thrift/lib/cpp2/test/metadata/simple_structs_test.thrift"
 
 exception CutoffException {
   1: string reason;
 }
 
+@simple_structs_test.Nat{data = "service"}
 service ParentService {
+  @simple_structs_test.Nat{data = "function"}
   i32 parentFun();
 }
 
 service MyTestService extends ParentService {
   list<typedef_test.Types> getAllTypes();
-  typedef_test.Types getType(
-    1: typedef_test.StringMap stringMap;
-  ) throws (
-    1: CutoffException ex;
+  typedef_test.Types getType(1: typedef_test.StringMap stringMap) throws (
+    1: CutoffException ex,
   );
   oneway void noReturn();
 }

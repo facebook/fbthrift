@@ -44,53 +44,47 @@ void t_concat_generator::generate_program() {
   init_generator();
 
   // Generate enums
-  vector<t_enum*> enums = program_->get_enums();
-  vector<t_enum*>::iterator en_iter;
-  for (en_iter = enums.begin(); en_iter != enums.end(); ++en_iter) {
-    generate_enum(*en_iter);
+  for (const auto* tenum : program_->enums()) {
+    generate_enum(tenum);
   }
 
-  vector<t_struct*> objects = program_->get_objects();
+  auto objects = program_->objects();
 
   // Generate forward declarations. Typedefs may use these
-  for (auto& object : objects) {
+  for (const auto* object : objects) {
     generate_forward_declaration(object);
   }
 
   // Generate typedefs
-  vector<t_typedef*> typedefs = program_->get_typedefs();
-  vector<t_typedef*>::iterator td_iter;
-  for (td_iter = typedefs.begin(); td_iter != typedefs.end(); ++td_iter) {
-    generate_typedef(*td_iter);
+  for (const auto* ttypedef : program_->typedefs()) {
+    generate_typedef(ttypedef);
   }
 
   // Validate unions
-  vector<t_struct*>::iterator o_iter;
-  for (o_iter = objects.begin(); o_iter != objects.end(); ++o_iter) {
-    if ((*o_iter)->is_union()) {
-      validate_union_members(*o_iter);
+  for (const auto* object : objects) {
+    if (object->is_union()) {
+      validate_union_members(object);
     }
   }
 
   // Generate constants
-  vector<t_const*> consts = program_->get_consts();
+  auto consts = program_->consts();
   generate_consts(consts);
 
   // Generate structs, exceptions, and unions in declared order
-  for (o_iter = objects.begin(); o_iter != objects.end(); ++o_iter) {
-    if ((*o_iter)->is_xception()) {
-      generate_xception(*o_iter);
+  for (const auto* object : objects) {
+    if (object->is_xception()) {
+      generate_xception(object);
     } else {
-      generate_struct(*o_iter);
+      generate_struct(object);
     }
   }
 
   // Generate services
-  vector<t_service*> services = program_->get_services();
-  vector<t_service*>::iterator sv_iter;
-  for (sv_iter = services.begin(); sv_iter != services.end(); ++sv_iter) {
-    service_name_ = get_service_name(*sv_iter);
-    generate_service(*sv_iter);
+  auto services = program_->services();
+  for (const auto* tservice : program_->services()) {
+    service_name_ = get_service_name(tservice);
+    generate_service(tservice);
   }
 
   // Close the generator
@@ -111,9 +105,8 @@ string t_concat_generator::escape_string(const string& in) const {
 }
 
 void t_concat_generator::generate_consts(vector<t_const*> consts) {
-  vector<t_const*>::iterator c_iter;
-  for (c_iter = consts.begin(); c_iter != consts.end(); ++c_iter) {
-    generate_const(*c_iter);
+  for (const auto* tconst : consts) {
+    generate_const(tconst);
   }
 }
 
@@ -138,17 +131,15 @@ void t_concat_generator::generate_docstring_comment(
 }
 
 std::string t_concat_generator::generate_structural_id(
-    const vector<t_field*>& members) {
+    const t_struct* tstruct) {
   // Generate a string that contains all the members' information:
   // key, name, type and req.
   vector<std::string> fields_str;
-  std::string delimiter = ",";
-  vector<t_field*>::const_iterator m_iter;
-  for (m_iter = members.begin(); m_iter != members.end(); ++m_iter) {
+  constexpr auto delim = ",";
+  for (const auto& field : tstruct->fields()) {
     std::stringstream ss_field;
-    ss_field << (*m_iter)->get_key() << delimiter << (*m_iter)->get_name()
-             << delimiter << (*m_iter)->get_type()->get_name() << delimiter
-             << (int)((*m_iter)->get_req());
+    ss_field << field.id() << delim << field.name() << delim
+             << field.type()->get_name() << delim << (int)(field.get_req());
     fields_str.push_back(ss_field.str());
   }
 
@@ -181,11 +172,12 @@ std::string t_concat_generator::generate_structural_id(
 }
 
 void t_concat_generator::validate_union_members(const t_struct* tstruct) {
-  for (const auto& mem : tstruct->get_members()) {
-    if (mem->get_req() == t_field::T_REQUIRED ||
-        mem->get_req() == t_field::T_OPTIONAL) {
-      throw "compiler error: Union field " + tstruct->get_name() + "." +
-          mem->get_name() + " cannot be required or optional";
+  for (const auto& field : tstruct->fields()) {
+    if (field.get_req() == t_field::e_req::required ||
+        field.get_req() == t_field::e_req::optional) {
+      throw std::runtime_error(
+          "compiler error: Union field " + tstruct->get_name() + "." +
+          field.name() + " cannot be required or optional");
     }
   }
 }

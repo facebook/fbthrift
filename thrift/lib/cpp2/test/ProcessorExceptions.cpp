@@ -44,9 +44,7 @@ using apache::thrift::TApplicationException;
 
 class SampleServiceHandler : public SampleServiceSvIf {
  public:
-  int32_t return42(const MyArgs&, int32_t) override {
-    return 42;
-  }
+  int32_t return42(const MyArgs&, int32_t) override { return 42; }
 };
 
 std::shared_ptr<ThriftServer> getServer() {
@@ -76,8 +74,9 @@ int32_t call_return42(std::function<void(MyArgs2&)> isset_cb) {
   args.li_ref() = {inner};
   args.mi_ref() = {{11, inner}};
   args.complex_key_ref() = {{inner, 11}};
-  args.i_ref()->__isset.i = (*args.li_ref())[0].__isset.i =
-      (*args.mi_ref())[11].__isset.i = true;
+  args.i_ref()->i_ref().ensure();
+  (*args.li_ref())[0].i_ref().ensure();
+  (*args.mi_ref())[11].i_ref().ensure();
   MyArgs2 all_is_set(args);
   isset_cb(args);
 
@@ -99,61 +98,74 @@ TEST(ProcessorExceptionTest, ok_if_required_set) {
 
 TEST(ProcessorExceptionTest, throw_if_scalar_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { a.__isset.s = false; }),
+      call_return42(
+          [](MyArgs2& a) { apache::thrift::unset_unsafe(a.s_ref()); }),
       TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_inner_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { a.__isset.i = false; }),
+      call_return42(
+          [](MyArgs2& a) { apache::thrift::unset_unsafe(a.i_ref()); }),
       TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_inner_field_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { a.i_ref()->__isset.i = false; }),
+      call_return42(
+          [](MyArgs2& a) { apache::thrift::unset_unsafe(a.i_ref()->i_ref()); }),
       TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_list_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { a.__isset.l = false; }),
+      call_return42(
+          [](MyArgs2& a) { apache::thrift::unset_unsafe(a.l_ref()); }),
       TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { a.__isset.m = false; }),
+      call_return42(
+          [](MyArgs2& a) { apache::thrift::unset_unsafe(a.m_ref()); }),
       TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_list_of_struct_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { a.__isset.li = false; }),
+      call_return42(
+          [](MyArgs2& a) { apache::thrift::unset_unsafe(a.li_ref()); }),
       TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_list_inner_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { (*a.li_ref())[0].__isset.i = false; }),
+      call_return42([](MyArgs2& a) {
+        apache::thrift::unset_unsafe((*a.li_ref())[0].i_ref());
+      }),
       TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_of_struct_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { a.__isset.mi = false; }),
+      call_return42(
+          [](MyArgs2& a) { apache::thrift::unset_unsafe(a.mi_ref()); }),
       TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_inner_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { (*a.mi_ref())[11].__isset.i = false; }),
+      call_return42([](MyArgs2& a) {
+        apache::thrift::unset_unsafe((*a.mi_ref())[11].i_ref());
+      }),
       TApplicationException);
 }
 
 TEST(ProcessorExceptionTest, throw_if_map_key_required_missing) {
   EXPECT_THROW(
-      call_return42([](MyArgs2& a) { a.__isset.complex_key = false; }),
+      call_return42([](MyArgs2& a) {
+        apache::thrift::unset_unsafe(a.complex_key_ref());
+      }),
       TApplicationException);
 }
 
@@ -185,7 +197,7 @@ TEST(ProcessorExceptionTest, throw_if_map_key_inner_required_missing) {
   EXPECT_THROW(
       call_return42([](MyArgs2& a) {
         std::pair<Inner2, int> elem = *a.complex_key_ref()->cbegin();
-        elem.first.__isset.i = false;
+        apache::thrift::unset_unsafe(elem.first.i_ref());
         a.complex_key_ref()->clear();
         a.complex_key_ref()->insert(elem);
       }),

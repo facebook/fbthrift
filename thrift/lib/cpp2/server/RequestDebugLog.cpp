@@ -32,9 +32,7 @@ const folly::RequestToken& getToken() {
 
 class RequestDebugLog : public folly::RequestData {
  public:
-  bool hasCallback() override {
-    return false;
-  }
+  bool hasCallback() override { return false; }
 
   template <typename T>
   void appendEntry(T&& msg) {
@@ -104,16 +102,22 @@ void appendRequestDebugLog(const std::string& msg) {
 }
 
 std::vector<std::string> collectRequestDebugLog(
-    const RequestsRegistry::DebugStub& stub) {
-  auto rctx = stub.getRequestContext();
-  if (rctx == nullptr) {
-    return {};
-  }
+    std::shared_ptr<folly::RequestContext> rctx) {
   auto log = dynamic_cast<RequestDebugLog*>(rctx->getContextData(getToken()));
   if (log == nullptr) {
     return {};
   }
   return log->getEntries();
 }
+
+std::vector<std::string> collectRequestDebugLog(
+    const RequestsRegistry::DebugStub& stub) {
+  auto rctx = stub.getRequestContext();
+  if (rctx == nullptr) {
+    return {};
+  }
+  return collectRequestDebugLog(std::move(rctx));
+}
+
 } // namespace thrift
 } // namespace apache

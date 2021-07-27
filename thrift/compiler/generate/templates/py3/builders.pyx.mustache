@@ -25,11 +25,11 @@ cdef class {{struct:name}}_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _{{#program:py3Namespaces}}{{value}}_{{/program:py3Namespaces}}{{program:name}}_types.{{struct:name}}
 
     def __iter__(self):
-        {{^struct:fields?}}
+        {{^struct:py3_fields?}}
         pass
-        {{/struct:fields?}}
-        {{#struct:fields}}
+        {{/struct:py3_fields?}}
+        {{#struct:py3_fields}}
         yield "{{field:py_name}}", self.{{field:py_name}}
-        {{/struct:fields}}
+        {{/struct:py3_fields}}
 
 {{/program:structs}}

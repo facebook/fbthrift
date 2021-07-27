@@ -142,9 +142,7 @@ class TOutput {
     f_ = function;
   }
 
-  inline void operator()(const char* message) {
-    f_(message);
-  }
+  inline void operator()(const char* message) { f_(message); }
 
   // It is important to have a const char* overload here instead of
   // just the string version, otherwise errno could be corrupted
@@ -179,17 +177,13 @@ extern TOutput GlobalOutput;
  * Base class for all Thrift exceptions.
  * Should never be instantiated, only caught.
  */
-class TException : public std::exception {
+class FOLLY_EXPORT TException : public std::exception {
  public:
   TException() {}
   TException(TException&&) noexcept {}
   TException(const TException&) {}
-  TException& operator=(const TException&) {
-    return *this;
-  }
-  TException& operator=(TException&&) {
-    return *this;
-  }
+  TException& operator=(const TException&) { return *this; }
+  TException& operator=(TException&&) { return *this; }
 };
 
 /**
@@ -197,7 +191,7 @@ class TException : public std::exception {
  * from the generated code.  This class should not be thrown by user code.
  * Instances of this class are not meant to be serialized.
  */
-class TLibraryException : public TException {
+class FOLLY_EXPORT TLibraryException : public TException {
  public:
   TLibraryException() {}
 
@@ -217,6 +211,42 @@ class TLibraryException : public TException {
 
  protected:
   std::string message_;
+};
+
+class FOLLY_EXPORT AppBaseError : public std::runtime_error {
+ public:
+  AppBaseError(const std::string& name, const std::string& what)
+      : std::runtime_error(what), name_(name) {}
+
+  AppBaseError(std::string&& name, std::string&& what)
+      : std::runtime_error(what), name_(std::move(name)) {}
+
+  virtual const char* name() const noexcept { return name_.c_str(); }
+
+  virtual bool isClientError() const noexcept = 0;
+
+ private:
+  std::string name_;
+};
+
+class FOLLY_EXPORT AppServerError : public AppBaseError {
+ public:
+  using AppBaseError::AppBaseError;
+
+  bool isClientError() const noexcept override { return false; }
+};
+
+class FOLLY_EXPORT AppClientError : public AppBaseError {
+ public:
+  using AppBaseError::AppBaseError;
+
+  bool isClientError() const noexcept override { return true; }
+};
+
+class FOLLY_EXPORT RequestParsingError : public std::runtime_error {
+ public:
+  explicit RequestParsingError(const std::string& what)
+      : std::runtime_error(what) {}
 };
 
 } // namespace thrift

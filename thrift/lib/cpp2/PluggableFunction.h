@@ -55,14 +55,10 @@ struct PluggableFunctionTag {};
 class PluggableFunctionMetadata;
 
 PluggableFunctionMetadata* registerPluggableFunction(
-    folly::StringPiece name,
-    std::type_index functionTag,
-    intptr_t defaultImpl);
+    folly::StringPiece name, std::type_index functionTag, intptr_t defaultImpl);
 
 void setPluggableFunction(
-    folly::StringPiece name,
-    std::type_index functionTag,
-    intptr_t impl);
+    folly::StringPiece name, std::type_index functionTag, intptr_t impl);
 
 intptr_t getPluggableFunction(PluggableFunctionMetadata* metadata);
 
@@ -105,14 +101,13 @@ struct SetterPluggableFunction {
 
 template <typename Ret, typename... Args>
 auto registerPluggableFunction(
-    folly::StringPiece name,
-    Ret (*defaultImpl)(Args...)) {
-  return detail::PluggableFunction(name, defaultImpl);
+    folly::StringPiece name, Ret (*defaultImpl)(Args...)) {
+  return apache::thrift::detail::PluggableFunction(name, defaultImpl);
 }
 
 template <typename Ret, typename... Args>
 auto setPluggableFunction(folly::StringPiece name, Ret (*impl)(Args...)) {
-  return detail::SetterPluggableFunction(name, impl);
+  return apache::thrift::detail::SetterPluggableFunction(name, impl);
 }
 
 #define THRIFT_PLUGGABLE_FUNC(_name) THRIFT__PLUGGABLE_FUNC_##_name

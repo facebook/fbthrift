@@ -16,9 +16,14 @@
 
 #pragma once
 
+#include <chrono>
+#include <memory>
 #include <optional>
+#include <string_view>
 #include <unordered_set>
+#include <variant>
 
+#include <folly/container/F14Map.h>
 #include <folly/io/async/AsyncServerSocket.h>
 #include <folly/io/async/AsyncTransport.h>
 #include <folly/io/async/EventBase.h>
@@ -27,6 +32,8 @@
 #include <folly/net/NetworkSocket.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp2/security/FizzPeeker.h>
+#include <thrift/lib/cpp2/server/IOWorkerContext.h>
+#include <thrift/lib/cpp2/server/MemoryTracker.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/peeking/TLSHelper.h>
@@ -48,7 +55,8 @@ class ThriftServer;
  * connection to a Cpp2Worker running in another thread.  There should
  * typically be around one Cpp2Worker thread per core.
  */
-class Cpp2Worker : public wangle::Acceptor,
+class Cpp2Worker : public IOWorkerContext,
+                   public wangle::Acceptor,
                    private wangle::PeekingAcceptorHandshakeHelper::PeekCallback,
                    public std::enable_shared_from_this<Cpp2Worker> {
  protected:
@@ -79,6 +87,13 @@ class Cpp2Worker : public wangle::Acceptor,
     return worker;
   }
 
+  static std::shared_ptr<Cpp2Worker> createDummy(folly::EventBase* eventBase) {
+    std::shared_ptr<Cpp2Worker> worker(new Cpp2Worker(nullptr, {}));
+    worker->Acceptor::init(nullptr, eventBase);
+    worker->IOWorkerContext::init(*eventBase);
+    return worker;
+  }
+
   void init(
       folly::AsyncServerSocket* serverSocket,
       folly::EventBase* eventBase,
@@ -87,6 +102,7 @@ class Cpp2Worker : public wangle::Acceptor,
       override {
     securityProtocolCtxManager_.addPeeker(this);
     Acceptor::init(serverSocket, eventBase, stats, fizzContext);
+    IOWorkerContext::init(*eventBase);
   }
 
   /*
@@ -100,16 +116,12 @@ class Cpp2Worker : public wangle::Acceptor,
    *
    * @returns pointer to ThriftServer
    */
-  ThriftServer* getServer() const {
-    return server_;
-  }
+  ThriftServer* getServer() const { return server_; }
 
   /**
    * Get a shared_ptr of this Cpp2Worker.
    */
-  std::shared_ptr<Cpp2Worker> getWorkerShared() {
-    return shared_from_this();
-  }
+  std::shared_ptr<Cpp2Worker> getWorkerShared() { return shared_from_this(); }
 
   /**
    * SSL stats hook
@@ -121,20 +133,15 @@ class Cpp2Worker : public wangle::Acceptor,
       const folly::exception_wrapper& ex) noexcept override;
 
   void handleHeader(
-      folly::AsyncTransport::UniquePtr sock,
-      const folly::SocketAddress* addr);
+      folly::AsyncTransport::UniquePtr sock, const folly::SocketAddress* addr);
 
-  RequestsRegistry* getRequestsRegistry() const {
-    return requestsRegistry_;
-  }
+  RequestsRegistry* getRequestsRegistry() const { return requestsRegistry_; }
 
-  bool isStopping() {
-    return stopping_;
-  }
+  bool isStopping() const { return stopping_.load(std::memory_order_relaxed); }
 
   struct ActiveRequestsDecrement {
     void operator()(Cpp2Worker* worker) {
-      if (--worker->activeRequests_ == 0 && worker->stopping_) {
+      if (--worker->activeRequests_ == 0 && worker->isStopping()) {
         worker->stopBaton_.post();
       }
     }
@@ -143,19 +150,107 @@ class Cpp2Worker : public wangle::Acceptor,
       std::unique_ptr<Cpp2Worker, ActiveRequestsDecrement>;
   ActiveRequestsGuard getActiveRequestsGuard();
 
+  class PerServiceMetadata {
+   public:
+    explicit PerServiceMetadata(
+        AsyncProcessorFactory& processorFactory,
+        AsyncProcessorFactory::CreateMethodMetadataResult&& methods)
+        : processorFactory_(processorFactory), methods_(std::move(methods)) {}
+
+    /**
+     * AsyncProcessorFactory::createMethodMetadata is not implemented.
+     */
+    using MetadataNotImplemented = std::monostate;
+    /**
+     * The service metadata contained an entry for the provided method name.
+     * Otherwise, if the metadata is WildcardMethodMetadataMap, then this is a
+     * reference to a WildcardMethodMetadata object.
+     *
+     * This aligns with the contracts of MethodMetadataMap and
+     * WildcardMethodMetadataMap.
+     */
+    struct MetadataFound {
+      const AsyncProcessorFactory::MethodMetadata& metadata;
+    };
+    /**
+     * The service metadata did not contain an entry for the provided method
+     * name. This should result in an unknown method error.
+     */
+    struct MetadataNotFound {};
+
+    /**
+     * The result type of findMethod() below.
+     */
+    using FindMethodResult =
+        std::variant<MetadataNotImplemented, MetadataFound, MetadataNotFound>;
+    /**
+     * Looks up the provided method name in the metadata map.
+     *
+     * This returns a valid metadata object per the contract established by
+     * AsyncProcessorFactory::createMethodMetadata.
+     *
+     * This returns MetadataNotFound iff no valid metadata exists. That means
+     * that an unknown method error should be sent.
+     *
+     * This returns MetadataNotImplemented iff the service does not support the
+     * createMethodMetadata() API.
+     */
+    FindMethodResult findMethod(std::string_view methodName) const;
+
+    /**
+     * Extracts the base request context from the service based on the result of
+     * findMethod().
+     * This returns nullptr iff no metadata was found or createMethodMetadata()
+     * is not implemented.
+     */
+    std::shared_ptr<folly::RequestContext> getBaseContextForRequest(
+        const FindMethodResult&) const;
+
+   private:
+    AsyncProcessorFactory& processorFactory_;
+    AsyncProcessorFactory::CreateMethodMetadataResult methods_;
+  };
+  /**
+   * Gets the per-IO-thread metadata stored per-service. The metadata is lazily
+   * created and the same object is returned for subsequent calls that pass the
+   * same service.
+   */
+  PerServiceMetadata& getMetadataForService(
+      AsyncProcessorFactory& processorFactory) const {
+    getEventBase()->dcheckIsInEventBaseThread();
+    if (auto metadata =
+            folly::get_ptr(perServiceMetadata_, &processorFactory)) {
+      return *metadata;
+    }
+    auto [metadata, _] = perServiceMetadata_.emplace(
+        &processorFactory,
+        PerServiceMetadata{
+            processorFactory, processorFactory.createMethodMetadata()});
+    return metadata->second;
+  }
+
  protected:
   Cpp2Worker(
       ThriftServer* server,
       DoNotUse /* ignored, never call constructor directly */)
-      : Acceptor(server->getServerSocketConfig()),
+      : Acceptor(
+            server ? server->getServerSocketConfig()
+                   : wangle::ServerSocketConfig()),
         wangle::PeekingAcceptorHandshakeHelper::PeekCallback(kPeekCount),
         server_(server),
         activeRequests_(0) {
-    setGracefulShutdownTimeout(server->workersJoinTimeout_);
+    if (server) {
+      // Leave enough headroom to close connections ungracefully before the
+      // worker join timeout expires.
+      constexpr auto kGracefulTimeoutHeadroom = std::chrono::milliseconds{500};
+      setGracefulShutdownTimeout(std::max(
+          server->getWorkersJoinTimeout() - kGracefulTimeoutHeadroom,
+          std::chrono::milliseconds::zero()));
+    }
   }
 
   void construct(
-      ThriftServer*,
+      ThriftServer* server,
       const std::shared_ptr<HeaderServerChannel>& serverChannel,
       folly::EventBase* eventBase,
       std::shared_ptr<const fizz::server::FizzServerContext> fizzContext) {
@@ -179,6 +274,23 @@ class Cpp2Worker : public wangle::Acceptor,
         eventBase->setObserver(observer);
       });
     }
+
+    // We distribute the memory limit averaged out over all IO workers. This
+    // avoids the need to synchronize memory usage counts with other IO threads.
+    // folly::AsyncServerSocket hands out connections to IO workers in a
+    // round-robin manner so we should expect a roughly uniform distribution of
+    // payload sizes.
+    ingressMemoryTracker_ = std::make_unique<MemoryTracker>(
+        folly::observer::makeObserver([server]() -> size_t {
+          return **server->getIngressMemoryLimitObserver() /
+              server->getNumIOWorkerThreads();
+        }),
+        server->getMinPayloadSizeToEnforceIngressMemoryLimitObserver());
+    egressMemoryTracker_ = std::make_unique<MemoryTracker>(
+        folly::observer::makeObserver([server]() -> size_t {
+          return **server->getEgressMemoryLimitObserver() /
+              server->getNumIOWorkerThreads();
+        }));
   }
 
   void onNewConnection(
@@ -201,7 +313,7 @@ class Cpp2Worker : public wangle::Acceptor,
   void requestStop();
 
   // returns false if timed out due to deadline
-  bool waitForStop(std::chrono::system_clock::time_point deadline);
+  bool waitForStop(std::chrono::steady_clock::time_point deadline);
 
   virtual wangle::AcceptorHandshakeHelper::UniquePtr createSSLHelper(
       const std::vector<uint8_t>& bytes,
@@ -212,6 +324,9 @@ class Cpp2Worker : public wangle::Acceptor,
   wangle::DefaultToFizzPeekingCallback* getFizzPeeker() override {
     return &fizzPeeker_;
   }
+
+  MemoryTracker& getIngressMemoryTracker() { return *ingressMemoryTracker_; }
+  MemoryTracker& getEgressMemoryTracker() { return *egressMemoryTracker_; }
 
  private:
   /// The mother ship.
@@ -224,24 +339,24 @@ class Cpp2Worker : public wangle::Acceptor,
   // Connections which are kept alive by in-flight requests
   std::shared_ptr<ThriftServer> duplexServer_;
 
-  folly::AsyncSocket::UniquePtr makeNewAsyncSocket(
-      folly::EventBase* base,
-      int fd) override {
-    return folly::AsyncSocket::UniquePtr(
-        new folly::AsyncSocket(base, folly::NetworkSocket::fromFd(fd)));
-  }
+  // We expect to have one processor factory per InterfaceKind. Using F14NodeMap
+  // guarantees reference stability.
+  mutable folly::F14NodeMap<AsyncProcessorFactory*, PerServiceMetadata>
+      perServiceMetadata_;
 
   folly::AsyncSSLSocket::UniquePtr makeNewAsyncSSLSocket(
       const std::shared_ptr<folly::SSLContext>& ctx,
       folly::EventBase* base,
-      int fd) override {
+      int fd,
+      const folly::SocketAddress* peerAddress) override {
     return folly::AsyncSSLSocket::UniquePtr(
         new apache::thrift::async::TAsyncSSLSocket(
             ctx,
             base,
             folly::NetworkSocket::fromFd(fd),
             true, /* set server */
-            true /* defer the security negotiation until sslAccept. */));
+            true /* defer the security negotiation until sslAccept. */,
+            peerAddress));
   }
 
   /**
@@ -250,10 +365,14 @@ class Cpp2Worker : public wangle::Acceptor,
   void useExistingChannel(
       const std::shared_ptr<HeaderServerChannel>& serverChannel);
 
+  void cancelQueuedRequests();
+
   uint32_t activeRequests_;
   RequestsRegistry* requestsRegistry_;
-  bool stopping_{false};
+  std::atomic<bool> stopping_{false};
   folly::Baton<> stopBaton_;
+  std::unique_ptr<MemoryTracker> ingressMemoryTracker_;
+  std::unique_ptr<MemoryTracker> egressMemoryTracker_;
 
   void initRequestsRegistry();
 
@@ -267,9 +386,7 @@ class Cpp2Worker : public wangle::Acceptor,
     return server_->isPlaintextAllowedOnLoopback();
   }
 
-  SSLPolicy getSSLPolicy() {
-    return server_->getSSLPolicy();
-  }
+  SSLPolicy getSSLPolicy() { return server_->getSSLPolicy(); }
 
   bool shouldPerformSSL(
       const std::vector<uint8_t>& bytes,

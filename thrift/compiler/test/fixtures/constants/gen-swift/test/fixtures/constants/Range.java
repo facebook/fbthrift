@@ -23,14 +23,13 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Range", builder=Range.Builder.class)
-public final class Range {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="Range", builder=Range.Builder.class)
+public final class Range implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Range(
-        @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED) final int min,
-        @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED) final int max
+        @com.facebook.swift.codec.ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED) final int min,
+        @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED) final int max
     ) {
         this.min = min;
         this.max = max;
@@ -43,12 +42,11 @@ public final class Range {
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private int min = 0;
         private int max = 0;
     
-        @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
+        @com.facebook.swift.codec.ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
         public Builder setMin(int min) {
             this.min = min;
             return this;
@@ -56,7 +54,7 @@ public final class Range {
     
         public int getMin() { return min; }
     
-            @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
+            @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
         public Builder setMax(int max) {
             this.max = max;
             return this;
@@ -76,7 +74,6 @@ public final class Range {
                 this.min,
                 this.max
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -97,24 +94,12 @@ public final class Range {
       FIELD_METADATA.put(2, MAX_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=1, name="min", requiredness=Requiredness.REQUIRED)
     public int getMin() { return min; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMin() {
-        return __isset_bit_vector.get(_MIN);
-    }
     
     
-    @ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
+    @com.facebook.swift.codec.ThriftField(value=2, name="max", requiredness=Requiredness.REQUIRED)
     public int getMax() { return max; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetMax() {
-        return __isset_bit_vector.get(_MAX);
-    }
     
     @java.lang.Override
     public String toString() {
@@ -149,6 +134,10 @@ public final class Range {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Range> asReader() {
+      return Range::read0;
+    }
     
     public static Range read0(TProtocol oprot) throws TException {
       TField __field;
@@ -196,4 +185,11 @@ public final class Range {
       oprot.writeStructEnd();
     }
     
+    private static class _RangeLazy {
+        private static final Range _DEFAULT = new Range.Builder().build();
+    }
+    
+    public static Range defaultInstance() {
+        return  _RangeLazy._DEFAULT;
+    }
 }

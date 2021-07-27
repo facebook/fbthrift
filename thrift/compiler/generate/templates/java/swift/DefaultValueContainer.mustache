@@ -26,9 +26,9 @@
 
 
 }}{{#type:typedef?}}{{!
-    }}{{#type:isMapKey?}}{{#type:typedefType}}{{type:setIsMapKey}}{{> DefaultValueContainer}}{{/type:typedefType}}{{/type:isMapKey?}}{{!
-    }}{{#type:isMapValue?}}{{#type:typedefType}}{{type:setIsMapValue}}{{> DefaultValueContainer}}{{/type:typedefType}}{{/type:isMapValue?}}{{!
-    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedefType}}{{> DefaultValueContainer}}{{/type:typedefType}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapKey?}}{{#type:typedef_type}}{{type:setIsMapKey}}{{> DefaultValueContainer}}{{/type:typedef_type}}{{/type:isMapKey?}}{{!
+    }}{{#type:isMapValue?}}{{#type:typedef_type}}{{type:setIsMapValue}}{{> DefaultValueContainer}}{{/type:typedef_type}}{{/type:isMapValue?}}{{!
+    }}{{^type:isMapKey?}}{{^type:isMapValue?}}{{#type:typedef_type}}{{> DefaultValueContainer}}{{/type:typedef_type}}{{/type:isMapValue?}}{{/type:isMapKey?}}{{!
 }}{{/type:typedef?}}{{!
 }}{{^type:typedef?}}{{!
 }}{{#type:map?}}{{!
@@ -38,29 +38,29 @@
       }}{{^field:isFirstDepth?}} new {{type:javaType}}();{{/field:isFirstDepth?}}{{/type:javaType}}{{!
       }}{{!
 
-    }}{{#value:mapElements}}
+    }}{{#value:map_elements}}
         { {{field:setIsNested}}{{!
-        }}{{#element:key}}{{#type:keyType}}{{!
+        }}{{#element:key}}{{#type:key_type}}{{!
 
         }}{{#type:isContainer?}}{{> Type}} _key{{field:nestedDepth}};{{type:setIsMapKey}}
         {{field:nestedDepth++}}{{> DefaultValueContainer}}{{field:nestedDepth--}}
         {{/type:isContainer?}}{{!
         }}{{^type:isContainer?}}{{> Type}} _key{{field:nestedDepth}} = {{> DefaultValue}};{{!
-        }}{{/type:isContainer?}}{{/type:keyType}}{{!
+        }}{{/type:isContainer?}}{{/type:key_type}}{{!
         }}{{/element:key}}{{!
 
-        }}{{#element:value}}{{#type:valueType}}{{!
+        }}{{#element:value}}{{#type:value_type}}{{!
         }}{{#type:isContainer?}}{{type:setIsMapValue}}
         {{> Type}} _val{{field:nestedDepth}};
         {{field:nestedDepth++}}{{> DefaultValueContainer}}{{field:nestedDepth--}}{{!
         }}{{/type:isContainer?}}{{!
         }}{{^type:isContainer?}}
         {{> Type}} _val{{field:nestedDepth}} = {{> DefaultValue}};{{!
-        }}{{/type:isContainer?}}{{/type:valueType}}{{/element:value}}{{!
+        }}{{/type:isContainer?}}{{/type:value_type}}{{/element:value}}{{!
 
         }}
         _objRef{{field:nestedDepth}}.put(_key{{field:nestedDepth}}, _val{{field:nestedDepth}}); }{{!
-        }}{{/value:mapElements}}{{!
+        }}{{/value:map_elements}}{{!
         }}{{!
         }}{{^field:isFirstDepth?}}
         {{#type:isMapKey?}}_key{{field:prevNestedDepth}} = _objRef{{field:nestedDepth}};{{/type:isMapKey?}}{{!
@@ -78,12 +78,12 @@
       }}{{^field:isFirstDepth?}} new {{type:javaType}}();{{/field:isFirstDepth?}}{{/type:javaType}}{{!
       }}{{!
 
-      }}{{#value:listElements}}
+      }}{{#value:list_elements}}
         { {{field:setIsNested}}{{!
-        }}{{#type:listElemType}}{{!
+        }}{{#type:list_elem_type}}{{!
         }}{{#type:isContainer?}}{{field:nestedDepth++}}{{> DefaultValueContainer}}{{field:nestedDepth--}}{{/type:isContainer?}}{{!
         }}{{^type:isContainer?}}_objRef{{field:nestedDepth}}.add({{> DefaultValue}});{{/type:isContainer?}}{{!
-        }}{{/type:listElemType}} }{{/value:listElements}}{{!
+        }}{{/type:list_elem_type}} }{{/value:list_elements}}{{!
         }}{{!
         }}{{^field:isFirstDepth?}}
         {{#type:isMapKey?}}_key{{field:prevNestedDepth}} = _objRef{{field:nestedDepth}};{{/type:isMapKey?}}{{!
@@ -101,12 +101,12 @@
       }}{{^field:isFirstDepth?}} new {{type:javaType}}();{{/field:isFirstDepth?}}{{/type:javaType}}{{!
       }}{{!
 
-      }}{{#value:listElements}}
+      }}{{#value:list_elements}}
         { {{field:setIsNested}}{{!
-        }}{{#type:setElemType}}{{!
+        }}{{#type:set_elem_type}}{{!
         }}{{#type:isContainer?}}{{field:nestedDepth++}}{{> DefaultValueContainer}}{{field:nestedDepth--}}{{/type:isContainer?}}{{!
         }}{{^type:isContainer?}}_objRef{{field:nestedDepth}}.add({{> DefaultValue}});{{/type:isContainer?}}{{!
-        }}{{/type:setElemType}} }{{/value:listElements}}{{!
+        }}{{/type:set_elem_type}} }{{/value:list_elements}}{{!
         }}{{!
 
         }}{{^field:isFirstDepth?}}

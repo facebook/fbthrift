@@ -36,24 +36,23 @@ namespace thrift {
 template <typename Output>
 struct diff_output_callback {
   diff_output_callback(
-      Output& out,
-      folly::StringPiece lhs,
-      folly::StringPiece rhs)
+      Output& out, folly::StringPiece lhs, folly::StringPiece rhs)
       : out_(out), lhs_(lhs), rhs_(rhs) {}
 
-  template <typename T>
+  template <typename TC, typename T>
   void operator()(
+      TC,
       T const* lhs,
       T const* rhs,
       folly::StringPiece path,
       folly::StringPiece) const {
     out_ << path << ":\n";
     if (lhs) {
-      pretty_print(out_, *lhs, "  ", lhs_.str());
+      pretty_print<TC>(out_, *lhs, "  ", lhs_.str());
       out_ << "\n";
     }
     if (rhs) {
-      pretty_print(out_, *rhs, "  ", rhs_.str());
+      pretty_print<TC>(out_, *rhs, "  ", rhs_.str());
       out_ << "\n";
     }
   }

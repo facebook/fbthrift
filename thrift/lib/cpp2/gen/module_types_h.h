@@ -21,7 +21,7 @@
 #include <memory>
 #include <type_traits>
 
-#include <thrift/lib/cpp2/OptionalField.h>
+#include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
@@ -30,6 +30,10 @@
 
 #include <folly/CPortability.h>
 #include <folly/Traits.h>
+
+#ifdef SWIG
+#error SWIG
+#endif
 
 //  all members are logically private to fbthrift; external use is deprecated
 //
@@ -149,34 +153,8 @@ FOLLY_ERASE wrapped_struct_argument<A, T&&> wrap_struct_argument(T&& value) {
   return wrapped_struct_argument<A, T&&>(static_cast<T&&>(value));
 }
 
-template <typename A, bool>
-struct assign_isset_;
-template <typename A>
-struct assign_isset_<A, false> {
-  template <typename S>
-  FOLLY_ERASE constexpr bool operator()(S&, bool b) const noexcept {
-    return b;
-  }
-};
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-template <typename A>
-struct assign_isset_<A, true> {
-  template <typename S>
-  FOLLY_ERASE constexpr auto operator()(S& s, bool b) const
-      noexcept(noexcept(access_field<A>{}(s.__isset) = b))
-          -> decltype(access_field<A>{}(s.__isset) = b) {
-    return access_field<A>{}(s.__isset) = b;
-  }
-};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-template <typename A, typename S>
-using assign_isset =
-    assign_isset_<A, folly::is_invocable_v<assign_isset_<A, true>, S&, bool>>;
-
 template <typename F, typename T>
-FOLLY_ERASE void assign_struct_field(F& f, T&& t) {
+FOLLY_ERASE void assign_struct_field(F f, T&& t) {
   f = static_cast<T&&>(t);
 }
 template <typename F, typename T>
@@ -190,27 +168,41 @@ FOLLY_ERASE void assign_struct_field(std::shared_ptr<F>& f, T&& t) {
 
 template <typename S, typename... A, typename... T>
 FOLLY_ERASE constexpr S make_constant(
-    type_class::structure,
-    wrapped_struct_argument<A, T>... arg) {
+    type_class::structure, wrapped_struct_argument<A, T>... arg) {
   using _ = int[];
   S s;
-  void(_{0, (void(assign_isset<A, S>{}(s, true)), 0)...});
-  void(_{0,
-         (void(assign_struct_field(
-              invoke_reffer_thru_or_access_field<A>{}(s),
-              static_cast<T>(arg.ref))),
-          0)...});
+  void(
+      _{0,
+        (void(assign_struct_field(
+             invoke_reffer<A>{}(s), static_cast<T>(arg.ref))),
+         0)...});
   return s;
 }
 
 template <typename S, typename... A, typename... T>
 FOLLY_ERASE constexpr S make_constant(
-    type_class::variant,
-    wrapped_struct_argument<A, T>... arg) {
+    type_class::variant, wrapped_struct_argument<A, T>... arg) {
   using _ = int[];
   S s;
   void(_{0, (void(invoke_setter<A>{}(s, static_cast<T>(arg.ref))), 0)...});
   return s;
+}
+
+template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
+constexpr bool operator!=(const T& lhs, const T& rhs) {
+  return !(lhs == rhs);
+}
+template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
+constexpr bool operator>(const T& lhs, const T& rhs) {
+  return rhs < lhs;
+}
+template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
+constexpr bool operator<=(const T& lhs, const T& rhs) {
+  return !(rhs < lhs);
+}
+template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
+constexpr bool operator>=(const T& lhs, const T& rhs) {
+  return !(lhs < rhs);
 }
 
 } // namespace detail

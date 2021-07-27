@@ -64,13 +64,7 @@ static dynamic kDynamics[] = {
     dynamic::array(nullptr),
     dynamic::array(0),
     dynamic::array(
-        nullptr,
-        0,
-        false,
-        0.0,
-        "",
-        dynamic::array(),
-        dynamic::object()),
+        nullptr, 0, false, 0.0, "", dynamic::array(), dynamic::object()),
     dynamic::array(
         1,
         true,
@@ -164,6 +158,4 @@ TEST_P(RoundtripTestFixture, SerializeOverHandler) {
 }
 
 INSTANTIATE_TEST_CASE_P(
-    All,
-    RoundtripTestFixture,
-    ::testing::ValuesIn(kDynamics));
+    All, RoundtripTestFixture, ::testing::ValuesIn(kDynamics));

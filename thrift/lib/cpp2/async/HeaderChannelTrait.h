@@ -29,61 +29,8 @@ namespace thrift {
  */
 class HeaderChannelTrait {
  public:
-  HeaderChannelTrait();
-  virtual ~HeaderChannelTrait() {}
-
-  // If clients is nullptr, a security policy of THRIFT_SECURITY_DISABLED
-  // will be used.
-  void setSupportedClients(std::bitset<CLIENT_TYPES_LEN> const* clients);
-  bool isSupportedClient(CLIENT_TYPE ct);
-  void checkSupportedClient(CLIENT_TYPE ct);
-
-  void setClientType(CLIENT_TYPE ct);
-  // Force using specified client type when using legacy client types
-  void forceClientType(bool enable) {
-    forceClientType_ = enable;
-  }
-  bool getForceClientType() {
-    return forceClientType_;
-  }
-  CLIENT_TYPE getClientType() {
-    return clientType_;
-  }
-  void updateClientType(CLIENT_TYPE ct);
-
-  uint16_t getFlags() const {
-    return flags_;
-  }
-  void setFlags(uint16_t flags) {
-    flags_ = flags;
-  }
-
-  void setTransform(uint16_t transId) {
-    for (auto& trans : writeTrans_) {
-      if (trans == transId) {
-        return;
-      }
-    }
-    writeTrans_.push_back(transId);
-  }
-
-  void setWriteTransforms(const std::vector<uint16_t>& trans) {
-    writeTrans_ = trans;
-  }
-
-  const std::vector<uint16_t>& getWriteTransforms() const {
-    return writeTrans_;
-  }
-
- private:
-  uint16_t flags_;
-
-  CLIENT_TYPE clientType_{THRIFT_HEADER_CLIENT_TYPE};
-  CLIENT_TYPE prevClientType_{THRIFT_HEADER_CLIENT_TYPE};
-  bool forceClientType_{false};
-  std::bitset<CLIENT_TYPES_LEN> supported_clients;
-
-  std::vector<uint16_t> writeTrans_;
+  static bool isSupportedClient(CLIENT_TYPE ct);
+  static void checkSupportedClient(CLIENT_TYPE ct);
 };
 } // namespace thrift
 } // namespace apache

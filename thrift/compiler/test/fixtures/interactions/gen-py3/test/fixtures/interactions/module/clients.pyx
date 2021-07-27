@@ -29,12 +29,19 @@ import thrift.py3.types
 cimport thrift.py3.types
 import thrift.py3.client
 cimport thrift.py3.client
-from thrift.py3.common cimport RpcOptions as __RpcOptions
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    cThriftServiceContext as __fbthrift_cThriftServiceContext,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    ServiceMetadata,
+    extractMetadataFromServiceContext,
+    MetadataBox as __MetadataBox,
+)
 
 from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
-cimport folly.iobuf as __iobuf
-import folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
+import folly.iobuf as _fbthrift_iobuf
 from folly.iobuf cimport move as move_iobuf
 cimport cython
 
@@ -44,13 +51,115 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
 import test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
+from thrift.py3.stream cimport cResponseAndClientBufferedStream, cClientBufferedStream
 
 cimport test.fixtures.interactions.module.services_reflection as _services_reflection
 
 from test.fixtures.interactions.module.clients_wrapper cimport cMyServiceAsyncClient, cMyServiceClientWrapper
+from test.fixtures.interactions.module.clients_wrapper cimport cMyServiceClientWrapper_MyInteractionInteractionWrapper
+from test.fixtures.interactions.module.clients_wrapper cimport cMyServiceClientWrapper_MyInteractionFastInteractionWrapper
+from test.fixtures.interactions.module.clients_wrapper cimport cMyServiceClientWrapper_SerialInteractionInteractionWrapper
 
 
 cdef void MyService_foo_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_MyInteraction_frobnicate_callback(
+    cFollyTry[cint32_t]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException[_test_fixtures_interactions_module_types.cCustomException]():
+        try:
+            exc = _test_fixtures_interactions_module_types.CustomException.create(try_make_shared_exception[_test_fixtures_interactions_module_types.cCustomException](result.exception()))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+        else:
+            pyfuture.set_exception(exc)
+    elif result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(result.value())
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_MyInteraction_ping_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_MyInteraction_truthify_callback(
+    cFollyTry[cClientBufferedStream[cbool]]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_test_fixtures_interactions_module_types.ClientBufferedStream__bool.create(result.value(), options))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_MyInteractionFast_frobnicate_callback(
+    cFollyTry[cint32_t]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(result.value())
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_MyInteractionFast_ping_callback(
+    cFollyTry[cFollyUnit]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(None)
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_MyInteractionFast_truthify_callback(
+    cFollyTry[cClientBufferedStream[cbool]]&& result,
+    PyObject* userdata
+):
+    client, pyfuture, options = <object> userdata  
+    if result.hasException():
+        pyfuture.set_exception(create_py_exception(result.exception(), <__RpcOptions>options))
+    else:
+        try:
+            pyfuture.set_result(_test_fixtures_interactions_module_types.ClientBufferedStream__bool.create(result.value(), options))
+        except Exception as ex:
+            pyfuture.set_exception(ex.with_traceback(None))
+
+cdef void MyService_SerialInteraction_frobnicate_callback(
     cFollyTry[cFollyUnit]&& result,
     PyObject* userdata
 ):
@@ -101,7 +210,204 @@ cdef class MyService(thrift.py3.client.Client):
         return asyncio_shield(__future)
 
 
+    def createMyInteraction(
+            MyService self
+    ):
+        interaction = MyService_MyInteraction()
+        bridgeFutureWith[unique_ptr[cClientWrapper]](
+            interaction._executor,
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).createMyInteraction(),
+            thrift.py3.client.interactions_callback,
+            <PyObject *> interaction
+        )
+        return interaction
+
+    def createMyInteractionFast(
+            MyService self
+    ):
+        interaction = MyService_MyInteractionFast()
+        bridgeFutureWith[unique_ptr[cClientWrapper]](
+            interaction._executor,
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).createMyInteractionFast(),
+            thrift.py3.client.interactions_callback,
+            <PyObject *> interaction
+        )
+        return interaction
+
+    def createSerialInteraction(
+            MyService self
+    ):
+        interaction = MyService_SerialInteraction()
+        bridgeFutureWith[unique_ptr[cClientWrapper]](
+            interaction._executor,
+            down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).createSerialInteraction(),
+            thrift.py3.client.interactions_callback,
+            <PyObject *> interaction
+        )
+        return interaction
+
     @classmethod
     def __get_reflection__(cls):
         return _services_reflection.get_reflection__MyService(for_clients=True)
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        cdef __fbthrift_cThriftServiceContext context
+        ServiceMetadata[_services_reflection.cMyServiceSvIf].gen(meta, context)
+        extractMetadataFromServiceContext(meta, context)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.MyService"
+
+@cython.auto_pickle(False)
+cdef class MyService_MyInteraction(thrift.py3.client.Client):
+
+    @cython.always_allow_keywords(True)
+    def frobnicate(
+            MyService_MyInteraction self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cint32_t](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper_MyInteractionInteractionWrapper, cClientWrapper](self._client.get()).frobnicate(rpc_options._cpp_obj, 
+            ),
+            MyService_MyInteraction_frobnicate_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def ping(
+            MyService_MyInteraction self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper_MyInteractionInteractionWrapper, cClientWrapper](self._client.get()).ping(rpc_options._cpp_obj, 
+            ),
+            MyService_MyInteraction_ping_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def truthify(
+            MyService_MyInteraction self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cClientBufferedStream[cbool]](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper_MyInteractionInteractionWrapper, cClientWrapper](self._client.get()).truthify(rpc_options._cpp_obj, 
+            ),
+            MyService_MyInteraction_truthify_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+@cython.auto_pickle(False)
+cdef class MyService_MyInteractionFast(thrift.py3.client.Client):
+
+    @cython.always_allow_keywords(True)
+    def frobnicate(
+            MyService_MyInteractionFast self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cint32_t](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper_MyInteractionFastInteractionWrapper, cClientWrapper](self._client.get()).frobnicate(rpc_options._cpp_obj, 
+            ),
+            MyService_MyInteractionFast_frobnicate_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def ping(
+            MyService_MyInteractionFast self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper_MyInteractionFastInteractionWrapper, cClientWrapper](self._client.get()).ping(rpc_options._cpp_obj, 
+            ),
+            MyService_MyInteractionFast_ping_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+    @cython.always_allow_keywords(True)
+    def truthify(
+            MyService_MyInteractionFast self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cClientBufferedStream[cbool]](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper_MyInteractionFastInteractionWrapper, cClientWrapper](self._client.get()).truthify(rpc_options._cpp_obj, 
+            ),
+            MyService_MyInteractionFast_truthify_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
+
+@cython.auto_pickle(False)
+cdef class MyService_SerialInteraction(thrift.py3.client.Client):
+
+    @cython.always_allow_keywords(True)
+    def frobnicate(
+            MyService_SerialInteraction self,
+            __RpcOptions rpc_options=None
+    ):
+        if rpc_options is None:
+            rpc_options = <__RpcOptions>__RpcOptions.__new__(__RpcOptions)
+        self._check_connect_future()
+        __loop = asyncio_get_event_loop()
+        __future = __loop.create_future()
+        __userdata = (self, __future, rpc_options)
+        bridgeFutureWith[cFollyUnit](
+            self._executor,
+            down_cast_ptr[cMyServiceClientWrapper_SerialInteractionInteractionWrapper, cClientWrapper](self._client.get()).frobnicate(rpc_options._cpp_obj, 
+            ),
+            MyService_SerialInteraction_frobnicate_callback,
+            <PyObject *> __userdata
+        )
+        return asyncio_shield(__future)
 

@@ -49,7 +49,7 @@ std::string t_scope::join_strings_by_commas(std::set<std::string> strs) {
                             : joined_str.substr(0, joined_str.size() - 2);
 }
 
-void t_scope::add_constant(std::string name, t_const* constant) {
+void t_scope::add_constant(std::string name, const t_const* constant) {
   if (constant && constant->get_value()->is_enum()) {
     const std::string& enum_value_name =
         constant->get_value()->get_enum_value()->get_name();

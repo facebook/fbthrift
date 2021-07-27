@@ -32,12 +32,6 @@ using namespace apache::thrift;
 DEFINE_int32(port, 1234, "server port");
 DEFINE_int64(num_threads, 4, "number of worker threads");
 DEFINE_int64(num_queue_threads, 4, "number of task queue threads");
-DEFINE_int64(
-    num_ssl_handshake_threads,
-    0,
-    "number of ssl handshake threads. Default is 0, which indicates no "
-    "additional threads will be spawned to handle SSL handshakes; "
-    "handshakes will instead be performed in the acceptor thread");
 DEFINE_int32(max_conn_pool_size, 0, "maximum size of idle connection pool");
 DEFINE_int32(idle_timeout, 0, "idle timeout (in milliseconds)");
 DEFINE_int32(task_timeout, 0, "task timeout (in milliseconds)");
@@ -56,9 +50,7 @@ DEFINE_string(client_ca_list, "", "file pointing to a client CA or list");
 DEFINE_string(ticket_seeds, "", "server Ticket seeds file");
 DEFINE_bool(queue_sends, true, "Queue sends for better throughput");
 DEFINE_string(
-    ecc_curve,
-    "prime256v1",
-    "The ECC curve to use for EC handshakes");
+    ecc_curve, "prime256v1", "The ECC curve to use for EC handshakes");
 DEFINE_bool(enable_tfo, true, "Enable TFO");
 DEFINE_int32(tfo_queue_size, 1000, "TFO queue size");
 
@@ -102,7 +94,6 @@ int main(int argc, char* argv[]) {
   server->setPort(FLAGS_port);
   server->setNumIOWorkerThreads(FLAGS_num_threads);
   server->setNumCPUWorkerThreads(FLAGS_num_queue_threads);
-  server->setNumSSLHandshakeWorkerThreads(FLAGS_num_ssl_handshake_threads);
   server->setMaxRequests(FLAGS_max_requests);
   server->setQueueSends(FLAGS_queue_sends);
   server->setFastOpenOptions(FLAGS_enable_tfo, FLAGS_tfo_queue_size);
@@ -115,7 +106,7 @@ int main(int argc, char* argv[]) {
     server->setSSLConfig(sslContext);
   }
   if (!FLAGS_ticket_seeds.empty()) {
-    server->watchTicketPathForChanges(FLAGS_ticket_seeds, true);
+    server->watchTicketPathForChanges(FLAGS_ticket_seeds);
   } else {
     // Generate random seeds to use for all workers.  If no seeds are set, then
     // each worker gets its own random seeds, so session resumptions fail across

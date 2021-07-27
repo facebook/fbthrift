@@ -16,13 +16,15 @@
 
 namespace java.swift test.fixtures.stream
 
-exception FooEx { }
+exception FooEx {
+}
 
 service PubSubStreamingService {
   stream<i32> returnstream(1: i32 i32_from, 2: i32 i32_to);
   stream<i32 throws (1: FooEx e)> streamthrows(1: i32 foo);
-  stream<i32 throws (1: FooEx e)> boththrows(1: i32 foo) throws(1: FooEx e);
-  i32, stream<i32 throws (1: FooEx e)> responseandstreamthrows(1: i32 foo)
-    throws(1: FooEx e);
-  stream<i32> returnstreamFast(1: i32 i32_from, 2: i32 i32_to) (thread='eb');
+  stream<i32 throws (1: FooEx e)> boththrows(1: i32 foo) throws (1: FooEx e);
+  i32, stream<i32 throws (1: FooEx e)> responseandstreamthrows(
+    1: i32 foo,
+  ) throws (1: FooEx e);
+  stream<i32> returnstreamFast(1: i32 i32_from, 2: i32 i32_to) (thread = 'eb');
 }

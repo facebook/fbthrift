@@ -21,11 +21,10 @@ import org.apache.thrift.meta_data.FieldMetaData;
 import org.apache.thrift.meta_data.FieldValueMetaData;
 
 @SwiftGenerated
-@ThriftStruct("emptyXcep")
-public final class EmptyXcep extends java.lang.Exception {
+@com.facebook.swift.codec.ThriftStruct("emptyXcep")
+public final class EmptyXcep extends java.lang.Exception implements com.facebook.thrift.payload.ThriftSerializable {
     private static final long serialVersionUID = 1L;
 
-    private BitSet __isset_bit_vector = new BitSet();
 
     public static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     public static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -40,7 +39,6 @@ public final class EmptyXcep extends java.lang.Exception {
     
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
     
     public Builder() { }
@@ -51,12 +49,15 @@ public final class EmptyXcep extends java.lang.Exception {
         public EmptyXcep build() {
             EmptyXcep result = new EmptyXcep (
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
     
 
+    
+    public static com.facebook.thrift.payload.Reader<EmptyXcep> asReader() {
+      return EmptyXcep::read0;
+    }
     
     public static EmptyXcep read0(TProtocol oprot) throws TException {
       TField __field;

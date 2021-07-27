@@ -16,35 +16,35 @@
 
 namespace cpp thrift.test.debug
 namespace py thrift.test.UnionTest
-namespace java thrift.test
+namespace java thrift.test.union
 
 struct OneOfEach {
   // make at least one field of a struct contained in a union required
   // to test exception handling in union code
-  1: required bool im_true,
-  2: bool im_false,
-  3: byte a_bite = 100,
-  4: i16 integer16 = 23000,
-  5: i32 integer32,
-  6: i64 integer64 = 10000000000,
-  7: double double_precision,
-  8: string some_characters,
-  9: string zomg_unicode,
-  10: bool what_who,
-  11: binary base64,
-  12: list<byte> byte_list = [1, 2, 3],
-  13: list<i16> i16_list = [1,2,3],
-  14: list<i64> i64_list = [1,2,3]
+  1: required bool im_true;
+  2: bool im_false;
+  3: byte a_bite = 100;
+  4: i16 integer16 = 23000;
+  5: i32 integer32;
+  6: i64 integer64 = 10000000000;
+  7: double double_precision;
+  8: string some_characters;
+  9: string zomg_unicode;
+  10: bool what_who;
+  11: binary base64;
+  12: list<byte> byte_list = [1, 2, 3];
+  13: list<i16> i16_list = [1, 2, 3];
+  14: list<i64> i64_list = [1, 2, 3];
 }
 
 struct RandomStuff {
-  1: i32 a,
-  2: i32 b,
-  3: i32 c,
-  4: i32 d,
-  5: list<i32> myintlist,
-  7: i64 bigint,
-  8: double triple,
+  1: i32 a;
+  2: i32 b;
+  3: i32 c;
+  4: i32 d;
+  5: list<i32> myintlist;
+  7: i64 bigint;
+  8: double triple;
 }
 
 union TestUnion {
@@ -60,7 +60,7 @@ union TestUnion {
 
 struct StructWithAUnion {
   1: TestUnion test_union;
-  2: TestUnion test_union_ref (cpp.ref = "true"),
+  2: TestUnion test_union_ref (cpp.ref = "true");
 }
 
 struct StructWithUnionAndOther {
@@ -69,17 +69,12 @@ struct StructWithUnionAndOther {
 }
 
 const list<StructWithUnionAndOther> NESTED = [
-  {
-    "test_union": {
-      "i32_field": 3,
-    },
-  },
-  {
-    "string_field": "hello",
-  },
-  {
-    "test_union": {
-      "other_i32_field": 4,
-    },
-  },
+  {"test_union": {"i32_field": 3}},
+  {"string_field": "hello"},
+  {"test_union": {"other_i32_field": 4}},
 ];
+
+struct StructWithDoubleUnderscoreField {
+  1: i32 __field;
+  2: i32 field;
+}

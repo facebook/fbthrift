@@ -30,6 +30,7 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
+// TODO(afuller): Replace usage with ast_visitor and remove.
 class visitor {
  public:
   virtual ~visitor() = default;

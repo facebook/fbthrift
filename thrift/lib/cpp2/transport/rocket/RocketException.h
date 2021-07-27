@@ -29,7 +29,7 @@ namespace apache {
 namespace thrift {
 namespace rocket {
 
-class RocketException : public std::exception {
+class FOLLY_EXPORT RocketException : public std::exception {
  public:
   explicit RocketException(ErrorCode errorCode)
       : rsocketErrorCode_(errorCode) {}
@@ -45,13 +45,9 @@ class RocketException : public std::exception {
       : rsocketErrorCode_(other.rsocketErrorCode_),
         errorData_(other.errorData_ ? other.errorData_->clone() : nullptr) {}
 
-  ErrorCode getErrorCode() const noexcept {
-    return rsocketErrorCode_;
-  }
+  ErrorCode getErrorCode() const noexcept { return rsocketErrorCode_; }
 
-  const char* what() const noexcept override {
-    return "RocketException";
-  }
+  const char* what() const noexcept override { return "RocketException"; }
 
   std::unique_ptr<folly::IOBuf> moveErrorData() {
     return std::move(errorData_);

@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp2/transport/rocket/test/util/TestUtil.h>
+
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/transport/core/testutil/TAsyncSocketIntercepted.h>
 
@@ -27,9 +28,10 @@ namespace thrift {
 std::unique_ptr<ThriftServer> TestSetup::createServer(
     std::shared_ptr<AsyncProcessorFactory> processorFactory,
     uint16_t& port,
-    int maxRequests) {
+    int maxRequests,
+    std::string transport) {
   // override the default
-  FLAGS_transport = "rocket"; // client's transport
+  FLAGS_transport = transport; // client's transport
   observer_ = std::make_shared<FakeServerObserver>();
 
   auto server = std::make_unique<ThriftServer>();
@@ -83,11 +85,8 @@ TestSetup::connectToServer(
           socketSetup(*static_cast<TAsyncSocketIntercepted*>(socket.get()));
         }
 
-        auto channel = [&]() -> std::unique_ptr<
-                                 ClientChannel,
-                                 folly::DelayedDestruction::Destructor> {
-          return RocketClientChannel::newChannel(std::move(socket));
-        }();
+        ClientChannel::Ptr channel =
+            RocketClientChannel::newChannel(std::move(socket));
 
         if (onDetachable) {
           channel->setOnDetachable(std::move(onDetachable));

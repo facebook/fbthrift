@@ -23,6 +23,7 @@
 #include <folly/Try.h>
 #include <folly/executors/GlobalExecutor.h>
 #include <thrift/lib/cpp2/async/ClientBufferedStream.h>
+#include <thrift/lib/cpp2/async/RpcTypes.h>
 #include <thrift/lib/cpp2/async/ServerGeneratorStream.h>
 #include <thrift/lib/cpp2/async/ServerPublisherStream.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
@@ -41,8 +42,17 @@ class ServerStream {
  public:
 #if FOLLY_HAS_COROUTINES
   /* implicit */ ServerStream(folly::coro::AsyncGenerator<T&&>&& gen)
-      : fn_(apache::thrift::detail::ServerGeneratorStream::fromAsyncGenerator(
-            std::move(gen))) {}
+      : fn_(apache::thrift::detail::ServerGeneratorStream::
+                fromAsyncGenerator<false, T>(std::move(gen))) {}
+
+  using PayloadAndHeader =
+      apache::thrift::detail::ServerGeneratorStream::PayloadAndHeader<T>;
+  /* implicit */ ServerStream(
+      folly::coro::AsyncGenerator<PayloadAndHeader&&>&& gen)
+      : fn_(apache::thrift::detail::ServerGeneratorStream::
+                fromAsyncGenerator<true, T>(std::move(gen))) {}
+
+  using promise_type = folly::coro::detail::AsyncGeneratorPromise<T&&, T>;
 #endif
 
   // Completion callback is optional
@@ -72,8 +82,8 @@ class ServerStream {
       "conditions in production code.")]] //
   ClientBufferedStream<T>
   toClientStreamUnsafeDoNotUse(
-      folly::EventBase* evb = folly::getEventBase(),
-      size_t bufferSize = 100) &&;
+      folly::EventBase* evb = folly::getUnsafeMutableGlobalEventBase(),
+      int32_t bufferSize = 100) &&;
 
   apache::thrift::detail::ServerStreamFactory operator()(
       folly::Executor::KeepAlive<> serverExecutor,
@@ -99,7 +109,7 @@ struct ResponseAndServerStream {
   ServerStream<StreamElement> stream;
 };
 struct ResponseAndServerStreamFactory {
-  folly::IOBufQueue response;
+  apache::thrift::LegacySerializedResponse response;
   apache::thrift::detail::ServerStreamFactory stream;
 };
 

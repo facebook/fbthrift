@@ -11,3 +11,107 @@
 
 #include "thrift/compiler/test/fixtures/interactions/gen-cpp2/module_data.h"
 
+
+namespace apache {
+namespace thrift {
+namespace detail {
+
+void TccStructTraits<::cpp2::CustomException>::translateFieldName(
+    folly::StringPiece _fname,
+    int16_t& fid,
+    apache::thrift::protocol::TType& _ftype) noexcept {
+  using data = apache::thrift::TStructDataStorage<::cpp2::CustomException>;
+  static const st::translate_field_name_table table{
+      data::fields_size,
+      data::fields_names.data(),
+      data::fields_ids.data(),
+      data::fields_types.data()};
+  st::translate_field_name(_fname, fid, _ftype, table);
+}
+
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
+namespace cpp2 {
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CustomException::CustomException(const CustomException&) = default;
+CustomException& CustomException::operator=(const CustomException&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CustomException::CustomException() {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+CustomException::~CustomException() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CustomException::CustomException(CustomException&& other) noexcept  :
+    message(std::move(other.message)),
+    __isset(other.__isset) {}
+CustomException& CustomException::operator=(FOLLY_MAYBE_UNUSED CustomException&& other) noexcept {
+    this->message = std::move(other.message);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+CustomException::CustomException(apache::thrift::FragileConstructor, ::std::string message__arg) :
+    message(std::move(message__arg)) {
+  __isset.message = true;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+void CustomException::__clear() {
+  // clear all fields
+  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset = {};
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+bool CustomException::operator==(const CustomException& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.message_ref() == rhs.message_ref())) {
+    return false;
+  }
+  return true;
+}
+
+bool CustomException::operator<(const CustomException& rhs) const {
+  (void)rhs;
+  auto& lhs = *this;
+  (void)lhs;
+  if (!(lhs.message_ref() == rhs.message_ref())) {
+    return lhs.message_ref() < rhs.message_ref();
+  }
+  return false;
+}
+
+
+void swap(CustomException& a, CustomException& b) {
+  using ::std::swap;
+  swap(a.message_ref().value(), b.message_ref().value());
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  swap(a.__isset, b.__isset);
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+}
+
+template void CustomException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
+template uint32_t CustomException::write<>(apache::thrift::BinaryProtocolWriter*) const;
+template uint32_t CustomException::serializedSize<>(apache::thrift::BinaryProtocolWriter const*) const;
+template uint32_t CustomException::serializedSizeZC<>(apache::thrift::BinaryProtocolWriter const*) const;
+template void CustomException::readNoXfer<>(apache::thrift::CompactProtocolReader*);
+template uint32_t CustomException::write<>(apache::thrift::CompactProtocolWriter*) const;
+template uint32_t CustomException::serializedSize<>(apache::thrift::CompactProtocolWriter const*) const;
+template uint32_t CustomException::serializedSizeZC<>(apache::thrift::CompactProtocolWriter const*) const;
+
+
+
+} // cpp2

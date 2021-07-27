@@ -47,6 +47,8 @@ TEST(ThriftTypesTest, Bool) {
   EXPECT_TRUE(is_concrete_type_v<tag>);
   IsSameType<tag::native_type, bool>();
   IsSameType<tag::native_types, detail::types<bool>>();
+  EXPECT_EQ(toTType(BaseType::Bool), TType::T_BOOL);
+  EXPECT_EQ(toThriftBaseType(TType::T_BOOL), BaseType::Bool);
 }
 
 TEST(ThriftTypesTest, Byte) {
@@ -67,6 +69,8 @@ TEST(ThriftTypesTest, Byte) {
   EXPECT_TRUE(is_concrete_type_v<tag>);
   IsSameType<tag::native_type, int8_t>();
   IsSameType<tag::native_types, detail::types<int8_t, uint8_t>>();
+  EXPECT_EQ(toTType(BaseType::Byte), TType::T_BYTE);
+  EXPECT_EQ(toThriftBaseType(TType::T_BYTE), BaseType::Byte);
 }
 
 TEST(ThriftTypesTest, I16) {
@@ -87,6 +91,8 @@ TEST(ThriftTypesTest, I16) {
   EXPECT_TRUE(is_concrete_type_v<tag>);
   IsSameType<tag::native_type, int16_t>();
   IsSameType<tag::native_types, detail::types<int16_t, uint16_t>>();
+  EXPECT_EQ(toTType(BaseType::I16), TType::T_I16);
+  EXPECT_EQ(toThriftBaseType(TType::T_I16), BaseType::I16);
 }
 
 TEST(ThriftTypesTest, I32) {
@@ -107,6 +113,8 @@ TEST(ThriftTypesTest, I32) {
   EXPECT_TRUE(is_concrete_type_v<tag>);
   IsSameType<tag::native_type, int32_t>();
   IsSameType<tag::native_types, detail::types<int32_t, uint32_t>>();
+  EXPECT_EQ(toTType(BaseType::I32), TType::T_I32);
+  EXPECT_EQ(toThriftBaseType(TType::T_I32), BaseType::I32);
 }
 
 TEST(ThriftTypesTest, I64) {
@@ -127,6 +135,8 @@ TEST(ThriftTypesTest, I64) {
   EXPECT_TRUE(is_concrete_type_v<tag>);
   IsSameType<tag::native_type, int64_t>();
   IsSameType<tag::native_types, detail::types<int64_t, uint64_t>>();
+  EXPECT_EQ(toTType(BaseType::I64), TType::T_I64);
+  EXPECT_EQ(toThriftBaseType(TType::T_I64), BaseType::I64);
 }
 
 TEST(ThriftTypesTest, Enum) {
@@ -149,11 +159,12 @@ TEST(ThriftTypesTest, Enum) {
 
   using tag_t = type::enum_t<BaseType>;
   EXPECT_EQ(tag_t::kBaseType, BaseType::Enum);
-  EXPECT_EQ(tag_t::getName(), "object.BaseType");
+  EXPECT_EQ(tag_t::getName(), "type.BaseType");
   EXPECT_TRUE(is_concrete_type_v<tag_t>);
   IsSameType<tag_t::native_type, BaseType>();
   IsSameType<tag_t::native_types, detail::types<BaseType>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
+  EXPECT_EQ(toTType(BaseType::Enum), TType::T_I32);
 }
 
 TEST(ThriftTypesTest, Float) {
@@ -174,6 +185,8 @@ TEST(ThriftTypesTest, Float) {
   EXPECT_TRUE(is_concrete_type_v<tag>);
   IsSameType<tag::native_type, float>();
   IsSameType<tag::native_types, detail::types<float>>();
+  EXPECT_EQ(toTType(BaseType::Float), TType::T_FLOAT);
+  EXPECT_EQ(toThriftBaseType(TType::T_FLOAT), BaseType::Float);
 }
 
 TEST(ThriftTypesTest, Double) {
@@ -194,6 +207,8 @@ TEST(ThriftTypesTest, Double) {
   EXPECT_TRUE(is_concrete_type_v<tag>);
   IsSameType<tag::native_type, double>();
   IsSameType<tag::native_types, detail::types<double>>();
+  EXPECT_EQ(toTType(BaseType::Double), TType::T_DOUBLE);
+  EXPECT_EQ(toThriftBaseType(TType::T_DOUBLE), BaseType::Double);
 }
 
 TEST(ThriftTypesTest, String) {
@@ -216,6 +231,8 @@ TEST(ThriftTypesTest, String) {
   IsSameType<
       tag::native_types,
       detail::types<std::string, std::string_view, folly::StringPiece>>();
+  EXPECT_EQ(toTType(BaseType::String), TType::T_UTF8);
+  EXPECT_EQ(toThriftBaseType(TType::T_UTF8), BaseType::String);
 }
 
 TEST(ThriftTypesTest, Binary) {
@@ -238,6 +255,8 @@ TEST(ThriftTypesTest, Binary) {
   IsSameType<
       tag::native_types,
       detail::types<std::string, folly::IOBuf, folly::ByteRange>>();
+  EXPECT_EQ(toTType(BaseType::Binary), TType::T_STRING);
+  EXPECT_EQ(toThriftBaseType(TType::T_STRING), BaseType::Binary);
 }
 
 TEST(ThriftTypesTest, Struct) {
@@ -264,6 +283,8 @@ TEST(ThriftTypesTest, Struct) {
   IsSameType<tag_t::native_type, Object>();
   IsSameType<tag_t::native_types, detail::types<Object>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
+  EXPECT_EQ(toTType(BaseType::Struct), TType::T_STRUCT);
+  EXPECT_EQ(toThriftBaseType(TType::T_STRUCT), BaseType::Struct);
 }
 
 TEST(ThriftTypesTest, Union) {
@@ -290,6 +311,7 @@ TEST(ThriftTypesTest, Union) {
   IsSameType<tag_t::native_type, Value>();
   IsSameType<tag_t::native_types, detail::types<Value>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
+  EXPECT_EQ(toTType(BaseType::Union), TType::T_STRUCT);
 }
 
 TEST(ThriftTypesTest, Exeption) {
@@ -308,6 +330,8 @@ TEST(ThriftTypesTest, Exeption) {
   EXPECT_EQ(tag::kBaseType, BaseType::Exception);
   EXPECT_EQ(tag::getName(), "exception");
   EXPECT_FALSE(is_concrete_type_v<tag>);
+
+  EXPECT_EQ(toTType(BaseType::Exception), TType::T_STRUCT);
 
   // TODO(afuller): Add a test exception and test the concrete form.
 }
@@ -347,6 +371,8 @@ TEST(ThriftTypesTest, List) {
           std::vector<std::string_view>,
           std::vector<folly::StringPiece>>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
+  EXPECT_EQ(toTType(BaseType::List), TType::T_LIST);
+  EXPECT_EQ(toThriftBaseType(TType::T_LIST), BaseType::List);
 }
 
 TEST(ThriftTypesTest, Set) {
@@ -384,6 +410,8 @@ TEST(ThriftTypesTest, Set) {
           std::set<std::string_view>,
           std::set<folly::StringPiece>>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
+  EXPECT_EQ(toTType(BaseType::Set), TType::T_SET);
+  EXPECT_EQ(toThriftBaseType(TType::T_SET), BaseType::Set);
 }
 
 TEST(ThriftTypesTest, Map) {
@@ -430,6 +458,9 @@ TEST(ThriftTypesTest, Map) {
       tag_t::native_types,
       detail::types<std::map<int16_t, int32_t>, std::map<int16_t, uint32_t>>>();
   EXPECT_TRUE(all_types::contains<tag_t>);
+
+  EXPECT_EQ(toTType(BaseType::Map), TType::T_MAP);
+  EXPECT_EQ(toThriftBaseType(TType::T_MAP), BaseType::Map);
 }
 
 TEST(ThriftTypesTest, ConcreteType_Bound) {

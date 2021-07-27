@@ -28,6 +28,7 @@
 #include <folly/Optional.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
+#include <folly/container/View.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 #include <thrift/lib/cpp2/TypeClass.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -39,6 +40,7 @@ namespace thrift {
 namespace detail {
 
 using FieldID = std::int16_t;
+
 // MSVC cannot reinterpret_cast an overloaded function to another function
 // pointer, but piping the function through an identity function before
 // reinterpret_cast works.
@@ -82,9 +84,10 @@ template <typename T>
 using maybe_get_element_type_t = typename maybe_get_element_type<T>::type;
 
 enum class StringFieldType {
+  String,
+  Binary,
   IOBuf,
   IOBufPtr,
-  String,
 };
 
 struct FieldInfo {
@@ -148,31 +151,6 @@ FOLLY_ERASE const StructInfo& toStructInfo(
   return reinterpret_cast<const StructInfo&>(templatizedInfo);
 }
 
-struct MapFieldExt {
-  const TypeInfo* keyInfo;
-  const TypeInfo* valInfo;
-  std::uint32_t (*size)(const void* object);
-  void (*consumeElem)(
-      const void* context,
-      void* object,
-      void (*keyReader)(const void* context, void* key),
-      void (*valueReader)(const void* context, void* val));
-  void (*readMap)(
-      const void* context,
-      void* object,
-      std::uint32_t mapSize,
-      void (*keyReader)(const void* context, void* key),
-      void (*valueReader)(const void* context, void* val));
-  size_t (*writeMap)(
-      const void* context,
-      const void* object,
-      bool protocolSortKeys,
-      size_t (*writer)(
-          const void* context,
-          const void* keyElem,
-          const void* valueElem));
-};
-
 struct ListFieldExt {
   const TypeInfo* valInfo;
   std::uint32_t (*size)(const void* object);
@@ -208,6 +186,29 @@ struct SetFieldExt {
       const void* object,
       bool protocolSortKeys,
       size_t (*writer)(const void* context, const void* val));
+};
+
+struct MapFieldExt {
+  const TypeInfo* keyInfo;
+  const TypeInfo* valInfo;
+  std::uint32_t (*size)(const void* object);
+  void (*consumeElem)(
+      const void* context,
+      void* object,
+      void (*keyReader)(const void* context, void* key),
+      void (*valueReader)(const void* context, void* val));
+  void (*readMap)(
+      const void* context,
+      void* object,
+      std::uint32_t mapSize,
+      void (*keyReader)(const void* context, void* key),
+      void (*valueReader)(const void* context, void* val));
+  size_t (*writeMap)(
+      const void* context,
+      const void* object,
+      bool protocolSortKeys,
+      size_t (*writer)(
+          const void* context, const void* keyElem, const void* valueElem));
 };
 
 template <typename ThriftUnion>
@@ -260,6 +261,16 @@ enable_if_smart_ptr_t<PtrType, OptionalThriftValue> get(const void* object) {
   return folly::none;
 }
 
+template <typename T, enable_if_not_smart_ptr_t<T, int> = 0>
+constexpr auto getDerefFuncPtr() {
+  return nullptr;
+}
+
+template <typename T, enable_if_smart_ptr_t<T, int> = 0>
+constexpr auto getDerefFuncPtr() {
+  return get<T>;
+}
+
 template <typename ObjectType>
 enable_if_not_smart_ptr_t<ObjectType, void*> set(void* object) {
   *static_cast<ObjectType*>(object) = ObjectType();
@@ -289,8 +300,7 @@ enable_if_not_smart_ptr_t<ObjectType> set(void* object, PrimitiveType val) {
 
 template <typename PtrType, typename PrimitiveType>
 std::enable_if_t<is_unique_ptr<PtrType>::value> set(
-    void* object,
-    PrimitiveType val) {
+    void* object, PrimitiveType val) {
   using Element = typename PtrType::element_type;
   *static_cast<PtrType*>(object) =
       std::make_unique<Element>(static_cast<Element>(val));
@@ -298,8 +308,7 @@ std::enable_if_t<is_unique_ptr<PtrType>::value> set(
 
 template <typename PtrType, typename PrimitiveType>
 std::enable_if_t<is_shared_ptr<PtrType>::value> set(
-    void* object,
-    PrimitiveType val) {
+    void* object, PrimitiveType val) {
   using Element = typename PtrType::element_type;
   *static_cast<PtrType*>(object) =
       std::make_shared<Element>(static_cast<Element>(val));
@@ -353,8 +362,8 @@ size_t writeSet(
     }
   } else {
     // Support containers with defined but non-FIFO iteration order.
-    using folly::order_preserving_reinsertion_view;
-    for (auto& elem : order_preserving_reinsertion_view(out)) {
+    auto get_view = folly::order_preserving_reinsertion_view_or_default;
+    for (auto const& elem : get_view(out)) {
       written += writer(context, &elem);
     }
   }
@@ -389,8 +398,8 @@ size_t writeMap(
     }
   } else {
     // Support containers with defined but non-FIFO iteration order.
-    using folly::order_preserving_reinsertion_view;
-    for (auto& elem_pair : order_preserving_reinsertion_view(out)) {
+    auto get_view = folly::order_preserving_reinsertion_view_or_default;
+    for (auto& elem_pair : get_view(out)) {
       written += writer(context, &elem_pair.first, &elem_pair.second);
     }
   }
@@ -499,45 +508,21 @@ void readList(
 
 // Specializations for numbers.
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::int8_t,
-    std::int8_t,
-    T_BYTE);
+    integral, std::int8_t, std::int8_t, T_BYTE);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::int16_t,
-    std::int16_t,
-    T_I16);
+    integral, std::int16_t, std::int16_t, T_I16);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::int32_t,
-    std::int32_t,
-    T_I32);
+    integral, std::int32_t, std::int32_t, T_I32);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::int64_t,
-    std::int64_t,
-    T_I64);
+    integral, std::int64_t, std::int64_t, T_I64);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::uint8_t,
-    std::int8_t,
-    T_BYTE);
+    integral, std::uint8_t, std::int8_t, T_BYTE);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::uint16_t,
-    std::int16_t,
-    T_I16);
+    integral, std::uint16_t, std::int16_t, T_I16);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::uint32_t,
-    std::int32_t,
-    T_I32);
+    integral, std::uint32_t, std::int32_t, T_I32);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(
-    integral,
-    std::uint64_t,
-    std::int64_t,
-    T_I64);
+    integral, std::uint64_t, std::int64_t, T_I64);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(integral, bool, bool, T_BOOL);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(floating_point, float, float, T_FLOAT);
 THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(floating_point, double, double, T_DOUBLE);
@@ -554,31 +539,15 @@ THRIFT_DEFINE_PRIMITIVE_TYPE_TO_INFO(floating_point, double, double, T_DOUBLE);
 
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(string, std::string, StringFieldType::String);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(
-    string,
-    folly::fbstring,
-    StringFieldType::String);
+    string, folly::fbstring, StringFieldType::String);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(binary, std::string, StringFieldType::String);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(
-    binary,
-    folly::fbstring,
-    StringFieldType::String);
+    binary, folly::fbstring, StringFieldType::String);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(binary, folly::IOBuf, StringFieldType::IOBuf);
 THRIFT_DEFINE_STRING_TYPE_TO_INFO(
-    binary,
-    std::unique_ptr<folly::IOBuf>,
-    StringFieldType::IOBufPtr);
+    binary, std::unique_ptr<folly::IOBuf>, StringFieldType::IOBufPtr);
 
 #undef THRIFT_DEFINE_STRING_TYPE_TO_INFO
-
-template <typename T>
-constexpr VoidFuncPtr getDerefFuncPtr(enable_if_not_smart_ptr_t<T, void*>) {
-  return nullptr;
-}
-
-template <typename T>
-constexpr VoidFuncPtr getDerefFuncPtr(enable_if_smart_ptr_t<T, void*>) {
-  return reinterpret_cast<VoidFuncPtr>(identity(get<T>));
-}
 
 // Specialization for set.
 template <typename ElemTypeClass, typename T>
@@ -601,8 +570,8 @@ const SetFieldExt TypeToInfo<type_class::set<ElemTypeClass>, T>::ext = {
 template <typename ElemTypeClass, typename T>
 const TypeInfo TypeToInfo<type_class::set<ElemTypeClass>, T>::typeInfo = {
     /* .type */ protocol::TType::T_SET,
+    /* .get */ getDerefFuncPtr<T>(),
     /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
-    /* .get */ getDerefFuncPtr<T>(nullptr),
     /* .typeExt */
     &TypeToInfo<type_class::set<ElemTypeClass>, T>::ext,
 };
@@ -626,8 +595,8 @@ const ListFieldExt TypeToInfo<type_class::list<ElemTypeClass>, T>::ext = {
 template <typename ElemTypeClass, typename T>
 const TypeInfo TypeToInfo<type_class::list<ElemTypeClass>, T>::typeInfo = {
     /* .type */ protocol::TType::T_LIST,
+    /* .get */ getDerefFuncPtr<T>(),
     /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
-    /* .get */ getDerefFuncPtr<T>(nullptr),
     /* .typeExt */ &ext,
 };
 
@@ -654,8 +623,8 @@ template <typename KeyTypeClass, typename ValTypeClass, typename T>
 const TypeInfo
     TypeToInfo<type_class::map<KeyTypeClass, ValTypeClass>, T>::typeInfo = {
         /* .type */ protocol::TType::T_MAP,
+        /* .get */ getDerefFuncPtr<T>(),
         /* .set */ reinterpret_cast<VoidFuncPtr>(set<T>),
-        /* .get */ getDerefFuncPtr<T>(nullptr),
         /* .typeExt */ &ext,
 };
 
@@ -673,8 +642,8 @@ const TypeInfo
       T,                                                                  \
       enable_if_smart_ptr_t<T>>::typeInfo = {                             \
       TypeToInfo<type_class::TypeClass, struct_type>::typeInfo.type,      \
+      get<T>,                                                             \
       reinterpret_cast<VoidFuncPtr>(set<T>),                              \
-      reinterpret_cast<VoidFuncPtr>(identity(get<T>)),                    \
       TypeToInfo<type_class::TypeClass, struct_type>::typeInfo.typeExt,   \
   }
 
@@ -698,9 +667,8 @@ THRIFT_DEFINE_STRUCT_PTR_TYPE_INFO(variant);
       TypeToInfo<type_class::TypeClass, T, enable_if_smart_ptr_t<T>>::        \
           typeInfo = {                                                        \
               TypeToInfo<type_class::TypeClass, numeric_type>::typeInfo.type, \
+              get<underlying_type, T>,                                        \
               reinterpret_cast<VoidFuncPtr>(set<T, underlying_type>),         \
-              reinterpret_cast<VoidFuncPtr>(                                  \
-                  identity(get<underlying_type, T>)),                         \
               nullptr,                                                        \
   }
 
@@ -721,8 +689,8 @@ template <class Protocol_>
 void read(Protocol_* iprot, const StructInfo& structInfo, void* object);
 
 template <class Protocol_>
-size_t
-write(Protocol_* iprot, const StructInfo& structInfo, const void* object);
+size_t write(
+    Protocol_* iprot, const StructInfo& structInfo, const void* object);
 
 } // namespace detail
 } // namespace thrift

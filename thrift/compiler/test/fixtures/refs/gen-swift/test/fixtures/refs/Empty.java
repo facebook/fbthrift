@@ -23,9 +23,8 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Empty", builder=Empty.Builder.class)
-public final class Empty {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="Empty", builder=Empty.Builder.class)
+public final class Empty implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Empty(
@@ -35,7 +34,6 @@ public final class Empty {
     
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
     
     public Builder() { }
@@ -46,7 +44,6 @@ public final class Empty {
         public Empty build() {
             Empty result = new Empty (
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -84,6 +81,10 @@ static {
     }
     
     
+    public static com.facebook.thrift.payload.Reader<Empty> asReader() {
+      return Empty::read0;
+    }
+    
     public static Empty read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(Empty.NAMES_TO_IDS, Empty.FIELD_METADATA);
@@ -108,4 +109,11 @@ static {
       oprot.writeStructEnd();
     }
     
+    private static class _EmptyLazy {
+        private static final Empty _DEFAULT = new Empty.Builder().build();
+    }
+    
+    public static Empty defaultInstance() {
+        return  _EmptyLazy._DEFAULT;
+    }
 }

@@ -16,6 +16,7 @@
 
 #include <folly/portability/GFlags.h>
 #include <folly/portability/GTest.h>
+#include <folly/test/TestUtils.h>
 
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
@@ -168,7 +169,8 @@ TEST_F(RocketCompatibilityTest, RequestResponse_ResponseSizeTooBig) {
   compatibilityTest_->TestRequestResponse_ResponseSizeTooBig();
 }
 
-TEST_F(RocketCompatibilityTest, RequestResponse_Checksumming) {
+// TODO(T90625074)
+TEST_F(RocketCompatibilityTest, DISABLED_RequestResponse_Checksumming) {
   compatibilityTest_->TestRequestResponse_Checksumming();
 }
 
@@ -186,12 +188,14 @@ TEST_F(RocketCompatibilityTest, RequestResponse_NoCompression) {
 
     auto* channel = dynamic_cast<RocketClientChannel*>(client->getChannel());
     ASSERT_NE(nullptr, channel);
-    auto sock = channel->getTransport()
-                    ->getUnderlyingTransport<TAsyncSocketIntercepted>();
-    ASSERT_NE(nullptr, sock);
-    int32_t numRead = sock->getTotalBytesRead();
-    // check that compression actually kicked in
-    EXPECT_GT(numRead, asString.size());
+    channel->getEventBase()->runInEventBaseThreadAndWait([&] {
+      auto sock = channel->getTransport()
+                      ->getUnderlyingTransport<TAsyncSocketIntercepted>();
+      ASSERT_NE(nullptr, sock);
+      int32_t numRead = sock->getTotalBytesRead();
+      // check that compression actually kicked in
+      EXPECT_GT(numRead, asString.size());
+    });
   });
 }
 

@@ -29,14 +29,40 @@ type Foo struct {
 
 func NewFoo() *Foo {
   return &Foo{
-A: 2,
-}
+    A: 2,
+  }
 }
 
 
 func (p *Foo) GetA() int64 {
   return p.A
 }
+type FooBuilder struct {
+  obj *Foo
+}
+
+func NewFooBuilder() *FooBuilder{
+  return &FooBuilder{
+    obj: NewFoo(),
+  }
+}
+
+func (p FooBuilder) Emit() *Foo{
+  return &Foo{
+    A: p.obj.A,
+  }
+}
+
+func (f *FooBuilder) A(a int64) *FooBuilder {
+  f.obj.A = a
+  return f
+}
+
+func (f *Foo) SetA(a int64) *Foo {
+  f.A = a
+  return f
+}
+
 func (p *Foo) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -71,10 +97,10 @@ func (p *Foo) Read(iprot thrift.Protocol) error {
 
 func (p *Foo)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.A = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.A = v
+  }
   return nil
 }
 

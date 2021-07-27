@@ -19,5 +19,13 @@ include "thrift/test/structs.thrift"
 namespace cpp2 apache.thrift.test
 
 struct BasicRefsSharedTerseWrites {
-  1: structs.HasInt def_field (cpp.ref),
+  1: optional structs.HasInt def_field (cpp.ref);
+  2: optional structs.HasInt shared_field (cpp.ref_type = "shared");
+  3: optional list<structs.HasInt> shared_fields (cpp.ref_type = "shared");
+  4: optional structs.HasInt shared_field_const (cpp.ref_type = "shared_const");
+  5: optional list<structs.HasInt> shared_fields_const (
+    cpp.ref_type = "shared_const",
+  );
+  6: structs.HasInt shared_field_req (cpp.ref_type = "shared");
+  7: list<structs.HasInt> shared_fields_req (cpp.ref_type = "shared");
 }

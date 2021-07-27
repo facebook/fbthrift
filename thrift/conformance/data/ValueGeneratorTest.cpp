@@ -84,8 +84,7 @@ using gtest_types_t =
 
 TYPED_TEST_CASE(ValueGeneratorTest, gtest_types_t<all_types>);
 TYPED_TEST_CASE(
-    FloatingPointGeneratorTest,
-    gtest_types_t<floating_point_types>);
+    FloatingPointGeneratorTest, gtest_types_t<floating_point_types>);
 
 TYPED_TEST(ValueGeneratorTest, UniqueKeys) {
   SCOPED_TRACE(TypeParam::getName());

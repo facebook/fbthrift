@@ -27,14 +27,13 @@ constexpr uint8_t kCompactV1ProtocolVersion = 0x01;
 } // namespace detail
 
 inline uint32_t CompactV1ProtocolWriter::writeMessageBegin(
-    const std::string& name,
-    MessageType messageType,
-    int32_t seqid) {
+    const std::string& name, MessageType messageType, int32_t seqid) {
   uint32_t wsize = 0;
   wsize += writeByte(apache::thrift::detail::compact::PROTOCOL_ID);
   wsize += writeByte(
       apache::thrift::detail::compact_v1::kCompactV1ProtocolVersion |
-      ((messageType << apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT) &
+      ((static_cast<int32_t>(messageType)
+        << apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT) &
        apache::thrift::detail::compact::TYPE_MASK));
   wsize += apache::thrift::util::writeVarint(out_, seqid);
   wsize += writeString(name);
@@ -51,9 +50,7 @@ inline uint32_t CompactV1ProtocolWriter::writeDouble(double dub) {
 }
 
 inline void CompactV1ProtocolReader::readMessageBegin(
-    std::string& name,
-    MessageType& messageType,
-    int32_t& seqid) {
+    std::string& name, MessageType& messageType, int32_t& seqid) {
   int8_t protocolId;
   int8_t versionAndType;
 
@@ -70,9 +67,8 @@ inline void CompactV1ProtocolReader::readMessageBegin(
         TProtocolException::BAD_VERSION, "Bad protocol version");
   }
 
-  messageType = (MessageType)(
-      (versionAndType & apache::thrift::detail::compact::TYPE_MASK) >>
-      apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT);
+  messageType =
+      (MessageType)((versionAndType & apache::thrift::detail::compact::TYPE_MASK) >> apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT);
   apache::thrift::util::readVarint(in_, seqid);
   readString(name);
 }

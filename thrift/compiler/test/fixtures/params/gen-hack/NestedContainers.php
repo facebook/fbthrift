@@ -240,7 +240,7 @@ trait NestedContainersClientBase {
           inout $mtype,
           inout $rseqid,
         );
-        if ($mtype == \TMessageType::EXCEPTION) {
+        if ($mtype === \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
@@ -249,7 +249,7 @@ trait NestedContainersClientBase {
         $result = NestedContainers_mapList_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
           throw new \TProtocolException("mapList failed: sequence id is out of order");
         }
       }
@@ -335,7 +335,7 @@ trait NestedContainersClientBase {
           inout $mtype,
           inout $rseqid,
         );
-        if ($mtype == \TMessageType::EXCEPTION) {
+        if ($mtype === \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
@@ -344,7 +344,7 @@ trait NestedContainersClientBase {
         $result = NestedContainers_mapSet_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
           throw new \TProtocolException("mapSet failed: sequence id is out of order");
         }
       }
@@ -432,7 +432,7 @@ trait NestedContainersClientBase {
           inout $mtype,
           inout $rseqid,
         );
-        if ($mtype == \TMessageType::EXCEPTION) {
+        if ($mtype === \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
@@ -441,7 +441,7 @@ trait NestedContainersClientBase {
         $result = NestedContainers_listMap_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
           throw new \TProtocolException("listMap failed: sequence id is out of order");
         }
       }
@@ -527,7 +527,7 @@ trait NestedContainersClientBase {
           inout $mtype,
           inout $rseqid,
         );
-        if ($mtype == \TMessageType::EXCEPTION) {
+        if ($mtype === \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
@@ -536,7 +536,7 @@ trait NestedContainersClientBase {
         $result = NestedContainers_listSet_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
           throw new \TProtocolException("listSet failed: sequence id is out of order");
         }
       }
@@ -628,7 +628,7 @@ trait NestedContainersClientBase {
           inout $mtype,
           inout $rseqid,
         );
-        if ($mtype == \TMessageType::EXCEPTION) {
+        if ($mtype === \TMessageType::EXCEPTION) {
           $x = new \TApplicationException();
           $x->read($this->input_);
           $this->input_->readMessageEnd();
@@ -637,7 +637,7 @@ trait NestedContainersClientBase {
         $result = NestedContainers_turtles_result::withDefaultValues();
         $result->read($this->input_);
         $this->input_->readMessageEnd();
-        if ($expectedsequenceid !== null && ($rseqid != $expectedsequenceid)) {
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
           throw new \TProtocolException("turtles failed: sequence id is out of order");
         }
       }
@@ -673,6 +673,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
    *   mapList(1: map<i32, list<i32>> foo);
    */
   public async function mapList(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
     $channel = $this->channel_;
@@ -696,6 +700,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
    *   mapSet(1: map<i32, set<i32>> foo);
    */
   public async function mapSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
     $channel = $this->channel_;
@@ -719,6 +727,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
    *   listMap(1: list<map<i32, i32>> foo);
    */
   public async function listMap(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
     $channel = $this->channel_;
@@ -742,6 +754,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
    *   listSet(1: list<set<i32>> foo);
    */
   public async function listSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
     $channel = $this->channel_;
@@ -765,6 +781,10 @@ class NestedContainersAsyncClient extends \ThriftClientBase implements NestedCon
    *   turtles(1: list<list<map<i32, map<i32, set<i32>>>>> foo);
    */
   public async function turtles(KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
     $channel = $this->channel_;
@@ -793,6 +813,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
    *   mapList(1: map<i32, list<i32>> foo);
    */
   public async function mapList(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
     $channel = $this->channel_;
@@ -816,6 +840,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
    *   mapSet(1: map<i32, set<i32>> foo);
    */
   public async function mapSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
     $channel = $this->channel_;
@@ -839,6 +867,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
    *   listMap(1: list<map<i32, i32>> foo);
    */
   public async function listMap(KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
     $channel = $this->channel_;
@@ -862,6 +894,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
    *   listSet(1: list<set<i32>> foo);
    */
   public async function listSet(KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
     $channel = $this->channel_;
@@ -885,6 +921,10 @@ class NestedContainersClient extends \ThriftClientBase implements NestedContaine
    *   turtles(1: list<list<map<i32, map<i32, set<i32>>>>> foo);
    */
   public async function turtles(KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
     $channel = $this->channel_;
@@ -944,6 +984,10 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
    *   mapList(1: map<i32, list<i32>> foo);
    */
   public async function mapList(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapList");
     $currentseqid = $this->sendImpl_mapList($foo);
     $channel = $this->channel_;
@@ -967,6 +1011,10 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
    *   mapSet(1: map<i32, set<i32>> foo);
    */
   public async function mapSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "mapSet");
     $currentseqid = $this->sendImpl_mapSet($foo);
     $channel = $this->channel_;
@@ -990,6 +1038,10 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
    *   listMap(1: list<map<i32, i32>> foo);
    */
   public async function listMap(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listMap");
     $currentseqid = $this->sendImpl_listMap($foo);
     $channel = $this->channel_;
@@ -1013,6 +1065,10 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
    *   listSet(1: list<set<i32>> foo);
    */
   public async function listSet(\RpcOptions $rpc_options, KeyedContainer<int, Set<int>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "listSet");
     $currentseqid = $this->sendImpl_listSet($foo);
     $channel = $this->channel_;
@@ -1036,6 +1092,10 @@ class NestedContainersAsyncRpcOptionsClient extends \ThriftClientBase implements
    *   turtles(1: list<list<map<i32, map<i32, set<i32>>>>> foo);
    */
   public async function turtles(\RpcOptions $rpc_options, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, KeyedContainer<int, Set<int>>>>> $foo): Awaitable<void> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
     await $this->asyncHandler_->genBefore("NestedContainers", "turtles");
     $currentseqid = $this->sendImpl_turtles($foo);
     $channel = $this->channel_;
@@ -1075,7 +1135,7 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     $this->eventHandler_->postRead($handler_ctx, 'mapList', $args);
     $result = NestedContainers_mapList_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'mapList', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'mapList', $args);
       await $this->handler->mapList($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'mapList', $result);
     } catch (\Exception $ex) {
@@ -1119,7 +1179,7 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     $this->eventHandler_->postRead($handler_ctx, 'mapSet', $args);
     $result = NestedContainers_mapSet_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'mapSet', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'mapSet', $args);
       await $this->handler->mapSet($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'mapSet', $result);
     } catch (\Exception $ex) {
@@ -1163,7 +1223,7 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     $this->eventHandler_->postRead($handler_ctx, 'listMap', $args);
     $result = NestedContainers_listMap_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'listMap', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'listMap', $args);
       await $this->handler->listMap($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'listMap', $result);
     } catch (\Exception $ex) {
@@ -1207,7 +1267,7 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     $this->eventHandler_->postRead($handler_ctx, 'listSet', $args);
     $result = NestedContainers_listSet_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'listSet', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'listSet', $args);
       await $this->handler->listSet($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'listSet', $result);
     } catch (\Exception $ex) {
@@ -1251,7 +1311,7 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
     $this->eventHandler_->postRead($handler_ctx, 'turtles', $args);
     $result = NestedContainers_turtles_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'turtles', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'turtles', $args);
       await $this->handler->turtles($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'turtles', $result);
     } catch (\Exception $ex) {
@@ -1276,6 +1336,41 @@ abstract class NestedContainersAsyncProcessorBase extends \ThriftAsyncProcessor 
       $output->getTransport()->flush();
     }
     $this->eventHandler_->postWrite($handler_ctx, 'turtles', $result);
+  }
+  protected async function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): Awaitable<void> {
+    $reply_type = \TMessageType::REPLY;
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, '\tmeta_ThriftMetadataService_getThriftServiceMetadata_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, '\tmeta_ThriftMetadataService_getThriftServiceMetadata_args');
+    } else {
+      $args = \tmeta_ThriftMetadataService_getThriftServiceMetadata_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $result = \tmeta_ThriftMetadataService_getThriftServiceMetadata_result::withDefaultValues();
+    try {
+      $result->success = NestedContainersStaticMetadata::getServiceMetadataResponse();
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'getThriftServiceMetadata', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'getThriftServiceMetadata', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("getThriftServiceMetadata", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
   }
 }
 class NestedContainersAsyncProcessor extends NestedContainersAsyncProcessorBase {
@@ -1302,7 +1397,7 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'mapList', $args);
     $result = NestedContainers_mapList_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'mapList', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'mapList', $args);
       $this->handler->mapList($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'mapList', $result);
     } catch (\Exception $ex) {
@@ -1346,7 +1441,7 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'mapSet', $args);
     $result = NestedContainers_mapSet_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'mapSet', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'mapSet', $args);
       $this->handler->mapSet($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'mapSet', $result);
     } catch (\Exception $ex) {
@@ -1390,7 +1485,7 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'listMap', $args);
     $result = NestedContainers_listMap_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'listMap', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'listMap', $args);
       $this->handler->listMap($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'listMap', $result);
     } catch (\Exception $ex) {
@@ -1434,7 +1529,7 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'listSet', $args);
     $result = NestedContainers_listSet_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'listSet', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'listSet', $args);
       $this->handler->listSet($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'listSet', $result);
     } catch (\Exception $ex) {
@@ -1478,7 +1573,7 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
     $this->eventHandler_->postRead($handler_ctx, 'turtles', $args);
     $result = NestedContainers_turtles_result::withDefaultValues();
     try {
-      $this->eventHandler_->preExec($handler_ctx, 'turtles', $args);
+      $this->eventHandler_->preExec($handler_ctx, 'NestedContainers', 'turtles', $args);
       $this->handler->turtles($args->foo);
       $this->eventHandler_->postExec($handler_ctx, 'turtles', $result);
     } catch (\Exception $ex) {
@@ -1503,6 +1598,41 @@ abstract class NestedContainersSyncProcessorBase extends \ThriftSyncProcessor {
       $output->getTransport()->flush();
     }
     $this->eventHandler_->postWrite($handler_ctx, 'turtles', $result);
+  }
+  protected function process_getThriftServiceMetadata(int $seqid, \TProtocol $input, \TProtocol $output): void {
+    $reply_type = \TMessageType::REPLY;
+
+    if ($input is \TBinaryProtocolAccelerated) {
+      $args = \thrift_protocol_read_binary_struct($input, '\tmeta_ThriftMetadataService_getThriftServiceMetadata_args');
+    } else if ($input is \TCompactProtocolAccelerated) {
+      $args = \thrift_protocol_read_compact_struct($input, '\tmeta_ThriftMetadataService_getThriftServiceMetadata_args');
+    } else {
+      $args = \tmeta_ThriftMetadataService_getThriftServiceMetadata_args::withDefaultValues();
+      $args->read($input);
+    }
+    $input->readMessageEnd();
+    $result = \tmeta_ThriftMetadataService_getThriftServiceMetadata_result::withDefaultValues();
+    try {
+      $result->success = NestedContainersStaticMetadata::getServiceMetadataResponse();
+    } catch (\Exception $ex) {
+      $reply_type = \TMessageType::EXCEPTION;
+      $result = new \TApplicationException($ex->getMessage()."\n".$ex->getTraceAsString());
+    }
+    if ($output is \TBinaryProtocolAccelerated)
+    {
+      \thrift_protocol_write_binary($output, 'getThriftServiceMetadata', $reply_type, $result, $seqid, $output->isStrictWrite());
+    }
+    else if ($output is \TCompactProtocolAccelerated)
+    {
+      \thrift_protocol_write_compact($output, 'getThriftServiceMetadata', $reply_type, $result, $seqid);
+    }
+    else
+    {
+      $output->writeMessageBegin("getThriftServiceMetadata", $reply_type, $seqid);
+      $result->write($output);
+      $output->writeMessageEnd();
+      $output->getTransport()->flush();
+    }
   }
 }
 class NestedContainersSyncProcessor extends NestedContainersSyncProcessorBase {
@@ -1541,7 +1671,7 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => Map<int, Vector<int>>,
+    ?'foo' => ?Map<int, Vector<int>>,
   );
 
   const type TShape = shape(
@@ -1551,55 +1681,84 @@ class NestedContainers_mapList_args implements \IThriftStruct, \IThriftShapishSt
   const int STRUCTURAL_ID = 860610040470759468;
   public Map<int, Vector<int>> $foo;
 
-  <<__Rx>>
-  public function __construct(?Map<int, Vector<int>> $foo = null  ) {
+  public function __construct(?Map<int, Vector<int>> $foo = null  )[] {
     $this->foo = $foo ?? Map {};
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_mapList_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.mapList_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_list" => tmeta_ThriftListType::fromShape(
+                            shape(
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "foo",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->foo = (new Map($shape['foo']))->map(
-      $val0 ==> (new Vector($val0)),
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      (new Map($shape['foo']))->map(
+        $val0 ==> (new Vector($val0)),
+      ),
     );
-    return $me;
   }
 
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'foo' => $this->foo->map(
         ($_val0) ==> vec($_val0),
@@ -1622,36 +1781,37 @@ class NestedContainers_mapList_result implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_mapList_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.NestedContainers_mapList_result",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }
@@ -1684,7 +1844,7 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => Map<int, Set<int>>,
+    ?'foo' => ?Map<int, Set<int>>,
   );
 
   const type TShape = shape(
@@ -1694,58 +1854,87 @@ class NestedContainers_mapSet_args implements \IThriftStruct, \IThriftShapishStr
   const int STRUCTURAL_ID = 860610040470759468;
   public Map<int, Set<int>> $foo;
 
-  <<__Rx>>
-  public function __construct(?Map<int, Set<int>> $foo = null  ) {
+  public function __construct(?Map<int, Set<int>> $foo = null  )[] {
     $this->foo = $foo ?? Map {};
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_mapSet_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.mapSet_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_map" => tmeta_ThriftMapType::fromShape(
+                    shape(
+                      "keyType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                        )
+                      ),
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_set" => tmeta_ThriftSetType::fromShape(
+                            shape(
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "foo",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->foo = (new Map($shape['foo']))->map(
-      $val0 ==> new Set(Keyset\keys($val0)),
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      (new Map($shape['foo']))->map(
+        $val0 ==> new Set(Keyset\keys($val0)),
+      ),
     );
-    return $me;
   }
 
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true), static::class),
       )
         |> dict($$),
     );
@@ -1765,36 +1954,37 @@ class NestedContainers_mapSet_result implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_mapSet_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.NestedContainers_mapSet_result",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }
@@ -1827,7 +2017,7 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => Vector<Map<int, int>>,
+    ?'foo' => ?Vector<Map<int, int>>,
   );
 
   const type TShape = shape(
@@ -1837,55 +2027,84 @@ class NestedContainers_listMap_args implements \IThriftStruct, \IThriftShapishSt
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Map<int, int>> $foo;
 
-  <<__Rx>>
-  public function __construct(?Vector<Map<int, int>> $foo = null  ) {
+  public function __construct(?Vector<Map<int, int>> $foo = null  )[] {
     $this->foo = $foo ?? Vector {};
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_listMap_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.listMap_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_map" => tmeta_ThriftMapType::fromShape(
+                            shape(
+                              "keyType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "foo",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->foo = (new Vector($shape['foo']))->map(
-      $val0 ==> (new Map($val0)),
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      (new Vector($shape['foo']))->map(
+        $val0 ==> (new Map($val0)),
+      ),
     );
-    return $me;
   }
 
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'foo' => $this->foo->map(
         ($_val0) ==> dict($_val0),
@@ -1908,36 +2127,37 @@ class NestedContainers_listMap_result implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_listMap_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.NestedContainers_listMap_result",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }
@@ -1966,7 +2186,7 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => Vector<Set<int>>,
+    ?'foo' => ?Vector<Set<int>>,
   );
 
   const type TShape = shape(
@@ -1976,58 +2196,82 @@ class NestedContainers_listSet_args implements \IThriftStruct, \IThriftShapishSt
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Set<int>> $foo;
 
-  <<__Rx>>
-  public function __construct(?Vector<Set<int>> $foo = null  ) {
+  public function __construct(?Vector<Set<int>> $foo = null  )[] {
     $this->foo = $foo ?? Vector {};
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_listSet_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.listSet_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_set" => tmeta_ThriftSetType::fromShape(
+                            shape(
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "foo",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->foo = (new Vector($shape['foo']))->map(
-      $val0 ==> new Set(Keyset\keys($val0)),
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      (new Vector($shape['foo']))->map(
+        $val0 ==> new Set(Keyset\keys($val0)),
+      ),
     );
-    return $me;
   }
 
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'foo' => $this->foo->map(
-        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true)),
+        ($_val0) ==> ThriftUtil::toDArray(Dict\fill_keys($_val0, true), static::class),
       )
         |> vec($$),
     );
@@ -2047,36 +2291,37 @@ class NestedContainers_listSet_result implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_listSet_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.NestedContainers_listSet_result",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
       ],
     );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
   }
 
 }
@@ -2128,7 +2373,7 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   ];
 
   const type TConstructorShape = shape(
-    ?'foo' => Vector<Vector<Map<int, Map<int, Set<int>>>>>,
+    ?'foo' => ?Vector<Vector<Map<int, Map<int, Set<int>>>>>,
   );
 
   const type TShape = shape(
@@ -2138,67 +2383,125 @@ class NestedContainers_turtles_args implements \IThriftStruct, \IThriftShapishSt
   const int STRUCTURAL_ID = 860610040470759468;
   public Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo;
 
-  <<__Rx>>
-  public function __construct(?Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo = null  ) {
+  public function __construct(?Vector<Vector<Map<int, Map<int, Set<int>>>>> $foo = null  )[] {
     $this->foo = $foo ?? Vector {};
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'foo'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_turtles_args';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.turtles_args",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_list" => tmeta_ThriftListType::fromShape(
+                    shape(
+                      "valueType" => tmeta_ThriftType::fromShape(
+                        shape(
+                          "t_list" => tmeta_ThriftListType::fromShape(
+                            shape(
+                              "valueType" => tmeta_ThriftType::fromShape(
+                                shape(
+                                  "t_map" => tmeta_ThriftMapType::fromShape(
+                                    shape(
+                                      "keyType" => tmeta_ThriftType::fromShape(
+                                        shape(
+                                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                        )
+                                      ),
+                                      "valueType" => tmeta_ThriftType::fromShape(
+                                        shape(
+                                          "t_map" => tmeta_ThriftMapType::fromShape(
+                                            shape(
+                                              "keyType" => tmeta_ThriftType::fromShape(
+                                                shape(
+                                                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                                )
+                                              ),
+                                              "valueType" => tmeta_ThriftType::fromShape(
+                                                shape(
+                                                  "t_set" => tmeta_ThriftSetType::fromShape(
+                                                    shape(
+                                                      "valueType" => tmeta_ThriftType::fromShape(
+                                                        shape(
+                                                          "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                                        )
+                                                      ),
+                                                    )
+                                                  ),
+                                                )
+                                              ),
+                                            )
+                                          ),
+                                        )
+                                      ),
+                                    )
+                                  ),
+                                )
+                              ),
+                            )
+                          ),
+                        )
+                      ),
+                    )
+                  ),
+                )
+              ),
+              "name" => "foo",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'foo' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
-  <<__Rx>>
-  public static function __fromShape(self::TShape $shape): this {
-    $me = new static();
-    $me->foo = (new Vector($shape['foo']))->map(
-      $val0 ==> (new Vector($val0))->map(
-        $val1 ==> (new Map($val1))->map(
-          $val2 ==> (new Map($val2))->map(
-            $val3 ==> new Set(Keyset\keys($val3)),
+  public static function __fromShape(self::TShape $shape)[]: this {
+    return new static(
+      (new Vector($shape['foo']))->map(
+        $val0 ==> (new Vector($val0))->map(
+          $val1 ==> (new Map($val1))->map(
+            $val2 ==> (new Map($val2))->map(
+              $val3 ==> new Set(Keyset\keys($val3)),
+            ),
           ),
         ),
       ),
     );
-    return $me;
   }
 
-  <<__Rx>>
-  public function __toShape(): self::TShape {
+  public function __toShape()[]: self::TShape {
     return shape(
       'foo' => $this->foo->map(
         ($_val0) ==> $_val0->map(
           ($_val1) ==> $_val1->map(
             ($_val2) ==> $_val2->map(
-              ($_val3) ==> ThriftUtil::toDArray(Dict\fill_keys($_val3, true)),
+              ($_val3) ==> ThriftUtil::toDArray(Dict\fill_keys($_val3, true), static::class),
             )
               |> dict($$),
           )
@@ -2224,26 +2527,32 @@ class NestedContainers_turtles_result implements \IThriftStruct {
 
   const int STRUCTURAL_ID = 957977401221134810;
 
-  <<__Rx>>
-  public function __construct(  ) {
+  public function __construct(  )[] {
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'NestedContainers_turtles_result';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.NestedContainers_turtles_result",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
@@ -2251,23 +2560,296 @@ class NestedContainers_turtles_result implements \IThriftStruct {
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
 }
 
 class NestedContainersStaticMetadata implements \IThriftServiceStaticMetadata {
-  public static function getAllStructuredAnnotations(): \TServiceAnnotations {
+  public static function getServiceMetadata()[]: \tmeta_ThriftService {
+    return tmeta_ThriftService::fromShape(
+      shape(
+        "name" => "module.NestedContainers",
+        "functions" => vec[
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "mapList",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_map" => tmeta_ThriftMapType::fromShape(
+                          shape(
+                            "keyType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                              )
+                            ),
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_list" => tmeta_ThriftListType::fromShape(
+                                  shape(
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "mapSet",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_map" => tmeta_ThriftMapType::fromShape(
+                          shape(
+                            "keyType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                              )
+                            ),
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_set" => tmeta_ThriftSetType::fromShape(
+                                  shape(
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "listMap",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_list" => tmeta_ThriftListType::fromShape(
+                          shape(
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_map" => tmeta_ThriftMapType::fromShape(
+                                  shape(
+                                    "keyType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "listSet",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_list" => tmeta_ThriftListType::fromShape(
+                          shape(
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_set" => tmeta_ThriftSetType::fromShape(
+                                  shape(
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+          tmeta_ThriftFunction::fromShape(
+            shape(
+              "name" => "turtles",
+              "return_type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_VOID_TYPE,
+                )
+              ),
+              "arguments" => vec[
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 1,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
+                        "t_list" => tmeta_ThriftListType::fromShape(
+                          shape(
+                            "valueType" => tmeta_ThriftType::fromShape(
+                              shape(
+                                "t_list" => tmeta_ThriftListType::fromShape(
+                                  shape(
+                                    "valueType" => tmeta_ThriftType::fromShape(
+                                      shape(
+                                        "t_map" => tmeta_ThriftMapType::fromShape(
+                                          shape(
+                                            "keyType" => tmeta_ThriftType::fromShape(
+                                              shape(
+                                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                              )
+                                            ),
+                                            "valueType" => tmeta_ThriftType::fromShape(
+                                              shape(
+                                                "t_map" => tmeta_ThriftMapType::fromShape(
+                                                  shape(
+                                                    "keyType" => tmeta_ThriftType::fromShape(
+                                                      shape(
+                                                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                                      )
+                                                    ),
+                                                    "valueType" => tmeta_ThriftType::fromShape(
+                                                      shape(
+                                                        "t_set" => tmeta_ThriftSetType::fromShape(
+                                                          shape(
+                                                            "valueType" => tmeta_ThriftType::fromShape(
+                                                              shape(
+                                                                "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                                                              )
+                                                            ),
+                                                          )
+                                                        ),
+                                                      )
+                                                    ),
+                                                  )
+                                                ),
+                                              )
+                                            ),
+                                          )
+                                        ),
+                                      )
+                                    ),
+                                  )
+                                ),
+                              )
+                            ),
+                          )
+                        ),
+                      )
+                    ),
+                    "name" => "foo",
+                  )
+                ),
+              ],
+            )
+          ),
+        ],
+      )
+    );
+  }
+
+  public static function getServiceMetadataResponse()[]: \tmeta_ThriftServiceMetadataResponse {
+    return \tmeta_ThriftServiceMetadataResponse::fromShape(
+      shape(
+        'context' => \tmeta_ThriftServiceContext::fromShape(
+          shape(
+            'service_info' => self::getServiceMetadata(),
+            'module' => \tmeta_ThriftModuleContext::fromShape(
+              shape(
+                'name' => 'module',
+              )
+            ),
+          )
+        ),
+        'metadata' => \tmeta_ThriftMetadata::fromShape(
+          shape(
+            'enums' => dict[
+            ],
+            'structs' => dict[
+            ],
+            'exceptions' => dict[
+            ],
+            'services' => dict[
+            ],
+          )
+        ),
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TServiceAnnotations {
     return shape(
       'service' => dict[],
       'functions' => dict[
-        'mapList' => dict[],
-        'mapSet' => dict[],
-        'listMap' => dict[],
-        'listSet' => dict[],
-        'turtles' => dict[],
       ],
     );
   }

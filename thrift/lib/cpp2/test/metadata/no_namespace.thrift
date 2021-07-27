@@ -15,7 +15,7 @@
  */
 
 struct MyData {
-  1: i32 i,
+  1: i32 i;
 }
 service AnotherTestService {
   MyData foo();

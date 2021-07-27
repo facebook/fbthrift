@@ -39,14 +39,14 @@ class JSONProtocolWriter : public JSONProtocolWriterCommon {
     return ProtocolType::T_JSON_PROTOCOL;
   }
 
-  static constexpr bool kSortKeys() {
-    return false;
-  }
+  static constexpr bool kSortKeys() { return false; }
+
+  static constexpr bool kHasIndexSupport() { return false; }
 
   inline uint32_t writeStructBegin(const char* name);
   inline uint32_t writeStructEnd();
-  inline uint32_t
-  writeFieldBegin(const char* name, TType fieldType, int16_t fieldId);
+  inline uint32_t writeFieldBegin(
+      const char* name, TType fieldType, int16_t fieldId);
   inline uint32_t writeFieldEnd();
   inline uint32_t writeFieldStop();
   inline uint32_t writeMapBegin(TType keyType, TType valType, uint32_t size);
@@ -62,11 +62,11 @@ class JSONProtocolWriter : public JSONProtocolWriterCommon {
    */
 
   inline uint32_t serializedMessageSize(const std::string& name) const;
-  inline uint32_t
-  serializedFieldSize(const char* name, TType fieldType, int16_t fieldId) const;
+  inline uint32_t serializedFieldSize(
+      const char* name, TType fieldType, int16_t fieldId) const;
   inline uint32_t serializedStructSize(const char* name) const;
-  inline uint32_t
-  serializedSizeMapBegin(TType keyType, TType valType, uint32_t size) const;
+  inline uint32_t serializedSizeMapBegin(
+      TType keyType, TType valType, uint32_t size) const;
   inline uint32_t serializedSizeMapEnd() const;
   inline uint32_t serializedSizeListBegin(TType elemType, uint32_t size) const;
   inline uint32_t serializedSizeListEnd() const;
@@ -89,18 +89,18 @@ class JSONProtocolReader : public JSONProtocolReaderCommon {
     return ProtocolType::T_JSON_PROTOCOL;
   }
 
-  static constexpr bool kUsesFieldNames() {
-    return false;
-  }
+  static constexpr bool kUsesFieldNames() { return false; }
 
-  static constexpr bool kOmitsContainerSizes() {
-    return false;
-  }
+  static constexpr bool kOmitsContainerSizes() { return false; }
+
+  static constexpr bool kOmitsStringSizes() { return true; }
+
+  static constexpr bool kHasDeferredRead() { return false; }
 
   inline void readStructBegin(std::string& name);
   inline void readStructEnd();
-  inline void
-  readFieldBegin(std::string& name, TType& fieldType, int16_t& fieldId);
+  inline void readFieldBegin(
+      std::string& name, TType& fieldType, int16_t& fieldId);
   inline void readFieldEnd();
   inline void readMapBegin(TType& keyType, TType& valType, uint32_t& size);
   inline void readMapEnd();

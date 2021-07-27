@@ -24,6 +24,7 @@ if(WIN32)
 endif(WIN32)
 set(BISON_FLAGS "--skeleton=lalr1.cc")
 BISON_TARGET(ThriftParser parse/thrifty.yy ${COMPILER_DIR}/thrifty.cc
+  DEFINES_FILE ${COMPILER_DIR}/location.hh
   DEFINES_FILE ${COMPILER_DIR}/thrifty.hh
   COMPILE_FLAGS "${BISON_FLAGS}")
 FLEX_TARGET(ThriftScanner parse/thriftl.ll ${COMPILER_DIR}/thriftl.cc
@@ -34,11 +35,19 @@ ADD_FLEX_BISON_DEPENDENCY(ThriftScanner ThriftParser)
 add_library(
   compiler_ast
 
+  ast/diagnostic.cc
+  ast/t_base_type.cc
+  ast/t_enum.cc
+  ast/t_function.cc
+  ast/t_interface.cc
+  ast/t_named.cc
+  ast/t_node.cc
+  ast/t_paramlist.cc
   ast/t_program.cc
+  ast/t_scope.cc
+  ast/t_structured.cc
   ast/t_type.cc
   ast/t_typedef.cc
-  ast/base_types.cc
-  ast/t_scope.cc
   ast/visitor.cc
 )
 target_link_libraries(compiler_ast ${OPENSSL_LIBRARIES})
@@ -48,15 +57,22 @@ add_library(
   compiler_base
 
   common.cc
-  parse/parsing_driver.cc
+  filesystem.cc
   platform.cc
   util.cc
+
+  parse/parsing_driver.cc
+  sema/ast_validator.cc
+  sema/scope_validator.cc
+  sema/const_checker.cc
+
   ${FLEX_ThriftScanner_OUTPUTS}
   ${BISON_ThriftParser_OUTPUTS}
 )
 target_compile_definitions(
  compiler_base
  PRIVATE -DTHRIFTY_HH="${COMPILER_DIR}/thrifty.hh"
+ PUBLIC -DLOCATION_HH="${COMPILER_DIR}/location.hh"
 )
 if (NOT MSVC)
   target_compile_options(
@@ -81,6 +97,11 @@ target_link_libraries(
 add_library(
   compiler_lib
 
+  gen/cpp/detail/gen.cc
+  gen/cpp/namespace_resolver.cc
+  gen/cpp/reference_type.cc
+  gen/cpp/type_resolver.cc
+
   lib/cpp2/util.cc
   lib/java/util.cc
 )
@@ -95,46 +116,26 @@ target_link_libraries(
 add_library(
   mustache_lib
 
-  mustache/mstch.cpp
-  mustache/render_context.cpp
-  mustache/state/in_section.cpp
-  mustache/state/outside_section.cpp
-  mustache/template_type.cpp
-  mustache/token.cpp
-  mustache/utils.cpp
+  detail/mustache/mstch.cpp
+  detail/mustache/render_context.cpp
+  detail/mustache/state/in_section.cpp
+  detail/mustache/state/outside_section.cpp
+  detail/mustache/template_type.cpp
+  detail/mustache/token.cpp
+  detail/mustache/utils.cpp
 )
 target_link_libraries(mustache_lib ${Boost_LIBRARIES})
 
 add_subdirectory(generate)
 
-# build compiler/generate
-aux_source_directory(./generate GENERATOR_FILES)
-list(REMOVE_ITEM GENERATOR_FILES ./generate/build_templates.cc)
-add_library(
-  compiler_generators
-
-  ${GENERATOR_FILES}
-  $<TARGET_OBJECTS:compiler_generate_templates>
-  validator/validator.cc
-)
-target_link_libraries(
-  compiler_generators
-
-  compiler_ast
-  compiler_base
-  compiler_lib
-  mustache_lib
-  ${Boost_LIBRARIES}
-  ${OPENSSL_LIBRARIES}
-)
-# Force compiler_generators linking (compiler will optimize it out otherwise)
-if(MSVC)
+# Force compiler_generators linking (compiler will optimize it out otherwise).
+if (MSVC)
   set(GENERATE_LINKED compiler_generators) #MSVC WHOLEARCHIVE is set after exe
-elseif(APPLE)
+elseif (APPLE)
   set(GENERATE_LINKED -Wl,-force_load compiler_generators)
-else()
+else ()
   set(GENERATE_LINKED -Wl,--whole-archive compiler_generators -Wl,--no-whole-archive)
-endif(MSVC)
+endif ()
 
 # Create the thrift compiler binary
 add_executable(
@@ -143,7 +144,7 @@ add_executable(
   main.cc
   compiler.cc
   mutator/mutator.cc
-  validator/diagnostic.cc
+  validator/validator.cc
   ast/visitor.cc
 )
 target_link_libraries(
@@ -171,13 +172,7 @@ if (BUILD_SHARED_LIBS)
 endif()
 
 install(
-  TARGETS
-    thrift1
-    compiler_ast
-    compiler_base
-    compiler_lib
-    mustache_lib
-    compiler_generators
+  TARGETS thrift1 compiler_ast compiler_base compiler_lib mustache_lib
   EXPORT fbthrift-exports
   RUNTIME DESTINATION ${BIN_INSTALL_DIR}
   LIBRARY DESTINATION ${LIB_INSTALL_DIR}

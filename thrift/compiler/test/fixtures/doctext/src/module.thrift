@@ -14,6 +14,29 @@
  * limitations under the License.
  */
 
+/** Constant foo */
+const string FOO = "foo";
+
+/// Multi-
+/// line
+/// slash comment
+const i32 BAR = 123;
+
+/// BIFF has your mail
+const i32 BIFF = 0;
+
+// Banners are not doc comments
+//////////////////////////////////////////
+///////////// SHOUTY /////////////////////
+//////////////////////////////////////////
+const i32 SHOUTY = 11;
+
+/** Cool new name for string */
+typedef string lanyard
+
+/** Secret name */
+typedef i32 number (rust.newtype)
+
 /**
  * DefinitionList doctext.
  */
@@ -21,19 +44,42 @@ struct A {
   /**
    * Field doctext.
    */
-  1: i32 useless_field
+  1: i32 useless_field;
 }
 
+/** This enum is great */
 enum B {
   /**
    * EnumDef doctext.
    */
-  HELLO = 0
+  HELLO = 0,
 }
 
+/** Union U */
+union U {
+  /** i32 field i */
+  1: i32 i;
+  /** string s */
+  2: string s;
+}
+
+/** Something amiss */
+exception Bang {
+  /** All explosions can be explained away */
+  1: string message;
+}
+
+/** Detailed overview of service */
 service C {
   /**
    * Function doctext.
    */
-  void f(),
+  void f();
+
+  /** Streaming function */
+  stream<number> numbers();
+
+  // test empty doc comment
+  ///
+  string thing(1: i32 a, 2: string b, 3: set<i32> c) throws (1: Bang bang);
 }

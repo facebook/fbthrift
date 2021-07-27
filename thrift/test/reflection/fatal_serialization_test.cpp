@@ -85,11 +85,11 @@ void init_struct_1(struct1& a) {
 
   a.field10 = {true, false, true, false, false, true, true};
 
-  a.__isset.field1 = true;
-  a.__isset.field2 = true;
-  a.field6.__isset.nfield00 = true;
-  a.field6.__isset.nfield01 = true;
-  a.__isset.field7 = true;
+  apache::thrift::ensure_isset_unsafe(a.field1_ref());
+  apache::thrift::ensure_isset_unsafe(a.field2_ref());
+  apache::thrift::ensure_isset_unsafe(a.field6.nfield00_ref());
+  apache::thrift::ensure_isset_unsafe(a.field6.nfield01_ref());
+  a.field7_ref().ensure();
 }
 
 TYPED_TEST(MultiProtocolTest, test_serialization) {
@@ -120,10 +120,10 @@ TYPED_TEST(MultiProtocolTest, test_serialization) {
       *b.field8_ref()); // default fields are always written out
   EXPECT_EQ(a.field10, b.field10);
 
-  EXPECT_TRUE(b.__isset.field1);
-  EXPECT_TRUE(b.__isset.field2);
-  EXPECT_TRUE(b.__isset.field7);
-  EXPECT_TRUE(b.__isset.field8);
+  EXPECT_TRUE(b.field1_ref().has_value());
+  EXPECT_TRUE(b.field2_ref().has_value());
+  EXPECT_TRUE(b.field7_ref().has_value());
+  EXPECT_TRUE(b.field8_ref().has_value());
 }
 
 TYPED_TEST(MultiProtocolTest, test_legacy_serialization) {
@@ -152,10 +152,10 @@ TYPED_TEST(MultiProtocolTest, test_legacy_serialization) {
       *a.field8_ref(),
       *b.field8_ref()); // default fields are always written out
 
-  EXPECT_TRUE(b.__isset.field1);
-  EXPECT_TRUE(b.__isset.field2);
-  EXPECT_TRUE(b.__isset.field7);
-  EXPECT_TRUE(b.__isset.field8);
+  EXPECT_TRUE(b.field1_ref().has_value());
+  EXPECT_TRUE(b.field2_ref().has_value());
+  EXPECT_TRUE(b.field7_ref().has_value());
+  EXPECT_TRUE(b.field8_ref().has_value());
 }
 
 TYPED_TEST(MultiProtocolTest, test_other_containers) {
@@ -169,9 +169,9 @@ TYPED_TEST(MultiProtocolTest, test_other_containers) {
   this->prep_read();
   serializer_read(b, this->reader);
 
-  EXPECT_TRUE(b.__isset.um_field);
-  EXPECT_TRUE(b.__isset.us_field);
-  EXPECT_TRUE(b.__isset.deq_field);
+  EXPECT_TRUE(b.um_field_ref().has_value());
+  EXPECT_TRUE(b.us_field_ref().has_value());
+  EXPECT_TRUE(b.deq_field_ref().has_value());
   EXPECT_EQ(*a.um_field_ref(), *b.um_field_ref());
   EXPECT_EQ(*a.us_field_ref(), *b.us_field_ref());
   EXPECT_EQ(*a.deq_field_ref(), *b.deq_field_ref());
@@ -236,6 +236,21 @@ TYPED_TEST(MultiProtocolTest, test_blank_required_ref_field) {
   EXPECT_EQ(*(a.def_nested), *(b.def_nested));
   EXPECT_EQ(*(a.opt_nested), *(b.opt_nested));
   EXPECT_EQ(smallstruct(), *(b.req_nested));
+  expect_same_serialized_size(a, this->writer);
+}
+
+TYPED_TEST(MultiProtocolTest, test_blank_optional_boxed_field) {
+  struct3 a, b;
+  a.box_nested1_ref().ensure().f1_ref() = 5;
+
+  serializer_write(a, this->writer);
+  this->prep_read();
+  this->debug_buffer();
+  serializer_read(b, this->reader);
+
+  EXPECT_EQ(*a.box_nested1_ref(), *b.box_nested1_ref());
+  EXPECT_FALSE(a.box_nested2_ref().has_value());
+  EXPECT_FALSE(b.box_nested2_ref().has_value());
   expect_same_serialized_size(a, this->writer);
 }
 
@@ -340,9 +355,9 @@ TYPED_TEST(MultiProtocolTest, test_binary_containers) {
 
   serializer_read(b, this->reader);
 
-  EXPECT_TRUE(b.__isset.def_field);
-  EXPECT_TRUE(b.__isset.iobuf_field);
-  EXPECT_TRUE(b.__isset.iobufptr_field);
+  EXPECT_TRUE(b.def_field_ref().has_value());
+  EXPECT_TRUE(b.iobuf_field_ref().has_value());
+  EXPECT_TRUE(b.iobufptr_field_ref().has_value());
   EXPECT_EQ(*a.def_field_ref(), *b.def_field_ref());
 
   EXPECT_EQ(test_range, b.iobuf_field_ref()->coalesce());
@@ -359,8 +374,8 @@ TYPED_TEST(MultiProtocolTest, test_workaround_binary) {
   this->prep_read();
   serializer_read(b, this->reader);
 
-  EXPECT_TRUE(b.__isset.def_field);
-  EXPECT_TRUE(b.__isset.iobuf_field);
+  EXPECT_TRUE(b.def_field_ref().has_value());
+  EXPECT_TRUE(b.iobuf_field_ref().has_value());
   EXPECT_EQ(test_string.str(), *b.def_field_ref());
   EXPECT_EQ(test_range2, b.iobuf_field_ref()->coalesce());
   expect_same_serialized_size(a, this->writer);
@@ -502,15 +517,11 @@ struct SimpleJsonTest : public ::testing::Test {
   }
 };
 
-TEST_F(SimpleJsonTest, throws_on_unset_required_value) {
+TEST_F(SimpleJsonTest, doesnt_throws_on_unset_required_value) {
   set_input("{}");
-  try {
-    struct2 a;
-    serializer_read(a, reader);
-    ADD_FAILURE() << "didn't throw!";
-  } catch (TProtocolException& e) {
-    EXPECT_EQ(TProtocolException::MISSING_REQUIRED_FIELD, e.getType());
-  }
+  struct2 a;
+  serializer_read(a, reader);
+  EXPECT_EQ("", *a.req_string_ref());
 }
 
 // wrap in quotes
@@ -524,8 +535,8 @@ TEST_F(SimpleJsonTest, handles_unset_default_member) {
   set_input("{" KVS("req_string", "required") "}");
   struct2 a;
   serializer_read(a, reader);
-  EXPECT_FALSE(a.__isset.opt_string); // gcc bug?
-  EXPECT_FALSE(a.__isset.def_string);
+  EXPECT_FALSE(a.opt_string_ref().has_value()); // gcc bug?
+  EXPECT_FALSE(a.def_string_ref().has_value());
   EXPECT_EQ("required", a.req_string);
   EXPECT_EQ("", *a.def_string_ref());
 }
@@ -534,8 +545,8 @@ TEST_F(SimpleJsonTest, sets_opt_members) {
       "{" KVS("req_string", "required") "," KVS("opt_string", "optional") "}");
   struct2 a;
   serializer_read(a, reader);
-  EXPECT_TRUE(a.__isset.opt_string); // gcc bug?
-  EXPECT_FALSE(a.__isset.def_string);
+  EXPECT_TRUE(a.opt_string_ref().has_value()); // gcc bug?
+  EXPECT_FALSE(a.def_string_ref().has_value());
   EXPECT_EQ("required", a.req_string);
   EXPECT_EQ("optional", *a.opt_string_ref());
   EXPECT_EQ("", *a.def_string_ref());
@@ -545,12 +556,12 @@ TEST_F(SimpleJsonTest, sets_def_members) {
       "{" KVS("req_string", "required") "," KVS("def_string", "default") "}");
   struct2 a;
   serializer_read(a, reader);
-  EXPECT_FALSE(a.__isset.opt_string);
-  EXPECT_TRUE(a.__isset.def_string);
+  EXPECT_FALSE(a.opt_string_ref().has_value());
+  EXPECT_TRUE(a.def_string_ref().has_value());
   EXPECT_EQ("required", a.req_string);
   EXPECT_EQ("default", *a.def_string_ref());
 }
-TEST_F(SimpleJsonTest, throws_on_missing_required_ref) {
+TEST_F(SimpleJsonTest, doesnt_throws_on_missing_required_ref) {
   // clang-format off
   set_input("{"
     KV("opt_nested", "{"
@@ -564,12 +575,8 @@ TEST_F(SimpleJsonTest, throws_on_missing_required_ref) {
 
   struct3 a;
 
-  try {
-    serializer_read(a, reader);
-    ADD_FAILURE() << "didn't throw!";
-  } catch (TProtocolException& e) {
-    EXPECT_EQ(TProtocolException::MISSING_REQUIRED_FIELD, e.getType());
-  }
+  serializer_read(a, reader);
+  EXPECT_EQ(0, *a.req_nested_ref()->f1_ref());
 }
 TEST_F(SimpleJsonTest, doesnt_throw_when_req_field_present) {
   // clang-format off

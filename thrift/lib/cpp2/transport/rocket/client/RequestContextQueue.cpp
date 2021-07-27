@@ -25,6 +25,10 @@ namespace thrift {
 namespace rocket {
 
 void RequestContextQueue::enqueueScheduledWrite(RequestContext& req) noexcept {
+  if (UNLIKELY(writeBufferQueue_ != nullptr)) {
+    writeBufferQueue_->push_back(req);
+    return;
+  }
   DCHECK(req.state_ == State::WRITE_NOT_SCHEDULED);
 
   req.state_ = State::WRITE_SCHEDULED;
@@ -74,8 +78,7 @@ void RequestContextQueue::timeOutSendingRequest(RequestContext& req) noexcept {
 }
 
 void RequestContextQueue::abortSentRequest(
-    RequestContext& req,
-    transport::TTransportException ex) noexcept {
+    RequestContext& req, transport::TTransportException ex) noexcept {
   if (req.state_ == State::COMPLETE) {
     return;
   }
@@ -107,29 +110,35 @@ void RequestContextQueue::markAsResponded(RequestContext& req) noexcept {
   req.baton_.post();
 }
 
-void RequestContextQueue::failAllScheduledWrites(
-    transport::TTransportException ex) {
+void RequestContextQueue::failAllScheduledWrites(folly::exception_wrapper ew) {
+  auto what = ew.what().toStdString();
   failQueue(
       writeScheduledQueue_,
       transport::TTransportException(
           transport::TTransportException::NOT_OPEN,
           fmt::format(
-              "Dropping unsent request. Connection closed after: {}",
-              ex.what())));
+              "Dropping unsent request. Connection closed after: {}", what)));
+  if (writeBufferQueue_) {
+    failQueue(
+        *writeBufferQueue_,
+        transport::TTransportException(
+            transport::TTransportException::NOT_OPEN,
+            fmt::format(
+                "Dropping unsent request. Connection closed after: {}", what)));
+  }
 }
 
-void RequestContextQueue::failAllSentWrites(transport::TTransportException ex) {
-  failQueue(writeSentQueue_, std::move(ex));
+void RequestContextQueue::failAllSentWrites(folly::exception_wrapper ew) {
+  failQueue(writeSentQueue_, std::move(ew));
 }
 
 void RequestContextQueue::failQueue(
-    RequestContext::Queue& queue,
-    transport::TTransportException ex) {
+    RequestContext::Queue& queue, folly::exception_wrapper ew) {
   while (!queue.empty()) {
     auto& req = queue.front();
     queue.pop_front();
     DCHECK(!req.responsePayload_.hasException());
-    req.responsePayload_ = folly::Try<Payload>(ex);
+    req.responsePayload_ = folly::Try<Payload>(ew);
     untrackIfRequestResponse(req);
     req.state_ = State::COMPLETE;
     req.baton_.post();

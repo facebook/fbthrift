@@ -15,6 +15,7 @@
  */
 
 #include <thrift/lib/cpp/Thrift.h>
+
 #include <stdarg.h>
 #include <stdio.h>
 

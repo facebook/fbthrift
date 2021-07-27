@@ -14,10 +14,6 @@ namespace apache {
 namespace thrift {
 namespace tag {
 struct name;
-struct count;
-struct name;
-struct extra;
-struct nest;
 struct majorVer;
 struct package;
 struct annotation_with_quote;
@@ -31,22 +27,6 @@ namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_name
 #define APACHE_THRIFT_ACCESSOR_name
 APACHE_THRIFT_DEFINE_ACCESSOR(name);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_count
-#define APACHE_THRIFT_ACCESSOR_count
-APACHE_THRIFT_DEFINE_ACCESSOR(count);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_name
-#define APACHE_THRIFT_ACCESSOR_name
-APACHE_THRIFT_DEFINE_ACCESSOR(name);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_extra
-#define APACHE_THRIFT_ACCESSOR_extra
-APACHE_THRIFT_DEFINE_ACCESSOR(extra);
-#endif
-#ifndef APACHE_THRIFT_ACCESSOR_nest
-#define APACHE_THRIFT_ACCESSOR_nest
-APACHE_THRIFT_DEFINE_ACCESSOR(nest);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_majorVer
 #define APACHE_THRIFT_ACCESSOR_majorVer
@@ -97,13 +77,10 @@ enum class MyEnum {
 
 
 } // cpp2
+
 namespace std {
-
-
-template<> struct hash<typename ::cpp2::MyEnum> : public apache::thrift::detail::enum_hash<typename ::cpp2::MyEnum> {};
-template<> struct equal_to<typename ::cpp2::MyEnum> : public apache::thrift::detail::enum_equal_to<typename ::cpp2::MyEnum> {};
-
-
+template<> struct hash<::cpp2::MyEnum> :
+  ::apache::thrift::detail::enum_hash<::cpp2::MyEnum> {};
 } // std
 
 namespace apache { namespace thrift {
@@ -142,7 +119,6 @@ extern const _MyEnum_EnumMapFactory::NamesToValuesMapType _MyEnum_NAMES_TO_VALUE
 // BEGIN forward_declare
 namespace cpp2 {
 class MyStructNestedAnnotation;
-class MyStructAnnotation;
 class MyStruct;
 class SecretStruct;
 } // cpp2
@@ -152,7 +128,13 @@ class SecretStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class MyStructNestedAnnotation final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -160,6 +142,7 @@ class MyStructNestedAnnotation final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = MyStructNestedAnnotation;
@@ -169,50 +152,34 @@ class MyStructNestedAnnotation final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  MyStructNestedAnnotation() {}
+  MyStructNestedAnnotation() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
   MyStructNestedAnnotation(apache::thrift::FragileConstructor, ::std::string name__arg);
 
-  MyStructNestedAnnotation(MyStructNestedAnnotation&&) = default;
+  MyStructNestedAnnotation(MyStructNestedAnnotation&&) noexcept;
 
-  MyStructNestedAnnotation(const MyStructNestedAnnotation&) = default;
+  MyStructNestedAnnotation(const MyStructNestedAnnotation& src);
 
 
-  MyStructNestedAnnotation& operator=(MyStructNestedAnnotation&&) = default;
-
-  MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  MyStructNestedAnnotation& operator=(MyStructNestedAnnotation&&) noexcept;
+  MyStructNestedAnnotation& operator=(const MyStructNestedAnnotation& src);
   void __clear();
  private:
   ::std::string name;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
   } __isset = {};
-  bool operator==(const MyStructNestedAnnotation& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const MyStructNestedAnnotation& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyStructNestedAnnotation& __x, const MyStructNestedAnnotation& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+ public:
+
+  bool operator==(const MyStructNestedAnnotation&) const;
+  bool operator<(const MyStructNestedAnnotation&) const;
+
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
     return {this->name, __isset.name};
@@ -232,7 +199,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
     return {std::move(this->name), __isset.name};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   const ::std::string& get_name() const& {
     return name;
@@ -243,11 +209,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStructNestedAnnotation_name_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_MyStructNestedAnnotation_name_struct_setter&& name_) {
     name = std::forward<T_MyStructNestedAnnotation_name_struct_setter>(name_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.name = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return name;
   }
 
@@ -264,7 +229,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStructNestedAnnotation >;
+  friend class ::apache::thrift::Cpp2Ops<MyStructNestedAnnotation>;
   friend void swap(MyStructNestedAnnotation& a, MyStructNestedAnnotation& b);
 };
 
@@ -277,247 +242,11 @@ uint32_t MyStructNestedAnnotation::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-class MyStructAnnotation final  {
- private:
-  friend struct ::apache::thrift::detail::st::struct_private_access;
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
 
-  //  used by a static_assert in the corresponding source
-  static constexpr bool __fbthrift_cpp2_gen_json = false;
-  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
-
- public:
-  using __fbthrift_cpp2_type = MyStructAnnotation;
-  static constexpr bool __fbthrift_cpp2_is_union =
-    false;
-
-
- public:
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  MyStructAnnotation() :
-      count(0) {}
-  // FragileConstructor for use in initialization lists only.
-  [[deprecated("This constructor is deprecated")]]
-  MyStructAnnotation(apache::thrift::FragileConstructor, int64_t count__arg, ::std::string name__arg, ::std::string extra__arg,  ::cpp2::MyStructNestedAnnotation nest__arg);
-
-  MyStructAnnotation(MyStructAnnotation&&) = default;
-
-  MyStructAnnotation(const MyStructAnnotation&) = default;
-
-
-  MyStructAnnotation& operator=(MyStructAnnotation&&) = default;
-
-  MyStructAnnotation& operator=(const MyStructAnnotation&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  void __clear();
- private:
-  int64_t count;
- private:
-  ::std::string name;
- private:
-  ::std::string extra;
- private:
-   ::cpp2::MyStructNestedAnnotation nest;
-
- public:
-  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
-  struct __isset {
-    bool count;
-    bool name;
-    bool extra;
-    bool nest;
-  } __isset = {};
-  bool operator==(const MyStructAnnotation& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyStructAnnotation& __x, const MyStructAnnotation& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const MyStructAnnotation& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyStructAnnotation& __x, const MyStructAnnotation& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyStructAnnotation& __x, const MyStructAnnotation& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyStructAnnotation& __x, const MyStructAnnotation& __y) {
-    return !(__x < __y);
-  }
-#endif
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
-    return {this->count, __isset.count};
-  }
-
-  template <typename..., typename T = int64_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> count_ref() const&& {
-    return {std::move(this->count), __isset.count};
-  }
-
-  template <typename..., typename T = int64_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> count_ref() & {
-    return {this->count, __isset.count};
-  }
-
-  template <typename..., typename T = int64_t>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
-    return {std::move(this->count), __isset.count};
-  }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
-    return {this->name, __isset.name};
-  }
-
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
-    return {std::move(this->name), __isset.name};
-  }
-
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
-    return {this->name, __isset.name};
-  }
-
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
-    return {std::move(this->name), __isset.name};
-  }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> extra_ref() const& {
-    return {this->extra, __isset.extra};
-  }
-
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> extra_ref() const&& {
-    return {std::move(this->extra), __isset.extra};
-  }
-
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> extra_ref() & {
-    return {this->extra, __isset.extra};
-  }
-
-  template <typename..., typename T = ::std::string>
-  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> extra_ref() && {
-    return {std::move(this->extra), __isset.extra};
-  }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::cpp2::MyStructNestedAnnotation>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&> nest_ref() const& {
-    return {this->nest, __isset.nest};
-  }
-
-  template <typename..., typename T =  ::cpp2::MyStructNestedAnnotation>
-  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> nest_ref() const&& {
-    return {std::move(this->nest), __isset.nest};
-  }
-
-  template <typename..., typename T =  ::cpp2::MyStructNestedAnnotation>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&> nest_ref() & {
-    return {this->nest, __isset.nest};
-  }
-
-  template <typename..., typename T =  ::cpp2::MyStructNestedAnnotation>
-  FOLLY_ERASE ::apache::thrift::field_ref<T&&> nest_ref() && {
-    return {std::move(this->nest), __isset.nest};
-  }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-
-  int64_t get_count() const {
-    return count;
-  }
-
-  int64_t& set_count(int64_t count_) {
-    count = count_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    __isset.count = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-    return count;
-  }
-
-  const ::std::string& get_name() const& {
-    return name;
-  }
-
-  ::std::string get_name() && {
-    return std::move(name);
-  }
-
-  template <typename T_MyStructAnnotation_name_struct_setter = ::std::string>
-  ::std::string& set_name(T_MyStructAnnotation_name_struct_setter&& name_) {
-    name = std::forward<T_MyStructAnnotation_name_struct_setter>(name_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    __isset.name = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-    return name;
-  }
-
-  const ::std::string* get_extra() const& {
-    return extra_ref() ? std::addressof(extra) : nullptr;
-  }
-
-  ::std::string* get_extra() & {
-    return extra_ref() ? std::addressof(extra) : nullptr;
-  }
-  ::std::string* get_extra() && = delete;
-
-  template <typename T_MyStructAnnotation_extra_struct_setter = ::std::string>
-  ::std::string& set_extra(T_MyStructAnnotation_extra_struct_setter&& extra_) {
-    extra = std::forward<T_MyStructAnnotation_extra_struct_setter>(extra_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    __isset.extra = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-    return extra;
-  }
-  const  ::cpp2::MyStructNestedAnnotation& get_nest() const&;
-   ::cpp2::MyStructNestedAnnotation get_nest() &&;
-
-  template <typename T_MyStructAnnotation_nest_struct_setter =  ::cpp2::MyStructNestedAnnotation>
-   ::cpp2::MyStructNestedAnnotation& set_nest(T_MyStructAnnotation_nest_struct_setter&& nest_) {
-    nest = std::forward<T_MyStructAnnotation_nest_struct_setter>(nest_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-    __isset.nest = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-    return nest;
-  }
-
-  template <class Protocol_>
-  uint32_t read(Protocol_* iprot);
-  template <class Protocol_>
-  uint32_t serializedSize(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
-  template <class Protocol_>
-  uint32_t write(Protocol_* prot_) const;
-
- private:
-  template <class Protocol_>
-  void readNoXfer(Protocol_* iprot);
-
-  friend class ::apache::thrift::Cpp2Ops< MyStructAnnotation >;
-  friend void swap(MyStructAnnotation& a, MyStructAnnotation& b);
-};
-
-template <class Protocol_>
-uint32_t MyStructAnnotation::read(Protocol_* iprot) {
-  auto _xferStart = iprot->getCursorPosition();
-  readNoXfer(iprot);
-  return iprot->getCursorPosition() - _xferStart;
-}
-
-} // cpp2
-namespace cpp2 {
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -525,6 +254,7 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -533,29 +263,32 @@ class MyStruct final  {
 
 
  public:
+  MyStruct& _data() & { return *this; }
+  MyStruct&& _data() && { return std::move(*this); }
+  const MyStruct& _data() const& { return *this; }
+  const MyStruct&& _data() const&& { return std::move(*this); }
+
+ public:
 
   MyStruct();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__arg, ::std::string package__arg, ::std::string annotation_with_quote__arg, ::std::string class___arg, ::std::string annotation_with_trailing_comma__arg, ::std::string empty_annotations__arg);
 
-  MyStruct(MyStruct&&) = default;
+  MyStruct(MyStruct&&) noexcept;
 
-  MyStruct(const MyStruct&) = default;
+  MyStruct(const MyStruct& src);
 
 
-  MyStruct& operator=(MyStruct&&) = default;
-
-  MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  MyStruct& operator=(MyStruct&&) noexcept;
+  MyStruct& operator=(const MyStruct& src);
   void __clear();
 
   ~MyStruct();
 
  private:
-  int64_t majorVer;
+  ::std::int64_t majorVer;
  private:
   ::std::string package;
  private:
@@ -567,7 +300,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
  private:
   ::std::string empty_annotations;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool majorVer;
@@ -577,48 +310,32 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
     bool annotation_with_trailing_comma;
     bool empty_annotations;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const MyStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+ public:
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
+
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> majorVer_ref() const& {
     return {this->majorVer, __isset.majorVer};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> majorVer_ref() const&& {
     return {std::move(this->majorVer), __isset.majorVer};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> majorVer_ref() & {
     return {this->majorVer, __isset.majorVer};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> majorVer_ref() && {
     return {std::move(this->majorVer), __isset.majorVer};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> package_ref() const& {
     return {this->package, __isset.package};
@@ -638,9 +355,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> package_ref() && {
     return {std::move(this->package), __isset.package};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotation_with_quote_ref() const& {
     return {this->annotation_with_quote, __isset.annotation_with_quote};
@@ -660,9 +375,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_quote_ref() && {
     return {std::move(this->annotation_with_quote), __isset.annotation_with_quote};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> class__ref() const& {
     return {this->class_, __isset.class_};
@@ -682,9 +395,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> class__ref() && {
     return {std::move(this->class_), __isset.class_};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotation_with_trailing_comma_ref() const& {
     return {this->annotation_with_trailing_comma, __isset.annotation_with_trailing_comma};
@@ -704,9 +415,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotation_with_trailing_comma_ref() && {
     return {std::move(this->annotation_with_trailing_comma), __isset.annotation_with_trailing_comma};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> empty_annotations_ref() const& {
     return {this->empty_annotations, __isset.empty_annotations};
@@ -726,17 +435,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> empty_annotations_ref() && {
     return {std::move(this->empty_annotations), __isset.empty_annotations};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_majorVer() const {
+  ::std::int64_t get_majorVer() const {
     return majorVer;
   }
 
-  int64_t& set_majorVer(int64_t majorVer_) {
+  [[deprecated("Use `FOO.majorVer_ref() = BAR;` instead of `FOO.set_majorVer(BAR);`")]]
+  ::std::int64_t& set_majorVer(::std::int64_t majorVer_) {
     majorVer = majorVer_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.majorVer = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return majorVer;
   }
 
@@ -749,11 +456,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStruct_package_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.package_ref() = BAR;` instead of `FOO.set_package(BAR);`")]]
   ::std::string& set_package(T_MyStruct_package_struct_setter&& package_) {
     package = std::forward<T_MyStruct_package_struct_setter>(package_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.package = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return package;
   }
 
@@ -766,11 +472,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStruct_annotation_with_quote_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.annotation_with_quote_ref() = BAR;` instead of `FOO.set_annotation_with_quote(BAR);`")]]
   ::std::string& set_annotation_with_quote(T_MyStruct_annotation_with_quote_struct_setter&& annotation_with_quote_) {
     annotation_with_quote = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotation_with_quote = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotation_with_quote;
   }
 
@@ -783,11 +488,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStruct_class__struct_setter = ::std::string>
+  [[deprecated("Use `FOO.class__ref() = BAR;` instead of `FOO.set_class_(BAR);`")]]
   ::std::string& set_class_(T_MyStruct_class__struct_setter&& class__) {
     class_ = std::forward<T_MyStruct_class__struct_setter>(class__);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.class_ = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return class_;
   }
 
@@ -800,11 +504,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStruct_annotation_with_trailing_comma_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.annotation_with_trailing_comma_ref() = BAR;` instead of `FOO.set_annotation_with_trailing_comma(BAR);`")]]
   ::std::string& set_annotation_with_trailing_comma(T_MyStruct_annotation_with_trailing_comma_struct_setter&& annotation_with_trailing_comma_) {
     annotation_with_trailing_comma = std::forward<T_MyStruct_annotation_with_trailing_comma_struct_setter>(annotation_with_trailing_comma_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.annotation_with_trailing_comma = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return annotation_with_trailing_comma;
   }
 
@@ -817,11 +520,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_MyStruct_empty_annotations_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.empty_annotations_ref() = BAR;` instead of `FOO.set_empty_annotations(BAR);`")]]
   ::std::string& set_empty_annotations(T_MyStruct_empty_annotations_struct_setter&& empty_annotations_) {
     empty_annotations = std::forward<T_MyStruct_empty_annotations_struct_setter>(empty_annotations_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.empty_annotations = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return empty_annotations;
   }
 
@@ -838,7 +540,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -851,6 +553,11 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class SecretStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -858,6 +565,7 @@ class SecretStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = SecretStruct;
@@ -867,76 +575,58 @@ class SecretStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   SecretStruct() :
-      id(0) {}
+      id(0) {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  SecretStruct(apache::thrift::FragileConstructor, int64_t id__arg, ::std::string password__arg);
+  SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string password__arg);
 
-  SecretStruct(SecretStruct&&) = default;
+  SecretStruct(SecretStruct&&) noexcept;
 
-  SecretStruct(const SecretStruct&) = default;
+  SecretStruct(const SecretStruct& src);
 
 
-  SecretStruct& operator=(SecretStruct&&) = default;
-
-  SecretStruct& operator=(const SecretStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  SecretStruct& operator=(SecretStruct&&) noexcept;
+  SecretStruct& operator=(const SecretStruct& src);
   void __clear();
  private:
-  int64_t id;
+  ::std::int64_t id;
  private:
   ::std::string password;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool id;
     bool password;
   } __isset = {};
-  bool operator==(const SecretStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const SecretStruct& __x, const SecretStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const SecretStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const SecretStruct& __x, const SecretStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const SecretStruct& __x, const SecretStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const SecretStruct& __x, const SecretStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T = int64_t>
+ public:
+
+  bool operator==(const SecretStruct&) const;
+  bool operator<(const SecretStruct&) const;
+
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> id_ref() const& {
     return {this->id, __isset.id};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> id_ref() const&& {
     return {std::move(this->id), __isset.id};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> id_ref() & {
     return {this->id, __isset.id};
   }
 
-  template <typename..., typename T = int64_t>
+  template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> id_ref() && {
     return {std::move(this->id), __isset.id};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> password_ref() const& {
     return {this->password, __isset.password};
@@ -956,17 +646,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> password_ref() && {
     return {std::move(this->password), __isset.password};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
-  int64_t get_id() const {
+  ::std::int64_t get_id() const {
     return id;
   }
 
-  int64_t& set_id(int64_t id_) {
+  [[deprecated("Use `FOO.id_ref() = BAR;` instead of `FOO.set_id(BAR);`")]]
+  ::std::int64_t& set_id(::std::int64_t id_) {
     id = id_;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.id = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return id;
   }
 
@@ -979,11 +667,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
 
   template <typename T_SecretStruct_password_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.password_ref() = BAR;` instead of `FOO.set_password(BAR);`")]]
   ::std::string& set_password(T_SecretStruct_password_struct_setter&& password_) {
     password = std::forward<T_SecretStruct_password_struct_setter>(password_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.password = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return password;
   }
 
@@ -1000,7 +687,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< SecretStruct >;
+  friend class ::apache::thrift::Cpp2Ops<SecretStruct>;
   friend void swap(SecretStruct& a, SecretStruct& b);
 };
 
@@ -1012,3 +699,4 @@ uint32_t SecretStruct::read(Protocol_* iprot) {
 }
 
 } // cpp2
+THRIFT_IGNORE_ISSET_USE_WARNING_END

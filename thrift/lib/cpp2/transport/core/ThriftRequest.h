@@ -42,6 +42,7 @@
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
+#include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -64,16 +65,21 @@ class ThriftRequestCore : public ResponseChannelRequest {
       : serverConfigs_(serverConfigs),
         kind_(metadata.kind_ref().value_or(
             RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE)),
-        active_(true),
         checksumRequested_(metadata.crc32c_ref().has_value()),
-        requestFlags_(metadata.flags_ref().value_or(0)),
         loadMetric_(
             metadata.loadMetric_ref()
                 ? folly::make_optional(std::move(*metadata.loadMetric_ref()))
                 : folly::none),
-        reqContext_(&connContext, &header_),
+        reqContext_(
+            &connContext,
+            &header_,
+            metadata.name_ref() ? std::move(*metadata.name_ref()).str()
+                                : std::string{}),
         queueTimeout_(serverConfigs_),
-        taskTimeout_(serverConfigs_) {
+        taskTimeout_(serverConfigs_),
+        stateMachine_(
+            includeInRecentRequestsCount(reqContext_.getMethodName()),
+            serverConfigs_.getAdaptiveConcurrencyController()) {
     // Note that method name, RPC kind, and serialization protocol are validated
     // outside the ThriftRequestCore constructor.
     header_.setProtocolId(static_cast<int16_t>(
@@ -94,10 +100,12 @@ class ThriftRequestCore : public ResponseChannelRequest {
       header_.setReadHeaders(std::move(*otherMetadata));
     }
     if (auto clientId = metadata.clientId_ref()) {
+      header_.setClientId(*clientId);
       header_.setReadHeader(
           transport::THeader::kClientId, std::move(*clientId));
     }
     if (auto serviceTraceMeta = metadata.serviceTraceMeta_ref()) {
+      header_.setServiceTraceMeta(*serviceTraceMeta);
       header_.setReadHeader(
           transport::THeader::kServiceTraceMeta, std::move(*serviceTraceMeta));
     }
@@ -109,45 +117,30 @@ class ThriftRequestCore : public ResponseChannelRequest {
       compressionConfig_ = *compressionConfig;
     }
 
-    if (auto methodName = metadata.name_ref()) {
-      reqContext_.setMethodName(std::move(*methodName));
-    }
-
     if (auto* observer = serverConfigs_.getObserver()) {
       observer->receivedRequest();
     }
   }
 
-  ~ThriftRequestCore() override {
-    cancelTimeout();
-  }
+  ~ThriftRequestCore() override { cancelTimeout(); }
 
-  bool isActive() const final {
-    return active_.load();
-  }
+  bool isActive() const final { return stateMachine_.isActive(); }
 
-  void cancel() override {
-    if (active_.exchange(false)) {
-      cancelTimeout();
-    }
-  }
+  bool tryCancel() { return stateMachine_.tryCancel(getEventBase()); }
 
-  RpcKind kind() const {
-    return kind_;
-  }
+  RpcKind kind() const { return kind_; }
 
   bool isOneway() const final {
-    return kind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE ||
-        kind_ == RpcKind::STREAMING_REQUEST_NO_RESPONSE;
+    return kind_ == RpcKind::SINGLE_REQUEST_NO_RESPONSE;
   }
 
   protocol::PROTOCOL_TYPES getProtoId() const {
     return static_cast<protocol::PROTOCOL_TYPES>(header_.getProtocolId());
   }
 
-  Cpp2RequestContext* getRequestContext() {
-    return &reqContext_;
-  }
+  Cpp2RequestContext* getRequestContext() { return &reqContext_; }
+
+  const transport::THeader& getTHeader() const { return header_; }
 
   const std::string& getMethodName() const {
     return reqContext_.getMethodName();
@@ -177,22 +170,22 @@ class ThriftRequestCore : public ResponseChannelRequest {
   };
 
   void sendReply(
-      std::unique_ptr<folly::IOBuf>&& buf,
-      apache::thrift::MessageChannel::SendCallback* cb,
+      ResponsePayload&& response,
+      MessageChannel::SendCallback* cb,
       folly::Optional<uint32_t> crc32c) override final;
 
   bool sendStreamReply(
-      std::unique_ptr<folly::IOBuf> response,
+      ResponsePayload&& response,
       StreamServerCallbackPtr stream,
       folly::Optional<uint32_t> crc32c) override final {
-    if (active_.exchange(false)) {
+    if (tryCancel()) {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
         metadata.crc32c_ref() = *crc32c;
       }
       auto alive = sendReplyInternal(
-          std::move(metadata), std::move(response), std::move(stream));
+          std::move(metadata), std::move(response).buffer(), std::move(stream));
 
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
@@ -203,16 +196,17 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
   void sendStreamReply(
-      std::unique_ptr<folly::IOBuf>&& buf,
+      ResponsePayload&& response,
       apache::thrift::detail::ServerStreamFactory&& stream,
       folly::Optional<uint32_t> crc32c) override final {
-    if (active_.exchange(false)) {
+    if (tryCancel()) {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
         metadata.crc32c_ref() = *crc32c;
       }
-      sendReplyInternal(std::move(metadata), std::move(buf), std::move(stream));
+      sendReplyInternal(
+          std::move(metadata), std::move(response).buffer(), std::move(stream));
 
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
@@ -222,22 +216,47 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
 #if FOLLY_HAS_COROUTINES
   void sendSinkReply(
-      std::unique_ptr<folly::IOBuf>&& buf,
+      ResponsePayload&& response,
       apache::thrift::detail::SinkConsumerImpl&& consumerImpl,
       folly::Optional<uint32_t> crc32c) override final {
-    if (active_.exchange(false)) {
+    if (tryCancel()) {
       cancelTimeout();
       auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
       if (crc32c) {
         metadata.crc32c_ref() = *crc32c;
       }
       sendReplyInternal(
-          std::move(metadata), std::move(buf), std::move(consumerImpl));
+          std::move(metadata),
+          std::move(response).buffer(),
+          std::move(consumerImpl));
 
       if (auto* observer = serverConfigs_.getObserver()) {
         observer->sentReply();
       }
     }
+  }
+
+  bool sendSinkReply(
+      ResponsePayload&& response,
+      SinkServerCallbackPtr callback,
+      folly::Optional<uint32_t> crc32c) override final {
+    if (tryCancel()) {
+      cancelTimeout();
+      auto metadata = makeResponseRpcMetadata(header_.extractAllWriteHeaders());
+      if (crc32c) {
+        metadata.crc32c_ref() = *crc32c;
+      }
+      auto alive = sendReplyInternal(
+          std::move(metadata),
+          std::move(response).buffer(),
+          std::move(callback));
+
+      if (auto* observer = serverConfigs_.getObserver()) {
+        observer->sentReply();
+      }
+      return alive;
+    }
+    return false;
   }
 #endif
 
@@ -246,15 +265,36 @@ class ThriftRequestCore : public ResponseChannelRequest {
       closeConnection(std::move(ew));
     }
 
-    if (active_.exchange(false)) {
+    if (tryCancel()) {
       cancelTimeout();
       sendErrorWrappedInternal(
           std::move(ew), exCode, header_.extractAllWriteHeaders());
     }
   }
 
-  bool isReplyChecksumNeeded() const override {
-    return checksumRequested_;
+  void sendException(
+      ResponsePayload&& response,
+      MessageChannel::SendCallback* cb) override final;
+
+  void sendQueueTimeoutResponse() final {
+    if (tryCancel() && !isOneway()) {
+      cancelTimeout();
+      if (auto* observer = serverConfigs_.getObserver()) {
+        observer->queueTimeout();
+      }
+      sendErrorWrappedInternal(
+          TApplicationException(
+              TApplicationException::TApplicationExceptionType::TIMEOUT,
+              "Queue Timeout"),
+          kServerQueueTimeoutErrorCode,
+          {});
+    }
+  }
+
+  bool isReplyChecksumNeeded() const override { return checksumRequested_; }
+
+  virtual void closeConnection(folly::exception_wrapper) noexcept {
+    LOG(FATAL) << "closeConnection not implemented";
   }
 
  protected:
@@ -289,11 +329,21 @@ class ThriftRequestCore : public ResponseChannelRequest {
       apache::thrift::detail::SinkConsumerImpl&&) noexcept {
     LOG(FATAL) << "sendSinkThriftResponse not implemented";
   }
+
+  virtual bool sendSinkThriftResponse(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      SinkServerCallbackPtr) noexcept {
+    LOG(FATAL) << "sendSinkThriftResponse not implemented";
+  }
 #endif
 
-  virtual void closeConnection(folly::exception_wrapper) noexcept {
-    LOG(FATAL) << "closeConnection not implemented";
-  }
+  virtual void sendThriftException(
+      ResponseRpcMetadata&&,
+      std::unique_ptr<folly::IOBuf>,
+      MessageChannel::SendCallbackPtr) noexcept = 0;
+
+  bool tryStartProcessing() final { return stateMachine_.tryStartProcessing(); }
 
   virtual folly::EventBase* getEventBase() noexcept = 0;
 
@@ -323,6 +373,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
   }
 
  private:
+  static bool includeInRecentRequestsCount(const std::string_view);
+
   MessageChannel::SendCallbackPtr prepareSendCallback(
       MessageChannel::SendCallbackPtr&& sendCallback,
       server::TServerObserver* observer);
@@ -368,6 +420,19 @@ class ThriftRequestCore : public ResponseChannelRequest {
       sendResponseTooBigEx();
     }
   }
+
+  bool sendReplyInternal(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> buf,
+      SinkServerCallbackPtr serverCb) {
+    if (checkResponseSize(*buf)) {
+      return sendSinkThriftResponse(
+          std::move(metadata), std::move(buf), std::move(serverCb));
+    } else {
+      sendResponseTooBigEx();
+      return false;
+    }
+  }
 #endif
 
   void sendResponseTooBigEx() {
@@ -383,11 +448,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
       transport::THeader::StringToStringMap&& writeHeaders) {
     ResponseRpcMetadata metadata;
 
-    if ((requestFlags_ &
-         static_cast<uint64_t>(RequestRpcMetadataFlags::QUERY_SERVER_LOAD)) ||
-        loadMetric_) {
-      metadata.load_ref() = serverConfigs_.getLoad(
-          loadMetric_.value_or(transport::THeader::QUERY_LOAD_HEADER));
+    if (loadMetric_) {
+      metadata.load_ref() = serverConfigs_.getLoad(*loadMetric_);
     }
 
     if (!writeHeaders.empty()) {
@@ -407,7 +469,13 @@ class ThriftRequestCore : public ResponseChannelRequest {
       std::unique_ptr<folly::IOBuf> exbuf;
       auto proto = getProtoId();
       try {
-        exbuf = serializeError(proto, tae, getMethodName(), 0);
+        if (includeEnvelope()) {
+          exbuf = serializeError</*includeEnvelope=*/true>(
+              proto, tae, getMethodName(), 0);
+        } else {
+          exbuf = serializeError</*includeEnvelope=*/false>(
+              proto, tae, getMethodName(), 0);
+        }
       } catch (const protocol::TProtocolException& pe) {
         // Should never happen.  Log an error and return an empty
         // payload.
@@ -444,17 +512,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
     QueueTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
-      if (!request_->getStartedProcessing() &&
-          request_->active_.exchange(false) && !request_->isOneway()) {
-        if (auto* observer = serverConfigs_.getObserver()) {
-          observer->queueTimeout();
-        }
-        request_->sendErrorWrappedInternal(
-            TApplicationException(
-                TApplicationException::TApplicationExceptionType::TIMEOUT,
-                "Queue Timeout"),
-            kServerQueueTimeoutErrorCode,
-            {});
+      if (request_->stateMachine_.tryStopProcessing()) {
+        request_->sendQueueTimeoutResponse();
       }
     }
     friend class ThriftRequestCore;
@@ -465,7 +524,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     TaskTimeout(const server::ServerConfigs& serverConfigs)
         : serverConfigs_(serverConfigs) {}
     void timeoutExpired() noexcept override {
-      if (request_->active_.exchange(false) && !request_->isOneway()) {
+      if (request_->tryCancel() && !request_->isOneway()) {
         if (auto* observer = serverConfigs_.getObserver()) {
           observer->taskTimeout();
         }
@@ -493,10 +552,8 @@ class ThriftRequestCore : public ResponseChannelRequest {
   const RpcKind kind_;
 
  private:
-  std::atomic<bool> active_;
   bool checksumRequested_{false};
   transport::THeader header_;
-  const uint64_t requestFlags_{0};
   folly::Optional<std::string> loadMetric_;
   Cpp2RequestContext reqContext_;
   folly::Optional<CompressionConfig> compressionConfig_;
@@ -505,6 +562,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
   TaskTimeout taskTimeout_;
   std::chrono::milliseconds clientQueueTimeout_{0};
   std::chrono::milliseconds clientTimeout_{0};
+
+ protected:
+  RequestStateMachine stateMachine_;
 };
 
 // HTTP2 uses this
@@ -515,27 +575,26 @@ class ThriftRequest final : public ThriftRequestCore {
       std::shared_ptr<ThriftChannelIf> channel,
       RequestRpcMetadata&& metadata,
       std::unique_ptr<Cpp2ConnContext> connContext)
-      : ThriftRequestCore(
-            serverConfigs,
-            std::move(metadata),
-            [&]() -> Cpp2ConnContext& {
-              if (!connContext) {
-                connContext = std::make_unique<Cpp2ConnContext>();
-              }
-              return *connContext;
-            }()),
+      : ThriftRequestCore(serverConfigs, std::move(metadata), *connContext),
         channel_(std::move(channel)),
         connContext_(std::move(connContext)) {
     serverConfigs_.incActiveRequests();
     scheduleTimeouts();
   }
 
-  ~ThriftRequest() {
-    serverConfigs_.decActiveRequests();
-  }
+  bool includeEnvelope() const override { return true; }
+
+  ~ThriftRequest() { serverConfigs_.decActiveRequests(); }
 
  private:
   void sendThriftResponse(
+      ResponseRpcMetadata&& metadata,
+      std::unique_ptr<folly::IOBuf> response,
+      MessageChannel::SendCallbackPtr) noexcept override {
+    channel_->sendThriftResponse(std::move(metadata), std::move(response));
+  }
+
+  void sendThriftException(
       ResponseRpcMetadata&& metadata,
       std::unique_ptr<folly::IOBuf> response,
       MessageChannel::SendCallbackPtr) noexcept override {
@@ -547,11 +606,9 @@ class ThriftRequest final : public ThriftRequestCore {
       std::unique_ptr<folly::IOBuf> exbuf) noexcept override {
     switch (kind_) {
       case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-      case RpcKind::STREAMING_REQUEST_SINGLE_RESPONSE:
         sendThriftResponse(std::move(metadata), std::move(exbuf), nullptr);
         break;
       case RpcKind::SINGLE_REQUEST_STREAMING_RESPONSE:
-      case RpcKind::STREAMING_REQUEST_STREAMING_RESPONSE:
         sendStreamThriftResponse(
             std::move(metadata),
             std::move(exbuf),
@@ -559,7 +616,10 @@ class ThriftRequest final : public ThriftRequestCore {
         break;
 #if FOLLY_HAS_COROUTINES
       case RpcKind::SINK:
-        sendSinkThriftResponse(std::move(metadata), std::move(exbuf), {});
+        sendSinkThriftResponse(
+            std::move(metadata),
+            std::move(exbuf),
+            SinkServerCallbackPtr(nullptr));
         break;
 #endif
       default: // Don't send error back for one-way.
@@ -569,6 +629,9 @@ class ThriftRequest final : public ThriftRequestCore {
   }
 
   // Don't allow hiding of overloaded method.
+#if FOLLY_HAS_COROUTINES
+  using ThriftRequestCore::sendSinkThriftResponse;
+#endif
   using ThriftRequestCore::sendStreamThriftResponse;
 
   folly::EventBase* getEventBase() noexcept override {

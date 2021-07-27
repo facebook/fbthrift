@@ -17,6 +17,7 @@
 #pragma once
 
 #include <algorithm>
+#include <memory>
 #include <type_traits>
 
 #include <folly/Indestructible.h>
@@ -32,6 +33,75 @@ namespace thrift {
 namespace detail {
 
 namespace st {
+
+//  copy_field_fn
+//  copy_field
+//
+//  Returns a copy of a field. Used by structure copy-cosntructors.
+//
+//  Transitively copies through unique-ptr's, which are not copy-constructible.
+template <typename TypeClass>
+struct copy_field_fn;
+template <typename TypeClass>
+FOLLY_INLINE_VARIABLE constexpr copy_field_fn<TypeClass> copy_field{};
+
+template <typename>
+struct copy_field_rec {
+  template <typename T>
+  T operator()(T const& t) const {
+    return t;
+  }
+};
+
+template <typename ValueTypeClass>
+struct copy_field_rec<type_class::list<ValueTypeClass>> {
+  template <typename T>
+  T operator()(T const& t) const {
+    T result;
+    for (auto const& e : t) {
+      result.push_back(copy_field<ValueTypeClass>(e));
+    }
+    return result;
+  }
+};
+
+template <typename ValueTypeClass>
+struct copy_field_rec<type_class::set<ValueTypeClass>> {
+  template <typename T>
+  T operator()(T const& t) const {
+    T result;
+    for (auto const& e : t) {
+      result.emplace_hint(result.end(), copy_field<ValueTypeClass>(e));
+    }
+    return result;
+  }
+};
+
+template <typename KeyTypeClass, typename MappedTypeClass>
+struct copy_field_rec<type_class::map<KeyTypeClass, MappedTypeClass>> {
+  template <typename T>
+  T operator()(T const& t) const {
+    T result;
+    for (auto const& pair : t) {
+      result.emplace_hint(
+          result.end(),
+          copy_field<KeyTypeClass>(pair.first),
+          copy_field<MappedTypeClass>(pair.second));
+    }
+    return result;
+  }
+};
+
+template <typename TypeClass>
+struct copy_field_fn : copy_field_rec<TypeClass> {
+  using rec = copy_field_rec<TypeClass>;
+
+  using rec::operator();
+  template <typename T>
+  std::unique_ptr<T> operator()(std::unique_ptr<T> const& t) const {
+    return !t ? nullptr : std::make_unique<T>((*this)(*t));
+  }
+};
 
 struct translate_field_name_table {
   size_t size;

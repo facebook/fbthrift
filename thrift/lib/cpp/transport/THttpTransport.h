@@ -37,21 +37,13 @@ class THttpTransport : public TVirtualTransport<THttpTransport> {
 
   ~THttpTransport() override;
 
-  void open() override {
-    transport_->open();
-  }
+  void open() override { transport_->open(); }
 
-  bool isOpen() override {
-    return transport_->isOpen();
-  }
+  bool isOpen() override { return transport_->isOpen(); }
 
-  bool peek() override {
-    return transport_->peek();
-  }
+  bool peek() override { return transport_->peek(); }
 
-  void close() override {
-    transport_->close();
-  }
+  void close() override { transport_->close(); }
 
   uint32_t read(uint8_t* buf, uint32_t len);
 
@@ -61,9 +53,7 @@ class THttpTransport : public TVirtualTransport<THttpTransport> {
 
   void flush() override = 0;
 
-  std::shared_ptr<TTransport> getUnderlyingTransport() {
-    return transport_;
-  }
+  std::shared_ptr<TTransport> getUnderlyingTransport() { return transport_; }
 
  protected:
   std::shared_ptr<TTransport> transport_;

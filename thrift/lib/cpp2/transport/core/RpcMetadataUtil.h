@@ -18,7 +18,9 @@
 
 #include <chrono>
 
+#include <folly/Optional.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/util/ManagedStringView.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
@@ -28,23 +30,31 @@ class RpcOptions;
 
 namespace detail {
 
+inline constexpr std::string_view kHeaderUex = "uex";
+inline constexpr std::string_view kHeaderUexw = "uexw";
+inline constexpr std::string_view kHeaderEx = "ex";
+inline constexpr std::string_view kHeaderExMeta = "exm";
+
 RequestRpcMetadata makeRequestRpcMetadata(
     const RpcOptions& rpcOptions,
     RpcKind kind,
     ProtocolId protocolId,
-    folly::StringPiece methodName,
+    ManagedStringView&& methodName,
     std::chrono::milliseconds defaultChannelTimeout,
-    transport::THeader& header,
-    const transport::THeader::StringToStringMap& persistentWriteHeaders,
-    const folly::Optional<int32_t>& version);
-
-void fillTHeaderFromResponseRpcMetadata(
-    ResponseRpcMetadata& responseMetadata,
     transport::THeader& header);
 
+void fillTHeaderFromResponseRpcMetadata(
+    ResponseRpcMetadata& responseMetadata, transport::THeader& header);
+
 void fillResponseRpcMetadataFromTHeader(
-    transport::THeader& header,
-    ResponseRpcMetadata& responseMetadata);
+    transport::THeader& header, ResponseRpcMetadata& responseMetadata);
+
+std::string serializeErrorClassification(ErrorClassification ec);
+ErrorClassification deserializeErrorClassification(std::string_view str);
+
+folly::Optional<std::string> errorKindToString(ErrorKind);
+folly::Optional<std::string> errorBlameToString(ErrorBlame);
+folly::Optional<std::string> errorSafetyToString(ErrorSafety);
 
 } // namespace detail
 } // namespace thrift

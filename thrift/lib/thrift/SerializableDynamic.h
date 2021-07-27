@@ -40,19 +40,11 @@ class SerializableDynamic {
     return *this;
   }
 
-  const folly::dynamic& operator*() const {
-    return value_;
-  }
-  folly::dynamic& operator*() {
-    return value_;
-  }
+  const folly::dynamic& operator*() const { return value_; }
+  folly::dynamic& operator*() { return value_; }
 
-  const folly::dynamic* operator->() const {
-    return &value_;
-  }
-  folly::dynamic* operator->() {
-    return &value_;
-  }
+  const folly::dynamic* operator->() const { return &value_; }
+  folly::dynamic* operator->() { return &value_; }
 
   bool operator==(const SerializableDynamic& other) const {
     return value_ == other.value_;
@@ -230,9 +222,7 @@ class SerializableDynamic {
     return xfer;
   }
 
-  void __clear() {
-    value_ = nullptr;
-  }
+  void __clear() { value_ = nullptr; }
 
  private:
   folly::dynamic value_;
@@ -244,13 +234,9 @@ class SerializableDynamic {
 template <>
 class Cpp2Ops<SerializableDynamic> {
  public:
-  static void clear(SerializableDynamic* obj) {
-    obj->__clear();
-  }
+  static void clear(SerializableDynamic* obj) { obj->__clear(); }
 
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_STRUCT;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_STRUCT; }
 
   template <class Protocol_>
   static uint32_t write(Protocol_* p, const SerializableDynamic* obj) {
@@ -259,8 +245,7 @@ class Cpp2Ops<SerializableDynamic> {
 
   template <class Protocol_>
   static uint32_t serializedSize(
-      Protocol_ const* p,
-      const SerializableDynamic* obj) {
+      Protocol_ const* p, const SerializableDynamic* obj) {
     uint32_t xfer = 0;
     xfer += p->serializedStructSize("Variant");
     switch (obj->value_.type()) {
@@ -316,8 +301,7 @@ class Cpp2Ops<SerializableDynamic> {
 
   template <class Protocol_>
   static uint32_t serializedSizeZC(
-      Protocol_ const* p,
-      const SerializableDynamic* obj) {
+      Protocol_ const* p, const SerializableDynamic* obj) {
     return serializedSize(p, obj);
   }
 

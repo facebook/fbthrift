@@ -35,15 +35,17 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 
 namespace cpp2 {
 
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Foo::Foo(apache::thrift::FragileConstructor, int32_t bar__arg) :
+Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg) :
     bar(std::move(bar__arg)) {
   __isset.bar = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void Foo::__clear() {
   // clear all fields
-  bar = 0;
+  this->bar = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -53,7 +55,7 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.bar_ref() != rhs.bar_ref()) {
+  if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return false;
   }
   return true;
@@ -63,7 +65,7 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.bar_ref() != rhs.bar_ref()) {
+  if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return lhs.bar_ref() < rhs.bar_ref();
   }
   return false;

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <numeric>
+
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/frozen/FrozenUtil.h>
@@ -51,6 +53,9 @@ TYPED_TEST_P(FrozenRange, Iterators) {
   EXPECT_EQ(*it--, 13);
   EXPECT_EQ(*it--, 12);
   EXPECT_EQ(*--it, 10);
+  std::adjacent_difference(fv.begin(), fv.end(), v.begin());
+  TypeParam ref{10, 1, 1, 1};
+  EXPECT_EQ(v, ref);
 }
 
 TYPED_TEST_P(FrozenRange, IteratorComparisons) {
@@ -147,11 +152,7 @@ TYPED_TEST_P(FrozenRange, Zeros) {
 }
 
 REGISTER_TYPED_TEST_CASE_P(
-    FrozenRange,
-    ArrayLike,
-    Iterators,
-    IteratorComparisons,
-    Zeros);
+    FrozenRange, ArrayLike, Iterators, IteratorComparisons, Zeros);
 typedef ::testing::Types<std::vector<int>, folly::fbvector<int>> MyTypes;
 INSTANTIATE_TYPED_TEST_CASE_P(Ranges, FrozenRange, MyTypes);
 

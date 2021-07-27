@@ -67,13 +67,9 @@ class Ewma {
     timestamp_ = now;
   }
 
-  double estimate() const {
-    return ewma_;
-  }
+  double estimate() const { return ewma_; }
 
-  double getWindowNs() const {
-    return tau_;
-  }
+  double getWindowNs() const { return tau_; }
 
  private:
   const double tau_;

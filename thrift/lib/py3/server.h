@@ -28,8 +28,7 @@ using AddressHandler = folly::Function<void(folly::SocketAddress)>;
 
 template <class Ret, class... Args>
 folly::Function<Ret(Args...)> object_partial(
-    Ret (*func)(PyObject*, Args...),
-    PyObject* py_object) {
+    Ret (*func)(PyObject*, Args...), PyObject* py_object) {
   Py_INCREF(py_object);
   auto guard = folly::makeGuard([=] { Py_DECREF(py_object); });
   return [func, py_object, guard = std::move(guard)](Args... args) mutable {
@@ -41,8 +40,7 @@ class Py3ServerEventHandler
     : public apache::thrift::server::TServerEventHandler {
  public:
   explicit Py3ServerEventHandler(
-      folly::Executor* executor,
-      AddressHandler address_handler)
+      folly::Executor* executor, AddressHandler address_handler)
       : executor_(executor), address_handler_(std::move(address_handler)) {}
 
   void preServe(const folly::SocketAddress* address) {

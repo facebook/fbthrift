@@ -45,9 +45,7 @@ class THttpClient : public THttpTransport {
 
   void setHeader(const std::string& name, const std::string& value);
 
-  StringToStringMap& getRequestHeaders() {
-    return requestHeaders_;
-  }
+  StringToStringMap& getRequestHeaders() { return requestHeaders_; }
 
   const StringToStringMap& getResponseHeaders() const {
     return responseHeaders_;
@@ -70,17 +68,11 @@ class THttpClient : public THttpTransport {
     THttpTransport::init();
   }
 
-  const std::string& getHost() const {
-    return host_;
-  }
+  const std::string& getHost() const { return host_; }
 
-  void setHost(const std::string& host) {
-    host_ = host;
-  }
+  void setHost(const std::string& host) { host_ = host; }
 
-  const std::string& getPath() const {
-    return path_;
-  }
+  const std::string& getPath() const { return path_; }
 
   const static std::string kAcceptHeader;
   const static std::string kConnectionHeader;

@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,10 +31,16 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 cimport include.types as _include_types
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -56,18 +61,27 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_unordered_map() except +
         std_unordered_map(std_unordered_map&) except +
 
         U& operator[](T&)
         iterator find(const T&)
+        const_iterator const_find "find"(const T&)
         size_type count(const T&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -86,6 +100,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_list() except +
         std_list(std_list&) except +
@@ -94,9 +112,13 @@ cdef extern from * nogil:
         void push_back(T&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -115,6 +137,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_deque() except +
         std_deque(std_deque&) except +
@@ -123,9 +149,13 @@ cdef extern from * nogil:
         void push_back(T&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -144,6 +174,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_fbvector() except +
         folly_fbvector(folly_fbvector&) except +
@@ -152,9 +186,13 @@ cdef extern from * nogil:
         void push_back(T&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -173,6 +211,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_small_vector() except +
         folly_small_vector(folly_small_vector&) except +
@@ -181,9 +223,13 @@ cdef extern from * nogil:
         void push_back(T&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -202,6 +248,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_sorted_vector_set() except +
         folly_sorted_vector_set(folly_sorted_vector_set&) except +
@@ -210,9 +260,13 @@ cdef extern from * nogil:
         size_type size()
         size_type count(const T&)
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -232,18 +286,27 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_sorted_vector_map() except +
         folly_sorted_vector_map(folly_sorted_vector_map&) except +
 
         U& operator[](T&)
         iterator find(const T&)
+        const_iterator const_find "find"(const T&)
         size_type count(const T&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -262,6 +325,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_list_int32_t() except +
         std_list_int32_t(std_list_int32_t&) except +
@@ -270,13 +337,21 @@ cdef extern from * nogil:
         void push_back(cint32_t&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass EnumMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::apache::thrift::fixtures::types":
     cdef cppclass chas_bitwise_ops "::apache::thrift::fixtures::types::has_bitwise_ops":
         pass
@@ -309,9 +384,15 @@ cdef class MyForwardRefEnum(thrift.py3.types.CompiledEnum):
 cdef class MyEnumA(thrift.py3.types.CompiledEnum):
     pass
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apache::thrift::fixtures::types":
-    cdef cppclass cdecorated_struct__isset "::apache::thrift::fixtures::types::decorated_struct::__isset":
-        bint field
 
     cdef cppclass cdecorated_struct "::apache::thrift::fixtures::types::decorated_struct":
         cdecorated_struct() except +
@@ -324,17 +405,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>=(cdecorated_struct&)
         __field_ref[string] field_ref()
         string field
-        cdecorated_struct__isset __isset
 
-    cdef cppclass cContainerStruct__isset "::apache::thrift::fixtures::types::ContainerStruct::__isset":
-        bint fieldA
-        bint fieldB
-        bint fieldC
-        bint fieldD
-        bint fieldE
-        bint fieldF
-        bint fieldG
-        bint fieldH
 
     cdef cppclass cContainerStruct "::apache::thrift::fixtures::types::ContainerStruct":
         cContainerStruct() except +
@@ -342,25 +413,22 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator==(cContainerStruct&)
         bint operator!=(cContainerStruct&)
         __field_ref[vector[cint32_t]] fieldA_ref()
-        vector[cint32_t] fieldA
         __field_ref[std_list[cint32_t]] fieldB_ref()
-        std_list[cint32_t] fieldB
         __field_ref[std_deque[cint32_t]] fieldC_ref()
-        std_deque[cint32_t] fieldC
         __field_ref[folly_fbvector[cint32_t]] fieldD_ref()
-        folly_fbvector[cint32_t] fieldD
         __field_ref[folly_small_vector[cint32_t]] fieldE_ref()
-        folly_small_vector[cint32_t] fieldE
         __field_ref[folly_sorted_vector_set[cint32_t]] fieldF_ref()
-        folly_sorted_vector_set[cint32_t] fieldF
         __field_ref[folly_sorted_vector_map[cint32_t,string]] fieldG_ref()
-        folly_sorted_vector_map[cint32_t,string] fieldG
         __field_ref[std_unordered_map[cint32_t,string]] fieldH_ref()
+        vector[cint32_t] fieldA
+        std_list[cint32_t] fieldB
+        std_deque[cint32_t] fieldC
+        folly_fbvector[cint32_t] fieldD
+        folly_small_vector[cint32_t] fieldE
+        folly_sorted_vector_set[cint32_t] fieldF
+        folly_sorted_vector_map[cint32_t,string] fieldG
         std_unordered_map[cint32_t,string] fieldH
-        cContainerStruct__isset __isset
 
-    cdef cppclass cCppTypeStruct__isset "::apache::thrift::fixtures::types::CppTypeStruct::__isset":
-        bint fieldA
 
     cdef cppclass cCppTypeStruct "::apache::thrift::fixtures::types::CppTypeStruct":
         cCppTypeStruct() except +
@@ -373,10 +441,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>=(cCppTypeStruct&)
         __field_ref[std_list_int32_t] fieldA_ref()
         std_list_int32_t fieldA
-        cCppTypeStruct__isset __isset
 
-    cdef cppclass cVirtualStruct__isset "::apache::thrift::fixtures::types::VirtualStruct::__isset":
-        bint MyIntField
 
     cdef cppclass cVirtualStruct "::apache::thrift::fixtures::types::VirtualStruct":
         cVirtualStruct() except +
@@ -389,11 +454,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>=(cVirtualStruct&)
         __field_ref[cint64_t] MyIntField_ref()
         cint64_t MyIntField
-        cVirtualStruct__isset __isset
 
-    cdef cppclass cMyStructWithForwardRefEnum__isset "::apache::thrift::fixtures::types::MyStructWithForwardRefEnum::__isset":
-        bint a
-        bint b
 
     cdef cppclass cMyStructWithForwardRefEnum "::apache::thrift::fixtures::types::MyStructWithForwardRefEnum":
         cMyStructWithForwardRefEnum() except +
@@ -405,14 +466,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cMyStructWithForwardRefEnum&)
         bint operator>=(cMyStructWithForwardRefEnum&)
         __field_ref[cMyForwardRefEnum] a_ref()
-        cMyForwardRefEnum a
         __field_ref[cMyForwardRefEnum] b_ref()
+        cMyForwardRefEnum a
         cMyForwardRefEnum b
-        cMyStructWithForwardRefEnum__isset __isset
 
-    cdef cppclass cTrivialNumeric__isset "::apache::thrift::fixtures::types::TrivialNumeric::__isset":
-        bint a
-        bint b
 
     cdef cppclass cTrivialNumeric "::apache::thrift::fixtures::types::TrivialNumeric":
         cTrivialNumeric() except +
@@ -424,14 +481,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cTrivialNumeric&)
         bint operator>=(cTrivialNumeric&)
         __field_ref[cint32_t] a_ref()
-        cint32_t a
         __field_ref[cbool] b_ref()
+        cint32_t a
         cbool b
-        cTrivialNumeric__isset __isset
 
-    cdef cppclass cTrivialNestedWithDefault__isset "::apache::thrift::fixtures::types::TrivialNestedWithDefault::__isset":
-        bint z
-        bint n
 
     cdef cppclass cTrivialNestedWithDefault "::apache::thrift::fixtures::types::TrivialNestedWithDefault":
         cTrivialNestedWithDefault() except +
@@ -443,14 +496,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cTrivialNestedWithDefault&)
         bint operator>=(cTrivialNestedWithDefault&)
         __field_ref[cint32_t] z_ref()
-        cint32_t z
         __field_ref[cTrivialNumeric] n_ref()
+        cint32_t z
         cTrivialNumeric n
-        cTrivialNestedWithDefault__isset __isset
 
-    cdef cppclass cComplexString__isset "::apache::thrift::fixtures::types::ComplexString::__isset":
-        bint a
-        bint b
 
     cdef cppclass cComplexString "::apache::thrift::fixtures::types::ComplexString":
         cComplexString() except +
@@ -462,14 +511,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cComplexString&)
         bint operator>=(cComplexString&)
         __field_ref[string] a_ref()
-        string a
         __field_ref[cmap[string,cint32_t]] b_ref()
+        string a
         cmap[string,cint32_t] b
-        cComplexString__isset __isset
 
-    cdef cppclass cComplexNestedWithDefault__isset "::apache::thrift::fixtures::types::ComplexNestedWithDefault::__isset":
-        bint z
-        bint n
 
     cdef cppclass cComplexNestedWithDefault "::apache::thrift::fixtures::types::ComplexNestedWithDefault":
         cComplexNestedWithDefault() except +
@@ -481,17 +526,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cComplexNestedWithDefault&)
         bint operator>=(cComplexNestedWithDefault&)
         __field_ref[string] z_ref()
-        string z
         __field_ref[cComplexString] n_ref()
+        string z
         cComplexString n
-        cComplexNestedWithDefault__isset __isset
 
-    cdef cppclass cMinPadding__isset "::apache::thrift::fixtures::types::MinPadding::__isset":
-        bint small
-        bint big
-        bint medium
-        bint biggish
-        bint tiny
 
     cdef cppclass cMinPadding "::apache::thrift::fixtures::types::MinPadding":
         cMinPadding() except +
@@ -503,46 +541,34 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cMinPadding&)
         bint operator>=(cMinPadding&)
         __required_field_ref[cint8_t] small_ref()
-        cint8_t small
         __required_field_ref[cint64_t] big_ref()
-        cint64_t big
         __required_field_ref[cint16_t] medium_ref()
-        cint16_t medium
         __required_field_ref[cint32_t] biggish_ref()
-        cint32_t biggish
         __required_field_ref[cint8_t] tiny_ref()
+        cint8_t small
+        cint64_t big
+        cint16_t medium
+        cint32_t biggish
         cint8_t tiny
-        cMinPadding__isset __isset
 
-    cdef cppclass cMyStruct__isset "::apache::thrift::fixtures::types::MyStruct::__isset":
-        bint MyIntField
-        bint MyStringField
-        bint majorVer
-        bint data
 
     cdef cppclass cMyStruct "::apache::thrift::fixtures::types::MyStruct":
         cMyStruct() except +
         cMyStruct(const cMyStruct&) except +
         __field_ref[cint64_t] MyIntField_ref()
-        cint64_t MyIntField
         __field_ref[string] MyStringField_ref()
-        string MyStringField
         __field_ref[cint64_t] majorVer_ref()
-        cint64_t majorVer
         __field_ref[cMyDataItem] data_ref()
+        cint64_t MyIntField
+        string MyStringField
+        cint64_t majorVer
         cMyDataItem data
-        cMyStruct__isset __isset
 
-    cdef cppclass cMyDataItem__isset "::apache::thrift::fixtures::types::MyDataItem::__isset":
-        pass
 
     cdef cppclass cMyDataItem "::apache::thrift::fixtures::types::MyDataItem":
         cMyDataItem() except +
         cMyDataItem(const cMyDataItem&) except +
-        cMyDataItem__isset __isset
 
-    cdef cppclass cRenaming__isset "::apache::thrift::fixtures::types::Renaming::__isset":
-        bint foo "bar"
 
     cdef cppclass cRenaming "::apache::thrift::fixtures::types::Renaming":
         cRenaming() except +
@@ -555,11 +581,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>=(cRenaming&)
         __field_ref[cint64_t] foo_ref "bar_ref"()
         cint64_t foo "bar"
-        cRenaming__isset __isset
 
-    cdef cppclass cAnnotatedTypes__isset "::apache::thrift::fixtures::types::AnnotatedTypes::__isset":
-        bint binary_field
-        bint list_field
 
     cdef cppclass cAnnotatedTypes "::apache::thrift::fixtures::types::AnnotatedTypes":
         cAnnotatedTypes() except +
@@ -567,14 +589,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator==(cAnnotatedTypes&)
         bint operator!=(cAnnotatedTypes&)
         __field_ref[string] binary_field_ref()
-        string binary_field
         __field_ref[vector[std_unordered_map[cint32_t,string]]] list_field_ref()
+        string binary_field
         vector[std_unordered_map[cint32_t,string]] list_field
-        cAnnotatedTypes__isset __isset
 
-    cdef cppclass cForwardUsageRoot__isset "::apache::thrift::fixtures::types::ForwardUsageRoot::__isset":
-        bint ForwardUsageStruct
-        bint ForwardUsageByRef
 
     cdef cppclass cForwardUsageRoot "::apache::thrift::fixtures::types::ForwardUsageRoot":
         cForwardUsageRoot() except +
@@ -586,12 +604,10 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cForwardUsageRoot&)
         bint operator>=(cForwardUsageRoot&)
         __optional_field_ref[cForwardUsageStruct] ForwardUsageStruct_ref()
+        unique_ptr[cForwardUsageByRef] ForwardUsageByRef_ref()
         cForwardUsageStruct ForwardUsageStruct
         unique_ptr[cForwardUsageByRef] ForwardUsageByRef
-        cForwardUsageRoot__isset __isset
 
-    cdef cppclass cForwardUsageStruct__isset "::apache::thrift::fixtures::types::ForwardUsageStruct::__isset":
-        bint foo
 
     cdef cppclass cForwardUsageStruct "::apache::thrift::fixtures::types::ForwardUsageStruct":
         cForwardUsageStruct() except +
@@ -604,10 +620,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>=(cForwardUsageStruct&)
         __optional_field_ref[cForwardUsageRoot] foo_ref()
         cForwardUsageRoot foo
-        cForwardUsageStruct__isset __isset
 
-    cdef cppclass cForwardUsageByRef__isset "::apache::thrift::fixtures::types::ForwardUsageByRef::__isset":
-        bint foo
 
     cdef cppclass cForwardUsageByRef "::apache::thrift::fixtures::types::ForwardUsageByRef":
         cForwardUsageByRef() except +
@@ -620,10 +633,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>=(cForwardUsageByRef&)
         __optional_field_ref[cForwardUsageRoot] foo_ref()
         cForwardUsageRoot foo
-        cForwardUsageByRef__isset __isset
 
-    cdef cppclass cNoexceptMoveEmpty__isset "::apache::thrift::fixtures::types::NoexceptMoveEmpty::__isset":
-        pass
 
     cdef cppclass cNoexceptMoveEmpty "::apache::thrift::fixtures::types::NoexceptMoveEmpty":
         cNoexceptMoveEmpty() except +
@@ -634,10 +644,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>(cNoexceptMoveEmpty&)
         bint operator<=(cNoexceptMoveEmpty&)
         bint operator>=(cNoexceptMoveEmpty&)
-        cNoexceptMoveEmpty__isset __isset
 
-    cdef cppclass cNoexceptMoveSimpleStruct__isset "::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct::__isset":
-        bint boolField
 
     cdef cppclass cNoexceptMoveSimpleStruct "::apache::thrift::fixtures::types::NoexceptMoveSimpleStruct":
         cNoexceptMoveSimpleStruct() except +
@@ -650,18 +657,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>=(cNoexceptMoveSimpleStruct&)
         __field_ref[cint64_t] boolField_ref()
         cint64_t boolField
-        cNoexceptMoveSimpleStruct__isset __isset
 
-    cdef cppclass cNoexceptMoveComplexStruct__isset "::apache::thrift::fixtures::types::NoexceptMoveComplexStruct::__isset":
-        bint MyBoolField
-        bint MyIntField
-        bint MyStringField
-        bint MyStringField2
-        bint MyBinaryField
-        bint MyBinaryField2
-        bint MyBinaryField3
-        bint MyBinaryListField4
-        bint MyMapEnumAndInt
 
     cdef cppclass cNoexceptMoveComplexStruct "::apache::thrift::fixtures::types::NoexceptMoveComplexStruct":
         cNoexceptMoveComplexStruct() except +
@@ -673,24 +669,23 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cNoexceptMoveComplexStruct&)
         bint operator>=(cNoexceptMoveComplexStruct&)
         __field_ref[cbool] MyBoolField_ref()
-        cbool MyBoolField
         __field_ref[cint64_t] MyIntField_ref()
-        cint64_t MyIntField
         __field_ref[string] MyStringField_ref()
-        string MyStringField
         __field_ref[string] MyStringField2_ref()
-        string MyStringField2
         __field_ref[string] MyBinaryField_ref()
-        string MyBinaryField
         __optional_field_ref[string] MyBinaryField2_ref()
-        string MyBinaryField2
         __required_field_ref[string] MyBinaryField3_ref()
-        string MyBinaryField3
         __field_ref[vector[string]] MyBinaryListField4_ref()
-        vector[string] MyBinaryListField4
         __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref()
+        cbool MyBoolField
+        cint64_t MyIntField
+        string MyStringField
+        string MyStringField2
+        string MyBinaryField
+        string MyBinaryField2
+        string MyBinaryField3
+        vector[string] MyBinaryListField4
         cmap[cMyEnumA,string] MyMapEnumAndInt
-        cNoexceptMoveComplexStruct__isset __isset
 
     cdef enum cNoExceptMoveUnion__type "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type":
         cNoExceptMoveUnion__type___EMPTY__ "::apache::thrift::fixtures::types::NoExceptMoveUnion::Type::__EMPTY__",
@@ -712,12 +707,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         const cint32_t& get_i32_field() const
         cint32_t& set_i32_field(const cint32_t&)
 
-    cdef cppclass cAllocatorAware__isset "::apache::thrift::fixtures::types::AllocatorAware::__isset":
-        bint aa_list
-        bint aa_set
-        bint aa_map
-        bint aa_string
-        bint not_a_container
 
     cdef cppclass cAllocatorAware "::apache::thrift::fixtures::types::AllocatorAware":
         cAllocatorAware() except +
@@ -729,19 +718,16 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator<=(cAllocatorAware&)
         bint operator>=(cAllocatorAware&)
         __field_ref[vector[cint32_t]] aa_list_ref()
-        vector[cint32_t] aa_list
         __field_ref[cset[cint32_t]] aa_set_ref()
-        cset[cint32_t] aa_set
         __field_ref[cmap[cint32_t,cint32_t]] aa_map_ref()
-        cmap[cint32_t,cint32_t] aa_map
         __field_ref[string] aa_string_ref()
-        string aa_string
         __field_ref[cint32_t] not_a_container_ref()
+        vector[cint32_t] aa_list
+        cset[cint32_t] aa_set
+        cmap[cint32_t,cint32_t] aa_map
+        string aa_string
         cint32_t not_a_container
-        cAllocatorAware__isset __isset
 
-    cdef cppclass cAllocatorAware2__isset "::apache::thrift::fixtures::types::AllocatorAware2::__isset":
-        bint not_a_container
 
     cdef cppclass cAllocatorAware2 "::apache::thrift::fixtures::types::AllocatorAware2":
         cAllocatorAware2() except +
@@ -754,14 +740,43 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::apac
         bint operator>=(cAllocatorAware2&)
         __field_ref[cint32_t] not_a_container_ref()
         cint32_t not_a_container
-        cAllocatorAware2__isset __isset
+
+
+    cdef cppclass cTypedefStruct "::apache::thrift::fixtures::types::TypedefStruct":
+        cTypedefStruct() except +
+        cTypedefStruct(const cTypedefStruct&) except +
+        bint operator==(cTypedefStruct&)
+        bint operator!=(cTypedefStruct&)
+        bint operator<(cTypedefStruct&)
+        bint operator>(cTypedefStruct&)
+        bint operator<=(cTypedefStruct&)
+        bint operator>=(cTypedefStruct&)
+        __field_ref[cint32_t] i32_field_ref()
+        __field_ref[cint32_t] IntTypedef_field_ref()
+        __field_ref[cint32_t] UintTypedef_field_ref()
+        cint32_t i32_field
+        cint32_t IntTypedef_field
+        cint32_t UintTypedef_field
+
+
+    cdef cppclass cStructWithDoubleUnderscores "::apache::thrift::fixtures::types::StructWithDoubleUnderscores":
+        cStructWithDoubleUnderscores() except +
+        cStructWithDoubleUnderscores(const cStructWithDoubleUnderscores&) except +
+        bint operator==(cStructWithDoubleUnderscores&)
+        bint operator!=(cStructWithDoubleUnderscores&)
+        bint operator<(cStructWithDoubleUnderscores&)
+        bint operator>(cStructWithDoubleUnderscores&)
+        bint operator<=(cStructWithDoubleUnderscores&)
+        bint operator>=(cStructWithDoubleUnderscores&)
+        __field_ref[cint32_t] __field_ref()
+        cint32_t __field
 
 
 
 
 cdef class decorated_struct(thrift.py3.types.Struct):
     cdef shared_ptr[cdecorated_struct] _cpp_obj
-    cdef __fbthrift_types_fields.__decorated_struct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__decorated_struct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cdecorated_struct])
@@ -770,15 +785,15 @@ cdef class decorated_struct(thrift.py3.types.Struct):
 
 cdef class ContainerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cContainerStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__ContainerStruct_FieldsSetter _fields_setter
-    cdef List__i32 __field_fieldA
-    cdef std_list__List__i32 __field_fieldB
-    cdef std_deque__List__i32 __field_fieldC
-    cdef folly_fbvector__List__i32 __field_fieldD
-    cdef folly_small_vector__List__i32 __field_fieldE
-    cdef folly_sorted_vector_set__Set__i32 __field_fieldF
-    cdef folly_sorted_vector_map__Map__i32_string __field_fieldG
-    cdef std_unordered_map__Map__i32_string __field_fieldH
+    cdef _fbthrift_types_fields.__ContainerStruct_FieldsSetter _fields_setter
+    cdef List__i32 __fbthrift_cached_fieldA
+    cdef std_list__List__i32 __fbthrift_cached_fieldB
+    cdef std_deque__List__i32 __fbthrift_cached_fieldC
+    cdef folly_fbvector__List__i32 __fbthrift_cached_fieldD
+    cdef folly_small_vector__List__i32 __fbthrift_cached_fieldE
+    cdef folly_sorted_vector_set__Set__i32 __fbthrift_cached_fieldF
+    cdef folly_sorted_vector_map__Map__i32_string __fbthrift_cached_fieldG
+    cdef std_unordered_map__Map__i32_string __fbthrift_cached_fieldH
 
     @staticmethod
     cdef create(shared_ptr[cContainerStruct])
@@ -787,8 +802,8 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
 cdef class CppTypeStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cCppTypeStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__CppTypeStruct_FieldsSetter _fields_setter
-    cdef std_list_int32_t__List__i32 __field_fieldA
+    cdef _fbthrift_types_fields.__CppTypeStruct_FieldsSetter _fields_setter
+    cdef std_list_int32_t__List__i32 __fbthrift_cached_fieldA
 
     @staticmethod
     cdef create(shared_ptr[cCppTypeStruct])
@@ -797,7 +812,7 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
 
 cdef class VirtualStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cVirtualStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__VirtualStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__VirtualStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cVirtualStruct])
@@ -806,7 +821,9 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
 cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStructWithForwardRefEnum] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStructWithForwardRefEnum_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__MyStructWithForwardRefEnum_FieldsSetter _fields_setter
+    cdef object __fbthrift_cached_a
+    cdef object __fbthrift_cached_b
 
     @staticmethod
     cdef create(shared_ptr[cMyStructWithForwardRefEnum])
@@ -815,7 +832,7 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
 
 cdef class TrivialNumeric(thrift.py3.types.Struct):
     cdef shared_ptr[cTrivialNumeric] _cpp_obj
-    cdef __fbthrift_types_fields.__TrivialNumeric_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__TrivialNumeric_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cTrivialNumeric])
@@ -824,8 +841,8 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
 
 cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
     cdef shared_ptr[cTrivialNestedWithDefault] _cpp_obj
-    cdef __fbthrift_types_fields.__TrivialNestedWithDefault_FieldsSetter _fields_setter
-    cdef TrivialNumeric __field_n
+    cdef _fbthrift_types_fields.__TrivialNestedWithDefault_FieldsSetter _fields_setter
+    cdef TrivialNumeric __fbthrift_cached_n
 
     @staticmethod
     cdef create(shared_ptr[cTrivialNestedWithDefault])
@@ -834,8 +851,8 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
 cdef class ComplexString(thrift.py3.types.Struct):
     cdef shared_ptr[cComplexString] _cpp_obj
-    cdef __fbthrift_types_fields.__ComplexString_FieldsSetter _fields_setter
-    cdef Map__string_i32 __field_b
+    cdef _fbthrift_types_fields.__ComplexString_FieldsSetter _fields_setter
+    cdef Map__string_i32 __fbthrift_cached_b
 
     @staticmethod
     cdef create(shared_ptr[cComplexString])
@@ -844,8 +861,8 @@ cdef class ComplexString(thrift.py3.types.Struct):
 
 cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
     cdef shared_ptr[cComplexNestedWithDefault] _cpp_obj
-    cdef __fbthrift_types_fields.__ComplexNestedWithDefault_FieldsSetter _fields_setter
-    cdef ComplexString __field_n
+    cdef _fbthrift_types_fields.__ComplexNestedWithDefault_FieldsSetter _fields_setter
+    cdef ComplexString __fbthrift_cached_n
 
     @staticmethod
     cdef create(shared_ptr[cComplexNestedWithDefault])
@@ -854,7 +871,7 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
 cdef class MinPadding(thrift.py3.types.Struct):
     cdef shared_ptr[cMinPadding] _cpp_obj
-    cdef __fbthrift_types_fields.__MinPadding_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__MinPadding_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cMinPadding])
@@ -863,8 +880,8 @@ cdef class MinPadding(thrift.py3.types.Struct):
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
-    cdef MyDataItem __field_data
+    cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef MyDataItem __fbthrift_cached_data
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
@@ -873,7 +890,7 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 cdef class MyDataItem(thrift.py3.types.Struct):
     cdef shared_ptr[cMyDataItem] _cpp_obj
-    cdef __fbthrift_types_fields.__MyDataItem_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__MyDataItem_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cMyDataItem])
@@ -882,7 +899,7 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
 cdef class Renaming(thrift.py3.types.Struct):
     cdef shared_ptr[cRenaming] _cpp_obj
-    cdef __fbthrift_types_fields.__Renaming_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__Renaming_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cRenaming])
@@ -891,8 +908,8 @@ cdef class Renaming(thrift.py3.types.Struct):
 
 cdef class AnnotatedTypes(thrift.py3.types.Struct):
     cdef shared_ptr[cAnnotatedTypes] _cpp_obj
-    cdef __fbthrift_types_fields.__AnnotatedTypes_FieldsSetter _fields_setter
-    cdef List__std_unordered_map__Map__i32_string __field_list_field
+    cdef _fbthrift_types_fields.__AnnotatedTypes_FieldsSetter _fields_setter
+    cdef List__std_unordered_map__Map__i32_string __fbthrift_cached_list_field
 
     @staticmethod
     cdef create(shared_ptr[cAnnotatedTypes])
@@ -901,9 +918,9 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
 
 cdef class ForwardUsageRoot(thrift.py3.types.Struct):
     cdef shared_ptr[cForwardUsageRoot] _cpp_obj
-    cdef __fbthrift_types_fields.__ForwardUsageRoot_FieldsSetter _fields_setter
-    cdef ForwardUsageStruct __field_ForwardUsageStruct
-    cdef ForwardUsageByRef __field_ForwardUsageByRef
+    cdef _fbthrift_types_fields.__ForwardUsageRoot_FieldsSetter _fields_setter
+    cdef ForwardUsageStruct __fbthrift_cached_ForwardUsageStruct
+    cdef ForwardUsageByRef __fbthrift_cached_ForwardUsageByRef
 
     @staticmethod
     cdef create(shared_ptr[cForwardUsageRoot])
@@ -912,8 +929,8 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
 
 cdef class ForwardUsageStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cForwardUsageStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__ForwardUsageStruct_FieldsSetter _fields_setter
-    cdef ForwardUsageRoot __field_foo
+    cdef _fbthrift_types_fields.__ForwardUsageStruct_FieldsSetter _fields_setter
+    cdef ForwardUsageRoot __fbthrift_cached_foo
 
     @staticmethod
     cdef create(shared_ptr[cForwardUsageStruct])
@@ -922,8 +939,8 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
 
 cdef class ForwardUsageByRef(thrift.py3.types.Struct):
     cdef shared_ptr[cForwardUsageByRef] _cpp_obj
-    cdef __fbthrift_types_fields.__ForwardUsageByRef_FieldsSetter _fields_setter
-    cdef ForwardUsageRoot __field_foo
+    cdef _fbthrift_types_fields.__ForwardUsageByRef_FieldsSetter _fields_setter
+    cdef ForwardUsageRoot __fbthrift_cached_foo
 
     @staticmethod
     cdef create(shared_ptr[cForwardUsageByRef])
@@ -932,7 +949,7 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
 
 cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
     cdef shared_ptr[cNoexceptMoveEmpty] _cpp_obj
-    cdef __fbthrift_types_fields.__NoexceptMoveEmpty_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__NoexceptMoveEmpty_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveEmpty])
@@ -941,7 +958,7 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
 
 cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cNoexceptMoveSimpleStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__NoexceptMoveSimpleStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__NoexceptMoveSimpleStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveSimpleStruct])
@@ -950,9 +967,9 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
 
 cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cNoexceptMoveComplexStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__NoexceptMoveComplexStruct_FieldsSetter _fields_setter
-    cdef List__binary __field_MyBinaryListField4
-    cdef Map__MyEnumA_string __field_MyMapEnumAndInt
+    cdef _fbthrift_types_fields.__NoexceptMoveComplexStruct_FieldsSetter _fields_setter
+    cdef List__binary __fbthrift_cached_MyBinaryListField4
+    cdef Map__MyEnumA_string __fbthrift_cached_MyMapEnumAndInt
 
     @staticmethod
     cdef create(shared_ptr[cNoexceptMoveComplexStruct])
@@ -983,10 +1000,10 @@ cdef class NoExceptMoveUnion(thrift.py3.types.Union):
 
 cdef class AllocatorAware(thrift.py3.types.Struct):
     cdef shared_ptr[cAllocatorAware] _cpp_obj
-    cdef __fbthrift_types_fields.__AllocatorAware_FieldsSetter _fields_setter
-    cdef List__i32 __field_aa_list
-    cdef Set__i32 __field_aa_set
-    cdef Map__i32_i32 __field_aa_map
+    cdef _fbthrift_types_fields.__AllocatorAware_FieldsSetter _fields_setter
+    cdef List__i32 __fbthrift_cached_aa_list
+    cdef Set__i32 __fbthrift_cached_aa_set
+    cdef Map__i32_i32 __fbthrift_cached_aa_map
 
     @staticmethod
     cdef create(shared_ptr[cAllocatorAware])
@@ -995,10 +1012,28 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
 
 cdef class AllocatorAware2(thrift.py3.types.Struct):
     cdef shared_ptr[cAllocatorAware2] _cpp_obj
-    cdef __fbthrift_types_fields.__AllocatorAware2_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__AllocatorAware2_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cAllocatorAware2])
+
+
+
+cdef class TypedefStruct(thrift.py3.types.Struct):
+    cdef shared_ptr[cTypedefStruct] _cpp_obj
+    cdef _fbthrift_types_fields.__TypedefStruct_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef create(shared_ptr[cTypedefStruct])
+
+
+
+cdef class StructWithDoubleUnderscores(thrift.py3.types.Struct):
+    cdef shared_ptr[cStructWithDoubleUnderscores] _cpp_obj
+    cdef _fbthrift_types_fields.__StructWithDoubleUnderscores_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef create(shared_ptr[cStructWithDoubleUnderscores])
 
 
 cdef class std_unordered_map__Map__i32_string(thrift.py3.types.Map):

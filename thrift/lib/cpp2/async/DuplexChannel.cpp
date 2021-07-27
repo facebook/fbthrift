@@ -33,15 +33,14 @@ namespace thrift {
 
 DuplexChannel::DuplexChannel(
     Who::WhoEnum who,
-    const shared_ptr<folly::AsyncTransport>& transport)
+    const shared_ptr<folly::AsyncTransport>& transport,
+    HeaderClientChannel::Options options)
     : cpp2Channel_(
           new DuplexCpp2Channel(
-              who,
-              transport,
-              make_unique<DuplexFramingHandler>(*this)),
+              who, transport, make_unique<DuplexFramingHandler>(*this)),
           folly::DelayedDestruction::Destructor()),
       clientChannel_(
-          new DuplexClientChannel(*this, cpp2Channel_),
+          new DuplexClientChannel(*this, cpp2Channel_, std::move(options)),
           folly::DelayedDestruction::Destructor()),
       clientFramingHandler_(*clientChannel_.get()),
       serverChannel_(
@@ -119,8 +118,7 @@ DuplexChannel::DuplexFramingHandler::removeFrame(folly::IOBufQueue* q) {
 }
 
 std::unique_ptr<folly::IOBuf> DuplexChannel::DuplexFramingHandler::addFrame(
-    std::unique_ptr<folly::IOBuf> buf,
-    THeader* header) {
+    std::unique_ptr<folly::IOBuf> buf, THeader* header) {
   buf = getHandler(duplex_.lastSender_.get()).addFrame(std::move(buf), header);
 
   if (duplex_.lastSender_.get() != duplex_.mainChannel_.get()) {

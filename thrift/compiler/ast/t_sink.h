@@ -16,9 +16,13 @@
 
 #pragma once
 
+#include <memory>
 #include <string>
+#include <utility>
 
-#include <thrift/compiler/ast/t_struct.h>
+#include <boost/optional.hpp>
+
+#include <thrift/compiler/ast/t_throws.h>
 #include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
@@ -26,80 +30,103 @@ namespace thrift {
 namespace compiler {
 
 /**
- * A sink is a lightweight object type that just wraps another data type.
+ * A sink contains the types for stream of responses and a final response.
  *
+ * Exceptions throw during the stream or instead of the final response can also
+ * be specified.
  */
-
-class t_sink : public t_type {
+class t_sink : public t_templated_type {
  public:
-  explicit t_sink(
-      t_type* sink_type,
-      t_struct* sink_xceptions,
-      t_type* final_response_type,
-      t_struct* final_response_xceptions)
-      : sink_type_(sink_type),
-        sink_xceptions_(sink_xceptions),
-        final_response_type_(final_response_type),
-        final_response_xceptions_(final_response_xceptions) {}
+  explicit t_sink(t_type_ref sink_type, t_type_ref final_response_type)
+      : sink_type_(std::move(sink_type)),
+        final_response_type_(std::move(final_response_type)) {}
 
-  void set_first_response(t_type* first_response) {
-    first_response_type_ = first_response;
+  const t_type_ref& sink_type() const { return sink_type_; }
+  const t_type_ref& final_response_type() const { return final_response_type_; }
+
+  // Returns nullptr when throws clause is absent.
+  t_throws* sink_exceptions() { return sink_exceptions_.get(); }
+  const t_throws* sink_exceptions() const { return sink_exceptions_.get(); }
+  // Use nullptr to indicate an absent throws clause.
+  void set_sink_exceptions(std::unique_ptr<t_throws> sink_exceptions) {
+    sink_exceptions_ = std::move(sink_exceptions);
   }
 
-  t_type* get_sink_type() const {
-    return sink_type_;
+  // Returns nullptr when throws clause is absent.
+  t_throws* final_response_exceptions() {
+    return final_response_exceptions_.get();
+  }
+  const t_throws* final_response_exceptions() const {
+    return final_response_exceptions_.get();
+  }
+  // Use nullptr to indicate an absent throws clause.
+  void set_final_response_exceptions(
+      std::unique_ptr<t_throws> final_response_exceptions) {
+    final_response_exceptions_ = std::move(final_response_exceptions);
   }
 
-  t_struct* get_sink_xceptions() const {
-    return sink_xceptions_;
+  void set_first_response_type(boost::optional<t_type_ref> first_response) {
+    first_response_type_ = std::move(first_response);
   }
-
-  t_type* get_final_response_type() const {
-    return final_response_type_;
-  }
-
-  t_struct* get_final_response_xceptions() const {
-    return final_response_xceptions_;
-  }
-
-  bool is_sink() const override {
-    return true;
-  }
-
-  t_type* get_first_response_type() const {
+  const boost::optional<t_type_ref>& first_response_type() const {
     return first_response_type_;
   }
 
-  bool sink_has_first_response() const {
-    return (bool)(first_response_type_);
-  }
-
   std::string get_full_name() const override {
-    return "sink<" + sink_type_->get_full_name() + ", " +
-        final_response_type_->get_full_name() + ">" +
-        (sink_has_first_response()
-             ? (", " + first_response_type_->get_full_name())
-             : "");
-  }
-
-  std::string get_impl_full_name() const override {
-    return "sink<" + sink_type_->get_impl_full_name() + ", " +
-        final_response_type_->get_impl_full_name() + ">" +
-        (sink_has_first_response()
-             ? (", " + first_response_type_->get_impl_full_name())
-             : "");
-  }
-
-  TypeValue get_type_value() const override {
-    return TypeValue::TYPE_SINK;
+    std::string result = "sink<" + sink_type_->get_full_name() + ", " +
+        final_response_type_->get_full_name() + ">";
+    if (first_response_type_ != boost::none) {
+      result += ", " + first_response_type_->deref().get_full_name();
+    }
+    return result;
   }
 
  private:
-  t_type* sink_type_;
-  t_struct* sink_xceptions_;
-  t_type* final_response_type_;
-  t_struct* final_response_xceptions_;
-  t_type* first_response_type_{nullptr};
+  t_type_ref sink_type_;
+  std::unique_ptr<t_throws> sink_exceptions_;
+  t_type_ref final_response_type_;
+  std::unique_ptr<t_throws> final_response_exceptions_;
+  boost::optional<t_type_ref> first_response_type_;
+
+ public:
+  // TODO(afuller): Delete everything below here. It is only provided for
+  // backwards compatibility.
+
+  explicit t_sink(
+      const t_type* sink_type,
+      std::unique_ptr<t_throws> sink_exceptions,
+      const t_type* final_response_type,
+      std::unique_ptr<t_throws> final_response_exceptions)
+      : t_sink(
+            t_type_ref::from_req_ptr(sink_type),
+            t_type_ref::from_req_ptr(final_response_type)) {
+    set_sink_exceptions(std::move(sink_exceptions));
+    set_final_response_exceptions(std::move(final_response_exceptions));
+  }
+
+  void set_first_response(const t_type* first_response) {
+    set_first_response_type(t_type_ref::from_ptr(first_response));
+  }
+
+  bool sink_has_first_response() const {
+    return first_response_type_ != boost::none;
+  }
+  t_throws* get_final_response_xceptions() const {
+    return final_response_exceptions_.get();
+  }
+  t_throws* get_sink_xceptions() const { return sink_exceptions_.get(); }
+  const t_type* get_sink_type() const { return sink_type().get_type(); }
+  const t_type* get_first_response_type() const {
+    return first_response_type_ == boost::none
+        ? nullptr
+        : first_response_type_->get_type();
+  }
+  const t_type* get_final_response_type() const {
+    return final_response_type().get_type();
+  }
+
+  bool is_sink() const override { return true; }
+  type get_type_value() const override { return type::t_sink; }
 };
 
 } // namespace compiler

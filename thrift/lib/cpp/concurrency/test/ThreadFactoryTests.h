@@ -55,17 +55,13 @@ class ThreadFactoryTests {
    public:
     Task() {}
 
-    void run() override {
-      std::cout << "\t\t\tHello World" << std::endl;
-    }
+    void run() override { std::cout << "\t\t\tHello World" << std::endl; }
   };
 
   class LambdaTask : public Runnable {
    public:
     LambdaTask(std::function<void()>&& lambda) : lambda_(std::move(lambda)) {}
-    void run() override {
-      lambda_();
-    }
+    void run() override { lambda_(); }
 
    private:
     std::function<void()> lambda_;
@@ -94,9 +90,7 @@ class ThreadFactoryTests {
    public:
     explicit RecordIdTask(ThreadFactory* factory) : factory_(factory) {}
 
-    void run() override {
-      id = factory_->getCurrentThreadId();
-    }
+    void run() override { id = factory_->getCurrentThreadId(); }
 
     Thread::id_t id;
     ThreadFactory* factory_;
@@ -133,9 +127,7 @@ class ThreadFactoryTests {
   class ReapNTask : public Runnable {
    public:
     ReapNTask(
-        std::mutex& mutex,
-        std::condition_variable& cond,
-        int& activeCount)
+        std::mutex& mutex, std::condition_variable& cond, int& activeCount)
         : _mutex(mutex), _cond(cond), _count(activeCount) {}
 
     void run() override {
@@ -220,9 +212,7 @@ class ThreadFactoryTests {
     };
 
     SynchStartTask(
-        std::mutex& mutex,
-        std::condition_variable& cond,
-        volatile STATE& state)
+        std::mutex& mutex, std::condition_variable& cond, volatile STATE& state)
         : _mutex(mutex), _cond(cond), _state(state) {}
 
     void run() override {

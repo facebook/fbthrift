@@ -20,6 +20,7 @@
 #include <memory>
 #include <string>
 
+#include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_program_bundle.h>
 #include <thrift/compiler/parse/parsing_driver.h>
@@ -107,14 +108,12 @@ void dump_docstrings(t_program* program);
  * If the parsing fails, nullptr is returned.
  */
 std::unique_ptr<t_program_bundle> parse_and_dump_diagnostics(
-    std::string path,
-    parsing_params params);
+    std::string path, parsing_params pparams, diagnostic_params dparams = {});
 
 /**
  * Dump the diagnostic messages to stderr.
  */
-void dump_diagnostics(
-    const std::vector<diagnostic_message>& diagnostic_messages);
+void dump_diagnostics(const std::vector<diagnostic>& diagnostic_messages);
 
 void mark_file_executable(std::string const& path);
 

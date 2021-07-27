@@ -90,14 +90,13 @@ const TType CTypeToTType[14] = {
 } // namespace detail
 
 uint32_t CompactProtocolWriter::writeMessageBegin(
-    folly::StringPiece name,
-    MessageType messageType,
-    int32_t seqid) {
+    folly::StringPiece name, MessageType messageType, int32_t seqid) {
   uint32_t wsize = 0;
   wsize += writeByte(apache::thrift::detail::compact::PROTOCOL_ID);
   wsize += writeByte(
       apache::thrift::detail::compact::COMPACT_PROTOCOL_VERSION |
-      ((messageType << apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT) &
+      ((static_cast<int32_t>(messageType)
+        << apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT) &
        apache::thrift::detail::compact::TYPE_MASK));
   wsize += apache::thrift::util::writeVarint(out_, seqid);
   wsize += writeString(name);
@@ -129,7 +128,9 @@ uint32_t CompactProtocolWriter::writeFieldBeginInternal(
     const char* /*name*/,
     const TType fieldType,
     const int16_t fieldId,
-    int8_t typeOverride) {
+    int8_t typeOverride,
+    int16_t previousId) {
+  DCHECK_EQ(previousId, lastFieldId_);
   uint32_t wsize = 0;
 
   // if there's a type override, use that.
@@ -139,9 +140,9 @@ uint32_t CompactProtocolWriter::writeFieldBeginInternal(
            : typeOverride);
 
   // check if we can use delta encoding for the field id
-  if (fieldId > lastFieldId_ && fieldId - lastFieldId_ <= 15) {
+  if (fieldId > previousId && fieldId - previousId <= 15) {
     // write them together
-    wsize += writeByte((fieldId - lastFieldId_) << 4 | typeToWrite);
+    wsize += writeByte((fieldId - previousId) << 4 | typeToWrite);
   } else {
     // write them separate
     wsize += writeByte(typeToWrite);
@@ -153,15 +154,13 @@ uint32_t CompactProtocolWriter::writeFieldBeginInternal(
 }
 
 uint32_t CompactProtocolWriter::writeFieldBegin(
-    const char* name,
-    TType fieldType,
-    int16_t fieldId) {
+    const char* name, TType fieldType, int16_t fieldId, int16_t previousId) {
   if (fieldType == TType::T_BOOL) {
     booleanField_.name = name;
     booleanField_.fieldType = fieldType;
     booleanField_.fieldId = fieldId;
   } else {
-    return writeFieldBeginInternal(name, fieldType, fieldId, -1);
+    return writeFieldBeginInternal(name, fieldType, fieldId, -1, previousId);
   }
   return 0;
 }
@@ -175,9 +174,7 @@ uint32_t CompactProtocolWriter::writeFieldStop() {
 }
 
 uint32_t CompactProtocolWriter::writeMapBegin(
-    const TType keyType,
-    TType valType,
-    uint32_t size) {
+    const TType keyType, TType valType, uint32_t size) {
   uint32_t wsize = 0;
 
   if (size == 0) {
@@ -196,8 +193,7 @@ uint32_t CompactProtocolWriter::writeMapEnd() {
 }
 
 uint32_t CompactProtocolWriter::writeCollectionBegin(
-    int8_t elemType,
-    int32_t size) {
+    int8_t elemType, int32_t size) {
   uint32_t wsize = 0;
   if (size <= 14) {
     wsize += writeByte(
@@ -229,15 +225,17 @@ uint32_t CompactProtocolWriter::writeSetEnd() {
 uint32_t CompactProtocolWriter::writeBool(bool value) {
   uint32_t wsize = 0;
 
-  if (booleanField_.name != NULL) {
+  value = detail::validate_bool(value);
+  if (booleanField_.name != nullptr) {
     // we haven't written the field header yet
     wsize += writeFieldBeginInternal(
         booleanField_.name,
         booleanField_.fieldType,
         booleanField_.fieldId,
         value ? apache::thrift::detail::compact::CT_BOOLEAN_TRUE
-              : apache::thrift::detail::compact::CT_BOOLEAN_FALSE);
-    booleanField_.name = NULL;
+              : apache::thrift::detail::compact::CT_BOOLEAN_FALSE,
+        lastFieldId_);
+    booleanField_.name = nullptr;
   } else {
     // we're not part of a field, so just write the value
     wsize += writeByte(
@@ -311,12 +309,23 @@ uint32_t CompactProtocolWriter::writeBinary(
 }
 
 uint32_t CompactProtocolWriter::writeBinary(const folly::IOBuf& str) {
+  return writeBinaryImpl<true>(str);
+}
+
+uint32_t CompactProtocolWriter::writeRaw(const folly::IOBuf& str) {
+  return writeBinaryImpl<false>(str);
+}
+
+template <bool kWriteSize>
+uint32_t CompactProtocolWriter::writeBinaryImpl(const folly::IOBuf& str) {
   size_t size = str.computeChainDataLength();
   // leave room for varint size
-  if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    TProtocolException::throwExceededSizeLimit();
+  uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
+  if (size > limit) {
+    TProtocolException::throwExceededSizeLimit(size, limit);
   }
-  uint32_t result = apache::thrift::util::writeVarint(out_, (int32_t)size);
+  uint32_t result =
+      kWriteSize ? apache::thrift::util::writeVarint(out_, (int32_t)size) : 0;
   if (sharing_ != SHARE_EXTERNAL_BUFFER && !str.isManaged()) {
     auto clone = str.clone();
     clone->makeManaged();
@@ -325,6 +334,13 @@ uint32_t CompactProtocolWriter::writeBinary(const folly::IOBuf& str) {
     out_.insert(str);
   }
   return result + static_cast<uint32_t>(size);
+}
+
+void CompactProtocolWriter::rewriteDouble(double dub, int64_t offset) {
+  auto cursor = RWCursor(out_);
+  cursor.advanceToEnd();
+  cursor -= offset;
+  cursor.writeBE(folly::bit_cast<uint64_t>(dub));
 }
 
 /**
@@ -338,9 +354,7 @@ uint32_t CompactProtocolWriter::serializedMessageSize(
 }
 
 uint32_t CompactProtocolWriter::serializedFieldSize(
-    const char* /*name*/,
-    TType /*fieldType*/,
-    int16_t /*fieldId*/) const {
+    const char* /*name*/, TType /*fieldType*/, int16_t /*fieldId*/) const {
   // byte + I16
   return serializedSizeByte() + serializedSizeI16();
 }
@@ -351,9 +365,7 @@ uint32_t CompactProtocolWriter::serializedStructSize(
 }
 
 uint32_t CompactProtocolWriter::serializedSizeMapBegin(
-    TType /*keyType*/,
-    TType /*valType*/,
-    uint32_t /*size*/) const {
+    TType /*keyType*/, TType /*valType*/, uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeByte() + serializedSizeI32();
 }
 
@@ -362,8 +374,7 @@ uint32_t CompactProtocolWriter::serializedSizeMapEnd() const {
 }
 
 uint32_t CompactProtocolWriter::serializedSizeListBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) const {
+    TType /*elemType*/, uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeI32();
 }
 
@@ -372,8 +383,7 @@ uint32_t CompactProtocolWriter::serializedSizeListEnd() const {
 }
 
 uint32_t CompactProtocolWriter::serializedSizeSetBegin(
-    TType /*elemType*/,
-    uint32_t /*size*/) const {
+    TType /*elemType*/, uint32_t /*size*/) const {
   return serializedSizeByte() + serializedSizeI32();
 }
 
@@ -437,8 +447,9 @@ uint32_t CompactProtocolWriter::serializedSizeBinary(
 uint32_t CompactProtocolWriter::serializedSizeBinary(
     folly::IOBuf const& v) const {
   size_t size = v.computeChainDataLength();
-  if (size > std::numeric_limits<uint32_t>::max() - serializedSizeI32()) {
-    TProtocolException::throwExceededSizeLimit();
+  uint32_t limit = std::numeric_limits<uint32_t>::max() - serializedSizeI32();
+  if (size > limit) {
+    TProtocolException::throwExceededSizeLimit(size, limit);
   }
   return serializedSizeI32() + static_cast<uint32_t>(size);
 }
@@ -470,9 +481,7 @@ uint32_t CompactProtocolWriter::serializedSizeZCBinary(IOBuf const& v) const {
  */
 
 void CompactProtocolReader::readMessageBegin(
-    std::string& name,
-    MessageType& messageType,
-    int32_t& seqid) {
+    std::string& name, MessageType& messageType, int32_t& seqid) {
   int8_t protocolId;
   int8_t versionAndType;
 
@@ -487,9 +496,8 @@ void CompactProtocolReader::readMessageBegin(
     throwBadProtocolVersion();
   }
 
-  messageType = (MessageType)(
-      (uint8_t)(versionAndType & apache::thrift::detail::compact::TYPE_MASK) >>
-      apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT);
+  messageType =
+      (MessageType)((uint8_t)(versionAndType & apache::thrift::detail::compact::TYPE_MASK) >> apache::thrift::detail::compact::TYPE_SHIFT_AMOUNT);
   apache::thrift::util::readVarint(in_, seqid);
   readString(name);
 }
@@ -510,9 +518,7 @@ void CompactProtocolReader::readStructEnd() {
 }
 
 void CompactProtocolReader::readFieldBegin(
-    std::string& /*name*/,
-    TType& fieldType,
-    int16_t& fieldId) {
+    std::string& /*name*/, TType& fieldType, int16_t& fieldId) {
   int8_t byte;
   int8_t type;
 
@@ -553,9 +559,7 @@ void CompactProtocolReader::readFieldBegin(
 void CompactProtocolReader::readFieldEnd() {}
 
 void CompactProtocolReader::readMapBegin(
-    TType& keyType,
-    TType& valType,
-    uint32_t& size) {
+    TType& keyType, TType& valType, uint32_t& size) {
   int8_t kvType = 0;
   int32_t msize = 0;
 
@@ -567,7 +571,7 @@ void CompactProtocolReader::readMapBegin(
   if (msize < 0) {
     TProtocolException::throwNegativeSize();
   } else if (container_limit_ && msize > container_limit_) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(msize, container_limit_);
   }
 
   keyType = getType((int8_t)((uint8_t)kvType >> 4));
@@ -591,7 +595,7 @@ void CompactProtocolReader::readListBegin(TType& elemType, uint32_t& size) {
   if (lsize < 0) {
     TProtocolException::throwNegativeSize();
   } else if (container_limit_ && lsize > container_limit_) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(lsize, container_limit_);
   }
 
   elemType = getType((int8_t)(size_and_type & 0x0f));
@@ -669,7 +673,7 @@ void CompactProtocolReader::readStringSize(int32_t& size) {
     TProtocolException::throwNegativeSize();
   }
   if (string_limit_ > 0 && size > string_limit_) {
-    TProtocolException::throwExceededSizeLimit();
+    TProtocolException::throwExceededSizeLimit(size, string_limit_);
   }
 }
 
@@ -687,7 +691,7 @@ void CompactProtocolReader::readStringBody(StrType& str, int32_t size) {
     auto data = in_.peekBytes();
     auto data_avail = std::min(data.size(), size_left);
     if (data.empty()) {
-      TProtocolException::throwExceededSizeLimit();
+      TProtocolException::throwTruncatedData();
     }
 
     str.append((const char*)data.data(), data_avail);
@@ -735,8 +739,8 @@ TType CompactProtocolReader::getType(int8_t type) {
   throwBadType(type);
 }
 
-FOLLY_ALWAYS_INLINE bool
-CompactProtocolReader::matchTypeHeader(uint8_t byte, TType type, uint8_t diff) {
+FOLLY_ALWAYS_INLINE bool CompactProtocolReader::matchTypeHeader(
+    uint8_t byte, TType type, uint8_t diff) {
   if (type == TType::T_BOOL) {
     if ((byte ==
          (apache::thrift::detail::compact::CT_BOOLEAN_TRUE | (diff << 4))) ||
@@ -824,9 +828,7 @@ void CompactProtocolReader::readFieldBeginWithState(StructReadState& state) {
 }
 
 FOLLY_ALWAYS_INLINE void CompactProtocolReader::readFieldBeginWithStateImpl(
-    StructReadState& state,
-    int16_t prevFieldId,
-    uint8_t firstByte) {
+    StructReadState& state, int16_t prevFieldId, uint8_t firstByte) {
   if (firstByte == apache::thrift::detail::compact::CT_STOP) {
     state.fieldType = TType::T_STOP;
     return;
@@ -850,6 +852,20 @@ FOLLY_ALWAYS_INLINE void CompactProtocolReader::readFieldBeginWithStateImpl(
     boolValue_.hasBoolValue = true;
     boolValue_.boolValue =
         type == apache::thrift::detail::compact::CT_BOOLEAN_TRUE;
+  }
+}
+
+constexpr std::size_t CompactProtocolReader::fixedSizeInContainer(TType type) {
+  switch (type) {
+    case TType::T_BOOL:
+    case TType::T_BYTE:
+      return 1;
+    case TType::T_FLOAT:
+      return 4;
+    case TType::T_DOUBLE:
+      return 8;
+    default:
+      return 0;
   }
 }
 

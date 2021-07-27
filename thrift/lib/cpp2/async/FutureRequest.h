@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <folly/CancellationToken.h>
 #include <folly/futures/Future.h>
 #include <thrift/lib/cpp2/async/RequestChannel.h>
 
@@ -57,7 +58,7 @@ class FutureCallback : public FutureCallbackBase<Result> {
 
   void replyReceived(ClientReceiveState&& state) {
     CHECK(!state.isException());
-    CHECK(state.buf());
+    CHECK(state.hasResponseBuffer());
 
     Result result;
     auto ew = processor_(result, state);
@@ -90,13 +91,12 @@ class HeaderFutureCallback
       Processor processor,
       std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr)
       : FutureCallbackBase<HeaderResult>(
-            std::move(promise),
-            std::move(channel)),
+            std::move(promise), std::move(channel)),
         processor_(processor) {}
 
   void replyReceived(ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.buf());
+    CHECK(state.hasResponseBuffer());
 
     Result result;
     auto ew = processor_(result, state);
@@ -127,13 +127,12 @@ class HeaderFutureCallback<folly::Unit>
       Processor processor,
       std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr)
       : FutureCallbackBase<HeaderResult>(
-            std::move(promise),
-            std::move(channel)),
+            std::move(promise), std::move(channel)),
         processor_(processor) {}
 
   void replyReceived(ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.buf());
+    CHECK(state.hasResponseBuffer());
 
     auto ew = processor_(state);
 
@@ -151,16 +150,11 @@ class OneWayFutureCallback : public FutureCallbackBase<folly::Unit> {
       folly::Promise<folly::Unit>&& promise,
       std::shared_ptr<apache::thrift::RequestChannel> channel = nullptr)
       : FutureCallbackBase<folly::Unit>(
-            std::move(promise),
-            std::move(channel)) {}
+            std::move(promise), std::move(channel)) {}
 
-  void requestSent() override {
-    promise_.setValue();
-  }
+  void requestSent() override { promise_.setValue(); }
 
-  void replyReceived(ClientReceiveState&& /*state*/) override {
-    CHECK(false);
-  }
+  void replyReceived(ClientReceiveState&& /*state*/) override { CHECK(false); }
 };
 
 template <>
@@ -178,7 +172,7 @@ class FutureCallback<folly::Unit> : public FutureCallbackBase<folly::Unit> {
 
   void replyReceived(ClientReceiveState&& state) override {
     CHECK(!state.isException());
-    CHECK(state.buf());
+    CHECK(state.hasResponseBuffer());
 
     auto ew = processor_(state);
 
@@ -214,9 +208,7 @@ class SemiFutureCallback : public RequestCallback {
     promise_.setException(std::move(state.exception()));
   }
 
-  bool isInlineSafe() const override {
-    return true;
-  }
+  bool isInlineSafe() const override { return true; }
 
  protected:
   folly::Promise<ClientReceiveState> promise_;
@@ -230,21 +222,15 @@ class OneWaySemiFutureCallback : public RequestCallback {
       std::shared_ptr<apache::thrift::RequestChannel> channel)
       : promise_(std::move(promise)), channel_(std::move(channel)) {}
 
-  void requestSent() override {
-    promise_.setValue();
-  }
+  void requestSent() override { promise_.setValue(); }
 
-  void replyReceived(ClientReceiveState&&) override {
-    CHECK(false);
-  }
+  void replyReceived(ClientReceiveState&&) override { CHECK(false); }
 
   void requestError(ClientReceiveState&& state) override {
     promise_.setException(std::move(state.exception()));
   }
 
-  bool isInlineSafe() const override {
-    return true;
-  }
+  bool isInlineSafe() const override { return true; }
 
  protected:
   folly::Promise<folly::Unit> promise_;
@@ -259,20 +245,21 @@ makeSemiFutureCallback(
   folly::Promise<ClientReceiveState> promise;
   auto future = promise.getSemiFuture();
 
-  return {std::make_unique<SemiFutureCallback>(
-              std::move(promise), std::move(channel)),
-          std::move(future).deferValue([processor](ClientReceiveState&& state) {
-            CHECK(!state.isException());
-            CHECK(state.buf());
+  return {
+      std::make_unique<SemiFutureCallback>(
+          std::move(promise), std::move(channel)),
+      std::move(future).deferValue([processor](ClientReceiveState&& state) {
+        CHECK(!state.isException());
+        CHECK(state.hasResponseBuffer());
 
-            Result result;
-            auto ew = processor(result, state);
+        Result result;
+        auto ew = processor(result, state);
 
-            if (ew) {
-              ew.throw_exception();
-            }
-            return result;
-          })};
+        if (ew) {
+          ew.throw_exception();
+        }
+        return result;
+      })};
 }
 
 inline std::
@@ -283,18 +270,19 @@ inline std::
   folly::Promise<ClientReceiveState> promise;
   auto future = promise.getSemiFuture();
 
-  return {std::make_unique<SemiFutureCallback>(
-              std::move(promise), std::move(channel)),
-          std::move(future).deferValue([processor](ClientReceiveState&& state) {
-            CHECK(!state.isException());
-            CHECK(state.buf());
+  return {
+      std::make_unique<SemiFutureCallback>(
+          std::move(promise), std::move(channel)),
+      std::move(future).deferValue([processor](ClientReceiveState&& state) {
+        CHECK(!state.isException());
+        CHECK(state.hasResponseBuffer());
 
-            auto ew = processor(state);
+        auto ew = processor(state);
 
-            if (ew) {
-              ew.throw_exception();
-            }
-          })};
+        if (ew) {
+          ew.throw_exception();
+        }
+      })};
 }
 
 template <typename Result>
@@ -308,20 +296,21 @@ makeHeaderSemiFutureCallback(
   folly::Promise<ClientReceiveState> promise;
   auto future = promise.getSemiFuture();
 
-  return {std::make_unique<SemiFutureCallback>(
-              std::move(promise), std::move(channel)),
-          std::move(future).deferValue([processor](ClientReceiveState&& state) {
-            CHECK(!state.isException());
-            CHECK(state.buf());
+  return {
+      std::make_unique<SemiFutureCallback>(
+          std::move(promise), std::move(channel)),
+      std::move(future).deferValue([processor](ClientReceiveState&& state) {
+        CHECK(!state.isException());
+        CHECK(state.hasResponseBuffer());
 
-            Result result;
-            auto ew = processor(result, state);
+        Result result;
+        auto ew = processor(result, state);
 
-            if (ew) {
-              ew.throw_exception();
-            }
-            return std::make_pair(std::move(result), state.extractHeader());
-          })};
+        if (ew) {
+          ew.throw_exception();
+        }
+        return std::make_pair(std::move(result), state.extractHeader());
+      })};
 }
 
 inline std::pair<
@@ -335,20 +324,21 @@ makeHeaderSemiFutureCallback(
   folly::Promise<ClientReceiveState> promise;
   auto future = promise.getSemiFuture();
 
-  return {std::make_unique<SemiFutureCallback>(
-              std::move(promise), std::move(channel)),
-          std::move(future).deferValue([processor](ClientReceiveState&& state) {
-            CHECK(!state.isException());
-            CHECK(state.buf());
+  return {
+      std::make_unique<SemiFutureCallback>(
+          std::move(promise), std::move(channel)),
+      std::move(future).deferValue([processor](ClientReceiveState&& state) {
+        CHECK(!state.isException());
+        CHECK(state.hasResponseBuffer());
 
-            auto ew = processor(state);
+        auto ew = processor(state);
 
-            if (ew) {
-              ew.throw_exception();
-            }
+        if (ew) {
+          ew.throw_exception();
+        }
 
-            return std::make_pair(folly::unit, state.extractHeader());
-          })};
+        return std::make_pair(folly::unit, state.extractHeader());
+      })};
 }
 
 inline std::pair<
@@ -358,9 +348,66 @@ makeOneWaySemiFutureCallback(
     std::shared_ptr<apache::thrift::RequestChannel> channel) {
   folly::Promise<folly::Unit> promise;
   auto future = promise.getSemiFuture();
-  return {std::make_unique<OneWaySemiFutureCallback>(
-              std::move(promise), std::move(channel)),
-          std::move(future)};
+  return {
+      std::make_unique<OneWaySemiFutureCallback>(
+          std::move(promise), std::move(channel)),
+      std::move(future)};
 }
+
+// Does not call onRequestSent for non-oneway methods.
+template <bool oneWay>
+class CancellableRequestClientCallback : public RequestClientCallback {
+  CancellableRequestClientCallback(
+      RequestClientCallback* wrapped, std::shared_ptr<RequestChannel> channel)
+      : callback_(wrapped), channel_(std::move(channel)) {
+    DCHECK(wrapped->isInlineSafe());
+  }
+
+ public:
+  static std::unique_ptr<CancellableRequestClientCallback> create(
+      RequestClientCallback* wrapped, std::shared_ptr<RequestChannel> channel) {
+    return std::unique_ptr<CancellableRequestClientCallback>(
+        new CancellableRequestClientCallback(wrapped, std::move(channel)));
+  }
+
+  static void cancel(std::unique_ptr<CancellableRequestClientCallback> cb) {
+    cb.release()->onResponseError(
+        folly::make_exception_wrapper<folly::OperationCancelled>());
+  }
+
+  void onRequestSent() noexcept override {
+    if (oneWay) {
+      if (auto callback =
+              callback_.exchange(nullptr, std::memory_order_acq_rel)) {
+        callback->onRequestSent();
+      } else {
+        delete this;
+      }
+    }
+  }
+  void onResponse(ClientReceiveState&& state) noexcept override {
+    CHECK(!oneWay);
+    if (auto callback =
+            callback_.exchange(nullptr, std::memory_order_acq_rel)) {
+      callback->onResponse(std::move(state));
+    } else {
+      delete this;
+    }
+  }
+  void onResponseError(folly::exception_wrapper ew) noexcept override {
+    if (auto callback =
+            callback_.exchange(nullptr, std::memory_order_acq_rel)) {
+      callback->onResponseError(std::move(ew));
+    } else {
+      delete this;
+    }
+  }
+
+  bool isInlineSafe() const override { return true; }
+
+ private:
+  std::atomic<RequestClientCallback*> callback_;
+  std::shared_ptr<RequestChannel> channel_;
+};
 } // namespace thrift
 } // namespace apache

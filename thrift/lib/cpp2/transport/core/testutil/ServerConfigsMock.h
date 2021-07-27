@@ -18,6 +18,7 @@
 
 #include <string>
 
+#include <folly/experimental/observer/SimpleObservable.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
@@ -31,9 +32,7 @@ namespace server {
 // ThriftProcessor.
 class ServerConfigsMock : public ServerConfigs {
  public:
-  uint64_t getMaxResponseSize() const override {
-    return maxResponseSize_;
-  }
+  uint64_t getMaxResponseSize() const override { return maxResponseSize_; }
 
   /**
    * @see BaseThriftServer::getTaskExpireTimeForRequest function.
@@ -52,9 +51,7 @@ class ServerConfigsMock : public ServerConfigs {
     return observer_.get();
   }
 
-  size_t getNumIOWorkerThreads() const override {
-    return numIOWorkerThreads_;
-  }
+  size_t getNumIOWorkerThreads() const override { return numIOWorkerThreads_; }
 
   std::chrono::milliseconds getStreamExpireTime() const override {
     return streamExpireTime_;
@@ -71,15 +68,21 @@ class ServerConfigsMock : public ServerConfigs {
     return {};
   }
 
-  PreprocessResult preprocess(
-      const transport::THeader::StringToStringMap*,
-      const std::string*) const override {
+  PreprocessResult preprocess(const server::PreprocessParams&) const override {
     return {};
   }
 
-  bool getTosReflect() const override {
-    return false;
+  bool getTosReflect() const override { return false; }
+
+  AdaptiveConcurrencyController& getAdaptiveConcurrencyController() {
+    return adaptiveConcurrencyController_;
   }
+  const AdaptiveConcurrencyController& getAdaptiveConcurrencyController()
+      const override {
+    return adaptiveConcurrencyController_;
+  }
+
+  uint32_t getListenerTos() const override { return 0; }
 
  public:
   uint64_t maxResponseSize_{0};
@@ -89,6 +92,11 @@ class ServerConfigsMock : public ServerConfigs {
       std::make_shared<FakeServerObserver>()};
   size_t numIOWorkerThreads_{10};
   std::chrono::milliseconds streamExpireTime_{std::chrono::minutes(1)};
+
+  folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
+      oConfig_{AdaptiveConcurrencyController::Config{}};
+  AdaptiveConcurrencyController adaptiveConcurrencyController_{
+      oConfig_.getObserver()};
 };
 
 } // namespace server

@@ -25,18 +25,16 @@ namespace thrift {
 namespace {
 struct InteractionState {
   folly::Executor::KeepAlive<folly::EventBase> keepAlive;
-  std::string name;
+  apache::thrift::ManagedStringView name;
   InteractionId id;
 };
 
 static void maybeCreateInteraction(
-    const RpcOptions& options,
-    PooledRequestChannel::Impl& channel) {
+    const RpcOptions& options, PooledRequestChannel::Impl& channel) {
   if (auto id = options.getInteractionId()) {
     auto* state = reinterpret_cast<InteractionState*>(id);
     if (!state->id) {
       state->id = channel.registerInteraction(std::move(state->name), id);
-      state->name = {};
     }
   }
 }
@@ -56,19 +54,21 @@ folly::EventBase& PooledRequestChannel::getEvb(const RpcOptions& options) {
 }
 
 uint16_t PooledRequestChannel::getProtocolId() {
-  folly::call_once(protocolIdInitFlag_, [&] {
-    auto& evb = getEvb({});
-    evb.runImmediatelyOrRunInEventBaseThreadAndWait(
-        [&] { protocolId_ = impl(evb).getProtocolId(); });
+  if (auto value = protocolId_.load(std::memory_order_relaxed)) {
+    return value;
+  }
+
+  auto& evb = getEvb({});
+  evb.runImmediatelyOrRunInEventBaseThreadAndWait([&] {
+    protocolId_.store(impl(evb).getProtocolId(), std::memory_order_relaxed);
   });
 
-  return protocolId_;
+  return protocolId_.load(std::memory_order_relaxed);
 }
 
 template <typename SendFunc>
 void PooledRequestChannel::sendRequestImpl(
-    SendFunc&& sendFunc,
-    folly::EventBase& evb) {
+    SendFunc&& sendFunc, folly::EventBase& evb) {
   evb.runInEventBaseThread(
       [this,
        keepAlive = getKeepAliveToken(evb),
@@ -129,7 +129,7 @@ class ExecutorRequestCallback final : public RequestClientCallback {
 
 void PooledRequestChannel::sendRequestResponse(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
@@ -139,14 +139,14 @@ void PooledRequestChannel::sendRequestResponse(
   }
   sendRequestImpl(
       [options,
-       methodNameStr = methodName.str(),
+       methodMetadata = std::move(methodMetadata),
        request = std::move(request),
        header = std::move(header),
        cob = std::move(cob)](Impl& channel) mutable {
         maybeCreateInteraction(options, channel);
         channel.sendRequestResponse(
             options,
-            methodNameStr,
+            std::move(methodMetadata),
             std::move(request),
             std::move(header),
             std::move(cob));
@@ -156,7 +156,7 @@ void PooledRequestChannel::sendRequestResponse(
 
 void PooledRequestChannel::sendRequestNoResponse(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     RequestClientCallback::Ptr cob) {
@@ -166,14 +166,14 @@ void PooledRequestChannel::sendRequestNoResponse(
   }
   sendRequestImpl(
       [options,
-       methodNameStr = methodName.str(),
+       methodMetadata = std::move(methodMetadata),
        request = std::move(request),
        header = std::move(header),
        cob = std::move(cob)](Impl& channel) mutable {
         maybeCreateInteraction(options, channel);
         channel.sendRequestNoResponse(
             options,
-            methodNameStr,
+            std::move(methodMetadata),
             std::move(request),
             std::move(header),
             std::move(cob));
@@ -183,47 +183,56 @@ void PooledRequestChannel::sendRequestNoResponse(
 
 void PooledRequestChannel::sendRequestStream(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     StreamClientCallback* cob) {
   sendRequestImpl(
       [options,
-       methodNameStr = methodName.str(),
+       methodMetadata = std::move(methodMetadata),
        request = std::move(request),
        header = std::move(header),
        cob](Impl& channel) mutable {
         maybeCreateInteraction(options, channel);
         channel.sendRequestStream(
-            options, methodNameStr, std::move(request), std::move(header), cob);
+            options,
+            std::move(methodMetadata),
+            std::move(request),
+            std::move(header),
+            cob);
       },
       getEvb(options));
 }
 
 void PooledRequestChannel::sendRequestSink(
     const RpcOptions& options,
-    folly::StringPiece methodName,
+    apache::thrift::MethodMetadata&& methodMetadata,
     SerializedRequest&& request,
     std::shared_ptr<transport::THeader> header,
     SinkClientCallback* cob) {
   sendRequestImpl(
       [options,
-       methodNameStr = methodName.str(),
+       methodMetadata = std::move(methodMetadata),
        request = std::move(request),
        header = std::move(header),
        cob](Impl& channel) mutable {
         maybeCreateInteraction(options, channel);
         channel.sendRequestSink(
-            options, methodNameStr, std::move(request), std::move(header), cob);
+            options,
+            std::move(methodMetadata),
+            std::move(request),
+            std::move(header),
+            cob);
       },
       getEvb(options));
 }
 
-InteractionId PooledRequestChannel::createInteraction(folly::StringPiece name) {
-  CHECK(!name.empty());
+InteractionId PooledRequestChannel::createInteraction(
+    ManagedStringView&& name) {
+  CHECK(!name.view().empty());
   auto& evb = getEvb({});
   return createInteractionId(reinterpret_cast<int64_t>(
-      new InteractionState{getKeepAliveToken(evb), name.str(), {}}));
+      new InteractionState{getKeepAliveToken(evb), std::move(name), {}}));
 }
 
 void PooledRequestChannel::terminateInteraction(InteractionId idWrapper) {
@@ -236,7 +245,7 @@ void PooledRequestChannel::terminateInteraction(InteractionId idWrapper) {
             implPtr = impl_](auto&& keepAlive) mutable {
         auto* channel = implPtr->get(*keepAlive);
         if (channel) {
-          channel->terminateInteraction(std::move(id));
+          (*channel)->terminateInteraction(std::move(id));
         } else {
           // channel is only null if nothing was ever sent on that evb,
           // in which case server doesn't know about this interaction
@@ -248,7 +257,11 @@ void PooledRequestChannel::terminateInteraction(InteractionId idWrapper) {
 PooledRequestChannel::Impl& PooledRequestChannel::impl(folly::EventBase& evb) {
   DCHECK(evb.inRunningEventBaseThread());
 
-  return impl_->getOrCreateFn(evb, [this, &evb] { return implCreator_(evb); });
+  return *impl_->try_emplace_with(evb, [this, &evb] {
+    auto ptr = implCreator_(evb);
+    DCHECK(!!ptr);
+    return ptr;
+  });
 }
 } // namespace thrift
 } // namespace apache

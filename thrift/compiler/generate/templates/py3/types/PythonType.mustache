@@ -31,7 +31,7 @@ in the client or server source rather than the type definition source.
 }}{{#type:float?}}float{{/type:float?}}{{!
 }}{{#type:string?}}str{{/type:string?}}{{!
 }}{{#type:binary?}}{{!
-  }}{{#type:iobufWrapper?}}__iobuf.IOBuf{{/type:iobufWrapper?}}{{!
+  }}{{#type:iobufWrapper?}}_fbthrift_iobuf.IOBuf{{/type:iobufWrapper?}}{{!
   }}{{^type:iobufWrapper?}}bytes{{/type:iobufWrapper?}}{{!
 }}{{/type:binary?}}{{!
 }}{{#type:struct}}{{!

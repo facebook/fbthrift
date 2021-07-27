@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,10 +31,16 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 cimport includes.types as _includes_types
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -57,6 +62,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_list() except +
         std_list(std_list&) except +
@@ -65,9 +74,13 @@ cdef extern from * nogil:
         void push_back(T&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -86,6 +99,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_deque() except +
         std_deque(std_deque&) except +
@@ -94,9 +111,13 @@ cdef extern from * nogil:
         void push_back(T&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -115,6 +136,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_sorted_vector_set() except +
         folly_sorted_vector_set(folly_sorted_vector_set&) except +
@@ -123,9 +148,13 @@ cdef extern from * nogil:
         size_type size()
         size_type count(const T&)
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -145,18 +174,27 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_sorted_vector_map() except +
         folly_sorted_vector_map(folly_sorted_vector_map&) except +
 
         U& operator[](T&)
         iterator find(const T&)
+        const_iterator const_find "find"(const T&)
         size_type count(const T&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -183,6 +221,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_small_vector_int64_t_8() except +
         folly_small_vector_int64_t_8(folly_small_vector_int64_t_8&) except +
@@ -191,9 +233,13 @@ cdef extern from * nogil:
         void push_back(cint64_t&) except +
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -212,6 +258,10 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         folly_sorted_vector_set_std_string() except +
         folly_sorted_vector_set_std_string(folly_sorted_vector_set_std_string&) except +
@@ -220,9 +270,13 @@ cdef extern from * nogil:
         size_type size()
         size_type count(const string&)
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -242,18 +296,27 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         FakeMap() except +
         FakeMap(FakeMap&) except +
 
         double& operator[](cint64_t&)
         iterator find(const cint64_t&)
+        const_iterator const_find "find"(const cint64_t&)
         size_type count(const cint64_t&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
@@ -273,24 +336,37 @@ cdef extern from * nogil:
             iterator operator++()
             bint operator==(reverse_iterator)
             bint operator!=(reverse_iterator)
+        cppclass const_iterator(iterator):
+            pass
+        cppclass const_reverse_iterator(reverse_iterator):
+            pass
 
         std_unordered_map_std_string_containerStruct() except +
         std_unordered_map_std_string_containerStruct(std_unordered_map_std_string_containerStruct&) except +
 
         ccontainerStruct& operator[](string&)
         iterator find(const string&)
+        const_iterator const_find "find"(const string&)
         size_type count(const string&)
         size_type size()
         iterator begin()
+        const_iterator const_begin "begin"()
         iterator end()
+        const_iterator const_end "end"()
         reverse_iterator rbegin()
+        const_reverse_iterator const_rbegin "rbegin"()
         reverse_iterator rend()
+        const_reverse_iterator const_rend "rend"()
         void clear()
         bint empty()
 
 cdef extern from *:
     ctypedef cint64_t Foo "Foo"
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass EnumMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types.h" namespace "::some::valid::ns":
     cdef cppclass cMyEnumA "::some::valid::ns::MyEnumA":
         pass
@@ -323,9 +399,15 @@ cdef class AnnotatedEnum2(thrift.py3.types.CompiledEnum):
 cdef class MyEnumB(thrift.py3.types.CompiledEnum):
     pass
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some::valid::ns":
-    cdef cppclass cEmpty__isset "::some::valid::ns::Empty::__isset":
-        pass
 
     cdef cppclass cEmpty "::some::valid::ns::Empty":
         cEmpty() except +
@@ -336,10 +418,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cEmpty&)
         bint operator<=(cEmpty&)
         bint operator>=(cEmpty&)
-        cEmpty__isset __isset
 
-    cdef cppclass cASimpleStruct__isset "::some::valid::ns::ASimpleStruct::__isset":
-        bint boolField
 
     cdef cppclass cASimpleStruct "::some::valid::ns::ASimpleStruct":
         cASimpleStruct() except +
@@ -348,10 +427,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator!=(cASimpleStruct&)
         __field_ref[cint64_t] boolField_ref()
         cint64_t boolField
-        cASimpleStruct__isset __isset
 
-    cdef cppclass cASimpleStructNoexcept__isset "::some::valid::ns::ASimpleStructNoexcept::__isset":
-        bint boolField
 
     cdef cppclass cASimpleStructNoexcept "::some::valid::ns::ASimpleStructNoexcept":
         cASimpleStructNoexcept() except +
@@ -364,18 +440,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>=(cASimpleStructNoexcept&)
         __field_ref[cint64_t] boolField_ref()
         cint64_t boolField
-        cASimpleStructNoexcept__isset __isset
 
-    cdef cppclass cMyStruct__isset "::some::valid::ns::MyStruct::__isset":
-        bint MyBoolField
-        bint MyIntField
-        bint MyStringField
-        bint MyStringField2
-        bint MyBinaryField
-        bint MyBinaryField2
-        bint MyBinaryField3
-        bint MyBinaryListField4
-        bint MyMapEnumAndInt
 
     cdef cppclass cMyStruct "::some::valid::ns::MyStruct":
         cMyStruct() except +
@@ -387,24 +452,23 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(cMyStruct&)
         bint operator>=(cMyStruct&)
         __field_ref[cbool] MyBoolField_ref()
-        cbool MyBoolField
         __field_ref[cint64_t] MyIntField_ref()
-        cint64_t MyIntField
         __field_ref[string] MyStringField_ref()
-        string MyStringField
         __field_ref[string] MyStringField2_ref()
-        string MyStringField2
         __field_ref[string] MyBinaryField_ref()
-        string MyBinaryField
         __optional_field_ref[string] MyBinaryField2_ref()
-        string MyBinaryField2
         __required_field_ref[string] MyBinaryField3_ref()
-        string MyBinaryField3
         __field_ref[vector[string]] MyBinaryListField4_ref()
-        vector[string] MyBinaryListField4
         __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref()
+        cbool MyBoolField
+        cint64_t MyIntField
+        string MyStringField
+        string MyStringField2
+        string MyBinaryField
+        string MyBinaryField2
+        string MyBinaryField3
+        vector[string] MyBinaryListField4
         cmap[cMyEnumA,string] MyMapEnumAndInt
-        cMyStruct__isset __isset
 
     cdef enum cSimpleUnion__type "::some::valid::ns::SimpleUnion::Type":
         cSimpleUnion__type___EMPTY__ "::some::valid::ns::SimpleUnion::Type::__EMPTY__",
@@ -521,22 +585,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         const cAnException& get_excp_field() const
         cAnException& set_excp_field(const cAnException&)
 
-    cdef cppclass cAnException__isset "::some::valid::ns::AnException::__isset":
-        bint code
-        bint req_code
-        bint message2
-        bint req_message
-        bint exception_list
-        bint exception_set
-        bint exception_map
-        bint req_exception_map
-        bint enum_field
-        bint enum_container
-        bint a_struct
-        bint a_set_struct
-        bint a_union_list
-        bint union_typedef
-        bint a_union_typedef_list
 
     cdef cppclass cAnException "::some::valid::ns::AnException"(cTException):
         cAnException() except +
@@ -548,41 +596,36 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(cAnException&)
         bint operator>=(cAnException&)
         __field_ref[cint32_t] code_ref()
-        cint32_t code
         __required_field_ref[cint32_t] req_code_ref()
-        cint32_t req_code
         __field_ref[string] message2_ref()
-        string message2
         __required_field_ref[string] req_message_ref()
-        string req_message
         __field_ref[vector[cint32_t]] exception_list_ref()
-        vector[cint32_t] exception_list
         __field_ref[cset[cint64_t]] exception_set_ref()
-        cset[cint64_t] exception_set
         __field_ref[cmap[string,cint32_t]] exception_map_ref()
-        cmap[string,cint32_t] exception_map
         __required_field_ref[cmap[string,cint32_t]] req_exception_map_ref()
-        cmap[string,cint32_t] req_exception_map
         __field_ref[cMyEnumA] enum_field_ref()
-        cMyEnumA enum_field
         __field_ref[vector[cMyEnumA]] enum_container_ref()
-        vector[cMyEnumA] enum_container
         __field_ref[cMyStruct] a_struct_ref()
-        cMyStruct a_struct
         __field_ref[cset[cMyStruct]] a_set_struct_ref()
-        cset[cMyStruct] a_set_struct
         __field_ref[vector[cSimpleUnion]] a_union_list_ref()
-        vector[cSimpleUnion] a_union_list
         __field_ref[cset[cSimpleUnion]] union_typedef_ref()
-        cset[cSimpleUnion] union_typedef
         __field_ref[vector[cset[cSimpleUnion]]] a_union_typedef_list_ref()
+        cint32_t code
+        cint32_t req_code
+        string message2
+        string req_message
+        vector[cint32_t] exception_list
+        cset[cint64_t] exception_set
+        cmap[string,cint32_t] exception_map
+        cmap[string,cint32_t] req_exception_map
+        cMyEnumA enum_field
+        vector[cMyEnumA] enum_container
+        cMyStruct a_struct
+        cset[cMyStruct] a_set_struct
+        vector[cSimpleUnion] a_union_list
+        cset[cSimpleUnion] union_typedef
         vector[cset[cSimpleUnion]] a_union_typedef_list
-        cAnException__isset __isset
 
-    cdef cppclass cAnotherException__isset "::some::valid::ns::AnotherException::__isset":
-        bint code
-        bint req_code
-        bint message
 
     cdef cppclass cAnotherException "::some::valid::ns::AnotherException"(cTException):
         cAnotherException() except +
@@ -594,60 +637,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(cAnotherException&)
         bint operator>=(cAnotherException&)
         __field_ref[cint32_t] code_ref()
-        cint32_t code
         __required_field_ref[cint32_t] req_code_ref()
-        cint32_t req_code
         __field_ref[string] message_ref()
+        cint32_t code
+        cint32_t req_code
         string message
-        cAnotherException__isset __isset
 
-    cdef cppclass ccontainerStruct__isset "::some::valid::ns::containerStruct::__isset":
-        bint fieldA
-        bint req_fieldA
-        bint opt_fieldA
-        bint fieldB
-        bint req_fieldB
-        bint opt_fieldB
-        bint fieldC
-        bint req_fieldC
-        bint opt_fieldC
-        bint fieldD
-        bint fieldE
-        bint req_fieldE
-        bint opt_fieldE
-        bint fieldF
-        bint fieldG
-        bint fieldH
-        bint fieldI
-        bint fieldJ
-        bint fieldK
-        bint fieldL
-        bint fieldM
-        bint fieldN
-        bint fieldO
-        bint fieldP
-        bint fieldQ
-        bint fieldR
-        bint req_fieldR
-        bint opt_fieldR
-        bint fieldS
-        bint fieldT
-        bint fieldU
-        bint fieldV
-        bint req_fieldV
-        bint opt_fieldV
-        bint fieldW
-        bint fieldX
-        bint req_fieldX
-        bint opt_fieldX
-        bint fieldY
-        bint fieldZ
-        bint fieldAA
-        bint fieldAB
-        bint fieldAC
-        bint fieldAD
-        bint fieldAE
-        bint fieldSD
 
     cdef cppclass ccontainerStruct "::some::valid::ns::containerStruct":
         ccontainerStruct() except +
@@ -658,104 +653,98 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(ccontainerStruct&)
         bint operator>=(ccontainerStruct&)
         __field_ref[cbool] fieldA_ref()
-        cbool fieldA
         __required_field_ref[cbool] req_fieldA_ref()
-        cbool req_fieldA
         __optional_field_ref[cbool] opt_fieldA_ref()
-        cbool opt_fieldA
         __field_ref[cmap[string,cbool]] fieldB_ref()
-        cmap[string,cbool] fieldB
         __required_field_ref[cmap[string,cbool]] req_fieldB_ref()
-        cmap[string,cbool] req_fieldB
         __optional_field_ref[cmap[string,cbool]] opt_fieldB_ref()
-        cmap[string,cbool] opt_fieldB
         __field_ref[cset[cint32_t]] fieldC_ref()
-        cset[cint32_t] fieldC
         __required_field_ref[cset[cint32_t]] req_fieldC_ref()
-        cset[cint32_t] req_fieldC
         __optional_field_ref[cset[cint32_t]] opt_fieldC_ref()
-        cset[cint32_t] opt_fieldC
         __field_ref[string] fieldD_ref()
-        string fieldD
         __field_ref[string] fieldE_ref()
-        string fieldE
         __required_field_ref[string] req_fieldE_ref()
-        string req_fieldE
         __optional_field_ref[string] opt_fieldE_ref()
-        string opt_fieldE
         __field_ref[vector[vector[cint32_t]]] fieldF_ref()
-        vector[vector[cint32_t]] fieldF
         __field_ref[cmap[string,cmap[string,cmap[string,cint32_t]]]] fieldG_ref()
-        cmap[string,cmap[string,cmap[string,cint32_t]]] fieldG
         __field_ref[vector[cset[cint32_t]]] fieldH_ref()
-        vector[cset[cint32_t]] fieldH
         __field_ref[cbool] fieldI_ref()
-        cbool fieldI
         __field_ref[cmap[string,vector[cint32_t]]] fieldJ_ref()
-        cmap[string,vector[cint32_t]] fieldJ
         __field_ref[vector[vector[vector[vector[cint32_t]]]]] fieldK_ref()
-        vector[vector[vector[vector[cint32_t]]]] fieldK
         __field_ref[cset[cset[cset[cbool]]]] fieldL_ref()
-        cset[cset[cset[cbool]]] fieldL
         __field_ref[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]] fieldM_ref()
-        cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]] fieldM
         __field_ref[cint32_t] fieldN_ref()
-        cint32_t fieldN
         __field_ref[vector[cmap[cEmpty,cMyStruct]]] fieldO_ref()
-        vector[cmap[cEmpty,cMyStruct]] fieldO
         __field_ref[vector[vector[vector[cmap[cEmpty,cMyStruct]]]]] fieldP_ref()
-        vector[vector[vector[cmap[cEmpty,cMyStruct]]]] fieldP
         __field_ref[cMyEnumA] fieldQ_ref()
-        cMyEnumA fieldQ
         __field_ref[cMyEnumA] fieldR_ref()
-        cMyEnumA fieldR
         __required_field_ref[cMyEnumA] req_fieldR_ref()
-        cMyEnumA req_fieldR
         __optional_field_ref[cMyEnumA] opt_fieldR_ref()
-        cMyEnumA opt_fieldR
         __field_ref[cMyEnumA] fieldS_ref()
-        cMyEnumA fieldS
         __field_ref[vector[cMyEnumA]] fieldT_ref()
-        vector[cMyEnumA] fieldT
         __field_ref[vector[cMyEnumA]] fieldU_ref()
-        vector[cMyEnumA] fieldU
         __field_ref[cMyStruct] fieldV_ref()
-        cMyStruct fieldV
         __required_field_ref[cMyStruct] req_fieldV_ref()
-        cMyStruct req_fieldV
         __optional_field_ref[cMyStruct] opt_fieldV_ref()
-        cMyStruct opt_fieldV
         __field_ref[cset[cMyStruct]] fieldW_ref()
-        cset[cMyStruct] fieldW
         __field_ref[cComplexUnion] fieldX_ref()
-        cComplexUnion fieldX
         __required_field_ref[cComplexUnion] req_fieldX_ref()
-        cComplexUnion req_fieldX
         __optional_field_ref[cComplexUnion] opt_fieldX_ref()
-        cComplexUnion opt_fieldX
         __field_ref[vector[cComplexUnion]] fieldY_ref()
-        vector[cComplexUnion] fieldY
         __field_ref[cset[cSimpleUnion]] fieldZ_ref()
-        cset[cSimpleUnion] fieldZ
         __field_ref[vector[cset[cSimpleUnion]]] fieldAA_ref()
-        vector[cset[cSimpleUnion]] fieldAA
         __field_ref[cmap[Bar,Baz]] fieldAB_ref()
-        cmap[Bar,Baz] fieldAB
         __field_ref[cMyEnumB] fieldAC_ref()
-        cMyEnumB fieldAC
         __field_ref[_includes_types.cAnEnum] fieldAD_ref()
-        _includes_types.cAnEnum fieldAD
         __field_ref[cmap[string,cint32_t]] fieldAE_ref()
-        cmap[string,cint32_t] fieldAE
         __field_ref[FooBar] fieldSD_ref()
+        cbool fieldA
+        cbool req_fieldA
+        cbool opt_fieldA
+        cmap[string,cbool] fieldB
+        cmap[string,cbool] req_fieldB
+        cmap[string,cbool] opt_fieldB
+        cset[cint32_t] fieldC
+        cset[cint32_t] req_fieldC
+        cset[cint32_t] opt_fieldC
+        string fieldD
+        string fieldE
+        string req_fieldE
+        string opt_fieldE
+        vector[vector[cint32_t]] fieldF
+        cmap[string,cmap[string,cmap[string,cint32_t]]] fieldG
+        vector[cset[cint32_t]] fieldH
+        cbool fieldI
+        cmap[string,vector[cint32_t]] fieldJ
+        vector[vector[vector[vector[cint32_t]]]] fieldK
+        cset[cset[cset[cbool]]] fieldL
+        cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]] fieldM
+        cint32_t fieldN
+        vector[cmap[cEmpty,cMyStruct]] fieldO
+        vector[vector[vector[cmap[cEmpty,cMyStruct]]]] fieldP
+        cMyEnumA fieldQ
+        cMyEnumA fieldR
+        cMyEnumA req_fieldR
+        cMyEnumA opt_fieldR
+        cMyEnumA fieldS
+        vector[cMyEnumA] fieldT
+        vector[cMyEnumA] fieldU
+        cMyStruct fieldV
+        cMyStruct req_fieldV
+        cMyStruct opt_fieldV
+        cset[cMyStruct] fieldW
+        cComplexUnion fieldX
+        cComplexUnion req_fieldX
+        cComplexUnion opt_fieldX
+        vector[cComplexUnion] fieldY
+        cset[cSimpleUnion] fieldZ
+        vector[cset[cSimpleUnion]] fieldAA
+        cmap[Bar,Baz] fieldAB
+        cMyEnumB fieldAC
+        _includes_types.cAnEnum fieldAD
+        cmap[string,cint32_t] fieldAE
         FooBar fieldSD
-        ccontainerStruct__isset __isset
 
-    cdef cppclass cMyIncludedStruct__isset "::some::valid::ns::MyIncludedStruct::__isset":
-        bint MyIncludedInt
-        bint MyIncludedStruct
-        bint ARefField
-        bint ARequiredField
 
     cdef cppclass cMyIncludedStruct "::some::valid::ns::MyIncludedStruct":
         cMyIncludedStruct() except +
@@ -767,61 +756,59 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(cMyIncludedStruct&)
         bint operator>=(cMyIncludedStruct&)
         __field_ref[cint64_t] MyIncludedInt_ref()
-        cint64_t MyIncludedInt
         __field_ref[_includes_types.cAStruct] MyIncludedStruct_ref()
+        unique_ptr[_includes_types.cAStruct] ARefField_ref()
+        __required_field_ref[_includes_types.cAStruct] ARequiredField_ref()
+        cint64_t MyIncludedInt
         _includes_types.cAStruct MyIncludedStruct
         unique_ptr[_includes_types.cAStruct] ARefField
-        __required_field_ref[_includes_types.cAStruct] ARequiredField_ref()
         _includes_types.cAStruct ARequiredField
-        cMyIncludedStruct__isset __isset
 
-    cdef cppclass cAnnotatedStruct__isset "::some::valid::ns::AnnotatedStruct::__isset":
-        bint no_annotation
-        bint cpp_unique_ref
-        bint cpp2_unique_ref
-        bint container_with_ref
-        bint req_cpp_unique_ref
-        bint req_cpp2_unique_ref
-        bint req_container_with_ref
-        bint opt_cpp_unique_ref
-        bint opt_cpp2_unique_ref
-        bint opt_container_with_ref
-        bint ref_type_unique
-        bint ref_type_shared
-        bint ref_type_const
-        bint req_ref_type_shared
-        bint req_ref_type_const
-        bint req_ref_type_unique
-        bint opt_ref_type_const
-        bint opt_ref_type_unique
-        bint opt_ref_type_shared
-        bint base_type
-        bint list_type
-        bint set_type
-        bint map_type
-        bint map_struct_type
-        bint iobuf_type
-        bint iobuf_ptr
-        bint list_i32_template
-        bint list_string_template
-        bint set_template
-        bint map_template
-        bint typedef_list_template
-        bint typedef_deque_template
-        bint typedef_set_template
-        bint typedef_map_template
-        bint indirection_a
-        bint indirection_b
-        bint indirection_c
-        bint iobuf_type_val
-        bint iobuf_ptr_val
-        bint struct_struct
 
     cdef cppclass cAnnotatedStruct "::some::valid::ns::AnnotatedStruct":
         cAnnotatedStruct() except +
         bint operator==(cAnnotatedStruct&)
         bint operator!=(cAnnotatedStruct&)
         __field_ref[ccontainerStruct] no_annotation_ref()
+        unique_ptr[ccontainerStruct] cpp_unique_ref_ref()
+        unique_ptr[ccontainerStruct] cpp2_unique_ref_ref()
+        unique_ptr[cmap[cint32_t,vector[string]]] container_with_ref_ref()
+        unique_ptr[ccontainerStruct] req_cpp_unique_ref_ref()
+        unique_ptr[ccontainerStruct] req_cpp2_unique_ref_ref()
+        unique_ptr[vector[string]] req_container_with_ref_ref()
+        unique_ptr[ccontainerStruct] opt_cpp_unique_ref_ref()
+        unique_ptr[ccontainerStruct] opt_cpp2_unique_ref_ref()
+        unique_ptr[cset[cint32_t]] opt_container_with_ref_ref()
+        unique_ptr[ccontainerStruct] ref_type_unique_ref()
+        shared_ptr[ccontainerStruct] ref_type_shared_ref()
+        shared_ptr[const cmap[cint32_t,vector[string]]] ref_type_const_ref()
+        shared_ptr[ccontainerStruct] req_ref_type_shared_ref()
+        shared_ptr[const ccontainerStruct] req_ref_type_const_ref()
+        unique_ptr[vector[string]] req_ref_type_unique_ref()
+        shared_ptr[const ccontainerStruct] opt_ref_type_const_ref()
+        unique_ptr[ccontainerStruct] opt_ref_type_unique_ref()
+        shared_ptr[cset[cint32_t]] opt_ref_type_shared_ref()
+        __field_ref[CppFakeI32] base_type_ref()
+        __field_ref[folly_small_vector_int64_t_8] list_type_ref()
+        __field_ref[folly_sorted_vector_set_std_string] set_type_ref()
+        __field_ref[FakeMap] map_type_ref()
+        __field_ref[std_unordered_map_std_string_containerStruct] map_struct_type_ref()
+        __field_ref[_fbthrift_iobuf.cIOBuf] iobuf_type_ref()
+        __field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] iobuf_ptr_ref()
+        __field_ref[std_list[cint32_t]] list_i32_template_ref()
+        __field_ref[std_deque[string]] list_string_template_ref()
+        __field_ref[folly_sorted_vector_set[string]] set_template_ref()
+        __field_ref[folly_sorted_vector_map[cint64_t,string]] map_template_ref()
+        __field_ref[std_list[cint32_t]] typedef_list_template_ref()
+        __field_ref[std_deque[string]] typedef_deque_template_ref()
+        __field_ref[folly_sorted_vector_set[string]] typedef_set_template_ref()
+        __field_ref[folly_sorted_vector_map[cint64_t,string]] typedef_map_template_ref()
+        __field_ref[Foo] indirection_a_ref()
+        __field_ref[vector[Bar]] indirection_b_ref()
+        __field_ref[cset[Baz]] indirection_c_ref()
+        __field_ref[_fbthrift_iobuf.cIOBuf] iobuf_type_val_ref()
+        __field_ref[unique_ptr[_fbthrift_iobuf.cIOBuf]] iobuf_ptr_val_ref()
+        __field_ref[ccontainerStruct] struct_struct_ref()
         ccontainerStruct no_annotation
         unique_ptr[ccontainerStruct] cpp_unique_ref
         unique_ptr[ccontainerStruct] cpp2_unique_ref
@@ -841,53 +828,28 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         shared_ptr[const ccontainerStruct] opt_ref_type_const
         unique_ptr[ccontainerStruct] opt_ref_type_unique
         shared_ptr[cset[cint32_t]] opt_ref_type_shared
-        __field_ref[CppFakeI32] base_type_ref()
         CppFakeI32 base_type
-        __field_ref[folly_small_vector_int64_t_8] list_type_ref()
         folly_small_vector_int64_t_8 list_type
-        __field_ref[folly_sorted_vector_set_std_string] set_type_ref()
         folly_sorted_vector_set_std_string set_type
-        __field_ref[FakeMap] map_type_ref()
         FakeMap map_type
-        __field_ref[std_unordered_map_std_string_containerStruct] map_struct_type_ref()
         std_unordered_map_std_string_containerStruct map_struct_type
-        __field_ref[__iobuf.cIOBuf] iobuf_type_ref()
-        __iobuf.cIOBuf iobuf_type
-        __field_ref[unique_ptr[__iobuf.cIOBuf]] iobuf_ptr_ref()
-        unique_ptr[__iobuf.cIOBuf] iobuf_ptr
-        __field_ref[std_list[cint32_t]] list_i32_template_ref()
+        _fbthrift_iobuf.cIOBuf iobuf_type
+        unique_ptr[_fbthrift_iobuf.cIOBuf] iobuf_ptr
         std_list[cint32_t] list_i32_template
-        __field_ref[std_deque[string]] list_string_template_ref()
         std_deque[string] list_string_template
-        __field_ref[folly_sorted_vector_set[string]] set_template_ref()
         folly_sorted_vector_set[string] set_template
-        __field_ref[folly_sorted_vector_map[cint64_t,string]] map_template_ref()
         folly_sorted_vector_map[cint64_t,string] map_template
-        __field_ref[std_list[cint32_t]] typedef_list_template_ref()
         std_list[cint32_t] typedef_list_template
-        __field_ref[std_deque[string]] typedef_deque_template_ref()
         std_deque[string] typedef_deque_template
-        __field_ref[folly_sorted_vector_set[string]] typedef_set_template_ref()
         folly_sorted_vector_set[string] typedef_set_template
-        __field_ref[folly_sorted_vector_map[cint64_t,string]] typedef_map_template_ref()
         folly_sorted_vector_map[cint64_t,string] typedef_map_template
-        __field_ref[Foo] indirection_a_ref()
         Foo indirection_a
-        __field_ref[vector[Bar]] indirection_b_ref()
         vector[Bar] indirection_b
-        __field_ref[cset[Baz]] indirection_c_ref()
         cset[Baz] indirection_c
-        __field_ref[__iobuf.cIOBuf] iobuf_type_val_ref()
-        __iobuf.cIOBuf iobuf_type_val
-        __field_ref[unique_ptr[__iobuf.cIOBuf]] iobuf_ptr_val_ref()
-        unique_ptr[__iobuf.cIOBuf] iobuf_ptr_val
-        __field_ref[ccontainerStruct] struct_struct_ref()
+        _fbthrift_iobuf.cIOBuf iobuf_type_val
+        unique_ptr[_fbthrift_iobuf.cIOBuf] iobuf_ptr_val
         ccontainerStruct struct_struct
-        cAnnotatedStruct__isset __isset
 
-    cdef cppclass cComplexContainerStruct__isset "::some::valid::ns::ComplexContainerStruct::__isset":
-        bint map_of_iobufs
-        bint map_of_iobuf_ptrs
 
     cdef cppclass cComplexContainerStruct "::some::valid::ns::ComplexContainerStruct":
         cComplexContainerStruct() except +
@@ -898,15 +860,11 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>(cComplexContainerStruct&)
         bint operator<=(cComplexContainerStruct&)
         bint operator>=(cComplexContainerStruct&)
-        __field_ref[cmap[string,__iobuf.cIOBuf]] map_of_iobufs_ref()
-        cmap[string,__iobuf.cIOBuf] map_of_iobufs
-        __field_ref[cmap[string,unique_ptr[__iobuf.cIOBuf]]] map_of_iobuf_ptrs_ref()
-        cmap[string,unique_ptr[__iobuf.cIOBuf]] map_of_iobuf_ptrs
-        cComplexContainerStruct__isset __isset
+        __field_ref[cmap[string,_fbthrift_iobuf.cIOBuf]] map_of_iobufs_ref()
+        __field_ref[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]] map_of_iobuf_ptrs_ref()
+        cmap[string,_fbthrift_iobuf.cIOBuf] map_of_iobufs
+        cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]] map_of_iobuf_ptrs
 
-    cdef cppclass cFloatStruct__isset "::some::valid::ns::FloatStruct::__isset":
-        bint floatField
-        bint doubleField
 
     cdef cppclass cFloatStruct "::some::valid::ns::FloatStruct":
         cFloatStruct() except +
@@ -918,10 +876,9 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator<=(cFloatStruct&)
         bint operator>=(cFloatStruct&)
         __field_ref[float] floatField_ref()
-        float floatField
         __field_ref[double] doubleField_ref()
+        float floatField
         double doubleField
-        cFloatStruct__isset __isset
 
     cdef enum cFloatUnion__type "::some::valid::ns::FloatUnion::Type":
         cFloatUnion__type___EMPTY__ "::some::valid::ns::FloatUnion::Type::__EMPTY__",
@@ -943,8 +900,6 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         const double& get_doubleSide() const
         double& set_doubleSide(const double&)
 
-    cdef cppclass cAllRequiredNoExceptMoveCtrStruct__isset "::some::valid::ns::AllRequiredNoExceptMoveCtrStruct::__isset":
-        bint intField
 
     cdef cppclass cAllRequiredNoExceptMoveCtrStruct "::some::valid::ns::AllRequiredNoExceptMoveCtrStruct":
         cAllRequiredNoExceptMoveCtrStruct() except +
@@ -957,14 +912,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         bint operator>=(cAllRequiredNoExceptMoveCtrStruct&)
         __required_field_ref[cint64_t] intField_ref()
         cint64_t intField
-        cAllRequiredNoExceptMoveCtrStruct__isset __isset
 
 
 
 
 cdef class Empty(thrift.py3.types.Struct):
     cdef shared_ptr[cEmpty] _cpp_obj
-    cdef __fbthrift_types_fields.__Empty_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__Empty_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cEmpty])
@@ -973,7 +927,7 @@ cdef class Empty(thrift.py3.types.Struct):
 
 cdef class ASimpleStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cASimpleStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__ASimpleStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__ASimpleStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cASimpleStruct])
@@ -982,7 +936,7 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 
 cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
     cdef shared_ptr[cASimpleStructNoexcept] _cpp_obj
-    cdef __fbthrift_types_fields.__ASimpleStructNoexcept_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__ASimpleStructNoexcept_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cASimpleStructNoexcept])
@@ -991,9 +945,9 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
 cdef class MyStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
-    cdef List__binary __field_MyBinaryListField4
-    cdef Map__MyEnumA_string __field_MyMapEnumAndInt
+    cdef _fbthrift_types_fields.__MyStruct_FieldsSetter _fields_setter
+    cdef List__binary __fbthrift_cached_MyBinaryListField4
+    cdef Map__MyEnumA_string __fbthrift_cached_MyMapEnumAndInt
 
     @staticmethod
     cdef create(shared_ptr[cMyStruct])
@@ -1071,17 +1025,18 @@ cdef class ComplexUnion(thrift.py3.types.Union):
 
 cdef class AnException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cAnException] _cpp_obj
-    cdef __fbthrift_types_fields.__AnException_FieldsSetter _fields_setter
-    cdef List__i32 __field_exception_list
-    cdef Set__i64 __field_exception_set
-    cdef Map__string_i32 __field_exception_map
-    cdef Map__string_i32 __field_req_exception_map
-    cdef List__MyEnumA __field_enum_container
-    cdef MyStruct __field_a_struct
-    cdef Set__MyStruct __field_a_set_struct
-    cdef List__SimpleUnion __field_a_union_list
-    cdef Set__SimpleUnion __field_union_typedef
-    cdef List__Set__SimpleUnion __field_a_union_typedef_list
+    cdef _fbthrift_types_fields.__AnException_FieldsSetter _fields_setter
+    cdef List__i32 __fbthrift_cached_exception_list
+    cdef Set__i64 __fbthrift_cached_exception_set
+    cdef Map__string_i32 __fbthrift_cached_exception_map
+    cdef Map__string_i32 __fbthrift_cached_req_exception_map
+    cdef object __fbthrift_cached_enum_field
+    cdef List__MyEnumA __fbthrift_cached_enum_container
+    cdef MyStruct __fbthrift_cached_a_struct
+    cdef Set__MyStruct __fbthrift_cached_a_set_struct
+    cdef List__SimpleUnion __fbthrift_cached_a_union_list
+    cdef Set__SimpleUnion __fbthrift_cached_union_typedef
+    cdef List__Set__SimpleUnion __fbthrift_cached_a_union_typedef_list
 
     @staticmethod
     cdef create(shared_ptr[cAnException])
@@ -1090,7 +1045,7 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
 
 cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cAnotherException] _cpp_obj
-    cdef __fbthrift_types_fields.__AnotherException_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__AnotherException_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cAnotherException])
@@ -1099,36 +1054,43 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
 
 cdef class containerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[ccontainerStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__containerStruct_FieldsSetter _fields_setter
-    cdef Map__string_bool __field_fieldB
-    cdef Map__string_bool __field_req_fieldB
-    cdef Map__string_bool __field_opt_fieldB
-    cdef Set__i32 __field_fieldC
-    cdef Set__i32 __field_req_fieldC
-    cdef Set__i32 __field_opt_fieldC
-    cdef List__List__i32 __field_fieldF
-    cdef Map__string_Map__string_Map__string_i32 __field_fieldG
-    cdef List__Set__i32 __field_fieldH
-    cdef Map__string_List__i32 __field_fieldJ
-    cdef List__List__List__List__i32 __field_fieldK
-    cdef Set__Set__Set__bool __field_fieldL
-    cdef Map__Set__List__i32_Map__List__Set__string_string __field_fieldM
-    cdef List__Map__Empty_MyStruct __field_fieldO
-    cdef List__List__List__Map__Empty_MyStruct __field_fieldP
-    cdef List__MyEnumA __field_fieldT
-    cdef List__MyEnumA __field_fieldU
-    cdef MyStruct __field_fieldV
-    cdef MyStruct __field_req_fieldV
-    cdef MyStruct __field_opt_fieldV
-    cdef Set__MyStruct __field_fieldW
-    cdef ComplexUnion __field_fieldX
-    cdef ComplexUnion __field_req_fieldX
-    cdef ComplexUnion __field_opt_fieldX
-    cdef List__ComplexUnion __field_fieldY
-    cdef Set__SimpleUnion __field_fieldZ
-    cdef List__Set__SimpleUnion __field_fieldAA
-    cdef Map__Bar__double_Baz__i32 __field_fieldAB
-    cdef Map__string_i32 __field_fieldAE
+    cdef _fbthrift_types_fields.__containerStruct_FieldsSetter _fields_setter
+    cdef Map__string_bool __fbthrift_cached_fieldB
+    cdef Map__string_bool __fbthrift_cached_req_fieldB
+    cdef Map__string_bool __fbthrift_cached_opt_fieldB
+    cdef Set__i32 __fbthrift_cached_fieldC
+    cdef Set__i32 __fbthrift_cached_req_fieldC
+    cdef Set__i32 __fbthrift_cached_opt_fieldC
+    cdef List__List__i32 __fbthrift_cached_fieldF
+    cdef Map__string_Map__string_Map__string_i32 __fbthrift_cached_fieldG
+    cdef List__Set__i32 __fbthrift_cached_fieldH
+    cdef Map__string_List__i32 __fbthrift_cached_fieldJ
+    cdef List__List__List__List__i32 __fbthrift_cached_fieldK
+    cdef Set__Set__Set__bool __fbthrift_cached_fieldL
+    cdef Map__Set__List__i32_Map__List__Set__string_string __fbthrift_cached_fieldM
+    cdef List__Map__Empty_MyStruct __fbthrift_cached_fieldO
+    cdef List__List__List__Map__Empty_MyStruct __fbthrift_cached_fieldP
+    cdef object __fbthrift_cached_fieldQ
+    cdef object __fbthrift_cached_fieldR
+    cdef object __fbthrift_cached_req_fieldR
+    cdef object __fbthrift_cached_opt_fieldR
+    cdef object __fbthrift_cached_fieldS
+    cdef List__MyEnumA __fbthrift_cached_fieldT
+    cdef List__MyEnumA __fbthrift_cached_fieldU
+    cdef MyStruct __fbthrift_cached_fieldV
+    cdef MyStruct __fbthrift_cached_req_fieldV
+    cdef MyStruct __fbthrift_cached_opt_fieldV
+    cdef Set__MyStruct __fbthrift_cached_fieldW
+    cdef ComplexUnion __fbthrift_cached_fieldX
+    cdef ComplexUnion __fbthrift_cached_req_fieldX
+    cdef ComplexUnion __fbthrift_cached_opt_fieldX
+    cdef List__ComplexUnion __fbthrift_cached_fieldY
+    cdef Set__SimpleUnion __fbthrift_cached_fieldZ
+    cdef List__Set__SimpleUnion __fbthrift_cached_fieldAA
+    cdef Map__Bar__double_Baz__i32 __fbthrift_cached_fieldAB
+    cdef object __fbthrift_cached_fieldAC
+    cdef object __fbthrift_cached_fieldAD
+    cdef Map__string_i32 __fbthrift_cached_fieldAE
 
     @staticmethod
     cdef create(shared_ptr[ccontainerStruct])
@@ -1137,10 +1099,10 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
 cdef class MyIncludedStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cMyIncludedStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__MyIncludedStruct_FieldsSetter _fields_setter
-    cdef _includes_types.AStruct __field_MyIncludedStruct
-    cdef _includes_types.AStruct __field_ARefField
-    cdef _includes_types.AStruct __field_ARequiredField
+    cdef _fbthrift_types_fields.__MyIncludedStruct_FieldsSetter _fields_setter
+    cdef _includes_types.AStruct __fbthrift_cached_MyIncludedStruct
+    cdef _includes_types.AStruct __fbthrift_cached_ARefField
+    cdef _includes_types.AStruct __fbthrift_cached_ARequiredField
 
     @staticmethod
     cdef create(shared_ptr[cMyIncludedStruct])
@@ -1149,45 +1111,45 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 
 cdef class AnnotatedStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cAnnotatedStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__AnnotatedStruct_FieldsSetter _fields_setter
-    cdef containerStruct __field_no_annotation
-    cdef containerStruct __field_cpp_unique_ref
-    cdef containerStruct __field_cpp2_unique_ref
-    cdef Map__i32_List__string __field_container_with_ref
-    cdef containerStruct __field_req_cpp_unique_ref
-    cdef containerStruct __field_req_cpp2_unique_ref
-    cdef List__string __field_req_container_with_ref
-    cdef containerStruct __field_opt_cpp_unique_ref
-    cdef containerStruct __field_opt_cpp2_unique_ref
-    cdef Set__i32 __field_opt_container_with_ref
-    cdef containerStruct __field_ref_type_unique
-    cdef containerStruct __field_ref_type_shared
-    cdef Map__i32_List__string __field_ref_type_const
-    cdef containerStruct __field_req_ref_type_shared
-    cdef containerStruct __field_req_ref_type_const
-    cdef List__string __field_req_ref_type_unique
-    cdef containerStruct __field_opt_ref_type_const
-    cdef containerStruct __field_opt_ref_type_unique
-    cdef Set__i32 __field_opt_ref_type_shared
-    cdef folly_small_vector_int64_t_8__List__i64 __field_list_type
-    cdef folly_sorted_vector_set_std_string__Set__string __field_set_type
-    cdef FakeMap__Map__i64_double __field_map_type
-    cdef std_unordered_map_std_string_containerStruct__Map__string_containerStruct __field_map_struct_type
-    cdef __iobuf.IOBuf __field_iobuf_type
-    cdef __iobuf.IOBuf __field_iobuf_ptr
-    cdef std_list__List__i32 __field_list_i32_template
-    cdef std_deque__List__string __field_list_string_template
-    cdef folly_sorted_vector_set__Set__string __field_set_template
-    cdef folly_sorted_vector_map__Map__i64_string __field_map_template
-    cdef std_list__List__i32 __field_typedef_list_template
-    cdef std_deque__List__string __field_typedef_deque_template
-    cdef folly_sorted_vector_set__Set__string __field_typedef_set_template
-    cdef folly_sorted_vector_map__Map__i64_string __field_typedef_map_template
-    cdef List__Bar__double __field_indirection_b
-    cdef Set__Baz__i32 __field_indirection_c
-    cdef __iobuf.IOBuf __field_iobuf_type_val
-    cdef __iobuf.IOBuf __field_iobuf_ptr_val
-    cdef containerStruct __field_struct_struct
+    cdef _fbthrift_types_fields.__AnnotatedStruct_FieldsSetter _fields_setter
+    cdef containerStruct __fbthrift_cached_no_annotation
+    cdef containerStruct __fbthrift_cached_cpp_unique_ref
+    cdef containerStruct __fbthrift_cached_cpp2_unique_ref
+    cdef Map__i32_List__string __fbthrift_cached_container_with_ref
+    cdef containerStruct __fbthrift_cached_req_cpp_unique_ref
+    cdef containerStruct __fbthrift_cached_req_cpp2_unique_ref
+    cdef List__string __fbthrift_cached_req_container_with_ref
+    cdef containerStruct __fbthrift_cached_opt_cpp_unique_ref
+    cdef containerStruct __fbthrift_cached_opt_cpp2_unique_ref
+    cdef Set__i32 __fbthrift_cached_opt_container_with_ref
+    cdef containerStruct __fbthrift_cached_ref_type_unique
+    cdef containerStruct __fbthrift_cached_ref_type_shared
+    cdef Map__i32_List__string __fbthrift_cached_ref_type_const
+    cdef containerStruct __fbthrift_cached_req_ref_type_shared
+    cdef containerStruct __fbthrift_cached_req_ref_type_const
+    cdef List__string __fbthrift_cached_req_ref_type_unique
+    cdef containerStruct __fbthrift_cached_opt_ref_type_const
+    cdef containerStruct __fbthrift_cached_opt_ref_type_unique
+    cdef Set__i32 __fbthrift_cached_opt_ref_type_shared
+    cdef folly_small_vector_int64_t_8__List__i64 __fbthrift_cached_list_type
+    cdef folly_sorted_vector_set_std_string__Set__string __fbthrift_cached_set_type
+    cdef FakeMap__Map__i64_double __fbthrift_cached_map_type
+    cdef std_unordered_map_std_string_containerStruct__Map__string_containerStruct __fbthrift_cached_map_struct_type
+    cdef _fbthrift_iobuf.IOBuf __fbthrift_cached_iobuf_type
+    cdef _fbthrift_iobuf.IOBuf __fbthrift_cached_iobuf_ptr
+    cdef std_list__List__i32 __fbthrift_cached_list_i32_template
+    cdef std_deque__List__string __fbthrift_cached_list_string_template
+    cdef folly_sorted_vector_set__Set__string __fbthrift_cached_set_template
+    cdef folly_sorted_vector_map__Map__i64_string __fbthrift_cached_map_template
+    cdef std_list__List__i32 __fbthrift_cached_typedef_list_template
+    cdef std_deque__List__string __fbthrift_cached_typedef_deque_template
+    cdef folly_sorted_vector_set__Set__string __fbthrift_cached_typedef_set_template
+    cdef folly_sorted_vector_map__Map__i64_string __fbthrift_cached_typedef_map_template
+    cdef List__Bar__double __fbthrift_cached_indirection_b
+    cdef Set__Baz__i32 __fbthrift_cached_indirection_c
+    cdef _fbthrift_iobuf.IOBuf __fbthrift_cached_iobuf_type_val
+    cdef _fbthrift_iobuf.IOBuf __fbthrift_cached_iobuf_ptr_val
+    cdef containerStruct __fbthrift_cached_struct_struct
 
     @staticmethod
     cdef create(shared_ptr[cAnnotatedStruct])
@@ -1196,9 +1158,9 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
 cdef class ComplexContainerStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cComplexContainerStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__ComplexContainerStruct_FieldsSetter _fields_setter
-    cdef Map__string_folly_IOBuf__binary __field_map_of_iobufs
-    cdef Map__string_std_unique_ptr_folly_IOBuf__binary __field_map_of_iobuf_ptrs
+    cdef _fbthrift_types_fields.__ComplexContainerStruct_FieldsSetter _fields_setter
+    cdef Map__string_folly_IOBuf__binary __fbthrift_cached_map_of_iobufs
+    cdef Map__string_std_unique_ptr_folly_IOBuf__binary __fbthrift_cached_map_of_iobuf_ptrs
 
     @staticmethod
     cdef create(shared_ptr[cComplexContainerStruct])
@@ -1207,7 +1169,7 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
 
 cdef class FloatStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cFloatStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__FloatStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__FloatStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cFloatStruct])
@@ -1238,7 +1200,7 @@ cdef class FloatUnion(thrift.py3.types.Union):
 
 cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
     cdef shared_ptr[cAllRequiredNoExceptMoveCtrStruct] _cpp_obj
-    cdef __fbthrift_types_fields.__AllRequiredNoExceptMoveCtrStruct_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__AllRequiredNoExceptMoveCtrStruct_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cAllRequiredNoExceptMoveCtrStruct])
@@ -1588,18 +1550,18 @@ cdef class Set__Baz__i32(thrift.py3.types.Set):
     cdef shared_ptr[cset[Baz]] _make_instance(object items) except *
 
 cdef class Map__string_folly_IOBuf__binary(thrift.py3.types.Map):
-    cdef shared_ptr[cmap[string,__iobuf.cIOBuf]] _cpp_obj
+    cdef shared_ptr[cmap[string,_fbthrift_iobuf.cIOBuf]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,__iobuf.cIOBuf]])
+    cdef create(shared_ptr[cmap[string,_fbthrift_iobuf.cIOBuf]])
     @staticmethod
-    cdef shared_ptr[cmap[string,__iobuf.cIOBuf]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[string,_fbthrift_iobuf.cIOBuf]] _make_instance(object items) except *
 
 cdef class Map__string_std_unique_ptr_folly_IOBuf__binary(thrift.py3.types.Map):
-    cdef shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] _cpp_obj
+    cdef shared_ptr[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]] _cpp_obj
     @staticmethod
-    cdef create(shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]])
+    cdef create(shared_ptr[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]])
     @staticmethod
-    cdef shared_ptr[cmap[string,unique_ptr[__iobuf.cIOBuf]]] _make_instance(object items) except *
+    cdef shared_ptr[cmap[string,unique_ptr[_fbthrift_iobuf.cIOBuf]]] _make_instance(object items) except *
 
 cdef class Map__i32_string(thrift.py3.types.Map):
     cdef shared_ptr[cmap[cint32_t,string]] _cpp_obj

@@ -16,14 +16,14 @@ cmake_minimum_required(VERSION 3.1.3 FATAL_ERROR)
 
 # Package information
 if (NOT DEFINED PACKAGE_VERSION)
-  set(PACKAGE_VERSION "1.0.0")
-endif()
-project("fbthrift" VERSION ${PACKAGE_VERSION} LANGUAGES C CXX)
+  set(PACKAGE_VERSION 1.0.0)
+endif ()
+project(fbthrift VERSION ${PACKAGE_VERSION} LANGUAGES CXX)
 
 if (NOT DEFINED CPACK_GENERATOR)
-  set(CPACK_GENERATOR "RPM")
-endif()
-set(CPACK_RPM_PACKAGE_PROVIDES "thrift")
+  set(CPACK_GENERATOR RPM)
+endif ()
+set(CPACK_RPM_PACKAGE_PROVIDES thrift)
 include(CPack)
 
 set(CMAKE_ARCHIVE_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/lib)
@@ -51,6 +51,7 @@ include_directories(${THRIFT_HOME})
 include_directories(${THRIFT_BUILD})
 
 # Set directory of the Find$x.cmake files to properly include dependencies
+set(CMAKE_STD_MODULE_PATH ${CMAKE_MODULE_PATH})
 set(CMAKE_MODULE_PATH
   "${THRIFT_HOME}/thrift/cmake"
   # for in-fbsource builds
@@ -87,17 +88,15 @@ option(thriftpy3
 )
 
 # Find required dependencies for thrift/compiler
-if(compiler_only OR build_all)
+if (compiler_only OR build_all)
   find_package(BISON 3.0.4 REQUIRED)
   find_package(FLEX REQUIRED)
-  include_directories(
-    ${OPENSSL_INCLUDE_DIR}
-  )
+  include_directories(${OPENSSL_INCLUDE_DIR})
   set(THRIFT1 thrift1)
   set(THRIFTCPP2 thriftcpp2)
   include(ThriftLibrary.cmake)
   install(FILES ThriftLibrary.cmake DESTINATION ${INCLUDE_INSTALL_DIR}/thrift)
-endif(compiler_only OR build_all)
+endif ()
 
 # Find required dependencies for thrift/lib
 if(lib_only OR build_all)
@@ -107,7 +106,7 @@ if(lib_only OR build_all)
   find_package(fizz CONFIG REQUIRED)
   find_package(fmt CONFIG REQUIRED)
   find_package(wangle CONFIG REQUIRED)
-  find_package(Zlib REQUIRED)
+  find_package(ZLIB REQUIRED)
   find_package(Zstd REQUIRED)
   # https://cmake.org/cmake/help/v3.9/module/FindThreads.html
   set(THREADS_PREFER_PTHREAD_FLAG ON)
@@ -116,7 +115,6 @@ if(lib_only OR build_all)
     ${LIBGFLAGS_INCLUDE_DIR}
     ${GLOG_INCLUDE_DIRS}
     ${OPENSSL_INCLUDE_DIR}
-    ${ZLIB_INCLUDE_DIRS}
     ${ZSTD_INCLUDE_DIRS}
     ${Boost_INCLUDE_DIRS}
   )

@@ -24,26 +24,33 @@ enum MyEnum {
 }
 
 struct MyStruct {
-  1: i64 MyIntField,
-  2: string MyStringField,
+  1: i64 MyIntField;
+  2: string MyStringField;
   # use the type before it is defined. Thrift should be able to handle this
-  3: MyDataItem MyDataField,
-  4: MyEnum myEnum,
+  3: MyDataItem MyDataField;
+  4: MyEnum myEnum;
 }
 
-struct MyDataItem {}
+struct MyDataItem {
+}
 
 union MyUnion {
-  1: MyEnum myEnum,
-  2: MyStruct myStruct,
-  3: MyDataItem myDataItem,
+  1: MyEnum myEnum;
+  2: MyStruct myStruct;
+  3: MyDataItem myDataItem;
+}
+
+exception MyException {
 }
 
 service MyService {
-  void ping()
-  string getRandomData()
-  bool hasDataById(1: i64 id)
-  string getDataById(1: i64 id)
-  void putDataById(1: i64 id, 2: string data)
-  oneway void lobDataById(1: i64 id, 2: string data)
+  void ping();
+  string getRandomData();
+  bool hasDataById(1: i64 id);
+  string getDataById(1: i64 id);
+  void putDataById(1: i64 id, 2: string data);
+  oneway void lobDataById(1: i64 id, 2: string data);
+  stream<MyStruct> streamById(1: i64 id);
+  stream<MyStruct throws (1: MyException e)> streamByIdWithException(1: i64 id);
+  MyDataItem, stream<MyStruct> streamByIdWithResponse(1: i64 id);
 } (rust.request_context)

@@ -31,6 +31,7 @@ class ConverterTest(unittest.TestCase):
                 strSet={"hello", "world"},
                 strToIntMap={"one": 1, "two": 2},
                 color=types.Color.GREEN,
+                name_="renamed",
             ),
         )
         self.assertEqual(simple.intField, 42)
@@ -39,6 +40,7 @@ class ConverterTest(unittest.TestCase):
         self.assertEqual(simple.strSet, {"hello", "world"})
         self.assertEqual(simple.strToIntMap, {"one": 1, "two": 2})
         self.assertEqual(simple.color, ttypes.Color.GREEN)
+        self.assertEqual(simple.name, "renamed")
 
     def test_nested(self) -> None:
         nested = to_py_struct(
@@ -101,14 +103,16 @@ class ConverterTest(unittest.TestCase):
         complex_union = to_py_struct(
             ttypes.Union,
             types.Union(
-                simpleField=types.Simple(
+                simple_=types.Simple(
                     intField=42,
                     strField="simple",
                     intList=[1, 2, 3],
                     strSet={"hello", "world"},
                     strToIntMap={"one": 1, "two": 2},
                     color=types.Color.NONE,
+                    name_="renamed",
                 )
             ),
         )
         self.assertEqual(complex_union.get_simpleField().intField, 42)
+        self.assertEqual(complex_union.get_simpleField().name, "renamed")

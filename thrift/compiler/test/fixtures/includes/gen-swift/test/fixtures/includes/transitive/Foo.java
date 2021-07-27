@@ -23,28 +23,26 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="Foo", builder=Foo.Builder.class)
-public final class Foo {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="Foo", builder=Foo.Builder.class)
+public final class Foo implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public Foo(
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final long a
+        @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE) final long a
     ) {
         this.a = a;
     }
     
     @ThriftConstructor
     protected Foo() {
-      this.a = 0L;
+      this.a = 2L;
     }
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
         private long a = 2L;
     
-        @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+        @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
         public Builder setA(long a) {
             this.a = a;
             return this;
@@ -62,7 +60,6 @@ public final class Foo {
             Foo result = new Foo (
                 this.a
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -78,14 +75,8 @@ public final class Foo {
       FIELD_METADATA.put(1, A_FIELD_DESC);
     }
     
-    @ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="a", requiredness=Requiredness.NONE)
     public long getA() { return a; }
-        
-    /** don't use this method for new code, it's here to make migrating to swift easier */
-    @Deprecated
-    public boolean fieldIsSetA() {
-        return __isset_bit_vector.get(_A);
-    }
     
     @java.lang.Override
     public String toString() {
@@ -117,6 +108,10 @@ public final class Foo {
         });
     }
     
+    
+    public static com.facebook.thrift.payload.Reader<Foo> asReader() {
+      return Foo::read0;
+    }
     
     public static Foo read0(TProtocol oprot) throws TException {
       TField __field;
@@ -153,4 +148,11 @@ public final class Foo {
       oprot.writeStructEnd();
     }
     
+    private static class _FooLazy {
+        private static final Foo _DEFAULT = new Foo.Builder().build();
+    }
+    
+    public static Foo defaultInstance() {
+        return  _FooLazy._DEFAULT;
+    }
 }

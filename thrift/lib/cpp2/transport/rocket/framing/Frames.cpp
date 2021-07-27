@@ -45,8 +45,7 @@ namespace {
 constexpr size_t kMaxFragmentedPayloadSize = 0xffffff - 512;
 
 std::unique_ptr<folly::IOBuf> trimBuffer(
-    std::unique_ptr<folly::IOBuf> buffer,
-    size_t toTrim) {
+    std::unique_ptr<folly::IOBuf> buffer, size_t toTrim) {
   folly::IOBufQueue bufQueue;
   bufQueue.append(std::move(buffer));
   bufQueue.trimStart(toTrim);
@@ -67,9 +66,7 @@ Payload readPayload(
 
 template <class Frame>
 void serializeInFragmentsSlowCommon(
-    Frame&& frame,
-    Flags flags,
-    Serializer& writer) {
+    Frame&& frame, Flags flags, Serializer& writer) {
   auto metadataSize = frame.payload().metadataSize();
   folly::IOBufQueue bufferQueue(folly::IOBufQueue::cacheChainLength());
   bufferQueue.append(std::move(frame.payload()).buffer());
@@ -151,6 +148,7 @@ std::unique_ptr<folly::IOBuf> serializeIntoHeadroomIfPossible(Frame&& frame) {
   constexpr size_t kHeadroomSize =
       Frame::frameHeaderSize() + 2 * Serializer::kBytesForFrameOrMetadataLength;
   if (LIKELY(
+          !frame.payload().buffer()->isSharedOne() &&
           frame.payload().metadataAndDataSize() <= kMaxFragmentedPayloadSize &&
           frame.payload().hasNonemptyMetadata() &&
           frame.payload().buffer()->headroom() >= kHeadroomSize)) {
@@ -584,7 +582,8 @@ void KeepAliveFrame::serialize(Serializer& writer) && {
    */
 
   // Excludes room for frame length
-  const auto frameSize = frameHeaderSize() + data_->computeChainDataLength();
+  const auto frameSize =
+      frameHeaderSize() + (data_ ? data_->computeChainDataLength() : 0);
   auto nwritten = writer.writeFrameOrMetadataSize(frameSize);
 
   nwritten += writer.write(StreamId{0});
@@ -593,7 +592,9 @@ void KeepAliveFrame::serialize(Serializer& writer) && {
   // Last received position: send 0 if not supported.
   nwritten += writer.writeBE(static_cast<uint64_t>(0));
 
-  nwritten += writer.write(std::move(data_));
+  if (data_) {
+    nwritten += writer.write(std::move(data_));
+  }
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
@@ -820,9 +821,7 @@ RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
 }
 
 RequestNFrame::RequestNFrame(
-    StreamId streamId,
-    Flags flags,
-    folly::io::Cursor& cursor)
+    StreamId streamId, Flags flags, folly::io::Cursor& cursor)
     : streamId_(streamId) {
   DCHECK(Flags::none() == flags);
   requestN_ = cursor.readBE<int32_t>();
@@ -860,9 +859,8 @@ PayloadFrame::PayloadFrame(
     std::unique_ptr<folly::IOBuf> underlyingBuffer)
     : streamId_(streamId),
       flags_(flags),
-      payload_(
-          readPayload(flags_.metadata(), cursor, std::move(underlyingBuffer))) {
-}
+      payload_(readPayload(
+          flags_.metadata(), cursor, std::move(underlyingBuffer))) {}
 
 ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
   folly::io::Cursor cursor(frame.get());

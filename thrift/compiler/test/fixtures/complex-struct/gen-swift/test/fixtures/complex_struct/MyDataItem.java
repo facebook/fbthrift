@@ -23,9 +23,8 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 import static com.google.common.base.MoreObjects.ToStringHelper;
 
 @SwiftGenerated
-@ThriftStruct(value="MyDataItem", builder=MyDataItem.Builder.class)
-public final class MyDataItem {
-    private BitSet __isset_bit_vector = new BitSet();
+@com.facebook.swift.codec.ThriftStruct(value="MyDataItem", builder=MyDataItem.Builder.class)
+public final class MyDataItem implements com.facebook.thrift.payload.ThriftSerializable {
 
     @ThriftConstructor
     public MyDataItem(
@@ -35,7 +34,6 @@ public final class MyDataItem {
     
     
     public static class Builder {
-        private final BitSet __optional_isset = new BitSet();
     
     
     public Builder() { }
@@ -46,7 +44,6 @@ public final class MyDataItem {
         public MyDataItem build() {
             MyDataItem result = new MyDataItem (
             );
-            result.__isset_bit_vector.or(__optional_isset);
             return result;
         }
     }
@@ -84,6 +81,10 @@ static {
     }
     
     
+    public static com.facebook.thrift.payload.Reader<MyDataItem> asReader() {
+      return MyDataItem::read0;
+    }
+    
     public static MyDataItem read0(TProtocol oprot) throws TException {
       TField __field;
       oprot.readStructBegin(MyDataItem.NAMES_TO_IDS, MyDataItem.FIELD_METADATA);
@@ -108,4 +109,11 @@ static {
       oprot.writeStructEnd();
     }
     
+    private static class _MyDataItemLazy {
+        private static final MyDataItem _DEFAULT = new MyDataItem.Builder().build();
+    }
+    
+    public static MyDataItem defaultInstance() {
+        return  _MyDataItemLazy._DEFAULT;
+    }
 }

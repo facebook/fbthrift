@@ -22,7 +22,7 @@
 #include <stdexcept>
 
 #include <boost/filesystem.hpp>
-#include <thrift/compiler/mustache/mstch.h>
+#include <thrift/compiler/detail/mustache/mstch.h>
 
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/generate/t_mstch_objects.h>
@@ -50,9 +50,7 @@ class t_mstch_generator : public t_generator {
    * If true, typedefs will be automatically resolved to their underlying
    * type.
    */
-  virtual bool should_resolve_typedefs() const {
-    return false;
-  }
+  virtual bool should_resolve_typedefs() const { return false; }
 
   /**
    * Fetches a particular template from the template map, throwing an error
@@ -72,16 +70,14 @@ class t_mstch_generator : public t_generator {
    * Render the mstch template with name `template_name` in the given context.
    */
   std::string render(
-      const std::string& template_name,
-      const mstch::node& context);
+      const std::string& template_name, const mstch::node& context);
 
   /**
    * Write an output file with the given contents to a path
    * under the output directory.
    */
   void write_output(
-      const boost::filesystem::path& path,
-      const std::string& data);
+      const boost::filesystem::path& path, const std::string& data);
 
   /**
    * Render the mstch template with name `template_name` in the given context
@@ -150,7 +146,7 @@ class t_mstch_generator : public t_generator {
   mstch::map dump(const t_const_value&);
   mstch::map dump(const std::map<t_const_value*, t_const_value*>::value_type&);
 
-  using annotation = std::pair<std::string, std::string>;
+  using annotation = std::pair<std::string, annotation_value>;
   mstch::map dump(const annotation&);
   mstch::map dump(const std::string&);
 

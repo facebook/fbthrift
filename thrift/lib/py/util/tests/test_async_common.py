@@ -16,7 +16,7 @@
 import unittest
 import mock
 
-from thrift.util.async_common import  AsyncioRpcConnectionContext
+from thrift.async_common import  AsyncioRpcConnectionContext
 
 
 class TestAsyncioRpcConnectionContext(unittest.TestCase):

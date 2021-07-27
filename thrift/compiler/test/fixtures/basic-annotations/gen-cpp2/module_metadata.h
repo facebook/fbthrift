@@ -33,21 +33,22 @@ template <>
 class StructMetadata<::cpp2::MyStructNestedAnnotation> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
-};
-template <>
-class StructMetadata<::cpp2::MyStructAnnotation> {
- public:
-  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+ private:
+  static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
 };
 template <>
 class StructMetadata<::cpp2::MyStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+ private:
+  static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
 };
 template <>
 class StructMetadata<::cpp2::SecretStruct> {
  public:
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+ private:
+  static void unstructured_annotations(::apache::thrift::metadata::ThriftStruct& thriftStruct);
 };
 template <>
 class ServiceMetadata<::cpp2::MyServiceSvIf> {

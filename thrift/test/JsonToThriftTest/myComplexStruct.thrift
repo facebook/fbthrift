@@ -29,9 +29,9 @@ exception ExceptionTest {
 }
 
 struct myComplexStruct {
-  1: mySimpleStruct.mySimpleStruct a,
-  2: list<i16> b,
-  3: map<string, mySimpleStruct.mySimpleStruct> c,
-  4: EnumTest e,
-  5: ExceptionTest x
+  1: mySimpleStruct.mySimpleStruct a;
+  2: list<i16> b;
+  3: map<string, mySimpleStruct.mySimpleStruct> c;
+  4: EnumTest e;
+  5: ExceptionTest x;
 }

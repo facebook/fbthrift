@@ -36,17 +36,36 @@ void TccStructTraits<::cpp2::MyStructMapFloatThrowExp>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(apache::thrift::FragileConstructor, int64_t myLongField__arg, ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::floatTypedef>>> mapListOfFloats__arg) :
+MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp&) = default;
+MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(const MyStructMapFloatThrowExp&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(MyStructMapFloatThrowExp&& other) noexcept  :
+    myLongField(std::move(other.myLongField)),
+    mapListOfFloats(std::move(other.mapListOfFloats)),
+    __isset(other.__isset) {}
+MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(FOLLY_MAYBE_UNUSED MyStructMapFloatThrowExp&& other) noexcept {
+    this->myLongField = std::move(other.myLongField);
+    this->mapListOfFloats = std::move(other.mapListOfFloats);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> mapListOfFloats__arg) :
     myLongField(std::move(myLongField__arg)),
     mapListOfFloats(std::move(mapListOfFloats__arg)) {
   __isset.myLongField = true;
   __isset.mapListOfFloats = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void MyStructMapFloatThrowExp::__clear() {
   // clear all fields
-  myLongField = 0;
-  mapListOfFloats.clear();
+  this->myLongField = 0;
+  this->mapListOfFloats.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -56,10 +75,10 @@ bool MyStructMapFloatThrowExp::operator==(const MyStructMapFloatThrowExp& rhs) c
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongField == rhs.myLongField)) {
+  if (!(lhs.myLongField_ref() == rhs.myLongField_ref())) {
     return false;
   }
-  if (!(lhs.mapListOfFloats == rhs.mapListOfFloats)) {
+  if (!(lhs.mapListOfFloats_ref() == rhs.mapListOfFloats_ref())) {
     return false;
   }
   return true;
@@ -69,20 +88,20 @@ bool MyStructMapFloatThrowExp::operator<(const MyStructMapFloatThrowExp& rhs) co
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongField == rhs.myLongField)) {
-    return lhs.myLongField < rhs.myLongField;
+  if (!(lhs.myLongField_ref() == rhs.myLongField_ref())) {
+    return lhs.myLongField_ref() < rhs.myLongField_ref();
   }
-  if (!(lhs.mapListOfFloats == rhs.mapListOfFloats)) {
-    return lhs.mapListOfFloats < rhs.mapListOfFloats;
+  if (!(lhs.mapListOfFloats_ref() == rhs.mapListOfFloats_ref())) {
+    return lhs.mapListOfFloats_ref() < rhs.mapListOfFloats_ref();
   }
   return false;
 }
 
-const ::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::floatTypedef>>>& MyStructMapFloatThrowExp::get_mapListOfFloats() const& {
+const ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>>& MyStructMapFloatThrowExp::get_mapListOfFloats() const& {
   return mapListOfFloats;
 }
 
-::std::map<int32_t, ::std::vector<::std::vector< ::cpp2::floatTypedef>>> MyStructMapFloatThrowExp::get_mapListOfFloats() && {
+::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> MyStructMapFloatThrowExp::get_mapListOfFloats() && {
   return std::move(mapListOfFloats);
 }
 
@@ -133,53 +152,112 @@ void TccStructTraits<::cpp2::defaultStruct>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+defaultStruct::defaultStruct(const defaultStruct&) = default;
+defaultStruct& defaultStruct::operator=(const defaultStruct&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 defaultStruct::defaultStruct() :
       myLongDFset(10LL),
       myLongDF(0),
       portDFset(3456),
       portNum(0),
-      myBinaryDFset(apache::thrift::StringTraits< std::string>::fromStringLiteral("abc")),
+      myBinaryDFset(apache::thrift::StringTraits<std::string>::fromStringLiteral("abc")),
       myByteDFSet(static_cast<int8_t>(17)),
       myByte(0),
       myDoubleDFset(99.7678),
       myDoubleDFZero(0),
       myDouble(0),
-      field3(std::initializer_list<std::pair<const int32_t, ::std::string>>{{15, apache::thrift::StringTraits< std::string>::fromStringLiteral("a_value")},
-  {2, apache::thrift::StringTraits< std::string>::fromStringLiteral("b_value")}}),
-      myList(std::initializer_list< ::cpp2::MyEnum>{ ::cpp2::MyEnum::MyValue1,
+      field3(std::initializer_list<std::pair<const ::std::int32_t, ::std::string>>{{15, apache::thrift::StringTraits<std::string>::fromStringLiteral("a_value")},
+  {2, apache::thrift::StringTraits<std::string>::fromStringLiteral("b_value")}}),
+      myList(std::initializer_list<::cpp2::MyEnum>{ ::cpp2::MyEnum::MyValue1,
    ::cpp2::MyEnum::MyValue1,
    ::cpp2::MyEnum::MyValue2}),
-      mySet(std::initializer_list<::std::string>{apache::thrift::StringTraits< std::string>::fromStringLiteral("house"),
-  apache::thrift::StringTraits< std::string>::fromStringLiteral("car"),
-  apache::thrift::StringTraits< std::string>::fromStringLiteral("dog")}),
-      simpleStruct(::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(40LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits< std::string>::fromStringLiteral("John")))),
-      listStructDFset(std::initializer_list< ::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(40LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits< std::string>::fromStringLiteral("IronMan"))),
-  ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(999LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Thanos")))}),
+      mySet(std::initializer_list<::std::string>{apache::thrift::StringTraits<std::string>::fromStringLiteral("house"),
+  apache::thrift::StringTraits<std::string>::fromStringLiteral("car"),
+  apache::thrift::StringTraits<std::string>::fromStringLiteral("dog")}),
+      simpleStruct(::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(40LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("John")))),
+      listStructDFset(std::initializer_list<::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(40LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("IronMan"))),
+  ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(999LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("Thanos")))}),
       myUnion(::apache::thrift::detail::make_constant< ::cpp2::MyUnion>(::apache::thrift::type_class::variant{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::myEnum>( ::cpp2::MyEnum::MyValue2))),
-      listUnionDFset(std::initializer_list< ::cpp2::MyUnion>{::apache::thrift::detail::make_constant< ::cpp2::MyUnion>(::apache::thrift::type_class::variant{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::myEnum>( ::cpp2::MyEnum::MyValue2)),
+      listUnionDFset(std::initializer_list<::cpp2::MyUnion>{::apache::thrift::detail::make_constant< ::cpp2::MyUnion>(::apache::thrift::type_class::variant{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::myEnum>( ::cpp2::MyEnum::MyValue2)),
   ::apache::thrift::detail::make_constant< ::cpp2::MyUnion>(::apache::thrift::type_class::variant{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::intValue>(123))}),
-      mapNestlistStructDfSet(std::initializer_list<std::pair<const int32_t, ::std::vector< ::cpp2::SimpleStruct>>>{{1, std::initializer_list< ::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(40LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits< std::string>::fromStringLiteral("IronMan"))),
-  ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(999LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Thanos")))}},
-  {2, std::initializer_list< ::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(28LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits< std::string>::fromStringLiteral("BatMan"))),
-  ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(12LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Robin")))}},
-  {5, std::initializer_list< ::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(12LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits< std::string>::fromStringLiteral("RatMan"))),
-  ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(6LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits< std::string>::fromStringLiteral("Catman")))}}}),
-      mapJavaTypeDFset(std::initializer_list<std::pair<const int64_t, ::std::string>>{{15, apache::thrift::StringTraits< std::string>::fromStringLiteral("a_value")},
-  {2, apache::thrift::StringTraits< std::string>::fromStringLiteral("b_value")}}),
-      enumMapDFset(std::initializer_list<std::pair<const ::std::string, ::std::map<int32_t,  ::cpp2::MyEnum>>>{{apache::thrift::StringTraits< std::string>::fromStringLiteral("SANDY BRIDGE"), std::initializer_list<std::pair<const int32_t,  ::cpp2::MyEnum>>{{16,  ::cpp2::MyEnum::MyValue1},
+      mapNestlistStructDfSet(std::initializer_list<std::pair<const ::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>>{{1, std::initializer_list<::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(40LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("IronMan"))),
+  ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(999LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("Thanos")))}},
+  {2, std::initializer_list<::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(28LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("BatMan"))),
+  ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(12LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("Robin")))}},
+  {5, std::initializer_list<::cpp2::SimpleStruct>{::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(12LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("RatMan"))),
+  ::apache::thrift::detail::make_constant< ::cpp2::SimpleStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::age>(6LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::name>(apache::thrift::StringTraits<std::string>::fromStringLiteral("Catman")))}}}),
+      mapJavaTypeDFset(std::initializer_list<std::pair<const ::std::int64_t, ::std::string>>{{15, apache::thrift::StringTraits<std::string>::fromStringLiteral("a_value")},
+  {2, apache::thrift::StringTraits<std::string>::fromStringLiteral("b_value")}}),
+      enumMapDFset(std::initializer_list<std::pair<const ::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("SANDY BRIDGE"), std::initializer_list<std::pair<const ::std::int32_t, ::cpp2::MyEnum>>{{16,  ::cpp2::MyEnum::MyValue1},
   {144,  ::cpp2::MyEnum::MyValue1}}},
-  {apache::thrift::StringTraits< std::string>::fromStringLiteral("IVY BRIDGE"), std::initializer_list<std::pair<const int32_t,  ::cpp2::MyEnum>>{{32,  ::cpp2::MyEnum::MyValue2},
+  {apache::thrift::StringTraits<std::string>::fromStringLiteral("IVY BRIDGE"), std::initializer_list<std::pair<const ::std::int32_t, ::cpp2::MyEnum>>{{32,  ::cpp2::MyEnum::MyValue2},
   {144,  ::cpp2::MyEnum::MyValue2}}},
-  {apache::thrift::StringTraits< std::string>::fromStringLiteral("HASWELL"), std::initializer_list<std::pair<const int32_t,  ::cpp2::MyEnum>>{{32,  ::cpp2::MyEnum::MyValue3},
+  {apache::thrift::StringTraits<std::string>::fromStringLiteral("HASWELL"), std::initializer_list<std::pair<const ::std::int32_t, ::cpp2::MyEnum>>{{32,  ::cpp2::MyEnum::MyValue3},
   {128,  ::cpp2::MyEnum::MyValue3},
-  {256,  ::cpp2::MyEnum::MyValue3}}}}) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+  {256,  ::cpp2::MyEnum::MyValue3}}}}) {
+}
 
+THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 defaultStruct::~defaultStruct() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-defaultStruct::defaultStruct(apache::thrift::FragileConstructor, int64_t myLongDFset__arg, int64_t myLongDF__arg, int32_t portDFset__arg, int32_t portNum__arg, ::std::string myBinaryDFset__arg, ::std::string myBinary__arg, int8_t myByteDFSet__arg, int8_t myByte__arg, double myDoubleDFset__arg, double myDoubleDFZero__arg, double myDouble__arg, ::std::map<int32_t, ::std::string> field3__arg, ::std::vector< ::cpp2::MyEnum> myList__arg, ::std::set<::std::string> mySet__arg,  ::cpp2::SimpleStruct simpleStruct__arg, ::std::vector< ::cpp2::SimpleStruct> listStructDFset__arg,  ::cpp2::MyUnion myUnion__arg, ::std::vector< ::cpp2::MyUnion> listUnionDFset__arg, ::std::map<int32_t, ::std::vector< ::cpp2::SimpleStruct>> mapNestlistStructDfSet__arg, ::std::map<int64_t, ::std::string> mapJavaTypeDFset__arg, ::std::map<int64_t, int32_t> emptyMap__arg, ::std::map<::std::string, ::std::map<int32_t,  ::cpp2::MyEnum>> enumMapDFset__arg) :
+defaultStruct::defaultStruct(defaultStruct&& other) noexcept  :
+    myLongDFset(std::move(other.myLongDFset)),
+    myLongDF(std::move(other.myLongDF)),
+    portDFset(std::move(other.portDFset)),
+    portNum(std::move(other.portNum)),
+    myBinaryDFset(std::move(other.myBinaryDFset)),
+    myBinary(std::move(other.myBinary)),
+    myByteDFSet(std::move(other.myByteDFSet)),
+    myByte(std::move(other.myByte)),
+    myDoubleDFset(std::move(other.myDoubleDFset)),
+    myDoubleDFZero(std::move(other.myDoubleDFZero)),
+    myDouble(std::move(other.myDouble)),
+    field3(std::move(other.field3)),
+    myList(std::move(other.myList)),
+    mySet(std::move(other.mySet)),
+    simpleStruct(std::move(other.simpleStruct)),
+    listStructDFset(std::move(other.listStructDFset)),
+    myUnion(std::move(other.myUnion)),
+    listUnionDFset(std::move(other.listUnionDFset)),
+    mapNestlistStructDfSet(std::move(other.mapNestlistStructDfSet)),
+    mapJavaTypeDFset(std::move(other.mapJavaTypeDFset)),
+    emptyMap(std::move(other.emptyMap)),
+    enumMapDFset(std::move(other.enumMapDFset)),
+    __isset(other.__isset) {}
+defaultStruct& defaultStruct::operator=(FOLLY_MAYBE_UNUSED defaultStruct&& other) noexcept {
+    this->myLongDFset = std::move(other.myLongDFset);
+    this->myLongDF = std::move(other.myLongDF);
+    this->portDFset = std::move(other.portDFset);
+    this->portNum = std::move(other.portNum);
+    this->myBinaryDFset = std::move(other.myBinaryDFset);
+    this->myBinary = std::move(other.myBinary);
+    this->myByteDFSet = std::move(other.myByteDFSet);
+    this->myByte = std::move(other.myByte);
+    this->myDoubleDFset = std::move(other.myDoubleDFset);
+    this->myDoubleDFZero = std::move(other.myDoubleDFZero);
+    this->myDouble = std::move(other.myDouble);
+    this->field3 = std::move(other.field3);
+    this->myList = std::move(other.myList);
+    this->mySet = std::move(other.mySet);
+    this->simpleStruct = std::move(other.simpleStruct);
+    this->listStructDFset = std::move(other.listStructDFset);
+    this->myUnion = std::move(other.myUnion);
+    this->listUnionDFset = std::move(other.listUnionDFset);
+    this->mapNestlistStructDfSet = std::move(other.mapNestlistStructDfSet);
+    this->mapJavaTypeDFset = std::move(other.mapJavaTypeDFset);
+    this->emptyMap = std::move(other.emptyMap);
+    this->enumMapDFset = std::move(other.enumMapDFset);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+defaultStruct::defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t myLongDFset__arg, ::std::int64_t myLongDF__arg, ::std::int32_t portDFset__arg, ::std::int32_t portNum__arg, ::std::string myBinaryDFset__arg, ::std::string myBinary__arg, ::std::int8_t myByteDFSet__arg, ::std::int8_t myByte__arg, double myDoubleDFset__arg, double myDoubleDFZero__arg, double myDouble__arg, ::std::map<::std::int32_t, ::std::string> field3__arg, ::std::vector<::cpp2::MyEnum> myList__arg, ::std::set<::std::string> mySet__arg, ::cpp2::SimpleStruct simpleStruct__arg, ::std::vector<::cpp2::SimpleStruct> listStructDFset__arg, ::cpp2::MyUnion myUnion__arg, ::std::vector<::cpp2::MyUnion> listUnionDFset__arg, ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>> mapNestlistStructDfSet__arg, ::std::map<::std::int64_t, ::std::string> mapJavaTypeDFset__arg, ::std::map<::std::int64_t, ::std::int32_t> emptyMap__arg, ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>> enumMapDFset__arg) :
     myLongDFset(std::move(myLongDFset__arg)),
     myLongDF(std::move(myLongDF__arg)),
     portDFset(std::move(portDFset__arg)),
@@ -226,30 +304,31 @@ defaultStruct::defaultStruct(apache::thrift::FragileConstructor, int64_t myLongD
   __isset.enumMapDFset = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void defaultStruct::__clear() {
   // clear all fields
-  myLongDFset = 10LL;
-  myLongDF = 0;
-  portDFset = 3456;
-  portNum = 0;
-  myBinaryDFset = apache::thrift::StringTraits< std::string>::fromStringLiteral("abc");
-  myBinary = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  myByteDFSet = static_cast<int8_t>(17);
-  myByte = 0;
-  myDoubleDFset = 99.7678;
-  myDoubleDFZero = 0;
-  myDouble = 0;
-  field3.clear();
-  myList.clear();
-  mySet.clear();
-  simpleStruct.__clear();
-  listStructDFset.clear();
-  myUnion.__clear();
-  listUnionDFset.clear();
-  mapNestlistStructDfSet.clear();
-  mapJavaTypeDFset.clear();
-  emptyMap.clear();
-  enumMapDFset.clear();
+  this->myLongDFset = 10LL;
+  this->myLongDF = 0;
+  this->portDFset = 3456;
+  this->portNum = 0;
+  this->myBinaryDFset = apache::thrift::StringTraits<std::string>::fromStringLiteral("abc");
+  this->myBinary = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->myByteDFSet = static_cast<int8_t>(17);
+  this->myByte = 0;
+  this->myDoubleDFset = 99.7678;
+  this->myDoubleDFZero = 0;
+  this->myDouble = 0;
+  this->field3.clear();
+  this->myList.clear();
+  this->mySet.clear();
+  this->simpleStruct.__clear();
+  this->listStructDFset.clear();
+  this->myUnion.__clear();
+  this->listUnionDFset.clear();
+  this->mapNestlistStructDfSet.clear();
+  this->mapJavaTypeDFset.clear();
+  this->emptyMap.clear();
+  this->enumMapDFset.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -259,16 +338,16 @@ bool defaultStruct::operator==(const defaultStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongDFset == rhs.myLongDFset)) {
+  if (!(lhs.myLongDFset_ref() == rhs.myLongDFset_ref())) {
     return false;
   }
-  if (!(lhs.myLongDF == rhs.myLongDF)) {
+  if (!(lhs.myLongDF_ref() == rhs.myLongDF_ref())) {
     return false;
   }
-  if (!(lhs.portDFset == rhs.portDFset)) {
+  if (!(lhs.portDFset_ref() == rhs.portDFset_ref())) {
     return false;
   }
-  if (!(lhs.portNum == rhs.portNum)) {
+  if (!(lhs.portNum_ref() == rhs.portNum_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinaryDFset, rhs.myBinaryDFset)) {
@@ -277,52 +356,52 @@ bool defaultStruct::operator==(const defaultStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinary, rhs.myBinary)) {
     return false;
   }
-  if (!(lhs.myByteDFSet == rhs.myByteDFSet)) {
+  if (!(lhs.myByteDFSet_ref() == rhs.myByteDFSet_ref())) {
     return false;
   }
-  if (!(lhs.myByte == rhs.myByte)) {
+  if (!(lhs.myByte_ref() == rhs.myByte_ref())) {
     return false;
   }
-  if (!(lhs.myDoubleDFset == rhs.myDoubleDFset)) {
+  if (!(lhs.myDoubleDFset_ref() == rhs.myDoubleDFset_ref())) {
     return false;
   }
-  if (!(lhs.myDoubleDFZero == rhs.myDoubleDFZero)) {
+  if (!(lhs.myDoubleDFZero_ref() == rhs.myDoubleDFZero_ref())) {
     return false;
   }
-  if (!(lhs.myDouble == rhs.myDouble)) {
+  if (!(lhs.myDouble_ref() == rhs.myDouble_ref())) {
     return false;
   }
-  if (!(lhs.field3 == rhs.field3)) {
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
     return false;
   }
-  if (!(lhs.myList == rhs.myList)) {
+  if (!(lhs.myList_ref() == rhs.myList_ref())) {
     return false;
   }
-  if (!(lhs.mySet == rhs.mySet)) {
+  if (!(lhs.mySet_ref() == rhs.mySet_ref())) {
     return false;
   }
-  if (!(lhs.simpleStruct == rhs.simpleStruct)) {
+  if (!(lhs.simpleStruct_ref() == rhs.simpleStruct_ref())) {
     return false;
   }
-  if (!(lhs.listStructDFset == rhs.listStructDFset)) {
+  if (!(lhs.listStructDFset_ref() == rhs.listStructDFset_ref())) {
     return false;
   }
-  if (!(lhs.myUnion == rhs.myUnion)) {
+  if (!(lhs.myUnion_ref() == rhs.myUnion_ref())) {
     return false;
   }
-  if (!(lhs.listUnionDFset == rhs.listUnionDFset)) {
+  if (!(lhs.listUnionDFset_ref() == rhs.listUnionDFset_ref())) {
     return false;
   }
-  if (!(lhs.mapNestlistStructDfSet == rhs.mapNestlistStructDfSet)) {
+  if (!(lhs.mapNestlistStructDfSet_ref() == rhs.mapNestlistStructDfSet_ref())) {
     return false;
   }
-  if (!(lhs.mapJavaTypeDFset == rhs.mapJavaTypeDFset)) {
+  if (!(lhs.mapJavaTypeDFset_ref() == rhs.mapJavaTypeDFset_ref())) {
     return false;
   }
-  if (!(lhs.emptyMap == rhs.emptyMap)) {
+  if (!(lhs.emptyMap_ref() == rhs.emptyMap_ref())) {
     return false;
   }
-  if (!(lhs.enumMapDFset == rhs.enumMapDFset)) {
+  if (!(lhs.enumMapDFset_ref() == rhs.enumMapDFset_ref())) {
     return false;
   }
   return true;
@@ -332,17 +411,17 @@ bool defaultStruct::operator<(const defaultStruct& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.myLongDFset == rhs.myLongDFset)) {
-    return lhs.myLongDFset < rhs.myLongDFset;
+  if (!(lhs.myLongDFset_ref() == rhs.myLongDFset_ref())) {
+    return lhs.myLongDFset_ref() < rhs.myLongDFset_ref();
   }
-  if (!(lhs.myLongDF == rhs.myLongDF)) {
-    return lhs.myLongDF < rhs.myLongDF;
+  if (!(lhs.myLongDF_ref() == rhs.myLongDF_ref())) {
+    return lhs.myLongDF_ref() < rhs.myLongDF_ref();
   }
-  if (!(lhs.portDFset == rhs.portDFset)) {
-    return lhs.portDFset < rhs.portDFset;
+  if (!(lhs.portDFset_ref() == rhs.portDFset_ref())) {
+    return lhs.portDFset_ref() < rhs.portDFset_ref();
   }
-  if (!(lhs.portNum == rhs.portNum)) {
-    return lhs.portNum < rhs.portNum;
+  if (!(lhs.portNum_ref() == rhs.portNum_ref())) {
+    return lhs.portNum_ref() < rhs.portNum_ref();
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinaryDFset, rhs.myBinaryDFset)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.myBinaryDFset, rhs.myBinaryDFset);
@@ -350,70 +429,70 @@ bool defaultStruct::operator<(const defaultStruct& rhs) const {
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.myBinary, rhs.myBinary)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.myBinary, rhs.myBinary);
   }
-  if (!(lhs.myByteDFSet == rhs.myByteDFSet)) {
-    return lhs.myByteDFSet < rhs.myByteDFSet;
+  if (!(lhs.myByteDFSet_ref() == rhs.myByteDFSet_ref())) {
+    return lhs.myByteDFSet_ref() < rhs.myByteDFSet_ref();
   }
-  if (!(lhs.myByte == rhs.myByte)) {
-    return lhs.myByte < rhs.myByte;
+  if (!(lhs.myByte_ref() == rhs.myByte_ref())) {
+    return lhs.myByte_ref() < rhs.myByte_ref();
   }
-  if (!(lhs.myDoubleDFset == rhs.myDoubleDFset)) {
-    return lhs.myDoubleDFset < rhs.myDoubleDFset;
+  if (!(lhs.myDoubleDFset_ref() == rhs.myDoubleDFset_ref())) {
+    return lhs.myDoubleDFset_ref() < rhs.myDoubleDFset_ref();
   }
-  if (!(lhs.myDoubleDFZero == rhs.myDoubleDFZero)) {
-    return lhs.myDoubleDFZero < rhs.myDoubleDFZero;
+  if (!(lhs.myDoubleDFZero_ref() == rhs.myDoubleDFZero_ref())) {
+    return lhs.myDoubleDFZero_ref() < rhs.myDoubleDFZero_ref();
   }
-  if (!(lhs.myDouble == rhs.myDouble)) {
-    return lhs.myDouble < rhs.myDouble;
+  if (!(lhs.myDouble_ref() == rhs.myDouble_ref())) {
+    return lhs.myDouble_ref() < rhs.myDouble_ref();
   }
-  if (!(lhs.field3 == rhs.field3)) {
-    return lhs.field3 < rhs.field3;
+  if (!(lhs.field3_ref() == rhs.field3_ref())) {
+    return lhs.field3_ref() < rhs.field3_ref();
   }
-  if (!(lhs.myList == rhs.myList)) {
-    return lhs.myList < rhs.myList;
+  if (!(lhs.myList_ref() == rhs.myList_ref())) {
+    return lhs.myList_ref() < rhs.myList_ref();
   }
-  if (!(lhs.mySet == rhs.mySet)) {
-    return lhs.mySet < rhs.mySet;
+  if (!(lhs.mySet_ref() == rhs.mySet_ref())) {
+    return lhs.mySet_ref() < rhs.mySet_ref();
   }
-  if (!(lhs.simpleStruct == rhs.simpleStruct)) {
-    return lhs.simpleStruct < rhs.simpleStruct;
+  if (!(lhs.simpleStruct_ref() == rhs.simpleStruct_ref())) {
+    return lhs.simpleStruct_ref() < rhs.simpleStruct_ref();
   }
-  if (!(lhs.listStructDFset == rhs.listStructDFset)) {
-    return lhs.listStructDFset < rhs.listStructDFset;
+  if (!(lhs.listStructDFset_ref() == rhs.listStructDFset_ref())) {
+    return lhs.listStructDFset_ref() < rhs.listStructDFset_ref();
   }
-  if (!(lhs.myUnion == rhs.myUnion)) {
-    return lhs.myUnion < rhs.myUnion;
+  if (!(lhs.myUnion_ref() == rhs.myUnion_ref())) {
+    return lhs.myUnion_ref() < rhs.myUnion_ref();
   }
-  if (!(lhs.listUnionDFset == rhs.listUnionDFset)) {
-    return lhs.listUnionDFset < rhs.listUnionDFset;
+  if (!(lhs.listUnionDFset_ref() == rhs.listUnionDFset_ref())) {
+    return lhs.listUnionDFset_ref() < rhs.listUnionDFset_ref();
   }
-  if (!(lhs.mapNestlistStructDfSet == rhs.mapNestlistStructDfSet)) {
-    return lhs.mapNestlistStructDfSet < rhs.mapNestlistStructDfSet;
+  if (!(lhs.mapNestlistStructDfSet_ref() == rhs.mapNestlistStructDfSet_ref())) {
+    return lhs.mapNestlistStructDfSet_ref() < rhs.mapNestlistStructDfSet_ref();
   }
-  if (!(lhs.mapJavaTypeDFset == rhs.mapJavaTypeDFset)) {
-    return lhs.mapJavaTypeDFset < rhs.mapJavaTypeDFset;
+  if (!(lhs.mapJavaTypeDFset_ref() == rhs.mapJavaTypeDFset_ref())) {
+    return lhs.mapJavaTypeDFset_ref() < rhs.mapJavaTypeDFset_ref();
   }
-  if (!(lhs.emptyMap == rhs.emptyMap)) {
-    return lhs.emptyMap < rhs.emptyMap;
+  if (!(lhs.emptyMap_ref() == rhs.emptyMap_ref())) {
+    return lhs.emptyMap_ref() < rhs.emptyMap_ref();
   }
-  if (!(lhs.enumMapDFset == rhs.enumMapDFset)) {
-    return lhs.enumMapDFset < rhs.enumMapDFset;
+  if (!(lhs.enumMapDFset_ref() == rhs.enumMapDFset_ref())) {
+    return lhs.enumMapDFset_ref() < rhs.enumMapDFset_ref();
   }
   return false;
 }
 
-const ::std::map<int32_t, ::std::string>& defaultStruct::get_field3() const& {
+const ::std::map<::std::int32_t, ::std::string>& defaultStruct::get_field3() const& {
   return field3;
 }
 
-::std::map<int32_t, ::std::string> defaultStruct::get_field3() && {
+::std::map<::std::int32_t, ::std::string> defaultStruct::get_field3() && {
   return std::move(field3);
 }
 
-const ::std::vector< ::cpp2::MyEnum>& defaultStruct::get_myList() const& {
+const ::std::vector<::cpp2::MyEnum>& defaultStruct::get_myList() const& {
   return myList;
 }
 
-::std::vector< ::cpp2::MyEnum> defaultStruct::get_myList() && {
+::std::vector<::cpp2::MyEnum> defaultStruct::get_myList() && {
   return std::move(myList);
 }
 
@@ -425,67 +504,67 @@ const ::std::set<::std::string>& defaultStruct::get_mySet() const& {
   return std::move(mySet);
 }
 
-const  ::cpp2::SimpleStruct& defaultStruct::get_simpleStruct() const& {
+const ::cpp2::SimpleStruct& defaultStruct::get_simpleStruct() const& {
   return simpleStruct;
 }
 
- ::cpp2::SimpleStruct defaultStruct::get_simpleStruct() && {
+::cpp2::SimpleStruct defaultStruct::get_simpleStruct() && {
   return std::move(simpleStruct);
 }
 
-const ::std::vector< ::cpp2::SimpleStruct>& defaultStruct::get_listStructDFset() const& {
+const ::std::vector<::cpp2::SimpleStruct>& defaultStruct::get_listStructDFset() const& {
   return listStructDFset;
 }
 
-::std::vector< ::cpp2::SimpleStruct> defaultStruct::get_listStructDFset() && {
+::std::vector<::cpp2::SimpleStruct> defaultStruct::get_listStructDFset() && {
   return std::move(listStructDFset);
 }
 
-const  ::cpp2::MyUnion& defaultStruct::get_myUnion() const& {
+const ::cpp2::MyUnion& defaultStruct::get_myUnion() const& {
   return myUnion;
 }
 
- ::cpp2::MyUnion defaultStruct::get_myUnion() && {
+::cpp2::MyUnion defaultStruct::get_myUnion() && {
   return std::move(myUnion);
 }
 
-const ::std::vector< ::cpp2::MyUnion>& defaultStruct::get_listUnionDFset() const& {
+const ::std::vector<::cpp2::MyUnion>& defaultStruct::get_listUnionDFset() const& {
   return listUnionDFset;
 }
 
-::std::vector< ::cpp2::MyUnion> defaultStruct::get_listUnionDFset() && {
+::std::vector<::cpp2::MyUnion> defaultStruct::get_listUnionDFset() && {
   return std::move(listUnionDFset);
 }
 
-const ::std::map<int32_t, ::std::vector< ::cpp2::SimpleStruct>>& defaultStruct::get_mapNestlistStructDfSet() const& {
+const ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>& defaultStruct::get_mapNestlistStructDfSet() const& {
   return mapNestlistStructDfSet;
 }
 
-::std::map<int32_t, ::std::vector< ::cpp2::SimpleStruct>> defaultStruct::get_mapNestlistStructDfSet() && {
+::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>> defaultStruct::get_mapNestlistStructDfSet() && {
   return std::move(mapNestlistStructDfSet);
 }
 
-const ::std::map<int64_t, ::std::string>& defaultStruct::get_mapJavaTypeDFset() const& {
+const ::std::map<::std::int64_t, ::std::string>& defaultStruct::get_mapJavaTypeDFset() const& {
   return mapJavaTypeDFset;
 }
 
-::std::map<int64_t, ::std::string> defaultStruct::get_mapJavaTypeDFset() && {
+::std::map<::std::int64_t, ::std::string> defaultStruct::get_mapJavaTypeDFset() && {
   return std::move(mapJavaTypeDFset);
 }
 
-const ::std::map<int64_t, int32_t>& defaultStruct::get_emptyMap() const& {
+const ::std::map<::std::int64_t, ::std::int32_t>& defaultStruct::get_emptyMap() const& {
   return emptyMap;
 }
 
-::std::map<int64_t, int32_t> defaultStruct::get_emptyMap() && {
+::std::map<::std::int64_t, ::std::int32_t> defaultStruct::get_emptyMap() && {
   return std::move(emptyMap);
 }
 
-const ::std::map<::std::string, ::std::map<int32_t,  ::cpp2::MyEnum>>& defaultStruct::get_enumMapDFset() const& {
+const ::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>>& defaultStruct::get_enumMapDFset() const& {
   return enumMapDFset;
 }
 
-::std::map<::std::string, ::std::map<int32_t,  ::cpp2::MyEnum>> defaultStruct::get_enumMapDFset() && {
+::std::map<::std::string, ::std::map<::std::int32_t, ::cpp2::MyEnum>> defaultStruct::get_enumMapDFset() && {
   return std::move(enumMapDFset);
 }
 
@@ -532,50 +611,50 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         defaultStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::SimpleStruct>,
+        ::cpp2::SimpleStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         defaultStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::cpp2::SimpleStruct>>,
+        ::std::vector<::cpp2::SimpleStruct>>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         defaultStruct,
         ::apache::thrift::type_class::variant,
-         ::cpp2::MyUnion>,
+        ::cpp2::MyUnion>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         defaultStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::map<int32_t, ::std::vector< ::cpp2::SimpleStruct>>>,
+        ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         defaultStruct,
         ::apache::thrift::type_class::structure,
-         ::cpp2::SimpleStruct>,
+        ::cpp2::SimpleStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         defaultStruct,
         ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>,
-        ::std::vector< ::cpp2::SimpleStruct>>,
+        ::std::vector<::cpp2::SimpleStruct>>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         defaultStruct,
         ::apache::thrift::type_class::variant,
-         ::cpp2::MyUnion>,
+        ::cpp2::MyUnion>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         defaultStruct,
         ::apache::thrift::type_class::map<::apache::thrift::type_class::integral, ::apache::thrift::type_class::list<::apache::thrift::type_class::structure>>,
-        ::std::map<int32_t, ::std::vector< ::cpp2::SimpleStruct>>>,
+        ::std::map<::std::int32_t, ::std::vector<::cpp2::SimpleStruct>>>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -718,38 +797,38 @@ static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyStruct>,
+        ::cpp2::MyStruct>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of json option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_json<
         MyUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::ComplexNestedStruct>,
+        ::cpp2::ComplexNestedStruct>,
     "inconsistent use of json option");
 
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyStruct>,
+        ::cpp2::MyStruct>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::MyDataItem>,
+        ::cpp2::MyDataItem>,
     "inconsistent use of nimble option");
 static_assert(
     ::apache::thrift::detail::st::gen_check_nimble<
         MyUnion,
         ::apache::thrift::type_class::structure,
-         ::cpp2::ComplexNestedStruct>,
+        ::cpp2::ComplexNestedStruct>,
     "inconsistent use of nimble option");
 
 } // cpp2
@@ -778,7 +857,29 @@ void TccStructTraits<::cpp2::TypeRemapped>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<int64_t, ::std::string> lsMap__arg, ::std::map<int32_t,  ::cpp2::FMap> ioMap__arg, int32_t BigInteger__arg, ::std::string binaryTestBuffer__arg) :
+TypeRemapped::TypeRemapped(const TypeRemapped&) = default;
+TypeRemapped& TypeRemapped::operator=(const TypeRemapped&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+TypeRemapped::TypeRemapped(TypeRemapped&& other) noexcept  :
+    lsMap(std::move(other.lsMap)),
+    ioMap(std::move(other.ioMap)),
+    BigInteger(std::move(other.BigInteger)),
+    binaryTestBuffer(std::move(other.binaryTestBuffer)),
+    __isset(other.__isset) {}
+TypeRemapped& TypeRemapped::operator=(FOLLY_MAYBE_UNUSED TypeRemapped&& other) noexcept {
+    this->lsMap = std::move(other.lsMap);
+    this->ioMap = std::move(other.ioMap);
+    this->BigInteger = std::move(other.BigInteger);
+    this->binaryTestBuffer = std::move(other.binaryTestBuffer);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<::std::int64_t, ::std::string> lsMap__arg, ::std::map<::std::int32_t, ::cpp2::FMap> ioMap__arg, ::std::int32_t BigInteger__arg, ::std::string binaryTestBuffer__arg) :
     lsMap(std::move(lsMap__arg)),
     ioMap(std::move(ioMap__arg)),
     BigInteger(std::move(BigInteger__arg)),
@@ -789,12 +890,13 @@ TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<int64_
   __isset.binaryTestBuffer = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void TypeRemapped::__clear() {
   // clear all fields
-  lsMap.clear();
-  ioMap.clear();
-  BigInteger = 0;
-  binaryTestBuffer = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
+  this->lsMap.clear();
+  this->ioMap.clear();
+  this->BigInteger = 0;
+  this->binaryTestBuffer = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -804,13 +906,13 @@ bool TypeRemapped::operator==(const TypeRemapped& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.lsMap == rhs.lsMap)) {
+  if (!(lhs.lsMap_ref() == rhs.lsMap_ref())) {
     return false;
   }
-  if (!(lhs.ioMap == rhs.ioMap)) {
+  if (!(lhs.ioMap_ref() == rhs.ioMap_ref())) {
     return false;
   }
-  if (!(lhs.BigInteger == rhs.BigInteger)) {
+  if (!(lhs.BigInteger_ref() == rhs.BigInteger_ref())) {
     return false;
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binaryTestBuffer, rhs.binaryTestBuffer)) {
@@ -823,14 +925,14 @@ bool TypeRemapped::operator<(const TypeRemapped& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.lsMap == rhs.lsMap)) {
-    return lhs.lsMap < rhs.lsMap;
+  if (!(lhs.lsMap_ref() == rhs.lsMap_ref())) {
+    return lhs.lsMap_ref() < rhs.lsMap_ref();
   }
-  if (!(lhs.ioMap == rhs.ioMap)) {
-    return lhs.ioMap < rhs.ioMap;
+  if (!(lhs.ioMap_ref() == rhs.ioMap_ref())) {
+    return lhs.ioMap_ref() < rhs.ioMap_ref();
   }
-  if (!(lhs.BigInteger == rhs.BigInteger)) {
-    return lhs.BigInteger < rhs.BigInteger;
+  if (!(lhs.BigInteger_ref() == rhs.BigInteger_ref())) {
+    return lhs.BigInteger_ref() < rhs.BigInteger_ref();
   }
   if (!apache::thrift::StringTraits<std::string>::isEqual(lhs.binaryTestBuffer, rhs.binaryTestBuffer)) {
     return apache::thrift::StringTraits<std::string>::isLess(lhs.binaryTestBuffer, rhs.binaryTestBuffer);
@@ -838,19 +940,19 @@ bool TypeRemapped::operator<(const TypeRemapped& rhs) const {
   return false;
 }
 
-const ::std::map<int64_t, ::std::string>& TypeRemapped::get_lsMap() const& {
+const ::std::map<::std::int64_t, ::std::string>& TypeRemapped::get_lsMap() const& {
   return lsMap;
 }
 
-::std::map<int64_t, ::std::string> TypeRemapped::get_lsMap() && {
+::std::map<::std::int64_t, ::std::string> TypeRemapped::get_lsMap() && {
   return std::move(lsMap);
 }
 
-const ::std::map<int32_t,  ::cpp2::FMap>& TypeRemapped::get_ioMap() const& {
+const ::std::map<::std::int32_t, ::cpp2::FMap>& TypeRemapped::get_ioMap() const& {
   return ioMap;
 }
 
-::std::map<int32_t,  ::cpp2::FMap> TypeRemapped::get_ioMap() && {
+::std::map<::std::int32_t, ::cpp2::FMap> TypeRemapped::get_ioMap() && {
   return std::move(ioMap);
 }
 
@@ -903,17 +1005,45 @@ void TccStructTraits<::cpp2::optXcep>::translateFieldName(
 namespace cpp2 {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-optXcep::optXcep(apache::thrift::FragileConstructor, ::std::string message__arg, int32_t errorCode__arg) :
+optXcep::optXcep(const optXcep&) = default;
+optXcep& optXcep::operator=(const optXcep&) = default;
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+optXcep::optXcep() :
+      errorCode(0) {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+optXcep::~optXcep() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+optXcep::optXcep(optXcep&& other) noexcept  :
+    message(std::move(other.message)),
+    errorCode(std::move(other.errorCode)),
+    __isset(other.__isset) {}
+optXcep& optXcep::operator=(FOLLY_MAYBE_UNUSED optXcep&& other) noexcept {
+    this->message = std::move(other.message);
+    this->errorCode = std::move(other.errorCode);
+    __isset = other.__isset;
+    return *this;
+}
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+optXcep::optXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg) :
     message(std::move(message__arg)),
     errorCode(std::move(errorCode__arg)) {
   __isset.message = true;
   __isset.errorCode = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 void optXcep::__clear() {
   // clear all fields
-  message = apache::thrift::StringTraits< std::string>::fromStringLiteral("");
-  errorCode = 0;
+  this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
+  this->errorCode = 0;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -923,10 +1053,10 @@ bool optXcep::operator==(const optXcep& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.message_ref() != rhs.message_ref()) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return false;
   }
-  if (lhs.errorCode_ref() != rhs.errorCode_ref()) {
+  if (!(lhs.errorCode_ref() == rhs.errorCode_ref())) {
     return false;
   }
   return true;
@@ -936,10 +1066,10 @@ bool optXcep::operator<(const optXcep& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (lhs.message_ref() != rhs.message_ref()) {
+  if (!(lhs.message_ref() == rhs.message_ref())) {
     return lhs.message_ref() < rhs.message_ref();
   }
-  if (lhs.errorCode_ref() != rhs.errorCode_ref()) {
+  if (!(lhs.errorCode_ref() == rhs.errorCode_ref())) {
     return lhs.errorCode_ref() < rhs.errorCode_ref();
   }
   return false;

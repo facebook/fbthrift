@@ -12,20 +12,102 @@
 namespace apache {
 namespace thrift {
 
+const std::array<::cpp2::MyEnumA, 3> TEnumDataStorage<::cpp2::MyEnumA>::values = {{
+  type::fieldA,
+  type::fieldB,
+  type::fieldC,
+}};
+const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::MyEnumA>::names = {{
+  "fieldA",
+  "fieldB",
+  "fieldC",
+}};
 
-constexpr const std::size_t TEnumDataStorage<::cpp2::MyEnumA>::size;
-constexpr const std::array<::cpp2::MyEnumA, 3> TEnumDataStorage<::cpp2::MyEnumA>::values;
-constexpr const std::array<folly::StringPiece, 3> TEnumDataStorage<::cpp2::MyEnumA>::names;
+const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::SmallStruct>::fields_names = {{
+  "small_A",
+  "small_B",
+}};
+const std::array<int16_t, 2> TStructDataStorage<::cpp2::SmallStruct>::fields_ids = {{
+  1,
+  2,
+}};
+const std::array<protocol::TType, 2> TStructDataStorage<::cpp2::SmallStruct>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_I32,
+}};
 
-
-constexpr const std::size_t TStructDataStorage<::cpp2::SmallStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::SmallStruct>::fields_size> TStructDataStorage<::cpp2::SmallStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::SmallStruct>::fields_size> TStructDataStorage<::cpp2::SmallStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::SmallStruct>::fields_size> TStructDataStorage<::cpp2::SmallStruct>::fields_types;
-constexpr const std::size_t TStructDataStorage<::cpp2::containerStruct>::fields_size;
-constexpr const std::array<folly::StringPiece, TStructDataStorage<::cpp2::containerStruct>::fields_size> TStructDataStorage<::cpp2::containerStruct>::fields_names;
-constexpr const std::array<int16_t, TStructDataStorage<::cpp2::containerStruct>::fields_size> TStructDataStorage<::cpp2::containerStruct>::fields_ids;
-constexpr const std::array<apache::thrift::protocol::TType, TStructDataStorage<::cpp2::containerStruct>::fields_size> TStructDataStorage<::cpp2::containerStruct>::fields_types;
+const std::array<folly::StringPiece, 22> TStructDataStorage<::cpp2::containerStruct>::fields_names = {{
+  "fieldA",
+  "fieldB",
+  "fieldC",
+  "fieldD",
+  "fieldE",
+  "fieldF",
+  "fieldG",
+  "fieldH",
+  "fieldI",
+  "fieldJ",
+  "fieldK",
+  "fieldL",
+  "fieldM",
+  "fieldN",
+  "fieldO",
+  "fieldP",
+  "fieldQ",
+  "fieldR",
+  "fieldS",
+  "fieldT",
+  "fieldU",
+  "fieldX",
+}};
+const std::array<int16_t, 22> TStructDataStorage<::cpp2::containerStruct>::fields_ids = {{
+  1,
+  2,
+  3,
+  4,
+  5,
+  6,
+  7,
+  8,
+  9,
+  10,
+  11,
+  12,
+  13,
+  14,
+  15,
+  16,
+  17,
+  18,
+  19,
+  20,
+  21,
+  23,
+}};
+const std::array<protocol::TType, 22> TStructDataStorage<::cpp2::containerStruct>::fields_types = {{
+  TType::T_BOOL,
+  TType::T_MAP,
+  TType::T_SET,
+  TType::T_STRING,
+  TType::T_STRING,
+  TType::T_LIST,
+  TType::T_MAP,
+  TType::T_LIST,
+  TType::T_BOOL,
+  TType::T_MAP,
+  TType::T_LIST,
+  TType::T_SET,
+  TType::T_MAP,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_LIST,
+  TType::T_I32,
+  TType::T_MAP,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+  TType::T_STRUCT,
+}};
 
 } // namespace thrift
 } // namespace apache

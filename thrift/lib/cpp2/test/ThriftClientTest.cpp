@@ -20,7 +20,9 @@
 #include <folly/fibers/Fiber.h>
 #include <folly/fibers/FiberManagerMap.h>
 #include <folly/portability/GTest.h>
+#include <folly/synchronization/test/Barrier.h>
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
+#include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/TestService.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 
@@ -122,18 +124,18 @@ TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
   };
 
   //  rpcTimeout << handlerDelay << channelTimeout.
-  constexpr auto handlerDelay = milliseconds(10);
+  constexpr auto handlerDelay = milliseconds(100);
   constexpr auto channelTimeout = duration_cast<milliseconds>(seconds(10));
   constexpr auto rpcTimeout = milliseconds(1);
 
-  //  Handler has medium 10ms delay.
+  //  Handler has medium 100ms delay.
   auto handler = make_shared<DelayHandler>(handlerDelay);
   ScopedServerInterfaceThread runner(handler);
+  runner.getThriftServer().setUseClientTimeout(false);
 
   EventBase eb;
-  const std::shared_ptr<HeaderClientChannel> channel =
-      HeaderClientChannel::newChannel(
-          folly::AsyncSocket::newSocket(&eb, runner.getAddress()));
+  auto channel = folly::to_shared_ptr(HeaderClientChannel::newChannel(
+      folly::AsyncSocket::newSocket(&eb, runner.getAddress())));
   channel->setTimeout(channelTimeout.count());
   auto client = std::make_unique<TestServiceAsyncClient>(channel);
 
@@ -164,9 +166,8 @@ TEST_F(ThriftClientTest, SyncCallRequestResponse) {
   ScopedServerInterfaceThread runner(handler);
 
   EventBase eb;
-  auto client = runner.newClient<TestServiceAsyncClient>(&eb, [](auto socket) {
-    return RocketClientChannel::newChannel(std::move(socket));
-  });
+  auto client = runner.newClient<TestServiceAsyncClient>(
+      &eb, RocketClientChannel::newChannel);
 
   auto doSyncRPC = [&]() {
     RpcOptions options;
@@ -423,4 +424,63 @@ TEST_F(ThriftClientTest, FutureCallOneWay) {
   eb.loop();
 
   handler->waitUntilNumCalls(6);
+}
+
+//
+// Corner case triggered by a first stream response timeout when client is
+// already destroyed.
+//
+// On the client side, we issue an async stream request then almost immediately
+// release the client. The client channel should be kept alive by a shared ptr
+// in the semifuture.
+//
+// On the server, we introduce a delay long enough to trigger a client-side
+// timeout for the initial stream response. After this timeout is handled, the
+// client channel should be gracefully destroyed.
+//
+TEST_F(ThriftClientTest, FirstResponseTimeout) {
+  struct TestServiceHandler : public TestServiceSvIf {
+    explicit TestServiceHandler(folly::test::Barrier& barrier)
+        : barrier_(barrier) {}
+    apache::thrift::ResponseAndServerStream<bool, int32_t> rangeWithResponse(
+        int32_t, int32_t) override {
+      // signal main thread that we received the request
+      barrier_.wait();
+      // trigger a timeout on the client
+      /* sleep override */ std::this_thread::sleep_for(
+          std::chrono::seconds(10));
+      // signal main thread that the request is done
+      barrier_.wait();
+      return {false, ServerStream<int32_t>::createEmpty()};
+    }
+    folly::test::Barrier& barrier_;
+  };
+
+  // server
+  folly::test::Barrier barrier(2);
+  auto handler = std::make_shared<TestServiceHandler>(barrier);
+  ScopedServerInterfaceThread runner(handler);
+
+  // client
+  folly::EventBase evb;
+  auto sock = folly::AsyncSocket::newSocket(&evb, runner.getAddress());
+  auto channel = RocketClientChannel::newChannel(std::move(sock));
+  auto client = std::make_shared<TestServiceAsyncClient>(std::move(channel));
+  auto t = std::thread([&] { evb.loopForever(); });
+
+  // send stream request
+  RpcOptions options;
+  options.setTimeout(std::chrono::seconds(5));
+  auto f = client->semifuture_rangeWithResponse(options, 0, 10);
+
+  // wait for server to receive the request
+  barrier.wait();
+  // release client while the first response is still pending
+  client.reset();
+  // (... a response timeout here should not cause a crash ...)
+  // wait for server to complete the request
+  barrier.wait();
+
+  evb.terminateLoopSoon();
+  t.join();
 }

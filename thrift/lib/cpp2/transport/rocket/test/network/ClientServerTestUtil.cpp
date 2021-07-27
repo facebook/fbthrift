@@ -65,7 +65,8 @@ namespace rocket {
 namespace test {
 
 namespace {
-constexpr int32_t kversion = 10;
+constexpr int32_t kClientVersion = 7;
+constexpr int32_t kServerVersion = 10;
 std::pair<std::unique_ptr<folly::IOBuf>, std::unique_ptr<folly::IOBuf>>
 makeTestResponse(
     std::unique_ptr<folly::IOBuf> requestMetadata,
@@ -113,6 +114,7 @@ rocket::SetupFrame RocketTestClient::makeTestSetupFrame(
   RequestSetupMetadata meta;
   meta.opaque_ref() = {};
   *meta.opaque_ref() = std::move(md);
+  meta.maxVersion_ref() = kClientVersion;
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
   compactProtocolWriter.setOutput(&paramQueue);
@@ -222,7 +224,7 @@ RocketTestClient::sendRequestStreamSync(Payload request) {
                 return folly::Try<Payload>();
               }
             },
-            100));
+            {100, 0}));
       }
       delete this;
     }
@@ -258,22 +260,8 @@ RocketTestClient::sendRequestStreamSync(Payload request) {
   });
 }
 
-void RocketTestClient::sendRequestChannel(
-    ChannelClientCallback* callback,
-    Payload request) {
-  evb_.runInEventBaseThread(
-      [this, request = std::move(request), callback]() mutable {
-        fm_.addTask([this, request = std::move(request), callback]() mutable {
-          constexpr std::chrono::milliseconds kFirstResponseTimeout{500};
-          client_->sendRequestChannel(
-              std::move(request), kFirstResponseTimeout, callback);
-        });
-      });
-}
-
 void RocketTestClient::sendRequestSink(
-    SinkClientCallback* callback,
-    Payload request) {
+    SinkClientCallback* callback, Payload request) {
   evb_.runInEventBaseThread(
       [this, request = std::move(request), callback]() mutable {
         fm_.addTask([this, request = std::move(request), callback]() mutable {
@@ -296,26 +284,19 @@ void RocketTestClient::connect() {
     client_ = RocketClient::create(
         evb_,
         std::move(socket),
-        std::make_unique<rocket::SetupFrame>(makeTestSetupFrame()),
-        [this](MetadataPushFrame&& frame) {
-          if (!frame.metadata()) {
-            return;
-          }
-
-          CompactProtocolReader reader;
-          reader.setInput(frame.metadata());
-          ServerPushMetadata metadata;
-          metadata.read(&reader);
-          EXPECT_EQ(
-              kversion,
-              metadata.setupResponse_ref()->version_ref().value_or(0));
-          b_.post();
-        });
+        std::make_unique<rocket::SetupFrame>(makeTestSetupFrame()));
   });
 }
 
 void RocketTestClient::disconnect() {
   evb_.runInEventBaseThread([client = std::move(client_)] {});
+}
+
+void RocketTestClient::verifyVersion() {
+  if (client_ && client_->getServerVersion() != -1) {
+    EXPECT_EQ(
+        std::min(kClientVersion, kServerVersion), client_->getServerVersion());
+  }
 }
 
 namespace {
@@ -329,9 +310,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
         frameHandlerFactory_(std::move(frameHandlerFactory)),
         shutdownPromise_(std::move(shutdownPromise)) {}
 
-  ~RocketTestServerAcceptor() override {
-    EXPECT_EQ(0, connections_);
-  }
+  ~RocketTestServerAcceptor() override { EXPECT_EQ(0, connections_); }
 
   void onNewConnection(
       folly::AsyncTransport::UniquePtr socket,
@@ -342,13 +321,14 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
     auto* connection = new RocketServerConnection(
         std::move(socket),
         frameHandlerFactory_(),
-        std::chrono::milliseconds::zero());
+        memoryTracker_, // (ingress)
+        memoryTracker_ // (egress)
+    );
+
     getConnectionManager()->addConnection(connection);
   }
 
-  void onConnectionsDrained() override {
-    shutdownPromise_.set_value();
-  }
+  void onConnectionsDrained() override { shutdownPromise_.set_value(); }
 
   void onConnectionAdded(const wangle::ManagedConnection*) override {
     ++connections_;
@@ -373,6 +353,7 @@ class RocketTestServerAcceptor final : public wangle::Acceptor {
   std::promise<void> shutdownPromise_;
   size_t connections_{0};
   folly::Optional<size_t> expectedRemainingStreams_ = folly::none;
+  MemoryTracker memoryTracker_;
 };
 } // namespace
 
@@ -382,8 +363,8 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
       folly::EventBase& ioEvb,
       const MetadataOpaqueMap<std::string, std::string>& expectedSetupMetadata)
       : ioEvb_(ioEvb), expectedSetupMetadata_(expectedSetupMetadata) {}
-  void handleSetupFrame(SetupFrame&& frame, RocketServerConnection& connection)
-      final {
+  void handleSetupFrame(
+      SetupFrame&& frame, RocketServerConnection& connection) final {
     folly::io::Cursor cursor(frame.payload().buffer());
     // Validate Rocket protocol key
     uint32_t protocolKey;
@@ -399,9 +380,10 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     meta.read(&reader);
     EXPECT_EQ(reader.getCursorPosition(), frame.payload().metadataSize());
     EXPECT_EQ(expectedSetupMetadata_, meta.opaque_ref().value_or({}));
+    version_ = std::min(kServerVersion, meta.maxVersion_ref().value_or(0));
     ServerPushMetadata serverMeta;
     serverMeta.set_setupResponse();
-    serverMeta.setupResponse_ref()->version_ref() = kversion;
+    serverMeta.setupResponse_ref()->version_ref() = version_;
     CompactProtocolWriter compactProtocolWriter;
     folly::IOBufQueue queue;
     compactProtocolWriter.setOutput(&queue);
@@ -410,8 +392,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
   }
 
   void handleRequestResponseFrame(
-      RequestResponseFrame&& frame,
-      RocketServerFrameContext&& context) final {
+      RequestResponseFrame&& frame, RocketServerFrameContext&& context) final {
     auto dam = splitMetadataAndData(frame.payload());
     auto payload = std::move(frame.payload());
     auto dataPiece = getRange(*dam.second);
@@ -433,8 +414,8 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         nullptr);
   }
 
-  void handleRequestFnfFrame(RequestFnfFrame&&, RocketServerFrameContext&&)
-      final {}
+  void handleRequestFnfFrame(
+      RequestFnfFrame&&, RocketServerFrameContext&&) final {}
 
   void handleRequestStreamFrame(
       RequestStreamFrame&& frame,
@@ -443,9 +424,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     class TestRocketStreamServerCallback final : public StreamServerCallback {
      public:
       TestRocketStreamServerCallback(
-          StreamClientCallback* clientCallback,
-          size_t n,
-          size_t nEchoHeaders)
+          StreamClientCallback* clientCallback, size_t n, size_t nEchoHeaders)
           : clientCallback_(clientCallback),
             n_(n),
             nEchoHeaders_(nEchoHeaders) {}
@@ -464,9 +443,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         return true;
       }
 
-      void onStreamCancel() override {
-        delete this;
-      }
+      void onStreamCancel() override { delete this; }
 
       bool onSinkHeaders(HeadersPayload&& payload) override {
         auto metadata_ref = payload.payload.otherMetadata_ref();
@@ -497,8 +474,9 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
       const size_t n_;
       const size_t nEchoHeaders_;
     };
-
-    folly::StringPiece data(std::move(frame.payload()).data()->coalesce());
+    std::unique_ptr<folly::IOBuf> buffer =
+        std::move(frame.payload()).data()->clone();
+    folly::StringPiece data(buffer->coalesce());
     if (data.removePrefix("error:application")) {
       clientCallback->onFirstResponseError(
           folly::make_exception_wrapper<
@@ -565,20 +543,21 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
         nullptr /* evb */,
         serverCallback.get());
     folly::coro::co_invoke(
-        [serverCallback =
-             std::move(serverCallback)]() mutable -> folly::coro::Task<void> {
-          co_return co_await serverCallback->start();
-        })
+        &apache::thrift::detail::ServerSinkBridge::start,
+        std::move(serverCallback))
         .scheduleOn(threadManagerThread_.getEventBase())
         .start();
   }
 
   void connectionClosing() final {}
 
+  int32_t getVersion() const final { return version_; }
+
  private:
   folly::EventBase& ioEvb_;
   const MetadataOpaqueMap<std::string, std::string>& expectedSetupMetadata_;
   folly::ScopedEventBaseThread threadManagerThread_;
+  int32_t version_{0};
 };
 
 RocketTestServer::RocketTestServer()
@@ -601,15 +580,12 @@ RocketTestServer::~RocketTestServer() {
 }
 
 void RocketTestServer::start() {
-  folly::via(
-      &evb_,
-      [this] {
-        acceptor_->init(listeningSocket_.get(), &evb_);
-        listeningSocket_->bind(0 /* bind to any port */);
-        listeningSocket_->listen(128 /* tcpBacklog */);
-        listeningSocket_->startAccepting();
-      })
-      .wait();
+  folly::via(&evb_, [this] {
+    acceptor_->init(listeningSocket_.get(), &evb_);
+    listeningSocket_->bind(0 /* bind to any port */);
+    listeningSocket_->listen(128 /* tcpBacklog */);
+    listeningSocket_->startAccepting();
+  }).wait();
 }
 
 void RocketTestServer::stop() {

@@ -50,12 +50,8 @@ class SizeGenerator {
 class ConstantSizeGenerator : public SizeGenerator {
  public:
   /* implicit */ ConstantSizeGenerator(uint32_t value) : value_(value) {}
-  uint32_t nextSize() override {
-    return value_;
-  }
-  string describe() const override {
-    return to<string>(value_);
-  }
+  uint32_t nextSize() override { return value_; }
+  string describe() const override { return to<string>(value_); }
 
  private:
   uint32_t value_;
@@ -65,20 +61,14 @@ class RandomSizeGenerator : public SizeGenerator {
  public:
   RandomSizeGenerator(uint32_t min, uint32_t max) : dist_(min, max) {}
 
-  uint32_t nextSize() override {
-    return dist_(rng_);
-  }
+  uint32_t nextSize() override { return dist_(rng_); }
 
   string describe() const override {
     return sformat("rand({}, {})", getMin(), getMax());
   }
 
-  uint32_t getMin() const {
-    return dist_.min();
-  }
-  uint32_t getMax() const {
-    return dist_.max();
-  }
+  uint32_t getMin() const { return dist_.min(); }
+  uint32_t getMax() const { return dist_.max(); }
 
  private:
   mt19937 rng_;
@@ -99,12 +89,8 @@ class GenericSizeGenerator : public SizeGenerator {
   GenericSizeGenerator(uint32_t min, uint32_t max)
       : generator_(make_shared<RandomSizeGenerator>(min, max)) {}
 
-  uint32_t nextSize() override {
-    return generator_->nextSize();
-  }
-  string describe() const override {
-    return generator_->describe();
-  }
+  uint32_t nextSize() override { return generator_->nextSize(); }
+  string describe() const override { return generator_->describe(); }
 
  private:
   shared_ptr<SizeGenerator> generator_;
@@ -708,9 +694,7 @@ void test_borrow_none_available() {
 
 class TransportTest : public testing::Test {
  public:
-  TransportTest() {
-    CHECK_GT(FLAGS_size_multiplier, 0);
-  }
+  TransportTest() { CHECK_GT(FLAGS_size_multiplier, 0); }
 };
 
 } // namespace
@@ -856,24 +840,12 @@ TEST_BLOCKING_BEHAVIOR(CoupledMemoryBuffers)
 // if there is too much outstanding unread data in the pipe.
 TEST_RW_7(CoupledFDTransports, kConst1024K, 0, 0, 0, 0, kFdMaxOutstanding)
 TEST_RW_7(
-    CoupledFDTransports,
-    kConst256K,
-    rand4k,
-    rand4k,
-    0,
-    0,
-    kFdMaxOutstanding)
+    CoupledFDTransports, kConst256K, rand4k, rand4k, 0, 0, kFdMaxOutstanding)
 TEST_RW_7(CoupledFDTransports, kConst256K, 167, 163, 0, 0, kFdMaxOutstanding)
 TEST_RW_7(CoupledFDTransports, kConst16K, 1, 1, 0, 0, kFdMaxOutstanding)
 
 TEST_RW_7(
-    CoupledFDTransports,
-    kConst256K,
-    0,
-    0,
-    rand4k,
-    rand4k,
-    kFdMaxOutstanding)
+    CoupledFDTransports, kConst256K, 0, 0, rand4k, rand4k, kFdMaxOutstanding)
 TEST_RW_7(
     CoupledFDTransports,
     kConst256K,
@@ -891,25 +863,13 @@ TEST_RW_7(
     rand4k,
     kFdMaxOutstanding)
 TEST_RW_7(
-    CoupledFDTransports,
-    kConst16K,
-    1,
-    1,
-    rand4k,
-    rand4k,
-    kFdMaxOutstanding)
+    CoupledFDTransports, kConst16K, 1, 1, rand4k, rand4k, kFdMaxOutstanding)
 
 TEST_BLOCKING_BEHAVIOR(CoupledFDTransports)
 
 // TSocket tests
 TEST_RW_7(
-    CoupledSocketTransports,
-    kConst1024K,
-    0,
-    0,
-    0,
-    0,
-    kSocketMaxOutstanding)
+    CoupledSocketTransports, kConst1024K, 0, 0, 0, 0, kSocketMaxOutstanding)
 TEST_RW_7(
     CoupledSocketTransports,
     kConst256K,
@@ -919,13 +879,7 @@ TEST_RW_7(
     0,
     kSocketMaxOutstanding)
 TEST_RW_7(
-    CoupledSocketTransports,
-    kConst256K,
-    167,
-    163,
-    0,
-    0,
-    kSocketMaxOutstanding)
+    CoupledSocketTransports, kConst256K, 167, 163, 0, 0, kSocketMaxOutstanding)
 // Doh.  Apparently writing to a socket has some additional overhead for
 // each send() call.  If we have more than ~100 outstanding 1-byte write
 // requests, additional send() calls start blocking.

@@ -110,15 +110,13 @@ inline bool isLargeMetadataTwoByte(std::uint8_t byte1) {
 }
 
 inline std::uint16_t fieldIdFromTwoByteMetadata(
-    std::uint8_t byte1,
-    std::uint8_t byte2) {
+    std::uint8_t byte1, std::uint8_t byte2) {
   DCHECK(isLargeMetadataTwoByte(byte1));
   return byte2 + 1;
 }
 
 inline std::uint16_t fieldIdFromThreeByteMetadata(
-    std::uint8_t byte1,
-    std::uint16_t short_) {
+    std::uint8_t byte1, std::uint16_t short_) {
   DCHECK(!isLargeMetadataTwoByte(byte1));
   return short_ + 1;
 }
@@ -192,8 +190,8 @@ inline void listTypeFromByte(std::uint8_t byte, NimbleType& elem) {
   elem = (NimbleType)(byte & 7);
 }
 
-inline void
-mapTypesFromByte(std::uint8_t byte, NimbleType& key, NimbleType& val) {
+inline void mapTypesFromByte(
+    std::uint8_t byte, NimbleType& key, NimbleType& val) {
   key = (NimbleType)(byte & 7);
   val = (NimbleType)(byte >> 5);
 }

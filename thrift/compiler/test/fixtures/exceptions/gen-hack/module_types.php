@@ -8,58 +8,6 @@
 
 /**
  * Original thrift exception:-
- * Banal
- */
-class Banal extends \TException implements \IThriftStruct {
-  use \ThriftSerializationTrait;
-
-  const dict<int, this::TFieldSpec> SPEC = dict[
-  ];
-  const dict<string, int> FIELDMAP = dict[
-  ];
-
-  const type TConstructorShape = shape(
-  );
-
-  const int STRUCTURAL_ID = 957977401221134810;
-
-  <<__Rx>>
-  public function __construct(  ) {
-    parent::__construct();
-  }
-
-  <<__Rx>>
-  public static function withDefaultValues(): this {
-    return new static();
-  }
-
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
-    return new static(
-    );
-  }
-
-  public function getName(): string {
-    return 'Banal';
-  }
-
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-      ],
-    );
-  }
-
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-    ];
-  }
-
-}
-
-/**
- * Original thrift exception:-
  * Fiery
  */
 class Fiery extends \TException implements \IThriftStruct {
@@ -76,7 +24,7 @@ class Fiery extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'message' => string,
+    ?'message' => ?string,
   );
 
   const int STRUCTURAL_ID = 1438368398389181198;
@@ -86,44 +34,52 @@ class Fiery extends \TException implements \IThriftStruct {
    */
   public string $message;
 
-  <<__Rx>>
-  public function __construct(?string $message = null  ) {
+  public function __construct(?string $message = null  )[] {
     parent::__construct();
     $this->message = $message ?? '';
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'message'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Fiery';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.Fiery",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+        ],
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-      'message' => "message",
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -156,49 +112,58 @@ class Serious extends \TException implements \IThriftStruct {
    */
   public ?string $sonnet;
 
-  <<__Rx>>
-  public function __construct(?string $sonnet = null  ) {
+  public function __construct(?string $sonnet = null  )[] {
     parent::__construct();
     $this->sonnet = $sonnet;
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'sonnet'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'Serious';
   }
 
-  <<__Override, __Rx, __MaybeMutable>>
-  public function getMessage(): string {
+  <<__Override>>
+  public function getMessage()[]: string {
     return $this->sonnet ?? '';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'sonnet' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.Serious",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "sonnet",
+              "is_optional" => true,
+            )
+          ),
+        ],
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-      'message' => "sonnet",
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -226,8 +191,8 @@ class ComplexFieldNames extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'error_message' => string,
-    ?'internal_error_message' => string,
+    ?'error_message' => ?string,
+    ?'internal_error_message' => ?string,
   );
 
   const int STRUCTURAL_ID = 4419960994551853385;
@@ -242,55 +207,70 @@ class ComplexFieldNames extends \TException implements \IThriftStruct {
    */
   public string $internal_error_message;
 
-  <<__Rx>>
-  public function __construct(?string $error_message = null, ?string $internal_error_message = null  ) {
+  public function __construct(?string $error_message = null, ?string $internal_error_message = null  )[] {
     parent::__construct();
     $this->error_message = $error_message ?? '';
     $this->internal_error_message = $internal_error_message ?? '';
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'error_message'),
       Shapes::idx($shape, 'internal_error_message'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'ComplexFieldNames';
   }
 
-  <<__Override, __Rx, __MaybeMutable>>
-  public function getMessage(): string {
+  <<__Override>>
+  public function getMessage()[]: string {
     return $this->internal_error_message ?? '';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
-    return shape(
-      'struct' => dict[],
-      'fields' => dict[
-        'error_message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'internal_error_message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-      ],
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.ComplexFieldNames",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "error_message",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "internal_error_message",
+            )
+          ),
+        ],
+      )
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-      'message' => "internal_error_message",
-    ];
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }
@@ -318,8 +298,8 @@ class CustomFieldNames extends \TException implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'error_message' => string,
-    ?'internal_error_message' => string,
+    ?'error_message' => ?string,
+    ?'internal_error_message' => ?string,
   );
 
   const int STRUCTURAL_ID = 4419960994551853385;
@@ -334,55 +314,224 @@ class CustomFieldNames extends \TException implements \IThriftStruct {
    */
   public string $internal_error_message;
 
-  <<__Rx>>
-  public function __construct(?string $error_message = null, ?string $internal_error_message = null  ) {
+  public function __construct(?string $error_message = null, ?string $internal_error_message = null  )[] {
     parent::__construct();
     $this->error_message = $error_message ?? '';
     $this->internal_error_message = $internal_error_message ?? '';
   }
 
-  <<__Rx>>
-  public static function withDefaultValues(): this {
+  public static function withDefaultValues()[]: this {
     return new static();
   }
 
-  <<__Rx>>
-  public static function fromShape(self::TConstructorShape $shape): this {
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
     return new static(
       Shapes::idx($shape, 'error_message'),
       Shapes::idx($shape, 'internal_error_message'),
     );
   }
 
-  public function getName(): string {
+  public function getName()[]: string {
     return 'CustomFieldNames';
   }
 
-  <<__Override, __Rx, __MaybeMutable>>
-  public function getMessage(): string {
+  <<__Override>>
+  public function getMessage()[]: string {
     return $this->internal_error_message ?? '';
   }
 
-  public static function getAllStructuredAnnotations(): \TStructAnnotations {
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.CustomFieldNames",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "error_message",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "internal_error_message",
+            )
+          ),
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
     return shape(
       'struct' => dict[],
       'fields' => dict[
-        'error_message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
-        'internal_error_message' => shape(
-          'field' => dict[],
-          'type' => dict[],
-        ),
       ],
     );
   }
 
-  public static function getAnnotations(): darray<string, mixed> {
-    return darray[
-      'message' => "internal_error_message",
-    ];
+}
+
+/**
+ * Original thrift exception:-
+ * ExceptionWithPrimitiveField
+ */
+class ExceptionWithPrimitiveField extends \TException implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    1 => shape(
+      'var' => 'message',
+      'type' => \TType::STRING,
+    ),
+    2 => shape(
+      'var' => 'error_code',
+      'type' => \TType::I32,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'message' => 1,
+    'error_code' => 2,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'message' => ?string,
+    ?'error_code' => ?int,
+  );
+
+  const int STRUCTURAL_ID = 2746197671326593349;
+  /**
+   * Original thrift field:-
+   * 1: string message
+   */
+  public string $message;
+  /**
+   * Original thrift field:-
+   * 2: i32 error_code
+   */
+  public int $error_code;
+
+  public function __construct(?string $message = null, ?int $error_code = null  )[] {
+    parent::__construct();
+    $this->message = $message ?? '';
+    $this->error_code = $error_code ?? 0;
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'message'),
+      Shapes::idx($shape, 'error_code'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'ExceptionWithPrimitiveField';
+  }
+
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.ExceptionWithPrimitiveField",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 1,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "message",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 2,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_I32_TYPE,
+                )
+              ),
+              "name" => "error_code",
+            )
+          ),
+        ],
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+/**
+ * Original thrift exception:-
+ * Banal
+ */
+class Banal extends \TException implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+    parent::__construct();
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'Banal';
+  }
+
+  public static function getExceptionMetadata()[]: \tmeta_ThriftException {
+    return tmeta_ThriftException::fromShape(
+      shape(
+        "name" => "module.Banal",
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
   }
 
 }

@@ -31,9 +31,7 @@ namespace detail {
 template <typename T>
 class ServerPublisherStream : private StreamServerCallback {
   struct Deleter {
-    void operator()(ServerPublisherStream<T>* ptr) {
-      ptr->decref();
-    }
+    void operator()(ServerPublisherStream<T>* ptr) { ptr->decref(); }
   };
 
   struct CancelDeleter {
@@ -52,9 +50,7 @@ class ServerPublisherStream : private StreamServerCallback {
     template <typename Func>
     struct FunctionHolder : public Function {
       explicit FunctionHolder(Func&& f) : f_(std::forward<Func>(f)) {}
-      void operator()() override {
-        f_();
-      }
+      void operator()() override { f_(); }
 
      private:
       Func f_;
@@ -174,9 +170,7 @@ class ServerPublisherStream : private StreamServerCallback {
       DCHECK(credits.isSet);
       credits.val = std::min(maxCreditVal, credits.val + delta);
     }
-    bool hasCredit() {
-      return credits.isSet && credits.val;
-    }
+    bool hasCredit() { return credits.isSet && credits.val; }
     void storeBuffer(Queue&& buf) {
       if (credits.isSet) {
         new (this) Queue(std::move(buf));
@@ -191,57 +185,46 @@ class ServerPublisherStream : private StreamServerCallback {
       }
       credits.val = std::min(maxCreditVal, val);
     }
-    Queue getBuffer() {
-      return credits.isSet ? Queue() : std::move(buffer);
-    }
-    uint64_t getCredits() {
-      return credits.isSet ? credits.val : 0;
-    }
+    Queue getBuffer() { return credits.isSet ? Queue() : std::move(buffer); }
+    uint64_t getCredits() { return credits.isSet ? credits.val : 0; }
   };
 
  public:
   using Ptr = std::unique_ptr<ServerPublisherStream<T>, Deleter>;
-
-  ~ServerPublisherStream() {
-    if (interaction_) {
-      clientEventBase_->add(
-          [interaction = interaction_, eb = clientEventBase_] {
-            interaction->__fbthrift_releaseRef(*eb);
-          });
-    }
-  }
 
   template <typename Func>
   static std::pair<ServerStreamFn<T>, ServerStreamPublisher<T>> create(
       Func onStreamCompleteOrCancel) {
     auto stream =
         new ServerPublisherStream<T>(std::move(onStreamCompleteOrCancel));
-    return {[stream = std::unique_ptr<ServerPublisherStream<T>, CancelDeleter>(
-                 stream)](
-                folly::Executor::KeepAlive<> serverExecutor,
-                folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
-              stream->serverExecutor_ = std::move(serverExecutor);
+    return {
+        [stream =
+             std::unique_ptr<ServerPublisherStream<T>, CancelDeleter>(stream)](
+            folly::Executor::KeepAlive<> serverExecutor,
+            folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
+          stream->serverExecutor_ = std::move(serverExecutor);
 
-              while (auto messages =
-                         stream->encodeOrQueue_.closeOrGetMessages(encode)) {
-                for (; !messages.empty(); messages.pop()) {
-                  stream->queue_.push(encode(std::move(messages.front())));
-                }
-              }
+          while (auto messages =
+                     stream->encodeOrQueue_.closeOrGetMessages(encode)) {
+            for (; !messages.empty(); messages.pop()) {
+              stream->queue_.push(encode(std::move(messages.front())));
+            }
+          }
 
-              return ServerStreamFactory([stream = std::move(stream)](
-                                             FirstResponsePayload&& payload,
-                                             StreamClientCallback* callback,
-                                             folly::EventBase* clientEb,
-                                             Tile* interaction) mutable {
-                stream->streamClientCallback_ = callback;
-                stream->clientEventBase_ = clientEb;
-                stream->interaction_ = interaction;
-                std::ignore = callback->onFirstResponse(
-                    std::move(payload), clientEb, stream.release());
-              });
-            },
-            ServerStreamPublisher<T>(stream->copy())};
+          return ServerStreamFactory([stream = std::move(stream)](
+                                         FirstResponsePayload&& payload,
+                                         StreamClientCallback* callback,
+                                         folly::EventBase* clientEb,
+                                         TilePtr&& interaction) mutable {
+            stream->streamClientCallback_ = callback;
+            stream->clientEventBase_ = clientEb;
+            stream->interaction_ =
+                TileStreamGuard::transferFrom(std::move(interaction));
+            std::ignore = callback->onFirstResponse(
+                std::move(payload), clientEb, stream.release());
+          });
+        },
+        ServerStreamPublisher<T>(stream->copy())};
   }
 
   void publish(folly::Try<T>&& payload) {
@@ -260,9 +243,7 @@ class ServerPublisherStream : private StreamServerCallback {
     }
   }
 
-  bool wasCancelled() {
-    return !onStreamCompleteOrCancel_;
-  }
+  bool wasCancelled() { return !onStreamCompleteOrCancel_; }
 
   void consume() {
     clientEventBase_->add([self = copy()]() {
@@ -403,7 +384,7 @@ class ServerPublisherStream : private StreamServerCallback {
   // must only be read/written on client thread
   CreditBuffer creditBuffer_;
 
-  Tile* interaction_{nullptr};
+  TileStreamGuard interaction_;
 };
 
 } // namespace detail

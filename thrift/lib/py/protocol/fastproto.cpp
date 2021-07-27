@@ -40,7 +40,7 @@ using apache::thrift::protocol::TType;
 #else
 #define FROM_LONG PyInt_FromLong
 #define AS_LONG PyInt_AsLong
-#include <cStringIO.h>
+#include <cStringIO.h> // @manual
 #endif
 
 #if PY_MAJOR_VERSION >= 3
@@ -73,6 +73,8 @@ typedef struct {
 
 static PyObject* INTERN_STRING(cstringio_buf);
 static PyObject* INTERN_STRING(cstringio_refill);
+static PyObject* INTERN_STRING(to_thrift);
+static PyObject* INTERN_STRING(from_thrift);
 
 typedef struct {
   PyObject* stringiobuf;
@@ -135,6 +137,7 @@ typedef struct {
   PyObject* klass;
   PyObject* spec;
   bool isunion;
+  PyObject* adapter;
 } StructTypeArgs;
 
 typedef struct {
@@ -193,15 +196,17 @@ static bool parse_map_args(MapTypeArgs* dest, PyObject* typeargs) {
 }
 
 static bool parse_struct_args(StructTypeArgs* dest, PyObject* typeargs) {
-  if (PyList_Size(typeargs) != 3) {
+  const auto size = PyList_Size(typeargs);
+  if (size != 3 && size != 4) {
     PyErr_SetString(
-        PyExc_TypeError, "expecting list of size 3 for struct args");
+        PyExc_TypeError, "expecting list of size 3 or 4 for struct args");
     return false;
   }
 
   dest->klass = PyList_GET_ITEM(typeargs, 0);
   dest->spec = PyList_GET_ITEM(typeargs, 1);
   dest->isunion = (PyObject_IsTrue(PyList_GET_ITEM(typeargs, 2)) == 1);
+  dest->adapter = (size >= 4) ? PyList_GET_ITEM(typeargs, 3) : Py_None;
 
   return true;
 }
@@ -247,8 +252,8 @@ static inline bool check_ssize_t_32(Py_ssize_t len) {
   return true;
 }
 
-static inline bool
-parse_pyint(PyObject* o, int32_t* ret, int32_t min, int32_t max) {
+static inline bool parse_pyint(
+    PyObject* o, int32_t* ret, int32_t min, int32_t max) {
   long val = AS_LONG(o);
   if (INT_CONV_ERROR_OCCURRED(val)) {
     return false;
@@ -482,6 +487,16 @@ static bool encode_impl(
         return false;
       }
 
+      auto guard = folly::makeDismissedGuard([&] { Py_DECREF(value); });
+      if (parsedargs.adapter != Py_None && value != Py_None) {
+        value = PyObject_CallMethodObjArgs(
+            parsedargs.adapter, INTERN_STRING(to_thrift), value, nullptr);
+        if (!value) {
+          return false;
+        }
+        guard.rehire();
+      }
+
       if (parsedargs.isunion) {
         // Union only has a field and a value.
         writer->writeStructBegin("");
@@ -609,10 +624,7 @@ static PyObject* decode_val(
 
 template <typename Reader>
 static bool decode_struct(
-    Reader* reader,
-    PyObject* value,
-    StructTypeArgs* args,
-    int utf8strings) {
+    Reader* reader, PyObject* value, StructTypeArgs* args, int utf8strings) {
   int speclen = PyTuple_Size(args->spec);
   if (speclen == -1) {
     return false;
@@ -948,6 +960,13 @@ static PyObject* decode_val(
         return nullptr;
       }
 
+      if (parsedargs.adapter != Py_None && ret != Py_None) {
+        PyObject* adapted = PyObject_CallMethodObjArgs(
+            parsedargs.adapter, INTERN_STRING(from_thrift), ret, nullptr);
+        Py_DECREF(ret);
+        return adapted;
+      }
+
       return ret;
     }
     case TType::T_STOP:
@@ -1052,11 +1071,12 @@ static PyObject* encode(PyObject* /*self*/, PyObject* args, PyObject* kws) {
   int utf8strings = 0;
   int protoid = 0;
 
-  static char* kwlist[] = {(char*)"enc",
-                           (char*)"spec",
-                           (char*)"utf8strings",
-                           (char*)"protoid",
-                           nullptr};
+  static char* kwlist[] = {
+      (char*)"enc",
+      (char*)"spec",
+      (char*)"utf8strings",
+      (char*)"protoid",
+      nullptr};
 
   if (!PyArg_ParseTupleAndKeywords(
           args,
@@ -1089,12 +1109,13 @@ static PyObject* decode(PyObject* /*self*/, PyObject* args, PyObject* kws) {
   StructTypeArgs parsedargs;
   DecodeBuffer input = {};
 
-  static char* kwlist[] = {(char*)"dec",
-                           (char*)"transport",
-                           (char*)"spec",
-                           (char*)"utf8strings",
-                           (char*)"protoid",
-                           nullptr};
+  static char* kwlist[] = {
+      (char*)"dec",
+      (char*)"transport",
+      (char*)"spec",
+      (char*)"utf8strings",
+      (char*)"protoid",
+      nullptr};
 
   if (!PyArg_ParseTupleAndKeywords(
           args,
@@ -1117,9 +1138,7 @@ static PyObject* decode(PyObject* /*self*/, PyObject* args, PyObject* kws) {
     return nullptr;
   }
 
-  SCOPE_EXIT {
-    free_decodebuf(&input);
-  };
+  SCOPE_EXIT { free_decodebuf(&input); };
 
   if (protoid == 0) {
     if (!decodeT<BinaryProtocolReaderWithRefill>(
@@ -1251,6 +1270,8 @@ PyMODINIT_FUNC initfastproto(void)
 
   INIT_INTERN_STRING(cstringio_buf);
   INIT_INTERN_STRING(cstringio_refill);
+  INIT_INTERN_STRING(to_thrift);
+  INIT_INTERN_STRING(from_thrift);
 #undef INIT_INTERN_STRING
 
 #if PY_MAJOR_VERSION >= 3

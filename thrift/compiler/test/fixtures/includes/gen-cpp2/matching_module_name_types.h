@@ -38,7 +38,13 @@ class MyStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace matching_module_name {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -46,6 +52,7 @@ class MyStruct final  {
   //  used by a static_assert in the corresponding source
   static constexpr bool __fbthrift_cpp2_gen_json = false;
   static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
 
  public:
   using __fbthrift_cpp2_type = MyStruct;
@@ -55,11 +62,11 @@ class MyStruct final  {
 
  public:
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  MyStruct() {}
+  MyStruct() {
+  }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor,  ::matching_module_name::OtherStruct OtherStructField__arg);
+  MyStruct(apache::thrift::FragileConstructor, ::matching_module_name::OtherStruct OtherStructField__arg);
 
   MyStruct(MyStruct&&) = default;
 
@@ -69,65 +76,48 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   MyStruct& operator=(MyStruct&&) = default;
 
   MyStruct& operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   void __clear();
  private:
-   ::matching_module_name::OtherStruct OtherStructField;
+  ::matching_module_name::OtherStruct OtherStructField;
 
- public:
+ private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool OtherStructField;
   } __isset = {};
-  bool operator==(const MyStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator!=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__x == __y);
-  }
-#endif
-  bool operator<(const MyStruct& rhs) const;
-#ifndef SWIG
-  friend bool operator>(const MyStruct& __x, const MyStruct& __y) {
-    return __y < __x;
-  }
-  friend bool operator<=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__y < __x);
-  }
-  friend bool operator>=(const MyStruct& __x, const MyStruct& __y) {
-    return !(__x < __y);
-  }
-#endif
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  template <typename..., typename T =  ::matching_module_name::OtherStruct>
+ public:
+
+  bool operator==(const MyStruct&) const;
+  bool operator<(const MyStruct&) const;
+
+  template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> OtherStructField_ref() const& {
     return {this->OtherStructField, __isset.OtherStructField};
   }
 
-  template <typename..., typename T =  ::matching_module_name::OtherStruct>
+  template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> OtherStructField_ref() const&& {
     return {std::move(this->OtherStructField), __isset.OtherStructField};
   }
 
-  template <typename..., typename T =  ::matching_module_name::OtherStruct>
+  template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> OtherStructField_ref() & {
     return {this->OtherStructField, __isset.OtherStructField};
   }
 
-  template <typename..., typename T =  ::matching_module_name::OtherStruct>
+  template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> OtherStructField_ref() && {
     return {std::move(this->OtherStructField), __isset.OtherStructField};
   }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-  const  ::matching_module_name::OtherStruct& get_OtherStructField() const&;
-   ::matching_module_name::OtherStruct get_OtherStructField() &&;
+  const ::matching_module_name::OtherStruct& get_OtherStructField() const&;
+  ::matching_module_name::OtherStruct get_OtherStructField() &&;
 
-  template <typename T_MyStruct_OtherStructField_struct_setter =  ::matching_module_name::OtherStruct>
-   ::matching_module_name::OtherStruct& set_OtherStructField(T_MyStruct_OtherStructField_struct_setter&& OtherStructField_) {
+  template <typename T_MyStruct_OtherStructField_struct_setter = ::matching_module_name::OtherStruct>
+  [[deprecated("Use `FOO.OtherStructField_ref() = BAR;` instead of `FOO.set_OtherStructField(BAR);`")]]
+  ::matching_module_name::OtherStruct& set_OtherStructField(T_MyStruct_OtherStructField_struct_setter&& OtherStructField_) {
     OtherStructField = std::forward<T_MyStruct_OtherStructField_struct_setter>(OtherStructField_);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
     __isset.OtherStructField = true;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
     return OtherStructField;
   }
 
@@ -144,7 +134,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   template <class Protocol_>
   void readNoXfer(Protocol_* iprot);
 
-  friend class ::apache::thrift::Cpp2Ops< MyStruct >;
+  friend class ::apache::thrift::Cpp2Ops<MyStruct>;
   friend void swap(MyStruct& a, MyStruct& b);
 };
 
@@ -156,3 +146,4 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 } // matching_module_name
+THRIFT_IGNORE_ISSET_USE_WARNING_END

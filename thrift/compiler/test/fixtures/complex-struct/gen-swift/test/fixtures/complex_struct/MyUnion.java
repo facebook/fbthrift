@@ -21,7 +21,7 @@ import static com.google.common.base.MoreObjects.toStringHelper;
 
 @SwiftGenerated
 @ThriftUnion("MyUnion")
-public final class MyUnion {
+public final class MyUnion implements com.facebook.thrift.payload.ThriftSerializable {
     private static final TStruct STRUCT_DESC = new TStruct("MyUnion");
     private static final Map<String, Integer> NAMES_TO_IDS = new HashMap();
     private static final Map<Integer, TField> FIELD_METADATA = new HashMap<>();
@@ -146,7 +146,7 @@ public final class MyUnion {
     }
     
 
-    @ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=1, name="myEnum", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyEnum getMyEnum() {
         if (this.id != 1) {
             throw new IllegalStateException("Not a myEnum element!");
@@ -158,7 +158,7 @@ public final class MyUnion {
         return this.id == 1;
     }
 
-    @ThriftField(value=2, name="myStruct", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=2, name="myStruct", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyStruct getMyStruct() {
         if (this.id != 2) {
             throw new IllegalStateException("Not a myStruct element!");
@@ -170,7 +170,7 @@ public final class MyUnion {
         return this.id == 2;
     }
 
-    @ThriftField(value=3, name="myDataItem", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=3, name="myDataItem", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.MyDataItem getMyDataItem() {
         if (this.id != 3) {
             throw new IllegalStateException("Not a myDataItem element!");
@@ -182,7 +182,7 @@ public final class MyUnion {
         return this.id == 3;
     }
 
-    @ThriftField(value=4, name="complexNestedStruct", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=4, name="complexNestedStruct", requiredness=Requiredness.NONE)
     public test.fixtures.complex_struct.ComplexNestedStruct getComplexNestedStruct() {
         if (this.id != 4) {
             throw new IllegalStateException("Not a complexNestedStruct element!");
@@ -194,7 +194,7 @@ public final class MyUnion {
         return this.id == 4;
     }
 
-    @ThriftField(value=5, name="longValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=5, name="longValue", requiredness=Requiredness.NONE)
     public long getLongValue() {
         if (this.id != 5) {
             throw new IllegalStateException("Not a longValue element!");
@@ -206,7 +206,7 @@ public final class MyUnion {
         return this.id == 5;
     }
 
-    @ThriftField(value=6, name="intValue", requiredness=Requiredness.NONE)
+    @com.facebook.swift.codec.ThriftField(value=6, name="intValue", requiredness=Requiredness.NONE)
     public int getIntValue() {
         if (this.id != 6) {
             throw new IllegalStateException("Not a intValue element!");
@@ -302,10 +302,10 @@ public final class MyUnion {
     }
 
     public void write0(TProtocol oprot) throws TException {
-      oprot.writeStructBegin(STRUCT_DESC);
       if (this.id != 0 && this.value == null ){
-         throw new TProtocolException("Cannot write a Union with marked-as-set but null value!");
+         return;
       }
+      oprot.writeStructBegin(STRUCT_DESC);
       switch (this.id) {
       case _MYENUM: {
         oprot.writeFieldBegin(MY_ENUM_FIELD_DESC);
@@ -354,6 +354,11 @@ public final class MyUnion {
       }
       oprot.writeFieldStop();
       oprot.writeStructEnd();
+    }
+    
+    
+    public static com.facebook.thrift.payload.Reader<MyUnion> asReader() {
+      return MyUnion::read0;
     }
     
     public static MyUnion read0(TProtocol oprot) throws TException {

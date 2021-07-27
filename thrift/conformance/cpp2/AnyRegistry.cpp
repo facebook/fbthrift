@@ -24,7 +24,6 @@
 #include <folly/String.h>
 #include <folly/io/Cursor.h>
 #include <thrift/conformance/cpp2/Any.h>
-#include <thrift/conformance/cpp2/ThriftTypeInfo.h>
 #include <thrift/conformance/cpp2/UniversalType.h>
 
 namespace apache::thrift::conformance {
@@ -53,34 +52,30 @@ folly::fbstring maybeGetTypeHash(
 } // namespace
 
 AnyRegistry::TypeEntry::TypeEntry(
-    const std::type_info& typeInfo,
-    ThriftTypeInfo type)
+    const std::type_info& typeInfo, ThriftTypeInfo type)
     : typeInfo(typeInfo),
       typeHash(maybeGetTypeHash(type)),
       type(std::move(type)) {}
 
 bool AnyRegistry::registerType(
-    const std::type_info& typeInfo,
-    ThriftTypeInfo type) {
+    const std::type_info& typeInfo, ThriftTypeInfo type) {
   return registerTypeImpl(typeInfo, std::move(type)) != nullptr;
 }
 
 bool AnyRegistry::registerSerializer(
-    const std::type_info& type,
-    const AnySerializer* serializer) {
+    const std::type_info& type, const AnySerializer* serializer) {
   return registerSerializerImpl(
       serializer, &registry_.at(std::type_index(type)));
 }
 
 bool AnyRegistry::registerSerializer(
-    const std::type_info& type,
-    std::unique_ptr<AnySerializer> serializer) {
+    const std::type_info& type, std::unique_ptr<AnySerializer> serializer) {
   return registerSerializerImpl(
       std::move(serializer), &registry_.at(std::type_index(type)));
 }
 
-std::string_view AnyRegistry::getTypeUri(const std::type_info& type) const
-    noexcept {
+std::string_view AnyRegistry::getTypeUri(
+    const std::type_info& type) const noexcept {
   const auto* entry = getTypeEntry(type);
   if (entry == nullptr) {
     return {};
@@ -88,15 +83,35 @@ std::string_view AnyRegistry::getTypeUri(const std::type_info& type) const
   return entry->type.get_uri();
 }
 
+std::string_view AnyRegistry::getTypeUri(const Any& value) const noexcept {
+  const auto* entry = getTypeEntryFor(value);
+  if (entry == nullptr) {
+    return {};
+  }
+  return entry->type.get_uri();
+}
+
+const std::type_info& AnyRegistry::getTypeId(const Any& value) const {
+  return getAndCheckTypeEntryFor(value).typeInfo;
+}
+
+// Same as above, except returns nullptr if the type has not been registered.
+const std::type_info* AnyRegistry::tryGetTypeId(
+    const Any& value) const noexcept {
+  const auto* entry = getTypeEntryFor(value);
+  if (entry == nullptr) {
+    return nullptr;
+  }
+  return &entry->typeInfo;
+}
+
 const AnySerializer* AnyRegistry::getSerializer(
-    const std::type_info& type,
-    const Protocol& protocol) const noexcept {
+    const std::type_info& type, const Protocol& protocol) const noexcept {
   return getSerializer(getTypeEntry(type), protocol);
 }
 
 const AnySerializer* AnyRegistry::getSerializerByUri(
-    const std::string_view uri,
-    const Protocol& protocol) const noexcept {
+    const std::string_view uri, const Protocol& protocol) const noexcept {
   return getSerializer(getTypeEntryByUri(uri), protocol);
 }
 
@@ -187,8 +202,7 @@ std::string AnyRegistry::debugString() const {
 }
 
 bool AnyRegistry::forceRegisterType(
-    const std::type_info& typeInfo,
-    std::string type) {
+    const std::type_info& typeInfo, std::string type) {
   if (getTypeEntryByUri(type) != nullptr) {
     return false;
   }
@@ -209,8 +223,7 @@ bool AnyRegistry::forceRegisterType(
 }
 
 auto AnyRegistry::registerTypeImpl(
-    const std::type_info& typeInfo,
-    ThriftTypeInfo type) -> TypeEntry* {
+    const std::type_info& typeInfo, ThriftTypeInfo type) -> TypeEntry* {
   validateThriftTypeInfo(type);
   std::vector<folly::fbstring> typeHashs;
   typeHashs.reserve(type.altUris_ref()->size() + 1);
@@ -239,8 +252,7 @@ auto AnyRegistry::registerTypeImpl(
 }
 
 bool AnyRegistry::registerSerializerImpl(
-    const AnySerializer* serializer,
-    TypeEntry* entry) {
+    const AnySerializer* serializer, TypeEntry* entry) {
   if (serializer == nullptr) {
     return false;
   }
@@ -250,8 +262,7 @@ bool AnyRegistry::registerSerializerImpl(
 }
 
 bool AnyRegistry::registerSerializerImpl(
-    std::unique_ptr<AnySerializer> serializer,
-    TypeEntry* entry) {
+    std::unique_ptr<AnySerializer> serializer, TypeEntry* entry) {
   if (!registerSerializerImpl(serializer.get(), entry)) {
     return false;
   }
@@ -298,8 +309,7 @@ void AnyRegistry::indexUri(std::string_view uri, TypeEntry* entry) noexcept {
 }
 
 void AnyRegistry::indexHash(
-    folly::fbstring&& typeHash,
-    TypeEntry* entry) noexcept {
+    folly::fbstring&& typeHash, TypeEntry* entry) noexcept {
   auto res = hashIndex_.emplace(std::move(typeHash), entry);
   DCHECK(res.second);
 }
@@ -313,8 +323,8 @@ auto AnyRegistry::getTypeEntry(const std::type_index& typeIndex) const noexcept
   return &itr->second;
 }
 
-auto AnyRegistry::getTypeEntryByHash(const folly::fbstring& typeHash) const
-    noexcept -> const TypeEntry* {
+auto AnyRegistry::getTypeEntryByHash(
+    const folly::fbstring& typeHash) const noexcept -> const TypeEntry* {
   if (typeHash.size() < kMinTypeHashBytes) {
     return nullptr;
   }
@@ -335,6 +345,18 @@ auto AnyRegistry::getTypeEntryByUri(std::string_view uri) const noexcept
   return itr->second;
 }
 
+auto AnyRegistry::getTypeEntryFor(const Any& value) const noexcept
+    -> const TypeEntry* {
+  if (value.type_ref().has_value() && !value.type_ref()->empty()) {
+    return getTypeEntryByUri(value.type_ref().value_unchecked());
+  }
+  if (value.typeHashPrefixSha2_256_ref().has_value()) {
+    return getTypeEntryByHash(
+        value.typeHashPrefixSha2_256_ref().value_unchecked());
+  }
+  return nullptr;
+}
+
 auto AnyRegistry::getAndCheckTypeEntryFor(const Any& value) const
     -> const TypeEntry& {
   if (value.type_ref().has_value() &&
@@ -349,8 +371,7 @@ auto AnyRegistry::getAndCheckTypeEntryFor(const Any& value) const
 }
 
 const AnySerializer* AnyRegistry::getSerializer(
-    const TypeEntry* entry,
-    const Protocol& protocol) const noexcept {
+    const TypeEntry* entry, const Protocol& protocol) const noexcept {
   if (entry == nullptr) {
     return nullptr;
   }
@@ -392,8 +413,7 @@ auto AnyRegistry::getAndCheckTypeEntryByHash(
 }
 
 const AnySerializer& AnyRegistry::getAndCheckSerializer(
-    const TypeEntry& entry,
-    const Protocol& protocol) const {
+    const TypeEntry& entry, const Protocol& protocol) const {
   auto itr = entry.serializers.find(protocol);
   if (itr == entry.serializers.end()) {
     folly::throw_exception<std::out_of_range>(fmt::format(

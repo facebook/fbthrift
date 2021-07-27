@@ -16,5 +16,8 @@
 
 %><% > Autogen%>
 #pragma once
+<%#program:thrift_includes%>
+#include "<%program:include_prefix%><%program:name%>_visitation.h"
+<%/program:thrift_includes%>
 #include "<%program:include_prefix%><%program:name%>_for_each_field.h"
 #include "<%program:include_prefix%><%program:name%>_visit_union.h"

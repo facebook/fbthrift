@@ -52,8 +52,7 @@ void TUnframedACWriteRequest::writeSuccess() noexcept {
 }
 
 void TUnframedACWriteRequest::writeError(
-    size_t bytesWritten,
-    const TTransportException& ex) noexcept {
+    size_t bytesWritten, const TTransportException& ex) noexcept {
   T_ERROR(
       "unframed channel: write failed after writing %zu bytes: %s",
       bytesWritten,

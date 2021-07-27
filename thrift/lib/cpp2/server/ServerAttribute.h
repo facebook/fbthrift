@@ -17,14 +17,26 @@
 #pragma once
 
 #include <atomic>
-#include <mutex>
+#include <functional>
 #include <type_traits>
 
 #include <folly/Optional.h>
 #include <folly/SharedMutex.h>
+#include <folly/experimental/observer/SimpleObservable.h>
+#include <folly/synchronization/DelayedInit.h>
 
 namespace apache {
 namespace thrift {
+
+/*
+ * ServerAttribute provides a mechanism for setting values which have varying
+ * precedence depending on who set it. The resolved value (`.get()`)
+ * prioritizes the value in the following order, falling back to the next one
+ * if the value is unset:
+ *   1. explicit application override
+ *   2. baseline from configuration mechanism
+ *   3. default provided in constructor
+ */
 
 // source of a server's attribute, precedence takes place in descending order
 // (APP will override CONF). see comment on ServerAttribute to learn more
@@ -33,130 +45,194 @@ enum class AttributeSource : uint32_t {
   BASELINE, // e.g., may come from external configuration mechanism
 };
 
+/**
+ * A thread-safe, dynamic ServerAttribute which uses folly::observer internally
+ * but reads are cached via `folly::observer::AtomicObserver`.
+ */
+template <typename T>
+struct ServerAttributeAtomic;
+
+/**
+ * A thread-safe, dynamic ServerAttribute which uses folly::observer internally
+ * but reads are cached via `folly::observer::TLObserver`.
+ */
+template <typename T>
+struct ServerAttributeThreadLocal;
+
+/**
+ * A thread-safe, dynamic ServerAttribute of suitable type. Dynamic
+ * ServerAttribute's can change after the server has already begun serving.
+ */
+template <typename T>
+using ServerAttributeDynamic = std::conditional_t<
+    sizeof(T) <= sizeof(std::uint64_t) && std::is_trivially_copyable<T>::value,
+    ServerAttributeAtomic<T>,
+    ServerAttributeThreadLocal<T>>;
+
+/**
+ * A static ServerAttribute without thread-safety. Static ServerAttribute's
+ * cannot change after the server has started. This is suitable for properties
+ * which are hard to change at runtime (such as number of threads in a
+ * thread-pool).
+ * These attributes should be set in the main thread before the server starts.
+ * As such, there is no need for synchronization.
+ */
+template <typename T>
+struct ServerAttributeStatic;
+
 namespace detail {
 
-template <typename T, typename D>
-class ServerAttributeBase {
- public:
-  template <typename U>
-  explicit ServerAttributeBase(U value) : default_(std::move(value)) {}
+template <typename T>
+struct ServerAttributeRawValues {
+  T baseline_;
+  T override_;
 
-  template <typename U>
-  void set(U value, AttributeSource source) {
-    folly::SharedMutex::WriteHolder h(&lock_);
-    this->choose(source) = value;
-    static_cast<D*>(this)->mergeImpl();
+  template <typename U, typename V>
+  ServerAttributeRawValues(U&& baseline, V&& override)
+      : baseline_(std::forward<U>(baseline)),
+        override_(std::forward<V>(override)) {}
+
+  T& choose(AttributeSource source) {
+    return source == AttributeSource::OVERRIDE ? override_ : baseline_;
+  }
+};
+
+template <typename T>
+T& mergeServerAttributeRawValues(
+    folly::Optional<T>& override,
+    folly::Optional<T>& baseline,
+    T& defaultValue) {
+  return override ? *override : baseline ? *baseline : defaultValue;
+}
+
+template <typename T>
+struct ServerAttributeObservable {
+  explicit ServerAttributeObservable(T defaultValue)
+      : ServerAttributeObservable(
+            folly::observer::makeStaticObserver<T>(std::move(defaultValue))) {}
+  explicit ServerAttributeObservable(folly::observer::Observer<T> defaultValue)
+      : default_(std::move(defaultValue)) {}
+
+  T get() const { return **getObserver(); }
+
+  const folly::observer::Observer<T>& getObserver() const {
+    return mergedObserver_.try_emplace_with([&] {
+      return folly::observer::makeObserver(
+          [overrideObserver = rawValues_.override_.getObserver(),
+           baselineObserver = rawValues_.baseline_.getObserver(),
+           defaultObserver =
+               std::move(default_)]() mutable -> std::shared_ptr<T> {
+            folly::Optional<folly::observer::Observer<T>> override =
+                **overrideObserver;
+            folly::Optional<folly::observer::Observer<T>> baseline =
+                **baselineObserver;
+            return std::make_shared<T>(
+                **apache::thrift::detail::mergeServerAttributeRawValues(
+                    override, baseline, defaultObserver));
+          });
+    });
+  }
+
+  void set(folly::observer::Observer<T> value, AttributeSource source) {
+    rawValues_.choose(source).setValue(folly::Optional{std::move(value)});
+    if (source == AttributeSource::OVERRIDE) {
+      // For backward compatibility reasons, we need to block until the observer
+      // value is updated. This ensures that reads always produce the latest
+      // value after a write from the writer thread. We need to be careful and
+      // only block if the source is an OVERRIDE, which should only happen from
+      // the main thread before the server has started.
+      folly::observer_detail::ObserverManager::waitForAllUpdates();
+    }
+  }
+  void set(T value, AttributeSource source) {
+    set(folly::observer::makeStaticObserver<T>(std::move(value)), source);
   }
 
   void unset(AttributeSource source) {
-    folly::SharedMutex::WriteHolder h(&lock_);
-    this->choose(source).reset();
-    static_cast<D*>(this)->mergeImpl();
-  }
-
- protected:
-  T& getMergedValue() {
-    return fromOverride_ ? *fromOverride_
-                         : fromBaseline_ ? *fromBaseline_ : default_;
-  }
-
-  folly::Optional<T>& choose(AttributeSource source) {
+    rawValues_.choose(source).setValue(folly::none);
     if (source == AttributeSource::OVERRIDE) {
-      return fromOverride_;
-    } else {
-      return fromBaseline_;
+      // See explanation in `.set()`
+      folly::observer_detail::ObserverManager::waitForAllUpdates();
     }
   }
 
-  folly::Optional<T> fromBaseline_;
-  folly::Optional<T> fromOverride_;
-  T default_;
-  folly::SharedMutex lock_;
+ protected:
+  ServerAttributeRawValues<folly::observer::SimpleObservable<
+      folly::Optional<folly::observer::Observer<T>>>>
+      rawValues_{folly::none, folly::none};
+  folly::observer::Observer<T> default_;
+  mutable folly::DelayedInit<folly::observer::Observer<T>> mergedObserver_;
 };
 
 } // namespace detail
 
-/*
- * ServerAttribute helps to keep track of who set what value on this
- * attribute. there can be two sources for now. One is from explicit
- * application override, the other may from configuration mechanism. The
- * former one will have higher precedence than the latter one.
- */
-
 template <typename T>
-class ServerAttributeAtomic final
-    : public apache::thrift::detail::
-          ServerAttributeBase<T, ServerAttributeAtomic<T>> {
- public:
-  template <typename U>
-  explicit ServerAttributeAtomic(U value)
-      : apache::thrift::detail::
-            ServerAttributeBase<T, ServerAttributeAtomic<T>>(value),
-        deduced_(this->default_) {}
+struct ServerAttributeAtomic
+    : private apache::thrift::detail::ServerAttributeObservable<T> {
+  using apache::thrift::detail::ServerAttributeObservable<
+      T>::ServerAttributeObservable;
+  using apache::thrift::detail::ServerAttributeObservable<T>::set;
+  using apache::thrift::detail::ServerAttributeObservable<T>::unset;
+  using apache::thrift::detail::ServerAttributeObservable<T>::getObserver;
 
-  T get() const {
-    return deduced_.load(std::memory_order_relaxed);
+  T get() const { return *getAtomicObserver(); }
+
+  const folly::observer::AtomicObserver<T>& getAtomicObserver() const {
+    return atomicObserver_.try_emplace(getObserver());
   }
 
-  void mergeImpl() {
-    deduced_.store(this->getMergedValue(), std::memory_order_relaxed);
-  }
-
- protected:
-  std::atomic<T> deduced_;
+ private:
+  mutable folly::DelayedInit<folly::observer::AtomicObserver<T>>
+      atomicObserver_;
 };
 
 template <typename T>
-class ServerAttributeSharedMutex final
-    : public apache::thrift::detail::
-          ServerAttributeBase<T, ServerAttributeSharedMutex<T>> {
- public:
-  template <typename U>
-  explicit ServerAttributeSharedMutex(U value)
-      : apache::thrift::detail::
-            ServerAttributeBase<T, ServerAttributeSharedMutex<T>>(value),
-        deduced_(this->default_) {}
+struct ServerAttributeThreadLocal
+    : private apache::thrift::detail::ServerAttributeObservable<T> {
+  using apache::thrift::detail::ServerAttributeObservable<
+      T>::ServerAttributeObservable;
+  using apache::thrift::detail::ServerAttributeObservable<T>::set;
+  using apache::thrift::detail::ServerAttributeObservable<T>::unset;
+  using apache::thrift::detail::ServerAttributeObservable<T>::getObserver;
 
-  T get() const {
-    folly::SharedMutex::ReadHolder h(&this->lock_);
-    return deduced_;
+  const T& get() const { return **getTLObserver(); }
+
+  const folly::observer::TLObserver<T>& getTLObserver() const {
+    return tlObserver_.try_emplace(getObserver());
   }
 
-  void mergeImpl() {
-    deduced_ = this->getMergedValue();
-  }
-
- protected:
-  std::reference_wrapper<T> deduced_;
+ private:
+  mutable folly::DelayedInit<folly::observer::TLObserver<T>> tlObserver_;
 };
 
 template <typename T>
-class ServerAttributeUnsafe final
-    : public apache::thrift::detail::
-          ServerAttributeBase<T, ServerAttributeUnsafe<T>> {
- public:
-  explicit ServerAttributeUnsafe(const T& value)
-      : apache::thrift::detail::
-            ServerAttributeBase<T, ServerAttributeUnsafe<T>>(value),
-        deduced_(this->default_) {}
+struct ServerAttributeStatic {
+  explicit ServerAttributeStatic(T defaultValue)
+      : default_{std::move(defaultValue)}, merged_{default_} {}
 
-  const T& get() const {
-    return deduced_;
+  void set(T value, AttributeSource source) {
+    rawValues_.choose(source) = value;
+    updateMergedValue();
+  }
+  void unset(AttributeSource source) {
+    rawValues_.choose(source) = folly::none;
+    updateMergedValue();
   }
 
-  void mergeImpl() {
-    deduced_ = this->getMergedValue();
-  }
+  const T& get() const { return merged_.get(); }
 
  protected:
-  T deduced_;
-};
+  void updateMergedValue() {
+    auto& merged = apache::thrift::detail::mergeServerAttributeRawValues(
+        rawValues_.override_, rawValues_.baseline_, default_);
+    merged_ = std::cref(merged);
+  }
 
-template <typename T>
-using ServerAttribute = std::conditional_t<
-    sizeof(T) <= sizeof(std::uint64_t) && std::is_trivially_copyable<T>::value,
-    ServerAttributeAtomic<T>,
-    ServerAttributeSharedMutex<T>>;
+  apache::thrift::detail::ServerAttributeRawValues<folly::Optional<T>>
+      rawValues_{folly::none, folly::none};
+  T default_;
+  std::reference_wrapper<const T> merged_;
+};
 
 } // namespace thrift
 } // namespace apache

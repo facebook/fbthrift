@@ -19,55 +19,66 @@ namespace cpp2 apache.thrift.test
 cpp_include "thrift/test/structs_extra.h"
 
 struct Basic {
-  1: i32 def_field,
-  2: required i32 req_field,
-  3: optional i32 opt_field,
+  1: i32 def_field;
+  2: required i32 req_field;
+  3: optional i32 opt_field;
 }
 
 struct BasicBinaries {
-  1: binary def_field,
-  2: required binary req_field,
-  3: optional binary opt_field,
+  1: binary def_field;
+  2: required binary req_field;
+  3: optional binary opt_field;
 }
 
 struct HasInt {
-  1: required i32 field,
+  1: required i32 field;
 }
 
 struct BasicRefs {
-  1: HasInt def_field (cpp.ref),
+  1: HasInt def_field (cpp.ref);
 }
 
 struct BasicRefsShared {
-  1: HasInt def_field (cpp.ref_type = "shared"),
+  1: HasInt def_field (cpp.ref_type = "shared");
 }
 
-struct BasicRefsAnnotCppNoexceptMoveCtor {
-  1: HasInt def_field (cpp.ref),
-} (cpp.noexcept_move_ctor)
-
 typedef Basic (
-    cpp.type = "WrappedTypeField<Basic>",
-    cpp.indirection) BasicIndirection
+  cpp.type = "WrappedTypeField<Basic>",
+  cpp.indirection,
+) BasicIndirection
 
-typedef binary (cpp.type = "WrappedTypeField<folly::IOBuf>",
-             cpp.indirection) t_foo
-typedef binary (cpp.type = "WrappedTypeField<std::string>",
-            cpp.indirection) t_bar
-typedef binary (cpp.type = "WrappedTypeMethod<folly::IOBuf>",
-            cpp.indirection) t_baz
+typedef binary (
+  cpp.type = "WrappedTypeField<folly::IOBuf>",
+  cpp.indirection,
+) t_foo
+typedef binary (
+  cpp.type = "WrappedTypeField<std::string>",
+  cpp.indirection,
+) t_bar
+typedef binary (
+  cpp.type = "WrappedTypeMethod<folly::IOBuf>",
+  cpp.indirection,
+) t_baz
 struct IOBufIndirection {
-  1: t_foo foo
-  2: t_bar bar
-  3: t_baz baz
+  1: t_foo foo;
+  2: t_bar bar;
+  3: t_baz baz;
 }
 
 struct HasSmallSortedVector {
-  1: set<i32> (cpp.template = "SmallSortedVectorSet") set_field,
-  2: map<i32, i32> (cpp.template = "SmallSortedVectorMap") map_field,
+  1: set<i32> (cpp.template = "SmallSortedVectorSet") set_field;
+  2: map<i32, i32> (cpp.template = "SmallSortedVectorMap") map_field;
 }
 
 struct NoexceptMoveStruct {
-  1: string string_field,
-  2: i32 i32_field,
+  1: string string_field;
+  2: i32 i32_field;
 } (cpp.noexcept_move)
+
+struct CppDataMethod {
+  1: i32 foo;
+} (cpp.internal.deprecated._data.method)
+
+struct PublicIsset {
+  1: i32 foo;
+} (cpp.deprecated_public_isset)

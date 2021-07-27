@@ -44,8 +44,7 @@ class TFramedACWriteRequest
 
   void writeSuccess() noexcept;
   void writeError(
-      size_t bytesWritten,
-      const transport::TTransportException& ex) noexcept;
+      size_t bytesWritten, const transport::TTransportException& ex) noexcept;
 
  private:
   union {
@@ -69,30 +68,22 @@ class TFramedACReadState {
     buffer_ = buffer;
     bytesRead_ = 0;
   }
-  void unsetCallbackBuffer() {
-    buffer_ = nullptr;
-  }
+  void unsetCallbackBuffer() { buffer_ = nullptr; }
 
   bool hasReadAheadData() {
     assert(bytesRead_ == 0);
     return false;
   }
-  bool hasPartialMessage() {
-    return (bytesRead_ > 0);
-  }
+  bool hasPartialMessage() { return (bytesRead_ > 0); }
 
   void getReadBuffer(void** bufReturn, size_t* lenReturn);
   bool readDataAvailable(size_t len);
 
   // Other methods specifict to TFramedAsyncChannel
 
-  void setMaxFrameSize(uint32_t size) {
-    maxFrameSize_ = size;
-  }
+  void setMaxFrameSize(uint32_t size) { maxFrameSize_ = size; }
 
-  uint32_t getMaxFrameSize() const {
-    return maxFrameSize_;
-  }
+  uint32_t getMaxFrameSize() const { return maxFrameSize_; }
 
  private:
   /// maximum frame size accepted
@@ -152,13 +143,9 @@ class TFramedAsyncChannel
   }
 
   /// size in bytes beyond which we'll reject a given frame size.
-  void setMaxFrameSize(uint32_t size) {
-    readState_.setMaxFrameSize(size);
-  }
+  void setMaxFrameSize(uint32_t size) { readState_.setMaxFrameSize(size); }
 
-  uint32_t getMaxFrameSize() const {
-    return readState_.getMaxFrameSize();
-  }
+  uint32_t getMaxFrameSize() const { return readState_.getMaxFrameSize(); }
 
  protected:
   /**
@@ -175,17 +162,11 @@ class TFramedAsyncChannelFactory : public TStreamAsyncChannelFactory {
   TFramedAsyncChannelFactory()
       : maxFrameSize_(0x7fffffff), recvTimeout_(0), sendTimeout_(0) {}
 
-  void setMaxFrameSize(uint32_t bytes) {
-    maxFrameSize_ = bytes;
-  }
+  void setMaxFrameSize(uint32_t bytes) { maxFrameSize_ = bytes; }
 
-  void setRecvTimeout(uint32_t milliseconds) {
-    recvTimeout_ = milliseconds;
-  }
+  void setRecvTimeout(uint32_t milliseconds) { recvTimeout_ = milliseconds; }
 
-  void setSendTimeout(uint32_t milliseconds) {
-    sendTimeout_ = milliseconds;
-  }
+  void setSendTimeout(uint32_t milliseconds) { sendTimeout_ = milliseconds; }
 
   std::shared_ptr<TAsyncEventChannel> newChannel(
       const std::shared_ptr<folly::AsyncTransport>& transport) override {

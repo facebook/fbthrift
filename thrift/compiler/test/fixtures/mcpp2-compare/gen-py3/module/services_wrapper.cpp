@@ -34,7 +34,7 @@ ReturnServiceWrapper::ReturnServiceWrapper(PyObject *obj, folly::Executor* exc)
 
 void ReturnServiceWrapper::async_eb_noReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -52,7 +52,7 @@ void ReturnServiceWrapper::async_eb_noReturn(
 }
 void ReturnServiceWrapper::async_tm_boolReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -70,7 +70,7 @@ void ReturnServiceWrapper::async_tm_boolReturn(
 }
 void ReturnServiceWrapper::async_tm_i16Return(
   std::unique_ptr<apache::thrift::HandlerCallback<int16_t>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -88,7 +88,7 @@ void ReturnServiceWrapper::async_tm_i16Return(
 }
 void ReturnServiceWrapper::async_tm_i32Return(
   std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -106,7 +106,7 @@ void ReturnServiceWrapper::async_tm_i32Return(
 }
 void ReturnServiceWrapper::async_tm_i64Return(
   std::unique_ptr<apache::thrift::HandlerCallback<int64_t>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -124,7 +124,7 @@ void ReturnServiceWrapper::async_tm_i64Return(
 }
 void ReturnServiceWrapper::async_tm_floatReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<float>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -142,7 +142,7 @@ void ReturnServiceWrapper::async_tm_floatReturn(
 }
 void ReturnServiceWrapper::async_tm_doubleReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<double>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -160,7 +160,7 @@ void ReturnServiceWrapper::async_tm_doubleReturn(
 }
 void ReturnServiceWrapper::async_eb_stringReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -178,7 +178,7 @@ void ReturnServiceWrapper::async_eb_stringReturn(
 }
 void ReturnServiceWrapper::async_tm_binaryReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -196,7 +196,7 @@ void ReturnServiceWrapper::async_tm_binaryReturn(
 }
 void ReturnServiceWrapper::async_tm_mapReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string,int64_t>>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -214,7 +214,7 @@ void ReturnServiceWrapper::async_tm_mapReturn(
 }
 void ReturnServiceWrapper::async_tm_simpleTypedefReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -232,7 +232,7 @@ void ReturnServiceWrapper::async_tm_simpleTypedefReturn(
 }
 void ReturnServiceWrapper::async_tm_complexTypedefReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -250,7 +250,7 @@ void ReturnServiceWrapper::async_tm_complexTypedefReturn(
 }
 void ReturnServiceWrapper::async_tm_list_mostComplexTypedefReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -268,7 +268,7 @@ void ReturnServiceWrapper::async_tm_list_mostComplexTypedefReturn(
 }
 void ReturnServiceWrapper::async_eb_enumReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -286,7 +286,7 @@ void ReturnServiceWrapper::async_eb_enumReturn(
 }
 void ReturnServiceWrapper::async_eb_list_EnumReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -304,7 +304,7 @@ void ReturnServiceWrapper::async_eb_list_EnumReturn(
 }
 void ReturnServiceWrapper::async_tm_structReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -322,7 +322,7 @@ void ReturnServiceWrapper::async_tm_structReturn(
 }
 void ReturnServiceWrapper::async_tm_set_StructReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -340,7 +340,7 @@ void ReturnServiceWrapper::async_tm_set_StructReturn(
 }
 void ReturnServiceWrapper::async_eb_unionReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::ComplexUnion>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -358,7 +358,7 @@ void ReturnServiceWrapper::async_eb_unionReturn(
 }
 void ReturnServiceWrapper::async_tm_list_UnionReturn(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>>> callback) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -378,7 +378,7 @@ void ReturnServiceWrapper::async_eb_readDataEb(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<folly::IOBuf>>> callback
     , int64_t size
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -400,7 +400,7 @@ void ReturnServiceWrapper::async_tm_readData(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::unique_ptr<folly::IOBuf>>>> callback
     , int64_t size
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -434,7 +434,7 @@ void ParamServiceWrapper::async_eb_void_ret_i16_param(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , int16_t param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -457,7 +457,7 @@ void ParamServiceWrapper::async_tm_void_ret_byte_i16_param(
     , int8_t param1
     , int16_t param2
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -481,7 +481,7 @@ void ParamServiceWrapper::async_tm_void_ret_map_param(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , std::unique_ptr<std::map<std::string,int64_t>> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -504,7 +504,7 @@ void ParamServiceWrapper::async_tm_void_ret_map_setlist_param(
     , std::unique_ptr<std::map<std::string,int64_t>> param1
     , std::unique_ptr<std::set<std::vector<std::string>>> param2
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -528,7 +528,7 @@ void ParamServiceWrapper::async_tm_void_ret_map_typedef_param(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , int32_t param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -550,7 +550,7 @@ void ParamServiceWrapper::async_tm_void_ret_enum_param(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , ::some::valid::ns::MyEnumA param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -572,7 +572,7 @@ void ParamServiceWrapper::async_tm_void_ret_struct_param(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , std::unique_ptr<::some::valid::ns::MyStruct> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -594,7 +594,7 @@ void ParamServiceWrapper::async_tm_void_ret_listunion_param(
   std::unique_ptr<apache::thrift::HandlerCallback<void>> callback
     , std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -617,7 +617,7 @@ void ParamServiceWrapper::async_tm_bool_ret_i32_i64_param(
     , int32_t param1
     , int64_t param2
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -641,7 +641,7 @@ void ParamServiceWrapper::async_tm_bool_ret_map_param(
   std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
     , std::unique_ptr<std::map<std::string,int64_t>> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -663,7 +663,7 @@ void ParamServiceWrapper::async_tm_bool_ret_union_param(
   std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback
     , std::unique_ptr<::some::valid::ns::ComplexUnion> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -686,7 +686,7 @@ void ParamServiceWrapper::async_tm_i64_ret_float_double_param(
     , float param1
     , double param2
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -711,7 +711,7 @@ void ParamServiceWrapper::async_tm_i64_ret_string_typedef_param(
     , std::unique_ptr<std::string> param1
     , std::unique_ptr<std::set<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>> param2
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -739,7 +739,7 @@ void ParamServiceWrapper::async_eb_i64_ret_i32_i32_i32_i32_i32_param(
     , int32_t param4
     , int32_t param5
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -769,7 +769,7 @@ void ParamServiceWrapper::async_tm_double_ret_setstruct_param(
   std::unique_ptr<apache::thrift::HandlerCallback<double>> callback
     , std::unique_ptr<std::set<::some::valid::ns::MyStruct>> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -791,7 +791,7 @@ void ParamServiceWrapper::async_tm_string_ret_string_param(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
     , std::unique_ptr<std::string> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -813,7 +813,7 @@ void ParamServiceWrapper::async_tm_binary_ret_binary_param(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::string>>> callback
     , std::unique_ptr<std::string> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -835,7 +835,7 @@ void ParamServiceWrapper::async_tm_map_ret_bool_param(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::string,int64_t>>>> callback
     , bool param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -858,7 +858,7 @@ void ParamServiceWrapper::async_tm_list_ret_map_setlist_param(
     , std::unique_ptr<std::map<int32_t,std::vector<std::string>>> param1
     , std::unique_ptr<std::vector<std::string>> param2
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -882,7 +882,7 @@ void ParamServiceWrapper::async_tm_mapsetlistmapliststring_ret_listlistlist_para
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>>> callback
     , std::unique_ptr<std::vector<std::vector<std::vector<std::vector<int32_t>>>>> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -904,7 +904,7 @@ void ParamServiceWrapper::async_tm_typedef_ret_i32_param(
   std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback
     , int32_t param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -926,7 +926,7 @@ void ParamServiceWrapper::async_eb_listtypedef_ret_typedef_param(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<int32_t>>>> callback
     , std::unique_ptr<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -948,7 +948,7 @@ void ParamServiceWrapper::async_tm_enum_ret_double_param(
   std::unique_ptr<apache::thrift::HandlerCallback<::some::valid::ns::MyEnumA>> callback
     , double param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -971,7 +971,7 @@ void ParamServiceWrapper::async_tm_enum_ret_double_enum_param(
     , double param1
     , ::some::valid::ns::MyEnumA param2
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -995,7 +995,7 @@ void ParamServiceWrapper::async_tm_listenum_ret_map_param(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<::some::valid::ns::MyEnumA>>>> callback
     , std::unique_ptr<std::map<std::string,int64_t>> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -1017,7 +1017,7 @@ void ParamServiceWrapper::async_eb_struct_ret_i16_param(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::some::valid::ns::MyStruct>>> callback
     , int16_t param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -1039,7 +1039,7 @@ void ParamServiceWrapper::async_tm_setstruct_ret_set_param(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::set<::some::valid::ns::MyStruct>>>> callback
     , std::unique_ptr<std::set<std::string>> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -1062,7 +1062,7 @@ void ParamServiceWrapper::async_tm_union_ret_i32_i32_param(
     , int32_t param1
     , int32_t param2
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,
@@ -1086,7 +1086,7 @@ void ParamServiceWrapper::async_tm_listunion_string_param(
   std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<std::vector<::some::valid::ns::ComplexUnion>>>> callback
     , std::unique_ptr<std::string> param1
 ) {
-  auto ctx = callback->getConnectionContext();
+  auto ctx = callback->getRequestContext();
   folly::via(
     this->executor,
     [this, ctx,

@@ -7,10 +7,16 @@
 
 import typing as _typing
 
-import folly.iobuf as __iobuf
+import folly.iobuf as _fbthrift_iobuf
 import thrift.py3.builder
 
 
 import test.fixtures.interactions.module.types as _test_fixtures_interactions_module_types
+
+
+class CustomException_Builder(thrift.py3.builder.StructBuilder):
+    message: _typing.Optional[str]
+
+    def __iter__(self) -> _typing.Iterator[_typing.Tuple[str, _typing.Any]]: ...
 
 

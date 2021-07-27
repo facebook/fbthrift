@@ -39,9 +39,7 @@ constexpr R fs() {
 }
 
 inline datatype_t* registering_datatype_prep(
-    schema_t& schema,
-    folly::StringPiece rname,
-    id_t rid) {
+    schema_t& schema, folly::StringPiece rname, id_t rid) {
   auto& dt = schema.dataTypes_ref()[rid];
   if (!dt.name_ref()->empty()) {
     return nullptr; // this datatype has already been registered
@@ -53,10 +51,7 @@ inline datatype_t* registering_datatype_prep(
 
 template <typename F>
 void registering_datatype(
-    schema_t& schema,
-    folly::StringPiece rname,
-    id_t rid,
-    F&& f) {
+    schema_t& schema, folly::StringPiece rname, id_t rid, F&& f) {
   if (auto* dt = registering_datatype_prep(schema, rname, rid)) {
     f(*dt);
   }
@@ -66,6 +61,8 @@ template <typename T>
 struct deref {
   using type = T;
 };
+template <typename T>
+struct deref<detail::boxed_value_ptr<T>> : deref<T> {};
 template <typename T, typename D>
 struct deref<std::unique_ptr<T, D>> : deref<T> {};
 template <typename T>
@@ -110,18 +107,14 @@ struct impl;
 template <>
 struct impl<void, type_class::nothing> {
   static constexpr auto rname = "void"_fs;
-  static id_t rid() {
-    return id_t(type_t::TYPE_VOID);
-  }
+  static id_t rid() { return id_t(type_t::TYPE_VOID); }
   static void go(schema_t&) {}
 };
 
 template <>
 struct impl<bool, type_class::integral> {
   static constexpr auto rname = "bool"_fs;
-  static id_t rid() {
-    return id_t(type_t::TYPE_BOOL);
-  }
+  static id_t rid() { return id_t(type_t::TYPE_BOOL); }
   static void go(schema_t&) {}
 };
 
@@ -131,36 +124,28 @@ struct impl_integral;
 template <>
 struct impl_integral<1> {
   static constexpr auto rname = "byte"_fs;
-  static id_t rid() {
-    return id_t(type_t::TYPE_BYTE);
-  }
+  static id_t rid() { return id_t(type_t::TYPE_BYTE); }
   static void go(schema_t&) {}
 };
 
 template <>
 struct impl_integral<2> {
   static constexpr auto rname = "i16"_fs;
-  static id_t rid() {
-    return id_t(type_t::TYPE_I16);
-  }
+  static id_t rid() { return id_t(type_t::TYPE_I16); }
   static void go(schema_t&) {}
 };
 
 template <>
 struct impl_integral<4> {
   static constexpr auto rname = "i32"_fs;
-  static id_t rid() {
-    return id_t(type_t::TYPE_I32);
-  }
+  static id_t rid() { return id_t(type_t::TYPE_I32); }
   static void go(schema_t&) {}
 };
 
 template <>
 struct impl_integral<8> {
   static constexpr auto rname = "i64"_fs;
-  static id_t rid() {
-    return id_t(type_t::TYPE_I64);
-  }
+  static id_t rid() { return id_t(type_t::TYPE_I64); }
   static void go(schema_t&) {}
 };
 
@@ -170,35 +155,27 @@ struct impl<I, type_class::integral> : impl_integral<sizeof(I)> {};
 template <>
 struct impl<double, type_class::floating_point> {
   static constexpr auto rname = "double"_fs;
-  static id_t rid() {
-    return id_t(type_t::TYPE_DOUBLE);
-  }
+  static id_t rid() { return id_t(type_t::TYPE_DOUBLE); }
   static void go(schema_t&) {}
 };
 template <>
 struct impl<float, type_class::floating_point> {
   static constexpr auto rname = "float"_fs;
-  static id_t rid() {
-    return id_t(type_t::TYPE_FLOAT);
-  }
+  static id_t rid() { return id_t(type_t::TYPE_FLOAT); }
   static void go(schema_t&) {}
 };
 
 template <typename T>
 struct impl<T, type_class::binary> {
   static constexpr auto rname = "string"_fs;
-  static id_t rid() {
-    return id_t(type_t::TYPE_STRING);
-  }
+  static id_t rid() { return id_t(type_t::TYPE_STRING); }
   static void go(schema_t&) {}
 };
 
 template <typename T>
 struct impl<T, type_class::string> {
   static constexpr auto rname = "string"_fs;
-  static id_t rid() {
-    return id_t(type_t::TYPE_STRING);
-  }
+  static id_t rid() { return id_t(type_t::TYPE_STRING); }
   static void go(schema_t&) {}
 };
 
@@ -252,9 +229,7 @@ struct impl<T, type_class::structure> {
   struct visitor {
     template <typename MemberInfo, size_t Index>
     void operator()(
-        fatal::indexed<MemberInfo, Index>,
-        schema_t& schema,
-        datatype_t& dt) {
+        fatal::indexed<MemberInfo, Index>, schema_t& schema, datatype_t& dt) {
       using getter = typename MemberInfo::getter;
       using type = deref_inner_t<decltype(getter{}(std::declval<T&>()))>;
       using type_class = typename MemberInfo::type_class;
@@ -302,9 +277,7 @@ struct impl<T, type_class::variant> {
   struct visitor {
     template <typename MemberInfo, size_t Index>
     void operator()(
-        fatal::indexed<MemberInfo, Index>,
-        schema_t& schema,
-        datatype_t& dt) {
+        fatal::indexed<MemberInfo, Index>, schema_t& schema, datatype_t& dt) {
       typename MemberInfo::getter getter;
       using type = deref_inner_t<decltype(getter(std::declval<T&>()))>;
       using type_class = typename MemberInfo::metadata::type_class;
@@ -393,25 +366,15 @@ struct impl<T, type_class::map<KeyTypeClass, MappedTypeClass>> {
 template <typename T, typename TC>
 struct helper {
   using type_impl = impl<T, TC>;
-  static void register_into(schema_t& schema) {
-    type_impl::go(schema);
-  }
-  static constexpr auto name() {
-    return type_impl::rname;
-  }
-  static id_t id() {
-    return type_impl::rid();
-  }
+  static void register_into(schema_t& schema) { type_impl::go(schema); }
+  static constexpr auto name() { return type_impl::rname; }
+  static id_t id() { return type_impl::rid(); }
 };
 
 struct helper_noop {
   static void register_into(schema_t&) {}
-  static constexpr auto name() {
-    return ""_fs;
-  }
-  static id_t id() {
-    return {};
-  }
+  static constexpr auto name() { return ""_fs; }
+  static id_t id() { return {}; }
 };
 
 template <typename T>

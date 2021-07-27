@@ -21,10 +21,9 @@ from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap, pair as cpair
 from thrift.py3.exceptions cimport cTException
-cimport folly.iobuf as __iobuf
+cimport folly.iobuf as _fbthrift_iobuf
 cimport thrift.py3.exceptions
 cimport thrift.py3.types
-from thrift.py3.common cimport Protocol as __Protocol
 from thrift.py3.types cimport (
     bstring,
     bytes_to_string,
@@ -32,9 +31,15 @@ from thrift.py3.types cimport (
     optional_field_ref as __optional_field_ref,
     required_field_ref as __required_field_ref,
 )
+from thrift.py3.common cimport (
+    RpcOptions as __RpcOptions,
+    Protocol as __Protocol,
+    cThriftMetadata as __fbthrift_cThriftMetadata,
+    MetadataBox as __MetadataBox,
+)
 from folly.optional cimport cOptional as __cOptional
 
-cimport module.types_fields as __fbthrift_types_fields
+cimport module.types_fields as _fbthrift_types_fields
 
 cdef extern from "src/gen-py3/module/types.h":
   pass
@@ -43,9 +48,15 @@ cdef extern from "src/gen-py3/module/types.h":
 
 
 
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass ExceptionMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
+cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+    cdef cppclass StructMetadata[T]:
+        @staticmethod
+        void gen(__fbthrift_cThriftMetadata &metadata)
 cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2":
-    cdef cppclass cInitialResponse__isset "::cpp2::InitialResponse::__isset":
-        bint content
 
     cdef cppclass cInitialResponse "::cpp2::InitialResponse":
         cInitialResponse() except +
@@ -58,10 +69,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cInitialResponse&)
         __field_ref[string] content_ref()
         string content
-        cInitialResponse__isset __isset
 
-    cdef cppclass cFinalResponse__isset "::cpp2::FinalResponse::__isset":
-        bint content
 
     cdef cppclass cFinalResponse "::cpp2::FinalResponse":
         cFinalResponse() except +
@@ -74,10 +82,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cFinalResponse&)
         __field_ref[string] content_ref()
         string content
-        cFinalResponse__isset __isset
 
-    cdef cppclass cSinkPayload__isset "::cpp2::SinkPayload::__isset":
-        bint content
 
     cdef cppclass cSinkPayload "::cpp2::SinkPayload":
         cSinkPayload() except +
@@ -90,10 +95,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cSinkPayload&)
         __field_ref[string] content_ref()
         string content
-        cSinkPayload__isset __isset
 
-    cdef cppclass cCompatibleWithKeywordSink__isset "::cpp2::CompatibleWithKeywordSink::__isset":
-        bint sink
 
     cdef cppclass cCompatibleWithKeywordSink "::cpp2::CompatibleWithKeywordSink":
         cCompatibleWithKeywordSink() except +
@@ -106,10 +108,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cCompatibleWithKeywordSink&)
         __field_ref[string] sink_ref()
         string sink
-        cCompatibleWithKeywordSink__isset __isset
 
-    cdef cppclass cInitialException__isset "::cpp2::InitialException::__isset":
-        bint reason
 
     cdef cppclass cInitialException "::cpp2::InitialException"(cTException):
         cInitialException() except +
@@ -122,10 +121,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cInitialException&)
         __field_ref[string] reason_ref()
         string reason
-        cInitialException__isset __isset
 
-    cdef cppclass cSinkException1__isset "::cpp2::SinkException1::__isset":
-        bint reason
 
     cdef cppclass cSinkException1 "::cpp2::SinkException1"(cTException):
         cSinkException1() except +
@@ -138,10 +134,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cSinkException1&)
         __field_ref[string] reason_ref()
         string reason
-        cSinkException1__isset __isset
 
-    cdef cppclass cSinkException2__isset "::cpp2::SinkException2::__isset":
-        bint reason
 
     cdef cppclass cSinkException2 "::cpp2::SinkException2"(cTException):
         cSinkException2() except +
@@ -154,14 +147,13 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         bint operator>=(cSinkException2&)
         __field_ref[cint64_t] reason_ref()
         cint64_t reason
-        cSinkException2__isset __isset
 
 
 
 
 cdef class InitialResponse(thrift.py3.types.Struct):
     cdef shared_ptr[cInitialResponse] _cpp_obj
-    cdef __fbthrift_types_fields.__InitialResponse_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__InitialResponse_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cInitialResponse])
@@ -170,7 +162,7 @@ cdef class InitialResponse(thrift.py3.types.Struct):
 
 cdef class FinalResponse(thrift.py3.types.Struct):
     cdef shared_ptr[cFinalResponse] _cpp_obj
-    cdef __fbthrift_types_fields.__FinalResponse_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__FinalResponse_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cFinalResponse])
@@ -179,7 +171,7 @@ cdef class FinalResponse(thrift.py3.types.Struct):
 
 cdef class SinkPayload(thrift.py3.types.Struct):
     cdef shared_ptr[cSinkPayload] _cpp_obj
-    cdef __fbthrift_types_fields.__SinkPayload_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__SinkPayload_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSinkPayload])
@@ -188,7 +180,7 @@ cdef class SinkPayload(thrift.py3.types.Struct):
 
 cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
     cdef shared_ptr[cCompatibleWithKeywordSink] _cpp_obj
-    cdef __fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__CompatibleWithKeywordSink_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cCompatibleWithKeywordSink])
@@ -197,7 +189,7 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
 
 cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cInitialException] _cpp_obj
-    cdef __fbthrift_types_fields.__InitialException_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__InitialException_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cInitialException])
@@ -206,7 +198,7 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
 
 cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cSinkException1] _cpp_obj
-    cdef __fbthrift_types_fields.__SinkException1_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__SinkException1_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSinkException1])
@@ -215,7 +207,7 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
 
 cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     cdef shared_ptr[cSinkException2] _cpp_obj
-    cdef __fbthrift_types_fields.__SinkException2_FieldsSetter _fields_setter
+    cdef _fbthrift_types_fields.__SinkException2_FieldsSetter _fields_setter
 
     @staticmethod
     cdef create(shared_ptr[cSinkException2])

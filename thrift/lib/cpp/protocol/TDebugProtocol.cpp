@@ -16,11 +16,11 @@
 
 #include <thrift/lib/cpp/protocol/TDebugProtocol.h>
 
-#include <boost/lexical_cast.hpp>
 #include <cassert>
 #include <cctype>
 #include <cstdio>
 #include <stdexcept>
+#include <boost/lexical_cast.hpp>
 
 using std::string;
 
@@ -210,9 +210,7 @@ uint32_t TDebugProtocol::writeStructEnd() {
 }
 
 uint32_t TDebugProtocol::writeFieldBegin(
-    const char* name,
-    const TType fieldType,
-    const int16_t fieldId) {
+    const char* name, const TType fieldType, const int16_t fieldId) {
   // sprintf(id_str, "%02d", fieldId);
   string id_str = boost::lexical_cast<string>(fieldId);
   if (id_str.length() == 1)
@@ -233,9 +231,7 @@ uint32_t TDebugProtocol::writeFieldStop() {
 }
 
 uint32_t TDebugProtocol::writeMapBegin(
-    const TType keyType,
-    const TType valType,
-    const uint32_t size) {
+    const TType keyType, const TType valType, const uint32_t size) {
   // TODO(dreiss): Optimize short maps?
   uint32_t bsize = 0;
   bsize += startItem();
@@ -259,8 +255,7 @@ uint32_t TDebugProtocol::writeMapEnd() {
 }
 
 uint32_t TDebugProtocol::writeListBegin(
-    const TType elemType,
-    const uint32_t size) {
+    const TType elemType, const uint32_t size) {
   // TODO(dreiss): Optimize short arrays.
   uint32_t bsize = 0;
   bsize += startItem();
@@ -286,8 +281,7 @@ uint32_t TDebugProtocol::writeListEnd() {
 }
 
 uint32_t TDebugProtocol::writeSetBegin(
-    const TType elemType,
-    const uint32_t size) {
+    const TType elemType, const uint32_t size) {
   // TODO(dreiss): Optimize short sets.
   uint32_t bsize = 0;
   bsize += startItem();

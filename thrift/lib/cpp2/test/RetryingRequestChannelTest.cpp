@@ -15,6 +15,13 @@
  */
 
 #include <thrift/lib/cpp2/async/RetryingRequestChannel.h>
+
+#include <folly/Portability.h>
+#if FOLLY_HAS_COROUTINES
+#include <folly/experimental/coro/AsyncGenerator.h>
+#include <folly/experimental/coro/BlockingWait.h>
+#include <folly/experimental/coro/Task.h>
+#endif
 #include <folly/io/async/AsyncSocket.h>
 #include <folly/io/async/EventBase.h>
 #include <folly/io/async/ScopedEventBaseThread.h>
@@ -37,17 +44,34 @@ using folly::AsyncSocket;
 
 class TestServiceServerMock : public TestServiceSvIf {
  public:
-  MOCK_METHOD1(echoInt, int32_t(int32_t));
-  MOCK_METHOD1(
+  MOCK_METHOD(int32_t, echoInt, (int32_t), (override));
+  MOCK_METHOD(
+      folly::SemiFuture<std::unique_ptr<std::string>>,
       semifuture_echoRequest,
-      folly::SemiFuture<std::unique_ptr<std::string>>(
-          std::unique_ptr<std::string>));
+      (std::unique_ptr<std::string>),
+      (override));
 
-  MOCK_METHOD2(
+  MOCK_METHOD(
+      folly::SemiFuture<ServerStream<int8_t>>,
       semifuture_echoIOBufAsByteStream,
-      folly::SemiFuture<ServerStream<int8_t>>(
-          std::unique_ptr<folly::IOBuf>,
-          int32_t));
+      (std::unique_ptr<folly::IOBuf>, int32_t),
+      (override));
+
+#if FOLLY_HAS_COROUTINES
+  folly::coro::Task<SinkConsumer<int32_t, int32_t>> co_sumSink() override {
+    SinkConsumer<int32_t, int32_t> sink;
+    sink.consumer = [](folly::coro::AsyncGenerator<int32_t&&> gen)
+        -> folly::coro::Task<int32_t> {
+      int32_t res = 0;
+      while (auto val = co_await gen.next()) {
+        res += *val;
+      }
+      co_return res;
+    };
+    sink.bufferSize = 10;
+    co_return sink;
+  }
+#endif
 };
 
 class RetryingRequestChannelTest : public Test {
@@ -68,6 +92,23 @@ class RetryingRequestChannelTest : public Test {
 
   folly::SocketAddress up_addr{runner->getAddress()};
   folly::SocketAddress dn_addr{bound.getAddress()};
+
+#if FOLLY_HAS_COROUTINES
+  folly::coro::Task<std::shared_ptr<TestServiceAsyncClient>> co_getClient(
+      int numRetries) {
+    auto executor = co_await folly::coro::co_current_executor;
+    auto channel = PooledRequestChannel::newChannel(
+        executor, ioThread_, [numRetries, this](folly::EventBase& evb) {
+          auto socket = AsyncSocket::UniquePtr(new AsyncSocket(&evb, up_addr));
+          auto rocket = RocketClientChannel::newChannel(std::move(socket));
+          return RetryingRequestChannel::newChannel(
+              evb, numRetries, std::move(rocket));
+        });
+    co_return std::make_shared<TestServiceAsyncClient>(std::move(channel));
+  }
+  std::shared_ptr<folly::IOExecutor> ioThread_{
+      std::make_shared<folly::ScopedEventBaseThread>()};
+#endif
 };
 
 TEST_F(RetryingRequestChannelTest, noRetrySuccess) {
@@ -252,3 +293,19 @@ TEST_F(RetryingRequestChannelTest, shutdownStream) {
   evbThread.reset();
   std::move(sf).get();
 }
+
+#if FOLLY_HAS_COROUTINES
+TEST_F(RetryingRequestChannelTest, sinkSuccess) {
+  folly::coro::blockingWait([&]() -> folly::coro::Task<void> {
+    auto client = co_await co_getClient(0 /* numRetries */);
+    auto consumer = co_await client->co_sumSink();
+    auto res =
+        co_await consumer.sink([]() -> folly::coro::AsyncGenerator<int32_t&&> {
+          for (int32_t i = 1; i <= 5; ++i) {
+            co_yield std::move(i);
+          }
+        }());
+    EXPECT_EQ(res, 15);
+  }());
+}
+#endif

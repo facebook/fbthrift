@@ -16,15 +16,20 @@
 
 #pragma once
 
-#include <folly/Portability.h>
+#include <string_view>
+#include <variant>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/Portability.h>
 #include <folly/String.h>
+#include <folly/Unit.h>
 #include <folly/container/F14Map.h>
 #include <folly/futures/Future.h>
 #include <folly/io/async/EventBase.h>
+
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp/TProcessor.h>
+#include <thrift/lib/cpp/Thrift.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
@@ -32,12 +37,14 @@
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/Interaction.h>
+#include <thrift/lib/cpp2/async/ReplyInfo.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/async/RpcTypes.h>
 #include <thrift/lib/cpp2/async/ServerStream.h>
 #include <thrift/lib/cpp2/async/Sink.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/server/IOWorkerContext.h>
 #include <thrift/lib/cpp2/util/Checksum.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
@@ -50,95 +57,133 @@ template <typename T>
 struct HandlerCallbackHelper;
 }
 
-class EventTask : public virtual concurrency::Runnable {
+class EventTask : public concurrency::Runnable, public InteractionTask {
  public:
   EventTask(
-      folly::Function<void(ResponseChannelRequest::UniquePtr)>&& taskFunc,
       ResponseChannelRequest::UniquePtr req,
-      folly::EventBase* base,
+      SerializedCompressedRequest&& serializedRequest,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm,
+      Cpp2RequestContext* ctx,
       bool oneway)
-      : base_(base),
-        taskFunc_(std::move(taskFunc)),
-        req_(std::move(req)),
+      : req_(std::move(req)),
+        serializedRequest_(std::move(serializedRequest)),
+        ctx_(ctx),
+        eb_(eb),
+        tm_(tm),
         oneway_(oneway) {}
 
   ~EventTask() override;
 
-  void run() override;
   void expired();
-  void failWith(folly::exception_wrapper ex, std::string exCode);
+  void failWith(folly::exception_wrapper ex, std::string exCode) override;
+
+  void setTile(TilePtr&& tile) override;
 
  protected:
-  folly::EventBase* base_;
-
- private:
-  folly::Function<void(ResponseChannelRequest::UniquePtr)> taskFunc_;
   ResponseChannelRequest::UniquePtr req_;
+  SerializedCompressedRequest serializedRequest_;
+  Cpp2RequestContext* ctx_;
+  folly::EventBase* eb_;
+  concurrency::ThreadManager* tm_;
   bool oneway_;
 };
 
-class PriorityEventTask : public concurrency::PriorityRunnable,
-                          public EventTask {
+class AsyncProcessor;
+class ServiceHandler;
+
+class AsyncProcessorFactory {
  public:
-  PriorityEventTask(
-      concurrency::PriorityThreadManager::PRIORITY priority,
-      folly::Function<void(ResponseChannelRequest::UniquePtr)>&& taskFunc,
-      ResponseChannelRequest::UniquePtr req,
-      folly::EventBase* base,
-      bool oneway)
-      : EventTask(std::move(taskFunc), std::move(req), base, oneway),
-        priority_(priority) {}
+  virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
+  virtual std::vector<ServiceHandler*> getServiceHandlers() = 0;
 
-  concurrency::PriorityThreadManager::PRIORITY getPriority() const override {
-    return priority_;
+  struct MethodMetadata {
+    virtual ~MethodMetadata() = default;
+  };
+  /**
+   * A map of method names to some loosely typed metadata that will be
+   * passed to AsyncProcessor::processSerializedRequest. The concrete type of
+   * the entries in the map is a contract between the AsyncProcessorFactory and
+   * the AsyncProcessor returned by getProcessor.
+   */
+  using MethodMetadataMap =
+      folly::F14FastMap<std::string, std::shared_ptr<const MethodMetadata>>;
+  /**
+   * A marker struct indicating that the AsyncProcessor supports any method, or
+   * a list of methods that is not enumerable. This applies to AsyncProcessor
+   * implementations such as proxies to external services.
+   * The implementation may optionally enumerate a subset of known methods.
+   */
+  struct WildcardMethodMetadataMap {
+    MethodMetadataMap knownMethods;
+  };
+  /**
+   * The concrete metadata type that will be passed if createMethodMetadata
+   * returns WildcardMethodMetadataMap and the current method is not in its
+   * knownMethods.
+   */
+  struct WildcardMethodMetadata final : public MethodMetadata {};
+
+  /**
+   * The API is not implemented (legacy).
+   */
+  using MetadataNotImplemented = std::monostate;
+
+  using CreateMethodMetadataResult = std::variant<
+      MetadataNotImplemented,
+      MethodMetadataMap,
+      WildcardMethodMetadataMap>;
+  /**
+   * This function enumerates the list of methods supported by the
+   * AsyncProcessor returned by getProcessor(), if possible. The return value
+   * represents one of the following states:
+   *   1. This API is not supported / implemented. (Will be removed soon)
+   *   2. This API is supported and there is a static list of known methods.
+   *      This applies to all generated AsyncProcessors.
+   *   3. This API is supported but the complete set of methods is not known or
+   *      is not enumerable (e.g. all method names supported). This applies, for
+   *      example, to AsyncProcessors that proxy to external services.
+   *
+   * If returning (1), AsyncProcessor::processSerializedCompressedRequest MUST
+   * be implemented instead of
+   * AsyncProcessor::processSerializedCompressedRequestWithMetadata. Override
+   * the latter only if returning (2) or (3). The metadata API is effectively
+   * bypassed as a result.
+   *
+   * If returning (2), Thrift server will lookup the method metadata in the map.
+   * If the method name is not found, a not-found error will be sent and
+   * getProcessor will not be called. Any metadata passed to the processor will
+   * always be a reference from the map.
+   *
+   * If returning (3), Thrift server will lookup the method metadata in the map.
+   * If the method name is not found, Thrift will pass a WildcardMethodMetadata
+   * object instead. Any metadata passed to the processor will always be a
+   * reference from the map (or be WildcardMethodMetadata).
+   */
+  virtual CreateMethodMetadataResult createMethodMetadata() { return {}; }
+
+  /**
+   * Override to return a pre-initialized RequestContext.
+   * Its content will be copied in the RequestContext initialized at
+   * the beginning of each thrift request processing.
+   *
+   * The method metadata (per createMethodMetadata's contract) is also passed
+   * in. If createMethodMetadata is unimplemented or the method is not found,
+   * then this function will not be called.
+   */
+  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest(
+      const MethodMetadata&) {
+    return nullptr;
   }
-  using EventTask::run;
 
- private:
-  concurrency::PriorityThreadManager::PRIORITY priority_;
-};
-
-class InteractionEventTask : public PriorityEventTask {
- public:
-  InteractionEventTask(
-      concurrency::PriorityThreadManager::PRIORITY priority,
-      folly::Function<void(ResponseChannelRequest::UniquePtr, Tile&)>&&
-          taskFunc,
-      ResponseChannelRequest::UniquePtr req,
-      folly::EventBase* base,
-      bool oneway,
-      Tile* tile)
-      : PriorityEventTask(
-            priority,
-            [=](ResponseChannelRequest::UniquePtr request) {
-              DCHECK(tile_);
-              DCHECK(!tile_->__fbthrift_isPromise());
-              taskFunc_(std::move(request), *std::exchange(tile_, nullptr));
-            },
-            std::move(req),
-            base,
-            oneway),
-        tile_(tile),
-        taskFunc_(std::move(taskFunc)) {}
-
-  ~InteractionEventTask() {
-    if (tile_) {
-      tile_->__fbthrift_releaseRef(*base_);
-    }
-  }
-
-  void setTile(Tile& tile) {
-    tile_ = &tile;
-  }
-
- private:
-  Tile* tile_;
-  folly::Function<void(ResponseChannelRequest::UniquePtr, Tile&)> taskFunc_;
+  virtual ~AsyncProcessorFactory() = default;
 };
 
 class AsyncProcessor : public TProcessorBase {
  public:
   virtual ~AsyncProcessor() = default;
+
+  using MethodMetadata = AsyncProcessorFactory::MethodMetadata;
 
   virtual void processSerializedRequest(
       ResponseChannelRequest::UniquePtr,
@@ -148,20 +193,29 @@ class AsyncProcessor : public TProcessorBase {
       folly::EventBase*,
       concurrency::ThreadManager*) = 0;
 
-  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
-    return nullptr;
-  }
+  virtual void processSerializedCompressedRequest(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedCompressedRequest&& serializedRequest,
+      protocol::PROTOCOL_TYPES prot_type,
+      Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm);
+
+  virtual void processSerializedCompressedRequestWithMetadata(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedCompressedRequest&& serializedRequest,
+      const MethodMetadata& methodMetadata,
+      protocol::PROTOCOL_TYPES prot_type,
+      Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm);
 
   virtual void getServiceMetadata(metadata::ThriftServiceMetadataResponse&) {}
 
   virtual void terminateInteraction(
-      int64_t id,
-      Cpp2ConnContext& conn,
-      folly::EventBase&) noexcept;
+      int64_t id, Cpp2ConnContext& conn, folly::EventBase&) noexcept;
   virtual void destroyAllInteractions(
-      Cpp2ConnContext& conn,
-      concurrency::ThreadManager& tm,
-      folly::EventBase&) noexcept;
+      Cpp2ConnContext& conn, folly::EventBase&) noexcept;
 };
 
 class ServerInterface;
@@ -173,18 +227,51 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   template <typename Derived>
   using ProcessFunc = void (Derived::*)(
       ResponseChannelRequest::UniquePtr,
-      SerializedRequest&&,
+      SerializedCompressedRequest&&,
       Cpp2RequestContext* context,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm);
-  template <typename ProcessFunc>
-  using ProcessMap = folly::F14ValueMap<std::string, ProcessFunc>;
+
+  template <typename Derived>
+  struct ProcessFuncs {
+    ProcessFunc<Derived> compact;
+    ProcessFunc<Derived> binary;
+  };
+
+  template <typename ProcessFuncs>
+  using ProcessMap = folly::F14ValueMap<std::string, ProcessFuncs>;
 
   template <typename Derived>
   using InteractionConstructor = std::unique_ptr<Tile> (Derived::*)();
   template <typename InteractionConstructor>
   using InteractionConstructorMap =
       folly::F14ValueMap<std::string, InteractionConstructor>;
+
+  void processSerializedRequest(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedRequest&& serializedRequest,
+      protocol::PROTOCOL_TYPES prot_type,
+      Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm) final {
+    processSerializedCompressedRequest(
+        std::move(req),
+        SerializedCompressedRequest(std::move(serializedRequest)),
+        prot_type,
+        context,
+        eb,
+        tm);
+  }
+
+  // TODO(praihan): This function will be removed once we enforce that
+  // createMethodMetadata is always implemented correctly.
+  void processSerializedCompressedRequest(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedCompressedRequest&& serializedRequest,
+      protocol::PROTOCOL_TYPES prot_type,
+      Cpp2RequestContext* context,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm) override = 0;
 
  protected:
   template <typename ProtocolIn, typename Args>
@@ -195,7 +282,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       ContextStack* c);
 
   template <typename ProtocolOut, typename Result>
-  static folly::IOBufQueue serializeResponse(
+  static LegacySerializedResponse serializeLegacyResponse(
       const char* method,
       ProtocolOut* prot,
       int32_t protoSeqId,
@@ -204,8 +291,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
   // Sends an error response if validation fails.
   static bool validateRpcKind(
-      ResponseChannelRequest::UniquePtr& req,
-      RpcKind kind);
+      ResponseChannelRequest::UniquePtr& req, RpcKind kind);
 
   // Returns true if setup succeeded and sends an error response otherwise.
   // Always runs in eb thread.
@@ -217,29 +303,27 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       concurrency::ThreadManager* tm,
       RpcKind kind,
       ServerInterface* si,
-      const char* interaction = nullptr);
+      folly::StringPiece interaction = "");
 
   template <typename ChildType>
   static void processInThread(
       ResponseChannelRequest::UniquePtr req,
-      SerializedRequest&& serializedRequest,
+      SerializedCompressedRequest&& serializedRequest,
       Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
-      concurrency::PRIORITY pri,
       RpcKind kind,
       ProcessFunc<ChildType> processFunc,
       ChildType* childClass);
 
  private:
   template <typename ChildType>
-  static std::shared_ptr<EventTask> makeEventTaskForRequest(
+  static std::unique_ptr<concurrency::Runnable> makeEventTaskForRequest(
       ResponseChannelRequest::UniquePtr req,
-      SerializedRequest&& serializedRequest,
+      SerializedCompressedRequest&& serializedRequest,
       Cpp2RequestContext* ctx,
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
-      concurrency::PRIORITY pri,
       RpcKind kind,
       ProcessFunc<ChildType> processFunc,
       ChildType* childClass,
@@ -249,7 +333,7 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
   bool createInteraction(
       ResponseChannelRequest::UniquePtr& req,
       int64_t id,
-      const std::string& name,
+      std::string&& name,
       Cpp2RequestContext& ctx,
       concurrency::ThreadManager* tm,
       folly::EventBase& eb,
@@ -260,19 +344,41 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
 
  public:
   void terminateInteraction(
-      int64_t id,
-      Cpp2ConnContext& conn,
-      folly::EventBase&) noexcept final;
+      int64_t id, Cpp2ConnContext& conn, folly::EventBase&) noexcept final;
   void destroyAllInteractions(
-      Cpp2ConnContext& conn,
-      concurrency::ThreadManager& tm,
-      folly::EventBase&) noexcept final;
+      Cpp2ConnContext& conn, folly::EventBase&) noexcept final;
 };
 
-class AsyncProcessorFactory {
+template <typename ChildType>
+class RequestTask final : public EventTask {
  public:
-  virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
-  virtual ~AsyncProcessorFactory() = default;
+  RequestTask(
+      ResponseChannelRequest::UniquePtr req,
+      SerializedCompressedRequest&& serializedRequest,
+      folly::EventBase* eb,
+      concurrency::ThreadManager* tm,
+      Cpp2RequestContext* ctx,
+      bool oneway,
+      ChildType* childClass,
+      GeneratedAsyncProcessor::ProcessFunc<ChildType> processFunc)
+      : EventTask(
+            std::move(req), std::move(serializedRequest), eb, tm, ctx, oneway),
+        childClass_(childClass),
+        processFunc_(processFunc) {}
+
+  void run() override {
+    if (ctx_->getTimestamps().getSamplingStatus().isEnabled()) {
+      // Since this request was queued, reset the processBegin
+      // time to the actual start time, and not the queue time.
+      ctx_->getTimestamps().processBegin = std::chrono::steady_clock::now();
+    }
+    (childClass_->*processFunc_)(
+        std::move(req_), std::move(serializedRequest_), ctx_, eb_, tm_);
+  }
+
+ private:
+  ChildType* childClass_;
+  GeneratedAsyncProcessor::ProcessFunc<ChildType> processFunc_;
 };
 
 /**
@@ -293,15 +399,11 @@ class RequestParams {
   RequestParams(const RequestParams&) = default;
   RequestParams& operator=(const RequestParams&) = default;
 
-  Cpp2RequestContext* getRequestContext() const {
-    return requestContext_;
-  }
+  Cpp2RequestContext* getRequestContext() const { return requestContext_; }
   concurrency::ThreadManager* getThreadManager() const {
     return threadManager_;
   }
-  folly::EventBase* getEventBase() const {
-    return eventBase_;
-  }
+  folly::EventBase* getEventBase() const { return eventBase_; }
 
  private:
   friend class ServerInterface;
@@ -311,13 +413,36 @@ class RequestParams {
   folly::EventBase* eventBase_;
 };
 
-class ServerInterface : public AsyncProcessorFactory {
+class ServiceHandler {
  public:
-  Cpp2RequestContext* getConnectionContext() const {
+  virtual folly::SemiFuture<folly::Unit> semifuture_onStartServing() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_onStopServing() = 0;
+
+  virtual ~ServiceHandler() = default;
+};
+
+class ServerInterface : public virtual AsyncProcessorFactory,
+                        public ServiceHandler {
+ public:
+  ServerInterface() = default;
+  ServerInterface(const ServerInterface&) = delete;
+  ServerInterface& operator=(const ServerInterface&) = delete;
+
+  [[deprecated("Replaced by getRequestContext")]] Cpp2RequestContext*
+  getConnectionContext() const {
     return requestParams_.requestContext_;
   }
 
-  void setConnectionContext(Cpp2RequestContext* c) {
+  Cpp2RequestContext* getRequestContext() const {
+    return requestParams_.requestContext_;
+  }
+
+  [[deprecated("Replaced by setRequestContext")]] void setConnectionContext(
+      Cpp2RequestContext* c) {
+    requestParams_.requestContext_ = c;
+  }
+
+  void setRequestContext(Cpp2RequestContext* c) {
     requestParams_.requestContext_ = c;
   }
 
@@ -340,25 +465,55 @@ class ServerInterface : public AsyncProcessorFactory {
 
   void setEventBase(folly::EventBase* eb);
 
-  folly::EventBase* getEventBase() {
-    return requestParams_.eventBase_;
-  }
+  folly::EventBase* getEventBase() { return requestParams_.eventBase_; }
 
-  /**
-   * Override to return a pre-initialized RequestContext.
-   * Its content will be copied in the RequestContext initialized at
-   * the beginning of each thrift request processing.
-   */
-  virtual std::shared_ptr<folly::RequestContext> getBaseContextForRequest() {
-    return nullptr;
-  }
+  void clearRequestParams() { requestParams_ = RequestParams(); }
 
   virtual concurrency::PRIORITY getRequestPriority(
-      Cpp2RequestContext* ctx,
-      concurrency::PRIORITY prio);
+      Cpp2RequestContext* ctx, concurrency::PRIORITY prio);
+  // TODO: replace with getRequestExecutionScope.
   concurrency::PRIORITY getRequestPriority(Cpp2RequestContext* ctx) {
     return getRequestPriority(ctx, concurrency::NORMAL);
   }
+
+  virtual concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
+      Cpp2RequestContext* ctx, concurrency::PRIORITY defaultPriority) {
+    concurrency::ThreadManager::ExecutionScope es(
+        getRequestPriority(ctx, defaultPriority));
+    return es;
+  }
+  concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
+      Cpp2RequestContext* ctx) {
+    return getRequestExecutionScope(ctx, concurrency::NORMAL);
+  }
+
+  folly::SemiFuture<folly::Unit> semifuture_onStartServing() override {
+    return folly::makeSemiFuture();
+  }
+  folly::SemiFuture<folly::Unit> semifuture_onStopServing() override {
+    return folly::makeSemiFuture();
+  }
+
+  std::vector<ServiceHandler*> getServiceHandlers() override { return {this}; }
+
+  /**
+   * The concrete instance of MethodMetadata that generated AsyncProcessors
+   * expect will be passed to them. Therefore, generated service handlers will
+   * also create instances of these for entries in
+   * AsyncProcessorFactory::createMethodMetadata.
+   */
+  template <typename Processor>
+  struct GeneratedMethodMetadata final
+      : public AsyncProcessorFactory::MethodMetadata {
+    explicit GeneratedMethodMetadata(
+        GeneratedAsyncProcessor::ProcessFuncs<Processor> funcs)
+        : processFuncs(funcs) {}
+
+    GeneratedAsyncProcessor::ProcessFuncs<Processor> processFuncs;
+  };
+
+ protected:
+  folly::Executor::KeepAlive<> getInternalKeepAlive();
 
  private:
   class BlockingThreadManager : public folly::Executor {
@@ -404,6 +559,14 @@ class ServerInterface : public AsyncProcessorFactory {
  * client will likely get confused with multiple response messages.
  */
 class HandlerCallbackBase {
+ private:
+  IOWorkerContext::ReplyQueue& getReplyQueue() {
+    auto worker = reinterpret_cast<IOWorkerContext*>(
+        const_cast<Cpp2Worker*>(reqCtx_->getConnectionContext()->getWorker()));
+    DCHECK(worker != nullptr);
+    return worker->getReplyQueue();
+  }
+
  protected:
   using exnw_ptr = void (*)(
       ResponseChannelRequest::UniquePtr,
@@ -423,10 +586,10 @@ class HandlerCallbackBase {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx,
-      Tile* interaction = nullptr)
+      TilePtr&& interaction = {})
       : req_(std::move(req)),
         ctx_(std::move(ctx)),
-        interaction_(interaction),
+        interaction_(std::move(interaction)),
         ewp_(ewp),
         eb_(eb),
         tm_(tm),
@@ -435,13 +598,14 @@ class HandlerCallbackBase {
 
   virtual ~HandlerCallbackBase();
 
-  void exception(std::exception_ptr ex) {
-    doException(ex);
-  }
+  static void releaseRequest(
+      ResponseChannelRequest::UniquePtr request,
+      folly::EventBase* eb,
+      TilePtr&& interaction = {});
 
-  void exception(folly::exception_wrapper ew) {
-    doExceptionWrapped(ew);
-  }
+  void exception(std::exception_ptr ex) { doException(ex); }
+
+  void exception(folly::exception_wrapper ew) { doExceptionWrapped(ew); }
 
   // Warning: just like "throw ex", this captures the STATIC type of ex, not
   // the dynamic type.  If you need the dynamic type, then either you should
@@ -462,14 +626,12 @@ class HandlerCallbackBase {
 
   concurrency::ThreadManager* getThreadManager();
 
-  Cpp2RequestContext* getConnectionContext() {
+  [[deprecated("Replaced by getRequestContext")]] Cpp2RequestContext*
+  getConnectionContext() {
     return reqCtx_;
   }
 
-  // pointer is valid until any of the finishing functions is called
-  Tile* getInteraction() {
-    return interaction_;
-  }
+  Cpp2RequestContext* getRequestContext() { return reqCtx_; }
 
   bool isRequestActive() {
     // If req_ is nullptr probably it is not managed by this HandlerCallback
@@ -477,12 +639,12 @@ class HandlerCallbackBase {
     return !req_ || req_->isActive();
   }
 
-  ResponseChannelRequest* getRequest() {
-    return req_.get();
-  }
+  ResponseChannelRequest* getRequest() { return req_.get(); }
 
   template <class F>
   void runFuncInQueue(F&& func, bool oneway = false);
+
+  folly::Executor::KeepAlive<> getInternalKeepAlive();
 
  protected:
   // HACK(tudorb): Call this to set up forwarding to the event base and
@@ -491,13 +653,16 @@ class HandlerCallbackBase {
   // pre- / post-processing).
   void forward(const HandlerCallbackBase& other);
 
-  folly::Optional<uint32_t> checksumIfNeeded(folly::IOBufQueue& queue);
+  folly::Optional<uint32_t> checksumIfNeeded(
+      LegacySerializedResponse& response);
 
-  virtual void transform(folly::IOBufQueue& queue);
+  folly::Optional<uint32_t> checksumIfNeeded(SerializedResponse& response);
+
+  virtual void transform(LegacySerializedResponse& reponse);
 
   // Can be called from IO or TM thread
   virtual void doException(std::exception_ptr ex) {
-    doExceptionWrapped(folly::exception_wrapper::from_exception_ptr(ex));
+    doExceptionWrapped(folly::exception_wrapper(ex));
   }
 
   virtual void doExceptionWrapped(folly::exception_wrapper ew);
@@ -506,12 +671,11 @@ class HandlerCallbackBase {
   template <typename F, typename T>
   void callExceptionInEventBaseThread(F&& f, T&& ex);
 
-  void sendReply(folly::IOBufQueue queue);
-  void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
+  template <typename Reply, typename... A>
+  void putMessageInReplyQueue(std::in_place_type_t<Reply> tag, A&&... a);
 
-  // Must be called from IO thread
-  static void releaseInteraction(Tile* interaction, folly::EventBase* eb);
-  void releaseInteractionInstance();
+  void sendReply(LegacySerializedResponse response);
+  void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
 
 #if !FOLLY_HAS_COROUTINES
   [[noreturn]]
@@ -519,13 +683,13 @@ class HandlerCallbackBase {
   void
   sendReply(
       FOLLY_MAYBE_UNUSED std::pair<
-          folly::IOBufQueue,
+          apache::thrift::LegacySerializedResponse,
           apache::thrift::detail::SinkConsumerImpl>&& responseAndSinkConsumer);
 
   // Required for this call
   ResponseChannelRequest::UniquePtr req_;
   std::unique_ptr<ContextStack> ctx_;
-  Tile* interaction_{nullptr};
+  TilePtr interaction_;
 
   // May be null in a oneway call
   exnw_ptr ewp_;
@@ -560,11 +724,9 @@ class HandlerCallback : public HandlerCallbackBase {
       concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx,
       folly::Executor::KeepAlive<> streamEx = nullptr,
-      Tile* interaction = nullptr);
+      TilePtr&& interaction = {});
 
-  void result(InputType r) {
-    doResult(std::forward<InputType>(r));
-  }
+  void result(InputType r) { doResult(std::forward<InputType>(r)); }
   void result(std::unique_ptr<ResultType> r);
 
   void complete(folly::Try<T>&& r);
@@ -578,7 +740,8 @@ class HandlerCallback : public HandlerCallbackBase {
 
 template <>
 class HandlerCallback<void> : public HandlerCallbackBase {
-  using cob_ptr = folly::IOBufQueue (*)(int32_t protoSeqId, ContextStack*);
+  using cob_ptr =
+      LegacySerializedResponse (*)(int32_t protoSeqId, ContextStack*);
 
  public:
   using ResultType = void;
@@ -594,11 +757,9 @@ class HandlerCallback<void> : public HandlerCallbackBase {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm,
       Cpp2RequestContext* reqCtx,
-      Tile* interaction = nullptr);
+      TilePtr&& interaction = {});
 
-  void done() {
-    doDone();
-  }
+  void done() { doDone(); }
 
   void complete(folly::Try<folly::Unit>&& r);
 
@@ -620,20 +781,33 @@ void GeneratedAsyncProcessor::deserializeRequest(
     ContextStack* c) {
   ProtocolIn iprot;
   iprot.setInput(serializedRequest.buffer.get());
-  c->preRead();
+  if (c) {
+    c->preRead();
+  }
   SerializedMessage smsg;
   smsg.protocolType = iprot.protocolType();
   smsg.buffer = serializedRequest.buffer.get();
   smsg.methodName = methodName;
-  c->onReadData(smsg);
-  uint32_t bytes =
-      apache::thrift::detail::deserializeRequestBody(&iprot, &args);
-  iprot.readMessageEnd();
-  c->postRead(nullptr, bytes);
+  if (c) {
+    c->onReadData(smsg);
+  }
+  uint32_t bytes = 0;
+  try {
+    bytes = apache::thrift::detail::deserializeRequestBody(&iprot, &args);
+    iprot.readMessageEnd();
+  } catch (const std::exception& ex) {
+    throw RequestParsingError(ex.what());
+  } catch (...) {
+    throw RequestParsingError(
+        folly::exceptionStr(std::current_exception()).toStdString());
+  }
+  if (c) {
+    c->postRead(nullptr, bytes);
+  }
 }
 
 template <typename ProtocolOut, typename Result>
-folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
+LegacySerializedResponse GeneratedAsyncProcessor::serializeLegacyResponse(
     const char* method,
     ProtocolOut* prot,
     int32_t protoSeqId,
@@ -651,83 +825,61 @@ folly::IOBufQueue GeneratedAsyncProcessor::serializeResponse(
   queue.append(std::move(buf));
 
   prot->setOutput(&queue, bufSize);
-  ctx->preWrite();
-  prot->writeMessageBegin(method, T_REPLY, protoSeqId);
+  if (ctx) {
+    ctx->preWrite();
+  }
+  prot->writeMessageBegin(method, MessageType::T_REPLY, protoSeqId);
   apache::thrift::detail::serializeResponseBody(prot, &result);
   prot->writeMessageEnd();
   SerializedMessage smsg;
   smsg.protocolType = prot->protocolType();
   smsg.buffer = queue.front();
-  ctx->onWriteData(smsg);
+  if (ctx) {
+    ctx->onWriteData(smsg);
+  }
   DCHECK_LE(
       queue.chainLength(),
       static_cast<size_t>(std::numeric_limits<int>::max()));
-  ctx->postWrite(folly::to_narrow(queue.chainLength()));
-  return queue;
+  if (ctx) {
+    ctx->postWrite(folly::to_narrow(queue.chainLength()));
+  }
+  return LegacySerializedResponse{queue.move()};
 }
 
 template <typename ChildType>
-std::shared_ptr<EventTask> GeneratedAsyncProcessor::makeEventTaskForRequest(
+std::unique_ptr<concurrency::Runnable>
+GeneratedAsyncProcessor::makeEventTaskForRequest(
     ResponseChannelRequest::UniquePtr req,
-    SerializedRequest&& serializedRequest,
+    SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
-    concurrency::PRIORITY pri,
     RpcKind kind,
     ProcessFunc<ChildType> processFunc,
     ChildType* childClass,
     Tile* tile) {
-  auto taskFn = [=, serializedRequest = std::move(serializedRequest)](
-                    ResponseChannelRequest::UniquePtr rq) mutable {
-    if (ctx->getTimestamps().getSamplingStatus().isEnabled()) {
-      // Since this request was queued, reset the processBegin
-      // time to the actual start time, and not the queue time.
-      ctx->getTimestamps().processBegin = std::chrono::steady_clock::now();
-    }
-    // Oneway request won't be canceled if expired. see
-    // D1006482 for furhter details.  TODO: fix this
-    if (kind != RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
-      if (!rq->isActive()) {
-        eb->runInEventBaseThread(
-            [rq = std::move(rq)]() mutable { rq.reset(); });
-        return;
-      }
-    }
-    (childClass->*processFunc)(
-        std::move(rq), std::move(serializedRequest), ctx, eb, tm);
-  };
-
-  if (!tile) {
-    return std::make_shared<PriorityEventTask>(
-        pri,
-        std::move(taskFn),
-        std::move(req),
-        eb,
-        kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE);
-  }
-
-  return std::make_shared<InteractionEventTask>(
-      pri,
-      [=, taskFn = std::move(taskFn)](
-          ResponseChannelRequest::UniquePtr rq, Tile& tileRef) mutable {
-        ctx->setTile(tileRef);
-        taskFn(std::move(rq));
-      },
+  auto task = std::make_unique<RequestTask<ChildType>>(
       std::move(req),
+      std::move(serializedRequest),
       eb,
+      tm,
+      ctx,
       kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE,
-      tile);
+      childClass,
+      processFunc);
+  if (tile) {
+    task->setTile({tile, eb});
+  }
+  return task;
 }
 
 template <typename ChildType>
 void GeneratedAsyncProcessor::processInThread(
     ResponseChannelRequest::UniquePtr req,
-    SerializedRequest&& serializedRequest,
+    SerializedCompressedRequest&& serializedRequest,
     Cpp2RequestContext* ctx,
     folly::EventBase* eb,
     concurrency::ThreadManager* tm,
-    concurrency::PRIORITY pri,
     RpcKind kind,
     ProcessFunc<ChildType> processFunc,
     ChildType* childClass) {
@@ -742,34 +894,31 @@ void GeneratedAsyncProcessor::processInThread(
           kInteractionIdUnknownErrorCode);
       return;
     }
-
-    tile->__fbthrift_acquireRef(*eb);
   }
 
+  auto scope = ctx->getRequestExecutionScope();
   auto task = makeEventTaskForRequest(
       std::move(req),
       std::move(serializedRequest),
       ctx,
       eb,
       tm,
-      pri,
       kind,
       processFunc,
       childClass,
       tile);
 
-  if (tile && tile->__fbthrift_isPromise()) {
-    static_cast<TilePromise*>(tile)->addContinuation(std::move(task));
+  if (tile && tile->__fbthrift_maybeEnqueue(std::move(task), scope)) {
     return;
   }
 
-  tm->add(
-      std::move(task),
-      0, // timeout
-      0, // expiration
-      tile && !ctx->getInteractionCreate()
-          ? concurrency::ThreadManager::Source::EXISTING_INTERACTION
-          : concurrency::ThreadManager::Source::UPSTREAM);
+  using Source = concurrency::ThreadManager::Source;
+  auto source = tile && !ctx->getInteractionCreate()
+      ? Source::EXISTING_INTERACTION
+      : Source::UPSTREAM;
+  tm->getKeepAlive(std::move(scope), source)->add([task = std::move(task)] {
+    task->run();
+  });
 }
 
 template <class F>
@@ -789,22 +938,34 @@ void HandlerCallbackBase::callExceptionInEventBaseThread(F&& f, T&& ex) {
     return;
   }
   if (getEventBase()->isInEventBaseThread()) {
-    releaseInteractionInstance();
     f(std::exchange(req_, {}), protoSeqId_, ctx_.get(), ex, reqCtx_);
     ctx_.reset();
   } else {
-    getEventBase()->runInEventBaseThread(
-        [f = std::forward<F>(f),
-         req = std::move(req_),
-         protoSeqId = protoSeqId_,
-         ctx = std::move(ctx_),
-         ex = std::forward<T>(ex),
-         reqCtx = reqCtx_,
-         interaction = std::exchange(interaction_, nullptr),
-         eb = getEventBase()]() mutable {
-          releaseInteraction(interaction, eb);
-          f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
-        });
+    getEventBase()->runInEventBaseThread([f = std::forward<F>(f),
+                                          req = std::move(req_),
+                                          protoSeqId = protoSeqId_,
+                                          ctx = std::move(ctx_),
+                                          ex = std::forward<T>(ex),
+                                          reqCtx = reqCtx_,
+                                          interaction = std::move(interaction_),
+                                          eb = getEventBase()]() mutable {
+      f(std::move(req), protoSeqId, ctx.get(), ex, reqCtx);
+    });
+  }
+}
+
+template <typename Reply, typename... A>
+void HandlerCallbackBase::putMessageInReplyQueue(
+    std::in_place_type_t<Reply> tag, A&&... a) {
+  if constexpr (folly::kIsWindows) {
+    // TODO(T88449658): We are seeing performance regression on Windows if we
+    // use the reply queue. The exact cause is under investigation. Before it is
+    // fixed, we can use the default EventBase queue on Windows for now.
+    auto eb = getEventBase();
+    eb->runInEventBaseThread(
+        [eb, reply = Reply(static_cast<A&&>(a)...)]() mutable { reply(*eb); });
+  } else {
+    getReplyQueue().putMessage(tag, static_cast<A&&>(a)...);
   }
 }
 
@@ -819,7 +980,7 @@ HandlerCallback<T>::HandlerCallback(
     concurrency::ThreadManager* tm,
     Cpp2RequestContext* reqCtx,
     folly::Executor::KeepAlive<> streamEx,
-    Tile* interaction)
+    TilePtr&& interaction)
     : HandlerCallbackBase(
           std::move(req),
           std::move(ctx),
@@ -827,7 +988,7 @@ HandlerCallback<T>::HandlerCallback(
           eb,
           tm,
           reqCtx,
-          interaction),
+          std::move(interaction)),
       cp_(cp),
       streamEx_(std::move(streamEx)) {
   this->protoSeqId_ = protoSeqId;
@@ -879,21 +1040,21 @@ struct inner_type<std::unique_ptr<S>> {
 template <typename T>
 struct HandlerCallbackHelper {
   using InputType = const typename apache::thrift::detail::inner_type<T>::type&;
-  using CobPtr =
-      folly::IOBufQueue (*)(int32_t protoSeqId, ContextStack*, InputType);
-  static folly::IOBufQueue call(
+  using CobPtr = apache::thrift::LegacySerializedResponse (*)(
+      int32_t protoSeqId, ContextStack*, InputType);
+  static apache::thrift::LegacySerializedResponse call(
       CobPtr cob,
       int32_t protoSeqId,
       ContextStack* ctx,
       folly::Executor::KeepAlive<>,
       InputType input) {
-    return cob(protoSeqId, ctx, std::move(input));
+    return cob(protoSeqId, ctx, input);
   }
 };
 
 template <typename StreamInputType>
 struct HandlerCallbackHelperServerStream {
-  using InputType = StreamInputType;
+  using InputType = StreamInputType&&;
   using CobPtr = ResponseAndServerStreamFactory (*)(
       int32_t protoSeqId,
       ContextStack*,
@@ -920,12 +1081,12 @@ struct HandlerCallbackHelper<ServerStream<StreamItem>>
 
 template <typename SinkInputType>
 struct HandlerCallbackHelperSink {
-  using InputType = SinkInputType;
-  using CobPtr = std::pair<folly::IOBufQueue, SinkConsumerImpl> (*)(
-      ContextStack*,
-      InputType&&,
-      folly::Executor::KeepAlive<>);
-  static std::pair<folly::IOBufQueue, SinkConsumerImpl> call(
+  using InputType = SinkInputType&&;
+  using CobPtr =
+      std::pair<apache::thrift::LegacySerializedResponse, SinkConsumerImpl> (*)(
+          ContextStack*, InputType, folly::Executor::KeepAlive<>);
+  static std::pair<apache::thrift::LegacySerializedResponse, SinkConsumerImpl>
+  call(
       CobPtr cob,
       int32_t,
       ContextStack* ctx,

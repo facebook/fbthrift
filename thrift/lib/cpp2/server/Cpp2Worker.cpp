@@ -16,8 +16,11 @@
 
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 
+#include <vector>
+
 #include <glog/logging.h>
 
+#include <folly/Overload.h>
 #include <folly/String.h>
 #include <folly/io/async/AsyncSSLSocket.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -25,6 +28,7 @@
 #include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/async/TAsyncSSLSocket.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
+#include <thrift/lib/cpp2/async/ResponseChannel.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
@@ -45,7 +49,7 @@ using std::shared_ptr;
 
 namespace {
 folly::LeakySingleton<folly::EventBaseLocal<RequestsRegistry>> registry;
-}
+} // namespace
 
 void Cpp2Worker::initRequestsRegistry() {
   auto* evb = getEventBase();
@@ -55,7 +59,7 @@ void Cpp2Worker::initRequestsRegistry() {
   std::weak_ptr<Cpp2Worker> self_weak = shared_from_this();
   evb->runInEventBaseThread([=, self_weak = std::move(self_weak)]() {
     if (auto self = self_weak.lock()) {
-      self->requestsRegistry_ = &registry.get().getOrCreate(
+      self->requestsRegistry_ = &registry.get().try_emplace(
           *evb, memPerReq, memPerWorker, maxFinished);
     }
   });
@@ -123,9 +127,6 @@ void Cpp2Worker::onNewConnection(
         handleHeader(std::move(sock), addr);
       }
       break;
-    case wangle::SecureTransportType::ZERO:
-      LOG(ERROR) << "Unsupported Secure Transport Type: ZERO";
-      break;
     default:
       LOG(ERROR) << "Unsupported Secure Transport Type";
       break;
@@ -133,8 +134,7 @@ void Cpp2Worker::onNewConnection(
 }
 
 void Cpp2Worker::handleHeader(
-    folly::AsyncTransport::UniquePtr sock,
-    const folly::SocketAddress* addr) {
+    folly::AsyncTransport::UniquePtr sock, const folly::SocketAddress* addr) {
   auto fd = sock->getUnderlyingTransport<folly::AsyncSocket>()
                 ->getNetworkSocket()
                 .toFd();
@@ -145,12 +145,6 @@ void Cpp2Worker::handleHeader(
       std::move(thriftTransport), addr, shared_from_this(), nullptr);
   Acceptor::addConnection(connection.get());
   connection->addConnection(connection);
-  // set compression algorithm to be used on this connection
-  auto compression = fizzPeeker_.getNegotiatedParameters().compression;
-  if (compression != CompressionAlgorithm::NONE) {
-    connection->setNegotiatedCompressionAlgorithm(compression);
-  }
-
   connection->start();
 
   VLOG(4) << "Cpp2Worker: created connection for socket " << fd;
@@ -294,8 +288,7 @@ wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::createSSLHelper(
 }
 
 bool Cpp2Worker::shouldPerformSSL(
-    const std::vector<uint8_t>& bytes,
-    const folly::SocketAddress& clientAddr) {
+    const std::vector<uint8_t>& bytes, const folly::SocketAddress& clientAddr) {
   auto sslPolicy = getSSLPolicy();
   if (sslPolicy == SSLPolicy::REQUIRED) {
     if (isPlaintextAllowedOnLoopback()) {
@@ -338,32 +331,23 @@ wangle::AcceptorHandshakeHelper::UniquePtr Cpp2Worker::getHelper(
     return wangle::AcceptorHandshakeHelper::UniquePtr(
         new wangle::UnencryptedAcceptorHandshakeHelper());
   }
-
-  auto sslAcceptor = createSSLHelper(bytes, clientAddr, acceptTime, ti);
-
-  // If we have a nonzero dedicated ssl handshake pool, offload the SSL
-  // handshakes with EvbHandshakeHelper.
-  if (server_->sslHandshakePool_->numThreads() > 0) {
-    return wangle::EvbHandshakeHelper::UniquePtr(new wangle::EvbHandshakeHelper(
-        std::move(sslAcceptor), server_->sslHandshakePool_->getEventBase()));
-  } else {
-    return sslAcceptor;
-  }
+  return createSSLHelper(bytes, clientAddr, acceptTime, ti);
 }
 
 void Cpp2Worker::requestStop() {
   getEventBase()->runInEventBaseThreadAndWait([&] {
-    if (stopping_) {
+    if (isStopping()) {
       return;
     }
-    stopping_ = true;
+    cancelQueuedRequests();
+    stopping_.store(true, std::memory_order_relaxed);
     if (activeRequests_ == 0) {
       stopBaton_.post();
     }
   });
 }
 
-bool Cpp2Worker::waitForStop(std::chrono::system_clock::time_point deadline) {
+bool Cpp2Worker::waitForStop(std::chrono::steady_clock::time_point deadline) {
   if (!stopBaton_.try_wait_until(deadline)) {
     LOG(ERROR) << "Failed to join outstanding requests.";
     return false;
@@ -371,10 +355,63 @@ bool Cpp2Worker::waitForStop(std::chrono::system_clock::time_point deadline) {
   return true;
 }
 
+void Cpp2Worker::cancelQueuedRequests() {
+  auto eb = getEventBase();
+  eb->dcheckIsInEventBaseThread();
+  for (auto& stub : requestsRegistry_->getActive()) {
+    if (stub.stateMachine_.isActive() &&
+        stub.stateMachine_.tryStopProcessing()) {
+      stub.req_->sendQueueTimeoutResponse();
+    }
+  }
+}
+
 Cpp2Worker::ActiveRequestsGuard Cpp2Worker::getActiveRequestsGuard() {
-  DCHECK(!stopping_ || activeRequests_);
+  DCHECK(!isStopping() || activeRequests_);
   ++activeRequests_;
   return Cpp2Worker::ActiveRequestsGuard(this);
 }
+
+Cpp2Worker::PerServiceMetadata::FindMethodResult
+Cpp2Worker::PerServiceMetadata::findMethod(std::string_view methodName) const {
+  static const auto& wildcardMethodMetadata =
+      *new AsyncProcessorFactory::WildcardMethodMetadata{};
+
+  return folly::variant_match(
+      methods_,
+      [](AsyncProcessorFactory::MetadataNotImplemented) -> FindMethodResult {
+        return MetadataNotImplemented{};
+      },
+      [&](const AsyncProcessorFactory::MethodMetadataMap& map)
+          -> FindMethodResult {
+        if (auto* m = folly::get_ptr(map, methodName)) {
+          DCHECK(m->get());
+          return MetadataFound{**m};
+        }
+        return MetadataNotFound{};
+      },
+      [&](const AsyncProcessorFactory::WildcardMethodMetadataMap& wildcard)
+          -> FindMethodResult {
+        if (auto* m = folly::get_ptr(wildcard.knownMethods, methodName)) {
+          DCHECK(m->get());
+          return MetadataFound{**m};
+        }
+        return MetadataFound{wildcardMethodMetadata};
+      });
+}
+
+std::shared_ptr<folly::RequestContext>
+Cpp2Worker::PerServiceMetadata::getBaseContextForRequest(
+    const Cpp2Worker::PerServiceMetadata::FindMethodResult& findMethodResult)
+    const {
+  using Result = std::shared_ptr<folly::RequestContext>;
+  return folly::variant_match(
+      findMethodResult,
+      [&](const PerServiceMetadata::MetadataFound& found) -> Result {
+        return processorFactory_.getBaseContextForRequest(found.metadata);
+      },
+      [](auto&&) -> Result { return nullptr; });
+}
+
 } // namespace thrift
 } // namespace apache

@@ -40,6 +40,18 @@ var MyEnumToValue = map[string]MyEnum {
   "DOMAIN": MyEnum_DOMAIN,
 }
 
+var MyEnumNames = []string {
+  "MyValue1",
+  "MyValue2",
+  "DOMAIN",
+}
+
+var MyEnumValues = []MyEnum {
+  MyEnum_MyValue1,
+  MyEnum_MyValue2,
+  MyEnum_DOMAIN,
+}
+
 func (p MyEnum) String() string {
   if v, ok := MyEnumToName[p]; ok {
     return v
@@ -70,6 +82,32 @@ func NewMyStructNestedAnnotation() *MyStructNestedAnnotation {
 func (p *MyStructNestedAnnotation) GetName() string {
   return p.Name
 }
+type MyStructNestedAnnotationBuilder struct {
+  obj *MyStructNestedAnnotation
+}
+
+func NewMyStructNestedAnnotationBuilder() *MyStructNestedAnnotationBuilder{
+  return &MyStructNestedAnnotationBuilder{
+    obj: NewMyStructNestedAnnotation(),
+  }
+}
+
+func (p MyStructNestedAnnotationBuilder) Emit() *MyStructNestedAnnotation{
+  return &MyStructNestedAnnotation{
+    Name: p.obj.Name,
+  }
+}
+
+func (m *MyStructNestedAnnotationBuilder) Name(name string) *MyStructNestedAnnotationBuilder {
+  m.obj.Name = name
+  return m
+}
+
+func (m *MyStructNestedAnnotation) SetName(name string) *MyStructNestedAnnotation {
+  m.Name = name
+  return m
+}
+
 func (p *MyStructNestedAnnotation) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -104,10 +142,10 @@ func (p *MyStructNestedAnnotation) Read(iprot thrift.Protocol) error {
 
 func (p *MyStructNestedAnnotation)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Name = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Name = v
+  }
   return nil
 }
 
@@ -139,212 +177,6 @@ func (p *MyStructNestedAnnotation) String() string {
 
   nameVal := fmt.Sprintf("%v", p.Name)
   return fmt.Sprintf("MyStructNestedAnnotation({Name:%s})", nameVal)
-}
-
-// Attributes:
-//  - Count
-//  - Name
-//  - Extra
-//  - Nest
-type MyStructAnnotation struct {
-  Count int64 `thrift:"count,1" db:"count" json:"count"`
-  Name string `thrift:"name,2" db:"name" json:"name"`
-  Extra *string `thrift:"extra,3" db:"extra" json:"extra,omitempty"`
-  Nest *MyStructNestedAnnotation `thrift:"nest,4" db:"nest" json:"nest"`
-}
-
-func NewMyStructAnnotation() *MyStructAnnotation {
-  return &MyStructAnnotation{
-Nest: NewMyStructNestedAnnotation(),
-}
-}
-
-
-func (p *MyStructAnnotation) GetCount() int64 {
-  return p.Count
-}
-
-func (p *MyStructAnnotation) GetName() string {
-  return p.Name
-}
-var MyStructAnnotation_Extra_DEFAULT string
-func (p *MyStructAnnotation) GetExtra() string {
-  if !p.IsSetExtra() {
-    return MyStructAnnotation_Extra_DEFAULT
-  }
-return *p.Extra
-}
-var MyStructAnnotation_Nest_DEFAULT *MyStructNestedAnnotation
-func (p *MyStructAnnotation) GetNest() *MyStructNestedAnnotation {
-  if !p.IsSetNest() {
-    return MyStructAnnotation_Nest_DEFAULT
-  }
-return p.Nest
-}
-func (p *MyStructAnnotation) IsSetExtra() bool {
-  return p != nil && p.Extra != nil
-}
-
-func (p *MyStructAnnotation) IsSetNest() bool {
-  return p != nil && p.Nest != nil
-}
-
-func (p *MyStructAnnotation) Read(iprot thrift.Protocol) error {
-  if _, err := iprot.ReadStructBegin(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
-  }
-
-
-  for {
-    _, fieldTypeId, fieldId, err := iprot.ReadFieldBegin()
-    if err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T field %d read error: ", p, fieldId), err)
-    }
-    if fieldTypeId == thrift.STOP { break; }
-    switch fieldId {
-    case 1:
-      if err := p.ReadField1(iprot); err != nil {
-        return err
-      }
-    case 2:
-      if err := p.ReadField2(iprot); err != nil {
-        return err
-      }
-    case 3:
-      if err := p.ReadField3(iprot); err != nil {
-        return err
-      }
-    case 4:
-      if err := p.ReadField4(iprot); err != nil {
-        return err
-      }
-    default:
-      if err := iprot.Skip(fieldTypeId); err != nil {
-        return err
-      }
-    }
-    if err := iprot.ReadFieldEnd(); err != nil {
-      return err
-    }
-  }
-  if err := iprot.ReadStructEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T read struct end error: ", p), err)
-  }
-  return nil
-}
-
-func (p *MyStructAnnotation)  ReadField1(iprot thrift.Protocol) error {
-  if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Count = v
-}
-  return nil
-}
-
-func (p *MyStructAnnotation)  ReadField2(iprot thrift.Protocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Name = v
-}
-  return nil
-}
-
-func (p *MyStructAnnotation)  ReadField3(iprot thrift.Protocol) error {
-  if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
-} else {
-  p.Extra = &v
-}
-  return nil
-}
-
-func (p *MyStructAnnotation)  ReadField4(iprot thrift.Protocol) error {
-  p.Nest = NewMyStructNestedAnnotation()
-  if err := p.Nest.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Nest), err)
-  }
-  return nil
-}
-
-func (p *MyStructAnnotation) Write(oprot thrift.Protocol) error {
-  if err := oprot.WriteStructBegin("MyStructAnnotation"); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
-  if err := p.writeField1(oprot); err != nil { return err }
-  if err := p.writeField2(oprot); err != nil { return err }
-  if err := p.writeField3(oprot); err != nil { return err }
-  if err := p.writeField4(oprot); err != nil { return err }
-  if err := oprot.WriteFieldStop(); err != nil {
-    return thrift.PrependError("write field stop error: ", err) }
-  if err := oprot.WriteStructEnd(); err != nil {
-    return thrift.PrependError("write struct stop error: ", err) }
-  return nil
-}
-
-func (p *MyStructAnnotation) writeField1(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("count", thrift.I64, 1); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 1:count: ", p), err) }
-  if err := oprot.WriteI64(int64(p.Count)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.count (1) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 1:count: ", p), err) }
-  return err
-}
-
-func (p *MyStructAnnotation) writeField2(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("name", thrift.STRING, 2); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:name: ", p), err) }
-  if err := oprot.WriteString(string(p.Name)); err != nil {
-  return thrift.PrependError(fmt.Sprintf("%T.name (2) field write error: ", p), err) }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 2:name: ", p), err) }
-  return err
-}
-
-func (p *MyStructAnnotation) writeField3(oprot thrift.Protocol) (err error) {
-  if p.IsSetExtra() {
-    if err := oprot.WriteFieldBegin("extra", thrift.STRING, 3); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:extra: ", p), err) }
-    if err := oprot.WriteString(string(*p.Extra)); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T.extra (3) field write error: ", p), err) }
-    if err := oprot.WriteFieldEnd(); err != nil {
-      return thrift.PrependError(fmt.Sprintf("%T write field end error 3:extra: ", p), err) }
-  }
-  return err
-}
-
-func (p *MyStructAnnotation) writeField4(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("nest", thrift.STRUCT, 4); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field begin error 4:nest: ", p), err) }
-  if err := p.Nest.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Nest), err)
-  }
-  if err := oprot.WriteFieldEnd(); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T write field end error 4:nest: ", p), err) }
-  return err
-}
-
-func (p *MyStructAnnotation) String() string {
-  if p == nil {
-    return "<nil>"
-  }
-
-  countVal := fmt.Sprintf("%v", p.Count)
-  nameVal := fmt.Sprintf("%v", p.Name)
-  var extraVal string
-  if p.Extra == nil {
-    extraVal = "<nil>"
-  } else {
-    extraVal = fmt.Sprintf("%v", *p.Extra)
-  }
-  var nestVal string
-  if p.Nest == nil {
-    nestVal = "<nil>"
-  } else {
-    nestVal = fmt.Sprintf("%v", p.Nest)
-  }
-  return fmt.Sprintf("MyStructAnnotation({Count:%s Name:%s Extra:%s Nest:%s})", countVal, nameVal, extraVal, nestVal)
 }
 
 // Attributes:
@@ -391,6 +223,87 @@ func (p *MyStruct) GetAnnotationWithTrailingComma() string {
 func (p *MyStruct) GetEmptyAnnotations() string {
   return p.EmptyAnnotations
 }
+type MyStructBuilder struct {
+  obj *MyStruct
+}
+
+func NewMyStructBuilder() *MyStructBuilder{
+  return &MyStructBuilder{
+    obj: NewMyStruct(),
+  }
+}
+
+func (p MyStructBuilder) Emit() *MyStruct{
+  return &MyStruct{
+    Major: p.obj.Major,
+    Package: p.obj.Package,
+    AnnotationWithQuote: p.obj.AnnotationWithQuote,
+    Class_: p.obj.Class_,
+    AnnotationWithTrailingComma: p.obj.AnnotationWithTrailingComma,
+    EmptyAnnotations: p.obj.EmptyAnnotations,
+  }
+}
+
+func (m *MyStructBuilder) Major(major int64) *MyStructBuilder {
+  m.obj.Major = major
+  return m
+}
+
+func (m *MyStructBuilder) Package(package_a1 string) *MyStructBuilder {
+  m.obj.Package = package_a1
+  return m
+}
+
+func (m *MyStructBuilder) AnnotationWithQuote(annotationWithQuote string) *MyStructBuilder {
+  m.obj.AnnotationWithQuote = annotationWithQuote
+  return m
+}
+
+func (m *MyStructBuilder) Class_(class_ string) *MyStructBuilder {
+  m.obj.Class_ = class_
+  return m
+}
+
+func (m *MyStructBuilder) AnnotationWithTrailingComma(annotationWithTrailingComma string) *MyStructBuilder {
+  m.obj.AnnotationWithTrailingComma = annotationWithTrailingComma
+  return m
+}
+
+func (m *MyStructBuilder) EmptyAnnotations(emptyAnnotations string) *MyStructBuilder {
+  m.obj.EmptyAnnotations = emptyAnnotations
+  return m
+}
+
+func (m *MyStruct) SetMajor(major int64) *MyStruct {
+  m.Major = major
+  return m
+}
+
+func (m *MyStruct) SetPackage(package_a1 string) *MyStruct {
+  m.Package = package_a1
+  return m
+}
+
+func (m *MyStruct) SetAnnotationWithQuote(annotationWithQuote string) *MyStruct {
+  m.AnnotationWithQuote = annotationWithQuote
+  return m
+}
+
+func (m *MyStruct) SetClass_(class_ string) *MyStruct {
+  m.Class_ = class_
+  return m
+}
+
+func (m *MyStruct) SetAnnotationWithTrailingComma(annotationWithTrailingComma string) *MyStruct {
+  m.AnnotationWithTrailingComma = annotationWithTrailingComma
+  return m
+}
+
+func (m *MyStruct) SetEmptyAnnotations(emptyAnnotations string) *MyStruct {
+  m.EmptyAnnotations = emptyAnnotations
+  return m
+}
+
 func (p *MyStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -445,55 +358,55 @@ func (p *MyStruct) Read(iprot thrift.Protocol) error {
 
 func (p *MyStruct)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Major = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Major = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Package = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Package = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField3(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 3: ", err)
-} else {
-  p.AnnotationWithQuote = v
-}
+    return thrift.PrependError("error reading field 3: ", err)
+  } else {
+    p.AnnotationWithQuote = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField4(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 4: ", err)
-} else {
-  p.Class_ = v
-}
+    return thrift.PrependError("error reading field 4: ", err)
+  } else {
+    p.Class_ = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField5(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 5: ", err)
-} else {
-  p.AnnotationWithTrailingComma = v
-}
+    return thrift.PrependError("error reading field 5: ", err)
+  } else {
+    p.AnnotationWithTrailingComma = v
+  }
   return nil
 }
 
 func (p *MyStruct)  ReadField6(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 6: ", err)
-} else {
-  p.EmptyAnnotations = v
-}
+    return thrift.PrependError("error reading field 6: ", err)
+  } else {
+    p.EmptyAnnotations = v
+  }
   return nil
 }
 
@@ -607,6 +520,43 @@ func (p *SecretStruct) GetId() int64 {
 func (p *SecretStruct) GetPassword() string {
   return p.Password
 }
+type SecretStructBuilder struct {
+  obj *SecretStruct
+}
+
+func NewSecretStructBuilder() *SecretStructBuilder{
+  return &SecretStructBuilder{
+    obj: NewSecretStruct(),
+  }
+}
+
+func (p SecretStructBuilder) Emit() *SecretStruct{
+  return &SecretStruct{
+    Id: p.obj.Id,
+    Password: p.obj.Password,
+  }
+}
+
+func (s *SecretStructBuilder) Id(id int64) *SecretStructBuilder {
+  s.obj.Id = id
+  return s
+}
+
+func (s *SecretStructBuilder) Password(password string) *SecretStructBuilder {
+  s.obj.Password = password
+  return s
+}
+
+func (s *SecretStruct) SetId(id int64) *SecretStruct {
+  s.Id = id
+  return s
+}
+
+func (s *SecretStruct) SetPassword(password string) *SecretStruct {
+  s.Password = password
+  return s
+}
+
 func (p *SecretStruct) Read(iprot thrift.Protocol) error {
   if _, err := iprot.ReadStructBegin(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T read error: ", p), err)
@@ -645,19 +595,19 @@ func (p *SecretStruct) Read(iprot thrift.Protocol) error {
 
 func (p *SecretStruct)  ReadField1(iprot thrift.Protocol) error {
   if v, err := iprot.ReadI64(); err != nil {
-  return thrift.PrependError("error reading field 1: ", err)
-} else {
-  p.Id = v
-}
+    return thrift.PrependError("error reading field 1: ", err)
+  } else {
+    p.Id = v
+  }
   return nil
 }
 
 func (p *SecretStruct)  ReadField2(iprot thrift.Protocol) error {
   if v, err := iprot.ReadString(); err != nil {
-  return thrift.PrependError("error reading field 2: ", err)
-} else {
-  p.Password = v
-}
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Password = v
+  }
   return nil
 }
 

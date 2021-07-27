@@ -31,16 +31,16 @@ namespace detail {
 
 template <
     typename C,
-    typename T = decltype(
-        std::declval<C&>().push_back(std::declval<typename C::value_type>()))>
+    typename T = decltype(std::declval<C&>().push_back(
+        std::declval<typename C::value_type>()))>
 struct push_back_result {
   using type = T;
 };
 
 template <
     typename C,
-    typename T = decltype(
-        std::declval<C&>().insert(std::declval<typename C::key_type>()))>
+    typename T = decltype(std::declval<C&>().insert(
+        std::declval<typename C::key_type>()))>
 struct insert_key_result {
   using type = T;
 };
@@ -55,8 +55,8 @@ struct subscript_key_result {
 
 template <
     typename C,
-    typename T = decltype(
-        std::declval<C&>().reserve(std::declval<typename C::size_type>()))>
+    typename T = decltype(std::declval<C&>().reserve(
+        std::declval<typename C::size_type>()))>
 struct reserve_result {
   using type = T;
 };
@@ -79,9 +79,7 @@ template <>
 class Cpp2Ops<folly::fbstring> {
  public:
   typedef folly::fbstring Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_STRING;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeString(*value);
@@ -104,9 +102,7 @@ template <>
 class Cpp2Ops<std::string> {
  public:
   typedef std::string Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_STRING;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeString(*value);
@@ -129,9 +125,7 @@ template <>
 class Cpp2Ops<int8_t> {
  public:
   typedef int8_t Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_BYTE;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_BYTE; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeByte(*value);
@@ -154,9 +148,7 @@ template <>
 class Cpp2Ops<int16_t> {
  public:
   typedef int16_t Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_I16;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_I16; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeI16(*value);
@@ -179,9 +171,7 @@ template <>
 class Cpp2Ops<int32_t> {
  public:
   typedef int32_t Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_I32;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_I32; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeI32(*value);
@@ -204,9 +194,7 @@ template <>
 class Cpp2Ops<int64_t> {
  public:
   typedef int64_t Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_I64;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_I64; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeI64(*value);
@@ -230,9 +218,7 @@ class Cpp2Ops<uint8_t> {
  public:
   using Type = uint8_t;
   using SignedType = std::make_signed_t<Type>;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_BYTE;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_BYTE; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeByte(folly::to_signed(*value));
@@ -258,9 +244,7 @@ class Cpp2Ops<uint16_t> {
  public:
   using Type = uint16_t;
   using SignedType = std::make_signed_t<Type>;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_I16;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_I16; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeI16(folly::to_signed(*value));
@@ -286,9 +270,7 @@ class Cpp2Ops<uint32_t> {
  public:
   using Type = uint32_t;
   using SignedType = std::make_signed_t<Type>;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_I32;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_I32; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeI32(folly::to_signed(*value));
@@ -314,9 +296,7 @@ class Cpp2Ops<uint64_t> {
  public:
   using Type = uint64_t;
   using SignedType = std::make_signed_t<Type>;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_I64;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_I64; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeI64(folly::to_signed(*value));
@@ -341,9 +321,7 @@ template <>
 class Cpp2Ops<bool> {
  public:
   typedef bool Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_BOOL;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_BOOL; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeBool(*value);
@@ -366,9 +344,7 @@ template <>
 class Cpp2Ops<double> {
  public:
   typedef double Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_DOUBLE;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_DOUBLE; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeDouble(*value);
@@ -391,9 +367,7 @@ template <class E>
 class Cpp2Ops<E, typename std::enable_if<std::is_enum<E>::value>::type> {
  public:
   typedef E Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_I32;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_I32; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeI32(static_cast<int32_t>(*value));
@@ -418,9 +392,7 @@ template <>
 class Cpp2Ops<float> {
  public:
   typedef float Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_FLOAT;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_FLOAT; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeFloat(*value);
@@ -471,9 +443,7 @@ class Cpp2Ops<
     folly::void_t<typename apache::thrift::detail::push_back_result<L>::type>> {
  public:
   typedef L Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_LIST;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_LIST; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     typedef typename Type::value_type ElemType;
@@ -529,9 +499,7 @@ class Cpp2Ops<
         typename apache::thrift::detail::insert_key_result<S>::type>> {
  public:
   typedef S Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_SET;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_SET; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     typedef typename Type::key_type ElemType;
@@ -591,14 +559,13 @@ class Cpp2Ops<
         typename apache::thrift::detail::subscript_key_result<M>::type>> {
  public:
   typedef M Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_MAP;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_MAP; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     typedef typename Type::key_type KeyType;
-    typedef typename std::remove_cv<typename std::remove_reference<decltype(
-        *value->begin())>::type>::type PairType;
+    typedef typename std::remove_cv<
+        typename std::remove_reference<decltype(*value->begin())>::type>::type
+        PairType;
     typedef typename PairType::second_type ValueType;
     uint32_t xfer = 0;
     xfer += prot->writeMapBegin(
@@ -618,8 +585,9 @@ class Cpp2Ops<
     // We do this dance with decltype rather than just using Type::mapped_type
     // because different map implementations (such as Google's dense_hash_map)
     // call it data_type.
-    typedef typename std::remove_cv<typename std::remove_reference<decltype(
-        *value->begin())>::type>::type PairType;
+    typedef typename std::remove_cv<
+        typename std::remove_reference<decltype(*value->begin())>::type>::type
+        PairType;
     typedef typename PairType::second_type ValueType;
     value->clear();
     uint32_t size;
@@ -637,8 +605,9 @@ class Cpp2Ops<
   template <class Protocol>
   static uint32_t serializedSize(Protocol* prot, const Type* value) {
     typedef typename Type::key_type KeyType;
-    typedef typename std::remove_cv<typename std::remove_reference<decltype(
-        *value->begin())>::type>::type PairType;
+    typedef typename std::remove_cv<
+        typename std::remove_reference<decltype(*value->begin())>::type>::type
+        PairType;
     typedef typename PairType::second_type ValueType;
     uint32_t xfer = 0;
     xfer += prot->serializedSizeMapBegin(
@@ -655,8 +624,9 @@ class Cpp2Ops<
   template <class Protocol>
   static uint32_t serializedSizeZC(Protocol* prot, const Type* value) {
     typedef typename Type::key_type KeyType;
-    typedef typename std::remove_cv<typename std::remove_reference<decltype(
-        *value->begin())>::type>::type PairType;
+    typedef typename std::remove_cv<
+        typename std::remove_reference<decltype(*value->begin())>::type>::type
+        PairType;
     typedef typename PairType::second_type ValueType;
     uint32_t xfer = 0;
     xfer += prot->serializedSizeMapBegin(
@@ -676,9 +646,7 @@ template <>
 class Cpp2Ops<folly::IOBuf> {
  public:
   typedef folly::IOBuf Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_STRING;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeBinary(*value);
@@ -701,9 +669,7 @@ template <>
 class Cpp2Ops<std::unique_ptr<folly::IOBuf>> {
  public:
   typedef std::unique_ptr<folly::IOBuf> Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_STRING;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_STRING; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return prot->writeBinary(*value);
@@ -730,9 +696,7 @@ class Cpp2Ops<
         !folly::is_detected_v<detect_indirection_fn_t, T>>> {
  public:
   typedef T Type;
-  static constexpr protocol::TType thriftType() {
-    return protocol::T_STRUCT;
-  }
+  static constexpr protocol::TType thriftType() { return protocol::T_STRUCT; }
   template <class Protocol>
   static uint32_t write(Protocol* prot, const Type* value) {
     return value->write(prot);
