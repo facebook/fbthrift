@@ -20,6 +20,7 @@
 #include <chrono>
 #include <cstdint>
 #include <memory>
+#include <mutex>
 
 #include <folly/Portability.h>
 
@@ -37,13 +38,10 @@ class Mutex final {
  public:
   Mutex();
 
-  ~Mutex() {}
-  void lock() const;
-  bool trylock() const;
+  void lock();
   bool try_lock();
-  bool timedlock(std::chrono::milliseconds milliseconds) const;
   bool try_lock_for(std::chrono::milliseconds timeout);
-  void unlock() const;
+  void unlock();
 
  private:
   std::shared_ptr<PthreadMutex> impl_;
@@ -52,50 +50,36 @@ class Mutex final {
 class FOLLY_NODISCARD Guard {
  public:
   explicit Guard(
-      const Mutex& value,
+      Mutex& value,
       std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
-      : mutex_(&value) {
+      : lock_(value, std::defer_lock) {
     if (timeout == std::chrono::milliseconds::zero()) {
-      value.lock();
+      lock_.lock();
     } else if (timeout < std::chrono::milliseconds::zero()) {
-      if (!value.trylock()) {
-        mutex_ = nullptr;
-      }
+      (void)lock_.try_lock();
     } else {
-      if (!value.timedlock(timeout)) {
-        mutex_ = nullptr;
-      }
+      (void)value.try_lock_for(timeout);
     }
   }
-  ~Guard() { release(); }
 
   Guard(const Guard&) = delete;
   Guard& operator=(const Guard&) = delete;
 
-  // Move constructor/assignment.
-  Guard(Guard&& other) noexcept { *this = std::move(other); }
-  Guard& operator=(Guard&& other) noexcept {
-    if (&other != this) {
-      release();
-      using std::swap;
-      swap(mutex_, other.mutex_);
-    }
-    return *this;
-  }
+  Guard(Guard&&) = default;
+  Guard& operator=(Guard&&) = default;
 
   bool release() {
-    if (!mutex_) {
-      return false;
+    bool held = lock_.owns_lock();
+    if (held) {
+      lock_.unlock();
     }
-    mutex_->unlock();
-    mutex_ = nullptr;
-    return true;
+    return held;
   }
 
-  explicit operator bool() const { return mutex_ != nullptr; }
+  explicit operator bool() const { return !!lock_; }
 
  private:
-  const Mutex* mutex_ = nullptr;
+  std::unique_lock<Mutex> lock_;
 };
 
 } // namespace concurrency

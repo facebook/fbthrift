@@ -1270,7 +1270,7 @@ class PriorityThreadManager::PriorityImpl
 
   std::unique_ptr<ThreadManager> managers_[N_PRIORITIES];
   size_t counts_[N_PRIORITIES];
-  Mutex mutex_;
+  mutable Mutex mutex_;
   std::vector<std::unique_ptr<Executor, Deleter>> executors_;
   bool keepAliveJoined_{false};
 };

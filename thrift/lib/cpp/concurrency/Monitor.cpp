@@ -159,11 +159,7 @@ class Monitor::Impl {
 
   FOLLY_MAYBE_UNUSED bool mutexIsLocked() const {
     assert(mutex_);
-    auto value = mutex_->trylock();
-    if (value) {
-      mutex_->unlock();
-    }
-    return !value;
+    return !std::unique_lock<Mutex>{*mutex_, std::try_to_lock};
   }
 
   pthread_mutex_t* mutexGetUnderlying() const {
