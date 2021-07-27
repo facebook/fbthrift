@@ -92,9 +92,25 @@ class EventTask : public concurrency::Runnable, public InteractionTask {
 class AsyncProcessor;
 class ServiceHandler;
 
+/**
+ * Descriptor of a Thrift service - its methods and how they should be handled.
+ */
 class AsyncProcessorFactory {
  public:
+  /**
+   * Creates a per-connection processor that will handle requests for this
+   * service. The returned AsyncProcessor has an implicit contract with the
+   * result of createMethodMetadata() - they are tightly coupled. Typically,
+   * both will need to be overridden.
+   */
   virtual std::unique_ptr<AsyncProcessor> getProcessor() = 0;
+  /**
+   * Returns the known list of user-implemented service handlers. For generated
+   * services, the AsyncProcessorFactory also serves as a ServiceHandler.
+   * However, custom implementations may wrap one or more other
+   * AsyncProcessorFactory's, in which case, they MUST return their combined
+   * result.
+   */
   virtual std::vector<ServiceHandler*> getServiceHandlers() = 0;
 
   struct MethodMetadata {
@@ -179,12 +195,32 @@ class AsyncProcessorFactory {
   virtual ~AsyncProcessorFactory() = default;
 };
 
+/**
+ * A class that is created once per-connection and handles incoming requests.
+ * This is the hand-off point from Thrift's IO threads to user code - the
+ * functions here are called on the IO thread.
+ *
+ * While this is a customization point, its API is not stable. Most services use
+ * GeneratedAsyncProcessor, which handles scheduling of methods on to the
+ * ThreadManager (tm) or executing inline (eb).
+ */
 class AsyncProcessor : public TProcessorBase {
  public:
   virtual ~AsyncProcessor() = default;
 
   using MethodMetadata = AsyncProcessorFactory::MethodMetadata;
 
+  /**
+   * DEPRECATED! This will be removed.
+   *
+   * Legacy overload for processing requests. This is pure virtual purely for
+   * backwards compatibility. Prefer implementing
+   * processSerializedCompressedRequestWithMetadata (or
+   * processSerializedCompressedRequest) instead.
+   *
+   * If either of those overloads are implemented, this function will NOT be
+   * called.
+   */
   virtual void processSerializedRequest(
       ResponseChannelRequest::UniquePtr,
       SerializedRequest&&,
@@ -193,6 +229,16 @@ class AsyncProcessor : public TProcessorBase {
       folly::EventBase*,
       concurrency::ThreadManager*) = 0;
 
+  /**
+   * DEPRECATED! This will be removed.
+   *
+   * Legacy overload for processing requests. By default, this calls
+   * processSerializedRequest for backward compatibility reasons. Prefer
+   * implementing processSerializedCompressedRequestWithMetadata instead.
+   *
+   * This overload is only called if
+   * AsyncProcessorFactory::createMethodMetadata() is not implemented.
+   */
   virtual void processSerializedCompressedRequest(
       ResponseChannelRequest::UniquePtr req,
       SerializedCompressedRequest&& serializedRequest,
@@ -201,6 +247,11 @@ class AsyncProcessor : public TProcessorBase {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm);
 
+  /**
+   * Processes one incoming request / method.
+   *
+   * @param methodMetadata See AsyncProcessorFactory::createMethodMetadata()
+   */
   virtual void processSerializedCompressedRequestWithMetadata(
       ResponseChannelRequest::UniquePtr req,
       SerializedCompressedRequest&& serializedRequest,
@@ -210,6 +261,15 @@ class AsyncProcessor : public TProcessorBase {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm);
 
+  /**
+   * Reflects on the current service's methods, associated structs etc. at
+   * runtime. This is useful to, for example, a tool that can send requests to a
+   * service without knowing its schemata ahead of time.
+   *
+   * This is analogous to GraphQL introspection
+   * (https://graphql.org/learn/introspection/) and can be used to build a tool
+   * like GraphiQL.
+   */
   virtual void getServiceMetadata(metadata::ThriftServiceMetadataResponse&) {}
 
   virtual void terminateInteraction(
@@ -413,6 +473,11 @@ class RequestParams {
   folly::EventBase* eventBase_;
 };
 
+/**
+ * Base-class for user-implemented service handlers. This serves as a channel
+ * user code to be notified by ThriftServer and respond to events (via
+ * callbacks).
+ */
 class ServiceHandler {
  public:
   virtual folly::SemiFuture<folly::Unit> semifuture_onStartServing() = 0;
@@ -421,6 +486,11 @@ class ServiceHandler {
   virtual ~ServiceHandler() = default;
 };
 
+/**
+ * Base-class for generated service handlers. While AsyncProcessorFactory and
+ * ServiceHandler are separate layers of abstraction, generated code reuse the
+ * same object for both.
+ */
 class ServerInterface : public virtual AsyncProcessorFactory,
                         public ServiceHandler {
  public:
