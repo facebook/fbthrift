@@ -17,6 +17,8 @@
 #ifndef CPP2_SERIALIZER_H
 #define CPP2_SERIALIZER_H
 
+#include <folly/Demangle.h>
+#include <folly/Portability.h>
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/Thrift.h>
@@ -40,7 +42,13 @@ struct Serializer {
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
     if /*constexpr*/ (!is_thrift_class_v<T>) {
       FB_LOG_ONCE(ERROR)
-          << "Thrift serialization is only defined for structs and unions, not containers thereof";
+          << "Thrift serialization is only defined for structs and unions, not"
+             " containers thereof."
+#if FOLLY_HAS_RTTI
+          << " Attemping to deserialize `" << folly::demangle(typeid(T)) << "`";
+#else
+          ;
+#endif
     }
     Reader reader(sharing);
     reader.setInput(cursor);
@@ -129,7 +137,13 @@ struct Serializer {
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
     if /*constexpr*/ (!is_thrift_class_v<T>) {
       FB_LOG_ONCE(ERROR)
-          << "Thrift serialization is only defined for structs and unions, not containers thereof";
+          << "Thrift serialization is only defined for structs and unions, not"
+             " containers thereof."
+#if FOLLY_HAS_RTTI
+          << " Attemping to serialize `" << folly::demangle(typeid(T)) << "`";
+#else
+          ;
+#endif
     }
     Writer writer(sharing);
     writer.setOutput(out);
