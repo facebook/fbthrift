@@ -25,10 +25,12 @@
 namespace apache {
 namespace thrift {
 namespace detail {
-using InteractionTaskQueue = std::queue<std::pair<
+using InteractionTask = std::pair<
     std::unique_ptr<concurrency::Runnable>,
-    concurrency::ThreadManager::ExecutionScope>>;
-}
+    concurrency::ThreadManager::ExecutionScope>;
+using InteractionTaskQueue =
+    std::queue<InteractionTask, std::list<InteractionTask>>;
+} // namespace detail
 
 class InteractionId {
  public:
