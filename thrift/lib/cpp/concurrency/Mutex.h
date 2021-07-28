@@ -68,14 +68,6 @@ class FOLLY_NODISCARD Guard {
   Guard(Guard&&) = default;
   Guard& operator=(Guard&&) = default;
 
-  bool release() {
-    bool held = lock_.owns_lock();
-    if (held) {
-      lock_.unlock();
-    }
-    return held;
-  }
-
   explicit operator bool() const { return !!lock_; }
 
  private:
