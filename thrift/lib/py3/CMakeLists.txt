@@ -56,7 +56,9 @@ create_cybld_tree(thrift thrift/py3
                          reflection.pxd
                          reflection.pyx
                          serializer.pxd
-                         serializer.pyx)
+                         serializer.pyx
+                         stream.pxd
+                         stream.pyx)
 
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/cybld/thrift/__init__.pxd)
 
@@ -72,6 +74,7 @@ set(cpp_tgts
   "thrift/py3/server.cpp"
   "thrift/py3/ssl.cpp"
   "thrift/py3/reflection.cpp"
+  "thrift/py3/stream.cpp"
 )
 foreach(_mod ${cpp_tgts})
   get_filename_component(_f ${_mod} NAME_WE)
