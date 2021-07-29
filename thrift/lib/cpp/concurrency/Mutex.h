@@ -49,18 +49,7 @@ class Mutex final {
 
 class FOLLY_NODISCARD Guard {
  public:
-  explicit Guard(
-      Mutex& value,
-      std::chrono::milliseconds timeout = std::chrono::milliseconds::zero())
-      : lock_(value, std::defer_lock) {
-    if (timeout == std::chrono::milliseconds::zero()) {
-      lock_.lock();
-    } else if (timeout < std::chrono::milliseconds::zero()) {
-      (void)lock_.try_lock();
-    } else {
-      (void)value.try_lock_for(timeout);
-    }
-  }
+  explicit Guard(Mutex& value) : lock_(value) {}
 
   Guard(const Guard&) = delete;
   Guard& operator=(const Guard&) = delete;
