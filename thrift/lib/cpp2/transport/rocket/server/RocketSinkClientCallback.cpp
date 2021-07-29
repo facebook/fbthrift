@@ -112,9 +112,6 @@ void RocketSinkClientCallback::onFinalResponse(StreamPayload&& finalResponse) {
 void RocketSinkClientCallback::onFinalResponseError(
     folly::exception_wrapper ew) {
   DCHECK(state_ == State::BothOpen || state_ == State::StreamOpen);
-  if (state_ == State::StreamOpen) {
-    connection_.decInflightFinalResponse();
-  }
   ew.handle(
       [this](RocketException& rex) {
         connection_.sendError(
@@ -147,7 +144,16 @@ void RocketSinkClientCallback::onFinalResponseError(
             streamId_,
             RocketException(ErrorCode::APPLICATION_ERROR, ew.what()));
       });
+  auto state = state_;
+  auto& connection = connection_;
+
+  // may destruct this instance
   connection_.freeStream(streamId_, true);
+
+  if (state == State::StreamOpen) {
+    // may destruct this instance
+    connection.decInflightFinalResponse();
+  }
 }
 
 bool RocketSinkClientCallback::onSinkRequestN(uint64_t n) {
