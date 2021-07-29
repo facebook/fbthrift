@@ -17,9 +17,8 @@
 #ifndef CPP2_SERIALIZER_H
 #define CPP2_SERIALIZER_H
 
-#include <folly/Demangle.h>
-#include <folly/Portability.h>
 #include <folly/io/IOBuf.h>
+#include <folly/lang/Pretty.h>
 #include <thrift/lib/cpp/TApplicationException.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
@@ -35,21 +34,27 @@ namespace thrift {
 
 template <typename Reader, typename Writer>
 struct Serializer {
+ private:
+  template <typename T>
+  using is_thrift_class = folly::bool_constant<is_thrift_class_v<T>>;
+
+  template <typename T>
+  static void warn_unless(folly::tag_t<T>, const char* which, std::false_type) {
+    FB_LOG_ONCE(ERROR)
+        << "Thrift serialization is only defined for structs and unions, not"
+        << " containers thereof. Attemping to " << which << " a value of type `"
+        << folly::pretty_name<T>() << "`.";
+  }
+  template <typename T>
+  static void warn_unless(folly::tag_t<T>, const char*, std::true_type) {}
+
+ public:
   template <class T>
   static folly::io::Cursor deserialize(
       const folly::io::Cursor& cursor,
       T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
-    if /*constexpr*/ (!is_thrift_class_v<T>) {
-      FB_LOG_ONCE(ERROR)
-          << "Thrift serialization is only defined for structs and unions, not"
-             " containers thereof."
-#if FOLLY_HAS_RTTI
-          << " Attemping to deserialize `" << folly::demangle(typeid(T)) << "`";
-#else
-          ;
-#endif
-    }
+    warn_unless(folly::tag<T>, "deserialize", is_thrift_class<T>{});
     Reader reader(sharing);
     reader.setInput(cursor);
 
@@ -135,16 +140,7 @@ struct Serializer {
       const T& obj,
       folly::IOBufQueue* out,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
-    if /*constexpr*/ (!is_thrift_class_v<T>) {
-      FB_LOG_ONCE(ERROR)
-          << "Thrift serialization is only defined for structs and unions, not"
-             " containers thereof."
-#if FOLLY_HAS_RTTI
-          << " Attemping to serialize `" << folly::demangle(typeid(T)) << "`";
-#else
-          ;
-#endif
-    }
+    warn_unless(folly::tag<T>, "serialize", is_thrift_class<T>{});
     Writer writer(sharing);
     writer.setOutput(out);
 
