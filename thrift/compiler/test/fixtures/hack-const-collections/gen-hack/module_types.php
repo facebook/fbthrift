@@ -63,8 +63,8 @@ class Foo implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => ?ConstVector<string>,
-    ?'b' => ?ConstMap<string, ConstVector<ConstSet<int>>>,
+    ?'a' => ?\ConstVector<string>,
+    ?'b' => ?\ConstMap<string, \ConstVector<\ConstSet<int>>>,
     ?'c' => ?int,
     ?'d' => ?bool,
   );
@@ -74,12 +74,12 @@ class Foo implements \IThriftStruct {
    * Original thrift field:-
    * 1: list<string> a
    */
-  public ConstVector<string> $a;
+  public \ConstVector<string> $a;
   /**
    * Original thrift field:-
    * 2: map<string, list<set<i32>>> b
    */
-  public ?ConstMap<string, ConstVector<ConstSet<int>>> $b;
+  public ?\ConstMap<string, \ConstVector<\ConstSet<int>>> $b;
   /**
    * Original thrift field:-
    * 3: i64 c
@@ -91,7 +91,7 @@ class Foo implements \IThriftStruct {
    */
   public bool $d;
 
-  public function __construct(?ConstVector<string> $a = null, ?ConstMap<string, ConstVector<ConstSet<int>>> $b = null, ?int $c = null, ?bool $d = null  )[] {
+  public function __construct(?\ConstVector<string> $a = null, ?\ConstMap<string, \ConstVector<\ConstSet<int>>> $b = null, ?int $c = null, ?bool $d = null  )[] {
     $this->a = $a ?? Vector {};
     $this->b = $b;
     $this->c = $c ?? 7;

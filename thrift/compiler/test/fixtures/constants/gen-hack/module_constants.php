@@ -32,7 +32,7 @@ multi line string.
    * list<map<string, i32>> states
    */
   <<__Memoize>>
-  public static function states()[]: ConstVector<ConstMap<string, int>>{
+  public static function states()[]: \ConstVector<\ConstMap<string, int>>{
     return ImmVector {
       ImmMap {
         "San Diego" => 3211000,
@@ -99,7 +99,7 @@ multi line string.
    * map<string, string> mymap
    */
   <<__Memoize>>
-  public static function mymap()[]: ConstMap<string, string>{
+  public static function mymap()[]: \ConstMap<string, string>{
     return ImmMap {
       "keys" => "values",
     };
@@ -140,7 +140,7 @@ multi line string.
    * list<struct module.Range> kRanges
    */
   <<__Memoize>>
-  public static function kRanges()[]: ConstVector<Range>{
+  public static function kRanges()[]: \ConstVector<Range>{
     return ImmVector {
       Range::fromShape(
         shape(
@@ -162,7 +162,7 @@ multi line string.
    * list<struct module.Internship> internList
    */
   <<__Memoize>>
-  public static function internList()[]: ConstVector<Internship>{
+  public static function internList()[]: \ConstVector<Internship>{
     return ImmVector {
       Internship::fromShape(
         shape(
@@ -550,7 +550,7 @@ multi line string.
    * map<string, i32> char2ascii
    */
   <<__Memoize>>
-  public static function char2ascii()[]: ConstMap<string, int>{
+  public static function char2ascii()[]: \ConstMap<string, int>{
     return ImmMap {
       "'" => 39,
       "\"" => 34,
@@ -564,7 +564,7 @@ multi line string.
    * list<string> escaped_strings
    */
   <<__Memoize>>
-  public static function escaped_strings()[]: ConstVector<string>{
+  public static function escaped_strings()[]: \ConstVector<string>{
     return ImmVector {
       "\x61",
       "\xab",
@@ -638,7 +638,7 @@ multi line string.
    * list<i32> empty_int_list
    */
   <<__Memoize>>
-  public static function empty_int_list()[]: ConstVector<int>{
+  public static function empty_int_list()[]: \ConstVector<int>{
     return ImmVector {
     };
   }
@@ -648,7 +648,7 @@ multi line string.
    * list<string> empty_string_list
    */
   <<__Memoize>>
-  public static function empty_string_list()[]: ConstVector<string>{
+  public static function empty_string_list()[]: \ConstVector<string>{
     return ImmVector {
     };
   }
@@ -658,7 +658,7 @@ multi line string.
    * set<i32> empty_int_set
    */
   <<__Memoize>>
-  public static function empty_int_set()[]: ConstSet<int>{
+  public static function empty_int_set()[]: \ConstSet<int>{
     return ImmSet {
     };
   }
@@ -668,7 +668,7 @@ multi line string.
    * set<string> empty_string_set
    */
   <<__Memoize>>
-  public static function empty_string_set()[]: ConstSet<string>{
+  public static function empty_string_set()[]: \ConstSet<string>{
     return ImmSet {
     };
   }
@@ -678,7 +678,7 @@ multi line string.
    * map<i32, i32> empty_int_int_map
    */
   <<__Memoize>>
-  public static function empty_int_int_map()[]: ConstMap<int, int>{
+  public static function empty_int_int_map()[]: \ConstMap<int, int>{
     return ImmMap {
     };
   }
@@ -688,7 +688,7 @@ multi line string.
    * map<i32, string> empty_int_string_map
    */
   <<__Memoize>>
-  public static function empty_int_string_map()[]: ConstMap<int, string>{
+  public static function empty_int_string_map()[]: \ConstMap<int, string>{
     return ImmMap {
     };
   }
@@ -698,7 +698,7 @@ multi line string.
    * map<string, i32> empty_string_int_map
    */
   <<__Memoize>>
-  public static function empty_string_int_map()[]: ConstMap<string, int>{
+  public static function empty_string_int_map()[]: \ConstMap<string, int>{
     return ImmMap {
     };
   }
@@ -708,7 +708,7 @@ multi line string.
    * map<string, string> empty_string_string_map
    */
   <<__Memoize>>
-  public static function empty_string_string_map()[]: ConstMap<string, string>{
+  public static function empty_string_string_map()[]: \ConstMap<string, string>{
     return ImmMap {
     };
   }

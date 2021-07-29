@@ -11,7 +11,7 @@ class module_CONSTANTS implements \IThriftConstants {
    * map<string, string> MyConst
    */
   <<__Memoize>>
-  public static function MyConst()[]: ConstMap<string, string>{
+  public static function MyConst()[]: \ConstMap<string, string>{
     return ImmMap {
       "ENUMERATOR" => "enum",
       "CONST" => "const",

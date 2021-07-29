@@ -2344,7 +2344,7 @@ void t_hack_generator::generate_php_struct_shape_methods(
     } else if (no_use_hack_collections_) {
       arg_return_type = "darray";
     } else if (const_collections_) {
-      arg_return_type = "ConstMap";
+      arg_return_type = "\\ConstMap";
     } else {
       arg_return_type = "Map";
     }
@@ -3370,7 +3370,7 @@ void t_hack_generator::generate_php_struct_from_map(
   out << indent() << "public static function fromMap_DEPRECATED(";
   if (strict_types_) {
     // Generate constructor from Map
-    out << (const_collections_ ? "Const" : "") << "Map<string, mixed> $map";
+    out << (const_collections_ ? "\\Const" : "") << "Map<string, mixed> $map";
   } else {
     // Generate constructor from KeyedContainer
     out << (soft_attribute_ ? "<<__Soft>> " : "@")
@@ -4292,7 +4292,7 @@ std::string t_hack_generator::type_to_typehint(
     } else if (shape) {
       prefix = array_migration_ ? "varray" : "vec";
     } else {
-      prefix = immutable_collections ? "ConstVector" : "Vector";
+      prefix = immutable_collections ? "\\ConstVector" : "Vector";
     }
     return prefix + "<" +
         type_to_typehint(
@@ -4307,7 +4307,7 @@ std::string t_hack_generator::type_to_typehint(
     } else if (shape) {
       prefix = array_keyword_;
     } else {
-      prefix = immutable_collections ? "ConstMap" : "Map";
+      prefix = immutable_collections ? "\\ConstMap" : "Map";
     }
     std::string key_type = type_to_typehint(
         tmap->get_key_type(), false, shape, immutable_collections);
@@ -4329,7 +4329,7 @@ std::string t_hack_generator::type_to_typehint(
     } else if (shape) {
       prefix = array_keyword_;
     } else {
-      prefix = immutable_collections ? "ConstSet" : "Set";
+      prefix = immutable_collections ? "\\ConstSet" : "Set";
     }
     std::string suffix = (arraysets_ || (shape && !arrays_)) ? ", bool>" : ">";
     std::string key_type = !is_type_arraykey(tset->get_elem_type())

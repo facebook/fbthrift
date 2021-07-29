@@ -20,7 +20,7 @@ interface BarAsyncIf extends \IThriftAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
+  public function baz(\ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, \ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
 }
 
 /**
@@ -37,7 +37,7 @@ interface BarIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): string;
+  public function baz(\ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, \ConstSet<string>>> $b, int $c, ?Foo $d, int $e): string;
 }
 
 /**
@@ -54,7 +54,7 @@ interface BarClientIf extends \IThriftSyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
+  public function baz(\ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, \ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
 }
 
 /**
@@ -71,7 +71,7 @@ interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public function baz(\RpcOptions $rpc_options, ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
+  public function baz(\RpcOptions $rpc_options, \ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, \ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string>;
 }
 
 /**
@@ -81,7 +81,7 @@ interface BarAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 trait BarClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_baz(ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
+  protected function sendImpl_baz(\ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, \ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
     $currentseqid = $this->getNextSequenceID();
     $args = Bar_baz_args::fromShape(shape(
       'a' => $a,
@@ -202,7 +202,7 @@ class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
+  public async function baz(\ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, \ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -238,7 +238,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
+  public async function baz(\ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, \ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -261,7 +261,7 @@ class BarClient extends \ThriftClientBase implements BarClientIf {
   }
 
   /* send and recv functions */
-  public function send_baz(ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
+  public function send_baz(\ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, \ConstSet<string>>> $b, int $c, ?Foo $d, int $e): int {
     return $this->sendImpl_baz($a, $b, $c, $d, $e);
   }
   public function recv_baz(?int $expectedsequenceid = null): string {
@@ -281,7 +281,7 @@ class BarAsyncRpcOptionsClient extends \ThriftClientBase implements BarAsyncRpcO
    *       4: Foo d,
    *       5: i64 e);
    */
-  public async function baz(\RpcOptions $rpc_options, ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
+  public async function baz(\RpcOptions $rpc_options, \ConstSet<int> $a, KeyedContainer<int, KeyedContainer<int, \ConstSet<string>>> $b, int $c, ?Foo $d, int $e): Awaitable<string> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
@@ -540,21 +540,21 @@ class Bar_baz_args implements \IThriftStruct {
   ];
 
   const type TConstructorShape = shape(
-    ?'a' => ?ConstSet<int>,
-    ?'b' => ?ConstVector<ConstMap<int, ConstSet<string>>>,
+    ?'a' => ?\ConstSet<int>,
+    ?'b' => ?\ConstVector<\ConstMap<int, \ConstSet<string>>>,
     ?'c' => ?int,
     ?'d' => ?Foo,
     ?'e' => ?int,
   );
 
   const int STRUCTURAL_ID = 7865027497865509792;
-  public ConstSet<int> $a;
-  public ConstVector<ConstMap<int, ConstSet<string>>> $b;
+  public \ConstSet<int> $a;
+  public \ConstVector<\ConstMap<int, \ConstSet<string>>> $b;
   public int $c;
   public ?Foo $d;
   public int $e;
 
-  public function __construct(?ConstSet<int> $a = null, ?ConstVector<ConstMap<int, ConstSet<string>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  )[] {
+  public function __construct(?\ConstSet<int> $a = null, ?\ConstVector<\ConstMap<int, \ConstSet<string>>> $b = null, ?int $c = null, ?Foo $d = null, ?int $e = null  )[] {
     $this->a = $a ?? Set {};
     $this->b = $b ?? Vector {};
     $this->c = $c ?? 0;
