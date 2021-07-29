@@ -168,7 +168,9 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
 
   virtual void* getPeerIdentities() const { return peerIdentities_.get(); }
 
-  const folly::AsyncTransport* getTransport() const { return transport_; }
+  virtual const folly::AsyncTransport* getTransport() const {
+    return transport_;
+  }
 
   /**
    * Get the user data field.
