@@ -86,8 +86,12 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_methodA(returnState)) {
@@ -166,8 +170,12 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_methodB(returnState)) {
@@ -246,8 +254,12 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::int32_t _return;
@@ -328,8 +340,12 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::int32_t _return;
@@ -410,8 +426,12 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::test_cpp2::cpp_reflection::struct2 _return;
@@ -492,8 +512,12 @@ class service3AsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::test_cpp2::cpp_reflection::struct3 _return;

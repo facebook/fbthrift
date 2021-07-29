@@ -83,8 +83,12 @@ class MyRootAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_do_root(returnState)) {

@@ -85,8 +85,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_void_ret_i16_param(returnState)) {
@@ -165,8 +169,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_void_ret_byte_i16_param(returnState)) {
@@ -245,8 +253,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_void_ret_map_param(returnState)) {
@@ -325,8 +337,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_void_ret_map_setlist_param(returnState)) {
@@ -405,8 +421,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_void_ret_map_typedef_param(returnState)) {
@@ -485,8 +505,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_void_ret_enum_param(returnState)) {
@@ -565,8 +589,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_void_ret_struct_param(returnState)) {
@@ -645,8 +673,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     if (auto ew = recv_wrapped_void_ret_listunion_param(returnState)) {
@@ -725,8 +757,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     bool _return;
@@ -807,8 +843,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     bool _return;
@@ -889,8 +929,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     bool _return;
@@ -971,8 +1015,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::int64_t _return;
@@ -1053,8 +1101,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::int64_t _return;
@@ -1135,8 +1187,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::int64_t _return;
@@ -1217,8 +1273,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     double _return;
@@ -1299,8 +1359,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::string _return;
@@ -1381,8 +1445,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::string _return;
@@ -1463,8 +1531,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::map<::std::string, ::std::int64_t> _return;
@@ -1545,8 +1617,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::vector<bool> _return;
@@ -1627,8 +1703,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>> _return;
@@ -1709,8 +1789,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::some::valid::ns::simpleTypeDef _return;
@@ -1791,8 +1875,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::vector<::some::valid::ns::simpleTypeDef> _return;
@@ -1873,8 +1961,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::some::valid::ns::MyEnumA _return;
@@ -1955,8 +2047,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::some::valid::ns::MyEnumA _return;
@@ -2037,8 +2133,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::vector<::some::valid::ns::MyEnumA> _return;
@@ -2119,8 +2219,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::some::valid::ns::MyStruct _return;
@@ -2201,8 +2305,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::set<::some::valid::ns::MyStruct> _return;
@@ -2283,8 +2391,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::some::valid::ns::ComplexUnion _return;
@@ -2365,8 +2477,12 @@ class ParamServiceAsyncClient : public apache::thrift::GeneratedAsyncClient {
     returnState.resetProtocolId(protocolId);
     returnState.resetCtx(std::move(ctx));
     SCOPE_EXIT {
-      if (hasRpcOptions && returnState.header() && !returnState.header()->getHeaders().empty()) {
-        rpcOptions->setReadHeaders(returnState.header()->releaseHeaders());
+      if (hasRpcOptions && returnState.header()) {
+        auto* rheader = returnState.header();
+        if (!rheader->getHeaders().empty()) {
+          rpcOptions->setReadHeaders(rheader->releaseHeaders());
+        }
+        rpcOptions->setRoutingData(rheader->releaseRoutingData());
       }
     };
     ::std::vector<::some::valid::ns::ComplexUnion> _return;
