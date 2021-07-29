@@ -21,6 +21,11 @@ namespace cpp2 some.valid.ns
 
 typedef includes.AStruct AStruct
 
+typedef binary (
+  cpp.type = "::folly::IOBuf",
+  cpp.adapter = "CustomProtocolAdapter",
+) CustomProtocolType
+
 // Generate base consts
 const bool aBool = true;
 const byte aByte = 1;
@@ -93,6 +98,8 @@ struct MyStruct {
     4: "fieldC",
     9: "nothing",
   };
+  10: CustomProtocolType MyCustomField;
+  11: optional CustomProtocolType MyOptCustomField;
 }
 
 union SimpleUnion {
@@ -136,6 +143,7 @@ union ComplexUnion {
   24: MyStruct ref_field (cpp.ref);
   25: MyStruct ref_field2 (cpp.ref_type = "shared_const");
   26: AnException excp_field;
+  27: CustomProtocolType MyCustomField;
 } (cpp.methods = "void foo(const std::string& bar) {}")
 
 exception AnException {
@@ -154,6 +162,8 @@ exception AnException {
   10: list<SimpleUnion> a_union_list;
   11: unionTypeDef union_typedef;
   19: list<unionTypeDef> a_union_typedef_list;
+  20: CustomProtocolType MyCustomField;
+  21: optional CustomProtocolType MyOptCustomField;
 } (message = "message2")
 
 exception AnotherException {

@@ -87,6 +87,8 @@ struct VisitUnion<::some::valid::ns::ComplexUnion> {
       return f(25, *static_cast<T&&>(t).get_ref_field2());
     case Union::Type::excp_field:
       return f(26, *static_cast<T&&>(t).excp_field_ref());
+    case Union::Type::MyCustomField:
+      return f(27, *static_cast<T&&>(t).MyCustomField_ref());
     case Union::Type::__EMPTY__: ;
     }
   }

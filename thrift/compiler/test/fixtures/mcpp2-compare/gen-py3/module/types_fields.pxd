@@ -93,6 +93,8 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_6(self, _fbthrift_value) except *
     cdef void _set_field_7(self, _fbthrift_value) except *
     cdef void _set_field_8(self, _fbthrift_value) except *
+    cdef void _set_field_9(self, _fbthrift_value) except *
+    cdef void _set_field_10(self, _fbthrift_value) except *
 
 
 ctypedef void (*__AnException_FieldsSetterFunc)(__AnException_FieldsSetter, object) except *
@@ -118,6 +120,8 @@ cdef class __AnException_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_12(self, _fbthrift_value) except *
     cdef void _set_field_13(self, _fbthrift_value) except *
     cdef void _set_field_14(self, _fbthrift_value) except *
+    cdef void _set_field_15(self, _fbthrift_value) except *
+    cdef void _set_field_16(self, _fbthrift_value) except *
 
 
 ctypedef void (*__AnotherException_FieldsSetterFunc)(__AnotherException_FieldsSetter, object) except *

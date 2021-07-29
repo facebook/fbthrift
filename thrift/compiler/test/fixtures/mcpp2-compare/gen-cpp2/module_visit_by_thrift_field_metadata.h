@@ -73,6 +73,10 @@ struct VisitByThriftId<::some::valid::ns::MyStruct> {
       return f(7, static_cast<T&&>(t).MyBinaryListField4_ref());
     case 9:
       return f(8, static_cast<T&&>(t).MyMapEnumAndInt_ref());
+    case 10:
+      return f(9, static_cast<T&&>(t).MyCustomField_ref());
+    case 11:
+      return f(10, static_cast<T&&>(t).MyOptCustomField_ref());
     default:
       throwInvalidThriftId(id, "::some::valid::ns::MyStruct");
     }
@@ -153,6 +157,8 @@ struct VisitByThriftId<::some::valid::ns::ComplexUnion> {
       return f(25, static_cast<T&&>(t).ref_field2_ref());
     case 26:
       return f(26, static_cast<T&&>(t).excp_field_ref());
+    case 27:
+      return f(27, static_cast<T&&>(t).MyCustomField_ref());
     default:
       throwInvalidThriftId(id, "::some::valid::ns::ComplexUnion");
     }
@@ -194,6 +200,10 @@ struct VisitByThriftId<::some::valid::ns::AnException> {
       return f(13, static_cast<T&&>(t).union_typedef_ref());
     case 19:
       return f(14, static_cast<T&&>(t).a_union_typedef_list_ref());
+    case 20:
+      return f(15, static_cast<T&&>(t).MyCustomField_ref());
+    case 21:
+      return f(16, static_cast<T&&>(t).MyOptCustomField_ref());
     default:
       throwInvalidThriftId(id, "::some::valid::ns::AnException");
     }

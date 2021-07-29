@@ -35,6 +35,8 @@ cdef class MyStruct_Builder(thrift.py3.builder.StructBuilder):
         yield "MyBinaryField3", self.MyBinaryField3
         yield "MyBinaryListField4", self.MyBinaryListField4
         yield "MyMapEnumAndInt", self.MyMapEnumAndInt
+        yield "MyCustomField", self.MyCustomField
+        yield "MyOptCustomField", self.MyOptCustomField
 
 cdef class SimpleUnion_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.SimpleUnion
@@ -74,6 +76,7 @@ cdef class ComplexUnion_Builder(thrift.py3.builder.StructBuilder):
         yield "ref_field", self.ref_field
         yield "ref_field2", self.ref_field2
         yield "excp_field", self.excp_field
+        yield "MyCustomField", self.MyCustomField
 
 cdef class AnException_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.AnException
@@ -94,6 +97,8 @@ cdef class AnException_Builder(thrift.py3.builder.StructBuilder):
         yield "a_union_list", self.a_union_list
         yield "union_typedef", self.union_typedef
         yield "a_union_typedef_list", self.a_union_typedef_list
+        yield "MyCustomField", self.MyCustomField
+        yield "MyOptCustomField", self.MyOptCustomField
 
 cdef class AnotherException_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.AnotherException

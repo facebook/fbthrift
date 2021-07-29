@@ -49,6 +49,8 @@ struct ForEachField<::some::valid::ns::MyStruct> {
     f(6, static_cast<T&&>(t).MyBinaryField3_ref()...);
     f(7, static_cast<T&&>(t).MyBinaryListField4_ref()...);
     f(8, static_cast<T&&>(t).MyMapEnumAndInt_ref()...);
+    f(9, static_cast<T&&>(t).MyCustomField_ref()...);
+    f(10, static_cast<T&&>(t).MyOptCustomField_ref()...);
   }
 };
 
@@ -92,6 +94,7 @@ struct ForEachField<::some::valid::ns::ComplexUnion> {
     f(24, static_cast<T&&>(t).ref_field_ref()...);
     f(25, static_cast<T&&>(t).ref_field2_ref()...);
     f(26, static_cast<T&&>(t).excp_field_ref()...);
+    f(27, static_cast<T&&>(t).MyCustomField_ref()...);
   }
 };
 
@@ -114,6 +117,8 @@ struct ForEachField<::some::valid::ns::AnException> {
     f(12, static_cast<T&&>(t).a_union_list_ref()...);
     f(13, static_cast<T&&>(t).union_typedef_ref()...);
     f(14, static_cast<T&&>(t).a_union_typedef_list_ref()...);
+    f(15, static_cast<T&&>(t).MyCustomField_ref()...);
+    f(16, static_cast<T&&>(t).MyOptCustomField_ref()...);
   }
 };
 

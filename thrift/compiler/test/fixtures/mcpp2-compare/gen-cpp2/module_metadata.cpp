@@ -146,6 +146,8 @@ StructMetadata<::some::valid::ns::MyStruct>::gen(ThriftMetadata& metadata) {
     std::make_tuple(7, "MyBinaryField3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}),
     std::make_tuple(8, "MyBinaryListField4", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
     std::make_tuple(9, "MyMapEnumAndInt", false, std::make_unique<Map>(std::make_unique<Enum< ::some::valid::ns::MyEnumA>>("module.MyEnumA"), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(10, "MyCustomField", false, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(11, "MyOptCustomField", true, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -221,6 +223,7 @@ StructMetadata<::some::valid::ns::ComplexUnion>::gen(ThriftMetadata& metadata) {
     std::make_tuple(24, "ref_field", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}),
     std::make_tuple(25, "ref_field2", false, std::make_unique<Struct< ::some::valid::ns::MyStruct>>("module.MyStruct"), std::vector<ThriftConstStruct>{}),
     std::make_tuple(26, "excp_field", false, std::make_unique<Typedef>("module.AnException", std::make_unique<Struct< ::some::valid::ns::AnException>>("module.AnException")), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(27, "MyCustomField", false, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_ComplexUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -259,6 +262,8 @@ StructMetadata<::some::valid::ns::AnException>::gen(ThriftMetadata& metadata) {
     std::make_tuple(10, "a_union_list", false, std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}),
     std::make_tuple(11, "union_typedef", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion"))), std::vector<ThriftConstStruct>{}),
     std::make_tuple(19, "a_union_typedef_list", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(20, "MyCustomField", false, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(21, "MyOptCustomField", true, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_AnException_fields) {
     ::apache::thrift::metadata::ThriftField field;
@@ -580,6 +585,8 @@ void ExceptionMetadata<::some::valid::ns::AnException>::gen(ThriftMetadata& meta
     std::make_tuple(10, "a_union_list", false, std::make_unique<List>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")), std::vector<ThriftConstStruct>{}),
     std::make_tuple(11, "union_typedef", false, std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion"))), std::vector<ThriftConstStruct>{}),
     std::make_tuple(19, "a_union_typedef_list", false, std::make_unique<List>(std::make_unique<Typedef>("module.unionTypeDef", std::make_unique<Set>(std::make_unique<Union< ::some::valid::ns::SimpleUnion>>("module.SimpleUnion")))), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(20, "MyCustomField", false, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
+    std::make_tuple(21, "MyOptCustomField", true, std::make_unique<Typedef>("module.CustomProtocolType", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
   };
   for (const auto& f : module_AnException_fields) {
     ::apache::thrift::metadata::ThriftField field;

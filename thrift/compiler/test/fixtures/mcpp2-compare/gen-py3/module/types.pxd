@@ -199,6 +199,8 @@ cdef extern from * nogil:
         bint empty()
 
 cdef extern from *:
+    ctypedef bstring _folly_IOBuf "::folly::IOBuf"
+cdef extern from *:
     ctypedef double Bar "Bar"
 cdef extern from *:
     ctypedef cint32_t Baz "Baz"
@@ -460,6 +462,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __required_field_ref[string] MyBinaryField3_ref()
         __field_ref[vector[string]] MyBinaryListField4_ref()
         __field_ref[cmap[cMyEnumA,string]] MyMapEnumAndInt_ref()
+        __field_ref[_folly_IOBuf] MyCustomField_ref()
+        __optional_field_ref[_folly_IOBuf] MyOptCustomField_ref()
         cbool MyBoolField
         cint64_t MyIntField
         string MyStringField
@@ -469,6 +473,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         string MyBinaryField3
         vector[string] MyBinaryListField4
         cmap[cMyEnumA,string] MyMapEnumAndInt
+        _folly_IOBuf MyCustomField
+        _folly_IOBuf MyOptCustomField
 
     cdef enum cSimpleUnion__type "::some::valid::ns::SimpleUnion::Type":
         cSimpleUnion__type___EMPTY__ "::some::valid::ns::SimpleUnion::Type::__EMPTY__",
@@ -519,6 +525,7 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         cComplexUnion__type_ref_field "::some::valid::ns::ComplexUnion::Type::ref_field",
         cComplexUnion__type_ref_field2 "::some::valid::ns::ComplexUnion::Type::ref_field2",
         cComplexUnion__type_excp_field "::some::valid::ns::ComplexUnion::Type::excp_field",
+        cComplexUnion__type_MyCustomField "::some::valid::ns::ComplexUnion::Type::MyCustomField",
 
     cdef cppclass cComplexUnion "::some::valid::ns::ComplexUnion":
         cComplexUnion() except +
@@ -584,6 +591,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         shared_ptr[const cMyStruct]& set_ref_field2(const cMyStruct&)
         const cAnException& get_excp_field() const
         cAnException& set_excp_field(const cAnException&)
+        const _folly_IOBuf& get_MyCustomField() const
+        _folly_IOBuf& set_MyCustomField(const _folly_IOBuf&)
 
 
     cdef cppclass cAnException "::some::valid::ns::AnException"(cTException):
@@ -610,6 +619,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         __field_ref[vector[cSimpleUnion]] a_union_list_ref()
         __field_ref[cset[cSimpleUnion]] union_typedef_ref()
         __field_ref[vector[cset[cSimpleUnion]]] a_union_typedef_list_ref()
+        __field_ref[_folly_IOBuf] MyCustomField_ref()
+        __optional_field_ref[_folly_IOBuf] MyOptCustomField_ref()
         cint32_t code
         cint32_t req_code
         string message2
@@ -625,6 +636,8 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::some
         vector[cSimpleUnion] a_union_list
         cset[cSimpleUnion] union_typedef
         vector[cset[cSimpleUnion]] a_union_typedef_list
+        _folly_IOBuf MyCustomField
+        _folly_IOBuf MyOptCustomField
 
 
     cdef cppclass cAnotherException "::some::valid::ns::AnotherException"(cTException):
@@ -1015,7 +1028,8 @@ cdef class ComplexUnion(thrift.py3.types.Union):
         object MyBinaryListField4,
         MyStruct ref_field,
         MyStruct ref_field2,
-        AnException excp_field
+        AnException excp_field,
+        bytes MyCustomField
     ) except *
 
     @staticmethod

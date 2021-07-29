@@ -49,7 +49,7 @@ template <> struct TEnumDataStorage<::some::valid::ns::SimpleUnion::Type> {
 
 template <> struct TEnumDataStorage<::some::valid::ns::ComplexUnion::Type> {
   using type = ::some::valid::ns::ComplexUnion::Type;
-  static constexpr const std::size_t size = 27;
+  static constexpr const std::size_t size = 28;
   static const std::array<type, size> values;
   static const std::array<folly::StringPiece, size> names;
 };
@@ -83,7 +83,7 @@ template <> struct TStructDataStorage<::some::valid::ns::ASimpleStructNoexcept> 
 };
 
 template <> struct TStructDataStorage<::some::valid::ns::MyStruct> {
-  static constexpr const std::size_t fields_size = 9;
+  static constexpr const std::size_t fields_size = 11;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
@@ -97,14 +97,14 @@ template <> struct TStructDataStorage<::some::valid::ns::SimpleUnion> {
 };
 
 template <> struct TStructDataStorage<::some::valid::ns::ComplexUnion> {
-  static constexpr const std::size_t fields_size = 27;
+  static constexpr const std::size_t fields_size = 28;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;
 };
 
 template <> struct TStructDataStorage<::some::valid::ns::AnException> {
-  static constexpr const std::size_t fields_size = 15;
+  static constexpr const std::size_t fields_size = 17;
   static const std::array<folly::StringPiece, fields_size> fields_names;
   static const std::array<int16_t, fields_size> fields_ids;
   static const std::array<protocol::TType, fields_size> fields_types;

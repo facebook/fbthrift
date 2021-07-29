@@ -119,6 +119,8 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         MyBinaryField3: bool
         MyBinaryListField4: bool
         MyMapEnumAndInt: bool
+        MyCustomField: bool
+        MyOptCustomField: bool
         pass
 
     MyBoolField: Final[bool] = ...
@@ -139,6 +141,10 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
 
     MyMapEnumAndInt: Final[_typing.Mapping[MyEnumA, str]] = ...
 
+    MyCustomField: Final[bytes] = ...
+
+    MyOptCustomField: Final[_typing.Optional[bytes]] = ...
+
     def __init__(
         self, *,
         MyBoolField: _typing.Optional[bool]=None,
@@ -149,7 +155,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         MyBinaryField2: _typing.Optional[bytes]=None,
         MyBinaryField3: _typing.Optional[bytes]=None,
         MyBinaryListField4: _typing.Optional[_typing.Sequence[bytes]]=None,
-        MyMapEnumAndInt: _typing.Optional[_typing.Mapping[MyEnumA, str]]=None
+        MyMapEnumAndInt: _typing.Optional[_typing.Mapping[MyEnumA, str]]=None,
+        MyCustomField: _typing.Optional[bytes]=None,
+        MyOptCustomField: _typing.Optional[bytes]=None
     ) -> None: ...
 
     def __call__(
@@ -162,7 +170,9 @@ class MyStruct(thrift.py3.types.Struct, _typing.Hashable):
         MyBinaryField2: _typing.Union[bytes, __NotSet, None]=NOTSET,
         MyBinaryField3: _typing.Union[bytes, __NotSet, None]=NOTSET,
         MyBinaryListField4: _typing.Union[_typing.Sequence[bytes], __NotSet, None]=NOTSET,
-        MyMapEnumAndInt: _typing.Union[_typing.Mapping[MyEnumA, str], __NotSet, None]=NOTSET
+        MyMapEnumAndInt: _typing.Union[_typing.Mapping[MyEnumA, str], __NotSet, None]=NOTSET,
+        MyCustomField: _typing.Union[bytes, __NotSet, None]=NOTSET,
+        MyOptCustomField: _typing.Union[bytes, __NotSet, None]=NOTSET
     ) -> MyStruct: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['MyStruct'], bytes]]: ...
@@ -235,6 +245,7 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
         MyBinaryField2: bool
         MyBinaryListField4: bool
         excp_field: bool
+        MyCustomField: bool
         pass
 
     intValue: Final[int] = ...
@@ -291,6 +302,8 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
 
     excp_field: Final['AnException'] = ...
 
+    MyCustomField: Final[bytes] = ...
+
     def __init__(
         self, *,
         intValue: _typing.Optional[int]=None,
@@ -319,7 +332,8 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
         MyBinaryListField4: _typing.Optional[_typing.Sequence[bytes]]=None,
         ref_field: _typing.Optional['MyStruct']=None,
         ref_field2: _typing.Optional['MyStruct']=None,
-        excp_field: _typing.Optional['AnException']=None
+        excp_field: _typing.Optional['AnException']=None,
+        MyCustomField: _typing.Optional[bytes]=None
     ) -> None: ...
 
     def __hash__(self) -> int: ...
@@ -357,11 +371,12 @@ class ComplexUnion(thrift.py3.types.Union, _typing.Hashable):
         ref_field: ComplexUnion.Type = ...
         ref_field2: ComplexUnion.Type = ...
         excp_field: ComplexUnion.Type = ...
+        MyCustomField: ComplexUnion.Type = ...
 
     @staticmethod
-    def fromValue(value: _typing.Union[None, int, int, str, str, int, int, float, bool, _typing.Sequence[int], _typing.AbstractSet[int], _typing.Mapping[str, int], _typing.Mapping[str, int], MyEnumA, _typing.Sequence[MyEnumA], 'MyStruct', _typing.AbstractSet['MyStruct'], 'SimpleUnion', 'SimpleUnion', _typing.Sequence['SimpleUnion'], _typing.AbstractSet['SimpleUnion'], _typing.Sequence[_typing.AbstractSet['SimpleUnion']], bytes, bytes, _typing.Sequence[bytes], 'MyStruct', 'MyStruct', 'AnException']) -> ComplexUnion: ...
+    def fromValue(value: _typing.Union[None, int, int, str, str, int, int, float, bool, _typing.Sequence[int], _typing.AbstractSet[int], _typing.Mapping[str, int], _typing.Mapping[str, int], MyEnumA, _typing.Sequence[MyEnumA], 'MyStruct', _typing.AbstractSet['MyStruct'], 'SimpleUnion', 'SimpleUnion', _typing.Sequence['SimpleUnion'], _typing.AbstractSet['SimpleUnion'], _typing.Sequence[_typing.AbstractSet['SimpleUnion']], bytes, bytes, _typing.Sequence[bytes], 'MyStruct', 'MyStruct', 'AnException', bytes]) -> ComplexUnion: ...
     @__property__
-    def value(self) -> _typing.Union[None, int, int, str, str, int, int, float, bool, _typing.Sequence[int], _typing.AbstractSet[int], _typing.Mapping[str, int], _typing.Mapping[str, int], MyEnumA, _typing.Sequence[MyEnumA], 'MyStruct', _typing.AbstractSet['MyStruct'], 'SimpleUnion', 'SimpleUnion', _typing.Sequence['SimpleUnion'], _typing.AbstractSet['SimpleUnion'], _typing.Sequence[_typing.AbstractSet['SimpleUnion']], bytes, bytes, _typing.Sequence[bytes], 'MyStruct', 'MyStruct', 'AnException']: ...
+    def value(self) -> _typing.Union[None, int, int, str, str, int, int, float, bool, _typing.Sequence[int], _typing.AbstractSet[int], _typing.Mapping[str, int], _typing.Mapping[str, int], MyEnumA, _typing.Sequence[MyEnumA], 'MyStruct', _typing.AbstractSet['MyStruct'], 'SimpleUnion', 'SimpleUnion', _typing.Sequence['SimpleUnion'], _typing.AbstractSet['SimpleUnion'], _typing.Sequence[_typing.AbstractSet['SimpleUnion']], bytes, bytes, _typing.Sequence[bytes], 'MyStruct', 'MyStruct', 'AnException', bytes]: ...
     @__property__
     def type(self) -> "ComplexUnion.Type": ...
 
@@ -383,6 +398,8 @@ class AnException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
         a_union_list: bool
         union_typedef: bool
         a_union_typedef_list: bool
+        MyCustomField: bool
+        MyOptCustomField: bool
         pass
 
     code: Final[int] = ...
@@ -415,6 +432,10 @@ class AnException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
 
     a_union_typedef_list: Final[_typing.Sequence[_typing.AbstractSet['SimpleUnion']]] = ...
 
+    MyCustomField: Final[bytes] = ...
+
+    MyOptCustomField: Final[_typing.Optional[bytes]] = ...
+
     def __init__(
         self, *,
         code: _typing.Optional[int]=None,
@@ -431,7 +452,9 @@ class AnException(thrift.py3.exceptions.GeneratedError, _typing.Hashable):
         a_set_struct: _typing.Optional[_typing.AbstractSet['MyStruct']]=None,
         a_union_list: _typing.Optional[_typing.Sequence['SimpleUnion']]=None,
         union_typedef: _typing.Optional[_typing.AbstractSet['SimpleUnion']]=None,
-        a_union_typedef_list: _typing.Optional[_typing.Sequence[_typing.AbstractSet['SimpleUnion']]]=None
+        a_union_typedef_list: _typing.Optional[_typing.Sequence[_typing.AbstractSet['SimpleUnion']]]=None,
+        MyCustomField: _typing.Optional[bytes]=None,
+        MyOptCustomField: _typing.Optional[bytes]=None
     ) -> None: ...
 
     def __hash__(self) -> int: ...
@@ -1890,6 +1913,7 @@ AnIntegerEnum2: List__i32 = ...
 constEnumA: MyEnumA = ...
 constEnumB: MyEnumA = ...
 AStruct = _includes_types.AStruct
+CustomProtocolType = bytes
 simpleTypeDef = int
 containerTypeDef = Map__i16_string
 complexContainerTypeDef = List__Map__i16_string

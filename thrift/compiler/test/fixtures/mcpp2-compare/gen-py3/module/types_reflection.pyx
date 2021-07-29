@@ -207,6 +207,30 @@ cdef __StructSpec get_reflection__MyStruct():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec.create(
+            id=10,
+            name="MyCustomField",
+            type=bytes,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=11,
+            name="MyOptCustomField",
+            type=bytes,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__SimpleUnion():
     cdef __StructSpec spec = __StructSpec.create(
@@ -571,6 +595,18 @@ cdef __StructSpec get_reflection__ComplexUnion():
             },
         ),
     )
+    spec.add_field(
+        __FieldSpec.create(
+            id=27,
+            name="MyCustomField",
+            type=bytes,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
     return spec
 cdef __StructSpec get_reflection__AnException():
     cdef _module_types.AnException defaults = _module_types.AnException.create(
@@ -759,6 +795,30 @@ cdef __StructSpec get_reflection__AnException():
             type=_module_types.List__Set__SimpleUnion,
             kind=__NumberType.NOT_A_NUMBER,
             qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=20,
+            name="MyCustomField",
+            type=bytes,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=21,
+            name="MyOptCustomField",
+            type=bytes,
+            kind=__NumberType.NOT_A_NUMBER,
+            qualifier=__Qualifier.OPTIONAL,
             default=None,
             annotations={
             },

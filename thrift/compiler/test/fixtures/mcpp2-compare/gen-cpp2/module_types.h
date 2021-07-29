@@ -26,6 +26,8 @@ struct MyBinaryField2;
 struct MyBinaryField3;
 struct MyBinaryListField4;
 struct MyMapEnumAndInt;
+struct MyCustomField;
+struct MyOptCustomField;
 struct intValue;
 struct stringValue;
 struct intValue;
@@ -55,6 +57,7 @@ struct MyBinaryListField4;
 struct ref_field;
 struct ref_field2;
 struct excp_field;
+struct MyCustomField;
 struct code;
 struct req_code;
 struct message2;
@@ -70,6 +73,8 @@ struct a_set_struct;
 struct a_union_list;
 struct union_typedef;
 struct a_union_typedef_list;
+struct MyCustomField;
+struct MyOptCustomField;
 struct code;
 struct req_code;
 struct message;
@@ -216,6 +221,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(MyBinaryListField4);
 #define APACHE_THRIFT_ACCESSOR_MyMapEnumAndInt
 APACHE_THRIFT_DEFINE_ACCESSOR(MyMapEnumAndInt);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyCustomField
+#define APACHE_THRIFT_ACCESSOR_MyCustomField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyCustomField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyOptCustomField
+#define APACHE_THRIFT_ACCESSOR_MyOptCustomField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyOptCustomField);
+#endif
 #ifndef APACHE_THRIFT_ACCESSOR_intValue
 #define APACHE_THRIFT_ACCESSOR_intValue
 APACHE_THRIFT_DEFINE_ACCESSOR(intValue);
@@ -332,6 +345,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(ref_field2);
 #define APACHE_THRIFT_ACCESSOR_excp_field
 APACHE_THRIFT_DEFINE_ACCESSOR(excp_field);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyCustomField
+#define APACHE_THRIFT_ACCESSOR_MyCustomField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyCustomField);
+#endif
 #ifndef APACHE_THRIFT_ACCESSOR_code
 #define APACHE_THRIFT_ACCESSOR_code
 APACHE_THRIFT_DEFINE_ACCESSOR(code);
@@ -391,6 +408,14 @@ APACHE_THRIFT_DEFINE_ACCESSOR(union_typedef);
 #ifndef APACHE_THRIFT_ACCESSOR_a_union_typedef_list
 #define APACHE_THRIFT_ACCESSOR_a_union_typedef_list
 APACHE_THRIFT_DEFINE_ACCESSOR(a_union_typedef_list);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyCustomField
+#define APACHE_THRIFT_ACCESSOR_MyCustomField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyCustomField);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_MyOptCustomField
+#define APACHE_THRIFT_ACCESSOR_MyOptCustomField
+APACHE_THRIFT_DEFINE_ACCESSOR(MyOptCustomField);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_code
 #define APACHE_THRIFT_ACCESSOR_code
@@ -1032,6 +1057,7 @@ class AllRequiredNoExceptMoveCtrStruct;
 // BEGIN typedefs
 namespace some { namespace valid { namespace ns {
 typedef ::a::different::ns::AStruct AStruct;
+typedef ::apache::thrift::adapt_detail::adapted_t<CustomProtocolAdapter, ::folly::IOBuf> CustomProtocolType;
 typedef ::std::int32_t simpleTypeDef;
 typedef ::std::map<::std::int16_t, ::std::string> containerTypeDef;
 typedef ::std::vector<::std::map<::std::int16_t, ::std::string>> complexContainerTypeDef;
@@ -1391,7 +1417,7 @@ class MyStruct final  {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg);
+  MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg, ::some::valid::ns::CustomProtocolType MyCustomField__arg, ::some::valid::ns::CustomProtocolType MyOptCustomField__arg);
 
   MyStruct(MyStruct&&) noexcept;
 
@@ -1422,6 +1448,10 @@ class MyStruct final  {
   ::std::vector<::std::string> MyBinaryListField4;
  private:
   ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt;
+ private:
+  ::some::valid::ns::CustomProtocolType MyCustomField;
+ private:
+  ::some::valid::ns::CustomProtocolType MyOptCustomField;
 
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -1434,6 +1464,8 @@ class MyStruct final  {
     bool MyBinaryField2;
     bool MyBinaryListField4;
     bool MyMapEnumAndInt;
+    bool MyCustomField;
+    bool MyOptCustomField;
   } __isset = {};
 
  public:
@@ -1621,6 +1653,46 @@ class MyStruct final  {
     return {std::move(this->MyMapEnumAndInt), __isset.MyMapEnumAndInt};
   }
 
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyCustomField_ref() const& {
+    return {this->MyCustomField, __isset.MyCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyCustomField_ref() const&& {
+    return {std::move(this->MyCustomField), __isset.MyCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyCustomField_ref() & {
+    return {this->MyCustomField, __isset.MyCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyCustomField_ref() && {
+    return {std::move(this->MyCustomField), __isset.MyCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> MyOptCustomField_ref() const& {
+    return {this->MyOptCustomField, __isset.MyOptCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyOptCustomField_ref() const&& {
+    return {std::move(this->MyOptCustomField), __isset.MyOptCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> MyOptCustomField_ref() & {
+    return {this->MyOptCustomField, __isset.MyOptCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyOptCustomField_ref() && {
+    return {std::move(this->MyOptCustomField), __isset.MyOptCustomField};
+  }
+
   bool get_MyBoolField() const {
     return MyBoolField;
   }
@@ -1741,6 +1813,39 @@ class MyStruct final  {
     MyMapEnumAndInt = std::forward<T_MyStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
     __isset.MyMapEnumAndInt = true;
     return MyMapEnumAndInt;
+  }
+
+  const ::some::valid::ns::CustomProtocolType& get_MyCustomField() const& {
+    return MyCustomField;
+  }
+
+  ::some::valid::ns::CustomProtocolType get_MyCustomField() && {
+    return std::move(MyCustomField);
+  }
+
+  template <typename T_MyStruct_MyCustomField_struct_setter = ::some::valid::ns::CustomProtocolType>
+  [[deprecated("Use `FOO.MyCustomField_ref() = BAR;` instead of `FOO.set_MyCustomField(BAR);`")]]
+  ::some::valid::ns::CustomProtocolType& set_MyCustomField(T_MyStruct_MyCustomField_struct_setter&& MyCustomField_) {
+    MyCustomField = std::forward<T_MyStruct_MyCustomField_struct_setter>(MyCustomField_);
+    __isset.MyCustomField = true;
+    return MyCustomField;
+  }
+
+  const ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() const& {
+    return MyOptCustomField_ref() ? std::addressof(MyOptCustomField) : nullptr;
+  }
+
+  ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() & {
+    return MyOptCustomField_ref() ? std::addressof(MyOptCustomField) : nullptr;
+  }
+  ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() && = delete;
+
+  template <typename T_MyStruct_MyOptCustomField_struct_setter = ::some::valid::ns::CustomProtocolType>
+  [[deprecated("Use `FOO.MyOptCustomField_ref() = BAR;` instead of `FOO.set_MyOptCustomField(BAR);`")]]
+  ::some::valid::ns::CustomProtocolType& set_MyOptCustomField(T_MyStruct_MyOptCustomField_struct_setter&& MyOptCustomField_) {
+    MyOptCustomField = std::forward<T_MyStruct_MyOptCustomField_struct_setter>(MyOptCustomField_);
+    __isset.MyOptCustomField = true;
+    return MyOptCustomField;
   }
 
   template <class Protocol_>
@@ -2097,6 +2202,7 @@ class ComplexUnion final  {
     ref_field = 24,
     ref_field2 = 25,
     excp_field = 26,
+    MyCustomField = 27,
   } ;
 
   ComplexUnion()
@@ -2240,6 +2346,11 @@ class ComplexUnion final  {
       case Type::excp_field:
       {
         set_excp_field(std::move(rhs.value_.excp_field));
+        break;
+      }
+      case Type::MyCustomField:
+      {
+        set_MyCustomField(std::move(rhs.value_.MyCustomField));
         break;
       }
       default:
@@ -2391,6 +2502,11 @@ class ComplexUnion final  {
         set_excp_field(rhs.value_.excp_field);
         break;
       }
+      case Type::MyCustomField:
+      {
+        set_MyCustomField(rhs.value_.MyCustomField);
+        break;
+      }
       default:
       {
         assert(false);
@@ -2537,6 +2653,11 @@ class ComplexUnion final  {
       case Type::excp_field:
       {
         set_excp_field(std::move(rhs.value_.excp_field));
+        break;
+      }
+      case Type::MyCustomField:
+      {
+        set_MyCustomField(std::move(rhs.value_.MyCustomField));
         break;
       }
       default:
@@ -2689,6 +2810,11 @@ class ComplexUnion final  {
         set_excp_field(rhs.value_.excp_field);
         break;
       }
+      case Type::MyCustomField:
+      {
+        set_MyCustomField(rhs.value_.MyCustomField);
+        break;
+      }
       default:
       {
         assert(false);
@@ -2730,6 +2856,7 @@ class ComplexUnion final  {
     ::std::unique_ptr<::some::valid::ns::MyStruct> ref_field;
     ::std::shared_ptr<const ::some::valid::ns::MyStruct> ref_field2;
     ::some::valid::ns::AnException excp_field;
+    ::some::valid::ns::CustomProtocolType MyCustomField;
 
     storage_type() {}
     ~storage_type() {}
@@ -3185,6 +3312,27 @@ class ComplexUnion final  {
     return value_.excp_field;
   }
 
+  ::some::valid::ns::CustomProtocolType& set_MyCustomField(::some::valid::ns::CustomProtocolType const &t) {
+    __clear();
+    type_ = Type::MyCustomField;
+    ::new (std::addressof(value_.MyCustomField)) ::some::valid::ns::CustomProtocolType(t);
+    return value_.MyCustomField;
+  }
+
+  ::some::valid::ns::CustomProtocolType& set_MyCustomField(::some::valid::ns::CustomProtocolType&& t) {
+    __clear();
+    type_ = Type::MyCustomField;
+    ::new (std::addressof(value_.MyCustomField)) ::some::valid::ns::CustomProtocolType(std::move(t));
+    return value_.MyCustomField;
+  }
+
+  template<typename... T, typename = ::apache::thrift::safe_overload_t<::some::valid::ns::CustomProtocolType, T...>> ::some::valid::ns::CustomProtocolType& set_MyCustomField(T&&... t) {
+    __clear();
+    type_ = Type::MyCustomField;
+    ::new (std::addressof(value_.MyCustomField)) ::some::valid::ns::CustomProtocolType(std::forward<T>(t)...);
+    return value_.MyCustomField;
+  }
+
   ::std::int64_t const& get_intValue() const {
     if (type_ != Type::intValue) {
       ::apache::thrift::detail::throw_on_bad_field_access();
@@ -3374,6 +3522,13 @@ class ComplexUnion final  {
     return value_.excp_field;
   }
 
+  ::some::valid::ns::CustomProtocolType const& get_MyCustomField() const {
+    if (type_ != Type::MyCustomField) {
+      ::apache::thrift::detail::throw_on_bad_field_access();
+    }
+    return value_.MyCustomField;
+  }
+
   ::std::int64_t& mutable_intValue() {
     assert(type_ == Type::intValue);
     return value_.intValue;
@@ -3509,6 +3664,11 @@ class ComplexUnion final  {
     return value_.excp_field;
   }
 
+  ::some::valid::ns::CustomProtocolType& mutable_MyCustomField() {
+    assert(type_ == Type::MyCustomField);
+    return value_.MyCustomField;
+  }
+
   ::std::int64_t move_intValue() {
     assert(type_ == Type::intValue);
     return std::move(value_.intValue);
@@ -3642,6 +3802,11 @@ class ComplexUnion final  {
   ::some::valid::ns::AnException move_excp_field() {
     assert(type_ == Type::excp_field);
     return std::move(value_.excp_field);
+  }
+
+  ::some::valid::ns::CustomProtocolType move_MyCustomField() {
+    assert(type_ == Type::MyCustomField);
+    return std::move(value_.MyCustomField);
   }
 
   template <typename..., typename T = ::std::int64_t>
@@ -4157,6 +4322,25 @@ class ComplexUnion final  {
   FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> excp_field_ref() && {
     return {std::move(value_.excp_field), type_, excp_field, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
   }
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&> MyCustomField_ref() const& {
+    return {value_.MyCustomField, type_, MyCustomField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<const T&&> MyCustomField_ref() const&& {
+    return {std::move(value_.MyCustomField), type_, MyCustomField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&> MyCustomField_ref() & {
+    return {value_.MyCustomField, type_, MyCustomField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::union_field_ref<T&&> MyCustomField_ref() && {
+    return {std::move(value_.MyCustomField), type_, MyCustomField, this, ::apache::thrift::detail::union_field_ref_owner_vtable_for<decltype(*this)>};
+  }
   Type getType() const { return static_cast<Type>(type_); }
 
   template <class Protocol_>
@@ -4228,7 +4412,7 @@ class FOLLY_EXPORT AnException final : public apache::thrift::TException {
 
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  AnException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<::std::int32_t> exception_list__arg, ::std::set<::std::int64_t> exception_set__arg, ::std::map<::std::string, ::std::int32_t> exception_map__arg, ::std::map<::std::string, ::std::int32_t> req_exception_map__arg, ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector<::some::valid::ns::MyEnumA> enum_container__arg, ::some::valid::ns::MyStruct a_struct__arg, ::std::set<::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector<::some::valid::ns::SimpleUnion> a_union_list__arg, ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list__arg);
+  AnException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<::std::int32_t> exception_list__arg, ::std::set<::std::int64_t> exception_set__arg, ::std::map<::std::string, ::std::int32_t> exception_map__arg, ::std::map<::std::string, ::std::int32_t> req_exception_map__arg, ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector<::some::valid::ns::MyEnumA> enum_container__arg, ::some::valid::ns::MyStruct a_struct__arg, ::std::set<::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector<::some::valid::ns::SimpleUnion> a_union_list__arg, ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list__arg, ::some::valid::ns::CustomProtocolType MyCustomField__arg, ::some::valid::ns::CustomProtocolType MyOptCustomField__arg);
 
   AnException(AnException&&) noexcept;
 
@@ -4271,6 +4455,10 @@ class FOLLY_EXPORT AnException final : public apache::thrift::TException {
   ::some::valid::ns::unionTypeDef union_typedef;
  private:
   ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list;
+ private:
+  ::some::valid::ns::CustomProtocolType MyCustomField;
+ private:
+  ::some::valid::ns::CustomProtocolType MyOptCustomField;
 
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -4287,6 +4475,8 @@ class FOLLY_EXPORT AnException final : public apache::thrift::TException {
     bool a_union_list;
     bool union_typedef;
     bool a_union_typedef_list;
+    bool MyCustomField;
+    bool MyOptCustomField;
   } __isset = {};
 
  public:
@@ -4594,6 +4784,46 @@ class FOLLY_EXPORT AnException final : public apache::thrift::TException {
     return {std::move(this->a_union_typedef_list), __isset.a_union_typedef_list};
   }
 
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> MyCustomField_ref() const& {
+    return {this->MyCustomField, __isset.MyCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> MyCustomField_ref() const&& {
+    return {std::move(this->MyCustomField), __isset.MyCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> MyCustomField_ref() & {
+    return {this->MyCustomField, __isset.MyCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> MyCustomField_ref() && {
+    return {std::move(this->MyCustomField), __isset.MyCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> MyOptCustomField_ref() const& {
+    return {this->MyOptCustomField, __isset.MyOptCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> MyOptCustomField_ref() const&& {
+    return {std::move(this->MyOptCustomField), __isset.MyOptCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> MyOptCustomField_ref() & {
+    return {this->MyOptCustomField, __isset.MyOptCustomField};
+  }
+
+  template <typename..., typename T = ::some::valid::ns::CustomProtocolType>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> MyOptCustomField_ref() && {
+    return {std::move(this->MyOptCustomField), __isset.MyOptCustomField};
+  }
+
   ::std::int32_t get_code() const {
     return code;
   }
@@ -4754,6 +4984,39 @@ class FOLLY_EXPORT AnException final : public apache::thrift::TException {
     a_union_typedef_list = std::forward<T_AnException_a_union_typedef_list_struct_setter>(a_union_typedef_list_);
     __isset.a_union_typedef_list = true;
     return a_union_typedef_list;
+  }
+
+  const ::some::valid::ns::CustomProtocolType& get_MyCustomField() const& {
+    return MyCustomField;
+  }
+
+  ::some::valid::ns::CustomProtocolType get_MyCustomField() && {
+    return std::move(MyCustomField);
+  }
+
+  template <typename T_AnException_MyCustomField_struct_setter = ::some::valid::ns::CustomProtocolType>
+  [[deprecated("Use `FOO.MyCustomField_ref() = BAR;` instead of `FOO.set_MyCustomField(BAR);`")]]
+  ::some::valid::ns::CustomProtocolType& set_MyCustomField(T_AnException_MyCustomField_struct_setter&& MyCustomField_) {
+    MyCustomField = std::forward<T_AnException_MyCustomField_struct_setter>(MyCustomField_);
+    __isset.MyCustomField = true;
+    return MyCustomField;
+  }
+
+  const ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() const& {
+    return MyOptCustomField_ref() ? std::addressof(MyOptCustomField) : nullptr;
+  }
+
+  ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() & {
+    return MyOptCustomField_ref() ? std::addressof(MyOptCustomField) : nullptr;
+  }
+  ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() && = delete;
+
+  template <typename T_AnException_MyOptCustomField_struct_setter = ::some::valid::ns::CustomProtocolType>
+  [[deprecated("Use `FOO.MyOptCustomField_ref() = BAR;` instead of `FOO.set_MyOptCustomField(BAR);`")]]
+  ::some::valid::ns::CustomProtocolType& set_MyOptCustomField(T_AnException_MyOptCustomField_struct_setter&& MyOptCustomField_) {
+    MyOptCustomField = std::forward<T_AnException_MyOptCustomField_struct_setter>(MyOptCustomField_);
+    __isset.MyOptCustomField = true;
+    return MyOptCustomField;
   }
 
   template <class Protocol_>
@@ -8530,7 +8793,7 @@ template <> struct TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>;
 template <> struct TEnumTraits<::some::valid::ns::ComplexUnion::Type> {
   using type = ::some::valid::ns::ComplexUnion::Type;
 
-  static constexpr std::size_t const size = 27;
+  static constexpr std::size_t const size = 28;
   static folly::Range<type const*> const values;
   static folly::Range<folly::StringPiece const*> const names;
 

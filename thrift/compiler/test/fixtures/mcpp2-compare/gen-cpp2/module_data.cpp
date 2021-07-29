@@ -61,7 +61,7 @@ const std::array<folly::StringPiece, 2> TEnumDataStorage<::some::valid::ns::Simp
   "stringValue",
 }};
 
-const std::array<::some::valid::ns::ComplexUnion::Type, 27> TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::values = {{
+const std::array<::some::valid::ns::ComplexUnion::Type, 28> TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::values = {{
   type::intValue,
   type::opt_intValue,
   type::stringValue,
@@ -89,8 +89,9 @@ const std::array<::some::valid::ns::ComplexUnion::Type, 27> TEnumDataStorage<::s
   type::ref_field,
   type::ref_field2,
   type::excp_field,
+  type::MyCustomField,
 }};
-const std::array<folly::StringPiece, 27> TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::names = {{
+const std::array<folly::StringPiece, 28> TEnumDataStorage<::some::valid::ns::ComplexUnion::Type>::names = {{
   "intValue",
   "opt_intValue",
   "stringValue",
@@ -118,6 +119,7 @@ const std::array<folly::StringPiece, 27> TEnumDataStorage<::some::valid::ns::Com
   "ref_field",
   "ref_field2",
   "excp_field",
+  "MyCustomField",
 }};
 
 const std::array<::some::valid::ns::FloatUnion::Type, 2> TEnumDataStorage<::some::valid::ns::FloatUnion::Type>::values = {{
@@ -156,7 +158,7 @@ const std::array<protocol::TType, 1> TStructDataStorage<::some::valid::ns::ASimp
   TType::T_I64,
 }};
 
-const std::array<folly::StringPiece, 9> TStructDataStorage<::some::valid::ns::MyStruct>::fields_names = {{
+const std::array<folly::StringPiece, 11> TStructDataStorage<::some::valid::ns::MyStruct>::fields_names = {{
   "MyBoolField",
   "MyIntField",
   "MyStringField",
@@ -166,8 +168,10 @@ const std::array<folly::StringPiece, 9> TStructDataStorage<::some::valid::ns::My
   "MyBinaryField3",
   "MyBinaryListField4",
   "MyMapEnumAndInt",
+  "MyCustomField",
+  "MyOptCustomField",
 }};
-const std::array<int16_t, 9> TStructDataStorage<::some::valid::ns::MyStruct>::fields_ids = {{
+const std::array<int16_t, 11> TStructDataStorage<::some::valid::ns::MyStruct>::fields_ids = {{
   1,
   2,
   3,
@@ -177,8 +181,10 @@ const std::array<int16_t, 9> TStructDataStorage<::some::valid::ns::MyStruct>::fi
   7,
   8,
   9,
+  10,
+  11,
 }};
-const std::array<protocol::TType, 9> TStructDataStorage<::some::valid::ns::MyStruct>::fields_types = {{
+const std::array<protocol::TType, 11> TStructDataStorage<::some::valid::ns::MyStruct>::fields_types = {{
   TType::T_BOOL,
   TType::T_I64,
   TType::T_STRING,
@@ -188,6 +194,8 @@ const std::array<protocol::TType, 9> TStructDataStorage<::some::valid::ns::MyStr
   TType::T_STRING,
   TType::T_LIST,
   TType::T_MAP,
+  TType::T_STRING,
+  TType::T_STRING,
 }};
 
 const std::array<folly::StringPiece, 2> TStructDataStorage<::some::valid::ns::SimpleUnion>::fields_names = {{
@@ -203,7 +211,7 @@ const std::array<protocol::TType, 2> TStructDataStorage<::some::valid::ns::Simpl
   TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 27> TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_names = {{
+const std::array<folly::StringPiece, 28> TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_names = {{
   "intValue",
   "opt_intValue",
   "stringValue",
@@ -231,8 +239,9 @@ const std::array<folly::StringPiece, 27> TStructDataStorage<::some::valid::ns::C
   "ref_field",
   "ref_field2",
   "excp_field",
+  "MyCustomField",
 }};
-const std::array<int16_t, 27> TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_ids = {{
+const std::array<int16_t, 28> TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_ids = {{
   1,
   201,
   3,
@@ -260,8 +269,9 @@ const std::array<int16_t, 27> TStructDataStorage<::some::valid::ns::ComplexUnion
   24,
   25,
   26,
+  27,
 }};
-const std::array<protocol::TType, 27> TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_types = {{
+const std::array<protocol::TType, 28> TStructDataStorage<::some::valid::ns::ComplexUnion>::fields_types = {{
   TType::T_I64,
   TType::T_I64,
   TType::T_STRING,
@@ -289,9 +299,10 @@ const std::array<protocol::TType, 27> TStructDataStorage<::some::valid::ns::Comp
   TType::T_STRUCT,
   TType::T_STRUCT,
   TType::T_STRUCT,
+  TType::T_STRING,
 }};
 
-const std::array<folly::StringPiece, 15> TStructDataStorage<::some::valid::ns::AnException>::fields_names = {{
+const std::array<folly::StringPiece, 17> TStructDataStorage<::some::valid::ns::AnException>::fields_names = {{
   "code",
   "req_code",
   "message2",
@@ -307,8 +318,10 @@ const std::array<folly::StringPiece, 15> TStructDataStorage<::some::valid::ns::A
   "a_union_list",
   "union_typedef",
   "a_union_typedef_list",
+  "MyCustomField",
+  "MyOptCustomField",
 }};
-const std::array<int16_t, 15> TStructDataStorage<::some::valid::ns::AnException>::fields_ids = {{
+const std::array<int16_t, 17> TStructDataStorage<::some::valid::ns::AnException>::fields_ids = {{
   1,
   101,
   2,
@@ -324,8 +337,10 @@ const std::array<int16_t, 15> TStructDataStorage<::some::valid::ns::AnException>
   10,
   11,
   19,
+  20,
+  21,
 }};
-const std::array<protocol::TType, 15> TStructDataStorage<::some::valid::ns::AnException>::fields_types = {{
+const std::array<protocol::TType, 17> TStructDataStorage<::some::valid::ns::AnException>::fields_types = {{
   TType::T_I32,
   TType::T_I32,
   TType::T_STRING,
@@ -341,6 +356,8 @@ const std::array<protocol::TType, 15> TStructDataStorage<::some::valid::ns::AnEx
   TType::T_LIST,
   TType::T_SET,
   TType::T_LIST,
+  TType::T_STRING,
+  TType::T_STRING,
 }};
 
 const std::array<folly::StringPiece, 3> TStructDataStorage<::some::valid::ns::AnotherException>::fields_names = {{

@@ -426,6 +426,8 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     MyBinaryField3(std::move(other.MyBinaryField3)),
     MyBinaryListField4(std::move(other.MyBinaryListField4)),
     MyMapEnumAndInt(std::move(other.MyMapEnumAndInt)),
+    MyCustomField(std::move(other.MyCustomField)),
+    MyOptCustomField(std::move(other.MyOptCustomField)),
     __isset(other.__isset) {}
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->MyBoolField = std::move(other.MyBoolField);
@@ -437,6 +439,8 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->MyBinaryField3 = std::move(other.MyBinaryField3);
     this->MyBinaryListField4 = std::move(other.MyBinaryListField4);
     this->MyMapEnumAndInt = std::move(other.MyMapEnumAndInt);
+    this->MyCustomField = std::move(other.MyCustomField);
+    this->MyOptCustomField = std::move(other.MyOptCustomField);
     __isset = other.__isset;
     return *this;
 }
@@ -444,7 +448,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg) :
+MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::std::int64_t MyIntField__arg, ::std::string MyStringField__arg, ::std::string MyStringField2__arg, ::std::string MyBinaryField__arg, ::std::string MyBinaryField2__arg, ::std::string MyBinaryField3__arg, ::std::vector<::std::string> MyBinaryListField4__arg, ::std::map<::some::valid::ns::MyEnumA, ::std::string> MyMapEnumAndInt__arg, ::some::valid::ns::CustomProtocolType MyCustomField__arg, ::some::valid::ns::CustomProtocolType MyOptCustomField__arg) :
     MyBoolField(std::move(MyBoolField__arg)),
     MyIntField(std::move(MyIntField__arg)),
     MyStringField(std::move(MyStringField__arg)),
@@ -453,7 +457,9 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::
     MyBinaryField2(std::move(MyBinaryField2__arg)),
     MyBinaryField3(std::move(MyBinaryField3__arg)),
     MyBinaryListField4(std::move(MyBinaryListField4__arg)),
-    MyMapEnumAndInt(std::move(MyMapEnumAndInt__arg)) {
+    MyMapEnumAndInt(std::move(MyMapEnumAndInt__arg)),
+    MyCustomField(std::move(MyCustomField__arg)),
+    MyOptCustomField(std::move(MyOptCustomField__arg)) {
   __isset.MyBoolField = true;
   __isset.MyIntField = true;
   __isset.MyStringField = true;
@@ -462,6 +468,8 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::
   __isset.MyBinaryField2 = true;
   __isset.MyBinaryListField4 = true;
   __isset.MyMapEnumAndInt = true;
+  __isset.MyCustomField = true;
+  __isset.MyOptCustomField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -476,6 +484,8 @@ void MyStruct::__clear() {
   this->MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->MyBinaryListField4.clear();
   this->MyMapEnumAndInt.clear();
+  this->MyCustomField = CustomProtocolAdapter::fromThrift(apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral(""));
+  this->MyOptCustomField = CustomProtocolAdapter::fromThrift(apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral(""));
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -512,6 +522,12 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
     return false;
   }
+  if (!(lhs.MyCustomField_ref() == rhs.MyCustomField_ref())) {
+    return false;
+  }
+  if (!(lhs.MyOptCustomField_ref() == rhs.MyOptCustomField_ref())) {
+    return false;
+  }
   return true;
 }
 
@@ -546,6 +562,12 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
     return lhs.MyMapEnumAndInt_ref() < rhs.MyMapEnumAndInt_ref();
   }
+  if (!(lhs.MyCustomField_ref() == rhs.MyCustomField_ref())) {
+    return lhs.MyCustomField_ref() < rhs.MyCustomField_ref();
+  }
+  if (!(lhs.MyOptCustomField_ref() == rhs.MyOptCustomField_ref())) {
+    return lhs.MyOptCustomField_ref() < rhs.MyOptCustomField_ref();
+  }
   return false;
 }
 
@@ -577,6 +599,8 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyBinaryField3_ref().value(), b.MyBinaryField3_ref().value());
   swap(a.MyBinaryListField4_ref().value(), b.MyBinaryListField4_ref().value());
   swap(a.MyMapEnumAndInt_ref().value(), b.MyMapEnumAndInt_ref().value());
+  swap(a.MyCustomField_ref().value(), b.MyCustomField_ref().value());
+  swap(a.MyOptCustomField_ref().value_unchecked(), b.MyOptCustomField_ref().value_unchecked());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -843,6 +867,9 @@ void ComplexUnion::__clear() {
     case Type::excp_field:
       destruct(value_.excp_field);
       break;
+    case Type::MyCustomField:
+      destruct(value_.MyCustomField);
+      break;
     default:
       assert(false);
       break;
@@ -911,6 +938,8 @@ bool ComplexUnion::operator==(const ComplexUnion& rhs) const {
       return *value_.ref_field2 == *rhs.value_.ref_field2;
     case Type::excp_field:
       return value_.excp_field == rhs.value_.excp_field;
+    case Type::MyCustomField:
+      return value_.MyCustomField == rhs.value_.MyCustomField;
     default:
       return true;
   }
@@ -980,6 +1009,8 @@ bool ComplexUnion::operator<(const ComplexUnion& rhs) const {
       return lhs.value_.ref_field2 < rhs.value_.ref_field2;
     case Type::excp_field:
       return lhs.value_.excp_field < rhs.value_.excp_field;
+    case Type::MyCustomField:
+      return lhs.value_.MyCustomField < rhs.value_.MyCustomField;
     default:
       return false;
   }
@@ -1194,6 +1225,8 @@ AnException::AnException(AnException&& other) noexcept  :
     a_union_list(std::move(other.a_union_list)),
     union_typedef(std::move(other.union_typedef)),
     a_union_typedef_list(std::move(other.a_union_typedef_list)),
+    MyCustomField(std::move(other.MyCustomField)),
+    MyOptCustomField(std::move(other.MyOptCustomField)),
     __isset(other.__isset) {}
 AnException& AnException::operator=(FOLLY_MAYBE_UNUSED AnException&& other) noexcept {
     this->code = std::move(other.code);
@@ -1211,6 +1244,8 @@ AnException& AnException::operator=(FOLLY_MAYBE_UNUSED AnException&& other) noex
     this->a_union_list = std::move(other.a_union_list);
     this->union_typedef = std::move(other.union_typedef);
     this->a_union_typedef_list = std::move(other.a_union_typedef_list);
+    this->MyCustomField = std::move(other.MyCustomField);
+    this->MyOptCustomField = std::move(other.MyOptCustomField);
     __isset = other.__isset;
     return *this;
 }
@@ -1218,7 +1253,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<::std::int32_t> exception_list__arg, ::std::set<::std::int64_t> exception_set__arg, ::std::map<::std::string, ::std::int32_t> exception_map__arg, ::std::map<::std::string, ::std::int32_t> req_exception_map__arg, ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector<::some::valid::ns::MyEnumA> enum_container__arg, ::some::valid::ns::MyStruct a_struct__arg, ::std::set<::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector<::some::valid::ns::SimpleUnion> a_union_list__arg, ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list__arg) :
+AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code__arg, ::std::int32_t req_code__arg, ::std::string message2__arg, ::std::string req_message__arg, ::std::vector<::std::int32_t> exception_list__arg, ::std::set<::std::int64_t> exception_set__arg, ::std::map<::std::string, ::std::int32_t> exception_map__arg, ::std::map<::std::string, ::std::int32_t> req_exception_map__arg, ::some::valid::ns::MyEnumA enum_field__arg, ::std::vector<::some::valid::ns::MyEnumA> enum_container__arg, ::some::valid::ns::MyStruct a_struct__arg, ::std::set<::some::valid::ns::MyStruct> a_set_struct__arg, ::std::vector<::some::valid::ns::SimpleUnion> a_union_list__arg, ::some::valid::ns::unionTypeDef union_typedef__arg, ::std::vector<::some::valid::ns::unionTypeDef> a_union_typedef_list__arg, ::some::valid::ns::CustomProtocolType MyCustomField__arg, ::some::valid::ns::CustomProtocolType MyOptCustomField__arg) :
     code(std::move(code__arg)),
     req_code(std::move(req_code__arg)),
     message2(std::move(message2__arg)),
@@ -1233,7 +1268,9 @@ AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code
     a_set_struct(std::move(a_set_struct__arg)),
     a_union_list(std::move(a_union_list__arg)),
     union_typedef(std::move(union_typedef__arg)),
-    a_union_typedef_list(std::move(a_union_typedef_list__arg)) {
+    a_union_typedef_list(std::move(a_union_typedef_list__arg)),
+    MyCustomField(std::move(MyCustomField__arg)),
+    MyOptCustomField(std::move(MyOptCustomField__arg)) {
   __isset.code = true;
   __isset.message2 = true;
   __isset.exception_list = true;
@@ -1246,6 +1283,8 @@ AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code
   __isset.a_union_list = true;
   __isset.union_typedef = true;
   __isset.a_union_typedef_list = true;
+  __isset.MyCustomField = true;
+  __isset.MyOptCustomField = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1266,6 +1305,8 @@ void AnException::__clear() {
   this->a_union_list.clear();
   this->union_typedef.clear();
   this->a_union_typedef_list.clear();
+  this->MyCustomField = CustomProtocolAdapter::fromThrift(apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral(""));
+  this->MyOptCustomField = CustomProtocolAdapter::fromThrift(apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral(""));
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1320,6 +1361,12 @@ bool AnException::operator==(const AnException& rhs) const {
   if (!(lhs.a_union_typedef_list_ref() == rhs.a_union_typedef_list_ref())) {
     return false;
   }
+  if (!(lhs.MyCustomField_ref() == rhs.MyCustomField_ref())) {
+    return false;
+  }
+  if (!(lhs.MyOptCustomField_ref() == rhs.MyOptCustomField_ref())) {
+    return false;
+  }
   return true;
 }
 
@@ -1371,6 +1418,12 @@ bool AnException::operator<(const AnException& rhs) const {
   }
   if (!(lhs.a_union_typedef_list_ref() == rhs.a_union_typedef_list_ref())) {
     return lhs.a_union_typedef_list_ref() < rhs.a_union_typedef_list_ref();
+  }
+  if (!(lhs.MyCustomField_ref() == rhs.MyCustomField_ref())) {
+    return lhs.MyCustomField_ref() < rhs.MyCustomField_ref();
+  }
+  if (!(lhs.MyOptCustomField_ref() == rhs.MyOptCustomField_ref())) {
+    return lhs.MyOptCustomField_ref() < rhs.MyOptCustomField_ref();
   }
   return false;
 }
@@ -1473,6 +1526,8 @@ void swap(AnException& a, AnException& b) {
   swap(a.a_union_list_ref().value(), b.a_union_list_ref().value());
   swap(a.union_typedef_ref().value(), b.union_typedef_ref().value());
   swap(a.a_union_typedef_list_ref().value(), b.a_union_typedef_list_ref().value());
+  swap(a.MyCustomField_ref().value(), b.MyCustomField_ref().value());
+  swap(a.MyOptCustomField_ref().value_unchecked(), b.MyOptCustomField_ref().value_unchecked());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

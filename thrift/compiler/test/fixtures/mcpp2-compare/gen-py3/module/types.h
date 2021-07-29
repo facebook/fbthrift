@@ -151,6 +151,12 @@ void reset_field<::some::valid::ns::MyStruct>(
     case 8:
       obj.MyMapEnumAndInt_ref().copy_from(default_inst<::some::valid::ns::MyStruct>().MyMapEnumAndInt_ref());
       return;
+    case 9:
+      obj.MyCustomField_ref().copy_from(default_inst<::some::valid::ns::MyStruct>().MyCustomField_ref());
+      return;
+    case 10:
+      obj.MyOptCustomField_ref().copy_from(default_inst<::some::valid::ns::MyStruct>().MyOptCustomField_ref());
+      return;
   }
 }
 
@@ -202,6 +208,12 @@ void reset_field<::some::valid::ns::AnException>(
       return;
     case 14:
       obj.a_union_typedef_list_ref().copy_from(default_inst<::some::valid::ns::AnException>().a_union_typedef_list_ref());
+      return;
+    case 15:
+      obj.MyCustomField_ref().copy_from(default_inst<::some::valid::ns::AnException>().MyCustomField_ref());
+      return;
+    case 16:
+      obj.MyOptCustomField_ref().copy_from(default_inst<::some::valid::ns::AnException>().MyOptCustomField_ref());
       return;
   }
 }

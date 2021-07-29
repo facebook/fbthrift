@@ -107,6 +107,8 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"MyBinaryField3")] = __MyStruct_FieldsSetter._set_field_6
         __fbthrift_inst._setters[__cstring_view(<const char*>"MyBinaryListField4")] = __MyStruct_FieldsSetter._set_field_7
         __fbthrift_inst._setters[__cstring_view(<const char*>"MyMapEnumAndInt")] = __MyStruct_FieldsSetter._set_field_8
+        __fbthrift_inst._setters[__cstring_view(<const char*>"MyCustomField")] = __MyStruct_FieldsSetter._set_field_9
+        __fbthrift_inst._setters[__cstring_view(<const char*>"MyOptCustomField")] = __MyStruct_FieldsSetter._set_field_10
         return __fbthrift_inst
 
     cdef void set_field(__MyStruct_FieldsSetter self, const char* name, object value) except *:
@@ -194,6 +196,24 @@ cdef class __MyStruct_FieldsSetter(__StructFieldsSetter):
             return
         deref(self._struct_cpp_obj).MyMapEnumAndInt_ref().assign(deref(_module_types.Map__MyEnumA_string(_fbthrift_value)._cpp_obj))
 
+    cdef void _set_field_9(self, _fbthrift_value) except *:
+        # for field MyCustomField
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 9)
+            return
+        if not isinstance(_fbthrift_value, bytes):
+            raise TypeError(f'MyCustomField is not a { bytes !r}.')
+        deref(self._struct_cpp_obj).MyCustomField_ref().assign(_module_types._folly_IOBuf(cmove(<string>_fbthrift_value)))
+
+    cdef void _set_field_10(self, _fbthrift_value) except *:
+        # for field MyOptCustomField
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cMyStruct](deref(self._struct_cpp_obj), 10)
+            return
+        if not isinstance(_fbthrift_value, bytes):
+            raise TypeError(f'MyOptCustomField is not a { bytes !r}.')
+        deref(self._struct_cpp_obj).MyOptCustomField_ref().assign(_module_types._folly_IOBuf(cmove(<string>_fbthrift_value)))
+
 
 @__cython.auto_pickle(False)
 cdef class __AnException_FieldsSetter(__StructFieldsSetter):
@@ -217,6 +237,8 @@ cdef class __AnException_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"a_union_list")] = __AnException_FieldsSetter._set_field_12
         __fbthrift_inst._setters[__cstring_view(<const char*>"union_typedef")] = __AnException_FieldsSetter._set_field_13
         __fbthrift_inst._setters[__cstring_view(<const char*>"a_union_typedef_list")] = __AnException_FieldsSetter._set_field_14
+        __fbthrift_inst._setters[__cstring_view(<const char*>"MyCustomField")] = __AnException_FieldsSetter._set_field_15
+        __fbthrift_inst._setters[__cstring_view(<const char*>"MyOptCustomField")] = __AnException_FieldsSetter._set_field_16
         return __fbthrift_inst
 
     cdef void set_field(__AnException_FieldsSetter self, const char* name, object value) except *:
@@ -344,6 +366,24 @@ cdef class __AnException_FieldsSetter(__StructFieldsSetter):
             __reset_field[_module_types.cAnException](deref(self._struct_cpp_obj), 14)
             return
         deref(self._struct_cpp_obj).a_union_typedef_list_ref().assign(deref(_module_types.List__Set__SimpleUnion(_fbthrift_value)._cpp_obj))
+
+    cdef void _set_field_15(self, _fbthrift_value) except *:
+        # for field MyCustomField
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cAnException](deref(self._struct_cpp_obj), 15)
+            return
+        if not isinstance(_fbthrift_value, bytes):
+            raise TypeError(f'MyCustomField is not a { bytes !r}.')
+        deref(self._struct_cpp_obj).MyCustomField_ref().assign(_module_types._folly_IOBuf(cmove(<string>_fbthrift_value)))
+
+    cdef void _set_field_16(self, _fbthrift_value) except *:
+        # for field MyOptCustomField
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cAnException](deref(self._struct_cpp_obj), 16)
+            return
+        if not isinstance(_fbthrift_value, bytes):
+            raise TypeError(f'MyOptCustomField is not a { bytes !r}.')
+        deref(self._struct_cpp_obj).MyOptCustomField_ref().assign(_module_types._folly_IOBuf(cmove(<string>_fbthrift_value)))
 
 
 @__cython.auto_pickle(False)
