@@ -30,15 +30,15 @@ StructMetadata<::cpp2::MyStruct>::gen(ThriftMetadata& metadata) {
   module_MyStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_MyStruct_fields[] = {
-    std::make_tuple(1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    {1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_MyStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -54,15 +54,15 @@ StructMetadata<::cpp2::MyUnion>::gen(ThriftMetadata& metadata) {
   module_MyUnion.is_union_ref() = true;
   static const EncodedThriftField
   module_MyUnion_fields[] = {
-    std::make_tuple(1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    {1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_MyUnion.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -78,15 +78,15 @@ StructMetadata<::cpp2::MyException>::gen(ThriftMetadata& metadata) {
   module_MyException.is_union_ref() = false;
   static const EncodedThriftField
   module_MyException_fields[] = {
-    std::make_tuple(1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    {1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyException_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_MyException.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -101,14 +101,14 @@ void ExceptionMetadata<::cpp2::MyException>::gen(ThriftMetadata& metadata) {
   module_MyException.name_ref() = "module.MyException";
   static const EncodedThriftField
   module_MyException_fields[] = {
-    std::make_tuple(1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    {1, "myString", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_MyException_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
     module_MyException.fields_ref()->push_back(std::move(field));
   }
 }

@@ -42,19 +42,19 @@ StructMetadata<::test::fixtures::tablebased::TrivialTypesStruct>::gen(ThriftMeta
   module_TrivialTypesStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_TrivialTypesStruct_fields[] = {
-    std::make_tuple(1, "fieldA", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(2, "fieldB", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(3, "fieldC", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(4, "fieldD", true, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(5, "fieldE", false, std::make_unique<Enum< ::test::fixtures::tablebased::ExampleEnum>>("module.ExampleEnum"), std::vector<ThriftConstStruct>{}),
+    {1, "fieldA", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+    {2, "fieldB", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+    {3, "fieldC", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
+    {4, "fieldD", true, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}},
+    {5, "fieldE", false, std::make_unique<Enum< ::test::fixtures::tablebased::ExampleEnum>>("module.ExampleEnum"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_TrivialTypesStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_TrivialTypesStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -70,22 +70,22 @@ StructMetadata<::test::fixtures::tablebased::ContainerStruct>::gen(ThriftMetadat
   module_ContainerStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_ContainerStruct_fields[] = {
-    std::make_tuple(12, "fieldA", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(2, "fieldB", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(3, "fieldC", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(4, "fieldD", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(5, "fieldE", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(6, "fieldF", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(7, "fieldG", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(8, "fieldH", false, std::make_unique<List>(std::make_unique<Struct< ::test::fixtures::tablebased::TrivialTypesStruct>>("module.TrivialTypesStruct")), std::vector<ThriftConstStruct>{}),
+    {12, "fieldA", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
+    {2, "fieldB", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
+    {3, "fieldC", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
+    {4, "fieldD", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
+    {5, "fieldE", false, std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
+    {6, "fieldF", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
+    {7, "fieldG", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}},
+    {8, "fieldH", false, std::make_unique<List>(std::make_unique<Struct< ::test::fixtures::tablebased::TrivialTypesStruct>>("module.TrivialTypesStruct")), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ContainerStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_ContainerStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -101,16 +101,16 @@ StructMetadata<::test::fixtures::tablebased::ExampleUnion>::gen(ThriftMetadata& 
   module_ExampleUnion.is_union_ref() = true;
   static const EncodedThriftField
   module_ExampleUnion_fields[] = {
-    std::make_tuple(1, "fieldA", false, std::make_unique<Struct< ::test::fixtures::tablebased::ContainerStruct>>("module.ContainerStruct"), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(2, "fieldB", false, std::make_unique<Struct< ::test::fixtures::tablebased::TrivialTypesStruct>>("module.TrivialTypesStruct"), std::vector<ThriftConstStruct>{}),
+    {1, "fieldA", false, std::make_unique<Struct< ::test::fixtures::tablebased::ContainerStruct>>("module.ContainerStruct"), std::vector<ThriftConstStruct>{}},
+    {2, "fieldB", false, std::make_unique<Struct< ::test::fixtures::tablebased::TrivialTypesStruct>>("module.TrivialTypesStruct"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ExampleUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_ExampleUnion.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

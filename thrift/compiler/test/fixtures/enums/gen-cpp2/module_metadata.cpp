@@ -42,18 +42,18 @@ StructMetadata<::cpp2::SomeStruct>::gen(ThriftMetadata& metadata) {
   module_SomeStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_SomeStruct_fields[] = {
-    std::make_tuple(1, "reasonable", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(2, "fine", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(3, "questionable", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(4, "tags", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}),
+    {1, "reasonable", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
+    {2, "fine", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
+    {3, "questionable", false, std::make_unique<Enum< ::cpp2::Metasyntactic>>("module.Metasyntactic"), std::vector<ThriftConstStruct>{}},
+    {4, "tags", false, std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_SomeStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_SomeStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;

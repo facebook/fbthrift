@@ -54,15 +54,15 @@ StructMetadata<::py3::simple::SimpleException>::gen(ThriftMetadata& metadata) {
   module_SimpleException.is_union_ref() = false;
   static const EncodedThriftField
   module_SimpleException_fields[] = {
-    std::make_tuple(1, "err_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}),
+    {1, "err_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_SimpleException_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_SimpleException.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -78,15 +78,15 @@ StructMetadata<::py3::simple::OptionalRefStruct>::gen(ThriftMetadata& metadata) 
   module_OptionalRefStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_OptionalRefStruct_fields[] = {
-    std::make_tuple(1, "optional_blob", true, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
+    {1, "optional_blob", true, std::make_unique<Typedef>("module.IOBufPtr", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_OptionalRefStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_OptionalRefStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -102,22 +102,22 @@ StructMetadata<::py3::simple::SimpleStruct>::gen(ThriftMetadata& metadata) {
   module_SimpleStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_SimpleStruct_fields[] = {
-    std::make_tuple(1, "is_on", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(2, "tiny_int", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(3, "small_int", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(4, "nice_sized_int", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(5, "big_int", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(6, "real", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(7, "smaller_real", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(8, "hidden_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}),
+    {1, "is_on", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BOOL_TYPE), std::vector<ThriftConstStruct>{}},
+    {2, "tiny_int", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BYTE_TYPE), std::vector<ThriftConstStruct>{}},
+    {3, "small_int", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
+    {4, "nice_sized_int", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+    {5, "big_int", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I64_TYPE), std::vector<ThriftConstStruct>{}},
+    {6, "real", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_DOUBLE_TYPE), std::vector<ThriftConstStruct>{}},
+    {7, "smaller_real", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_FLOAT_TYPE), std::vector<ThriftConstStruct>{}},
+    {8, "hidden_field", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_SimpleStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_SimpleStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -133,23 +133,23 @@ StructMetadata<::py3::simple::ComplexStruct>::gen(ThriftMetadata& metadata) {
   module_ComplexStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_ComplexStruct_fields[] = {
-    std::make_tuple(1, "structOne", false, std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct"), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(2, "structTwo", false, std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct"), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(3, "an_integer", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(4, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(5, "an_enum", false, std::make_unique<Enum< ::py3::simple::AnEnum>>("module.AnEnum"), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(6, "some_bytes", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(7, "from", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(8, "cdef", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(9, "bytes_with_cpp_type", false, std::make_unique<Typedef>("module.foo_bar", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
+    {1, "structOne", false, std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct"), std::vector<ThriftConstStruct>{}},
+    {2, "structTwo", false, std::make_unique<Struct< ::py3::simple::SimpleStruct>>("module.SimpleStruct"), std::vector<ThriftConstStruct>{}},
+    {3, "an_integer", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
+    {4, "name", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+    {5, "an_enum", false, std::make_unique<Enum< ::py3::simple::AnEnum>>("module.AnEnum"), std::vector<ThriftConstStruct>{}},
+    {6, "some_bytes", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
+    {7, "from", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+    {8, "cdef", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+    {9, "bytes_with_cpp_type", false, std::make_unique<Typedef>("module.foo_bar", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_ComplexStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_ComplexStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -165,15 +165,15 @@ StructMetadata<::py3::simple::BinaryUnion>::gen(ThriftMetadata& metadata) {
   module_BinaryUnion.is_union_ref() = true;
   static const EncodedThriftField
   module_BinaryUnion_fields[] = {
-    std::make_tuple(1, "iobuf_val", false, std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}),
+    {1, "iobuf_val", false, std::make_unique<Typedef>("module.IOBuf", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE)), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_BinaryUnion_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_BinaryUnion.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -189,15 +189,15 @@ StructMetadata<::py3::simple::BinaryUnionStruct>::gen(ThriftMetadata& metadata) 
   module_BinaryUnionStruct.is_union_ref() = false;
   static const EncodedThriftField
   module_BinaryUnionStruct_fields[] = {
-    std::make_tuple(1, "u", false, std::make_unique<Union< ::py3::simple::BinaryUnion>>("module.BinaryUnion"), std::vector<ThriftConstStruct>{}),
+    {1, "u", false, std::make_unique<Union< ::py3::simple::BinaryUnion>>("module.BinaryUnion"), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_BinaryUnionStruct_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_BinaryUnionStruct.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -212,14 +212,14 @@ void ExceptionMetadata<::py3::simple::SimpleException>::gen(ThriftMetadata& meta
   module_SimpleException.name_ref() = "module.SimpleException";
   static const EncodedThriftField
   module_SimpleException_fields[] = {
-    std::make_tuple(1, "err_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}),
+    {1, "err_code", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I16_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_SimpleException_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
     module_SimpleException.fields_ref()->push_back(std::move(field));
   }
 }

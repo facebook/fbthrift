@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <memory>
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
@@ -43,12 +46,16 @@ class MetadataTypeInterface {
   virtual ~MetadataTypeInterface() {}
 };
 
-using EncodedThriftField = std::tuple<
-    int32_t,
-    const char*,
-    bool,
-    std::unique_ptr<MetadataTypeInterface>,
-    std::vector<ThriftConstStruct>>;
+/**
+ * @brief Used in module metadata templates
+ */
+struct EncodedThriftField {
+  int32_t id;
+  const char* name;
+  bool is_optional;
+  std::unique_ptr<MetadataTypeInterface> metadata_type_interface;
+  std::vector<ThriftConstStruct> structured_annotations;
+};
 
 class Primitive : public MetadataTypeInterface {
  public:

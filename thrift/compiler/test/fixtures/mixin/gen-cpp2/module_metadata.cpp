@@ -30,15 +30,15 @@ StructMetadata<::cpp2::Mixin1>::gen(ThriftMetadata& metadata) {
   module_Mixin1.is_union_ref() = false;
   static const EncodedThriftField
   module_Mixin1_fields[] = {
-    std::make_tuple(1, "field1", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    {1, "field1", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_Mixin1_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_Mixin1.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -54,16 +54,16 @@ StructMetadata<::cpp2::Mixin2>::gen(ThriftMetadata& metadata) {
   module_Mixin2.is_union_ref() = false;
   static const EncodedThriftField
   module_Mixin2_fields[] = {
-    std::make_tuple(1, "m1", false, std::make_unique<Struct< ::cpp2::Mixin1>>("module.Mixin1"), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(2, "field2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    {1, "m1", false, std::make_unique<Struct< ::cpp2::Mixin1>>("module.Mixin1"), std::vector<ThriftConstStruct>{}},
+    {2, "field2", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_Mixin2_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_Mixin2.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -79,15 +79,15 @@ StructMetadata<::cpp2::Mixin3Base>::gen(ThriftMetadata& metadata) {
   module_Mixin3Base.is_union_ref() = false;
   static const EncodedThriftField
   module_Mixin3Base_fields[] = {
-    std::make_tuple(1, "field3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
+    {1, "field3", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_Mixin3Base_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_Mixin3Base.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
@@ -103,17 +103,17 @@ StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
   module_Foo.is_union_ref() = false;
   static const EncodedThriftField
   module_Foo_fields[] = {
-    std::make_tuple(1, "field4", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(2, "m2", false, std::make_unique<Struct< ::cpp2::Mixin2>>("module.Mixin2"), std::vector<ThriftConstStruct>{}),
-    std::make_tuple(3, "m3", false, std::make_unique<Typedef>("module.Mixin3", std::make_unique<Struct< ::cpp2::Mixin3Base>>("module.Mixin3Base")), std::vector<ThriftConstStruct>{}),
+    {1, "field4", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::vector<ThriftConstStruct>{}},
+    {2, "m2", false, std::make_unique<Struct< ::cpp2::Mixin2>>("module.Mixin2"), std::vector<ThriftConstStruct>{}},
+    {3, "m3", false, std::make_unique<Typedef>("module.Mixin3", std::make_unique<Struct< ::cpp2::Mixin3Base>>("module.Mixin3Base")), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_Foo_fields) {
     ::apache::thrift::metadata::ThriftField field;
-    field.id_ref() = std::get<0>(f);
-    field.name_ref() = std::get<1>(f);
-    field.is_optional_ref() = std::get<2>(f);
-    std::get<3>(f)->writeAndGenType(*field.type_ref(), metadata);
-    field.structured_annotations_ref() = std::get<4>(f);
+    field.id_ref() = f.id;
+    field.name_ref() = f.name;
+    field.is_optional_ref() = f.is_optional;
+    f.metadata_type_interface->writeAndGenType(*field.type_ref(), metadata);
+    field.structured_annotations_ref() = f.structured_annotations;
     module_Foo.fields_ref()->push_back(std::move(field));
   }
   return res.first->second;
