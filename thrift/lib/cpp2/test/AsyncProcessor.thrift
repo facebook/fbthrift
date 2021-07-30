@@ -31,3 +31,7 @@ service Child extends Parent {
   oneway void childMethod1();
   string childMethod2();
 }
+
+service DummyMonitor {
+  i64 getCounter();
+}

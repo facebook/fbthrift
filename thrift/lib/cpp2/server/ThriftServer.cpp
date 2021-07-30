@@ -37,6 +37,7 @@
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
+#include <thrift/lib/cpp2/async/MultiplexAsyncProcessor.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEvent.h>
@@ -104,29 +105,22 @@ using std::shared_ptr;
 using wangle::TLSCredProcessor;
 
 namespace {
-class DecoratedProcessorFactory : public AsyncProcessorFactory {
- public:
-  std::unique_ptr<AsyncProcessor> getProcessor() override {
-    return processorFactory_->getProcessor();
+/**
+ * Multiplexes the user-service (set via setProcessorFactory) with the
+ * monitoring interface (set via setMonitoringInterface).
+ */
+std::unique_ptr<AsyncProcessorFactory> createDecoratedProcessorFactory(
+    std::shared_ptr<AsyncProcessorFactory> processorFactory,
+    std::shared_ptr<MonitoringServerInterface> monitoringProcessorFactory) {
+  std::vector<std::shared_ptr<AsyncProcessorFactory>> servicesToMultiplex;
+  CHECK(processorFactory != nullptr);
+  servicesToMultiplex.emplace_back(std::move(processorFactory));
+  if (monitoringProcessorFactory != nullptr) {
+    servicesToMultiplex.emplace_back(std::move(monitoringProcessorFactory));
   }
-  std::vector<ServiceHandler*> getServiceHandlers() override {
-    return processorFactory_->getServiceHandlers();
-  }
-  std::shared_ptr<folly::RequestContext> getBaseContextForRequest(
-      const MethodMetadata& untypedMethodMetadata) override {
-    return processorFactory_->getBaseContextForRequest(untypedMethodMetadata);
-  }
-  CreateMethodMetadataResult createMethodMetadata() override {
-    return processorFactory_->createMethodMetadata();
-  }
-
-  explicit DecoratedProcessorFactory(
-      std::shared_ptr<AsyncProcessorFactory> processorFactory)
-      : processorFactory_(std::move(processorFactory)) {}
-
- private:
-  const std::shared_ptr<AsyncProcessorFactory> processorFactory_;
-};
+  return std::make_unique<MultiplexAsyncProcessorFactory>(
+      std::move(servicesToMultiplex));
+}
 } // namespace
 
 TLSCredentialWatcher::TLSCredentialWatcher(ThriftServer* server)
@@ -720,8 +714,9 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
 void ThriftServer::ensureDecoratedProcessorFactoryInitialized() {
   DCHECK(getProcessorFactory().get());
   if (decoratedProcessorFactory_ == nullptr) {
-    decoratedProcessorFactory_ =
-        std::make_unique<DecoratedProcessorFactory>(getProcessorFactory());
+    decoratedProcessorFactory_ = createDecoratedProcessorFactory(
+        getProcessorFactory(), getMonitoringProcessorFactory());
+    ;
   }
 }
 
