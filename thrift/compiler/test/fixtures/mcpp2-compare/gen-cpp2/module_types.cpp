@@ -484,8 +484,8 @@ void MyStruct::__clear() {
   this->MyBinaryField3 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->MyBinaryListField4.clear();
   this->MyMapEnumAndInt.clear();
-  this->MyCustomField = CustomProtocolAdapter::fromThrift(apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral(""));
-  this->MyOptCustomField = CustomProtocolAdapter::fromThrift(apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral(""));
+  this->MyCustomField = {};
+  this->MyOptCustomField = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1305,8 +1305,8 @@ void AnException::__clear() {
   this->a_union_list.clear();
   this->union_typedef.clear();
   this->a_union_typedef_list.clear();
-  this->MyCustomField = CustomProtocolAdapter::fromThrift(apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral(""));
-  this->MyOptCustomField = CustomProtocolAdapter::fromThrift(apache::thrift::StringTraits<::folly::IOBuf>::fromStringLiteral(""));
+  this->MyCustomField = {};
+  this->MyOptCustomField = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

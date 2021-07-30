@@ -863,7 +863,7 @@ uint32_t MyStruct::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map<::some::valid::ns::MyEnumA, ::std::string>>::serializedSize<false>(*prot_, this->MyMapEnumAndInt);
   }
-  if (!apache::thrift::StringTraits<::folly::IOBuf>::isEmpty(this->MyCustomField)) {
+  if (!(this->MyCustomField == ::some::valid::ns::CustomProtocolType())) {
     xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 10);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<false>(*prot_, CustomProtocolAdapter::toThrift(this->MyCustomField));
   }
@@ -917,7 +917,7 @@ uint32_t MyStruct::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("MyMapEnumAndInt", apache::thrift::protocol::T_MAP, 9);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::map<::apache::thrift::type_class::enumeration, ::apache::thrift::type_class::string>, ::std::map<::some::valid::ns::MyEnumA, ::std::string>>::serializedSize<false>(*prot_, this->MyMapEnumAndInt);
   }
-  if (!apache::thrift::StringTraits<::folly::IOBuf>::isEmpty(this->MyCustomField)) {
+  if (!(this->MyCustomField == ::some::valid::ns::CustomProtocolType())) {
     xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 10);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<true>(*prot_, CustomProtocolAdapter::toThrift(this->MyCustomField));
   }
@@ -1015,7 +1015,7 @@ uint32_t MyStruct::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!apache::thrift::StringTraits<::folly::IOBuf>::isEmpty(this->MyCustomField)) {
+  if (!(this->MyCustomField == ::some::valid::ns::CustomProtocolType())) {
     constexpr int16_t kPrevFieldId = 9;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 10, kPrevFieldId>(*prot_, "MyCustomField", previousFieldHasValue);
     previousFieldHasValue = true;
@@ -2765,7 +2765,7 @@ uint32_t AnException::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("a_union_typedef_list", apache::thrift::protocol::T_LIST, 19);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::variant>>, ::std::vector<::some::valid::ns::unionTypeDef>>::serializedSize<false>(*prot_, this->a_union_typedef_list);
   }
-  if (!apache::thrift::StringTraits<::folly::IOBuf>::isEmpty(this->MyCustomField)) {
+  if (!(this->MyCustomField == ::some::valid::ns::CustomProtocolType())) {
     xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 20);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<false>(*prot_, CustomProtocolAdapter::toThrift(this->MyCustomField));
   }
@@ -2843,7 +2843,7 @@ uint32_t AnException::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("a_union_typedef_list", apache::thrift::protocol::T_LIST, 19);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::set<::apache::thrift::type_class::variant>>, ::std::vector<::some::valid::ns::unionTypeDef>>::serializedSize<false>(*prot_, this->a_union_typedef_list);
   }
-  if (!apache::thrift::StringTraits<::folly::IOBuf>::isEmpty(this->MyCustomField)) {
+  if (!(this->MyCustomField == ::some::valid::ns::CustomProtocolType())) {
     xfer += prot_->serializedFieldSize("MyCustomField", apache::thrift::protocol::T_STRING, 20);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::serializedSize<true>(*prot_, CustomProtocolAdapter::toThrift(this->MyCustomField));
   }
@@ -2989,7 +2989,7 @@ uint32_t AnException::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!apache::thrift::StringTraits<::folly::IOBuf>::isEmpty(this->MyCustomField)) {
+  if (!(this->MyCustomField == ::some::valid::ns::CustomProtocolType())) {
     constexpr int16_t kPrevFieldId = 19;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_STRING, 20, kPrevFieldId>(*prot_, "MyCustomField", previousFieldHasValue);
     previousFieldHasValue = true;

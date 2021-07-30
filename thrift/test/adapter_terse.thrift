@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace cpp2 apache.thrift.test.basic
+namespace cpp2 apache.thrift.test.terse
 
 cpp_include "thrift/test/AdapterTest.h"
 

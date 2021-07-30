@@ -61,7 +61,7 @@ void <%struct:name%>::__clear() {
   // clear all fields
 <%#struct:fields%><%#field:type%>
 <%#type:resolves_to_base_or_enum?%>
-  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <% > field/default%>;
+  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <%#type:cpp_adapter%>{}<%/type:cpp_adapter%><%^type:cpp_adapter%><% > field/default%><%/type:cpp_adapter%>;
 <%/type:resolves_to_base_or_enum?%>
 <%#type:resolves_to_container?%>
 <%#field:cpp_ref?%>

@@ -24,12 +24,21 @@
 %><%#type:resolves_to_container?%><%!
 %><%#field:cpp_ref?%> && <%/field:cpp_ref?%>!<% > field/member%><%#field:cpp_ref?%>-><%/field:cpp_ref?%><%^field:cpp_ref?%>.<%/field:cpp_ref?%>empty()<%!
 %><%/type:resolves_to_container?%><%!
-%><%#type:string_or_binary?%><%!
+%><%#type:raw_string_or_binary?%><%!
 %>!apache::thrift::StringTraits<<% > types/indirected_string_type%>>::isEmpty(<% >  module_types_tcc/field_ref %>)<%!
-%><%/type:string_or_binary?%><%!
+%><%/type:raw_string_or_binary?%><%!
 
+%><%^field:cpp_ref?%><%^type:resolves_to_container?%><%^type:raw_string_or_binary?%><%!
+%><%#type:cpp_adapter%><%!
+// Must use == operator, and check against the default constructor (ignoring any IDL-specified default).
+%>!(<% >  module_types_tcc/field_ref %> == <%type:cpp_type%>())<%!
+%><%/type:cpp_adapter%><%!
+%><%^type:cpp_adapter%><%!
 // For all other cases, must not equal the default.
-%><%^field:cpp_ref?%><%^type:resolves_to_container?%><%^type:string_or_binary?%><%!
+// TODO(afuller): As with containers, binary, and string above, this should check for
+// the 'intrinsic' default so the behavior does not change when IDL-specified defaults
+// change.
 %><% >  module_types_tcc/field_ref %> != <% > field/default%><%!
-%><%/type:string_or_binary?%><%/type:resolves_to_container?%><%/field:cpp_ref?%><%!
+%><%/type:cpp_adapter%><%!
+%><%/type:raw_string_or_binary?%><%/type:resolves_to_container?%><%/field:cpp_ref?%><%!
 %>

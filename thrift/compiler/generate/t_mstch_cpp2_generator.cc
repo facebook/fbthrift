@@ -401,8 +401,10 @@ class mstch_cpp2_type : public mstch_type {
             {"type:cpp_standard_type", &mstch_cpp2_type::cpp_standard_type},
             {"type:cpp_adapter", &mstch_cpp2_type::cpp_adapter},
             {"type:raw_binary?", &mstch_cpp2_type::raw_binary},
-            {"type:resolved_cpp_type", &mstch_cpp2_type::resolved_cpp_type},
+            {"type:raw_string_or_binary?",
+             &mstch_cpp2_type::raw_string_or_binary},
             {"type:string_or_binary?", &mstch_cpp2_type::is_string_or_binary},
+            {"type:resolved_cpp_type", &mstch_cpp2_type::resolved_cpp_type},
             {"type:cpp_template", &mstch_cpp2_type::cpp_template},
             {"type:cpp_indirection?", &mstch_cpp2_type::cpp_indirection},
             {"type:non_empty_struct?", &mstch_cpp2_type::is_non_empty_struct},
@@ -498,8 +500,10 @@ class mstch_cpp2_type : public mstch_type {
     return {};
   }
   mstch::node raw_binary() {
-    return resolved_type_->is_binary() &&
-        gen::cpp::type_resolver::find_first_adapter(type_) == nullptr;
+    return resolved_type_->is_binary() && !is_adapted();
+  }
+  mstch::node raw_string_or_binary() {
+    return resolved_type_->is_string_or_binary() && !is_adapted();
   }
   mstch::node resolved_cpp_type() { return cpp2::get_type(resolved_type_); }
   mstch::node is_string_or_binary() {
@@ -542,6 +546,10 @@ class mstch_cpp2_type : public mstch_type {
 
  private:
   std::shared_ptr<cpp2_generator_context> context_;
+
+  bool is_adapted() const {
+    return gen::cpp::type_resolver::find_first_adapter(type_) != nullptr;
+  }
 };
 
 class mstch_cpp2_field : public mstch_field {

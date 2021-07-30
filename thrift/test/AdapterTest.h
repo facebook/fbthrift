@@ -61,7 +61,7 @@ struct OverloadedAdatper {
 struct CustomProtocolAdapter {
   static Num fromThrift(const folly::IOBuf& data) {
     if (data.length() < sizeof(int64_t)) {
-      throw std::invalid_argument("parse error");
+      throw std::invalid_argument("CustomProtocolAdapter parse error");
     }
     return {*reinterpret_cast<const int64_t*>(data.data())};
   }

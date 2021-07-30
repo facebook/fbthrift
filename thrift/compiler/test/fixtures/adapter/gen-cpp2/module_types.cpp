@@ -99,14 +99,14 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Foo::__clear() {
   // clear all fields
-  this->intField = my::Adapter1::fromThrift(0);
-  this->optionalIntField = my::Adapter1::fromThrift(0);
-  this->intFieldWithDefault = my::Adapter1::fromThrift(13);
+  this->intField = {};
+  this->optionalIntField = {};
+  this->intFieldWithDefault = {};
   this->setField.clear();
   this->optionalSetField.clear();
   this->mapField.clear();
   this->optionalMapField.clear();
-  this->binaryField = my::Adapter1::fromThrift(apache::thrift::StringTraits<std::string>::fromStringLiteral(""));
+  this->binaryField = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
