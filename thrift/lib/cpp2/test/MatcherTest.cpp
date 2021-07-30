@@ -27,4 +27,6 @@ TEST(MatcherTest, ThriftField) {
   auto p = Person();
   p.name_ref() = "Zaphod";
   EXPECT_THAT(p, ThriftField(&Person::name_ref<>, Eq("Zaphod")));
+  p.id_ref() = 42;
+  EXPECT_THAT(p, ThriftField(&Person::id_ref<>, Eq(42)));
 }

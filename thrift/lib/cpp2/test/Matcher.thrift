@@ -17,5 +17,6 @@
 namespace cpp2 apache.thrift.test
 
 struct Person {
-  1: string name;
+  1: optional string name;
+  2: i32 id;
 }
