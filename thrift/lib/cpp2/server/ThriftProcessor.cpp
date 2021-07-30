@@ -48,7 +48,7 @@ void ThriftProcessor::onThriftRequest(
   DCHECK(payload);
   DCHECK(channel);
 
-  auto& processorFactory = *server_.getProcessorFactory();
+  auto& processorFactory = server_.getDecoratedProcessorFactory();
   if (processor_ == nullptr) {
     processor_ = processorFactory.getProcessor();
   }

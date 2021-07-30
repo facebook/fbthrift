@@ -192,7 +192,8 @@ void ThriftRocketServerHandler::handleSetupFrame(
       }
     }
     // no custom frame handler was found, do the default
-    processorFactory_ = worker_->getServer()->getProcessorFactory().get();
+    processorFactory_ =
+        std::addressof(worker_->getServer()->getDecoratedProcessorFactory());
     serviceMetadata_ =
         std::addressof(worker_->getMetadataForService(*processorFactory_));
     processor_ = processorFactory_->getProcessor();

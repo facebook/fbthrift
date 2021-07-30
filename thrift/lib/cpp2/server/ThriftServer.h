@@ -216,6 +216,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void callOnStartServing();
   void callOnStopServing();
 
+  void ensureDecoratedProcessorFactoryInitialized();
+
   std::atomic<bool> stoppedListening_{false};
 
 #if FOLLY_HAS_COROUTINES
@@ -241,6 +243,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   bool quickExitOnShutdownTimeout_ = false;
 
   std::atomic<bool> started_{false};
+
+  std::unique_ptr<AsyncProcessorFactory> decoratedProcessorFactory_;
 
  public:
   ThriftServer();
@@ -755,6 +759,19 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    */
   virtual void setProcessorFactory(
       std::shared_ptr<AsyncProcessorFactory> pFac) override;
+
+  /**
+   * Returns an AsyncProcessorFactory that wraps the user-provided service and
+   * additionally handles Thrift-internal methods as well (such as the
+   * monitoring interface).
+   *
+   * This is the factory that all transports should use to handle requests.
+   */
+  AsyncProcessorFactory& getDecoratedProcessorFactory() const {
+    CHECK(decoratedProcessorFactory_)
+        << "Server must be set up before calling this method";
+    return *decoratedProcessorFactory_;
+  }
 
   // ThriftServer by defaults uses a global ShutdownSocketSet, so all socket's
   // FDs are registered there. But in some tests you might want to simulate 2

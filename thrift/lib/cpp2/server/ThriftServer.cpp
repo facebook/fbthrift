@@ -103,6 +103,32 @@ using RequestSnapshot = ThriftServer::RequestSnapshot;
 using std::shared_ptr;
 using wangle::TLSCredProcessor;
 
+namespace {
+class DecoratedProcessorFactory : public AsyncProcessorFactory {
+ public:
+  std::unique_ptr<AsyncProcessor> getProcessor() override {
+    return processorFactory_->getProcessor();
+  }
+  std::vector<ServiceHandler*> getServiceHandlers() override {
+    return processorFactory_->getServiceHandlers();
+  }
+  std::shared_ptr<folly::RequestContext> getBaseContextForRequest(
+      const MethodMetadata& untypedMethodMetadata) override {
+    return processorFactory_->getBaseContextForRequest(untypedMethodMetadata);
+  }
+  CreateMethodMetadataResult createMethodMetadata() override {
+    return processorFactory_->createMethodMetadata();
+  }
+
+  explicit DecoratedProcessorFactory(
+      std::shared_ptr<AsyncProcessorFactory> processorFactory)
+      : processorFactory_(std::move(processorFactory)) {}
+
+ private:
+  const std::shared_ptr<AsyncProcessorFactory> processorFactory_;
+};
+} // namespace
+
 TLSCredentialWatcher::TLSCredentialWatcher(ThriftServer* server)
     : credProcessor_() {
   credProcessor_.addCertCallback([server] { server->updateTLSCert(); });
@@ -269,7 +295,8 @@ void ThriftServer::touchRequestTimestamp() noexcept {
 void ThriftServer::setup() {
   THRIFT_SERVER_EVENT(serve).log(*this);
 
-  DCHECK(getProcessorFactory().get());
+  ensureDecoratedProcessorFactoryInitialized();
+
   auto nWorkers = getNumIOWorkerThreads();
   DCHECK_GT(nWorkers, 0u);
 
@@ -473,6 +500,7 @@ void ThriftServer::setupThreadManager() {
  */
 void ThriftServer::startDuplex() {
   CHECK(configMutable());
+  ensureDecoratedProcessorFactoryInitialized();
   duplexWorker_ = Cpp2Worker::create(this, serverChannel_);
   // we don't control the EventBase for the duplexWorker, so when we shut
   // it down, we need to ensure there's no delay
@@ -545,6 +573,9 @@ void ThriftServer::cleanUp() {
 
   // Now clear all the handlers
   routingHandlers_.clear();
+  // Clear the decorated processor factory so that it's re-created if the server
+  // is restarted.
+  decoratedProcessorFactory_.reset();
 }
 
 uint64_t ThriftServer::getNumDroppedConnections() const {
@@ -686,8 +717,16 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
   started_.store(false, std::memory_order_relaxed);
 }
 
+void ThriftServer::ensureDecoratedProcessorFactoryInitialized() {
+  DCHECK(getProcessorFactory().get());
+  if (decoratedProcessorFactory_ == nullptr) {
+    decoratedProcessorFactory_ =
+        std::make_unique<DecoratedProcessorFactory>(getProcessorFactory());
+  }
+}
+
 void ThriftServer::callOnStartServing() {
-  auto handlerList = getProcessorFactory()->getServiceHandlers();
+  auto handlerList = getDecoratedProcessorFactory().getServiceHandlers();
   std::vector<folly::SemiFuture<folly::Unit>> futures;
   futures.reserve(handlerList.size());
   for (auto handler : handlerList) {
@@ -699,7 +738,7 @@ void ThriftServer::callOnStartServing() {
 }
 
 void ThriftServer::callOnStopServing() {
-  auto handlerList = getProcessorFactory()->getServiceHandlers();
+  auto handlerList = getDecoratedProcessorFactory().getServiceHandlers();
   std::vector<folly::SemiFuture<folly::Unit>> futures;
   futures.reserve(handlerList.size());
   for (auto handler : handlerList) {

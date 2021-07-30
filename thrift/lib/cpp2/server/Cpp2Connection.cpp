@@ -120,7 +120,7 @@ Cpp2Connection::Cpp2Connection(
     const folly::SocketAddress* address,
     std::shared_ptr<Cpp2Worker> worker,
     const std::shared_ptr<HeaderServerChannel>& serverChannel)
-    : processorFactory_(*worker->getServer()->getProcessorFactory()),
+    : processorFactory_(worker->getServer()->getDecoratedProcessorFactory()),
       serviceMetadata_(worker->getMetadataForService(processorFactory_)),
       processor_(processorFactory_.getProcessor()),
       duplexChannel_(
