@@ -1349,11 +1349,18 @@ using Callback = HandlerCallback<T>;
 template <typename T>
 using CallbackPtr = std::unique_ptr<Callback<T>>;
 
-inline void async_tm_prep(ServerInterface* si, CallbackBase* callback) {
-  si->setEventBase(callback->getEventBase());
-  si->setThreadManager(callback->getThreadManager());
-  si->setRequestContext(callback->getRequestContext());
-}
+class AsyncTmPrep {
+  ServerInterface* si_;
+
+ public:
+  AsyncTmPrep(ServerInterface* si, CallbackBase* callback) : si_{si} {
+    si->setEventBase(callback->getEventBase());
+    si->setThreadManager(callback->getThreadManager());
+    si->setRequestContext(callback->getRequestContext());
+  }
+
+  ~AsyncTmPrep() { si_->clearRequestParams(); }
+};
 
 inline void async_tm_future_oneway(
     CallbackBasePtr callback, folly::Future<folly::Unit>&& fut) {

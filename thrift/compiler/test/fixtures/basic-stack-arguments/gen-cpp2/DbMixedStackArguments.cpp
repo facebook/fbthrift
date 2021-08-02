@@ -40,9 +40,9 @@ folly::Future<std::unique_ptr<::std::string>> DbMixedStackArgumentsSvIf::future_
 void DbMixedStackArgumentsSvIf::async_tm_getDataByKey0(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_key) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_getDataByKey0.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -101,9 +101,9 @@ folly::Future<::std::string> DbMixedStackArgumentsSvIf::future_getDataByKey1(con
 void DbMixedStackArgumentsSvIf::async_tm_getDataByKey1(std::unique_ptr<apache::thrift::HandlerCallback<::std::string>> callback, const ::std::string& p_key) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_getDataByKey1.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {

@@ -1007,6 +1007,43 @@ TEST_P(HeaderOrRocket, OnewayClientConnectionCloseTest) {
   EXPECT_TRUE(posted);
 }
 
+TEST_P(HeaderOrRocket, RequestParamsNullCheck) {
+  class TestInterfaceSF : public TestServiceSvIf {
+    folly::SemiFuture<folly::Unit> semifuture_voidResponse() override {
+      EXPECT_NE(getRequestContext(), nullptr);
+      EXPECT_NE(getThreadManager(), nullptr);
+      EXPECT_NE(getEventBase(), nullptr);
+      return folly::makeSemiFuture().deferValue([this](folly::Unit) {
+        EXPECT_EQ(getRequestContext(), nullptr);
+        EXPECT_EQ(getThreadManager(), nullptr);
+        EXPECT_EQ(getEventBase(), nullptr);
+      });
+    }
+  };
+
+  class TestInterfaceCoro : public TestServiceSvIf {
+    folly::coro::Task<void> co_voidResponse() override {
+      EXPECT_NE(getRequestContext(), nullptr);
+      EXPECT_NE(getThreadManager(), nullptr);
+      EXPECT_NE(getEventBase(), nullptr);
+      co_await folly::coro::co_reschedule_on_current_executor;
+      EXPECT_EQ(getRequestContext(), nullptr);
+      EXPECT_EQ(getThreadManager(), nullptr);
+      EXPECT_EQ(getEventBase(), nullptr);
+    }
+  };
+  {
+    ScopedServerInterfaceThread runner(std::make_shared<TestInterfaceSF>());
+    auto client = makeClient(runner, nullptr);
+    client->semifuture_voidResponse().get();
+  }
+  {
+    ScopedServerInterfaceThread runner(std::make_shared<TestInterfaceCoro>());
+    auto client = makeClient(runner, nullptr);
+    client->semifuture_voidResponse().get();
+  }
+}
+
 TEST_P(HeaderOrRocket, OnewayQueueTimeTest) {
   static folly::Baton running, finished;
   static folly::Baton running2;

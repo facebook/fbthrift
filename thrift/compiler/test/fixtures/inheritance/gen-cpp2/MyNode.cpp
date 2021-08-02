@@ -39,9 +39,9 @@ folly::Future<folly::Unit> MyNodeSvIf::future_do_mid() {
 void MyNodeSvIf::async_tm_do_mid(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_do_mid.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {

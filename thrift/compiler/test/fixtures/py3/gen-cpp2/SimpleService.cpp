@@ -38,9 +38,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_get_five() {
 void SimpleServiceSvIf::async_tm_get_five(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_get_five.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -95,9 +95,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_add_five(::std::int32_t 
 void SimpleServiceSvIf::async_tm_add_five(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, ::std::int32_t p_num) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_add_five.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -153,9 +153,9 @@ folly::Future<folly::Unit> SimpleServiceSvIf::future_do_nothing() {
 void SimpleServiceSvIf::async_tm_do_nothing(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_do_nothing.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -213,9 +213,9 @@ folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_concat(s
 void SimpleServiceSvIf::async_tm_concat(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_first, std::unique_ptr<::std::string> p_second) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_concat.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -272,9 +272,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_get_value(std::unique_pt
 void SimpleServiceSvIf::async_tm_get_value(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::py3::simple::SimpleStruct> p_simple_struct) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_get_value.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -329,9 +329,9 @@ folly::Future<bool> SimpleServiceSvIf::future_negate(bool p_input) {
 void SimpleServiceSvIf::async_tm_negate(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, bool p_input) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_negate.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -386,9 +386,9 @@ folly::Future<::std::int8_t> SimpleServiceSvIf::future_tiny(::std::int8_t p_inpu
 void SimpleServiceSvIf::async_tm_tiny(std::unique_ptr<apache::thrift::HandlerCallback<::std::int8_t>> callback, ::std::int8_t p_input) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_tiny.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -443,9 +443,9 @@ folly::Future<::std::int16_t> SimpleServiceSvIf::future_small(::std::int16_t p_i
 void SimpleServiceSvIf::async_tm_small(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback, ::std::int16_t p_input) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_small.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -500,9 +500,9 @@ folly::Future<::std::int64_t> SimpleServiceSvIf::future_big(::std::int64_t p_inp
 void SimpleServiceSvIf::async_tm_big(std::unique_ptr<apache::thrift::HandlerCallback<::std::int64_t>> callback, ::std::int64_t p_input) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_big.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -557,9 +557,9 @@ folly::Future<double> SimpleServiceSvIf::future_two(double p_input) {
 void SimpleServiceSvIf::async_tm_two(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, double p_input) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_two.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -615,9 +615,9 @@ folly::Future<folly::Unit> SimpleServiceSvIf::future_expected_exception() {
 void SimpleServiceSvIf::async_tm_expected_exception(std::unique_ptr<apache::thrift::HandlerCallback<void>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_expected_exception.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -673,9 +673,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_unexpected_exception() {
 void SimpleServiceSvIf::async_tm_unexpected_exception(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_unexpected_exception.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -730,9 +730,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_sum_i16_list(std::unique
 void SimpleServiceSvIf::async_tm_sum_i16_list(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::std::int16_t>> p_numbers) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_sum_i16_list.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -787,9 +787,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_sum_i32_list(std::unique
 void SimpleServiceSvIf::async_tm_sum_i32_list(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::std::int32_t>> p_numbers) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_sum_i32_list.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -844,9 +844,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_sum_i64_list(std::unique
 void SimpleServiceSvIf::async_tm_sum_i64_list(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::std::int64_t>> p_numbers) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_sum_i64_list.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -903,9 +903,9 @@ folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_concat_m
 void SimpleServiceSvIf::async_tm_concat_many(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::vector<::std::string>> p_words) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_concat_many.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -962,9 +962,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_count_structs(std::uniqu
 void SimpleServiceSvIf::async_tm_count_structs(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::vector<::py3::simple::SimpleStruct>> p_items) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_count_structs.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1019,9 +1019,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_sum_set(std::unique_ptr<
 void SimpleServiceSvIf::async_tm_sum_set(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::set<::std::int32_t>> p_numbers) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_sum_set.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1076,9 +1076,9 @@ folly::Future<bool> SimpleServiceSvIf::future_contains_word(std::unique_ptr<::st
 void SimpleServiceSvIf::async_tm_contains_word(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, std::unique_ptr<::std::set<::std::string>> p_words, std::unique_ptr<::std::string> p_word) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_contains_word.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1135,9 +1135,9 @@ folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_get_map_
 void SimpleServiceSvIf::async_tm_get_map_value(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::map<::std::string, ::std::string>> p_words, std::unique_ptr<::std::string> p_key) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_get_map_value.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1194,9 +1194,9 @@ folly::Future<::std::int16_t> SimpleServiceSvIf::future_map_length(std::unique_p
 void SimpleServiceSvIf::async_tm_map_length(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback, std::unique_ptr<::std::map<::std::string, ::py3::simple::SimpleStruct>> p_items) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_map_length.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1251,9 +1251,9 @@ folly::Future<::std::int16_t> SimpleServiceSvIf::future_sum_map_values(std::uniq
 void SimpleServiceSvIf::async_tm_sum_map_values(std::unique_ptr<apache::thrift::HandlerCallback<::std::int16_t>> callback, std::unique_ptr<::std::map<::std::string, ::std::int16_t>> p_items) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_sum_map_values.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1308,9 +1308,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_complex_sum_i32(std::uni
 void SimpleServiceSvIf::async_tm_complex_sum_i32(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_complex_sum_i32.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1367,9 +1367,9 @@ folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_repeat_n
 void SimpleServiceSvIf::async_tm_repeat_name(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::py3::simple::ComplexStruct> p_counter) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_repeat_name.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1428,9 +1428,9 @@ folly::Future<std::unique_ptr<::py3::simple::SimpleStruct>> SimpleServiceSvIf::f
 void SimpleServiceSvIf::async_tm_get_struct(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::SimpleStruct>>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_get_struct.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1489,9 +1489,9 @@ folly::Future<std::unique_ptr<::std::vector<::std::int32_t>>> SimpleServiceSvIf:
 void SimpleServiceSvIf::async_tm_fib(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::int32_t>>>> callback, ::std::int16_t p_n) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_fib.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1550,9 +1550,9 @@ folly::Future<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf::fut
 void SimpleServiceSvIf::async_tm_unique_words(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>> callback, std::unique_ptr<::std::vector<::std::string>> p_words) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_unique_words.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1611,9 +1611,9 @@ folly::Future<std::unique_ptr<::std::map<::std::string, ::std::int16_t>>> Simple
 void SimpleServiceSvIf::async_tm_words_count(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::int16_t>>>> callback, std::unique_ptr<::std::vector<::std::string>> p_words) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_words_count.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1670,9 +1670,9 @@ folly::Future<::py3::simple::AnEnum> SimpleServiceSvIf::future_set_enum(::py3::s
 void SimpleServiceSvIf::async_tm_set_enum(std::unique_ptr<apache::thrift::HandlerCallback<::py3::simple::AnEnum>> callback, ::py3::simple::AnEnum p_in_enum) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_set_enum.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1729,9 +1729,9 @@ folly::Future<std::unique_ptr<::std::vector<::std::vector<::std::int32_t>>>> Sim
 void SimpleServiceSvIf::async_tm_list_of_lists(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::vector<::std::int32_t>>>>> callback, ::std::int16_t p_num_lists, ::std::int16_t p_num_items) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_list_of_lists.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1790,9 +1790,9 @@ folly::Future<std::unique_ptr<::std::map<::std::string, ::std::map<::std::string
 void SimpleServiceSvIf::async_tm_word_character_frequency(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>>> callback, std::unique_ptr<::std::string> p_sentence) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_word_character_frequency.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1851,9 +1851,9 @@ folly::Future<std::unique_ptr<::std::vector<::std::set<::std::string>>>> SimpleS
 void SimpleServiceSvIf::async_tm_list_of_sets(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::std::set<::std::string>>>>> callback, std::unique_ptr<::std::string> p_some_words) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_list_of_sets.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1910,9 +1910,9 @@ folly::Future<::std::int32_t> SimpleServiceSvIf::future_nested_map_argument(std:
 void SimpleServiceSvIf::async_tm_nested_map_argument(std::unique_ptr<apache::thrift::HandlerCallback<::std::int32_t>> callback, std::unique_ptr<::std::map<::std::string, ::std::vector<::py3::simple::SimpleStruct>>> p_struct_map) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_nested_map_argument.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -1969,9 +1969,9 @@ folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_make_sen
 void SimpleServiceSvIf::async_tm_make_sentence(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::vector<::std::vector<::std::string>>> p_word_chars) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_make_sentence.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -2030,9 +2030,9 @@ folly::Future<std::unique_ptr<::std::set<::std::int32_t>>> SimpleServiceSvIf::fu
 void SimpleServiceSvIf::async_tm_get_union(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::int32_t>>>> callback, std::unique_ptr<::std::vector<::std::set<::std::int32_t>>> p_sets) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_get_union.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -2091,9 +2091,9 @@ folly::Future<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf::fut
 void SimpleServiceSvIf::async_tm_get_keys(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>> callback, std::unique_ptr<::std::vector<::std::map<::std::string, ::std::string>>> p_string_map) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_get_keys.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -2150,9 +2150,9 @@ folly::Future<double> SimpleServiceSvIf::future_lookup_double(::std::int32_t p_k
 void SimpleServiceSvIf::async_tm_lookup_double(std::unique_ptr<apache::thrift::HandlerCallback<double>> callback, ::std::int32_t p_key) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_lookup_double.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -2209,9 +2209,9 @@ folly::Future<std::unique_ptr<::std::string>> SimpleServiceSvIf::future_retrieve
 void SimpleServiceSvIf::async_tm_retrieve_binary(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>> callback, std::unique_ptr<::std::string> p_something) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_retrieve_binary.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -2270,9 +2270,9 @@ folly::Future<std::unique_ptr<::std::set<::std::string>>> SimpleServiceSvIf::fut
 void SimpleServiceSvIf::async_tm_contain_binary(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::set<::std::string>>>> callback, std::unique_ptr<::std::vector<::std::string>> p_binaries) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_contain_binary.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -2331,9 +2331,9 @@ folly::Future<std::unique_ptr<::std::vector<::py3::simple::AnEnum>>> SimpleServi
 void SimpleServiceSvIf::async_tm_contain_enum(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::vector<::py3::simple::AnEnum>>>> callback, std::unique_ptr<::std::vector<::py3::simple::AnEnum>> p_the_enum) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_contain_enum.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -2392,9 +2392,9 @@ folly::Future<std::unique_ptr<::py3::simple::BinaryUnionStruct>> SimpleServiceSv
 void SimpleServiceSvIf::async_tm_get_binary_union_struct(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::py3::simple::BinaryUnionStruct>>> callback, std::unique_ptr<::py3::simple::BinaryUnion> p_u) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_get_binary_union_struct.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {

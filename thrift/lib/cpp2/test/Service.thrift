@@ -69,7 +69,7 @@ service TestService {
   string serializationTest(1: bool inEventBase);
   string eventBaseAsync() (thread = 'eb');
   void notCalledBack();
-  void voidResponse();
+  void voidResponse() (cpp.coroutine);
   i32 processHeader();
   IOBufPtr echoIOBuf(1: IOBuf buf);
   oneway void noResponseIOBuf(1: IOBuf buf);

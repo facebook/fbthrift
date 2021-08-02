@@ -40,9 +40,9 @@ folly::Future<std::unique_ptr<::apache::thrift::fixtures::types::SomeMap>> SomeS
 void SomeServiceSvIf::async_tm_bounce_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::apache::thrift::fixtures::types::SomeMap>>> callback, std::unique_ptr<::apache::thrift::fixtures::types::SomeMap> p_m) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_bounce_map.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -101,9 +101,9 @@ folly::Future<std::unique_ptr<::std::map<::apache::thrift::fixtures::types::TBin
 void SomeServiceSvIf::async_tm_binary_keyed_map(std::unique_ptr<apache::thrift::HandlerCallback<std::unique_ptr<::std::map<::apache::thrift::fixtures::types::TBinary, ::std::int64_t>>>> callback, std::unique_ptr<::std::vector<::std::int64_t>> p_r) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_binary_keyed_map.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {

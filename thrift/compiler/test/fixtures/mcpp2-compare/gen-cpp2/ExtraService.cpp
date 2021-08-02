@@ -38,9 +38,9 @@ folly::Future<bool> ExtraServiceSvIf::future_simple_function() {
 void ExtraServiceSvIf::async_tm_simple_function(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_simple_function.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -99,9 +99,9 @@ folly::Future<bool> ExtraServiceSvIf::future_throws_function2(bool p_param1) {
 void ExtraServiceSvIf::async_tm_throws_function2(std::unique_ptr<apache::thrift::HandlerCallback<bool>> callback, bool p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_throws_function2.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -158,9 +158,9 @@ folly::Future<::std::map<::std::int32_t, ::std::string>> ExtraServiceSvIf::futur
 void ExtraServiceSvIf::async_tm_throws_function3(std::unique_ptr<apache::thrift::HandlerCallback<::std::map<::std::int32_t, ::std::string>>> callback, bool p_param1, const ::std::string& p_param2) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_throws_function3.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -218,9 +218,9 @@ folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret() {
 void ExtraServiceSvIf::async_tm_oneway_void_ret(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_oneway_void_ret.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -276,9 +276,9 @@ folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_i32_i32_i32_
 void ExtraServiceSvIf::async_tm_oneway_void_ret_i32_i32_i32_i32_i32_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, ::std::int32_t p_param1, ::std::int32_t p_param2, ::std::int32_t p_param3, ::std::int32_t p_param4, ::std::int32_t p_param5) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_oneway_void_ret_i32_i32_i32_i32_i32_param.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -338,9 +338,9 @@ folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_struct_param
 void ExtraServiceSvIf::async_tm_oneway_void_ret_struct_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const ::some::valid::ns::MyStruct& p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_oneway_void_ret_struct_param.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
@@ -396,9 +396,9 @@ folly::Future<folly::Unit> ExtraServiceSvIf::future_oneway_void_ret_listunion_pa
 void ExtraServiceSvIf::async_tm_oneway_void_ret_listunion_param(std::unique_ptr<apache::thrift::HandlerCallbackBase> callback, const ::std::vector<::some::valid::ns::ComplexUnion>& p_param1) {
   // It's possible the coroutine versions will delegate to a future-based
   // version. If that happens, we need the RequestParams arguments to be
-  // available to the future through the thread-local backchannel, so we set that up
-  // for all cases.
-  apache::thrift::detail::si::async_tm_prep(this, callback.get());
+  // available to the future through the thread-local backchannel, so we create
+  // a RAII object that sets up RequestParams and clears them on destruction.
+  apache::thrift::detail::si::AsyncTmPrep asyncTmPrep(this, callback.get());
   auto invocationType = __fbthrift_invocation_oneway_void_ret_listunion_param.load(std::memory_order_relaxed);
   try {
     switch (invocationType) {
