@@ -251,6 +251,13 @@ THRIFT_PLUGGABLE_FUNC_SET(
   return !excludeFromRecentRequestsCount.count(std::string{methodName});
 }
 
+folly::Function<ThriftServer::DumpSnapshotOnLongShutdownResult()> snapshotFunc;
+THRIFT_PLUGGABLE_FUNC_SET(
+    ThriftServer::DumpSnapshotOnLongShutdownResult,
+    dumpSnapshotOnLongShutdown) {
+  return snapshotFunc();
+}
+
 } // namespace
 
 class RequestInstrumentationTest : public testing::Test {
@@ -803,6 +810,54 @@ TEST_F(ServerInstrumentationTest, simpleServerTest) {
   EXPECT_EQ(
       instrumentation::getServerCount(instrumentation::kThriftServerTrackerKey),
       1);
+}
+
+TEST(ThriftServerDeathTest, getSnapshotOnServerShutdown) {
+  constexpr int kExitCode = 156;
+  EXPECT_EXIT(
+      ({
+        folly::Baton<> started;
+        auto blockIf = std::make_shared<TestInterface>();
+        blockIf->setCallback([&](TestInterface*) {
+          started.post();
+          // Locks up the server and prevents clean shutdown
+          /* sleep override */ std::this_thread::sleep_for(
+              std::chrono::seconds::max());
+        });
+        ScopedServerInterfaceThread runner(blockIf, [](ThriftServer& server) {
+          // We need two threads, so that we can test when one has an open
+          // connection and one without any connections
+          server.setNumIOWorkerThreads(2);
+          server.setWorkersJoinTimeout(1s);
+        });
+
+        // Set the snapshot function that'll be called during server shutdown
+        snapshotFunc = [&]() -> ThriftServer::DumpSnapshotOnLongShutdownResult {
+          return {
+              folly::makeSemiFuture().deferValue([&](folly::Unit) {
+                auto snapshot =
+                    dynamic_cast<ThriftServer&>(runner.getThriftServer())
+                        .getServerSnapshot()
+                        .get();
+                ASSERT_EQ(snapshot.requests.size(), 1);
+                // We exit here with a specific exit code to test that this code
+                // is reached
+                std::quick_exit(kExitCode);
+              }),
+              2s};
+        };
+
+        // Send a request so that there is an active request when server
+        // shutsdown
+        auto client = runner.newClient<InstrumentationTestServiceAsyncClient>();
+        client->semifuture_runCallback();
+        // Wait for the request to start executing before initiating server
+        // shutdown
+        ASSERT_TRUE(started.try_wait_for(2s));
+        // Server shuts down when we exit the scope.
+      }),
+      testing::ExitedWithCode(kExitCode),
+      "");
 }
 
 TEST_P(RequestInstrumentationTestP, FinishedRequests) {
