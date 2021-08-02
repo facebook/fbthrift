@@ -470,6 +470,7 @@ class mstch_rust_struct : public mstch_struct {
             {"struct:fields_by_name", &mstch_rust_struct::rust_fields_by_name},
             {"struct:docs?", &mstch_rust_struct::rust_has_doc},
             {"struct:docs", &mstch_rust_struct::rust_doc},
+            {"struct:derive", &mstch_rust_struct::rust_derive},
         });
   }
   mstch::node rust_name() {
@@ -502,6 +503,12 @@ class mstch_rust_struct : public mstch_struct {
   }
   mstch::node rust_has_doc() { return strct_->has_doc(); }
   mstch::node rust_doc() { return quoted_rust_doc(strct_); }
+  mstch::node rust_derive() {
+    if (!strct_->has_annotation("rust.derive")) {
+      return nullptr;
+    }
+    return strct_->get_annotation("rust.derive");
+  }
 
  private:
   const rust_codegen_options& options_;

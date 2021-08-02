@@ -21,6 +21,7 @@
         }}Clone, Debug, PartialEq{{!
         }}{{#struct:ord?}}, Eq, PartialOrd, Ord, Hash{{/struct:ord?}}{{!
         }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
+        }}{{#struct:derive}}, {{.}}{{/struct:derive}}{{!
     }})]
     {{#struct:docs?}}
     #[doc = {{struct:docs}}]
