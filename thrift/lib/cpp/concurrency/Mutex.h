@@ -37,6 +37,8 @@ class PthreadMutex;
 class Mutex final {
  public:
   Mutex();
+  Mutex(Mutex const&) = delete;
+  void operator=(Mutex const&) = delete;
 
   void lock();
   bool try_lock();
