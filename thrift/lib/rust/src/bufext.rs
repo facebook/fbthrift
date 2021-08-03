@@ -125,7 +125,7 @@ macro_rules! impl_deser_as_ref_u8 {
     }
 }
 
-impl_deser_as_ref_u8!([u8], Vec<u8>);
+impl_deser_as_ref_u8!([u8], Vec<u8>, String, str);
 
 // These types take ownership without copying
 // Have to explicitly do the Into types as well due to no upstream From<&Bytes> for Bytes.
@@ -141,7 +141,7 @@ macro_rules! impl_deser_into_bytes {
     }
 }
 
-impl_deser_into_bytes!(Bytes, Vec<u8>);
+impl_deser_into_bytes!(Bytes, Vec<u8>, String);
 
 // Special case for &Bytes that is not covered in upstream crates From defs
 impl From<&Bytes> for DeserializeSource<Cursor<Bytes>> {

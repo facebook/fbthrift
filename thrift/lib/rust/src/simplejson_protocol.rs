@@ -15,7 +15,7 @@
  */
 
 use crate::binary_type::CopyFromBuf;
-use crate::bufext::BufMutExt;
+use crate::bufext::{BufExt, BufMutExt, DeserializeSource};
 use crate::deserialize::Deserialize;
 use crate::errors::ProtocolError;
 use crate::framing::Framing;
@@ -832,6 +832,24 @@ impl<B: Buf> ProtocolReader for SimpleJsonProtocolDeserializer<B> {
     }
 }
 
+pub trait SerializeRef:
+    Serialize<SimpleJsonProtocolSerializer<SizeCounter>>
+    + Serialize<SimpleJsonProtocolSerializer<BytesMut>>
+where
+    for<'a> &'a Self: Serialize<SimpleJsonProtocolSerializer<SizeCounter>>,
+    for<'a> &'a Self: Serialize<SimpleJsonProtocolSerializer<BytesMut>>,
+{
+}
+
+impl<T> SerializeRef for T
+where
+    T: Serialize<SimpleJsonProtocolSerializer<BytesMut>>,
+    T: Serialize<SimpleJsonProtocolSerializer<SizeCounter>>,
+    for<'a> &'a T: Serialize<SimpleJsonProtocolSerializer<BytesMut>>,
+    for<'a> &'a T: Serialize<SimpleJsonProtocolSerializer<SizeCounter>>,
+{
+}
+
 /// Serialize a Thrift value using the compact protocol.
 pub fn serialize<T>(v: T) -> Bytes
 where
@@ -858,13 +876,24 @@ where
     buf.finish()
 }
 
-/// Deserialize a Thrift blob using the compact protocol.
-pub fn deserialize<T, B>(b: B) -> Result<T>
-where
-    B: AsRef<[u8]>,
-    for<'a> T: Deserialize<SimpleJsonProtocolDeserializer<Cursor<&'a [u8]>>>,
+pub trait DeserializeSlice:
+    for<'a> Deserialize<SimpleJsonProtocolDeserializer<Cursor<&'a [u8]>>>
 {
-    let b = b.as_ref();
-    let mut deser = SimpleJsonProtocolDeserializer::new(Cursor::new(b));
+}
+
+impl<T> DeserializeSlice for T where
+    T: for<'a> Deserialize<SimpleJsonProtocolDeserializer<Cursor<&'a [u8]>>>
+{
+}
+
+/// Deserialize a Thrift blob using the compact protocol.
+pub fn deserialize<T, B, C>(b: B) -> Result<T>
+where
+    B: Into<DeserializeSource<C>>,
+    C: BufExt,
+    for<'a> T: Deserialize<SimpleJsonProtocolDeserializer<C>>,
+{
+    let source: DeserializeSource<C> = b.into();
+    let mut deser = SimpleJsonProtocolDeserializer::new(source.0);
     Ok(T::read(&mut deser)?)
 }

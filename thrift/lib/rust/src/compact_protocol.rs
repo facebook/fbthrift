@@ -29,6 +29,7 @@ use bufsize::SizeCounter;
 use bytes::{Bytes, BytesMut};
 use ghost::phantom;
 use std::convert::TryFrom;
+use std::io::Cursor;
 
 const COMPACT_PROTOCOL_VERSION: u8 = 0x02;
 const PROTOCOL_ID: u8 = 0x82;
@@ -806,6 +807,23 @@ where
     buf
 }
 
+pub trait SerializeRef:
+    Serialize<CompactProtocolSerializer<SizeCounter>> + Serialize<CompactProtocolSerializer<BytesMut>>
+where
+    for<'a> &'a Self: Serialize<CompactProtocolSerializer<SizeCounter>>,
+    for<'a> &'a Self: Serialize<CompactProtocolSerializer<BytesMut>>,
+{
+}
+
+impl<T> SerializeRef for T
+where
+    T: Serialize<CompactProtocolSerializer<BytesMut>>,
+    T: Serialize<CompactProtocolSerializer<SizeCounter>>,
+    for<'a> &'a T: Serialize<CompactProtocolSerializer<BytesMut>>,
+    for<'a> &'a T: Serialize<CompactProtocolSerializer<SizeCounter>>,
+{
+}
+
 /// Serialize a Thrift value using the compact protocol.
 pub fn serialize<T>(v: T) -> Bytes
 where
@@ -816,6 +834,16 @@ where
     let buf = serialize_to_buffer(v, BytesMut::with_capacity(sz));
     // Done
     buf.finish()
+}
+
+pub trait DeserializeSlice:
+    for<'a> Deserialize<CompactProtocolDeserializer<Cursor<&'a [u8]>>>
+{
+}
+
+impl<T> DeserializeSlice for T where
+    T: for<'a> Deserialize<CompactProtocolDeserializer<Cursor<&'a [u8]>>>
+{
 }
 
 /// Deserialize a Thrift blob using the compact protocol.
