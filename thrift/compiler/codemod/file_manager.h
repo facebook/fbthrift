@@ -58,6 +58,9 @@ class file_manager {
     }
   }
 
+  // Write all existing replacements back to file.
+  void apply_replacements();
+
   // Adds a given replacement to the set of replacements.
   void add(replacement replace) { replacements_.insert(std::move(replace)); }
 
