@@ -658,6 +658,16 @@ TEST(Frozen, FixedSizeString) {
 
 TEST(Frozen, Empty) {
   Empty s;
-  FOLLY_MAYBE_UNUSED auto view = freeze(s);
+  auto view = freeze(s);
+  (void)view;
 }
+
+TEST(Frozen, Excluded) {
+  ContainsExcluded excludedUnset;
+  ContainsExcluded excludedSet;
+  excludedSet.excluded_ref().ensure();
+  (void)freeze(excludedUnset);
+  EXPECT_THROW(freeze(excludedSet), LayoutExcludedException);
+}
+
 } // namespace

@@ -173,3 +173,10 @@ struct TestFixedSizeString {
 
 struct Empty {
 }
+
+struct Excluded {
+} (cpp.frozen2_exclude)
+
+struct ContainsExcluded {
+  1: optional Excluded excluded,
+}

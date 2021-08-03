@@ -32,7 +32,6 @@ struct TrivialLayout : public LayoutBase {
   TrivialLayout() : LayoutBase(typeid(T)) {}
 
   FieldPosition maximize() { return FieldPosition(sizeof(T), 0); }
-
   FieldPosition layout(LayoutRoot&, const T&, LayoutPosition /* start */) {
     return maximize();
   }
@@ -91,6 +90,7 @@ struct Layout<
     T,
     typename std::enable_if<
         apache::thrift::frozen::detail::IsBlitType<T>::value &&
+        !apache::thrift::frozen::IsExcluded<T>::value &&
         !apache::thrift::frozen::detail::IsStdPair<T>::value &&
         !std::is_pointer<T>::value>::type>
     : apache::thrift::frozen::detail::TrivialLayout<T> {};

@@ -8,7 +8,6 @@
 
 namespace apache { namespace thrift { namespace frozen {
 
-
 FROZEN_CTOR(::some::ns::IncludedB,
   FROZEN_CTOR_FIELD(i32Field, 1)
   FROZEN_CTOR_FIELD(strField, 2))
@@ -30,7 +29,6 @@ FROZEN_DEBUG(::some::ns::IncludedB,
 FROZEN_CLEAR(::some::ns::IncludedB,
   FROZEN_CLEAR_FIELD(i32Field)
   FROZEN_CLEAR_FIELD(strField))
-
 
 
 }}} // apache::thrift::frozen

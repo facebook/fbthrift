@@ -1108,3 +1108,4 @@ using View = typename Layout<T>::View;
 #include <thrift/lib/cpp2/frozen/FrozenAssociative-inl.h> // @nolint
 // depends on Integral
 #include <thrift/lib/cpp2/frozen/FrozenEnum-inl.h> // @nolint
+#include <thrift/lib/cpp2/frozen/FrozenExcluded-inl.h> // @nolint

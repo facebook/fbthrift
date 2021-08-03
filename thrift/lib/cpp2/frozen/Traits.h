@@ -33,6 +33,11 @@ struct IsOrderedSet : std::false_type {};
 template <class>
 struct IsList : std::false_type {};
 
+namespace frozen {
+template <class>
+struct IsExcluded : std::false_type {};
+} // namespace frozen
+
 } // namespace thrift
 } // namespace apache
 

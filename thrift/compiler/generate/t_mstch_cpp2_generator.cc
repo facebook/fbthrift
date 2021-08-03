@@ -775,6 +775,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_allocator", &mstch_cpp2_struct::cpp_allocator},
             {"struct:cpp_allocator_via", &mstch_cpp2_struct::cpp_allocator_via},
             {"struct:cpp_data_method?", &mstch_cpp2_struct::cpp_data_method},
+            {"struct:cpp_frozen2_exclude?",
+             &mstch_cpp2_struct::cpp_frozen2_exclude},
         });
     register_has_option("struct:no_getters_setters?", "no_getters_setters");
   }
@@ -884,6 +886,9 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node cpp_data_method() {
     return strct_->has_annotation("cpp.internal.deprecated._data.method");
+  }
+  mstch::node cpp_frozen2_exclude() {
+    return strct_->has_annotation("cpp.frozen2_exclude");
   }
   mstch::node cpp_allocator_via() {
     if (const auto* name =

@@ -11,7 +11,6 @@
 namespace apache { namespace thrift { namespace frozen {
 
 
-
 FROZEN_TYPE(::some::ns::IncludedA,
   FROZEN_FIELD(i32Field, 1, ::std::int32_t)
   FROZEN_FIELD(strField, 2, ::std::string)
@@ -24,7 +23,5 @@ FROZEN_TYPE(::some::ns::IncludedA,
   FROZEN_LOAD_INLINE(
     FROZEN_LOAD_FIELD(i32Field, 1)
     FROZEN_LOAD_FIELD(strField, 2)));
-
-
 
 }}} // apache::thrift::frozen

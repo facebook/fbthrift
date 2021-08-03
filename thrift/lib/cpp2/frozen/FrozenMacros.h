@@ -192,3 +192,7 @@
       LoadRoot& root) {                           \
     FROZEN_LOAD_BODY(__VA_ARGS__)                 \
   }
+
+#define FROZEN_EXCLUDE_TYPE(...) \
+  template <>                    \
+  struct IsExcluded<__VA_ARGS__> : std::true_type {};
