@@ -19,6 +19,7 @@
 #include <cassert>
 #include <map>
 #include <memory>
+#include <stdexcept>
 #include <string>
 #include <utility>
 #include <vector>
@@ -253,6 +254,28 @@ class t_program : public t_node {
    */
   std::string compute_name_from_file_path(std::string path);
 
+  // Push back the given byte offset from beginning of file to new line ('\n').
+  void add_line_offset(size_t offset) { line_to_offset_.push_back(offset); }
+
+  /**
+   * Gets the offset in bytes from beginning of file to
+   * a given source location.
+   *
+   * @param loc - The source location.
+   * @exception std::invalid_argument, std::out_of_range.
+   */
+  size_t get_offset(const source_loc& loc) const {
+    if (&loc.program() != this) {
+      throw std::invalid_argument(
+          "A program can not get the offset of a "
+          "source location that belongs to a different program.");
+    }
+    if (loc.line() == 0) {
+      throw std::invalid_argument("Unknown line value of source location (0).");
+    }
+    return line_to_offset_.at(loc.line() - 1) + loc.column() - 1;
+  }
+
  private:
   // All the elements owned by this program.
   node_list<t_node> nodes_;
@@ -278,6 +301,7 @@ class t_program : public t_node {
   std::map<std::string, std::string> namespaces_;
   std::vector<std::string> cpp_includes_;
   std::unique_ptr<t_scope> scope_{new t_scope{}};
+  std::vector<size_t> line_to_offset_{0};
 
   // TODO(afuller): Remove everything below this comment. It is only provided
   // for backwards compatibility.

@@ -58,7 +58,7 @@ void unexpected_token(parsing_driver& driver, const char* text) {
   driver.failure([&](auto& o) { o << "Unexpected token in input: " << text << "\n"; });
 }
 
-#define YY_USER_ACTION driver.compute_location(*yylloc, yytext);
+#define YY_USER_ACTION driver.compute_location(*yylloc, *yylval, yytext);
 
 } // namespace
 

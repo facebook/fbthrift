@@ -47,6 +47,7 @@ class source_loc final {
 
   constexpr int line() const noexcept { return line_; }
   constexpr int column() const noexcept { return column_; }
+  size_t offset() const;
   constexpr const t_program& program() const {
     assert(program_ != nullptr);
     return *program_;

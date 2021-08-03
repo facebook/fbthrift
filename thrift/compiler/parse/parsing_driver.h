@@ -394,7 +394,7 @@ class parsing_driver {
     return c == ' ' || c == '\t' || c == '\r' || c == '\n';
   }
 
-  void compute_location(YYLTYPE& yylloc, const char* text) {
+  void compute_location(YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {
     /* Only computing locations during second pass. */
     if (mode != parsing_mode::PROGRAM) {
       return;
@@ -407,9 +407,11 @@ class parsing_driver {
 
     /* Getting rid of useless whitespaces on begin position. */
     for (; is_white_space(text[i]); i++) {
+      yylval++;
       if (text[i] == '\n') {
         yylloc.begin.line++;
         yylloc.begin.column = 1;
+        program->add_line_offset(yylval);
       } else {
         yylloc.begin.column++;
       }
@@ -420,9 +422,11 @@ class parsing_driver {
 
     /* Updating current end position. */
     for (; text[i] != '\0'; i++) {
+      yylval++;
       if (text[i] == '\n') {
         yylloc.end.line++;
         yylloc.end.column = 1;
+        program->add_line_offset(yylval);
       } else {
         yylloc.end.column++;
       }

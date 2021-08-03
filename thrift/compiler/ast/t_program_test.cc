@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <stdexcept>
 #include <string>
 #include <vector>
 
@@ -33,6 +34,17 @@ class t_program_fake : public t_program {
   using t_program::set_include_prefix;
   using t_program::t_program;
 };
+
+// Simulates parsing a thrift file, only adding the offsets to the program.
+void add_offsets(t_program_fake& program, const std::string& content) {
+  size_t offset = 0;
+  for (const auto& c : content) {
+    offset++;
+    if (c == '\n') {
+      program.add_line_offset(offset);
+    }
+  }
+}
 
 TEST(TProgram, GetNamespace) {
   auto program = t_program_fake("");
@@ -100,6 +112,39 @@ TEST(TProgram, ComputeNameFromFilePath) {
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_1));
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_2));
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_3));
+}
+
+// Test basic functionality of t_program::get_offset().
+TEST(TProgram, GetOffsetFromBeginningOfFile) {
+  auto program = t_program_fake("");
+
+  add_offsets(
+      program,
+      "struct A {\n"
+      "  1: optional A a (cpp.ref);\n"
+      "}\n");
+
+  EXPECT_EQ(program.get_offset({1, 1, program}), 0); // struct begin
+  EXPECT_EQ(program.get_offset({3, 2, program}), 41); // struct end
+
+  EXPECT_EQ(program.get_offset({2, 3, program}), 13); // field begin
+  EXPECT_EQ(program.get_offset({2, 29, program}), 39); // field end
+}
+
+// Test all exception throw for t_program::get_offset().
+TEST(TProgram, GetOffsetExceptions) {
+  auto program_1 = t_program_fake("");
+  auto program_2 = t_program_fake("");
+
+  add_offsets(
+      program_1,
+      "struct A {\n"
+      "  1: optional A a (cpp.ref);\n"
+      "}\n");
+
+  EXPECT_THROW(program_1.get_offset({1, 1, program_2}), std::invalid_argument);
+  EXPECT_THROW(program_1.get_offset({0, 0, program_1}), std::invalid_argument);
+  EXPECT_THROW(program_1.get_offset({100, 100, program_1}), std::out_of_range);
 }
 
 } // namespace
