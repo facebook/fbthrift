@@ -168,7 +168,8 @@ class ServerPublisherStream : private StreamServerCallback {
     }
     void addCredits(int64_t delta) {
       DCHECK(credits.isSet);
-      credits.val = std::min(maxCreditVal, credits.val + delta);
+      credits.val =
+          std::min(maxCreditVal, folly::to_unsigned(credits.val + delta));
     }
     bool hasCredit() { return credits.isSet && credits.val; }
     void storeBuffer(Queue&& buf) {
