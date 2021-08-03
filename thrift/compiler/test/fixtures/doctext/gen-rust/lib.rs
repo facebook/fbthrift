@@ -767,7 +767,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::c::FExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::c::FExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -871,7 +871,7 @@ pub mod client {
                                     let de = P::deserializer(stream_item);
                                     (move |mut p: P::Deserializer| {
                                         let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::c::NumbersStreamExn, _>, _)> = 
-                                            ::tokio_shim::task::spawn_blocking(|| (::fbthrift::Deserialize::read(&mut p), p));
+                                            ::tokio_shim::task::spawn_blocking_fallback_inline(|| (::fbthrift::Deserialize::read(&mut p), p));
                                         ::futures::future::Either::Right(exn.then(
                                             |exn| {
                                                 let result = (move || {
@@ -956,7 +956,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::c::ThingExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::c::ThingExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(

@@ -348,7 +348,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::foo::ReturnExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::foo::ReturnExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -452,7 +452,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::foo::SuperExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::foo::SuperExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(

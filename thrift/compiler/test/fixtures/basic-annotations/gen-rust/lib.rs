@@ -1350,7 +1350,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::PingExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::PingExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -1450,7 +1450,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::GetRandomDataExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::GetRandomDataExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -1554,7 +1554,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::HasDataByIdExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::HasDataByIdExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -1658,7 +1658,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::GetDataByIdExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::GetDataByIdExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -1766,7 +1766,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::PutDataByIdExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::PutDataByIdExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -1874,7 +1874,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::LobDataByIdExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::LobDataByIdExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -1974,7 +1974,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::DoNothingExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::DoNothingExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -2218,7 +2218,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service_prio_parent::PingExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service_prio_parent::PingExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -2318,7 +2318,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service_prio_parent::PongExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service_prio_parent::PongExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -2529,7 +2529,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service_prio_child::PangExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service_prio_child::PangExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(

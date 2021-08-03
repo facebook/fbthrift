@@ -353,7 +353,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_root::DoRootExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_root::DoRootExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -557,7 +557,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_node::DoMidExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_node::DoMidExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -776,7 +776,7 @@ pub mod client {
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_leaf::DoLeafExn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_leaf::DoLeafExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(

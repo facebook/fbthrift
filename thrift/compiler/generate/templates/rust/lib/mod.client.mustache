@@ -172,7 +172,7 @@
                                     let de = P::deserializer(stream_item);
                                     (move |mut p: P::Deserializer| {
                                         let exn: ::tokio_shim::task::JoinHandle<(Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn, _>, _)> = 
-                                            ::tokio_shim::task::spawn_blocking(|| (::fbthrift::Deserialize::read(&mut p), p));
+                                            ::tokio_shim::task::spawn_blocking_fallback_inline(|| (::fbthrift::Deserialize::read(&mut p), p));
                                         ::futures::future::Either::Right(exn.then(
                                             |exn| {
                                                 let result = (move || {
@@ -219,7 +219,7 @@
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
@@ -306,7 +306,7 @@
                         };
                         match message_type {
                             ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn, _>, _)> = ::tokio_shim::task::spawn_blocking(move || {
+                                let exn: ::tokio_shim::task::JoinHandle<(Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
                                   (::fbthrift::Deserialize::read(&mut p), p)
                                 });
                                 ::futures::future::Either::Right(exn.then(
