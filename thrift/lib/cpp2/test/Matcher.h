@@ -39,7 +39,7 @@ auto ThriftField(
     apache::thrift::field_ref<const T&> (Struct::*ref)() const&,
     const Matcher& matcher) {
   return testing::ResultOf(
-      [=](const Struct& s) { return (s.*ref)(); }, matcher);
+      [=](const Struct& s) { return *(s.*ref)(); }, matcher);
 }
 template <typename T, typename Struct, typename Matcher>
 auto ThriftField(
