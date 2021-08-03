@@ -304,8 +304,12 @@ cdef class ConnectionContext:
         cdef const_uchar* data
         cdef X509UniquePtr cert
         cdef uint64_t length
+        cdef const AsyncTransport* transport
         cdef const AsyncTransportCertificate* osslCert
-        osslCert = self._ctx.getTransport().getPeerCertificate()
+        transport = self._ctx.getTransport()
+        if not transport:
+            return None
+        osslCert = transport.getPeerCertificate()
         if not osslCert:
             return None
         cert = osslCert.getX509();
