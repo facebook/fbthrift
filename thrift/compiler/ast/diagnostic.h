@@ -77,7 +77,7 @@ class diagnostic {
   int lineno() const { return line_; }
   const std::string& token() const { return token_; }
 
-  std::string str();
+  std::string str() const;
 
  private:
   diagnostic_level level_;

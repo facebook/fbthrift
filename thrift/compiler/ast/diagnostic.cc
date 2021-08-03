@@ -41,7 +41,7 @@ const char* level_to_string(diagnostic_level level) {
 }
 } // namespace
 
-std::string diagnostic::str() {
+std::string diagnostic::str() const {
   std::ostringstream ss;
   ss << *this;
   return ss.str();
