@@ -178,5 +178,5 @@ struct Excluded {
 } (cpp.frozen2_exclude)
 
 struct ContainsExcluded {
-  1: optional Excluded excluded,
+  1: optional Excluded excluded;
 }
