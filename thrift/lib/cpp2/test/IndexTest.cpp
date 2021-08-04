@@ -23,45 +23,45 @@ namespace apache::thrift::detail {
 
 using folly::io::Cursor;
 
-TEST(checksum, test) {
+TEST(xxh3_64bits, test) {
   constexpr int64_t kExpected = 5501799519012602454; // 64bits xxh3 of "thrift"
   {
     auto buf = folly::IOBuf::copyBuffer("thrift");
-    EXPECT_EQ(checksum(Cursor{buf.get(), 6}), kExpected);
+    EXPECT_EQ(xxh3_64bits(Cursor{buf.get(), 6}), kExpected);
   }
   {
     auto buf = folly::IOBuf::copyBuffer("thrif_");
-    EXPECT_NE(checksum(Cursor{buf.get(), 6}), kExpected);
+    EXPECT_NE(xxh3_64bits(Cursor{buf.get(), 6}), kExpected);
   }
   {
     auto buf = folly::IOBuf::copyBuffer("thrift_");
-    EXPECT_EQ(checksum(Cursor{buf.get(), 6}), kExpected);
+    EXPECT_EQ(xxh3_64bits(Cursor{buf.get(), 6}), kExpected);
   }
   {
     auto buf = folly::IOBuf::copyBuffer("thrift_");
-    EXPECT_NE(checksum(Cursor{buf.get(), 7}), kExpected);
+    EXPECT_NE(xxh3_64bits(Cursor{buf.get(), 7}), kExpected);
   }
   {
     auto buf = folly::IOBuf::copyBuffer("_thrift");
     Cursor io{buf.get()};
-    EXPECT_EQ(checksum(Cursor{io + 1, 6}), kExpected);
+    EXPECT_EQ(xxh3_64bits(Cursor{io + 1, 6}), kExpected);
   }
   {
     auto buf = folly::IOBuf::copyBuffer("_thrift_");
     Cursor io{buf.get()};
     io += 1;
-    EXPECT_EQ(checksum(Cursor{io, 6}), kExpected);
+    EXPECT_EQ(xxh3_64bits(Cursor{io, 6}), kExpected);
   }
   {
     auto buf = folly::IOBuf::copyBuffer("thr");
     buf->appendChain(folly::IOBuf::copyBuffer("ift"));
-    EXPECT_EQ(checksum(Cursor{buf.get(), 6}), kExpected);
+    EXPECT_EQ(xxh3_64bits(Cursor{buf.get(), 6}), kExpected);
   }
   {
     auto buf = folly::IOBuf::copyBuffer("_thr");
     buf->appendChain(folly::IOBuf::copyBuffer("ift_"));
     Cursor io{buf.get()};
-    EXPECT_EQ(checksum(Cursor{io + 1, 6}), kExpected);
+    EXPECT_EQ(xxh3_64bits(Cursor{io + 1, 6}), kExpected);
   }
   {
     auto buf = folly::IOBuf::copyBuffer("_th");
@@ -70,7 +70,7 @@ TEST(checksum, test) {
     buf2->appendChain(std::move(buf3));
     buf->appendChain(std::move(buf2));
     Cursor io{buf.get()};
-    EXPECT_EQ(checksum(Cursor{io + 1, 6}), kExpected);
+    EXPECT_EQ(xxh3_64bits(Cursor{io + 1, 6}), kExpected);
   }
 }
 

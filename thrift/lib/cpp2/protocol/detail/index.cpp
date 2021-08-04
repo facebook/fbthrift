@@ -29,7 +29,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-int64_t checksum(folly::io::Cursor cursor) {
+int64_t xxh3_64bits(folly::io::Cursor cursor) {
   thread_local std::unique_ptr<XXH3_state_t, decltype(&XXH3_freeState)> state{
       XXH3_createState(), &XXH3_freeState};
   XXH3_64bits_reset(state.get());

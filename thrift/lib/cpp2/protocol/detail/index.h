@@ -59,7 +59,7 @@ constexpr auto kSizeField =
 constexpr auto kIndexField =
     InternalField{"__fbthrift_field_id_to_size", -32767, TType::T_MAP};
 
-int64_t checksum(folly::io::Cursor cursor);
+int64_t xxh3_64bits(folly::io::Cursor cursor);
 
 struct DummyIndexWriter {
   DummyIndexWriter(void*, uint32_t&) {}
