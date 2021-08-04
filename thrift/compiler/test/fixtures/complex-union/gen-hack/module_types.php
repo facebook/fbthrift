@@ -203,10 +203,6 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
 }
 
   public function set_intValue(int $intValue)[write_props]: this {
-    return $this->setx_intValue($intValue);
-   }
-
-  public function setx_intValue(int $intValue)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::intValue;
     $this->intValue = $intValue;
@@ -227,10 +223,6 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_stringValue(string $stringValue)[write_props]: this {
-    return $this->setx_stringValue($stringValue);
-   }
-
-  public function setx_stringValue(string $stringValue)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::stringValue;
     $this->stringValue = $stringValue;
@@ -251,10 +243,6 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_intListValue(Vector<int> $intListValue)[write_props]: this {
-    return $this->setx_intListValue($intListValue);
-   }
-
-  public function setx_intListValue(Vector<int> $intListValue)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::intListValue;
     $this->intListValue = $intListValue;
@@ -275,10 +263,6 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_stringListValue(Vector<string> $stringListValue)[write_props]: this {
-    return $this->setx_stringListValue($stringListValue);
-   }
-
-  public function setx_stringListValue(Vector<string> $stringListValue)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::stringListValue;
     $this->stringListValue = $stringListValue;
@@ -299,10 +283,6 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_typedefValue(Map<int, string> $typedefValue)[write_props]: this {
-    return $this->setx_typedefValue($typedefValue);
-   }
-
-  public function setx_typedefValue(Map<int, string> $typedefValue)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::typedefValue;
     $this->typedefValue = $typedefValue;
@@ -323,10 +303,6 @@ class ComplexUnion implements \IThriftStruct, \IThriftUnion<ComplexUnionEnum> {
   }
 
   public function set_stringRef(string $stringRef)[write_props]: this {
-    return $this->setx_stringRef($stringRef);
-   }
-
-  public function setx_stringRef(string $stringRef)[write_props]: this {
     $this->reset();
     $this->_type = ComplexUnionEnum::stringRef;
     $this->stringRef = $stringRef;
@@ -630,10 +606,6 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
 }
 
   public function set_intListValue(Vector<int> $intListValue)[write_props]: this {
-    return $this->setx_intListValue($intListValue);
-   }
-
-  public function setx_intListValue(Vector<int> $intListValue)[write_props]: this {
     $this->reset();
     $this->_type = ListUnionEnum::intListValue;
     $this->intListValue = $intListValue;
@@ -654,10 +626,6 @@ class ListUnion implements \IThriftStruct, \IThriftUnion<ListUnionEnum> {
   }
 
   public function set_stringListValue(Vector<string> $stringListValue)[write_props]: this {
-    return $this->setx_stringListValue($stringListValue);
-   }
-
-  public function setx_stringListValue(Vector<string> $stringListValue)[write_props]: this {
     $this->reset();
     $this->_type = ListUnionEnum::stringListValue;
     $this->stringListValue = $stringListValue;
@@ -862,10 +830,6 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
 }
 
   public function set_binaryData(string $binaryData)[write_props]: this {
-    return $this->setx_binaryData($binaryData);
-   }
-
-  public function setx_binaryData(string $binaryData)[write_props]: this {
     $this->reset();
     $this->_type = DataUnionEnum::binaryData;
     $this->binaryData = $binaryData;
@@ -886,10 +850,6 @@ class DataUnion implements \IThriftStruct, \IThriftUnion<DataUnionEnum> {
   }
 
   public function set_stringData(string $stringData)[write_props]: this {
-    return $this->setx_stringData($stringData);
-   }
-
-  public function setx_stringData(string $stringData)[write_props]: this {
     $this->reset();
     $this->_type = DataUnionEnum::stringData;
     $this->stringData = $stringData;
@@ -1253,10 +1213,6 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
 }
 
   public function set_v1(Val $v1)[write_props]: this {
-    return $this->setx_v1($v1);
-   }
-
-  public function setx_v1(Val $v1)[write_props]: this {
     $this->reset();
     $this->_type = ValUnionEnum::v1;
     $this->v1 = $v1;
@@ -1277,10 +1233,6 @@ class ValUnion implements \IThriftStruct, \IThriftUnion<ValUnionEnum> {
   }
 
   public function set_v2(Val $v2)[write_props]: this {
-    return $this->setx_v2($v2);
-   }
-
-  public function setx_v2(Val $v2)[write_props]: this {
     $this->reset();
     $this->_type = ValUnionEnum::v2;
     $this->v2 = $v2;
@@ -1469,10 +1421,6 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
 }
 
   public function set_thingOne(string $thingOne)[write_props]: this {
-    return $this->setx_thingOne($thingOne);
-   }
-
-  public function setx_thingOne(string $thingOne)[write_props]: this {
     $this->reset();
     $this->_type = VirtualComplexUnionEnum::thingOne;
     $this->thingOne = $thingOne;
@@ -1493,10 +1441,6 @@ class VirtualComplexUnion implements \IThriftStruct, \IThriftUnion<VirtualComple
   }
 
   public function set_thingTwo(string $thingTwo)[write_props]: this {
-    return $this->setx_thingTwo($thingTwo);
-   }
-
-  public function setx_thingTwo(string $thingTwo)[write_props]: this {
     $this->reset();
     $this->_type = VirtualComplexUnionEnum::thingTwo;
     $this->thingTwo = $thingTwo;
@@ -1741,10 +1685,6 @@ class NonCopyableUnion implements \IThriftStruct, \IThriftUnion<NonCopyableUnion
 }
 
   public function set_s(NonCopyableStruct $s)[write_props]: this {
-    return $this->setx_s($s);
-   }
-
-  public function setx_s(NonCopyableStruct $s)[write_props]: this {
     $this->reset();
     $this->_type = NonCopyableUnionEnum::s;
     $this->s = $s;

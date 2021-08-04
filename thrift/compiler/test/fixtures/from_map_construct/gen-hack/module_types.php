@@ -416,10 +416,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
 }
 
   public function set_string_field(string $string_field)[write_props]: this {
-    return $this->setx_string_field($string_field);
-   }
-
-  public function setx_string_field(string $string_field)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::string_field;
     $this->string_field = $string_field;
@@ -440,10 +436,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_int_field(int $int_field)[write_props]: this {
-    return $this->setx_int_field($int_field);
-   }
-
-  public function setx_int_field(int $int_field)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::int_field;
     $this->int_field = $int_field;
@@ -464,10 +456,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_enum_field(TestEnum $enum_field)[write_props]: this {
-    return $this->setx_enum_field($enum_field);
-   }
-
-  public function setx_enum_field(TestEnum $enum_field)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::enum_field;
     $this->enum_field = $enum_field;
@@ -488,10 +476,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_foo_struct(Foo $foo_struct)[write_props]: this {
-    return $this->setx_foo_struct($foo_struct);
-   }
-
-  public function setx_foo_struct(Foo $foo_struct)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::foo_struct;
     $this->foo_struct = $foo_struct;

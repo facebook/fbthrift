@@ -728,10 +728,6 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
 }
 
   public function set_intField(\Adapter1::THackType $intField)[write_props]: this {
-    return $this->setx_intField($intField);
-   }
-
-  public function setx_intField(\Adapter1::THackType $intField)[write_props]: this {
     $this->reset();
     $this->_type = BazEnum::intField;
     $this->intField = $intField;
@@ -752,10 +748,6 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
   }
 
   public function set_setField(\Adapter2::THackType $setField)[write_props]: this {
-    return $this->setx_setField($setField);
-   }
-
-  public function setx_setField(\Adapter2::THackType $setField)[write_props]: this {
     $this->reset();
     $this->_type = BazEnum::setField;
     $this->setField = $setField;
@@ -776,10 +768,6 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
   }
 
   public function set_mapField(\Adapter3::THackType $mapField)[write_props]: this {
-    return $this->setx_mapField($mapField);
-   }
-
-  public function setx_mapField(\Adapter3::THackType $mapField)[write_props]: this {
     $this->reset();
     $this->_type = BazEnum::mapField;
     $this->mapField = $mapField;
@@ -800,10 +788,6 @@ class Baz implements \IThriftStruct, \IThriftUnion<BazEnum>, \IThriftShapishStru
   }
 
   public function set_binaryField(\Adapter1::THackType $binaryField)[write_props]: this {
-    return $this->setx_binaryField($binaryField);
-   }
-
-  public function setx_binaryField(\Adapter1::THackType $binaryField)[write_props]: this {
     $this->reset();
     $this->_type = BazEnum::binaryField;
     $this->binaryField = $binaryField;

@@ -540,10 +540,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
 }
 
   public function set_myEnum(MyEnum $myEnum)[write_props]: this {
-    return $this->setx_myEnum($myEnum);
-   }
-
-  public function setx_myEnum(MyEnum $myEnum)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::myEnum;
     $this->myEnum = $myEnum;
@@ -564,10 +560,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   public function set_myStruct(MyStruct $myStruct)[write_props]: this {
-    return $this->setx_myStruct($myStruct);
-   }
-
-  public function setx_myStruct(MyStruct $myStruct)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::myStruct;
     $this->myStruct = $myStruct;
@@ -588,10 +580,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum>, \IThriftSha
   }
 
   public function set_myDataItem(MyDataItem $myDataItem)[write_props]: this {
-    return $this->setx_myDataItem($myDataItem);
-   }
-
-  public function setx_myDataItem(MyDataItem $myDataItem)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::myDataItem;
     $this->myDataItem = $myDataItem;

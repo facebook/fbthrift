@@ -230,10 +230,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
 }
 
   public function set_int_value(int $int_value)[write_props]: this {
-    return $this->setx_int_value($int_value);
-   }
-
-  public function setx_int_value(int $int_value)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::int_value;
     $this->int_value = $int_value;
@@ -254,10 +250,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_str_value(string $str_value)[write_props]: this {
-    return $this->setx_str_value($str_value);
-   }
-
-  public function setx_str_value(string $str_value)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::str_value;
     $this->str_value = $str_value;
@@ -278,10 +270,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_double_value(float $double_value)[write_props]: this {
-    return $this->setx_double_value($double_value);
-   }
-
-  public function setx_double_value(float $double_value)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::double_value;
     $this->double_value = $double_value;
@@ -302,10 +290,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_list_of_strings(Vector<string> $list_of_strings)[write_props]: this {
-    return $this->setx_list_of_strings($list_of_strings);
-   }
-
-  public function setx_list_of_strings(Vector<string> $list_of_strings)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::list_of_strings;
     $this->list_of_strings = $list_of_strings;
@@ -326,10 +310,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_map_of_string_to_ints(Map<string, int> $map_of_string_to_ints)[write_props]: this {
-    return $this->setx_map_of_string_to_ints($map_of_string_to_ints);
-   }
-
-  public function setx_map_of_string_to_ints(Map<string, int> $map_of_string_to_ints)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::map_of_string_to_ints;
     $this->map_of_string_to_ints = $map_of_string_to_ints;
@@ -350,10 +330,6 @@ class TestUnion implements \IThriftStruct, \IThriftUnion<TestUnionEnum> {
   }
 
   public function set_struct_foo(Foo $struct_foo)[write_props]: this {
-    return $this->setx_struct_foo($struct_foo);
-   }
-
-  public function setx_struct_foo(Foo $struct_foo)[write_props]: this {
     $this->reset();
     $this->_type = TestUnionEnum::struct_foo;
     $this->struct_foo = $struct_foo;

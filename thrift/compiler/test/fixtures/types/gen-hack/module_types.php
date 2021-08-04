@@ -3340,10 +3340,6 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
 }
 
   public function set_string_field(string $string_field)[write_props]: this {
-    return $this->setx_string_field($string_field);
-   }
-
-  public function setx_string_field(string $string_field)[write_props]: this {
     $this->reset();
     $this->_type = NoExceptMoveUnionEnum::string_field;
     $this->string_field = $string_field;
@@ -3364,10 +3360,6 @@ class NoExceptMoveUnion implements \IThriftStruct, \IThriftUnion<NoExceptMoveUni
   }
 
   public function set_i32_field(int $i32_field)[write_props]: this {
-    return $this->setx_i32_field($i32_field);
-   }
-
-  public function setx_i32_field(int $i32_field)[write_props]: this {
     $this->reset();
     $this->_type = NoExceptMoveUnionEnum::i32_field;
     $this->i32_field = $i32_field;

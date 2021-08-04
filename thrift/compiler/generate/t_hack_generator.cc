@@ -2709,15 +2709,6 @@ void t_hack_generator::generate_php_union_methods(
     indent(out) << "public function set_" << fieldName << "(" << typehint
                 << " $" << fieldName << ")[write_props]: this {\n";
     indent_up();
-    indent(out) << "return $this->setx_" << fieldName << "($" << fieldName
-                << ");\n ";
-    indent_down();
-    indent(out) << "}\n\n";
-
-    // setx_<fieldName>()
-    indent(out) << "public function setx_" << fieldName << "(" << typehint
-                << " $" << fieldName << ")[write_props]: this {\n";
-    indent_up();
     indent(out) << "$this->reset();\n";
     indent(out) << "$this->_type = " << enumName << "::" << fieldName << ";\n";
     indent(out) << "$this->" << fieldName << " = "

@@ -401,10 +401,6 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
 }
 
   public function set_foo(string $foo)[write_props]: this {
-    return $this->setx_foo($foo);
-   }
-
-  public function setx_foo(string $foo)[write_props]: this {
     $this->reset();
     $this->_type = \test\fixtures\jsenum\UnionTestingEnum::foo;
     $this->foo = $foo;
@@ -425,10 +421,6 @@ class UnionTesting implements \IThriftStruct, \IThriftUnion<\test\fixtures\jsenu
   }
 
   public function set_bar(int $bar)[write_props]: this {
-    return $this->setx_bar($bar);
-   }
-
-  public function setx_bar(int $bar)[write_props]: this {
     $this->reset();
     $this->_type = \test\fixtures\jsenum\UnionTestingEnum::bar;
     $this->bar = $bar;

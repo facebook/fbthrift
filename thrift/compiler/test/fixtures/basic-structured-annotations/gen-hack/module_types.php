@@ -1008,10 +1008,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
 }
 
   public function set_first(string $first)[write_props]: this {
-    return $this->setx_first($first);
-   }
-
-  public function setx_first(string $first)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::first;
     $this->first = $first;
@@ -1032,10 +1028,6 @@ class MyUnion implements \IThriftStruct, \IThriftUnion<MyUnionEnum> {
   }
 
   public function set_second(int $second)[write_props]: this {
-    return $this->setx_second($second);
-   }
-
-  public function setx_second(int $second)[write_props]: this {
     $this->reset();
     $this->_type = MyUnionEnum::second;
     $this->second = $second;

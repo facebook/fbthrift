@@ -136,10 +136,6 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
 }
 
   public function set_intValue(int $intValue)[write_props]: this {
-    return $this->setx_intValue($intValue);
-   }
-
-  public function setx_intValue(int $intValue)[write_props]: this {
     $this->reset();
     $this->_type = \test\fixtures\UnionEnum::intValue;
     $this->intValue = $intValue;
@@ -160,10 +156,6 @@ class Union implements \IThriftStruct, \IThriftUnion<\test\fixtures\UnionEnum>, 
   }
 
   public function set_stringValue(string $stringValue)[write_props]: this {
-    return $this->setx_stringValue($stringValue);
-   }
-
-  public function setx_stringValue(string $stringValue)[write_props]: this {
     $this->reset();
     $this->_type = \test\fixtures\UnionEnum::stringValue;
     $this->stringValue = $stringValue;

@@ -983,10 +983,6 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
 }
 
   public function set_i(int $i)[write_props]: this {
-    return $this->setx_i($i);
-   }
-
-  public function setx_i(int $i)[write_props]: this {
     $this->reset();
     $this->_type = union1Enum::i;
     $this->i = $i;
@@ -1007,10 +1003,6 @@ class union1 implements \IThriftStruct, \IThriftUnion<union1Enum> {
   }
 
   public function set_d(float $d)[write_props]: this {
-    return $this->setx_d($d);
-   }
-
-  public function setx_d(float $d)[write_props]: this {
     $this->reset();
     $this->_type = union1Enum::d;
     $this->d = $d;
@@ -1211,10 +1203,6 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
 }
 
   public function set_i(int $i)[write_props]: this {
-    return $this->setx_i($i);
-   }
-
-  public function setx_i(int $i)[write_props]: this {
     $this->reset();
     $this->_type = union2Enum::i;
     $this->i = $i;
@@ -1235,10 +1223,6 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function set_d(float $d)[write_props]: this {
-    return $this->setx_d($d);
-   }
-
-  public function setx_d(float $d)[write_props]: this {
     $this->reset();
     $this->_type = union2Enum::d;
     $this->d = $d;
@@ -1259,10 +1243,6 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function set_s(struct1 $s)[write_props]: this {
-    return $this->setx_s($s);
-   }
-
-  public function setx_s(struct1 $s)[write_props]: this {
     $this->reset();
     $this->_type = union2Enum::s;
     $this->s = $s;
@@ -1283,10 +1263,6 @@ class union2 implements \IThriftStruct, \IThriftUnion<union2Enum> {
   }
 
   public function set_u(union1 $u)[write_props]: this {
-    return $this->setx_u($u);
-   }
-
-  public function setx_u(union1 $u)[write_props]: this {
     $this->reset();
     $this->_type = union2Enum::u;
     $this->u = $u;
