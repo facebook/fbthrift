@@ -134,7 +134,13 @@ RocketServerConnection::~RocketServerConnection() {
   if (rawSocket_) {
     rawSocket_->setBufferCallback(nullptr);
   }
-  socket_.reset();
+
+  // Subtle: Close the socket, which will fail all outstanding writes and
+  // unsubscribe the read callback, but do not destroy the object itself, since
+  // other member variables of RocketServerConnection may be borrowing the
+  // object.
+  socket_->closeNow();
+
   // reclaim any memory in use by pending writes
   if (egressBufferSize_) {
     egressMemoryTracker_.decrement(egressBufferSize_);
