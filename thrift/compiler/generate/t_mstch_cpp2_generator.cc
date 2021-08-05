@@ -629,10 +629,12 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node cpp_ref_unique() { return cpp2::is_unique_ref(field_); }
   mstch::node cpp_ref_shared() {
-    return cpp2::get_ref_type(field_) == "shared";
+    return gen::cpp::find_ref_type(*field_) ==
+        gen::cpp::reference_type::shared_mutable;
   }
   mstch::node cpp_ref_shared_const() {
-    return cpp2::get_ref_type(field_) == "shared_const";
+    return gen::cpp::find_ref_type(*field_) ==
+        gen::cpp::reference_type::shared_const;
   }
   mstch::node cpp_noncopyable() {
     return field_->get_type()->has_annotation("cpp2.noncopyable");
