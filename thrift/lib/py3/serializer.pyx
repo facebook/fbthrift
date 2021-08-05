@@ -27,7 +27,7 @@ def serialize_iobuf(Struct tstruct not None, protocol=Protocol.COMPACT):
     if not isinstance(protocol, Protocol):
         raise TypeError(f"{protocol} must of type Protocol")
     cdef Struct cy_struct = <Struct> tstruct
-    return cy_struct._serialize(protocol)
+    return cy_struct._fbthrift_serialize(protocol)
 
 
 def deserialize_with_length(structKlass, buf not None, protocol=Protocol.COMPACT):
@@ -39,7 +39,7 @@ def deserialize_with_length(structKlass, buf not None, protocol=Protocol.COMPACT
 
     cdef IOBuf iobuf = buf if isinstance(buf, IOBuf) else IOBuf(buf)
     try:
-        length = cy_struct._deserialize(iobuf._this, protocol)
+        length = cy_struct._fbthrift_deserialize(iobuf._this, protocol)
         return cy_struct, length
     except Exception as e:
         raise Error.__new__(Error, *e.args) from None

@@ -141,8 +141,8 @@ cdef class Struct:
     cdef object _fbthrift_hash
     cdef object __weakref__
     cdef size_t _fbthrift_struct_size
-    cdef IOBuf _serialize(self, Protocol proto)
-    cdef uint32_t _deserialize(self, const cIOBuf* buf, Protocol proto) except? 0
+    cdef IOBuf _fbthrift_serialize(self, Protocol proto)
+    cdef uint32_t _fbthrift_deserialize(self, const cIOBuf* buf, Protocol proto) except? 0
     cdef object _fbthrift_isset(self)
     cdef bint _fbthrift_noncomparable_eq(self, other)
     cdef object _fbthrift_cmp_sametype(self, other, int op)
