@@ -32,6 +32,7 @@
 #include <thrift/lib/cpp2/test/gen-cpp2/Interaction1.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Interaction2.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Second.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/SomeService.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Third.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types_custom_protocol.h>
 
@@ -81,6 +82,50 @@ TEST(MultiplexAsyncProcessorTest, getServiceHandlers) {
       std::make_shared<MultiplexAsyncProcessorFactory>(std::move(services));
   // Generated service handlers are one per service
   EXPECT_EQ(processorFactory->getServiceHandlers().size(), 4);
+}
+
+TEST(MultiplexAsyncProcessorTest, getServiceMetadata) {
+  auto getMetadataFromService = [](AsyncProcessorFactory& service) {
+    metadata::ThriftServiceMetadataResponse response;
+    service.getProcessor()->getServiceMetadata(response);
+    return response;
+  };
+  std::vector<std::shared_ptr<AsyncProcessorFactory>> servicesToMultiplex = {
+      std::make_shared<First>(),
+      std::make_shared<Second>(),
+      std::make_shared<SomeServiceSvIf>(),
+      std::make_shared<Conflicts>(),
+      std::make_shared<Third>(),
+  };
+  auto processorFactory = std::make_shared<MultiplexAsyncProcessorFactory>(
+      std::move(servicesToMultiplex));
+  auto response = getMetadataFromService(*processorFactory);
+
+  LOG(INFO) << "ServiceMetadata: " << debugString(response);
+
+  EXPECT_EQ(
+      *response.context_ref()->service_info_ref()->name_ref(),
+      "MultiplexAsyncProcessor.First");
+
+  auto& services = *response.services_ref();
+  EXPECT_EQ(services.size(), 6);
+  EXPECT_EQ(*services[0].service_name_ref(), "MultiplexAsyncProcessor.First");
+  EXPECT_EQ(*services[1].service_name_ref(), "MultiplexAsyncProcessor.Second");
+  EXPECT_EQ(
+      *services[2].service_name_ref(), "MultiplexAsyncProcessor.SomeService");
+  // Base service of SomeService
+  EXPECT_EQ(*services[3].service_name_ref(), "MultiplexAsyncProcessor.Third");
+  EXPECT_EQ(
+      *services[4].service_name_ref(), "MultiplexAsyncProcessor.Conflicts");
+  EXPECT_EQ(*services[5].service_name_ref(), "MultiplexAsyncProcessor.Third");
+
+  const auto& metadata = *response.metadata_ref();
+  EXPECT_EQ(metadata.structs_ref()->size(), 1);
+  EXPECT_EQ(
+      metadata.structs_ref()->begin()->first,
+      "MultiplexAsyncProcessor.SomeStruct");
+  // All composed services are referred to
+  EXPECT_EQ(metadata.services_ref()->size(), 5);
 }
 
 namespace {

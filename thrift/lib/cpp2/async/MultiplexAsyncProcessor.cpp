@@ -234,12 +234,49 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
   }
 
   void getServiceMetadata(
-      metadata::ThriftServiceMetadataResponse& response) override {
-    // TODO(praihan): The metadata API currently does not have a nice way to
-    // communicate that multiple services are composed together. Let's return
-    // the metadata for the first AsyncProcessor which should at least cover the
-    // most relevant service being composed.
-    processors_.front()->getServiceMetadata(response);
+      metadata::ThriftServiceMetadataResponse& actualResponse) override {
+    auto copyMetadataInto =
+        [](metadata::ThriftMetadata& dst,
+           const metadata::ThriftServiceMetadataResponse& src) {
+          // The multiplexed services makes reference to a composed service, so
+          // we need to include it in the metadata.
+          auto& metadata = *src.metadata_ref();
+          dst.enums_ref()->insert(
+              metadata.enums_ref()->begin(), metadata.enums_ref()->end());
+          dst.structs_ref()->insert(
+              metadata.structs_ref()->begin(), metadata.structs_ref()->end());
+          dst.exceptions_ref()->insert(
+              metadata.exceptions_ref()->begin(),
+              metadata.exceptions_ref()->end());
+          dst.services_ref()->insert(
+              metadata.services_ref()->begin(), metadata.services_ref()->end());
+        };
+
+    for (auto& processor : processors_) {
+      metadata::ThriftServiceMetadataResponse response;
+      processor->getServiceMetadata(response);
+      // Copying gives precedence to earlier inserted entries - this matches
+      // the semantics of the processor method delegation.
+      copyMetadataInto(*actualResponse.metadata_ref(), response);
+
+      actualResponse.services_ref()->insert(
+          actualResponse.services_ref()->end(),
+          response.services_ref()->begin(),
+          response.services_ref()->end());
+    }
+
+    // TODO(praihan): Remove context field from metadata response object
+    // There is no "correct" way to set context for MultiplexAsyncProcessor. Our
+    // best guess would be the first service, which is likely to be most
+    // relevant to the user.
+    DCHECK(!actualResponse.services_ref()->empty());
+    const auto& defaultServiceContextRef =
+        actualResponse.services_ref()->front();
+    actualResponse.context_ref()->service_info_ref() =
+        actualResponse.metadata_ref()->services_ref()->at(
+            *defaultServiceContextRef.service_name_ref());
+    actualResponse.context_ref()->module_ref() =
+        *defaultServiceContextRef.module_ref();
   }
 
   void terminateInteraction(
