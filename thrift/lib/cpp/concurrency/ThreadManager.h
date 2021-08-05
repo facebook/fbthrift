@@ -27,8 +27,8 @@
 
 #include <folly/DefaultKeepAliveExecutor.h>
 #include <folly/Executor.h>
-#include <folly/concurrency/QueueObserver.h>
 #include <folly/executors/Codel.h>
+#include <folly/executors/QueueObserver.h>
 #include <folly/io/async/Request.h>
 #include <folly/portability/GFlags.h>
 #include <folly/portability/Unistd.h>
