@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/matching_module_name_types.h"
 #include "other/gen-cpp2/matching_module_name_metadata.h"

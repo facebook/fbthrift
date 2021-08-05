@@ -44,6 +44,10 @@ cdef inline cPriority Priority_to_cpp(object value):
     cdef int cvalue = value.value
     return <cPriority>cvalue
 
+cdef extern from "thrift/lib/cpp2/FieldRef.h" namespace "apache::thrift":
+    cdef cppclass cFieldRef "apache::thrift::field_ref"[T]:
+        T& operator*()
+
 
 cdef class Headers:
     cdef object __weakref__
@@ -69,17 +73,17 @@ cdef extern from "thrift/lib/cpp2/async/RequestChannel.h" namespace "apache::thr
 
 
 cdef extern from "thrift/lib/cpp2/gen/module_metadata_h.h" namespace "::apache::thrift::metadata":
-    cdef cppclass cThriftServiceContext "::apache::thrift::metadata::ThriftServiceContext":
-        cThriftServiceContext()
+    cdef cppclass cThriftServiceContextRef "::apache::thrift::metadata::ThriftServiceContextRef":
+        cThriftServiceContextRef()
     cdef cppclass cThriftMetadata "::apache::thrift::metadata::ThriftMetadata":
         cThriftMetadata()
+    cdef cppclass cThriftServiceMetadataResponse "::apache::thrift::metadata::ThriftServiceMetadataResponse":
+        cThriftServiceMetadataResponse()
+        cFieldRef[cThriftServiceContextRef] services_ref()
+        cFieldRef[cThriftMetadata] metadata_ref()
     cdef cppclass ServiceMetadata "::apache::thrift::detail::md::ServiceMetadata"[T]:
         @staticmethod
-        void gen(cThriftMetadata &metadata, cThriftServiceContext& context)
-
-
-cdef extern from "<thrift/lib/py3/metadata.h>" namespace "::thrift::py3":
-    cdef void extractMetadataFromServiceContext(cThriftMetadata& metadata, cThriftServiceContext& context)
+        const void gen(cThriftServiceMetadataResponse& context)
 
 
 cdef class RpcOptions:

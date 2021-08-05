@@ -37,10 +37,8 @@ from folly cimport (
   c_unit,
 )
 from thrift.py3.common cimport (
-    cThriftServiceContext as __fbthrift_cThriftServiceContext,
-    cThriftMetadata as __fbthrift_cThriftMetadata,
+    cThriftServiceMetadataResponse as __fbthrift_cThriftServiceMetadataResponse,
     ServiceMetadata,
-    extractMetadataFromServiceContext,
     MetadataBox as __MetadataBox,
 )
 
@@ -671,11 +669,9 @@ cdef class SimpleServiceInterface(
 
     @staticmethod
     def __get_metadata__():
-        cdef __fbthrift_cThriftMetadata meta
-        cdef __fbthrift_cThriftServiceContext context
-        ServiceMetadata[_services_reflection.cSimpleServiceSvIf].gen(meta, context)
-        extractMetadataFromServiceContext(meta, context)
-        return __MetadataBox.box(cmove(meta))
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cSimpleServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
 
     @staticmethod
     def __get_thrift_name__():
@@ -712,11 +708,9 @@ SimpleServiceInterface
 
     @staticmethod
     def __get_metadata__():
-        cdef __fbthrift_cThriftMetadata meta
-        cdef __fbthrift_cThriftServiceContext context
-        ServiceMetadata[_services_reflection.cDerivedServiceSvIf].gen(meta, context)
-        extractMetadataFromServiceContext(meta, context)
-        return __MetadataBox.box(cmove(meta))
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cDerivedServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
 
     @staticmethod
     def __get_thrift_name__():
@@ -752,11 +746,9 @@ DerivedServiceInterface
 
     @staticmethod
     def __get_metadata__():
-        cdef __fbthrift_cThriftMetadata meta
-        cdef __fbthrift_cThriftServiceContext context
-        ServiceMetadata[_services_reflection.cRederivedServiceSvIf].gen(meta, context)
-        extractMetadataFromServiceContext(meta, context)
-        return __MetadataBox.box(cmove(meta))
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cRederivedServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
 
     @staticmethod
     def __get_thrift_name__():

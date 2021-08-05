@@ -210,15 +210,23 @@ struct ThriftModuleContext {
   1: string name;
 }
 
-// ThriftServiceContext represents service-specific metadata.
+// DEPRECATED! ThriftServiceContext represents service-specific metadata.
 struct ThriftServiceContext {
   1: ThriftService service_info;
   2: ThriftModuleContext module;
 }
 
+struct ThriftServiceContextRef {
+  1: string service_name;
+  2: ThriftModuleContext module;
+}
+
 struct ThriftServiceMetadataResponse {
+  // DEPRECATED! Use `services`.
   1: ThriftServiceContext context;
   2: ThriftMetadata metadata;
+  // All service interfaces (including inherited ones) running on the server.
+  3: list<ThriftServiceContextRef> services;
 }
 
 /**

@@ -7,17 +7,14 @@
 
 #include "src/gen-py3/module/metadata.h"
 
-#include <thrift/lib/py3/metadata.h>
-
 namespace cpp2 {
 ::apache::thrift::metadata::ThriftMetadata module_getThriftModuleMetadata() {
-  ::apache::thrift::metadata::ThriftMetadata metadata;
-  ::apache::thrift::metadata::ThriftServiceContext serviceContext;
+  ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
+  ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::StructMetadata<Foo>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Baz>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Bar>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<ServiceSvIf>::gen(metadata, serviceContext);
-  ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
+  ::apache::thrift::detail::md::ServiceMetadata<ServiceSvIf>::gen(response);
   return metadata;
 }
 } // namespace cpp2

@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/sink/gen-cpp2/module_types.h"
 
@@ -71,8 +73,13 @@ class ExceptionMetadata<::cpp2::SinkException2> {
 template <>
 class ServiceMetadata<::cpp2::SinkServiceSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_method(ThriftMetadata& metadata, ThriftService& context);
   static void gen_methodAndReponse(ThriftMetadata& metadata, ThriftService& context);
   static void gen_methodThrow(ThriftMetadata& metadata, ThriftService& context);

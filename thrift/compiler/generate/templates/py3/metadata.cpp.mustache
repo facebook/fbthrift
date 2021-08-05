@@ -18,13 +18,11 @@
 
 #include "{{program:includePrefix}}gen-py3/{{program:name}}/metadata.h"
 
-#include <thrift/lib/py3/metadata.h>
-
 {{#program:cppNamespaces}}namespace {{value}} {
 {{/program:cppNamespaces}}
 ::apache::thrift::metadata::ThriftMetadata {{program:name}}_getThriftModuleMetadata() {
-  ::apache::thrift::metadata::ThriftMetadata metadata;
-  ::apache::thrift::metadata::ThriftServiceContext serviceContext;
+  ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
+  ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
 {{#program:enums}}
   ::apache::thrift::detail::md::EnumMetadata<{{enum:name}}>::gen(metadata);
 {{/program:enums}}
@@ -37,8 +35,7 @@
 {{/struct:exception?}}
 {{/program:structs}}
 {{#program:services}}
-  ::apache::thrift::detail::md::ServiceMetadata<{{service:name}}SvIf>::gen(metadata, serviceContext);
-  ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
+  ::apache::thrift::detail::md::ServiceMetadata<{{service:name}}SvIf>::gen(response);
 {{/program:services}}
   return metadata;
 }

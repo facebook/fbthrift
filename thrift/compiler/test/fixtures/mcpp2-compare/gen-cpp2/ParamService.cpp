@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamService.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ParamService.tcc"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_metadata.h"
@@ -1599,7 +1600,7 @@ const char* ParamServiceAsyncProcessor::getServiceName() {
 }
 
 void ParamServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<ParamServiceSvIf>::gen(*response.metadata_ref(), *response.context_ref());
+  ::apache::thrift::detail::md::ServiceMetadata<ParamServiceSvIf>::gen(response);
 }
 
 void ParamServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

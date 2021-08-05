@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/visitation/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/visitation/gen-cpp2/reflection_dep_B_metadata.h"
@@ -151,8 +153,13 @@ class StructMetadata<::test_cpp2::cpp_reflection::struct_with_indirections> {
 template <>
 class ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_method1(ThriftMetadata& metadata, ThriftService& context);
   static void gen_method2(ThriftMetadata& metadata, ThriftService& context);
   static void gen_method3(ThriftMetadata& metadata, ThriftService& context);
@@ -163,8 +170,13 @@ class ServiceMetadata<::test_cpp2::cpp_reflection::service1SvIf> {
 template <>
 class ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_methodA(ThriftMetadata& metadata, ThriftService& context);
   static void gen_methodB(ThriftMetadata& metadata, ThriftService& context);
   static void gen_methodC(ThriftMetadata& metadata, ThriftService& context);
@@ -175,8 +187,13 @@ class ServiceMetadata<::test_cpp2::cpp_reflection::service2SvIf> {
 template <>
 class ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_methodA(ThriftMetadata& metadata, ThriftService& context);
   static void gen_methodB(ThriftMetadata& metadata, ThriftService& context);
   static void gen_methodC(ThriftMetadata& metadata, ThriftService& context);
@@ -187,8 +204,13 @@ class ServiceMetadata<::test_cpp2::cpp_reflection::service3SvIf> {
 template <>
 class ServiceMetadata<::test_cpp2::cpp_reflection::service_with_special_namesSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_get(ThriftMetadata& metadata, ThriftService& context);
   static void gen_getter(ThriftMetadata& metadata, ThriftService& context);
   static void gen_lists(ThriftMetadata& metadata, ThriftService& context);

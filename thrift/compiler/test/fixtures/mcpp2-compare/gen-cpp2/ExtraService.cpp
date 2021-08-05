@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ExtraService.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/ExtraService.tcc"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/extra_services_metadata.h"
@@ -467,7 +468,7 @@ const char* ExtraServiceAsyncProcessor::getServiceName() {
 }
 
 void ExtraServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<ExtraServiceSvIf>::gen(*response.metadata_ref(), *response.context_ref());
+  ::apache::thrift::detail::md::ServiceMetadata<ExtraServiceSvIf>::gen(response);
 }
 
 void ExtraServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

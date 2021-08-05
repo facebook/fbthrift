@@ -620,14 +620,30 @@ void ExceptionMetadata<::some::valid::ns::AnotherException>::gen(ThriftMetadata&
   }
 }
 
-void ServiceMetadata<::some::valid::ns::EmptyServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+void ServiceMetadata<::some::valid::ns::EmptyServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  DCHECK(self != nullptr);
+  // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
+  ::apache::thrift::metadata::ThriftServiceContext context;
+  context.module_ref() = *self->module_ref();
+  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
+  response.context_ref() = std::move(context);
+}
+
+const ThriftServiceContextRef* ServiceMetadata<::some::valid::ns::EmptyServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_EmptyService;
   module_EmptyService.name_ref() = "module.EmptyService";
-  context.service_info_ref() = std::move(module_EmptyService);
+  // We need to keep the index around because a reference or iterator could be invalidated.
+  auto selfIndex = services.size();
+  services.emplace_back();
+  ThriftServiceContextRef& context = services[selfIndex];
+  metadata.services_ref()->emplace("module.EmptyService", std::move(module_EmptyService));
+  context.service_name_ref() = "module.EmptyService";
   ::apache::thrift::metadata::ThriftModuleContext module;
   module.name_ref() = "module";
   context.module_ref() = std::move(module);
+  return &context;
 }
 void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_noReturn(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -833,7 +849,17 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen_readData(ThriftM
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  DCHECK(self != nullptr);
+  // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
+  ::apache::thrift::metadata::ThriftServiceContext context;
+  context.module_ref() = *self->module_ref();
+  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
+  response.context_ref() = std::move(context);
+}
+
+const ThriftServiceContextRef* ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_ReturnService;
   module_ReturnService.name_ref() = "module.ReturnService";
@@ -863,10 +889,16 @@ void ServiceMetadata<::some::valid::ns::ReturnServiceSvIf>::gen(ThriftMetadata& 
   for (auto& function_gen : functions) {
     function_gen(metadata, module_ReturnService);
   }
-  context.service_info_ref() = std::move(module_ReturnService);
+  // We need to keep the index around because a reference or iterator could be invalidated.
+  auto selfIndex = services.size();
+  services.emplace_back();
+  ThriftServiceContextRef& context = services[selfIndex];
+  metadata.services_ref()->emplace("module.ReturnService", std::move(module_ReturnService));
+  context.service_name_ref() = "module.ReturnService";
   ::apache::thrift::metadata::ThriftModuleContext module;
   module.name_ref() = "module";
   context.module_ref() = std::move(module);
+  return &context;
 }
 void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_void_ret_i16_param(ThriftMetadata& metadata, ThriftService& service) {
   ::apache::thrift::metadata::ThriftFunction func;
@@ -1417,7 +1449,17 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen_listunion_string_
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  DCHECK(self != nullptr);
+  // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
+  ::apache::thrift::metadata::ThriftServiceContext context;
+  context.module_ref() = *self->module_ref();
+  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
+  response.context_ref() = std::move(context);
+}
+
+const ThriftServiceContextRef* ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_ParamService;
   module_ParamService.name_ref() = "module.ParamService";
@@ -1455,10 +1497,16 @@ void ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen(ThriftMetadata& m
   for (auto& function_gen : functions) {
     function_gen(metadata, module_ParamService);
   }
-  context.service_info_ref() = std::move(module_ParamService);
+  // We need to keep the index around because a reference or iterator could be invalidated.
+  auto selfIndex = services.size();
+  services.emplace_back();
+  ThriftServiceContextRef& context = services[selfIndex];
+  metadata.services_ref()->emplace("module.ParamService", std::move(module_ParamService));
+  context.service_name_ref() = "module.ParamService";
   ::apache::thrift::metadata::ThriftModuleContext module;
   module.name_ref() = "module";
   context.module_ref() = std::move(module);
+  return &context;
 }
 } // namespace md
 } // namespace detail

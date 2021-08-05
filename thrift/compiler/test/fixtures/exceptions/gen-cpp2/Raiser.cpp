@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/Raiser.h"
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/Raiser.tcc"
 #include "thrift/compiler/test/fixtures/exceptions/gen-cpp2/module_metadata.h"
@@ -278,7 +279,7 @@ const char* RaiserAsyncProcessor::getServiceName() {
 }
 
 void RaiserAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<RaiserSvIf>::gen(*response.metadata_ref(), *response.context_ref());
+  ::apache::thrift::detail::md::ServiceMetadata<RaiserSvIf>::gen(response);
 }
 
 void RaiserAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

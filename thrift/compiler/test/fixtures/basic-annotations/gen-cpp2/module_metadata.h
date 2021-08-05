@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/basic-annotations/gen-cpp2/module_types.h"
 
@@ -53,8 +55,13 @@ class StructMetadata<::cpp2::SecretStruct> {
 template <>
 class ServiceMetadata<::cpp2::MyServiceSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_ping(ThriftMetadata& metadata, ThriftService& context);
   static void gen_getRandomData(ThriftMetadata& metadata, ThriftService& context);
   static void gen_hasDataById(ThriftMetadata& metadata, ThriftService& context);
@@ -66,16 +73,26 @@ class ServiceMetadata<::cpp2::MyServiceSvIf> {
 template <>
 class ServiceMetadata<::cpp2::MyServicePrioParentSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_ping(ThriftMetadata& metadata, ThriftService& context);
   static void gen_pong(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
 class ServiceMetadata<::cpp2::MyServicePrioChildSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_pang(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md

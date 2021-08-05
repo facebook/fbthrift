@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/params/gen-cpp2/module_types.h"
 
@@ -21,8 +23,13 @@ namespace md {
 template <>
 class ServiceMetadata<::cpp2::NestedContainersSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_mapList(ThriftMetadata& metadata, ThriftService& context);
   static void gen_mapSet(ThriftMetadata& metadata, ThriftService& context);
   static void gen_listMap(ThriftMetadata& metadata, ThriftService& context);

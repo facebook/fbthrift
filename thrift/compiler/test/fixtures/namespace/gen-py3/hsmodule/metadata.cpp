@@ -7,15 +7,12 @@
 
 #include "gen-py3/hsmodule/metadata.h"
 
-#include <thrift/lib/py3/metadata.h>
-
 namespace cpp2 {
 ::apache::thrift::metadata::ThriftMetadata hsmodule_getThriftModuleMetadata() {
-  ::apache::thrift::metadata::ThriftMetadata metadata;
-  ::apache::thrift::metadata::ThriftServiceContext serviceContext;
+  ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
+  ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::StructMetadata<HsFoo>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<HsTestServiceSvIf>::gen(metadata, serviceContext);
-  ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
+  ::apache::thrift::detail::md::ServiceMetadata<HsTestServiceSvIf>::gen(response);
   return metadata;
 }
 } // namespace cpp2

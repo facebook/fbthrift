@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/types/gen-cpp2/include_metadata.h"
@@ -170,8 +172,13 @@ class StructMetadata<::apache::thrift::fixtures::types::StructWithDoubleUndersco
 template <>
 class ServiceMetadata<::apache::thrift::fixtures::types::SomeServiceSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_bounce_map(ThriftMetadata& metadata, ThriftService& context);
   static void gen_binary_keyed_map(ThriftMetadata& metadata, ThriftService& context);
 };

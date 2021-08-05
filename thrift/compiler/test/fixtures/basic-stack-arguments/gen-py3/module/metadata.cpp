@@ -7,20 +7,15 @@
 
 #include "src/gen-py3/module/metadata.h"
 
-#include <thrift/lib/py3/metadata.h>
-
 namespace cpp2 {
 ::apache::thrift::metadata::ThriftMetadata module_getThriftModuleMetadata() {
-  ::apache::thrift::metadata::ThriftMetadata metadata;
-  ::apache::thrift::metadata::ThriftServiceContext serviceContext;
+  ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
+  ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::EnumMetadata<MyEnum>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<MyStruct>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<MyServiceSvIf>::gen(metadata, serviceContext);
-  ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
-  ::apache::thrift::detail::md::ServiceMetadata<MyServiceFastSvIf>::gen(metadata, serviceContext);
-  ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
-  ::apache::thrift::detail::md::ServiceMetadata<DbMixedStackArgumentsSvIf>::gen(metadata, serviceContext);
-  ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
+  ::apache::thrift::detail::md::ServiceMetadata<MyServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<MyServiceFastSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<DbMixedStackArgumentsSvIf>::gen(response);
   return metadata;
 }
 } // namespace cpp2

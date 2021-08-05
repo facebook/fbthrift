@@ -7,15 +7,13 @@
 
 #include "src/gen-py3/module/metadata.h"
 
-#include <thrift/lib/py3/metadata.h>
-
 namespace apache {
 namespace thrift {
 namespace fixtures {
 namespace types {
 ::apache::thrift::metadata::ThriftMetadata module_getThriftModuleMetadata() {
-  ::apache::thrift::metadata::ThriftMetadata metadata;
-  ::apache::thrift::metadata::ThriftServiceContext serviceContext;
+  ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
+  ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::EnumMetadata<has_bitwise_ops>::gen(metadata);
   ::apache::thrift::detail::md::EnumMetadata<is_unscoped>::gen(metadata);
   ::apache::thrift::detail::md::EnumMetadata<MyForwardRefEnum>::gen(metadata);
@@ -45,8 +43,7 @@ namespace types {
   ::apache::thrift::detail::md::StructMetadata<AllocatorAware2>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<TypedefStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<StructWithDoubleUnderscores>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<SomeServiceSvIf>::gen(metadata, serviceContext);
-  ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
+  ::apache::thrift::detail::md::ServiceMetadata<SomeServiceSvIf>::gen(response);
   return metadata;
 }
 } // namespace apache

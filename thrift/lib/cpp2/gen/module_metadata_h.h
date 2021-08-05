@@ -17,6 +17,7 @@
 #pragma once
 
 #include <array>
+#include <vector>
 
 #include <folly/Indestructible.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
@@ -28,7 +29,11 @@ namespace md {
 
 using ThriftMetadata = ::apache::thrift::metadata::ThriftMetadata;
 using ThriftServiceContext = ::apache::thrift::metadata::ThriftServiceContext;
+using ThriftServiceContextRef =
+    ::apache::thrift::metadata::ThriftServiceContextRef;
 using ThriftService = ::apache::thrift::metadata::ThriftService;
+using ThriftServiceMetadataResponse =
+    ::apache::thrift::metadata::ThriftServiceMetadataResponse;
 
 class EmptyMetadata {
  protected:
@@ -37,7 +42,11 @@ class EmptyMetadata {
 
 class EmptyServiceMetadata {
  protected:
-  FOLLY_ERASE static void gen(ThriftMetadata&, ThriftServiceContext&) {}
+  FOLLY_ERASE static void gen(ThriftServiceMetadataResponse&) {}
+  FOLLY_ERASE static const ThriftServiceContextRef* genRecurse(
+      ThriftMetadata&, std::vector<ThriftServiceContextRef>&) {
+    return nullptr;
+  }
 };
 
 template <typename T>

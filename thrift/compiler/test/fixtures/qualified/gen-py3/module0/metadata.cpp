@@ -7,12 +7,10 @@
 
 #include "gen-py3/module0/metadata.h"
 
-#include <thrift/lib/py3/metadata.h>
-
 namespace module0 {
 ::apache::thrift::metadata::ThriftMetadata module0_getThriftModuleMetadata() {
-  ::apache::thrift::metadata::ThriftMetadata metadata;
-  ::apache::thrift::metadata::ThriftServiceContext serviceContext;
+  ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
+  ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::EnumMetadata<Enum>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<Struct>::gen(metadata);
   return metadata;

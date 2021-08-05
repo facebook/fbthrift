@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/module_types.h"
 #include "thrift/compiler/test/fixtures/mcpp2-compare/gen-cpp2/includes_metadata.h"
@@ -139,14 +141,24 @@ class ExceptionMetadata<::some::valid::ns::AnotherException> {
 template <>
 class ServiceMetadata<::some::valid::ns::EmptyServiceSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
 };
 template <>
 class ServiceMetadata<::some::valid::ns::ReturnServiceSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_noReturn(ThriftMetadata& metadata, ThriftService& context);
   static void gen_boolReturn(ThriftMetadata& metadata, ThriftService& context);
   static void gen_i16Return(ThriftMetadata& metadata, ThriftService& context);
@@ -172,8 +184,13 @@ class ServiceMetadata<::some::valid::ns::ReturnServiceSvIf> {
 template <>
 class ServiceMetadata<::some::valid::ns::ParamServiceSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_void_ret_i16_param(ThriftMetadata& metadata, ThriftService& context);
   static void gen_void_ret_byte_i16_param(ThriftMetadata& metadata, ThriftService& context);
   static void gen_void_ret_map_param(ThriftMetadata& metadata, ThriftService& context);

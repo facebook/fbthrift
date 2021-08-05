@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/no_metadata/gen-cpp2/module_types.h"
 
@@ -47,6 +49,12 @@ class ServiceMetadata<::cpp2::MyServiceSvIf>
     : private EmptyServiceMetadata {
  public:
   using EmptyServiceMetadata::gen;
+
+ private:
+  using EmptyServiceMetadata::genRecurse;
+
+  template <typename T>
+  friend class ServiceMetadata;
 };
 } // namespace md
 } // namespace detail

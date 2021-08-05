@@ -14,7 +14,7 @@ from libcpp.memory cimport shared_ptr, make_shared, unique_ptr, make_unique
 from libcpp.string cimport string
 from libcpp cimport bool as cbool
 from cpython cimport bool as pbool
-from libcpp.vector cimport vector as vector
+from libcpp.vector cimport vector
 from libcpp.set cimport set as cset
 from libcpp.map cimport map as cmap
 from libcpp.utility cimport move as cmove
@@ -31,10 +31,8 @@ import thrift.py3.client
 cimport thrift.py3.client
 from thrift.py3.common cimport (
     RpcOptions as __RpcOptions,
-    cThriftServiceContext as __fbthrift_cThriftServiceContext,
-    cThriftMetadata as __fbthrift_cThriftMetadata,
+    cThriftServiceMetadataResponse as __fbthrift_cThriftServiceMetadataResponse,
     ServiceMetadata,
-    extractMetadataFromServiceContext,
     MetadataBox as __MetadataBox,
 )
 
@@ -735,11 +733,9 @@ cdef class EmptyService(thrift.py3.client.Client):
 
     @staticmethod
     def __get_metadata__():
-        cdef __fbthrift_cThriftMetadata meta
-        cdef __fbthrift_cThriftServiceContext context
-        ServiceMetadata[_services_reflection.cEmptyServiceSvIf].gen(meta, context)
-        extractMetadataFromServiceContext(meta, context)
-        return __MetadataBox.box(cmove(meta))
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cEmptyServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
 
     @staticmethod
     def __get_thrift_name__():
@@ -1200,11 +1196,9 @@ cdef class ReturnService(thrift.py3.client.Client):
 
     @staticmethod
     def __get_metadata__():
-        cdef __fbthrift_cThriftMetadata meta
-        cdef __fbthrift_cThriftServiceContext context
-        ServiceMetadata[_services_reflection.cReturnServiceSvIf].gen(meta, context)
-        extractMetadataFromServiceContext(meta, context)
-        return __MetadataBox.box(cmove(meta))
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cReturnServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
 
     @staticmethod
     def __get_thrift_name__():
@@ -1981,11 +1975,9 @@ cdef class ParamService(thrift.py3.client.Client):
 
     @staticmethod
     def __get_metadata__():
-        cdef __fbthrift_cThriftMetadata meta
-        cdef __fbthrift_cThriftServiceContext context
-        ServiceMetadata[_services_reflection.cParamServiceSvIf].gen(meta, context)
-        extractMetadataFromServiceContext(meta, context)
-        return __MetadataBox.box(cmove(meta))
+        cdef __fbthrift_cThriftServiceMetadataResponse response
+        ServiceMetadata[_services_reflection.cParamServiceSvIf].gen(response)
+        return __MetadataBox.box(cmove(deref(response.metadata_ref())))
 
     @staticmethod
     def __get_thrift_name__():

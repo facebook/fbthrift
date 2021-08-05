@@ -86,7 +86,8 @@ class ServiceMetadataTest : public testing::Test {
 
 TEST_F(ServiceMetadataTest, EnumTest) {
   auto& metadata = getMetadata<metadata::test::enums::EnumTestServiceSvIf>();
-  EXPECT_EQ(response_.get_context().get_module().get_name(), "enum_test");
+  EXPECT_EQ(
+      response_.services_ref()->front().module_ref()->name_ref(), "enum_test");
   auto e = metadata.enums_ref()->at("enum_test.Continent");
   EXPECT_EQ(*e.name_ref(), "enum_test.Continent");
   EXPECT_EQ(e.elements_ref()->at(1), "NorthAmerica");
@@ -101,7 +102,9 @@ TEST_F(ServiceMetadataTest, EnumTest) {
 TEST_F(ServiceMetadataTest, ExceptionTest) {
   auto& metadata =
       getMetadata<metadata::test::exceptions::ExceptionTestServiceSvIf>();
-  EXPECT_EQ(response_.get_context().get_module().get_name(), "exception_test");
+  EXPECT_EQ(
+      response_.services_ref()->front().module_ref()->name_ref(),
+      "exception_test");
   auto ex = metadata.exceptions_ref()->at("exception_test.RuntimeException");
   EXPECT_EQ(*ex.name_ref(), "exception_test.RuntimeException");
   EXPECT_EQ(*ex.fields_ref()[0].id_ref(), 1);
@@ -124,7 +127,8 @@ TEST_F(ServiceMetadataTest, SimpleStructsTest) {
   auto& metadata = getMetadata<
       metadata::test::simple_structs::SimpleStructsTestServiceSvIf>();
   EXPECT_EQ(
-      response_.get_context().get_module().get_name(), "simple_structs_test");
+      response_.services_ref()->front().module_ref()->name_ref(),
+      "simple_structs_test");
 
   auto s1 = metadata.structs_ref()->at("simple_structs_test.Country");
   EXPECT_EQ(*s1.name_ref(), "simple_structs_test.Country");
@@ -196,7 +200,8 @@ TEST_F(ServiceMetadataTest, StructUnionTest) {
   auto& metadata =
       getMetadata<metadata::test::struct_union::StructUnionTestServiceSvIf>();
   EXPECT_EQ(
-      response_.get_context().get_module().get_name(), "struct_union_test");
+      response_.services_ref()->front().module_ref()->name_ref(),
+      "struct_union_test");
 
   auto s1 = metadata.structs_ref()->at("struct_union_test.Dog");
   EXPECT_EQ(*s1.name_ref(), "struct_union_test.Dog");
@@ -229,7 +234,8 @@ TEST_F(ServiceMetadataTest, NestedStructsTest) {
   auto& metadata = getMetadata<
       metadata::test::nested_structs::NestedStructsTestServiceSvIf>();
   EXPECT_EQ(
-      response_.get_context().get_module().get_name(), "nested_structs_test");
+      response_.services_ref()->front().module_ref()->name_ref(),
+      "nested_structs_test");
   auto e1 = metadata.enums_ref()->at("nested_structs_test.Continent");
   EXPECT_EQ(*e1.name_ref(), "nested_structs_test.Continent");
   EXPECT_EQ(e1.elements_ref()->at(1), "NorthAmerica");
@@ -312,7 +318,9 @@ TEST_F(ServiceMetadataTest, NestedStructsTest) {
 TEST_F(ServiceMetadataTest, IncludeTest) {
   auto& metadata =
       getMetadata<metadata::test::include::IncludeTestServiceSvIf>();
-  EXPECT_EQ(response_.get_context().get_module().get_name(), "include_test");
+  EXPECT_EQ(
+      response_.services_ref()->front().module_ref()->name_ref(),
+      "include_test");
 
   // In-file enums
   auto e1 = metadata.enums_ref()->at("include_test.Animal");
@@ -458,7 +466,9 @@ TEST_F(ServiceMetadataTest, IncludeTest) {
 TEST_F(ServiceMetadataTest, TypedefTest) {
   auto& metadata =
       getMetadata<metadata::test::typedefs::TypedefTestServiceSvIf>();
-  EXPECT_EQ(response_.get_context().get_module().get_name(), "typedef_test");
+  EXPECT_EQ(
+      response_.services_ref()->front().module_ref()->name_ref(),
+      "typedef_test");
 
   auto s1 = metadata.structs_ref()->at("typedef_test.Types");
   EXPECT_EQ(*s1.name_ref(), "typedef_test.Types");
@@ -538,9 +548,32 @@ TEST_F(ServiceMetadataTest, TypedefTest) {
       ThriftPrimitiveType::THRIFT_I64_TYPE);
 }
 
+TEST_F(ServiceMetadataTest, ServicesAndContextPopulated) {
+  auto& metadata = getMetadata<metadata::test::services::MyTestServiceSvIf>();
+  EXPECT_EQ(response_.services_ref()->size(), 2);
+  auto& derived = response_.services_ref()->front();
+  auto& base = response_.services_ref()->back();
+
+  EXPECT_EQ(
+      *derived.service_name_ref(),
+      *response_.context_ref()->service_info_ref()->name_ref());
+  EXPECT_EQ(
+      *derived.module_ref()->name_ref(),
+      *response_.context_ref()->module_ref()->name_ref());
+
+  EXPECT_EQ(
+      *metadata.services_ref()->at(*derived.service_name_ref()).name_ref(),
+      "service_test.MyTestService");
+  EXPECT_EQ(
+      *metadata.services_ref()->at(*base.service_name_ref()).name_ref(),
+      "service_test.ParentService");
+}
+
 TEST_F(ServiceMetadataTest, ServiceTest) {
   auto& metadata = getMetadata<metadata::test::services::MyTestServiceSvIf>();
-  EXPECT_EQ(response_.get_context().get_module().get_name(), "service_test");
+  EXPECT_EQ(
+      response_.services_ref()->front().module_ref()->name_ref(),
+      "service_test");
 
   const auto& p = metadata.services_ref()->at("service_test.ParentService");
   EXPECT_EQ(*p.name_ref(), "service_test.ParentService");
@@ -562,7 +595,8 @@ TEST_F(ServiceMetadataTest, ServiceTest) {
   EXPECT_EQ(f.arguments_ref()->size(), 0);
   EXPECT_EQ(f.exceptions_ref()->size(), 0);
 
-  const auto& s = response_.get_context().get_service_info();
+  const auto& s = metadata.services_ref()->at(
+      *response_.services_ref()->front().service_name_ref());
   EXPECT_EQ(*s.name_ref(), "service_test.MyTestService");
   EXPECT_EQ(s.functions_ref()->size(), 3);
   EXPECT_EQ(*s.get_parent(), "service_test.ParentService");
@@ -611,8 +645,11 @@ TEST_F(ServiceMetadataTest, RepeatedTest) {
     resetResponse();
     auto& metadata =
         getMetadata<metadata::test::repeated::RepeatedTestServiceSvIf>();
-    EXPECT_EQ(response_.get_context().get_module().get_name(), "repeated");
-    const auto& s = response_.get_context().get_service_info();
+    EXPECT_EQ(
+        response_.services_ref()->front().module_ref()->name_ref(), "repeated");
+
+    const auto& s = metadata.services_ref()->at(
+        *response_.services_ref()->front().service_name_ref());
     EXPECT_EQ(*s.name_ref(), "repeated.RepeatedTestService");
     EXPECT_EQ(s.functions_ref()->size(), 1);
     EXPECT_EQ(*s.functions_ref()[0].name_ref(), "addValue");
@@ -641,7 +678,9 @@ TEST_F(ServiceMetadataTest, RepeatedTest) {
 
 TEST_F(ServiceMetadataTest, NoNamespaceTest) {
   auto& metadata = getMetadata<cpp2::AnotherTestServiceSvIf>();
-  EXPECT_EQ(response_.get_context().get_module().get_name(), "no_namespace");
+  EXPECT_EQ(
+      response_.services_ref()->front().module_ref()->name_ref(),
+      "no_namespace");
 
   auto s = metadata.structs_ref()->at("no_namespace.MyData");
   EXPECT_EQ(s.fields_ref()->size(), 1);

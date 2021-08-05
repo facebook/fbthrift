@@ -4,6 +4,7 @@
  * DO NOT EDIT UNLESS YOU ARE SURE THAT YOU KNOW WHAT YOU ARE DOING
  *  @generated
  */
+
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingService.h"
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/PubSubStreamingService.tcc"
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/module_metadata.h"
@@ -258,7 +259,7 @@ const char* PubSubStreamingServiceAsyncProcessor::getServiceName() {
 }
 
 void PubSubStreamingServiceAsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<PubSubStreamingServiceSvIf>::gen(*response.metadata_ref(), *response.context_ref());
+  ::apache::thrift::detail::md::ServiceMetadata<PubSubStreamingServiceSvIf>::gen(response);
 }
 
 void PubSubStreamingServiceAsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

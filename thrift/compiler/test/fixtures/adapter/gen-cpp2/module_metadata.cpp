@@ -131,7 +131,17 @@ void ServiceMetadata<::cpp2::ServiceSvIf>::gen_func(ThriftMetadata& metadata, Th
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::cpp2::ServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+void ServiceMetadata<::cpp2::ServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  DCHECK(self != nullptr);
+  // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
+  ::apache::thrift::metadata::ThriftServiceContext context;
+  context.module_ref() = *self->module_ref();
+  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
+  response.context_ref() = std::move(context);
+}
+
+const ThriftServiceContextRef* ServiceMetadata<::cpp2::ServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService module_Service;
   module_Service.name_ref() = "module.Service";
@@ -141,10 +151,16 @@ void ServiceMetadata<::cpp2::ServiceSvIf>::gen(ThriftMetadata& metadata, ThriftS
   for (auto& function_gen : functions) {
     function_gen(metadata, module_Service);
   }
-  context.service_info_ref() = std::move(module_Service);
+  // We need to keep the index around because a reference or iterator could be invalidated.
+  auto selfIndex = services.size();
+  services.emplace_back();
+  ThriftServiceContextRef& context = services[selfIndex];
+  metadata.services_ref()->emplace("module.Service", std::move(module_Service));
+  context.service_name_ref() = "module.Service";
   ::apache::thrift::metadata::ThriftModuleContext module;
   module.name_ref() = "module";
   context.module_ref() = std::move(module);
+  return &context;
 }
 } // namespace md
 } // namespace detail

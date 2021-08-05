@@ -15,6 +15,7 @@
   limitations under the License.
 
 %><% > Autogen%>
+
 #include "<%service:include_prefix%><%service:name%>.h"
 #include "<%service:include_prefix%><%service:name%>.tcc"
 #include "<%service:include_prefix%><%service:program_name%>_metadata.h"
@@ -43,7 +44,7 @@ const char* <%service:name%>AsyncProcessor::getServiceName() {
 }
 
 void <%service:name%>AsyncProcessor::getServiceMetadata(apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
-  ::apache::thrift::detail::md::ServiceMetadata<<%service:name%>SvIf>::gen(*response.metadata_ref(), *response.context_ref());
+  ::apache::thrift::detail::md::ServiceMetadata<<%service:name%>SvIf>::gen(response);
 }
 
 void <%service:name%>AsyncProcessor::processSerializedCompressedRequest(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::protocol::PROTOCOL_TYPES protType, apache::thrift::Cpp2RequestContext* context, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {

@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/py3/gen-cpp2/module_types.h"
 
@@ -75,8 +77,13 @@ class ExceptionMetadata<::py3::simple::SimpleException> {
 template <>
 class ServiceMetadata<::py3::simple::SimpleServiceSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_get_five(ThriftMetadata& metadata, ThriftService& context);
   static void gen_add_five(ThriftMetadata& metadata, ThriftService& context);
   static void gen_do_nothing(ThriftMetadata& metadata, ThriftService& context);
@@ -122,15 +129,25 @@ class ServiceMetadata<::py3::simple::SimpleServiceSvIf> {
 template <>
 class ServiceMetadata<::py3::simple::DerivedServiceSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_get_six(ThriftMetadata& metadata, ThriftService& context);
 };
 template <>
 class ServiceMetadata<::py3::simple::RederivedServiceSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_get_seven(ThriftMetadata& metadata, ThriftService& context);
 };
 } // namespace md

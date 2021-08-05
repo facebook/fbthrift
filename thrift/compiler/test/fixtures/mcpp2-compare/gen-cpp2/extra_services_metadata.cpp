@@ -270,7 +270,17 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen_oneway_void_ret_listun
   service.functions_ref()->push_back(std::move(func));
 }
 
-void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  DCHECK(self != nullptr);
+  // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
+  ::apache::thrift::metadata::ThriftServiceContext context;
+  context.module_ref() = *self->module_ref();
+  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
+  response.context_ref() = std::move(context);
+}
+
+const ThriftServiceContextRef* ServiceMetadata<::extra::svc::ExtraServiceSvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService extra_services_ExtraService;
   extra_services_ExtraService.name_ref() = "extra_services.ExtraService";
@@ -288,15 +298,18 @@ void ServiceMetadata<::extra::svc::ExtraServiceSvIf>::gen(ThriftMetadata& metada
   for (auto& function_gen : functions) {
     function_gen(metadata, extra_services_ExtraService);
   }
+  // We need to keep the index around because a reference or iterator could be invalidated.
+  auto selfIndex = services.size();
+  services.emplace_back();
   extra_services_ExtraService.parent_ref() = "module.ParamService";
-  ThriftServiceContext module_ParamService_parent_context;
-  ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::gen(metadata, module_ParamService_parent_context);
-  auto module_ParamService_parent_name = module_ParamService_parent_context.get_service_info().get_name();
-  metadata.services_ref()->emplace(std::move(module_ParamService_parent_name), std::move(*module_ParamService_parent_context.service_info_ref()));
-  context.service_info_ref() = std::move(extra_services_ExtraService);
+  ServiceMetadata<::some::valid::ns::ParamServiceSvIf>::genRecurse(metadata, services);
+  ThriftServiceContextRef& context = services[selfIndex];
+  metadata.services_ref()->emplace("extra_services.ExtraService", std::move(extra_services_ExtraService));
+  context.service_name_ref() = "extra_services.ExtraService";
   ::apache::thrift::metadata::ThriftModuleContext module;
   module.name_ref() = "extra_services";
   context.module_ref() = std::move(module);
+  return &context;
 }
 } // namespace md
 } // namespace detail

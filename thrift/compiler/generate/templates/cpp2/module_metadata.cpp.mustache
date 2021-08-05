@@ -164,7 +164,17 @@ func.exceptions_ref()->push_back(std::move(<% > metadata/func_field_name%>));
 }
 <%/function:starts_interaction?%><%/service:functions%>
 
-void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen(ThriftMetadata& metadata, ThriftServiceContext& context) {
+void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen(::apache::thrift::metadata::ThriftServiceMetadataResponse& response) {
+  const ::apache::thrift::metadata::ThriftServiceContextRef* self = genRecurse(*response.metadata_ref(), *response.services_ref());
+  DCHECK(self != nullptr);
+  // TODO(praihan): Remove ThriftServiceContext from response. But in the meantime, we need to fill the field with the result of looking up in ThriftMetadata.
+  ::apache::thrift::metadata::ThriftServiceContext context;
+  context.module_ref() = *self->module_ref();
+  context.service_info_ref() = response.metadata_ref()->services_ref()->at(*self->service_name_ref());
+  response.context_ref() = std::move(context);
+}
+
+const ThriftServiceContextRef* ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services) {
   (void) metadata;
   ::apache::thrift::metadata::ThriftService <%service:metadata_name%>;
   <%service:metadata_name%>.name_ref() = "<%program:name%>.<%service:name%>";
@@ -178,13 +188,13 @@ void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvI
     function_gen(metadata, <%service:metadata_name%>);
   }
 <%/service:functions?%>
+  // We need to keep the index around because a reference or iterator could be invalidated.
+  auto selfIndex = services.size();
+  services.emplace_back();
 <%#service:extends?%>
   <%service:metadata_name%>.parent_ref() = "<%#service:extends%><%service:program_name%>.<%service:name%><%/service:extends%>";
 <%#service:extends%>
-  ThriftServiceContext <%service:metadata_name%>_parent_context;
-  ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::gen(metadata, <%service:metadata_name%>_parent_context);
-  auto <%service:metadata_name%>_parent_name = <%service:metadata_name%>_parent_context.get_service_info().get_name();
-  metadata.services_ref()->emplace(std::move(<%service:metadata_name%>_parent_name), std::move(*<%service:metadata_name%>_parent_context.service_info_ref()));
+  ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvIf>::genRecurse(metadata, services);
 <%/service:extends%>
 <%/service:extends?%>
 <%#service:structured_annotations%>
@@ -192,10 +202,13 @@ void ServiceMetadata<::<% > common/service_namespace_cpp2%>::<%service:name%>SvI
   <%service:metadata_name%>.structured_annotations_ref()->push_back(<% > metadata/const_struct%>);
 <%/structured_annotation:const_struct?%>
 <%/service:structured_annotations%>
-  context.service_info_ref() = std::move(<%service:metadata_name%>);
+  ThriftServiceContextRef& context = services[selfIndex];
+  metadata.services_ref()->emplace("<%program:name%>.<%service:name%>", std::move(<%service:metadata_name%>));
+  context.service_name_ref() = "<%program:name%>.<%service:name%>";
   ::apache::thrift::metadata::ThriftModuleContext module;
   module.name_ref() = "<%program:name%>";
   context.module_ref() = std::move(module);
+  return &context;
 }
 <%/program:services%>
 } // namespace md

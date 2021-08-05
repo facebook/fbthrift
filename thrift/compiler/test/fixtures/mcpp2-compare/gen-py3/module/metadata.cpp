@@ -7,14 +7,12 @@
 
 #include "src/gen-py3/module/metadata.h"
 
-#include <thrift/lib/py3/metadata.h>
-
 namespace some {
 namespace valid {
 namespace ns {
 ::apache::thrift::metadata::ThriftMetadata module_getThriftModuleMetadata() {
-  ::apache::thrift::metadata::ThriftMetadata metadata;
-  ::apache::thrift::metadata::ThriftServiceContext serviceContext;
+  ::apache::thrift::metadata::ThriftServiceMetadataResponse response;
+  ::apache::thrift::metadata::ThriftMetadata& metadata = *response.metadata_ref();
   ::apache::thrift::detail::md::EnumMetadata<MyEnumA>::gen(metadata);
   ::apache::thrift::detail::md::EnumMetadata<AnnotatedEnum>::gen(metadata);
   ::apache::thrift::detail::md::EnumMetadata<AnnotatedEnum2>::gen(metadata);
@@ -34,12 +32,9 @@ namespace ns {
   ::apache::thrift::detail::md::StructMetadata<FloatStruct>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<FloatUnion>::gen(metadata);
   ::apache::thrift::detail::md::StructMetadata<AllRequiredNoExceptMoveCtrStruct>::gen(metadata);
-  ::apache::thrift::detail::md::ServiceMetadata<EmptyServiceSvIf>::gen(metadata, serviceContext);
-  ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
-  ::apache::thrift::detail::md::ServiceMetadata<ReturnServiceSvIf>::gen(metadata, serviceContext);
-  ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
-  ::apache::thrift::detail::md::ServiceMetadata<ParamServiceSvIf>::gen(metadata, serviceContext);
-  ::thrift::py3::extractMetadataFromServiceContext(metadata, serviceContext);
+  ::apache::thrift::detail::md::ServiceMetadata<EmptyServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<ReturnServiceSvIf>::gen(response);
+  ::apache::thrift::detail::md::ServiceMetadata<ParamServiceSvIf>::gen(response);
   return metadata;
 }
 } // namespace some

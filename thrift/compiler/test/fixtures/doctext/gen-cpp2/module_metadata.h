@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/doctext/gen-cpp2/module_types.h"
 
@@ -46,8 +48,13 @@ class ExceptionMetadata<::cpp2::Bang> {
 template <>
 class ServiceMetadata<::cpp2::CSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_f(ThriftMetadata& metadata, ThriftService& context);
   static void gen_numbers(ThriftMetadata& metadata, ThriftService& context);
   static void gen_thing(ThriftMetadata& metadata, ThriftService& context);

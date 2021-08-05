@@ -6,6 +6,8 @@
  */
 #pragma once
 
+#include <vector>
+
 #include <thrift/lib/cpp2/gen/module_metadata_h.h>
 #include "thrift/compiler/test/fixtures/stream/gen-cpp2/module_types.h"
 
@@ -31,8 +33,13 @@ class ExceptionMetadata<::cpp2::FooEx> {
 template <>
 class ServiceMetadata<::cpp2::PubSubStreamingServiceSvIf> {
  public:
-  static void gen(ThriftMetadata& metadata, ThriftServiceContext& context);
+  static void gen(ThriftServiceMetadataResponse& response);
  private:
+  static const ThriftServiceContextRef* genRecurse(ThriftMetadata& metadata, std::vector<ThriftServiceContextRef>& services);
+
+  template <typename T>
+  friend class ServiceMetadata;
+
   static void gen_returnstream(ThriftMetadata& metadata, ThriftService& context);
   static void gen_streamthrows(ThriftMetadata& metadata, ThriftService& context);
   static void gen_boththrows(ThriftMetadata& metadata, ThriftService& context);
