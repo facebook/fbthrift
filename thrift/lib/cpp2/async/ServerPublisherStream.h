@@ -145,19 +145,18 @@ class ServerPublisherStream : private StreamServerCallback {
   union CreditBuffer {
     using Queue =
         typename twowaybridge_detail::Queue<folly::Try<StreamPayload>>;
-    static constexpr uint64_t creditValSize = sizeof(void*) * 8 - 1;
-    static constexpr uint64_t maxCreditVal = (1ull << creditValSize) - 1;
+    static constexpr uint64_t maxCreditVal = ~uint64_t(0) >> 1;
 
     Queue buffer;
     struct {
       uint64_t isSet : 1;
-      uint64_t val : creditValSize;
+      uint64_t val : 63;
     } credits;
 
     CreditBuffer() {
       static_assert(
-          sizeof credits == sizeof buffer,
-          "CreditBuffer members must be the same size");
+          sizeof credits >= sizeof buffer,
+          "CreditBuffer queue must not be larger than u64 credits");
       credits.isSet = true;
       credits.val = 0;
     }
