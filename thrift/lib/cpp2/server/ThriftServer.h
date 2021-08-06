@@ -700,11 +700,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    */
   void stopListening() override;
 
-  /**
-   * Deprecated
-   */
-  void setQueueSends(bool) {}
-
   // client side duplex
   std::shared_ptr<HeaderServerChannel> getDuplexServerChannel() {
     return serverChannel_;
