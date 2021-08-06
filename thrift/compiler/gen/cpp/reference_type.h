@@ -39,11 +39,6 @@ enum class reference_type {
 };
 
 reference_type find_ref_type(const t_field& node);
-const std::string& reference_template(reference_type ref_type);
-
-namespace detail {
-const std::string* find_ref_type_annot(const t_node& node);
-}
 
 } // namespace cpp
 } // namespace gen

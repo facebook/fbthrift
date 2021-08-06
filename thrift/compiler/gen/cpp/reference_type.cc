@@ -22,13 +22,13 @@ namespace compiler {
 namespace gen {
 namespace cpp {
 
-namespace detail {
+namespace {
 
 const std::string* find_ref_type_annot(const t_node& node) {
   return node.get_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"});
 }
 
-} // namespace detail
+} // namespace
 
 reference_type find_ref_type(const t_field& node) {
   if (node.has_annotation("cpp.box")) {
@@ -36,7 +36,7 @@ reference_type find_ref_type(const t_field& node) {
   }
 
   // Look for a specific ref type annotation.
-  if (const std::string* ref_type = detail::find_ref_type_annot(node)) {
+  if (const std::string* ref_type = find_ref_type_annot(node)) {
     if (*ref_type == "unique") {
       return reference_type::unique;
     } else if (*ref_type == "shared") {

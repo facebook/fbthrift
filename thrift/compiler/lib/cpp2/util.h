@@ -130,12 +130,6 @@ void for_each_transitive_field(const t_struct* s, F f) {
 }
 
 /**
- * The value of cpp.ref_type/cpp2.ref_type.
- */
-// TODO(afuller): Replace with type_resolver::find_ref_type.
-std::string const& get_ref_type(const t_field* f);
-
-/**
  * If the field has cpp.ref/cpp2.ref or cpp.ref_type/cpp2.ref_type == "unique".
  */
 // TODO(afuller): Remove by actually inlining function.
