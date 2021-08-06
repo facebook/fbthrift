@@ -14,14 +14,14 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::facebook::ns::qwerty::SomeStruct> {
+struct VisitByFieldId<::facebook::ns::qwerty::SomeStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).fieldA_ref());
     default:
-      throwInvalidThriftId(id, "::facebook::ns::qwerty::SomeStruct");
+      throwInvalidThriftId(fieldId, "::facebook::ns::qwerty::SomeStruct");
     }
   }
 };

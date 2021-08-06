@@ -14,83 +14,83 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::Fiery> {
+struct VisitByFieldId<::cpp2::Fiery> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).message_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Fiery");
+      throwInvalidThriftId(fieldId, "::cpp2::Fiery");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::Serious> {
+struct VisitByFieldId<::cpp2::Serious> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).sonnet_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Serious");
+      throwInvalidThriftId(fieldId, "::cpp2::Serious");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::ComplexFieldNames> {
+struct VisitByFieldId<::cpp2::ComplexFieldNames> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).error_message_ref());
     case 2:
       return f(1, static_cast<T&&>(t).internal_error_message_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::ComplexFieldNames");
+      throwInvalidThriftId(fieldId, "::cpp2::ComplexFieldNames");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::CustomFieldNames> {
+struct VisitByFieldId<::cpp2::CustomFieldNames> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).error_message_ref());
     case 2:
       return f(1, static_cast<T&&>(t).internal_error_message_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::CustomFieldNames");
+      throwInvalidThriftId(fieldId, "::cpp2::CustomFieldNames");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::ExceptionWithPrimitiveField> {
+struct VisitByFieldId<::cpp2::ExceptionWithPrimitiveField> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).message_ref());
     case 2:
       return f(1, static_cast<T&&>(t).error_code_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::ExceptionWithPrimitiveField");
+      throwInvalidThriftId(fieldId, "::cpp2::ExceptionWithPrimitiveField");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::Banal> {
+struct VisitByFieldId<::cpp2::Banal> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     default:
-      throwInvalidThriftId(id, "::cpp2::Banal");
+      throwInvalidThriftId(fieldId, "::cpp2::Banal");
     }
   }
 };

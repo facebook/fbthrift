@@ -14,10 +14,10 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::Internship> {
+struct VisitByFieldId<::cpp2::Internship> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).weeks_ref());
     case 2:
@@ -27,46 +27,46 @@ struct VisitByThriftId<::cpp2::Internship> {
     case 4:
       return f(3, static_cast<T&&>(t).compensation_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Internship");
+      throwInvalidThriftId(fieldId, "::cpp2::Internship");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::Range> {
+struct VisitByFieldId<::cpp2::Range> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).min_ref());
     case 2:
       return f(1, static_cast<T&&>(t).max_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Range");
+      throwInvalidThriftId(fieldId, "::cpp2::Range");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::struct1> {
+struct VisitByFieldId<::cpp2::struct1> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).a_ref());
     case 2:
       return f(1, static_cast<T&&>(t).b_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::struct1");
+      throwInvalidThriftId(fieldId, "::cpp2::struct1");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::struct2> {
+struct VisitByFieldId<::cpp2::struct2> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).a_ref());
     case 2:
@@ -76,16 +76,16 @@ struct VisitByThriftId<::cpp2::struct2> {
     case 4:
       return f(3, static_cast<T&&>(t).d_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::struct2");
+      throwInvalidThriftId(fieldId, "::cpp2::struct2");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::struct3> {
+struct VisitByFieldId<::cpp2::struct3> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).a_ref());
     case 2:
@@ -93,16 +93,16 @@ struct VisitByThriftId<::cpp2::struct3> {
     case 3:
       return f(2, static_cast<T&&>(t).c_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::struct3");
+      throwInvalidThriftId(fieldId, "::cpp2::struct3");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::struct4> {
+struct VisitByFieldId<::cpp2::struct4> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).a_ref());
     case 2:
@@ -110,31 +110,31 @@ struct VisitByThriftId<::cpp2::struct4> {
     case 3:
       return f(2, static_cast<T&&>(t).c_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::struct4");
+      throwInvalidThriftId(fieldId, "::cpp2::struct4");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::union1> {
+struct VisitByFieldId<::cpp2::union1> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).i_ref());
     case 2:
       return f(1, static_cast<T&&>(t).d_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::union1");
+      throwInvalidThriftId(fieldId, "::cpp2::union1");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::union2> {
+struct VisitByFieldId<::cpp2::union2> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).i_ref());
     case 2:
@@ -144,7 +144,7 @@ struct VisitByThriftId<::cpp2::union2> {
     case 4:
       return f(3, static_cast<T&&>(t).u_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::union2");
+      throwInvalidThriftId(fieldId, "::cpp2::union2");
     }
   }
 };

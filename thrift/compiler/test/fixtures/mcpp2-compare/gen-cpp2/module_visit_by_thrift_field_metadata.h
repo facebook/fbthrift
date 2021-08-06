@@ -14,47 +14,47 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::some::valid::ns::Empty> {
+struct VisitByFieldId<::some::valid::ns::Empty> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::Empty");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::Empty");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::ASimpleStruct> {
+struct VisitByFieldId<::some::valid::ns::ASimpleStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).boolField_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::ASimpleStruct");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::ASimpleStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::ASimpleStructNoexcept> {
+struct VisitByFieldId<::some::valid::ns::ASimpleStructNoexcept> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).boolField_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::ASimpleStructNoexcept");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::ASimpleStructNoexcept");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::MyStruct> {
+struct VisitByFieldId<::some::valid::ns::MyStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).MyBoolField_ref());
     case 2:
@@ -78,31 +78,31 @@ struct VisitByThriftId<::some::valid::ns::MyStruct> {
     case 11:
       return f(10, static_cast<T&&>(t).MyOptCustomField_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::MyStruct");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::MyStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::SimpleUnion> {
+struct VisitByFieldId<::some::valid::ns::SimpleUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 7:
       return f(0, static_cast<T&&>(t).intValue_ref());
     case 2:
       return f(1, static_cast<T&&>(t).stringValue_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::SimpleUnion");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::SimpleUnion");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::ComplexUnion> {
+struct VisitByFieldId<::some::valid::ns::ComplexUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).intValue_ref());
     case 201:
@@ -160,16 +160,16 @@ struct VisitByThriftId<::some::valid::ns::ComplexUnion> {
     case 27:
       return f(27, static_cast<T&&>(t).MyCustomField_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::ComplexUnion");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::ComplexUnion");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::AnException> {
+struct VisitByFieldId<::some::valid::ns::AnException> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).code_ref());
     case 101:
@@ -205,16 +205,16 @@ struct VisitByThriftId<::some::valid::ns::AnException> {
     case 21:
       return f(16, static_cast<T&&>(t).MyOptCustomField_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::AnException");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::AnException");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::AnotherException> {
+struct VisitByFieldId<::some::valid::ns::AnotherException> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).code_ref());
     case 101:
@@ -222,16 +222,16 @@ struct VisitByThriftId<::some::valid::ns::AnotherException> {
     case 2:
       return f(2, static_cast<T&&>(t).message_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::AnotherException");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::AnotherException");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::containerStruct> {
+struct VisitByFieldId<::some::valid::ns::containerStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).fieldA_ref());
     case 101:
@@ -325,16 +325,16 @@ struct VisitByThriftId<::some::valid::ns::containerStruct> {
     case 33:
       return f(45, static_cast<T&&>(t).fieldSD_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::containerStruct");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::containerStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::MyIncludedStruct> {
+struct VisitByFieldId<::some::valid::ns::MyIncludedStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).MyIncludedInt_ref());
     case 2:
@@ -344,16 +344,16 @@ struct VisitByThriftId<::some::valid::ns::MyIncludedStruct> {
     case 4:
       return f(3, static_cast<T&&>(t).ARequiredField_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::MyIncludedStruct");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::MyIncludedStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::AnnotatedStruct> {
+struct VisitByFieldId<::some::valid::ns::AnnotatedStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).no_annotation_ref());
     case 2:
@@ -435,65 +435,65 @@ struct VisitByThriftId<::some::valid::ns::AnnotatedStruct> {
     case 40:
       return f(39, static_cast<T&&>(t).struct_struct_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::AnnotatedStruct");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::AnnotatedStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::ComplexContainerStruct> {
+struct VisitByFieldId<::some::valid::ns::ComplexContainerStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).map_of_iobufs_ref());
     case 2:
       return f(1, static_cast<T&&>(t).map_of_iobuf_ptrs_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::ComplexContainerStruct");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::ComplexContainerStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::FloatStruct> {
+struct VisitByFieldId<::some::valid::ns::FloatStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).floatField_ref());
     case 2:
       return f(1, static_cast<T&&>(t).doubleField_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::FloatStruct");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::FloatStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::FloatUnion> {
+struct VisitByFieldId<::some::valid::ns::FloatUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).floatSide_ref());
     case 2:
       return f(1, static_cast<T&&>(t).doubleSide_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::FloatUnion");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::FloatUnion");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct> {
+struct VisitByFieldId<::some::valid::ns::AllRequiredNoExceptMoveCtrStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).intField_ref());
     default:
-      throwInvalidThriftId(id, "::some::valid::ns::AllRequiredNoExceptMoveCtrStruct");
+      throwInvalidThriftId(fieldId, "::some::valid::ns::AllRequiredNoExceptMoveCtrStruct");
     }
   }
 };

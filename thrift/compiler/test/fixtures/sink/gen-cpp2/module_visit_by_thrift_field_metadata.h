@@ -14,92 +14,92 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::InitialResponse> {
+struct VisitByFieldId<::cpp2::InitialResponse> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).content_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::InitialResponse");
+      throwInvalidThriftId(fieldId, "::cpp2::InitialResponse");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::FinalResponse> {
+struct VisitByFieldId<::cpp2::FinalResponse> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).content_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::FinalResponse");
+      throwInvalidThriftId(fieldId, "::cpp2::FinalResponse");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::SinkPayload> {
+struct VisitByFieldId<::cpp2::SinkPayload> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).content_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::SinkPayload");
+      throwInvalidThriftId(fieldId, "::cpp2::SinkPayload");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::CompatibleWithKeywordSink> {
+struct VisitByFieldId<::cpp2::CompatibleWithKeywordSink> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).sink_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::CompatibleWithKeywordSink");
+      throwInvalidThriftId(fieldId, "::cpp2::CompatibleWithKeywordSink");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::InitialException> {
+struct VisitByFieldId<::cpp2::InitialException> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).reason_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::InitialException");
+      throwInvalidThriftId(fieldId, "::cpp2::InitialException");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::SinkException1> {
+struct VisitByFieldId<::cpp2::SinkException1> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).reason_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::SinkException1");
+      throwInvalidThriftId(fieldId, "::cpp2::SinkException1");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::SinkException2> {
+struct VisitByFieldId<::cpp2::SinkException2> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).reason_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::SinkException2");
+      throwInvalidThriftId(fieldId, "::cpp2::SinkException2");
     }
   }
 };

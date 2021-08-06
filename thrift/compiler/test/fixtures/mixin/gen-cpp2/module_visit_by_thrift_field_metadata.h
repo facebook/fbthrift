@@ -14,51 +14,51 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::Mixin1> {
+struct VisitByFieldId<::cpp2::Mixin1> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field1_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Mixin1");
+      throwInvalidThriftId(fieldId, "::cpp2::Mixin1");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::Mixin2> {
+struct VisitByFieldId<::cpp2::Mixin2> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).m1_ref());
     case 2:
       return f(1, static_cast<T&&>(t).field2_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Mixin2");
+      throwInvalidThriftId(fieldId, "::cpp2::Mixin2");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::Mixin3Base> {
+struct VisitByFieldId<::cpp2::Mixin3Base> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field3_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Mixin3Base");
+      throwInvalidThriftId(fieldId, "::cpp2::Mixin3Base");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::Foo> {
+struct VisitByFieldId<::cpp2::Foo> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field4_ref());
     case 2:
@@ -66,7 +66,7 @@ struct VisitByThriftId<::cpp2::Foo> {
     case 3:
       return f(2, static_cast<T&&>(t).m3_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Foo");
+      throwInvalidThriftId(fieldId, "::cpp2::Foo");
     }
   }
 };

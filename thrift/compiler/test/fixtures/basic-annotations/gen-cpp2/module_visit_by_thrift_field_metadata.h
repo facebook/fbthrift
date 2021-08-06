@@ -14,23 +14,23 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::MyStructNestedAnnotation> {
+struct VisitByFieldId<::cpp2::MyStructNestedAnnotation> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).name_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::MyStructNestedAnnotation");
+      throwInvalidThriftId(fieldId, "::cpp2::MyStructNestedAnnotation");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::MyStruct> {
+struct VisitByFieldId<::cpp2::MyStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).majorVer_ref());
     case 2:
@@ -44,22 +44,22 @@ struct VisitByThriftId<::cpp2::MyStruct> {
     case 6:
       return f(5, static_cast<T&&>(t).empty_annotations_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::MyStruct");
+      throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::SecretStruct> {
+struct VisitByFieldId<::cpp2::SecretStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).id_ref());
     case 2:
       return f(1, static_cast<T&&>(t).password_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::SecretStruct");
+      throwInvalidThriftId(fieldId, "::cpp2::SecretStruct");
     }
   }
 };

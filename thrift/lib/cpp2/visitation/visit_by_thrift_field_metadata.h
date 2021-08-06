@@ -27,7 +27,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 template <class T>
-struct VisitByThriftId {
+struct VisitByFieldId {
   static_assert(sizeof(T) < 0, "Must include visitation header");
 };
 [[noreturn]] void throwInvalidThriftId(size_t id, std::string_view type);
@@ -56,7 +56,7 @@ void visit_by_thrift_field_metadata(
   auto adapter = [&f](auto&&, auto&& ref) {
     f(std::forward<decltype(ref)>(ref));
   };
-  return apache::thrift::detail::VisitByThriftId<folly::remove_cvref_t<T>>()(
+  return apache::thrift::detail::VisitByFieldId<folly::remove_cvref_t<T>>()(
       detail::MetadataForwarder<T, decltype(adapter)>{adapter},
       *meta.id_ref(),
       static_cast<T&&>(t));

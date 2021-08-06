@@ -14,10 +14,10 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::Color> {
+struct VisitByFieldId<::cpp2::Color> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).red_ref());
     case 2:
@@ -27,16 +27,16 @@ struct VisitByThriftId<::cpp2::Color> {
     case 4:
       return f(3, static_cast<T&&>(t).alpha_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Color");
+      throwInvalidThriftId(fieldId, "::cpp2::Color");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::Vehicle> {
+struct VisitByFieldId<::cpp2::Vehicle> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).color_ref());
     case 2:
@@ -48,16 +48,16 @@ struct VisitByThriftId<::cpp2::Vehicle> {
     case 5:
       return f(4, static_cast<T&&>(t).hasAC_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Vehicle");
+      throwInvalidThriftId(fieldId, "::cpp2::Vehicle");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::Person> {
+struct VisitByFieldId<::cpp2::Person> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).id_ref());
     case 2:
@@ -79,7 +79,7 @@ struct VisitByThriftId<::cpp2::Person> {
     case 10:
       return f(9, static_cast<T&&>(t).vehicles_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Person");
+      throwInvalidThriftId(fieldId, "::cpp2::Person");
     }
   }
 };

@@ -14,10 +14,10 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::union1> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::union1> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).ui_ref());
     case 3:
@@ -27,16 +27,16 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::union1> {
     case 7:
       return f(3, static_cast<T&&>(t).ue_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::union1");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::union1");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::union2> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::union2> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).ui_2_ref());
     case 2:
@@ -46,16 +46,16 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::union2> {
     case 4:
       return f(3, static_cast<T&&>(t).ue_2_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::union2");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::union2");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::union3> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::union3> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).ui_3_ref());
     case 2:
@@ -65,31 +65,31 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::union3> {
     case 4:
       return f(3, static_cast<T&&>(t).ue_3_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::union3");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::union3");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::structA> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::structA> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).a_ref());
     case 2:
       return f(1, static_cast<T&&>(t).b_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::structA");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::structA");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::unionA> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::unionA> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).i_ref());
     case 2:
@@ -101,31 +101,31 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::unionA> {
     case 5:
       return f(4, static_cast<T&&>(t).a_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::unionA");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::unionA");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::structB> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::structB> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).c_ref());
     case 2:
       return f(1, static_cast<T&&>(t).d_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::structB");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::structB");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::structC> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::structC> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).a_ref());
     case 2:
@@ -187,16 +187,16 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::structC> {
     case 30:
       return f(29, static_cast<T&&>(t).o3_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::structC");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::structC");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::struct1> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::struct1> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field0_ref());
     case 2:
@@ -210,16 +210,16 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::struct1> {
     case 6:
       return f(5, static_cast<T&&>(t).field5_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::struct1");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::struct1");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::struct2> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::struct2> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).fieldA_ref());
     case 2:
@@ -235,16 +235,16 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::struct2> {
     case 7:
       return f(6, static_cast<T&&>(t).fieldG_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::struct2");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::struct2");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::struct3> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::struct3> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).fieldA_ref());
     case 2:
@@ -282,16 +282,16 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::struct3> {
     case 18:
       return f(17, static_cast<T&&>(t).fieldR_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::struct3");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::struct3");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::struct4> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::struct4> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field0_ref());
     case 2:
@@ -301,16 +301,16 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::struct4> {
     case 6:
       return f(3, static_cast<T&&>(t).field3_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::struct4");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::struct4");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::struct5> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::struct5> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field0_ref());
     case 2:
@@ -322,29 +322,29 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::struct5> {
     case 5:
       return f(4, static_cast<T&&>(t).field4_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::struct5");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::struct5");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::struct_binary> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::struct_binary> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).bi_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::struct_binary");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::struct_binary");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::dep_A_struct> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::dep_A_struct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).b_ref());
     case 2:
@@ -352,16 +352,16 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::dep_A_struct> {
     case 3:
       return f(2, static_cast<T&&>(t).i_a_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::dep_A_struct");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::dep_A_struct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::dep_B_struct> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::dep_B_struct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).b_ref());
     case 2:
@@ -369,29 +369,29 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::dep_B_struct> {
     case 3:
       return f(2, static_cast<T&&>(t).i_a_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::dep_B_struct");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::dep_B_struct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::annotated> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::annotated> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).a_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::annotated");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::annotated");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::union_with_special_names> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::union_with_special_names> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).get_ref());
     case 2:
@@ -449,16 +449,16 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::union_with_special_names> {
     case 28:
       return f(27, static_cast<T&&>(t).fields_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::union_with_special_names");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::union_with_special_names");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::struct_with_special_names> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::struct_with_special_names> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).get_ref());
     case 2:
@@ -516,16 +516,16 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::struct_with_special_names> {
     case 28:
       return f(27, static_cast<T&&>(t).fields_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::struct_with_special_names");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::struct_with_special_names");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::test_cpp2::cpp_reflection::struct_with_indirections> {
+struct VisitByFieldId<::test_cpp2::cpp_reflection::struct_with_indirections> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).real_ref());
     case 2:
@@ -537,7 +537,7 @@ struct VisitByThriftId<::test_cpp2::cpp_reflection::struct_with_indirections> {
     case 5:
       return f(4, static_cast<T&&>(t).phrase_ref());
     default:
-      throwInvalidThriftId(id, "::test_cpp2::cpp_reflection::struct_with_indirections");
+      throwInvalidThriftId(fieldId, "::test_cpp2::cpp_reflection::struct_with_indirections");
     }
   }
 };

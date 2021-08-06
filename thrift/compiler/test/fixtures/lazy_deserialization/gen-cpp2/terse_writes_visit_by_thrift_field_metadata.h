@@ -14,10 +14,10 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::apache::thrift::test::TerseFoo> {
+struct VisitByFieldId<::apache::thrift::test::TerseFoo> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field1_ref());
     case 2:
@@ -27,16 +27,16 @@ struct VisitByThriftId<::apache::thrift::test::TerseFoo> {
     case 4:
       return f(3, static_cast<T&&>(t).field4_ref());
     default:
-      throwInvalidThriftId(id, "::apache::thrift::test::TerseFoo");
+      throwInvalidThriftId(fieldId, "::apache::thrift::test::TerseFoo");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::apache::thrift::test::TerseLazyFoo> {
+struct VisitByFieldId<::apache::thrift::test::TerseLazyFoo> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field1_ref());
     case 2:
@@ -46,16 +46,16 @@ struct VisitByThriftId<::apache::thrift::test::TerseLazyFoo> {
     case 4:
       return f(3, static_cast<T&&>(t).field4_ref());
     default:
-      throwInvalidThriftId(id, "::apache::thrift::test::TerseLazyFoo");
+      throwInvalidThriftId(fieldId, "::apache::thrift::test::TerseLazyFoo");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::apache::thrift::test::TerseOptionalFoo> {
+struct VisitByFieldId<::apache::thrift::test::TerseOptionalFoo> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field1_ref());
     case 2:
@@ -65,16 +65,16 @@ struct VisitByThriftId<::apache::thrift::test::TerseOptionalFoo> {
     case 4:
       return f(3, static_cast<T&&>(t).field4_ref());
     default:
-      throwInvalidThriftId(id, "::apache::thrift::test::TerseOptionalFoo");
+      throwInvalidThriftId(fieldId, "::apache::thrift::test::TerseOptionalFoo");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::apache::thrift::test::TerseOptionalLazyFoo> {
+struct VisitByFieldId<::apache::thrift::test::TerseOptionalLazyFoo> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).field1_ref());
     case 2:
@@ -84,7 +84,7 @@ struct VisitByThriftId<::apache::thrift::test::TerseOptionalLazyFoo> {
     case 4:
       return f(3, static_cast<T&&>(t).field4_ref());
     default:
-      throwInvalidThriftId(id, "::apache::thrift::test::TerseOptionalLazyFoo");
+      throwInvalidThriftId(fieldId, "::apache::thrift::test::TerseOptionalLazyFoo");
     }
   }
 };

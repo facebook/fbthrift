@@ -14,31 +14,31 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::module2::Struct> {
+struct VisitByFieldId<::module2::Struct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).first_ref());
     case 2:
       return f(1, static_cast<T&&>(t).second_ref());
     default:
-      throwInvalidThriftId(id, "::module2::Struct");
+      throwInvalidThriftId(fieldId, "::module2::Struct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::module2::BigStruct> {
+struct VisitByFieldId<::module2::BigStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).s_ref());
     case 2:
       return f(1, static_cast<T&&>(t).id_ref());
     default:
-      throwInvalidThriftId(id, "::module2::BigStruct");
+      throwInvalidThriftId(fieldId, "::module2::BigStruct");
     }
   }
 };

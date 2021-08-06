@@ -14,27 +14,27 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::a::different::ns::AStruct> {
+struct VisitByFieldId<::a::different::ns::AStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).FieldA_ref());
     default:
-      throwInvalidThriftId(id, "::a::different::ns::AStruct");
+      throwInvalidThriftId(fieldId, "::a::different::ns::AStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::a::different::ns::AStructB> {
+struct VisitByFieldId<::a::different::ns::AStructB> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).FieldA_ref());
     default:
-      throwInvalidThriftId(id, "::a::different::ns::AStructB");
+      throwInvalidThriftId(fieldId, "::a::different::ns::AStructB");
     }
   }
 };

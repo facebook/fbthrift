@@ -14,25 +14,25 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::SmallStruct> {
+struct VisitByFieldId<::cpp2::SmallStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).small_A_ref());
     case 2:
       return f(1, static_cast<T&&>(t).small_B_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::SmallStruct");
+      throwInvalidThriftId(fieldId, "::cpp2::SmallStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::containerStruct> {
+struct VisitByFieldId<::cpp2::containerStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).fieldA_ref());
     case 2:
@@ -78,7 +78,7 @@ struct VisitByThriftId<::cpp2::containerStruct> {
     case 23:
       return f(21, static_cast<T&&>(t).fieldX_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::containerStruct");
+      throwInvalidThriftId(fieldId, "::cpp2::containerStruct");
     }
   }
 };

@@ -7,3 +7,4 @@
 #pragma once
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_for_each_field.h"
 #include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_visit_union.h"
+#include "thrift/compiler/test/fixtures/frozen-struct/gen-cpp2/include1_visit_by_thrift_field_metadata.h"

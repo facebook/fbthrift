@@ -14,36 +14,36 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::py3::simple::SimpleException> {
+struct VisitByFieldId<::py3::simple::SimpleException> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).err_code_ref());
     default:
-      throwInvalidThriftId(id, "::py3::simple::SimpleException");
+      throwInvalidThriftId(fieldId, "::py3::simple::SimpleException");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::py3::simple::OptionalRefStruct> {
+struct VisitByFieldId<::py3::simple::OptionalRefStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).optional_blob_ref());
     default:
-      throwInvalidThriftId(id, "::py3::simple::OptionalRefStruct");
+      throwInvalidThriftId(fieldId, "::py3::simple::OptionalRefStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::py3::simple::SimpleStruct> {
+struct VisitByFieldId<::py3::simple::SimpleStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).is_on_ref());
     case 2:
@@ -61,16 +61,16 @@ struct VisitByThriftId<::py3::simple::SimpleStruct> {
     case 8:
       return f(7, static_cast<T&&>(t).hidden_field_ref());
     default:
-      throwInvalidThriftId(id, "::py3::simple::SimpleStruct");
+      throwInvalidThriftId(fieldId, "::py3::simple::SimpleStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::py3::simple::ComplexStruct> {
+struct VisitByFieldId<::py3::simple::ComplexStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).structOne_ref());
     case 2:
@@ -90,33 +90,33 @@ struct VisitByThriftId<::py3::simple::ComplexStruct> {
     case 9:
       return f(8, static_cast<T&&>(t).bytes_with_cpp_type_ref());
     default:
-      throwInvalidThriftId(id, "::py3::simple::ComplexStruct");
+      throwInvalidThriftId(fieldId, "::py3::simple::ComplexStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::py3::simple::BinaryUnion> {
+struct VisitByFieldId<::py3::simple::BinaryUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).iobuf_val_ref());
     default:
-      throwInvalidThriftId(id, "::py3::simple::BinaryUnion");
+      throwInvalidThriftId(fieldId, "::py3::simple::BinaryUnion");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::py3::simple::BinaryUnionStruct> {
+struct VisitByFieldId<::py3::simple::BinaryUnionStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).u_ref());
     default:
-      throwInvalidThriftId(id, "::py3::simple::BinaryUnionStruct");
+      throwInvalidThriftId(fieldId, "::py3::simple::BinaryUnionStruct");
     }
   }
 };

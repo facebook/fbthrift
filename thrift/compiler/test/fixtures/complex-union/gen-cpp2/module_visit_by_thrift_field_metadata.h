@@ -14,10 +14,10 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::ComplexUnion> {
+struct VisitByFieldId<::cpp2::ComplexUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).intValue_ref());
     case 5:
@@ -31,46 +31,46 @@ struct VisitByThriftId<::cpp2::ComplexUnion> {
     case 14:
       return f(5, static_cast<T&&>(t).stringRef_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::ComplexUnion");
+      throwInvalidThriftId(fieldId, "::cpp2::ComplexUnion");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::ListUnion> {
+struct VisitByFieldId<::cpp2::ListUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 2:
       return f(0, static_cast<T&&>(t).intListValue_ref());
     case 3:
       return f(1, static_cast<T&&>(t).stringListValue_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::ListUnion");
+      throwInvalidThriftId(fieldId, "::cpp2::ListUnion");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::DataUnion> {
+struct VisitByFieldId<::cpp2::DataUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).binaryData_ref());
     case 2:
       return f(1, static_cast<T&&>(t).stringData_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::DataUnion");
+      throwInvalidThriftId(fieldId, "::cpp2::DataUnion");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::Val> {
+struct VisitByFieldId<::cpp2::Val> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).strVal_ref());
     case 2:
@@ -78,63 +78,63 @@ struct VisitByThriftId<::cpp2::Val> {
     case 9:
       return f(2, static_cast<T&&>(t).typedefValue_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::Val");
+      throwInvalidThriftId(fieldId, "::cpp2::Val");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::ValUnion> {
+struct VisitByFieldId<::cpp2::ValUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).v1_ref());
     case 2:
       return f(1, static_cast<T&&>(t).v2_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::ValUnion");
+      throwInvalidThriftId(fieldId, "::cpp2::ValUnion");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::VirtualComplexUnion> {
+struct VisitByFieldId<::cpp2::VirtualComplexUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).thingOne_ref());
     case 2:
       return f(1, static_cast<T&&>(t).thingTwo_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::VirtualComplexUnion");
+      throwInvalidThriftId(fieldId, "::cpp2::VirtualComplexUnion");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::NonCopyableStruct> {
+struct VisitByFieldId<::cpp2::NonCopyableStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).num_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::NonCopyableStruct");
+      throwInvalidThriftId(fieldId, "::cpp2::NonCopyableStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::NonCopyableUnion> {
+struct VisitByFieldId<::cpp2::NonCopyableUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).s_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::NonCopyableUnion");
+      throwInvalidThriftId(fieldId, "::cpp2::NonCopyableUnion");
     }
   }
 };

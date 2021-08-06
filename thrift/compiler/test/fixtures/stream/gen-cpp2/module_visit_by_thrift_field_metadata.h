@@ -14,12 +14,12 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::FooEx> {
+struct VisitByFieldId<::cpp2::FooEx> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     default:
-      throwInvalidThriftId(id, "::cpp2::FooEx");
+      throwInvalidThriftId(fieldId, "::cpp2::FooEx");
     }
   }
 };

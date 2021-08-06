@@ -14,23 +14,23 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::Empty> {
+struct VisitByFieldId<::cpp2::Empty> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     default:
-      throwInvalidThriftId(id, "::cpp2::Empty");
+      throwInvalidThriftId(fieldId, "::cpp2::Empty");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::Nada> {
+struct VisitByFieldId<::cpp2::Nada> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     default:
-      throwInvalidThriftId(id, "::cpp2::Nada");
+      throwInvalidThriftId(fieldId, "::cpp2::Nada");
     }
   }
 };

@@ -14,14 +14,14 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::matching_module_name::MyStruct> {
+struct VisitByFieldId<::matching_module_name::MyStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).OtherStructField_ref());
     default:
-      throwInvalidThriftId(id, "::matching_module_name::MyStruct");
+      throwInvalidThriftId(fieldId, "::matching_module_name::MyStruct");
     }
   }
 };

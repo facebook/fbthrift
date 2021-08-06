@@ -14,40 +14,40 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::MyStruct> {
+struct VisitByFieldId<::cpp2::MyStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).myString_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::MyStruct");
+      throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::MyUnion> {
+struct VisitByFieldId<::cpp2::MyUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).myString_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::MyUnion");
+      throwInvalidThriftId(fieldId, "::cpp2::MyUnion");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::MyException> {
+struct VisitByFieldId<::cpp2::MyException> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).myString_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::MyException");
+      throwInvalidThriftId(fieldId, "::cpp2::MyException");
     }
   }
 };

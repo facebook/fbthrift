@@ -14,10 +14,10 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::some::ns::ModuleA> {
+struct VisitByFieldId<::some::ns::ModuleA> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).i32Field_ref());
     case 2:
@@ -31,22 +31,22 @@ struct VisitByThriftId<::some::ns::ModuleA> {
     case 6:
       return f(5, static_cast<T&&>(t).inclBField_ref());
     default:
-      throwInvalidThriftId(id, "::some::ns::ModuleA");
+      throwInvalidThriftId(fieldId, "::some::ns::ModuleA");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::some::ns::ModuleB> {
+struct VisitByFieldId<::some::ns::ModuleB> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).i32Field_ref());
     case 2:
       return f(1, static_cast<T&&>(t).inclEnumB_ref());
     default:
-      throwInvalidThriftId(id, "::some::ns::ModuleB");
+      throwInvalidThriftId(fieldId, "::some::ns::ModuleB");
     }
   }
 };

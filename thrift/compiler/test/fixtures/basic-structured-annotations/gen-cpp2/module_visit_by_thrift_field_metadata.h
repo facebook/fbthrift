@@ -14,51 +14,51 @@ namespace thrift {
 namespace detail {
 
 template <>
-struct VisitByThriftId<::cpp2::structured_annotation_inline> {
+struct VisitByFieldId<::cpp2::structured_annotation_inline> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).count_ref());
     case 2:
       return f(1, static_cast<T&&>(t).name_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::structured_annotation_inline");
+      throwInvalidThriftId(fieldId, "::cpp2::structured_annotation_inline");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::structured_annotation_with_default> {
+struct VisitByFieldId<::cpp2::structured_annotation_with_default> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).name_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::structured_annotation_with_default");
+      throwInvalidThriftId(fieldId, "::cpp2::structured_annotation_with_default");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::structured_annotation_forward> {
+struct VisitByFieldId<::cpp2::structured_annotation_forward> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).count_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::structured_annotation_forward");
+      throwInvalidThriftId(fieldId, "::cpp2::structured_annotation_forward");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::structured_annotation_recursive> {
+struct VisitByFieldId<::cpp2::structured_annotation_recursive> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).name_ref());
     case 2:
@@ -66,31 +66,31 @@ struct VisitByThriftId<::cpp2::structured_annotation_recursive> {
     case 3:
       return f(2, static_cast<T&&>(t).forward_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::structured_annotation_recursive");
+      throwInvalidThriftId(fieldId, "::cpp2::structured_annotation_recursive");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::structured_annotation_nested> {
+struct VisitByFieldId<::cpp2::structured_annotation_nested> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).name_ref());
     case 2:
       return f(1, static_cast<T&&>(t).nest_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::structured_annotation_nested");
+      throwInvalidThriftId(fieldId, "::cpp2::structured_annotation_nested");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::MyStruct> {
+struct VisitByFieldId<::cpp2::MyStruct> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).annotated_field_ref());
     case 2:
@@ -100,35 +100,35 @@ struct VisitByThriftId<::cpp2::MyStruct> {
     case 4:
       return f(3, static_cast<T&&>(t).annotated_nested_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::MyStruct");
+      throwInvalidThriftId(fieldId, "::cpp2::MyStruct");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::MyException> {
+struct VisitByFieldId<::cpp2::MyException> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).context_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::MyException");
+      throwInvalidThriftId(fieldId, "::cpp2::MyException");
     }
   }
 };
 
 template <>
-struct VisitByThriftId<::cpp2::MyUnion> {
+struct VisitByFieldId<::cpp2::MyUnion> {
   template <typename F, typename T>
-  void operator()(FOLLY_MAYBE_UNUSED F&& f, size_t id, FOLLY_MAYBE_UNUSED T&& t) const {
-    switch (id) {
+  void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
+    switch (fieldId) {
     case 1:
       return f(0, static_cast<T&&>(t).first_ref());
     case 2:
       return f(1, static_cast<T&&>(t).second_ref());
     default:
-      throwInvalidThriftId(id, "::cpp2::MyUnion");
+      throwInvalidThriftId(fieldId, "::cpp2::MyUnion");
     }
   }
 };
