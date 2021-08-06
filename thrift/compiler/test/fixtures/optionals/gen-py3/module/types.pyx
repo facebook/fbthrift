@@ -156,7 +156,14 @@ cdef class Color(thrift.py3.types.Struct):
 
 
     def __hash__(Color self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Color self):
+        return super().__repr__()
+
+    def __str__(Color self):
+        return super().__str__()
+
 
     def __copy__(Color self):
         cdef shared_ptr[cColor] cpp_obj = make_shared[cColor](
@@ -276,7 +283,14 @@ cdef class Vehicle(thrift.py3.types.Struct):
 
 
     def __hash__(Vehicle self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Vehicle self):
+        return super().__repr__()
+
+    def __str__(Vehicle self):
+        return super().__str__()
+
 
     def __copy__(Vehicle self):
         cdef shared_ptr[cVehicle] cpp_obj = make_shared[cVehicle](
@@ -444,7 +458,14 @@ cdef class Person(thrift.py3.types.Struct):
 
 
     def __hash__(Person self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Person self):
+        return super().__repr__()
+
+    def __str__(Person self):
+        return super().__str__()
+
 
     def __copy__(Person self):
         cdef shared_ptr[cPerson] cpp_obj = make_shared[cPerson](

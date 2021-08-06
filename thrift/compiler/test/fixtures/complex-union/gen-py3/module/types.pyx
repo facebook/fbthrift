@@ -798,7 +798,14 @@ cdef class Val(thrift.py3.types.Struct):
 
 
     def __hash__(Val self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Val self):
+        return super().__repr__()
+
+    def __str__(Val self):
+        return super().__str__()
+
 
     def __copy__(Val self):
         cdef shared_ptr[cVal] cpp_obj = make_shared[cVal](
@@ -1142,7 +1149,14 @@ cdef class NonCopyableStruct(thrift.py3.types.Struct):
 
 
     def __hash__(NonCopyableStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(NonCopyableStruct self):
+        return super().__repr__()
+
+    def __str__(NonCopyableStruct self):
+        return super().__str__()
+
 
     def __copy__(NonCopyableStruct self):
         raise TypeError("NonCopyableStruct is noncopyable")

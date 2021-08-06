@@ -208,7 +208,14 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(SimpleException self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(SimpleException self):
+        return super().__repr__()
+
+    def __str__(SimpleException self):
+        return super().__str__()
+
 
     def __copy__(SimpleException self):
         cdef shared_ptr[cSimpleException] cpp_obj = make_shared[cSimpleException](
@@ -290,7 +297,14 @@ cdef class OptionalRefStruct(thrift.py3.types.Struct):
 
 
     def __hash__(OptionalRefStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(OptionalRefStruct self):
+        return super().__repr__()
+
+    def __str__(OptionalRefStruct self):
+        return super().__str__()
+
 
     def __copy__(OptionalRefStruct self):
         cdef shared_ptr[cOptionalRefStruct] cpp_obj = make_shared[cOptionalRefStruct](
@@ -414,7 +428,14 @@ cdef class SimpleStruct(thrift.py3.types.Struct):
 
 
     def __hash__(SimpleStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(SimpleStruct self):
+        return super().__repr__()
+
+    def __str__(SimpleStruct self):
+        return super().__str__()
+
 
     def __copy__(SimpleStruct self):
         cdef shared_ptr[cSimpleStruct] cpp_obj = make_shared[cSimpleStruct](
@@ -556,7 +577,14 @@ cdef class ComplexStruct(thrift.py3.types.Struct):
 
 
     def __hash__(ComplexStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ComplexStruct self):
+        return super().__repr__()
+
+    def __str__(ComplexStruct self):
+        return super().__str__()
+
 
     def __copy__(ComplexStruct self):
         cdef shared_ptr[cComplexStruct] cpp_obj = make_shared[cComplexStruct](
@@ -756,7 +784,14 @@ cdef class BinaryUnionStruct(thrift.py3.types.Struct):
 
 
     def __hash__(BinaryUnionStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(BinaryUnionStruct self):
+        return super().__repr__()
+
+    def __str__(BinaryUnionStruct self):
+        return super().__str__()
+
 
     def __copy__(BinaryUnionStruct self):
         cdef shared_ptr[cBinaryUnionStruct] cpp_obj = make_shared[cBinaryUnionStruct](

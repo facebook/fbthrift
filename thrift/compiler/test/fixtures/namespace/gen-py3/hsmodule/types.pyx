@@ -96,7 +96,14 @@ cdef class HsFoo(thrift.py3.types.Struct):
 
 
     def __hash__(HsFoo self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(HsFoo self):
+        return super().__repr__()
+
+    def __str__(HsFoo self):
+        return super().__str__()
+
 
     def __copy__(HsFoo self):
         cdef shared_ptr[cHsFoo] cpp_obj = make_shared[cHsFoo](

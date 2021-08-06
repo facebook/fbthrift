@@ -87,13 +87,17 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(Fiery self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Fiery self):
+        return super().__repr__()
 
     def __str__(Fiery self):
         field = self.message
         if field is None:
             return str(field)
         return field
+
 
     def __copy__(Fiery self):
         cdef shared_ptr[cFiery] cpp_obj = make_shared[cFiery](
@@ -162,13 +166,17 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(Serious self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Serious self):
+        return super().__repr__()
 
     def __str__(Serious self):
         field = self.sonnet
         if field is None:
             return str(field)
         return field
+
 
     def __copy__(Serious self):
         cdef shared_ptr[cSerious] cpp_obj = make_shared[cSerious](
@@ -241,13 +249,17 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(ComplexFieldNames self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ComplexFieldNames self):
+        return super().__repr__()
 
     def __str__(ComplexFieldNames self):
         field = self.internal_error_message
         if field is None:
             return str(field)
         return field
+
 
     def __copy__(ComplexFieldNames self):
         cdef shared_ptr[cComplexFieldNames] cpp_obj = make_shared[cComplexFieldNames](
@@ -320,13 +332,17 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(CustomFieldNames self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(CustomFieldNames self):
+        return super().__repr__()
 
     def __str__(CustomFieldNames self):
         field = self.internal_error_message
         if field is None:
             return str(field)
         return field
+
 
     def __copy__(CustomFieldNames self):
         cdef shared_ptr[cCustomFieldNames] cpp_obj = make_shared[cCustomFieldNames](
@@ -399,13 +415,17 @@ cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(ExceptionWithPrimitiveField self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ExceptionWithPrimitiveField self):
+        return super().__repr__()
 
     def __str__(ExceptionWithPrimitiveField self):
         field = self.message
         if field is None:
             return str(field)
         return field
+
 
     def __copy__(ExceptionWithPrimitiveField self):
         cdef shared_ptr[cExceptionWithPrimitiveField] cpp_obj = make_shared[cExceptionWithPrimitiveField](
@@ -466,7 +486,14 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(Banal self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Banal self):
+        return super().__repr__()
+
+    def __str__(Banal self):
+        return super().__str__()
+
 
     def __copy__(Banal self):
         cdef shared_ptr[cBanal] cpp_obj = make_shared[cBanal](

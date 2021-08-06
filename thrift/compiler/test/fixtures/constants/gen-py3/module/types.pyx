@@ -314,7 +314,14 @@ cdef class Internship(thrift.py3.types.Struct):
 
 
     def __hash__(Internship self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Internship self):
+        return super().__repr__()
+
+    def __str__(Internship self):
+        return super().__str__()
+
 
     def __copy__(Internship self):
         cdef shared_ptr[cInternship] cpp_obj = make_shared[cInternship](
@@ -408,7 +415,14 @@ cdef class Range(thrift.py3.types.Struct):
 
 
     def __hash__(Range self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Range self):
+        return super().__repr__()
+
+    def __str__(Range self):
+        return super().__str__()
+
 
     def __copy__(Range self):
         cdef shared_ptr[cRange] cpp_obj = make_shared[cRange](
@@ -502,7 +516,14 @@ cdef class struct1(thrift.py3.types.Struct):
 
 
     def __hash__(struct1 self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(struct1 self):
+        return super().__repr__()
+
+    def __str__(struct1 self):
+        return super().__str__()
+
 
     def __copy__(struct1 self):
         cdef shared_ptr[cstruct1] cpp_obj = make_shared[cstruct1](
@@ -612,7 +633,14 @@ cdef class struct2(thrift.py3.types.Struct):
 
 
     def __hash__(struct2 self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(struct2 self):
+        return super().__repr__()
+
+    def __str__(struct2 self):
+        return super().__str__()
+
 
     def __copy__(struct2 self):
         cdef shared_ptr[cstruct2] cpp_obj = make_shared[cstruct2](
@@ -714,7 +742,14 @@ cdef class struct3(thrift.py3.types.Struct):
 
 
     def __hash__(struct3 self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(struct3 self):
+        return super().__repr__()
+
+    def __str__(struct3 self):
+        return super().__str__()
+
 
     def __copy__(struct3 self):
         cdef shared_ptr[cstruct3] cpp_obj = make_shared[cstruct3](
@@ -818,7 +853,14 @@ cdef class struct4(thrift.py3.types.Struct):
 
 
     def __hash__(struct4 self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(struct4 self):
+        return super().__repr__()
+
+    def __str__(struct4 self):
+        return super().__str__()
+
 
     def __copy__(struct4 self):
         cdef shared_ptr[cstruct4] cpp_obj = make_shared[cstruct4](

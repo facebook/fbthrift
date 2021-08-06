@@ -96,7 +96,14 @@ cdef class InitialResponse(thrift.py3.types.Struct):
 
 
     def __hash__(InitialResponse self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(InitialResponse self):
+        return super().__repr__()
+
+    def __str__(InitialResponse self):
+        return super().__str__()
+
 
     def __copy__(InitialResponse self):
         cdef shared_ptr[cInitialResponse] cpp_obj = make_shared[cInitialResponse](
@@ -184,7 +191,14 @@ cdef class FinalResponse(thrift.py3.types.Struct):
 
 
     def __hash__(FinalResponse self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(FinalResponse self):
+        return super().__repr__()
+
+    def __str__(FinalResponse self):
+        return super().__str__()
+
 
     def __copy__(FinalResponse self):
         cdef shared_ptr[cFinalResponse] cpp_obj = make_shared[cFinalResponse](
@@ -272,7 +286,14 @@ cdef class SinkPayload(thrift.py3.types.Struct):
 
 
     def __hash__(SinkPayload self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(SinkPayload self):
+        return super().__repr__()
+
+    def __str__(SinkPayload self):
+        return super().__str__()
+
 
     def __copy__(SinkPayload self):
         cdef shared_ptr[cSinkPayload] cpp_obj = make_shared[cSinkPayload](
@@ -360,7 +381,14 @@ cdef class CompatibleWithKeywordSink(thrift.py3.types.Struct):
 
 
     def __hash__(CompatibleWithKeywordSink self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(CompatibleWithKeywordSink self):
+        return super().__repr__()
+
+    def __str__(CompatibleWithKeywordSink self):
+        return super().__str__()
+
 
     def __copy__(CompatibleWithKeywordSink self):
         cdef shared_ptr[cCompatibleWithKeywordSink] cpp_obj = make_shared[cCompatibleWithKeywordSink](
@@ -439,7 +467,14 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(InitialException self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(InitialException self):
+        return super().__repr__()
+
+    def __str__(InitialException self):
+        return super().__str__()
+
 
     def __copy__(InitialException self):
         cdef shared_ptr[cInitialException] cpp_obj = make_shared[cInitialException](
@@ -506,7 +541,14 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(SinkException1 self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(SinkException1 self):
+        return super().__repr__()
+
+    def __str__(SinkException1 self):
+        return super().__str__()
+
 
     def __copy__(SinkException1 self):
         cdef shared_ptr[cSinkException1] cpp_obj = make_shared[cSinkException1](
@@ -573,7 +615,14 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(SinkException2 self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(SinkException2 self):
+        return super().__repr__()
+
+    def __str__(SinkException2 self):
+        return super().__str__()
+
 
     def __copy__(SinkException2 self):
         cdef shared_ptr[cSinkException2] cpp_obj = make_shared[cSinkException2](

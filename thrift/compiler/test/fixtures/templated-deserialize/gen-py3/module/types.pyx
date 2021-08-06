@@ -144,7 +144,14 @@ cdef class SmallStruct(thrift.py3.types.Struct):
 
 
     def __hash__(SmallStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(SmallStruct self):
+        return super().__repr__()
+
+    def __str__(SmallStruct self):
+        return super().__str__()
+
 
     def __copy__(SmallStruct self):
         cdef shared_ptr[cSmallStruct] cpp_obj = make_shared[cSmallStruct](
@@ -399,7 +406,14 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
 
     def __hash__(containerStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(containerStruct self):
+        return super().__repr__()
+
+    def __str__(containerStruct self):
+        return super().__str__()
+
 
     def __copy__(containerStruct self):
         cdef shared_ptr[ccontainerStruct] cpp_obj = make_shared[ccontainerStruct](

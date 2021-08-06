@@ -167,19 +167,29 @@ cdef class {{struct:name}}({{> types/PythonStructClass}}):
     {{/struct:fields_and_mixin_fields}}
 
     def __hash__({{struct:name}} self):
-        return  super().__hash__()
+        return super().__hash__()
 
-    {{#struct:exception?}}
-    {{#struct:exception_message?}}
+    def __repr__({{struct:name}} self):
+        return super().__repr__()
+
     def __str__({{struct:name}} self):
+        {{^struct:exception?}}
+        return super().__str__()
+        {{/struct:exception?}}
+        {{#struct:exception?}}
+        {{#struct:exception_message?}}
         field = self.{{struct:exception_message}}
         if field is None:
             {{! optional field, stringify }}
             return str(field)
         return field
+        {{/struct:exception_message?}}
+        {{^struct:exception_message?}}
+        return super().__str__()
+        {{/struct:exception_message?}}
+        {{/struct:exception?}}
 
-    {{/struct:exception_message?}}
-    {{/struct:exception?}}
+
 {{/struct:union?}}{{!
 }}{{#struct:union?}}
 

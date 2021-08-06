@@ -411,7 +411,14 @@ cdef class MyField(thrift.py3.types.Struct):
 
 
     def __hash__(MyField self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(MyField self):
+        return super().__repr__()
+
+    def __str__(MyField self):
+        return super().__str__()
+
 
     def __copy__(MyField self):
         cdef shared_ptr[cMyField] cpp_obj = make_shared[cMyField](
@@ -520,7 +527,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
     def __hash__(MyStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(MyStruct self):
+        return super().__repr__()
+
+    def __str__(MyStruct self):
+        return super().__str__()
+
 
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
@@ -628,7 +642,14 @@ cdef class StructWithUnion(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithUnion self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(StructWithUnion self):
+        return super().__repr__()
+
+    def __str__(StructWithUnion self):
+        return super().__str__()
+
 
     def __copy__(StructWithUnion self):
         cdef shared_ptr[cStructWithUnion] cpp_obj = make_shared[cStructWithUnion](
@@ -720,7 +741,14 @@ cdef class RecursiveStruct(thrift.py3.types.Struct):
 
 
     def __hash__(RecursiveStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(RecursiveStruct self):
+        return super().__repr__()
+
+    def __str__(RecursiveStruct self):
+        return super().__str__()
+
 
     def __copy__(RecursiveStruct self):
         cdef shared_ptr[cRecursiveStruct] cpp_obj = make_shared[cRecursiveStruct](
@@ -856,7 +884,14 @@ cdef class StructWithContainers(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithContainers self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(StructWithContainers self):
+        return super().__repr__()
+
+    def __str__(StructWithContainers self):
+        return super().__str__()
+
 
     def __copy__(StructWithContainers self):
         cdef shared_ptr[cStructWithContainers] cpp_obj = make_shared[cStructWithContainers](
@@ -965,7 +1000,14 @@ cdef class StructWithSharedConst(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithSharedConst self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(StructWithSharedConst self):
+        return super().__repr__()
+
+    def __str__(StructWithSharedConst self):
+        return super().__str__()
+
 
     def __copy__(StructWithSharedConst self):
         cdef shared_ptr[cStructWithSharedConst] cpp_obj = make_shared[cStructWithSharedConst](
@@ -1040,7 +1082,14 @@ cdef class Empty(thrift.py3.types.Struct):
 
 
     def __hash__(Empty self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Empty self):
+        return super().__repr__()
+
+    def __str__(Empty self):
+        return super().__str__()
+
 
     def __copy__(Empty self):
         cdef shared_ptr[cEmpty] cpp_obj = make_shared[cEmpty](
@@ -1149,7 +1198,14 @@ cdef class StructWithRef(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithRef self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(StructWithRef self):
+        return super().__repr__()
+
+    def __str__(StructWithRef self):
+        return super().__str__()
+
 
     def __copy__(StructWithRef self):
         cdef shared_ptr[cStructWithRef] cpp_obj = make_shared[cStructWithRef](
@@ -1258,7 +1314,14 @@ cdef class StructWithRefTypeUnique(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithRefTypeUnique self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(StructWithRefTypeUnique self):
+        return super().__repr__()
+
+    def __str__(StructWithRefTypeUnique self):
+        return super().__str__()
+
 
     def __copy__(StructWithRefTypeUnique self):
         cdef shared_ptr[cStructWithRefTypeUnique] cpp_obj = make_shared[cStructWithRefTypeUnique](
@@ -1367,7 +1430,14 @@ cdef class StructWithRefTypeShared(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithRefTypeShared self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(StructWithRefTypeShared self):
+        return super().__repr__()
+
+    def __str__(StructWithRefTypeShared self):
+        return super().__str__()
+
 
     def __copy__(StructWithRefTypeShared self):
         cdef shared_ptr[cStructWithRefTypeShared] cpp_obj = make_shared[cStructWithRefTypeShared](
@@ -1476,7 +1546,14 @@ cdef class StructWithRefTypeSharedConst(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithRefTypeSharedConst self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(StructWithRefTypeSharedConst self):
+        return super().__repr__()
+
+    def __str__(StructWithRefTypeSharedConst self):
+        return super().__str__()
+
 
     def __copy__(StructWithRefTypeSharedConst self):
         cdef shared_ptr[cStructWithRefTypeSharedConst] cpp_obj = make_shared[cStructWithRefTypeSharedConst](
@@ -1567,7 +1644,14 @@ cdef class StructWithRefAndAnnotCppNoexceptMoveCtor(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithRefAndAnnotCppNoexceptMoveCtor self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(StructWithRefAndAnnotCppNoexceptMoveCtor self):
+        return super().__repr__()
+
+    def __str__(StructWithRefAndAnnotCppNoexceptMoveCtor self):
+        return super().__str__()
+
 
     def __copy__(StructWithRefAndAnnotCppNoexceptMoveCtor self):
         cdef shared_ptr[cStructWithRefAndAnnotCppNoexceptMoveCtor] cpp_obj = make_shared[cStructWithRefAndAnnotCppNoexceptMoveCtor](

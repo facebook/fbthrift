@@ -83,7 +83,14 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(FooEx self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(FooEx self):
+        return super().__repr__()
+
+    def __str__(FooEx self):
+        return super().__str__()
+
 
     def __copy__(FooEx self):
         cdef shared_ptr[cFooEx] cpp_obj = make_shared[cFooEx](

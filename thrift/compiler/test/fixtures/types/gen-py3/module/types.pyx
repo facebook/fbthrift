@@ -300,7 +300,14 @@ cdef class decorated_struct(thrift.py3.types.Struct):
 
 
     def __hash__(decorated_struct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(decorated_struct self):
+        return super().__repr__()
+
+    def __str__(decorated_struct self):
+        return super().__str__()
+
 
     def __copy__(decorated_struct self):
         cdef shared_ptr[cdecorated_struct] cpp_obj = make_shared[cdecorated_struct](
@@ -446,7 +453,14 @@ cdef class ContainerStruct(thrift.py3.types.Struct):
 
 
     def __hash__(ContainerStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ContainerStruct self):
+        return super().__repr__()
+
+    def __str__(ContainerStruct self):
+        return super().__str__()
+
 
     def __copy__(ContainerStruct self):
         cdef shared_ptr[cContainerStruct] cpp_obj = make_shared[cContainerStruct](
@@ -538,7 +552,14 @@ cdef class CppTypeStruct(thrift.py3.types.Struct):
 
 
     def __hash__(CppTypeStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(CppTypeStruct self):
+        return super().__repr__()
+
+    def __str__(CppTypeStruct self):
+        return super().__str__()
+
 
     def __copy__(CppTypeStruct self):
         cdef shared_ptr[cCppTypeStruct] cpp_obj = make_shared[cCppTypeStruct](
@@ -626,7 +647,14 @@ cdef class VirtualStruct(thrift.py3.types.Struct):
 
 
     def __hash__(VirtualStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(VirtualStruct self):
+        return super().__repr__()
+
+    def __str__(VirtualStruct self):
+        return super().__str__()
+
 
     def __copy__(VirtualStruct self):
         cdef shared_ptr[cVirtualStruct] cpp_obj = make_shared[cVirtualStruct](
@@ -724,7 +752,14 @@ cdef class MyStructWithForwardRefEnum(thrift.py3.types.Struct):
 
 
     def __hash__(MyStructWithForwardRefEnum self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(MyStructWithForwardRefEnum self):
+        return super().__repr__()
+
+    def __str__(MyStructWithForwardRefEnum self):
+        return super().__str__()
+
 
     def __copy__(MyStructWithForwardRefEnum self):
         cdef shared_ptr[cMyStructWithForwardRefEnum] cpp_obj = make_shared[cMyStructWithForwardRefEnum](
@@ -818,7 +853,14 @@ cdef class TrivialNumeric(thrift.py3.types.Struct):
 
 
     def __hash__(TrivialNumeric self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(TrivialNumeric self):
+        return super().__repr__()
+
+    def __str__(TrivialNumeric self):
+        return super().__str__()
+
 
     def __copy__(TrivialNumeric self):
         cdef shared_ptr[cTrivialNumeric] cpp_obj = make_shared[cTrivialNumeric](
@@ -914,7 +956,14 @@ cdef class TrivialNestedWithDefault(thrift.py3.types.Struct):
 
 
     def __hash__(TrivialNestedWithDefault self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(TrivialNestedWithDefault self):
+        return super().__repr__()
+
+    def __str__(TrivialNestedWithDefault self):
+        return super().__str__()
+
 
     def __copy__(TrivialNestedWithDefault self):
         cdef shared_ptr[cTrivialNestedWithDefault] cpp_obj = make_shared[cTrivialNestedWithDefault](
@@ -1010,7 +1059,14 @@ cdef class ComplexString(thrift.py3.types.Struct):
 
 
     def __hash__(ComplexString self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ComplexString self):
+        return super().__repr__()
+
+    def __str__(ComplexString self):
+        return super().__str__()
+
 
     def __copy__(ComplexString self):
         cdef shared_ptr[cComplexString] cpp_obj = make_shared[cComplexString](
@@ -1106,7 +1162,14 @@ cdef class ComplexNestedWithDefault(thrift.py3.types.Struct):
 
 
     def __hash__(ComplexNestedWithDefault self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ComplexNestedWithDefault self):
+        return super().__repr__()
+
+    def __str__(ComplexNestedWithDefault self):
+        return super().__str__()
+
 
     def __copy__(ComplexNestedWithDefault self):
         cdef shared_ptr[cComplexNestedWithDefault] cpp_obj = make_shared[cComplexNestedWithDefault](
@@ -1218,7 +1281,14 @@ cdef class MinPadding(thrift.py3.types.Struct):
 
 
     def __hash__(MinPadding self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(MinPadding self):
+        return super().__repr__()
+
+    def __str__(MinPadding self):
+        return super().__str__()
+
 
     def __copy__(MinPadding self):
         cdef shared_ptr[cMinPadding] cpp_obj = make_shared[cMinPadding](
@@ -1326,7 +1396,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
     def __hash__(MyStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(MyStruct self):
+        return super().__repr__()
+
+    def __str__(MyStruct self):
+        return super().__str__()
+
 
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
@@ -1396,7 +1473,14 @@ cdef class MyDataItem(thrift.py3.types.Struct):
 
 
     def __hash__(MyDataItem self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(MyDataItem self):
+        return super().__repr__()
+
+    def __str__(MyDataItem self):
+        return super().__str__()
+
 
     def __copy__(MyDataItem self):
         cdef shared_ptr[cMyDataItem] cpp_obj = make_shared[cMyDataItem](
@@ -1479,7 +1563,14 @@ cdef class Renaming(thrift.py3.types.Struct):
 
 
     def __hash__(Renaming self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Renaming self):
+        return super().__repr__()
+
+    def __str__(Renaming self):
+        return super().__str__()
+
 
     def __copy__(Renaming self):
         cdef shared_ptr[cRenaming] cpp_obj = make_shared[cRenaming](
@@ -1575,7 +1666,14 @@ cdef class AnnotatedTypes(thrift.py3.types.Struct):
 
 
     def __hash__(AnnotatedTypes self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(AnnotatedTypes self):
+        return super().__repr__()
+
+    def __str__(AnnotatedTypes self):
+        return super().__str__()
+
 
     def __copy__(AnnotatedTypes self):
         cdef shared_ptr[cAnnotatedTypes] cpp_obj = make_shared[cAnnotatedTypes](
@@ -1678,7 +1776,14 @@ cdef class ForwardUsageRoot(thrift.py3.types.Struct):
 
 
     def __hash__(ForwardUsageRoot self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ForwardUsageRoot self):
+        return super().__repr__()
+
+    def __str__(ForwardUsageRoot self):
+        return super().__str__()
+
 
     def __copy__(ForwardUsageRoot self):
         cdef shared_ptr[cForwardUsageRoot] cpp_obj = make_shared[cForwardUsageRoot](
@@ -1770,7 +1875,14 @@ cdef class ForwardUsageStruct(thrift.py3.types.Struct):
 
 
     def __hash__(ForwardUsageStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ForwardUsageStruct self):
+        return super().__repr__()
+
+    def __str__(ForwardUsageStruct self):
+        return super().__str__()
+
 
     def __copy__(ForwardUsageStruct self):
         cdef shared_ptr[cForwardUsageStruct] cpp_obj = make_shared[cForwardUsageStruct](
@@ -1862,7 +1974,14 @@ cdef class ForwardUsageByRef(thrift.py3.types.Struct):
 
 
     def __hash__(ForwardUsageByRef self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ForwardUsageByRef self):
+        return super().__repr__()
+
+    def __str__(ForwardUsageByRef self):
+        return super().__str__()
+
 
     def __copy__(ForwardUsageByRef self):
         cdef shared_ptr[cForwardUsageByRef] cpp_obj = make_shared[cForwardUsageByRef](
@@ -1937,7 +2056,14 @@ cdef class NoexceptMoveEmpty(thrift.py3.types.Struct):
 
 
     def __hash__(NoexceptMoveEmpty self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(NoexceptMoveEmpty self):
+        return super().__repr__()
+
+    def __str__(NoexceptMoveEmpty self):
+        return super().__str__()
+
 
     def __copy__(NoexceptMoveEmpty self):
         cdef shared_ptr[cNoexceptMoveEmpty] cpp_obj = make_shared[cNoexceptMoveEmpty](
@@ -2025,7 +2151,14 @@ cdef class NoexceptMoveSimpleStruct(thrift.py3.types.Struct):
 
 
     def __hash__(NoexceptMoveSimpleStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(NoexceptMoveSimpleStruct self):
+        return super().__repr__()
+
+    def __str__(NoexceptMoveSimpleStruct self):
+        return super().__str__()
+
 
     def __copy__(NoexceptMoveSimpleStruct self):
         cdef shared_ptr[cNoexceptMoveSimpleStruct] cpp_obj = make_shared[cNoexceptMoveSimpleStruct](
@@ -2167,7 +2300,14 @@ cdef class NoexceptMoveComplexStruct(thrift.py3.types.Struct):
 
 
     def __hash__(NoexceptMoveComplexStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(NoexceptMoveComplexStruct self):
+        return super().__repr__()
+
+    def __str__(NoexceptMoveComplexStruct self):
+        return super().__str__()
+
 
     def __copy__(NoexceptMoveComplexStruct self):
         cdef shared_ptr[cNoexceptMoveComplexStruct] cpp_obj = make_shared[cNoexceptMoveComplexStruct](
@@ -2428,7 +2568,14 @@ cdef class AllocatorAware(thrift.py3.types.Struct):
 
 
     def __hash__(AllocatorAware self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(AllocatorAware self):
+        return super().__repr__()
+
+    def __str__(AllocatorAware self):
+        return super().__str__()
+
 
     def __copy__(AllocatorAware self):
         cdef shared_ptr[cAllocatorAware] cpp_obj = make_shared[cAllocatorAware](
@@ -2516,7 +2663,14 @@ cdef class AllocatorAware2(thrift.py3.types.Struct):
 
 
     def __hash__(AllocatorAware2 self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(AllocatorAware2 self):
+        return super().__repr__()
+
+    def __str__(AllocatorAware2 self):
+        return super().__str__()
+
 
     def __copy__(AllocatorAware2 self):
         cdef shared_ptr[cAllocatorAware2] cpp_obj = make_shared[cAllocatorAware2](
@@ -2616,7 +2770,14 @@ cdef class TypedefStruct(thrift.py3.types.Struct):
 
 
     def __hash__(TypedefStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(TypedefStruct self):
+        return super().__repr__()
+
+    def __str__(TypedefStruct self):
+        return super().__str__()
+
 
     def __copy__(TypedefStruct self):
         cdef shared_ptr[cTypedefStruct] cpp_obj = make_shared[cTypedefStruct](
@@ -2704,7 +2865,14 @@ cdef class StructWithDoubleUnderscores(thrift.py3.types.Struct):
 
 
     def __hash__(StructWithDoubleUnderscores self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(StructWithDoubleUnderscores self):
+        return super().__repr__()
+
+    def __str__(StructWithDoubleUnderscores self):
+        return super().__str__()
+
 
     def __copy__(StructWithDoubleUnderscores self):
         cdef shared_ptr[cStructWithDoubleUnderscores] cpp_obj = make_shared[cStructWithDoubleUnderscores](

@@ -89,7 +89,14 @@ cdef class CustomException(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(CustomException self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(CustomException self):
+        return super().__repr__()
+
+    def __str__(CustomException self):
+        return super().__str__()
+
 
     def __copy__(CustomException self):
         cdef shared_ptr[cCustomException] cpp_obj = make_shared[cCustomException](

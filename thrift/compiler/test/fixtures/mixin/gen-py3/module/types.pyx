@@ -96,7 +96,14 @@ cdef class Mixin1(thrift.py3.types.Struct):
 
 
     def __hash__(Mixin1 self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Mixin1 self):
+        return super().__repr__()
+
+    def __str__(Mixin1 self):
+        return super().__str__()
+
 
     def __copy__(Mixin1 self):
         cdef shared_ptr[cMixin1] cpp_obj = make_shared[cMixin1](
@@ -199,7 +206,14 @@ cdef class Mixin2(thrift.py3.types.Struct):
 
 
     def __hash__(Mixin2 self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Mixin2 self):
+        return super().__repr__()
+
+    def __str__(Mixin2 self):
+        return super().__str__()
+
 
     def __copy__(Mixin2 self):
         cdef shared_ptr[cMixin2] cpp_obj = make_shared[cMixin2](
@@ -287,7 +301,14 @@ cdef class Mixin3Base(thrift.py3.types.Struct):
 
 
     def __hash__(Mixin3Base self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Mixin3Base self):
+        return super().__repr__()
+
+    def __str__(Mixin3Base self):
+        return super().__str__()
+
 
     def __copy__(Mixin3Base self):
         cdef shared_ptr[cMixin3Base] cpp_obj = make_shared[cMixin3Base](
@@ -415,7 +436,14 @@ cdef class Foo(thrift.py3.types.Struct):
 
 
     def __hash__(Foo self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Foo self):
+        return super().__repr__()
+
+    def __str__(Foo self):
+        return super().__str__()
+
 
     def __copy__(Foo self):
         cdef shared_ptr[cFoo] cpp_obj = make_shared[cFoo](

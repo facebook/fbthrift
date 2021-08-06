@@ -355,7 +355,14 @@ cdef class Empty(thrift.py3.types.Struct):
 
 
     def __hash__(Empty self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Empty self):
+        return super().__repr__()
+
+    def __str__(Empty self):
+        return super().__str__()
+
 
     def __copy__(Empty self):
         cdef shared_ptr[cEmpty] cpp_obj = make_shared[cEmpty](
@@ -443,7 +450,14 @@ cdef class ASimpleStruct(thrift.py3.types.Struct):
 
 
     def __hash__(ASimpleStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ASimpleStruct self):
+        return super().__repr__()
+
+    def __str__(ASimpleStruct self):
+        return super().__str__()
+
 
     def __copy__(ASimpleStruct self):
         cdef shared_ptr[cASimpleStruct] cpp_obj = make_shared[cASimpleStruct](
@@ -533,7 +547,14 @@ cdef class ASimpleStructNoexcept(thrift.py3.types.Struct):
 
 
     def __hash__(ASimpleStructNoexcept self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ASimpleStructNoexcept self):
+        return super().__repr__()
+
+    def __str__(ASimpleStructNoexcept self):
+        return super().__str__()
+
 
     def __copy__(ASimpleStructNoexcept self):
         cdef shared_ptr[cASimpleStructNoexcept] cpp_obj = make_shared[cASimpleStructNoexcept](
@@ -689,7 +710,14 @@ cdef class MyStruct(thrift.py3.types.Struct):
 
 
     def __hash__(MyStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(MyStruct self):
+        return super().__repr__()
+
+    def __str__(MyStruct self):
+        return super().__str__()
+
 
     def __copy__(MyStruct self):
         cdef shared_ptr[cMyStruct] cpp_obj = make_shared[cMyStruct](
@@ -1692,13 +1720,17 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(AnException self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(AnException self):
+        return super().__repr__()
 
     def __str__(AnException self):
         field = self.message2
         if field is None:
             return str(field)
         return field
+
 
     def __copy__(AnException self):
         cdef shared_ptr[cAnException] cpp_obj = make_shared[cAnException](
@@ -1777,7 +1809,14 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
 
 
     def __hash__(AnotherException self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(AnotherException self):
+        return super().__repr__()
+
+    def __str__(AnotherException self):
+        return super().__str__()
+
 
     def __copy__(AnotherException self):
         cdef shared_ptr[cAnotherException] cpp_obj = make_shared[cAnotherException](
@@ -2193,7 +2232,14 @@ cdef class containerStruct(thrift.py3.types.Struct):
 
 
     def __hash__(containerStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(containerStruct self):
+        return super().__repr__()
+
+    def __str__(containerStruct self):
+        return super().__str__()
+
 
     def __copy__(containerStruct self):
         raise TypeError("containerStruct is noncopyable")
@@ -2303,7 +2349,14 @@ cdef class MyIncludedStruct(thrift.py3.types.Struct):
 
 
     def __hash__(MyIncludedStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(MyIncludedStruct self):
+        return super().__repr__()
+
+    def __str__(MyIncludedStruct self):
+        return super().__str__()
+
 
     def __copy__(MyIncludedStruct self):
         cdef shared_ptr[cMyIncludedStruct] cpp_obj = make_shared[cMyIncludedStruct](
@@ -2713,7 +2766,14 @@ cdef class AnnotatedStruct(thrift.py3.types.Struct):
 
 
     def __hash__(AnnotatedStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(AnnotatedStruct self):
+        return super().__repr__()
+
+    def __str__(AnnotatedStruct self):
+        return super().__str__()
+
 
     def __copy__(AnnotatedStruct self):
         raise TypeError("AnnotatedStruct is noncopyable")
@@ -2810,7 +2870,14 @@ cdef class ComplexContainerStruct(thrift.py3.types.Struct):
 
 
     def __hash__(ComplexContainerStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(ComplexContainerStruct self):
+        return super().__repr__()
+
+    def __str__(ComplexContainerStruct self):
+        return super().__str__()
+
 
     def __copy__(ComplexContainerStruct self):
         cdef shared_ptr[cComplexContainerStruct] cpp_obj = make_shared[cComplexContainerStruct](
@@ -2904,7 +2971,14 @@ cdef class FloatStruct(thrift.py3.types.Struct):
 
 
     def __hash__(FloatStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(FloatStruct self):
+        return super().__repr__()
+
+    def __str__(FloatStruct self):
+        return super().__str__()
+
 
     def __copy__(FloatStruct self):
         cdef shared_ptr[cFloatStruct] cpp_obj = make_shared[cFloatStruct](
@@ -3155,7 +3229,14 @@ cdef class AllRequiredNoExceptMoveCtrStruct(thrift.py3.types.Struct):
 
 
     def __hash__(AllRequiredNoExceptMoveCtrStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(AllRequiredNoExceptMoveCtrStruct self):
+        return super().__repr__()
+
+    def __str__(AllRequiredNoExceptMoveCtrStruct self):
+        return super().__str__()
+
 
     def __copy__(AllRequiredNoExceptMoveCtrStruct self):
         cdef shared_ptr[cAllRequiredNoExceptMoveCtrStruct] cpp_obj = make_shared[cAllRequiredNoExceptMoveCtrStruct](

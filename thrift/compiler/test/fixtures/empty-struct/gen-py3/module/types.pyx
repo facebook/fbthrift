@@ -117,7 +117,14 @@ cdef class Empty(thrift.py3.types.Struct):
 
 
     def __hash__(Empty self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Empty self):
+        return super().__repr__()
+
+    def __str__(Empty self):
+        return super().__str__()
+
 
     def __copy__(Empty self):
         cdef shared_ptr[cEmpty] cpp_obj = make_shared[cEmpty](

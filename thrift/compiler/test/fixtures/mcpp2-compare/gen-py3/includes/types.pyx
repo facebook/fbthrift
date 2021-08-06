@@ -138,7 +138,14 @@ cdef class AStruct(thrift.py3.types.Struct):
 
 
     def __hash__(AStruct self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(AStruct self):
+        return super().__repr__()
+
+    def __str__(AStruct self):
+        return super().__str__()
+
 
     def __copy__(AStruct self):
         cdef shared_ptr[cAStruct] cpp_obj = make_shared[cAStruct](
@@ -229,7 +236,14 @@ cdef class AStructB(thrift.py3.types.Struct):
 
 
     def __hash__(AStructB self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(AStructB self):
+        return super().__repr__()
+
+    def __str__(AStructB self):
+        return super().__str__()
+
 
     def __copy__(AStructB self):
         cdef shared_ptr[cAStructB] cpp_obj = make_shared[cAStructB](

@@ -88,6 +88,26 @@ class StructTests(unittest.TestCase):
     def test_hashability(self) -> None:
         hash(easy())
 
+    def test_str(self) -> None:
+        self.assertEqual(
+            "easy(val=0, val_list=i[], name=None, an_int=Integers(type=EMPTY, value=None))",
+            str(easy()),
+        )
+        self.assertEqual(
+            "easy(val=0, val_list=i[], name=None, an_int=Integers(type=EMPTY, value=None))",
+            repr(easy()),
+        )
+
+        x = easy(val=1, an_int=Integers(small=300), name="foo", val_list=[1, 2, 3, 4])
+        self.assertEqual(
+            "easy(val=1, val_list=i[1, 2, 3, 4], name='foo', an_int=Integers(type=small, value=300))",
+            str(x),
+        )
+        self.assertEqual(
+            "easy(val=1, val_list=i[1, 2, 3, 4], name='foo', an_int=Integers(type=small, value=300))",
+            repr(x),
+        )
+
     def test_optional_struct_creation(self) -> None:
         with self.assertRaises(TypeError):
             # pyre-fixme[19]: Expected 0 positional arguments.

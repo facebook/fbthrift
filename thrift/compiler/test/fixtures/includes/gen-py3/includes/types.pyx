@@ -106,7 +106,14 @@ cdef class Included(thrift.py3.types.Struct):
 
 
     def __hash__(Included self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Included self):
+        return super().__repr__()
+
+    def __str__(Included self):
+        return super().__str__()
+
 
     def __copy__(Included self):
         cdef shared_ptr[cIncluded] cpp_obj = make_shared[cIncluded](

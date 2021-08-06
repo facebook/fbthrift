@@ -186,7 +186,14 @@ cdef class Foo(thrift.py3.types.Struct):
 
 
     def __hash__(Foo self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Foo self):
+        return super().__repr__()
+
+    def __str__(Foo self):
+        return super().__str__()
+
 
     def __copy__(Foo self):
         cdef shared_ptr[cFoo] cpp_obj = make_shared[cFoo](
@@ -501,7 +508,14 @@ cdef class Bar(thrift.py3.types.Struct):
 
 
     def __hash__(Bar self):
-        return  super().__hash__()
+        return super().__hash__()
+
+    def __repr__(Bar self):
+        return super().__repr__()
+
+    def __str__(Bar self):
+        return super().__str__()
+
 
     def __copy__(Bar self):
         cdef shared_ptr[cBar] cpp_obj = make_shared[cBar](
