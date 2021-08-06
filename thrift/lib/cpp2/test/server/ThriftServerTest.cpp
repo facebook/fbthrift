@@ -867,6 +867,7 @@ THRIFT_PLUGGABLE_FUNC_SET(
 TEST(ThriftServerDeathTest, LongShutdown_DumpSnapshot) {
   EXPECT_EXIT(
       ({
+        THRIFT_FLAG_SET_MOCK(dump_snapshot_on_long_shutdown, true);
         folly::Baton<> ready;
         ScopedServerInterfaceThread runner(
             std::make_shared<long_shutdown::BlockingTestInterface>(ready),
@@ -886,6 +887,7 @@ TEST(ThriftServerDeathTest, LongShutdown_DumpSnapshot) {
 TEST(ThriftServerDeathTest, LongShutdown_DumpSnapshotTimeout) {
   EXPECT_DEATH(
       ({
+        THRIFT_FLAG_SET_MOCK(dump_snapshot_on_long_shutdown, true);
         folly::Baton<> ready;
         ScopedServerInterfaceThread runner(
             std::make_shared<long_shutdown::BlockingTestInterface>(ready),

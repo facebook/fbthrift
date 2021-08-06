@@ -63,6 +63,8 @@
 DECLARE_bool(thrift_abort_if_exceeds_shutdown_deadline);
 DECLARE_string(service_identity);
 
+THRIFT_FLAG_DECLARE_bool(dump_snapshot_on_long_shutdown);
+
 namespace apache {
 namespace thrift {
 

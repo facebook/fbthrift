@@ -68,6 +68,7 @@ THRIFT_FLAG_DEFINE_bool(server_alpn_prefer_rocket, true);
 THRIFT_FLAG_DEFINE_bool(server_enable_stoptls, false);
 THRIFT_FLAG_DEFINE_bool(ssl_policy_default_required, false);
 
+THRIFT_FLAG_DEFINE_bool(dump_snapshot_on_long_shutdown, true);
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     apache::thrift::ThriftServer::DumpSnapshotOnLongShutdownResult,
     dumpSnapshotOnLongShutdown) {
@@ -659,23 +660,30 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
 
   auto joinDeadline =
       std::chrono::steady_clock::now() + getWorkersJoinTimeout();
+  bool dumpSnapshotFlag = THRIFT_FLAG(dump_snapshot_on_long_shutdown);
 
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
       if (!worker->waitForStop(joinDeadline)) {
         // Before we crash, let's dump a snapshot of the server.
+
+        // We create the CPUThreadPoolExecutor outside the if block so that it
+        // doesn't wait for our task to complete when exiting the block even
+        // after the timeout expires as we can't cancel the task
         folly::CPUThreadPoolExecutor dumpSnapshotExecutor{1};
-        // The IO threads may be deadlocked in which case we won't be able to
-        // dump snapshots. It still shouldn't block shutdown indefinitely.
-        auto dumpSnapshotResult =
-            THRIFT_PLUGGABLE_FUNC(dumpSnapshotOnLongShutdown)();
-        try {
-          std::move(dumpSnapshotResult.task)
-              .via(folly::getKeepAliveToken(dumpSnapshotExecutor))
-              .get(dumpSnapshotResult.timeout);
-        } catch (...) {
-          LOG(ERROR) << "Failed to dump server snapshot on long shutdown: "
-                     << folly::exceptionStr(std::current_exception());
+        if (dumpSnapshotFlag) {
+          // The IO threads may be deadlocked in which case we won't be able to
+          // dump snapshots. It still shouldn't block shutdown indefinitely.
+          auto dumpSnapshotResult =
+              THRIFT_PLUGGABLE_FUNC(dumpSnapshotOnLongShutdown)();
+          try {
+            std::move(dumpSnapshotResult.task)
+                .via(folly::getKeepAliveToken(dumpSnapshotExecutor))
+                .get(dumpSnapshotResult.timeout);
+          } catch (...) {
+            LOG(ERROR) << "Failed to dump server snapshot on long shutdown: "
+                       << folly::exceptionStr(std::current_exception());
+          }
         }
 
         auto msgTemplate =

@@ -816,6 +816,7 @@ TEST(ThriftServerDeathTest, getSnapshotOnServerShutdown) {
   constexpr int kExitCode = 156;
   EXPECT_EXIT(
       ({
+        THRIFT_FLAG_SET_MOCK(dump_snapshot_on_long_shutdown, true);
         folly::Baton<> started;
         auto blockIf = std::make_shared<TestInterface>();
         blockIf->setCallback([&](TestInterface*) {
