@@ -187,10 +187,6 @@ class HeaderServerChannel : public ServerChannel,
 
   void setSampleRate(uint32_t sampleRate) { sampleRate_ = sampleRate; }
 
-  void setQueueSends(bool queueSends) {
-    cpp2Channel_->setQueueSends(queueSends);
-  }
-
   void closeNow() { cpp2Channel_->closeNow(); }
 
   class ServerFramingHandler : public FramingHandler {

@@ -116,16 +116,6 @@ class Cpp2Channel
   virtual void detachEventBase();
   folly::EventBase* getEventBase();
 
-  // Queued sends feature - optimizes by minimizing syscalls in high-QPS
-  // loads for greater throughput, but at the expense of some
-  // minor latency increase.
-  void setQueueSends(bool queueSends) {
-    if (pipeline_) {
-      pipeline_->getHandler<wangle::OutputBufferingHandler>(1)->queueSends_ =
-          queueSends;
-    }
-  }
-
   /**
    * Set read buffer size.
    *

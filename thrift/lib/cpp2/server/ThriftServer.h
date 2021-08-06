@@ -186,8 +186,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   void updateCertsToWatch();
 
-  bool queueSends_ = true;
-
   bool stopWorkersOnStopListening_ = true;
   bool joinRequestsWhenServerStops_{true};
 
@@ -703,12 +701,9 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void stopListening() override;
 
   /**
-   * Queue sends - better throughput by avoiding syscalls, but can increase
-   * latency for low-QPS servers.  Defaults to true
+   * Deprecated
    */
-  void setQueueSends(bool queueSends) { queueSends_ = queueSends; }
-
-  bool getQueueSends() { return queueSends_; }
+  void setQueueSends(bool) {}
 
   // client side duplex
   std::shared_ptr<HeaderServerChannel> getDuplexServerChannel() {

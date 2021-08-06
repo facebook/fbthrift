@@ -48,7 +48,6 @@ DEFINE_string(cert, "", "server SSL certificate file");
 DEFINE_string(key, "", "server SSL private key file");
 DEFINE_string(client_ca_list, "", "file pointing to a client CA or list");
 DEFINE_string(ticket_seeds, "", "server Ticket seeds file");
-DEFINE_bool(queue_sends, true, "Queue sends for better throughput");
 DEFINE_string(
     ecc_curve, "prime256v1", "The ECC curve to use for EC handshakes");
 DEFINE_bool(enable_tfo, true, "Enable TFO");
@@ -95,7 +94,6 @@ int main(int argc, char* argv[]) {
   server->setNumIOWorkerThreads(FLAGS_num_threads);
   server->setNumCPUWorkerThreads(FLAGS_num_queue_threads);
   server->setMaxRequests(FLAGS_max_requests);
-  server->setQueueSends(FLAGS_queue_sends);
   server->setFastOpenOptions(FLAGS_enable_tfo, FLAGS_tfo_queue_size);
 
   if (FLAGS_cert.length() > 0 && FLAGS_key.length() > 0) {
