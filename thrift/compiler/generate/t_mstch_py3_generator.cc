@@ -834,27 +834,36 @@ class mstch_py3_field : public mstch_field {
       return ref_type_;
     }
     ref_type_cached_ = true;
-    if (cpp2::is_unique_ref(field_)) {
-      return ref_type_ = RefType::Unique;
-    }
-
-    const std::string& reftype = cpp2::get_ref_type(field_);
-    if (reftype.empty() && field_->get_type() != nullptr) {
-      const t_type* resolved_type = field_->get_type()->get_true_type();
-      if (cpp2::get_type(resolved_type) == "std::unique_ptr<folly::IOBuf>") {
-        return ref_type_ = RefType::IOBuf;
+    switch (gen::cpp::find_ref_type(*field_)) {
+      case gen::cpp::reference_type::unique: {
+        return ref_type_ = RefType::Unique;
       }
-      return ref_type_ = RefType::NotRef;
-    } else if (reftype == "shared") {
-      return ref_type_ = RefType::Shared;
-    } else if (reftype == "shared_const") {
-      return ref_type_ = RefType::SharedConst;
-    } else {
-      // It is legal to get here but hopefully nobody will in practice, since
-      // we're not set up to handle other kinds of refs:
-      throw std::runtime_error{"Unhandled ref_type " + reftype};
+      case gen::cpp::reference_type::shared_const: {
+        return ref_type_ = RefType::SharedConst;
+      }
+      case gen::cpp::reference_type::shared_mutable: {
+        return ref_type_ = RefType::Shared;
+      }
+      case gen::cpp::reference_type::boxed: {
+        return ref_type_ = RefType::NotRef;
+      }
+      case gen::cpp::reference_type::none: {
+        const t_type* resolved_type = field_->get_type()->get_true_type();
+        if (cpp2::get_type(resolved_type) == "std::unique_ptr<folly::IOBuf>") {
+          return ref_type_ = RefType::IOBuf;
+        }
+        return ref_type_ = RefType::NotRef;
+      }
+      case gen::cpp::reference_type::unrecognized: {
+        // It is legal to get here but hopefully nobody will in practice, since
+        // we're not set up to handle other kinds of refs:
+        throw std::runtime_error{"Unrecognized ref_type"};
+      }
     }
+    // Suppress "control reaches end of non-void function" warning
+    throw std::logic_error{"Unhandled ref_type"};
   }
+
   bool is_optional() const {
     return field_->get_req() == t_field::e_req::optional;
   }
