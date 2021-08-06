@@ -50,7 +50,10 @@ template <size_t MinConcurrency = 5>
 class AdaptiveConcurrencyBase : public testing::Test {
  protected:
   static constexpr Clock::duration kIdealRtt = 10ms;
-  static constexpr size_t minConcurrency = MinConcurrency;
+  static constexpr uint32_t minConcurrency = MinConcurrency;
+
+  AdaptiveConcurrencyBase(uint32_t maxRequests = 0)
+      : oMaxRequests(maxRequests) {}
 
   void setConfig(size_t concurrency, double jitter = 0.0) {
     oConfig.setValue(makeConfig(concurrency, jitter));
@@ -65,8 +68,10 @@ class AdaptiveConcurrencyBase : public testing::Test {
   }
   folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
       oConfig{makeConfig(MinConcurrency)};
+  folly::observer::SimpleObservable<uint32_t> oMaxRequests{0u};
 
-  AdaptiveConcurrencyController controller{oConfig.getObserver()};
+  AdaptiveConcurrencyController controller{
+      oConfig.getObserver(), oMaxRequests.getObserver()};
 
   void makeRequest(Clock::duration latency = kIdealRtt) {
     auto now = Clock::now();
@@ -109,8 +114,12 @@ class AdaptiveConcurrencyBase : public testing::Test {
     p(controller).samplingPeriodStart(Clock::now());
     doSamplingRequests(latency, endState);
     double slope = 1.0 * controller.targetRtt() / latency;
-    size_t expectConcurrency = slope * concurrency + sqrt(slope * concurrency);
-    expectConcurrency = std::min(expectConcurrency, 1000ul);
+    uint32_t expectConcurrency =
+        slope * concurrency + std::sqrt(slope * concurrency);
+    auto maxRequests = **oMaxRequests.getObserver();
+    expectConcurrency = std::min(
+        expectConcurrency,
+        (maxRequests == 0) ? 1000u : std::min(1000u, maxRequests));
     expectConcurrency = std::max(minConcurrency, expectConcurrency);
     EXPECT_EQ(controller.getMaxRequests(), expectConcurrency);
     // targetRtt is computed to be 2x the observed p95 latency
@@ -120,7 +129,6 @@ class AdaptiveConcurrencyBase : public testing::Test {
 
 class AdaptiveConcurrency : public AdaptiveConcurrencyBase<5> {};
 class AdaptiveConcurrencyDisabled : public AdaptiveConcurrencyBase<0> {};
-
 TEST_F(AdaptiveConcurrency, IdealRttCalc) {
   // first request primes the system to start ideal rtt calibration
   EXPECT_EQ(p(controller).samplingPeriodStart(), Clock::time_point{});
@@ -139,13 +147,23 @@ TEST_F(AdaptiveConcurrency, IdealRttCalc) {
   EXPECT_EQ(controller.targetRtt(), 2 * 290ms);
 }
 
-TEST_F(AdaptiveConcurrency, Sampling) {
+class AdaptiveConcurrencyP : public AdaptiveConcurrencyBase<5>,
+                             public ::testing::WithParamInterface<uint32_t> {
+ public:
+  AdaptiveConcurrencyP() : AdaptiveConcurrencyBase<5>{GetParam()} {}
+};
+
+TEST_P(AdaptiveConcurrencyP, Sampling) {
   // calibrate ideal rtt
   makeRequest();
   doSamplingRequests(kIdealRtt);
 
+  uint32_t maxRequests = **oMaxRequests.getObserver();
+  maxRequests = maxRequests == 0 ? 1000u : std::min(maxRequests, 1000u);
+
   // imitate low request latencies
-  // concurrency limit grows until reaching max of 1000
+  // concurrency limit grows until reaching max of 1000 (or less if server
+  // provided maxRequests is smaller than 1000)
   auto lowLatency = kIdealRtt;
   performSampling(lowLatency);
   EXPECT_EQ(controller.getMaxRequests(), 13);
@@ -160,31 +178,39 @@ TEST_F(AdaptiveConcurrency, Sampling) {
   performSampling(lowLatency);
   EXPECT_EQ(controller.getMaxRequests(), 655);
   performSampling(lowLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 1000);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
   performSampling(lowLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 1000);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
   performSampling(lowLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 1000);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
 
   // imitate higher latencies
   // concurrency limit drops until reaching min of 5
   auto highLatency = 4 * kIdealRtt;
   performSampling(highLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 522);
+  maxRequests = maxRequests / 2.0 + std::sqrt(maxRequests / 2.0);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
   performSampling(highLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 277);
+  maxRequests = maxRequests / 2.0 + std::sqrt(maxRequests / 2.0);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
   performSampling(highLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 150);
+  maxRequests = maxRequests / 2.0 + std::sqrt(maxRequests / 2.0);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
   performSampling(highLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 83);
+  maxRequests = maxRequests / 2.0 + std::sqrt(maxRequests / 2.0);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
   performSampling(highLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 47);
+  maxRequests = maxRequests / 2.0 + std::sqrt(maxRequests / 2.0);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
   performSampling(highLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 28);
+  maxRequests = maxRequests / 2.0 + std::sqrt(maxRequests / 2.0);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
   performSampling(highLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 17);
+  maxRequests = maxRequests / 2.0 + std::sqrt(maxRequests / 2.0);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
   performSampling(highLatency);
-  EXPECT_EQ(controller.getMaxRequests(), 11);
+  maxRequests = maxRequests / 2.0 + std::sqrt(maxRequests / 2.0);
+  EXPECT_EQ(controller.getMaxRequests(), maxRequests);
   performSampling(highLatency);
   EXPECT_EQ(controller.getMaxRequests(), 7);
   performSampling(highLatency);
@@ -204,6 +230,11 @@ TEST_F(AdaptiveConcurrency, Sampling) {
   performSampling(lowLatency);
   EXPECT_EQ(controller.getMaxRequests(), 31);
 }
+
+INSTANTIATE_TEST_CASE_P(
+    AdaptiveConcurrencySequence,
+    AdaptiveConcurrencyP,
+    testing::Values(0, 900, 1000, 5000));
 
 TEST_F(AdaptiveConcurrency, RttRecalibration) {
   // calibrate ideal rtt

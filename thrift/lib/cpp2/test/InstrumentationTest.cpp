@@ -964,8 +964,10 @@ class RegistryTests : public testing::TestWithParam<std::tuple<size_t, bool>> {
    private:
     folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
         oConfig{AdaptiveConcurrencyController::Config{}};
-    AdaptiveConcurrencyController controller_{oConfig.getObserver()};
-    RequestStateMachine stateMachine_;
+  folly::observer::SimpleObservable<uint32_t> oMaxRequests{0u};
+  AdaptiveConcurrencyController controller_{
+      oConfig.getObserver(), oMaxRequests.getObserver()};
+  RequestStateMachine stateMachine_;
   };
 };
 

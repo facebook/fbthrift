@@ -44,8 +44,11 @@ Clock::duration jitter(Clock::duration d, double jitter) {
 } // namespace
 
 AdaptiveConcurrencyController::AdaptiveConcurrencyController(
-    folly::observer::Observer<AdaptiveConcurrencyController::Config> oConfig)
-    : config_(std::move(oConfig)), concurrencyLimit_(config().minConcurrency) {
+    folly::observer::Observer<AdaptiveConcurrencyController::Config> oConfig,
+    folly::observer::Observer<uint32_t> maxRequestsLimit)
+    : config_(std::move(oConfig)),
+      maxRequestsLimit_(std::move(maxRequestsLimit)),
+      concurrencyLimit_(config().minConcurrency) {
   enabled_ = config().isEnabled();
   rttRecalcStart_ = enabled_ ? Clock::now() : kZero;
   enablingCallback_ = config_.addCallback([this](auto snapshot) {
@@ -153,9 +156,12 @@ void AdaptiveConcurrencyController::recalculate() {
     double headroom = std::sqrt(limit);
     auto newLimit = static_cast<size_t>(limit + headroom);
 
-    constexpr size_t kUpperConcurrencyLimit = 1000;
-    concurrencyLimit_ = std::max(
-        cfg.minConcurrency, std::min(newLimit, kUpperConcurrencyLimit));
+    uint32_t maxRequests = **maxRequestsLimit_;
+    // limit concurrency at 1000 but respect server's maxRequests value
+    size_t upperConcurrencyLimit =
+        maxRequests == 0 ? 1000u : std::min(1000u, maxRequests);
+    concurrencyLimit_ =
+        std::max(cfg.minConcurrency, std::min(newLimit, upperConcurrencyLimit));
     maxRequests_.store(concurrencyLimit_, std::memory_order_relaxed);
   }
 }

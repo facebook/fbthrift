@@ -95,8 +95,9 @@ class ServerConfigsMock : public ServerConfigs {
 
   folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
       oConfig_{AdaptiveConcurrencyController::Config{}};
+  folly::observer::SimpleObservable<uint32_t> oMaxRequests_{0};
   AdaptiveConcurrencyController adaptiveConcurrencyController_{
-      oConfig_.getObserver()};
+      oConfig_.getObserver(), oMaxRequests_.getObserver()};
 };
 
 } // namespace server

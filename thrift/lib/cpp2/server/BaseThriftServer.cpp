@@ -58,7 +58,7 @@ const size_t BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
 
 BaseThriftServer::BaseThriftServer()
     : adaptiveConcurrencyController_{THRIFT_PLUGGABLE_FUNC(
-          makeAdaptiveConcurrencyConfig())},
+          makeAdaptiveConcurrencyConfig()), maxRequests_.getObserver()},
       addresses_(1) {}
 
 void BaseThriftServer::CumulativeFailureInjection::set(
