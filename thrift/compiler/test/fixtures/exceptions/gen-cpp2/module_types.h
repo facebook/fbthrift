@@ -84,7 +84,7 @@ using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
-class FOLLY_EXPORT Fiery final : public apache::thrift::TException {
+class FOLLY_EXPORT Fiery : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -205,7 +205,7 @@ using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
-class FOLLY_EXPORT Serious final : public apache::thrift::TException {
+class FOLLY_EXPORT Serious : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -332,7 +332,7 @@ using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
-class FOLLY_EXPORT ComplexFieldNames final : public apache::thrift::TException {
+class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -497,7 +497,7 @@ using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
-class FOLLY_EXPORT CustomFieldNames final : public apache::thrift::TException {
+class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -662,7 +662,7 @@ using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
-class FOLLY_EXPORT ExceptionWithPrimitiveField final : public apache::thrift::TException {
+class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
@@ -822,7 +822,7 @@ using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
-class FOLLY_EXPORT Banal final : public apache::thrift::TException {
+class FOLLY_EXPORT Banal : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 

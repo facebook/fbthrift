@@ -44,7 +44,7 @@ using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
-class FOLLY_EXPORT CustomException final : public apache::thrift::TException {
+class FOLLY_EXPORT CustomException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 

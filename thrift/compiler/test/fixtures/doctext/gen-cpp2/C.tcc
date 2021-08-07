@@ -193,7 +193,7 @@ void CAsyncProcessor::throw_wrapped_thing(apache::thrift::ResponseChannelRequest
       ctx->userExceptionWrapped(true, ew);
     }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Bang>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Bang>(ew, *reqCtx);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }

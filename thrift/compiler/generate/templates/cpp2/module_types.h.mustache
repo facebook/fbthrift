@@ -72,8 +72,8 @@ using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
 class <%#struct:exception?%>FOLLY_EXPORT <%/struct:exception?%><%struct:name%> <%!
-%><%^struct:virtual%>final <%/struct:virtual%><%#struct:exception?%><%!
-%>: public apache::thrift::TException<%/struct:exception?%> {
+%><%^struct:exception?%><%^struct:virtual%>final <%/struct:virtual%><%/struct:exception?%><%!
+%><%#struct:exception?%>: public apache::thrift::TException<%/struct:exception?%> {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 

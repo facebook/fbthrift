@@ -239,7 +239,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_boththrows(apache::thri
       ctx->userExceptionWrapped(true, ew);
     }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::FooEx>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::FooEx>(ew, *reqCtx);
     result.fields.get<0>().ref() = e;
     result.fields.setIsSet(0, true);
   }
@@ -327,7 +327,7 @@ void PubSubStreamingServiceAsyncProcessor::throw_wrapped_responseandstreamthrows
       ctx->userExceptionWrapped(true, ew);
     }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::FooEx>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::FooEx>(ew, *reqCtx);
     result.fields.get<1>().ref() = e;
     result.fields.setIsSet(1, true);
   }

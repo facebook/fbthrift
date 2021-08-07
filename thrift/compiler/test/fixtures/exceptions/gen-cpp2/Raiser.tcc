@@ -125,7 +125,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(apache::thrift::ResponseChannel
       ctx->userExceptionWrapped(true, ew);
     }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Banal>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Banal>(ew, *reqCtx);
     result.get<0>().ref() = e;
     result.setIsSet(0, true);
   }
@@ -135,7 +135,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(apache::thrift::ResponseChannel
       ctx->userExceptionWrapped(true, ew);
     }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Fiery>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Fiery>(ew, *reqCtx);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
@@ -145,7 +145,7 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(apache::thrift::ResponseChannel
       ctx->userExceptionWrapped(true, ew);
     }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Serious>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Serious>(ew, *reqCtx);
     result.get<2>().ref() = e;
     result.setIsSet(2, true);
   }
@@ -272,7 +272,7 @@ void RaiserAsyncProcessor::throw_wrapped_get500(apache::thrift::ResponseChannelR
       ctx->userExceptionWrapped(true, ew);
     }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Fiery>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Fiery>(ew, *reqCtx);
     result.get<1>().ref() = e;
     result.setIsSet(1, true);
   }
@@ -282,7 +282,7 @@ void RaiserAsyncProcessor::throw_wrapped_get500(apache::thrift::ResponseChannelR
       ctx->userExceptionWrapped(true, ew);
     }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Banal>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Banal>(ew, *reqCtx);
     result.get<2>().ref() = e;
     result.setIsSet(2, true);
   }
@@ -292,7 +292,7 @@ void RaiserAsyncProcessor::throw_wrapped_get500(apache::thrift::ResponseChannelR
       ctx->userExceptionWrapped(true, ew);
     }
     ::apache::thrift::util::appendExceptionToHeader(ew, *reqCtx);
-    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Serious>(*reqCtx);
+    ::apache::thrift::util::appendErrorClassificationToHeader< ::cpp2::Serious>(ew, *reqCtx);
     result.get<3>().ref() = e;
     result.setIsSet(3, true);
   }

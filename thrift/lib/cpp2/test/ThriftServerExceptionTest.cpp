@@ -138,6 +138,26 @@ class BugServiceHandler : public BugSvIf {
   folly::coro::Task<void> co_fun3() override { throw DoubleKill(); }
 
   folly::coro::Task<void> co_fun4() override { throw TripleKill(); }
+
+  folly::coro::Task<void> co_fun5() override {
+    try {
+      throw overrideExceptionMetadata(TripleKill());
+    } catch (const TripleKill&) {
+      throw;
+    } catch (...) {
+      LOG(FATAL) << "Should be caught by the catch block above";
+    }
+  }
+
+  folly::coro::Task<void> co_fun6() override {
+    try {
+      throw overrideExceptionMetadata(TripleKill()).setServer().setTransient();
+    } catch (const TripleKill&) {
+      throw;
+    } catch (...) {
+      LOG(FATAL) << "Should be caught by the catch block above";
+    }
+  }
 };
 
 } // namespace
@@ -234,6 +254,28 @@ TEST_F(ThriftServerExceptionTest, dummy_test) {
       apache::thrift::detail::deserializeErrorClassification(reader["exm"]);
   EXPECT_EQ(*errorClass.kind_ref(), ErrorKind::PERMANENT);
   EXPECT_EQ(*errorClass.blame_ref(), ErrorBlame::CLIENT);
+  EXPECT_EQ(*errorClass.safety_ref(), ErrorSafety::SAFE);
+
+  try {
+    folly::coro::blockingWait(client->co_fun5(rpcOptions));
+  } catch (...) {
+  }
+  reader = rpcOptions.getReadHeaders();
+  errorClass =
+      apache::thrift::detail::deserializeErrorClassification(reader["exm"]);
+  EXPECT_EQ(*errorClass.kind_ref(), ErrorKind::PERMANENT);
+  EXPECT_EQ(*errorClass.blame_ref(), ErrorBlame::CLIENT);
+  EXPECT_EQ(*errorClass.safety_ref(), ErrorSafety::SAFE);
+
+  try {
+    folly::coro::blockingWait(client->co_fun6(rpcOptions));
+  } catch (...) {
+  }
+  reader = rpcOptions.getReadHeaders();
+  errorClass =
+      apache::thrift::detail::deserializeErrorClassification(reader["exm"]);
+  EXPECT_EQ(*errorClass.kind_ref(), ErrorKind::TRANSIENT);
+  EXPECT_EQ(*errorClass.blame_ref(), ErrorBlame::SERVER);
   EXPECT_EQ(*errorClass.safety_ref(), ErrorSafety::SAFE);
 }
 

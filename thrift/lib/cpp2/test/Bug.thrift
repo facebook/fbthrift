@@ -32,4 +32,8 @@ service Bug {
   void fun3() throws (1: DoubleKill d) (cpp.coroutine);
 
   void fun4() throws (1: TripleKill t) (cpp.coroutine);
+
+  void fun5() throws (1: TripleKill t) (cpp.coroutine);
+
+  void fun6() throws (1: TripleKill t) (cpp.coroutine);
 }

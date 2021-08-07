@@ -251,6 +251,63 @@ struct apply_indirection_fn {
 
 FOLLY_INLINE_VARIABLE constexpr detail::apply_indirection_fn apply_indirection;
 
+class ExceptionMetadataOverrideBase {
+ public:
+  ExceptionKind errorKind() const { return errorKind_; }
+
+  ExceptionBlame errorBlame() const { return errorBlame_; }
+
+  ExceptionSafety errorSafety() const { return errorSafety_; }
+
+ protected:
+  ExceptionKind errorKind_{ExceptionKind::UNSPECIFIED};
+  ExceptionBlame errorBlame_{ExceptionBlame::UNSPECIFIED};
+  ExceptionSafety errorSafety_{ExceptionSafety::UNSPECIFIED};
+};
+
+template <typename T>
+class ExceptionMetadataOverride : public T,
+                                  public ExceptionMetadataOverrideBase {
+ public:
+  explicit ExceptionMetadataOverride(const T& t) : T(t) {}
+  explicit ExceptionMetadataOverride(T&& t) : T(std::move(t)) {}
+
+  // ExceptionKind
+  ExceptionMetadataOverride& setTransient() {
+    errorKind_ = ExceptionKind::TRANSIENT;
+    return *this;
+  }
+  ExceptionMetadataOverride& setPermanent() {
+    errorKind_ = ExceptionKind::PERMANENT;
+    return *this;
+  }
+  ExceptionMetadataOverride& setStateful() {
+    errorKind_ = ExceptionKind::STATEFUL;
+    return *this;
+  }
+
+  // ExceptionBlame
+  ExceptionMetadataOverride& setClient() {
+    errorBlame_ = ExceptionBlame::CLIENT;
+    return *this;
+  }
+  ExceptionMetadataOverride& setServer() {
+    errorBlame_ = ExceptionBlame::SERVER;
+    return *this;
+  }
+
+  // ExceptionSafety
+  ExceptionMetadataOverride& setSafe() {
+    errorSafety_ = ExceptionSafety::SAFE;
+    return *this;
+  }
+};
+
+template <typename T>
+ExceptionMetadataOverride<std::decay_t<T>> overrideExceptionMetadata(T&& ex) {
+  return ExceptionMetadataOverride<std::decay_t<T>>(std::forward<T>(ex));
+}
+
 } // namespace thrift
 } // namespace apache
 

@@ -1483,7 +1483,7 @@ constexpr ErrorSafety fromExceptionSafety(ExceptionSafety safety) {
 }
 
 template <typename T>
-std::string serializeExceptionMeta() {
+std::string serializeExceptionMeta(const folly::exception_wrapper& ew) {
   ErrorClassification errorClassification;
 
   constexpr auto errorKind = apache::thrift::detail::st::struct_private_access::
@@ -1496,6 +1496,19 @@ std::string serializeExceptionMeta() {
       struct_private_access::__fbthrift_cpp2_gen_exception_safety<T>();
   errorClassification.safety_ref() = fromExceptionSafety(errorSafety);
 
+  ew.with_exception([&errorClassification](
+                        const ExceptionMetadataOverrideBase& ex) {
+    if (ex.errorKind() != ExceptionKind::UNSPECIFIED) {
+      errorClassification.kind_ref() = fromExceptionKind(ex.errorKind());
+    }
+    if (ex.errorBlame() != ExceptionBlame::UNSPECIFIED) {
+      errorClassification.blame_ref() = fromExceptionBlame(ex.errorBlame());
+    }
+    if (ex.errorSafety() != ExceptionSafety::UNSPECIFIED) {
+      errorClassification.safety_ref() = fromExceptionSafety(ex.errorSafety());
+    }
+  });
+
   return apache::thrift::detail::serializeErrorClassification(
       errorClassification);
 }
@@ -1506,12 +1519,13 @@ void appendExceptionToHeader(
     const folly::exception_wrapper& ew, Cpp2RequestContext& ctx);
 
 template <typename T>
-void appendErrorClassificationToHeader(Cpp2RequestContext& ctx) {
+void appendErrorClassificationToHeader(
+    const folly::exception_wrapper& ew, Cpp2RequestContext& ctx) {
   auto header = ctx.getHeader();
   if (!header) {
     return;
   }
-  auto exMeta = detail::serializeExceptionMeta<T>();
+  auto exMeta = detail::serializeExceptionMeta<T>(ew);
   header->setHeader(
       std::string(apache::thrift::detail::kHeaderExMeta), std::move(exMeta));
 }

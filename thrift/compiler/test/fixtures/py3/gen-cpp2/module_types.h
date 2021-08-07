@@ -240,7 +240,7 @@ using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
 
-class FOLLY_EXPORT SimpleException final : public apache::thrift::TException {
+class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
 
