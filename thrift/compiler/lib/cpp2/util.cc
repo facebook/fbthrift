@@ -250,8 +250,17 @@ bool is_mixin(const t_field& field) {
 }
 
 bool has_ref_annotation(const t_field& field) {
-  return field.has_annotation(
-      {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"});
+  switch (gen::cpp::find_ref_type(field)) {
+    case gen::cpp::reference_type::unique:
+    case gen::cpp::reference_type::shared_const:
+    case gen::cpp::reference_type::shared_mutable:
+    case gen::cpp::reference_type::unrecognized:
+      return true;
+    case gen::cpp::reference_type::none:
+    case gen::cpp::reference_type::boxed:
+      return false;
+  }
+  throw std::logic_error("Unhandled ref_type");
 }
 
 static void get_mixins_and_members_impl(

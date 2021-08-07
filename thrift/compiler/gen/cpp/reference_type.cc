@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <thrift/compiler/ast/t_const.h>
+#include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/gen/cpp/reference_type.h>
 
 namespace apache {
@@ -27,6 +29,14 @@ namespace {
 const std::string* find_ref_type_annot(const t_node& node) {
   return node.get_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"});
 }
+
+// Since we can not include `thrift/lib/thrift/annotation/cpp.thrift`
+// This is a copy of apache::thrift::annotation::RefType
+enum class RefType {
+  Unique = 0,
+  Shared = 1,
+  SharedMutable = 2,
+};
 
 } // namespace
 
@@ -59,6 +69,34 @@ reference_type find_ref_type(const t_field& node) {
     // constructors would work. Maybe that would let us also remove most or all
     // uses of 'shared' (which can lead to reference cycles).
     return reference_type::unique;
+  }
+
+  for (const t_const* anno : node.structured_annotations()) {
+    const t_type* type = anno->type().get_type()->get_true_type();
+    if (type->program()->path() != "thrift/lib/thrift/annotation/cpp.thrift") {
+      continue;
+    }
+    if (type->get_scoped_name() != "cpp.Ref") {
+      continue;
+    }
+
+    for (const auto& kv : anno->value()->get_map()) {
+      if (kv.first->get_string() == "type") {
+        switch (static_cast<RefType>(kv.second->get_integer())) {
+          case RefType::Unique:
+            return reference_type::unique;
+          case RefType::Shared:
+            return reference_type::shared_const;
+          case RefType::SharedMutable:
+            return reference_type::shared_mutable;
+          default:
+            return reference_type::unrecognized;
+        }
+      }
+    }
+
+    // TODO: Consider having default reference type
+    throw std::runtime_error("cpp.Ref with unspecified type");
   }
 
   return reference_type::none;
