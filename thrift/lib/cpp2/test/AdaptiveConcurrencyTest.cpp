@@ -55,15 +55,22 @@ class AdaptiveConcurrencyBase : public testing::Test {
   AdaptiveConcurrencyBase(uint32_t maxRequests = 0)
       : oMaxRequests(maxRequests) {}
 
-  void setConfig(size_t concurrency, double jitter = 0.0) {
-    oConfig.setValue(makeConfig(concurrency, jitter));
+  void setConfig(
+      size_t concurrency,
+      double jitter = 0.0,
+      std::chrono::milliseconds targetRttFixed = {}) {
+    oConfig.setValue(makeConfig(concurrency, jitter, targetRttFixed));
     folly::observer_detail::ObserverManager::waitForAllUpdates();
   }
 
-  static auto makeConfig(size_t concurrency, double jitter = 0.0) {
+  static auto makeConfig(
+      size_t concurrency,
+      double jitter = 0.0,
+      std::chrono::milliseconds targetRttFixed = {}) {
     AdaptiveConcurrencyController::Config config;
     config.minConcurrency = concurrency;
     config.recalcPeriodJitter = jitter;
+    config.targetRttFixed = targetRttFixed;
     return config;
   }
   folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
@@ -272,6 +279,47 @@ TEST_F(AdaptiveConcurrency, RttRecalibration) {
 
   // targetRtt is computed to be 2x the observed p95 latency
   EXPECT_EQ(controller.targetRtt(), 4 * kIdealRtt);
+}
+
+TEST_F(AdaptiveConcurrency, FixedTargetRtt) {
+  // use fixed target rtt
+  setConfig(
+      5,
+      0.2,
+      std::chrono::duration_cast<std::chrono::milliseconds>(kIdealRtt * 2));
+
+  makeRequest();
+  doSamplingRequests(kIdealRtt, EndState::SamplingScheduled);
+  EXPECT_EQ(p(controller).nextRttRecalcStart(), Clock::time_point{});
+  EXPECT_EQ(controller.getMaxRequests(), 5);
+
+  performSampling(kIdealRtt, EndState::SamplingScheduled);
+  EXPECT_EQ(controller.getMaxRequests(), 13);
+  EXPECT_EQ(p(controller).nextRttRecalcStart(), Clock::time_point{});
+
+  setConfig(5, 0.2);
+
+  auto before = Clock::now();
+  makeRequest();
+  auto after = Clock::now();
+  doSamplingRequests(kIdealRtt, EndState::SamplingScheduled);
+  EXPECT_GT(p(controller).nextRttRecalcStart(), before + 4min);
+  EXPECT_LT(p(controller).nextRttRecalcStart(), after + 6min);
+  EXPECT_EQ(controller.getMaxRequests(), 5);
+
+  setConfig(
+      5,
+      0.2,
+      std::chrono::duration_cast<std::chrono::milliseconds>(kIdealRtt * 2));
+
+  makeRequest();
+  doSamplingRequests(kIdealRtt, EndState::SamplingScheduled);
+  EXPECT_EQ(p(controller).nextRttRecalcStart(), Clock::time_point{});
+  EXPECT_EQ(controller.getMaxRequests(), 5);
+
+  performSampling(kIdealRtt, EndState::SamplingScheduled);
+  EXPECT_EQ(controller.getMaxRequests(), 13);
+  EXPECT_EQ(p(controller).nextRttRecalcStart(), Clock::time_point{});
 }
 
 TEST_F(AdaptiveConcurrencyDisabled, Enabling) {

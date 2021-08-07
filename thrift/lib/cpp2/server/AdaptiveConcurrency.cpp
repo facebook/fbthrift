@@ -49,23 +49,15 @@ AdaptiveConcurrencyController::AdaptiveConcurrencyController(
     : config_(std::move(oConfig)),
       maxRequestsLimit_(std::move(maxRequestsLimit)),
       concurrencyLimit_(config().minConcurrency) {
-  enabled_ = config().isEnabled();
-  rttRecalcStart_ = enabled_ ? Clock::now() : kZero;
+  rttRecalcStart_ = config().isEnabled() ? Clock::now() : kZero;
   enablingCallback_ = config_.addCallback([this](auto snapshot) {
-    bool enabled = snapshot->isEnabled();
-    bool wasEnabled = enabled_.load(std::memory_order_relaxed);
-    if (wasEnabled && !enabled) {
-      rttRecalcStart_.store(kZero, std::memory_order_relaxed);
-      samplingPeriodStart_.store(kZero, std::memory_order_relaxed);
-      latencySamplesIdx_.store(0, std::memory_order_relaxed);
-      latencySamplesCnt_.store(0, std::memory_order_relaxed);
-      enabled_.store(false, std::memory_order_relaxed);
-      maxRequests_.store(0, std::memory_order_relaxed);
-    } else if (!wasEnabled && enabled) {
-      // request that starts after now will kick off target rtt sampling
-      rttRecalcStart_.store(Clock::now(), std::memory_order_relaxed);
-      enabled_.store(true, std::memory_order_relaxed);
-    }
+    rttRecalcStart_ = snapshot->isEnabled() ? Clock::now() : kZero;
+    // reset all the state
+    maxRequests_.store(0, std::memory_order_relaxed);
+    nextRttRecalcStart_.store(kZero, std::memory_order_relaxed);
+    samplingPeriodStart_.store(kZero, std::memory_order_relaxed);
+    latencySamplesIdx_.store(0, std::memory_order_relaxed);
+    latencySamplesCnt_.store(0, std::memory_order_relaxed);
     concurrencyLimit_ = snapshot->minConcurrency;
   });
 }
@@ -92,9 +84,11 @@ void AdaptiveConcurrencyController::requestStarted(Clock::time_point started) {
     targetRtt_.store({}, std::memory_order_relaxed);
     // and start collecting samples for requests running with this concurrency
     samplingPeriodStart_.store(Clock::now(), std::memory_order_relaxed);
-    // and schedule next rtt recalc, with jitter
-    auto dur = jitter(config().recalcInterval, config().recalcPeriodJitter);
-    nextRttRecalcStart_.store(Clock::now() + dur, std::memory_order_relaxed);
+    if (config().targetRttFixed.count() == 0) {
+      // and schedule next rtt recalc, with jitter
+      auto dur = jitter(config().recalcInterval, config().recalcPeriodJitter);
+      nextRttRecalcStart_.store(Clock::now() + dur, std::memory_order_relaxed);
+    }
   }
 }
 
@@ -118,8 +112,8 @@ void AdaptiveConcurrencyController::requestFinished(
     // start recalibration for requests that will start running in 500ms
     auto now = Clock::now();
     auto nextRttRecalc = nextRttRecalcStart_.load(std::memory_order_relaxed);
-    DCHECK(nextRttRecalc != kZero);
-    if (now + config().samplingInterval > nextRttRecalc) {
+    if (nextRttRecalc != kZero &&
+        now + config().samplingInterval > nextRttRecalc) {
       rttRecalcStart_.store(nextRttRecalc, std::memory_order_relaxed);
     } else {
       samplingPeriodStart_.store(

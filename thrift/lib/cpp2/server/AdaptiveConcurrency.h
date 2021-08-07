@@ -132,7 +132,6 @@ class AdaptiveConcurrencyController {
   std::atomic<Clock::time_point> rttRecalcStart_{Clock::time_point{}};
   std::atomic<Clock::time_point> nextRttRecalcStart_{Clock::time_point{}};
   std::atomic<Clock::time_point> samplingPeriodStart_{Clock::time_point{}};
-  std::atomic<bool> enabled_{false};
 
   std::atomic<Duration> targetRtt_{Duration{}};
   std::atomic<Duration> sampledRtt_{Duration{}};
