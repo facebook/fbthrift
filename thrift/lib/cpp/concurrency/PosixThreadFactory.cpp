@@ -79,7 +79,7 @@ PthreadThread::~PthreadThread() {
 }
 
 void PthreadThread::start() {
-  Guard g(stateLock_);
+  std::unique_lock<Mutex> g(stateLock_);
 
   if (state_ != uninitialized) {
     return;
@@ -117,7 +117,7 @@ void PthreadThread::start() {
 }
 
 void PthreadThread::join() {
-  Guard g(stateLock_);
+  std::unique_lock<Mutex> g(stateLock_);
   STATE join_state = state_;
 
   if (!detached_ && join_state != uninitialized) {
@@ -161,7 +161,7 @@ void PthreadThread::weakRef(shared_ptr<PthreadThread> self) {
 }
 
 bool PthreadThread::setName(const std::string& name) {
-  Guard g(stateLock_);
+  std::unique_lock<Mutex> g(stateLock_);
   name_ = name;
   return updateName();
 }

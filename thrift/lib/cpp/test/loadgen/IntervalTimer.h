@@ -62,7 +62,7 @@ class IntervalTimer {
         maxBacklog_(maxBacklog) {}
 
   void setIntervalNsec(uint64_t interval) {
-    concurrency::Guard guard(mutex_);
+    std::unique_lock guard(mutex_);
     intervalNsec_ = interval;
     if (intervalStart_ > std::chrono::steady_clock::time_point{}) {
       intervalStart_ = std::chrono::steady_clock::now();
@@ -74,7 +74,7 @@ class IntervalTimer {
    * Change the rate, 0 means run as fast as possible.
    */
   void setRatePerSec(uint64_t rate) {
-    concurrency::Guard guard(mutex_);
+    std::unique_lock guard(mutex_);
     if (rate == 0)
       intervalNsec_ = 0;
     else
@@ -91,7 +91,7 @@ class IntervalTimer {
    * Call this method before the first interval.
    */
   void start() {
-    concurrency::Guard guard(mutex_);
+    std::unique_lock guard(mutex_);
     intervalStart_ = std::chrono::steady_clock::now();
   }
 
@@ -109,7 +109,7 @@ class IntervalTimer {
 
     std::chrono::steady_clock::time_point waitUntil, now;
     {
-      concurrency::Guard guard(mutex_);
+      std::unique_lock guard(mutex_);
 
       // intervalStart_ is when the just previous interval started (or when it
       // was supposed to start, if we aren't able to keep up with the requested

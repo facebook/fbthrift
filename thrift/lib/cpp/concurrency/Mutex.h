@@ -49,22 +49,6 @@ class Mutex final {
   std::shared_ptr<PthreadMutex> impl_;
 };
 
-class FOLLY_NODISCARD Guard {
- public:
-  explicit Guard(Mutex& value) : lock_(value) {}
-
-  Guard(const Guard&) = delete;
-  Guard& operator=(const Guard&) = delete;
-
-  Guard(Guard&&) = default;
-  Guard& operator=(Guard&&) = default;
-
-  explicit operator bool() const { return !!lock_; }
-
- private:
-  std::unique_lock<Mutex> lock_;
-};
-
 } // namespace concurrency
 } // namespace thrift
 } // namespace apache

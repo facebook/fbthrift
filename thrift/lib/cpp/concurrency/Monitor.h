@@ -112,7 +112,7 @@ class Synchronized {
   explicit Synchronized(const Monitor& monitor) : g(monitor.mutex()) {}
 
  private:
-  Guard g;
+  std::unique_lock<Mutex> g;
 };
 
 } // namespace concurrency
