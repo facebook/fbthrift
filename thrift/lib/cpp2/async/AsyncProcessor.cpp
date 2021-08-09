@@ -144,30 +144,34 @@ bool GeneratedAsyncProcessor::createInteraction(
     return false;
   }
 
-  folly::via(
-      tm,
-      [=, eb = &eb, ctx = &ctx, name = std::move(name)] {
-        si->setEventBase(eb);
-        si->setThreadManager(tm);
-        si->setRequestContext(ctx);
-        return nullthrows(createInteractionImpl(name));
-      })
-      .via(&eb)
-      .thenTry([&conn, id, tm, &eb, promisePtr](auto&& t) {
-        if (t.hasException()) {
-          promisePtr->failWith(
-              folly::make_exception_wrapper<TApplicationException>(
-                  "Interaction constructor failed with " +
-                  t.exception().what().toStdString()),
-              kInteractionConstructorErrorErrorCode);
-          conn.removeTile(id);
-          return;
-        }
+  tm->add([=, &eb, &ctx, name = std::move(name), &conn] {
+    si->setEventBase(&eb);
+    si->setThreadManager(tm);
+    si->setRequestContext(&ctx);
 
-        TilePtr tile{t->release(), &eb};
+    std::exception_ptr ex;
+    try {
+      auto tilePtr = nullthrows(createInteractionImpl(name));
+      eb.add([=, &conn, &eb, t = std::move(tilePtr)]() mutable {
+        TilePtr tile{t.release(), &eb};
         promisePtr->fulfill(*tile, *tm, eb);
         conn.tryReplaceTile(id, std::move(tile));
       });
+      return;
+    } catch (...) {
+      ex = std::current_exception();
+    }
+    DCHECK(ex);
+    eb.add([=, &conn, ex = std::move(ex)]() {
+      promisePtr->failWith(
+          folly::make_exception_wrapper<TApplicationException>(
+              folly::to<std::string>(
+                  "Interaction constructor failed with ",
+                  folly::exceptionStr(ex))),
+          kInteractionConstructorErrorErrorCode);
+      conn.removeTile(id);
+    });
+  });
   return true;
 }
 
