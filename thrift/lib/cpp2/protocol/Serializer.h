@@ -54,22 +54,18 @@ struct Serializer {
       const folly::io::Cursor& cursor,
       T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
-    warn_unless(folly::tag<T>, "deserialize", is_thrift_class<T>{});
-    Reader reader(sharing);
-    reader.setInput(cursor);
-
-    // This can be obj.read(&reader);
-    // if you don't need to support thrift1-compatibility types
-    apache::thrift::Cpp2Ops<T>::read(&reader, &obj);
-
-    return reader.getCursor();
+    return deserializeImpl(cursor, obj, sharing);
   }
+
   template <class T>
   static size_t deserialize(
       const folly::IOBuf* buf,
       T& obj,
       ExternalBufferSharing sharing = COPY_EXTERNAL_BUFFER) {
-    return deserialize(folly::io::Cursor{buf}, obj, sharing)
+    // Create Reader and assign/read Cursor object in the same method to avoid
+    // store-load forwarding block penalty vs calling deserializer from Cursor
+    // object directly.
+    return deserializeImpl(folly::io::Cursor{buf}, obj, sharing)
         .getCurrentPosition();
   }
 
@@ -191,6 +187,22 @@ struct Serializer {
   }
 
  private:
+  template <typename T>
+  FOLLY_ALWAYS_INLINE static folly::io::Cursor deserializeImpl(
+      const folly::io::Cursor& cursor,
+      T& obj,
+      ExternalBufferSharing sharing) {
+    warn_unless(folly::tag<T>, "deserialize", is_thrift_class<T>{});
+    Reader reader(sharing);
+    reader.setInput(cursor);
+
+    // This can be obj.read(&reader);
+    // if you don't need to support thrift1-compatibility types
+    apache::thrift::Cpp2Ops<T>::read(&reader, &obj);
+
+    return reader.getCursor();
+  }
+
   template <typename T>
   static void set(T* t, T&& v) {
     if (t != nullptr) {
