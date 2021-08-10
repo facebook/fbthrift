@@ -82,12 +82,12 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
       const Cpp2Worker* worker = nullptr)
       : manager_(manager),
         duplexChannel_(duplexChannel),
+        peerCert_(peerCert),
         transport_(transport),
         worker_(worker) {
     if (address) {
       peerAddress_ = *address;
     }
-    X509* x509 = peerCert.get();
     if (transport) {
       // require worker to be passed when wrapping a real connection
       DCHECK(worker != nullptr);
@@ -96,12 +96,12 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
       if (cert) {
         auto osslCert =
             dynamic_cast<const folly::OpenSSLTransportCertificate*>(cert);
-        x509 = osslCert ? osslCert->getX509().get() : nullptr;
+        peerCert_ = osslCert ? osslCert->getX509() : nullptr;
       }
       securityProtocol_ = transport->getSecurityProtocol();
 
       if (localAddress_.getFamily() == AF_UNIX) {
-        auto wrapper = transport->getUnderlyingTransport<folly::AsyncSocket>();
+        auto wrapper = transport_->getUnderlyingTransport<folly::AsyncSocket>();
         if (wrapper) {
           peerCred_ = PeerCred::queryFromSocket(wrapper->getNetworkSocket());
         }
@@ -109,7 +109,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     }
 
     if (clientIdentityHook) {
-      peerIdentities_ = clientIdentityHook(transport, x509, peerAddress_);
+      peerIdentities_ =
+          clientIdentityHook(transport_, peerCert_.get(), peerAddress_);
     }
   }
 
@@ -140,16 +141,15 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   folly::EventBaseManager* getEventBaseManager() override { return manager_; }
 
   std::string getPeerCommonName() const {
-    if (!transport_) {
-      return "";
+    if (peerCert_) {
+      if (auto cnPtr = wangle::SSLUtil::getCommonName(peerCert_.get())) {
+        return std::move(*cnPtr);
+      }
     }
-    auto osslCert = dynamic_cast<const folly::OpenSSLTransportCertificate*>(
-        transport_->getPeerCertificate());
-    if (!osslCert) {
-      return "";
-    }
-    return folly::ssl::OpenSSLUtils::getCommonName(osslCert->getX509().get());
+    return std::string();
   }
+
+  virtual std::shared_ptr<X509> getPeerCertificate() const { return peerCert_; }
 
   template <typename Client>
   std::shared_ptr<Client> getDuplexClient() {
@@ -391,6 +391,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   folly::EventBaseManager* manager_;
   std::shared_ptr<RequestChannel> duplexChannel_;
   std::shared_ptr<TClientBase> duplexClient_;
+  std::shared_ptr<X509> peerCert_;
   folly::erased_unique_ptr peerIdentities_{folly::empty_erased_unique_ptr()};
   std::string securityProtocol_;
   const folly::AsyncTransport* transport_;
