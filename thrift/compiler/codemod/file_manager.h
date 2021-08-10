@@ -64,6 +64,8 @@ class file_manager {
   // Adds a given replacement to the set of replacements.
   void add(replacement replace) { replacements_.insert(std::move(replace)); }
 
+  const std::string_view old_content() { return old_content_; }
+
  private:
   const t_program* program_;
   std::string old_content_;

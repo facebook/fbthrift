@@ -20,6 +20,7 @@
 #include <vector>
 
 #include <thrift/compiler/ast/diagnostic.h>
+#include <thrift/compiler/ast/t_program_bundle.h>
 
 namespace apache {
 namespace thrift {
@@ -34,6 +35,12 @@ struct compile_result {
   compile_retcode retcode = compile_retcode::failure;
   diagnostic_results detail;
 };
+
+/**
+ * Parse it up, then just spit back out the program_bundle it generated.
+ */
+std::unique_ptr<t_program_bundle> parse_and_get_program(
+    const std::vector<std::string>& arguments);
 
 /**
  * Parse it up, then spit it back out, in pretty much every language. Alright
