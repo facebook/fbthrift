@@ -51,6 +51,7 @@ void logSetupConnectionEventsOnce(
     folly::once_flag& flag, const ConnectionLoggingContext& context) {
   static_cast<void>(folly::try_call_once(flag, [&]() noexcept {
     try {
+      THRIFT_CONNECTION_EVENT(new_connection).log(context);
       if (auto transport = context.getTransport()) {
         const auto& protocol = context.getSecurityProtocol();
         if (protocol == "TLS" || protocol == "Fizz" || protocol == "stopTLS") {
