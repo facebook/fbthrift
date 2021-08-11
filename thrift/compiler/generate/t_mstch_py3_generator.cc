@@ -98,6 +98,11 @@ const t_type* get_stream_elem_type(const t_type& type) {
   return dynamic_cast<const t_stream_response&>(type).get_elem_type();
 }
 
+bool is_func_supported(bool no_stream, const t_function* func) {
+  return !(no_stream && func->returns_stream()) && !func->returns_sink() &&
+      !func->get_returntype()->is_service();
+}
+
 class mstch_py3_type : public mstch_type {
  public:
   struct CachedProperties {
@@ -393,8 +398,9 @@ class mstch_py3_program : public mstch_program {
   }
   mstch::node unique_functions_by_return_type() {
     std::vector<const t_function*> functions;
+    bool no_stream = has_option("no_stream");
     for (auto& kv : uniqueFunctionsByReturnType_) {
-      if (!kv.second->get_returntype()->is_service()) {
+      if (is_func_supported(no_stream, kv.second)) {
         functions.push_back(kv.second);
       }
     }
@@ -430,8 +436,10 @@ class mstch_py3_program : public mstch_program {
 
   mstch::node getStreamTypes() {
     std::vector<const t_type*> types;
-    for (auto& it : streamTypes_) {
-      types.push_back(it.second);
+    if (!has_option("no_stream")) {
+      for (auto& it : streamTypes_) {
+        types.push_back(it.second);
+      }
     }
     return generate_types_array(types);
   }
@@ -738,8 +746,7 @@ class mstch_py3_service : public mstch_service {
     std::vector<t_function*> funcs;
     bool no_stream = has_option("no_stream");
     for (auto func : service_->get_functions()) {
-      if (!(no_stream && func->returns_stream()) && !func->returns_sink() &&
-          !func->get_returntype()->is_service()) {
+      if (is_func_supported(no_stream, func)) {
         funcs.push_back(func);
       }
     }

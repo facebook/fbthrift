@@ -95,16 +95,6 @@ cdef class ServerStream_cbool(ServerStream):
 
 
 @cython.auto_pickle(False)
-cdef class Promise_:
-    cdef cFollyPromise[] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[] cPromise):
-        cdef Promise_ inst = Promise_.__new__(Promise_)
-        inst.cPromise = cmove(cPromise)
-        return inst
-
-@cython.auto_pickle(False)
 cdef class Promise_cServerStream__cbool:
     cdef cFollyPromise[cServerStream[cbool]] cPromise
 

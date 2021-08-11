@@ -67,16 +67,6 @@ from module.services_wrapper cimport cSinkServiceInterface
 
 
 
-@cython.auto_pickle(False)
-cdef class Promise_:
-    cdef cFollyPromise[] cPromise
-
-    @staticmethod
-    cdef create(cFollyPromise[] cPromise):
-        cdef Promise_ inst = Promise_.__new__(Promise_)
-        inst.cPromise = cmove(cPromise)
-        return inst
-
 cdef object _SinkService_annotations = _py_types.MappingProxyType({
 })
 
