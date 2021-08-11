@@ -16,7 +16,6 @@
 
 namespace cpp2 apache.thrift.test
 
-cpp_include "<memory_resource>"
 cpp_include "folly/io/IOBuf.h"
 cpp_include "thrift/test/container_size.h"
 
