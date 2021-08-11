@@ -189,9 +189,7 @@ struct Serializer {
  private:
   template <typename T>
   FOLLY_ALWAYS_INLINE static folly::io::Cursor deserializeImpl(
-      const folly::io::Cursor& cursor,
-      T& obj,
-      ExternalBufferSharing sharing) {
+      const folly::io::Cursor& cursor, T& obj, ExternalBufferSharing sharing) {
     warn_unless(folly::tag<T>, "deserialize", is_thrift_class<T>{});
     Reader reader(sharing);
     reader.setInput(cursor);
