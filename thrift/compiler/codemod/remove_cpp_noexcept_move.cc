@@ -24,23 +24,11 @@
 using namespace apache::thrift::compiler;
 
 // Removes cpp.noexcept_move annotation.
-// NOTE: Rely on THRIFTFORMAT to fix formatting issues.
-static void remove_noexcept(codemod::file_manager& fm, const t_struct& node) {
+static void remove_cpp_noexcept_move(
+    codemod::file_manager& fm, const t_struct& node) {
   for (const auto& annotation : node.annotations()) {
     if (annotation.first == "cpp.noexcept_move") {
-      auto begin_offset = annotation.second.src_range.begin().offset();
-      auto end_offset = annotation.second.src_range.end().offset();
-
-      while (end_offset < fm.old_content().length() &&
-             std::isspace(fm.old_content()[end_offset])) {
-        end_offset++;
-      }
-
-      if (fm.old_content()[end_offset] == ',') {
-        end_offset++;
-      }
-
-      fm.add({begin_offset, end_offset, ""});
+      fm.remove(annotation);
     }
   }
 }
@@ -58,8 +46,10 @@ int main(int argc, char** argv) {
   codemod::file_manager fm(*program);
 
   const_ast_visitor visitor;
-  visitor.add_struct_visitor(folly::partial(remove_noexcept, std::ref(fm)));
-  visitor.add_union_visitor(folly::partial(remove_noexcept, std::ref(fm)));
+  visitor.add_struct_visitor(
+      folly::partial(remove_cpp_noexcept_move, std::ref(fm)));
+  visitor.add_union_visitor(
+      folly::partial(remove_cpp_noexcept_move, std::ref(fm)));
   visitor(*program);
 
   fm.apply_replacements();

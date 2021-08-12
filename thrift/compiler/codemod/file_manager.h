@@ -66,6 +66,9 @@ class file_manager {
 
   const std::string_view old_content() { return old_content_; }
 
+  // Adds a replacement to remove the given element.
+  void remove(const t_annotation& annotation);
+
  private:
   const t_program* program_;
   std::string old_content_;

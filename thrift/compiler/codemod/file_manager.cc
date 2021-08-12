@@ -46,6 +46,24 @@ void file_manager::apply_replacements() {
   folly::writeFile(new_content, program_->path().c_str());
 }
 
+// Adds a replacement to remove the given element.
+// NOTE: Rely on THRIFTFORMAT to fix formatting issues.
+void file_manager::remove(const t_annotation& annotation) {
+  auto begin_offset = annotation.second.src_range.begin().offset();
+  auto end_offset = annotation.second.src_range.end().offset();
+
+  while (end_offset < old_content().length() &&
+         std::isspace(old_content()[end_offset])) {
+    end_offset++;
+  }
+
+  if (old_content()[end_offset] == ',') {
+    end_offset++;
+  }
+
+  add({begin_offset, end_offset, ""});
+}
+
 } // namespace codemod
 } // namespace compiler
 } // namespace thrift
