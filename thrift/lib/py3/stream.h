@@ -121,4 +121,9 @@ apache::thrift::ServerStream<StreamElement> createAsyncIteratorFromPyIterator(
 } // namespace py3
 } // namespace thrift
 
+#else /* !FOLLY_HAS_COROUTINES */
+#error  Thrift stream type support needs C++ coroutines, which are not currently available. \
+        Use a modern compiler and pass appropriate options to enable C++ coroutine support, \
+        or consider passing the Thrift compiler the mstch_py3:no_stream option in order to \
+        ignore stream type fields when generating code.
 #endif
