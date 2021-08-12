@@ -17,6 +17,7 @@
 include "thrift/lib/thrift/annotation/scope.thrift"
 
 namespace cpp2 apache.thrift.annotation
+namespace py3 thrift.lib.thrift.annotation
 
 enum RefType {
   Unique = 0,

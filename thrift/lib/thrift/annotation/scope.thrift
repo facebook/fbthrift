@@ -18,7 +18,7 @@ namespace cpp2 apache.thrift.annotation
 namespace php apache_thrift
 namespace py thrift.annotation.scope
 namespace py.asyncio thrift_asyncio.annotation.scope
-namespace py3 thrift.annotation
+namespace py3 thrift.lib.thrift.annotation
 namespace java.swift org.apache.thrift.annotation
 namespace java org.apache.thrift.annotation
 namespace go thrift.annotation.scope
@@ -54,9 +54,15 @@ struct Interaction {
 } (thrift.uri = "facebook.com/thrift/annotation/Interaction")
 struct Function {
 } (thrift.uri = "facebook.com/thrift/annotation/Function")
-struct Enum {
-} (thrift.uri = "facebook.com/thrift/annotation/Enum")
 struct EnumValue {
 } (thrift.uri = "facebook.com/thrift/annotation/EnumValue")
 struct Const {
 } (thrift.uri = "facebook.com/thrift/annotation/Const")
+
+// Due to cython bug, we can not use `Enum` as class name directly
+// https://github.com/cython/cython/issues/2474
+struct FbthriftInternalEnum {
+}
+typedef FbthriftInternalEnum Enum (
+  thrift.uri = "facebook.com/thrift/annotation/Enum",
+)

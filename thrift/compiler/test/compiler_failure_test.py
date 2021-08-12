@@ -1153,12 +1153,15 @@ class CompilerFailureTest(unittest.TestCase):
                 } (thrift.uri = "facebook.com/thrift/annotation/Interaction")
                 struct Function {
                 } (thrift.uri = "facebook.com/thrift/annotation/Function")
-                struct Enum {
-                } (thrift.uri = "facebook.com/thrift/annotation/Enum")
                 struct EnumValue {
                 } (thrift.uri = "facebook.com/thrift/annotation/EnumValue")
                 struct Const {
                 } (thrift.uri = "facebook.com/thrift/annotation/Const")
+
+                // Due to cython bug, we can not use `Enum` as class name directly
+                // https://github.com/cython/cython/issues/2474
+                struct FbthriftInternalEnum {}
+                typedef FbthriftInternalEnum Enum (thrift.uri = "facebook.com/thrift/annotation/Enum")
                 """
             ),
         )
@@ -1180,16 +1183,23 @@ class CompilerFailureTest(unittest.TestCase):
                 @scope.Field
                 struct StructOrFieldAnnot {}
 
+                @scope.Enum
+                struct EnumAnnot {}
+
                 @NotAnAnnot
                 @StructAnnot
                 @FieldAnnot
                 @StructOrFieldAnnot
+                @EnumAnnot
                 struct TestStruct {
                     @FieldAnnot
                     @StructAnnot
                     @StructOrFieldAnnot
                     1: bool test_field;
                 }
+
+                @EnumAnnot
+                enum TestEnum { Foo = 0, Bar = 1 }
                 """
             ),
         )
@@ -1199,9 +1209,10 @@ class CompilerFailureTest(unittest.TestCase):
             "\n" + err,
             textwrap.dedent(
                 """
-                [WARNING:foo.thrift:15] Using `NotAnAnnot` as an annotation, even though it has not been enabled for any annotation scope.
-                [FAILURE:foo.thrift:17] `FieldAnnot` cannot annotate `TestStruct`
-                [FAILURE:foo.thrift:21] `StructAnnot` cannot annotate `test_field`
+                [WARNING:foo.thrift:18] Using `NotAnAnnot` as an annotation, even though it has not been enabled for any annotation scope.
+                [FAILURE:foo.thrift:20] `FieldAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:22] `EnumAnnot` cannot annotate `TestStruct`
+                [FAILURE:foo.thrift:25] `StructAnnot` cannot annotate `test_field`
                 """
             ),
         )

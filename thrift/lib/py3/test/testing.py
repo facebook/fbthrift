@@ -12,11 +12,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from unittest import IsolatedAsyncioTestCase
+from unittest import TestCase, IsolatedAsyncioTestCase
 from unittest.mock import patch, Mock
 
 import thrift.py3  # @manual
 from testing.clients import TestingService
+from testing.types import ListNode
 from thrift.py3.testing import mock_client
 
 
@@ -37,3 +38,16 @@ class TestTesting(IsolatedAsyncioTestCase):
 
         self.assertTrue(mock_get_client.return_value.getName.called)
         self.assertEqual(mock_get_client.return_value.getName.call_count, 2)
+
+
+class ListNodeTests(TestCase):
+    def test_basic(self) -> None:
+        node = None
+        for i in [30, 20, 10]:
+            newNode = ListNode(value=i, next=node)
+            node = newNode
+
+        for i in [10, 20, 30]:
+            assert node
+            self.assertEqual(node.value, i)
+            node = node.next
