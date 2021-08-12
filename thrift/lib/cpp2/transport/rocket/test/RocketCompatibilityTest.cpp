@@ -230,6 +230,10 @@ TEST_F(RocketCompatibilityTest, Oneway_Saturation) {
     // SINGLE_REQUEST_NO_RESPONSE doesn't need to wait for server response
     client->future_addAfterDelay(100, 5).get();
     client->future_addAfterDelay(50, 5).get(); // TODO: H2 fails in this call.
+
+    // This ensure the server to stays alive until the oneway methods have
+    // reached it
+    client->semifuture_sleep(0).get();
   });
 }
 
