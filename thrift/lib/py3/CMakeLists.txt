@@ -37,44 +37,48 @@ string(CONFIGURE [[
 
 check_cxx_source_compiles("${_code}" HAVE_STREAM_SUPPORT)
 
-function (create_cybld_tree _extname _tre)
-  file(MAKE_DIRECTORY "cybld/${_tre}")
-  set(_linked_files)
-  foreach (_src ${ARGN})
-    add_custom_command(OUTPUT "cybld/${_tre}/${_src}"
-      COMMAND ${CMAKE_COMMAND} -E create_symlink
-        ${CMAKE_CURRENT_SOURCE_DIR}/${_src}
-        "cybld/${_tre}/${_src}"
-      COMMENT "Generating symlink to ${_cxx}"
-    )
-    list(APPEND _linked_files "cybld/${_tre}/${_src}")
-  endforeach ()
-  add_custom_target(${_extname}-symlinks DEPENDS ${_linked_files})
-endfunction ()
+set(_py_srcs
+  "__init__.py"
+  "client.pxd"
+  "client.pyx"
+  "ssl.pxd"
+  "ssl.pyx"
+  "server.pxd"
+  "server.pyx"
+  "common.pxd"
+  "common.pyx"
+  "std_libcpp.pxd"
+  "exceptions.pxd"
+  "exceptions.pyx"
+  "types.pxd"
+  "types.pyx"
+  "reflection.pxd"
+  "reflection.pyx"
+  "serializer.pxd"
+  "serializer.pyx"
+)
 
+if(HAVE_STREAM_SUPPORT)
+  list(APPEND _py_srcs
+    "stream.pxd"
+    "stream.pyx"
+  )
+endif()
 
-create_cybld_tree(thrift thrift/py3
-                         __init__.py
-                         client.pxd
-                         client.pyx
-                         ssl.pxd
-                         ssl.pyx
-                         server.pxd
-                         server.pyx
-                         common.pxd
-                         common.pyx
-                         std_libcpp.pxd
-                         exceptions.pxd
-                         exceptions.pyx
-                         types.pxd
-                         types.pyx
-                         reflection.pxd
-                         reflection.pyx
-                         serializer.pxd
-                         serializer.pyx
-                         stream.pxd
-                         stream.pyx)
-
+set(_extname thrift)
+set(_tre thrift/py3)
+file(MAKE_DIRECTORY "cybld/${_tre}")
+set(_linked_files)
+foreach (_src ${_py_srcs})
+  add_custom_command(OUTPUT "cybld/${_tre}/${_src}"
+    COMMAND ${CMAKE_COMMAND} -E create_symlink
+      ${CMAKE_CURRENT_SOURCE_DIR}/${_src}
+      "cybld/${_tre}/${_src}"
+    COMMENT "Generating symlink to ${_cxx}"
+  )
+  list(APPEND _linked_files "cybld/${_tre}/${_src}")
+endforeach ()
+add_custom_target(${_extname}-symlinks DEPENDS ${_linked_files})
 file(WRITE ${CMAKE_CURRENT_BINARY_DIR}/cybld/thrift/__init__.pxd)
 
 # Shared library targets for each Cython module, to avoid conficts targets
@@ -89,8 +93,10 @@ set(cpp_tgts
   "thrift/py3/server.cpp"
   "thrift/py3/ssl.cpp"
   "thrift/py3/reflection.cpp"
-  "thrift/py3/stream.cpp"
 )
+if(HAVE_STREAM_SUPPORT)
+  list(APPEND cpp_tgts "thrift/py3/stream.cpp")
+endiF()
 foreach(_mod ${cpp_tgts})
   get_filename_component(_f ${_mod} NAME_WE)
   get_filename_component(_d ${_mod} DIRECTORY)
