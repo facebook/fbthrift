@@ -21,6 +21,21 @@
 #   name of the extension - e.g. thrift
 #   sources...
 
+include(CheckCXXSourceCompiles)
+
+string(CONFIGURE [[
+  #include <folly/Portability.h>
+
+  #if !FOLLY_HAS_COROUTINES
+  #error Support for coroutines unavailable.
+  #endif
+
+  int main() {
+    return 0;
+  }
+  ]] _code)
+
+check_cxx_source_compiles("${_code}" HAVE_STREAM_SUPPORT)
 
 function (create_cybld_tree _extname _tre)
   file(MAKE_DIRECTORY "cybld/${_tre}")

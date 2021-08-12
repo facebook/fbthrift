@@ -29,11 +29,17 @@ macro(thrift_py3_test filename services)
      PROPERTIES POSITION_INDEPENDENT_CODE True)
   target_include_directories(${filename}-cpp2-obj PUBLIC ${FOLLY_INCLUDE_DIR})
 
+  set(_py3_thrift_flags "")
+  if(NOT HAVE_STREAM_SUPPORT)
+    message(WARNING "Support for Thrift 'stream' type disabled for lack of C++ coroutine support.")
+    set(_py3_thrift_flags "no_stream")
+  endif()
+
   thrift_generate(
     ${filename}
     ${services}
     "py3"
-    ""
+    "${_py3_thrift_flags}"
     "${CMAKE_CURRENT_SOURCE_DIR}"
     "${CMAKE_CURRENT_BINARY_DIR}"
     "test"
