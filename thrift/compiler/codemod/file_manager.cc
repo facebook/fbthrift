@@ -23,7 +23,6 @@ namespace thrift {
 namespace compiler {
 namespace codemod {
 
-// Write all existing replacements back to file.
 void file_manager::apply_replacements() {
   size_t prev_end = 0;
   std::string new_content;
@@ -46,8 +45,7 @@ void file_manager::apply_replacements() {
   folly::writeFile(new_content, program_->path().c_str());
 }
 
-// Adds a replacement to remove the given element.
-// NOTE: Rely on THRIFTFORMAT to fix formatting issues.
+// NOTE: Rely on automated formatting to fix formatting issues.
 void file_manager::remove(const t_annotation& annotation) {
   auto begin_offset = annotation.second.src_range.begin().offset();
   auto end_offset = annotation.second.src_range.end().offset();
@@ -62,6 +60,25 @@ void file_manager::remove(const t_annotation& annotation) {
   }
 
   add({begin_offset, end_offset, ""});
+}
+
+size_t file_manager::get_last_include_offset() const {
+  int lineno = 0;
+
+  for (const auto* include : program_->includes()) {
+    lineno = std::max(lineno, include->lineno());
+  }
+
+  return program_->get_offset({lineno + 1, 1, *program_});
+}
+
+void file_manager::add_include(std::string include) {
+  if (includes_.find(include) == includes_.end()) {
+    std::string curr_include = "include \"" + include + "\"\n";
+    includes_.insert(std::move(include));
+    auto offset = get_last_include_offset();
+    replacements_.insert({offset, offset, curr_include});
+  }
 }
 
 } // namespace codemod

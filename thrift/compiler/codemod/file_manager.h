@@ -19,6 +19,7 @@
 #include <stddef.h>
 #include <set>
 #include <stdexcept>
+#include <unordered_set>
 
 #include <folly/FileUtil.h>
 
@@ -56,6 +57,9 @@ class file_manager {
     if (!folly::readFile(program_->path().c_str(), old_content_)) {
       throw std::runtime_error("Could not read file: " + program_->path());
     }
+    for (const auto* include : program_->includes()) {
+      includes_.insert(include->get_doc());
+    }
   }
 
   // Write all existing replacements back to file.
@@ -64,15 +68,22 @@ class file_manager {
   // Adds a given replacement to the set of replacements.
   void add(replacement replace) { replacements_.insert(std::move(replace)); }
 
-  const std::string_view old_content() { return old_content_; }
+  const std::string_view old_content() const noexcept { return old_content_; }
+
+  // Adds a given include to the set of replacements.
+  void add_include(std::string include);
 
   // Adds a replacement to remove the given element.
   void remove(const t_annotation& annotation);
 
  private:
+  // Gets the line number of the first include in program's includes_.
+  size_t get_last_include_offset() const;
+
   const t_program* program_;
   std::string old_content_;
   std::set<replacement> replacements_;
+  std::unordered_set<std::string> includes_;
 };
 
 } // namespace codemod
