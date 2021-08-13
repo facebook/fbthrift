@@ -123,6 +123,25 @@ struct OnWriteSuccess : RocketClient::WriteSuccessCallback {
 };
 } // namespace
 
+class StreamElementEncoderStub final
+    : public apache::thrift::detail::StreamElementEncoder<int> {
+  folly::Try<StreamPayload> operator()(int&& i) override {
+    return folly::Try<StreamPayload>(
+        StreamPayload(folly::IOBuf::copyBuffer(folly::to<std::string>(i)), {}));
+  }
+
+  folly::Try<StreamPayload> operator()(folly::exception_wrapper&&) override {
+    return folly::Try<StreamPayload>(
+        StreamPayload(folly::IOBuf::create(0), {}));
+  }
+
+  folly::Try<StreamPayload> operator()() override {
+    return folly::Try<StreamPayload>(
+        StreamPayload(folly::IOBuf::create(0), {}));
+  }
+};
+static StreamElementEncoderStub encode;
+
 TEST_F(RocketNetworkTest, FlushManager) {
   this->withClients([](RocketTestClient& client, RocketClient& client2) {
     constexpr folly::StringPiece kMetadata1("metadata1");
@@ -921,16 +940,7 @@ TEST_F(RocketNetworkTest, SinkBasic) {
           co_await sinkClientCallback->getFirstThriftResponse();
           auto clientSink = ClientSink<int, int>(
               std::move(sinkClientCallback),
-              [](folly::Try<int>&& i) -> folly::Try<StreamPayload> {
-                if (i.hasValue()) {
-                  return folly::Try<StreamPayload>(StreamPayload(
-                      folly::IOBuf::copyBuffer(folly::to<std::string>(*i)),
-                      {}));
-                } else {
-                  return folly::Try<StreamPayload>(
-                      StreamPayload(folly::IOBuf::create(0), {}));
-                }
-              },
+              &encode,
               [](folly::Try<StreamPayload>&& payload) -> folly::Try<int> {
                 if (payload.hasValue()) {
                   return folly::Try<int>(folly::to<int>(
@@ -975,15 +985,7 @@ TEST_F(RocketNetworkTest, SinkCloseClient) {
 
     auto sink = ClientSink<int, int>(
         std::move(sinkClientCallback),
-        [](folly::Try<int>&& i) -> folly::Try<StreamPayload> {
-          if (i.hasValue()) {
-            return folly::Try<StreamPayload>(StreamPayload(
-                folly::IOBuf::copyBuffer(folly::to<std::string>(*i)), {}));
-          } else {
-            return folly::Try<StreamPayload>(
-                StreamPayload(folly::IOBuf::create(0), {}));
-          }
-        },
+        &encode,
         [](folly::Try<StreamPayload>&& payload) -> folly::Try<int> {
           if (payload.hasValue()) {
             return folly::Try<int>(folly::to<int>(

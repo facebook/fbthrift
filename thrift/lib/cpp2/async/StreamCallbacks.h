@@ -20,6 +20,7 @@
 #include <utility>
 
 #include <folly/ExceptionWrapper.h>
+#include <folly/Try.h>
 #include <folly/Utility.h>
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/EventBase.h>
@@ -70,6 +71,18 @@ struct HeadersPayload {
 };
 
 namespace detail {
+
+template <typename T>
+class StreamElementEncoder {
+ public:
+  virtual folly::Try<apache::thrift::StreamPayload> operator()(T&&) = 0;
+  virtual folly::Try<apache::thrift::StreamPayload> operator()(
+      folly::exception_wrapper&&) = 0;
+  virtual folly::Try<apache::thrift::StreamPayload> operator()() = 0;
+
+ protected:
+  ~StreamElementEncoder() = default;
+};
 
 struct FOLLY_EXPORT EncodedError : std::exception {
   explicit EncodedError(std::unique_ptr<folly::IOBuf> buf)

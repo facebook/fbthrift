@@ -15,11 +15,29 @@
  */
 
 #pragma once
+#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 #include "folly/synchronization/Baton.h"
 
 namespace apache {
 namespace thrift {
+
+template <typename T>
+class CompactSerializerEncoder final : public detail::StreamElementEncoder<T> {
+  folly::Try<StreamPayload> operator()(T&& in) override {
+    folly::IOBufQueue buf;
+    CompactSerializer::serialize(in, &buf);
+    return folly::Try<StreamPayload>({buf.move(), {}});
+  }
+
+  folly::Try<StreamPayload> operator()(folly::exception_wrapper&& e) override {
+    return folly::Try<StreamPayload>(e);
+  }
+
+  folly::Try<StreamPayload> operator()() override {
+    return folly::Try<StreamPayload>();
+  }
+};
 
 template <typename T>
 ClientBufferedStream<T> ServerStream<T>::toClientStreamUnsafeDoNotUse(
@@ -40,17 +58,6 @@ ClientBufferedStream<T> ServerStream<T>::toClientStreamUnsafeDoNotUse(
   auto streamBridge = apache::thrift::detail::ClientStreamBridge::create(
       &firstResponseCallback);
 
-  auto encode = [](folly::Try<T>&& in) {
-    if (in.hasValue()) {
-      folly::IOBufQueue buf;
-      CompactSerializer::serialize(*in, &buf);
-      return folly::Try<StreamPayload>({buf.move(), {}});
-    } else if (in.hasException()) {
-      return folly::Try<StreamPayload>(in.exception());
-    } else {
-      return folly::Try<StreamPayload>();
-    }
-  };
   auto decode = [](folly::Try<StreamPayload>&& in) {
     if (in.hasValue()) {
       T out;
@@ -63,7 +70,8 @@ ClientBufferedStream<T> ServerStream<T>::toClientStreamUnsafeDoNotUse(
     }
   };
 
-  eb->add([factory = (*this)(eb, encode), eb, streamBridge]() mutable {
+  static CompactSerializerEncoder<T> encode;
+  eb->add([factory = (*this)(eb, &encode), eb, streamBridge]() mutable {
     factory({nullptr, {}}, streamBridge, eb);
   });
   firstResponseCallback.baton.wait();

@@ -87,7 +87,7 @@ class ServerStream {
 
   apache::thrift::detail::ServerStreamFactory operator()(
       folly::Executor::KeepAlive<> serverExecutor,
-      folly::Try<StreamPayload> (*encode)(folly::Try<T>&&)) {
+      apache::thrift::detail::StreamElementEncoder<T>* encode) {
     return fn_(std::move(serverExecutor), encode);
   }
 

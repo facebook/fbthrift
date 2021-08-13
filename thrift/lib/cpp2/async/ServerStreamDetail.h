@@ -53,7 +53,7 @@ struct ServerStreamFactory {
 template <typename T>
 using ServerStreamFn = folly::Function<ServerStreamFactory(
     folly::Executor::KeepAlive<>,
-    folly::Try<StreamPayload> (*)(folly::Try<T>&&))>;
+    apache::thrift::detail::StreamElementEncoder<T>*)>;
 
 } // namespace detail
 } // namespace thrift

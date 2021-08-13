@@ -25,7 +25,7 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
         std::conditional_t<WithHeader, PayloadAndHeader<T>, T>&&>&& gen) {
   return [gen = std::move(gen)](
              folly::Executor::KeepAlive<> serverExecutor,
-             folly::Try<StreamPayload> (*encode)(folly::Try<T> &&)) mutable {
+             StreamElementEncoder<T>* encode) mutable {
     return ServerStreamFactory([gen = std::move(gen),
                                 serverExecutor = std::move(serverExecutor),
                                 encode](
@@ -95,8 +95,7 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
                   folly::coro::co_withCancellation(
                       stream->cancelSource_.getToken(), gen_.next()));
               if (next.hasException()) {
-                stream->publish(
-                    encode(folly::Try<T>(std::move(next.exception()))));
+                stream->publish((*encode)(std::move(next.exception())));
                 co_return;
               }
               if (!next->has_value()) {
@@ -112,14 +111,13 @@ ServerStreamFn<T> ServerGeneratorStream::fromAsyncGenerator(
                   stream->publish(folly::Try<StreamPayload>(
                       folly::in_place, nullptr, std::move(md)));
                 } else {
-                  StreamPayload sp =
-                      *encode(folly::Try<T>(*std::move(item.payload)));
+                  StreamPayload sp = *(*encode)(*std::move(item.payload));
                   sp.metadata.otherMetadata_ref() = std::move(item.metadata);
                   stream->publish(folly::Try<StreamPayload>(std::move(sp)));
                   --credits;
                 }
               } else {
-                stream->publish(encode(folly::Try<T>(std::move(item))));
+                stream->publish((*encode)(std::move(item)));
                 --credits;
               }
             }

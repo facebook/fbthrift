@@ -41,7 +41,7 @@ class SinkThrew : public TApplicationException {};
 template <typename T, typename R>
 class ClientSink {
 #if FOLLY_HAS_COROUTINES
-  using PayloadSerializer = folly::Try<StreamPayload> (*)(folly::Try<T>&&);
+  using PayloadSerializer = apache::thrift::detail::StreamElementEncoder<T>*;
   using FinalResponseDeserializer =
       folly::Try<R> (*)(folly::Try<StreamPayload>&&);
 
@@ -83,14 +83,13 @@ class ClientSink {
                         co_await folly::coro::co_awaitTry(_generator.next());
                     if (item.hasException()) {
                       sinkThrew = true;
-                      co_yield serializer_(
-                          folly::Try<T>(std::move(item.exception())));
+                      co_yield (*serializer_)(std::move(item.exception()));
                       co_return;
                     }
                     if (!item->has_value()) {
                       co_return;
                     }
-                    co_yield serializer_(folly::Try<T>(std::move(**item)));
+                    co_yield (*serializer_)(std::move(**item));
                   }
                   co_return;
                 }(std::move(generator)));
@@ -106,10 +105,10 @@ class ClientSink {
  private:
   void cancel() {
     if (impl_) {
-      impl_->cancel(serializer_(
-          folly::Try<T>(folly::make_exception_wrapper<TApplicationException>(
+      impl_->cancel(
+          (*serializer_)(folly::make_exception_wrapper<TApplicationException>(
               TApplicationException::TApplicationExceptionType::INTERRUPTION,
-              "never called sink object"))));
+              "never called sink object")));
     }
   }
 

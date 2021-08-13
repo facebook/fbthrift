@@ -410,7 +410,7 @@ template <
     typename PResult,
     typename T,
     typename ErrorMapFunc>
-folly::Try<StreamPayload> encode_stream_element(folly::Try<T>&& val);
+class StreamElementEncoderImpl;
 
 template <typename Protocol, typename PResult, typename T>
 folly::Try<T> decode_stream_element(
@@ -618,13 +618,15 @@ template <
     typename ErrorMapFunc>
 ClientSink<SinkType, FinalResponseType> createSink(
     apache::thrift::detail::ClientSinkBridge::Ptr impl) {
+  static apache::thrift::detail::ap::StreamElementEncoderImpl<
+      ProtocolWriter,
+      SinkPResult,
+      SinkType,
+      std::decay_t<ErrorMapFunc>>
+      encode;
   return ClientSink<SinkType, FinalResponseType>(
       std::move(impl),
-      apache::thrift::detail::ap::encode_stream_element<
-          ProtocolWriter,
-          SinkPResult,
-          SinkType,
-          std::decay_t<ErrorMapFunc>>,
+      &encode,
       apache::thrift::detail::ap::decode_stream_element<
           ProtocolReader,
           FinalResponsePResult,
@@ -1101,23 +1103,27 @@ template <
     typename PResult,
     typename T,
     typename ErrorMapFunc>
-folly::Try<StreamPayload> encode_stream_element(folly::Try<T>&& val) {
-  if (val.hasValue()) {
+class StreamElementEncoderImpl final
+    : public apache::thrift::detail::StreamElementEncoder<T> {
+  folly::Try<StreamPayload> operator()(T&& val) override {
     StreamPayloadMetadata streamPayloadMetadata;
     PayloadMetadata payloadMetadata;
     payloadMetadata.responseMetadata_ref().ensure();
     streamPayloadMetadata.payloadMetadata_ref() = std::move(payloadMetadata);
     return folly::Try<StreamPayload>(
-        {encode_stream_payload<Protocol, PResult>(std::move(*val)),
+        {encode_stream_payload<Protocol, PResult>(std::move(val)),
          std::move(streamPayloadMetadata)});
-  } else if (val.hasException()) {
+  }
+
+  folly::Try<StreamPayload> operator()(folly::exception_wrapper&& e) override {
     return folly::Try<StreamPayload>(folly::exception_wrapper(
-        encode_stream_exception<Protocol, PResult, ErrorMapFunc>(
-            val.exception())));
-  } else {
+        encode_stream_exception<Protocol, PResult, ErrorMapFunc>(e)));
+  }
+
+  folly::Try<StreamPayload> operator()() override {
     return folly::Try<StreamPayload>();
   }
-}
+};
 
 template <typename Protocol, typename PResult, typename T>
 T decode_stream_payload_impl(folly::IOBuf& payload, folly::tag_t<T>) {
@@ -1242,9 +1248,8 @@ template <
 ServerStreamFactory encode_server_stream(
     apache::thrift::ServerStream<T>&& stream,
     folly::Executor::KeepAlive<> serverExecutor) {
-  return stream(
-      std::move(serverExecutor),
-      encode_stream_element<Protocol, PResult, T, ErrorMapFunc>);
+  static StreamElementEncoderImpl<Protocol, PResult, T, ErrorMapFunc> encode;
+  return stream(std::move(serverExecutor), &encode);
 }
 
 template <typename Protocol, typename PResult, typename T>

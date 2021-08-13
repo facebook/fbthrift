@@ -32,17 +32,25 @@ namespace thrift {
 
 using namespace ::testing;
 
-auto encode(folly::Try<int>&& i) -> folly::Try<StreamPayload> {
-  if (i.hasValue()) {
+class StreamElementEncoderStub final
+    : public apache::thrift::detail::StreamElementEncoder<int> {
+  folly::Try<StreamPayload> operator()(int&& i) override {
     folly::IOBufQueue buf;
-    CompactSerializer::serialize(*i, &buf);
+    CompactSerializer::serialize(i, &buf);
     return folly::Try<StreamPayload>({buf.move(), {}});
-  } else if (i.hasException()) {
-    return folly::Try<StreamPayload>(i.exception());
-  } else {
+  }
+
+  folly::Try<StreamPayload> operator()(folly::exception_wrapper&& e) override {
+    return folly::Try<StreamPayload>(e);
+  }
+
+  folly::Try<StreamPayload> operator()() override {
     return folly::Try<StreamPayload>();
   }
-}
+};
+
+static StreamElementEncoderStub encode;
+
 auto decode(folly::Try<StreamPayload>&& i) -> folly::Try<int> {
   if (i.hasValue()) {
     int out;
