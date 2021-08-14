@@ -24,28 +24,50 @@
 
 using namespace apache::thrift::compiler;
 
+static bool only_annotations(
+    const t_node& node, std::vector<std::string> annotations) {
+  if (node.annotations().size() != annotations.size()) {
+    return false;
+  }
+
+  std::vector<std::string> node_annotations;
+
+  for (const auto& annotation : node.annotations()) {
+    node_annotations.push_back(annotation.first);
+  }
+
+  std::sort(annotations.begin(), annotations.end());
+
+  return std::equal(
+      annotations.begin(), annotations.end(), node_annotations.begin());
+}
+
 // Migrates cpp.ref and cpp2.ref unstructured annotations to its
 // newly implemented structured versions.
 // NOTE: Rely on automated formatting to fix formatting issues.
 static void cppref_to_structured(
     codemod::file_manager& fm, const t_field& field) {
-  // TODO(urielrivas): Remove parenthesis when there are only
-  // "cpp.ref" and "cpp2.ref" annotations in the field.
-  bool ref_field = false;
+  if (!field.annotations().count("cpp.ref") &&
+      !field.annotations().count("cpp2.ref")) {
+    return;
+  }
+
+  fm.add_include("thrift/lib/thrift/annotation/cpp.thrift");
+
+  const auto field_begin_offset = field.src_range().begin().offset();
+
+  fm.add(
+      {field_begin_offset,
+       field_begin_offset,
+       "@cpp.Ref{type = cpp.RefType.Unique}\n"});
+
+  if (only_annotations(field, {"cpp.ref", "cpp2.ref"})) {
+    fm.remove_all_annotations(field);
+    return;
+  }
+
   for (const auto& annotation : field.annotations()) {
     if (annotation.first == "cpp.ref" || annotation.first == "cpp2.ref") {
-      auto field_begin_offset = field.src_range().begin().offset();
-
-      fm.add_include("thrift/lib/thrift/annotation/cpp.thrift");
-
-      if (!ref_field) {
-        fm.add(
-            {field_begin_offset,
-             field_begin_offset,
-             "@cpp.Ref{type = cpp.RefType.Unique}\n"});
-        ref_field = true;
-      }
-
       fm.remove(annotation);
     }
   }

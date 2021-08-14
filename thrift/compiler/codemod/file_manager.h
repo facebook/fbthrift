@@ -76,6 +76,9 @@ class file_manager {
   // Adds a replacement to remove the given element.
   void remove(const t_annotation& annotation);
 
+  // Removes all annotations from a given t_node.
+  void remove_all_annotations(const t_node& node);
+
  private:
   // Gets the line number of the first include in program's includes_.
   size_t get_last_include_offset() const;

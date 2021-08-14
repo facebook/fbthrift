@@ -96,6 +96,29 @@ void file_manager::add_include(std::string include) {
   }
 }
 
+void file_manager::remove_all_annotations(const t_node& node) {
+  size_t begin_offset = SIZE_MAX;
+  size_t end_offset = 0;
+
+  for (const auto& annotation : node.annotations()) {
+    begin_offset =
+        std::min(begin_offset, annotation.second.src_range.begin().offset());
+    end_offset =
+        std::max(end_offset, annotation.second.src_range.end().offset());
+  }
+
+  expand_over_whitespaces(begin_offset, end_offset);
+
+  if (begin_offset - 1 >= 0 && end_offset < old_content_.length() &&
+      old_content_[begin_offset - 1] == '(' &&
+      old_content_[end_offset] == ')') {
+    --begin_offset;
+    ++end_offset;
+  }
+
+  replacements_.insert({begin_offset, end_offset, ""});
+}
+
 } // namespace codemod
 } // namespace compiler
 } // namespace thrift
