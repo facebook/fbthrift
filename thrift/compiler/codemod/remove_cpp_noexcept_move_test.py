@@ -62,7 +62,7 @@ class RemoveCppNoexceptMove(unittest.TestCase):
                 union Fee {
                     1: i32 fee1;
                     2: string fee2;
-                } ()
+                } 
                 """
             ),
         )

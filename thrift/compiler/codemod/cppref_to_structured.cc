@@ -29,19 +29,24 @@ using namespace apache::thrift::compiler;
 // NOTE: Rely on automated formatting to fix formatting issues.
 static void cppref_to_structured(
     codemod::file_manager& fm, const t_field& field) {
-  if (cpp2::has_ref_annotation(field)) {
-    auto field_begin_offset = field.src_range().begin().offset();
+  // TODO(urielrivas): Remove parenthesis when there are only
+  // "cpp.ref" and "cpp2.ref" annotations in the field.
+  bool ref_field = false;
+  for (const auto& annotation : field.annotations()) {
+    if (annotation.first == "cpp.ref" || annotation.first == "cpp2.ref") {
+      auto field_begin_offset = field.src_range().begin().offset();
 
-    fm.add_include("thrift/lib/thrift/annotation/cpp.thrift");
-    fm.add(
-        {field_begin_offset,
-         field_begin_offset,
-         "@cpp.Ref{type = cpp.RefType.Unique}\n"});
+      fm.add_include("thrift/lib/thrift/annotation/cpp.thrift");
 
-    for (const auto& annotation : field.annotations()) {
-      if (annotation.first == "cpp.ref" || annotation.first == "cpp2.ref") {
-        fm.remove(annotation);
+      if (!ref_field) {
+        fm.add(
+            {field_begin_offset,
+             field_begin_offset,
+             "@cpp.Ref{type = cpp.RefType.Unique}\n"});
+        ref_field = true;
       }
+
+      fm.remove(annotation);
     }
   }
 }

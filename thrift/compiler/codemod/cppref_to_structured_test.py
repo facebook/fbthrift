@@ -56,7 +56,7 @@ class CppRefToUnstructured(unittest.TestCase):
                 struct Faa {
                     1: i32 faa1;
                     @cpp.Ref{type = cpp.RefType.Unique}
-                2: optional Faa faa2 ();
+                2: optional Faa faa2 ;
                     3: i32 faa3;
                 }
                 """
@@ -99,7 +99,7 @@ class CppRefToUnstructured(unittest.TestCase):
                 struct Faa {
                     1: i32 faa1;
                     @cpp.Ref{type = cpp.RefType.Unique}
-                2: optional Faa faa2 ();
+                2: optional Faa faa2 ;
                     3: i32 faa3;
                 }
                 """
@@ -163,7 +163,7 @@ class CppRefToUnstructured(unittest.TestCase):
                 struct Faa {
                     1: i32 faa1;
                     @cpp.Ref{type = cpp.RefType.Unique}
-                2: optional Faa faa2 ( );
+                2: optional Faa faa2 ();
                     3: i32 faa3;
                 }
                 """
