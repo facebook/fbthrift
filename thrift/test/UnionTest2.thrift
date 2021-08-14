@@ -77,7 +77,7 @@ union NoExceptMoveUnion {
   1: string string_field;
   2: i32 i32_field;
   3: OneOfEach struct_field;
-} (cpp.noexcept_move)
+}
 
 union CppRefContainers {
   1: list<CppRefContainers> values (cpp.ref);

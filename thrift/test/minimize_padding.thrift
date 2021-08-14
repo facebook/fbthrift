@@ -80,7 +80,7 @@ struct nonoptimal_struct_noexcept_move {
   1: required byte small;
   2: required big_align big;
   3: required small_align medium;
-} (cpp.minimize_padding, cpp.noexcept_move)
+} (cpp.minimize_padding)
 
 struct nonoptimal_large_struct_noexcept_move {
   1: required byte small;
@@ -88,4 +88,4 @@ struct nonoptimal_large_struct_noexcept_move {
   3: required small_align medium;
   4: required string mystring;
   5: required i32 a;
-} (cpp.minimize_padding, cpp.noexcept_move)
+} (cpp.minimize_padding)
