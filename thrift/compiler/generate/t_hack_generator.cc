@@ -15,6 +15,7 @@
  */
 
 #include <stdlib.h>
+#include <thrift/compiler/ast/t_stream.h>
 
 #include <fstream>
 #include <iostream>
@@ -182,8 +183,19 @@ class t_hack_generator : public t_oop_generator {
       bool is_result,
       bool is_args,
       const std::string& name);
+  void generate_php_function_result_helpers(
+      const t_function* tfunction,
+      const t_type* ttype,
+      const t_throws* ex,
+      const std::string& prefix,
+      const std::string& suffix,
+      bool is_void);
+  void generate_php_function_args_helpers(
+      const t_function* tfunction, const std::string& prefix);
   void generate_php_function_helpers(
       const t_service* tservice, const t_function* tfunction);
+  void generate_php_stream_function_helpers(
+      const t_function* tfunction, const std::string& prefix);
   void generate_php_interaction_function_helpers(
       const t_service* tservice,
       const t_service* interaction,
@@ -243,6 +255,10 @@ class t_hack_generator : public t_oop_generator {
       std::ofstream& out,
       const t_service* tservice,
       const t_function* tfunction);
+  void _generate_stream_decode_recvImpl(
+      std::ofstream& out,
+      const t_service* tservice,
+      const t_function* tfunction);
   void _generate_sendImpl(
       std::ofstream& out,
       const t_service* tservice,
@@ -259,6 +275,12 @@ class t_hack_generator : public t_oop_generator {
       bool async,
       bool rpc_options);
   void _generate_service_client_child_fn(
+      std::ofstream& out,
+      const t_service* tservice,
+      const t_function* tfunction,
+      bool rpc_options,
+      bool legacy_arrays = false);
+  void _generate_service_client_stream_child_fn(
       std::ofstream& out,
       const t_service* tservice,
       const t_function* tfunction,
@@ -336,6 +358,13 @@ class t_hack_generator : public t_oop_generator {
    * Helper rendering functions
    */
 
+  enum class PhpFunctionNameSuffix {
+    ARGS = 0,
+    RESULT = 1,
+    STREAM_RESPONSE = 2,
+    FIRST_RESPONSE = 3,
+  };
+
   std::string declare_field(
       const t_field* tfield,
       bool init = false,
@@ -355,7 +384,9 @@ class t_hack_generator : public t_oop_generator {
   std::string generate_rpc_function_name(
       const t_service* tservice, const t_function* tfunction) const;
   std::string generate_function_helper_name(
-      const t_service* tservice, const t_function* tfunction, bool is_args);
+      const t_service* tservice,
+      const t_function* tfunction,
+      PhpFunctionNameSuffix suffix);
   std::string type_to_cast(const t_type* ttype);
   std::string type_to_enum(const t_type* ttype);
   void generate_php_docstring(std::ofstream& out, const t_node* tdoc);
@@ -369,6 +400,9 @@ class t_hack_generator : public t_oop_generator {
   void generate_php_docstring_args(
       std::ofstream& out, int start_pos, const t_struct* arg_list);
   std::string render_string(std::string value);
+
+  std::string get_stream_function_return_typehint(
+      const t_stream_response* tstream);
 
   std::string type_to_typehint(
       const t_type* ttype,
@@ -530,12 +564,23 @@ class t_hack_generator : public t_oop_generator {
 
   bool is_hack_const_type(const t_type* type);
 
-  std::vector<const t_function*> get_supported_functions(
+  std::vector<const t_function*> get_supported_server_functions(
       const t_service* tservice) {
     std::vector<const t_function*> funcs;
     for (auto func : tservice->get_functions()) {
       if (!func->returns_stream() && !func->returns_sink() &&
           !func->get_returntype()->is_service()) {
+        funcs.push_back(func);
+      }
+    }
+    return funcs;
+  }
+
+  std::vector<const t_function*> get_supported_client_functions(
+      const t_service* tservice) {
+    auto funcs = get_supported_server_functions(tservice);
+    for (auto func : tservice->get_functions()) {
+      if (func->returns_stream()) {
         funcs.push_back(func);
       }
     }
@@ -1552,6 +1597,29 @@ std::unique_ptr<t_const_value> t_hack_generator::type_to_tmeta(
 
     tmeta_ThriftType->add_map(
         std::make_unique<t_const_value>("t_sink"), std::move(tsink_tmeta));
+  } else if (
+      const auto* tstream = dynamic_cast<const t_stream_response*>(type)) {
+    auto tstream_tmeta = std::make_unique<t_const_value>();
+    tstream_tmeta->add_map(
+        std::make_unique<t_const_value>("elemType"),
+        type_to_tmeta(tstream->get_elem_type()));
+    if (tstream->has_first_response()) {
+      tstream_tmeta->add_map(
+          std::make_unique<t_const_value>("initialResponseType"),
+          type_to_tmeta(tstream->get_first_response_type()));
+    } else {
+      auto first_response_type = std::make_unique<t_const_value>();
+      first_response_type->add_map(
+          std::make_unique<t_const_value>("t_primitive"),
+          std::make_unique<t_const_value>(
+              ThriftPrimitiveType::THRIFT_VOID_TYPE));
+      tstream_tmeta->add_map(
+          std::make_unique<t_const_value>("initialResponseType"),
+          std::move(first_response_type));
+    }
+
+    tmeta_ThriftType->add_map(
+        std::make_unique<t_const_value>("t_stream"), std::move(tstream_tmeta));
   } else {
     // Unsupported type
   }
@@ -1635,7 +1703,7 @@ std::unique_ptr<t_const_value> t_hack_generator::service_to_tmeta(
       std::make_unique<t_const_value>("name"),
       std::make_unique<t_const_value>(service->get_scoped_name()));
 
-  auto functions = get_supported_functions(service);
+  auto functions = get_supported_client_functions(service);
   if (!functions.empty()) {
     auto tmeta_functions = std::make_unique<t_const_value>();
     tmeta_functions->set_list();
@@ -2840,6 +2908,10 @@ std::string t_hack_generator::render_service_metadata_response(
       queue.push(tsink->get_sink_type());
       queue.push(tsink->get_first_response_type());
       queue.push(tsink->get_final_response_type());
+    } else if (
+        const auto* tstream = dynamic_cast<const t_stream_response*>(type)) {
+      queue.push(tstream->get_elem_type());
+      queue.push(tstream->get_first_response_type());
     } else {
       // Unsupported type
     }
@@ -3511,7 +3583,7 @@ void t_hack_generator::generate_service_processor(
   indent_up();
 
   // Generate the process subfunctions
-  for (const auto* function : get_supported_functions(tservice)) {
+  for (const auto* function : get_supported_server_functions(tservice)) {
     generate_process_function(tservice, function, async);
   }
   generate_process_metadata_function(tservice, mangle, async);
@@ -3631,10 +3703,10 @@ void t_hack_generator::generate_process_function(
   indent_up();
 
   std::string service_name = hack_name(tservice);
-  std::string argsname =
-      generate_function_helper_name(tservice, tfunction, /*is_args*/ true);
-  std::string resultname =
-      generate_function_helper_name(tservice, tfunction, /*is_args*/ false);
+  std::string argsname = generate_function_helper_name(
+      tservice, tfunction, PhpFunctionNameSuffix::ARGS);
+  std::string resultname = generate_function_helper_name(
+      tservice, tfunction, PhpFunctionNameSuffix::RESULT);
   const std::string& fn_name = tfunction->name();
 
   f_service_ << indent()
@@ -3777,12 +3849,12 @@ void t_hack_generator::generate_service_helpers(
     const t_service* tservice, bool mangle) {
   f_service_ << "// HELPER FUNCTIONS AND STRUCTURES\n\n";
 
-  for (const auto* function : get_supported_functions(tservice)) {
+  for (const auto* function : get_supported_client_functions(tservice)) {
     generate_php_function_helpers(tservice, function);
   }
 
   for (const auto& interaction : get_interactions(tservice)) {
-    for (const auto& function : get_supported_functions(interaction)) {
+    for (const auto& function : get_supported_client_functions(interaction)) {
       generate_php_interaction_function_helpers(
           tservice, interaction, function);
     }
@@ -3833,7 +3905,7 @@ void t_hack_generator::generate_service_helpers(
              << ",\n";
   f_service_ << indent() << "'functions' => dict[\n";
   indent_up();
-  for (const auto& function : get_supported_functions(tservice)) {
+  for (const auto& function : get_supported_client_functions(tservice)) {
     if (function->structured_annotations().empty()) {
       continue;
     }
@@ -3900,7 +3972,7 @@ void t_hack_generator::generate_service_interactions(
     f_service_ << indent() << "}\n\n";
 
     // Generate interaction method implementations
-    for (const auto& function : get_supported_functions(interaction)) {
+    for (const auto& function : get_supported_client_functions(interaction)) {
       _generate_service_client_child_fn(
           f_service_, interaction, function, /*rpc_options*/ true);
       _generate_sendImpl(f_service_, interaction, function);
@@ -3922,28 +3994,80 @@ void t_hack_generator::generate_service_interactions(
 void t_hack_generator::generate_php_function_helpers(
     const t_service* tservice, const t_function* tfunction) {
   const std::string& service_name = tservice->name();
-  const t_struct* params = tfunction->get_paramlist();
-  std::string params_name = service_name + "_" + params->name();
+  if (tfunction->returns_stream()) {
+    generate_php_stream_function_helpers(tfunction, service_name);
+    return;
+  }
 
-  generate_php_struct_definition(
-      f_service_, params, false, false, true, params_name);
+  generate_php_function_args_helpers(tfunction, service_name);
 
   if (tfunction->qualifier() != t_function_qualifier::one_way) {
-    t_struct result(
-        program_, service_name + "_" + tfunction->name() + "_result");
-    auto success =
-        std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
-    if (!tfunction->get_returntype()->is_void()) {
+    generate_php_function_result_helpers(
+        tfunction,
+        tfunction->get_returntype(),
+        tfunction->exceptions(),
+        service_name,
+        "_result",
+        tfunction->get_returntype()->is_void());
+  }
+}
+
+void t_hack_generator::generate_php_function_result_helpers(
+    const t_function* tfunction,
+    const t_type* ttype,
+    const t_throws* ex,
+    const std::string& prefix,
+    const std::string& suffix,
+    bool is_void) {
+  t_struct result(program_, prefix + "_" + tfunction->name() + suffix);
+  if (ttype) {
+    auto success = std::make_unique<t_field>(ttype, "success", 0);
+    if (!is_void) {
       result.append(std::move(success));
     }
-
-    if (tfunction->exceptions() != nullptr) {
-      for (const auto& x : tfunction->exceptions()->fields()) {
-        result.append(x.clone_DO_NOT_USE());
-      }
-    }
-    generate_php_struct_definition(f_service_, &result, false, true);
   }
+  if (ex != nullptr) {
+    for (const auto& x : ex->fields()) {
+      result.append(x.clone_DO_NOT_USE());
+    }
+  }
+  generate_php_struct_definition(f_service_, &result, false, true);
+}
+
+void t_hack_generator::generate_php_function_args_helpers(
+    const t_function* tfunction, const std::string& prefix) {
+  const t_struct* params = tfunction->get_paramlist();
+  std::string params_name = prefix + "_" + params->name();
+  generate_php_struct_definition(
+      f_service_, params, false, false, true, params_name);
+}
+
+/**
+ * Generates a struct and helpers for a stream function.
+ *
+ * @param tfunction The function
+ */
+void t_hack_generator::generate_php_stream_function_helpers(
+    const t_function* tfunction, const std::string& prefix) {
+  const auto* tstream =
+      dynamic_cast<const t_stream_response*>(tfunction->get_returntype());
+  generate_php_function_args_helpers(tfunction, prefix);
+
+  generate_php_function_result_helpers(
+      tfunction,
+      tstream->get_elem_type(),
+      tstream->exceptions(),
+      prefix,
+      "_StreamResponse",
+      false);
+
+  generate_php_function_result_helpers(
+      tfunction,
+      tstream->get_first_response_type(),
+      tfunction->exceptions(),
+      prefix,
+      "_FirstResponse",
+      !tstream->has_first_response());
 }
 
 /**
@@ -3954,27 +4078,20 @@ void t_hack_generator::generate_php_interaction_function_helpers(
     const t_service* interaction,
     const t_function* tfunction) {
   const std::string& prefix = tservice->name() + "_" + interaction->name();
-  const t_struct* params = tfunction->get_paramlist();
-  std::string params_name = prefix + "_" + params->name();
-
-  generate_php_struct_definition(
-      f_service_, params, false, false, true, params_name);
+  if (tfunction->returns_stream()) {
+    generate_php_stream_function_helpers(tfunction, prefix);
+    return;
+  }
+  generate_php_function_args_helpers(tfunction, prefix);
 
   if (tfunction->qualifier() != t_function_qualifier::one_way) {
-    t_struct result(program_, prefix + "_" + tfunction->name() + "_result");
-    auto success =
-        std::make_unique<t_field>(tfunction->get_returntype(), "success", 0);
-    if (!tfunction->get_returntype()->is_void()) {
-      result.append(std::move(success));
-    }
-
-    if (tfunction->exceptions() != nullptr) {
-      for (const auto& x : tfunction->exceptions()->fields()) {
-        result.append(x.clone_DO_NOT_USE());
-      }
-    }
-
-    generate_php_struct_definition(f_service_, &result, false, true);
+    generate_php_function_result_helpers(
+        tfunction,
+        tfunction->get_returntype(),
+        tfunction->exceptions(),
+        prefix,
+        "_result",
+        tfunction->get_returntype()->is_void());
   }
 }
 
@@ -4031,7 +4148,34 @@ void t_hack_generator::generate_php_docstring(
   if (tfunction->qualifier() == t_function_qualifier::one_way) {
     out << "oneway ";
   }
-  out << thrift_type_name(tfunction->get_returntype()) << "\n";
+  if (const auto* tstream =
+          dynamic_cast<const t_stream_response*>(tfunction->get_returntype())) {
+    if (tstream->has_first_response()) {
+      out << thrift_type_name(tstream->get_first_response_type()) << ", ";
+    } else {
+      out << "void, ";
+    }
+    out << "stream<" << thrift_type_name(tstream->get_elem_type());
+
+    // Exceptions.
+    if (t_throws::or_empty(tstream->exceptions())->has_fields()) {
+      out << ", throws (";
+      auto first = true;
+      for (const auto& param : tstream->exceptions()->fields()) {
+        if (first) {
+          first = false;
+        } else {
+          out << ", ";
+        }
+        out << param.id() << ": " << thrift_type_name(param.get_type()) << " "
+            << param.name();
+      }
+      out << ")";
+    }
+    out << ">\n";
+  } else {
+    out << thrift_type_name(tfunction->get_returntype()) << "\n";
+  }
 
   // Function name.
   indent(out) << " * " << indent(1) << tfunction->name() << "(";
@@ -4333,6 +4477,26 @@ std::string t_hack_generator::type_to_typehint(
   }
 }
 
+std::string t_hack_generator::get_stream_function_return_typehint(
+    const t_stream_response* tstream) {
+  // Finally, the function declaration.
+  std::string return_typehint;
+
+  auto stream_response_type_hint =
+      type_to_typehint(tstream->get_elem_type()) + ">";
+
+  if (tstream->has_first_response()) {
+    auto first_response_type_hint =
+        type_to_typehint(tstream->get_first_response_type());
+    return_typehint = "\\ResponseAndClientStream<" + first_response_type_hint +
+        ", " + stream_response_type_hint;
+  } else {
+    return_typehint =
+        "\\ResponseAndClientStream<void, " + stream_response_type_hint;
+  }
+  return return_typehint;
+}
+
 /**
  * Generate an appropriate string for a parameter typehint.
  * The difference from type_to_typehint() is for parameters we should accept an
@@ -4397,7 +4561,7 @@ void t_hack_generator::generate_service_interface(
              << extends_if << " {\n";
   indent_up();
   auto delim = "";
-  for (const auto* function : get_supported_functions(tservice)) {
+  for (const auto* function : get_supported_client_functions(tservice)) {
     // Add a blank line before the start of a new function definition
     f_service_ << delim;
     delim = "\n";
@@ -4406,7 +4570,15 @@ void t_hack_generator::generate_service_interface(
     generate_php_docstring(f_service_, function);
 
     // Finally, the function declaration.
-    std::string return_typehint = type_to_typehint(function->get_returntype());
+    std::string return_typehint;
+
+    if (const auto* tstream = dynamic_cast<const t_stream_response*>(
+            function->get_returntype())) {
+      return_typehint = get_stream_function_return_typehint(tstream);
+    } else {
+      return_typehint = type_to_typehint(function->get_returntype());
+    }
+
     if (async || client) {
       return_typehint = "Awaitable<" + return_typehint + ">";
     }
@@ -4449,7 +4621,7 @@ void t_hack_generator::_generate_service_client(
   indent_up();
 
   // Generate client method implementations
-  for (const auto* function : get_supported_functions(tservice)) {
+  for (const auto* function : get_supported_client_functions(tservice)) {
     _generate_sendImpl(out, tservice, function);
     if (function->qualifier() != t_function_qualifier::one_way) {
       _generate_recvImpl(out, tservice, function);
@@ -4497,16 +4669,44 @@ void t_hack_generator::_generate_recvImpl(
     std::ofstream& out,
     const t_service* tservice,
     const t_function* tfunction) {
-  const std::string& resultname =
-      generate_function_helper_name(tservice, tfunction, /*is_args*/ false);
+  auto ttype = tfunction->get_returntype();
+  std::string return_typehint;
+  std::string resultname;
+  std::string recvImpl_method_name;
+  bool is_void = false;
+  if (const auto* tstream = dynamic_cast<const t_stream_response*>(ttype)) {
+    _generate_stream_decode_recvImpl(out, tservice, tfunction);
+
+    resultname = generate_function_helper_name(
+        tservice, tfunction, PhpFunctionNameSuffix::FIRST_RESPONSE);
+
+    recvImpl_method_name =
+        std::string("recvImpl_") + tfunction->name() + "_FirstResponse";
+
+    if (tstream->has_first_response()) {
+      ttype = tstream->get_first_response_type();
+      return_typehint = type_to_typehint(ttype);
+    } else {
+      return_typehint = "void";
+      is_void = true;
+    }
+  } else {
+    resultname = generate_function_helper_name(
+        tservice, tfunction, PhpFunctionNameSuffix::RESULT);
+    recvImpl_method_name = std::string("recvImpl_") + tfunction->name();
+    return_typehint = type_to_typehint(ttype);
+
+    is_void = ttype->is_void();
+  }
+
   const std::string& rpc_function_name =
       generate_rpc_function_name(tservice, tfunction);
 
   t_function recv_function(
       tfunction->get_returntype(),
-      std::string("recvImpl_") + tfunction->name(),
+      recvImpl_method_name,
       std::make_unique<t_paramlist>(program_));
-  std::string return_typehint = type_to_typehint(tfunction->get_returntype());
+
   // Open function
   out << "\n";
   if (arrprov_skip_frames_) {
@@ -4601,7 +4801,7 @@ void t_hack_generator::_generate_recvImpl(
       << "', $expectedsequenceid, $ex->result);\n"
       << indent() << "    return";
 
-  if (!tfunction->get_returntype()->is_void()) {
+  if (!is_void) {
     out << " $ex->result";
   }
   out << ";\n" << indent() << "}\n";
@@ -4615,7 +4815,7 @@ void t_hack_generator::_generate_recvImpl(
   out << indent() << "}\n";
 
   // Careful, only return result if not a void function
-  if (!tfunction->get_returntype()->is_void()) {
+  if (!is_void) {
     out << indent() << "if ($result->success !== null) {\n"
         << indent() << "  $success = $result->success;\n"
         << indent() << "  $this->eventHandler_->postRecv('" << rpc_function_name
@@ -4636,7 +4836,7 @@ void t_hack_generator::_generate_recvImpl(
   }
 
   // Careful, only return _result if not a void function
-  if (tfunction->get_returntype()->is_void()) {
+  if (is_void) {
     out << indent() << "$this->eventHandler_->postRecv('" << rpc_function_name
         << "', $expectedsequenceid, null);\n"
         << indent() << "return;\n";
@@ -4649,6 +4849,102 @@ void t_hack_generator::_generate_recvImpl(
         << "', $expectedsequenceid, $x);\n"
         << indent() << "throw $x;\n";
   }
+
+  // Close function
+  scope_down(out);
+}
+
+void t_hack_generator::_generate_stream_decode_recvImpl(
+    std::ofstream& out,
+    const t_service* tservice,
+    const t_function* tfunction) {
+  const std::string& resultname = generate_function_helper_name(
+      tservice, tfunction, PhpFunctionNameSuffix::STREAM_RESPONSE);
+
+  t_function recv_function(
+      tfunction->get_returntype(),
+      std::string("recvImpl_") + tfunction->name() +
+          std::string("_StreamDecode"),
+      std::make_unique<t_paramlist>(program_));
+  const auto* tstream =
+      dynamic_cast<const t_stream_response*>(tfunction->get_returntype());
+  auto ttype = tstream->get_elem_type();
+
+  std::string return_typehint =
+      "(function(?string, ?\\Exception) : " + type_to_typehint(ttype) + ")";
+  // Open function
+  out << "\n";
+  if (arrprov_skip_frames_) {
+    indent(f_service_) << "<<__ProvenanceSkipFrame>>\n";
+  }
+  out << indent() << "protected function "
+      << function_signature(
+             &recv_function,
+             "",
+             "shape(?'read_options' => int) $options = shape()",
+             return_typehint)
+      << " {\n";
+  indent_up();
+  out << indent() << "$protocol = $this->input_;\n";
+  out << indent() << "return function(\n";
+  indent_up();
+  out << indent() << "?string $stream_payload, ?\\Exception $ex\n";
+  indent_down();
+  out << indent() << ") use (\n";
+  indent_up();
+  out << indent() << "$protocol,\n";
+  indent_down();
+  out << indent() << ") {\n";
+  indent_up();
+  out << indent() << "try {\n";
+  indent_up();
+
+  out << indent() << "if ($ex !== null) {\n";
+  indent_up();
+  out << indent() << "throw $ex;\n";
+  indent_down();
+  out << indent() << "}\n";
+
+  out << indent() << "$transport = $protocol->getTransport();\n";
+
+  out << indent() << "invariant(\n";
+  indent_up();
+  out << indent() << "$transport is \\TMemoryBuffer,\n"
+      << indent() << "\"Stream methods require TMemoryBuffer transport\"\n";
+  indent_down();
+  out << indent() << ");\n\n";
+
+  out << indent() << "$transport->resetBuffer();\n"
+      << indent() << "$transport->write($stream_payload as nonnull);\n";
+
+  out << indent() << "$result = " << resultname << "::withDefaultValues();\n"
+      << indent() << "$result->read($protocol);\n";
+
+  out << indent() << "$protocol->readMessageEnd();\n";
+  indent_down();
+  indent(out) << "} catch (\\THandlerShortCircuitException $ex) {\n";
+  indent_up();
+  out << indent() << "throw $ex->result;\n";
+  indent_down();
+  out << indent() << "}\n";
+
+  out << indent() << "if ($result->success !== null) {\n"
+      << indent() << " return $result->success;\n"
+      << indent() << "}\n";
+  for (const auto& x : t_throws::or_empty(tstream->exceptions())->fields()) {
+    out << indent() << "if ($result->" << x.name() << " !== null) {\n"
+        << indent() << "  throw $result->" << x.name() << ";"
+        << "\n"
+        << indent() << "}\n";
+  }
+
+  out << indent() << "throw new \\TApplicationException(\"" << tfunction->name()
+      << " failed: unknown result\""
+      << ", \\TApplicationException::MISSING_RESULT"
+      << ");\n";
+  // close decode function
+  indent_down();
+  out << indent() << "};\n";
 
   // Close function
   scope_down(out);
@@ -4674,8 +4970,8 @@ void t_hack_generator::_generate_sendImpl(
   }
   indent_up();
 
-  const std::string& argsname =
-      generate_function_helper_name(tservice, tfunction, /*is_args*/ true);
+  const std::string& argsname = generate_function_helper_name(
+      tservice, tfunction, PhpFunctionNameSuffix::ARGS);
 
   out << indent() << "$currentseqid = $this->getNextSequenceID();\n"
       << indent() << "$args = " << argsname;
@@ -4900,11 +5196,8 @@ void t_hack_generator::_generate_service_client_children(
       << "  use " << long_name << "ClientBase;\n\n";
   indent_up();
 
-  // Generate client method implementations.
-  auto functions = get_supported_functions(tservice);
-
   // Generate functions as necessary.
-  for (const auto* function : functions) {
+  for (const auto* function : get_supported_client_functions(tservice)) {
     _generate_service_client_child_fn(out, tservice, function, rpc_options);
     if (no_use_hack_collections_) {
       _generate_service_client_child_fn(
@@ -4915,7 +5208,7 @@ void t_hack_generator::_generate_service_client_children(
   if (!async) {
     out << indent() << "/* send and recv functions */\n";
 
-    for (const auto* function : functions) {
+    for (const auto* function : get_supported_server_functions(tservice)) {
       const std::string& funname = function->name();
       std::string return_typehint =
           type_to_typehint(function->get_returntype());
@@ -4963,6 +5256,11 @@ void t_hack_generator::_generate_service_client_child_fn(
     const t_function* tfunction,
     bool rpc_options,
     bool legacy_arrays) {
+  if (tfunction->returns_stream()) {
+    _generate_service_client_stream_child_fn(
+        out, tservice, tfunction, rpc_options, legacy_arrays);
+    return;
+  }
   std::string funname =
       tfunction->name() + (legacy_arrays ? "__LEGACY_ARRAYS" : "");
   const std::string& tservice_name =
@@ -5058,6 +5356,122 @@ void t_hack_generator::_generate_service_client_child_fn(
   scope_down(out);
   out << "\n";
 }
+
+void t_hack_generator::_generate_service_client_stream_child_fn(
+    std::ofstream& out,
+    const t_service* tservice,
+    const t_function* tfunction,
+    bool rpc_options,
+    bool legacy_arrays) {
+  std::string funname =
+      tfunction->name() + (legacy_arrays ? "__LEGACY_ARRAYS" : "");
+  const std::string& tservice_name =
+      (tservice->is_interaction() ? service_name_ : tservice->name());
+  std::string return_typehint = get_stream_function_return_typehint(
+      dynamic_cast<const t_stream_response*>(tfunction->get_returntype()));
+  std::string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
+  std::string rpc_options_param =
+      rpc_options ? "$rpc_options" : "new \\RpcOptions()";
+
+  generate_php_docstring(out, tfunction);
+  if (arrprov_skip_frames_) {
+    indent(out) << "<<__ProvenanceSkipFrame>>\n";
+  }
+  indent(out) << "public async function " << funname << "("
+              << argument_list(
+                     tfunction->get_paramlist(),
+                     head_parameters,
+                     "",
+                     true,
+                     nullable_everything_)
+              << "): Awaitable<" + return_typehint + "> {\n";
+
+  indent_up();
+
+  indent(out) << "$hh_frame_metadata = $this->getHHFrameMetadata();\n";
+  indent(out) << "if ($hh_frame_metadata !== null) {\n";
+  indent_up();
+  indent(out) << "\\HH\\set_frame_metadata($hh_frame_metadata);\n";
+  indent_down();
+  indent(out) << "}\n";
+
+  if (tservice->is_interaction()) {
+    if (!rpc_options) {
+      throw std::runtime_error("Interaction methods require rpc_options");
+    }
+    indent(out) << rpc_options_param << " = " << rpc_options_param
+                << "->setInteractionId($this->interactionId);\n";
+  }
+
+  indent(out) << "$channel = $this->channel_;\n";
+  indent(out) << "$out_transport = $this->output_->getTransport();\n";
+  indent(out) << "$in_transport = $this->input_->getTransport();\n";
+
+  indent(out) << "invariant(\n";
+  indent_up();
+  indent(out)
+      << "$channel !== null && $out_transport is \\TMemoryBuffer && $in_transport is \\TMemoryBuffer,\n";
+  indent(out)
+      << "\"Stream methods require nonnull channel and TMemoryBuffer transport\"\n";
+  indent_down();
+  indent(out) << ");\n\n";
+
+  indent(out) << "await $this->asyncHandler_->genBefore(\"" << tservice_name
+              << "\", \"" << generate_rpc_function_name(tservice, tfunction)
+              << "\");\n";
+  indent(out) << "$currentseqid = $this->sendImpl_" << tfunction->name() << "(";
+
+  auto delim = "";
+  for (const auto& param : tfunction->get_paramlist()->fields()) {
+    out << delim << "$" << param.name();
+    delim = ", ";
+  }
+  out << ");\n";
+
+  out << indent() << "$msg = $out_transport->getBuffer();\n"
+      << indent() << "$out_transport->resetBuffer();\n"
+      << indent()
+      << "list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse("
+      << rpc_options_param << ", $msg);\n\n";
+
+  const auto* tstream =
+      dynamic_cast<const t_stream_response*>(tfunction->get_returntype());
+
+  out << indent() << "$stream_gen = $stream->gen<"
+      << type_to_typehint(tstream->get_elem_type()) << ">($this->recvImpl_"
+      << tfunction->name() << "_StreamDecode(";
+  if (legacy_arrays) {
+    out << "shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS)";
+  }
+  out << "));\n";
+
+  out << indent() << "$in_transport->resetBuffer();\n"
+      << indent() << "$in_transport->write($result_msg);\n"
+      << indent();
+  if (tstream->has_first_response()) {
+    out << "$first_response = ";
+  }
+  out << "$this->recvImpl_" << tfunction->name() << "_FirstResponse"
+      << "("
+      << "$currentseqid";
+  if (legacy_arrays) {
+    out << ", shape('read_options' => THRIFT_MARK_LEGACY_ARRAYS)";
+  }
+  out << ");\n";
+
+  if (tstream->has_first_response()) {
+    auto first_response_typehint =
+        type_to_typehint(tstream->get_first_response_type());
+    out << indent() << "return new " << return_typehint
+        << "($first_response, $stream_gen);\n";
+  } else {
+    out << indent() << "return new " << return_typehint
+        << "(null, $stream_gen);\n";
+  }
+  scope_down(out);
+  out << "\n";
+}
+
 /**
  * Declares a field, which may include initialization as necessary.
  *
@@ -5210,20 +5624,31 @@ std::string t_hack_generator::generate_rpc_function_name(
 
 /**
  * Generate function's helper structures name
- * @param is_args defines the suffix
- *    true  : _args
- *    false : _result
+ * @param suffix defines the suffix
  */
 std::string t_hack_generator::generate_function_helper_name(
-    const t_service* tservice, const t_function* tfunction, bool is_args) {
+    const t_service* tservice,
+    const t_function* tfunction,
+    PhpFunctionNameSuffix suffix) {
   std::string prefix = "";
   if (tservice->is_interaction()) {
     prefix = hack_name(service_name_, program_) + "_" + tservice->name();
   } else {
     prefix = hack_name(tservice);
   }
-  const std::string& suffix = is_args ? "args" : "result";
-  return prefix + "_" + tfunction->name() + "_" + suffix;
+
+  switch (suffix) {
+    case PhpFunctionNameSuffix::ARGS:
+      return prefix + "_" + tfunction->name() + "_args";
+    case PhpFunctionNameSuffix::RESULT:
+      return prefix + "_" + tfunction->name() + "_result";
+    case PhpFunctionNameSuffix::STREAM_RESPONSE:
+      return prefix + "_" + tfunction->name() + "_StreamResponse";
+    case PhpFunctionNameSuffix::FIRST_RESPONSE:
+      return prefix + "_" + tfunction->name() + "_FirstResponse";
+    default:
+      throw std::runtime_error("Invalid php function name suffix");
+  }
 }
 
 /**

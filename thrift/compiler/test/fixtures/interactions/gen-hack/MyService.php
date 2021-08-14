@@ -488,6 +488,162 @@ class MyService_MyInteraction extends \ThriftClientBase {
     $this->eventHandler_->postSend('MyInteraction.ping', $args, $currentseqid);
     return $currentseqid;
   }
+  /**
+   * Original thrift definition:-
+   * void, stream<bool>
+   *   truthify();
+   */
+  public async function truthify(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientStream<void, bool>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $rpc_options->setInteractionId($this->interactionId);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Stream methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("MyService", "MyInteraction.truthify");
+    $currentseqid = $this->sendImpl_truthify();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
+
+    $stream_gen = $stream->gen<bool>($this->recvImpl_truthify_StreamDecode());
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_truthify_FirstResponse($currentseqid);
+    return new \ResponseAndClientStream<void, bool>(null, $stream_gen);
+  }
+
+  protected function sendImpl_truthify(): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = MyService_MyInteraction_truthify_args::withDefaultValues();
+    try {
+      $this->eventHandler_->preSend('MyInteraction.truthify', $args, $currentseqid);
+      if ($this->output_ is \TBinaryProtocolAccelerated)
+      {
+        \thrift_protocol_write_binary($this->output_, 'MyInteraction.truthify', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ is \TCompactProtocolAccelerated)
+      {
+        \thrift_protocol_write_compact($this->output_, 'MyInteraction.truthify', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('MyInteraction.truthify', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('MyInteraction.truthify', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('MyInteraction.truthify', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->sendError('MyInteraction.truthify', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('MyInteraction.truthify', $args, $currentseqid);
+    return $currentseqid;
+  }
+
+  protected function recvImpl_truthify_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : bool) {
+    $protocol = $this->input_;
+    return function(
+      ?string $stream_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($stream_payload as nonnull);
+        $result = MyService_MyInteraction_truthify_StreamResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("truthify failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
+  protected function recvImpl_truthify_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
+    try {
+      $this->eventHandler_->preRecv('MyInteraction.truthify', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_MyInteraction_truthify_FirstResponse', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_MyInteraction_truthify_FirstResponse', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = MyService_MyInteraction_truthify_FirstResponse::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("truthify failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('MyInteraction.truthify', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('MyInteraction.truthify', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('MyInteraction.truthify', $expectedsequenceid, $ex->result);
+          return;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('MyInteraction.truthify', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postRecv('MyInteraction.truthify', $expectedsequenceid, null);
+    return;
+  }
 }
 
 class MyService_MyInteractionFast extends \ThriftClientBase {
@@ -687,6 +843,162 @@ class MyService_MyInteractionFast extends \ThriftClientBase {
     }
     $this->eventHandler_->postSend('MyInteractionFast.ping', $args, $currentseqid);
     return $currentseqid;
+  }
+  /**
+   * Original thrift definition:-
+   * void, stream<bool>
+   *   truthify();
+   */
+  public async function truthify(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientStream<void, bool>> {
+    $hh_frame_metadata = $this->getHHFrameMetadata();
+    if ($hh_frame_metadata !== null) {
+      \HH\set_frame_metadata($hh_frame_metadata);
+    }
+    $rpc_options = $rpc_options->setInteractionId($this->interactionId);
+    $channel = $this->channel_;
+    $out_transport = $this->output_->getTransport();
+    $in_transport = $this->input_->getTransport();
+    invariant(
+      $channel !== null && $out_transport is \TMemoryBuffer && $in_transport is \TMemoryBuffer,
+      "Stream methods require nonnull channel and TMemoryBuffer transport"
+    );
+
+    await $this->asyncHandler_->genBefore("MyService", "MyInteractionFast.truthify");
+    $currentseqid = $this->sendImpl_truthify();
+    $msg = $out_transport->getBuffer();
+    $out_transport->resetBuffer();
+    list($result_msg, $_read_headers, $stream) = await $channel->genSendRequestStreamResponse($rpc_options, $msg);
+
+    $stream_gen = $stream->gen<bool>($this->recvImpl_truthify_StreamDecode());
+    $in_transport->resetBuffer();
+    $in_transport->write($result_msg);
+    $this->recvImpl_truthify_FirstResponse($currentseqid);
+    return new \ResponseAndClientStream<void, bool>(null, $stream_gen);
+  }
+
+  protected function sendImpl_truthify(): int {
+    $currentseqid = $this->getNextSequenceID();
+    $args = MyService_MyInteractionFast_truthify_args::withDefaultValues();
+    try {
+      $this->eventHandler_->preSend('MyInteractionFast.truthify', $args, $currentseqid);
+      if ($this->output_ is \TBinaryProtocolAccelerated)
+      {
+        \thrift_protocol_write_binary($this->output_, 'MyInteractionFast.truthify', \TMessageType::CALL, $args, $currentseqid, $this->output_->isStrictWrite(), false);
+      }
+      else if ($this->output_ is \TCompactProtocolAccelerated)
+      {
+        \thrift_protocol_write_compact($this->output_, 'MyInteractionFast.truthify', \TMessageType::CALL, $args, $currentseqid, false);
+      }
+      else
+      {
+        $this->output_->writeMessageBegin('MyInteractionFast.truthify', \TMessageType::CALL, $currentseqid);
+        $args->write($this->output_);
+        $this->output_->writeMessageEnd();
+        $this->output_->getTransport()->flush();
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->sendError('MyInteractionFast.truthify', $args, $currentseqid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postSend('MyInteractionFast.truthify', $args, $currentseqid);
+          return $currentseqid;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->sendError('MyInteractionFast.truthify', $args, $currentseqid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postSend('MyInteractionFast.truthify', $args, $currentseqid);
+    return $currentseqid;
+  }
+
+  protected function recvImpl_truthify_StreamDecode(shape(?'read_options' => int) $options = shape()): (function(?string, ?\Exception) : bool) {
+    $protocol = $this->input_;
+    return function(
+      ?string $stream_payload, ?\Exception $ex
+    ) use (
+      $protocol,
+    ) {
+      try {
+        if ($ex !== null) {
+          throw $ex;
+        }
+        $transport = $protocol->getTransport();
+        invariant(
+          $transport is \TMemoryBuffer,
+          "Stream methods require TMemoryBuffer transport"
+        );
+
+        $transport->resetBuffer();
+        $transport->write($stream_payload as nonnull);
+        $result = MyService_MyInteractionFast_truthify_StreamResponse::withDefaultValues();
+        $result->read($protocol);
+        $protocol->readMessageEnd();
+      } catch (\THandlerShortCircuitException $ex) {
+        throw $ex->result;
+      }
+      if ($result->success !== null) {
+       return $result->success;
+      }
+      throw new \TApplicationException("truthify failed: unknown result", \TApplicationException::MISSING_RESULT);
+    };
+  }
+
+  protected function recvImpl_truthify_FirstResponse(?int $expectedsequenceid = null, shape(?'read_options' => int) $options = shape()): void {
+    try {
+      $this->eventHandler_->preRecv('MyInteractionFast.truthify', $expectedsequenceid);
+      if ($this->input_ is \TBinaryProtocolAccelerated) {
+        $result = \thrift_protocol_read_binary($this->input_, 'MyService_MyInteractionFast_truthify_FirstResponse', $this->input_->isStrictRead(), Shapes::idx($options, 'read_options', 0));
+      } else if ($this->input_ is \TCompactProtocolAccelerated)
+      {
+        $result = \thrift_protocol_read_compact($this->input_, 'MyService_MyInteractionFast_truthify_FirstResponse', Shapes::idx($options, 'read_options', 0));
+      }
+      else
+      {
+        $rseqid = 0;
+        $fname = '';
+        $mtype = 0;
+
+        $this->input_->readMessageBegin(
+          inout $fname,
+          inout $mtype,
+          inout $rseqid,
+        );
+        if ($mtype === \TMessageType::EXCEPTION) {
+          $x = new \TApplicationException();
+          $x->read($this->input_);
+          $this->input_->readMessageEnd();
+          throw $x;
+        }
+        $result = MyService_MyInteractionFast_truthify_FirstResponse::withDefaultValues();
+        $result->read($this->input_);
+        $this->input_->readMessageEnd();
+        if ($expectedsequenceid !== null && ($rseqid !== $expectedsequenceid)) {
+          throw new \TProtocolException("truthify failed: sequence id is out of order");
+        }
+      }
+    } catch (\THandlerShortCircuitException $ex) {
+      switch ($ex->resultType) {
+        case \THandlerShortCircuitException::R_EXPECTED_EX:
+          $this->eventHandler_->recvException('MyInteractionFast.truthify', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_UNEXPECTED_EX:
+          $this->eventHandler_->recvError('MyInteractionFast.truthify', $expectedsequenceid, $ex->result);
+          throw $ex->result;
+        case \THandlerShortCircuitException::R_SUCCESS:
+        default:
+          $this->eventHandler_->postRecv('MyInteractionFast.truthify', $expectedsequenceid, $ex->result);
+          return;
+      }
+    } catch (\Exception $ex) {
+      $this->eventHandler_->recvError('MyInteractionFast.truthify', $expectedsequenceid, $ex);
+      throw $ex;
+    }
+    $this->eventHandler_->postRecv('MyInteractionFast.truthify', $expectedsequenceid, null);
+    return;
   }
 }
 
@@ -1111,6 +1423,171 @@ class MyService_MyInteraction_ping_args implements \IThriftStruct {
 
 }
 
+class MyService_MyInteraction_truthify_args implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_MyInteraction_truthify_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.truthify_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_MyInteraction_truthify_StreamResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::BOOL,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?bool,
+  );
+
+  const int STRUCTURAL_ID = 8594383818423018844;
+  public ?bool $success;
+
+  public function __construct(?bool $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_MyInteraction_truthify_StreamResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_MyInteraction_truthify_StreamResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_MyInteraction_truthify_FirstResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_MyInteraction_truthify_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_MyInteraction_truthify_FirstResponse",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
 class MyService_MyInteractionFast_frobnicate_args implements \IThriftStruct {
   use \ThriftSerializationTrait;
 
@@ -1261,6 +1738,171 @@ class MyService_MyInteractionFast_ping_args implements \IThriftStruct {
     return tmeta_ThriftStruct::fromShape(
       shape(
         "name" => "module.ping_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_MyInteractionFast_truthify_args implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_MyInteractionFast_truthify_args';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.truthify_args",
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_MyInteractionFast_truthify_StreamResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+    0 => shape(
+      'var' => 'success',
+      'type' => \TType::BOOL,
+    ),
+  ];
+  const dict<string, int> FIELDMAP = dict[
+    'success' => 0,
+  ];
+
+  const type TConstructorShape = shape(
+    ?'success' => ?bool,
+  );
+
+  const int STRUCTURAL_ID = 8594383818423018844;
+  public ?bool $success;
+
+  public function __construct(?bool $success = null  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+      Shapes::idx($shape, 'success'),
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_MyInteractionFast_truthify_StreamResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_MyInteractionFast_truthify_StreamResponse",
+        "fields" => vec[
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 0,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_BOOL_TYPE,
+                )
+              ),
+              "name" => "success",
+            )
+          ),
+        ],
+        "is_union" => false,
+      )
+    );
+  }
+
+  public static function getAllStructuredAnnotations()[]: \TStructAnnotations {
+    return shape(
+      'struct' => dict[],
+      'fields' => dict[
+      ],
+    );
+  }
+
+}
+
+class MyService_MyInteractionFast_truthify_FirstResponse implements \IThriftStruct {
+  use \ThriftSerializationTrait;
+
+  const dict<int, this::TFieldSpec> SPEC = dict[
+  ];
+  const dict<string, int> FIELDMAP = dict[
+  ];
+
+  const type TConstructorShape = shape(
+  );
+
+  const int STRUCTURAL_ID = 957977401221134810;
+
+  public function __construct(  )[] {
+  }
+
+  public static function withDefaultValues()[]: this {
+    return new static();
+  }
+
+  public static function fromShape(self::TConstructorShape $shape)[]: this {
+    return new static(
+    );
+  }
+
+  public function getName()[]: string {
+    return 'MyService_MyInteractionFast_truthify_FirstResponse';
+  }
+
+  public static function getStructMetadata()[]: \tmeta_ThriftStruct {
+    return tmeta_ThriftStruct::fromShape(
+      shape(
+        "name" => "module.MyService_MyInteractionFast_truthify_FirstResponse",
         "is_union" => false,
       )
     );
