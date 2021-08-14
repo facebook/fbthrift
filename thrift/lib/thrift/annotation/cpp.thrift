@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-include "thrift/lib/thrift/annotation/scope.thrift"
+include "scope.thrift"
 
 namespace cpp2 apache.thrift.annotation
 namespace py3 thrift.lib.thrift.annotation
