@@ -480,8 +480,28 @@ class RequestParams {
  */
 class ServiceHandler {
  public:
-  virtual folly::SemiFuture<folly::Unit> semifuture_onStartServing() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_onStopServing() = 0;
+  virtual folly::SemiFuture<folly::Unit> semifuture_onStartServing() {
+#if FOLLY_HAS_COROUTINES
+    if constexpr (folly::kIsLinux) {
+      return co_onStartServing().semi();
+    }
+#endif
+    return folly::makeSemiFuture();
+  }
+
+  virtual folly::SemiFuture<folly::Unit> semifuture_onStopServing() {
+#if FOLLY_HAS_COROUTINES
+    if constexpr (folly::kIsLinux) {
+      return co_onStopServing().semi();
+    }
+#endif
+    return folly::makeSemiFuture();
+  }
+
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<void> co_onStartServing() { co_return; }
+  virtual folly::coro::Task<void> co_onStopServing() { co_return; }
+#endif
 
   virtual ~ServiceHandler() = default;
 };
@@ -555,13 +575,6 @@ class ServerInterface : public virtual AsyncProcessorFactory,
   concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
       Cpp2RequestContext* ctx) {
     return getRequestExecutionScope(ctx, concurrency::NORMAL);
-  }
-
-  folly::SemiFuture<folly::Unit> semifuture_onStartServing() override {
-    return folly::makeSemiFuture();
-  }
-  folly::SemiFuture<folly::Unit> semifuture_onStopServing() override {
-    return folly::makeSemiFuture();
   }
 
   std::vector<ServiceHandler*> getServiceHandlers() override { return {this}; }
