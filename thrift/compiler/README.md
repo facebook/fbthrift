@@ -1,18 +1,29 @@
 # FbThrift Compiler
 
-The Thrift compiler is a standalone binary to read and generate code for any proper *.thrift file.
+The Thrift compiler is a standalone binary to read and generate code for any proper `*.thrift` file.
 
-## Downloading:
+Contents
+========
+* [Downloading](#downloading)
+* [Dependencies](#dependencies)
+  * [Ubuntu](#ubuntu)
+  * [macOS](#macos)
+  * [Windows (MSVC)](#windows-msvc)
+* [Building](#building)
+* [Testing](#testing)
+* [Usage](#usage)
+
+## Downloading
 ```
 git clone https://github.com/facebook/fbthrift.git
 ```
 
-## Dependencies:
+## Dependencies
 - [Cmake](https://cmake.org/) package builder
 - C++ [Boost](http://www.boost.org/)
 - [Flex](https://github.com/westes/flex) and [Bison](https://www.gnu.org/software/bison/)
 
-### Ubuntu:
+### Ubuntu
 ```
 sudo apt-get install \
   cmake \
@@ -103,7 +114,7 @@ cd ~/tmp/gtest/googletest
 make install
 cd ~/tmp/gtest/googlemock
 make install
-``` 
+```
 
 ### Building and Running Tests
 ```
