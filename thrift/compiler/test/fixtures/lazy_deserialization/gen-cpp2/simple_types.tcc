@@ -341,8 +341,11 @@ void LazyFoo::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool __fbthrift_has_lazy_field_field3 = false;
-  bool __fbthrift_has_lazy_field_field4 = false;
+  if (__fbthrift_protocol_ != iprot->protocolType()) {
+    __fbthrift_read_field_field3();
+    __fbthrift_read_field_field4();
+    __fbthrift_protocol_ = iprot->protocolType();
+  }
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -390,7 +393,6 @@ _readField_field2:
     goto _loop;
   }
 _readField_field3:
-  __fbthrift_has_lazy_field_field3 = true;
   __fbthrift_read_field_field3();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
@@ -422,7 +424,6 @@ _readField_field3:
     goto _loop;
   }
 _readField_field4:
-  __fbthrift_has_lazy_field_field4 = true;
   __fbthrift_read_field_field4();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
@@ -457,17 +458,6 @@ _readField_field4:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (__fbthrift_protocol_ != iprot->protocolType()
-      && !__fbthrift_has_lazy_field_field3
-      && !__fbthrift_isDeserialized_.field3) {
-    __fbthrift_read_field_field3();
-  }
-  if (__fbthrift_protocol_ != iprot->protocolType()
-      && !__fbthrift_has_lazy_field_field4
-      && !__fbthrift_isDeserialized_.field4) {
-    __fbthrift_read_field_field4();
-  }
-  __fbthrift_protocol_ = iprot->protocolType();
   return;
 
 _loop:
@@ -932,8 +922,11 @@ void OptionalLazyFoo::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool __fbthrift_has_lazy_field_field3 = false;
-  bool __fbthrift_has_lazy_field_field4 = false;
+  if (__fbthrift_protocol_ != iprot->protocolType()) {
+    __fbthrift_read_field_field3();
+    __fbthrift_read_field_field4();
+    __fbthrift_protocol_ = iprot->protocolType();
+  }
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -981,7 +974,6 @@ _readField_field2:
     goto _loop;
   }
 _readField_field3:
-  __fbthrift_has_lazy_field_field3 = true;
   __fbthrift_read_field_field3();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
@@ -1013,7 +1005,6 @@ _readField_field3:
     goto _loop;
   }
 _readField_field4:
-  __fbthrift_has_lazy_field_field4 = true;
   __fbthrift_read_field_field4();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
@@ -1048,17 +1039,6 @@ _readField_field4:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (__fbthrift_protocol_ != iprot->protocolType()
-      && !__fbthrift_has_lazy_field_field3
-      && !__fbthrift_isDeserialized_.field3) {
-    __fbthrift_read_field_field3();
-  }
-  if (__fbthrift_protocol_ != iprot->protocolType()
-      && !__fbthrift_has_lazy_field_field4
-      && !__fbthrift_isDeserialized_.field4) {
-    __fbthrift_read_field_field4();
-  }
-  __fbthrift_protocol_ = iprot->protocolType();
   return;
 
 _loop:
@@ -1268,9 +1248,12 @@ void LazyCppRef::readNoXfer(Protocol_* iprot) {
 
   using apache::thrift::TProtocolException;
 
-  bool __fbthrift_has_lazy_field_field1 = false;
-  bool __fbthrift_has_lazy_field_field2 = false;
-  bool __fbthrift_has_lazy_field_field3 = false;
+  if (__fbthrift_protocol_ != iprot->protocolType()) {
+    __fbthrift_read_field_field1();
+    __fbthrift_read_field_field2();
+    __fbthrift_read_field_field3();
+    __fbthrift_protocol_ = iprot->protocolType();
+  }
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1280,7 +1263,6 @@ void LazyCppRef::readNoXfer(Protocol_* iprot) {
     goto _loop;
   }
 _readField_field1:
-  __fbthrift_has_lazy_field_field1 = true;
   __fbthrift_read_field_field1();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
@@ -1310,7 +1292,6 @@ _readField_field1:
     goto _loop;
   }
 _readField_field2:
-  __fbthrift_has_lazy_field_field2 = true;
   __fbthrift_read_field_field2();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
@@ -1340,7 +1321,6 @@ _readField_field2:
     goto _loop;
   }
 _readField_field3:
-  __fbthrift_has_lazy_field_field3 = true;
   __fbthrift_read_field_field3();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
@@ -1373,22 +1353,6 @@ _readField_field3:
 _end:
   _readState.readStructEnd(iprot);
 
-  if (__fbthrift_protocol_ != iprot->protocolType()
-      && !__fbthrift_has_lazy_field_field1
-      && !__fbthrift_isDeserialized_.field1) {
-    __fbthrift_read_field_field1();
-  }
-  if (__fbthrift_protocol_ != iprot->protocolType()
-      && !__fbthrift_has_lazy_field_field2
-      && !__fbthrift_isDeserialized_.field2) {
-    __fbthrift_read_field_field2();
-  }
-  if (__fbthrift_protocol_ != iprot->protocolType()
-      && !__fbthrift_has_lazy_field_field3
-      && !__fbthrift_isDeserialized_.field3) {
-    __fbthrift_read_field_field3();
-  }
-  __fbthrift_protocol_ = iprot->protocolType();
   return;
 
 _loop:
