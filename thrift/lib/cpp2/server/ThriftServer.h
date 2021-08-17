@@ -765,6 +765,15 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     return *decoratedProcessorFactory_;
   }
 
+  /**
+   * Returns an AsyncProcessor from getDecoratedProcessorFactory() without any
+   * application-specific event handlers installed on the underlying processors.
+   * This is useful, for example, in InterfaceKind::MONITORING where
+   * application-specific checks (such as ACL checks) should be bypassed.
+   */
+  std::unique_ptr<AsyncProcessor> getDecoratedProcessorWithoutEventHandlers()
+      const;
+
   // ThriftServer by defaults uses a global ShutdownSocketSet, so all socket's
   // FDs are registered there. But in some tests you might want to simulate 2
   // ThriftServer running in different processes, so their ShutdownSocketSet are

@@ -198,6 +198,14 @@ void ThriftServer::setProcessorFactory(
   thriftProcessor_.reset(new ThriftProcessor(*this));
 }
 
+std::unique_ptr<AsyncProcessor>
+ThriftServer::getDecoratedProcessorWithoutEventHandlers() const {
+  return static_cast<MultiplexAsyncProcessorFactory&>(
+             getDecoratedProcessorFactory())
+      .getProcessorWithUnderlyingModifications(
+          [](AsyncProcessor& processor) { processor.clearEventHandlers(); });
+}
+
 void ThriftServer::useExistingSocket(
     folly::AsyncServerSocket::UniquePtr socket) {
   socket_ = std::move(socket);
