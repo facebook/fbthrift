@@ -9,11 +9,11 @@
       "spec_args" : "Included",
       "source_range" : {
         "begin" : {
-          "line" : 50,
+          "line" : 27,
           "column" : 1
         },
         "end" : {
-          "line" : 53,
+          "line" : 30,
           "column" : 3
         }
       }
@@ -25,11 +25,11 @@
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 57,
+          "line" : 34,
           "column" : 1
         },
         "end" : {
-          "line" : 57,
+          "line" : 34,
           "column" : 33
         }
       }
@@ -42,11 +42,11 @@
       "spec_args" : null,
       "source_range" : {
         "begin" : {
-          "line" : 55,
+          "line" : 32,
           "column" : 1
         },
         "end" : {
-          "line" : 55,
+          "line" : 32,
           "column" : 26
         }
       }
@@ -57,11 +57,11 @@
       "spec_args" : "transitive.Foo",
       "source_range" : {
         "begin" : {
-          "line" : 60,
+          "line" : 37,
           "column" : 1
         },
         "end" : {
-          "line" : 60,
+          "line" : 37,
           "column" : 37
         }
       }
@@ -80,11 +80,11 @@
           "default_value" : 0,
           "source_range" : {
             "begin" : {
-              "line" : 46,
+              "line" : 23,
               "column" : 3
             },
             "end" : {
-              "line" : 46,
+              "line" : 23,
               "column" : 25
             }
           }
@@ -96,11 +96,11 @@
           "default_value" : { "a" : 2 },
           "source_range" : {
             "begin" : {
-              "line" : 47,
+              "line" : 24,
               "column" : 3
             },
             "end" : {
-              "line" : 47,
+              "line" : 24,
               "column" : 63
             }
           }
@@ -108,11 +108,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 45,
+          "line" : 22,
           "column" : 1
         },
         "end" : {
-          "line" : 48,
+          "line" : 25,
           "column" : 2
         }
       }

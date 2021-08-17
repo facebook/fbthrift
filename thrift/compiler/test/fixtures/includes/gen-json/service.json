@@ -8,11 +8,11 @@
       "spec_args" : "includes.Included",
       "source_range" : {
         "begin" : {
-          "line" : 116,
+          "line" : 32,
           "column" : 1
         },
         "end" : {
-          "line" : 116,
+          "line" : 32,
           "column" : 43
         }
       }
@@ -23,11 +23,11 @@
       "spec_args" : "includes.TransitiveFoo",
       "source_range" : {
         "begin" : {
-          "line" : 118,
+          "line" : 34,
           "column" : 1
         },
         "end" : {
-          "line" : 118,
+          "line" : 34,
           "column" : 53
         }
       }
@@ -55,11 +55,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 106,
+              "line" : 22,
               "column" : 20
             },
             "end" : {
-              "line" : 108,
+              "line" : 24,
               "column" : 59
             }
           }
@@ -82,11 +82,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 108,
+              "line" : 24,
               "column" : 59
             },
             "end" : {
-              "line" : 112,
+              "line" : 28,
               "column" : 4
             }
           }
@@ -94,11 +94,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 103,
+          "line" : 19,
           "column" : 44
         },
         "end" : {
-          "line" : 113,
+          "line" : 29,
           "column" : 2
         }
       }

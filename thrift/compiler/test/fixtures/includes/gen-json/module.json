@@ -14,11 +14,11 @@
           "default_value" : { "MyIntField" : 2, "MyTransitiveField" : { "a" : 2 } },
           "source_range" : {
             "begin" : {
-              "line" : 81,
+              "line" : 21,
               "column" : 3
             },
             "end" : {
-              "line" : 81,
+              "line" : 21,
               "column" : 67
             }
           }
@@ -29,11 +29,11 @@
           "required" : true,
           "source_range" : {
             "begin" : {
-              "line" : 82,
+              "line" : 22,
               "column" : 3
             },
             "end" : {
-              "line" : 82,
+              "line" : 22,
               "column" : 45
             }
           }
@@ -45,11 +45,11 @@
           "default_value" : 42,
           "source_range" : {
             "begin" : {
-              "line" : 83,
+              "line" : 23,
               "column" : 3
             },
             "end" : {
-              "line" : 83,
+              "line" : 23,
               "column" : 71
             }
           }
@@ -57,11 +57,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 80,
+          "line" : 20,
           "column" : 1
         },
         "end" : {
-          "line" : 84,
+          "line" : 24,
           "column" : 2
         }
       }

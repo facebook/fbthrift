@@ -72,11 +72,8 @@ std::unique_ptr<t_program_bundle> parsing_driver::parse() {
     return result;
   }
 
-  YYSTYPE yylval{};
-  YYLTYPE yylloc{};
-
   parser_ = std::make_unique<yy::parser>(
-      *this, scanner->get_scanner(), &yylval, &yylloc);
+      *this, scanner->get_scanner(), &yylval_, &yylloc_);
 
   try {
     parse_file();
@@ -102,6 +99,7 @@ void parsing_driver::parse_file() {
   try {
     scanner->start(path);
     scanner->set_lineno(1);
+    reset_locations();
   } catch (std::runtime_error const& ex) {
     failure(ex.what());
   }
@@ -153,6 +151,7 @@ void parsing_driver::parse_file() {
   try {
     scanner->start(path);
     scanner->set_lineno(1);
+    reset_locations();
   } catch (std::runtime_error const& ex) {
     failure(ex.what());
   }

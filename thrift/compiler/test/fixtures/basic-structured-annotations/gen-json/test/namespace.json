@@ -14,11 +14,11 @@
           "default_value" : "abacaba",
           "source_range" : {
             "begin" : {
-              "line" : 40,
+              "line" : 21,
               "column" : 3
             },
             "end" : {
-              "line" : 40,
+              "line" : 21,
               "column" : 30
             }
           }
@@ -26,11 +26,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 39,
+          "line" : 20,
           "column" : 1
         },
         "end" : {
-          "line" : 41,
+          "line" : 22,
           "column" : 2
         }
       }

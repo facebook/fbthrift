@@ -257,6 +257,16 @@ class parsing_driver {
   std::unique_ptr<t_program_bundle> parse();
 
   /**
+   * Bison's type (default is int).
+   */
+  YYSTYPE yylval_{};
+
+  /**
+   * Bison's structure to store location.
+   */
+  YYLTYPE yylloc_{};
+
+  /**
    * Diagnostic message callbacks.
    */
   // TODO(afuller): Remove these, and have the parser call the functions on ctx_
@@ -391,6 +401,14 @@ class parsing_driver {
 
   bool is_white_space(const char& c) {
     return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+  }
+
+  void reset_locations() {
+    yylloc_.begin.line = 1;
+    yylloc_.begin.column = 1;
+    yylloc_.end.line = 1;
+    yylloc_.end.column = 1;
+    yylval_ = 0;
   }
 
   void compute_location(YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {

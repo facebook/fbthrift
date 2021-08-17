@@ -20,6 +20,7 @@
 
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/codemod/file_manager.h>
+#include <thrift/compiler/compiler.h>
 
 namespace apache::thrift::compiler {
 
@@ -92,6 +93,50 @@ TEST(FileManagerTest, apply_replacements_test) {
         1: optional string a;
       }
       )"));
+}
+
+// Testing correct line and column after including another thrift file.
+TEST(FileManagerTest, correct_location_after_include_test) {
+  const folly::test::TemporaryFile tempFile1(
+      "FileManagerTest_correct_location_after_include_test");
+  const std::string path1 = tempFile1.path().string();
+  const std::string initial_content1 = folly::stripLeftMargin(R"(
+      struct A {
+        1: string a;
+      }
+      )");
+
+  const folly::test::TemporaryFile tempFile2(
+      "FileManagerTest_correct_location_after_include_test2");
+  const std::string path2 = tempFile2.path().string();
+  const std::string initial_content2 = folly::stripLeftMargin(R"(
+      include ")" + path1 + R"("
+      struct B {
+        1: string b;
+      }
+      )");
+
+  write_file(path1, initial_content1);
+  write_file(path2, initial_content2);
+
+  const auto program_bundle =
+      parse_and_get_program({"thrift1", "--gen", "mstch_cpp2", path2});
+
+  EXPECT_TRUE(program_bundle);
+
+  const auto program = program_bundle->root_program();
+  const auto struct_src_range = program->structs()[0]->src_range();
+  const auto field_src_range = program->structs()[0]->fields()[0].src_range();
+
+  EXPECT_EQ(struct_src_range.begin().line(), 2);
+  EXPECT_EQ(struct_src_range.begin().column(), 1);
+  EXPECT_EQ(struct_src_range.end().line(), 4);
+  EXPECT_EQ(struct_src_range.end().column(), 2);
+
+  EXPECT_EQ(field_src_range.begin().line(), 3);
+  EXPECT_EQ(field_src_range.begin().column(), 3);
+  EXPECT_EQ(field_src_range.end().line(), 3);
+  EXPECT_EQ(field_src_range.end().column(), 15);
 }
 
 } // namespace apache::thrift::compiler
