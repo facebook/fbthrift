@@ -22,13 +22,9 @@
 #include <memory>
 #include <system_error>
 
-namespace apache {
-namespace thrift {
-namespace compiler {
-typedef void* yyscan_t;
-}
-} // namespace thrift
-} // namespace apache
+namespace apache::thrift::compiler {
+using yyscan_t = void*;
+} // namespace apache::thrift::compiler
 
 /**
  * These are provided by Flex.
