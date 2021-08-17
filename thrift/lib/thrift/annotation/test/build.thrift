@@ -18,6 +18,8 @@ include "thrift/lib/thrift/annotation/cpp.thrift"
 
 namespace cpp2 thrift.lib.thrift.annotation.test
 namespace py3 thrift.lib.thrift.annotation.test
+namespace py thrift.lib.thrift.annotation.test.build
+namespace java.swift org.apache.thrift.annotation.test
 
 struct Foo {
   @cpp.Ref{type = cpp.RefType.Unique}

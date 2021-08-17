@@ -16,7 +16,7 @@
 
 namespace cpp2 apache.thrift.annotation
 namespace php apache_thrift
-namespace py thrift.annotation.scope
+namespace py thrift.lib.thrift.annotation.scope
 namespace py.asyncio thrift_asyncio.annotation.scope
 namespace py3 thrift.lib.thrift.annotation
 namespace java.swift org.apache.thrift.annotation
