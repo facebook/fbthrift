@@ -79,12 +79,14 @@ class ServicesTests(unittest.TestCase):
         loop = asyncio.get_event_loop()
 
         async def inner() -> None:
+            # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
             async with Handler() as h:
                 self.assertTrue(h.initalized)
 
         loop.run_until_complete(inner())
 
     def test_get_service_name(self) -> None:
+        # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
         h = Handler()
         self.assertEqual(getServiceName(h), "TestingService")
 
@@ -94,6 +96,7 @@ class ServicesTests(unittest.TestCase):
         self.assertIsInstance(loop.run_until_complete(coro), SocketAddress)
 
     async def get_address(self, loop: asyncio.AbstractEventLoop) -> SocketAddress:
+        # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
         server = ThriftServer(Handler(), port=0)
         serve_task = loop.create_task(server.serve())
         addy = await server.get_address()
@@ -120,6 +123,7 @@ class ServicesTests(unittest.TestCase):
     )
     def test_ctx_unittest_call(self) -> None:
         # Create a broken client
+        # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
         h = Handler()
         loop = asyncio.get_event_loop()
         # pyre-fixme[19]: Expected 1 positional argument.
@@ -128,6 +132,7 @@ class ServicesTests(unittest.TestCase):
         self.assertTrue(value)
 
     def test_unittest_call(self) -> None:
+        # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
         h = Handler()
         loop = asyncio.get_event_loop()
         call = 5
@@ -135,6 +140,7 @@ class ServicesTests(unittest.TestCase):
         self.assertEqual(call, ret)
 
     def test_unittest_call_renamed_func(self) -> None:
+        # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
         h = Handler()
         loop = asyncio.get_event_loop()
         ret = loop.run_until_complete(h.renamed_func(True))
@@ -148,6 +154,7 @@ class ServicesTests(unittest.TestCase):
         IDLE_TIMEOUT = 19.84
         QUEUE_TIMEOUT = 20.19
 
+        # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
         server = ThriftServer(Handler(), port=0)
         server.set_max_requests(MAX_REQUESTS)
         server.set_max_connections(MAX_CONNECTIONS)
@@ -167,6 +174,7 @@ class ServicesTests(unittest.TestCase):
         self.assertTrue(server.is_plaintext_allowed_on_loopback())
 
     def test_server_get_stats(self) -> None:
+        # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
         server = ThriftServer(Handler(), port=0)
 
         active_requests = server.get_active_requests()
@@ -174,6 +182,7 @@ class ServicesTests(unittest.TestCase):
         self.assertLess(active_requests, 10)
 
     def test_set_is_overloaded(self) -> None:
+        # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
         helper = OverloadTestHelper(Handler(), 0)
         helper.set_is_overload()
         self.assertTrue(helper.check_overload("overloaded_method"))
