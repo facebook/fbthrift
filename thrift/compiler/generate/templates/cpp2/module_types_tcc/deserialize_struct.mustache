@@ -73,11 +73,11 @@ _readField_<%field:cpp_name%>:
 <%#program:enforce_required?%><%#field:required?%>
   isset_<%field:cpp_name%> = true;
 <%/field:required?%><%/program:enforce_required?%>
-<%^field:required?%><%^field:cpp_ref?%>
+<%#field:has_isset?%>
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.<%field:cpp_name%> = true;
   THRIFT_IGNORE_ISSET_USE_WARNING_END
-<%/field:cpp_ref?%><%/field:required?%>
+<%/field:has_isset?%>
 
 <%^last?%>
 <%#field:next_field_type%>
