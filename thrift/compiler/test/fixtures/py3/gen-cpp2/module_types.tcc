@@ -87,6 +87,7 @@ void SimpleException::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -99,9 +100,7 @@ _readField_err_code:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::readWithContext(*iprot, this->err_code, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.err_code = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -110,6 +109,7 @@ _readField_err_code:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);
@@ -213,6 +213,7 @@ void OptionalRefStruct::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -225,9 +226,7 @@ _readField_optional_blob:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::IOBufPtr>::readWithContext(*iprot, this->optional_blob, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.optional_blob = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -236,6 +235,7 @@ _readField_optional_blob:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);
@@ -341,6 +341,7 @@ void SimpleStruct::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -353,9 +354,7 @@ _readField_is_on:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, bool>::readWithContext(*iprot, this->is_on, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.is_on = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -369,9 +368,7 @@ _readField_tiny_int:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int8_t>::readWithContext(*iprot, this->tiny_int, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.tiny_int = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -385,9 +382,7 @@ _readField_small_int:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::readWithContext(*iprot, this->small_int, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.small_int = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -401,9 +396,7 @@ _readField_nice_sized_int:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->nice_sized_int, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.nice_sized_int = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -417,9 +410,7 @@ _readField_big_int:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->big_int, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.big_int = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -433,9 +424,7 @@ _readField_real:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, double>::readWithContext(*iprot, this->real, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.real = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -449,9 +438,7 @@ _readField_smaller_real:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::floating_point, float>::readWithContext(*iprot, this->smaller_real, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.smaller_real = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -465,9 +452,7 @@ _readField_hidden_field:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int16_t>::readWithContext(*iprot, this->hidden_field, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.hidden_field = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -476,6 +461,7 @@ _readField_hidden_field:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);
@@ -740,6 +726,7 @@ void ComplexStruct::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -754,9 +741,7 @@ _readField_structOne:
     _readState.afterSubobject(iprot);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.structOne = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -772,9 +757,7 @@ _readField_structTwo:
     _readState.afterSubobject(iprot);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.structTwo = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -788,9 +771,7 @@ _readField_an_integer:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->an_integer, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.an_integer = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -804,9 +785,7 @@ _readField_name:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.name = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -820,9 +799,7 @@ _readField_an_enum:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::py3::simple::AnEnum>::readWithContext(*iprot, this->an_enum, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.an_enum = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -836,9 +813,7 @@ _readField_some_bytes:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::readWithContext(*iprot, this->some_bytes, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.some_bytes = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -852,9 +827,7 @@ _readField_from:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->from, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.from = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -868,9 +841,7 @@ _readField_cdef:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->cdef, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.cdef = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -884,9 +855,7 @@ _readField_bytes_with_cpp_type:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::py3::simple::foo_bar>::readWithContext(*iprot, this->bytes_with_cpp_type, _readState);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.bytes_with_cpp_type = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -895,6 +864,7 @@ _readField_bytes_with_cpp_type:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);
@@ -1289,6 +1259,7 @@ void BinaryUnionStruct::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -1303,9 +1274,7 @@ _readField_u:
     _readState.afterSubobject(iprot);
     
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.u = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -1314,6 +1283,7 @@ _readField_u:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);

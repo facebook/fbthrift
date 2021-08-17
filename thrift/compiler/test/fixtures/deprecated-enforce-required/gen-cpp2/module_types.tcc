@@ -39,6 +39,7 @@ void Foo::readNoXfer(Protocol_* iprot) {
 
   bool isset_bar = false;
 
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -60,6 +61,7 @@ _readField_bar:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);

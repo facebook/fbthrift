@@ -37,6 +37,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 <%/struct:lazy_fields?%>
 
 <%#struct:fields?%>
+  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%#struct:fields%>
 <%#field:type%>
 <%#first?%>
@@ -74,9 +75,7 @@ _readField_<%field:cpp_name%>:
   isset_<%field:cpp_name%> = true;
 <%/field:required?%><%/program:enforce_required?%>
 <%#field:has_isset?%>
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   this->__isset.<%field:cpp_name%> = true;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:has_isset?%>
 
 <%^last?%>
@@ -101,6 +100,7 @@ _readField_<%field:cpp_name%>:
 <%/last?%>
 <%/field:type%>
 <%/struct:fields%>
+  THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/struct:fields?%>
 <%^struct:fields?%>
   if (UNLIKELY(!_readState.advanceToNextField(
