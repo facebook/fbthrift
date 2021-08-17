@@ -22,6 +22,8 @@
 #include <variant>
 #include <vector>
 
+#include <folly/Function.h>
+
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 
 namespace apache::thrift {
@@ -64,6 +66,13 @@ class MultiplexAsyncProcessorFactory final : public AsyncProcessorFactory {
 
   std::unique_ptr<AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
+
+  /**
+   * Applies the provided modifier func to each underlying AsyncProcessor before
+   * multiplexing them.
+   */
+  std::unique_ptr<AsyncProcessor> getProcessorWithUnderlyingModifications(
+      folly::FunctionRef<void(AsyncProcessor&)> modifier);
 
   std::shared_ptr<folly::RequestContext> getBaseContextForRequest(
       const MethodMetadata&) override;

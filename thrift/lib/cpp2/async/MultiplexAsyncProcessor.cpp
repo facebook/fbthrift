@@ -334,10 +334,20 @@ MultiplexAsyncProcessorFactory::MultiplexAsyncProcessorFactory(
 }
 
 std::unique_ptr<AsyncProcessor> MultiplexAsyncProcessorFactory::getProcessor() {
+  return getProcessorWithUnderlyingModifications({} /* modifier */);
+}
+
+std::unique_ptr<AsyncProcessor>
+MultiplexAsyncProcessorFactory::getProcessorWithUnderlyingModifications(
+    folly::FunctionRef<void(AsyncProcessor&)> modifier) {
   std::vector<std::unique_ptr<AsyncProcessor>> processors;
   processors.reserve(processorFactories_.size());
   for (auto& processorFactory : processorFactories_) {
-    processors.emplace_back(processorFactory->getProcessor());
+    auto processor = processorFactory->getProcessor();
+    if (modifier) {
+      modifier(*processor);
+    }
+    processors.emplace_back(std::move(processor));
   }
   return std::make_unique<MultiplexAsyncProcessor>(
       std::move(processors), compositionMetadata_);
