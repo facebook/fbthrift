@@ -123,14 +123,26 @@ cdef extern from "thrift/lib/cpp2/server/ThriftServer.h" \
         void setStopWorkersOnStopListening(cbool stopWorkers)
         cbool getStopWorkersOnStopListening()
 
-cdef extern from "folly/ssl/OpenSSLCertUtils.h":
+cdef extern from "folly/ssl/OpenSSLCertUtils.h" \
+        namespace "folly::ssl":
     # I need a opque id for x509 structs
     cdef cppclass X509:
         pass
+    cdef cppclass X509UniquePtr:
+        X509* get()
 
 cdef extern from "folly/ssl/OpenSSLCertUtils.h" \
         namespace "folly::ssl::OpenSSLCertUtils":
     unique_ptr[cIOBuf] derEncode(X509& cert)
+
+cdef extern from "folly/io/async/AsyncTransportCertificate.h" \
+        namespace "folly":
+    cdef cppclass AsyncTransportCertificate:
+        X509UniquePtr getX509()
+
+cdef extern from "folly/io/async/AsyncTransport.h" namespace "folly":
+    cdef cppclass AsyncTransport:
+        const AsyncTransportCertificate* getPeerCertificate()
 
 cdef extern from "thrift/lib/cpp/transport/THeader.h" namespace "apache::thrift":
     cdef cppclass THeader:
@@ -144,7 +156,7 @@ cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
     cdef cppclass Cpp2ConnContext:
         string getSecurityProtocol()
         string getPeerCommonName()
-        shared_ptr[X509] getPeerCertificate()
+        AsyncTransport* getTransport()
         cfollySocketAddress* getPeerAddress()
         cfollySocketAddress* getLocalAddress()
 
