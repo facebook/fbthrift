@@ -623,8 +623,6 @@ void t_json_generator::generate_struct(const t_struct* tstruct) {
   f_out_ << endl;
   indent_down();
   indent(f_out_) << "}," << endl;
-  indent(f_out_) << "\"annotation_last_lineno\" : "
-                 << tstruct->last_annotation_lineno() << "," << endl;
   print_source_range(tstruct->src_range());
   indent_down();
   indent(f_out_) << "}";

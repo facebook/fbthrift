@@ -191,7 +191,6 @@
           }
         }
       },
-      "annotation_last_lineno" : -1,
       "source_range" : {
         "begin" : {
           "line" : 34,
@@ -269,7 +268,6 @@
           }
         }
       },
-      "annotation_last_lineno" : -1,
       "source_range" : {
         "begin" : {
           "line" : 83,
@@ -377,7 +375,6 @@
           }
         }
       },
-      "annotation_last_lineno" : -1,
       "source_range" : {
         "begin" : {
           "line" : 109,

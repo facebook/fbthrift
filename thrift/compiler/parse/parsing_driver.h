@@ -106,7 +106,6 @@ using t_struct_annotations = node_list<t_const>;
 struct t_annotations {
   std::map<std::string, annotation_value> strings;
   std::map<std::string, std::shared_ptr<const t_const>> objects;
-  int last_lineno;
 };
 using t_doc = boost::optional<std::string>;
 struct t_def_attrs {

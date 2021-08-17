@@ -114,7 +114,6 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
-                        "annotation_last_lineno": -1,
                         "source_range": {
                             "begin": {
                                 "line": 1,
@@ -154,7 +153,6 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
-                        "annotation_last_lineno": -1,
                         "source_range": {
                             "begin": {
                                 "line": 1,
@@ -187,7 +185,6 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 3,
-                        "annotation_last_lineno": -1,
                         "source_range": {
                             "begin": {
                                 "line": 3,
@@ -227,7 +224,6 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
-                        "annotation_last_lineno": -1,
                         "source_range": {
                             "begin": {
                                 "line": 1,
@@ -269,7 +265,6 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 3,
-                        "annotation_last_lineno": -1,
                         "source_range": {
                             "begin": {
                                 "line": 3,
@@ -311,7 +306,6 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 4,
-                        "annotation_last_lineno": -1,
                         "source_range": {
                             "begin": {
                                 "line": 4,
@@ -344,7 +338,6 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 1,
-                        "annotation_last_lineno": -1,
                         "source_range": {
                             "begin": {
                                 "line": 1,
@@ -384,7 +377,6 @@ class JsonCompilerTest(unittest.TestCase):
                 "thrift_module": "foo",
                 "structs": {
                     "Annotation": {
-                        "annotation_last_lineno": -1,
                         "fields": {
                             "name": {
                                 "required": True,
@@ -465,7 +457,6 @@ class JsonCompilerTest(unittest.TestCase):
                         "is_exception": False,
                         "is_union": False,
                         "lineno": 6,
-                        "annotation_last_lineno": 8,
                         "annotations": {
                             "my_annotation_key": {
                                 "value": "my_annotation_value",

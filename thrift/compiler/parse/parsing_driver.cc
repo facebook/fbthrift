@@ -403,7 +403,7 @@ bool parsing_driver::require_experimental_feature(const char* feature) {
 void parsing_driver::set_annotations(
     t_node* node, std::unique_ptr<t_annotations> annotations) {
   if (annotations != nullptr) {
-    node->reset_annotations(annotations->strings, annotations->last_lineno);
+    node->reset_annotations(annotations->strings);
   }
 }
 

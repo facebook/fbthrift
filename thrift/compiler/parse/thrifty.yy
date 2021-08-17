@@ -1425,11 +1425,7 @@ ListType:
     }
 
 TypeAnnotations:
-  "(" TypeAnnotationList CommaOrSemicolonOptional
-    {
-      $2->last_lineno = driver.scanner->get_lineno();
-    }
-  ")"
+  "(" TypeAnnotationList CommaOrSemicolonOptional ")"
     {
       driver.debug("TypeAnnotations => ( TypeAnnotationList CommaOrSemicolonOptional)");
       $$ = $2;

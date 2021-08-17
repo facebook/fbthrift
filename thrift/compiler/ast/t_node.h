@@ -95,10 +95,8 @@ class t_node {
         std::forward<D>(default_value));
   }
 
-  void reset_annotations(
-      std::map<std::string, annotation_value> annotations, int last_lineno) {
+  void reset_annotations(std::map<std::string, annotation_value> annotations) {
     annotations_ = std::move(annotations);
-    last_annotation_lineno_ = last_lineno;
   }
 
   void set_annotation(
@@ -107,8 +105,6 @@ class t_node {
       const source_range& range = {}) {
     annotations_[key] = {range, value};
   }
-
-  int last_annotation_lineno() const { return last_annotation_lineno_; }
 
  protected:
   // t_node is abstract.
@@ -146,10 +142,6 @@ class t_node {
   source_range source_range_;
 
   std::map<std::string, annotation_value> annotations_;
-  // TODO(afuller): Looks like only this is only used by t_json_generator.
-  // Consider removing.
-  int last_annotation_lineno_{-1};
-
   // TODO(afuller): Remove everything below this comment. It is only provideed
   // for backwards compatibility.
  public:
