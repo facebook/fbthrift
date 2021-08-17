@@ -522,11 +522,15 @@ void parsing_driver::append_fields(
     t_structured& tstruct, t_field_list&& fields) {
   for (auto& field : fields) {
     if (!tstruct.try_append_field(std::move(field))) {
-      failure([&](auto& o) {
-        o << "Field identifier " << field->get_key() << " for \""
-          << field->get_name() << "\" has already been used";
-      });
-      break;
+      // Since we process root_program twice, we need to check parsing mode to
+      // avoid double reporting
+      if (mode == parsing_mode::PROGRAM ||
+          program != program_bundle->root_program()) {
+        ctx_.failure(*field, [&](auto& o) {
+          o << "Field identifier " << field->get_key() << " for \""
+            << field->get_name() << "\" has already been used.";
+        });
+      }
     }
   }
 }

@@ -1237,3 +1237,30 @@ class CompilerFailureTest(unittest.TestCase):
                 "[FAILURE:foo.thrift:1] cpp.methods is incompatible with lazy deserialization in struct `Foo`\n"
             ),
         )
+
+    def test_duplicate_field_id(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct A {
+                    1: i64 field1;
+                    1: i64 field2;
+                }
+
+                struct B {
+                    1: i64 field1;
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent(
+                '[FAILURE:foo.thrift:3] Field identifier 1 for "field2" has already been used.\n'
+            ),
+        )
