@@ -20,7 +20,9 @@
 #include <folly/Executor.h>
 #include <folly/Function.h>
 #include <folly/ScopeGuard.h>
+#include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/server/TServerEventHandler.h>
+#include <thrift/lib/cpp2/server/RequestsRegistry.h>
 
 namespace thrift {
 namespace py3 {
@@ -53,6 +55,16 @@ class Py3ServerEventHandler
   folly::Executor* executor_;
   AddressHandler address_handler_;
 };
+
+std::string getRequestId() {
+  if (auto rctx = folly::RequestContext::get()) {
+    if (auto rootId = rctx->getRootId();
+        apache::thrift::RequestsRegistry::isThriftRootId(rootId)) {
+      return apache::thrift::RequestsRegistry::getRequestId(rootId);
+    }
+  }
+  return {};
+}
 
 } // namespace py3
 } // namespace thrift

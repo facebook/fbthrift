@@ -323,6 +323,7 @@ struct StructuredAnnotation {
 service TestingService {
   string getName();
   string getMethodName();
+  string getRequestId();
   oneway void shutdown();
   bool invert(1: bool value);
   i32 complex_action(

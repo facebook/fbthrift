@@ -173,6 +173,14 @@ class ReflectionTests(unittest.TestCase):
                 annotations={},
             ),
             MethodSpec(
+                name="getRequestId",
+                arguments=[],
+                result=str,
+                result_kind=NumberType.NOT_A_NUMBER,
+                exceptions=[],
+                annotations={},
+            ),
+            MethodSpec(
                 name="shutdown",
                 arguments=[],
                 result=None,

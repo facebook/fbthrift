@@ -45,6 +45,7 @@ cdef extern from "thrift/lib/py3/server.h" namespace "::thrift::py3":
 
     cdef cppclass cIsOverloadedFunc "apache::thrift::IsOverloadedFunc":
         pass
+    string getRequestId() except +
 
 cdef extern from "thrift/lib/cpp2/async/AsyncProcessor.h" \
         namespace "apache::thrift":
@@ -184,6 +185,7 @@ cdef class RequestContext:
     cdef Cpp2RequestContext* _ctx
     cdef object _readheaders
     cdef object _writeheaders
+    cdef string _requestId
 
     @staticmethod
     cdef RequestContext create(Cpp2RequestContext* ctx)

@@ -61,6 +61,10 @@ class Handler(TestingServiceInterface):
         ctx = get_context()
         return ctx.method_name
 
+    async def getRequestId(self) -> str:
+        ctx = get_context()
+        return ctx.request_id
+
     async def shutdown(self) -> None:
         pass
 
@@ -143,6 +147,11 @@ class ClientServerTests(unittest.TestCase):
                     self.assertEqual(
                         "getMethodName",
                         await client.getMethodName(),
+                    )
+                    # requestId is a 16 char wide hex string
+                    self.assertEqual(
+                        len(await client.getRequestId()),
+                        16,
                     )
 
         loop.run_until_complete(inner_test())

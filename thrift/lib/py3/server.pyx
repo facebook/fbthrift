@@ -345,6 +345,7 @@ cdef class RequestContext:
         inst = <RequestContext>RequestContext.__new__(RequestContext)
         inst._ctx = ctx
         inst._c_ctx = ConnectionContext.create(ctx.getConnectionContext())
+        inst._requestId = getRequestId()
         return inst
 
     @property
@@ -374,3 +375,7 @@ cdef class RequestContext:
     @property
     def method_name(ConnectionContext self):
         return self._ctx.getMethodName().decode('utf-8')
+
+    @property
+    def request_id(self):
+        return self._requestId.decode('utf-8')
