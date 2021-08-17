@@ -24,7 +24,7 @@
     }}{{#service:requestContext?}}
         type RequestContext: ::std::marker::Sync;{{!
     }}{{/service:requestContext?}}
-    {{#service:rustFunctions}}{{^function:returns_streams?}}
+    {{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
         {{#function:docs?}}
         #[doc = {{function:docs}}]
         {{/function:docs?}}
@@ -49,7 +49,7 @@
         }
     {{/function:returns_streams?}}{{#function:returns_streams?}}
         // {{function:rust_name}}: server-side streaming not yet implemented
-    {{/function:returns_streams?}}{{/service:rustFunctions}}
+    {{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
     }
 
     /// Processor for {{service:name}}'s methods.
@@ -102,7 +102,7 @@
         pub fn into_inner(self) -> H {
             self.service
         }{{!
-        }}{{#service:rustFunctions}}{{^function:returns_streams?}}
+        }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
 
         async fn handle_{{function:name}}<'a>(
             &'a self,
@@ -192,7 +192,7 @@
             ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
             ::std::result::Result::Ok(res)
         }{{!
-        }}{{/function:returns_streams?}}{{/service:rustFunctions}}
+        }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
     }
 
     #[::async_trait::async_trait]
@@ -219,9 +219,9 @@
         #[inline]
         fn method_idx(&self, name: &[::std::primitive::u8]) -> ::std::result::Result<::std::primitive::usize, ::fbthrift::ApplicationException> {
             match name {{>lib/block}}{{!
-                }}{{#service:rustFunctions}}{{^function:returns_streams?}}
+                }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
                 b"{{function:name}}" => ::std::result::Result::Ok({{function:index}}usize),{{!
-                }}{{/function:returns_streams?}}{{/service:rustFunctions}}
+                }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
                 _ => ::std::result::Result::Err(::fbthrift::ApplicationException::unknown_method()),
             }
         }
@@ -234,9 +234,9 @@
             _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {{>lib/block}}{{!
-                }}{{#service:rustFunctions}}{{^function:returns_streams?}}
+                }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
                 {{function:index}}usize => self.handle_{{function:name}}(_p, _r, _seqid).await,{{!
-                }}{{/function:returns_streams?}}{{/service:rustFunctions}}
+                }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "{{service:name}}Processor",

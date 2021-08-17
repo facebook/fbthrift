@@ -21,7 +21,9 @@
         pub parent: {{service:package}}::mock::{{service:name}}<'mock>,
         {{/service:extends}}
         {{#service:rustFunctions}}
+        {{^function:starts_interaction?}}
         pub {{function:rust_name}}: r#impl::{{service:snake}}::{{function:rust_name}}<'mock>,
+        {{/function:starts_interaction?}}
         {{/service:rustFunctions}}
         _marker: ::std::marker::PhantomData<&'mock ()>,
     }
@@ -33,8 +35,10 @@
                 parent: <dyn {{service:package}}::client::{{service:name}}>::mock(),
                 {{/service:extends}}
                 {{#service:rustFunctions}}
+                {{^function:starts_interaction?}}
                 {{function:rust_name}}: {{!
                     }}r#impl::{{service:snake}}::{{function:rust_name}}::unimplemented(),
+                {{/function:starts_interaction?}}
                 {{/service:rustFunctions}}
                 _marker: ::std::marker::PhantomData,
             }
@@ -44,6 +48,7 @@
     #[::async_trait::async_trait]
     impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
         }}{{#service:rustFunctions}}
+        {{^function:starts_interaction?}}
         fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
@@ -73,6 +78,7 @@
                 }}{{/function:args}}{{!
             }})))
         }{{!
+        }}{{/function:starts_interaction?}}{{!
         }}{{/service:rustFunctions}}
     }
 
@@ -98,6 +104,7 @@
         pub mod {{service:snake}} {{>lib/block}}{{!
 
             }}{{#service:rustFunctions}}
+            {{^function:starts_interaction?}}
 
             pub struct {{function:rust_name}}<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
@@ -205,6 +212,7 @@
                     }}| ::std::result::Result::Err(exception.clone().into()));
                 }
             }{{!
+            }}{{/function:starts_interaction?}}{{!
             }}{{/service:rustFunctions}}
         }{{!
     }}{{/program:services}}

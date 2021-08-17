@@ -86,6 +86,7 @@
         }}::std::marker::Send {{>lib/block}}{{!
 
         }}{{#service:rustFunctions}}
+        {{^function:starts_interaction?}}
         {{#function:docs?}}
         #[doc = {{function:docs}}]
         {{/function:docs?}}
@@ -98,6 +99,7 @@
             }}{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{!
             }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error{{!
         }}>> + ::std::marker::Send + 'static>>;{{!
+        }}{{/function:starts_interaction?}}{{!
         }}{{/service:rustFunctions}}
     }
 
@@ -111,6 +113,7 @@
         P::Deserializer: ::std::marker::Send,
     {{>lib/block}}{{!
         }}{{#service:rustFunctions}}
+        {{^function:starts_interaction?}}
         fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
@@ -371,6 +374,7 @@
                 .boxed()
         {{/function:returns_streams?}}
         }
+        {{/function:starts_interaction?}}
         {{/service:rustFunctions}}
     }
 
@@ -385,6 +389,7 @@
         T: ::std::marker::Send,
     {
         {{#service:rustFunctions}}
+        {{^function:starts_interaction?}}
         fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
@@ -400,6 +405,7 @@
                 {{/function:args}}
             )
         }
+        {{/function:starts_interaction?}}
         {{/service:rustFunctions}}
     }
 

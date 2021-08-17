@@ -20,7 +20,7 @@
         }}{{#service:docs?}}
         #![doc = {{service:docs}}]
         {{/service:docs?}}{{!
-        }}{{#service:rustFunctions}}{{#function:returns_stream?}}
+        }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{#function:returns_stream?}}
 
         #[derive(Clone, Debug)]
         pub enum {{function:upcamel}}StreamExn {
@@ -440,6 +440,6 @@
                 }}{{/function:void?}}
             }
         }{{!
-        }}{{/function:returns_stream?}}{{/service:rustFunctions}}
+        }}{{/function:returns_stream?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
     }
     {{!newline}}

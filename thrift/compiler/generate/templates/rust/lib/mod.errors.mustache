@@ -42,6 +42,7 @@
 
         {{/service:rust_exceptions}}
         {{#service:rustFunctions}}
+        {{^function:starts_interaction?}}
         {{#function:exceptions?}}
         /// Errors for {{function:rust_name}}.
         #[derive(Debug, ::thiserror::Error)]
@@ -125,6 +126,7 @@
         {{^function:stream_exceptions?}}
         pub type {{function:upcamel}}StreamError = ::fbthrift::NonthrowingFunctionError;
         {{/function:stream_exceptions?}}{{/function:returns_stream?}}
+        {{/function:starts_interaction?}}
         {{/service:rustFunctions}}
     }
 
