@@ -12,41 +12,35 @@ pub mod types {
     #![allow(clippy::redundant_closure)]
 
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("Fiery: {message}: {self:?}")]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Fiery {
         pub message: ::std::string::String,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("Serious: {sonnet}: {self:?}")]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Serious {
         pub sonnet: ::std::option::Option<::std::string::String>,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("ComplexFieldNames: {internal_error_message}: {self:?}")]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct ComplexFieldNames {
         pub error_message: ::std::string::String,
         pub internal_error_message: ::std::string::String,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("CustomFieldNames: {internal_error_message}: {self:?}")]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct CustomFieldNames {
         pub error_message: ::std::string::String,
         pub internal_error_message: ::std::string::String,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("ExceptionWithPrimitiveField: {message}: {self:?}")]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct ExceptionWithPrimitiveField {
         pub message: ::std::string::String,
         pub error_code: ::std::primitive::i32,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("{self:?}")]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Banal {
     }
 

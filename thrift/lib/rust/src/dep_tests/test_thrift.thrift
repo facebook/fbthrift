@@ -87,7 +87,3 @@ exception TestException {
 service TestService {
   void method1(1: string req) throws (1: TestException ex);
 }
-
-exception TestExceptionMsgOverride {
-  1: string message;
-} (message = 'message')

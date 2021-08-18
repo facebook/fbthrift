@@ -21,21 +21,12 @@
         }}Clone, Debug, PartialEq{{!
         }}{{#struct:ord?}}, Eq, PartialOrd, Ord, Hash{{/struct:ord?}}{{!
         }}{{#program:serde?}}, ::serde_derive::Serialize, ::serde_derive::Deserialize{{/program:serde?}}{{!
-        }}{{#struct:exception?}}, ::thiserror::Error{{/struct:exception?}}{{!
         }}{{#struct:derive}}, {{.}}{{/struct:derive}}{{!
     }})]
     {{#struct:docs?}}
     #[doc = {{struct:docs}}]
     {{/struct:docs?}}{{!
 }}{{^struct:union?}}
-    {{#struct:exception?}}
-    {{#struct:has_exception_message?}}
-    #[error("{{struct:rust_name}}: {{>lib/block}}{{struct:exception_message}}}: {self:?}")]
-    {{/struct:has_exception_message?}}
-    {{^struct:has_exception_message?}}
-    #[error("{self:?}")]
-    {{/struct:has_exception_message?}}
-    {{/struct:exception?}}
     pub struct {{struct:rust_name}} {{>lib/block}}{{!
     }}{{#struct:fields}}{{!
         }}{{#program:serde?}}{{#field:rename?}}
@@ -55,9 +46,6 @@
         {{#field:docs?}}
         #[doc = {{field:docs}}]
         {{/field:docs?}}
-        {{#struct:exception?}}
-        #[error("{0:?}")]
-        {{/struct:exception?}}
         {{field:rust_name}}({{>lib/fieldtype}}),{{!
     }}{{/struct:fields}}
         UnknownField(::std::primitive::i32),
