@@ -471,6 +471,9 @@ class mstch_rust_struct : public mstch_struct {
             {"struct:docs?", &mstch_rust_struct::rust_has_doc},
             {"struct:docs", &mstch_rust_struct::rust_doc},
             {"struct:derive", &mstch_rust_struct::rust_derive},
+            {"struct:has_exception_message?",
+             &mstch_rust_struct::has_exception_message},
+            {"struct:exception_message", &mstch_rust_struct::exception_message},
         });
   }
   mstch::node rust_name() {
@@ -509,6 +512,10 @@ class mstch_rust_struct : public mstch_struct {
     }
     return strct_->get_annotation("rust.derive");
   }
+  mstch::node has_exception_message() {
+    return strct_->has_annotation("message");
+  }
+  mstch::node exception_message() { return strct_->get_annotation("message"); }
 
  private:
   const rust_codegen_options& options_;
