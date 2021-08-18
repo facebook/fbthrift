@@ -18,16 +18,19 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 from os import path
+
 from SCons.Builder import Builder
 
-def scons_env(env, add=''):
-    opath = path.dirname(path.abspath('$TARGET'))
-    lstr = 'thrift --gen cpp -o ' + opath + ' ' + add + ' $SOURCE'
+
+def scons_env(env, add=""):
+    opath = path.dirname(path.abspath("$TARGET"))
+    lstr = "thrift --gen cpp -o " + opath + " " + add + " $SOURCE"
     cppbuild = Builder(action=lstr)
-    env.Append(BUILDERS={'ThriftCpp': cppbuild})
+    env.Append(BUILDERS={"ThriftCpp": cppbuild})
+
 
 def gen_cpp(env, dir, file):
     scons_env(env)
-    suffixes = ['_data.h', '_data.cpp', '_types.h', '_types.cpp']
-    targets = ['gen-cpp' + file + s for s in suffixes]
-    return env.ThriftCpp(targets, dir + file + '.thrift')
+    suffixes = ["_data.h", "_data.cpp", "_types.h", "_types.cpp"]
+    targets = ["gen-cpp" + file + s for s in suffixes]
+    return env.ThriftCpp(targets, dir + file + ".thrift")

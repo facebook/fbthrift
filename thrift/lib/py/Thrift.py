@@ -18,9 +18,10 @@ from __future__ import print_function
 from __future__ import unicode_literals
 
 import logging
-import six
 import sys
 import threading
+
+import six
 
 UEXW_MAX_LENGTH = 1024
 
@@ -54,7 +55,8 @@ class TMessageType:
 
 
 class TPriority:
-    """ apache::thrift::concurrency::PRIORITY """
+    """apache::thrift::concurrency::PRIORITY"""
+
     HIGH_IMPORTANT = 0
     HIGH = 1
     IMPORTANT = 2
@@ -76,6 +78,7 @@ class TRequestContext:
 
 class TProcessorEventHandler:
     """Event handler for thrift processors"""
+
     # TODO: implement asyncComplete for Twisted
 
     def getHandlerContext(self, fn_name, server_context):
@@ -147,7 +150,7 @@ class TProcessor:
     def readMessageBegin(self, iprot):
         name, _, seqid = iprot.readMessageBegin()
         if six.PY3:
-            name = name.decode('utf8')
+            name = name.decode("utf8")
         return name, seqid
 
     def skipMessageStruct(self, iprot):
@@ -192,14 +195,13 @@ class TProcessor:
         indicating the exception thrown.
         """
         fields = (
-            result.__dict__.keys()
-            if hasattr(result, "__dict__") else result.__slots__
+            result.__dict__.keys() if hasattr(result, "__dict__") else result.__slots__
         )
         for field in fields:
             value = getattr(result, field)
             if value is None:
                 continue
-            elif field == 'success':
+            elif field == "success":
                 return None
             else:
                 return value
@@ -209,9 +211,12 @@ class TProcessor:
         self._event_handler.preWrite(handler_ctx, fn_name, result)
         reply_type = self._getReplyType(result)
 
-        if server_ctx is not None and hasattr(server_ctx, 'context_data'):
-            ex = (result if reply_type == TMessageType.EXCEPTION
-                  else self._get_exception_from_thrift_result(result))
+        if server_ctx is not None and hasattr(server_ctx, "context_data"):
+            ex = (
+                result
+                if reply_type == TMessageType.EXCEPTION
+                else self._get_exception_from_thrift_result(result)
+            )
             if ex:
                 server_ctx.context_data.setHeaderEx(ex.__class__.__name__)
                 server_ctx.context_data.setHeaderExWhat(str(ex)[:UEXW_MAX_LENGTH])
@@ -249,6 +254,7 @@ class TException(Exception):
 
     # BaseException.message is deprecated in Python v[2.6,3.0)
     if (2, 6, 0) <= sys.version_info < (3, 0):
+
         def _get_message(self):
             return self._message
 
@@ -282,19 +288,19 @@ class TApplicationException(TException):
     INJECTED_FAILURE = 13
 
     EXTYPE_TO_STRING = {
-        UNKNOWN_METHOD: 'Unknown method',
-        INVALID_MESSAGE_TYPE: 'Invalid message type',
-        WRONG_METHOD_NAME: 'Wrong method name',
-        BAD_SEQUENCE_ID: 'Bad sequence ID',
-        MISSING_RESULT: 'Missing result',
-        INTERNAL_ERROR: 'Internal error',
-        PROTOCOL_ERROR: 'Protocol error',
-        INVALID_TRANSFORM: 'Invalid transform',
-        INVALID_PROTOCOL: 'Invalid protocol',
-        UNSUPPORTED_CLIENT_TYPE: 'Unsupported client type',
-        LOADSHEDDING: 'Loadshedding request',
-        TIMEOUT: 'Task timeout',
-        INJECTED_FAILURE: 'Injected Failure',
+        UNKNOWN_METHOD: "Unknown method",
+        INVALID_MESSAGE_TYPE: "Invalid message type",
+        WRONG_METHOD_NAME: "Wrong method name",
+        BAD_SEQUENCE_ID: "Bad sequence ID",
+        MISSING_RESULT: "Missing result",
+        INTERNAL_ERROR: "Internal error",
+        PROTOCOL_ERROR: "Protocol error",
+        INVALID_TRANSFORM: "Invalid transform",
+        INVALID_PROTOCOL: "Invalid protocol",
+        UNSUPPORTED_CLIENT_TYPE: "Unsupported client type",
+        LOADSHEDDING: "Loadshedding request",
+        TIMEOUT: "Task timeout",
+        INJECTED_FAILURE: "Injected Failure",
     }
 
     def __init__(self, type=UNKNOWN, message=None):
@@ -306,8 +312,8 @@ class TApplicationException(TException):
             return self.message
         else:
             return self.EXTYPE_TO_STRING.get(
-                self.type,
-                'Default (unknown) TApplicationException')
+                self.type, "Default (unknown) TApplicationException"
+            )
 
     def read(self, iprot):
         iprot.readStructBegin()
@@ -318,10 +324,9 @@ class TApplicationException(TException):
             if fid == 1:
                 if ftype == TType.STRING:
                     message = iprot.readString()
-                    if sys.version_info.major >= 3 and isinstance(message,
-                                                                  bytes):
+                    if sys.version_info.major >= 3 and isinstance(message, bytes):
                         try:
-                            message = message.decode('utf-8')
+                            message = message.decode("utf-8")
                         except UnicodeDecodeError:
                             pass
                     self.message = message
@@ -338,15 +343,17 @@ class TApplicationException(TException):
         iprot.readStructEnd()
 
     def write(self, oprot):
-        oprot.writeStructBegin(b'TApplicationException')
+        oprot.writeStructBegin(b"TApplicationException")
         if self.message is not None:
-            oprot.writeFieldBegin(b'message', TType.STRING, 1)
-            oprot.writeString(self.message.encode('utf-8')
-                              if not isinstance(self.message, bytes)
-                              else self.message)
+            oprot.writeFieldBegin(b"message", TType.STRING, 1)
+            oprot.writeString(
+                self.message.encode("utf-8")
+                if not isinstance(self.message, bytes)
+                else self.message
+            )
             oprot.writeFieldEnd()
         if self.type is not None:
-            oprot.writeFieldBegin(b'type', TType.I32, 2)
+            oprot.writeFieldBegin(b"type", TType.I32, 2)
             oprot.writeI32(self.type)
             oprot.writeFieldEnd()
         oprot.writeFieldStop()

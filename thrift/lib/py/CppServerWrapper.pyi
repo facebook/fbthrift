@@ -14,18 +14,18 @@
 
 import typing as __typing
 
-
-class CppContextData:
-    ...
-
+class CppContextData: ...
 
 class CallbackWrapper:
     def call(self, obj: object) -> None: ...
 
-
 class CppServerWrapper:
     def setAddress(self, ip: __typing.Union[bytes, str], port: int) -> None: ...
-    def getAddress(self) -> __typing.Union[__typing.Tuple[str, int], __typing.Tuple[str, int, int, int], str]: ...
+    def getAddress(
+        self,
+    ) -> __typing.Union[
+        __typing.Tuple[str, int], __typing.Tuple[str, int, int, int], str
+    ]: ...
     def setUnixSocketPath(self, ip: str) -> None: ...
     def setNumCPUWorkerThreads(self, num_threads: int) -> None: ...
     def setNumIOWorkerThreads(self, num_threads: int) -> None: ...
@@ -34,22 +34,17 @@ class CppServerWrapper:
     def cleanUp(self) -> None: ...
     def setEnable(self, enable: bool) -> None: ...
 
-
-class CallTimestamps:
-    ...
-
+class CallTimestamps: ...
 
 class SSLPolicy(int):
     DISABLED: __typing.ClassVar[SSLPolicy]
     PERMITTED: __typing.ClassVar[SSLPolicy]
     REQUIRED: __typing.ClassVar[SSLPolicy]
 
-
 class VerifyClientCertificate(int):
-  IF_PRESENTED: __typing.ClassVar[VerifyClientCertificate]
-  ALWAYS_VERIFY: __typing.ClassVar[VerifyClientCertificate]
-  NONE_DO_NOT_REQUEST: __typing.ClassVar[VerifyClientCertificate]
-
+    IF_PRESENTED: __typing.ClassVar[VerifyClientCertificate]
+    ALWAYS_VERIFY: __typing.ClassVar[VerifyClientCertificate]
+    NONE_DO_NOT_REQUEST: __typing.ClassVar[VerifyClientCertificate]
 
 class SSLVersion(int):
     TLSv1_2: __typing.ClassVar[SSLVersion]

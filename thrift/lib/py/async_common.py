@@ -27,26 +27,29 @@ from __future__ import division
 from __future__ import print_function
 from __future__ import unicode_literals
 
-import six
 import logging
 import struct
 import warnings
-
-import thrift
 from collections import defaultdict
 from io import BytesIO
+
+import six
+import thrift
 from thrift.protocol.THeaderProtocol import THeaderProtocolFactory
 from thrift.server.TServer import TConnectionContext
-from thrift.transport.TTransport import (
-    TTransportBase,
-    TTransportException,
-)
-from thrift.transport.THeaderTransport import (
-    THeaderTransport, HEADER_FLAG, MAX_FRAME_SIZE, CLIENT_TYPE
-)
 from thrift.Thrift import (
     TApplicationException,
     TMessageType,
+)
+from thrift.transport.THeaderTransport import (
+    THeaderTransport,
+    HEADER_FLAG,
+    MAX_FRAME_SIZE,
+    CLIENT_TYPE,
+)
+from thrift.transport.TTransport import (
+    TTransportBase,
+    TTransportException,
 )
 
 if six.PY3:
@@ -68,6 +71,7 @@ logger = logging.getLogger(__name__)
 
 
 if six.PY2:
+
     class PermissionError(IOError):
         pass
 
@@ -205,21 +209,20 @@ class WrappedTransport(TWriteOnlyBuffer):
             self._trans.close()
 
     def __del__(self):
-        if (
-            self._consumer
-            and (not self._consumer.done() or not self._consumer.cancelled())
+        if self._consumer and (
+            not self._consumer.done() or not self._consumer.cancelled()
         ):
             logger.debug(
-                'WrappedTransport did not finish properly'
-                ' as the consumer asyncio.Task is still pending.'
-                ' Make sure to call .close() on this object.'
+                "WrappedTransport did not finish properly"
+                " as the consumer asyncio.Task is still pending."
+                " Make sure to call .close() on this object."
             )
         if self.isOpen():
             warnings.warn(
-                'WrappedTransport is being garbage collected'
-                ' while still open.'
-                ' Make sure to call .close() on this object.',
-                ResourceWarning
+                "WrappedTransport is being garbage collected"
+                " while still open."
+                " Make sure to call .close() on this object.",
+                ResourceWarning,
             )
 
 
@@ -238,7 +241,7 @@ class FramedProtocol(asyncio.Protocol):
         """Implements asyncio.Protocol.data_received."""
         self.recvd = self.recvd + data
         while len(self.recvd) >= 4:
-            length, = struct.unpack("!I", self.recvd[:4])
+            (length,) = struct.unpack("!I", self.recvd[:4])
             if length > MAX_FRAME_SIZE:
                 logger.error(
                     "Frame size %d too large for THeaderProtocol",
@@ -254,8 +257,8 @@ class FramedProtocol(asyncio.Protocol):
             if len(self.recvd) < length + 4:
                 return
 
-            frame = self.recvd[0:4 + length]
-            self.recvd = self.recvd[4 + length:]
+            frame = self.recvd[0 : 4 + length]
+            self.recvd = self.recvd[4 + length :]
             self.loop.create_task(self.message_received(frame))
 
     def eof_received(self):
@@ -273,6 +276,7 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
     This is abstract, missing implementation of an async TTransport
     wrapper and the `message_received` coroutine function.
     """
+
     DEFAULT_TIMEOUT = 60.0
     THEADER_PROTOCOL_FACTORY = THeaderProtocolFactory
     _exception_serializer = None
@@ -288,7 +292,7 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
         self.client_class = client_class
         if timeouts is None:
             timeouts = {}
-        default_timeout = timeouts.get('') or self.DEFAULT_TIMEOUT
+        default_timeout = timeouts.get("") or self.DEFAULT_TIMEOUT
         self.timeouts = defaultdict(lambda: default_timeout)
         self.timeouts.update(timeouts)
         self.client_type = client_type
@@ -316,9 +320,7 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
 
     def connection_made(self, transport):
         """Implements asyncio.Protocol.connection_made."""
-        assert self.transport is None, (
-            "Thrift transport already instantiated here."
-        )
+        assert self.transport is None, "Thrift transport already instantiated here."
         assert self.client is None, "Client already instantiated here."
         self.transport = self.wrapAsyncioTransport(transport)
         thrift_protocol = self.THEADER_PROTOCOL_FACTORY(
@@ -330,8 +332,8 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
     def connection_lost(self, exc):
         """Implements asyncio.Protocol.connection_lost."""
         te = TTransportException(
-            type=TTransportException.END_OF_FILE,
-            message="Connection closed")
+            type=TTransportException.END_OF_FILE, message="Connection closed"
+        )
         self.fail_all_futures(te)
 
     def fail_all_futures(self, exc):
@@ -352,8 +354,8 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
             return
         except Exception as ex:
             te = TTransportException(
-                type=TTransportException.END_OF_FILE,
-                message=str(ex))
+                type=TTransportException.END_OF_FILE, message=str(ex)
+            )
             self.fail_all_futures(te)
             self.transport.close()
             return
@@ -387,14 +389,13 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
 
     def update_pending_tasks(self, seqid, task):
         no_longer_pending = [
-            _seqid for _seqid, _task in self.pending_tasks.items()
+            _seqid
+            for _seqid, _task in self.pending_tasks.items()
             if _task.done() or _task.cancelled()
         ]
         for _seqid in no_longer_pending:
             del self.pending_tasks[_seqid]
-        assert seqid not in self.pending_tasks, (
-            "seqid already pending for timeout"
-        )
+        assert seqid not in self.pending_tasks, "seqid already pending for timeout"
         self.pending_tasks[seqid] = task
 
     def schedule_timeout(self, fname, seqid):
@@ -448,7 +449,6 @@ class ThriftHeaderClientProtocolBase(FramedProtocol):
 
 
 class AsyncioRpcConnectionContext(TConnectionContext):
-
     def __init__(self, client_socket):
         self._client_socket = client_socket
 

@@ -21,8 +21,9 @@ from __future__ import unicode_literals
 
 import sys
 
-from thrift.Thrift import TProcessor, TMessageType, TException
 from thrift.protocol import TProtocolDecorator, TMultiplexedProtocol
+from thrift.Thrift import TProcessor, TMessageType, TException
+
 
 class TMultiplexedProcessor(TProcessor):
     def __init__(self):
@@ -32,12 +33,15 @@ class TMultiplexedProcessor(TProcessor):
         self.services[serviceName] = processor
 
     def setEventHandler(self, event_handler, serviceName=None):
-        """ Set event handler for a service. If serviceName is None,
+        """Set event handler for a service. If serviceName is None,
         set event handler for all services"""
         if serviceName is not None:
             if not serviceName in self.services:
-                raise TException("Cannot set event handler for service " +
-                        serviceName + ": no such service")
+                raise TException(
+                    "Cannot set event handler for service "
+                    + serviceName
+                    + ": no such service"
+                )
             else:
                 self.services[serviceName].setEventHandler(event_handler)
         else:
@@ -50,28 +54,31 @@ class TMultiplexedProcessor(TProcessor):
             raise TException("TMultiplex protocol only supports CALL & ONEWAY")
 
         if sys.version_info[0] >= 3 and isinstance(name, bytes):
-            name = name.decode('utf-8')
+            name = name.decode("utf-8")
         index = name.find(TMultiplexedProtocol.SEPARATOR)
         if index < 0:
-            raise TException("Service name not found in message name: " +
-                name + ". Did you forget to use TMultiplexProtocol " +
-                "in your client?")
+            raise TException(
+                "Service name not found in message name: "
+                + name
+                + ". Did you forget to use TMultiplexProtocol "
+                + "in your client?"
+            )
 
         serviceName = name[0:index]
-        call = name[index + len(TMultiplexedProtocol.SEPARATOR):]
+        call = name[index + len(TMultiplexedProtocol.SEPARATOR) :]
         if sys.version_info[0] >= 3:
-            call = call.encode('utf-8')
+            call = call.encode("utf-8")
         if not serviceName in self.services:
-            raise TException("Service name not found: " + serviceName +
-                ". Did you forget to call registerProcessor()?")
+            raise TException(
+                "Service name not found: "
+                + serviceName
+                + ". Did you forget to call registerProcessor()?"
+            )
 
-        standardMessage = (
-            call,
-            type,
-            seqid
+        standardMessage = (call, type, seqid)
+        return self.services[serviceName].process(
+            StoredMessageProtocol(iprot, standardMessage), oprot, server_ctx
         )
-        return self.services[serviceName].process(StoredMessageProtocol(iprot,
-            standardMessage), oprot, server_ctx)
 
 
 class StoredMessageProtocol(TProtocolDecorator.TProtocolDecorator):
