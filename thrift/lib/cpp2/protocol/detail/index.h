@@ -164,9 +164,6 @@ class ProtocolReaderStructReadStateWithIndexImpl
       int32_t currFieldId,
       int32_t nextFieldId,
       TType nextFieldType) {
-    if (currFieldId == 0 && foundSizeField_) {
-      currFieldId = detail::kSizeField.id;
-    }
     tryAdvanceIndex(currFieldId);
     return Base::advanceToNextField(
         iprot, currFieldId, nextFieldId, nextFieldType);
@@ -182,7 +179,8 @@ class ProtocolReaderStructReadStateWithIndexImpl
       return tryFastSkipImpl(iprot, [&] { iprot->skip(type); });
     }
 
-    if (foundSizeField_ && currentIndexFieldId_ == id) {
+    if (currentIndexFieldId_ == id) {
+      DCHECK_NE(id, 0);
       return tryFastSkipImpl(
           iprot, [&] { iprot->skipBytes(currentIndexFieldSize_); });
     }
@@ -204,7 +202,6 @@ class ProtocolReaderStructReadStateWithIndexImpl
   void readStructBeginWithIndex(folly::io::Cursor structBegin) {
     indexReader_.setInput(std::move(structBegin));
     if (auto serializedDataSize = readIndexOffsetField(indexReader_)) {
-      foundSizeField_ = true;
       if (!FLAGS_thrift_enable_lazy_deserialization) {
         return;
       }
@@ -262,7 +259,6 @@ class ProtocolReaderStructReadStateWithIndexImpl
   }
 
   Protocol indexReader_;
-  bool foundSizeField_ = false;
   uint32_t indexFieldCount_ = 0;
   int16_t currentIndexFieldId_ = 0;
   int64_t currentIndexFieldSize_ = 0;
