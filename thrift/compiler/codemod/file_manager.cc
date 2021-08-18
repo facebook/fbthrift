@@ -109,7 +109,7 @@ void file_manager::remove_all_annotations(const t_node& node) {
 
   expand_over_whitespaces(begin_offset, end_offset);
 
-  if (begin_offset - 1 >= 0 && end_offset < old_content_.length() &&
+  if (begin_offset >= 1 && end_offset < old_content_.length() &&
       old_content_[begin_offset - 1] == '(' &&
       old_content_[end_offset] == ')') {
     --begin_offset;
