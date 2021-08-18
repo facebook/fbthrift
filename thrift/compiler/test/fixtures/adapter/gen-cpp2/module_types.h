@@ -366,102 +366,6 @@ class Foo final  {
     return {std::move(this->binaryField), __isset.binaryField};
   }
 
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> get_intField() const {
-    return intField;
-  }
-
-  [[deprecated("Use `FOO.intField_ref() = BAR;` instead of `FOO.set_intField(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& set_intField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intField_) {
-    intField = intField_;
-    __isset.intField = true;
-    return intField;
-  }
-
-  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>* get_optionalIntField() const& {
-    return optionalIntField_ref() ? std::addressof(optionalIntField) : nullptr;
-  }
-
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>* get_optionalIntField() & {
-    return optionalIntField_ref() ? std::addressof(optionalIntField) : nullptr;
-  }
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>* get_optionalIntField() && = delete;
-
-  [[deprecated("Use `FOO.optionalIntField_ref() = BAR;` instead of `FOO.set_optionalIntField(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& set_optionalIntField(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> optionalIntField_) {
-    optionalIntField = optionalIntField_;
-    __isset.optionalIntField = true;
-    return optionalIntField;
-  }
-
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> get_intFieldWithDefault() const {
-    return intFieldWithDefault;
-  }
-
-  [[deprecated("Use `FOO.intFieldWithDefault_ref() = BAR;` instead of `FOO.set_intFieldWithDefault(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>& set_intFieldWithDefault(::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> intFieldWithDefault_) {
-    intFieldWithDefault = intFieldWithDefault_;
-    __isset.intFieldWithDefault = true;
-    return intFieldWithDefault;
-  }
-  const ::cpp2::SetWithAdapter& get_setField() const&;
-  ::cpp2::SetWithAdapter get_setField() &&;
-
-  template <typename T_Foo_setField_struct_setter = ::cpp2::SetWithAdapter>
-  [[deprecated("Use `FOO.setField_ref() = BAR;` instead of `FOO.set_setField(BAR);`")]]
-  ::cpp2::SetWithAdapter& set_setField(T_Foo_setField_struct_setter&& setField_) {
-    setField = std::forward<T_Foo_setField_struct_setter>(setField_);
-    __isset.setField = true;
-    return setField;
-  }
-  const ::cpp2::SetWithAdapter* get_optionalSetField() const&;
-  ::cpp2::SetWithAdapter* get_optionalSetField() &;
-  ::cpp2::SetWithAdapter* get_optionalSetField() && = delete;
-
-  template <typename T_Foo_optionalSetField_struct_setter = ::cpp2::SetWithAdapter>
-  [[deprecated("Use `FOO.optionalSetField_ref() = BAR;` instead of `FOO.set_optionalSetField(BAR);`")]]
-  ::cpp2::SetWithAdapter& set_optionalSetField(T_Foo_optionalSetField_struct_setter&& optionalSetField_) {
-    optionalSetField = std::forward<T_Foo_optionalSetField_struct_setter>(optionalSetField_);
-    __isset.optionalSetField = true;
-    return optionalSetField;
-  }
-  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& get_mapField() const&;
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> get_mapField() &&;
-
-  template <typename T_Foo_mapField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
-  [[deprecated("Use `FOO.mapField_ref() = BAR;` instead of `FOO.set_mapField(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& set_mapField(T_Foo_mapField_struct_setter&& mapField_) {
-    mapField = std::forward<T_Foo_mapField_struct_setter>(mapField_);
-    __isset.mapField = true;
-    return mapField;
-  }
-  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>* get_optionalMapField() const&;
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>* get_optionalMapField() &;
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>* get_optionalMapField() && = delete;
-
-  template <typename T_Foo_optionalMapField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>>
-  [[deprecated("Use `FOO.optionalMapField_ref() = BAR;` instead of `FOO.set_optionalMapField(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& set_optionalMapField(T_Foo_optionalMapField_struct_setter&& optionalMapField_) {
-    optionalMapField = std::forward<T_Foo_optionalMapField_struct_setter>(optionalMapField_);
-    __isset.optionalMapField = true;
-    return optionalMapField;
-  }
-
-  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>& get_binaryField() const& {
-    return binaryField;
-  }
-
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string> get_binaryField() && {
-    return std::move(binaryField);
-  }
-
-  template <typename T_Foo_binaryField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>>
-  [[deprecated("Use `FOO.binaryField_ref() = BAR;` instead of `FOO.set_binaryField(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::string>& set_binaryField(T_Foo_binaryField_struct_setter&& binaryField_) {
-    binaryField = std::forward<T_Foo_binaryField_struct_setter>(binaryField_);
-    __isset.binaryField = true;
-    return binaryField;
-  }
-
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
@@ -1110,27 +1014,6 @@ class Bar final  {
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> optionalUnionField_ref() && {
     return {std::move(this->optionalUnionField), __isset.optionalUnionField};
   }
-  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>& get_structField() const&;
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> get_structField() &&;
-
-  template <typename T_Bar_structField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
-  [[deprecated("Use `FOO.structField_ref() = BAR;` instead of `FOO.set_structField(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>& set_structField(T_Bar_structField_struct_setter&& structField_) {
-    structField = std::forward<T_Bar_structField_struct_setter>(structField_);
-    __isset.structField = true;
-    return structField;
-  }
-  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>* get_optionalStructField() const&;
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>* get_optionalStructField() &;
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>* get_optionalStructField() && = delete;
-
-  template <typename T_Bar_optionalStructField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>
-  [[deprecated("Use `FOO.optionalStructField_ref() = BAR;` instead of `FOO.set_optionalStructField(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>& set_optionalStructField(T_Bar_optionalStructField_struct_setter&& optionalStructField_) {
-    optionalStructField = std::forward<T_Bar_optionalStructField_struct_setter>(optionalStructField_);
-    __isset.optionalStructField = true;
-    return optionalStructField;
-  }
   const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& get_structListField() const&;
   ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>> get_structListField() &&;
 
@@ -1151,27 +1034,6 @@ class Bar final  {
     optionalStructListField = std::forward<T_Bar_optionalStructListField_struct_setter>(optionalStructListField_);
     __isset.optionalStructListField = true;
     return optionalStructListField;
-  }
-  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>& get_unionField() const&;
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> get_unionField() &&;
-
-  template <typename T_Bar_unionField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>
-  [[deprecated("Use `FOO.unionField_ref() = BAR;` instead of `FOO.set_unionField(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>& set_unionField(T_Bar_unionField_struct_setter&& unionField_) {
-    unionField = std::forward<T_Bar_unionField_struct_setter>(unionField_);
-    __isset.unionField = true;
-    return unionField;
-  }
-  const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>* get_optionalUnionField() const&;
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>* get_optionalUnionField() &;
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>* get_optionalUnionField() && = delete;
-
-  template <typename T_Bar_optionalUnionField_struct_setter = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>>
-  [[deprecated("Use `FOO.optionalUnionField_ref() = BAR;` instead of `FOO.set_optionalUnionField(BAR);`")]]
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>& set_optionalUnionField(T_Bar_optionalUnionField_struct_setter&& optionalUnionField_) {
-    optionalUnionField = std::forward<T_Bar_optionalUnionField_struct_setter>(optionalUnionField_);
-    __isset.optionalUnionField = true;
-    return optionalUnionField;
   }
 
   template <class Protocol_>

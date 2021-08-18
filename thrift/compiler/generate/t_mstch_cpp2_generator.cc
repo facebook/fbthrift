@@ -573,6 +573,8 @@ class mstch_cpp2_field : public mstch_field {
             {"field:cpp_storage_type", &mstch_cpp2_field::cpp_storage_type},
             {"field:cpp_deprecated_accessor_type",
              &mstch_cpp2_field::cpp_deprecated_accessor_type},
+            {"field:has_deprecated_accessors?",
+             &mstch_cpp2_field::has_deprecated_accessors},
             {"field:next_field_key", &mstch_cpp2_field::next_field_key},
             {"field:prev_field_key", &mstch_cpp2_field::prev_field_key},
             {"field:next_field_type", &mstch_cpp2_field::next_field_type},
@@ -614,6 +616,10 @@ class mstch_cpp2_field : public mstch_field {
     // TODO(afuller): Remove this once all non-field_ref based accessors have
     // been removed.
     return context_->resolver().get_storage_type_name(field_);
+  }
+  mstch::node has_deprecated_accessors() {
+    return !cpp2::is_explicit_ref(field_) && !cpp2::is_lazy(field_) &&
+        !gen::cpp::type_resolver::find_first_adapter(&*field_->type());
   }
   mstch::node cpp_ref() { return cpp2::is_explicit_ref(field_); }
   mstch::node non_opt_cpp_ref() {

@@ -1815,39 +1815,6 @@ class MyStruct final  {
     return MyMapEnumAndInt;
   }
 
-  const ::some::valid::ns::CustomProtocolType& get_MyCustomField() const& {
-    return MyCustomField;
-  }
-
-  ::some::valid::ns::CustomProtocolType get_MyCustomField() && {
-    return std::move(MyCustomField);
-  }
-
-  template <typename T_MyStruct_MyCustomField_struct_setter = ::some::valid::ns::CustomProtocolType>
-  [[deprecated("Use `FOO.MyCustomField_ref() = BAR;` instead of `FOO.set_MyCustomField(BAR);`")]]
-  ::some::valid::ns::CustomProtocolType& set_MyCustomField(T_MyStruct_MyCustomField_struct_setter&& MyCustomField_) {
-    MyCustomField = std::forward<T_MyStruct_MyCustomField_struct_setter>(MyCustomField_);
-    __isset.MyCustomField = true;
-    return MyCustomField;
-  }
-
-  const ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() const& {
-    return MyOptCustomField_ref() ? std::addressof(MyOptCustomField) : nullptr;
-  }
-
-  ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() & {
-    return MyOptCustomField_ref() ? std::addressof(MyOptCustomField) : nullptr;
-  }
-  ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() && = delete;
-
-  template <typename T_MyStruct_MyOptCustomField_struct_setter = ::some::valid::ns::CustomProtocolType>
-  [[deprecated("Use `FOO.MyOptCustomField_ref() = BAR;` instead of `FOO.set_MyOptCustomField(BAR);`")]]
-  ::some::valid::ns::CustomProtocolType& set_MyOptCustomField(T_MyStruct_MyOptCustomField_struct_setter&& MyOptCustomField_) {
-    MyOptCustomField = std::forward<T_MyStruct_MyOptCustomField_struct_setter>(MyOptCustomField_);
-    __isset.MyOptCustomField = true;
-    return MyOptCustomField;
-  }
-
   template <class Protocol_>
   uint32_t read(Protocol_* iprot);
   template <class Protocol_>
@@ -4984,39 +4951,6 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
     a_union_typedef_list = std::forward<T_AnException_a_union_typedef_list_struct_setter>(a_union_typedef_list_);
     __isset.a_union_typedef_list = true;
     return a_union_typedef_list;
-  }
-
-  const ::some::valid::ns::CustomProtocolType& get_MyCustomField() const& {
-    return MyCustomField;
-  }
-
-  ::some::valid::ns::CustomProtocolType get_MyCustomField() && {
-    return std::move(MyCustomField);
-  }
-
-  template <typename T_AnException_MyCustomField_struct_setter = ::some::valid::ns::CustomProtocolType>
-  [[deprecated("Use `FOO.MyCustomField_ref() = BAR;` instead of `FOO.set_MyCustomField(BAR);`")]]
-  ::some::valid::ns::CustomProtocolType& set_MyCustomField(T_AnException_MyCustomField_struct_setter&& MyCustomField_) {
-    MyCustomField = std::forward<T_AnException_MyCustomField_struct_setter>(MyCustomField_);
-    __isset.MyCustomField = true;
-    return MyCustomField;
-  }
-
-  const ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() const& {
-    return MyOptCustomField_ref() ? std::addressof(MyOptCustomField) : nullptr;
-  }
-
-  ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() & {
-    return MyOptCustomField_ref() ? std::addressof(MyOptCustomField) : nullptr;
-  }
-  ::some::valid::ns::CustomProtocolType* get_MyOptCustomField() && = delete;
-
-  template <typename T_AnException_MyOptCustomField_struct_setter = ::some::valid::ns::CustomProtocolType>
-  [[deprecated("Use `FOO.MyOptCustomField_ref() = BAR;` instead of `FOO.set_MyOptCustomField(BAR);`")]]
-  ::some::valid::ns::CustomProtocolType& set_MyOptCustomField(T_AnException_MyOptCustomField_struct_setter&& MyOptCustomField_) {
-    MyOptCustomField = std::forward<T_AnException_MyOptCustomField_struct_setter>(MyOptCustomField_);
-    __isset.MyOptCustomField = true;
-    return MyOptCustomField;
   }
 
   template <class Protocol_>
