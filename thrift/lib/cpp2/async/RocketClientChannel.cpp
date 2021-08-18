@@ -640,9 +640,7 @@ RocketClientChannel::~RocketClientChannel() {
 }
 
 void RocketClientChannel::setFlushList(FlushList* flushList) {
-  if (!clientDestroyed_) {
-    rocket::RocketClient::setFlushList(flushList);
-  }
+  rocket::RocketClient::setFlushList(flushList);
 }
 
 RocketClientChannel::Ptr RocketClientChannel::newChannel(
@@ -887,16 +885,6 @@ bool RocketClientChannel::preSendValidation(
     std::chrono::milliseconds& firstResponseTimeout) {
   DCHECK(metadata.kind_ref().has_value());
 
-  if (clientDestroyed_) {
-    // Channel destroyed by explicit closeNow() call.
-    onResponseError(
-        cb,
-        folly::make_exception_wrapper<TTransportException>(
-            TTransportException::NOT_OPEN,
-            "Connection not open: client destroyed due to closeNow."));
-    return false;
-  }
-
   if (!isAlive()) {
     // Channel is not in connected state due to some pre-existing transport
     // exception, pass it back for some breadcrumbs.
@@ -951,28 +939,19 @@ ClientChannel::SaturationStatus RocketClientChannel::getSaturationStatus() {
 
 void RocketClientChannel::closeNow() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
-  if (!clientDestroyed_) {
-    clientDestroyed_ = true;
-    rocket::RocketClient::closeNow(transport::TTransportException(
-        transport::TTransportException::INTERRUPTED, "Client shutdown."));
-  }
+  rocket::RocketClient::closeNow(transport::TTransportException(
+      transport::TTransportException::INTERRUPTED, "Client shutdown."));
 }
 
 void RocketClientChannel::setCloseCallback(CloseCallback* closeCallback) {
-  if (!clientDestroyed_) {
-    rocket::RocketClient::setCloseCallback([closeCallback] {
-      if (closeCallback) {
-        closeCallback->channelClosed();
-      }
-    });
-  }
+  rocket::RocketClient::setCloseCallback([closeCallback] {
+    if (closeCallback) {
+      closeCallback->channelClosed();
+    }
+  });
 }
 
 folly::AsyncTransport* FOLLY_NULLABLE RocketClientChannel::getTransport() {
-  if (clientDestroyed_) {
-    return nullptr;
-  }
-
   auto* transportWrapper = rocket::RocketClient::getTransportWrapper();
   return transportWrapper
       ? transportWrapper->getUnderlyingTransport<folly::AsyncTransport>()
@@ -981,7 +960,7 @@ folly::AsyncTransport* FOLLY_NULLABLE RocketClientChannel::getTransport() {
 
 bool RocketClientChannel::good() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
-  return !clientDestroyed_ && isAlive();
+  return isAlive();
 }
 
 size_t RocketClientChannel::inflightRequestsAndStreams() const {
@@ -998,7 +977,7 @@ void RocketClientChannel::setTimeout(uint32_t timeoutMs) {
 
 void RocketClientChannel::attachEventBase(folly::EventBase* evb) {
   DCHECK(evb->isInEventBaseThread());
-  if (!clientDestroyed_) {
+  if (getTransportWrapper()) {
     rocket::RocketClient::attachEventBase(*evb);
   }
   evb_ = evb;
@@ -1008,7 +987,7 @@ void RocketClientChannel::detachEventBase() {
   DCHECK(isDetachable());
   DCHECK(getDestructorGuardCount() == 0);
 
-  if (!clientDestroyed_) {
+  if (getTransportWrapper()) {
     rocket::RocketClient::detachEventBase();
   }
   evb_ = nullptr;
@@ -1017,13 +996,13 @@ void RocketClientChannel::detachEventBase() {
 bool RocketClientChannel::isDetachable() {
   DCHECK(!evb_ || evb_->isInEventBaseThread());
   auto* transport = getTransport();
-  return !evb_ || !transport || clientDestroyed_ ||
+  return !evb_ || !transport ||
       (rocket::RocketClient::isDetachable() && pendingInteractions_.empty());
 }
 
 void RocketClientChannel::setOnDetachable(
     folly::Function<void()> onDetachable) {
-  DCHECK(!clientDestroyed_);
+  DCHECK(getTransportWrapper());
   ClientChannel::setOnDetachable(std::move(onDetachable));
   rocket::RocketClient::setOnDetachable([this] {
     if (isDetachable()) {
@@ -1034,9 +1013,7 @@ void RocketClientChannel::setOnDetachable(
 
 void RocketClientChannel::unsetOnDetachable() {
   ClientChannel::unsetOnDetachable();
-  if (!clientDestroyed_) {
-    rocket::RocketClient::setOnDetachable(nullptr);
-  }
+  rocket::RocketClient::setOnDetachable(nullptr);
 }
 
 void RocketClientChannel::terminateInteraction(InteractionId id) {

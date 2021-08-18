@@ -144,7 +144,6 @@ class RocketClientChannel final : public ClientChannel,
 
   uint16_t protocolId_{apache::thrift::protocol::T_COMPACT_PROTOCOL};
   std::chrono::milliseconds timeout_{kDefaultRpcTimeout};
-  bool clientDestroyed_{false};
   uint32_t maxInflightRequestsAndStreams_{std::numeric_limits<uint32_t>::max()};
   folly::EventBase* evb_{nullptr};
 
