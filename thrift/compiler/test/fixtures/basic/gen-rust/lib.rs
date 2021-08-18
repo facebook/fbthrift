@@ -2278,6 +2278,9 @@ pub mod client {
         }
     }
 
+    pub type MyServiceDynClient = <make_MyService as ::fbthrift::ClientFactory>::Api;
+    pub type MyServiceClient = ::std::sync::Arc<MyServiceDynClient>;
+
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
     impl ::fbthrift::ClientFactory for make_MyService {
@@ -2594,6 +2597,9 @@ pub mod client {
         }
     }
 
+    pub type DbMixedStackArgumentsDynClient = <make_DbMixedStackArguments as ::fbthrift::ClientFactory>::Api;
+    pub type DbMixedStackArgumentsClient = ::std::sync::Arc<DbMixedStackArgumentsDynClient>;
+
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
     impl ::fbthrift::ClientFactory for make_DbMixedStackArguments {
@@ -2608,6 +2614,8 @@ pub mod client {
             <dyn DbMixedStackArguments>::new(protocol, transport)
         }
     }
+
+
 }
 
 /// Server definitions for `module`.

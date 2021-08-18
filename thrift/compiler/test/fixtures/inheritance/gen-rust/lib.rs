@@ -458,6 +458,9 @@ pub mod client {
         }
     }
 
+    pub type MyRootDynClient = <make_MyRoot as ::fbthrift::ClientFactory>::Api;
+    pub type MyRootClient = ::std::sync::Arc<MyRootDynClient>;
+
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
     impl ::fbthrift::ClientFactory for make_MyRoot {
@@ -662,6 +665,9 @@ pub mod client {
             ::std::sync::Arc::new(MyNodeImpl::<P, T>::new(transport))
         }
     }
+
+    pub type MyNodeDynClient = <make_MyNode as ::fbthrift::ClientFactory>::Api;
+    pub type MyNodeClient = ::std::sync::Arc<MyNodeDynClient>;
 
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
@@ -883,6 +889,9 @@ pub mod client {
         }
     }
 
+    pub type MyLeafDynClient = <make_MyLeaf as ::fbthrift::ClientFactory>::Api;
+    pub type MyLeafClient = ::std::sync::Arc<MyLeafDynClient>;
+
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
     impl ::fbthrift::ClientFactory for make_MyLeaf {
@@ -897,6 +906,8 @@ pub mod client {
             <dyn MyLeaf>::new(protocol, transport)
         }
     }
+
+
 }
 
 /// Server definitions for `module`.

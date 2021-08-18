@@ -669,6 +669,9 @@ pub mod client {
         }
     }
 
+    pub type ServiceDynClient = <make_Service as ::fbthrift::ClientFactory>::Api;
+    pub type ServiceClient = ::std::sync::Arc<ServiceDynClient>;
+
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
     impl ::fbthrift::ClientFactory for make_Service {
@@ -683,6 +686,8 @@ pub mod client {
             <dyn Service>::new(protocol, transport)
         }
     }
+
+
 }
 
 /// Server definitions for `module`.

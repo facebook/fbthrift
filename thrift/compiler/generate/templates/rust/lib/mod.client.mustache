@@ -445,6 +445,9 @@
         }
     }
 
+    pub type {{service:name}}DynClient = <make_{{service:name}} as ::fbthrift::ClientFactory>::Api;
+    pub type {{service:name}}Client = ::std::sync::Arc<{{service:name}}DynClient>;
+
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
     impl ::fbthrift::ClientFactory for make_{{service:name}} {
@@ -460,4 +463,6 @@
         }
     }{{!
 }}{{/program:services}}
+
+
 {{!newline}}

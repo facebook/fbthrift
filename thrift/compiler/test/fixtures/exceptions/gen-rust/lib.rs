@@ -1413,6 +1413,9 @@ pub mod client {
         }
     }
 
+    pub type RaiserDynClient = <make_Raiser as ::fbthrift::ClientFactory>::Api;
+    pub type RaiserClient = ::std::sync::Arc<RaiserDynClient>;
+
     /// The same thing, but to be called from generic contexts where we are
     /// working with a type parameter `C: ClientFactory` to produce clients.
     impl ::fbthrift::ClientFactory for make_Raiser {
@@ -1427,6 +1430,8 @@ pub mod client {
             <dyn Raiser>::new(protocol, transport)
         }
     }
+
+
 }
 
 /// Server definitions for `module`.
