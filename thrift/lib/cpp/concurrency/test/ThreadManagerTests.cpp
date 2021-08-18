@@ -17,14 +17,15 @@
 #include <chrono>
 #include <condition_variable>
 #include <deque>
-#include <iostream>
 #include <memory>
 #include <mutex>
 #include <random>
 #include <thread>
 
+#include <folly/CPortability.h>
 #include <folly/Synchronized.h>
 #include <folly/executors/Codel.h>
+#include <folly/lang/Keep.h>
 #include <folly/portability/GTest.h>
 #include <folly/portability/SysResource.h>
 #include <folly/portability/SysTime.h>
@@ -43,6 +44,21 @@ class ThreadManagerTest : public testing::Test {
  private:
   gflags::FlagSaver flagsaver_;
 };
+
+static folly::WorkerProvider* kWorkerProviderGlobal = nullptr;
+
+namespace folly {
+
+#ifdef FOLLY_HAVE_WEAK_SYMBOLS
+FOLLY_KEEP std::unique_ptr<folly::QueueObserverFactory>
+make_queue_observer_factory(
+    const std::string&, size_t, folly::WorkerProvider* workerProvider) {
+  kWorkerProviderGlobal = workerProvider;
+  return {};
+}
+#endif
+
+} // namespace folly
 
 // Loops until x==y for up to timeout ms.
 // The end result is the same as of {EXPECT,ASSERT}_EQ(x,y)
@@ -858,3 +874,112 @@ TEST_P(JoinTest, Join) {
 
 INSTANTIATE_TEST_CASE_P(
     ThreadManagerTest, JoinTest, ::testing::ValuesIn(factories));
+
+class TMThreadIDCollectorTest : public ::testing::Test {
+ protected:
+  void SetUp() override { kWorkerProviderGlobal = nullptr; }
+  void TearDown() override { kWorkerProviderGlobal = nullptr; }
+  static constexpr size_t kNumThreads = 4;
+};
+
+TEST_F(TMThreadIDCollectorTest, BasicTest) {
+  // This is a sanity check test. We start a ThreadManager, queue a task,
+  // and then invoke the collectThreadIds() API to capture the TID of the
+  // active thread.
+  auto tm = ThreadManager::newSimpleThreadManager(1);
+  tm->setNamePrefix("baz");
+  tm->threadFactory(std::make_shared<PosixThreadFactory>());
+  tm->start();
+
+  std::atomic<pid_t> threadId = {};
+  folly::Baton<> bat;
+  tm->add([&]() {
+    threadId.exchange(folly::getOSThreadID());
+    bat.post();
+  });
+  {
+    bat.wait();
+    auto idsWithKA = kWorkerProviderGlobal->collectThreadIds();
+    auto& ids = idsWithKA.threadIds;
+    EXPECT_EQ(ids.size(), 1);
+    EXPECT_EQ(ids[0], threadId.load());
+  }
+}
+
+TEST_F(TMThreadIDCollectorTest, CollectIDMultipleInvocationTest) {
+  // This test verifies that multiple invocations of collectthreadId()
+  // do not deadlock.
+  auto tm = ThreadManager::newSimpleThreadManager(kNumThreads);
+  tm->setNamePrefix("bar");
+  tm->threadFactory(std::make_shared<PosixThreadFactory>());
+  tm->start();
+
+  folly::Synchronized<std::vector<pid_t>> threadIds;
+  std::array<folly::Baton<>, kNumThreads> bats;
+  folly::Baton<> tasksAddedBat;
+  for (size_t i = 0; i < kNumThreads; ++i) {
+    tm->add([i, &threadIds, &bats, &tasksAddedBat]() {
+      threadIds.wlock()->push_back(folly::getOSThreadID());
+      if (i == kNumThreads - 1) {
+        tasksAddedBat.post();
+      }
+      bats[i].wait();
+    });
+  }
+  {
+    tasksAddedBat.wait();
+    auto idsWithKA1 = kWorkerProviderGlobal->collectThreadIds();
+    auto idsWithKA2 = kWorkerProviderGlobal->collectThreadIds();
+    auto& ids1 = idsWithKA1.threadIds;
+    auto& ids2 = idsWithKA2.threadIds;
+    EXPECT_EQ(ids1.size(), 4);
+    EXPECT_EQ(ids1.size(), ids2.size());
+    EXPECT_EQ(ids1, ids2);
+  }
+  for (auto& bat : bats) {
+    bat.post();
+  }
+  tm->join();
+}
+
+TEST_F(TMThreadIDCollectorTest, CollectIDBlocksThreadExitTest) {
+  // This test verifies that collectThreadId() call prevents the
+  // active ThreadManager threads from exiting.
+  auto tm = ThreadManager::newSimpleThreadManager(kNumThreads);
+  tm->setNamePrefix("bar");
+  tm->threadFactory(std::make_shared<PosixThreadFactory>());
+  tm->start();
+
+  std::array<folly::Baton<>, kNumThreads> bats;
+  folly::Baton<> tasksAddedBat;
+  for (size_t i = 0; i < kNumThreads; ++i) {
+    tm->add([i, &bats, &tasksAddedBat]() {
+      if (i == kNumThreads - 1) {
+        tasksAddedBat.post();
+      }
+      bats[i].wait();
+    });
+  }
+  folly::Baton<> waitForCollectBat;
+  folly::Baton<> threadCountBat;
+  auto bgCollector = std::thread([&]() {
+    tasksAddedBat.wait();
+    auto idsWithKA = kWorkerProviderGlobal->collectThreadIds();
+    waitForCollectBat.post();
+    auto posted = threadCountBat.try_wait_for(std::chrono::milliseconds(100));
+    // The thread count reduction should not have returned (thread exit
+    // is currently blocked).
+    EXPECT_FALSE(posted);
+    auto& ids = idsWithKA.threadIds;
+    EXPECT_EQ(ids.size(), kNumThreads);
+  });
+  waitForCollectBat.wait();
+  for (auto& bat : bats) {
+    bat.post();
+  }
+  tm->removeWorker(2);
+  threadCountBat.post();
+  bgCollector.join();
+  EXPECT_EQ(tm->workerCount(), 2);
+  tm->join();
+}
