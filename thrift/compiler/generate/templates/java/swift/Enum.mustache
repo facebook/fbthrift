@@ -25,7 +25,7 @@ import com.facebook.swift.codec.*;
 public {{#enum:skipEnumNameMap?}}class{{/enum:skipEnumNameMap?}}{{^enum:skipEnumNameMap?}}enum{{/enum:skipEnumNameMap?}} {{enum:javaCapitalName}}{{#enum:skipEnumNameMap?}} extends IntEnum{{/enum:skipEnumNameMap?}} {
 {{^enum:skipEnumNameMap?}}
 {{#enum:values}}
-    {{enumValue:javaConstantName}}({{enumValue:value}}){{^last?}},{{/last?}}{{#last?}};{{/last?}}
+    {{enum_value:javaConstantName}}({{enum_value:value}}){{^last?}},{{/last?}}{{#last?}};{{/last?}}
 {{/enum:values}}
 {{! semicolon here is required for Java Enum definition, see Java Language Spec
     section 8.9.1 https://docs.oracle.com/javase/specs/jls/se8/html/jls-8.html#jls-8.9.1}}
@@ -55,8 +55,8 @@ public {{#enum:skipEnumNameMap?}}class{{/enum:skipEnumNameMap?}}{{^enum:skipEnum
         {{^enum:skipEnumNameMap?}}
         switch (n) {
         {{#enum:values}}
-        case {{enumValue:value}}:
-            return {{enumValue:javaConstantName}};
+        case {{enum_value:value}}:
+            return {{enum_value:javaConstantName}};
         {{/enum:values}}
         default:
             return null;

@@ -26,11 +26,11 @@
 
     impl {{enum:rust_name}} {{>lib/block}}{{!
         }}{{#enum:values}}
-        {{#enumValue:docs?}}
-        #[doc = {{enumValue:docs}}]
-        {{/enumValue:docs?}}
-        pub const {{enumValue:rust_name}}: Self = {{!
-            }}{{enum:rust_name}}({{enumValue:value}}i32);{{!
+        {{#enum_value:docs?}}
+        #[doc = {{enum_value:docs}}]
+        {{/enum_value:docs?}}
+        pub const {{enum_value:rust_name}}: Self = {{!
+            }}{{enum:rust_name}}({{enum_value:value}}i32);{{!
         }}{{/enum:values}}
     }
 
@@ -38,7 +38,7 @@
         fn enumerate() -> &'static [({{enum:rust_name}}, &'static str)] {
             &[
                 {{#enum:values}}
-                ({{enum:rust_name}}::{{enumValue:rust_name}}, "{{enumValue:name}}"),
+                ({{enum:rust_name}}::{{enum_value:rust_name}}, "{{enum_value:name}}"),
                 {{/enum:values}}
             ]
         }
@@ -46,7 +46,7 @@
         fn variants() -> &'static [&'static str] {
             &[
                 {{#enum:values}}
-                "{{enumValue:name}}",
+                "{{enum_value:name}}",
                 {{/enum:values}}
             ]
         }
@@ -54,7 +54,7 @@
         fn variant_values() -> &'static [{{enum:rust_name}}] {
             &[
                 {{#enum:values}}
-                {{enum:rust_name}}::{{enumValue:rust_name}},
+                {{enum:rust_name}}::{{enum_value:rust_name}},
                 {{/enum:values}}
             ]
         }
@@ -91,7 +91,7 @@
         fn fmt(&self, fmt: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {{>lib/block}}
             static VARIANTS_BY_NUMBER: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
                 {{#enum:variants_by_number}}
-                ("{{enumValue:name}}", {{enumValue:value}}),
+                ("{{enum_value:name}}", {{enum_value:value}}),
                 {{/enum:variants_by_number}}
             ];
             ::fbthrift::help::enum_display(VARIANTS_BY_NUMBER, fmt, self.0)
@@ -110,7 +110,7 @@
         fn from_str(string: &::std::primitive::str) -> ::std::result::Result<Self, Self::Err> {
             static VARIANTS_BY_NAME: &[(&::std::primitive::str, ::std::primitive::i32)] = &[
                 {{#enum:variants_by_name}}
-                ("{{enumValue:name}}", {{enumValue:value}}),
+                ("{{enum_value:name}}", {{enum_value:value}}),
                 {{/enum:variants_by_name}}
             ];
             ::fbthrift::help::enum_from_str(VARIANTS_BY_NAME, string, "{{enum:name}}").map({{enum:rust_name}})

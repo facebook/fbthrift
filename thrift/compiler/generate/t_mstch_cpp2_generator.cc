@@ -319,11 +319,11 @@ class mstch_cpp2_enum_value : public mstch_enum_value {
     register_methods(
         this,
         {
-            {"enumValue:name_hash", &mstch_cpp2_enum_value::name_hash},
-            {"enumValue:cpp_name", &mstch_cpp2_enum_value::cpp_name},
-            {"enumValue:fatal_annotations?",
+            {"enum_value:name_hash", &mstch_cpp2_enum_value::name_hash},
+            {"enum_value:cpp_name", &mstch_cpp2_enum_value::cpp_name},
+            {"enum_value:fatal_annotations?",
              &mstch_cpp2_enum_value::has_fatal_annotations},
-            {"enumValue:fatal_annotations",
+            {"enum_value:fatal_annotations",
              &mstch_cpp2_enum_value::fatal_annotations},
         });
   }

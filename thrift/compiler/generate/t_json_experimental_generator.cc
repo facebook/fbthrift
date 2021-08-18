@@ -164,10 +164,10 @@ class json_experimental_enum_value : public mstch_enum_value {
     register_methods(
         this,
         {
-            {"enumValue:lineno", &json_experimental_enum_value::get_lineno},
-            {"enumValue:docstring?",
+            {"enum_value:lineno", &json_experimental_enum_value::get_lineno},
+            {"enum_value:docstring?",
              &json_experimental_enum_value::has_docstring},
-            {"enumValue:docstring",
+            {"enum_value:docstring",
              &json_experimental_enum_value::get_docstring},
         });
   }

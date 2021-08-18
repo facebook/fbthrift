@@ -202,15 +202,15 @@ each of those keys, and a short description of what the key means.
 | Key                     | Type               | Description                                      |
 |-------------------------|--------------------|--------------------------------------------------|
 | `enum:name`             | `string`           | Name of this enum                                |
-| `enum:values`           | `list<enumValue>`  | Values of this enum                              |
+| `enum:values`           | `list<enum_value>` | Values of this enum                              |
 | `enum:annotations`      | `list<annotation>` | List of annotations declared on this enum        |
 
-#### `enumValue`
+#### `enum_value`
 
 | Key                     | Type               | Description                                      |
 |-------------------------|--------------------|--------------------------------------------------|
-| `enumValue:name`        | `string`           | Name of this variant of the enum                 |
-| `enumValue:value`       | `string`           | Integer key for this enum variant                |
+| `enum_value:name`       | `string`           | Name of this variant of the enum                 |
+| `enum_value:value`      | `string`           | Integer key for this enum variant                |
 
 #### `type`
 

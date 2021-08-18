@@ -504,8 +504,8 @@ class mstch_enum_value : public mstch_base {
     register_methods(
         this,
         {
-            {"enumValue:name", &mstch_enum_value::name},
-            {"enumValue:value", &mstch_enum_value::value},
+            {"enum_value:name", &mstch_enum_value::name},
+            {"enum_value:value", &mstch_enum_value::value},
         });
   }
   mstch::node name() { return enm_value_->get_name(); }

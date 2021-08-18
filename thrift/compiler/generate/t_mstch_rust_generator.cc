@@ -698,9 +698,9 @@ class mstch_rust_enum_value : public mstch_enum_value {
     register_methods(
         this,
         {
-            {"enumValue:rust_name", &mstch_rust_enum_value::rust_name},
-            {"enumValue:docs?", &mstch_rust_enum_value::rust_has_doc},
-            {"enumValue:docs", &mstch_rust_enum_value::rust_doc},
+            {"enum_value:rust_name", &mstch_rust_enum_value::rust_name},
+            {"enum_value:docs?", &mstch_rust_enum_value::rust_has_doc},
+            {"enum_value:docs", &mstch_rust_enum_value::rust_doc},
         });
   }
   mstch::node rust_name() {

@@ -40,9 +40,9 @@ const std::vector<std::pair<std::string_view, std::string_view>>& PyEnumTraits<
     {{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}::{{enum:name}}>::namesmap() {
   static const folly::Indestructible<NamesMap> pairs {
     {
-      {{#enum:values}}{{#enumValue:hasPyName?}}
-      {"{{enumValue:py_name}}", "{{enumValue:name}}"},
-      {{/enumValue:hasPyName?}}{{/enum:values}}
+      {{#enum:values}}{{#enum_value:hasPyName?}}
+      {"{{enum_value:py_name}}", "{{enum_value:name}}"},
+      {{/enum_value:hasPyName?}}{{/enum:values}}
     }
   };
   return *pairs;

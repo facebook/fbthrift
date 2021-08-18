@@ -216,7 +216,7 @@ mstch::map t_mstch_generator::dump(const t_enum_value& val) {
 
   mstch::map extension = extend_enum_value(val);
   extension.insert(result.begin(), result.end());
-  return prepend_prefix("enumValue", std::move(extension));
+  return prepend_prefix("enum_value", std::move(extension));
 }
 
 mstch::map t_mstch_generator::dump(const t_service& service) {

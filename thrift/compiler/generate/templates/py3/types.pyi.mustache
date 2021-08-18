@@ -46,7 +46,7 @@ __property__ = property
 {{#program:enums}}
 class {{enum:name}}(thrift.py3.types.{{^enum:flags?}}Enum{{/enum:flags?}}{{#enum:flags?}}Flag{{/enum:flags?}}):
     {{#enum:values}}
-    {{enumValue:py_name}}: {{enum:name}} = ...
+    {{enum_value:py_name}}: {{enum:name}} = ...
     {{/enum:values}}
     {{^enum:values}}
     pass

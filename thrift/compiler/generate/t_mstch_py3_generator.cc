@@ -984,9 +984,9 @@ class mstch_py3_enum_value : public mstch_enum_value {
     register_methods(
         this,
         {
-            {"enumValue:py_name", &mstch_py3_enum_value::pyName},
-            {"enumValue:cppName", &mstch_py3_enum_value::cppName},
-            {"enumValue:hasPyName?", &mstch_py3_enum_value::hasPyName},
+            {"enum_value:py_name", &mstch_py3_enum_value::pyName},
+            {"enum_value:cppName", &mstch_py3_enum_value::cppName},
+            {"enum_value:hasPyName?", &mstch_py3_enum_value::hasPyName},
         });
   }
 

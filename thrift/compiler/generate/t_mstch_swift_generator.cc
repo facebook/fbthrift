@@ -734,7 +734,7 @@ class mstch_swift_enum_value : public mstch_enum_value {
     register_methods(
         this,
         {
-            {"enumValue:javaConstantName",
+            {"enum_value:javaConstantName",
              &mstch_swift_enum_value::java_constant_name},
         });
   }

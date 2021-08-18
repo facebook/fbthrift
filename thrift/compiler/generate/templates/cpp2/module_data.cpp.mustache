@@ -26,12 +26,12 @@ namespace thrift {
 
 const std::array<<% > common/namespace_cpp2%><%enum:name%>, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::values = {{
 <%#enum:values%><%!
-%>  type::<%enumValue:cpp_name%>,
+%>  type::<%enum_value:cpp_name%>,
 <%/enum:values%>
 }};
 const std::array<folly::StringPiece, <%enum:size%>> TEnumDataStorage<<% > common/namespace_cpp2%><%enum:name%>>::names = {{
 <%#enum:values%><%!
-%>  "<%enumValue:name%>",
+%>  "<%enum_value:name%>",
 <%/enum:values%>
 }};
 <%/program:enums%>

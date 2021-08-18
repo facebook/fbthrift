@@ -40,7 +40,7 @@ UTF8STRINGS: bool
 
 class {{enum:name}}(int):
     {{#enum:values}}
-    {{enumValue:name}}: __T.ClassVar[{{enum:name}}]
+    {{enum_value:name}}: __T.ClassVar[{{enum:name}}]
     {{/enum:values}}
 
     _VALUES_TO_NAMES: __T.ClassVar[__T.Dict[{{enum:name}}, str]]
