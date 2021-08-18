@@ -18,6 +18,7 @@
 #include <glog/logging.h>
 
 #include <fizz/client/AsyncFizzClient.h>
+#include <folly/FileUtil.h>
 #include <folly/Random.h>
 #include <folly/init/Init.h>
 #include <folly/io/async/AsyncSocket.h>
@@ -41,10 +42,16 @@ DEFINE_int32(threshold, 32 * 1024, "Zerocopy threshold");
 DEFINE_bool(debug_logs, false, "Debug logs");
 DEFINE_bool(use_crypto, true, "Use crypto");
 DEFINE_bool(verify, true, "Verify reply");
-
+DEFINE_string(
+    cert, "", "Path to file containing PEM encoded client certificate");
+DEFINE_string(
+    key,
+    "",
+    "Path to file containing PEM encoded key corresponding to client certificate. If unset and -cert is set, will use the value given in -cert");
 using namespace thrift::zerocopy::cpp2;
 
 namespace {
+
 class Client {
  public:
   Client(const std::string& server, int port) {
@@ -60,6 +67,16 @@ class Client {
         alpns.push_back("thrift");
       }
       context->setSupportedAlpns(std::move(alpns));
+      if (FLAGS_cert.size() > 0) {
+        std::string cert;
+        std::string key;
+        CHECK(folly::readFile(FLAGS_cert.c_str(), cert));
+        const char* keypath =
+            FLAGS_key.size() > 0 ? FLAGS_key.c_str() : FLAGS_cert.c_str();
+        CHECK(folly::readFile(keypath, key));
+        context->setClientCertificate(
+            fizz::CertUtils::makeSelfCert(std::move(cert), std::move(key)));
+      }
       auto* fizzClient =
           new fizz::client::AsyncFizzClient(&evb_, std::move(context));
       socket.reset(fizzClient);
