@@ -66,7 +66,7 @@ DEFINE_string(
 
 THRIFT_FLAG_DEFINE_bool(server_alpn_prefer_rocket, true);
 THRIFT_FLAG_DEFINE_bool(server_enable_stoptls, false);
-THRIFT_FLAG_DEFINE_bool(ssl_policy_default_required, false);
+THRIFT_FLAG_DEFINE_bool(ssl_policy_default_required, true);
 
 THRIFT_FLAG_DEFINE_bool(dump_snapshot_on_long_shutdown, true);
 THRIFT_PLUGGABLE_FUNC_REGISTER(
@@ -185,8 +185,8 @@ SSLPolicy ThriftServer::getSSLPolicy() const {
     return *sslPolicy_;
   }
   // Otherwise, fallback to default (currently defined through a ThriftFlag).
-  // PERMITTED is the old default. REQUIRED is the new default we're migrating
-  // to. We can use ThriftFlags to opt-out services.
+  // REQUIRED is the new default we're migrating to. We use ThriftFlags to
+  // opt-out services that still need to use PERMITTED.
   return THRIFT_FLAG(ssl_policy_default_required) ? SSLPolicy::REQUIRED
                                                   : SSLPolicy::PERMITTED;
 }
