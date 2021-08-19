@@ -18,4 +18,5 @@
 mod as_exception;
 mod binary;
 mod compact;
+mod exceptions;
 mod simplejson;

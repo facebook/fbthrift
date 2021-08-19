@@ -471,6 +471,11 @@ class mstch_rust_struct : public mstch_struct {
             {"struct:docs?", &mstch_rust_struct::rust_has_doc},
             {"struct:docs", &mstch_rust_struct::rust_doc},
             {"struct:derive", &mstch_rust_struct::rust_derive},
+            {"struct:has_exception_message?",
+             &mstch_rust_struct::has_exception_message},
+            {"struct:is_exception_message_optional?",
+             &mstch_rust_struct::is_exception_message_optional},
+            {"struct:exception_message", &mstch_rust_struct::exception_message},
         });
   }
   mstch::node rust_name() {
@@ -509,6 +514,17 @@ class mstch_rust_struct : public mstch_struct {
     }
     return strct_->get_annotation("rust.derive");
   }
+  mstch::node has_exception_message() {
+    return strct_->has_annotation("message");
+  }
+  mstch::node is_exception_message_optional() {
+    if (!strct_->has_annotation("message")) {
+      return nullptr;
+    }
+    return strct_->get_field_by_name(strct_->get_annotation("message"))
+               ->get_req() == t_field::e_req::optional;
+  }
+  mstch::node exception_message() { return strct_->get_annotation("message"); }
 
  private:
   const rust_codegen_options& options_;

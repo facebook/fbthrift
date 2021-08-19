@@ -51,8 +51,9 @@ pub mod types {
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
     #[doc = "Something amiss"]
+    #[error("{self:?}")]
     pub struct Bang {
         #[doc = "All explosions can be explained away"]
         pub message: ::std::string::String,
