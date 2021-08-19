@@ -482,17 +482,13 @@ void Cpp2Connection::requestReceived(
     return;
   }
 
-  if (!worker_->getServer()->getEnabled() ||
-      (worker_->getServer()->getRejectRequestsUntilStarted() &&
-       !worker_->getServer()->getStarted())) {
-    if (!worker_->getServer()->getInternalMethods().count(methodName)) {
-      killRequest(
-          std::move(hreq),
-          TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
-          kQueueOverloadedErrorCode,
-          "server not ready");
-      return;
-    }
+  if (!worker_->getServer()->shouldHandleRequestForMethod(methodName)) {
+    killRequest(
+        std::move(hreq),
+        TApplicationException::TApplicationExceptionType::INTERNAL_ERROR,
+        kQueueOverloadedErrorCode,
+        "server not ready");
+    return;
   }
 
   // After this, the request buffer is no longer owned by the request

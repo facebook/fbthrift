@@ -303,8 +303,6 @@ void ThriftServer::setup() {
   auto nWorkers = getNumIOWorkerThreads();
   DCHECK_GT(nWorkers, 0u);
 
-  stopAcceptingAndJoinOutstandingRequestsDone_ = false;
-
   addRoutingHandler(
       std::make_unique<apache::thrift::RocketRoutingHandler>(*this));
 
@@ -436,12 +434,21 @@ void ThriftServer::setup() {
       startDuplex();
     }
 
+    DCHECK(
+        internalStatus_.load(std::memory_order_relaxed) ==
+        ServerStatus::NOT_RUNNING);
+    // The server is not yet ready for the user's service methods but fine to
+    // handle internal methods. See ServerConfigs::getInternalMethods().
+    internalStatus_.store(
+        ServerStatus::PRE_STARTING, std::memory_order_release);
+
     // Notify handler of the preStart event
     for (const auto& eventHandler : getEventHandlersUnsafe()) {
       eventHandler->preStart(&addresses_.at(0));
     }
 
-    stoppedListening_ = false;
+    internalStatus_.store(ServerStatus::STARTING, std::memory_order_release);
+
 #if FOLLY_HAS_COROUTINES
     asyncScope_ = std::make_unique<folly::coro::CancellableAsyncScope>();
 #endif
@@ -449,7 +456,9 @@ void ThriftServer::setup() {
     // Called after setup
     callOnStartServing();
 
-    started_.store(true, std::memory_order_release);
+    // After the onStartServing hooks have finished, we are ready to handle
+    // requests, at least from the server's perspective.
+    internalStatus_.store(ServerStatus::RUNNING, std::memory_order_release);
 
     // Notify handler of the preServe event
     for (const auto& eventHandler : getEventHandlersUnsafe()) {
@@ -568,9 +577,6 @@ void ThriftServer::cleanUp() {
 
   // Now clear all the handlers
   routingHandlers_.clear();
-  // Clear the decorated processor factory so that it's re-created if the server
-  // is restarted.
-  decoratedProcessorFactory_.reset();
 }
 
 uint64_t ThriftServer::getNumDroppedConnections() const {
@@ -591,12 +597,22 @@ void ThriftServer::stop() {
 void ThriftServer::stopListening() {
   // We have to make sure stopListening() is not called twice when both
   // stopListening() and cleanUp() are called
-  if (stoppedListening_.exchange(true)) {
-    // stopListening() was called earlier
-    return;
+  {
+    auto expected = ServerStatus::RUNNING;
+    if (!internalStatus_.compare_exchange_strong(
+            expected,
+            ServerStatus::PRE_STOPPING,
+            std::memory_order_release,
+            std::memory_order_relaxed)) {
+      // stopListening() was called earlier
+      DCHECK(
+          expected == ServerStatus::PRE_STOPPING ||
+          expected == ServerStatus::STOPPING ||
+          expected == ServerStatus::DRAINING_UNTIL_STOPPED ||
+          expected == ServerStatus::NOT_RUNNING);
+      return;
+    }
   }
-  // Called before cleanUp
-  callOnStopServing();
 
 #if FOLLY_HAS_COROUTINES
   asyncScope_->requestCancellation();
@@ -635,9 +651,27 @@ void ThriftServer::stopWorkers() {
 }
 
 void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
-  if (std::exchange(stopAcceptingAndJoinOutstandingRequestsDone_, true)) {
-    return;
+  {
+    auto expected = ServerStatus::PRE_STOPPING;
+    if (!internalStatus_.compare_exchange_strong(
+            expected,
+            ServerStatus::STOPPING,
+            std::memory_order_release,
+            std::memory_order_relaxed)) {
+      // stopListening() was called earlier
+      DCHECK(
+          expected == ServerStatus::STOPPING ||
+          expected == ServerStatus::DRAINING_UNTIL_STOPPED ||
+          expected == ServerStatus::NOT_RUNNING);
+      return;
+    }
   }
+
+  callOnStopServing();
+
+  internalStatus_.store(
+      ServerStatus::DRAINING_UNTIL_STOPPED, std::memory_order_release);
+
   forEachWorker([&](wangle::Acceptor* acceptor) {
     if (auto worker = dynamic_cast<Cpp2Worker*>(acceptor)) {
       worker->requestStop();
@@ -656,10 +690,10 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
         &done, [](folly::Baton<>* done) { done->post(); });
 
     for (auto& socket : sockets) {
-      // Stop accepting new connections
+      // We should have already paused accepting new connections. This just
+      // closes the sockets once and for all.
       auto eb = socket->getEventBase();
       eb->runInEventBaseThread([socket = std::move(socket), doneGuard] {
-        // Close the listening socket
         // This will also cause the workers to stop
         socket->stopAccepting();
       });
@@ -716,7 +750,11 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
     }
   });
 
-  started_.store(false, std::memory_order_relaxed);
+  // Clear the decorated processor factory so that it's re-created if the server
+  // is restarted.
+  decoratedProcessorFactory_.reset();
+
+  internalStatus_.store(ServerStatus::NOT_RUNNING, std::memory_order_release);
 }
 
 void ThriftServer::ensureDecoratedProcessorFactoryInitialized() {

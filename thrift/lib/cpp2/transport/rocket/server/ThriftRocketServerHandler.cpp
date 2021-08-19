@@ -487,13 +487,9 @@ void ThriftRocketServerHandler::handleRequestCommon(
     return;
   }
 
-  if (!serverConfigs_->getEnabled() ||
-      (serverConfigs_->getRejectRequestsUntilStarted() &&
-       !serverConfigs_->getStarted())) {
-    if (!serverConfigs_->getInternalMethods().count(name)) {
-      handleServerNotReady(std::move(request));
-      return;
-    }
+  if (!serverConfigs_->shouldHandleRequestForMethod(name)) {
+    handleServerNotReady(std::move(request));
+    return;
   }
 
   auto preprocessResult =

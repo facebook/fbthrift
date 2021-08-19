@@ -20,6 +20,8 @@
 #include <chrono>
 #include <string>
 
+#include <folly/lang/Assume.h>
+
 #include <boost/variant.hpp>
 
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -133,7 +135,27 @@ class ServerConfigs {
     }
   }
 
-  virtual bool getStarted() const { return true; }
+  enum class RequestHandlingCapability { NONE, INTERNAL_METHODS_ONLY, ALL };
+  /**
+   * Determines which requests the server can handle in its current state.
+   */
+  virtual RequestHandlingCapability shouldHandleRequests() const {
+    return RequestHandlingCapability::ALL;
+  }
+
+  bool shouldHandleRequestForMethod(const std::string& methodName) const {
+    switch (shouldHandleRequests()) {
+      case RequestHandlingCapability::ALL:
+        return true;
+      case RequestHandlingCapability::INTERNAL_METHODS_ONLY:
+        return getInternalMethods().count(methodName) > 0;
+      case RequestHandlingCapability::NONE:
+        return false;
+      default:
+        LOG(DFATAL) << "Invalid RequestHandlingCapability";
+        folly::assume_unreachable();
+    }
+  }
 
   bool getEnabled() const { return enabled_.load(); }
 

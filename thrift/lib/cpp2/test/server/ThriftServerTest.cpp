@@ -2952,13 +2952,16 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
 
   // Wait for preStart callback
   EXPECT_TRUE(preStartHandler->preStartEnter.try_wait_for(2s));
+  // Provide a single IO thread for the client so that only one connection is
+  // created. While the server is stopping, we may not be able to create a new
+  // connection (which PooledRequestChannel will do given many IO threads)
+  auto clientEvbThread = std::make_shared<folly::ScopedEventBaseThread>();
   TestServiceAsyncClient client(
       apache::thrift::PooledRequestChannel::newSyncChannel(
-          folly::getUnsafeMutableGlobalIOExecutor(),
+          clientEvbThread,
           [address = preStartHandler->address,
            this](folly::EventBase& eb) mutable {
-            return makeChannel(folly::AsyncSocket::UniquePtr(
-                new folly::AsyncSocket(&eb, address)));
+            return makeChannel(folly::AsyncSocket::newSocket(&eb, address));
           }));
 
   client.semifuture_voidResponse().get();
