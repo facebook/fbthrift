@@ -40,6 +40,8 @@ class t_mstch_generator : public t_generator {
       std::map<std::string, std::string> parsed_options,
       bool convert_delimiter = false);
 
+  virtual ~t_mstch_generator() override;
+
  protected:
   /**
    * Option pairs specified on command line for influencing generation behavior

@@ -49,6 +49,13 @@ struct mstch_cache {
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> structs_;
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> services_;
   std::unordered_map<std::string, std::shared_ptr<mstch_base>> programs_;
+
+  void clear() {
+    enums_.clear();
+    structs_.clear();
+    services_.clear();
+    programs_.clear();
+  }
 };
 
 class enum_value_generator {

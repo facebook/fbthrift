@@ -76,6 +76,16 @@ t_mstch_generator::t_mstch_generator(
   gen_template_map(template_prefix);
 }
 
+t_mstch_generator::~t_mstch_generator() {
+  // The cache can hold circular references to contexts and other generators,
+  // which results in a memory leak on cleanup. Therefore, we must explicitly
+  // clear the cache when we are destroyed, to break the cycles. (Hopefully
+  // nobody has kept a reference to us, or this will never be called!)
+  if (cache_) {
+    cache_->clear();
+  }
+}
+
 mstch::map t_mstch_generator::dump(const t_program& program) {
   mstch::map result{
       {"name", program.name()},
