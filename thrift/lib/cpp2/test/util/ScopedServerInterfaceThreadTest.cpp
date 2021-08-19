@@ -691,7 +691,6 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
   auto future = cli->semifuture_echoSlow(message, 2000);
 
   serviceImpl->waitForRequest();
-  serviceImpl.reset();
 
   constexpr size_t kRequestsPerLoop = 20;
   constexpr size_t kMaxInflightSpamRequests = 1000;
@@ -746,8 +745,11 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
                            apache::thrift::TApplicationException>([](auto&&
                                                                          ex) {
                          if (ex.getType() !=
-                             apache::thrift::TApplicationException::
-                                 LOADSHEDDING) {
+                                 apache::thrift::TApplicationException::
+                                     LOADSHEDDING &&
+                             ex.getType() !=
+                                 apache::thrift::TApplicationException::
+                                     TIMEOUT) {
                            FAIL()
                                << "Non-retriable TApplicationException exception: "
                                << ex.what()
@@ -763,6 +765,10 @@ TYPED_TEST(ScopedServerInterfaceThreadTest, joinRequestsStress) {
     });
   };
   spamServer();
+
+  // Wait for spamming to start before initiating SSIT shutdown
+  serviceImpl->waitForRequest();
+  serviceImpl.reset();
 
   ssit.reset();
 
