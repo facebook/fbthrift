@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/py3/test/interactions/gen-cpp2/BlankService.h>
 #include <thrift/lib/py3/test/interactions/gen-cpp2/Calculator.h>
 
 namespace interactions {
@@ -56,6 +57,7 @@ struct SemiCalculatorHandler : CalculatorSvIf {
     return a + b;
   }
 };
+struct SemiBlankServiceHandler : BlankServiceSvIf {};
 } // namespace thrift
 } // namespace test
 } // namespace interactions

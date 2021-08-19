@@ -466,7 +466,13 @@ class mstch_py3_program : public mstch_program {
   mstch::node hasServiceFunctions() {
     const auto& services = program_->services();
     return std::any_of(services.begin(), services.end(), [](const auto& s) {
-      return !s->get_functions().empty();
+      // TODO(ffrancet): This is here because service interaction functions
+      // aren't supported yet and won't be generated, so this shouldn't include
+      // them
+      const auto& functions = s->get_functions();
+      return std::any_of(functions.begin(), functions.end(), [](const auto& f) {
+        return !f->get_returntype()->is_service();
+      });
     });
   }
 

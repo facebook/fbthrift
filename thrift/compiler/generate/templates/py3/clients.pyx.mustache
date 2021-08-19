@@ -245,5 +245,8 @@ cdef class {{service:parent_service_name}}_{{service:name}}({{#service:extends}}
         return asyncio_shield(__future)
 
 {{/service:supportedFunctions}}
+{{^service:supportedFunctions}}
+    pass
+{{/service:supportedFunctions}}
 {{/service:interactions}}
 {{/program:services}}
