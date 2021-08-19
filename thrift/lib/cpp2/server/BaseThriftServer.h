@@ -43,6 +43,7 @@
 #include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
 #include <thrift/lib/cpp2/server/ServerAttribute.h>
 #include <thrift/lib/cpp2/server/ServerConfigs.h>
+#include <thrift/lib/cpp2/server/StatusServerInterface.h>
 
 THRIFT_FLAG_DECLARE_int64(server_default_socket_queue_timeout_ms);
 
@@ -188,6 +189,9 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
 
   // Explicitly set monitoring service interface handler
   std::shared_ptr<MonitoringServerInterface> monitoringServiceHandler_;
+
+  // Explicitly set status service interface handler
+  std::shared_ptr<StatusServerInterface> statusServiceHandler_;
 
   //! Number of io worker threads (may be set) (should be # of CPU cores)
   ServerAttributeStatic<size_t> nWorkers_{T_ASYNC_DEFAULT_WORKER_THREADS};
@@ -853,6 +857,18 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   const std::shared_ptr<MonitoringServerInterface>&
   getMonitoringProcessorFactory() {
     return monitoringServiceHandler_;
+  }
+
+  /**
+   * Sets the interface that will be used for status RPCs only.
+   */
+  void setStatusInterface(std::shared_ptr<StatusServerInterface> iface) {
+    CHECK(configMutable());
+    statusServiceHandler_ = std::move(iface);
+  }
+
+  const std::shared_ptr<StatusServerInterface>& getStatusInterface() {
+    return statusServiceHandler_;
   }
 
   /**

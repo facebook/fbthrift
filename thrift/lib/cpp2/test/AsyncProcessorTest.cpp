@@ -30,6 +30,7 @@
 #include <thrift/lib/cpp2/async/RocketClientChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
+#include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
@@ -39,6 +40,7 @@
 
 #include <thrift/lib/cpp2/test/gen-cpp2/Child.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/DummyMonitor.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/DummyStatus.h>
 #include <thrift/lib/cpp2/test/gen-cpp2/Parent.h>
 
 namespace apache::thrift::test {
@@ -314,9 +316,17 @@ TEST_P(AsyncProcessorMethodResolutionTestP, Interaction) {
   EXPECT_EQ(interaction2.semifuture_interactionMethod().get(), 2);
 }
 
-TEST_P(AsyncProcessorMethodResolutionTestP, MonitoringMethodMultiplexing) {
+TEST_P(
+    AsyncProcessorMethodResolutionTestP,
+    MonitoringAndStatusMethodMultiplexing) {
   class Monitor : public DummyMonitorSvIf, public MonitoringServerInterface {
     std::int64_t getCounter() override { return 420; }
+  };
+  class Status : public DummyStatusSvIf, public StatusServerInterface {
+    void async_eb_getStatus(
+        std::unique_ptr<HandlerCallback<std::int64_t>> callback) override {
+      callback->result(360);
+    }
   };
   auto service = std::make_shared<ChildWithMetadata>([](auto defaultResult) {
     MethodMetadataMap result;
@@ -325,18 +335,23 @@ TEST_P(AsyncProcessorMethodResolutionTestP, MonitoringMethodMultiplexing) {
     return result;
   });
   auto runner = makeServer(service, [&](ThriftServer& server) {
+    server.setStatusInterface(std::make_shared<Status>());
     server.setMonitoringInterface(std::make_shared<Monitor>());
   });
 
   auto client = makeClientFor<ChildAsyncClient>(*runner);
   auto monitoringClient = makeClientFor<DummyMonitorAsyncClient>(*runner);
+  auto statusClient = makeClientFor<DummyStatusAsyncClient>(*runner);
 
   EXPECT_EQ(client->semifuture_parentMethod1().get(), 42);
   // The monitoring interface should be invoked if the user interface doesn't
   // have the method.
   EXPECT_EQ(monitoringClient->semifuture_getCounter().get(), 420);
-  // If the method is in neither user nor monitoring interfaces, we expect an
-  // error.
+  // The status interface should be invoked if the user interface doesn't
+  // have the method.
+  EXPECT_EQ(statusClient->semifuture_getStatus().get(), 360);
+  // If the method is in neither user, status, or monitoring interfaces, we
+  // expect an error.
   EXPECT_THROW(client->semifuture_parentMethod3().get(), TApplicationException);
 }
 
@@ -360,9 +375,16 @@ TEST_P(
 }
 
 TEST_P(
-    AsyncProcessorMethodResolutionTestP, WildcardMethodMetadataWithMonitoring) {
+    AsyncProcessorMethodResolutionTestP,
+    WildcardMethodMetadataWithMonitoringAndStatus) {
   class Monitor : public DummyMonitorSvIf, public MonitoringServerInterface {
     std::int64_t getCounter() override { return 420; }
+  };
+  class Status : public DummyStatusSvIf, public StatusServerInterface {
+    void async_eb_getStatus(
+        std::unique_ptr<HandlerCallback<std::int64_t>> callback) override {
+      callback->result(360);
+    }
   };
   class ChildWithWildcard : public ChildWithMetadata {
    public:
@@ -422,16 +444,21 @@ TEST_P(
   };
   auto service = std::make_shared<ChildWithWildcard>();
   auto runner = makeServer(service, [&](ThriftServer& server) {
+    server.setStatusInterface(std::make_shared<Status>());
     server.setMonitoringInterface(std::make_shared<Monitor>());
   });
 
   auto client = makeClientFor<ChildAsyncClient>(*runner);
   auto monitoringClient = makeClientFor<DummyMonitorAsyncClient>(*runner);
+  auto statusClient = makeClientFor<DummyStatusAsyncClient>(*runner);
 
   EXPECT_EQ(client->semifuture_parentMethod1().get(), 42);
   // The monitoring interface should not be available
   EXPECT_THROW(
       monitoringClient->semifuture_getCounter().get(), TApplicationException);
+  // The status interface should not be available
+  EXPECT_THROW(
+      statusClient->semifuture_getStatus().get(), TApplicationException);
 }
 
 INSTANTIATE_TEST_SUITE_P(

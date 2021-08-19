@@ -35,3 +35,7 @@ service Child extends Parent {
 service DummyMonitor {
   i64 getCounter();
 }
+
+service DummyStatus {
+  i64 getStatus() (thread = 'eb');
+}
