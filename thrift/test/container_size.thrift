@@ -17,7 +17,7 @@
 namespace cpp2 apache.thrift.test
 
 cpp_include "folly/io/IOBuf.h"
-cpp_include "thrift/test/container_size.h"
+cpp_include "thrift/test/ContainerSize.h"
 
 struct Struct {
   1: string (cpp.type = "TestFileBackedString") str;
