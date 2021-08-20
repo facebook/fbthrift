@@ -3056,35 +3056,24 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
    public:
     folly::SemiFuture<folly::Unit> semifuture_onStartServing() override {
       return folly::makeSemiFuture().deferValue([&](auto&&) {
-        EXPECT_TRUE(starting_.try_wait_for(2s));
+        EXPECT_TRUE(starting.try_wait_for(2s));
         return folly::unit;
       });
     }
 
     folly::SemiFuture<folly::Unit> semifuture_onStopServing() override {
-      onStopServingCalled_.post();
+      onStopServingCalled.post();
       return folly::makeSemiFuture().deferValue([&](auto&&) {
-        EXPECT_TRUE(stopping_.try_wait_for(2s));
+        EXPECT_TRUE(stopping.try_wait_for(2s));
         return folly::unit;
       });
     }
 
-    explicit Handler(
-        folly::Baton<>& starting,
-        folly::Baton<>& stopping,
-        folly::Baton<>& onStopServingCalled)
-        : starting_(starting),
-          stopping_(stopping),
-          onStopServingCalled_(onStopServingCalled) {}
-
-   private:
-    folly::Baton<>& starting_;
-    folly::Baton<>& stopping_;
-    folly::Baton<>& onStopServingCalled_;
+    folly::Baton<> starting;
+    folly::Baton<> stopping;
+    folly::Baton<> onStopServingCalled;
   };
-  folly::Baton<> starting, stopping, onStopServingCalled;
-  auto handler =
-      std::make_shared<Handler>(starting, stopping, onStopServingCalled);
+  auto handler = std::make_shared<Handler>();
 
   class DummyStatus : public DummyStatusSvIf, public StatusServerInterface {
     void async_eb_getStatus(
@@ -3103,7 +3092,6 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
   std::thread startRunnerThread([&] {
     runner = std::make_unique<ScopedServerInterfaceThread>(
         handler, [&](ThriftServer& server) {
-          server.setInternalMethods({"getStatus"});
           server.setStatusInterface(std::make_shared<DummyStatus>());
           server.addServerEventHandler(preStartHandler);
         });
@@ -3122,18 +3110,18 @@ TEST_P(HeaderOrRocket, StatusOnStartingAndStopping) {
       client.semifuture_getStatus().get(),
       static_cast<std::int64_t>(ThriftServer::ServerStatus::STARTING));
 
-  starting.post();
+  handler->starting.post();
   startRunnerThread.join();
   EXPECT_EQ(
       client.semifuture_getStatus().get(),
       static_cast<std::int64_t>(ThriftServer::ServerStatus::RUNNING));
 
   runner->getThriftServer().stop();
-  EXPECT_TRUE(onStopServingCalled.try_wait_for(2s));
+  EXPECT_TRUE(handler->onStopServingCalled.try_wait_for(2s));
   EXPECT_EQ(
       client.semifuture_getStatus().get(),
       static_cast<std::int64_t>(ThriftServer::ServerStatus::STOPPING));
-  stopping.post();
+  handler->stopping.post();
 }
 
 namespace {
