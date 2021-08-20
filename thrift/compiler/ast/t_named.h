@@ -45,6 +45,9 @@ class t_named : public t_node {
   }
   void add_structured_annotation(std::unique_ptr<t_const> annot);
 
+  const t_const* get_structured_annotation_or_null(
+      const char* path, const char* name) const;
+
  protected:
   // t_named is abstract.
   t_named() = default;

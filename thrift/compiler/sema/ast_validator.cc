@@ -423,6 +423,18 @@ void validate_compatibility_with_lazy_field(
     });
   }
 }
+
+void validate_ref_annotation(diagnostic_context& ctx, const t_field& node) {
+  if (node.get_structured_annotation_or_null(
+          "thrift/lib/thrift/annotation/cpp.thrift", "Ref") &&
+      node.has_annotation(
+          {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"})) {
+    ctx.failure([&](auto& o) {
+      o << "The @cpp.Ref annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `"
+        << node.name() << "`.";
+    });
+  }
+}
 } // namespace
 
 ast_validator standard_validator() {
@@ -441,6 +453,7 @@ ast_validator standard_validator() {
   validator.add_field_visitor(&validate_boxed_field_attributes);
   validator.add_field_visitor(&validate_ref_field_attributes);
   validator.add_field_visitor(&validate_field_default_value);
+  validator.add_field_visitor(&validate_ref_annotation);
 
   validator.add_enum_visitor(&validate_enum_value_name_uniqueness);
   validator.add_enum_visitor(&validate_enum_value_uniqueness);

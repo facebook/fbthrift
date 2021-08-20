@@ -713,6 +713,54 @@ class CompilerFailureTest(unittest.TestCase):
             "[WARNING:foo.thrift:2] `cpp.ref` field `rec` must be optional if it is recursive.\n",
         )
 
+    def test_structured_ref(self):
+        write_file(
+            "thrift/lib/thrift/annotation/cpp.thrift",
+            textwrap.dedent(
+                """\
+                enum RefType {Unique, SharedConst, SharedMutable}
+                struct Ref {
+                  1: RefType type;
+                }
+                """
+            ),
+        )
+
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/lib/thrift/annotation/cpp.thrift"
+
+                struct Foo {
+                  1: optional Foo field1 (cpp.ref);
+
+                  @cpp.Ref{type = cpp.RefType.Unique}
+                  2: optional Foo field2;
+
+                  @cpp.Ref{type = cpp.RefType.Unique}
+                  3: optional Foo field3 (cpp.ref);
+
+                  @cpp.Ref{type = cpp.RefType.Unique}
+                  @cpp.Ref{type = cpp.RefType.Unique}
+                  4: optional Foo field4;
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:10] The @cpp.Ref annotation cannot be combined "
+            "with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the"
+            " annotations from `field3`.\n"
+            "[FAILURE:foo.thrift:13] Structured annotation `Ref` is already"
+            " defined for `field4`.\n",
+        )
+
     def test_mixin_nonstruct_members(self):
         write_file(
             "foo.thrift",

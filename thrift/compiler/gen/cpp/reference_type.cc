@@ -71,15 +71,8 @@ reference_type find_ref_type(const t_field& node) {
     return reference_type::unique;
   }
 
-  for (const t_const* anno : node.structured_annotations()) {
-    const t_type* type = anno->type().get_type()->get_true_type();
-    if (type->program()->path() != "thrift/lib/thrift/annotation/cpp.thrift") {
-      continue;
-    }
-    if (type->get_scoped_name() != "cpp.Ref") {
-      continue;
-    }
-
+  if (const t_const* anno = node.get_structured_annotation_or_null(
+          "thrift/lib/thrift/annotation/cpp.thrift", "Ref")) {
     for (const auto& kv : anno->value()->get_map()) {
       if (kv.first->get_string() == "type") {
         switch (static_cast<RefType>(kv.second->get_integer())) {

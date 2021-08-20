@@ -17,6 +17,8 @@
 #include <thrift/compiler/ast/t_named.h>
 
 #include <thrift/compiler/ast/t_const.h>
+#include <thrift/compiler/ast/t_program.h>
+#include <thrift/compiler/ast/t_type.h>
 
 namespace apache {
 namespace thrift {
@@ -28,6 +30,18 @@ t_named::~t_named() = default;
 void t_named::add_structured_annotation(std::unique_ptr<t_const> annot) {
   structured_annotations_raw_.emplace_back(annot.get());
   structured_annotations_.emplace_back(std::move(annot));
+}
+
+const t_const* t_named::get_structured_annotation_or_null(
+    const char* path, const char* name) const {
+  for (const auto* annotation : structured_annotations_raw_) {
+    const t_type* type = annotation->type().get_type()->get_true_type();
+    if (type->program()->path() == path && type->get_name() == name) {
+      return annotation;
+    }
+  }
+
+  return nullptr;
 }
 
 } // namespace compiler
