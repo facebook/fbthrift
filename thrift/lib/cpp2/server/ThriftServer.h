@@ -1004,9 +1004,7 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 template <typename AcceptorClass, typename SharedSSLContextManagerClass>
 class ThriftAcceptorFactory : public wangle::AcceptorFactorySharedSSLContext {
  public:
-  ThriftAcceptorFactory<AcceptorClass, SharedSSLContextManagerClass>(
-      ThriftServer* server)
-      : server_(server) {}
+  ThriftAcceptorFactory(ThriftServer* server) : server_(server) {}
 
   std::shared_ptr<wangle::SharedSSLContextManager>
   initSharedSSLContextManager() {
