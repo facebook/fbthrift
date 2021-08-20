@@ -19,7 +19,7 @@
 use super::{BOOL_VALUES, DOUBLE_VALUES, INT64_VALUES};
 use crate::thrift_protocol::MessageType;
 use crate::ttype::TType;
-use crate::{ProtocolWriter, SimpleJsonProtocol};
+use crate::{simplejson_protocol, ProtocolWriter, SimpleJsonProtocol};
 
 #[test]
 fn write_bool_list() {
@@ -171,4 +171,19 @@ fn write_message() {
     let v: serde_json::Result<serde_json::Value> = serde_json::from_slice(&buf);
     assert!(v.is_ok());
     assert_eq!(buf, "[\"hello_message\",1,10]");
+}
+
+#[test]
+fn test_trailing() {
+    let json: &[u8] = br#" "..." null "#;
+    match simplejson_protocol::deserialize(json) {
+        Ok(ok) => {
+            let _: String = ok;
+            panic!("trailing data is supposed to cause deserialization failure");
+        }
+        Err(err) => assert_eq!(
+            "Unexpected trailing data after the end of a value",
+            err.to_string(),
+        ),
+    }
 }

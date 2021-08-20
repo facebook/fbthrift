@@ -46,6 +46,8 @@ pub enum ProtocolError {
     InvalidDataLength,
     #[error("Invalid value for type")]
     InvalidValue,
+    #[error("Unexpected trailing data after the end of a value")]
+    TrailingData,
     #[error("Application exception: {0:?}")]
     ApplicationException(ApplicationException),
 }

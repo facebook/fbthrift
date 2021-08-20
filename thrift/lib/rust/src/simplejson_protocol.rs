@@ -891,9 +891,13 @@ pub fn deserialize<T, B, C>(b: B) -> Result<T>
 where
     B: Into<DeserializeSource<C>>,
     C: BufExt,
-    for<'a> T: Deserialize<SimpleJsonProtocolDeserializer<C>>,
+    T: Deserialize<SimpleJsonProtocolDeserializer<C>>,
 {
     let source: DeserializeSource<C> = b.into();
     let mut deser = SimpleJsonProtocolDeserializer::new(source.0);
-    Ok(T::read(&mut deser)?)
+    let t = T::read(&mut deser)?;
+    if deser.peek().is_some() {
+        bail!(ProtocolError::TrailingData);
+    }
+    Ok(t)
 }
