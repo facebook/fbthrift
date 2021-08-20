@@ -34,10 +34,6 @@ namespace thrift {
 namespace compiler {
 
 namespace {
-bool field_has_isset(const t_field* field) {
-  return field->get_req() != t_field::e_req::required &&
-      !cpp2::is_explicit_ref(field);
-}
 
 std::string const& get_cpp_template(const t_type* type) {
   return type->get_annotation({"cpp.template", "cpp2.template"});
@@ -183,12 +179,17 @@ class cpp2_generator_context {
     return cpp2::is_orderable(seen, memo, type);
   }
 
+  size_t isset_index(const t_field* f) {
+    return cpp2::isset_index(isset_index_memo_, f);
+  }
+
   gen::cpp::type_resolver& resolver() { return resolver_; }
 
  private:
   cpp2_generator_context() = default;
 
   std::unordered_map<t_type const*, bool> is_orderable_memo_;
+  std::unordered_map<t_field const*, int32_t> isset_index_memo_;
   gen::cpp::type_resolver resolver_;
 };
 
@@ -569,6 +570,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:name_hash", &mstch_cpp2_field::name_hash},
             {"field:index_plus_one", &mstch_cpp2_field::index_plus_one},
             {"field:has_isset?", &mstch_cpp2_field::has_isset},
+            {"field:isset_index", &mstch_cpp2_field::isset_index},
             {"field:cpp_name", &mstch_cpp2_field::cpp_name},
             {"field:cpp_storage_type", &mstch_cpp2_field::cpp_storage_type},
             {"field:cpp_deprecated_accessor_type",
@@ -605,6 +607,9 @@ class mstch_cpp2_field : public mstch_field {
     return "__fbthrift_hash_" + cpp2::sha256_hex(field_->get_name());
   }
   mstch::node index_plus_one() { return std::to_string(index_ + 1); }
+  mstch::node isset_index() {
+    return std::to_string(context_->isset_index(field_));
+  }
   mstch::node cpp_name() { return cpp2::get_name(field_); }
   mstch::node cpp_storage_type() {
     return context_->resolver().get_storage_type_name(field_);
@@ -693,7 +698,7 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node has_fatal_annotations() {
     return get_fatal_annotations(field_->annotations()).size() > 0;
   }
-  mstch::node has_isset() { return field_has_isset(field_); }
+  mstch::node has_isset() { return cpp2::field_has_isset(field_); }
   mstch::node fatal_annotations() {
     return generate_annotations(get_fatal_annotations(field_->annotations()));
   }
@@ -921,7 +926,7 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node indexing() { return has_lazy_fields(); }
   mstch::node has_isset_fields() {
     for (const auto& field : strct_->fields()) {
-      if (field_has_isset(&field)) {
+      if (cpp2::field_has_isset(&field)) {
         return true;
       }
     }
@@ -930,7 +935,7 @@ class mstch_cpp2_struct : public mstch_struct {
   mstch::node isset_fields() {
     std::vector<t_field const*> fields;
     for (const auto& field : strct_->fields()) {
-      if (field_has_isset(&field)) {
+      if (cpp2::field_has_isset(&field)) {
         fields.push_back(&field);
       }
     }

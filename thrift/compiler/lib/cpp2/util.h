@@ -57,6 +57,8 @@ bool is_orderable(
     std::unordered_map<t_type const*, bool>& memo,
     t_type const& type);
 bool is_orderable(t_type const& type);
+int32_t isset_index(
+    std::unordered_map<t_field const*, int32_t>& memo, t_field const* field);
 
 /**
  * Return the cpp.type/cpp2.type attribute or empty string if nothing set.
@@ -80,6 +82,11 @@ inline bool is_explicit_ref(const t_field* f) {
 
 inline bool is_ref(const t_field* f) {
   return is_explicit_ref(f) || is_implicit_ref(f->get_type());
+}
+
+inline bool field_has_isset(const t_field* field) {
+  return field->get_req() != t_field::e_req::required &&
+      !is_explicit_ref(field);
 }
 
 inline bool is_lazy(const t_field* field) {
