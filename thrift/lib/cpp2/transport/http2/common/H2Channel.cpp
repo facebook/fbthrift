@@ -48,7 +48,8 @@ void H2Channel::encodeHeaders(
     std::string headerNameLowercase(it->first);
     folly::toLowerAscii(headerNameLowercase);
     if (!proxygen::CodecUtil::validateHeaderName(
-            folly::ByteRange(folly::StringPiece(headerNameLowercase))) ||
+            folly::ByteRange(folly::StringPiece(headerNameLowercase)),
+            proxygen::CodecUtil::HEADER_NAME_STRICT) ||
         !proxygen::CodecUtil::validateHeaderValue(
             folly::ByteRange(folly::StringPiece(it->second)),
             proxygen::CodecUtil::CtlEscapeMode::STRICT)) {

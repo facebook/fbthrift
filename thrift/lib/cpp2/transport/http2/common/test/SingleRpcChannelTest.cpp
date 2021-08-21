@@ -115,13 +115,13 @@ TEST_F(ChannelTestFixture, BadHeaderFields) {
   EchoProcessor processor("extrakey", "extravalue", "<eom>", eventBase_.get());
   unordered_map<string, string> headersExpectNoEncoding{
       {"X-FB-Header-Uppercase", "good value"},
-      {"x-fb-header-lowercase", "good value"},
-      {"good header1", "good value"}};
+      {"x-fb-header-lowercase", "good value"}};
   unordered_map<string, string> headersExpectEncoding{
       {"good header2", "bad\x01\x02value\r\n"},
       {"bad\x01header", "good value"},
       {"header:with:colon", "bad value\r\n\r\n"},
-      {"asdf:gh", "{\"json\":\"data\"}"}};
+      {"asdf:gh", "{\"json\":\"data\"}"},
+      {"bad header1", "good value"}};
   unordered_map<string, string> inputHeaders;
   inputHeaders.insert(
       headersExpectNoEncoding.begin(), headersExpectNoEncoding.end());
