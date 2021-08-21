@@ -16,11 +16,14 @@
 
 #pragma once
 
+#include <folly/MapUtil.h>
 #include <folly/Optional.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
+#include <folly/container/F14Map.h>
 #include <folly/io/Cursor.h>
 #include <folly/portability/GFlags.h>
+#include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
@@ -154,21 +157,6 @@ class ProtocolReaderStructReadStateWithIndexImpl
     Base::readStructBegin(iprot);
   }
 
-  void readFieldEnd(Protocol* iprot) {
-    tryAdvanceIndex(Base::fieldId);
-    Base::readFieldEnd(iprot);
-  }
-
-  FOLLY_ALWAYS_INLINE bool advanceToNextField(
-      Protocol* iprot,
-      int32_t currFieldId,
-      int32_t nextFieldId,
-      TType nextFieldType) {
-    tryAdvanceIndex(currFieldId);
-    return Base::advanceToNextField(
-        iprot, currFieldId, nextFieldId, nextFieldType);
-  }
-
   FOLLY_ALWAYS_INLINE folly::Optional<folly::IOBuf> tryFastSkip(
       Protocol* iprot, int16_t id, TType type, bool fixedCostSkip) {
     if (!FLAGS_thrift_enable_lazy_deserialization) {
@@ -179,10 +167,8 @@ class ProtocolReaderStructReadStateWithIndexImpl
       return tryFastSkipImpl(iprot, [&] { iprot->skip(type); });
     }
 
-    if (currentIndexFieldId_ == id) {
-      DCHECK_NE(id, 0);
-      return tryFastSkipImpl(
-          iprot, [&] { iprot->skipBytes(currentIndexFieldSize_); });
+    if (auto p = folly::get_ptr(fieldIdToSize_, id)) {
+      return tryFastSkipImpl(iprot, [&] { iprot->skipBytes(*p); });
     }
 
     return {};
@@ -200,26 +186,15 @@ class ProtocolReaderStructReadStateWithIndexImpl
   }
 
   void readStructBeginWithIndex(folly::io::Cursor structBegin) {
-    indexReader_.setInput(std::move(structBegin));
-    if (auto serializedDataSize = readIndexOffsetField(indexReader_)) {
-      if (!FLAGS_thrift_enable_lazy_deserialization) {
-        return;
-      }
-
-      indexReader_.skipBytes(*serializedDataSize);
-      if (auto count = readIndexField(indexReader_)) {
-        indexFieldCount_ = *count;
-        tryAdvanceIndex(0); // Read first (field id, size) pair
-        return;
-      }
+    if (!FLAGS_thrift_enable_lazy_deserialization) {
+      return;
     }
-  }
 
-  FOLLY_ALWAYS_INLINE void tryAdvanceIndex(int16_t id) {
-    if (indexFieldCount_ > 0 && id == currentIndexFieldId_) {
-      indexReader_.readI16(currentIndexFieldId_);
-      indexReader_.readI64(currentIndexFieldSize_);
-      --indexFieldCount_;
+    Protocol indexReader;
+    indexReader.setInput(std::move(structBegin));
+    if (auto serializedDataSize = readIndexOffsetField(indexReader)) {
+      indexReader.skipBytes(*serializedDataSize);
+      fieldIdToSize_ = readIndexField(indexReader);
     }
   }
 
@@ -239,29 +214,23 @@ class ProtocolReaderStructReadStateWithIndexImpl
     return indexOffset;
   }
 
-  static folly::Optional<uint32_t> readIndexField(Protocol& p) {
+  using FieldIdToSize = folly::F14FastMap<int16_t, int64_t>;
+
+  static FieldIdToSize readIndexField(Protocol& p) {
     std::string name;
     TType fieldType;
     int16_t fieldId;
     p.readFieldBegin(name, fieldType, fieldId);
-    if (fieldType != kIndexField.type) {
+    if (fieldId != kIndexField.id || fieldType != kIndexField.type) {
       return {};
     }
 
-    TType key;
-    TType value;
-    uint32_t fieldCount;
-    p.readMapBegin(key, value, fieldCount);
-    if (key != TType::T_I16 || value != TType::T_I64) {
-      return {};
-    }
-    return fieldCount;
+    FieldIdToSize fieldIdToSize;
+    Cpp2Ops<FieldIdToSize>::read(&p, &fieldIdToSize);
+    return fieldIdToSize;
   }
 
-  Protocol indexReader_;
-  uint32_t indexFieldCount_ = 0;
-  int16_t currentIndexFieldId_ = 0;
-  int64_t currentIndexFieldSize_ = 0;
+  FieldIdToSize fieldIdToSize_;
 };
 
 template <class Protocol>
