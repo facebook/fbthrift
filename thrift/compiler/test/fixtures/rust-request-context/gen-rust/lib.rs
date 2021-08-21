@@ -32,9 +32,16 @@ pub mod types {
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("{self:?}")]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct MyException {
+    }
+
+    impl ::std::error::Error for MyException {}
+
+    impl ::std::fmt::Display for MyException {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(f, "{:?}", self)
+        }
     }
 
     #[derive(Copy, Clone, Eq, PartialEq, Ord, PartialOrd, Hash)]

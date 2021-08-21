@@ -51,12 +51,19 @@ pub mod types {
         UnknownField(::std::primitive::i32),
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     #[doc = "Something amiss"]
-    #[error("{self:?}")]
     pub struct Bang {
         #[doc = "All explosions can be explained away"]
         pub message: ::std::string::String,
+    }
+
+    impl ::std::error::Error for Bang {}
+
+    impl ::std::fmt::Display for Bang {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(f, "{:?}", self)
+        }
     }
 
     #[doc = "This enum is great"]

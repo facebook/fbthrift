@@ -12,42 +12,84 @@ pub mod types {
     #![allow(clippy::redundant_closure)]
 
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("Fiery: {message}: {self:?}")]
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Fiery {
         pub message: ::std::string::String,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("Serious: {sonnet:?}: {self:?}")]
+    impl ::std::error::Error for Fiery {}
+
+    impl ::std::fmt::Display for Fiery {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(f, "Fiery: {}: {:?}", self.message, self)
+        }
+    }
+
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Serious {
         pub sonnet: ::std::option::Option<::std::string::String>,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("ComplexFieldNames: {internal_error_message}: {self:?}")]
+    impl ::std::error::Error for Serious {}
+
+    impl ::std::fmt::Display for Serious {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(f, "Serious: {:?}: {:?}", self.sonnet, self)
+        }
+    }
+
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct ComplexFieldNames {
         pub error_message: ::std::string::String,
         pub internal_error_message: ::std::string::String,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("CustomFieldNames: {internal_error_message}: {self:?}")]
+    impl ::std::error::Error for ComplexFieldNames {}
+
+    impl ::std::fmt::Display for ComplexFieldNames {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(f, "ComplexFieldNames: {}: {:?}", self.internal_error_message, self)
+        }
+    }
+
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct CustomFieldNames {
         pub error_message: ::std::string::String,
         pub internal_error_message: ::std::string::String,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("ExceptionWithPrimitiveField: {message}: {self:?}")]
+    impl ::std::error::Error for CustomFieldNames {}
+
+    impl ::std::fmt::Display for CustomFieldNames {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(f, "CustomFieldNames: {}: {:?}", self.internal_error_message, self)
+        }
+    }
+
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct ExceptionWithPrimitiveField {
         pub message: ::std::string::String,
         pub error_code: ::std::primitive::i32,
     }
 
-    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash, ::thiserror::Error)]
-    #[error("{self:?}")]
+    impl ::std::error::Error for ExceptionWithPrimitiveField {}
+
+    impl ::std::fmt::Display for ExceptionWithPrimitiveField {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(f, "ExceptionWithPrimitiveField: {}: {:?}", self.message, self)
+        }
+    }
+
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
     pub struct Banal {
+    }
+
+    impl ::std::error::Error for Banal {}
+
+    impl ::std::fmt::Display for Banal {
+        fn fmt(&self, f: &mut ::std::fmt::Formatter) -> ::std::fmt::Result {
+            write!(f, "{:?}", self)
+        }
     }
 
     impl ::std::default::Default for self::Fiery {
