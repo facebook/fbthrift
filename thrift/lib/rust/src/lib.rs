@@ -21,7 +21,7 @@ use std::i32;
 
 macro_rules! bail_err {
     ($e:expr) => {
-        return Err(From::from($e));
+        return Err(From::from($e))
     };
 }
 
