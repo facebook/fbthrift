@@ -16,7 +16,7 @@
 
 include "thrift/lib/thrift/annotation/scope.thrift"
 
-namespace cpp2 apache.thrift.annotation
+namespace cpp2 thrift.lib.thrift.annotation
 namespace py3 thrift.lib.thrift.annotation
 namespace py thrift.lib.thrift.annotation.cpp
 namespace java.swift org.apache.thrift.annotation

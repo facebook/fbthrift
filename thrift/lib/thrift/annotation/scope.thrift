@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-namespace cpp2 apache.thrift.annotation
+namespace cpp2 thrift.lib.thrift.annotation
 namespace php apache_thrift
 namespace py thrift.lib.thrift.annotation.scope
 namespace py.asyncio thrift_asyncio.annotation.scope

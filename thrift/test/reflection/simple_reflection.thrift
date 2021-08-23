@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/lib/thrift/annotation/cpp.thrift"
+
 namespace cpp2 test_cpp2.simple_cpp_reflection
 
 cpp_include "<deque>"
@@ -63,7 +65,8 @@ union union1 {
   2: string field_string;
   66: list<i64> field_list_i64;
   99: list<string> field_list_string;
-  5: string field_string_reference (cpp2.ref = "true");
+  @cpp.Ref{type = cpp.RefType.Unique}
+  5: string field_string_reference;
   999: binary field_binary;
   12: smallstruct field_smallstruct (cpp2.ref = "true");
 }
