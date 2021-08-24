@@ -62,8 +62,6 @@ _readField_<%field:cpp_name%>:
     __fbthrift_serializedData_.<%field:cpp_name%> = *iobuf;
     __fbthrift_isDeserialized_.<%field:cpp_name%> = false;
   } else {
-    __fbthrift_serializedData_.<%field:cpp_name%>.clear();
-    __fbthrift_isDeserialized_.<%field:cpp_name%> = true;
 <%/field:lazy?%>
 <%^field:lazy?%>
   {

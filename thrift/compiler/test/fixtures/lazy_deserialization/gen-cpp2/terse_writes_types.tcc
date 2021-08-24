@@ -375,8 +375,6 @@ _readField_field3:
     __fbthrift_serializedData_.field3 = *iobuf;
     __fbthrift_isDeserialized_.field3 = false;
   } else {
-    __fbthrift_serializedData_.field3.clear();
-    __fbthrift_isDeserialized_.field3 = true;
     _readState.beforeSubobject(iprot);
     this->field3 = ::std::vector<double>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::readWithContext(*iprot, this->field3, _readState);
@@ -404,8 +402,6 @@ _readField_field4:
     __fbthrift_serializedData_.field4 = *iobuf;
     __fbthrift_isDeserialized_.field4 = false;
   } else {
-    __fbthrift_serializedData_.field4.clear();
-    __fbthrift_isDeserialized_.field4 = true;
     _readState.beforeSubobject(iprot);
     this->field4 = ::std::vector<::std::int32_t>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, this->field4, _readState);
@@ -952,8 +948,6 @@ _readField_field3:
     __fbthrift_serializedData_.field3 = *iobuf;
     __fbthrift_isDeserialized_.field3 = false;
   } else {
-    __fbthrift_serializedData_.field3.clear();
-    __fbthrift_isDeserialized_.field3 = true;
     _readState.beforeSubobject(iprot);
     this->field3 = ::std::vector<double>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::readWithContext(*iprot, this->field3, _readState);
@@ -981,8 +975,6 @@ _readField_field4:
     __fbthrift_serializedData_.field4 = *iobuf;
     __fbthrift_isDeserialized_.field4 = false;
   } else {
-    __fbthrift_serializedData_.field4.clear();
-    __fbthrift_isDeserialized_.field4 = true;
     _readState.beforeSubobject(iprot);
     this->field4 = ::std::vector<::std::int32_t>();
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::readWithContext(*iprot, this->field4, _readState);
