@@ -292,6 +292,7 @@ const ::std::vector<double>& LazyFoo::__fbthrift_read_field_field3() const {
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field3.clear();
     __fbthrift_isDeserialized_.field3 = true;
   }
   return field3;
@@ -319,6 +320,7 @@ const ::std::vector<::std::int32_t>& LazyFoo::__fbthrift_read_field_field4() con
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field4.clear();
     __fbthrift_isDeserialized_.field4 = true;
   }
   return field4;
@@ -707,6 +709,7 @@ const ::std::vector<double>& OptionalLazyFoo::__fbthrift_read_field_field3() con
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field3.clear();
     __fbthrift_isDeserialized_.field3 = true;
   }
   return field3;
@@ -734,6 +737,7 @@ const ::std::vector<::std::int32_t>& OptionalLazyFoo::__fbthrift_read_field_fiel
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field4.clear();
     __fbthrift_isDeserialized_.field4 = true;
   }
   return field4;
@@ -942,6 +946,7 @@ const ::std::unique_ptr<::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_r
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field1.clear();
     __fbthrift_isDeserialized_.field1 = true;
   }
   return field1;
@@ -969,6 +974,7 @@ const ::std::shared_ptr<::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_r
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field2.clear();
     __fbthrift_isDeserialized_.field2 = true;
   }
   return field2;
@@ -996,6 +1002,7 @@ const ::std::shared_ptr<const ::std::vector<::std::int32_t>>& LazyCppRef::__fbth
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field3.clear();
     __fbthrift_isDeserialized_.field3 = true;
   }
   return field3;

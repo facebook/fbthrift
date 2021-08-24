@@ -292,6 +292,7 @@ const ::std::vector<double>& TerseLazyFoo::__fbthrift_read_field_field3() const 
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field3.clear();
     __fbthrift_isDeserialized_.field3 = true;
   }
   return field3;
@@ -319,6 +320,7 @@ const ::std::vector<::std::int32_t>& TerseLazyFoo::__fbthrift_read_field_field4(
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field4.clear();
     __fbthrift_isDeserialized_.field4 = true;
   }
   return field4;
@@ -707,6 +709,7 @@ const ::std::vector<double>& TerseOptionalLazyFoo::__fbthrift_read_field_field3(
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field3.clear();
     __fbthrift_isDeserialized_.field3 = true;
   }
   return field3;
@@ -734,6 +737,7 @@ const ::std::vector<::std::int32_t>& TerseOptionalLazyFoo::__fbthrift_read_field
       default:
         CHECK(false) << int(__fbthrift_protocol_);
     }
+    __fbthrift_serializedData_.field4.clear();
     __fbthrift_isDeserialized_.field4 = true;
   }
   return field4;
