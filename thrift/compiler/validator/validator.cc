@@ -75,7 +75,7 @@ static void fill_validators(validator_list& vs) {
 
 bool struct_names_uniqueness_validator::visit(t_program* p) {
   set_program(p);
-  std::set<std::string> seen;
+  std::unordered_set<std::string> seen;
   for (auto* object : p->objects()) {
     if (!seen.emplace(object->name()).second) {
       add_error(
@@ -108,7 +108,7 @@ bool interactions_validator::visit(t_program* p) {
 }
 
 bool interactions_validator::visit(t_service* s) {
-  std::set<std::string> seen;
+  std::unordered_set<std::string> seen;
   for (auto* func : s->get_functions()) {
     auto ret = func->get_returntype();
     if (func->is_interaction_constructor()) {

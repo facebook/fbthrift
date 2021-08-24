@@ -37,7 +37,7 @@ bool t_typedef::is_defined() const {
 
 bool t_placeholder_typedef::resolve() {
   assert(type_.get_type() == nullptr);
-  type_.set_type(scope_->get_type(program()->name() + "." + name()));
+  type_.set_type(scope_->find_type(program()->name() + "." + name()));
   return type_.get_type() != nullptr;
 }
 

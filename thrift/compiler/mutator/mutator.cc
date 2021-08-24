@@ -125,13 +125,13 @@ static void match_type_with_const_value(
     if (value->get_type() == t_const_value::CV_STRING) {
       // The enum was defined after the struct field with that type was declared
       // so the field default value, if present, was treated as a string rather
-      // than resolving to the enum constant in the parser
-      // So we have to resolve the string to the enum constant here instead
+      // than resolving to the enum constant in the parser.
+      // So we have to resolve the string to the enum constant here instead.
       auto str = value->get_string();
-      auto constant = program->scope()->get_constant(str);
+      auto constant = program->scope()->find_constant(str);
       if (!constant) {
         auto full_str = program->name() + "." + str;
-        constant = program->scope()->get_constant(full_str);
+        constant = program->scope()->find_constant(full_str);
       }
       if (!constant) {
         throw std::runtime_error(

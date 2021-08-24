@@ -660,11 +660,11 @@ ConstValue:
 | Identifier
     {
       driver.debug("ConstValue => Identifier");
-      const t_const* constant = driver.scope_cache->get_constant($1);
+      const t_const* constant = driver.scope_cache->find_constant($1);
       driver.validate_not_ambiguous_enum($1);
       if (constant == nullptr) {
         auto name_with_program_name = driver.program->name() + "." + $1;
-        constant = driver.scope_cache->get_constant(name_with_program_name);
+        constant = driver.scope_cache->find_constant(name_with_program_name);
         driver.validate_not_ambiguous_enum(name_with_program_name);
       }
       if (constant != nullptr) {
@@ -964,9 +964,9 @@ Extends:
       driver.debug("Extends -> tok_extends Identifier");
       $$ = nullptr;
       if (driver.mode == parsing_mode::PROGRAM) {
-        $$ = driver.scope_cache->get_service($2);
+        $$ = driver.scope_cache->find_service($2);
         if (!$$) {
-          $$ = driver.scope_cache->get_service(driver.program->name() + "." + $2);
+          $$ = driver.scope_cache->find_service(driver.program->name() + "." + $2);
         }
         if (!$$) {
           driver.failure([&](auto& o) {

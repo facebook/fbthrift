@@ -591,10 +591,10 @@ t_type_ref parsing_driver::new_type_ref(
     return {};
   }
 
-  // Try to resolve the type
-  const t_type* type = scope_cache->get_type(name);
+  // Try to resolve the type.
+  const t_type* type = scope_cache->find_type(name);
   if (type == nullptr) {
-    type = scope_cache->get_type(program->name() + "." + name);
+    type = scope_cache->find_type(program->name() + "." + name);
   }
   if (type == nullptr) {
     // TODO(afuller): Remove this special case for const, which requires a
@@ -607,9 +607,9 @@ t_type_ref parsing_driver::new_type_ref(
     }
     // TODO(afuller): Why are interactions special? They should just be another
     // declared type.
-    type = scope_cache->get_interaction(name);
+    type = scope_cache->find_interaction(name);
     if (type == nullptr) {
-      type = scope_cache->get_interaction(program->name() + "." + name);
+      type = scope_cache->find_interaction(program->name() + "." + name);
     }
   }
 

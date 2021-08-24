@@ -14,97 +14,99 @@
  * limitations under the License.
  */
 
-#ifndef T_SCOPE_H
-#define T_SCOPE_H
+#pragma once
 
-#include <map>
-#include <set>
-
-#include <thrift/compiler/ast/t_const.h>
-#include <thrift/compiler/ast/t_enum.h>
-#include <thrift/compiler/ast/t_interaction.h>
-#include <thrift/compiler/ast/t_service.h>
-#include <thrift/compiler/ast/t_type.h>
+#include <string>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
+class t_const;
+class t_interaction;
+class t_service;
+class t_type;
+
 /**
- * This represents a variable scope used for looking up predefined types and
- * services. Typically, a scope is associated with a t_program. Scopes are not
- * used to determine code generation, but rather to resolve identifiers at
- * parse time.
- *
+ * This represents a scope used for looking up types, services and other AST
+ * constructs. Typically, a scope is associated with a t_program. Scopes are not
+ * used to determine code generation, but rather to resolve identifiers at parse
+ * time.
  */
 class t_scope {
  public:
-  t_scope() {}
+  void add_type(std::string name, const t_type* type) {
+    types_[std::move(name)] = type;
+  }
 
-  void add_type(std::string name, const t_type* type) { types_[name] = type; }
-
-  const t_type* get_type(std::string name) { return types_[name]; }
+  const t_type* find_type(const std::string& name) const {
+    return find_or_null(types_, name);
+  }
 
   void add_service(std::string name, const t_service* service) {
-    services_[name] = service;
+    services_[std::move(name)] = service;
   }
 
-  const t_service* get_service(std::string name) { return services_[name]; }
+  const t_service* find_service(const std::string& name) const {
+    return find_or_null(services_, name);
+  }
 
   void add_interaction(std::string name, const t_interaction* interaction) {
-    interactions_[name] = interaction;
+    interactions_[std::move(name)] = interaction;
   }
 
-  const t_interaction* get_interaction(std::string name) {
-    return interactions_[name];
+  const t_interaction* find_interaction(const std::string& name) const {
+    return find_or_null(interactions_, name);
   }
 
   void add_constant(std::string name, const t_const* constant);
 
-  std::vector<std::string> split_string_by_periods(std::string str);
+  const t_const* find_constant(const std::string& name) const {
+    return find_or_null(constants_, name);
+  }
 
-  std::string join_strings_by_commas(std::set<std::string> strs);
-
-  const t_const* get_constant(std::string name) { return constants_[name]; }
-
-  bool is_ambiguous_enum_value(std::string enum_value_name) {
+  bool is_ambiguous_enum_value(const std::string& enum_value_name) const {
     return redefined_enum_values_.find(enum_value_name) !=
         redefined_enum_values_.end();
   }
 
-  std::string get_fully_qualified_enum_value_names(std::string name);
+  std::string get_fully_qualified_enum_value_names(const std::string& name);
 
-  void print() {
-    std::map<std::string, const t_type*>::iterator iter;
-    for (iter = types_.begin(); iter != types_.end(); ++iter) {
-      printf(
-          "%s => %s\n", iter->first.c_str(), iter->second->get_name().c_str());
-    }
-  }
+  // Dumps the content of type map to stdout.
+  void dump() const;
 
  private:
-  // Map of names to types
-  std::map<std::string, const t_type*> types_;
+  template <typename T>
+  static const T* find_or_null(
+      const std::unordered_map<std::string, const T*>& map,
+      const std::string& name) {
+    auto it = map.find(name);
+    return it != map.end() ? it->second : nullptr;
+  }
 
-  // Map of names to constants
-  std::map<std::string, const t_const*> constants_;
+  // Map of names to types.
+  std::unordered_map<std::string, const t_type*> types_;
 
-  // Map of names to services
-  std::map<std::string, const t_service*> services_;
+  // Map of names to constants.
+  std::unordered_map<std::string, const t_const*> constants_;
 
-  // Map of names to interactions
-  std::map<std::string, const t_interaction*> interactions_;
+  // Map of names to services.
+  std::unordered_map<std::string, const t_service*> services_;
 
-  // Set of enum_values that are redefined and are ambiguous
-  // if referred to without the enum name
-  std::set<std::string> redefined_enum_values_;
+  // Map of names to interactions.
+  std::unordered_map<std::string, const t_interaction*> interactions_;
 
-  // Map of enum_values to their definition full names
-  std::map<std::string, std::set<std::string>> enum_values_;
+  // Set of enum value names that are redefined and are ambiguous
+  // if referred to without the enum name.
+  std::unordered_set<std::string> redefined_enum_values_;
+
+  // Map of enum value names to their definition full names.
+  std::unordered_map<std::string, std::unordered_set<std::string>> enum_values_;
 };
 
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
-
-#endif
