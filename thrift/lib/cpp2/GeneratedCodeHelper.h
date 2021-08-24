@@ -18,7 +18,6 @@
 
 #include <type_traits>
 #include <utility>
-#include "thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h"
 
 #include <folly/Portability.h>
 
@@ -43,6 +42,7 @@
 #include <thrift/lib/cpp2/protocol/Traits.h>
 #include <thrift/lib/cpp2/transport/core/RpcMetadataUtil.h>
 #include <thrift/lib/cpp2/util/Frozen2ViewHelpers.h>
+#include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/FutureUtil.h>
