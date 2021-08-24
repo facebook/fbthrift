@@ -29,7 +29,7 @@ from thrift.py3.reflection cimport (
 
 cdef __InterfaceSpec get_reflection__{{service:name}}(bint for_clients)
 
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:name}}.h"{{!
+cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{service:name}}.h"{{!
     }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
     cdef cppclass c{{service:name}}SvIf {{!
       }}"::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!

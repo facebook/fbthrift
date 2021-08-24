@@ -27,21 +27,21 @@ from thrift.py3.client cimport cClientWrapper
 cimport module.types as _module_types
 
 
-cdef extern from "src/gen-cpp2/SimpleService.h" namespace "::py3::simple":
+cdef extern from "src/gen-py3cpp/SimpleService.h" namespace "::py3::simple":
   cdef cppclass cSimpleServiceAsyncClient "::py3::simple::SimpleServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cSimpleServiceClientWrapper] move(unique_ptr[cSimpleServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/DerivedService.h" namespace "::py3::simple":
+cdef extern from "src/gen-py3cpp/DerivedService.h" namespace "::py3::simple":
   cdef cppclass cDerivedServiceAsyncClient "::py3::simple::DerivedServiceAsyncClient":
       pass
 
 cdef extern from "<utility>" namespace "std":
   cdef unique_ptr[cDerivedServiceClientWrapper] move(unique_ptr[cDerivedServiceClientWrapper])
 
-cdef extern from "src/gen-cpp2/RederivedService.h" namespace "::py3::simple":
+cdef extern from "src/gen-py3cpp/RederivedService.h" namespace "::py3::simple":
   cdef cppclass cRederivedServiceAsyncClient "::py3::simple::RederivedServiceAsyncClient":
       pass
 

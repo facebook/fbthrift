@@ -9,7 +9,7 @@
 
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
-#include "src/gen-cpp2/module_metadata.h"
+#include "src/gen-py3cpp/module_metadata.h"
 
 namespace py3 {
 namespace simple {

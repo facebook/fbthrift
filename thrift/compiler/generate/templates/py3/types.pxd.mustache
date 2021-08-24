@@ -88,11 +88,11 @@ cdef extern from "{{.}}":
 
 {{#program:enums}}
 {{#first?}}
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_metadata.h" namespace "apache::thrift::detail::md":
+cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:name}}_metadata.h" namespace "apache::thrift::detail::md":
     cdef cppclass EnumMetadata[T]:
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
+cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:name}}_types.h"{{!
 }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
     cdef cppclass c{{enum:name}} "::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{enum:name}}":
@@ -105,15 +105,15 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types.h"{{!
 
 {{#program:structs}}
 {{#first?}}
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_metadata.h" namespace "apache::thrift::detail::md":
+cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:name}}_metadata.h" namespace "apache::thrift::detail::md":
     cdef cppclass ExceptionMetadata[T]:
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_metadata.h" namespace "apache::thrift::detail::md":
+cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:name}}_metadata.h" namespace "apache::thrift::detail::md":
     cdef cppclass StructMetadata[T]:
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_types_custom_protocol.h"{{!
+cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:name}}_types_custom_protocol.h"{{!
 }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
     {{#struct:union?}}
@@ -247,7 +247,7 @@ cdef class {{> types/CythonPythonType}}(thrift.py3.types.{{!
 
 {{#program:constants}}
 {{#first?}}
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{program:name}}_constants.h"{{!
+cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{program:name}}_constants.h"{{!
 }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
 {{/first?}}
     {{#constant:type}}

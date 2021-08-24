@@ -11,9 +11,9 @@
 #include <folly/Range.h>
 
 #include <thrift/lib/py3/enums.h>
-#include "src/gen-cpp2/empty_data.h"
-#include "src/gen-cpp2/empty_types.h"
-#include "src/gen-cpp2/empty_metadata.h"
+#include "src/gen-py3cpp/empty_data.h"
+#include "src/gen-py3cpp/empty_types.h"
+#include "src/gen-py3cpp/empty_metadata.h"
 namespace thrift {
 namespace py3 {
 

@@ -27,7 +27,7 @@ from thrift.py3.client cimport cClientWrapper
 cimport empty.types as _empty_types
 
 
-cdef extern from "src/gen-cpp2/NullService.h" namespace "::cpp2":
+cdef extern from "src/gen-py3cpp/NullService.h" namespace "::cpp2":
   cdef cppclass cNullServiceAsyncClient "::cpp2::NullServiceAsyncClient":
       pass
 

@@ -375,6 +375,7 @@ class mstch_py3_program : public mstch_program {
              &mstch_py3_program::getResponseAndStreamTypes},
             {"program:stream_exceptions",
              &mstch_py3_program::getStreamExceptions},
+            {"program:cpp_gen_path", &mstch_py3_program::getCppGenPath},
         });
     gather_included_program_namespaces();
     visit_types_for_services_and_interactions();
@@ -382,6 +383,10 @@ class mstch_py3_program : public mstch_program {
     visit_types_for_constants();
     visit_types_for_typedefs();
     visit_types_for_mixin_fields();
+  }
+
+  mstch::node getCppGenPath() {
+    return std::string(has_option("py3cpp") ? "gen-py3cpp" : "gen-cpp2");
   }
 
   mstch::node getContainerTypes() {

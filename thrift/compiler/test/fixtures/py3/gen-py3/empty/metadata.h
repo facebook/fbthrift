@@ -9,7 +9,7 @@
 
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
-#include "src/gen-cpp2/empty_metadata.h"
+#include "src/gen-py3cpp/empty_metadata.h"
 
 namespace cpp2 {
 ::apache::thrift::metadata::ThriftMetadata empty_getThriftModuleMetadata();

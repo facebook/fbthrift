@@ -6,9 +6,9 @@
  */
 
 #pragma once
-#include <src/gen-cpp2/SimpleService.h>
-#include <src/gen-cpp2/DerivedService.h>
-#include <src/gen-cpp2/RederivedService.h>
+#include <src/gen-py3cpp/SimpleService.h>
+#include <src/gen-py3cpp/DerivedService.h>
+#include <src/gen-py3cpp/RederivedService.h>
 #include <folly/python/futures.h>
 #include <Python.h>
 

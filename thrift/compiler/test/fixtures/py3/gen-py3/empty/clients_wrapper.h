@@ -6,7 +6,7 @@
  */
 
 #pragma once
-#include <src/gen-cpp2/NullService.h>
+#include <src/gen-py3cpp/NullService.h>
 
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>

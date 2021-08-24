@@ -47,11 +47,11 @@ cdef extern from "src/gen-py3/module/types.h":
 cdef extern from *:
     ctypedef bstring foo_Bar "foo::Bar"
 
-cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+cdef extern from "src/gen-py3cpp/module_metadata.h" namespace "apache::thrift::detail::md":
     cdef cppclass EnumMetadata[T]:
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
-cdef extern from "src/gen-cpp2/module_types.h" namespace "::py3::simple":
+cdef extern from "src/gen-py3cpp/module_types.h" namespace "::py3::simple":
     cdef cppclass cAnEnum "::py3::simple::AnEnum":
         pass
 
@@ -69,15 +69,15 @@ cdef class AnEnum(thrift.py3.types.CompiledEnum):
 cdef class Flags(thrift.py3.types.Flag):
     pass
 
-cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+cdef extern from "src/gen-py3cpp/module_metadata.h" namespace "apache::thrift::detail::md":
     cdef cppclass ExceptionMetadata[T]:
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
-cdef extern from "src/gen-cpp2/module_metadata.h" namespace "apache::thrift::detail::md":
+cdef extern from "src/gen-py3cpp/module_metadata.h" namespace "apache::thrift::detail::md":
     cdef cppclass StructMetadata[T]:
         @staticmethod
         void gen(__fbthrift_cThriftMetadata &metadata)
-cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::py3::simple":
+cdef extern from "src/gen-py3cpp/module_types_custom_protocol.h" namespace "::py3::simple":
 
     cdef cppclass cSimpleException "::py3::simple::SimpleException"(cTException):
         cSimpleException() except +
@@ -411,7 +411,7 @@ cdef class List__Map__i32_double(thrift.py3.types.List):
     cdef shared_ptr[vector[cmap[cint32_t,double]]] _make_instance(object items) except *
 
 
-cdef extern from "src/gen-cpp2/module_constants.h" namespace "::py3::simple":
+cdef extern from "src/gen-py3cpp/module_constants.h" namespace "::py3::simple":
     cdef cbool cA_BOOL "::py3::simple::module_constants::A_BOOL"
     cdef cint8_t cA_BYTE "::py3::simple::module_constants::A_BYTE"
     cdef cint16_t cTHE_ANSWER "::py3::simple::module_constants::THE_ANSWER"

@@ -55,7 +55,7 @@ cimport {{#includeNamespace}}{{value}}.{{/includeNamespace}}clients_wrapper as _
 {{/program:includeNamespaces}}
 
 {{#program:services}}
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:name}}.h"{{!
+cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{service:name}}.h"{{!
     }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
   cdef cppclass c{{service:name}}AsyncClient {{!
     }}"::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
@@ -63,7 +63,7 @@ cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:name}}.h"{{!
       pass
 
 {{#service:interactions}}
-cdef extern from "{{program:includePrefix}}gen-cpp2/{{service:parent_service_name}}.h"{{!
+cdef extern from "{{program:includePrefix}}{{program:cpp_gen_path}}/{{service:parent_service_name}}.h"{{!
     }} namespace "{{#program:cppNamespaces}}::{{value}}{{/program:cppNamespaces}}":
   cdef cppclass c{{service:parent_service_name}}AsyncClient_{{service:name}} {{!
     }}"::{{#program:cppNamespaces}}{{value}}::{{/program:cppNamespaces}}{{!
