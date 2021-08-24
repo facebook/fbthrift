@@ -162,6 +162,11 @@ std::string render_fatal_string(const std::string& normal_string) {
   return res.str();
 }
 
+std::string get_out_dir_base(
+    const std::map<std::string, std::string>& options) {
+  return options.find("py3cpp") != options.end() ? "gen-py3cpp" : "gen-cpp2";
+}
+
 } // namespace
 
 class cpp2_generator_context {
@@ -207,7 +212,7 @@ class t_mstch_cpp2_generator : public t_mstch_generator {
   static mstch::array get_namespace_array(t_program const* program);
   static mstch::node cpp_includes(t_program const* program);
   static mstch::node include_prefix(
-      t_program const* program, std::string& include_prefix);
+      t_program const* program, std::map<std::string, std::string>& options);
 
  private:
   void set_mstch_generators();
@@ -1193,7 +1198,7 @@ class mstch_cpp2_service : public mstch_service {
   }
   mstch::node include_prefix() {
     return t_mstch_cpp2_generator::include_prefix(
-        service_->program(), cache_->parsed_options_["include_prefix"]);
+        service_->program(), cache_->parsed_options_);
   }
   mstch::node thrift_includes() {
     mstch::array a{};
@@ -1420,7 +1425,7 @@ class mstch_cpp2_program : public mstch_program {
   }
   mstch::node include_prefix() {
     return t_mstch_cpp2_generator::include_prefix(
-        program_, cache_->parsed_options_["include_prefix"]);
+        program_, cache_->parsed_options_);
   }
   mstch::node cpp_declare_hash() {
     bool cpp_declare_in_structs = std::any_of(
@@ -1864,7 +1869,7 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
           program, std::move(context), "cpp2", parsed_options, true),
       context_(std::make_shared<cpp2_generator_context>(
           cpp2_generator_context::create(program))) {
-  out_dir_base_ = "gen-cpp2";
+  out_dir_base_ = get_out_dir_base(parsed_options);
 }
 
 void t_mstch_cpp2_generator::generate_program() {
@@ -2060,19 +2065,21 @@ mstch::node t_mstch_cpp2_generator::cpp_includes(t_program const* program) {
 }
 
 mstch::node t_mstch_cpp2_generator::include_prefix(
-    t_program const* program, std::string& include_prefix) {
+    t_program const* program, std::map<std::string, std::string>& options) {
   auto prefix = program->include_prefix();
+  auto include_prefix = options["include_prefix"];
+  auto out_dir_base = get_out_dir_base(options);
   if (prefix.empty()) {
     if (include_prefix.empty()) {
       return prefix;
     } else {
-      return include_prefix + "/gen-cpp2/";
+      return include_prefix + "/" + out_dir_base + "/";
     }
   }
   if (boost::filesystem::path(prefix).has_root_directory()) {
-    return include_prefix + "/gen-cpp2/";
+    return include_prefix + "/" + out_dir_base + "/";
   }
-  return prefix + "gen-cpp2/";
+  return prefix + out_dir_base + "/";
 }
 
 namespace {

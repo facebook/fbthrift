@@ -1,4 +1,4 @@
-mstch_cpp2 src/module.thrift
-mstch_cpp2 src/empty.thrift
+mstch_cpp2:py3cpp src/module.thrift
+mstch_cpp2:py3cpp src/empty.thrift
 mstch_py3 src/module.thrift
 mstch_py3 src/empty.thrift
