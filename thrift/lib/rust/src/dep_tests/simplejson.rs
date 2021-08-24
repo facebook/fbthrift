@@ -119,7 +119,13 @@ fn test_struct_key() -> Result<()> {
     assert!(v.is_err());
 
     // ...but it needs to deserialize
-    assert_eq!(sub, deserialize(s).unwrap());
+    assert_eq!(sub, deserialize(&s).unwrap());
+
+    // ...though not to serde_json::Value.
+    if let Ok(wat) = deserialize(&s) {
+        let _: serde_json::Value = wat;
+        panic!("map with struct keys is not supposed to deserialize to Value");
+    }
 
     Ok(())
 }

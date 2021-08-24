@@ -17,9 +17,11 @@
 // NOTE: See dep_test/cpp_compat_test.cpp for a comparison
 
 use super::{BOOL_VALUES, DOUBLE_VALUES, INT64_VALUES};
+use crate::simplejson_protocol::{self, SimpleJsonProtocolDeserializer};
 use crate::thrift_protocol::MessageType;
 use crate::ttype::TType;
-use crate::{simplejson_protocol, ProtocolWriter, SimpleJsonProtocol};
+use crate::{Deserialize, ProtocolWriter, SimpleJsonProtocol};
+use serde_json::json;
 
 #[test]
 fn write_bool_list() {
@@ -171,6 +173,37 @@ fn write_message() {
     let v: serde_json::Result<serde_json::Value> = serde_json::from_slice(&buf);
     assert!(v.is_ok());
     assert_eq!(buf, "[\"hello_message\",1,10]");
+}
+
+#[test]
+fn read_json_value() {
+    let json: &[u8] = br#" {
+        "void" : null ,
+        "bool" : true ,
+        "double" : 1.0 ,
+        "utf8" : "..." ,
+        "list" : [ null , 1 ] ,
+        "struct" : { "" : null , "x" : false }
+    } "#;
+    let mut de = SimpleJsonProtocolDeserializer::new(json);
+    let actual = serde_json::Value::read(&mut de).unwrap();
+    let expected = json!({
+        "void": null,
+        "bool": true,
+        "double": 1.0,
+        "utf8": "...",
+        "list": [null, 1],
+        "struct": {"": null, "x": false},
+    });
+    assert_eq!(actual, expected);
+}
+
+#[test]
+fn fail_to_read_json_value() {
+    let json: &[u8] = br#" [null,] "#;
+    let mut de = SimpleJsonProtocolDeserializer::new(json);
+    let err = serde_json::Value::read(&mut de).unwrap_err();
+    assert_eq!("Found trailing comma", err.to_string());
 }
 
 #[test]

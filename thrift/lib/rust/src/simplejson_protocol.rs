@@ -471,6 +471,60 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
             _ => bail!("invalid number"),
         }
     }
+
+    fn read_json_value(&mut self, max_depth: i32) -> Result<serde_json::Value> {
+        if max_depth <= 0 {
+            bail_err!(ProtocolError::SkipDepthExceeded)
+        }
+
+        self.strip_whitespace();
+        match self.guess_kind()? {
+            ValueKind::Null => {
+                self.read_null()?;
+                Ok(serde_json::Value::Null)
+            }
+            ValueKind::Bool => {
+                let value = self.read_bool()?;
+                Ok(serde_json::Value::Bool(value))
+            }
+            ValueKind::Number => {
+                let value = self.read_json_number()?;
+                Ok(serde_json::Value::Number(value))
+            }
+            ValueKind::String => {
+                let value = self.read_string()?;
+                Ok(serde_json::Value::String(value))
+            }
+            ValueKind::Array => {
+                let mut vec = Vec::new();
+                self.read_list_begin()?;
+                while self.read_list_value_begin()? {
+                    let element = self.read_json_value(max_depth - 1)?;
+                    vec.push(element);
+                    self.read_list_value_end()?;
+                }
+                self.read_list_end()?;
+                Ok(serde_json::Value::Array(vec))
+            }
+            ValueKind::Object => {
+                let mut map = serde_json::Map::new();
+                self.read_struct_begin(|_| ())?;
+                loop {
+                    let key = match self.peek() {
+                        Some(b'"') => self.read_string()?,
+                        _ => break,
+                    };
+                    self.eat(b":")?;
+                    let value = self.read_json_value(max_depth - 1)?;
+                    map.insert(key, value);
+                    self.read_field_end()?;
+                }
+                self.read_struct_end()?;
+                Ok(serde_json::Value::Object(map))
+            }
+        }
+    }
+
     fn skip_inner(&mut self, field_type: TType, max_depth: i32) -> Result<()> {
         if max_depth <= 0 {
             bail_err!(ProtocolError::SkipDepthExceeded)
@@ -551,14 +605,25 @@ impl<B: Buf> SimpleJsonProtocolDeserializer<B> {
     // Fallback to guessing what "type" of structure we are parsing and mark
     // the field_id as something impossible so we skip everything underneath this string
     fn guess_type(&mut self) -> Result<TType> {
+        match self.guess_kind()? {
+            ValueKind::Object => Ok(TType::Struct),
+            ValueKind::Array => Ok(TType::List),
+            ValueKind::String => Ok(TType::UTF8),
+            ValueKind::Null => Ok(TType::Void),
+            ValueKind::Bool => Ok(TType::Bool),
+            ValueKind::Number => Ok(TType::Double),
+        }
+    }
+
+    fn guess_kind(&mut self) -> Result<ValueKind> {
         match self.peek() {
-            Some(b'{') => Ok(TType::Struct),
-            Some(b'[') => Ok(TType::List),
-            Some(b'"') => Ok(TType::UTF8),
-            Some(b'n') => Ok(TType::Void),
-            Some(b't') | Some(b'f') => Ok(TType::Bool),
-            Some(b'-') => Ok(TType::Double),
-            Some(b) if (b as char).is_ascii_digit() => Ok(TType::Double),
+            Some(b'{') => Ok(ValueKind::Object),
+            Some(b'[') => Ok(ValueKind::Array),
+            Some(b'"') => Ok(ValueKind::String),
+            Some(b'n') => Ok(ValueKind::Null),
+            Some(b't') | Some(b'f') => Ok(ValueKind::Bool),
+            Some(b'-') => Ok(ValueKind::Number),
+            Some(b) if (b as char).is_ascii_digit() => Ok(ValueKind::Number),
             ch => bail!(
                 "Expected [, {{, or \", or number after {:?}",
                 ch.map(|a| a as char)
@@ -900,4 +965,20 @@ where
         bail!(ProtocolError::TrailingData);
     }
     Ok(t)
+}
+
+// Aligns with the variant names of serde_json::Value.
+enum ValueKind {
+    Null,
+    Bool,
+    Number,
+    String,
+    Array,
+    Object,
+}
+
+impl<B: Buf> Deserialize<SimpleJsonProtocolDeserializer<B>> for serde_json::Value {
+    fn read(p: &mut SimpleJsonProtocolDeserializer<B>) -> Result<Self> {
+        p.read_json_value(DEFAULT_RECURSION_DEPTH)
+    }
 }
