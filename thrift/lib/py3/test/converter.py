@@ -133,5 +133,9 @@ class ConverterTest(unittest.TestCase):
             types.OptionalDefaultsStruct,
             ttypes.OptionalDefaultsStruct(),
         )
+        # pyre-fixme[6]: Expected `HasIsSet[Variable[thrift.py3.types._T]]` for 1st
+        #  param but got `OptionalDefaultsStruct`.
         self.assertFalse(Struct.isset(converted).sillyString)
+        # pyre-fixme[6]: Expected `HasIsSet[Variable[thrift.py3.types._T]]` for 1st
+        #  param but got `OptionalDefaultsStruct`.
         self.assertFalse(Struct.isset(converted).sillyColor)
