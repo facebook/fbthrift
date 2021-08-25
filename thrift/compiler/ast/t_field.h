@@ -48,10 +48,10 @@ using t_field_id = int16_t;
  */
 class t_field final : public t_named {
  public:
-  // Field ids whose binary digital leads with `10` are reserved
-  // TODO(afuller): It looks like this is actually allowing
-  // 0b1100'0000'0000'0000 as an id, while the comment implies that it
-  // shouldn't be allowed.
+  // Field IDs starting with `0b10` as the most significant binary digits are
+  // reserved. e.g.
+  // * 0b1011'1111'1111'1111 (-16385) leads with 0b10, it's largest reserved id
+  // * 0b1100'0000'0000'0000 (-16384) leads with 0b11, it's smallest allowed id
   static constexpr auto min_id = -static_cast<t_field_id>(1 << 14);
 
   /**
