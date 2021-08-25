@@ -58,6 +58,9 @@ exception_ptr to_eptr(const E& e) {
 
 class TProcessorEventHandlerTest : public testing::Test {};
 
+class TProcessorTester : public TProcessorBase {};
+class TClientTester : public TClientBase {};
+
 } // namespace
 
 TEST_F(TProcessorEventHandlerTest, with_full_wrapped_eptr) {
@@ -93,4 +96,33 @@ TEST_F(TProcessorEventHandlerTest, with_wrap_declared) {
   eh.userExceptionWrapped(nullptr, nullptr, true, wrap);
   EXPECT_EQ("lulz", eh.ex_type);
   EXPECT_EQ("hello", eh.ex_what);
+}
+
+TEST_F(TProcessorEventHandlerTest, registerProcessorHandler) {
+  auto countProcessor = [](const auto& h) {
+    TProcessorTester tpt;
+    return std::count(
+        tpt.getEventHandlers().begin(), tpt.getEventHandlers().end(), h);
+  };
+  auto countClient = [](const auto& h) {
+    TClientTester tct;
+    return std::count(
+        tct.getEventHandlers().begin(), tct.getEventHandlers().end(), h);
+  };
+
+  auto h = std::make_shared<EventHandler>();
+  EXPECT_FALSE(countProcessor(h));
+  EXPECT_FALSE(countClient(h));
+  TProcessorBase::addProcessorEventHandler(h);
+  EXPECT_TRUE(countProcessor(h));
+  EXPECT_FALSE(countClient(h));
+  TClientBase::addClientEventHandler(h);
+  EXPECT_TRUE(countProcessor(h));
+  EXPECT_TRUE(countClient(h));
+  TProcessorBase::removeProcessorEventHandler(h);
+  EXPECT_FALSE(countProcessor(h));
+  EXPECT_TRUE(countClient(h));
+  TClientBase::removeClientEventHandler(h);
+  EXPECT_FALSE(countProcessor(h));
+  EXPECT_FALSE(countClient(h));
 }

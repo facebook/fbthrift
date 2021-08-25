@@ -53,6 +53,31 @@ TProcessorBase::TProcessorBase() {
       addEventHandler(handler);
     }
   }
+  for (const auto& handler : getHandlers()) {
+    if (handler) {
+      addEventHandler(handler);
+    }
+  }
+}
+
+void TProcessorBase::addProcessorEventHandler(
+    std::shared_ptr<TProcessorEventHandler> handler) {
+  WLock lock{getRWMutex()};
+  assert(
+      find(getHandlers().begin(), getHandlers().end(), handler) ==
+      getHandlers().end());
+  getHandlers().push_back(std::move(handler));
+}
+
+void TProcessorBase::removeProcessorEventHandler(
+    std::shared_ptr<TProcessorEventHandler> handler) {
+  WLock lock{getRWMutex()};
+  assert(
+      find(getHandlers().begin(), getHandlers().end(), handler) !=
+      getHandlers().end());
+  getHandlers().erase(
+      remove(getHandlers().begin(), getHandlers().end(), handler),
+      getHandlers().end());
 }
 
 void TProcessorBase::addProcessorEventHandlerFactory(
@@ -86,6 +111,11 @@ TProcessorBase::getFactories() {
       new vector<shared_ptr<TProcessorEventHandlerFactory>>();
   return *factories;
 }
+vector<std::shared_ptr<TProcessorEventHandler>>& TProcessorBase::getHandlers() {
+  static vector<std::shared_ptr<TProcessorEventHandler>>* handlers =
+      new vector<std::shared_ptr<TProcessorEventHandler>>();
+  return *handlers;
+}
 
 TClientBase::TClientBase() {
   // Automatically ask all registered factories to produce an event
@@ -97,8 +127,32 @@ TClientBase::TClientBase() {
       addEventHandler(handler);
     }
   }
+  for (const auto& handler : getHandlers()) {
+    if (handler) {
+      addEventHandler(handler);
+    }
+  }
 }
 
+void TClientBase::addClientEventHandler(
+    std::shared_ptr<TProcessorEventHandler> handler) {
+  WLock lock{getRWMutex()};
+  assert(
+      find(getHandlers().begin(), getHandlers().end(), handler) ==
+      getHandlers().end());
+  getHandlers().push_back(std::move(handler));
+}
+
+void TClientBase::removeClientEventHandler(
+    std::shared_ptr<TProcessorEventHandler> handler) {
+  WLock lock{getRWMutex()};
+  assert(
+      find(getHandlers().begin(), getHandlers().end(), handler) !=
+      getHandlers().end());
+  getHandlers().erase(
+      remove(getHandlers().begin(), getHandlers().end(), handler),
+      getHandlers().end());
+}
 void TClientBase::addClientEventHandlerFactory(
     std::shared_ptr<TProcessorEventHandlerFactory> factory) {
   WLock lock{getRWMutex()};
@@ -127,6 +181,11 @@ vector<shared_ptr<TProcessorEventHandlerFactory>>& TClientBase::getFactories() {
   static vector<shared_ptr<TProcessorEventHandlerFactory>>* factories =
       new vector<shared_ptr<TProcessorEventHandlerFactory>>();
   return *factories;
+}
+vector<std::shared_ptr<TProcessorEventHandler>>& TClientBase::getHandlers() {
+  static vector<std::shared_ptr<TProcessorEventHandler>>* handlers =
+      new vector<std::shared_ptr<TProcessorEventHandler>>();
+  return *handlers;
 }
 
 } // namespace thrift

@@ -66,6 +66,12 @@ class TProcessorBase : public EventHandlerBase {
  public:
   TProcessorBase();
 
+  static void addProcessorEventHandler(
+      std::shared_ptr<TProcessorEventHandler> handler);
+
+  static void removeProcessorEventHandler(
+      std::shared_ptr<TProcessorEventHandler> handler);
+
   static void addProcessorEventHandlerFactory(
       std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
@@ -78,6 +84,7 @@ class TProcessorBase : public EventHandlerBase {
  private:
   static folly::SharedMutex& getRWMutex();
 
+  static std::vector<std::shared_ptr<TProcessorEventHandler>>& getHandlers();
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
   getFactories();
 };
@@ -91,6 +98,12 @@ class TClientBase : public EventHandlerBase {
   TClientBase();
   virtual ~TClientBase() = default;
 
+  static void addClientEventHandler(
+      std::shared_ptr<TProcessorEventHandler> handler);
+
+  static void removeClientEventHandler(
+      std::shared_ptr<TProcessorEventHandler> handler);
+
   static void addClientEventHandlerFactory(
       std::shared_ptr<TProcessorEventHandlerFactory> factory);
 
@@ -100,6 +113,7 @@ class TClientBase : public EventHandlerBase {
  private:
   static folly::SharedMutex& getRWMutex();
 
+  static std::vector<std::shared_ptr<TProcessorEventHandler>>& getHandlers();
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
   getFactories();
 };
