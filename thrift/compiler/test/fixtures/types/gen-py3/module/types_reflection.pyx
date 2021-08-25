@@ -699,7 +699,7 @@ cdef __StructSpec get_reflection__NoexceptMoveEmpty():
         name="NoexceptMoveEmpty",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move""": """1""",        },
+        },
     )
     return spec
 cdef __StructSpec get_reflection__NoexceptMoveSimpleStruct():
@@ -712,7 +712,7 @@ cdef __StructSpec get_reflection__NoexceptMoveSimpleStruct():
         name="NoexceptMoveSimpleStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -737,7 +737,7 @@ cdef __StructSpec get_reflection__NoexceptMoveComplexStruct():
         name="NoexceptMoveComplexStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.noexcept_move""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -853,7 +853,7 @@ cdef __StructSpec get_reflection__NoExceptMoveUnion():
         name="NoExceptMoveUnion",
         kind=__StructType.UNION,
         annotations={
-            """cpp.noexcept_move""": """1""",        },
+        },
     )
     spec.add_field(
         __FieldSpec.create(

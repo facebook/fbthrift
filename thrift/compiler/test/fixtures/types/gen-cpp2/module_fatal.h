@@ -164,7 +164,6 @@ struct __fbthrift_strings_module {
   using cpp_declare_hash = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'd', 'e', 'c', 'l', 'a', 'r', 'e', '_', 'h', 'a', 's', 'h'>;
   using cpp_deprecated_enum_unscoped = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'd', 'e', 'p', 'r', 'e', 'c', 'a', 't', 'e', 'd', '_', 'e', 'n', 'u', 'm', '_', 'u', 'n', 's', 'c', 'o', 'p', 'e', 'd'>;
   using cpp_minimize_padding = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'm', 'i', 'n', 'i', 'm', 'i', 'z', 'e', '_', 'p', 'a', 'd', 'd', 'i', 'n', 'g'>;
-  using cpp_noexcept_move = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'n', 'o', 'e', 'x', 'c', 'e', 'p', 't', '_', 'm', 'o', 'v', 'e'>;
   using cpp_virtual = ::fatal::sequence<char, 'c', 'p', 'p', '.', 'v', 'i', 'r', 't', 'u', 'a', 'l'>;
   using data = ::fatal::sequence<char, 'd', 'a', 't', 'a'>;
   using decorated_struct = ::fatal::sequence<char, 'd', 'e', 'c', 'o', 'r', 'a', 't', 'e', 'd', '_', 's', 't', 'r', 'u', 'c', 't'>;

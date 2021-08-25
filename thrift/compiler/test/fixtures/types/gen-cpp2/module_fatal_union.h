@@ -133,22 +133,7 @@ class NoExceptMoveUnion_variant_traits {
           ::apache::thrift::reflected_variant_member_metadata<__fbthrift_member_i32_field>>
   >;
 
-  class annotations {
-    struct __fbthrift_keys {
-      using cpp_noexcept_move = __fbthrift_strings_module::cpp_noexcept_move;
-    };
-
-    struct __fbthrift_values {
-      using cpp_noexcept_move = ::fatal::sequence<char, '1'>;
-    };
-
-   public:
-    using keys = __fbthrift_keys;
-    using values = __fbthrift_values;
-    using map = ::fatal::list<
-        ::apache::thrift::annotation<keys::cpp_noexcept_move, values::cpp_noexcept_move>
-    >;
-  };
+  using annotations = __fbthrift_refl_impl::no_annotations;
 
   static id get_id(type const &variant) {
     return variant.getType();

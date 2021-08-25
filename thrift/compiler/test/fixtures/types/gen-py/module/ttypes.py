@@ -3150,7 +3150,6 @@ NoexceptMoveEmpty.thrift_spec = (
 )
 
 NoexceptMoveEmpty.thrift_struct_annotations = {
-  "cpp.noexcept_move": "1",
 }
 NoexceptMoveEmpty.thrift_field_annotations = {
 }
@@ -3162,7 +3161,6 @@ NoexceptMoveSimpleStruct.thrift_spec = (
 )
 
 NoexceptMoveSimpleStruct.thrift_struct_annotations = {
-  "cpp.noexcept_move": "1",
 }
 NoexceptMoveSimpleStruct.thrift_field_annotations = {
 }
@@ -3197,7 +3195,6 @@ NoexceptMoveComplexStruct.thrift_spec = (
 )
 
 NoexceptMoveComplexStruct.thrift_struct_annotations = {
-  "cpp.noexcept_move": "1",
 }
 NoexceptMoveComplexStruct.thrift_field_annotations = {
 }
@@ -3246,7 +3243,6 @@ NoExceptMoveUnion.thrift_spec = (
 )
 
 NoExceptMoveUnion.thrift_struct_annotations = {
-  "cpp.noexcept_move": "1",
 }
 NoExceptMoveUnion.thrift_field_annotations = {
 }

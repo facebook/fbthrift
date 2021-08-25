@@ -1071,20 +1071,7 @@ class NoexceptMoveEmpty_struct_traits {
      public:
     };
 
-    struct __fbthrift_keys {
-      using cpp_noexcept_move = __fbthrift_strings_module::cpp_noexcept_move;
-    };
-
-    struct __fbthrift_values {
-      using cpp_noexcept_move = ::fatal::sequence<char, '1'>;
-    };
-
    public:
-    using keys = __fbthrift_keys;
-    using values = __fbthrift_values;
-    using map = ::fatal::list<
-        ::apache::thrift::annotation<keys::cpp_noexcept_move, values::cpp_noexcept_move>
-    >;
     using members = __fbthrift_members;
   };
 
@@ -1112,20 +1099,7 @@ class NoexceptMoveSimpleStruct_struct_traits {
       using boolField = __fbthrift_refl_impl::reflected_no_annotations;
     };
 
-    struct __fbthrift_keys {
-      using cpp_noexcept_move = __fbthrift_strings_module::cpp_noexcept_move;
-    };
-
-    struct __fbthrift_values {
-      using cpp_noexcept_move = ::fatal::sequence<char, '1'>;
-    };
-
    public:
-    using keys = __fbthrift_keys;
-    using values = __fbthrift_values;
-    using map = ::fatal::list<
-        ::apache::thrift::annotation<keys::cpp_noexcept_move, values::cpp_noexcept_move>
-    >;
     using members = __fbthrift_members;
   };
 
@@ -1174,20 +1148,7 @@ class NoexceptMoveComplexStruct_struct_traits {
       using MyMapEnumAndInt = __fbthrift_refl_impl::reflected_no_annotations;
     };
 
-    struct __fbthrift_keys {
-      using cpp_noexcept_move = __fbthrift_strings_module::cpp_noexcept_move;
-    };
-
-    struct __fbthrift_values {
-      using cpp_noexcept_move = ::fatal::sequence<char, '1'>;
-    };
-
    public:
-    using keys = __fbthrift_keys;
-    using values = __fbthrift_values;
-    using map = ::fatal::list<
-        ::apache::thrift::annotation<keys::cpp_noexcept_move, values::cpp_noexcept_move>
-    >;
     using members = __fbthrift_members;
   };
 
