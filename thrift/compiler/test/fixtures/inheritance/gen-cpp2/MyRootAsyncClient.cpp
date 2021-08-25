@@ -13,8 +13,8 @@ namespace cpp2 {
 typedef apache::thrift::ThriftPresult<false> MyRoot_do_root_pargs;
 typedef apache::thrift::ThriftPresult<true> MyRoot_do_root_presult;
 
-template <typename Protocol_>
-void MyRootAsyncClient::do_rootT(Protocol_* prot, const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+template <typename Protocol_, typename RpcOptions>
+void MyRootAsyncClient::do_rootT(Protocol_* prot, RpcOptions&& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
 
   MyRoot_do_root_pargs args;
   auto sizer = [&](Protocol_* p) { return args.serializedSizeZC(p); };
@@ -24,8 +24,7 @@ void MyRootAsyncClient::do_rootT(Protocol_* prot, const apache::thrift::RpcOptio
         new ::apache::thrift::MethodMetadata::Data(
                 "do_root",
                 ::apache::thrift::FunctionQualifier::Unspecified);
-  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, rpcOptions, std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
-
+  apache::thrift::clientSendT<apache::thrift::RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE, Protocol_>(prot, std::forward<RpcOptions>(rpcOptions), std::move(callback), contextStack, std::move(header), channel_.get(), ::apache::thrift::MethodMetadata::from_static(methodMetadata), writer, sizer);
 }
 
 
@@ -48,18 +47,26 @@ void MyRootAsyncClient::do_root(apache::thrift::RpcOptions& rpcOptions, std::uni
   do_rootImpl(rpcOptions, std::move(header), contextStack, std::move(wrappedCallback));
 }
 
-void MyRootAsyncClient::do_rootImpl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback) {
+void MyRootAsyncClient::do_rootImpl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, apache::thrift::RequestClientCallback::Ptr callback, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      do_rootT(&writer, rpcOptions, std::move(header), contextStack, std::move(callback));
+      if (stealRpcOptions) {
+        do_rootT(&writer, std::move(rpcOptions), std::move(header), contextStack, std::move(callback));
+      } else {
+        do_rootT(&writer, rpcOptions, std::move(header), contextStack, std::move(callback));
+      }
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      do_rootT(&writer, rpcOptions, std::move(header), contextStack, std::move(callback));
+      if (stealRpcOptions) {
+        do_rootT(&writer, std::move(rpcOptions), std::move(header), contextStack, std::move(callback));
+      } else {
+        do_rootT(&writer, rpcOptions, std::move(header), contextStack, std::move(callback));
+      }
       break;
     }
     default:

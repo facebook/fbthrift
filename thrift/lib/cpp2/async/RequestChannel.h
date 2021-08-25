@@ -75,9 +75,17 @@ template <>
 struct RequestClientCallbackType<RpcKind::SINK> {
   using Ptr = SinkClientCallback*;
 };
-template <RpcKind Kind>
+template <typename T>
+struct const_if_lvalue_ref {
+  using type = T;
+};
+template <typename T>
+struct const_if_lvalue_ref<T&> {
+  using type = const T&;
+};
+template <RpcKind Kind, typename RpcOptions>
 using ChannelSendFunc = void (RequestChannel::*)(
-    const RpcOptions&,
+    typename const_if_lvalue_ref<RpcOptions>::type&&,
     MethodMetadata&&,
     SerializedRequest&&,
     std::shared_ptr<transport::THeader>,
@@ -362,8 +370,8 @@ SerializedRequest preprocessSendT(
 }
 
 namespace detail {
-template <RpcKind Kind>
-constexpr ChannelSendFunc<Kind> getChannelSendFunc() {
+template <RpcKind Kind, typename RpcOptions>
+constexpr ChannelSendFunc<Kind, RpcOptions> getChannelSendFunc() {
   if constexpr (Kind == RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE) {
     return &RequestChannel::sendRequestResponse;
   } else if constexpr (Kind == RpcKind::SINGLE_REQUEST_NO_RESPONSE) {
@@ -387,9 +395,9 @@ void RequestChannel::sendRequestAsync(
         callback) {
   auto* eb = getEventBase();
   if (!eb || eb->isInEventBaseThread()) {
-    auto send = apache::thrift::detail::getChannelSendFunc<Kind>();
+    auto send = apache::thrift::detail::getChannelSendFunc<Kind, RpcOptions>();
     (this->*send)(
-        rpcOptions,
+        std::forward<RpcOptions>(rpcOptions),
         std::move(methodMetadata),
         std::move(request),
         std::move(header),
@@ -401,9 +409,10 @@ void RequestChannel::sendRequestAsync(
                               request = std::move(request),
                               header = std::move(header),
                               callback = std::move(callback)]() mutable {
-      auto send = apache::thrift::detail::getChannelSendFunc<Kind>();
+      auto send =
+          apache::thrift::detail::getChannelSendFunc<Kind, RpcOptions>();
       (this->*send)(
-          rpcOptions,
+          std::forward<RpcOptions>(rpcOptions),
           std::move(methodMetadata),
           std::move(request),
           std::move(header),
@@ -412,10 +421,10 @@ void RequestChannel::sendRequestAsync(
   }
 }
 
-template <RpcKind Kind, class Protocol>
+template <RpcKind Kind, class Protocol, typename RpcOptions>
 void clientSendT(
     Protocol* prot,
-    const apache::thrift::RpcOptions& rpcOptions,
+    RpcOptions&& rpcOptions,
     typename apache::thrift::detail::RequestClientCallbackType<Kind>::Ptr
         callback,
     apache::thrift::ContextStack* ctx,
@@ -434,7 +443,7 @@ void clientSendT(
       sizefunc);
 
   channel->sendRequestAsync<Kind>(
-      rpcOptions,
+      std::forward<RpcOptions>(rpcOptions),
       std::move(methodMetadata),
       std::move(request),
       std::move(header),

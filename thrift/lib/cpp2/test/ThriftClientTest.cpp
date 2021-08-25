@@ -142,7 +142,7 @@ TEST_F(ThriftClientTest, SyncRpcOptionsTimeout) {
   auto start = steady_clock::now();
   RpcOptions options;
   options.setTimeout(rpcTimeout);
-  auto response = client->sync_complete_eventBaseAsync(options);
+  auto response = client->sync_complete_eventBaseAsync(std::move(options));
   EXPECT_TRUE(response.hasException());
   EXPECT_TRUE(response.exception().with_exception<TTransportException>(
       [](const auto& tex) {
@@ -171,7 +171,7 @@ TEST_F(ThriftClientTest, SyncCallRequestResponse) {
 
   auto doSyncRPC = [&]() {
     RpcOptions options;
-    auto response = client->sync_complete_sendResponse(options, 123);
+    auto response = client->sync_complete_sendResponse(std::move(options), 123);
     EXPECT_TRUE(response.hasValue());
     EXPECT_TRUE(response->response.hasValue());
     EXPECT_EQ(*response->response, "123");

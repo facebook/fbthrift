@@ -45,18 +45,26 @@ void <% > service_common/client_class_name%>::<%function:cpp_name%>(apache::thri
 }
 
 <%/function:returns_sink?%>
-void <% > service_common/client_class_name%>::<%function:cpp_name%>Impl(const apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>) {
+void <% > service_common/client_class_name%>::<%function:cpp_name%>Impl(apache::thrift::RpcOptions& rpcOptions, std::shared_ptr<apache::thrift::transport::THeader> header, apache::thrift::ContextStack* contextStack, <% > types/callback_type%> callback<%function:comma%><% > service_common/function_param_list_const%>, bool stealRpcOptions) {
   switch (apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId()) {
     case apache::thrift::protocol::T_BINARY_PROTOCOL:
     {
       apache::thrift::BinaryProtocolWriter writer;
-      <%function:cpp_name%>T(&writer, rpcOptions, std::move(header), contextStack, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+      if (stealRpcOptions) {
+        <%function:cpp_name%>T(&writer, std::move(rpcOptions), std::move(header), contextStack, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+      } else {
+        <%function:cpp_name%>T(&writer, rpcOptions, std::move(header), contextStack, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+      }
       break;
     }
     case apache::thrift::protocol::T_COMPACT_PROTOCOL:
     {
       apache::thrift::CompactProtocolWriter writer;
-      <%function:cpp_name%>T(&writer, rpcOptions, std::move(header), contextStack, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+      if (stealRpcOptions) {
+        <%function:cpp_name%>T(&writer, std::move(rpcOptions), std::move(header), contextStack, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+      } else {
+        <%function:cpp_name%>T(&writer, rpcOptions, std::move(header), contextStack, std::move(callback)<%function:comma%><% > service_common/param_list%>);
+      }
       break;
     }
     default:
