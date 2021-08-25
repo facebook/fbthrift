@@ -174,16 +174,20 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
       }
     };
 
-    if (auto* methodMetadata =
-            AsyncProcessorHelper::metadataOfType<MetadataImpl>(
-                untypedMethodMetadata)) {
-      DCHECK(methodMetadata->sourceIndex < processors_.size());
-      auto& processor = *processors_[methodMetadata->sourceIndex];
+    const bool isWildcard =
+        AsyncProcessorHelper::isWildcardMethodMetadata(untypedMethodMetadata);
+
+    if (!isWildcard) {
+      const auto& methodMetadata =
+          AsyncProcessorHelper::expectMetadataOfType<MetadataImpl>(
+              untypedMethodMetadata);
+      DCHECK(methodMetadata.sourceIndex < processors_.size());
+      auto& processor = *processors_[methodMetadata.sourceIndex];
       maybeTrackInteraction(processor);
       processor.processSerializedCompressedRequestWithMetadata(
           std::move(req),
           std::move(serializedRequest),
-          *methodMetadata->inner,
+          *methodMetadata.inner,
           protocolType,
           context,
           eb,
@@ -191,45 +195,40 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
       return;
     }
 
-    if (AsyncProcessorHelper::isWildcardMethodMetadata(untypedMethodMetadata)) {
-      const auto& wildcardMethodMetadata = untypedMethodMetadata;
-      folly::variant_match(
-          compositionMetadata_.firstWildcardLike,
-          [](std::monostate) {
-            LOG(FATAL)
-                << "Received WildcardMethodMetadata but expected no WildcardMethodMetadataMap was composed";
-          },
-          [&](const MultiplexAsyncProcessorFactory::CompositionMetadata::
-                  Wildcard& wildcard) {
-            DCHECK(wildcard.index < processors_.size());
-            auto& processor = *processors_[wildcard.index];
-            maybeTrackInteraction(processor);
-            processor.processSerializedCompressedRequestWithMetadata(
-                std::move(req),
-                std::move(serializedRequest),
-                wildcardMethodMetadata,
-                protocolType,
-                context,
-                eb,
-                tm);
-          },
-          [&](const MultiplexAsyncProcessorFactory::CompositionMetadata::
-                  WildcardNoMetadata& wildcard) {
-            DCHECK(wildcard.index < processors_.size());
-            auto& processor = *processors_[wildcard.index];
-            maybeTrackInteraction(processor);
-            processor.processSerializedCompressedRequest(
-                std::move(req),
-                std::move(serializedRequest),
-                protocolType,
-                context,
-                eb,
-                tm);
-          });
-      return;
-    }
-
-    LOG(FATAL) << "Received metadata of unknown type";
+    const auto& wildcardMethodMetadata = untypedMethodMetadata;
+    folly::variant_match(
+        compositionMetadata_.firstWildcardLike,
+        [](std::monostate) {
+          LOG(FATAL)
+              << "Received WildcardMethodMetadata but expected no WildcardMethodMetadataMap was composed";
+        },
+        [&](const MultiplexAsyncProcessorFactory::CompositionMetadata::Wildcard&
+                wildcard) {
+          DCHECK(wildcard.index < processors_.size());
+          auto& processor = *processors_[wildcard.index];
+          maybeTrackInteraction(processor);
+          processor.processSerializedCompressedRequestWithMetadata(
+              std::move(req),
+              std::move(serializedRequest),
+              wildcardMethodMetadata,
+              protocolType,
+              context,
+              eb,
+              tm);
+        },
+        [&](const MultiplexAsyncProcessorFactory::CompositionMetadata::
+                WildcardNoMetadata& wildcard) {
+          DCHECK(wildcard.index < processors_.size());
+          auto& processor = *processors_[wildcard.index];
+          maybeTrackInteraction(processor);
+          processor.processSerializedCompressedRequest(
+              std::move(req),
+              std::move(serializedRequest),
+              protocolType,
+              context,
+              eb,
+              tm);
+        });
   }
 
   void getServiceMetadata(
@@ -360,23 +359,23 @@ MultiplexAsyncProcessorFactory::createMethodMetadata() {
 std::shared_ptr<folly::RequestContext>
 MultiplexAsyncProcessorFactory::getBaseContextForRequest(
     const MethodMetadata& untypedMethodMetadata) {
-  if (auto* methodMetadata = AsyncProcessorHelper::metadataOfType<MetadataImpl>(
-          untypedMethodMetadata)) {
-    return processorFactories_[methodMetadata->sourceIndex]
-        ->getBaseContextForRequest(*methodMetadata->inner);
+  const bool isWildcard =
+      AsyncProcessorHelper::isWildcardMethodMetadata(untypedMethodMetadata);
+
+  if (!isWildcard) {
+    const auto& methodMetadata =
+        AsyncProcessorHelper::expectMetadataOfType<MetadataImpl>(
+            untypedMethodMetadata);
+    return processorFactories_[methodMetadata.sourceIndex]
+        ->getBaseContextForRequest(*methodMetadata.inner);
   }
 
-  if (AsyncProcessorHelper::isWildcardMethodMetadata(untypedMethodMetadata)) {
-    const auto& wildcardMethodMetadata = untypedMethodMetadata;
-    auto wildcardIndex = compositionMetadata_.wildcardIndex();
-    DCHECK(wildcardIndex.has_value())
-        << "Received WildcardMethodMetadata but expected no WildcardMethodMetadataMap was composed";
-    return processorFactories_[*wildcardIndex]->getBaseContextForRequest(
-        wildcardMethodMetadata);
-  }
-
-  LOG(FATAL) << "Received metadata of unknown type";
-  return nullptr;
+  const auto& wildcardMethodMetadata = untypedMethodMetadata;
+  auto wildcardIndex = compositionMetadata_.wildcardIndex();
+  DCHECK(wildcardIndex.has_value())
+      << "Received WildcardMethodMetadata but expected no WildcardMethodMetadataMap was composed";
+  return processorFactories_[*wildcardIndex]->getBaseContextForRequest(
+      wildcardMethodMetadata);
 }
 
 std::vector<ServiceHandler*>

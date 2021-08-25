@@ -909,12 +909,11 @@ void nonRecursiveProcess(
     concurrency::ThreadManager* tm) {
   using Metadata = ServerInterface::GeneratedMethodMetadata<Processor>;
   static_assert(std::is_final_v<Metadata>);
-  auto methodMetadata =
-      AsyncProcessorHelper::metadataOfType<Metadata>(untypedMethodMetadata);
-  DCHECK(methodMetadata != nullptr)
-      << "Received MethodMetadata of an unknown type";
+  const auto& methodMetadata =
+      AsyncProcessorHelper::expectMetadataOfType<Metadata>(
+          untypedMethodMetadata);
   auto pfn = getProcessFuncFromProtocol(
-      folly::tag<ProtocolReader>, methodMetadata->processFuncs);
+      folly::tag<ProtocolReader>, methodMetadata.processFuncs);
   (processor->*pfn)(std::move(req), std::move(serializedRequest), ctx, eb, tm);
 }
 
