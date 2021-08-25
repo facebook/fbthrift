@@ -415,8 +415,7 @@ TEST_P(
             Cpp2RequestContext* context,
             folly::EventBase* eb,
             concurrency::ThreadManager* tm) override {
-          if (AsyncProcessorHelper::metadataOfType<
-                  AsyncProcessorFactory::WildcardMethodMetadata>(
+          if (AsyncProcessorHelper::isWildcardMethodMetadata(
                   untypedMethodMetadata)) {
             AsyncProcessorHelper::sendUnknownMethodError(
                 std::move(req), "someUnknownMethod");

@@ -374,9 +374,6 @@ Cpp2Worker::ActiveRequestsGuard Cpp2Worker::getActiveRequestsGuard() {
 
 Cpp2Worker::PerServiceMetadata::FindMethodResult
 Cpp2Worker::PerServiceMetadata::findMethod(std::string_view methodName) const {
-  static const auto& wildcardMethodMetadata =
-      *new AsyncProcessorFactory::WildcardMethodMetadata{};
-
   if (const auto* map =
           std::get_if<AsyncProcessorFactory::MethodMetadataMap>(&methods_)) {
     if (auto* m = folly::get_ptr(*map, methodName)) {
@@ -392,7 +389,7 @@ Cpp2Worker::PerServiceMetadata::findMethod(std::string_view methodName) const {
       DCHECK(m->get());
       return MetadataFound{**m};
     }
-    return MetadataFound{wildcardMethodMetadata};
+    return MetadataFound{AsyncProcessorFactory::kWildcardMethodMetadata};
   }
   if (std::holds_alternative<AsyncProcessorFactory::MetadataNotImplemented>(
           methods_)) {

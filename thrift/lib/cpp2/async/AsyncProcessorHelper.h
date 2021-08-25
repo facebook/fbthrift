@@ -67,6 +67,21 @@ class AsyncProcessorHelper {
     static_assert(std::is_final_v<Metadata>);
     return dynamic_cast<const Metadata*>(&methodMetadata);
   }
+
+  static bool isWildcardMethodMetadata(
+      const AsyncProcessorFactory::MethodMetadata& methodMetadata) {
+    bool isWildcard =
+        &methodMetadata == &AsyncProcessorFactory::kWildcardMethodMetadata;
+    if constexpr (folly::kIsDebug) {
+      if (!isWildcard) {
+        DCHECK(
+            dynamic_cast<const AsyncProcessorFactory::WildcardMethodMetadata*>(
+                &methodMetadata) == nullptr)
+            << "Detected WildcardMethodMetadata object that is distinct from the singleton, AsyncProcessorFactory::kWildcardMethodMetadata.";
+      }
+    }
+    return isWildcard;
+  }
 };
 
 } // namespace apache::thrift

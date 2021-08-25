@@ -251,7 +251,7 @@ class WildcardThrowsInternalError : public TProcessorFactory {
           Cpp2RequestContext* context,
           folly::EventBase* eb,
           concurrency::ThreadManager* tm) override {
-        if (AsyncProcessorHelper::metadataOfType<WildcardMethodMetadata>(
+        if (AsyncProcessorHelper::isWildcardMethodMetadata(
                 untypedMethodMetadata)) {
           std::string message = folly::variant_match(
               message_,

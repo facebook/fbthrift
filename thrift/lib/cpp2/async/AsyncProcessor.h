@@ -136,9 +136,23 @@ class AsyncProcessorFactory {
   /**
    * The concrete metadata type that will be passed if createMethodMetadata
    * returns WildcardMethodMetadataMap and the current method is not in its
-   * knownMethods.
+   * knownMethods. There should only be a single instance of this type that all
+   * services refer to.
    */
-  struct WildcardMethodMetadata final : public MethodMetadata {};
+  struct WildcardMethodMetadata final : public MethodMetadata {
+   private:
+    WildcardMethodMetadata() = default;
+    friend class AsyncProcessorFactory;
+
+   public:
+    WildcardMethodMetadata(const WildcardMethodMetadata&) = delete;
+    WildcardMethodMetadata& operator=(const WildcardMethodMetadata&) = delete;
+  };
+  /**
+   * Single instance of WildcardMethodMetadata so that AsyncProcessor can just
+   * rely on comparing the address instead of using dynamic_cast.
+   */
+  static const inline WildcardMethodMetadata kWildcardMethodMetadata;
 
   /**
    * The API is not implemented (legacy).
@@ -173,8 +187,9 @@ class AsyncProcessorFactory {
    *
    * If returning (3), Thrift server will lookup the method metadata in the map.
    * If the method name is not found, Thrift will pass a WildcardMethodMetadata
-   * object instead. Any metadata passed to the processor will always be a
-   * reference from the map (or be WildcardMethodMetadata).
+   * object instead (kWildcardMethodMetadata). Any metadata passed to the
+   * processor will always be a reference from the map (or be
+   * kWildcardMethodMetadata).
    */
   virtual CreateMethodMetadataResult createMethodMetadata() { return {}; }
 
