@@ -439,6 +439,34 @@ class ClientServerTests(unittest.TestCase):
 
         loop.run_until_complete(clients_run(testing))
 
+    def test_cancelled_task(self) -> None:
+        """
+        This tests whether cancelled tasks are handled properly.
+        """
+        cancelledMessage: str = "I have been cancelled"
+
+        class CancelHandler(Handler):
+            async def getName(self) -> str:
+                raise asyncio.CancelledError(
+                    cancelledMessage
+                )  # Pretend that this is some await call that gets cancelled
+
+        loop = asyncio.get_event_loop()
+
+        async def inner_test() -> None:
+            async with TestServer(handler=CancelHandler(), ip="::1") as sa:
+                ip, port = sa.ip, sa.port
+                assert ip and port
+                async with get_client(TestingService, host=ip, port=port) as client:
+                    with self.assertRaises(ApplicationError) as ex:
+                        await client.getName()
+                    self.assertEqual(
+                        ex.exception.message,
+                        f"Application was cancelled on the server with message: {cancelledMessage}",
+                    )
+
+        loop.run_until_complete(inner_test())
+
 
 class StackHandler(StackServiceInterface):
     async def add_to(self, lst: Sequence[int], value: int) -> Sequence[int]:
