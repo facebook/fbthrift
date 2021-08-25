@@ -21,26 +21,116 @@
 
 namespace apache {
 namespace thrift {
+void RequestChannel::sendRequestResponse(
+    const RpcOptions& rpcOptions,
+    MethodMetadata&& metadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr clientCallback) {
+  sendRequestResponse(
+      folly::copy(rpcOptions),
+      std::move(metadata),
+      std::move(request),
+      std::move(header),
+      std::move(clientCallback));
+}
+
+void RequestChannel::sendRequestNoResponse(
+    const RpcOptions& rpcOptions,
+    MethodMetadata&& metadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr clientCallback) {
+  sendRequestNoResponse(
+      folly::copy(rpcOptions),
+      std::move(metadata),
+      std::move(request),
+      std::move(header),
+      std::move(clientCallback));
+}
+
 void RequestChannel::sendRequestStream(
-    const RpcOptions&,
-    MethodMetadata&&,
-    SerializedRequest&&,
-    std::shared_ptr<transport::THeader>,
+    const RpcOptions& rpcOptions,
+    MethodMetadata&& metadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
     StreamClientCallback* clientCallback) {
-  clientCallback->onFirstResponseError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          "This channel doesn't support stream RPC"));
+  sendRequestStream(
+      folly::copy(rpcOptions),
+      std::move(metadata),
+      std::move(request),
+      std::move(header),
+      clientCallback);
 }
 
 void RequestChannel::sendRequestSink(
-    const RpcOptions&,
-    MethodMetadata&&,
-    SerializedRequest&&,
-    std::shared_ptr<transport::THeader>,
+    const RpcOptions& rpcOptions,
+    MethodMetadata&& metadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
     SinkClientCallback* clientCallback) {
-  clientCallback->onFirstResponseError(
-      folly::make_exception_wrapper<transport::TTransportException>(
-          "This channel doesn't support sink RPC"));
+  sendRequestSink(
+      folly::copy(rpcOptions),
+      std::move(metadata),
+      std::move(request),
+      std::move(header),
+      clientCallback);
+}
+
+void RequestChannel::sendRequestResponse(
+    RpcOptions&& rpcOptions,
+    MethodMetadata&& metadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr clientCallback) {
+  sendRequestResponse(
+      rpcOptions,
+      std::move(metadata),
+      std::move(request),
+      std::move(header),
+      std::move(clientCallback));
+}
+
+void RequestChannel::sendRequestNoResponse(
+    RpcOptions&& rpcOptions,
+    MethodMetadata&& metadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
+    RequestClientCallback::Ptr clientCallback) {
+  sendRequestNoResponse(
+      rpcOptions,
+      std::move(metadata),
+      std::move(request),
+      std::move(header),
+      std::move(clientCallback));
+}
+
+void RequestChannel::sendRequestStream(
+    RpcOptions&& rpcOptions,
+    MethodMetadata&& metadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
+    StreamClientCallback* clientCallback) {
+  sendRequestStream(
+      rpcOptions,
+      std::move(metadata),
+      std::move(request),
+      std::move(header),
+      clientCallback);
+}
+
+void RequestChannel::sendRequestSink(
+    RpcOptions&& rpcOptions,
+    MethodMetadata&& metadata,
+    SerializedRequest&& request,
+    std::shared_ptr<transport::THeader> header,
+    SinkClientCallback* clientCallback) {
+  sendRequestSink(
+      rpcOptions,
+      std::move(metadata),
+      std::move(request),
+      std::move(header),
+      clientCallback);
 }
 
 void RequestChannel::terminateInteraction(InteractionId) {

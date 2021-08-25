@@ -157,6 +157,8 @@ class HeaderClientChannel : public ClientChannel,
   // Client interface from RequestChannel
   using RequestChannel::sendRequestNoResponse;
   using RequestChannel::sendRequestResponse;
+  using RequestChannel::sendRequestSink;
+  using RequestChannel::sendRequestStream;
 
   void sendRequestResponse(
       const RpcOptions&,
@@ -171,6 +173,28 @@ class HeaderClientChannel : public ClientChannel,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
       RequestClientCallback::Ptr) override;
+
+  void sendRequestStream(
+      const RpcOptions&,
+      MethodMetadata&&,
+      SerializedRequest&&,
+      std::shared_ptr<transport::THeader>,
+      StreamClientCallback* clientCallback) override {
+    clientCallback->onFirstResponseError(
+        folly::make_exception_wrapper<transport::TTransportException>(
+            "This channel doesn't support stream RPC"));
+  }
+
+  void sendRequestSink(
+      const RpcOptions&,
+      MethodMetadata&&,
+      SerializedRequest&&,
+      std::shared_ptr<transport::THeader>,
+      SinkClientCallback* clientCallback) override {
+    clientCallback->onFirstResponseError(
+        folly::make_exception_wrapper<transport::TTransportException>(
+            "This channel doesn't support sink RPC"));
+  }
 
   void setCloseCallback(CloseCallback*) override;
 
@@ -280,6 +304,11 @@ class HeaderClientChannel : public ClientChannel,
         std::unique_ptr<RequestSetupMetadata>);
 
     ~RocketUpgradeChannel() override;
+
+    using RequestChannel::sendRequestNoResponse;
+    using RequestChannel::sendRequestResponse;
+    using RequestChannel::sendRequestSink;
+    using RequestChannel::sendRequestStream;
 
     void sendRequestResponse(
         const RpcOptions&,

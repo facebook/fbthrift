@@ -121,7 +121,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr) = 0;
+      RequestClientCallback::Ptr);
 
   /* Similar to sendRequest, although replyReceived will never be called
    *
@@ -132,7 +132,7 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       MethodMetadata&&,
       SerializedRequest&&,
       std::shared_ptr<apache::thrift::transport::THeader>,
-      RequestClientCallback::Ptr) = 0;
+      RequestClientCallback::Ptr);
 
   /**
    * ReplyCallback will be invoked when the reply to this request is
@@ -155,6 +155,32 @@ class RequestChannel : virtual public folly::DelayedDestruction {
       SerializedRequest&&,
       std::shared_ptr<transport::THeader> header,
       SinkClientCallback* clientCallback);
+
+  // Some channels can make use of rvalue RpcOptions as an optimization.
+  virtual void sendRequestResponse(
+      RpcOptions&&,
+      MethodMetadata&&,
+      SerializedRequest&&,
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr);
+  virtual void sendRequestNoResponse(
+      RpcOptions&&,
+      MethodMetadata&&,
+      SerializedRequest&&,
+      std::shared_ptr<apache::thrift::transport::THeader>,
+      RequestClientCallback::Ptr);
+  virtual void sendRequestStream(
+      RpcOptions&&,
+      MethodMetadata&&,
+      SerializedRequest&&,
+      std::shared_ptr<transport::THeader>,
+      StreamClientCallback*);
+  virtual void sendRequestSink(
+      RpcOptions&&,
+      MethodMetadata&&,
+      SerializedRequest&&,
+      std::shared_ptr<transport::THeader>,
+      SinkClientCallback*);
 
   virtual void setCloseCallback(CloseCallback*) = 0;
 

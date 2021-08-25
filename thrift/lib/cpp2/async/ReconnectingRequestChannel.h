@@ -56,6 +56,8 @@ class ReconnectingRequestChannel : public RequestChannel {
 
   using RequestChannel::sendRequestNoResponse;
   using RequestChannel::sendRequestResponse;
+  using RequestChannel::sendRequestSink;
+  using RequestChannel::sendRequestStream;
 
   void sendRequestResponse(
       const RpcOptions& options,

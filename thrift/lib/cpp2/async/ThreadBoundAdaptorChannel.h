@@ -31,6 +31,11 @@ class ThreadBoundAdaptorChannel : public apache::thrift::RequestChannel {
       folly::EventBase* evb,
       std::shared_ptr<apache::thrift::RequestChannel> threadSafeChannel);
 
+  using RequestChannel::sendRequestNoResponse;
+  using RequestChannel::sendRequestResponse;
+  using RequestChannel::sendRequestSink;
+  using RequestChannel::sendRequestStream;
+
   // RequestChannel
   void sendRequestResponse(
       const apache::thrift::RpcOptions& options,

@@ -37,6 +37,11 @@ class RetryingRequestChannel : public apache::thrift::RequestChannel {
     return {new RetryingRequestChannel(evb, numRetries, std::move(impl)), {}};
   }
 
+  using RequestChannel::sendRequestNoResponse;
+  using RequestChannel::sendRequestResponse;
+  using RequestChannel::sendRequestSink;
+  using RequestChannel::sendRequestStream;
+
   void sendRequestStream(
       const apache::thrift::RpcOptions& rpcOptions,
       MethodMetadata&& methodMetadata,

@@ -31,6 +31,11 @@ class FaultInjectionChannel : public RequestChannel {
       ScopedServerInterfaceThread::FaultInjectionFunc injectFault)
       : client_(std::move(client)), injectFault_(std::move(injectFault)) {}
 
+  using RequestChannel::sendRequestNoResponse;
+  using RequestChannel::sendRequestResponse;
+  using RequestChannel::sendRequestSink;
+  using RequestChannel::sendRequestStream;
+
   void sendRequestResponse(
       const RpcOptions& rpcOptions,
       MethodMetadata&& methodMetadata,
