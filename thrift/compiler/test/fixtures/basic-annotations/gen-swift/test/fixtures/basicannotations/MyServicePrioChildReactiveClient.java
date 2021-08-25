@@ -22,11 +22,12 @@ import com.facebook.thrift.client.RpcOptions;
 
 public class MyServicePrioChildReactiveClient  extends test.fixtures.basicannotations.MyServicePrioParentReactiveClient
   implements MyServicePrioChild.Reactive {
+  private static final AtomicLong _interactionCounter = new AtomicLong(0);
+
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
   private final Map<String, String> _headers;
   private final Map<String, String> _persistentHeaders;
-  private final AtomicLong _interactionCounter;
   private final Set<Long> _activeInteractions;
 
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _pang_EXCEPTION_READERS = java.util.Collections.emptyMap();
@@ -40,7 +41,6 @@ public class MyServicePrioChildReactiveClient  extends test.fixtures.basicannota
     this._rpcClient = _rpcClient;
     this._headers = java.util.Collections.emptyMap();
     this._persistentHeaders = java.util.Collections.emptyMap();
-    this._interactionCounter = new AtomicLong(0);
     this._activeInteractions = ConcurrentHashMap.newKeySet();
   }
 
@@ -54,7 +54,6 @@ public class MyServicePrioChildReactiveClient  extends test.fixtures.basicannota
     this._rpcClient = _rpcClient;
     this._headers = _headers;
     this._persistentHeaders = _persistentHeaders;
-    this._interactionCounter = interactionCounter;
     this._activeInteractions = activeInteractions;
   }
 

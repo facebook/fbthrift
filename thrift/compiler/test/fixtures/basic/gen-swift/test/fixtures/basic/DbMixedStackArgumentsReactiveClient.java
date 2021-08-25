@@ -22,11 +22,12 @@ import com.facebook.thrift.client.RpcOptions;
 
 public class DbMixedStackArgumentsReactiveClient 
   implements DbMixedStackArguments.Reactive {
+  private static final AtomicLong _interactionCounter = new AtomicLong(0);
+
   private final org.apache.thrift.ProtocolId _protocolId;
   private final reactor.core.publisher.Mono<? extends com.facebook.thrift.client.RpcClient> _rpcClient;
   private final Map<String, String> _headers;
   private final Map<String, String> _persistentHeaders;
-  private final AtomicLong _interactionCounter;
   private final Set<Long> _activeInteractions;
 
   private static final TField _getDataByKey0_KEY_FIELD_DESC = new TField("key", TType.STRING, (short)1);
@@ -43,7 +44,6 @@ public class DbMixedStackArgumentsReactiveClient
     this._rpcClient = _rpcClient;
     this._headers = java.util.Collections.emptyMap();
     this._persistentHeaders = java.util.Collections.emptyMap();
-    this._interactionCounter = new AtomicLong(0);
     this._activeInteractions = ConcurrentHashMap.newKeySet();
   }
 
@@ -57,7 +57,6 @@ public class DbMixedStackArgumentsReactiveClient
     this._rpcClient = _rpcClient;
     this._headers = _headers;
     this._persistentHeaders = _persistentHeaders;
-    this._interactionCounter = interactionCounter;
     this._activeInteractions = activeInteractions;
   }
 
