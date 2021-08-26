@@ -274,7 +274,9 @@ class ClientSyncCallback : public RequestClientCallback {
 inline StreamClientCallback* createStreamClientCallback(
     RequestClientCallback::Ptr requestCallback,
     const BufferOptions& bufferOptions) {
-  DCHECK(requestCallback->isInlineSafe());
+  DCHECK(requestCallback->isInlineSafe())
+      << "Streaming methods do not support the callback client method flavor. "
+         "Use co_, sync_, or semifuture_ instead.";
   class RequestClientCallbackWrapper
       : public apache::thrift::detail::ClientStreamBridge::
             FirstResponseCallback {
