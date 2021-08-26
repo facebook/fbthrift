@@ -22,6 +22,8 @@
 
 namespace apache {
 namespace thrift {
+/* static */ const AsyncProcessorFactory::WildcardMethodMetadata
+    AsyncProcessorFactory::kWildcardMethodMetadata;
 
 constexpr std::chrono::seconds ServerInterface::BlockingThreadManager::kTimeout;
 thread_local RequestParams ServerInterface::requestParams_;

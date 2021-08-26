@@ -152,7 +152,7 @@ class AsyncProcessorFactory {
    * Single instance of WildcardMethodMetadata so that AsyncProcessor can just
    * rely on comparing the address instead of using dynamic_cast.
    */
-  static const inline WildcardMethodMetadata kWildcardMethodMetadata;
+  static const WildcardMethodMetadata kWildcardMethodMetadata;
 
   /**
    * The API is not implemented (legacy).
