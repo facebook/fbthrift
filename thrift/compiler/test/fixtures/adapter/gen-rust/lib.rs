@@ -511,7 +511,9 @@ pub mod client {
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
-    {        fn func(
+    {
+        #[::tracing::instrument(name = "Service.func", skip(self, arg_arg1, arg_arg2), fields(r#arg1 = ?arg_arg1,r#arg2 = ?arg_arg2,))]
+        fn func(
             &self,
             arg_arg1: &::std::primitive::str,
             arg_arg2: &crate::types::Foo,
@@ -519,104 +521,114 @@ pub mod client {
             use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Service";
                 METHOD_NAME = "Service.func";
             }
-            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "func",
-                ::fbthrift::MessageType::Call,
-                // Note: we send a 0 message sequence ID from clients because
-                // this field should not be used by the server (except for some
-                // language implementations).
-                0,
-                |p| {
-                    p.write_struct_begin("args");
-                    p.write_field_begin("arg_arg1", ::fbthrift::TType::String, 1i16);
-                    ::fbthrift::Serialize::write(&arg_arg1, p);
-                    p.write_field_end();
-                    p.write_field_begin("arg_arg2", ::fbthrift::TType::Struct, 2i16);
-                    ::fbthrift::Serialize::write(&arg_arg2, p);
-                    p.write_field_end();
-                    p.write_field_stop();
-                    p.write_struct_end();
-                },
-            ));
+            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
+                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "func",
+                    ::fbthrift::MessageType::Call,
+                    // Note: we send a 0 message sequence ID from clients because
+                    // this field should not be used by the server (except for some
+                    // language implementations).
+                    0,
+                    |p| {
+                        p.write_struct_begin("args");
+                        p.write_field_begin("arg_arg1", ::fbthrift::TType::String, 1i16);
+                        ::fbthrift::Serialize::write(&arg_arg1, p);
+                        p.write_field_end();
+                        p.write_field_begin("arg_arg2", ::fbthrift::TType::Struct, 2i16);
+                        ::fbthrift::Serialize::write(&arg_arg2, p);
+                        p.write_field_end();
+                        p.write_field_stop();
+                        p.write_struct_end();
+                    },
+                ))
+            });
             self.transport()
                 .call(SERVICE_NAME, METHOD_NAME, request)
+                .instrument(::tracing::info_span!("call", function = "Service.func"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
-                    let de = P::deserializer(reply);
-                    (move |mut p: P::Deserializer| {
-                        use ::fbthrift::{ProtocolReader as _};
-                        let (_, message_type, _) = match p.read_message_begin(|_| ()) {
-                            Ok(res) => res,
-                            Err(e) => return ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ::std::result::Result::Err(e.into())
+                        let de = P::deserializer(reply);
+                        (move |mut p: P::Deserializer| {
+                            use ::fbthrift::{ProtocolReader as _};
+                            let (_, message_type, _) = match p.read_message_begin(|_| ()) {
+                                Ok(res) => res,
+                                Err(e) => {
+                                    ::tracing::error!(error = ?e);
+                                    return ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            ::std::result::Result::Err(e.into())
+                                        )
                                     )
-                                )
-                        };
-                        match message_type {
-                            ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::service::FuncExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
-                                  (::fbthrift::Deserialize::read(&mut p), p)
-                                });
-                                ::futures::future::Either::Right(exn.then(
-                                    |exn| {
-                                        let result = (move || {
-                                            let (exn, mut p) = match exn {
-                                                Ok(res) => res,
-                                                Err(e) => {
-                                                    // spawn_blocking threads can't be cancelled, so any
-                                                    // error is a panic. This shouldn't happen, but we propagate if it does
-                                                    ::std::panic::resume_unwind(e.into_panic())
-                                                }
-                                            };
-                                            let exn = exn?;
-                                            let result = match exn {
-                                                crate::services::service::FuncExn::Success(x) => ::std::result::Result::Ok(x),
-                                                crate::services::service::FuncExn::ApplicationException(ae) => {
+                                }
+                            };
+                            match message_type {
+                                ::fbthrift::MessageType::Reply => {
+                                    let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::service::FuncExn, _>, _)> =
+                                        ::tokio_shim::task::spawn_blocking_fallback_inline(move || (::fbthrift::Deserialize::read(&mut p), p));
+                                    ::futures::future::Either::Right(exn.then(
+                                        |exn| {
+                                            let result = (move || {
+                                                let (exn, mut p) = match exn {
+                                                    Ok(res) => res,
+                                                    Err(e) => {
+                                                        // spawn_blocking threads can't be cancelled, so any
+                                                        // error is a panic. This shouldn't happen, but we propagate if it does
+                                                        ::std::panic::resume_unwind(e.into_panic())
+                                                    }
+                                                };
+                                                let exn = exn?;
+                                                let result = match exn {
+                                                    crate::services::service::FuncExn::Success(x) => {
+                                                        ::tracing::info!("success");
+                                                        ::std::result::Result::Ok(x)
+                                                    },
+                                                    crate::services::service::FuncExn::ApplicationException(ae) => {
+                                                        ::tracing::error!(application_exception = ?ae);
+                                                        ::std::result::Result::Err(crate::errors::service::FuncError::ApplicationException(ae))
+                                                    }
+                                                };
+                                                p.read_message_end()?;
+                                                result
+                                            })();
+                                            ::futures::future::ready(result)
+                                        }
+                                    ))
+                                }
+                                ::fbthrift::MessageType::Exception => {
+                                    let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
+                                    ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            ae.map_err(|e| e.into()).and_then(|ae| {
+                                                p.read_message_end().map_err(|e| e.into()).and_then(|_| {
                                                     ::std::result::Result::Err(crate::errors::service::FuncError::ApplicationException(ae))
-                                                }
-                                            };
-                                            p.read_message_end()?;
-                                            result
-                                        })();
-                                        ::futures::future::ready(result)
-                                    }
-                                ))
-                            }
-                            ::fbthrift::MessageType::Exception => {
-                                let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ae.map_err(|e| e.into()).and_then(|ae| {
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                              ::std::result::Result::Err(crate::errors::service::FuncError::ApplicationException(ae))
-                                          }
-                                        )
-                                        })
-                                    )
-                                )
-                            }
-                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
-                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                            ::std::result::Result::Err(crate::errors::service::FuncError::ThriftError(err))
-                                          }
+                                                })
+                                            })
                                         )
                                     )
-                                )
+                                }
+                                ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                    let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                    ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            p.read_message_end().map_err(|e| e.into()).and_then(
+                                            |_| {
+                                                ::std::result::Result::Err(crate::errors::service::FuncError::ThriftError(err))
+                                            }
+                                            )
+                                        )
+                                    )
+                                }
                             }
-                        }
-                    })(de)
-                })
+                        })(de)
+                    }
+                    .instrument(::tracing::trace_span!("deserialize_response", method = "Service.func"))
+                )
                 .boxed()
         }
     }

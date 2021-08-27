@@ -979,422 +979,476 @@ pub mod client {
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
-    {        fn doBland(
+    {
+        #[::tracing::instrument(name = "Raiser.doBland", skip(self), fields())]
+        fn doBland(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoBlandError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Raiser";
                 METHOD_NAME = "Raiser.doBland";
             }
-            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "doBland",
-                ::fbthrift::MessageType::Call,
-                // Note: we send a 0 message sequence ID from clients because
-                // this field should not be used by the server (except for some
-                // language implementations).
-                0,
-                |p| {
-                    p.write_struct_begin("args");
-                    p.write_field_stop();
-                    p.write_struct_end();
-                },
-            ));
+            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
+                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "doBland",
+                    ::fbthrift::MessageType::Call,
+                    // Note: we send a 0 message sequence ID from clients because
+                    // this field should not be used by the server (except for some
+                    // language implementations).
+                    0,
+                    |p| {
+                        p.write_struct_begin("args");
+                        p.write_field_stop();
+                        p.write_struct_end();
+                    },
+                ))
+            });
             self.transport()
                 .call(SERVICE_NAME, METHOD_NAME, request)
+                .instrument(::tracing::info_span!("call", function = "Raiser.doBland"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
-                    let de = P::deserializer(reply);
-                    (move |mut p: P::Deserializer| {
-                        use ::fbthrift::{ProtocolReader as _};
-                        let (_, message_type, _) = match p.read_message_begin(|_| ()) {
-                            Ok(res) => res,
-                            Err(e) => return ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ::std::result::Result::Err(e.into())
+                        let de = P::deserializer(reply);
+                        (move |mut p: P::Deserializer| {
+                            use ::fbthrift::{ProtocolReader as _};
+                            let (_, message_type, _) = match p.read_message_begin(|_| ()) {
+                                Ok(res) => res,
+                                Err(e) => {
+                                    ::tracing::error!(error = ?e);
+                                    return ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            ::std::result::Result::Err(e.into())
+                                        )
                                     )
-                                )
-                        };
-                        match message_type {
-                            ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::raiser::DoBlandExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
-                                  (::fbthrift::Deserialize::read(&mut p), p)
-                                });
-                                ::futures::future::Either::Right(exn.then(
-                                    |exn| {
-                                        let result = (move || {
-                                            let (exn, mut p) = match exn {
-                                                Ok(res) => res,
-                                                Err(e) => {
-                                                    // spawn_blocking threads can't be cancelled, so any
-                                                    // error is a panic. This shouldn't happen, but we propagate if it does
-                                                    ::std::panic::resume_unwind(e.into_panic())
-                                                }
-                                            };
-                                            let exn = exn?;
-                                            let result = match exn {
-                                                crate::services::raiser::DoBlandExn::Success(x) => ::std::result::Result::Ok(x),
-                                                crate::services::raiser::DoBlandExn::ApplicationException(ae) => {
+                                }
+                            };
+                            match message_type {
+                                ::fbthrift::MessageType::Reply => {
+                                    let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::raiser::DoBlandExn, _>, _)> =
+                                        ::tokio_shim::task::spawn_blocking_fallback_inline(move || (::fbthrift::Deserialize::read(&mut p), p));
+                                    ::futures::future::Either::Right(exn.then(
+                                        |exn| {
+                                            let result = (move || {
+                                                let (exn, mut p) = match exn {
+                                                    Ok(res) => res,
+                                                    Err(e) => {
+                                                        // spawn_blocking threads can't be cancelled, so any
+                                                        // error is a panic. This shouldn't happen, but we propagate if it does
+                                                        ::std::panic::resume_unwind(e.into_panic())
+                                                    }
+                                                };
+                                                let exn = exn?;
+                                                let result = match exn {
+                                                    crate::services::raiser::DoBlandExn::Success(x) => {
+                                                        ::tracing::info!("success");
+                                                        ::std::result::Result::Ok(x)
+                                                    },
+                                                    crate::services::raiser::DoBlandExn::ApplicationException(ae) => {
+                                                        ::tracing::error!(application_exception = ?ae);
+                                                        ::std::result::Result::Err(crate::errors::raiser::DoBlandError::ApplicationException(ae))
+                                                    }
+                                                };
+                                                p.read_message_end()?;
+                                                result
+                                            })();
+                                            ::futures::future::ready(result)
+                                        }
+                                    ))
+                                }
+                                ::fbthrift::MessageType::Exception => {
+                                    let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
+                                    ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            ae.map_err(|e| e.into()).and_then(|ae| {
+                                                p.read_message_end().map_err(|e| e.into()).and_then(|_| {
                                                     ::std::result::Result::Err(crate::errors::raiser::DoBlandError::ApplicationException(ae))
-                                                }
-                                            };
-                                            p.read_message_end()?;
-                                            result
-                                        })();
-                                        ::futures::future::ready(result)
-                                    }
-                                ))
-                            }
-                            ::fbthrift::MessageType::Exception => {
-                                let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ae.map_err(|e| e.into()).and_then(|ae| {
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                              ::std::result::Result::Err(crate::errors::raiser::DoBlandError::ApplicationException(ae))
-                                          }
-                                        )
-                                        })
-                                    )
-                                )
-                            }
-                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
-                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                            ::std::result::Result::Err(crate::errors::raiser::DoBlandError::ThriftError(err))
-                                          }
+                                                })
+                                            })
                                         )
                                     )
-                                )
+                                }
+                                ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                    let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                    ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            p.read_message_end().map_err(|e| e.into()).and_then(
+                                            |_| {
+                                                ::std::result::Result::Err(crate::errors::raiser::DoBlandError::ThriftError(err))
+                                            }
+                                            )
+                                        )
+                                    )
+                                }
                             }
-                        }
-                    })(de)
-                })
+                        })(de)
+                    }
+                    .instrument(::tracing::trace_span!("deserialize_response", method = "Raiser.doBland"))
+                )
                 .boxed()
         }
+
+        #[::tracing::instrument(name = "Raiser.doRaise", skip(self), fields())]
         fn doRaise(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoRaiseError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Raiser";
                 METHOD_NAME = "Raiser.doRaise";
             }
-            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "doRaise",
-                ::fbthrift::MessageType::Call,
-                // Note: we send a 0 message sequence ID from clients because
-                // this field should not be used by the server (except for some
-                // language implementations).
-                0,
-                |p| {
-                    p.write_struct_begin("args");
-                    p.write_field_stop();
-                    p.write_struct_end();
-                },
-            ));
+            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
+                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "doRaise",
+                    ::fbthrift::MessageType::Call,
+                    // Note: we send a 0 message sequence ID from clients because
+                    // this field should not be used by the server (except for some
+                    // language implementations).
+                    0,
+                    |p| {
+                        p.write_struct_begin("args");
+                        p.write_field_stop();
+                        p.write_struct_end();
+                    },
+                ))
+            });
             self.transport()
                 .call(SERVICE_NAME, METHOD_NAME, request)
+                .instrument(::tracing::info_span!("call", function = "Raiser.doRaise"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
-                    let de = P::deserializer(reply);
-                    (move |mut p: P::Deserializer| {
-                        use ::fbthrift::{ProtocolReader as _};
-                        let (_, message_type, _) = match p.read_message_begin(|_| ()) {
-                            Ok(res) => res,
-                            Err(e) => return ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ::std::result::Result::Err(e.into())
+                        let de = P::deserializer(reply);
+                        (move |mut p: P::Deserializer| {
+                            use ::fbthrift::{ProtocolReader as _};
+                            let (_, message_type, _) = match p.read_message_begin(|_| ()) {
+                                Ok(res) => res,
+                                Err(e) => {
+                                    ::tracing::error!(error = ?e);
+                                    return ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            ::std::result::Result::Err(e.into())
+                                        )
                                     )
-                                )
-                        };
-                        match message_type {
-                            ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::raiser::DoRaiseExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
-                                  (::fbthrift::Deserialize::read(&mut p), p)
-                                });
-                                ::futures::future::Either::Right(exn.then(
-                                    |exn| {
-                                        let result = (move || {
-                                            let (exn, mut p) = match exn {
-                                                Ok(res) => res,
-                                                Err(e) => {
-                                                    // spawn_blocking threads can't be cancelled, so any
-                                                    // error is a panic. This shouldn't happen, but we propagate if it does
-                                                    ::std::panic::resume_unwind(e.into_panic())
-                                                }
-                                            };
-                                            let exn = exn?;
-                                            let result = match exn {
-                                                crate::services::raiser::DoRaiseExn::Success(x) => ::std::result::Result::Ok(x),
-                                                crate::services::raiser::DoRaiseExn::b(err) => {
-                                                    ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::b(err))
-                                                }
-                                                crate::services::raiser::DoRaiseExn::f(err) => {
-                                                    ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::f(err))
-                                                }
-                                                crate::services::raiser::DoRaiseExn::s(err) => {
-                                                    ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::s(err))
-                                                }
-                                                crate::services::raiser::DoRaiseExn::ApplicationException(ae) => {
+                                }
+                            };
+                            match message_type {
+                                ::fbthrift::MessageType::Reply => {
+                                    let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::raiser::DoRaiseExn, _>, _)> =
+                                        ::tokio_shim::task::spawn_blocking_fallback_inline(move || (::fbthrift::Deserialize::read(&mut p), p));
+                                    ::futures::future::Either::Right(exn.then(
+                                        |exn| {
+                                            let result = (move || {
+                                                let (exn, mut p) = match exn {
+                                                    Ok(res) => res,
+                                                    Err(e) => {
+                                                        // spawn_blocking threads can't be cancelled, so any
+                                                        // error is a panic. This shouldn't happen, but we propagate if it does
+                                                        ::std::panic::resume_unwind(e.into_panic())
+                                                    }
+                                                };
+                                                let exn = exn?;
+                                                let result = match exn {
+                                                    crate::services::raiser::DoRaiseExn::Success(x) => {
+                                                        ::tracing::info!("success");
+                                                        ::std::result::Result::Ok(x)
+                                                    },
+                                                    crate::services::raiser::DoRaiseExn::b(err) => {
+                                                        ::tracing::error!(?err);
+                                                        ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::b(err))
+                                                    }
+                                                    crate::services::raiser::DoRaiseExn::f(err) => {
+                                                        ::tracing::error!(?err);
+                                                        ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::f(err))
+                                                    }
+                                                    crate::services::raiser::DoRaiseExn::s(err) => {
+                                                        ::tracing::error!(?err);
+                                                        ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::s(err))
+                                                    }
+                                                    crate::services::raiser::DoRaiseExn::ApplicationException(ae) => {
+                                                        ::tracing::error!(application_exception = ?ae);
+                                                        ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::ApplicationException(ae))
+                                                    }
+                                                };
+                                                p.read_message_end()?;
+                                                result
+                                            })();
+                                            ::futures::future::ready(result)
+                                        }
+                                    ))
+                                }
+                                ::fbthrift::MessageType::Exception => {
+                                    let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
+                                    ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            ae.map_err(|e| e.into()).and_then(|ae| {
+                                                p.read_message_end().map_err(|e| e.into()).and_then(|_| {
                                                     ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::ApplicationException(ae))
-                                                }
-                                            };
-                                            p.read_message_end()?;
-                                            result
-                                        })();
-                                        ::futures::future::ready(result)
-                                    }
-                                ))
-                            }
-                            ::fbthrift::MessageType::Exception => {
-                                let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ae.map_err(|e| e.into()).and_then(|ae| {
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                              ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::ApplicationException(ae))
-                                          }
-                                        )
-                                        })
-                                    )
-                                )
-                            }
-                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
-                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                            ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::ThriftError(err))
-                                          }
+                                                })
+                                            })
                                         )
                                     )
-                                )
+                                }
+                                ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                    let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                    ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            p.read_message_end().map_err(|e| e.into()).and_then(
+                                            |_| {
+                                                ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::ThriftError(err))
+                                            }
+                                            )
+                                        )
+                                    )
+                                }
                             }
-                        }
-                    })(de)
-                })
+                        })(de)
+                    }
+                    .instrument(::tracing::trace_span!("deserialize_response", method = "Raiser.doRaise"))
+                )
                 .boxed()
         }
+
+        #[::tracing::instrument(name = "Raiser.get200", skip(self), fields())]
         fn get200(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get200Error>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Raiser";
                 METHOD_NAME = "Raiser.get200";
             }
-            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "get200",
-                ::fbthrift::MessageType::Call,
-                // Note: we send a 0 message sequence ID from clients because
-                // this field should not be used by the server (except for some
-                // language implementations).
-                0,
-                |p| {
-                    p.write_struct_begin("args");
-                    p.write_field_stop();
-                    p.write_struct_end();
-                },
-            ));
+            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
+                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "get200",
+                    ::fbthrift::MessageType::Call,
+                    // Note: we send a 0 message sequence ID from clients because
+                    // this field should not be used by the server (except for some
+                    // language implementations).
+                    0,
+                    |p| {
+                        p.write_struct_begin("args");
+                        p.write_field_stop();
+                        p.write_struct_end();
+                    },
+                ))
+            });
             self.transport()
                 .call(SERVICE_NAME, METHOD_NAME, request)
+                .instrument(::tracing::info_span!("call", function = "Raiser.get200"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
-                    let de = P::deserializer(reply);
-                    (move |mut p: P::Deserializer| {
-                        use ::fbthrift::{ProtocolReader as _};
-                        let (_, message_type, _) = match p.read_message_begin(|_| ()) {
-                            Ok(res) => res,
-                            Err(e) => return ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ::std::result::Result::Err(e.into())
+                        let de = P::deserializer(reply);
+                        (move |mut p: P::Deserializer| {
+                            use ::fbthrift::{ProtocolReader as _};
+                            let (_, message_type, _) = match p.read_message_begin(|_| ()) {
+                                Ok(res) => res,
+                                Err(e) => {
+                                    ::tracing::error!(error = ?e);
+                                    return ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            ::std::result::Result::Err(e.into())
+                                        )
                                     )
-                                )
-                        };
-                        match message_type {
-                            ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::raiser::Get200Exn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
-                                  (::fbthrift::Deserialize::read(&mut p), p)
-                                });
-                                ::futures::future::Either::Right(exn.then(
-                                    |exn| {
-                                        let result = (move || {
-                                            let (exn, mut p) = match exn {
-                                                Ok(res) => res,
-                                                Err(e) => {
-                                                    // spawn_blocking threads can't be cancelled, so any
-                                                    // error is a panic. This shouldn't happen, but we propagate if it does
-                                                    ::std::panic::resume_unwind(e.into_panic())
-                                                }
-                                            };
-                                            let exn = exn?;
-                                            let result = match exn {
-                                                crate::services::raiser::Get200Exn::Success(x) => ::std::result::Result::Ok(x),
-                                                crate::services::raiser::Get200Exn::ApplicationException(ae) => {
+                                }
+                            };
+                            match message_type {
+                                ::fbthrift::MessageType::Reply => {
+                                    let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::raiser::Get200Exn, _>, _)> =
+                                        ::tokio_shim::task::spawn_blocking_fallback_inline(move || (::fbthrift::Deserialize::read(&mut p), p));
+                                    ::futures::future::Either::Right(exn.then(
+                                        |exn| {
+                                            let result = (move || {
+                                                let (exn, mut p) = match exn {
+                                                    Ok(res) => res,
+                                                    Err(e) => {
+                                                        // spawn_blocking threads can't be cancelled, so any
+                                                        // error is a panic. This shouldn't happen, but we propagate if it does
+                                                        ::std::panic::resume_unwind(e.into_panic())
+                                                    }
+                                                };
+                                                let exn = exn?;
+                                                let result = match exn {
+                                                    crate::services::raiser::Get200Exn::Success(x) => {
+                                                        ::tracing::info!("success");
+                                                        ::std::result::Result::Ok(x)
+                                                    },
+                                                    crate::services::raiser::Get200Exn::ApplicationException(ae) => {
+                                                        ::tracing::error!(application_exception = ?ae);
+                                                        ::std::result::Result::Err(crate::errors::raiser::Get200Error::ApplicationException(ae))
+                                                    }
+                                                };
+                                                p.read_message_end()?;
+                                                result
+                                            })();
+                                            ::futures::future::ready(result)
+                                        }
+                                    ))
+                                }
+                                ::fbthrift::MessageType::Exception => {
+                                    let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
+                                    ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            ae.map_err(|e| e.into()).and_then(|ae| {
+                                                p.read_message_end().map_err(|e| e.into()).and_then(|_| {
                                                     ::std::result::Result::Err(crate::errors::raiser::Get200Error::ApplicationException(ae))
-                                                }
-                                            };
-                                            p.read_message_end()?;
-                                            result
-                                        })();
-                                        ::futures::future::ready(result)
-                                    }
-                                ))
-                            }
-                            ::fbthrift::MessageType::Exception => {
-                                let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ae.map_err(|e| e.into()).and_then(|ae| {
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                              ::std::result::Result::Err(crate::errors::raiser::Get200Error::ApplicationException(ae))
-                                          }
-                                        )
-                                        })
-                                    )
-                                )
-                            }
-                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
-                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                            ::std::result::Result::Err(crate::errors::raiser::Get200Error::ThriftError(err))
-                                          }
+                                                })
+                                            })
                                         )
                                     )
-                                )
+                                }
+                                ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                    let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                    ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            p.read_message_end().map_err(|e| e.into()).and_then(
+                                            |_| {
+                                                ::std::result::Result::Err(crate::errors::raiser::Get200Error::ThriftError(err))
+                                            }
+                                            )
+                                        )
+                                    )
+                                }
                             }
-                        }
-                    })(de)
-                })
+                        })(de)
+                    }
+                    .instrument(::tracing::trace_span!("deserialize_response", method = "Raiser.get200"))
+                )
                 .boxed()
         }
+
+        #[::tracing::instrument(name = "Raiser.get500", skip(self), fields())]
         fn get500(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Raiser";
                 METHOD_NAME = "Raiser.get500";
             }
-            let request = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "get500",
-                ::fbthrift::MessageType::Call,
-                // Note: we send a 0 message sequence ID from clients because
-                // this field should not be used by the server (except for some
-                // language implementations).
-                0,
-                |p| {
-                    p.write_struct_begin("args");
-                    p.write_field_stop();
-                    p.write_struct_end();
-                },
-            ));
+            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
+                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "get500",
+                    ::fbthrift::MessageType::Call,
+                    // Note: we send a 0 message sequence ID from clients because
+                    // this field should not be used by the server (except for some
+                    // language implementations).
+                    0,
+                    |p| {
+                        p.write_struct_begin("args");
+                        p.write_field_stop();
+                        p.write_struct_end();
+                    },
+                ))
+            });
             self.transport()
                 .call(SERVICE_NAME, METHOD_NAME, request)
+                .instrument(::tracing::info_span!("call", function = "Raiser.get500"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
-                    let de = P::deserializer(reply);
-                    (move |mut p: P::Deserializer| {
-                        use ::fbthrift::{ProtocolReader as _};
-                        let (_, message_type, _) = match p.read_message_begin(|_| ()) {
-                            Ok(res) => res,
-                            Err(e) => return ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ::std::result::Result::Err(e.into())
+                        let de = P::deserializer(reply);
+                        (move |mut p: P::Deserializer| {
+                            use ::fbthrift::{ProtocolReader as _};
+                            let (_, message_type, _) = match p.read_message_begin(|_| ()) {
+                                Ok(res) => res,
+                                Err(e) => {
+                                    ::tracing::error!(error = ?e);
+                                    return ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            ::std::result::Result::Err(e.into())
+                                        )
                                     )
-                                )
-                        };
-                        match message_type {
-                            ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::raiser::Get500Exn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
-                                  (::fbthrift::Deserialize::read(&mut p), p)
-                                });
-                                ::futures::future::Either::Right(exn.then(
-                                    |exn| {
-                                        let result = (move || {
-                                            let (exn, mut p) = match exn {
-                                                Ok(res) => res,
-                                                Err(e) => {
-                                                    // spawn_blocking threads can't be cancelled, so any
-                                                    // error is a panic. This shouldn't happen, but we propagate if it does
-                                                    ::std::panic::resume_unwind(e.into_panic())
-                                                }
-                                            };
-                                            let exn = exn?;
-                                            let result = match exn {
-                                                crate::services::raiser::Get500Exn::Success(x) => ::std::result::Result::Ok(x),
-                                                crate::services::raiser::Get500Exn::f(err) => {
-                                                    ::std::result::Result::Err(crate::errors::raiser::Get500Error::f(err))
-                                                }
-                                                crate::services::raiser::Get500Exn::b(err) => {
-                                                    ::std::result::Result::Err(crate::errors::raiser::Get500Error::b(err))
-                                                }
-                                                crate::services::raiser::Get500Exn::s(err) => {
-                                                    ::std::result::Result::Err(crate::errors::raiser::Get500Error::s(err))
-                                                }
-                                                crate::services::raiser::Get500Exn::ApplicationException(ae) => {
+                                }
+                            };
+                            match message_type {
+                                ::fbthrift::MessageType::Reply => {
+                                    let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::raiser::Get500Exn, _>, _)> =
+                                        ::tokio_shim::task::spawn_blocking_fallback_inline(move || (::fbthrift::Deserialize::read(&mut p), p));
+                                    ::futures::future::Either::Right(exn.then(
+                                        |exn| {
+                                            let result = (move || {
+                                                let (exn, mut p) = match exn {
+                                                    Ok(res) => res,
+                                                    Err(e) => {
+                                                        // spawn_blocking threads can't be cancelled, so any
+                                                        // error is a panic. This shouldn't happen, but we propagate if it does
+                                                        ::std::panic::resume_unwind(e.into_panic())
+                                                    }
+                                                };
+                                                let exn = exn?;
+                                                let result = match exn {
+                                                    crate::services::raiser::Get500Exn::Success(x) => {
+                                                        ::tracing::info!("success");
+                                                        ::std::result::Result::Ok(x)
+                                                    },
+                                                    crate::services::raiser::Get500Exn::f(err) => {
+                                                        ::tracing::error!(?err);
+                                                        ::std::result::Result::Err(crate::errors::raiser::Get500Error::f(err))
+                                                    }
+                                                    crate::services::raiser::Get500Exn::b(err) => {
+                                                        ::tracing::error!(?err);
+                                                        ::std::result::Result::Err(crate::errors::raiser::Get500Error::b(err))
+                                                    }
+                                                    crate::services::raiser::Get500Exn::s(err) => {
+                                                        ::tracing::error!(?err);
+                                                        ::std::result::Result::Err(crate::errors::raiser::Get500Error::s(err))
+                                                    }
+                                                    crate::services::raiser::Get500Exn::ApplicationException(ae) => {
+                                                        ::tracing::error!(application_exception = ?ae);
+                                                        ::std::result::Result::Err(crate::errors::raiser::Get500Error::ApplicationException(ae))
+                                                    }
+                                                };
+                                                p.read_message_end()?;
+                                                result
+                                            })();
+                                            ::futures::future::ready(result)
+                                        }
+                                    ))
+                                }
+                                ::fbthrift::MessageType::Exception => {
+                                    let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
+                                    ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            ae.map_err(|e| e.into()).and_then(|ae| {
+                                                p.read_message_end().map_err(|e| e.into()).and_then(|_| {
                                                     ::std::result::Result::Err(crate::errors::raiser::Get500Error::ApplicationException(ae))
-                                                }
-                                            };
-                                            p.read_message_end()?;
-                                            result
-                                        })();
-                                        ::futures::future::ready(result)
-                                    }
-                                ))
-                            }
-                            ::fbthrift::MessageType::Exception => {
-                                let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ae.map_err(|e| e.into()).and_then(|ae| {
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                              ::std::result::Result::Err(crate::errors::raiser::Get500Error::ApplicationException(ae))
-                                          }
-                                        )
-                                        })
-                                    )
-                                )
-                            }
-                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
-                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                            ::std::result::Result::Err(crate::errors::raiser::Get500Error::ThriftError(err))
-                                          }
+                                                })
+                                            })
                                         )
                                     )
-                                )
+                                }
+                                ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
+                                    let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
+                                    ::futures::future::Either::Left(
+                                        ::futures::future::ready(
+                                            p.read_message_end().map_err(|e| e.into()).and_then(
+                                            |_| {
+                                                ::std::result::Result::Err(crate::errors::raiser::Get500Error::ThriftError(err))
+                                            }
+                                            )
+                                        )
+                                    )
+                                }
                             }
-                        }
-                    })(de)
-                })
+                        })(de)
+                    }
+                    .instrument(::tracing::trace_span!("deserialize_response", method = "Raiser.get500"))
+                )
                 .boxed()
         }
     }
