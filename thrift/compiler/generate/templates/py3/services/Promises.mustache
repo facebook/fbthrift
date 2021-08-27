@@ -33,7 +33,17 @@ executing.
 cdef class {{> services/PromiseName}}:
     cdef cFollyPromise[{{!
             }}{{> services/CythonReturnTypeCppType}}{{!
-        }}] cPromise
+        }}]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[{{!
+            }}{{> services/CythonReturnTypeCppType}}{{!
+        }}](cFollyPromise[{{!
+            }}{{> services/CythonReturnTypeCppType}}{{!
+        }}].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[{{!
@@ -41,7 +51,7 @@ cdef class {{> services/PromiseName}}:
         }}] cPromise):
         cdef {{> services/PromiseName}} inst = {{> services/PromiseName}}.__new__({{!
         }}{{> services/PromiseName}})
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 {{/function:return_type}}
 {{/program:unique_functions_by_return_type}}

@@ -277,22 +277,34 @@ cdef void getNextGenerator_PubSubStreamingService_returnstreamFast(object genera
 
 @cython.auto_pickle(False)
 cdef class Promise_cResponseAndServerStream__cint32_t_cint32_t:
-    cdef cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise
+    cdef cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]](cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cResponseAndServerStream[cint32_t,cint32_t]] cPromise):
         cdef Promise_cResponseAndServerStream__cint32_t_cint32_t inst = Promise_cResponseAndServerStream__cint32_t_cint32_t.__new__(Promise_cResponseAndServerStream__cint32_t_cint32_t)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
 cdef class Promise_cServerStream__cint32_t:
-    cdef cFollyPromise[cServerStream[cint32_t]] cPromise
+    cdef cFollyPromise[cServerStream[cint32_t]]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cServerStream[cint32_t]](cFollyPromise[cServerStream[cint32_t]].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cServerStream[cint32_t]] cPromise):
         cdef Promise_cServerStream__cint32_t inst = Promise_cServerStream__cint32_t.__new__(Promise_cServerStream__cint32_t)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)

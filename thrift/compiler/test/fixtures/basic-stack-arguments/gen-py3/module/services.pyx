@@ -71,52 +71,82 @@ from module.services_wrapper cimport cDbMixedStackArgumentsInterface
 
 @cython.auto_pickle(False)
 cdef class Promise_binary:
-    cdef cFollyPromise[unique_ptr[string]] cPromise
+    cdef cFollyPromise[unique_ptr[string]]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[unique_ptr[string]](cFollyPromise[unique_ptr[string]].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[string]] cPromise):
         cdef Promise_binary inst = Promise_binary.__new__(Promise_binary)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
 cdef class Promise__sa_binary:
-    cdef cFollyPromise[string] cPromise
+    cdef cFollyPromise[string]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[string](cFollyPromise[string].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[string] cPromise):
         cdef Promise__sa_binary inst = Promise__sa_binary.__new__(Promise__sa_binary)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
 cdef class Promise__sa_cbool:
-    cdef cFollyPromise[cbool] cPromise
+    cdef cFollyPromise[cbool]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cbool](cFollyPromise[cbool].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
         cdef Promise__sa_cbool inst = Promise__sa_cbool.__new__(Promise__sa_cbool)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
 cdef class Promise__sa_string:
-    cdef cFollyPromise[string] cPromise
+    cdef cFollyPromise[string]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[string](cFollyPromise[string].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[string] cPromise):
         cdef Promise__sa_string inst = Promise__sa_string.__new__(Promise__sa_string)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
 cdef class Promise__sa_cFollyUnit:
-    cdef cFollyPromise[cFollyUnit] cPromise
+    cdef cFollyPromise[cFollyUnit]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cFollyUnit](cFollyPromise[cFollyUnit].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise__sa_cFollyUnit inst = Promise__sa_cFollyUnit.__new__(Promise__sa_cFollyUnit)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 cdef object _MyService_annotations = _py_types.MappingProxyType({

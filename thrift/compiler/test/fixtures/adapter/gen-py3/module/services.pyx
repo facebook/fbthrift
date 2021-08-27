@@ -69,12 +69,18 @@ from module.services_wrapper cimport cServiceInterface
 
 @cython.auto_pickle(False)
 cdef class Promise_cint32_t:
-    cdef cFollyPromise[cint32_t] cPromise
+    cdef cFollyPromise[cint32_t]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cint32_t](cFollyPromise[cint32_t].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cint32_t] cPromise):
         cdef Promise_cint32_t inst = Promise_cint32_t.__new__(Promise_cint32_t)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 cdef object _Service_annotations = _py_types.MappingProxyType({

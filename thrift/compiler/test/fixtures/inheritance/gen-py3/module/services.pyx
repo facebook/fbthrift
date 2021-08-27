@@ -71,12 +71,18 @@ from module.services_wrapper cimport cMyLeafInterface
 
 @cython.auto_pickle(False)
 cdef class Promise_cFollyUnit:
-    cdef cFollyPromise[cFollyUnit] cPromise
+    cdef cFollyPromise[cFollyUnit]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cFollyUnit](cFollyPromise[cFollyUnit].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 cdef object _MyRoot_annotations = _py_types.MappingProxyType({

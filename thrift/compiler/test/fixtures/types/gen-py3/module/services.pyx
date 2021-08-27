@@ -71,22 +71,34 @@ from module.services_wrapper cimport cSomeServiceInterface
 
 @cython.auto_pickle(False)
 cdef class Promise_cmap__binary_cint64_t:
-    cdef cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise
+    cdef cFollyPromise[unique_ptr[cmap[string,cint64_t]]]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[unique_ptr[cmap[string,cint64_t]]](cFollyPromise[unique_ptr[cmap[string,cint64_t]]].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[cmap[string,cint64_t]]] cPromise):
         cdef Promise_cmap__binary_cint64_t inst = Promise_cmap__binary_cint64_t.__new__(Promise_cmap__binary_cint64_t)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
 cdef class Promise__module_types_std_unordered_map__cint32_t_string:
-    cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] cPromise
+    cdef cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]](cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[unique_ptr[_module_types.std_unordered_map[cint32_t,string]]] cPromise):
         cdef Promise__module_types_std_unordered_map__cint32_t_string inst = Promise__module_types_std_unordered_map__cint32_t_string.__new__(Promise__module_types_std_unordered_map__cint32_t_string)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 cdef object _SomeService_annotations = _py_types.MappingProxyType({

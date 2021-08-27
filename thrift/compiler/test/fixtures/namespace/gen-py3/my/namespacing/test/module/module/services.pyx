@@ -69,12 +69,18 @@ from my.namespacing.test.module.module.services_wrapper cimport cTestServiceInte
 
 @cython.auto_pickle(False)
 cdef class Promise_cint64_t:
-    cdef cFollyPromise[cint64_t] cPromise
+    cdef cFollyPromise[cint64_t]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cint64_t](cFollyPromise[cint64_t].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cint64_t] cPromise):
         cdef Promise_cint64_t inst = Promise_cint64_t.__new__(Promise_cint64_t)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 cdef object _TestService_annotations = _py_types.MappingProxyType({

@@ -96,32 +96,50 @@ cdef class ServerStream_cbool(ServerStream):
 
 @cython.auto_pickle(False)
 cdef class Promise_cServerStream__cbool:
-    cdef cFollyPromise[cServerStream[cbool]] cPromise
+    cdef cFollyPromise[cServerStream[cbool]]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cServerStream[cbool]](cFollyPromise[cServerStream[cbool]].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cServerStream[cbool]] cPromise):
         cdef Promise_cServerStream__cbool inst = Promise_cServerStream__cbool.__new__(Promise_cServerStream__cbool)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
 cdef class Promise_cint32_t:
-    cdef cFollyPromise[cint32_t] cPromise
+    cdef cFollyPromise[cint32_t]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cint32_t](cFollyPromise[cint32_t].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cint32_t] cPromise):
         cdef Promise_cint32_t inst = Promise_cint32_t.__new__(Promise_cint32_t)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)
 cdef class Promise_cFollyUnit:
-    cdef cFollyPromise[cFollyUnit] cPromise
+    cdef cFollyPromise[cFollyUnit]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cFollyUnit](cFollyPromise[cFollyUnit].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cFollyUnit] cPromise):
         cdef Promise_cFollyUnit inst = Promise_cFollyUnit.__new__(Promise_cFollyUnit)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 @cython.auto_pickle(False)

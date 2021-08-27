@@ -73,12 +73,18 @@ from my.namespacing.extend.test.extend.services_wrapper cimport cExtendTestServi
 
 @cython.auto_pickle(False)
 cdef class Promise_cbool:
-    cdef cFollyPromise[cbool] cPromise
+    cdef cFollyPromise[cbool]* cPromise
+
+    def __cinit__(self):
+        self.cPromise = new cFollyPromise[cbool](cFollyPromise[cbool].makeEmpty())
+
+    def __dealloc__(self):
+        del self.cPromise
 
     @staticmethod
     cdef create(cFollyPromise[cbool] cPromise):
         cdef Promise_cbool inst = Promise_cbool.__new__(Promise_cbool)
-        inst.cPromise = cmove(cPromise)
+        inst.cPromise[0] = cmove(cPromise)
         return inst
 
 cdef object _ExtendTestService_annotations = _py_types.MappingProxyType({
