@@ -253,11 +253,15 @@ FOLLY_INLINE_VARIABLE constexpr detail::apply_indirection_fn apply_indirection;
 
 class ExceptionMetadataOverrideBase {
  public:
+  virtual ~ExceptionMetadataOverrideBase() {}
+
   ExceptionKind errorKind() const { return errorKind_; }
 
   ExceptionBlame errorBlame() const { return errorBlame_; }
 
   ExceptionSafety errorSafety() const { return errorSafety_; }
+
+  virtual const std::type_info* type() const = 0;
 
  protected:
   ExceptionKind errorKind_{ExceptionKind::UNSPECIFIED};
@@ -271,6 +275,14 @@ class ExceptionMetadataOverride : public T,
  public:
   explicit ExceptionMetadataOverride(const T& t) : T(t) {}
   explicit ExceptionMetadataOverride(T&& t) : T(std::move(t)) {}
+
+  const std::type_info* type() const override {
+#if FOLLY_HAS_RTTI
+    return &typeid(T);
+#else
+    return nullptr;
+#endif
+  }
 
   // ExceptionKind
   ExceptionMetadataOverride& setTransient() {

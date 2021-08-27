@@ -266,6 +266,7 @@ TEST_F(ThriftServerExceptionTest, dummy_test) {
   EXPECT_EQ(*errorClass.kind_ref(), ErrorKind::PERMANENT);
   EXPECT_EQ(*errorClass.blame_ref(), ErrorBlame::CLIENT);
   EXPECT_EQ(*errorClass.safety_ref(), ErrorSafety::SAFE);
+  EXPECT_EQ("apache::thrift::test::TripleKill", reader["uex"]);
 
   try {
     folly::coro::blockingWait(client->co_fun6(rpcOptions));
@@ -277,6 +278,7 @@ TEST_F(ThriftServerExceptionTest, dummy_test) {
   EXPECT_EQ(*errorClass.kind_ref(), ErrorKind::TRANSIENT);
   EXPECT_EQ(*errorClass.blame_ref(), ErrorBlame::SERVER);
   EXPECT_EQ(*errorClass.safety_ref(), ErrorSafety::SAFE);
+  EXPECT_EQ("apache::thrift::test::TripleKill", reader["uex"]);
 }
 
 TEST_F(ThriftServerExceptionTest, bland_with_exception_ptr) {

@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/Demangle.h>
 #include <folly/Portability.h>
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
@@ -255,12 +256,18 @@ void appendExceptionToHeader(
 
   const auto what = ew.what();
   folly::StringPiece whatsp(what);
-  const auto type = ew.class_name();
+  auto typeName = ew.class_name();
 
-  whatsp.removePrefix(type);
+  ew.with_exception([&](const ExceptionMetadataOverrideBase& emob) {
+    if (auto type = emob.type()) {
+      typeName = folly::demangle(*type);
+    }
+  });
+
+  whatsp.removePrefix(typeName);
   whatsp.removePrefix(": ");
 
-  auto exName = type.toStdString();
+  auto exName = typeName.toStdString();
   auto exWhat = whatsp.str();
 
   setUserExceptionHeader(ctx, std::move(exName), std::move(exWhat), false);
