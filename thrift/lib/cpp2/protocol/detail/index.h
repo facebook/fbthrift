@@ -27,6 +27,7 @@
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
 #include <thrift/lib/cpp2/protocol/Traits.h>
+#include <thrift/lib/cpp2/protocol/detail/ReservedId.h>
 
 DECLARE_bool(thrift_enable_lazy_deserialization);
 
@@ -56,11 +57,15 @@ struct InternalField {
 
 // The reason this field is T_DOUBLE is because we will backfill it after
 // serializing the whole struct, though we will only use the integer part.
-constexpr auto kSizeField =
-    InternalField{"__fbthrift_index_offset", -32768, TType::T_DOUBLE};
+constexpr auto kSizeField = InternalField{
+    "__fbthrift_index_offset",
+    static_cast<int16_t>(ReservedId::kOffset),
+    TType::T_DOUBLE};
 
-constexpr auto kIndexField =
-    InternalField{"__fbthrift_field_id_to_size", -32767, TType::T_MAP};
+constexpr auto kIndexField = InternalField{
+    "__fbthrift_field_id_to_size",
+    static_cast<int16_t>(ReservedId::kIndex),
+    TType::T_MAP};
 
 int64_t xxh3_64bits(folly::io::Cursor cursor);
 
