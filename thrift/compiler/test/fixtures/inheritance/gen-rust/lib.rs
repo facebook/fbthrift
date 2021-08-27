@@ -954,6 +954,7 @@ pub mod server {
             self.service
         }
 
+        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyRoot.do_root"))]
         async fn handle_do_root<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -962,6 +963,7 @@ pub mod server {
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+            use ::tracing::Instrument as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyRoot";
@@ -976,24 +978,31 @@ pub mod server {
             static ARGS: &[::fbthrift::Field] = &[
             ];
 
-            let _ = p.read_struct_begin(|_| ())?;
-            loop {
-                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                match (fty, fid as ::std::primitive::i32) {
-                    (::fbthrift::TType::Stop, _) => break,
-                    (fty, _) => p.skip(fty)?,
+            ::tracing::trace_span!("deserialize_args", method = "MyRoot.do_root").in_scope(|| -> ::anyhow::Result<()> {
+                let _ = p.read_struct_begin(|_| ())?;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                    match (fty, fid as ::std::primitive::i32) {
+                        (::fbthrift::TType::Stop, _) => break,
+                        (fty, _) => p.skip(fty)?,
+                    }
+                    p.read_field_end()?;
                 }
-                p.read_field_end()?;
-            }
-            p.read_struct_end()?;
+                p.read_struct_end()?;
+                Ok(())
+            })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.do_root(
-            ).await;
+            )
+            .instrument(::tracing::info_span!("service_handler", method = "MyRoot.do_root"))
+            .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
+                    ::tracing::info!(method = "MyRoot.", "success");
                     crate::services::my_root::DoRootExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_root::DoRootExn::ApplicationException(aexn)) => {
+                    ::tracing::error!(method = "MyRoot.", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1004,15 +1013,18 @@ pub mod server {
                     )
                 }
             };
-            ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
-            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "do_root",
-                ::fbthrift::MessageType::Reply,
-                seqid,
-                |p| ::fbthrift::Serialize::write(&res, p),
-            ));
-            ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+            let res = ::tracing::trace_span!("serialize_result", method = "MyRoot.do_root").in_scope(|| -> ::anyhow::Result<_> {
+                ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
+                let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "do_root",
+                    ::fbthrift::MessageType::Reply,
+                    seqid,
+                    |p| ::fbthrift::Serialize::write(&res, p),
+                ));
+                ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+                Ok(res)
+            })?;
             ::std::result::Result::Ok(res)
         }
     }
@@ -1067,6 +1079,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
+        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "MyRoot"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -1115,6 +1128,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
+    #[::tracing::instrument(level="debug", skip(handler))]
     pub fn make_MyRoot_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -1132,7 +1146,10 @@ pub mod server {
             ::fbthrift::ProtocolID::CompactProtocol => {
                 ::std::result::Result::Ok(::std::boxed::Box::new(MyRootProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
             }
-            bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
+            bad => {
+                ::tracing::error!(method = "MyRoot.", invalid_protocol = ?bad);
+                ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad))
+            }
         }
     }
     #[::async_trait::async_trait]
@@ -1180,6 +1197,7 @@ pub mod server {
             self.service
         }
 
+        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyNode.do_mid"))]
         async fn handle_do_mid<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1188,6 +1206,7 @@ pub mod server {
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+            use ::tracing::Instrument as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyNode";
@@ -1202,24 +1221,31 @@ pub mod server {
             static ARGS: &[::fbthrift::Field] = &[
             ];
 
-            let _ = p.read_struct_begin(|_| ())?;
-            loop {
-                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                match (fty, fid as ::std::primitive::i32) {
-                    (::fbthrift::TType::Stop, _) => break,
-                    (fty, _) => p.skip(fty)?,
+            ::tracing::trace_span!("deserialize_args", method = "MyNode.do_mid").in_scope(|| -> ::anyhow::Result<()> {
+                let _ = p.read_struct_begin(|_| ())?;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                    match (fty, fid as ::std::primitive::i32) {
+                        (::fbthrift::TType::Stop, _) => break,
+                        (fty, _) => p.skip(fty)?,
+                    }
+                    p.read_field_end()?;
                 }
-                p.read_field_end()?;
-            }
-            p.read_struct_end()?;
+                p.read_struct_end()?;
+                Ok(())
+            })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.do_mid(
-            ).await;
+            )
+            .instrument(::tracing::info_span!("service_handler", method = "MyNode.do_mid"))
+            .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
+                    ::tracing::info!(method = "MyNode.", "success");
                     crate::services::my_node::DoMidExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_node::DoMidExn::ApplicationException(aexn)) => {
+                    ::tracing::error!(method = "MyNode.", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1230,15 +1256,18 @@ pub mod server {
                     )
                 }
             };
-            ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
-            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "do_mid",
-                ::fbthrift::MessageType::Reply,
-                seqid,
-                |p| ::fbthrift::Serialize::write(&res, p),
-            ));
-            ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+            let res = ::tracing::trace_span!("serialize_result", method = "MyNode.do_mid").in_scope(|| -> ::anyhow::Result<_> {
+                ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
+                let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "do_mid",
+                    ::fbthrift::MessageType::Reply,
+                    seqid,
+                    |p| ::fbthrift::Serialize::write(&res, p),
+                ));
+                ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+                Ok(res)
+            })?;
             ::std::result::Result::Ok(res)
         }
     }
@@ -1299,6 +1328,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
+        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "MyNode"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -1347,6 +1377,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
+    #[::tracing::instrument(level="debug", skip(handler, supa))]
     pub fn make_MyNode_server<F, H, R, SMAKE, SS>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -1368,7 +1399,10 @@ pub mod server {
             ::fbthrift::ProtocolID::CompactProtocol => {
                 ::std::result::Result::Ok(::std::boxed::Box::new(MyNodeProcessor::<::fbthrift::CompactProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
             }
-            bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
+            bad => {
+                ::tracing::error!(method = "MyNode.", invalid_protocol = ?bad);
+                ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad))
+            }
         }
     }
     #[::async_trait::async_trait]
@@ -1416,6 +1450,7 @@ pub mod server {
             self.service
         }
 
+        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyLeaf.do_leaf"))]
         async fn handle_do_leaf<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1424,6 +1459,7 @@ pub mod server {
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+            use ::tracing::Instrument as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyLeaf";
@@ -1438,24 +1474,31 @@ pub mod server {
             static ARGS: &[::fbthrift::Field] = &[
             ];
 
-            let _ = p.read_struct_begin(|_| ())?;
-            loop {
-                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                match (fty, fid as ::std::primitive::i32) {
-                    (::fbthrift::TType::Stop, _) => break,
-                    (fty, _) => p.skip(fty)?,
+            ::tracing::trace_span!("deserialize_args", method = "MyLeaf.do_leaf").in_scope(|| -> ::anyhow::Result<()> {
+                let _ = p.read_struct_begin(|_| ())?;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                    match (fty, fid as ::std::primitive::i32) {
+                        (::fbthrift::TType::Stop, _) => break,
+                        (fty, _) => p.skip(fty)?,
+                    }
+                    p.read_field_end()?;
                 }
-                p.read_field_end()?;
-            }
-            p.read_struct_end()?;
+                p.read_struct_end()?;
+                Ok(())
+            })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.do_leaf(
-            ).await;
+            )
+            .instrument(::tracing::info_span!("service_handler", method = "MyLeaf.do_leaf"))
+            .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
+                    ::tracing::info!(method = "MyLeaf.", "success");
                     crate::services::my_leaf::DoLeafExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_leaf::DoLeafExn::ApplicationException(aexn)) => {
+                    ::tracing::error!(method = "MyLeaf.", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1466,15 +1509,18 @@ pub mod server {
                     )
                 }
             };
-            ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
-            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "do_leaf",
-                ::fbthrift::MessageType::Reply,
-                seqid,
-                |p| ::fbthrift::Serialize::write(&res, p),
-            ));
-            ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+            let res = ::tracing::trace_span!("serialize_result", method = "MyLeaf.do_leaf").in_scope(|| -> ::anyhow::Result<_> {
+                ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
+                let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "do_leaf",
+                    ::fbthrift::MessageType::Reply,
+                    seqid,
+                    |p| ::fbthrift::Serialize::write(&res, p),
+                ));
+                ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+                Ok(res)
+            })?;
             ::std::result::Result::Ok(res)
         }
     }
@@ -1535,6 +1581,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
+        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "MyLeaf"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -1583,6 +1630,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
+    #[::tracing::instrument(level="debug", skip(handler, supa))]
     pub fn make_MyLeaf_server<F, H, R, SMAKE, SS>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -1604,7 +1652,10 @@ pub mod server {
             ::fbthrift::ProtocolID::CompactProtocol => {
                 ::std::result::Result::Ok(::std::boxed::Box::new(MyLeafProcessor::<::fbthrift::CompactProtocol<F>, H, R, SS>::new(handler, supa(proto)?)))
             }
-            bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
+            bad => {
+                ::tracing::error!(method = "MyLeaf.", invalid_protocol = ?bad);
+                ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad))
+            }
         }
     }
 }

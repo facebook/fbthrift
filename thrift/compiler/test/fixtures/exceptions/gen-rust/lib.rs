@@ -1556,6 +1556,7 @@ pub mod server {
             self.service
         }
 
+        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Raiser.doBland"))]
         async fn handle_doBland<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1564,6 +1565,7 @@ pub mod server {
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+            use ::tracing::Instrument as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -1578,24 +1580,31 @@ pub mod server {
             static ARGS: &[::fbthrift::Field] = &[
             ];
 
-            let _ = p.read_struct_begin(|_| ())?;
-            loop {
-                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                match (fty, fid as ::std::primitive::i32) {
-                    (::fbthrift::TType::Stop, _) => break,
-                    (fty, _) => p.skip(fty)?,
+            ::tracing::trace_span!("deserialize_args", method = "Raiser.doBland").in_scope(|| -> ::anyhow::Result<()> {
+                let _ = p.read_struct_begin(|_| ())?;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                    match (fty, fid as ::std::primitive::i32) {
+                        (::fbthrift::TType::Stop, _) => break,
+                        (fty, _) => p.skip(fty)?,
+                    }
+                    p.read_field_end()?;
                 }
-                p.read_field_end()?;
-            }
-            p.read_struct_end()?;
+                p.read_struct_end()?;
+                Ok(())
+            })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.doBland(
-            ).await;
+            )
+            .instrument(::tracing::info_span!("service_handler", method = "Raiser.doBland"))
+            .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
+                    ::tracing::info!(method = "Raiser.", "success");
                     crate::services::raiser::DoBlandExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::DoBlandExn::ApplicationException(aexn)) => {
+                    ::tracing::error!(method = "Raiser.", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1606,18 +1615,22 @@ pub mod server {
                     )
                 }
             };
-            ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
-            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "doBland",
-                ::fbthrift::MessageType::Reply,
-                seqid,
-                |p| ::fbthrift::Serialize::write(&res, p),
-            ));
-            ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+            let res = ::tracing::trace_span!("serialize_result", method = "Raiser.doBland").in_scope(|| -> ::anyhow::Result<_> {
+                ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
+                let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "doBland",
+                    ::fbthrift::MessageType::Reply,
+                    seqid,
+                    |p| ::fbthrift::Serialize::write(&res, p),
+                ));
+                ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+                Ok(res)
+            })?;
             ::std::result::Result::Ok(res)
         }
 
+        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Raiser.doRaise"))]
         async fn handle_doRaise<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1626,6 +1639,7 @@ pub mod server {
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+            use ::tracing::Instrument as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -1640,24 +1654,31 @@ pub mod server {
             static ARGS: &[::fbthrift::Field] = &[
             ];
 
-            let _ = p.read_struct_begin(|_| ())?;
-            loop {
-                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                match (fty, fid as ::std::primitive::i32) {
-                    (::fbthrift::TType::Stop, _) => break,
-                    (fty, _) => p.skip(fty)?,
+            ::tracing::trace_span!("deserialize_args", method = "Raiser.doRaise").in_scope(|| -> ::anyhow::Result<()> {
+                let _ = p.read_struct_begin(|_| ())?;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                    match (fty, fid as ::std::primitive::i32) {
+                        (::fbthrift::TType::Stop, _) => break,
+                        (fty, _) => p.skip(fty)?,
+                    }
+                    p.read_field_end()?;
                 }
-                p.read_field_end()?;
-            }
-            p.read_struct_end()?;
+                p.read_struct_end()?;
+                Ok(())
+            })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.doRaise(
-            ).await;
+            )
+            .instrument(::tracing::info_span!("service_handler", method = "Raiser.doRaise"))
+            .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
+                    ::tracing::info!(method = "Raiser.", "success");
                     crate::services::raiser::DoRaiseExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::DoRaiseExn::ApplicationException(aexn)) => {
+                    ::tracing::error!(method = "Raiser.", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1668,22 +1689,27 @@ pub mod server {
                     )
                 }
                 ::std::result::Result::Err(exn) => {
+                    ::tracing::error!(method = "Raiser.", exception = ?exn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
                     exn
                 }
             };
-            ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
-            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "doRaise",
-                ::fbthrift::MessageType::Reply,
-                seqid,
-                |p| ::fbthrift::Serialize::write(&res, p),
-            ));
-            ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+            let res = ::tracing::trace_span!("serialize_result", method = "Raiser.doRaise").in_scope(|| -> ::anyhow::Result<_> {
+                ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
+                let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "doRaise",
+                    ::fbthrift::MessageType::Reply,
+                    seqid,
+                    |p| ::fbthrift::Serialize::write(&res, p),
+                ));
+                ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+                Ok(res)
+            })?;
             ::std::result::Result::Ok(res)
         }
 
+        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Raiser.get200"))]
         async fn handle_get200<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1692,6 +1718,7 @@ pub mod server {
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+            use ::tracing::Instrument as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -1706,24 +1733,31 @@ pub mod server {
             static ARGS: &[::fbthrift::Field] = &[
             ];
 
-            let _ = p.read_struct_begin(|_| ())?;
-            loop {
-                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                match (fty, fid as ::std::primitive::i32) {
-                    (::fbthrift::TType::Stop, _) => break,
-                    (fty, _) => p.skip(fty)?,
+            ::tracing::trace_span!("deserialize_args", method = "Raiser.get200").in_scope(|| -> ::anyhow::Result<()> {
+                let _ = p.read_struct_begin(|_| ())?;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                    match (fty, fid as ::std::primitive::i32) {
+                        (::fbthrift::TType::Stop, _) => break,
+                        (fty, _) => p.skip(fty)?,
+                    }
+                    p.read_field_end()?;
                 }
-                p.read_field_end()?;
-            }
-            p.read_struct_end()?;
+                p.read_struct_end()?;
+                Ok(())
+            })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.get200(
-            ).await;
+            )
+            .instrument(::tracing::info_span!("service_handler", method = "Raiser.get200"))
+            .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
+                    ::tracing::info!(method = "Raiser.", "success");
                     crate::services::raiser::Get200Exn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::Get200Exn::ApplicationException(aexn)) => {
+                    ::tracing::error!(method = "Raiser.", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1734,18 +1768,22 @@ pub mod server {
                     )
                 }
             };
-            ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
-            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "get200",
-                ::fbthrift::MessageType::Reply,
-                seqid,
-                |p| ::fbthrift::Serialize::write(&res, p),
-            ));
-            ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+            let res = ::tracing::trace_span!("serialize_result", method = "Raiser.get200").in_scope(|| -> ::anyhow::Result<_> {
+                ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
+                let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "get200",
+                    ::fbthrift::MessageType::Reply,
+                    seqid,
+                    |p| ::fbthrift::Serialize::write(&res, p),
+                ));
+                ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+                Ok(res)
+            })?;
             ::std::result::Result::Ok(res)
         }
 
+        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Raiser.get500"))]
         async fn handle_get500<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1754,6 +1792,7 @@ pub mod server {
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::ProtocolReader as _;
+            use ::tracing::Instrument as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -1768,24 +1807,31 @@ pub mod server {
             static ARGS: &[::fbthrift::Field] = &[
             ];
 
-            let _ = p.read_struct_begin(|_| ())?;
-            loop {
-                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                match (fty, fid as ::std::primitive::i32) {
-                    (::fbthrift::TType::Stop, _) => break,
-                    (fty, _) => p.skip(fty)?,
+            ::tracing::trace_span!("deserialize_args", method = "Raiser.get500").in_scope(|| -> ::anyhow::Result<()> {
+                let _ = p.read_struct_begin(|_| ())?;
+                loop {
+                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                    match (fty, fid as ::std::primitive::i32) {
+                        (::fbthrift::TType::Stop, _) => break,
+                        (fty, _) => p.skip(fty)?,
+                    }
+                    p.read_field_end()?;
                 }
-                p.read_field_end()?;
-            }
-            p.read_struct_end()?;
+                p.read_struct_end()?;
+                Ok(())
+            })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.get500(
-            ).await;
+            )
+            .instrument(::tracing::info_span!("service_handler", method = "Raiser.get500"))
+            .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
+                    ::tracing::info!(method = "Raiser.", "success");
                     crate::services::raiser::Get500Exn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::Get500Exn::ApplicationException(aexn)) => {
+                    ::tracing::error!(method = "Raiser.", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1796,19 +1842,23 @@ pub mod server {
                     )
                 }
                 ::std::result::Result::Err(exn) => {
+                    ::tracing::error!(method = "Raiser.", exception = ?exn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
                     exn
                 }
             };
-            ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
-            let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                p,
-                "get500",
-                ::fbthrift::MessageType::Reply,
-                seqid,
-                |p| ::fbthrift::Serialize::write(&res, p),
-            ));
-            ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+            let res = ::tracing::trace_span!("serialize_result", method = "Raiser.get500").in_scope(|| -> ::anyhow::Result<_> {
+                ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
+                let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
+                    p,
+                    "get500",
+                    ::fbthrift::MessageType::Reply,
+                    seqid,
+                    |p| ::fbthrift::Serialize::write(&res, p),
+                ));
+                ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
+                Ok(res)
+            })?;
             ::std::result::Result::Ok(res)
         }
     }
@@ -1869,6 +1919,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
+        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "Raiser"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -1917,6 +1968,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
+    #[::tracing::instrument(level="debug", skip(handler))]
     pub fn make_Raiser_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -1934,7 +1986,10 @@ pub mod server {
             ::fbthrift::ProtocolID::CompactProtocol => {
                 ::std::result::Result::Ok(::std::boxed::Box::new(RaiserProcessor::<::fbthrift::CompactProtocol<F>, H, R>::new(handler)))
             }
-            bad => ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad)),
+            bad => {
+                ::tracing::error!(method = "Raiser.", invalid_protocol = ?bad);
+                ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad))
+            }
         }
     }
 }
