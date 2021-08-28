@@ -24,19 +24,8 @@
 namespace apache::thrift::compiler {
 namespace {
 
-/**
- * t_program functions are protected so we need
- * an inheritance to access the functions
- */
-class t_program_fake : public t_program {
- public:
-  using t_program::compute_name_from_file_path;
-  using t_program::set_include_prefix;
-  using t_program::t_program;
-};
-
 // Simulates parsing a thrift file, only adding the offsets to the program.
-void add_offsets(t_program_fake& program, const std::string& content) {
+void add_offsets(t_program& program, const std::string& content) {
   size_t offset = 0;
   for (const auto& c : content) {
     offset++;
@@ -47,7 +36,7 @@ void add_offsets(t_program_fake& program, const std::string& content) {
 }
 
 TEST(TProgram, GetNamespace) {
-  auto program = t_program_fake("");
+  t_program program("");
 
   const std::string expect_1 = "this.namespace";
   program.set_namespace("java", expect_1);
@@ -67,7 +56,7 @@ TEST(TProgram, GetNamespace) {
 }
 
 TEST(TProgram, AddInclude) {
-  auto program = t_program_fake("");
+  t_program program("");
 
   const std::string expect_1 = "tprogramtest1";
   const std::string rel_file_path_1 = "./" + expect_1 + ".thrift";
@@ -88,7 +77,7 @@ TEST(TProgram, AddInclude) {
 }
 
 TEST(TProgram, SetIncludePrefix) {
-  auto program = t_program_fake("");
+  t_program program("");
 
   const std::string dir_path_1 = "/this/is/a/dir";
   const std::string dir_path_2 = "/this/is/a/dir/";
@@ -102,7 +91,7 @@ TEST(TProgram, SetIncludePrefix) {
 }
 
 TEST(TProgram, ComputeNameFromFilePath) {
-  auto program = t_program_fake("");
+  t_program program("");
 
   const std::string expect = "tprogramtest";
   const std::string file_path_1 = expect;
@@ -114,9 +103,8 @@ TEST(TProgram, ComputeNameFromFilePath) {
   EXPECT_EQ(expect, program.compute_name_from_file_path(file_path_3));
 }
 
-// Test basic functionality of t_program::get_offset().
-TEST(TProgram, GetOffsetFromBeginningOfFile) {
-  auto program = t_program_fake("");
+TEST(TProgram, GetByteOffset) {
+  t_program program("");
 
   add_offsets(
       program,
@@ -124,27 +112,28 @@ TEST(TProgram, GetOffsetFromBeginningOfFile) {
       "  1: optional A a (cpp.ref);\n"
       "}\n");
 
-  EXPECT_EQ(program.get_offset({1, 1, program}), 0); // struct begin
-  EXPECT_EQ(program.get_offset({3, 2, program}), 41); // struct end
+  EXPECT_EQ(program.get_byte_offset(0),
+            t_program::noffset); // unknown line.
+  EXPECT_EQ(
+      program.get_byte_offset(0, 7),
+      t_program::noffset); // unknown line, ignored col.
+  EXPECT_EQ(program.get_byte_offset(1), 0); // first line.
+  EXPECT_EQ(program.get_byte_offset(1, 0), 0); // first line, no extra offset.
 
-  EXPECT_EQ(program.get_offset({2, 3, program}), 13); // field begin
-  EXPECT_EQ(program.get_offset({2, 29, program}), 39); // field end
-}
+  EXPECT_EQ(program.get_byte_offset(1, 0), 0); // struct begin
+  EXPECT_EQ(program.get_byte_offset(3, 1), 41); // struct end
 
-// Test all exception throw for t_program::get_offset().
-TEST(TProgram, GetOffsetExceptions) {
-  auto program_1 = t_program_fake("");
-  auto program_2 = t_program_fake("");
+  EXPECT_EQ(program.get_byte_offset(2, 2), 13); // field begin
+  EXPECT_EQ(program.get_byte_offset(2, 28), 39); // field end
 
-  add_offsets(
-      program_1,
-      "struct A {\n"
-      "  1: optional A a (cpp.ref);\n"
-      "}\n");
-
-  EXPECT_THROW(program_1.get_offset({1, 1, program_2}), std::invalid_argument);
-  EXPECT_THROW(program_1.get_offset({0, 0, program_1}), std::invalid_argument);
-  EXPECT_THROW(program_1.get_offset({100, 100, program_1}), std::out_of_range);
+  // We can't compute the offset for a line past the end of the file.
+  EXPECT_EQ(program.get_byte_offset(100, 0), t_program::noffset);
+  // We can compute the offset if the line_offset is past the end of the line.
+  EXPECT_EQ(program.get_byte_offset(1, 14), 14);
+  // We currently can compute the line_offset when past the end of the line and
+  // file, though this is techically UB.
+  // TODO(afuller): Consider returning noffset in this case.
+  EXPECT_EQ(program.get_byte_offset(1, 100), 100);
 }
 
 } // namespace

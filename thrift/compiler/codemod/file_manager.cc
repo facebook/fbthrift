@@ -72,7 +72,7 @@ size_t file_manager::get_last_include_offset() const {
     lineno = std::max(lineno, include->lineno());
   }
 
-  return program_->get_offset({lineno + 1, 1, *program_});
+  return program_->get_byte_offset(lineno + 1);
 }
 
 void file_manager::expand_over_whitespaces(

@@ -73,6 +73,17 @@ std::string t_program::compute_name_from_file_path(std::string path) {
   return path;
 }
 
+size_t t_program::get_byte_offset(
+    size_t line, size_t line_offset) const noexcept {
+  if (line == 0) {
+    return noffset; // Not specified.
+  }
+  if (line > line_to_offset_.size()) {
+    return noffset; // No offset data provided.
+  }
+  return line_to_offset_[line - 1] + line_offset;
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

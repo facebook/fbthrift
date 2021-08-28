@@ -14,15 +14,23 @@
  * limitations under the License.
  */
 
+#include <thrift/compiler/ast/source_range.h>
+
 #include <thrift/compiler/ast/t_program.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-// Note include cycle between t_program and source_range for get_offset().
-size_t source_loc::offset() const {
-  return program().get_offset(*this);
+// Note: Must be defined here because requires t_program's definition.
+size_t source_loc::offset() const noexcept {
+  if (program_ == nullptr) {
+    return t_program::noffset;
+  }
+  // TODO(afuller): Take into account multi-byte UTF-8 characters. The current
+  // logic assumes every 'column' is one byte wide, which is only true for
+  // single byte unicode characters.
+  return program_->get_byte_offset(line_, column_ > 0 ? column_ - 1 : 0);
 }
 
 } // namespace compiler

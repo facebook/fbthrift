@@ -63,6 +63,9 @@ namespace compiler {
  */
 class t_program : public t_node {
  public:
+  // The value used when an offset is not specified/unknown.
+  static constexpr auto noffset = static_cast<size_t>(-1);
+
   /**
    * Constructor for t_program
    *
@@ -254,27 +257,24 @@ class t_program : public t_node {
    */
   std::string compute_name_from_file_path(std::string path);
 
-  // Push back the given byte offset from beginning of file to new line ('\n').
-  void add_line_offset(size_t offset) { line_to_offset_.push_back(offset); }
-
-  /**
-   * Gets the offset in bytes from beginning of file to
-   * a given source location.
-   *
-   * @param loc - The source location.
-   * @exception std::invalid_argument, std::out_of_range.
-   */
-  size_t get_offset(const source_loc& loc) const {
-    if (&loc.program() != this) {
-      throw std::invalid_argument(
-          "A program can not get the offset of a "
-          "source location that belongs to a different program.");
-    }
-    if (loc.line() == 0) {
-      throw std::invalid_argument("Unknown line value of source location (0).");
-    }
-    return line_to_offset_.at(loc.line() - 1) + loc.column() - 1;
+  // Add the byte offset, from the beginning of the file, for the next new line
+  // ('\n').
+  void add_line_offset(size_t offset) {
+    assert(line_to_offset_.empty() || offset > line_to_offset_.back());
+    line_to_offset_.push_back(offset);
   }
+  /**
+   * Computes the bytes offset for the given line, based on the offsets provied
+   * via `add_line_offset`
+   *
+   * @param line The 1-based line number.
+   * @param line_offset Optional additional 0-based byte offset to add to the
+   * result, iff line offset could be determined.
+   *
+   * @returns The byte offset, or `noffset` if line==0 or no offset data was
+   * provided for the given for line via `add_line_offset`.
+   */
+  size_t get_byte_offset(size_t line, size_t line_offset = 0) const noexcept;
 
  private:
   // All the elements owned by this program.

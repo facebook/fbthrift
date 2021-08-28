@@ -77,13 +77,10 @@ TEST(FileManagerTest, apply_replacements_test) {
   codemod::file_manager fm(program);
 
   fm.add(
-      {program.get_offset({2, 3, program}),
-       program.get_offset({2, 29, program}),
+      {program.get_byte_offset(2, 2),
+       program.get_byte_offset(2, 28),
        "@cpp.Ref{cpp.RefType.Unique}\n  1: optional string a;"});
-  fm.add(
-      {program.get_offset({3, 2, program}),
-       program.get_offset({3, 22, program}),
-       ""});
+  fm.add({program.get_byte_offset(3, 1), program.get_byte_offset(3, 21), ""});
 
   fm.apply_replacements();
 

@@ -45,9 +45,10 @@ class source_loc final {
   constexpr source_loc(int line, int column, const t_program& program) noexcept
       : line_(line), column_(column), program_(&program) {}
 
-  constexpr int line() const noexcept { return line_; }
-  constexpr int column() const noexcept { return column_; }
-  size_t offset() const;
+  int line() const noexcept { return line_; }
+  int column() const noexcept { return column_; }
+  size_t offset() const noexcept;
+
   constexpr const t_program& program() const {
     assert(program_ != nullptr);
     return *program_;
