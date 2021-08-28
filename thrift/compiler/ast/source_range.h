@@ -78,6 +78,38 @@ class source_loc final {
   const t_program* program_ = nullptr;
   size_t line_ = 0; // 1-based
   size_t col_ = 0; // Code units (bytes), 1-based
+
+  friend bool operator==(const source_loc& lhs, const source_loc& rhs) {
+    return lhs.program_ == rhs.program_ && lhs.line_ == rhs.line_ &&
+        lhs.col_ == rhs.col_;
+  }
+  friend bool operator!=(const source_loc& lhs, const source_loc& rhs) {
+    return !(lhs == rhs);
+  }
+
+  // Defines a lexigraphical ordering for (nullable) programs where
+  // nullptr comes first, then non-null programs ordered by path,
+  // lastly, ordered by address to break ties.
+  static int cmp(const t_program* lhs, const t_program* rhs);
+
+  template <typename T>
+  static int cmp(const T& lhs, const T& rhs) {
+    return lhs == rhs ? 0 : (lhs < rhs ? -1 : 1);
+  }
+  static int cmp(const source_loc& lhs, const source_loc& rhs);
+
+  friend bool operator<(const source_loc& lhs, const source_loc& rhs) {
+    return cmp(lhs, rhs) < 0;
+  }
+  friend bool operator<=(const source_loc& lhs, const source_loc& rhs) {
+    return cmp(lhs, rhs) <= 0;
+  }
+  friend bool operator>(const source_loc& lhs, const source_loc& rhs) {
+    return cmp(lhs, rhs) > 0;
+  }
+  friend bool operator>=(const source_loc& lhs, const source_loc& rhs) {
+    return cmp(lhs, rhs) >= 0;
+  }
 };
 
 /**
@@ -102,17 +134,8 @@ class source_range final {
         end_line_(end_line),
         end_col_(end_column) {}
 
-  source_range(const source_loc& begin, const source_loc& end)
-      : source_range(
-            begin.program(),
-            begin.line(),
-            begin.column(),
-            end.line(),
-            end.column()) {
-    if (&begin.program() != &end.program()) {
-      throw std::invalid_argument("A source_range cannot span programs/files.");
-    }
-  }
+  // Throws std::invalid_argument if begin and end refer to different programs.
+  source_range(const source_loc& begin, const source_loc& end);
 
   constexpr source_loc begin() const noexcept {
     return {*program_, begin_line_, begin_col_};

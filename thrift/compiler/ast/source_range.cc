@@ -33,6 +33,53 @@ size_t source_loc::offset() const noexcept {
   return program_->get_byte_offset(line_, col_ > 0 ? col_ - 1 : 0);
 }
 
+int source_loc::cmp(const t_program* lhs, const t_program* rhs) {
+  if (lhs == rhs) {
+    return 0;
+  }
+
+  // nullptr comes first.
+  if (lhs == nullptr) {
+    return rhs == nullptr ? 0 : -1;
+  }
+  if (rhs == nullptr) {
+    return 1;
+  }
+
+  // Then order by path.
+  if (int result = lhs->path().compare(rhs->path())) {
+    return result;
+  }
+
+  // Then by pointer, to break ties.
+  return cmp<const t_program*>(lhs, rhs);
+}
+
+int source_loc::cmp(const source_loc& lhs, const source_loc& rhs) {
+  // Order by program.
+  if (auto result = cmp(lhs.program_, rhs.program_)) {
+    return result;
+  }
+  // Then line.
+  if (auto result = cmp(lhs.line_, rhs.line_)) {
+    return result;
+  }
+  // Then column.
+  return cmp(lhs.col_, rhs.col_);
+}
+
+source_range::source_range(const source_loc& begin, const source_loc& end)
+    : source_range(
+          begin.program(),
+          begin.line(),
+          begin.column(),
+          end.line(),
+          end.column()) {
+  if (&begin.program() != &end.program()) {
+    throw std::invalid_argument("A source_range cannot span programs/files.");
+  }
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache
