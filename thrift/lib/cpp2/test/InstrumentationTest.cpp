@@ -829,12 +829,6 @@ TEST(ThriftServerDeathTest, getSnapshotOnServerShutdown) {
           // We need two threads, so that we can test when one has an open
           // connection and one without any connections
           server.setNumIOWorkerThreads(2);
-          // We need at least 2 cpu threads for the test
-          auto tm = ThreadManager::newSimpleThreadManager(2);
-          tm->threadFactory(std::make_shared<PosixThreadFactory>(
-              PosixThreadFactory::ATTACHED));
-          tm->start();
-          server.setThreadManager(tm);
           server.setWorkersJoinTimeout(1s);
         });
 
