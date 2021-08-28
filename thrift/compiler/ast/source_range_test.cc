@@ -47,25 +47,25 @@ TEST_F(SourceLocTest, Offset) {
 
   EXPECT_EQ(source_loc().offset(), t_program::noffset); // unknown loc.
   EXPECT_EQ(
-      source_loc(0, 7, program).offset(),
+      source_loc(program, 0, 7).offset(),
       t_program::noffset); // unknown line, ignored col.
-  EXPECT_EQ(source_loc(1, 0, program).offset(), 0); // first line, unknown col.
+  EXPECT_EQ(source_loc(program, 1, 0).offset(), 0); // first line, unknown col.
 
-  EXPECT_EQ(source_loc(1, 1, program).offset(), 0); // struct begin
-  EXPECT_EQ(source_loc(3, 2, program).offset(), 41); // struct end
+  EXPECT_EQ(source_loc(program, 1, 1).offset(), 0); // struct begin
+  EXPECT_EQ(source_loc(program, 3, 2).offset(), 41); // struct end
 
-  EXPECT_EQ(source_loc(2, 3, program).offset(), 13); // field begin
-  EXPECT_EQ(source_loc(2, 29, program).offset(), 39); // field end
+  EXPECT_EQ(source_loc(program, 2, 3).offset(), 13); // field begin
+  EXPECT_EQ(source_loc(program, 2, 29).offset(), 39); // field end
 
-  EXPECT_EQ(source_loc(100, 1, program).offset(), t_program::noffset);
+  EXPECT_EQ(source_loc(program, 100, 1).offset(), t_program::noffset);
 }
 
 TEST_F(SourceRangeTest, ProgramMismatch) {
   t_program program1("");
   t_program program2("");
 
-  source_loc loc1(1, 0, program1);
-  source_loc loc2(1, 0, program2);
+  source_loc loc1(program1, 1, 1);
+  source_loc loc2(program2, 2, 1);
 
   EXPECT_THROW(source_range(loc1, loc2), std::invalid_argument);
 }

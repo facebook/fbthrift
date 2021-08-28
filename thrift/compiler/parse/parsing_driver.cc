@@ -450,7 +450,7 @@ int parsing_driver::pop_node(LineType lineType) {
 
 source_range parsing_driver::get_source_range(const YYLTYPE& loc) {
   return source_range(
-      loc.begin.line, loc.begin.column, loc.end.line, loc.end.column, *program);
+      *program, loc.begin.line, loc.begin.column, loc.end.line, loc.end.column);
 }
 
 void parsing_driver::finish_node(

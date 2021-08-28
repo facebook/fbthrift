@@ -38,31 +38,46 @@ class source_loc final {
   /**
    * Constructor for source_loc
    *
-   * @param line - The 1-based line of the location.
-   * @param column - The 1-based column of the location.
-   * @param program - The Thrift program this location belongs to.
+   * @param program - The program this location belongs to.
+   * @param line - The 1-based line number.
+   * @param column - The 1-based column number.
    */
-  constexpr source_loc(int line, int column, const t_program& program) noexcept
-      : line_(line), column_(column), program_(&program) {}
+  constexpr source_loc(
+      const t_program& program, size_t line, size_t column) noexcept
+      : program_(&program), line_(line), col_(column) {}
 
-  int line() const noexcept { return line_; }
-  int column() const noexcept { return column_; }
-  size_t offset() const noexcept;
+  // If the location is specified/known.
+  constexpr bool has_loc() const noexcept { return program_ != nullptr; }
 
+  // The program associated with the location.
+  //
+  // UB if `has_loc()` returns false.
   constexpr const t_program& program() const {
     assert(program_ != nullptr);
     return *program_;
   }
 
-  constexpr explicit operator bool() const noexcept {
-    return program_ != nullptr;
-  }
+  // The 1-based line number.
+  //
+  // Returns 0 if unknown/not specified.
+  size_t line() const noexcept { return line_; }
+  // The 1-based column number.
+  //
+  // Returns 0 if unknown/not specified.
+  size_t column() const noexcept { return col_; }
+
+  // The 0-based byte offset from the beginning of the program.
+  //
+  // Returns t_program::noffset if unknown/not specified.
+  size_t offset() const noexcept;
+
+  constexpr explicit operator bool() const noexcept { return has_loc(); }
   constexpr source_loc& operator=(const source_loc& loc) noexcept = default;
 
  private:
-  int line_ = 0; // 1-based
-  int column_ = 0; // Code units (bytes), 1-based
   const t_program* program_ = nullptr;
+  size_t line_ = 0; // 1-based
+  size_t col_ = 0; // Code units (bytes), 1-based
 };
 
 /**
@@ -76,54 +91,53 @@ class source_range final {
   constexpr source_range(source_range const&) noexcept = default;
 
   constexpr source_range(
-      int begin_line,
-      int begin_column,
-      int end_line,
-      int end_column,
-      const t_program& program) noexcept
-      : begin_line_(begin_line),
-        begin_column_(begin_column),
+      const t_program& program,
+      size_t begin_line,
+      size_t begin_column,
+      size_t end_line,
+      size_t end_column) noexcept
+      : program_(&program),
+        begin_line_(begin_line),
+        begin_col_(begin_column),
         end_line_(end_line),
-        end_column_(end_column),
-        program_(&program) {}
+        end_col_(end_column) {}
 
   source_range(const source_loc& begin, const source_loc& end)
       : source_range(
+            begin.program(),
             begin.line(),
             begin.column(),
             end.line(),
-            end.column(),
-            begin.program()) {
+            end.column()) {
     if (&begin.program() != &end.program()) {
-      throw std::invalid_argument(
-          "Construction error: Cannot construct from begin source_loc and end "
-          "source_loc with different programs to a single source_range.");
+      throw std::invalid_argument("A source_range cannot span programs/files.");
     }
   }
 
   constexpr source_loc begin() const noexcept {
-    return {begin_line_, begin_column_, *program_};
+    return {*program_, begin_line_, begin_col_};
   }
   constexpr source_loc end() const noexcept {
-    return {end_line_, end_column_, *program_};
+    return {*program_, end_line_, end_col_};
   }
   constexpr const t_program& program() const {
     assert(program_ != nullptr);
     return *program_;
   }
 
-  constexpr explicit operator bool() const noexcept {
-    return program_ != nullptr;
-  }
+  // If the range is specified/known.
+  constexpr bool has_range() const noexcept { return program_ != nullptr; }
+
+  constexpr explicit operator bool() const noexcept { return has_range(); }
   constexpr source_range& operator=(const source_range& range) noexcept =
       default;
 
  private:
-  int begin_line_ = 0; // 1-based
-  int begin_column_ = 0; // Code units (bytes), 1-based
-  int end_line_ = 0; // 1-based
-  int end_column_ = 0; // Code units (bytes), 1-based
   const t_program* program_ = nullptr;
+  size_t begin_line_ = 0; // 1-based
+  size_t begin_col_ = 0; // Code units (bytes), 1-based
+  size_t end_line_ = 0; // 1-based
+  size_t end_col_ = 0; // Code units (bytes), 1-based
 };
 
 } // namespace compiler

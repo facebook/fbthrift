@@ -30,7 +30,7 @@ size_t source_loc::offset() const noexcept {
   // TODO(afuller): Take into account multi-byte UTF-8 characters. The current
   // logic assumes every 'column' is one byte wide, which is only true for
   // single byte unicode characters.
-  return program_->get_byte_offset(line_, column_ > 0 ? column_ - 1 : 0);
+  return program_->get_byte_offset(line_, col_ > 0 ? col_ - 1 : 0);
 }
 
 } // namespace compiler
