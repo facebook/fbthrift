@@ -24,6 +24,8 @@ namespace detail {
 enum class ReservedId : int16_t {
   kOffset = -32768, // Lazy deserialization
   kIndex = -32767, // Lazy deserialization
+  kExpectedRandomNumber = -32766, // Lazy deserialization
+  kActualRandomNumber = -32765, // Lazy deserialization
 };
 } // namespace detail
 } // namespace thrift

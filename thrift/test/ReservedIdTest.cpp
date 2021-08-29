@@ -35,6 +35,8 @@ void for_each_id(F f) {
     switch (static_cast<ReservedId>(i)) {
       case ReservedId::kIndex:
       case ReservedId::kOffset:
+      case ReservedId::kExpectedRandomNumber:
+      case ReservedId::kActualRandomNumber:
         f(i);
     };
   }

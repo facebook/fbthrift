@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include <folly/Random.h>
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/detail/index.h>
 #include <thrift/lib/cpp2/reflection/testing.h>
@@ -24,6 +25,9 @@
 #include <thrift/test/lazy_deserialization/gen-cpp2/terse_writes_fatal_all.h>
 
 namespace apache::thrift::test {
+
+const int64_t kRandomValue = 1234512345;
+
 // Represent the field header and actual field data in serialized data
 struct FieldToken {
   std::string header, value;
@@ -90,15 +94,31 @@ std::string genFieldHeader(TType type, int16_t id, Serializer<Reader, Writer>) {
   return output.moveAsValue().moveToFbString().toStdString();
 }
 
+template <class Reader, class Writer>
+std::string writeI64(int64_t i, Serializer<Reader, Writer>) {
+  IOBufQueue output;
+  Writer writer;
+  writer.setOutput(&output);
+  writer.writeI64(i);
+  return output.moveAsValue().moveToFbString().toStdString();
+}
+
+template <class Serializer>
+bool cheapToSkipListOfDouble(Serializer) {
+  static_assert(
+      std::is_same_v<Serializer, BinarySerializer> ||
+      std::is_same_v<Serializer, CompactSerializer>);
+  return std::is_same_v<Serializer, BinarySerializer>;
+}
+
 template <class IndexedStruct, class Serializer>
 IndexedStruct genIndexedStruct(Serializer ser) {
   auto obj = gen<IndexedStruct>();
   auto tokens = tokenize(obj, ser);
   obj.serialized_data_size_ref() =
       tokens[1].size() + tokens[2].size() + tokens[3].size() + tokens[4].size();
-  if (std::is_same_v<Serializer, CompactSerializer>) {
-    // field2 and field4 are hard to skip for CompactProtocol, but not
-    // BinaryProtocol
+  if (!cheapToSkipListOfDouble(ser)) {
+    // Only add index field if list<double> is not cheap to skip
     obj.field_id_to_size_ref() = {
         {2, tokens[2].value.size()},
         {4, tokens[4].value.size()},
@@ -181,5 +201,48 @@ TYPED_TEST(LazyDeserialization, LazyFooToIndexedFoo) {
   EXPECT_EQ(lazyFoo.field4_ref(), indexedFoo.field4_ref());
 
   EXPECT_THRIFT_EQ(indexedFoo, genIndexedStruct<IndexedStruct>(Serializer{}));
+}
+
+TYPED_TEST(LazyDeserialization, ReadRandomNumber) {
+  using Serializer = typename TypeParam::Serializer;
+  using LazyStruct = typename TypeParam::LazyStruct;
+  using IndexedStruct = typename TypeParam::IndexedStruct;
+
+  auto indexedFoo = genIndexedStruct<IndexedStruct>(Serializer{});
+  indexedFoo.field_id_to_size_ref()[detail::kActualRandomNumberFieldId] =
+      kRandomValue;
+  auto tokens = tokenize(indexedFoo, Serializer{});
+
+  // add random field
+  tokens.insert(tokens.begin(), FieldToken{});
+
+  // Replace header with internal field ids
+  tokens[0].header = genFieldHeader(
+      detail::kExpectedRandomNumberField.type,
+      detail::kExpectedRandomNumberField.id,
+      Serializer{});
+  tokens[1].header = genFieldHeader(
+      detail::kSizeField.type, detail::kSizeField.id, Serializer{});
+  tokens.rbegin()->header = genFieldHeader(
+      detail::kIndexField.type, detail::kIndexField.id, Serializer{});
+
+  {
+    // Random number matches
+    tokens[0].value = writeI64(kRandomValue, Serializer{});
+    auto lazyFoo = this->template deserialize<LazyStruct>(merge(tokens));
+
+    EXPECT_TRUE(get_field4(lazyFoo).empty());
+    EXPECT_EQ(lazyFoo.field4_ref(), indexedFoo.field4_ref());
+  }
+  {
+    tokens[0].value = writeI64(kRandomValue - 1, Serializer{});
+    auto lazyFoo = this->template deserialize<LazyStruct>(merge(tokens));
+
+    // Due to random number mismatch, index won't be used.
+    // We only deserialize it lazily if field4 can be skipped cheaply
+    EXPECT_EQ(
+        get_field4(lazyFoo).empty(), cheapToSkipListOfDouble(Serializer{}));
+    EXPECT_EQ(lazyFoo.field4_ref(), indexedFoo.field4_ref());
+  }
 }
 } // namespace apache::thrift::test
