@@ -26,6 +26,7 @@
 
 #include <folly/CPortability.h>
 #include <folly/Optional.h>
+#include <folly/Range.h>
 #include <folly/Traits.h>
 #include <folly/Utility.h>
 #include <folly/container/View.h>
@@ -85,6 +86,7 @@ using maybe_get_element_type_t = typename maybe_get_element_type<T>::type;
 
 enum class StringFieldType {
   String,
+  StringView,
   Binary,
   IOBuf,
   IOBufPtr,
@@ -114,6 +116,8 @@ struct UnionExt {
   VoidFuncPtr clear;
 
   ptrdiff_t unionTypeOffset;
+  int (*getActiveId)(const void*);
+  void (*setActiveId)(void*, int);
 
   // Value initializes using placement new into the member.
   // Generated code should order this list by fields key order.
@@ -125,6 +129,8 @@ template <std::int16_t NumFields>
 struct UnionExtN {
   VoidFuncPtr clear;
   ptrdiff_t unionTypeOffset;
+  int (*getActiveId)(const void*);
+  void (*setActiveId)(void*, int);
   VoidFuncPtr initMember[NumFields];
 };
 
@@ -133,6 +139,10 @@ struct StructInfo {
   const char* name;
   // This should be set to nullptr when not a union.
   const UnionExt* unionExt = nullptr;
+  bool (*getIsset)(const void*, ptrdiff_t);
+  void (*setIsset)(void*, ptrdiff_t, bool);
+  // Use for other languages to pass in additional information.
+  const void* customExt;
   FieldInfo fieldInfos[];
 };
 
@@ -142,6 +152,9 @@ struct StructInfoN {
   std::int16_t numFields = NumFields;
   const char* name;
   const void* unionExt = nullptr;
+  bool (*getIsset)(const void*, ptrdiff_t);
+  void (*setIsset)(void*, ptrdiff_t, bool);
+  const void* customExt;
   FieldInfo fieldInfos[NumFields];
 };
 
@@ -225,6 +238,7 @@ union ThriftValue {
   explicit ThriftValue(float value) : floatValue(value) {}
   explicit ThriftValue(double value) : doubleValue(value) {}
   explicit ThriftValue(const void* value) : object(value) {}
+  explicit ThriftValue(folly::StringPiece value) : stringViewValue(value) {}
 
   bool boolValue;
   std::int8_t int8Value;
@@ -234,6 +248,7 @@ union ThriftValue {
   float floatValue;
   double doubleValue;
   const void* object;
+  folly::StringPiece stringViewValue;
 };
 
 using OptionalThriftValue = folly::Optional<ThriftValue>;

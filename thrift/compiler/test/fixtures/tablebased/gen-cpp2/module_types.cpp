@@ -270,6 +270,9 @@ constexpr ::apache::thrift::detail::StructInfoN<5> __fbthrift_struct_info_Trivia
   /* .numFields */ 5,
   /* .name */ "TrivialTypesStruct",
   /* .unionExt */ nullptr,
+  /* .getIsset */ nullptr,
+  /* .setIsset */ nullptr,
+  /* .customExt */ nullptr,
   /* .fieldInfos */ {
   {
     /* .id */ 1,
@@ -520,6 +523,9 @@ constexpr ::apache::thrift::detail::StructInfoN<8> __fbthrift_struct_info_Contai
   /* .numFields */ 8,
   /* .name */ "ContainerStruct",
   /* .unionExt */ nullptr,
+  /* .getIsset */ nullptr,
+  /* .setIsset */ nullptr,
+  /* .customExt */ nullptr,
   /* .fieldInfos */ {
   {
     /* .id */ 2,
@@ -677,6 +683,8 @@ template uint32_t ExampleUnion::serializedSizeZC<>(apache::thrift::SimpleJSONPro
 constexpr ::apache::thrift::detail::UnionExtN<2> ExampleUnion_unionExt = {
   /* .clear */ ::apache::thrift::detail::clearUnion<::test::fixtures::tablebased::ExampleUnion>,
   /* .unionTypeOffset */ ::apache::thrift::detail::unionTypeOffset<::test::fixtures::tablebased::ExampleUnion>(),
+  /* .getActiveId */ nullptr,
+  /* .setActiveId */ nullptr,
   /* .initMember */ {
   ::apache::thrift::detail::placementNewUnionValue<::test::fixtures::tablebased::ContainerStruct>,
 ::apache::thrift::detail::placementNewUnionValue<::test::fixtures::tablebased::TrivialTypesStruct>},
@@ -685,6 +693,9 @@ constexpr ::apache::thrift::detail::StructInfoN<2> __fbthrift_struct_info_Exampl
   /* .numFields */ 2,
   /* .name */ "ExampleUnion",
   /* .unionExt */ &ExampleUnion_unionExt,
+  /* .getIsset */ nullptr,
+  /* .setIsset */ nullptr,
+  /* .customExt */ nullptr,
   /* .fieldInfos */ {
   {
     /* .id */ 1,

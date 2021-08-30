@@ -185,6 +185,8 @@ template uint32_t <%struct:name%>::serializedSizeZC<>(apache::thrift::NimbleProt
 constexpr ::apache::thrift::detail::UnionExtN<<%struct:fields_size%>> <%struct:name%>_unionExt = {
   /* .clear */ ::apache::thrift::detail::clearUnion<<% > common/namespace_cpp2 %><%struct:name%>>,
   /* .unionTypeOffset */ ::apache::thrift::detail::unionTypeOffset<<% > common/namespace_cpp2 %><%struct:name%>>(),
+  /* .getActiveId */ nullptr,
+  /* .setActiveId */ nullptr,
   /* .initMember */ {
   <%#struct:fields_in_key_order%><%#field:type%>::apache::thrift::detail::placementNewUnionValue<<%field:cpp_storage_type%>><% > common/comma_newline%><%!
 %><%/field:type%><%/struct:fields_in_key_order%>},
@@ -199,6 +201,9 @@ constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthri
   %><%^struct:union?%>
   /* .unionExt */ nullptr,<%!
   %><%/struct:union?%>
+  /* .getIsset */ nullptr,
+  /* .setIsset */ nullptr,
+  /* .customExt */ nullptr,
   /* .fieldInfos */ {
 <%#struct:fields_in_key_order%>
   {

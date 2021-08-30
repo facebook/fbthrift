@@ -17,6 +17,7 @@
 #include "thrift/lib/cpp2/protocol/TableBasedSerializer.h"
 
 #include "folly/CppAttributes.h"
+#include "folly/Range.h"
 #include "glog/logging.h"
 #include "thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h"
 #include "thrift/lib/cpp2/protocol/ProtocolReaderWireTypeInfo.h"
@@ -57,6 +58,11 @@ FOLLY_ERASE void* invokeSet(VoidFuncPtr set, void* object) {
   return reinterpret_cast<void* (*)(void*)>(set)(object);
 }
 
+FOLLY_ERASE void* invokeStructSet(const TypeInfo& info, void* object) {
+  return reinterpret_cast<void* (*)(void*, const TypeInfo&)>(info.set)(
+      object, info);
+}
+
 template <class Protocol_>
 const FieldInfo* FOLLY_NULLABLE findFieldInfo(
     Protocol_* iprot,
@@ -89,16 +95,50 @@ const FieldInfo* FOLLY_NULLABLE findFieldInfo(
   return nullptr;
 }
 
-// Returns a reference to the data member that holds the active field id for a
-// Thrift union object.
-inline const int& getActiveId(const void* object, const StructInfo& info) {
+// Returns active field id for a Thrift union object.
+inline int getActiveId(const void* object, const StructInfo& info) {
+  auto getActiveIdFunc = info.unionExt->getActiveId;
+  if (getActiveIdFunc != nullptr) {
+    return getActiveIdFunc(object);
+  }
   return *reinterpret_cast<const int*>(
       static_cast<const char*>(object) + info.unionExt->unionTypeOffset);
 }
 
-inline const bool& fieldIsSet(const void* object, ptrdiff_t offset) {
+// Sets the active field id for a Thrift union object.
+inline void setActiveId(void* object, const StructInfo& info, int value) {
+  auto setActiveIdFunc = info.unionExt->setActiveId;
+  if (setActiveIdFunc != nullptr) {
+    setActiveIdFunc(object, value);
+  }
+  *reinterpret_cast<int*>(
+      static_cast<char*>(object) + info.unionExt->unionTypeOffset) = value;
+}
+
+inline bool isFieldSet(
+    const void* object, const FieldInfo& info, const StructInfo& structInfo) {
+  if (structInfo.getIsset != nullptr) {
+    return structInfo.getIsset(object, info.issetOffset);
+  }
+
+  if (info.issetOffset == 0) {
+    return true; // return true for union fields
+  }
   return *reinterpret_cast<const bool*>(
-      offset + static_cast<const char*>(object));
+      static_cast<const char*>(object) + info.issetOffset);
+}
+
+inline void markFieldAsSet(
+    void* object, const FieldInfo& info, const StructInfo& structInfo) {
+  if (structInfo.setIsset != nullptr) {
+    structInfo.setIsset(object, info.issetOffset, true);
+    return;
+  }
+  if (info.issetOffset == 0) {
+    return;
+  }
+  *reinterpret_cast<bool*>(static_cast<char*>(object) + info.issetOffset) =
+      true;
 }
 
 template <class Protocol_>
@@ -115,7 +155,7 @@ void read(
       read<Protocol_>(
           iprot,
           *static_cast<const StructInfo*>(typeInfo.typeExt),
-          typeInfo.set ? invokeSet(typeInfo.set, object) : object);
+          typeInfo.set ? invokeStructSet(typeInfo, object) : object);
       readState.afterSubobject(iprot);
       break;
     case protocol::TType::T_I64: {
@@ -169,6 +209,13 @@ void read(
         case StringFieldType::String:
           iprot->readString(*static_cast<std::string*>(object));
           break;
+        case StringFieldType::StringView: {
+          std::string temp;
+          iprot->readBinary(temp);
+          reinterpret_cast<void (*)(void*, const std::string&)>(typeInfo.set)(
+              object, temp);
+          break;
+        }
         case StringFieldType::Binary:
           iprot->readBinary(*static_cast<std::string*>(object));
           break;
@@ -369,6 +416,9 @@ size_t write(Protocol_* iprot, const TypeInfo& typeInfo, ThriftValue value) {
         case StringFieldType::String:
           return iprot->writeString(
               *static_cast<const std::string*>(value.object));
+        case StringFieldType::StringView:
+          return iprot->writeBinary(
+              static_cast<const folly::StringPiece>(value.stringViewValue));
         case StringFieldType::Binary:
           return iprot->writeBinary(
               *static_cast<const std::string*>(value.object));
@@ -500,14 +550,16 @@ void read(Protocol_* iprot, const StructInfo& structInfo, void* object) {
       return;
     }
     if (const auto* fieldInfo = findFieldInfo(iprot, readState, structInfo)) {
-      auto& activeId = const_cast<int&>(getActiveId(object, structInfo));
-      if (activeId != 0) {
+      if (getActiveId(object, structInfo) != 0) {
         structInfo.unionExt->clear(object);
       }
       void* value = getMember(*fieldInfo, object);
-      structInfo.unionExt->initMember[fieldInfo - structInfo.fieldInfos](value);
+      if (structInfo.unionExt->initMember[0] != nullptr) {
+        structInfo.unionExt->initMember[fieldInfo - structInfo.fieldInfos](
+            value);
+      }
       read(iprot, *fieldInfo->typeInfo, readState, value);
-      activeId = fieldInfo->id;
+      setActiveId(object, structInfo, fieldInfo->id);
     } else {
       skip(iprot, readState);
     }
@@ -565,9 +617,7 @@ void read(Protocol_* iprot, const StructInfo& structInfo, void* object) {
     // Id and type are what we expect, try read.
     prevFieldId = fieldInfo->id;
     read(iprot, *fieldInfo->typeInfo, readState, getMember(*fieldInfo, object));
-    if (fieldInfo->issetOffset > 0) {
-      const_cast<bool&>(fieldIsSet(object, fieldInfo->issetOffset)) = true;
-    }
+    markFieldAsSet(object, *fieldInfo, structInfo);
   }
 }
 
@@ -578,14 +628,15 @@ size_t write(
   size_t written = iprot->writeStructBegin(structInfo.name);
   if (UNLIKELY(structInfo.unionExt != nullptr)) {
     const FieldInfo* end = structInfo.fieldInfos + structInfo.numFields;
-    const auto& activeId = getActiveId(object, structInfo);
+    int activeId = getActiveId(object, structInfo);
     const FieldInfo* found = std::lower_bound(
         structInfo.fieldInfos,
         end,
         activeId,
         [](const FieldInfo& lhs, FieldID rhs) { return lhs.id < rhs; });
     if (found < end && found->id == activeId) {
-      const OptionalThriftValue value = getValue(*found->typeInfo, object);
+      const OptionalThriftValue value =
+          getValue(*found->typeInfo, getMember(*found, object));
       if (value.hasValue()) {
         written += writeField(iprot, *found, value.value());
       } else if (found->typeInfo->type == protocol::TType::T_STRUCT) {
@@ -600,11 +651,10 @@ size_t write(
   } else {
     for (std::int16_t index = 0; index < structInfo.numFields; index++) {
       const auto& fieldInfo = structInfo.fieldInfos[index];
-      if (fieldInfo.isUnqualified || fieldInfo.issetOffset == 0 ||
-          fieldIsSet(object, fieldInfo.issetOffset)) {
-        const OptionalThriftValue value =
-            getValue(*fieldInfo.typeInfo, getMember(fieldInfo, object));
-        if (value.hasValue()) {
+      if (fieldInfo.isUnqualified ||
+          isFieldSet(object, fieldInfo, structInfo)) {
+        if (OptionalThriftValue value =
+                getValue(*fieldInfo.typeInfo, getMember(fieldInfo, object))) {
           written += writeField(iprot, fieldInfo, value.value());
         }
       }
