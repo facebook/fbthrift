@@ -58,37 +58,7 @@ TEST_F(HandlerTest, async_eb_result_nullptr) {
   EXPECT_THAT(client->semifuture_get_string_eb().getTry(), IsMissingResult());
 }
 
-TEST_F(HandlerTest, async_eb_result_in_thread_nullptr) {
-  struct Handler : HandlerGenericSvIf {
-    void async_eb_get_string_eb(
-        unique_ptr<HandlerCallback<unique_ptr<string>>> callback) override {
-      callback->result(unique_ptr<string>(nullptr));
-    }
-  };
-  ScopedServerInterfaceThread runner{make_shared<Handler>()};
-  auto client =
-      runner.newClient<HandlerGenericAsyncClient>(nullptr, [](auto socket) {
-        return HeaderClientChannel::newChannel(std::move(socket));
-      });
-  EXPECT_THAT(client->semifuture_get_string_eb().getTry(), IsMissingResult());
-}
-
 TEST_F(HandlerTest, async_tm_result_nullptr) {
-  struct Handler : HandlerGenericSvIf {
-    void async_tm_get_string(
-        unique_ptr<HandlerCallback<unique_ptr<string>>> callback) override {
-      callback->result(unique_ptr<string>(nullptr));
-    }
-  };
-  ScopedServerInterfaceThread runner{make_shared<Handler>()};
-  auto client =
-      runner.newClient<HandlerGenericAsyncClient>(nullptr, [](auto socket) {
-        return HeaderClientChannel::newChannel(std::move(socket));
-      });
-  EXPECT_THAT(client->semifuture_get_string().getTry(), IsMissingResult());
-}
-
-TEST_F(HandlerTest, async_tm_result_in_thread_nullptr) {
   struct Handler : HandlerGenericSvIf {
     void async_tm_get_string(
         unique_ptr<HandlerCallback<unique_ptr<string>>> callback) override {
