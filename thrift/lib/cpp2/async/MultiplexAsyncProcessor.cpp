@@ -153,24 +153,24 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
       folly::EventBase* eb,
       concurrency::ThreadManager* tm) override {
     auto maybeTrackInteraction = [&](AsyncProcessor& processor) {
-      if (defaultInteractionProcessor_ == nullptr) {
-        // The first to create an interaction gets the privilege of being the
-        // "default"
-        defaultInteractionProcessor_ = &processor;
-        return;
-      }
-      if (&processor == defaultInteractionProcessor_) {
-        return;
-      }
       if (auto interactionCreate = context->getInteractionCreate();
           interactionCreate.has_value() &&
           *interactionCreate->interactionId_ref() > 0) {
-        // Note that when there is a duplicate interaction we do not replace the
-        // existing entry. A connection should have unique interaction IDs which
-        // means that the underlying processor should fail (and close the
-        // connection) - it's safe to ignore the duplicated ID.
-        inflightInteractions_.emplace(
-            *interactionCreate->interactionId_ref(), &processor);
+        if (&processor == defaultInteractionProcessor_) {
+          return;
+        }
+        if (defaultInteractionProcessor_ == nullptr) {
+          // The first to create an interaction gets the privilege of being the
+          // "default"
+          defaultInteractionProcessor_ = &processor;
+        } else {
+          // Note that when there is a duplicate interaction we do not replace
+          // the existing entry. A connection should have unique interaction IDs
+          // which means that the underlying processor should fail (and close
+          // the connection) - it's safe to ignore the duplicated ID.
+          inflightInteractions_.emplace(
+              *interactionCreate->interactionId_ref(), &processor);
+        }
       }
     };
 
