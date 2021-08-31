@@ -857,6 +857,19 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   std::unique_ptr<AsyncProcessor> getDecoratedProcessorWithoutEventHandlers()
       const;
 
+  /**
+   * A struct containing all "extra" internal interfaces that the service
+   * multiplexes behind the main user-defined interface.
+   *
+   * See ThriftServer::getDecoratedProcessorFactory.
+   */
+  struct ExtraInterfaces {
+    // See ThriftServer::setMonitoringInterface.
+    std::shared_ptr<MonitoringServerInterface> monitoring;
+    // See ThriftServer::setStatusInterface.
+    std::shared_ptr<StatusServerInterface> status;
+  };
+
   // ThriftServer by defaults uses a global ShutdownSocketSet, so all socket's
   // FDs are registered there. But in some tests you might want to simulate 2
   // ThriftServer running in different processes, so their ShutdownSocketSet are

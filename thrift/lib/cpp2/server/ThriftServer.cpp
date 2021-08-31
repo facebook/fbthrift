@@ -75,6 +75,12 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
   return {folly::makeSemiFuture(folly::unit), 0ms};
 }
 
+THRIFT_PLUGGABLE_FUNC_REGISTER(
+    apache::thrift::ThriftServer::ExtraInterfaces,
+    createDefaultExtraInterfaces) {
+  return {nullptr /* monitoring */, nullptr /* status */};
+}
+
 namespace {
 
 [[noreturn]] void try_quick_exit(int code) {
@@ -147,6 +153,9 @@ ThriftServer::ThriftServer()
     sslPolicy_ = SSLPolicy::PERMITTED;
   }
   metadata().wrapper = "ThriftServer-cpp";
+  auto extraInterfaces = THRIFT_PLUGGABLE_FUNC(createDefaultExtraInterfaces)();
+  setMonitoringInterface(std::move(extraInterfaces.monitoring));
+  setStatusInterface(std::move(extraInterfaces.status));
 }
 
 ThriftServer::ThriftServer(
