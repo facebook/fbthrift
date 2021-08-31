@@ -11,7 +11,6 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -27,11 +26,11 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::Future<folly::Unit> query(
+    folly::SemiFuture<folly::Unit> query(
       apache::thrift::RpcOptions& rpcOptions,
       ::cpp2::MyStruct arg_s,
       ::cpp2::Included arg_i);
-    folly::Future<folly::Unit> has_arg_docs(
+    folly::SemiFuture<folly::Unit> has_arg_docs(
       apache::thrift::RpcOptions& rpcOptions,
       ::cpp2::MyStruct arg_s,
       ::cpp2::Included arg_i);

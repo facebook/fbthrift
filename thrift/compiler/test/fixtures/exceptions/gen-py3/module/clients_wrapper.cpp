@@ -10,64 +10,68 @@
 namespace cpp2 {
 
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 RaiserClientWrapper::doBland(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_doBland, channel_);
-  client->doBland(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_doBland(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 RaiserClientWrapper::doRaise(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_doRaise, channel_);
-  client->doRaise(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_doRaise(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::string>
+folly::SemiFuture<std::string>
 RaiserClientWrapper::get200(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
-  folly::Promise<std::string> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_get200, channel_);
-  client->get200(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_get200(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::string>
+folly::SemiFuture<std::string>
 RaiserClientWrapper::get500(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::RaiserAsyncClient*>(async_client_.get());
-  folly::Promise<std::string> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_get500, channel_);
-  client->get500(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_get500(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
 } // namespace cpp2

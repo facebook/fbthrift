@@ -10,23 +10,24 @@
 namespace cpp2 {
 
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 MyServiceClientWrapper::foo(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::MyServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_foo, channel_);
-  client->foo(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_foo(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
 
-folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>>
+folly::SemiFuture<std::unique_ptr<::thrift::py3::ClientWrapper>>
 MyServiceClientWrapper::createMyInteraction() {
   return folly::via(
       channel_->getEventBase(),
@@ -38,7 +39,7 @@ MyServiceClientWrapper::createMyInteraction() {
 }
 
 
-folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>>
+folly::SemiFuture<std::unique_ptr<::thrift::py3::ClientWrapper>>
 MyServiceClientWrapper::createMyInteractionFast() {
   return folly::via(
       channel_->getEventBase(),
@@ -50,7 +51,7 @@ MyServiceClientWrapper::createMyInteractionFast() {
 }
 
 
-folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>>
+folly::SemiFuture<std::unique_ptr<::thrift::py3::ClientWrapper>>
 MyServiceClientWrapper::createSerialInteraction() {
   return folly::via(
       channel_->getEventBase(),
@@ -61,109 +62,104 @@ MyServiceClientWrapper::createSerialInteraction() {
   );
 }
 
-folly::Future<int32_t>
+folly::SemiFuture<int32_t>
 MyServiceClientWrapper::MyInteractionInteractionWrapper::frobnicate(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::MyServiceAsyncClient::MyInteraction*>(async_client_.get());
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_frobnicate, channel_);
-  client->frobnicate(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_frobnicate(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 MyServiceClientWrapper::MyInteractionInteractionWrapper::ping(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::MyServiceAsyncClient::MyInteraction*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::apache::thrift::OneWayFutureCallback>(
-    std::move(_promise), channel_);
-  client->ping(
-    rpcOptions,
-    std::move(callback)
+  return client->semifuture_ping(
+    rpcOptions
   );
-  return _future;
+  
 }
 
-folly::Future<apache::thrift::ClientBufferedStream<bool>>
+folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>>
 MyServiceClientWrapper::MyInteractionInteractionWrapper::truthify(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::MyServiceAsyncClient::MyInteraction*>(async_client_.get());
-  folly::Promise<apache::thrift::ClientBufferedStream<bool>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<bool>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_truthify, channel_);
-  client->truthify(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_truthify(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<int32_t>
+folly::SemiFuture<int32_t>
 MyServiceClientWrapper::MyInteractionFastInteractionWrapper::frobnicate(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::MyServiceAsyncClient::MyInteractionFast*>(async_client_.get());
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_frobnicate, channel_);
-  client->frobnicate(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_frobnicate(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 MyServiceClientWrapper::MyInteractionFastInteractionWrapper::ping(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::MyServiceAsyncClient::MyInteractionFast*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::apache::thrift::OneWayFutureCallback>(
-    std::move(_promise), channel_);
-  client->ping(
-    rpcOptions,
-    std::move(callback)
+  return client->semifuture_ping(
+    rpcOptions
   );
-  return _future;
+  
 }
 
-folly::Future<apache::thrift::ClientBufferedStream<bool>>
+folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>>
 MyServiceClientWrapper::MyInteractionFastInteractionWrapper::truthify(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::MyServiceAsyncClient::MyInteractionFast*>(async_client_.get());
-  folly::Promise<apache::thrift::ClientBufferedStream<bool>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<bool>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_truthify, channel_);
-  client->truthify(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_truthify(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 MyServiceClientWrapper::SerialInteractionInteractionWrapper::frobnicate(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::cpp2::MyServiceAsyncClient::SerialInteraction*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_frobnicate, channel_);
-  client->frobnicate(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_frobnicate(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
 } // namespace cpp2

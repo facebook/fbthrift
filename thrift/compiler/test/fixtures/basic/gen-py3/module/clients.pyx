@@ -36,7 +36,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-from folly.futures cimport bridgeFutureWith
+from folly.futures cimport bridgeSemiFutureWith
 from folly.executor cimport get_executor
 cimport folly.iobuf as _fbthrift_iobuf
 import folly.iobuf as _fbthrift_iobuf
@@ -214,7 +214,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).ping(rpc_options._cpp_obj, 
             ),
@@ -234,7 +234,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[string](
+        bridgeSemiFutureWith[string](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).getRandomData(rpc_options._cpp_obj, 
             ),
@@ -259,7 +259,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).sink(rpc_options._cpp_obj, 
                 sink,
@@ -286,7 +286,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).putDataById(rpc_options._cpp_obj, 
                 id,
@@ -313,7 +313,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cbool](
+        bridgeSemiFutureWith[cbool](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).hasDataById(rpc_options._cpp_obj, 
                 id,
@@ -339,7 +339,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[string](
+        bridgeSemiFutureWith[string](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).getDataById(rpc_options._cpp_obj, 
                 id,
@@ -365,7 +365,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).deleteDataById(rpc_options._cpp_obj, 
                 id,
@@ -392,7 +392,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).lobDataById(rpc_options._cpp_obj, 
                 id,
@@ -446,7 +446,7 @@ cdef class DbMixedStackArguments(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[string](
+        bridgeSemiFutureWith[string](
             self._executor,
             down_cast_ptr[cDbMixedStackArgumentsClientWrapper, cClientWrapper](self._client.get()).getDataByKey0(rpc_options._cpp_obj, 
                 key.encode('UTF-8'),
@@ -468,7 +468,7 @@ cdef class DbMixedStackArguments(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[string](
+        bridgeSemiFutureWith[string](
             self._executor,
             down_cast_ptr[cDbMixedStackArgumentsClientWrapper, cClientWrapper](self._client.get()).getDataByKey1(rpc_options._cpp_obj, 
                 key.encode('UTF-8'),

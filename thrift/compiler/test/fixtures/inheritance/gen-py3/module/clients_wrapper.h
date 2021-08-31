@@ -13,7 +13,6 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -29,7 +28,7 @@ class MyRootClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::Future<folly::Unit> do_root(
+    folly::SemiFuture<folly::Unit> do_root(
       apache::thrift::RpcOptions& rpcOptions);
 };
 
@@ -38,7 +37,7 @@ class MyNodeClientWrapper : public ::cpp2::MyRootClientWrapper {
   public:
     using ::cpp2::MyRootClientWrapper::MyRootClientWrapper;
 
-    folly::Future<folly::Unit> do_mid(
+    folly::SemiFuture<folly::Unit> do_mid(
       apache::thrift::RpcOptions& rpcOptions);
 };
 
@@ -47,7 +46,7 @@ class MyLeafClientWrapper : public ::cpp2::MyNodeClientWrapper {
   public:
     using ::cpp2::MyNodeClientWrapper::MyNodeClientWrapper;
 
-    folly::Future<folly::Unit> do_leaf(
+    folly::SemiFuture<folly::Unit> do_leaf(
       apache::thrift::RpcOptions& rpcOptions);
 };
 

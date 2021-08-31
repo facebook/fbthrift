@@ -36,7 +36,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-from folly.futures cimport bridgeFutureWith
+from folly.futures cimport bridgeSemiFutureWith
 from folly.executor cimport get_executor
 cimport folly.iobuf as _fbthrift_iobuf
 import folly.iobuf as _fbthrift_iobuf
@@ -101,7 +101,7 @@ cdef class HsTestService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cint64_t](
+        bridgeSemiFutureWith[cint64_t](
             self._executor,
             down_cast_ptr[cHsTestServiceClientWrapper, cClientWrapper](self._client.get()).init(rpc_options._cpp_obj, 
                 int1,

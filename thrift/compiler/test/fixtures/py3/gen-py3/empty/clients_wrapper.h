@@ -11,7 +11,6 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>

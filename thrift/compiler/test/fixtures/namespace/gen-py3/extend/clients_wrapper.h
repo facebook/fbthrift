@@ -12,7 +12,6 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -28,7 +27,7 @@ class ExtendTestServiceClientWrapper : public ::cpp2::HsTestServiceClientWrapper
   public:
     using ::cpp2::HsTestServiceClientWrapper::HsTestServiceClientWrapper;
 
-    folly::Future<bool> check(
+    folly::SemiFuture<bool> check(
       apache::thrift::RpcOptions& rpcOptions,
       ::cpp2::HsFoo arg_struct1);
 };

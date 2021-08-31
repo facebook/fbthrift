@@ -11,7 +11,6 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -27,19 +26,19 @@ class NestedContainersClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::Future<folly::Unit> mapList(
+    folly::SemiFuture<folly::Unit> mapList(
       apache::thrift::RpcOptions& rpcOptions,
       std::map<int32_t,std::vector<int32_t>> arg_foo);
-    folly::Future<folly::Unit> mapSet(
+    folly::SemiFuture<folly::Unit> mapSet(
       apache::thrift::RpcOptions& rpcOptions,
       std::map<int32_t,std::set<int32_t>> arg_foo);
-    folly::Future<folly::Unit> listMap(
+    folly::SemiFuture<folly::Unit> listMap(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::map<int32_t,int32_t>> arg_foo);
-    folly::Future<folly::Unit> listSet(
+    folly::SemiFuture<folly::Unit> listSet(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::set<int32_t>> arg_foo);
-    folly::Future<folly::Unit> turtles(
+    folly::SemiFuture<folly::Unit> turtles(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::vector<std::map<int32_t,std::map<int32_t,std::set<int32_t>>>>> arg_foo);
 };

@@ -36,7 +36,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-from folly.futures cimport bridgeFutureWith
+from folly.futures cimport bridgeSemiFutureWith
 from folly.executor cimport get_executor
 cimport folly.iobuf as _fbthrift_iobuf
 import folly.iobuf as _fbthrift_iobuf
@@ -114,7 +114,7 @@ cdef class SomeService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[_module_types.std_unordered_map[cint32_t,string]](
+        bridgeSemiFutureWith[_module_types.std_unordered_map[cint32_t,string]](
             self._executor,
             down_cast_ptr[cSomeServiceClientWrapper, cClientWrapper](self._client.get()).bounce_map(rpc_options._cpp_obj, 
                 deref((<_module_types.std_unordered_map__Map__i32_string>m)._cpp_obj),
@@ -138,7 +138,7 @@ cdef class SomeService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cmap[string,cint64_t]](
+        bridgeSemiFutureWith[cmap[string,cint64_t]](
             self._executor,
             down_cast_ptr[cSomeServiceClientWrapper, cClientWrapper](self._client.get()).binary_keyed_map(rpc_options._cpp_obj, 
                 deref((<_module_types.List__i64>r)._cpp_obj),

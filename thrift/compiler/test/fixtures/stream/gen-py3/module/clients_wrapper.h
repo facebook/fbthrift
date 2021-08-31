@@ -11,7 +11,6 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -27,20 +26,20 @@ class PubSubStreamingServiceClientWrapper : public ::thrift::py3::ClientWrapper 
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::Future<apache::thrift::ClientBufferedStream<int32_t>> returnstream(
+    folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> returnstream(
       apache::thrift::RpcOptions& rpcOptions,
       int32_t arg_i32_from,
       int32_t arg_i32_to);
-    folly::Future<apache::thrift::ClientBufferedStream<int32_t>> streamthrows(
+    folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> streamthrows(
       apache::thrift::RpcOptions& rpcOptions,
       int32_t arg_foo);
-    folly::Future<apache::thrift::ClientBufferedStream<int32_t>> boththrows(
+    folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> boththrows(
       apache::thrift::RpcOptions& rpcOptions,
       int32_t arg_foo);
-    folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> responseandstreamthrows(
+    folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> responseandstreamthrows(
       apache::thrift::RpcOptions& rpcOptions,
       int32_t arg_foo);
-    folly::Future<apache::thrift::ClientBufferedStream<int32_t>> returnstreamFast(
+    folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>> returnstreamFast(
       apache::thrift::RpcOptions& rpcOptions,
       int32_t arg_i32_from,
       int32_t arg_i32_to);

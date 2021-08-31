@@ -19,7 +19,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from folly cimport cFollySemiFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
@@ -57,15 +57,15 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollyFuture[cFollyUnit] do_root(cRpcOptions, )
+    cFollySemiFuture[cFollyUnit] do_root(cRpcOptions, )
 
 
   cdef cppclass cMyNodeClientWrapper "::cpp2::MyNodeClientWrapper"(cMyRootClientWrapper):
 
-    cFollyFuture[cFollyUnit] do_mid(cRpcOptions, )
+    cFollySemiFuture[cFollyUnit] do_mid(cRpcOptions, )
 
 
   cdef cppclass cMyLeafClientWrapper "::cpp2::MyLeafClientWrapper"(cMyNodeClientWrapper):
 
-    cFollyFuture[cFollyUnit] do_leaf(cRpcOptions, )
+    cFollySemiFuture[cFollyUnit] do_leaf(cRpcOptions, )
 

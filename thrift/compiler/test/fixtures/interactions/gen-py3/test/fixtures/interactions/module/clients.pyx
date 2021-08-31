@@ -36,7 +36,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-from folly.futures cimport bridgeFutureWith
+from folly.futures cimport bridgeSemiFutureWith
 from folly.executor cimport get_executor
 cimport folly.iobuf as _fbthrift_iobuf
 import folly.iobuf as _fbthrift_iobuf
@@ -198,7 +198,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).foo(rpc_options._cpp_obj, 
             ),
@@ -212,7 +212,7 @@ cdef class MyService(thrift.py3.client.Client):
             MyService self
     ):
         interaction = MyService_MyInteraction()
-        bridgeFutureWith[unique_ptr[cClientWrapper]](
+        bridgeSemiFutureWith[unique_ptr[cClientWrapper]](
             interaction._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).createMyInteraction(),
             thrift.py3.client.interactions_callback,
@@ -224,7 +224,7 @@ cdef class MyService(thrift.py3.client.Client):
             MyService self
     ):
         interaction = MyService_MyInteractionFast()
-        bridgeFutureWith[unique_ptr[cClientWrapper]](
+        bridgeSemiFutureWith[unique_ptr[cClientWrapper]](
             interaction._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).createMyInteractionFast(),
             thrift.py3.client.interactions_callback,
@@ -236,7 +236,7 @@ cdef class MyService(thrift.py3.client.Client):
             MyService self
     ):
         interaction = MyService_SerialInteraction()
-        bridgeFutureWith[unique_ptr[cClientWrapper]](
+        bridgeSemiFutureWith[unique_ptr[cClientWrapper]](
             interaction._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).createSerialInteraction(),
             thrift.py3.client.interactions_callback,
@@ -272,7 +272,7 @@ cdef class MyService_MyInteraction(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cint32_t](
+        bridgeSemiFutureWith[cint32_t](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper_MyInteractionInteractionWrapper, cClientWrapper](self._client.get()).frobnicate(rpc_options._cpp_obj, 
             ),
@@ -292,7 +292,7 @@ cdef class MyService_MyInteraction(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper_MyInteractionInteractionWrapper, cClientWrapper](self._client.get()).ping(rpc_options._cpp_obj, 
             ),
@@ -312,7 +312,7 @@ cdef class MyService_MyInteraction(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cClientBufferedStream[cbool]](
+        bridgeSemiFutureWith[cClientBufferedStream[cbool]](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper_MyInteractionInteractionWrapper, cClientWrapper](self._client.get()).truthify(rpc_options._cpp_obj, 
             ),
@@ -335,7 +335,7 @@ cdef class MyService_MyInteractionFast(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cint32_t](
+        bridgeSemiFutureWith[cint32_t](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper_MyInteractionFastInteractionWrapper, cClientWrapper](self._client.get()).frobnicate(rpc_options._cpp_obj, 
             ),
@@ -355,7 +355,7 @@ cdef class MyService_MyInteractionFast(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper_MyInteractionFastInteractionWrapper, cClientWrapper](self._client.get()).ping(rpc_options._cpp_obj, 
             ),
@@ -375,7 +375,7 @@ cdef class MyService_MyInteractionFast(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cClientBufferedStream[cbool]](
+        bridgeSemiFutureWith[cClientBufferedStream[cbool]](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper_MyInteractionFastInteractionWrapper, cClientWrapper](self._client.get()).truthify(rpc_options._cpp_obj, 
             ),
@@ -398,7 +398,7 @@ cdef class MyService_SerialInteraction(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper_SerialInteractionInteractionWrapper, cClientWrapper](self._client.get()).frobnicate(rpc_options._cpp_obj, 
             ),

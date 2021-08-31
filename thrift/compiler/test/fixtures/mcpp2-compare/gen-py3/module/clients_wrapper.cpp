@@ -12,557 +12,591 @@ namespace valid {
 namespace ns {
 
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 ReturnServiceClientWrapper::noReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_noReturn, channel_);
-  client->noReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_noReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<bool>
+folly::SemiFuture<bool>
 ReturnServiceClientWrapper::boolReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<bool> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_boolReturn, channel_);
-  client->boolReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_boolReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<int16_t>
+folly::SemiFuture<int16_t>
 ReturnServiceClientWrapper::i16Return(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<int16_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int16_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_i16Return, channel_);
-  client->i16Return(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_i16Return(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<int32_t>
+folly::SemiFuture<int32_t>
 ReturnServiceClientWrapper::i32Return(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_i32Return, channel_);
-  client->i32Return(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_i32Return(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<int64_t>
+folly::SemiFuture<int64_t>
 ReturnServiceClientWrapper::i64Return(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<int64_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_i64Return, channel_);
-  client->i64Return(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_i64Return(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<float>
+folly::SemiFuture<float>
 ReturnServiceClientWrapper::floatReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<float> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<float>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_floatReturn, channel_);
-  client->floatReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_floatReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<double>
+folly::SemiFuture<double>
 ReturnServiceClientWrapper::doubleReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<double> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<double>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_doubleReturn, channel_);
-  client->doubleReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_doubleReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::string>
+folly::SemiFuture<std::string>
 ReturnServiceClientWrapper::stringReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::string> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_stringReturn, channel_);
-  client->stringReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_stringReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::string>
+folly::SemiFuture<std::string>
 ReturnServiceClientWrapper::binaryReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::string> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_binaryReturn, channel_);
-  client->binaryReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_binaryReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::map<std::string,int64_t>>
+folly::SemiFuture<std::map<std::string,int64_t>>
 ReturnServiceClientWrapper::mapReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::map<std::string,int64_t>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::string,int64_t>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_mapReturn, channel_);
-  client->mapReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_mapReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<int32_t>
+folly::SemiFuture<int32_t>
 ReturnServiceClientWrapper::simpleTypedefReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_simpleTypedefReturn, channel_);
-  client->simpleTypedefReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_simpleTypedefReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>
+folly::SemiFuture<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>
 ReturnServiceClientWrapper::complexTypedefReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_complexTypedefReturn, channel_);
-  client->complexTypedefReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_complexTypedefReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>
+folly::SemiFuture<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>
 ReturnServiceClientWrapper::list_mostComplexTypedefReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_list_mostComplexTypedefReturn, channel_);
-  client->list_mostComplexTypedefReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_list_mostComplexTypedefReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<::some::valid::ns::MyEnumA>
+folly::SemiFuture<::some::valid::ns::MyEnumA>
 ReturnServiceClientWrapper::enumReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<::some::valid::ns::MyEnumA> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::MyEnumA>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_enumReturn, channel_);
-  client->enumReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_enumReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::vector<::some::valid::ns::MyEnumA>>
+folly::SemiFuture<std::vector<::some::valid::ns::MyEnumA>>
 ReturnServiceClientWrapper::list_EnumReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::vector<::some::valid::ns::MyEnumA>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<::some::valid::ns::MyEnumA>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_list_EnumReturn, channel_);
-  client->list_EnumReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_list_EnumReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<::some::valid::ns::MyStruct>
+folly::SemiFuture<::some::valid::ns::MyStruct>
 ReturnServiceClientWrapper::structReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<::some::valid::ns::MyStruct> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::MyStruct>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_structReturn, channel_);
-  client->structReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_structReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::set<::some::valid::ns::MyStruct>>
+folly::SemiFuture<std::set<::some::valid::ns::MyStruct>>
 ReturnServiceClientWrapper::set_StructReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::set<::some::valid::ns::MyStruct>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::set<::some::valid::ns::MyStruct>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_set_StructReturn, channel_);
-  client->set_StructReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_set_StructReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<::some::valid::ns::ComplexUnion>
+folly::SemiFuture<::some::valid::ns::ComplexUnion>
 ReturnServiceClientWrapper::unionReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<::some::valid::ns::ComplexUnion> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::ComplexUnion>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_unionReturn, channel_);
-  client->unionReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_unionReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::vector<::some::valid::ns::ComplexUnion>>
+folly::SemiFuture<std::vector<::some::valid::ns::ComplexUnion>>
 ReturnServiceClientWrapper::list_UnionReturn(
     apache::thrift::RpcOptions& rpcOptions) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::vector<::some::valid::ns::ComplexUnion>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<::some::valid::ns::ComplexUnion>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_list_UnionReturn, channel_);
-  client->list_UnionReturn(
-    rpcOptions,
-    std::move(callback)
-  );
-  return _future;
+  return client->header_semifuture_list_UnionReturn(
+    rpcOptions
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::IOBuf>
+folly::SemiFuture<folly::IOBuf>
 ReturnServiceClientWrapper::readDataEb(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_size) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::IOBuf> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::IOBuf>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_readDataEb, channel_);
-  client->readDataEb(
+  return client->header_semifuture_readDataEb(
     rpcOptions,
-    std::move(callback),
     arg_size
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::unique_ptr<folly::IOBuf>>
+folly::SemiFuture<std::unique_ptr<folly::IOBuf>>
 ReturnServiceClientWrapper::readData(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_size) {
   auto* client = static_cast<::some::valid::ns::ReturnServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::unique_ptr<folly::IOBuf>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::unique_ptr<folly::IOBuf>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_readData, channel_);
-  client->readData(
+  return client->header_semifuture_readData(
     rpcOptions,
-    std::move(callback),
     arg_size
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 ParamServiceClientWrapper::void_ret_i16_param(
     apache::thrift::RpcOptions& rpcOptions,
     int16_t arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_i16_param, channel_);
-  client->void_ret_i16_param(
+  return client->header_semifuture_void_ret_i16_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 ParamServiceClientWrapper::void_ret_byte_i16_param(
     apache::thrift::RpcOptions& rpcOptions,
     int8_t arg_param1,
     int16_t arg_param2) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_byte_i16_param, channel_);
-  client->void_ret_byte_i16_param(
+  return client->header_semifuture_void_ret_byte_i16_param(
     rpcOptions,
-    std::move(callback),
     arg_param1,
     arg_param2
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 ParamServiceClientWrapper::void_ret_map_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::map<std::string,int64_t> arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_map_param, channel_);
-  client->void_ret_map_param(
+  return client->header_semifuture_void_ret_map_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 ParamServiceClientWrapper::void_ret_map_setlist_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::map<std::string,int64_t> arg_param1,
     std::set<std::vector<std::string>> arg_param2) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_map_setlist_param, channel_);
-  client->void_ret_map_setlist_param(
+  return client->header_semifuture_void_ret_map_setlist_param(
     rpcOptions,
-    std::move(callback),
     arg_param1,
     arg_param2
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 ParamServiceClientWrapper::void_ret_map_typedef_param(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_map_typedef_param, channel_);
-  client->void_ret_map_typedef_param(
+  return client->header_semifuture_void_ret_map_typedef_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 ParamServiceClientWrapper::void_ret_enum_param(
     apache::thrift::RpcOptions& rpcOptions,
     ::some::valid::ns::MyEnumA arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_enum_param, channel_);
-  client->void_ret_enum_param(
+  return client->header_semifuture_void_ret_enum_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 ParamServiceClientWrapper::void_ret_struct_param(
     apache::thrift::RpcOptions& rpcOptions,
     ::some::valid::ns::MyStruct arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_struct_param, channel_);
-  client->void_ret_struct_param(
+  return client->header_semifuture_void_ret_struct_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<folly::Unit>
+folly::SemiFuture<folly::Unit>
 ParamServiceClientWrapper::void_ret_listunion_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::vector<::some::valid::ns::ComplexUnion> arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<folly::Unit> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<folly::Unit>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_void_ret_listunion_param, channel_);
-  client->void_ret_listunion_param(
+  return client->header_semifuture_void_ret_listunion_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<bool>
+folly::SemiFuture<bool>
 ParamServiceClientWrapper::bool_ret_i32_i64_param(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_param1,
     int64_t arg_param2) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<bool> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_bool_ret_i32_i64_param, channel_);
-  client->bool_ret_i32_i64_param(
+  return client->header_semifuture_bool_ret_i32_i64_param(
     rpcOptions,
-    std::move(callback),
     arg_param1,
     arg_param2
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<bool>
+folly::SemiFuture<bool>
 ParamServiceClientWrapper::bool_ret_map_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::map<std::string,int64_t> arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<bool> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_bool_ret_map_param, channel_);
-  client->bool_ret_map_param(
+  return client->header_semifuture_bool_ret_map_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<bool>
+folly::SemiFuture<bool>
 ParamServiceClientWrapper::bool_ret_union_param(
     apache::thrift::RpcOptions& rpcOptions,
     ::some::valid::ns::ComplexUnion arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<bool> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<bool>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_bool_ret_union_param, channel_);
-  client->bool_ret_union_param(
+  return client->header_semifuture_bool_ret_union_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<int64_t>
+folly::SemiFuture<int64_t>
 ParamServiceClientWrapper::i64_ret_float_double_param(
     apache::thrift::RpcOptions& rpcOptions,
     float arg_param1,
     double arg_param2) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<int64_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_i64_ret_float_double_param, channel_);
-  client->i64_ret_float_double_param(
+  return client->header_semifuture_i64_ret_float_double_param(
     rpcOptions,
-    std::move(callback),
     arg_param1,
     arg_param2
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<int64_t>
+folly::SemiFuture<int64_t>
 ParamServiceClientWrapper::i64_ret_string_typedef_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_param1,
     std::set<std::vector<std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>>>> arg_param2) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<int64_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_i64_ret_string_typedef_param, channel_);
-  client->i64_ret_string_typedef_param(
+  return client->header_semifuture_i64_ret_string_typedef_param(
     rpcOptions,
-    std::move(callback),
     arg_param1,
     arg_param2
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<int64_t>
+folly::SemiFuture<int64_t>
 ParamServiceClientWrapper::i64_ret_i32_i32_i32_i32_i32_param(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_param1,
@@ -571,281 +605,297 @@ ParamServiceClientWrapper::i64_ret_i32_i32_i32_i32_i32_param(
     int32_t arg_param4,
     int32_t arg_param5) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<int64_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_i64_ret_i32_i32_i32_i32_i32_param, channel_);
-  client->i64_ret_i32_i32_i32_i32_i32_param(
+  return client->header_semifuture_i64_ret_i32_i32_i32_i32_i32_param(
     rpcOptions,
-    std::move(callback),
     arg_param1,
     arg_param2,
     arg_param3,
     arg_param4,
     arg_param5
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<double>
+folly::SemiFuture<double>
 ParamServiceClientWrapper::double_ret_setstruct_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::set<::some::valid::ns::MyStruct> arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<double> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<double>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_double_ret_setstruct_param, channel_);
-  client->double_ret_setstruct_param(
+  return client->header_semifuture_double_ret_setstruct_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::string>
+folly::SemiFuture<std::string>
 ParamServiceClientWrapper::string_ret_string_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::string> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_string_ret_string_param, channel_);
-  client->string_ret_string_param(
+  return client->header_semifuture_string_ret_string_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::string>
+folly::SemiFuture<std::string>
 ParamServiceClientWrapper::binary_ret_binary_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::string> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::string>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_binary_ret_binary_param, channel_);
-  client->binary_ret_binary_param(
+  return client->header_semifuture_binary_ret_binary_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::map<std::string,int64_t>>
+folly::SemiFuture<std::map<std::string,int64_t>>
 ParamServiceClientWrapper::map_ret_bool_param(
     apache::thrift::RpcOptions& rpcOptions,
     bool arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::map<std::string,int64_t>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::string,int64_t>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_map_ret_bool_param, channel_);
-  client->map_ret_bool_param(
+  return client->header_semifuture_map_ret_bool_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::vector<bool>>
+folly::SemiFuture<std::vector<bool>>
 ParamServiceClientWrapper::list_ret_map_setlist_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::map<int32_t,std::vector<std::string>> arg_param1,
     std::vector<std::string> arg_param2) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::vector<bool>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<bool>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_list_ret_map_setlist_param, channel_);
-  client->list_ret_map_setlist_param(
+  return client->header_semifuture_list_ret_map_setlist_param(
     rpcOptions,
-    std::move(callback),
     arg_param1,
     arg_param2
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>
+folly::SemiFuture<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>
 ParamServiceClientWrapper::mapsetlistmapliststring_ret_listlistlist_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::vector<std::vector<std::vector<std::vector<int32_t>>>> arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::map<std::set<std::vector<int32_t>>,std::map<std::vector<std::set<std::string>>,std::string>>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_mapsetlistmapliststring_ret_listlistlist_param, channel_);
-  client->mapsetlistmapliststring_ret_listlistlist_param(
+  return client->header_semifuture_mapsetlistmapliststring_ret_listlistlist_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<int32_t>
+folly::SemiFuture<int32_t>
 ParamServiceClientWrapper::typedef_ret_i32_param(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<int32_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_typedef_ret_i32_param, channel_);
-  client->typedef_ret_i32_param(
+  return client->header_semifuture_typedef_ret_i32_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::vector<int32_t>>
+folly::SemiFuture<std::vector<int32_t>>
 ParamServiceClientWrapper::listtypedef_ret_typedef_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::vector<std::map<::some::valid::ns::Empty,::some::valid::ns::MyStruct>> arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::vector<int32_t>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<int32_t>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_listtypedef_ret_typedef_param, channel_);
-  client->listtypedef_ret_typedef_param(
+  return client->header_semifuture_listtypedef_ret_typedef_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<::some::valid::ns::MyEnumA>
+folly::SemiFuture<::some::valid::ns::MyEnumA>
 ParamServiceClientWrapper::enum_ret_double_param(
     apache::thrift::RpcOptions& rpcOptions,
     double arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<::some::valid::ns::MyEnumA> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::MyEnumA>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_enum_ret_double_param, channel_);
-  client->enum_ret_double_param(
+  return client->header_semifuture_enum_ret_double_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<::some::valid::ns::MyEnumA>
+folly::SemiFuture<::some::valid::ns::MyEnumA>
 ParamServiceClientWrapper::enum_ret_double_enum_param(
     apache::thrift::RpcOptions& rpcOptions,
     double arg_param1,
     ::some::valid::ns::MyEnumA arg_param2) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<::some::valid::ns::MyEnumA> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::MyEnumA>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_enum_ret_double_enum_param, channel_);
-  client->enum_ret_double_enum_param(
+  return client->header_semifuture_enum_ret_double_enum_param(
     rpcOptions,
-    std::move(callback),
     arg_param1,
     arg_param2
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::vector<::some::valid::ns::MyEnumA>>
+folly::SemiFuture<std::vector<::some::valid::ns::MyEnumA>>
 ParamServiceClientWrapper::listenum_ret_map_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::map<std::string,int64_t> arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::vector<::some::valid::ns::MyEnumA>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<::some::valid::ns::MyEnumA>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_listenum_ret_map_param, channel_);
-  client->listenum_ret_map_param(
+  return client->header_semifuture_listenum_ret_map_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<::some::valid::ns::MyStruct>
+folly::SemiFuture<::some::valid::ns::MyStruct>
 ParamServiceClientWrapper::struct_ret_i16_param(
     apache::thrift::RpcOptions& rpcOptions,
     int16_t arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<::some::valid::ns::MyStruct> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::MyStruct>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_struct_ret_i16_param, channel_);
-  client->struct_ret_i16_param(
+  return client->header_semifuture_struct_ret_i16_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::set<::some::valid::ns::MyStruct>>
+folly::SemiFuture<std::set<::some::valid::ns::MyStruct>>
 ParamServiceClientWrapper::setstruct_ret_set_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::set<std::string> arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::set<::some::valid::ns::MyStruct>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::set<::some::valid::ns::MyStruct>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_setstruct_ret_set_param, channel_);
-  client->setstruct_ret_set_param(
+  return client->header_semifuture_setstruct_ret_set_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<::some::valid::ns::ComplexUnion>
+folly::SemiFuture<::some::valid::ns::ComplexUnion>
 ParamServiceClientWrapper::union_ret_i32_i32_param(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_param1,
     int32_t arg_param2) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<::some::valid::ns::ComplexUnion> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<::some::valid::ns::ComplexUnion>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_union_ret_i32_i32_param, channel_);
-  client->union_ret_i32_i32_param(
+  return client->header_semifuture_union_ret_i32_i32_param(
     rpcOptions,
-    std::move(callback),
     arg_param1,
     arg_param2
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
-folly::Future<std::vector<::some::valid::ns::ComplexUnion>>
+folly::SemiFuture<std::vector<::some::valid::ns::ComplexUnion>>
 ParamServiceClientWrapper::listunion_string_param(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_param1) {
   auto* client = static_cast<::some::valid::ns::ParamServiceAsyncClient*>(async_client_.get());
-  folly::Promise<std::vector<::some::valid::ns::ComplexUnion>> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<std::vector<::some::valid::ns::ComplexUnion>>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_listunion_string_param, channel_);
-  client->listunion_string_param(
+  return client->header_semifuture_listunion_string_param(
     rpcOptions,
-    std::move(callback),
     arg_param1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
 } // namespace some

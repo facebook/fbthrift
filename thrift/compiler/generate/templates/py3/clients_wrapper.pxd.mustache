@@ -35,7 +35,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from folly cimport cFollySemiFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
@@ -97,7 +97,7 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     {{/service:extends?}}
 
     {{#service:supportedFunctions}}
-    cFollyFuture[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}] {{function:cppName}}(cRpcOptions, {{#function:args}}
+    cFollySemiFuture[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}] {{function:cppName}}(cRpcOptions, {{#function:args}}
       {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
     {{/service:supportedFunctions}}
     {{!
@@ -113,7 +113,7 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     {{/service:interactions}}
     {{/service:supportedFunctions}}
     {{#service:interactions}}
-    cFollyFuture[unique_ptr[cClientWrapper]]& create{{service:name}}()
+    cFollySemiFuture[unique_ptr[cClientWrapper]]& create{{service:name}}()
     {{/service:interactions}}
 
   {{#service:interactions}}
@@ -124,7 +124,7 @@ cdef extern from "{{program:includePrefix}}gen-py3/{{program:name}}/clients_wrap
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
     {{#service:supportedFunctions}}
-    cFollyFuture[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}] {{function:cppName}}(cRpcOptions, {{#function:args}}
+    cFollySemiFuture[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}] {{function:cppName}}(cRpcOptions, {{#function:args}}
       {{#field:type}}{{> types/CythonCppType}}{{/field:type}} arg_{{field:py_name}},{{/function:args}})
     {{/service:supportedFunctions}}
     {{!

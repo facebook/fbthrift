@@ -36,7 +36,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-from folly.futures cimport bridgeFutureWith
+from folly.futures cimport bridgeSemiFutureWith
 from folly.executor cimport get_executor
 cimport folly.iobuf as _fbthrift_iobuf
 import folly.iobuf as _fbthrift_iobuf
@@ -151,7 +151,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cNestedContainersClientWrapper, cClientWrapper](self._client.get()).mapList(rpc_options._cpp_obj, 
                 deref((<_module_types.Map__i32_List__i32>foo)._cpp_obj),
@@ -175,7 +175,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cNestedContainersClientWrapper, cClientWrapper](self._client.get()).mapSet(rpc_options._cpp_obj, 
                 deref((<_module_types.Map__i32_Set__i32>foo)._cpp_obj),
@@ -199,7 +199,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cNestedContainersClientWrapper, cClientWrapper](self._client.get()).listMap(rpc_options._cpp_obj, 
                 deref((<_module_types.List__Map__i32_i32>foo)._cpp_obj),
@@ -223,7 +223,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cNestedContainersClientWrapper, cClientWrapper](self._client.get()).listSet(rpc_options._cpp_obj, 
                 deref((<_module_types.List__Set__i32>foo)._cpp_obj),
@@ -247,7 +247,7 @@ cdef class NestedContainers(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeFutureWith[cFollyUnit](
+        bridgeSemiFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cNestedContainersClientWrapper, cClientWrapper](self._client.get()).turtles(rpc_options._cpp_obj, 
                 deref((<_module_types.List__List__Map__i32_Map__i32_Set__i32>foo)._cpp_obj),

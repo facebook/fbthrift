@@ -65,7 +65,8 @@
 <%^type:streamresponse?%>
   virtual folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_future_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
 <%/type:streamresponse?%>
-  virtual folly::SemiFuture<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+  virtual<%/service:reduced_client?%> folly::SemiFuture<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>);
+<%^service:reduced_client?%>
 <%#type:sync_methods_return_try?%>
   FOLLY_NODISCARD [[deprecated("To be replaced by new API soon")]] virtual folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>> sync_complete_<%function:cpp_name%>(
       apache::thrift::RpcOptions&& rpcOptions<%function:comma%> <% > service_common/function_param_list_const%>);

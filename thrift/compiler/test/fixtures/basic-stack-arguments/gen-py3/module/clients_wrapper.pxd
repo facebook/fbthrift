@@ -19,7 +19,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from folly cimport cFollySemiFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
@@ -57,14 +57,14 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollyFuture[cbool] hasDataById(cRpcOptions, 
+    cFollySemiFuture[cbool] hasDataById(cRpcOptions, 
       cint64_t arg_id,)
-    cFollyFuture[string] getDataById(cRpcOptions, 
+    cFollySemiFuture[string] getDataById(cRpcOptions, 
       cint64_t arg_id,)
-    cFollyFuture[cFollyUnit] putDataById(cRpcOptions, 
+    cFollySemiFuture[cFollyUnit] putDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)
-    cFollyFuture[cFollyUnit] lobDataById(cRpcOptions, 
+    cFollySemiFuture[cFollyUnit] lobDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)
 
@@ -73,14 +73,14 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollyFuture[cbool] hasDataById(cRpcOptions, 
+    cFollySemiFuture[cbool] hasDataById(cRpcOptions, 
       cint64_t arg_id,)
-    cFollyFuture[string] getDataById(cRpcOptions, 
+    cFollySemiFuture[string] getDataById(cRpcOptions, 
       cint64_t arg_id,)
-    cFollyFuture[cFollyUnit] putDataById(cRpcOptions, 
+    cFollySemiFuture[cFollyUnit] putDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)
-    cFollyFuture[cFollyUnit] lobDataById(cRpcOptions, 
+    cFollySemiFuture[cFollyUnit] lobDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)
 
@@ -89,8 +89,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollyFuture[string] getDataByKey0(cRpcOptions, 
+    cFollySemiFuture[string] getDataByKey0(cRpcOptions, 
       string arg_key,)
-    cFollyFuture[string] getDataByKey1(cRpcOptions, 
+    cFollySemiFuture[string] getDataByKey1(cRpcOptions, 
       string arg_key,)
 

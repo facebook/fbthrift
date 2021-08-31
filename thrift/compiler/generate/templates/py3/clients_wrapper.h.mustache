@@ -34,7 +34,6 @@ Header file for ClientsWrapper.cpp for cython to import in CythonClients.pxd.
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -59,7 +58,7 @@ class {{service:name}}ClientWrapper : {{!
     }}{{^service:extends?}}::thrift::py3::ClientWrapper::ClientWrapper{{/service:extends?}};
 
 {{#service:supportedFunctions}}
-    folly::Future<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}> {{function:cppName}}(
+    folly::SemiFuture<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}> {{function:cppName}}(
       apache::thrift::RpcOptions& rpcOptions{{#function:args}},
       {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}});
 {{/service:supportedFunctions}}
@@ -74,14 +73,14 @@ class {{service:name}}ClientWrapper : {{!
            : ClientWrapper(std::move(async_client), channel) {}
 
         {{#service:supportedFunctions}}
-        folly::Future<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}> {{function:cppName}}(
+        folly::SemiFuture<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}> {{function:cppName}}(
           apache::thrift::RpcOptions& rpcOptions{{#function:args}},
           {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}});
         {{/service:supportedFunctions}}
     };
 {{/service:interactions}}
 {{#service:interactions}}
-    folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>> create{{service:name}}();
+    folly::SemiFuture<std::unique_ptr<::thrift::py3::ClientWrapper>> create{{service:name}}();
 {{/service:interactions}}
 };
 

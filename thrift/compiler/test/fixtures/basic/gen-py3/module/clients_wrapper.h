@@ -12,7 +12,6 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
-#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -28,27 +27,27 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::Future<folly::Unit> ping(
+    folly::SemiFuture<folly::Unit> ping(
       apache::thrift::RpcOptions& rpcOptions);
-    folly::Future<std::string> getRandomData(
+    folly::SemiFuture<std::string> getRandomData(
       apache::thrift::RpcOptions& rpcOptions);
-    folly::Future<folly::Unit> sink(
+    folly::SemiFuture<folly::Unit> sink(
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_sink);
-    folly::Future<folly::Unit> putDataById(
+    folly::SemiFuture<folly::Unit> putDataById(
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id,
       std::string arg_data);
-    folly::Future<bool> hasDataById(
+    folly::SemiFuture<bool> hasDataById(
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id);
-    folly::Future<std::string> getDataById(
+    folly::SemiFuture<std::string> getDataById(
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id);
-    folly::Future<folly::Unit> deleteDataById(
+    folly::SemiFuture<folly::Unit> deleteDataById(
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id);
-    folly::Future<folly::Unit> lobDataById(
+    folly::SemiFuture<folly::Unit> lobDataById(
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_id,
       std::string arg_data);
@@ -59,10 +58,10 @@ class DbMixedStackArgumentsClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::Future<std::string> getDataByKey0(
+    folly::SemiFuture<std::string> getDataByKey0(
       apache::thrift::RpcOptions& rpcOptions,
       std::string arg_key);
-    folly::Future<std::string> getDataByKey1(
+    folly::SemiFuture<std::string> getDataByKey1(
       apache::thrift::RpcOptions& rpcOptions,
       std::string arg_key);
 };

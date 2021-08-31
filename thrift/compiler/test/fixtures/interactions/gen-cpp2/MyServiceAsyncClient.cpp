@@ -414,6 +414,13 @@ folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::MyInteraction::semifutur
 }
 
 
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::MyInteraction::header_semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_frobnicate, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  frobnicate(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
+}
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper MyServiceAsyncClient::MyInteraction::recv_wrapped_frobnicate(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
@@ -660,6 +667,13 @@ folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> MyServiceAsyncClie
   return std::move(callbackAndFuture.second);
 }
 
+
+folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<bool>, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::MyInteraction::header_semifuture_truthify(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_truthify, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  truthify(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
+}
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
@@ -997,6 +1011,13 @@ folly::SemiFuture<::std::int32_t> MyServiceAsyncClient::MyInteractionFast::semif
 }
 
 
+folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::MyInteractionFast::header_semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_frobnicate, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  frobnicate(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
+}
+
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper MyServiceAsyncClient::MyInteractionFast::recv_wrapped_frobnicate(::std::int32_t& _return, ::apache::thrift::ClientReceiveState& state) {
@@ -1243,6 +1264,13 @@ folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> MyServiceAsyncClie
   return std::move(callbackAndFuture.second);
 }
 
+
+folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<bool>, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::MyInteractionFast::header_semifuture_truthify(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_truthify, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  truthify(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
+}
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES
@@ -1519,6 +1547,13 @@ folly::SemiFuture<folly::Unit> MyServiceAsyncClient::SerialInteraction::semifutu
   return std::move(callbackAndFuture.second);
 }
 
+
+folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> MyServiceAsyncClient::SerialInteraction::header_semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions) {
+  auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_frobnicate, channel_);
+  auto callback = std::move(callbackAndFuture.first);
+  frobnicate(rpcOptions, std::move(callback));
+  return std::move(callbackAndFuture.second);
+}
 
 #if FOLLY_HAS_COROUTINES
 #endif // FOLLY_HAS_COROUTINES

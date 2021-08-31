@@ -10,21 +10,22 @@
 namespace cpp2 {
 
 
-folly::Future<int64_t>
+folly::SemiFuture<int64_t>
 TestServiceClientWrapper::init(
     apache::thrift::RpcOptions& rpcOptions,
     int64_t arg_int1) {
   auto* client = static_cast<::cpp2::TestServiceAsyncClient*>(async_client_.get());
-  folly::Promise<int64_t> _promise;
-  auto _future = _promise.getFuture();
-  auto callback = std::make_unique<::thrift::py3::FutureCallback<int64_t>>(
-    std::move(_promise), rpcOptions, client->recv_wrapped_init, channel_);
-  client->init(
+  return client->header_semifuture_init(
     rpcOptions,
-    std::move(callback),
     arg_int1
-  );
-  return _future;
+  ).deferValue([&](auto pair){
+      auto& header = *pair.second;
+      if (!header.getHeaders().empty()) {
+        rpcOptions.setReadHeaders(header.releaseHeaders());
+      }
+      return std::move(pair.first);
+  });
+  
 }
 
 } // namespace cpp2

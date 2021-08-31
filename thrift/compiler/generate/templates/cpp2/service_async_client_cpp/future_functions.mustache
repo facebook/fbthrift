@@ -68,6 +68,7 @@ folly::Future<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::
   return future;
 }
 <%/type:streamresponse?%>
+<%/service:reduced_client?%>
 
 folly::SemiFuture<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apache::thrift::transport::THeader>>> <% > service_common/client_class_name%>::header_semifuture_<%function:cpp_name%>(apache::thrift::RpcOptions& rpcOptions<%function:comma%><% > service_common/function_param_list_const%>) {
   auto callbackAndFuture = makeHeaderSemiFutureCallback(recv_wrapped_<%function:cpp_name%>, channel_);
@@ -75,4 +76,4 @@ folly::SemiFuture<std::pair<<% > types/service_type_semi%>, std::unique_ptr<apac
   <%function:cpp_name%>(rpcOptions, std::move(callback)<%function:comma%><% > service_common/param_list%>);
   return std::move(callbackAndFuture.second);
 }
-<%/service:reduced_client?%><%/function:oneway?%>
+<%/function:oneway?%>

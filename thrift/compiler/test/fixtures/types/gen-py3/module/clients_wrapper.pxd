@@ -19,7 +19,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from folly cimport cFollyFuture, cFollyTry, cFollyUnit
+from folly cimport cFollySemiFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
@@ -44,8 +44,8 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::apache::thr
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollyFuture[_module_types.std_unordered_map[cint32_t,string]] bounce_map(cRpcOptions, 
+    cFollySemiFuture[_module_types.std_unordered_map[cint32_t,string]] bounce_map(cRpcOptions, 
       _module_types.std_unordered_map[cint32_t,string] arg_m,)
-    cFollyFuture[cmap[string,cint64_t]] binary_keyed_map(cRpcOptions, 
+    cFollySemiFuture[cmap[string,cint64_t]] binary_keyed_map(cRpcOptions, 
       vector[cint64_t] arg_r,)
 
