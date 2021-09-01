@@ -405,12 +405,11 @@ Cpp2Worker::PerServiceMetadata::getBaseContextForRequest(
     const Cpp2Worker::PerServiceMetadata::FindMethodResult& findMethodResult)
     const {
   using Result = std::shared_ptr<folly::RequestContext>;
-  return folly::variant_match(
-      findMethodResult,
-      [&](const PerServiceMetadata::MetadataFound& found) -> Result {
-        return processorFactory_.getBaseContextForRequest(found.metadata);
-      },
-      [](auto&&) -> Result { return nullptr; });
+  if (const auto* found =
+          std::get_if<PerServiceMetadata::MetadataFound>(&findMethodResult)) {
+    return processorFactory_.getBaseContextForRequest(found->metadata);
+  }
+  return nullptr;
 }
 
 } // namespace thrift
