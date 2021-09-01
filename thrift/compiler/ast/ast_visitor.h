@@ -78,9 +78,8 @@ using const_ast_visitor = basic_ast_visitor<true>;
 // See ast_visitor.
 template <bool is_const, typename... Args>
 class basic_ast_visitor {
-  // The type to use when traversing the given node type N.
   template <typename N>
-  using node_type = std::conditional_t<is_const, const N, N>;
+  using node_type = ast_detail::node_type<is_const, N>;
 
  public:
   // Adds visitor for all interface node types.
@@ -139,7 +138,7 @@ class basic_ast_visitor {
     visit_children_ptrs(node.interactions(), args...);
     // TODO(afuller): Split structs and unions in t_program accessors.
     for (auto* struct_or_union : node.structs()) {
-      if (auto* tunion = as<t_union>(*struct_or_union)) {
+      if (auto* tunion = ast_detail::as<t_union>(struct_or_union)) {
         this->operator()(args..., *tunion);
       } else {
         this->operator()(args..., *struct_or_union);
@@ -150,15 +149,16 @@ class basic_ast_visitor {
     visit_children_ptrs(node.enums(), args...);
     visit_children_ptrs(node.consts(), args...);
     for (auto& type_inst : node.type_instantiations()) {
-      if (auto* set_node = as<t_set>(type_inst)) {
+      if (auto* set_node = ast_detail::as<t_set>(&type_inst)) {
         visit_child(*set_node, args...);
-      } else if (auto* list_node = as<t_list>(type_inst)) {
+      } else if (auto* list_node = ast_detail::as<t_list>(&type_inst)) {
         visit_child(*list_node, args...);
-      } else if (auto* map_node = as<t_map>(type_inst)) {
+      } else if (auto* map_node = ast_detail::as<t_map>(&type_inst)) {
         visit_child(*map_node, args...);
-      } else if (auto* sink_node = as<t_sink>(type_inst)) {
+      } else if (auto* sink_node = ast_detail::as<t_sink>(&type_inst)) {
         visit_child(*sink_node, args...);
-      } else if (auto* stream_node = as<t_stream_response>(type_inst)) {
+      } else if (
+          auto* stream_node = ast_detail::as<t_stream_response>(&type_inst)) {
         visit_child(*stream_node, args...);
       } else {
         std::terminate(); // Should be unreachable.
@@ -301,31 +301,32 @@ class basic_ast_visitor {
       operator()(args..., *child);
     }
   }
-  // Helper that to propagate constness throw a dynamic_cast.
-  template <typename T>
-  static node_type<T>* as(node_type<t_node>& node) {
-    return dynamic_cast<node_type<T>*>(&node);
-  }
 };
 
-class visit_context {
+template <bool is_const, typename N = t_node>
+class basic_visit_context {
+  using node_type = ast_detail::node_type<is_const, N>;
+
  public:
   // The node currently being visited, or nullptr.
-  const t_node* current() const {
+  node_type* current() const {
     return context_.empty() ? nullptr : context_.back();
   }
 
   // The parent of the current node, or nullptr.
-  const t_node* parent() const {
+  node_type* parent() const {
     return context_.size() < 2 ? nullptr : context_[context_.size() - 2];
   }
 
-  void begin_visit(const t_node& node) { context_.emplace_back(&node); }
-  void end_visit(const t_node&) { context_.pop_back(); }
+  void begin_visit(node_type& node) { context_.emplace_back(&node); }
+  void end_visit(node_type&) { context_.pop_back(); }
 
  private:
-  std::vector<const t_node*> context_;
+  std::vector<node_type*> context_;
 };
+
+using visit_context = basic_visit_context<false>;
+using const_visit_context = basic_visit_context<true>;
 
 } // namespace compiler
 } // namespace thrift

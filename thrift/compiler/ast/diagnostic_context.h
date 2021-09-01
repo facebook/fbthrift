@@ -127,7 +127,7 @@ class node_metadata_cache {
 };
 
 // A context aware reporter for diagnostic results.
-class diagnostic_context : public visit_context {
+class diagnostic_context : public const_visit_context {
  public:
   explicit diagnostic_context(
       std::function<void(diagnostic)> report_cb, diagnostic_params params = {})

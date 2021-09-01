@@ -292,8 +292,8 @@ TYPED_TEST(AstVisitorTest, Typedef) {
 
 class MockObserver {
  public:
-  MOCK_METHOD(void, begin_visit, (const t_node&));
-  MOCK_METHOD(void, end_visit, (const t_node&));
+  MOCK_METHOD(void, begin_visit, (t_node&));
+  MOCK_METHOD(void, end_visit, (t_node&));
 };
 
 TEST(ObserverTest, OrderOfCalls) {
