@@ -263,11 +263,17 @@ class MultiplexAsyncProcessor final : public AsyncProcessor {
           response.services_ref()->end());
     }
 
+    // The underlying AsyncProcessor::getServiceMetadata may not be implemented
+    // if using: a service compiled without metadata support; or a custom
+    // AsyncProcessor implementation
+    if (actualResponse.services_ref()->empty()) {
+      return;
+    }
+
     // TODO(praihan): Remove context field from metadata response object
-    // There is no "correct" way to set context for MultiplexAsyncProcessor. Our
-    // best guess would be the first service, which is likely to be most
+    // There is no "correct" way to set context for MultiplexAsyncProcessor.
+    // Our best guess would be the first service, which is likely to be most
     // relevant to the user.
-    DCHECK(!actualResponse.services_ref()->empty());
     const auto& defaultServiceContextRef =
         actualResponse.services_ref()->front();
     actualResponse.context_ref()->service_info_ref() =
