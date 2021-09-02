@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+#include <folly/lang/Assume.h>
+
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEventHelper.h>
 
@@ -52,6 +54,21 @@ void logSetupConnectionEventsOnce(
   static_cast<void>(folly::try_call_once(flag, [&]() noexcept {
     try {
       THRIFT_CONNECTION_EVENT(new_connection).log(context);
+      if (auto transportType = context.getTransportType()) {
+        switch (*transportType) {
+          case Cpp2ConnContext::TransportType::HEADER:
+            THRIFT_CONNECTION_EVENT(new_connection.header).log(context);
+            break;
+          case Cpp2ConnContext::TransportType::ROCKET:
+            THRIFT_CONNECTION_EVENT(new_connection.rocket).log(context);
+            break;
+          case Cpp2ConnContext::TransportType::HTTP2:
+            THRIFT_CONNECTION_EVENT(new_connection.http2).log(context);
+            break;
+          default:
+            folly::assume_unreachable();
+        }
+      }
       if (auto transport = context.getTransport()) {
         const auto& protocol = context.getSecurityProtocol();
         if (protocol == "TLS" || protocol == "Fizz" || protocol == "stopTLS") {
