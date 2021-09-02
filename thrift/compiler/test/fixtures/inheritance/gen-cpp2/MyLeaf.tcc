@@ -48,10 +48,10 @@ void MyLeafAsyncProcessor::process_do_leaf(apache::thrift::ResponseChannelReques
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse MyLeafAsyncProcessor::return_do_leaf(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::SerializedResponse MyLeafAsyncProcessor::return_do_leaf(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyLeaf_do_leaf_presult result;
-  return serializeLegacyResponse("do_leaf", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

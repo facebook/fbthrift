@@ -52,12 +52,12 @@ void ServiceAsyncProcessor::process_func(apache::thrift::ResponseChannelRequest:
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse ServiceAsyncProcessor::return_func(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> const& _return) {
+apache::thrift::SerializedResponse ServiceAsyncProcessor::return_func(apache::thrift::ContextStack* ctx, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> const& _return) {
   ProtocolOut_ prot;
   Service_func_presult result;
   result.get<0>().value = const_cast<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>*>(&_return);
   result.setIsSet(0, true);
-  return serializeLegacyResponse("func", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

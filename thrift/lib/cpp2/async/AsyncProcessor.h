@@ -356,6 +356,14 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       const SerializedRequest& serializedRequest,
       ContextStack* c);
 
+  template <typename Response, typename ProtocolOut, typename Result>
+  static Response serializeResponseImpl(
+      const char* method,
+      ProtocolOut* prot,
+      int32_t protoSeqId,
+      ContextStack* ctx,
+      const Result& result);
+
   template <typename ProtocolOut, typename Result>
   static LegacySerializedResponse serializeLegacyResponse(
       const char* method,
@@ -363,6 +371,10 @@ class GeneratedAsyncProcessor : public AsyncProcessor {
       int32_t protoSeqId,
       ContextStack* ctx,
       const Result& result);
+
+  template <typename ProtocolOut, typename Result>
+  static SerializedResponse serializeResponse(
+      ProtocolOut* prot, ContextStack* ctx, const Result& result);
 
   // Sends an error response if validation fails.
   static bool validateRpcKind(
@@ -743,7 +755,7 @@ class HandlerCallbackBase {
 
   folly::Optional<uint32_t> checksumIfNeeded(SerializedResponse& response);
 
-  virtual void transform(LegacySerializedResponse& reponse);
+  virtual ResponsePayload transform(ResponsePayload&& response);
 
   // Can be called from IO or TM thread
   virtual void doException(std::exception_ptr ex) {
@@ -759,7 +771,7 @@ class HandlerCallbackBase {
   template <typename Reply, typename... A>
   void putMessageInReplyQueue(std::in_place_type_t<Reply> tag, A&&... a);
 
-  void sendReply(LegacySerializedResponse response);
+  void sendReply(SerializedResponse response);
   void sendReply(ResponseAndServerStreamFactory&& responseAndStream);
 
 #if !FOLLY_HAS_COROUTINES
@@ -768,7 +780,7 @@ class HandlerCallbackBase {
   void
   sendReply(
       FOLLY_MAYBE_UNUSED std::pair<
-          apache::thrift::LegacySerializedResponse,
+          apache::thrift::SerializedResponse,
           apache::thrift::detail::SinkConsumerImpl>&& responseAndSinkConsumer);
 
   // Required for this call
@@ -825,8 +837,7 @@ class HandlerCallback : public HandlerCallbackBase {
 
 template <>
 class HandlerCallback<void> : public HandlerCallbackBase {
-  using cob_ptr =
-      LegacySerializedResponse (*)(int32_t protoSeqId, ContextStack*);
+  using cob_ptr = SerializedResponse (*)(ContextStack*);
 
  public:
   using ResultType = void;
@@ -891,8 +902,8 @@ void GeneratedAsyncProcessor::deserializeRequest(
   }
 }
 
-template <typename ProtocolOut, typename Result>
-LegacySerializedResponse GeneratedAsyncProcessor::serializeLegacyResponse(
+template <typename Response, typename ProtocolOut, typename Result>
+Response GeneratedAsyncProcessor::serializeResponseImpl(
     const char* method,
     ProtocolOut* prot,
     int32_t protoSeqId,
@@ -901,7 +912,9 @@ LegacySerializedResponse GeneratedAsyncProcessor::serializeLegacyResponse(
   folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
   size_t bufSize =
       apache::thrift::detail::serializedResponseBodySizeZC(prot, &result);
-  bufSize += prot->serializedMessageSize(method);
+  if constexpr (std::is_same_v<Response, LegacySerializedResponse>) {
+    bufSize += prot->serializedMessageSize(method);
+  }
 
   // Preallocate small buffer headroom for transports metadata & framing.
   constexpr size_t kHeadroomBytes = 128;
@@ -913,7 +926,9 @@ LegacySerializedResponse GeneratedAsyncProcessor::serializeLegacyResponse(
   if (ctx) {
     ctx->preWrite();
   }
-  prot->writeMessageBegin(method, MessageType::T_REPLY, protoSeqId);
+  if constexpr (std::is_same_v<Response, LegacySerializedResponse>) {
+    prot->writeMessageBegin(method, MessageType::T_REPLY, protoSeqId);
+  }
   apache::thrift::detail::serializeResponseBody(prot, &result);
   prot->writeMessageEnd();
   SerializedMessage smsg;
@@ -928,7 +943,24 @@ LegacySerializedResponse GeneratedAsyncProcessor::serializeLegacyResponse(
   if (ctx) {
     ctx->postWrite(folly::to_narrow(queue.chainLength()));
   }
-  return LegacySerializedResponse{queue.move()};
+  return Response{queue.move()};
+}
+
+template <typename ProtocolOut, typename Result>
+LegacySerializedResponse GeneratedAsyncProcessor::serializeLegacyResponse(
+    const char* method,
+    ProtocolOut* prot,
+    int32_t protoSeqId,
+    ContextStack* ctx,
+    const Result& result) {
+  return serializeResponseImpl<LegacySerializedResponse>(
+      method, prot, protoSeqId, ctx, result);
+}
+
+template <typename ProtocolOut, typename Result>
+SerializedResponse GeneratedAsyncProcessor::serializeResponse(
+    ProtocolOut* prot, ContextStack* ctx, const Result& result) {
+  return serializeResponseImpl<SerializedResponse>("", prot, 0, ctx, result);
 }
 
 template <typename ChildType>
@@ -1101,7 +1133,6 @@ void HandlerCallback<T>::doResult(InputType r) {
   assert(cp_ != nullptr);
   auto reply = Helper::call(
       cp_,
-      this->protoSeqId_,
       this->ctx_.get(),
       std::move(this->streamEx_),
       std::forward<InputType>(r));
@@ -1125,15 +1156,14 @@ struct inner_type<std::unique_ptr<S>> {
 template <typename T>
 struct HandlerCallbackHelper {
   using InputType = const typename apache::thrift::detail::inner_type<T>::type&;
-  using CobPtr = apache::thrift::LegacySerializedResponse (*)(
-      int32_t protoSeqId, ContextStack*, InputType);
-  static apache::thrift::LegacySerializedResponse call(
+  using CobPtr =
+      apache::thrift::SerializedResponse (*)(ContextStack*, InputType);
+  static apache::thrift::SerializedResponse call(
       CobPtr cob,
-      int32_t protoSeqId,
       ContextStack* ctx,
       folly::Executor::KeepAlive<>,
       InputType input) {
-    return cob(protoSeqId, ctx, input);
+    return cob(ctx, input);
   }
 };
 
@@ -1141,17 +1171,13 @@ template <typename StreamInputType>
 struct HandlerCallbackHelperServerStream {
   using InputType = StreamInputType&&;
   using CobPtr = ResponseAndServerStreamFactory (*)(
-      int32_t protoSeqId,
-      ContextStack*,
-      folly::Executor::KeepAlive<>,
-      InputType);
+      ContextStack*, folly::Executor::KeepAlive<>, InputType);
   static ResponseAndServerStreamFactory call(
       CobPtr cob,
-      int32_t protoSeqId,
       ContextStack* ctx,
       folly::Executor::KeepAlive<> streamEx,
       InputType input) {
-    return cob(protoSeqId, ctx, std::move(streamEx), std::move(input));
+    return cob(ctx, std::move(streamEx), std::move(input));
   }
 };
 
@@ -1168,12 +1194,10 @@ template <typename SinkInputType>
 struct HandlerCallbackHelperSink {
   using InputType = SinkInputType&&;
   using CobPtr =
-      std::pair<apache::thrift::LegacySerializedResponse, SinkConsumerImpl> (*)(
+      std::pair<apache::thrift::SerializedResponse, SinkConsumerImpl> (*)(
           ContextStack*, InputType, folly::Executor::KeepAlive<>);
-  static std::pair<apache::thrift::LegacySerializedResponse, SinkConsumerImpl>
-  call(
+  static std::pair<apache::thrift::SerializedResponse, SinkConsumerImpl> call(
       CobPtr cob,
-      int32_t,
       ContextStack* ctx,
       folly::Executor::KeepAlive<> streamEx,
       InputType input) {

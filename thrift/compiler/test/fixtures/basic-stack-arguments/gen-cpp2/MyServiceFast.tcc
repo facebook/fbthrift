@@ -53,12 +53,12 @@ void MyServiceFastAsyncProcessor::process_hasDataById(apache::thrift::ResponseCh
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse MyServiceFastAsyncProcessor::return_hasDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx, bool const& _return) {
+apache::thrift::SerializedResponse MyServiceFastAsyncProcessor::return_hasDataById(apache::thrift::ContextStack* ctx, bool const& _return) {
   ProtocolOut_ prot;
   MyServiceFast_hasDataById_presult result;
   result.get<0>().value = const_cast<bool*>(&_return);
   result.setIsSet(0, true);
-  return serializeLegacyResponse("hasDataById", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -109,12 +109,12 @@ void MyServiceFastAsyncProcessor::process_getDataById(apache::thrift::ResponseCh
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse MyServiceFastAsyncProcessor::return_getDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::SerializedResponse MyServiceFastAsyncProcessor::return_getDataById(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   MyServiceFast_getDataById_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeLegacyResponse("getDataById", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -167,10 +167,10 @@ void MyServiceFastAsyncProcessor::process_putDataById(apache::thrift::ResponseCh
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse MyServiceFastAsyncProcessor::return_putDataById(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::SerializedResponse MyServiceFastAsyncProcessor::return_putDataById(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyServiceFast_putDataById_presult result;
-  return serializeLegacyResponse("putDataById", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

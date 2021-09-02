@@ -48,12 +48,12 @@ void DerivedServiceAsyncProcessor::process_get_six(apache::thrift::ResponseChann
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse DerivedServiceAsyncProcessor::return_get_six(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::SerializedResponse DerivedServiceAsyncProcessor::return_get_six(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   DerivedService_get_six_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeLegacyResponse("get_six", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

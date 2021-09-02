@@ -58,10 +58,10 @@ void service2AsyncProcessor::process_methodA(apache::thrift::ResponseChannelRequ
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse service2AsyncProcessor::return_methodA(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::SerializedResponse service2AsyncProcessor::return_methodA(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   service2_methodA_presult result;
-  return serializeLegacyResponse("methodA", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -118,10 +118,10 @@ void service2AsyncProcessor::process_methodB(apache::thrift::ResponseChannelRequ
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse service2AsyncProcessor::return_methodB(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::SerializedResponse service2AsyncProcessor::return_methodB(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   service2_methodB_presult result;
-  return serializeLegacyResponse("methodB", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -172,12 +172,12 @@ void service2AsyncProcessor::process_methodC(apache::thrift::ResponseChannelRequ
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse service2AsyncProcessor::return_methodC(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::SerializedResponse service2AsyncProcessor::return_methodC(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service2_methodC_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeLegacyResponse("methodC", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -234,12 +234,12 @@ void service2AsyncProcessor::process_methodD(apache::thrift::ResponseChannelRequ
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse service2AsyncProcessor::return_methodD(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::SerializedResponse service2AsyncProcessor::return_methodD(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service2_methodD_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeLegacyResponse("methodD", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -290,12 +290,12 @@ void service2AsyncProcessor::process_methodE(apache::thrift::ResponseChannelRequ
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse service2AsyncProcessor::return_methodE(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::test_cpp2::cpp_reflection::struct2 const& _return) {
+apache::thrift::SerializedResponse service2AsyncProcessor::return_methodE(apache::thrift::ContextStack* ctx, ::test_cpp2::cpp_reflection::struct2 const& _return) {
   ProtocolOut_ prot;
   service2_methodE_presult result;
   result.get<0>().value = const_cast<::test_cpp2::cpp_reflection::struct2*>(&_return);
   result.setIsSet(0, true);
-  return serializeLegacyResponse("methodE", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -352,12 +352,12 @@ void service2AsyncProcessor::process_methodF(apache::thrift::ResponseChannelRequ
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse service2AsyncProcessor::return_methodF(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::test_cpp2::cpp_reflection::struct2 const& _return) {
+apache::thrift::SerializedResponse service2AsyncProcessor::return_methodF(apache::thrift::ContextStack* ctx, ::test_cpp2::cpp_reflection::struct2 const& _return) {
   ProtocolOut_ prot;
   service2_methodF_presult result;
   result.get<0>().value = const_cast<::test_cpp2::cpp_reflection::struct2*>(&_return);
   result.setIsSet(0, true);
-  return serializeLegacyResponse("methodF", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
