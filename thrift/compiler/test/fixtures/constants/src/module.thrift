@@ -58,6 +58,7 @@ struct Internship {
   2: string title;
   3: optional Company employer;
   4: optional double compensation;
+  5: optional string school;
 }
 
 typedef string MyStringIdentifier
@@ -73,6 +74,7 @@ const Internship instagram = {
   "title": "Software Engineer",
   "employer": Company.INSTAGRAM,
   "compensation": 1200.0,
+  "school": "Monters University",
 };
 
 const Internship partial_const = {"weeks": 8, "title": "Some Job"};

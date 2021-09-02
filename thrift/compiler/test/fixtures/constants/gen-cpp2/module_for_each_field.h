@@ -21,6 +21,7 @@ struct ForEachField<::cpp2::Internship> {
     f(1, static_cast<T&&>(t).title_ref()...);
     f(2, static_cast<T&&>(t).employer_ref()...);
     f(3, static_cast<T&&>(t).compensation_ref()...);
+    f(4, static_cast<T&&>(t).school_ref()...);
   }
 };
 

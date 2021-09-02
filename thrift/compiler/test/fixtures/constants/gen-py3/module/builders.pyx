@@ -12,6 +12,7 @@ cdef class Internship_Builder(thrift.py3.builder.StructBuilder):
         yield "title", self.title
         yield "employer", self.employer
         yield "compensation", self.compensation
+        yield "school", self.school
 
 cdef class Range_Builder(thrift.py3.builder.StructBuilder):
     _struct_type = _module_types.Range

@@ -43,6 +43,7 @@ class Internship(thrift.py3.types.Struct, _typing.Hashable):
         title: bool
         employer: bool
         compensation: bool
+        school: bool
         pass
 
     weeks: Final[int] = ...
@@ -53,12 +54,15 @@ class Internship(thrift.py3.types.Struct, _typing.Hashable):
 
     compensation: Final[_typing.Optional[float]] = ...
 
+    school: Final[_typing.Optional[str]] = ...
+
     def __init__(
         self, *,
         weeks: _typing.Optional[int]=None,
         title: _typing.Optional[str]=None,
         employer: _typing.Optional[Company]=None,
-        compensation: _typing.Optional[float]=None
+        compensation: _typing.Optional[float]=None,
+        school: _typing.Optional[str]=None
     ) -> None: ...
 
     def __call__(
@@ -66,7 +70,8 @@ class Internship(thrift.py3.types.Struct, _typing.Hashable):
         weeks: _typing.Union[int, __NotSet, None]=NOTSET,
         title: _typing.Union[str, __NotSet, None]=NOTSET,
         employer: _typing.Union[Company, __NotSet, None]=NOTSET,
-        compensation: _typing.Union[float, __NotSet, None]=NOTSET
+        compensation: _typing.Union[float, __NotSet, None]=NOTSET,
+        school: _typing.Union[str, __NotSet, None]=NOTSET
     ) -> Internship: ...
 
     def __reduce__(self) -> _typing.Tuple[_typing.Callable, _typing.Tuple[_typing.Type['Internship'], bytes]]: ...

@@ -97,10 +97,12 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         __field_ref[string] title_ref()
         __optional_field_ref[cCompany] employer_ref()
         __optional_field_ref[double] compensation_ref()
+        __optional_field_ref[string] school_ref()
         cint32_t weeks
         string title
         cCompany employer
         double compensation
+        string school
 
 
     cdef cppclass cRange "::cpp2::Range":

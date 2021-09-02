@@ -65,23 +65,26 @@ const std::array<folly::StringPiece, 4> TEnumDataStorage<::cpp2::union2::Type>::
   "u",
 }};
 
-const std::array<folly::StringPiece, 4> TStructDataStorage<::cpp2::Internship>::fields_names = {{
+const std::array<folly::StringPiece, 5> TStructDataStorage<::cpp2::Internship>::fields_names = {{
   "weeks",
   "title",
   "employer",
   "compensation",
+  "school",
 }};
-const std::array<int16_t, 4> TStructDataStorage<::cpp2::Internship>::fields_ids = {{
+const std::array<int16_t, 5> TStructDataStorage<::cpp2::Internship>::fields_ids = {{
   1,
   2,
   3,
   4,
+  5,
 }};
-const std::array<protocol::TType, 4> TStructDataStorage<::cpp2::Internship>::fields_types = {{
+const std::array<protocol::TType, 5> TStructDataStorage<::cpp2::Internship>::fields_types = {{
   TType::T_I32,
   TType::T_STRING,
   TType::T_I32,
   TType::T_DOUBLE,
+  TType::T_STRING,
 }};
 
 const std::array<folly::StringPiece, 2> TStructDataStorage<::cpp2::Range>::fields_names = {{

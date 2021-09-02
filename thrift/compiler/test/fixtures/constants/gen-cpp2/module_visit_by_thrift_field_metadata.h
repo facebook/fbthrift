@@ -26,6 +26,8 @@ struct VisitByFieldId<::cpp2::Internship> {
       return f(2, static_cast<T&&>(t).employer_ref());
     case 4:
       return f(3, static_cast<T&&>(t).compensation_ref());
+    case 5:
+      return f(4, static_cast<T&&>(t).school_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::Internship");
     }

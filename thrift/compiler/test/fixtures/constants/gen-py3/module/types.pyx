@@ -278,6 +278,7 @@ cdef class Internship(thrift.py3.types.Struct):
           "title": deref(self._cpp_obj).title_ref().has_value(),
           "employer": deref(self._cpp_obj).employer_ref().has_value(),
           "compensation": deref(self._cpp_obj).compensation_ref().has_value(),
+          "school": deref(self._cpp_obj).school_ref().has_value(),
         })
 
     @staticmethod
@@ -311,6 +312,13 @@ cdef class Internship(thrift.py3.types.Struct):
             return None
 
         return deref(self._cpp_obj).compensation_ref().value_unchecked()
+
+    @property
+    def school(self):
+        if not deref(self._cpp_obj).school_ref().has_value():
+            return None
+
+        return (<bytes>deref(self._cpp_obj).school_ref().value_unchecked()).decode('UTF-8')
 
 
     def __hash__(Internship self):
@@ -355,7 +363,7 @@ cdef class Internship(thrift.py3.types.Struct):
         return __get_field_name_by_index[cInternship](idx)
 
     def __cinit__(self):
-        self._fbthrift_struct_size = 4
+        self._fbthrift_struct_size = 5
 
     cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Internship self, __Protocol proto):
         cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data

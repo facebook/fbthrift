@@ -29,6 +29,7 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
         __fbthrift_inst._setters[__cstring_view(<const char*>"title")] = __Internship_FieldsSetter._set_field_1
         __fbthrift_inst._setters[__cstring_view(<const char*>"employer")] = __Internship_FieldsSetter._set_field_2
         __fbthrift_inst._setters[__cstring_view(<const char*>"compensation")] = __Internship_FieldsSetter._set_field_3
+        __fbthrift_inst._setters[__cstring_view(<const char*>"school")] = __Internship_FieldsSetter._set_field_4
         return __fbthrift_inst
 
     cdef void set_field(__Internship_FieldsSetter self, const char* name, object value) except *:
@@ -74,6 +75,15 @@ cdef class __Internship_FieldsSetter(__StructFieldsSetter):
         if not isinstance(_fbthrift_value, (float, int)):
             raise TypeError(f'compensation is not a { float !r}.')
         deref(self._struct_cpp_obj).compensation_ref().assign(_fbthrift_value)
+
+    cdef void _set_field_4(self, _fbthrift_value) except *:
+        # for field school
+        if _fbthrift_value is None:
+            __reset_field[_module_types.cInternship](deref(self._struct_cpp_obj), 4)
+            return
+        if not isinstance(_fbthrift_value, str):
+            raise TypeError(f'school is not a { str !r}.')
+        deref(self._struct_cpp_obj).school_ref().assign(cmove(bytes_to_string(_fbthrift_value.encode('utf-8'))))
 
 
 @__cython.auto_pickle(False)

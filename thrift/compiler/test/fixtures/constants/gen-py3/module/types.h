@@ -88,6 +88,9 @@ void reset_field<::cpp2::Internship>(
     case 3:
       obj.compensation_ref().copy_from(default_inst<::cpp2::Internship>().compensation_ref());
       return;
+    case 4:
+      obj.school_ref().copy_from(default_inst<::cpp2::Internship>().school_ref());
+      return;
   }
 }
 

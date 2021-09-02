@@ -139,17 +139,30 @@ Internship::Internship(const Internship&) = default;
 Internship& Internship::operator=(const Internship&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+Internship::Internship() :
+      weeks(0),
+      employer( ::cpp2::Company::FACEBOOK),
+      compensation(0) {
+}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+
+Internship::~Internship() {}
+
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Internship::Internship(Internship&& other) noexcept  :
     weeks(std::move(other.weeks)),
     title(std::move(other.title)),
     employer(std::move(other.employer)),
     compensation(std::move(other.compensation)),
+    school(std::move(other.school)),
     __isset(other.__isset) {}
 Internship& Internship::operator=(FOLLY_MAYBE_UNUSED Internship&& other) noexcept {
     this->weeks = std::move(other.weeks);
     this->title = std::move(other.title);
     this->employer = std::move(other.employer);
     this->compensation = std::move(other.compensation);
+    this->school = std::move(other.school);
     __isset = other.__isset;
     return *this;
 }
@@ -157,14 +170,16 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg) :
+Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg, ::std::string school__arg) :
     weeks(std::move(weeks__arg)),
     title(std::move(title__arg)),
     employer(std::move(employer__arg)),
-    compensation(std::move(compensation__arg)) {
+    compensation(std::move(compensation__arg)),
+    school(std::move(school__arg)) {
   __isset.title = true;
   __isset.employer = true;
   __isset.compensation = true;
+  __isset.school = true;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -174,6 +189,7 @@ void Internship::__clear() {
   this->title = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->employer =  ::cpp2::Company::FACEBOOK;
   this->compensation = 0;
+  this->school = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -195,6 +211,9 @@ bool Internship::operator==(const Internship& rhs) const {
   if (!(lhs.compensation_ref() == rhs.compensation_ref())) {
     return false;
   }
+  if (!(lhs.school_ref() == rhs.school_ref())) {
+    return false;
+  }
   return true;
 }
 
@@ -214,6 +233,9 @@ bool Internship::operator<(const Internship& rhs) const {
   if (!(lhs.compensation_ref() == rhs.compensation_ref())) {
     return lhs.compensation_ref() < rhs.compensation_ref();
   }
+  if (!(lhs.school_ref() == rhs.school_ref())) {
+    return lhs.school_ref() < rhs.school_ref();
+  }
   return false;
 }
 
@@ -224,6 +246,7 @@ void swap(Internship& a, Internship& b) {
   swap(a.title_ref().value(), b.title_ref().value());
   swap(a.employer_ref().value_unchecked(), b.employer_ref().value_unchecked());
   swap(a.compensation_ref().value_unchecked(), b.compensation_ref().value_unchecked());
+  swap(a.school_ref().value_unchecked(), b.school_ref().value_unchecked());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END

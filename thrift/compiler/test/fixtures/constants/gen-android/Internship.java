@@ -28,6 +28,7 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
   private static final TField TITLE_FIELD_DESC = new TField("title", TType.STRING, (short)2);
   private static final TField EMPLOYER_FIELD_DESC = new TField("employer", TType.I32, (short)3);
   private static final TField COMPENSATION_FIELD_DESC = new TField("compensation", TType.DOUBLE, (short)4);
+  private static final TField SCHOOL_FIELD_DESC = new TField("school", TType.STRING, (short)5);
 
   public final Integer weeks;
   public final String title;
@@ -37,20 +38,24 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
    */
   public final Company employer;
   public final Double compensation;
+  public final String school;
   public static final int WEEKS = 1;
   public static final int TITLE = 2;
   public static final int EMPLOYER = 3;
   public static final int COMPENSATION = 4;
+  public static final int SCHOOL = 5;
 
   public Internship(
       Integer weeks,
       String title,
       Company employer,
-      Double compensation) {
+      Double compensation,
+      String school) {
     this.weeks = weeks;
     this.title = title;
     this.employer = employer;
     this.compensation = compensation;
+    this.school = school;
   }
 
   /**
@@ -76,6 +81,11 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
       this.compensation = TBaseHelper.deepCopy(other.compensation);
     } else {
       this.compensation = null;
+    }
+    if (other.isSetSchool()) {
+      this.school = TBaseHelper.deepCopy(other.school);
+    } else {
+      this.school = null;
     }
   }
 
@@ -123,6 +133,15 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
     return this.compensation != null;
   }
 
+  public String getSchool() {
+    return this.school;
+  }
+
+  // Returns true if field school is set (has been assigned a value) and false otherwise
+  public boolean isSetSchool() {
+    return this.school != null;
+  }
+
   @Override
   public boolean equals(Object _that) {
     if (_that == null)
@@ -141,12 +160,14 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
 
     if (!TBaseHelper.equalsNobinary(this.isSetCompensation(), that.isSetCompensation(), this.compensation, that.compensation)) { return false; }
 
+    if (!TBaseHelper.equalsNobinary(this.isSetSchool(), that.isSetSchool(), this.school, that.school)) { return false; }
+
     return true;
   }
 
   @Override
   public int hashCode() {
-    return Arrays.deepHashCode(new Object[] {weeks, title, employer, compensation});
+    return Arrays.deepHashCode(new Object[] {weeks, title, employer, compensation, school});
   }
 
   // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -159,6 +180,7 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
     String tmp_title = null;
     Company tmp_employer = null;
     Double tmp_compensation = null;
+    String tmp_school = null;
     TField __field;
     iprot.readStructBegin();
     while (true)
@@ -197,6 +219,13 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
             TProtocolUtil.skip(iprot, __field.type);
           }
           break;
+        case SCHOOL:
+          if (__field.type == TType.STRING) {
+            tmp_school = iprot.readString();
+          } else { 
+            TProtocolUtil.skip(iprot, __field.type);
+          }
+          break;
         default:
           TProtocolUtil.skip(iprot, __field.type);
           break;
@@ -211,6 +240,7 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
       ,tmp_title
       ,tmp_employer
       ,tmp_compensation
+      ,tmp_school
     );
     _that.validate();
     return _that;
@@ -241,6 +271,13 @@ public class Internship implements TBase, java.io.Serializable, Cloneable {
       if (isSetCompensation()) {
         oprot.writeFieldBegin(COMPENSATION_FIELD_DESC);
         oprot.writeDouble(this.compensation);
+        oprot.writeFieldEnd();
+      }
+    }
+    if (this.school != null) {
+      if (isSetSchool()) {
+        oprot.writeFieldBegin(SCHOOL_FIELD_DESC);
+        oprot.writeString(this.school);
         oprot.writeFieldEnd();
       }
     }

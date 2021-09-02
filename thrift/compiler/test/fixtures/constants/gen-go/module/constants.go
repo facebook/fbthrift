@@ -118,6 +118,7 @@ Instagram = &Internship{
   Title: "Software Engineer",
   Employer:   3,
   Compensation: &const_lit_Instagram_compensation,
+  School: "Monters University",
 }
 
 PartialConst = &Internship{
@@ -142,6 +143,7 @@ InternList = []*Internship{
     Title: "Software Engineer",
     Employer:     3,
     Compensation: &const_lit_InternList_0_compensation,
+    School: "Monters University",
   },
   &Internship{
     Weeks: 10,

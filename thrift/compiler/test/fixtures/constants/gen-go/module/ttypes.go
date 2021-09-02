@@ -178,11 +178,13 @@ func MyMapIdentifierPtr(v MyMapIdentifier) *MyMapIdentifier { return &v }
 //  - Title
 //  - Employer
 //  - Compensation
+//  - School
 type Internship struct {
   Weeks int32 `thrift:"weeks,1,required" db:"weeks" json:"weeks"`
   Title string `thrift:"title,2" db:"title" json:"title"`
   Employer *Company `thrift:"employer,3,optional" db:"employer" json:"employer,omitempty"`
   Compensation *float64 `thrift:"compensation,4,optional" db:"compensation" json:"compensation,omitempty"`
+  School *string `thrift:"school,5,optional" db:"school" json:"school,omitempty"`
 }
 
 func NewInternship() *Internship {
@@ -211,12 +213,23 @@ func (p *Internship) GetCompensation() float64 {
   }
 return *p.Compensation
 }
+var Internship_School_DEFAULT string
+func (p *Internship) GetSchool() string {
+  if !p.IsSetSchool() {
+    return Internship_School_DEFAULT
+  }
+return *p.School
+}
 func (p *Internship) IsSetEmployer() bool {
   return p != nil && p.Employer != nil
 }
 
 func (p *Internship) IsSetCompensation() bool {
   return p != nil && p.Compensation != nil
+}
+
+func (p *Internship) IsSetSchool() bool {
+  return p != nil && p.School != nil
 }
 
 type InternshipBuilder struct {
@@ -235,6 +248,7 @@ func (p InternshipBuilder) Emit() *Internship{
     Title: p.obj.Title,
     Employer: p.obj.Employer,
     Compensation: p.obj.Compensation,
+    School: p.obj.School,
   }
 }
 
@@ -258,6 +272,11 @@ func (i *InternshipBuilder) Compensation(compensation *float64) *InternshipBuild
   return i
 }
 
+func (i *InternshipBuilder) School(school *string) *InternshipBuilder {
+  i.obj.School = school
+  return i
+}
+
 func (i *Internship) SetWeeks(weeks int32) *Internship {
   i.Weeks = weeks
   return i
@@ -275,6 +294,11 @@ func (i *Internship) SetEmployer(employer *Company) *Internship {
 
 func (i *Internship) SetCompensation(compensation *float64) *Internship {
   i.Compensation = compensation
+  return i
+}
+
+func (i *Internship) SetSchool(school *string) *Internship {
+  i.School = school
   return i
 }
 
@@ -307,6 +331,10 @@ func (p *Internship) Read(iprot thrift.Protocol) error {
       }
     case 4:
       if err := p.ReadField4(iprot); err != nil {
+        return err
+      }
+    case 5:
+      if err := p.ReadField5(iprot); err != nil {
         return err
       }
     default:
@@ -364,6 +392,15 @@ func (p *Internship)  ReadField4(iprot thrift.Protocol) error {
   return nil
 }
 
+func (p *Internship)  ReadField5(iprot thrift.Protocol) error {
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 5: ", err)
+  } else {
+    p.School = &v
+  }
+  return nil
+}
+
 func (p *Internship) Write(oprot thrift.Protocol) error {
   if err := oprot.WriteStructBegin("Internship"); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
@@ -371,6 +408,7 @@ func (p *Internship) Write(oprot thrift.Protocol) error {
   if err := p.writeField2(oprot); err != nil { return err }
   if err := p.writeField3(oprot); err != nil { return err }
   if err := p.writeField4(oprot); err != nil { return err }
+  if err := p.writeField5(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -422,6 +460,18 @@ func (p *Internship) writeField4(oprot thrift.Protocol) (err error) {
   return err
 }
 
+func (p *Internship) writeField5(oprot thrift.Protocol) (err error) {
+  if p.IsSetSchool() {
+    if err := oprot.WriteFieldBegin("school", thrift.STRING, 5); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field begin error 5:school: ", p), err) }
+    if err := oprot.WriteString(string(*p.School)); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T.school (5) field write error: ", p), err) }
+    if err := oprot.WriteFieldEnd(); err != nil {
+      return thrift.PrependError(fmt.Sprintf("%T write field end error 5:school: ", p), err) }
+  }
+  return err
+}
+
 func (p *Internship) String() string {
   if p == nil {
     return "<nil>"
@@ -441,7 +491,13 @@ func (p *Internship) String() string {
   } else {
     compensationVal = fmt.Sprintf("%v", *p.Compensation)
   }
-  return fmt.Sprintf("Internship({Weeks:%s Title:%s Employer:%s Compensation:%s})", weeksVal, titleVal, employerVal, compensationVal)
+  var schoolVal string
+  if p.School == nil {
+    schoolVal = "<nil>"
+  } else {
+    schoolVal = fmt.Sprintf("%v", *p.School)
+  }
+  return fmt.Sprintf("Internship({Weeks:%s Title:%s Employer:%s Compensation:%s School:%s})", weeksVal, titleVal, employerVal, compensationVal, schoolVal)
 }
 
 // Attributes:

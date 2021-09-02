@@ -17,6 +17,7 @@ struct weeks;
 struct title;
 struct employer;
 struct compensation;
+struct school;
 struct min;
 struct max;
 struct a;
@@ -54,6 +55,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(employer);
 #ifndef APACHE_THRIFT_ACCESSOR_compensation
 #define APACHE_THRIFT_ACCESSOR_compensation
 APACHE_THRIFT_DEFINE_ACCESSOR(compensation);
+#endif
+#ifndef APACHE_THRIFT_ACCESSOR_school
+#define APACHE_THRIFT_ACCESSOR_school
+APACHE_THRIFT_DEFINE_ACCESSOR(school);
 #endif
 #ifndef APACHE_THRIFT_ACCESSOR_min
 #define APACHE_THRIFT_ACCESSOR_min
@@ -303,14 +308,11 @@ class Internship final  {
 
  public:
 
-  Internship() :
-      weeks(0),
-      employer( ::cpp2::Company::FACEBOOK),
-      compensation(0) {
-  }
+  Internship();
+
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg);
+  Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks__arg, ::std::string title__arg, ::cpp2::Company employer__arg, double compensation__arg, ::std::string school__arg);
 
   Internship(Internship&&) noexcept;
 
@@ -320,6 +322,9 @@ class Internship final  {
   Internship& operator=(Internship&&) noexcept;
   Internship& operator=(const Internship& src);
   void __clear();
+
+  ~Internship();
+
  public:
   ::std::int32_t weeks;
  private:
@@ -328,6 +333,8 @@ class Internship final  {
   ::cpp2::Company employer;
  private:
   double compensation;
+ private:
+  ::std::string school;
 
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
@@ -335,6 +342,7 @@ class Internship final  {
     bool title;
     bool employer;
     bool compensation;
+    bool school;
   } __isset = {};
 
  public:
@@ -422,6 +430,26 @@ class Internship final  {
     return {std::move(this->compensation), __isset.compensation};
   }
 
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> school_ref() const& {
+    return {this->school, __isset.school};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> school_ref() const&& {
+    return {std::move(this->school), __isset.school};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> school_ref() & {
+    return {this->school, __isset.school};
+  }
+
+  template <typename..., typename T = ::std::string>
+  FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> school_ref() && {
+    return {std::move(this->school), __isset.school};
+  }
+
   ::std::int32_t get_weeks() const {
     return weeks;
   }
@@ -478,6 +506,23 @@ class Internship final  {
     compensation = compensation_;
     __isset.compensation = true;
     return compensation;
+  }
+
+  const ::std::string* get_school() const& {
+    return school_ref() ? std::addressof(school) : nullptr;
+  }
+
+  ::std::string* get_school() & {
+    return school_ref() ? std::addressof(school) : nullptr;
+  }
+  ::std::string* get_school() && = delete;
+
+  template <typename T_Internship_school_struct_setter = ::std::string>
+  [[deprecated("Use `FOO.school_ref() = BAR;` instead of `FOO.set_school(BAR);`")]]
+  ::std::string& set_school(T_Internship_school_struct_setter&& school_) {
+    school = std::forward<T_Internship_school_struct_setter>(school_);
+    __isset.school = true;
+    return school;
   }
 
   template <class Protocol_>

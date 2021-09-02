@@ -67,6 +67,7 @@ multi line string.
     instagram.setTitle("Software Engineer");
     instagram.setEmployer(Company.INSTAGRAM);
     instagram.setCompensation(1200);
+    instagram.setSchool("Monters University");
   }
 
   public static final Internship partial_const = new Internship();
@@ -96,6 +97,7 @@ multi line string.
     tmp4.setTitle("Software Engineer");
     tmp4.setEmployer(Company.INSTAGRAM);
     tmp4.setCompensation(1200);
+    tmp4.setSchool("Monters University");
 
     internList.add(tmp4);
     Internship tmp5 = new Internship();

@@ -117,6 +117,7 @@ multi line string.
         "title" => "Software Engineer",
         "employer" => Company::INSTAGRAM,
         "compensation" => 1200.0,
+        "school" => "Monters University",
       )
     );
   }
@@ -170,6 +171,7 @@ multi line string.
           "title" => "Software Engineer",
           "employer" => Company::INSTAGRAM,
           "compensation" => 1200.0,
+          "school" => "Monters University",
         )
       ),
       Internship::fromShape(

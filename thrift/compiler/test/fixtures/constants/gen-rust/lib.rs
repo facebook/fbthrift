@@ -59,6 +59,7 @@ pub mod consts {
             title: "Software Engineer".to_owned(),
             employer: ::std::option::Option::Some(crate::types::Company::INSTAGRAM),
             compensation: ::std::option::Option::Some(1200.0),
+            school: ::std::option::Option::Some("Monters University".to_owned()),
         });
 
     pub static partial_const: ::once_cell::sync::Lazy<crate::types::Internship> = ::once_cell::sync::Lazy::new(|| crate::types::Internship {
@@ -66,6 +67,7 @@ pub mod consts {
             title: "Some Job".to_owned(),
             employer: ::std::default::Default::default(),
             compensation: ::std::default::Default::default(),
+            school: ::std::default::Default::default(),
         });
 
     pub static kRanges: ::once_cell::sync::Lazy<::std::vec::Vec<crate::types::Range>> = ::once_cell::sync::Lazy::new(|| vec![
@@ -85,12 +87,14 @@ pub mod consts {
                 title: "Software Engineer".to_owned(),
                 employer: ::std::option::Option::Some(crate::types::Company::INSTAGRAM),
                 compensation: ::std::option::Option::Some(1200.0),
+                school: ::std::option::Option::Some("Monters University".to_owned()),
             },
             crate::types::Internship {
                 weeks: 10,
                 title: "Sales Intern".to_owned(),
                 employer: ::std::option::Option::Some(crate::types::Company::FACEBOOK),
                 compensation: ::std::option::Option::Some(1000.0),
+                school: ::std::default::Default::default(),
             },
         ]);
 
@@ -309,6 +313,7 @@ pub mod types {
         pub title: ::std::string::String,
         pub employer: ::std::option::Option<crate::types::Company>,
         pub compensation: ::std::option::Option<::std::primitive::f64>,
+        pub school: ::std::option::Option<::std::string::String>,
     }
 
     #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
@@ -714,6 +719,7 @@ pub mod types {
                 title: ::std::default::Default::default(),
                 employer: ::std::option::Option::None,
                 compensation: ::std::option::Option::None,
+                school: ::std::option::Option::None,
             }
         }
     }
@@ -747,6 +753,11 @@ pub mod types {
                 ::fbthrift::Serialize::write(some, p);
                 p.write_field_end();
             }
+            if let ::std::option::Option::Some(some) = &self.school {
+                p.write_field_begin("school", ::fbthrift::TType::String, 5);
+                ::fbthrift::Serialize::write(some, p);
+                p.write_field_end();
+            }
             p.write_field_stop();
             p.write_struct_end();
         }
@@ -760,6 +771,7 @@ pub mod types {
             static FIELDS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("compensation", ::fbthrift::TType::Double, 4),
                 ::fbthrift::Field::new("employer", ::fbthrift::TType::I32, 3),
+                ::fbthrift::Field::new("school", ::fbthrift::TType::String, 5),
                 ::fbthrift::Field::new("title", ::fbthrift::TType::String, 2),
                 ::fbthrift::Field::new("weeks", ::fbthrift::TType::I32, 1),
             ];
@@ -767,6 +779,7 @@ pub mod types {
             let mut field_title = ::std::option::Option::None;
             let mut field_employer = ::std::option::Option::None;
             let mut field_compensation = ::std::option::Option::None;
+            let mut field_school = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
@@ -776,6 +789,7 @@ pub mod types {
                     (::fbthrift::TType::String, 2) => field_title = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::I32, 3) => field_employer = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (::fbthrift::TType::Double, 4) => field_compensation = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 5) => field_school = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -786,6 +800,7 @@ pub mod types {
                 title: field_title.unwrap_or_default(),
                 employer: field_employer,
                 compensation: field_compensation,
+                school: field_school,
             })
         }
     }

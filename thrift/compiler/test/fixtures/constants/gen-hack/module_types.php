@@ -126,12 +126,17 @@ class Internship implements \IThriftStruct {
       'var' => 'compensation',
       'type' => \TType::DOUBLE,
     ),
+    5 => shape(
+      'var' => 'school',
+      'type' => \TType::STRING,
+    ),
   ];
   const dict<string, int> FIELDMAP = dict[
     'weeks' => 1,
     'title' => 2,
     'employer' => 3,
     'compensation' => 4,
+    'school' => 5,
   ];
 
   const type TConstructorShape = shape(
@@ -139,9 +144,10 @@ class Internship implements \IThriftStruct {
     ?'title' => ?string,
     ?'employer' => ?Company,
     ?'compensation' => ?float,
+    ?'school' => ?string,
   );
 
-  const int STRUCTURAL_ID = 1958641629526735979;
+  const int STRUCTURAL_ID = 5601694484190969969;
   /**
    * Original thrift field:-
    * 1: i32 weeks
@@ -162,12 +168,18 @@ class Internship implements \IThriftStruct {
    * 4: double compensation
    */
   public ?float $compensation;
+  /**
+   * Original thrift field:-
+   * 5: string school
+   */
+  public ?string $school;
 
-  public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null, ?float $compensation = null  )[] {
+  public function __construct(?int $weeks = null, ?string $title = null, ?Company $employer = null, ?float $compensation = null, ?string $school = null  )[] {
     $this->weeks = $weeks ?? 0;
     $this->title = $title ?? '';
     $this->employer = $employer;
     $this->compensation = $compensation;
+    $this->school = $school;
   }
 
   public static function withDefaultValues()[]: this {
@@ -180,6 +192,7 @@ class Internship implements \IThriftStruct {
       Shapes::idx($shape, 'title'),
       Shapes::idx($shape, 'employer'),
       Shapes::idx($shape, 'compensation'),
+      Shapes::idx($shape, 'school'),
     );
   }
 
@@ -239,6 +252,18 @@ class Internship implements \IThriftStruct {
                 )
               ),
               "name" => "compensation",
+              "is_optional" => true,
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 5,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "school",
               "is_optional" => true,
             )
           ),
