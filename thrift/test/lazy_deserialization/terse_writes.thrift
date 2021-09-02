@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/lib/thrift/annotation/cpp.thrift"
+
 namespace cpp2 apache.thrift.test
 
 struct TerseFoo {
@@ -26,8 +28,10 @@ struct TerseFoo {
 struct TerseLazyFoo {
   1: list<double> field1;
   2: list<i32> field2;
-  3: list<double> field3 (cpp.experimental.lazy);
-  4: list<i32> field4 (cpp.experimental.lazy);
+  @cpp.Lazy
+  3: list<double> field3;
+  @cpp.Lazy
+  4: list<i32> field4;
 }
 
 struct TerseOptionalFoo {
@@ -40,6 +44,8 @@ struct TerseOptionalFoo {
 struct TerseOptionalLazyFoo {
   1: optional list<double> field1;
   2: optional list<i32> field2;
-  3: optional list<double> field3 (cpp.experimental.lazy);
-  4: optional list<i32> field4 (cpp.experimental.lazy);
+  @cpp.Lazy
+  3: optional list<double> field3;
+  @cpp.Lazy
+  4: optional list<i32> field4;
 }

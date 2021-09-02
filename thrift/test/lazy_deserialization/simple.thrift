@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/lib/thrift/annotation/cpp.thrift"
+
 namespace cpp2 apache.thrift.test
 namespace py3 thrift.test.lazy_deserialization
 
@@ -28,8 +30,10 @@ struct Foo {
 struct LazyFoo {
   1: list<double> field1;
   2: list<i32> field2;
-  3: list<double> field3 (cpp.experimental.lazy);
-  4: list<i32> field4 (cpp.experimental.lazy);
+  @cpp.Lazy
+  3: list<double> field3;
+  @cpp.Lazy
+  4: list<i32> field4;
 }
 
 struct OptionalFoo {
@@ -42,17 +46,22 @@ struct OptionalFoo {
 struct OptionalLazyFoo {
   1: optional list<double> field1;
   2: optional list<i32> field2;
-  3: optional list<double> field3 (cpp.experimental.lazy);
-  4: optional list<i32> field4 (cpp.experimental.lazy);
+  @cpp.Lazy
+  3: optional list<double> field3;
+  @cpp.Lazy
+  4: optional list<i32> field4;
 }
 
 struct LazyCppRef {
-  1: optional list<i32> field1 (cpp.ref_type = "unique", cpp.experimental.lazy);
-  2: optional list<i32> field2 (cpp.ref_type = "shared", cpp.experimental.lazy);
-  3: optional list<i32> field3 (
-    cpp.ref_type = "shared_const",
-    cpp.experimental.lazy,
-  );
+  @cpp.Lazy
+  @cpp.Ref{type = cpp.RefType.Unique}
+  1: optional list<i32> field1;
+  @cpp.Lazy
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  2: optional list<i32> field2;
+  @cpp.Lazy
+  @cpp.Ref{type = cpp.RefType.Shared}
+  3: optional list<i32> field3;
 }
 
 // Same as Foo, except adding index field explicitly

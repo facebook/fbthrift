@@ -31,3 +31,7 @@ enum RefType {
 struct Ref {
   1: RefType type;
 }
+
+@scope.Field
+struct Lazy {
+}

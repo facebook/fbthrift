@@ -90,7 +90,9 @@ inline bool field_has_isset(const t_field* field) {
 }
 
 inline bool is_lazy(const t_field* field) {
-  return field->has_annotation("cpp.experimental.lazy");
+  return field->has_annotation("cpp.experimental.lazy") ||
+      field->get_structured_annotation_or_null(
+          "thrift/lib/thrift/annotation/cpp.thrift", "Lazy") != nullptr;
 }
 
 bool field_transitively_refers_to_unique(const t_field* field);
