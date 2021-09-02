@@ -1312,3 +1312,37 @@ class CompilerFailureTest(unittest.TestCase):
                 '[FAILURE:foo.thrift:3] Field identifier 1 for "field2" has already been used.\n'
             ),
         )
+
+    def test_structured_annotation_thrift_uri(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Struct1 {
+                } (thrift.uri = "facebook.com/thrift/annotation/Struct")
+                struct Struct2 {
+                } (thrift.uri = "facebook.com/thrift/annotation/Struct")
+
+                @Struct1
+                struct Struct3 {}
+
+                @Struct2
+                struct Struct4 {}
+
+                @Struct1
+                @Struct2
+                struct Struct5 {}
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            "\n" + err,
+            textwrap.dedent(
+                """
+                [FAILURE:foo.thrift:14] Structured annotation thrift.uri `facebook.com/thrift/annotation/Struct` is already defined for `Struct5`.
+                """
+            ),
+        )

@@ -385,6 +385,28 @@ void validate_structured_annotation(
   }
 }
 
+void validate_structured_annotation_thrift_uri(
+    diagnostic_context& ctx, const t_named& node) {
+  std::unordered_map<std::string, const t_const*> uri_to_annotation;
+  for (const auto* annot : node.structured_annotations()) {
+    const auto* uri = annot->get_type()->get_annotation_or_null("thrift.uri");
+    if (!uri) {
+      continue;
+    }
+
+    auto result = uri_to_annotation.emplace(*uri, annot);
+    if (!result.second) {
+      report_redef_failure(
+          ctx,
+          "Structured annotation thrift.uri",
+          *uri,
+          node,
+          *annot,
+          *result.first->second);
+    }
+  }
+}
+
 void validate_field_id(diagnostic_context& ctx, const t_field& node) {
   if (!node.has_explicit_id()) {
     ctx.warning([&](auto& o) {
@@ -460,6 +482,7 @@ ast_validator standard_validator() {
   validator.add_enum_value_visitor(&validate_enum_value);
 
   validator.add_definition_visitor(&validate_structured_annotation);
+  validator.add_definition_visitor(&validate_structured_annotation_thrift_uri);
   validator.add_definition_visitor(&validate_annotation_scopes);
   validator.add_const_visitor(&validate_const_type);
   return validator;
