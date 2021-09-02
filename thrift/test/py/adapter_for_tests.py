@@ -21,9 +21,13 @@ class AdapterTestStructToDict:
     Type = Dict[str, int]
 
     @staticmethod
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def from_thrift(thrift_value):
         return {k: v for k, v in thrift_value.__dict__.items() if v is not None}
 
     @staticmethod
+    # pyre-fixme[3]: Return type must be annotated.
+    # pyre-fixme[2]: Parameter must be annotated.
     def to_thrift(py_value):
         return Bar(**py_value)
