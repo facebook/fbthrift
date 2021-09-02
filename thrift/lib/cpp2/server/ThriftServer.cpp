@@ -774,9 +774,7 @@ void ThriftServer::ensureDecoratedProcessorFactoryInitialized() {
   DCHECK(getProcessorFactory().get());
   if (decoratedProcessorFactory_ == nullptr) {
     decoratedProcessorFactory_ = createDecoratedProcessorFactory(
-        getProcessorFactory(),
-        getStatusInterface(),
-        getMonitoringProcessorFactory());
+        getProcessorFactory(), getStatusInterface(), getMonitoringInterface());
     ;
   }
 }

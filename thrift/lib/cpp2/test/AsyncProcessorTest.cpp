@@ -480,7 +480,7 @@ THRIFT_PLUGGABLE_FUNC_SET(
     std::optional<rocket::ProcessorInfo> tryHandle(
         const RequestSetupMetadata& meta) override {
       if (meta.interfaceKind_ref() == InterfaceKind::MONITORING) {
-        auto processorFactory = server_.getMonitoringProcessorFactory();
+        auto processorFactory = server_.getMonitoringInterface();
         DCHECK(processorFactory);
         return rocket::ProcessorInfo{
             *processorFactory,
