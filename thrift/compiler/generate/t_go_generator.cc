@@ -1136,7 +1136,14 @@ string t_go_generator::render_const_value(
 
     switch (tbase) {
       case t_base_type::TYPE_STRING:
-        out << '"' << get_escaped_string(value) << '"';
+        if (is_optional) {
+          f_const_vars_ << "var const_lit_" << name << " "
+                        << type_to_go_type(type) << " = " << '"'
+                        << get_escaped_string(value) << '"' << endl;
+          out << "&const_lit_" << name;
+        } else {
+          out << '"' << get_escaped_string(value) << '"';
+        }
         break;
       case t_base_type::TYPE_BINARY:
         out << "[]byte(\"" << get_escaped_string(value) << "\")";
