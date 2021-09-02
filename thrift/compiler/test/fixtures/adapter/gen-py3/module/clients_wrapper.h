@@ -11,6 +11,7 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
+#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -26,7 +27,7 @@ class ServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::SemiFuture<int32_t> func(
+    folly::Future<int32_t> func(
       apache::thrift::RpcOptions& rpcOptions,
       std::string arg_arg1,
       ::cpp2::Foo arg_arg2);

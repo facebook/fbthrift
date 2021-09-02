@@ -19,7 +19,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from folly cimport cFollySemiFuture, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
@@ -44,16 +44,16 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollySemiFuture[cClientBufferedStream[cint32_t]] returnstream(cRpcOptions, 
+    cFollyFuture[cClientBufferedStream[cint32_t]] returnstream(cRpcOptions, 
       cint32_t arg_i32_from,
       cint32_t arg_i32_to,)
-    cFollySemiFuture[cClientBufferedStream[cint32_t]] streamthrows(cRpcOptions, 
+    cFollyFuture[cClientBufferedStream[cint32_t]] streamthrows(cRpcOptions, 
       cint32_t arg_foo,)
-    cFollySemiFuture[cClientBufferedStream[cint32_t]] boththrows(cRpcOptions, 
+    cFollyFuture[cClientBufferedStream[cint32_t]] boththrows(cRpcOptions, 
       cint32_t arg_foo,)
-    cFollySemiFuture[cResponseAndClientBufferedStream[cint32_t,cint32_t]] responseandstreamthrows(cRpcOptions, 
+    cFollyFuture[cResponseAndClientBufferedStream[cint32_t,cint32_t]] responseandstreamthrows(cRpcOptions, 
       cint32_t arg_foo,)
-    cFollySemiFuture[cClientBufferedStream[cint32_t]] returnstreamFast(cRpcOptions, 
+    cFollyFuture[cClientBufferedStream[cint32_t]] returnstreamFast(cRpcOptions, 
       cint32_t arg_i32_from,
       cint32_t arg_i32_to,)
 

@@ -10,98 +10,93 @@
 namespace cpp2 {
 
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>>
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
 PubSubStreamingServiceClientWrapper::returnstream(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_i32_from,
     int32_t arg_i32_to) {
   auto* client = static_cast<::cpp2::PubSubStreamingServiceAsyncClient*>(async_client_.get());
-  return client->header_semifuture_returnstream(
+  folly::Promise<apache::thrift::ClientBufferedStream<int32_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_returnstream, channel_);
+  client->returnstream(
     rpcOptions,
+    std::move(callback),
     arg_i32_from,
     arg_i32_to
-  ).deferValue([&](auto pair){
-      auto& header = *pair.second;
-      if (!header.getHeaders().empty()) {
-        rpcOptions.setReadHeaders(header.releaseHeaders());
-      }
-      return std::move(pair.first);
-  });
-  
+  );
+  return _future;
 }
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>>
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
 PubSubStreamingServiceClientWrapper::streamthrows(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_foo) {
   auto* client = static_cast<::cpp2::PubSubStreamingServiceAsyncClient*>(async_client_.get());
-  return client->header_semifuture_streamthrows(
+  folly::Promise<apache::thrift::ClientBufferedStream<int32_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_streamthrows, channel_);
+  client->streamthrows(
     rpcOptions,
+    std::move(callback),
     arg_foo
-  ).deferValue([&](auto pair){
-      auto& header = *pair.second;
-      if (!header.getHeaders().empty()) {
-        rpcOptions.setReadHeaders(header.releaseHeaders());
-      }
-      return std::move(pair.first);
-  });
-  
+  );
+  return _future;
 }
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>>
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
 PubSubStreamingServiceClientWrapper::boththrows(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_foo) {
   auto* client = static_cast<::cpp2::PubSubStreamingServiceAsyncClient*>(async_client_.get());
-  return client->header_semifuture_boththrows(
+  folly::Promise<apache::thrift::ClientBufferedStream<int32_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_boththrows, channel_);
+  client->boththrows(
     rpcOptions,
+    std::move(callback),
     arg_foo
-  ).deferValue([&](auto pair){
-      auto& header = *pair.second;
-      if (!header.getHeaders().empty()) {
-        rpcOptions.setReadHeaders(header.releaseHeaders());
-      }
-      return std::move(pair.first);
-  });
-  
+  );
+  return _future;
 }
 
-folly::SemiFuture<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>
+folly::Future<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>
 PubSubStreamingServiceClientWrapper::responseandstreamthrows(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_foo) {
   auto* client = static_cast<::cpp2::PubSubStreamingServiceAsyncClient*>(async_client_.get());
-  return client->header_semifuture_responseandstreamthrows(
+  folly::Promise<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ResponseAndClientBufferedStream<int32_t,int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_responseandstreamthrows, channel_);
+  client->responseandstreamthrows(
     rpcOptions,
+    std::move(callback),
     arg_foo
-  ).deferValue([&](auto pair){
-      auto& header = *pair.second;
-      if (!header.getHeaders().empty()) {
-        rpcOptions.setReadHeaders(header.releaseHeaders());
-      }
-      return std::move(pair.first);
-  });
-  
+  );
+  return _future;
 }
 
-folly::SemiFuture<apache::thrift::ClientBufferedStream<int32_t>>
+folly::Future<apache::thrift::ClientBufferedStream<int32_t>>
 PubSubStreamingServiceClientWrapper::returnstreamFast(
     apache::thrift::RpcOptions& rpcOptions,
     int32_t arg_i32_from,
     int32_t arg_i32_to) {
   auto* client = static_cast<::cpp2::PubSubStreamingServiceAsyncClient*>(async_client_.get());
-  return client->header_semifuture_returnstreamFast(
+  folly::Promise<apache::thrift::ClientBufferedStream<int32_t>> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<apache::thrift::ClientBufferedStream<int32_t>>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_returnstreamFast, channel_);
+  client->returnstreamFast(
     rpcOptions,
+    std::move(callback),
     arg_i32_from,
     arg_i32_to
-  ).deferValue([&](auto pair){
-      auto& header = *pair.second;
-      if (!header.getHeaders().empty()) {
-        rpcOptions.setReadHeaders(header.releaseHeaders());
-      }
-      return std::move(pair.first);
-  });
-  
+  );
+  return _future;
 }
 
 } // namespace cpp2

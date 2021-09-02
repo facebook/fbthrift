@@ -36,7 +36,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-from folly.futures cimport bridgeSemiFutureWith
+from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport folly.iobuf as _fbthrift_iobuf
 import folly.iobuf as _fbthrift_iobuf
@@ -117,7 +117,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).query(rpc_options._cpp_obj, 
                 deref((<_module_types.MyStruct>s)._cpp_obj),
@@ -141,7 +141,7 @@ cdef class MyService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cMyServiceClientWrapper, cClientWrapper](self._client.get()).has_arg_docs(rpc_options._cpp_obj, 
                 deref((<_module_types.MyStruct>s)._cpp_obj),

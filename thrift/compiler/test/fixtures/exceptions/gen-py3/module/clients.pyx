@@ -36,7 +36,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-from folly.futures cimport bridgeSemiFutureWith
+from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport folly.iobuf as _fbthrift_iobuf
 import folly.iobuf as _fbthrift_iobuf
@@ -177,7 +177,7 @@ cdef class Raiser(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cRaiserClientWrapper, cClientWrapper](self._client.get()).doBland(rpc_options._cpp_obj, 
             ),
@@ -197,7 +197,7 @@ cdef class Raiser(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cRaiserClientWrapper, cClientWrapper](self._client.get()).doRaise(rpc_options._cpp_obj, 
             ),
@@ -217,7 +217,7 @@ cdef class Raiser(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[string](
+        bridgeFutureWith[string](
             self._executor,
             down_cast_ptr[cRaiserClientWrapper, cClientWrapper](self._client.get()).get200(rpc_options._cpp_obj, 
             ),
@@ -237,7 +237,7 @@ cdef class Raiser(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[string](
+        bridgeFutureWith[string](
             self._executor,
             down_cast_ptr[cRaiserClientWrapper, cClientWrapper](self._client.get()).get500(rpc_options._cpp_obj, 
             ),

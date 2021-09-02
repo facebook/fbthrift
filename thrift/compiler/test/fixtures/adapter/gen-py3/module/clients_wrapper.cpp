@@ -10,24 +10,23 @@
 namespace cpp2 {
 
 
-folly::SemiFuture<int32_t>
+folly::Future<int32_t>
 ServiceClientWrapper::func(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_arg1,
     ::cpp2::Foo arg_arg2) {
   auto* client = static_cast<::cpp2::ServiceAsyncClient*>(async_client_.get());
-  return client->header_semifuture_func(
+  folly::Promise<int32_t> _promise;
+  auto _future = _promise.getFuture();
+  auto callback = std::make_unique<::thrift::py3::FutureCallback<int32_t>>(
+    std::move(_promise), rpcOptions, client->recv_wrapped_func, channel_);
+  client->func(
     rpcOptions,
+    std::move(callback),
     arg_arg1,
     arg_arg2
-  ).deferValue([&](auto pair){
-      auto& header = *pair.second;
-      if (!header.getHeaders().empty()) {
-        rpcOptions.setReadHeaders(header.releaseHeaders());
-      }
-      return std::move(pair.first);
-  });
-  
+  );
+  return _future;
 }
 
 } // namespace cpp2

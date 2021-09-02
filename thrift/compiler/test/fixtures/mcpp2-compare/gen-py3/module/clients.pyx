@@ -36,7 +36,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-from folly.futures cimport bridgeSemiFutureWith
+from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport folly.iobuf as _fbthrift_iobuf
 import folly.iobuf as _fbthrift_iobuf
@@ -768,7 +768,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).noReturn(rpc_options._cpp_obj, 
             ),
@@ -788,7 +788,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cbool](
+        bridgeFutureWith[cbool](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).boolReturn(rpc_options._cpp_obj, 
             ),
@@ -808,7 +808,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cint16_t](
+        bridgeFutureWith[cint16_t](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).i16Return(rpc_options._cpp_obj, 
             ),
@@ -828,7 +828,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cint32_t](
+        bridgeFutureWith[cint32_t](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).i32Return(rpc_options._cpp_obj, 
             ),
@@ -848,7 +848,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cint64_t](
+        bridgeFutureWith[cint64_t](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).i64Return(rpc_options._cpp_obj, 
             ),
@@ -868,7 +868,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[float](
+        bridgeFutureWith[float](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).floatReturn(rpc_options._cpp_obj, 
             ),
@@ -888,7 +888,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[double](
+        bridgeFutureWith[double](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).doubleReturn(rpc_options._cpp_obj, 
             ),
@@ -908,7 +908,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[string](
+        bridgeFutureWith[string](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).stringReturn(rpc_options._cpp_obj, 
             ),
@@ -928,7 +928,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[string](
+        bridgeFutureWith[string](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).binaryReturn(rpc_options._cpp_obj, 
             ),
@@ -948,7 +948,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cmap[string,cint64_t]](
+        bridgeFutureWith[cmap[string,cint64_t]](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).mapReturn(rpc_options._cpp_obj, 
             ),
@@ -968,7 +968,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cint32_t](
+        bridgeFutureWith[cint32_t](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).simpleTypedefReturn(rpc_options._cpp_obj, 
             ),
@@ -988,7 +988,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]](
+        bridgeFutureWith[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).complexTypedefReturn(rpc_options._cpp_obj, 
             ),
@@ -1008,7 +1008,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]](
+        bridgeFutureWith[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).list_mostComplexTypedefReturn(rpc_options._cpp_obj, 
             ),
@@ -1028,7 +1028,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[_module_types.cMyEnumA](
+        bridgeFutureWith[_module_types.cMyEnumA](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).enumReturn(rpc_options._cpp_obj, 
             ),
@@ -1048,7 +1048,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[vector[_module_types.cMyEnumA]](
+        bridgeFutureWith[vector[_module_types.cMyEnumA]](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).list_EnumReturn(rpc_options._cpp_obj, 
             ),
@@ -1068,7 +1068,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[_module_types.cMyStruct](
+        bridgeFutureWith[_module_types.cMyStruct](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).structReturn(rpc_options._cpp_obj, 
             ),
@@ -1088,7 +1088,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cset[_module_types.cMyStruct]](
+        bridgeFutureWith[cset[_module_types.cMyStruct]](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).set_StructReturn(rpc_options._cpp_obj, 
             ),
@@ -1108,7 +1108,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[_module_types.cComplexUnion](
+        bridgeFutureWith[_module_types.cComplexUnion](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).unionReturn(rpc_options._cpp_obj, 
             ),
@@ -1128,7 +1128,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[vector[_module_types.cComplexUnion]](
+        bridgeFutureWith[vector[_module_types.cComplexUnion]](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).list_UnionReturn(rpc_options._cpp_obj, 
             ),
@@ -1153,7 +1153,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[_fbthrift_iobuf.cIOBuf](
+        bridgeFutureWith[_fbthrift_iobuf.cIOBuf](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).readDataEb(rpc_options._cpp_obj, 
                 size,
@@ -1179,7 +1179,7 @@ cdef class ReturnService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[unique_ptr[_fbthrift_iobuf.cIOBuf]](
+        bridgeFutureWith[unique_ptr[_fbthrift_iobuf.cIOBuf]](
             self._executor,
             down_cast_ptr[cReturnServiceClientWrapper, cClientWrapper](self._client.get()).readData(rpc_options._cpp_obj, 
                 size,
@@ -1236,7 +1236,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).void_ret_i16_param(rpc_options._cpp_obj, 
                 param1,
@@ -1267,7 +1267,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).void_ret_byte_i16_param(rpc_options._cpp_obj, 
                 param1,
@@ -1292,7 +1292,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).void_ret_map_param(rpc_options._cpp_obj, 
                 deref((<_module_types.Map__string_i64>param1)._cpp_obj),
@@ -1319,7 +1319,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).void_ret_map_setlist_param(rpc_options._cpp_obj, 
                 deref((<_module_types.Map__string_i64>param1)._cpp_obj),
@@ -1346,7 +1346,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).void_ret_map_typedef_param(rpc_options._cpp_obj, 
                 param1,
@@ -1368,7 +1368,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).void_ret_enum_param(rpc_options._cpp_obj, 
                 <_module_types.cMyEnumA><int>param1,
@@ -1390,7 +1390,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).void_ret_struct_param(rpc_options._cpp_obj, 
                 deref((<_module_types.MyStruct>param1)._cpp_obj),
@@ -1414,7 +1414,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cFollyUnit](
+        bridgeFutureWith[cFollyUnit](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).void_ret_listunion_param(rpc_options._cpp_obj, 
                 deref((<_module_types.List__ComplexUnion>param1)._cpp_obj),
@@ -1445,7 +1445,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cbool](
+        bridgeFutureWith[cbool](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).bool_ret_i32_i64_param(rpc_options._cpp_obj, 
                 param1,
@@ -1470,7 +1470,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cbool](
+        bridgeFutureWith[cbool](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).bool_ret_map_param(rpc_options._cpp_obj, 
                 deref((<_module_types.Map__string_i64>param1)._cpp_obj),
@@ -1492,7 +1492,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cbool](
+        bridgeFutureWith[cbool](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).bool_ret_union_param(rpc_options._cpp_obj, 
                 deref((<_module_types.ComplexUnion>param1)._cpp_obj),
@@ -1515,7 +1515,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cint64_t](
+        bridgeFutureWith[cint64_t](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).i64_ret_float_double_param(rpc_options._cpp_obj, 
                 param1,
@@ -1541,7 +1541,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cint64_t](
+        bridgeFutureWith[cint64_t](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).i64_ret_string_typedef_param(rpc_options._cpp_obj, 
                 param1.encode('UTF-8'),
@@ -1588,7 +1588,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cint64_t](
+        bridgeFutureWith[cint64_t](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).i64_ret_i32_i32_i32_i32_i32_param(rpc_options._cpp_obj, 
                 param1,
@@ -1616,7 +1616,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[double](
+        bridgeFutureWith[double](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).double_ret_setstruct_param(rpc_options._cpp_obj, 
                 deref((<_module_types.Set__MyStruct>param1)._cpp_obj),
@@ -1638,7 +1638,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[string](
+        bridgeFutureWith[string](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).string_ret_string_param(rpc_options._cpp_obj, 
                 param1.encode('UTF-8'),
@@ -1660,7 +1660,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[string](
+        bridgeFutureWith[string](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).binary_ret_binary_param(rpc_options._cpp_obj, 
                 param1,
@@ -1682,7 +1682,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cmap[string,cint64_t]](
+        bridgeFutureWith[cmap[string,cint64_t]](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).map_ret_bool_param(rpc_options._cpp_obj, 
                 param1,
@@ -1709,7 +1709,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[vector[cbool]](
+        bridgeFutureWith[vector[cbool]](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).list_ret_map_setlist_param(rpc_options._cpp_obj, 
                 deref((<_module_types.Map__i32_List__string>param1)._cpp_obj),
@@ -1734,7 +1734,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]](
+        bridgeFutureWith[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).mapsetlistmapliststring_ret_listlistlist_param(rpc_options._cpp_obj, 
                 deref((<_module_types.List__List__List__List__i32>param1)._cpp_obj),
@@ -1760,7 +1760,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cint32_t](
+        bridgeFutureWith[cint32_t](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).typedef_ret_i32_param(rpc_options._cpp_obj, 
                 param1,
@@ -1784,7 +1784,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[vector[cint32_t]](
+        bridgeFutureWith[vector[cint32_t]](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).listtypedef_ret_typedef_param(rpc_options._cpp_obj, 
                 deref((<_module_types.List__Map__Empty_MyStruct>param1)._cpp_obj),
@@ -1806,7 +1806,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[_module_types.cMyEnumA](
+        bridgeFutureWith[_module_types.cMyEnumA](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).enum_ret_double_param(rpc_options._cpp_obj, 
                 param1,
@@ -1829,7 +1829,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[_module_types.cMyEnumA](
+        bridgeFutureWith[_module_types.cMyEnumA](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).enum_ret_double_enum_param(rpc_options._cpp_obj, 
                 param1,
@@ -1854,7 +1854,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[vector[_module_types.cMyEnumA]](
+        bridgeFutureWith[vector[_module_types.cMyEnumA]](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).listenum_ret_map_param(rpc_options._cpp_obj, 
                 deref((<_module_types.Map__string_i64>param1)._cpp_obj),
@@ -1880,7 +1880,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[_module_types.cMyStruct](
+        bridgeFutureWith[_module_types.cMyStruct](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).struct_ret_i16_param(rpc_options._cpp_obj, 
                 param1,
@@ -1904,7 +1904,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cset[_module_types.cMyStruct]](
+        bridgeFutureWith[cset[_module_types.cMyStruct]](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).setstruct_ret_set_param(rpc_options._cpp_obj, 
                 deref((<_module_types.Set__string>param1)._cpp_obj),
@@ -1935,7 +1935,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[_module_types.cComplexUnion](
+        bridgeFutureWith[_module_types.cComplexUnion](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).union_ret_i32_i32_param(rpc_options._cpp_obj, 
                 param1,
@@ -1958,7 +1958,7 @@ cdef class ParamService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[vector[_module_types.cComplexUnion]](
+        bridgeFutureWith[vector[_module_types.cComplexUnion]](
             self._executor,
             down_cast_ptr[cParamServiceClientWrapper, cClientWrapper](self._client.get()).listunion_string_param(rpc_options._cpp_obj, 
                 param1.encode('UTF-8'),

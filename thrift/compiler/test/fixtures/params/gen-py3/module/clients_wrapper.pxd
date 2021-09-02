@@ -19,7 +19,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from folly cimport cFollySemiFuture, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
@@ -43,14 +43,14 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollySemiFuture[cFollyUnit] mapList(cRpcOptions, 
+    cFollyFuture[cFollyUnit] mapList(cRpcOptions, 
       cmap[cint32_t,vector[cint32_t]] arg_foo,)
-    cFollySemiFuture[cFollyUnit] mapSet(cRpcOptions, 
+    cFollyFuture[cFollyUnit] mapSet(cRpcOptions, 
       cmap[cint32_t,cset[cint32_t]] arg_foo,)
-    cFollySemiFuture[cFollyUnit] listMap(cRpcOptions, 
+    cFollyFuture[cFollyUnit] listMap(cRpcOptions, 
       vector[cmap[cint32_t,cint32_t]] arg_foo,)
-    cFollySemiFuture[cFollyUnit] listSet(cRpcOptions, 
+    cFollyFuture[cFollyUnit] listSet(cRpcOptions, 
       vector[cset[cint32_t]] arg_foo,)
-    cFollySemiFuture[cFollyUnit] turtles(cRpcOptions, 
+    cFollyFuture[cFollyUnit] turtles(cRpcOptions, 
       vector[vector[cmap[cint32_t,cmap[cint32_t,cset[cint32_t]]]]] arg_foo,)
 

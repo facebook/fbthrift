@@ -19,7 +19,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from folly cimport cFollySemiFuture, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
@@ -43,6 +43,6 @@ cdef extern from "thrift/lib/cpp/TProcessorEventHandler.h" namespace "::apache::
 cdef extern from "src/gen-py3/extend/clients_wrapper.h" namespace "::cpp2":
   cdef cppclass cExtendTestServiceClientWrapper "::cpp2::ExtendTestServiceClientWrapper"(_hsmodule_clients_wrapper.cHsTestServiceClientWrapper):
 
-    cFollySemiFuture[cbool] check(cRpcOptions, 
+    cFollyFuture[cbool] check(cRpcOptions, 
       _hsmodule_types.cHsFoo arg_struct1,)
 

@@ -19,7 +19,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from folly cimport cFollySemiFuture, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
@@ -57,30 +57,30 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollySemiFuture[cFollyUnit] ping(cRpcOptions, )
-    cFollySemiFuture[string] getRandomData(cRpcOptions, )
-    cFollySemiFuture[cbool] hasDataById(cRpcOptions, 
+    cFollyFuture[cFollyUnit] ping(cRpcOptions, )
+    cFollyFuture[string] getRandomData(cRpcOptions, )
+    cFollyFuture[cbool] hasDataById(cRpcOptions, 
       cint64_t arg_id,)
-    cFollySemiFuture[string] getDataById(cRpcOptions, 
+    cFollyFuture[string] getDataById(cRpcOptions, 
       cint64_t arg_id,)
-    cFollySemiFuture[cFollyUnit] putDataById(cRpcOptions, 
+    cFollyFuture[cFollyUnit] putDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)
-    cFollySemiFuture[cFollyUnit] lobDataById(cRpcOptions, 
+    cFollyFuture[cFollyUnit] lobDataById(cRpcOptions, 
       cint64_t arg_id,
       string arg_data,)
-    cFollySemiFuture[cFollyUnit] cppDoNothing(cRpcOptions, )
+    cFollyFuture[cFollyUnit] cppDoNothing(cRpcOptions, )
 
 
   cdef cppclass cMyServicePrioParentClientWrapper "::cpp2::MyServicePrioParentClientWrapper":
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollySemiFuture[cFollyUnit] ping(cRpcOptions, )
-    cFollySemiFuture[cFollyUnit] pong(cRpcOptions, )
+    cFollyFuture[cFollyUnit] ping(cRpcOptions, )
+    cFollyFuture[cFollyUnit] pong(cRpcOptions, )
 
 
   cdef cppclass cMyServicePrioChildClientWrapper "::cpp2::MyServicePrioChildClientWrapper"(cMyServicePrioParentClientWrapper):
 
-    cFollySemiFuture[cFollyUnit] pang(cRpcOptions, )
+    cFollyFuture[cFollyUnit] pang(cRpcOptions, )
 

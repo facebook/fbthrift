@@ -19,7 +19,7 @@ from libcpp.set cimport set as cset
 from libcpp.string cimport string
 from libcpp.vector cimport vector
 
-from folly cimport cFollySemiFuture, cFollyTry, cFollyUnit
+from folly cimport cFollyFuture, cFollyTry, cFollyUnit
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common cimport cRpcOptions
 from thrift.py3.client cimport cClientWrapper
@@ -57,95 +57,95 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::py3::simple
     void setPersistentHeader(const string& key, const string& value)
     void addEventHandler(const shared_ptr[cTProcessorEventHandler]& handler)
 
-    cFollySemiFuture[cint32_t] get_five(cRpcOptions, )
-    cFollySemiFuture[cint32_t] add_five(cRpcOptions, 
+    cFollyFuture[cint32_t] get_five(cRpcOptions, )
+    cFollyFuture[cint32_t] add_five(cRpcOptions, 
       cint32_t arg_num,)
-    cFollySemiFuture[cFollyUnit] do_nothing(cRpcOptions, )
-    cFollySemiFuture[string] concat(cRpcOptions, 
+    cFollyFuture[cFollyUnit] do_nothing(cRpcOptions, )
+    cFollyFuture[string] concat(cRpcOptions, 
       string arg_first,
       string arg_second,)
-    cFollySemiFuture[cint32_t] get_value(cRpcOptions, 
+    cFollyFuture[cint32_t] get_value(cRpcOptions, 
       _module_types.cSimpleStruct arg_simple_struct,)
-    cFollySemiFuture[cbool] negate(cRpcOptions, 
+    cFollyFuture[cbool] negate(cRpcOptions, 
       cbool arg_input,)
-    cFollySemiFuture[cint8_t] tiny(cRpcOptions, 
+    cFollyFuture[cint8_t] tiny(cRpcOptions, 
       cint8_t arg_input,)
-    cFollySemiFuture[cint16_t] small(cRpcOptions, 
+    cFollyFuture[cint16_t] small(cRpcOptions, 
       cint16_t arg_input,)
-    cFollySemiFuture[cint64_t] big(cRpcOptions, 
+    cFollyFuture[cint64_t] big(cRpcOptions, 
       cint64_t arg_input,)
-    cFollySemiFuture[double] two(cRpcOptions, 
+    cFollyFuture[double] two(cRpcOptions, 
       double arg_input,)
-    cFollySemiFuture[cFollyUnit] expected_exception(cRpcOptions, )
-    cFollySemiFuture[cint32_t] unexpected_exception(cRpcOptions, )
-    cFollySemiFuture[cint32_t] sum_i16_list(cRpcOptions, 
+    cFollyFuture[cFollyUnit] expected_exception(cRpcOptions, )
+    cFollyFuture[cint32_t] unexpected_exception(cRpcOptions, )
+    cFollyFuture[cint32_t] sum_i16_list(cRpcOptions, 
       vector[cint16_t] arg_numbers,)
-    cFollySemiFuture[cint32_t] sum_i32_list(cRpcOptions, 
+    cFollyFuture[cint32_t] sum_i32_list(cRpcOptions, 
       vector[cint32_t] arg_numbers,)
-    cFollySemiFuture[cint32_t] sum_i64_list(cRpcOptions, 
+    cFollyFuture[cint32_t] sum_i64_list(cRpcOptions, 
       vector[cint64_t] arg_numbers,)
-    cFollySemiFuture[string] concat_many(cRpcOptions, 
+    cFollyFuture[string] concat_many(cRpcOptions, 
       vector[string] arg_words,)
-    cFollySemiFuture[cint32_t] count_structs(cRpcOptions, 
+    cFollyFuture[cint32_t] count_structs(cRpcOptions, 
       vector[_module_types.cSimpleStruct] arg_items,)
-    cFollySemiFuture[cint32_t] sum_set(cRpcOptions, 
+    cFollyFuture[cint32_t] sum_set(cRpcOptions, 
       cset[cint32_t] arg_numbers,)
-    cFollySemiFuture[cbool] contains_word(cRpcOptions, 
+    cFollyFuture[cbool] contains_word(cRpcOptions, 
       cset[string] arg_words,
       string arg_word,)
-    cFollySemiFuture[string] get_map_value(cRpcOptions, 
+    cFollyFuture[string] get_map_value(cRpcOptions, 
       cmap[string,string] arg_words,
       string arg_key,)
-    cFollySemiFuture[cint16_t] map_length(cRpcOptions, 
+    cFollyFuture[cint16_t] map_length(cRpcOptions, 
       cmap[string,_module_types.cSimpleStruct] arg_items,)
-    cFollySemiFuture[cint16_t] sum_map_values(cRpcOptions, 
+    cFollyFuture[cint16_t] sum_map_values(cRpcOptions, 
       cmap[string,cint16_t] arg_items,)
-    cFollySemiFuture[cint32_t] complex_sum_i32(cRpcOptions, 
+    cFollyFuture[cint32_t] complex_sum_i32(cRpcOptions, 
       _module_types.cComplexStruct arg_counter,)
-    cFollySemiFuture[string] repeat_name(cRpcOptions, 
+    cFollyFuture[string] repeat_name(cRpcOptions, 
       _module_types.cComplexStruct arg_counter,)
-    cFollySemiFuture[_module_types.cSimpleStruct] get_struct(cRpcOptions, )
-    cFollySemiFuture[vector[cint32_t]] fib(cRpcOptions, 
+    cFollyFuture[_module_types.cSimpleStruct] get_struct(cRpcOptions, )
+    cFollyFuture[vector[cint32_t]] fib(cRpcOptions, 
       cint16_t arg_n,)
-    cFollySemiFuture[cset[string]] unique_words(cRpcOptions, 
+    cFollyFuture[cset[string]] unique_words(cRpcOptions, 
       vector[string] arg_words,)
-    cFollySemiFuture[cmap[string,cint16_t]] words_count(cRpcOptions, 
+    cFollyFuture[cmap[string,cint16_t]] words_count(cRpcOptions, 
       vector[string] arg_words,)
-    cFollySemiFuture[_module_types.cAnEnum] set_enum(cRpcOptions, 
+    cFollyFuture[_module_types.cAnEnum] set_enum(cRpcOptions, 
       _module_types.cAnEnum arg_in_enum,)
-    cFollySemiFuture[vector[vector[cint32_t]]] list_of_lists(cRpcOptions, 
+    cFollyFuture[vector[vector[cint32_t]]] list_of_lists(cRpcOptions, 
       cint16_t arg_num_lists,
       cint16_t arg_num_items,)
-    cFollySemiFuture[cmap[string,cmap[string,cint32_t]]] word_character_frequency(cRpcOptions, 
+    cFollyFuture[cmap[string,cmap[string,cint32_t]]] word_character_frequency(cRpcOptions, 
       string arg_sentence,)
-    cFollySemiFuture[vector[cset[string]]] list_of_sets(cRpcOptions, 
+    cFollyFuture[vector[cset[string]]] list_of_sets(cRpcOptions, 
       string arg_some_words,)
-    cFollySemiFuture[cint32_t] nested_map_argument(cRpcOptions, 
+    cFollyFuture[cint32_t] nested_map_argument(cRpcOptions, 
       cmap[string,vector[_module_types.cSimpleStruct]] arg_struct_map,)
-    cFollySemiFuture[string] make_sentence(cRpcOptions, 
+    cFollyFuture[string] make_sentence(cRpcOptions, 
       vector[vector[string]] arg_word_chars,)
-    cFollySemiFuture[cset[cint32_t]] get_union(cRpcOptions, 
+    cFollyFuture[cset[cint32_t]] get_union(cRpcOptions, 
       vector[cset[cint32_t]] arg_sets,)
-    cFollySemiFuture[cset[string]] get_keys(cRpcOptions, 
+    cFollyFuture[cset[string]] get_keys(cRpcOptions, 
       vector[cmap[string,string]] arg_string_map,)
-    cFollySemiFuture[double] lookup_double(cRpcOptions, 
+    cFollyFuture[double] lookup_double(cRpcOptions, 
       cint32_t arg_key,)
-    cFollySemiFuture[string] retrieve_binary(cRpcOptions, 
+    cFollyFuture[string] retrieve_binary(cRpcOptions, 
       string arg_something,)
-    cFollySemiFuture[cset[string]] contain_binary(cRpcOptions, 
+    cFollyFuture[cset[string]] contain_binary(cRpcOptions, 
       vector[string] arg_binaries,)
-    cFollySemiFuture[vector[_module_types.cAnEnum]] contain_enum(cRpcOptions, 
+    cFollyFuture[vector[_module_types.cAnEnum]] contain_enum(cRpcOptions, 
       vector[_module_types.cAnEnum] arg_the_enum,)
-    cFollySemiFuture[_module_types.cBinaryUnionStruct] get_binary_union_struct(cRpcOptions, 
+    cFollyFuture[_module_types.cBinaryUnionStruct] get_binary_union_struct(cRpcOptions, 
       _module_types.cBinaryUnion arg_u,)
 
 
   cdef cppclass cDerivedServiceClientWrapper "::py3::simple::DerivedServiceClientWrapper"(cSimpleServiceClientWrapper):
 
-    cFollySemiFuture[cint32_t] get_six(cRpcOptions, )
+    cFollyFuture[cint32_t] get_six(cRpcOptions, )
 
 
   cdef cppclass cRederivedServiceClientWrapper "::py3::simple::RederivedServiceClientWrapper"(cDerivedServiceClientWrapper):
 
-    cFollySemiFuture[cint32_t] get_seven(cRpcOptions, )
+    cFollyFuture[cint32_t] get_seven(cRpcOptions, )
 

@@ -31,7 +31,7 @@ thread that will pass data to the cython callback.
 
 {{#program:services}}
 {{#service:supportedFunctions}}
-folly::SemiFuture<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}>
+folly::Future<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}>
 {{service:name}}ClientWrapper::{{function:cppName}}(
     apache::thrift::RpcOptions& rpcOptions{{#function:args}},
     {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}}) {
@@ -43,7 +43,7 @@ folly::SemiFuture<{{#function:return_type}}{{> clients/CppReturnType}}{{/functio
 {{/service:supportedFunctions}}
 {{#service:interactions}}
 
-folly::SemiFuture<std::unique_ptr<::thrift::py3::ClientWrapper>>
+folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>>
 {{service:parent_service_name}}ClientWrapper::create{{service:name}}() {
   return folly::via(
       channel_->getEventBase(),
@@ -57,7 +57,7 @@ folly::SemiFuture<std::unique_ptr<::thrift::py3::ClientWrapper>>
 {{/service:interactions}}
 {{#service:interactions}}
 {{#service:supportedFunctions}}
-folly::SemiFuture<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}>
+folly::Future<{{#function:return_type}}{{> clients/CppReturnType}}{{/function:return_type}}>
 {{service:parent_service_name}}ClientWrapper::{{service:name}}InteractionWrapper::{{function:cppName}}(
     apache::thrift::RpcOptions& rpcOptions{{#function:args}},
     {{#field:type}}{{> types/CppValueType}}{{/field:type}} arg_{{field:py_name}}{{/function:args}}) {

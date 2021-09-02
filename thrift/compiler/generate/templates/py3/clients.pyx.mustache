@@ -55,7 +55,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-from folly.futures cimport bridgeSemiFutureWith
+from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport folly.iobuf as _fbthrift_iobuf
 import folly.iobuf as _fbthrift_iobuf
@@ -155,7 +155,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}](
+        bridgeFutureWith[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}](
             self._executor,
             down_cast_ptr[c{{service:name}}ClientWrapper, cClientWrapper](self._client.get()).{{function:cppName}}(rpc_options._cpp_obj, {{#function:args}}
                 {{#field:type}}{{> CythonPythonToCppArg}}{{/field:type}},{{/function:args}}
@@ -172,7 +172,7 @@ cdef class {{service:name}}({{#service:extends}}{{#service:externalProgram?}}{{!
             {{service:parent_service_name}} self
     ):
         interaction = {{service:parent_service_name}}_{{service:name}}()
-        bridgeSemiFutureWith[unique_ptr[cClientWrapper]](
+        bridgeFutureWith[unique_ptr[cClientWrapper]](
             interaction._executor,
             down_cast_ptr[c{{service:parent_service_name}}ClientWrapper, cClientWrapper](self._client.get()).create{{service:name}}(),
             thrift.py3.client.interactions_callback,
@@ -233,7 +233,7 @@ cdef class {{service:parent_service_name}}_{{service:name}}({{#service:extends}}
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}](
+        bridgeFutureWith[{{#function:return_type}}{{> clients/CythonReturnTypeCppType}}{{/function:return_type}}](
             self._executor,
             down_cast_ptr[c{{service:parent_service_name}}ClientWrapper_{{service:name}}InteractionWrapper, {{!
             }}cClientWrapper](self._client.get()).{{function:cppName}}(rpc_options._cpp_obj, {{#function:args}}

@@ -36,7 +36,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-from folly.futures cimport bridgeSemiFutureWith
+from folly.futures cimport bridgeFutureWith
 from folly.executor cimport get_executor
 cimport folly.iobuf as _fbthrift_iobuf
 import folly.iobuf as _fbthrift_iobuf
@@ -173,7 +173,7 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cClientBufferedStream[cint32_t]](
+        bridgeFutureWith[cClientBufferedStream[cint32_t]](
             self._executor,
             down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).returnstream(rpc_options._cpp_obj, 
                 i32_from,
@@ -200,7 +200,7 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cClientBufferedStream[cint32_t]](
+        bridgeFutureWith[cClientBufferedStream[cint32_t]](
             self._executor,
             down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).streamthrows(rpc_options._cpp_obj, 
                 foo,
@@ -226,7 +226,7 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cClientBufferedStream[cint32_t]](
+        bridgeFutureWith[cClientBufferedStream[cint32_t]](
             self._executor,
             down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).boththrows(rpc_options._cpp_obj, 
                 foo,
@@ -252,7 +252,7 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cResponseAndClientBufferedStream[cint32_t,cint32_t]](
+        bridgeFutureWith[cResponseAndClientBufferedStream[cint32_t,cint32_t]](
             self._executor,
             down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).responseandstreamthrows(rpc_options._cpp_obj, 
                 foo,
@@ -283,7 +283,7 @@ cdef class PubSubStreamingService(thrift.py3.client.Client):
         __loop = asyncio_get_event_loop()
         __future = __loop.create_future()
         __userdata = (self, __future, rpc_options)
-        bridgeSemiFutureWith[cClientBufferedStream[cint32_t]](
+        bridgeFutureWith[cClientBufferedStream[cint32_t]](
             self._executor,
             down_cast_ptr[cPubSubStreamingServiceClientWrapper, cClientWrapper](self._client.get()).returnstreamFast(rpc_options._cpp_obj, 
                 i32_from,

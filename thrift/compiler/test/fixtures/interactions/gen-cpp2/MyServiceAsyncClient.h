@@ -50,7 +50,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
   folly::SemiFuture<::std::int32_t> semifuture_frobnicate();
   folly::SemiFuture<::std::int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
- folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -184,7 +183,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
   folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify();
   folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify(apache::thrift::RpcOptions& rpcOptions);
- folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<bool>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_truthify(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -289,7 +287,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
   folly::SemiFuture<::std::int32_t> semifuture_frobnicate();
   folly::SemiFuture<::std::int32_t> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
- folly::SemiFuture<std::pair<::std::int32_t, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -423,7 +420,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
   folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify();
   folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> semifuture_truthify(apache::thrift::RpcOptions& rpcOptions);
- folly::SemiFuture<std::pair<apache::thrift::ClientBufferedStream<bool>, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_truthify(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>
@@ -528,7 +524,6 @@ class MyInteraction final : public apache::thrift::InteractionHandle {
 
   folly::SemiFuture<folly::Unit> semifuture_frobnicate();
   folly::SemiFuture<folly::Unit> semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
- folly::SemiFuture<std::pair<folly::Unit, std::unique_ptr<apache::thrift::transport::THeader>>> header_semifuture_frobnicate(apache::thrift::RpcOptions& rpcOptions);
 
 #if FOLLY_HAS_COROUTINES
   template <int = 0>

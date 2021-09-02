@@ -11,6 +11,7 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
+#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -29,10 +30,10 @@ class SomeServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::SemiFuture<std::unordered_map<int32_t,std::string>> bounce_map(
+    folly::Future<std::unordered_map<int32_t,std::string>> bounce_map(
       apache::thrift::RpcOptions& rpcOptions,
       std::unordered_map<int32_t,std::string> arg_m);
-    folly::SemiFuture<std::map<std::string,int64_t>> binary_keyed_map(
+    folly::Future<std::map<std::string,int64_t>> binary_keyed_map(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<int64_t> arg_r);
 };

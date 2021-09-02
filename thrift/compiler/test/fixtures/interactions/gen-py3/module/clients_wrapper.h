@@ -11,6 +11,7 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
+#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -26,7 +27,7 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::SemiFuture<folly::Unit> foo(
+    folly::Future<folly::Unit> foo(
       apache::thrift::RpcOptions& rpcOptions);
 
     class MyInteractionInteractionWrapper : public ClientWrapper {
@@ -36,11 +37,11 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
            std::shared_ptr<apache::thrift::RequestChannel> channel)
            : ClientWrapper(std::move(async_client), channel) {}
 
-        folly::SemiFuture<int32_t> frobnicate(
+        folly::Future<int32_t> frobnicate(
           apache::thrift::RpcOptions& rpcOptions);
-        folly::SemiFuture<folly::Unit> ping(
+        folly::Future<folly::Unit> ping(
           apache::thrift::RpcOptions& rpcOptions);
-        folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> truthify(
+        folly::Future<apache::thrift::ClientBufferedStream<bool>> truthify(
           apache::thrift::RpcOptions& rpcOptions);
     };
 
@@ -51,11 +52,11 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
            std::shared_ptr<apache::thrift::RequestChannel> channel)
            : ClientWrapper(std::move(async_client), channel) {}
 
-        folly::SemiFuture<int32_t> frobnicate(
+        folly::Future<int32_t> frobnicate(
           apache::thrift::RpcOptions& rpcOptions);
-        folly::SemiFuture<folly::Unit> ping(
+        folly::Future<folly::Unit> ping(
           apache::thrift::RpcOptions& rpcOptions);
-        folly::SemiFuture<apache::thrift::ClientBufferedStream<bool>> truthify(
+        folly::Future<apache::thrift::ClientBufferedStream<bool>> truthify(
           apache::thrift::RpcOptions& rpcOptions);
     };
 
@@ -66,12 +67,12 @@ class MyServiceClientWrapper : public ::thrift::py3::ClientWrapper {
            std::shared_ptr<apache::thrift::RequestChannel> channel)
            : ClientWrapper(std::move(async_client), channel) {}
 
-        folly::SemiFuture<folly::Unit> frobnicate(
+        folly::Future<folly::Unit> frobnicate(
           apache::thrift::RpcOptions& rpcOptions);
     };
-    folly::SemiFuture<std::unique_ptr<::thrift::py3::ClientWrapper>> createMyInteraction();
-    folly::SemiFuture<std::unique_ptr<::thrift::py3::ClientWrapper>> createMyInteractionFast();
-    folly::SemiFuture<std::unique_ptr<::thrift::py3::ClientWrapper>> createSerialInteraction();
+    folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>> createMyInteraction();
+    folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>> createMyInteractionFast();
+    folly::Future<std::unique_ptr<::thrift::py3::ClientWrapper>> createSerialInteraction();
 };
 
 

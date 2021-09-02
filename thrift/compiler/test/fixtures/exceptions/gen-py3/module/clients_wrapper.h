@@ -11,6 +11,7 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
+#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -26,13 +27,13 @@ class RaiserClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::SemiFuture<folly::Unit> doBland(
+    folly::Future<folly::Unit> doBland(
       apache::thrift::RpcOptions& rpcOptions);
-    folly::SemiFuture<folly::Unit> doRaise(
+    folly::Future<folly::Unit> doRaise(
       apache::thrift::RpcOptions& rpcOptions);
-    folly::SemiFuture<std::string> get200(
+    folly::Future<std::string> get200(
       apache::thrift::RpcOptions& rpcOptions);
-    folly::SemiFuture<std::string> get500(
+    folly::Future<std::string> get500(
       apache::thrift::RpcOptions& rpcOptions);
 };
 

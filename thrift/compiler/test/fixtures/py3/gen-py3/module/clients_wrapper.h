@@ -13,6 +13,7 @@
 #include <folly/futures/Future.h>
 #include <folly/futures/Promise.h>
 #include <folly/Unit.h>
+#include <thrift/lib/py3/clientcallbacks.h>
 #include <thrift/lib/py3/client_wrapper.h>
 
 #include <cstdint>
@@ -29,126 +30,126 @@ class SimpleServiceClientWrapper : public ::thrift::py3::ClientWrapper {
   public:
     using ::thrift::py3::ClientWrapper::ClientWrapper;
 
-    folly::SemiFuture<int32_t> get_five(
+    folly::Future<int32_t> get_five(
       apache::thrift::RpcOptions& rpcOptions);
-    folly::SemiFuture<int32_t> add_five(
+    folly::Future<int32_t> add_five(
       apache::thrift::RpcOptions& rpcOptions,
       int32_t arg_num);
-    folly::SemiFuture<folly::Unit> do_nothing(
+    folly::Future<folly::Unit> do_nothing(
       apache::thrift::RpcOptions& rpcOptions);
-    folly::SemiFuture<std::string> concat(
+    folly::Future<std::string> concat(
       apache::thrift::RpcOptions& rpcOptions,
       std::string arg_first,
       std::string arg_second);
-    folly::SemiFuture<int32_t> get_value(
+    folly::Future<int32_t> get_value(
       apache::thrift::RpcOptions& rpcOptions,
       ::py3::simple::SimpleStruct arg_simple_struct);
-    folly::SemiFuture<bool> negate(
+    folly::Future<bool> negate(
       apache::thrift::RpcOptions& rpcOptions,
       bool arg_input);
-    folly::SemiFuture<int8_t> tiny(
+    folly::Future<int8_t> tiny(
       apache::thrift::RpcOptions& rpcOptions,
       int8_t arg_input);
-    folly::SemiFuture<int16_t> small(
+    folly::Future<int16_t> small(
       apache::thrift::RpcOptions& rpcOptions,
       int16_t arg_input);
-    folly::SemiFuture<int64_t> big(
+    folly::Future<int64_t> big(
       apache::thrift::RpcOptions& rpcOptions,
       int64_t arg_input);
-    folly::SemiFuture<double> two(
+    folly::Future<double> two(
       apache::thrift::RpcOptions& rpcOptions,
       double arg_input);
-    folly::SemiFuture<folly::Unit> expected_exception(
+    folly::Future<folly::Unit> expected_exception(
       apache::thrift::RpcOptions& rpcOptions);
-    folly::SemiFuture<int32_t> unexpected_exception(
+    folly::Future<int32_t> unexpected_exception(
       apache::thrift::RpcOptions& rpcOptions);
-    folly::SemiFuture<int32_t> sum_i16_list(
+    folly::Future<int32_t> sum_i16_list(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<int16_t> arg_numbers);
-    folly::SemiFuture<int32_t> sum_i32_list(
+    folly::Future<int32_t> sum_i32_list(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<int32_t> arg_numbers);
-    folly::SemiFuture<int32_t> sum_i64_list(
+    folly::Future<int32_t> sum_i64_list(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<int64_t> arg_numbers);
-    folly::SemiFuture<std::string> concat_many(
+    folly::Future<std::string> concat_many(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::string> arg_words);
-    folly::SemiFuture<int32_t> count_structs(
+    folly::Future<int32_t> count_structs(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<::py3::simple::SimpleStruct> arg_items);
-    folly::SemiFuture<int32_t> sum_set(
+    folly::Future<int32_t> sum_set(
       apache::thrift::RpcOptions& rpcOptions,
       std::set<int32_t> arg_numbers);
-    folly::SemiFuture<bool> contains_word(
+    folly::Future<bool> contains_word(
       apache::thrift::RpcOptions& rpcOptions,
       std::set<std::string> arg_words,
       std::string arg_word);
-    folly::SemiFuture<std::string> get_map_value(
+    folly::Future<std::string> get_map_value(
       apache::thrift::RpcOptions& rpcOptions,
       std::map<std::string,std::string> arg_words,
       std::string arg_key);
-    folly::SemiFuture<int16_t> map_length(
+    folly::Future<int16_t> map_length(
       apache::thrift::RpcOptions& rpcOptions,
       std::map<std::string,::py3::simple::SimpleStruct> arg_items);
-    folly::SemiFuture<int16_t> sum_map_values(
+    folly::Future<int16_t> sum_map_values(
       apache::thrift::RpcOptions& rpcOptions,
       std::map<std::string,int16_t> arg_items);
-    folly::SemiFuture<int32_t> complex_sum_i32(
+    folly::Future<int32_t> complex_sum_i32(
       apache::thrift::RpcOptions& rpcOptions,
       ::py3::simple::ComplexStruct arg_counter);
-    folly::SemiFuture<std::string> repeat_name(
+    folly::Future<std::string> repeat_name(
       apache::thrift::RpcOptions& rpcOptions,
       ::py3::simple::ComplexStruct arg_counter);
-    folly::SemiFuture<::py3::simple::SimpleStruct> get_struct(
+    folly::Future<::py3::simple::SimpleStruct> get_struct(
       apache::thrift::RpcOptions& rpcOptions);
-    folly::SemiFuture<std::vector<int32_t>> fib(
+    folly::Future<std::vector<int32_t>> fib(
       apache::thrift::RpcOptions& rpcOptions,
       int16_t arg_n);
-    folly::SemiFuture<std::set<std::string>> unique_words(
+    folly::Future<std::set<std::string>> unique_words(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::string> arg_words);
-    folly::SemiFuture<std::map<std::string,int16_t>> words_count(
+    folly::Future<std::map<std::string,int16_t>> words_count(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::string> arg_words);
-    folly::SemiFuture<::py3::simple::AnEnum> set_enum(
+    folly::Future<::py3::simple::AnEnum> set_enum(
       apache::thrift::RpcOptions& rpcOptions,
       ::py3::simple::AnEnum arg_in_enum);
-    folly::SemiFuture<std::vector<std::vector<int32_t>>> list_of_lists(
+    folly::Future<std::vector<std::vector<int32_t>>> list_of_lists(
       apache::thrift::RpcOptions& rpcOptions,
       int16_t arg_num_lists,
       int16_t arg_num_items);
-    folly::SemiFuture<std::map<std::string,std::map<std::string,int32_t>>> word_character_frequency(
+    folly::Future<std::map<std::string,std::map<std::string,int32_t>>> word_character_frequency(
       apache::thrift::RpcOptions& rpcOptions,
       std::string arg_sentence);
-    folly::SemiFuture<std::vector<std::set<std::string>>> list_of_sets(
+    folly::Future<std::vector<std::set<std::string>>> list_of_sets(
       apache::thrift::RpcOptions& rpcOptions,
       std::string arg_some_words);
-    folly::SemiFuture<int32_t> nested_map_argument(
+    folly::Future<int32_t> nested_map_argument(
       apache::thrift::RpcOptions& rpcOptions,
       std::map<std::string,std::vector<::py3::simple::SimpleStruct>> arg_struct_map);
-    folly::SemiFuture<std::string> make_sentence(
+    folly::Future<std::string> make_sentence(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::vector<std::string>> arg_word_chars);
-    folly::SemiFuture<std::set<int32_t>> get_union(
+    folly::Future<std::set<int32_t>> get_union(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::set<int32_t>> arg_sets);
-    folly::SemiFuture<std::set<std::string>> get_keys(
+    folly::Future<std::set<std::string>> get_keys(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::map<std::string,std::string>> arg_string_map);
-    folly::SemiFuture<double> lookup_double(
+    folly::Future<double> lookup_double(
       apache::thrift::RpcOptions& rpcOptions,
       int32_t arg_key);
-    folly::SemiFuture<std::string> retrieve_binary(
+    folly::Future<std::string> retrieve_binary(
       apache::thrift::RpcOptions& rpcOptions,
       std::string arg_something);
-    folly::SemiFuture<std::set<std::string>> contain_binary(
+    folly::Future<std::set<std::string>> contain_binary(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<std::string> arg_binaries);
-    folly::SemiFuture<std::vector<::py3::simple::AnEnum>> contain_enum(
+    folly::Future<std::vector<::py3::simple::AnEnum>> contain_enum(
       apache::thrift::RpcOptions& rpcOptions,
       std::vector<::py3::simple::AnEnum> arg_the_enum);
-    folly::SemiFuture<::py3::simple::BinaryUnionStruct> get_binary_union_struct(
+    folly::Future<::py3::simple::BinaryUnionStruct> get_binary_union_struct(
       apache::thrift::RpcOptions& rpcOptions,
       ::py3::simple::BinaryUnion arg_u);
 };
@@ -158,7 +159,7 @@ class DerivedServiceClientWrapper : public ::py3::simple::SimpleServiceClientWra
   public:
     using ::py3::simple::SimpleServiceClientWrapper::SimpleServiceClientWrapper;
 
-    folly::SemiFuture<int32_t> get_six(
+    folly::Future<int32_t> get_six(
       apache::thrift::RpcOptions& rpcOptions);
 };
 
@@ -167,7 +168,7 @@ class RederivedServiceClientWrapper : public ::py3::simple::DerivedServiceClient
   public:
     using ::py3::simple::DerivedServiceClientWrapper::DerivedServiceClientWrapper;
 
-    folly::SemiFuture<int32_t> get_seven(
+    folly::Future<int32_t> get_seven(
       apache::thrift::RpcOptions& rpcOptions);
 };
 
