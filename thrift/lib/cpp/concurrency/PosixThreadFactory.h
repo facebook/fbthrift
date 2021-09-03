@@ -18,12 +18,12 @@
 #define THRIFT_CONCURRENCY_POSIXTHREADFACTORY_H_ 1
 
 #include <memory>
+#include <mutex>
 #include <set>
 #include <string>
 
 #include <folly/portability/PThread.h>
 
-#include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/Thread.h>
 
 namespace apache {
@@ -49,7 +49,7 @@ class PthreadThread : public Thread {
   int stackSize_;
   std::weak_ptr<PthreadThread> self_;
   bool detached_;
-  Mutex stateLock_;
+  std::mutex stateLock_;
   std::string name_;
 
   // push our given name upstream into pthreads

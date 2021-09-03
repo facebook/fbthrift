@@ -20,6 +20,7 @@
 #include <cassert>
 #include <chrono>
 #include <memory>
+#include <mutex>
 #include <queue>
 #include <set>
 #include <string>
@@ -1091,7 +1092,7 @@ class PriorityThreadManager::PriorityImpl
   ~PriorityImpl() override { joinKeepAliveOnce(); }
 
   void start() override {
-    std::unique_lock<Mutex> g(mutex_);
+    std::unique_lock<std::mutex> g(mutex_);
     for (int i = 0; i < N_PRIORITIES; i++) {
       if (managers_[i]->state() == STARTED) {
         continue;
@@ -1102,7 +1103,7 @@ class PriorityThreadManager::PriorityImpl
   }
 
   void stop() override {
-    std::unique_lock<Mutex> g(mutex_);
+    std::unique_lock<std::mutex> g(mutex_);
     joinKeepAliveOnce();
     for (auto& m : managers_) {
       m->stop();
@@ -1110,7 +1111,7 @@ class PriorityThreadManager::PriorityImpl
   }
 
   void join() override {
-    std::unique_lock<Mutex> g(mutex_);
+    std::unique_lock<std::mutex> g(mutex_);
     joinKeepAliveOnce();
     for (auto& m : managers_) {
       m->join();
@@ -1145,7 +1146,7 @@ class PriorityThreadManager::PriorityImpl
 
   STATE state() const override {
     size_t started = 0;
-    std::unique_lock<Mutex> g(mutex_);
+    std::unique_lock<std::mutex> g(mutex_);
     for (auto& m : managers_) {
       STATE cur_state = m->state();
       switch (cur_state) {
@@ -1173,7 +1174,7 @@ class PriorityThreadManager::PriorityImpl
   }
 
   void threadFactory(std::shared_ptr<ThreadFactory> value) override {
-    std::unique_lock<Mutex> g(mutex_);
+    std::unique_lock<std::mutex> g(mutex_);
     for (auto& m : managers_) {
       m->threadFactory(value);
     }
@@ -1327,7 +1328,7 @@ class PriorityThreadManager::PriorityImpl
 
   std::unique_ptr<ThreadManager> managers_[N_PRIORITIES];
   size_t counts_[N_PRIORITIES];
-  mutable Mutex mutex_;
+  mutable std::mutex mutex_;
   std::vector<std::unique_ptr<Executor, Deleter>> executors_;
   bool keepAliveJoined_{false};
 };

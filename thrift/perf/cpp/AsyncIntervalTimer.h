@@ -18,11 +18,11 @@
 #define THRIFT_TEST_PERF_ASYNCINTERVALTIMER_H_ 1
 
 #include <thrift/lib/cpp/TLogging.h>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 #include <thrift/lib/cpp/test/loadgen/RNG.h>
 
 #include <chrono>
+#include <mutex>
 #include <thread>
 #include <folly/portability/Unistd.h>
 
@@ -157,7 +157,7 @@ class AsyncIntervalTimer {
   uint64_t intervalNsec_;
   std::chrono::steady_clock::time_point intervalStart_;
   std::chrono::microseconds maxBacklog_;
-  concurrency::Mutex mutex_;
+  std::mutex mutex_;
 };
 
 } // namespace thrift

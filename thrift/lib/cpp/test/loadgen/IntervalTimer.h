@@ -18,12 +18,12 @@
 #define THRIFT_TEST_LOADGEN_INTERVALTIMER_H_ 1
 
 #include <thrift/lib/cpp/TLogging.h>
-#include <thrift/lib/cpp/concurrency/Mutex.h>
 #include <thrift/lib/cpp/concurrency/Util.h>
 
 #include <folly/portability/Unistd.h>
 
 #include <chrono>
+#include <mutex>
 #include <thread>
 
 namespace apache {
@@ -150,7 +150,7 @@ class IntervalTimer {
   uint64_t intervalNsec_;
   std::chrono::steady_clock::time_point intervalStart_;
   std::chrono::microseconds maxBacklog_;
-  concurrency::Mutex mutex_;
+  std::mutex mutex_;
 };
 
 } // namespace loadgen

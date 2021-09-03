@@ -827,26 +827,6 @@ useful for multithreaded application, it requires no link-time or
 runtime libraries (i.e. it is a pure template library) and it is due
 to become part of the C++0x standard.
 
-We implement standard \texttt{Mutex} and \texttt{Condition} classes, and a
- \texttt{Monitor} class. The latter is simply a combination of a mutex and
-condition variable and is analogous to the \texttt{Monitor} implementation provided for
-the Java \texttt{Object} class. This is also sometimes referred to as a barrier. We
-provide a \texttt{Synchronized} guard class to allow Java-like synchronized blocks.
-This is just a bit of syntactic sugar, but, like its Java counterpart, clearly
-delimits critical sections of code. Unlike its Java counterpart, we still
-have the ability to programmatically lock, unlock, block, and signal monitors.
-
-\begin{verbatim}
-void run() {
- {Synchronized s(manager->monitor);
-  if (manager->state == TimerManager::STARTING) {
-    manager->state = TimerManager::STARTED;
-    manager->monitor.notifyAll();
-  }
- }
-}
-\end{verbatim}
-
 We again borrowed from Java the distinction between a thread and a runnable
 class. A \texttt{Thread} is the actual schedulable object. The
 \texttt{Runnable} is the logic to execute within the thread.
