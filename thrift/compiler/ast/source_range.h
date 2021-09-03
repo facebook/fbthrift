@@ -74,6 +74,12 @@ class source_loc final {
   constexpr explicit operator bool() const noexcept { return has_loc(); }
   constexpr source_loc& operator=(const source_loc& loc) noexcept = default;
 
+  // Ordered by program (nullptr first, then ordered by program.path(), then
+  // &program), then line, then column.
+  int compare(const source_loc& rhs) const noexcept {
+    return compare(*this, rhs);
+  }
+
  private:
   const t_program* program_ = nullptr;
   size_t line_ = 0; // 1-based
@@ -87,28 +93,21 @@ class source_loc final {
     return !(lhs == rhs);
   }
 
-  // Defines a lexigraphical ordering for (nullable) programs where
-  // nullptr comes first, then non-null programs ordered by path,
-  // lastly, ordered by address to break ties.
-  static int cmp(const t_program* lhs, const t_program* rhs);
+  static int compare(const source_loc& lhs, const source_loc& rhs) noexcept;
 
-  template <typename T>
-  static int cmp(const T& lhs, const T& rhs) {
-    return lhs == rhs ? 0 : (lhs < rhs ? -1 : 1);
+  friend bool operator<(const source_loc& lhs, const source_loc& rhs) noexcept {
+    return compare(lhs, rhs) < 0;
   }
-  static int cmp(const source_loc& lhs, const source_loc& rhs);
-
-  friend bool operator<(const source_loc& lhs, const source_loc& rhs) {
-    return cmp(lhs, rhs) < 0;
+  friend bool operator<=(
+      const source_loc& lhs, const source_loc& rhs) noexcept {
+    return compare(lhs, rhs) <= 0;
   }
-  friend bool operator<=(const source_loc& lhs, const source_loc& rhs) {
-    return cmp(lhs, rhs) <= 0;
+  friend bool operator>(const source_loc& lhs, const source_loc& rhs) noexcept {
+    return compare(lhs, rhs) > 0;
   }
-  friend bool operator>(const source_loc& lhs, const source_loc& rhs) {
-    return cmp(lhs, rhs) > 0;
-  }
-  friend bool operator>=(const source_loc& lhs, const source_loc& rhs) {
-    return cmp(lhs, rhs) >= 0;
+  friend bool operator>=(
+      const source_loc& lhs, const source_loc& rhs) noexcept {
+    return compare(lhs, rhs) >= 0;
   }
 };
 
@@ -155,12 +154,46 @@ class source_range final {
   constexpr source_range& operator=(const source_range& range) noexcept =
       default;
 
+  // Ordered by `begin` than `end`.
+  int compare(const source_range& rhs) const noexcept {
+    return compare(*this, rhs);
+  }
+
  private:
   const t_program* program_ = nullptr;
   size_t begin_line_ = 0; // 1-based
   size_t begin_col_ = 0; // Code units (bytes), 1-based
   size_t end_line_ = 0; // 1-based
   size_t end_col_ = 0; // Code units (bytes), 1-based
+
+  friend bool operator==(const source_range& lhs, const source_range& rhs) {
+    return lhs.program_ == rhs.program_ && lhs.begin_line_ == rhs.begin_line_ &&
+        lhs.begin_col_ == rhs.begin_col_ && lhs.end_line_ == rhs.end_line_ &&
+        lhs.end_col_ == rhs.end_col_;
+  }
+  friend bool operator!=(
+      const source_range& lhs, const source_range& rhs) noexcept {
+    return !(lhs == rhs);
+  }
+
+  static int compare(const source_range& lhs, const source_range& rhs) noexcept;
+
+  friend bool operator<(
+      const source_range& lhs, const source_range& rhs) noexcept {
+    return compare(lhs, rhs) < 0;
+  }
+  friend bool operator<=(
+      const source_range& lhs, const source_range& rhs) noexcept {
+    return compare(lhs, rhs) <= 0;
+  }
+  friend bool operator>(
+      const source_range& lhs, const source_range& rhs) noexcept {
+    return compare(lhs, rhs) > 0;
+  }
+  friend bool operator>=(
+      const source_range& lhs, const source_range& rhs) noexcept {
+    return compare(lhs, rhs) >= 0;
+  }
 };
 
 } // namespace compiler

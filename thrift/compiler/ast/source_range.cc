@@ -22,18 +22,17 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-// Note: Must be defined here because requires t_program's definition.
-size_t source_loc::offset() const noexcept {
-  if (program_ == nullptr) {
-    return t_program::noffset;
-  }
-  // TODO(afuller): Take into account multi-byte UTF-8 characters. The current
-  // logic assumes every 'column' is one byte wide, which is only true for
-  // single byte unicode characters.
-  return program_->get_byte_offset(line_, col_ > 0 ? col_ - 1 : 0);
+namespace {
+
+template <typename T>
+constexpr int cmp(const T& lhs, const T& rhs) noexcept {
+  return lhs == rhs ? 0 : (lhs < rhs ? -1 : 1);
 }
 
-int source_loc::cmp(const t_program* lhs, const t_program* rhs) {
+// TODO(afuller): Make constexpr when
+// std::basic_string<CharT,Traits,Allocator>::compare
+// becomes constexpr in c++20.
+int compare_programs(const t_program* lhs, const t_program* rhs) noexcept {
   if (lhs == rhs) {
     return 0;
   }
@@ -52,12 +51,25 @@ int source_loc::cmp(const t_program* lhs, const t_program* rhs) {
   }
 
   // Then by pointer, to break ties.
-  return cmp<const t_program*>(lhs, rhs);
+  return cmp(lhs, rhs);
 }
 
-int source_loc::cmp(const source_loc& lhs, const source_loc& rhs) {
+} // namespace
+
+// Note: Must be defined here because requires t_program's definition.
+size_t source_loc::offset() const noexcept {
+  if (program_ == nullptr) {
+    return t_program::noffset;
+  }
+  // TODO(afuller): Take into account multi-byte UTF-8 characters. The current
+  // logic assumes every 'column' is one byte wide, which is only true for
+  // single byte unicode characters.
+  return program_->get_byte_offset(line_, col_ > 0 ? col_ - 1 : 0);
+}
+
+int source_loc::compare(const source_loc& lhs, const source_loc& rhs) noexcept {
   // Order by program.
-  if (auto result = cmp(lhs.program_, rhs.program_)) {
+  if (auto result = compare_programs(lhs.program_, rhs.program_)) {
     return result;
   }
   // Then line.
@@ -78,6 +90,28 @@ source_range::source_range(const source_loc& begin, const source_loc& end)
   if (&begin.program() != &end.program()) {
     throw std::invalid_argument("A source_range cannot span programs/files.");
   }
+}
+
+int source_range::compare(
+    const source_range& lhs, const source_range& rhs) noexcept {
+  // Order by program.
+  if (auto result = compare_programs(lhs.program_, rhs.program_)) {
+    return result;
+  }
+  // Then begin line.
+  if (auto result = cmp(lhs.begin_line_, rhs.begin_line_)) {
+    return result;
+  }
+  // Then begin column.
+  if (auto result = cmp(lhs.begin_col_, rhs.begin_col_)) {
+    return result;
+  }
+  // Then end line.
+  if (auto result = cmp(lhs.end_line_, rhs.end_line_)) {
+    return result;
+  }
+  // Then end column.
+  return cmp(lhs.end_col_, rhs.end_col_);
 }
 
 } // namespace compiler

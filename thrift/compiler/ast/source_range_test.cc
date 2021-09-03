@@ -33,8 +33,46 @@ void add_offsets(t_program& program, const std::string& content) {
   }
 }
 
-class SourceLocTest : public ::testing::Test {};
-class SourceRangeTest : public ::testing::Test {};
+template <typename T>
+void TestOrdering(int expected_cmp, const T& lhs, const T& rhs) {
+  EXPECT_EQ(lhs == rhs, expected_cmp == 0);
+  EXPECT_EQ(lhs != rhs, expected_cmp != 0);
+  EXPECT_EQ(lhs < rhs, expected_cmp < 0);
+  EXPECT_EQ(lhs <= rhs, expected_cmp <= 0);
+  EXPECT_EQ(lhs > rhs, expected_cmp > 0);
+  EXPECT_EQ(lhs >= rhs, expected_cmp >= 0);
+
+  EXPECT_EQ(rhs == lhs, 0 == expected_cmp);
+  EXPECT_EQ(rhs != lhs, 0 != expected_cmp);
+  EXPECT_EQ(rhs < lhs, 0 < expected_cmp);
+  EXPECT_EQ(rhs <= lhs, 0 <= expected_cmp);
+  EXPECT_EQ(rhs > lhs, 0 > expected_cmp);
+  EXPECT_EQ(rhs >= lhs, 0 >= expected_cmp);
+}
+
+class SourceLocTest : public ::testing::Test {
+ protected:
+  void TestLocOrdering(
+      int expected_cmp, const source_loc& lhs, const source_loc& rhs) {
+    EXPECT_EQ(lhs.compare(rhs), expected_cmp);
+    TestOrdering(expected_cmp, lhs, rhs);
+  }
+};
+
+class SourceRangeTest : public ::testing::Test {
+ protected:
+  void TestRangeOrdering(
+      int expected_cmp, const source_range& lhs, const source_range& rhs) {
+    // Should match comparing begin() than end()
+    int actual_cmp = lhs.begin().compare(rhs.begin());
+    if (actual_cmp == 0) {
+      actual_cmp = lhs.end().compare(rhs.end());
+    }
+    EXPECT_EQ(actual_cmp, expected_cmp);
+
+    TestOrdering(expected_cmp, lhs, rhs);
+  }
+};
 
 TEST_F(SourceLocTest, Offset) {
   t_program program("");
@@ -60,37 +98,20 @@ TEST_F(SourceLocTest, Offset) {
   EXPECT_EQ(source_loc(program, 100, 1).offset(), t_program::noffset);
 }
 
-template <typename T>
-void TestOrdering(int expected_cmp, const T& lhs, const T& rhs) {
-  EXPECT_EQ(lhs == rhs, expected_cmp == 0);
-  EXPECT_EQ(lhs != rhs, expected_cmp != 0);
-  EXPECT_EQ(lhs < rhs, expected_cmp < 0);
-  EXPECT_EQ(lhs <= rhs, expected_cmp <= 0);
-  EXPECT_EQ(lhs > rhs, expected_cmp > 0);
-  EXPECT_EQ(lhs >= rhs, expected_cmp >= 0);
-
-  EXPECT_EQ(rhs == lhs, 0 == expected_cmp);
-  EXPECT_EQ(rhs != lhs, 0 != expected_cmp);
-  EXPECT_EQ(rhs < lhs, 0 < expected_cmp);
-  EXPECT_EQ(rhs <= lhs, 0 <= expected_cmp);
-  EXPECT_EQ(rhs > lhs, 0 > expected_cmp);
-  EXPECT_EQ(rhs >= lhs, 0 >= expected_cmp);
-}
-
 TEST_F(SourceLocTest, Order) {
   t_program prog1("prog/1/src.thrift");
   t_program prog2("prog/2/src.thrift");
-  TestOrdering(0, source_loc(), source_loc());
-  TestOrdering(-1, source_loc(), source_loc(prog1, 1, 1));
-  TestOrdering(0, source_loc(prog1, 7, 13), source_loc(prog1, 7, 13));
-  TestOrdering(-1, source_loc(prog1, 7, 12), source_loc(prog1, 7, 13));
-  TestOrdering(1, source_loc(prog1, 7, 12), source_loc(prog1, 6, 13));
-  TestOrdering(-1, source_loc(prog1, 7, 12), source_loc(prog2, 6, 13));
+  TestLocOrdering(0, source_loc(), source_loc());
+  TestLocOrdering(-1, source_loc(), source_loc(prog1, 1, 1));
+  TestLocOrdering(0, source_loc(prog1, 7, 13), source_loc(prog1, 7, 13));
+  TestLocOrdering(-1, source_loc(prog1, 7, 12), source_loc(prog1, 7, 13));
+  TestLocOrdering(1, source_loc(prog1, 7, 12), source_loc(prog1, 6, 13));
+  TestLocOrdering(-1, source_loc(prog1, 7, 12), source_loc(prog2, 6, 13));
 
   // For stability and consistency with operator==, Pointer address is a tie
   // breaker between same paths.
   t_program prog1b("prog/1/src.thrift");
-  TestOrdering(
+  TestLocOrdering(
       &prog1 > &prog1b ? 1 : -1,
       source_loc(prog1, 1, 1),
       source_loc(prog1b, 1, 1));
@@ -104,6 +125,33 @@ TEST_F(SourceRangeTest, ProgramMismatch) {
   source_loc loc2(program2, 2, 1);
 
   EXPECT_THROW(source_range(loc1, loc2), std::invalid_argument);
+}
+
+TEST_F(SourceRangeTest, Order) {
+  t_program prog1("prog/1/src.thrift");
+  t_program prog2("prog/2/src.thrift");
+  TestRangeOrdering(0, source_range(), source_range());
+  TestRangeOrdering(-1, source_range(), source_range(prog1, 1, 1, 1, 2));
+  TestRangeOrdering(
+      0, source_range(prog1, 7, 13, 7, 14), source_range(prog1, 7, 13, 7, 14));
+  TestRangeOrdering(
+      -1, source_range(prog1, 7, 13, 7, 14), source_range(prog1, 7, 13, 7, 15));
+  TestRangeOrdering(
+      1, source_range(prog1, 7, 13, 8, 14), source_range(prog1, 7, 13, 7, 15));
+  TestRangeOrdering(
+      -1, source_range(prog1, 7, 13, 8, 14), source_range(prog1, 7, 14, 7, 15));
+  TestRangeOrdering(
+      1, source_range(prog1, 8, 13, 8, 14), source_range(prog1, 7, 14, 7, 15));
+  TestRangeOrdering(
+      -1, source_range(prog1, 8, 13, 8, 14), source_range(prog2, 7, 14, 7, 15));
+
+  // For stability and consistency with operator==, Pointer address is a tie
+  // breaker between same paths.
+  t_program prog1b("prog/1/src.thrift");
+  TestRangeOrdering(
+      &prog1 > &prog1b ? 1 : -1,
+      source_range(prog1, 1, 1, 1, 1),
+      source_range(prog1b, 1, 1, 1, 1));
 }
 
 } // namespace
