@@ -26,15 +26,25 @@ const transport::THeader::StringToStringMap& kEmptyMap() {
       *(new transport::THeader::StringToStringMap);
   return map;
 }
+
+uint32_t validateTimeout(std::chrono::milliseconds timeout) {
+  using rep = std::chrono::milliseconds::rep;
+  static constexpr rep min = 0;
+  static constexpr rep max = std::numeric_limits<uint32_t>::max();
+  const auto ms = timeout.count();
+  DCHECK_GE(ms, min) << "Timeout should be >= 0";
+  DCHECK_LE(ms, max) << "Timeout should not exceed " << max << " ms";
+  return std::max(min, std::min(ms, max));
+}
 } // namespace
 
 RpcOptions& RpcOptions::setTimeout(std::chrono::milliseconds timeout) {
-  timeout_ = timeout;
+  timeout_ = validateTimeout(timeout);
   return *this;
 }
 
 std::chrono::milliseconds RpcOptions::getTimeout() const {
-  return timeout_;
+  return std::chrono::milliseconds(timeout_);
 }
 
 RpcOptions& RpcOptions::setPriority(RpcOptions::PRIORITY priority) {
@@ -66,12 +76,12 @@ bool RpcOptions::getEnableChecksum() const {
 
 RpcOptions& RpcOptions::setChunkTimeout(
     std::chrono::milliseconds chunkTimeout) {
-  chunkTimeout_ = chunkTimeout;
+  chunkTimeout_ = validateTimeout(chunkTimeout);
   return *this;
 }
 
 std::chrono::milliseconds RpcOptions::getChunkTimeout() const {
-  return chunkTimeout_;
+  return std::chrono::milliseconds(chunkTimeout_);
 }
 
 RpcOptions& RpcOptions::setChunkBufferSize(int32_t chunkBufferSize) {
@@ -101,32 +111,32 @@ const BufferOptions& RpcOptions::getBufferOptions() const {
 
 RpcOptions& RpcOptions::setQueueTimeout(
     std::chrono::milliseconds queueTimeout) {
-  queueTimeout_ = queueTimeout;
+  queueTimeout_ = validateTimeout(queueTimeout);
   return *this;
 }
 
 std::chrono::milliseconds RpcOptions::getQueueTimeout() const {
-  return queueTimeout_;
+  return std::chrono::milliseconds(queueTimeout_);
 }
 
 RpcOptions& RpcOptions::setOverallTimeout(
     std::chrono::milliseconds overallTimeout) {
-  overallTimeout_ = overallTimeout;
+  overallTimeout_ = validateTimeout(overallTimeout);
   return *this;
 }
 
 std::chrono::milliseconds RpcOptions::getOverallTimeout() const {
-  return overallTimeout_;
+  return std::chrono::milliseconds(overallTimeout_);
 }
 
 RpcOptions& RpcOptions::setProcessingTimeout(
     std::chrono::milliseconds processingTimeout) {
-  processingTimeout_ = processingTimeout;
+  processingTimeout_ = validateTimeout(processingTimeout);
   return *this;
 }
 
 std::chrono::milliseconds RpcOptions::getProcessingTimeout() const {
-  return processingTimeout_;
+  return std::chrono::milliseconds(processingTimeout_);
 }
 
 RpcOptions& RpcOptions::setRoutingKey(std::string routingKey) {

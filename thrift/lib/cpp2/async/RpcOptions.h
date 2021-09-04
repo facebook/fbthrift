@@ -109,11 +109,12 @@ class RpcOptions {
   const std::shared_ptr<void>& getRoutingData() const;
 
  private:
-  std::chrono::milliseconds timeout_{0};
-  std::chrono::milliseconds chunkTimeout_{0};
-  std::chrono::milliseconds queueTimeout_{0};
-  std::chrono::milliseconds overallTimeout_{0};
-  std::chrono::milliseconds processingTimeout_{0};
+  using timeout_ms_t = uint32_t;
+  timeout_ms_t timeout_{0};
+  timeout_ms_t chunkTimeout_{0};
+  timeout_ms_t queueTimeout_{0};
+  timeout_ms_t overallTimeout_{0};
+  timeout_ms_t processingTimeout_{0};
   uint8_t priority_{apache::thrift::concurrency::N_PRIORITIES};
   bool clientOnlyTimeouts_{false};
   bool enableChecksum_{false};
