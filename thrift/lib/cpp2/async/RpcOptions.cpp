@@ -221,5 +221,14 @@ const std::shared_ptr<void>& RpcOptions::getRoutingData() const {
   return routingData_;
 }
 
+RpcOptions& RpcOptions::setRoutingHint(uint64_t hint) {
+  routingHint_ = hint;
+  return *this;
+}
+
+uint64_t RpcOptions::getRoutingHint() const {
+  return routingHint_;
+}
+
 } // namespace thrift
 } // namespace apache
