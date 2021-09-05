@@ -16,7 +16,6 @@
 
 #pragma once
 
-#include <array>
 #include <vector>
 
 #include <folly/Indestructible.h>
@@ -69,6 +68,9 @@ class ServiceMetadata {
   static_assert(!sizeof(T), "invalid use of base template");
 };
 
+} // namespace md
+} // namespace detail
+
 /**
  * Get ThriftMetadata of given thrift structure. If no_metadata option is
  * enabled, return empty data.
@@ -78,15 +80,13 @@ class ServiceMetadata {
  * @return ThriftStruct (https://git.io/JJQpW)
  */
 template <class T>
-const auto& get_struct_metadata() {
-  static const folly::Indestructible<metadata::ThriftStruct> data =
-      StructMetadata<T>::gen(std::array<ThriftMetadata, 1>()[0]);
+const metadata::ThriftStruct& get_struct_metadata() {
+  static const folly::Indestructible<metadata::ThriftStruct> data = [] {
+    detail::md::ThriftMetadata meta;
+    return detail::md::StructMetadata<T>::gen(meta);
+  }();
   return *data;
 }
 
-} // namespace md
-} // namespace detail
-
-using detail::md::get_struct_metadata;
 } // namespace thrift
 } // namespace apache
