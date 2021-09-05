@@ -45,8 +45,7 @@ class t_named : public t_node {
   }
   void add_structured_annotation(std::unique_ptr<t_const> annot);
 
-  const t_const* get_structured_annotation_or_null(
-      const char* path, const char* name) const;
+  const t_const* get_structured_annotation_or_null(const char* uri) const;
 
  protected:
   // t_named is abstract.
@@ -59,6 +58,8 @@ class t_named : public t_node {
 
  private:
   std::vector<std::shared_ptr<const t_const>> structured_annotations_;
+
+  // TODO(ytj): use thrift.uri --> t_const map for structured annotation
   std::vector<const t_const*> structured_annotations_raw_;
 
   // TODO(afuller): Remove everything below this comment. It is only provided

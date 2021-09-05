@@ -33,11 +33,13 @@ void t_named::add_structured_annotation(std::unique_ptr<t_const> annot) {
 }
 
 const t_const* t_named::get_structured_annotation_or_null(
-    const char* path, const char* name) const {
-  for (const auto* annotation : structured_annotations_raw_) {
-    const t_type* type = annotation->type().get_type()->get_true_type();
-    if (type->program()->path() == path && type->get_name() == name) {
-      return annotation;
+    const char* uri) const {
+  for (const auto* annot : structured_annotations_raw_) {
+    if (const std::string* p =
+            annot->get_type()->get_annotation_or_null("thrift.uri")) {
+      if (*p == uri) {
+        return annot;
+      }
     }
   }
 

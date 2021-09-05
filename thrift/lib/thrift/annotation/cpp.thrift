@@ -30,8 +30,8 @@ enum RefType {
 @scope.Field
 struct Ref {
   1: RefType type;
-}
+} (thrift.uri = "facebook.com/thrift/annotation/cpp/Ref")
 
 @scope.Field
 struct Lazy {
-}
+} (thrift.uri = "facebook.com/thrift/annotation/cpp/Lazy")

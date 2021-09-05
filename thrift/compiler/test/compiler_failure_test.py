@@ -721,7 +721,7 @@ class CompilerFailureTest(unittest.TestCase):
                 enum RefType {Unique, SharedConst, SharedMutable}
                 struct Ref {
                   1: RefType type;
-                }
+                } (thrift.uri = "facebook.com/thrift/annotation/cpp/Ref")
                 """
             ),
         )
@@ -753,12 +753,12 @@ class CompilerFailureTest(unittest.TestCase):
 
         self.assertEqual(ret, 1)
         self.assertEqual(
-            err,
-            "[FAILURE:foo.thrift:10] The @cpp.Ref annotation cannot be combined "
-            "with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the"
-            " annotations from `field3`.\n"
-            "[FAILURE:foo.thrift:13] Structured annotation `Ref` is already"
-            " defined for `field4`.\n",
+            '\n' + err,
+            textwrap.dedent("""
+                [FAILURE:foo.thrift:10] The @cpp.Ref annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `field3`.
+                [FAILURE:foo.thrift:13] Structured annotation `Ref` is already defined for `field4`.
+                [FAILURE:foo.thrift:13] Structured annotation thrift.uri `facebook.com/thrift/annotation/cpp/Ref` is already defined for `field4`.
+            """)
         )
 
     def test_mixin_nonstruct_members(self):

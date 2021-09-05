@@ -448,7 +448,7 @@ void validate_compatibility_with_lazy_field(
 
 void validate_ref_annotation(diagnostic_context& ctx, const t_field& node) {
   if (node.get_structured_annotation_or_null(
-          "thrift/lib/thrift/annotation/cpp.thrift", "Ref") &&
+          "facebook.com/thrift/annotation/cpp/Ref") &&
       node.has_annotation(
           {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"})) {
     ctx.failure([&](auto& o) {
