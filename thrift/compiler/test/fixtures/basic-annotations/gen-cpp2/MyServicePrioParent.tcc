@@ -50,10 +50,10 @@ void MyServicePrioParentAsyncProcessor::process_ping(apache::thrift::ResponseCha
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse MyServicePrioParentAsyncProcessor::return_ping(apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse MyServicePrioParentAsyncProcessor::return_ping(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyServicePrioParent_ping_presult result;
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("ping", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -104,10 +104,10 @@ void MyServicePrioParentAsyncProcessor::process_pong(apache::thrift::ResponseCha
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse MyServicePrioParentAsyncProcessor::return_pong(apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse MyServicePrioParentAsyncProcessor::return_pong(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyServicePrioParent_pong_presult result;
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("pong", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

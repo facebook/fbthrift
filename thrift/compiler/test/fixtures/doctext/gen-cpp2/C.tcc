@@ -55,10 +55,10 @@ void CAsyncProcessor::process_f(apache::thrift::ResponseChannelRequest::UniquePt
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse CAsyncProcessor::return_f(apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse CAsyncProcessor::return_f(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   C_f_presult result;
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("f", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -109,7 +109,7 @@ void CAsyncProcessor::process_numbers(apache::thrift::ResponseChannelRequest::Un
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndServerStreamFactory CAsyncProcessor::return_numbers(apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<::cpp2::number>&& _return) {
+apache::thrift::ResponseAndServerStreamFactory CAsyncProcessor::return_numbers(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<::cpp2::number>&& _return) {
   ProtocolOut_ prot;
   C_numbers_presult::FieldsType result;
   using StreamPResultType = C_numbers_presult::StreamPResultType;
@@ -117,7 +117,7 @@ apache::thrift::ResponseAndServerStreamFactory CAsyncProcessor::return_numbers(a
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
   auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
-  return {serializeResponse(&prot, ctx, result), std::move(encodedStream)};
+  return {serializeLegacyResponse("numbers", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -174,12 +174,12 @@ void CAsyncProcessor::process_thing(apache::thrift::ResponseChannelRequest::Uniq
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse CAsyncProcessor::return_thing(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse CAsyncProcessor::return_thing(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   C_thing_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("thing", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -205,11 +205,9 @@ void CAsyncProcessor::throw_wrapped_thing(apache::thrift::ResponseChannelRequest
     return;
   }
   ProtocolOut_ prot;
-  auto response = serializeResponse(&prot, ctx, result);
-  auto payload = std::move(response).extractPayload(
-      req->includeEnvelope(), prot.protocolType(), protoSeqId, apache::thrift::MessageType::T_REPLY, "thing");
-  payload.transform(reqCtx->getHeader()->getWriteTransforms());
-  return req->sendReply(std::move(payload));
+  auto response = serializeLegacyResponse("thing", &prot, protoSeqId, ctx, result);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  return req->sendReply(std::move(response.buffer));
 }
 
 

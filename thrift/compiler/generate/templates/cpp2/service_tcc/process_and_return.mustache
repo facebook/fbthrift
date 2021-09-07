@@ -96,17 +96,17 @@ void <%service:parent_service_name%>AsyncProcessor::process_<%#service:interacti
 <%^function:oneway?%>
 template <class ProtocolIn_, class ProtocolOut_>
 <%#type:void?%>
-apache::thrift::SerializedResponse <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
 <%/type:void?%>
 <%^type:void?%>
     <%^type:streamresponse?%><%^type:sink?%>
-apache::thrift::SerializedResponse <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, <%type:cpp_type%> const& _return) {
+apache::thrift::LegacySerializedResponse <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, <%type:cpp_type%> const& _return) {
     <%/type:sink?%><%/type:streamresponse?%>
     <%#type:streamresponse?%>
-apache::thrift::ResponseAndServerStreamFactory <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <%type:cpp_type%>&& _return) {
+apache::thrift::ResponseAndServerStreamFactory <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, <%type:cpp_type%>&& _return) {
     <%/type:streamresponse?%>
     <%#type:sink?%>
-std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsumerImpl> <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, <%type:cpp_type%>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> <%service:parent_service_name%>AsyncProcessor::return_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>(apache::thrift::ContextStack* ctx, <%type:cpp_type%>&& _return, folly::Executor::KeepAlive<> executor) {
     <%/type:sink?%>
 <%/type:void?%>
   ProtocolOut_ prot;
@@ -141,7 +141,7 @@ std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsum
   };
       <%/function:stream_exceptions?%>
   auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
-  return {serializeResponse(&prot, ctx, result), std::move(encodedStream)};
+  return {serializeLegacyResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
 <%/function:returns_stream?%>
 <%#function:returns_sink?%>
   <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult::FieldsType result;
@@ -185,7 +185,7 @@ std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsum
   <%/type:sink_has_first_response?%>
       std::move(executor));
 
-  return {serializeResponse(&prot, ctx, result), std::move(sinkConsumerImpl)};
+  return {serializeLegacyResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
 <%/function:returns_sink?%>
 <%^function:returns_stream?%><%^function:returns_sink?%>
   <%service:parent_service_name%>_<%#service:interaction?%><%service:name%>_<%/service:interaction?%><%function:cpp_name%>_presult result;
@@ -193,7 +193,7 @@ std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsum
   result.get<0>().value = const_cast<<%type:cpp_type%>*>(&_return);
   result.setIsSet(0, true);
 <%/type:void?%>
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result);
 <%/function:returns_sink?%><%/function:returns_stream?%>
 }
 
@@ -254,25 +254,19 @@ void <%service:parent_service_name%>AsyncProcessor::throw_wrapped_<%#service:int
 <%#function:exceptions?%>
   ProtocolOut_ prot;
   <%^function:returns_stream?%><%^function:returns_sink?%>
-  auto response = serializeResponse(&prot, ctx, result);
-  auto payload = std::move(response).extractPayload(
-      req->includeEnvelope(), prot.protocolType(), protoSeqId, apache::thrift::MessageType::T_REPLY, "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
-  payload.transform(reqCtx->getHeader()->getWriteTransforms());
-  return req->sendReply(std::move(payload));
+  auto response = serializeLegacyResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  return req->sendReply(std::move(response.buffer));
   <%/function:returns_sink?%><%/function:returns_stream?%>
   <%#function:returns_stream?%>
-  auto response = serializeResponse(&prot, ctx, result.fields);
-  auto payload = std::move(response).extractPayload(
-      req->includeEnvelope(), prot.protocolType(), protoSeqId, apache::thrift::MessageType::T_REPLY, "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
-  payload.transform(reqCtx->getHeader()->getWriteTransforms());
-  req->sendStreamReply(std::move(payload), apache::thrift::detail::ServerStreamFactory{nullptr});
+  auto response = serializeLegacyResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result.fields);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  req->sendStreamReply(std::move(response.buffer), apache::thrift::detail::ServerStreamFactory{nullptr});
   <%/function:returns_stream?%>
   <%#function:returns_sink?%>
-  auto response = serializeResponse(&prot, ctx, result.fields);
-  auto payload = std::move(response).extractPayload(
-      req->includeEnvelope(), prot.protocolType(), protoSeqId, apache::thrift::MessageType::T_REPLY, "<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>");
-  payload.transform(reqCtx->getHeader()->getWriteTransforms());
-  req->sendSinkReply(std::move(payload), apache::thrift::detail::SinkConsumerImpl{});
+  auto response = serializeLegacyResponse("<%#service:interaction?%><%service:name%>.<%/service:interaction?%><%function:name%>", &prot, protoSeqId, ctx, result.fields);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  req->sendSinkReply(std::move(response.buffer), apache::thrift::detail::SinkConsumerImpl{});
   <%/function:returns_sink?%>
 <%/function:exceptions?%>
 }

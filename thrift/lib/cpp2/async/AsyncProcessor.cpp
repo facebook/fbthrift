@@ -215,7 +215,7 @@ bool GeneratedAsyncProcessor::validateRpcKind(
         case RpcKind::SINGLE_REQUEST_NO_RESPONSE:
           return true;
         case RpcKind::SINGLE_REQUEST_SINGLE_RESPONSE:
-          req->sendReply(ResponsePayload{});
+          req->sendReply(std::unique_ptr<folly::IOBuf>());
           return true;
         default:
           break;
@@ -427,11 +427,11 @@ folly::Optional<uint32_t> HandlerCallbackBase::checksumIfNeeded(
   return crc32c;
 }
 
-ResponsePayload HandlerCallbackBase::transform(ResponsePayload&& payload) {
+void HandlerCallbackBase::transform(LegacySerializedResponse& response) {
   // Do any compression or other transforms in this thread, the same thread
   // that serialization happens on.
-  payload.transform(reqCtx_->getHeader()->getWriteTransforms());
-  return std::move(payload);
+  response.buffer = transport::THeader::transform(
+      std::move(response.buffer), reqCtx_->getHeader()->getWriteTransforms());
 }
 
 void HandlerCallbackBase::doExceptionWrapped(folly::exception_wrapper ew) {
@@ -453,83 +453,63 @@ void HandlerCallbackBase::doAppOverloadedException(const std::string& message) {
   }
 }
 
-void HandlerCallbackBase::sendReply(SerializedResponse response) {
+void HandlerCallbackBase::sendReply(LegacySerializedResponse response) {
   folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
-  auto payload = std::move(response).extractPayload(
-      req_->includeEnvelope(),
-      reqCtx_->getHeader()->getProtocolId(),
-      protoSeqId_,
-      MessageType::T_REPLY,
-      reqCtx_->getMethodName());
-  payload = transform(std::move(payload));
+  transform(response);
   if (getEventBase()->isInEventBaseThread()) {
     QueueReplyInfo(
-        std::move(req_), std::move(payload), crc32c)(*getEventBase());
+        std::move(req_), std::move(response), crc32c)(*getEventBase());
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<QueueReplyInfo>(),
         std::move(req_),
-        std::move(payload),
+        std::move(response),
         crc32c);
   }
 }
 
 void HandlerCallbackBase::sendReply(
     ResponseAndServerStreamFactory&& responseAndStream) {
-  folly::Optional<uint32_t> crc32c =
-      checksumIfNeeded(responseAndStream.response);
-  auto payload = std::move(responseAndStream.response)
-                     .extractPayload(
-                         req_->includeEnvelope(),
-                         reqCtx_->getHeader()->getProtocolId(),
-                         protoSeqId_,
-                         MessageType::T_REPLY,
-                         reqCtx_->getMethodName());
-  payload = transform(std::move(payload));
+  auto& response = responseAndStream.response;
   auto& stream = responseAndStream.stream;
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
+  transform(response);
   stream.setInteraction(std::move(interaction_));
   if (getEventBase()->isInEventBaseThread()) {
     StreamReplyInfo(
-        std::move(req_), std::move(stream), std::move(payload), crc32c)(
+        std::move(req_), std::move(stream), std::move(response), crc32c)(
         *getEventBase());
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<StreamReplyInfo>(),
         std::move(req_),
         std::move(stream),
-        std::move(payload),
+        std::move(response),
         crc32c);
   }
 }
 
 void HandlerCallbackBase::sendReply(
     FOLLY_MAYBE_UNUSED std::pair<
-        SerializedResponse,
+        LegacySerializedResponse,
         apache::thrift::detail::SinkConsumerImpl>&& responseAndSinkConsumer) {
 #if FOLLY_HAS_COROUTINES
-  folly::Optional<uint32_t> crc32c =
-      checksumIfNeeded(responseAndSinkConsumer.first);
-  auto payload = std::move(responseAndSinkConsumer.first)
-                     .extractPayload(
-                         req_->includeEnvelope(),
-                         reqCtx_->getHeader()->getProtocolId(),
-                         protoSeqId_,
-                         MessageType::T_REPLY,
-                         reqCtx_->getMethodName());
-  payload = transform(std::move(payload));
+  auto& response = responseAndSinkConsumer.first;
   auto& sinkConsumer = responseAndSinkConsumer.second;
+  folly::Optional<uint32_t> crc32c = checksumIfNeeded(response);
+  transform(response);
   sinkConsumer.interaction = std::move(interaction_);
 
   if (getEventBase()->isInEventBaseThread()) {
     SinkConsumerReplyInfo(
-        std::move(req_), std::move(sinkConsumer), std::move(payload), crc32c)(
+        std::move(req_), std::move(sinkConsumer), std::move(response), crc32c)(
         *getEventBase());
   } else {
     putMessageInReplyQueue(
         std::in_place_type_t<SinkConsumerReplyInfo>(),
         std::move(req_),
         std::move(sinkConsumer),
-        std::move(payload),
+        std::move(response),
         crc32c);
   }
 #else
@@ -569,7 +549,7 @@ void HandlerCallback<void>::complete(folly::Try<folly::Unit>&& r) {
 
 void HandlerCallback<void>::doDone() {
   assert(cp_ != nullptr);
-  auto queue = cp_(this->ctx_.get());
+  auto queue = cp_(this->protoSeqId_, this->ctx_.get());
   this->ctx_.reset();
   sendReply(std::move(queue));
 }

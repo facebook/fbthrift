@@ -48,12 +48,12 @@ void RederivedServiceAsyncProcessor::process_get_seven(apache::thrift::ResponseC
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse RederivedServiceAsyncProcessor::return_get_seven(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse RederivedServiceAsyncProcessor::return_get_seven(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   RederivedService_get_seven_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("get_seven", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

@@ -109,7 +109,7 @@ struct ResponseAndServerStream {
   ServerStream<StreamElement> stream;
 };
 struct ResponseAndServerStreamFactory {
-  apache::thrift::SerializedResponse response;
+  apache::thrift::LegacySerializedResponse response;
   apache::thrift::detail::ServerStreamFactory stream;
 };
 

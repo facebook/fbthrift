@@ -102,12 +102,12 @@ void service_with_special_namesAsyncProcessor::process_get(apache::thrift::Respo
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_get(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_get(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_get_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("get", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -158,12 +158,12 @@ void service_with_special_namesAsyncProcessor::process_getter(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_getter(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_getter(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_getter_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("getter", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -214,12 +214,12 @@ void service_with_special_namesAsyncProcessor::process_lists(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_lists(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_lists(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_lists_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("lists", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -270,12 +270,12 @@ void service_with_special_namesAsyncProcessor::process_maps(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_maps(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_maps(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_maps_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("maps", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -326,12 +326,12 @@ void service_with_special_namesAsyncProcessor::process_name(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_name(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_name_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("name", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -382,12 +382,12 @@ void service_with_special_namesAsyncProcessor::process_name_to_value(apache::thr
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_name_to_value(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_name_to_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_name_to_value_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("name_to_value", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -438,12 +438,12 @@ void service_with_special_namesAsyncProcessor::process_names(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_names(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_names(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_names_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("names", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -494,12 +494,12 @@ void service_with_special_namesAsyncProcessor::process_prefix_tree(apache::thrif
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_prefix_tree(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_prefix_tree(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_prefix_tree_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("prefix_tree", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -550,12 +550,12 @@ void service_with_special_namesAsyncProcessor::process_sets(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_sets(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_sets(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_sets_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("sets", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -606,12 +606,12 @@ void service_with_special_namesAsyncProcessor::process_setter(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_setter(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_setter(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_setter_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("setter", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -662,12 +662,12 @@ void service_with_special_namesAsyncProcessor::process_str(apache::thrift::Respo
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_str(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_str(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_str_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("str", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -718,12 +718,12 @@ void service_with_special_namesAsyncProcessor::process_strings(apache::thrift::R
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_strings(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_strings(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_strings_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("strings", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -774,12 +774,12 @@ void service_with_special_namesAsyncProcessor::process_type(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_type(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_type(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_type_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("type", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -830,12 +830,12 @@ void service_with_special_namesAsyncProcessor::process_value(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_value(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_value(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_value_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("value", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -886,12 +886,12 @@ void service_with_special_namesAsyncProcessor::process_value_to_name(apache::thr
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_value_to_name(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_value_to_name(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_value_to_name_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("value_to_name", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -942,12 +942,12 @@ void service_with_special_namesAsyncProcessor::process_values(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_values(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_values(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_values_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("values", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -998,12 +998,12 @@ void service_with_special_namesAsyncProcessor::process_id(apache::thrift::Respon
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_id(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_id(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_id_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("id", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1054,12 +1054,12 @@ void service_with_special_namesAsyncProcessor::process_ids(apache::thrift::Respo
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_ids(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_ids(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_ids_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("ids", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1110,12 +1110,12 @@ void service_with_special_namesAsyncProcessor::process_descriptor(apache::thrift
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_descriptor(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_descriptor(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_descriptor_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("descriptor", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1166,12 +1166,12 @@ void service_with_special_namesAsyncProcessor::process_descriptors(apache::thrif
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_descriptors(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_descriptors(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_descriptors_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("descriptors", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1222,12 +1222,12 @@ void service_with_special_namesAsyncProcessor::process_key(apache::thrift::Respo
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_key(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_key(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_key_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("key", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1278,12 +1278,12 @@ void service_with_special_namesAsyncProcessor::process_keys(apache::thrift::Resp
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_keys(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_keys(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_keys_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("keys", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1334,12 +1334,12 @@ void service_with_special_namesAsyncProcessor::process_annotation(apache::thrift
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_annotation(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_annotation(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_annotation_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("annotation", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1390,12 +1390,12 @@ void service_with_special_namesAsyncProcessor::process_annotations(apache::thrif
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_annotations(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_annotations(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_annotations_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("annotations", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1446,12 +1446,12 @@ void service_with_special_namesAsyncProcessor::process_member(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_member(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_member(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_member_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("member", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1502,12 +1502,12 @@ void service_with_special_namesAsyncProcessor::process_members(apache::thrift::R
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_members(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_members(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_members_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("members", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1558,12 +1558,12 @@ void service_with_special_namesAsyncProcessor::process_field(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_field(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_field(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_field_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("field", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -1614,12 +1614,12 @@ void service_with_special_namesAsyncProcessor::process_fields(apache::thrift::Re
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse service_with_special_namesAsyncProcessor::return_fields(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::LegacySerializedResponse service_with_special_namesAsyncProcessor::return_fields(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   service_with_special_names_fields_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("fields", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

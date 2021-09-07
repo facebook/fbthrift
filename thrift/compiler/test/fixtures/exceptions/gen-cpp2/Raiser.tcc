@@ -54,10 +54,10 @@ void RaiserAsyncProcessor::process_doBland(apache::thrift::ResponseChannelReques
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse RaiserAsyncProcessor::return_doBland(apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse RaiserAsyncProcessor::return_doBland(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   Raiser_doBland_presult result;
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("doBland", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -108,10 +108,10 @@ void RaiserAsyncProcessor::process_doRaise(apache::thrift::ResponseChannelReques
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse RaiserAsyncProcessor::return_doRaise(apache::thrift::ContextStack* ctx) {
+apache::thrift::LegacySerializedResponse RaiserAsyncProcessor::return_doRaise(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   Raiser_doRaise_presult result;
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("doRaise", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -157,11 +157,9 @@ void RaiserAsyncProcessor::throw_wrapped_doRaise(apache::thrift::ResponseChannel
     return;
   }
   ProtocolOut_ prot;
-  auto response = serializeResponse(&prot, ctx, result);
-  auto payload = std::move(response).extractPayload(
-      req->includeEnvelope(), prot.protocolType(), protoSeqId, apache::thrift::MessageType::T_REPLY, "doRaise");
-  payload.transform(reqCtx->getHeader()->getWriteTransforms());
-  return req->sendReply(std::move(payload));
+  auto response = serializeLegacyResponse("doRaise", &prot, protoSeqId, ctx, result);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  return req->sendReply(std::move(response.buffer));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -199,12 +197,12 @@ void RaiserAsyncProcessor::process_get200(apache::thrift::ResponseChannelRequest
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse RaiserAsyncProcessor::return_get200(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse RaiserAsyncProcessor::return_get200(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   Raiser_get200_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("get200", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -255,12 +253,12 @@ void RaiserAsyncProcessor::process_get500(apache::thrift::ResponseChannelRequest
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::SerializedResponse RaiserAsyncProcessor::return_get500(apache::thrift::ContextStack* ctx, ::std::string const& _return) {
+apache::thrift::LegacySerializedResponse RaiserAsyncProcessor::return_get500(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::string const& _return) {
   ProtocolOut_ prot;
   Raiser_get500_presult result;
   result.get<0>().value = const_cast<::std::string*>(&_return);
   result.setIsSet(0, true);
-  return serializeResponse(&prot, ctx, result);
+  return serializeLegacyResponse("get500", &prot, protoSeqId, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -306,11 +304,9 @@ void RaiserAsyncProcessor::throw_wrapped_get500(apache::thrift::ResponseChannelR
     return;
   }
   ProtocolOut_ prot;
-  auto response = serializeResponse(&prot, ctx, result);
-  auto payload = std::move(response).extractPayload(
-      req->includeEnvelope(), prot.protocolType(), protoSeqId, apache::thrift::MessageType::T_REPLY, "get500");
-  payload.transform(reqCtx->getHeader()->getWriteTransforms());
-  return req->sendReply(std::move(payload));
+  auto response = serializeLegacyResponse("get500", &prot, protoSeqId, ctx, result);
+  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
+  return req->sendReply(std::move(response.buffer));
 }
 
 
