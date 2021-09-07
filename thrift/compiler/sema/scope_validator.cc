@@ -67,9 +67,23 @@ struct allowed_scopes {
 } // namespace
 
 void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
-  for (const auto* annot : node.structured_annotations()) {
+  // Ignore a transitive annotation definition because it is a collection of
+  // annotations that apply at other scopes. For example:
+  //
+  //   @cpp.Ref{type = cpp.RefType.Unique}
+  //   @meta.Transitive
+  //   struct MyAnnotation {}
+  //
+  // Although @cpp.Ref is a field annotation we don't emit a diagnostic here
+  // because it applies not to the definition of MyAnnotation but to its uses.
+  if (is_transitive_annotation(node)) {
+    return;
+  }
+
+  for (const t_const* annot : node.structured_annotations()) {
     // Ignore scoping annotations themselves.
-    if (uri_map().find(annot->get_type()->get_annotation("thrift.uri")) !=
+    const t_type* annot_type = &*annot->type();
+    if (uri_map().find(annot_type->get_annotation("thrift.uri")) !=
         uri_map().end()) {
       continue;
     }
@@ -80,14 +94,15 @@ void validate_annotation_scopes(diagnostic_context& ctx, const t_named& node) {
     if (allowed.types.empty()) {
       // Warn that the annotation isn't marked as such.
       ctx.warning_strict(*annot, [&](auto& o) {
-        o << "Using `" << annot->get_type()->name()
-          << "` as an annotation, even though it has not been enabled for any annotation scope.";
+        o << "Using `" << annot_type->name()
+          << "` as an annotation, even though it has not been enabled for any "
+             "annotation scope.";
       });
     } else if (allowed.types.find(typeid(node)) == allowed.types.end()) {
       // Type mismatch.
       ctx.failure(*annot, [&](auto& o) {
-        o << "`" << annot->get_type()->name() << "` cannot annotate `"
-          << node.name() << "`";
+        o << "`" << annot_type->name() << "` cannot annotate `" << node.name()
+          << "`";
       });
     }
   }

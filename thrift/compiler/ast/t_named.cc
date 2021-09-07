@@ -34,16 +34,29 @@ void t_named::add_structured_annotation(std::unique_ptr<t_const> annot) {
 
 const t_const* t_named::get_structured_annotation_or_null(
     const char* uri) const {
-  for (const auto* annot : structured_annotations_raw_) {
-    if (const std::string* p =
-            annot->get_type()->get_annotation_or_null("thrift.uri")) {
-      if (*p == uri) {
-        return annot;
-      }
+  for (const auto* annotation : structured_annotations_raw_) {
+    const t_type& annotation_type = *annotation->get_type();
+    const std::string* actual_uri =
+        annotation_type.get_annotation_or_null("thrift.uri");
+    if (actual_uri && *actual_uri == uri) {
+      return annotation;
+    }
+    if (is_transitive_annotation(annotation_type)) {
+      return annotation_type.get_structured_annotation_or_null(uri);
     }
   }
-
   return nullptr;
+}
+
+bool is_transitive_annotation(const t_named& node) {
+  for (const auto* annotation : node.structured_annotations()) {
+    const std::string* uri =
+        annotation->type()->get_annotation_or_null("thrift.uri");
+    if (uri && *uri == "facebook.com/thrift/annotation/meta/Transitive") {
+      return true;
+    }
+  }
+  return false;
 }
 
 } // namespace compiler

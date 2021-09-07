@@ -70,6 +70,10 @@ class t_named : public t_node {
   const std::string& get_name() const { return name_; }
 };
 
+// Returns true iff the node is a definition of a transitive annotation,
+// i.e. it has the @meta.Transitive annotation itself.
+bool is_transitive_annotation(const t_named& node);
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

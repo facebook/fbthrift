@@ -33,13 +33,9 @@ namespace cpp {
 namespace {
 
 const std::string* find_structured_adapter_annotation(const t_named* node) {
-  // TODO(viz): Replace structured annotation lookup with
-  // get_structured_annotation_or_null once it supports thrift.uri.
-  for (const t_const* annotation : node->structured_annotations()) {
-    if (annotation->type()->uri() !=
-        "facebook.com/thrift/annotation/ExperimentalAdapter") {
-      continue;
-    }
+  const t_const* annotation = node->get_structured_annotation_or_null(
+      "facebook.com/thrift/annotation/ExperimentalAdapter");
+  if (annotation) {
     for (const auto& item : annotation->value()->get_map()) {
       if (item.first->get_string() == "name") {
         return &item.second->get_string();
