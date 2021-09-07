@@ -30,8 +30,36 @@ namespace thrift {
 namespace compiler {
 namespace gen {
 namespace cpp {
+namespace {
+
+const std::string* find_structured_adapter_annotation(const t_named* node) {
+  // TODO(viz): Replace structured annotation lookup with
+  // get_structured_annotation_or_null once it supports thrift.uri.
+  for (const t_const* annotation : node->structured_annotations()) {
+    if (annotation->type()->uri() !=
+        "facebook.com/thrift/annotation/ExperimentalAdapter") {
+      continue;
+    }
+    for (const auto& item : annotation->value()->get_map()) {
+      if (item.first->get_string() == "name") {
+        return &item.second->get_string();
+      }
+    }
+  }
+  return nullptr;
+}
+
+} // namespace
 
 const std::string& type_resolver::get_storage_type_name(const t_field* node) {
+  if (const std::string* adapter = find_structured_adapter_annotation(node)) {
+    const t_type* type = &*node->type();
+    auto key = std::make_pair(type, adapter);
+    return detail::get_or_gen(adapter_storage_type_cache_, key, [&]() {
+      return gen_type(type, adapter);
+    });
+  }
+
   auto ref_type = find_ref_type(*node);
   if (ref_type == reference_type::none) {
     // The storage type is just the type name.
@@ -41,6 +69,17 @@ const std::string& type_resolver::get_storage_type_name(const t_field* node) {
   auto key = std::make_pair(node->get_type(), ref_type);
   return detail::get_or_gen(
       storage_type_cache_, key, [&]() { return gen_storage_type(key); });
+}
+
+const std::string* type_resolver::find_first_adapter(const t_field* field) {
+  if (const std::string* adapter = find_structured_adapter_annotation(field)) {
+    return adapter;
+  }
+  if (const std::string* adapter =
+          gen::cpp::type_resolver::find_first_adapter(&*field->type())) {
+    return adapter;
+  }
+  return nullptr;
 }
 
 const std::string& type_resolver::default_template(t_container::type ctype) {
@@ -106,7 +145,8 @@ const std::string& type_resolver::default_type(t_base_type::type btype) {
       "unknown base type: " + std::to_string(static_cast<int>(btype)));
 }
 
-std::string type_resolver::gen_type(const t_type* node) {
+std::string type_resolver::gen_type(
+    const t_type* node, const std::string* adapter) {
   std::string name;
   // Find the base name.
   if (const auto* type = find_type(node)) {
@@ -118,10 +158,7 @@ std::string type_resolver::gen_type(const t_type* node) {
   }
 
   // Adapt the base name.
-  if (const auto* adapter = find_adapter(node)) {
-    name = gen_adapted_type(*adapter, std::move(name));
-  }
-  return name;
+  return adapter ? gen_adapted_type(*adapter, std::move(name)) : name;
 }
 
 std::string type_resolver::gen_standard_type(const t_type* node) {

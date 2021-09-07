@@ -44,12 +44,14 @@ TEST(AdaptTest, StructCodeGen_Empty) {
   AdaptTestStruct obj0a;
   EXPECT_EQ(obj0a.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0a.custom_ref()->val, 13); // Defined in Num.
+  EXPECT_EQ(obj0a.timeout_ref(), std::chrono::milliseconds(0));
 
   auto data0 = CompactSerializer::serialize<std::string>(obj0a);
   AdaptTestStruct obj0b;
   CompactSerializer::deserialize(data0, obj0b);
   EXPECT_EQ(obj0b.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0b.custom_ref()->val, 13);
+  EXPECT_EQ(obj0b.timeout_ref(), std::chrono::milliseconds(0));
 
   EXPECT_EQ(obj0b, obj0a);
 }
@@ -59,12 +61,14 @@ TEST(AdaptTest, StructCodeGen_Zero) {
   EXPECT_EQ(obj0a.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0a.custom_ref()->val, 13); // Defined in Num.
   obj0a.custom_ref()->val = 0;
+  EXPECT_EQ(obj0a.timeout_ref(), std::chrono::milliseconds(0));
 
   auto data0 = CompactSerializer::serialize<std::string>(obj0a);
   AdaptTestStruct obj0b;
   CompactSerializer::deserialize(data0, obj0b);
   EXPECT_EQ(obj0b.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0b.custom_ref()->val, 0);
+  EXPECT_EQ(obj0b.timeout_ref(), std::chrono::milliseconds(0));
 
   EXPECT_EQ(obj0b, obj0a);
 }
@@ -73,6 +77,7 @@ TEST(AdaptTest, StructCodeGen) {
   AdaptTestStruct obj1a;
   AssertSameType<decltype(*obj1a.delay_ref()), std::chrono::milliseconds&>();
   AssertSameType<decltype(*obj1a.custom_ref()), Num&>();
+  AssertSameType<decltype(*obj1a.timeout_ref()), std::chrono::milliseconds&>();
 
   EXPECT_EQ(obj1a.delay_ref(), std::chrono::milliseconds(0));
   obj1a.delay_ref() = std::chrono::milliseconds(7);
@@ -82,11 +87,16 @@ TEST(AdaptTest, StructCodeGen) {
   obj1a.custom_ref() = Num{std::numeric_limits<int64_t>::min()};
   EXPECT_EQ(obj1a.custom_ref()->val, std::numeric_limits<int64_t>::min());
 
+  EXPECT_EQ(obj1a.timeout_ref(), std::chrono::milliseconds(0));
+  obj1a.timeout_ref() = std::chrono::milliseconds(7);
+  EXPECT_EQ(obj1a.timeout_ref(), std::chrono::milliseconds(7));
+
   auto data1 = CompactSerializer::serialize<std::string>(obj1a);
   AdaptTestStruct obj1b;
   CompactSerializer::deserialize(data1, obj1b);
   EXPECT_EQ(obj1b.delay_ref(), std::chrono::milliseconds(7));
   EXPECT_EQ(obj1b.custom_ref()->val, std::numeric_limits<int64_t>::min());
+  EXPECT_EQ(obj1b.timeout_ref(), std::chrono::milliseconds(7));
 
   EXPECT_EQ(obj1b, obj1b);
   EXPECT_FALSE(obj1b < obj1a);
@@ -105,9 +115,17 @@ TEST(AdaptTest, StructCodeGen) {
   EXPECT_TRUE(obj1b < obj1a);
   EXPECT_FALSE(obj1a < obj1b);
 
+  obj1a.timeout_ref() = std::chrono::milliseconds(8);
+  EXPECT_NE(obj1b, obj1a);
+  EXPECT_TRUE(obj1b.timeout_ref() < obj1a.timeout_ref());
+  EXPECT_FALSE(obj1a.timeout_ref() < obj1b.timeout_ref());
+  EXPECT_TRUE(obj1b < obj1a);
+  EXPECT_FALSE(obj1a < obj1b);
+
   obj1a.__clear();
   EXPECT_EQ(obj1a.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj1a.custom_ref()->val, 13);
+  EXPECT_EQ(obj1a.timeout_ref(), std::chrono::milliseconds(0));
 }
 } // namespace basic
 

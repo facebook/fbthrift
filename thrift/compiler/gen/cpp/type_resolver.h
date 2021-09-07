@@ -45,8 +45,9 @@ class type_resolver {
  public:
   // Returns c++ type name for the given thrift type.
   const std::string& get_type_name(const t_type* node) {
-    return detail::get_or_gen(
-        type_cache_, node, [&]() { return gen_type(node); });
+    return detail::get_or_gen(type_cache_, node, [&]() {
+      return gen_type(node, find_adapter(node));
+    });
   }
 
   // Returns the c++ type that the runtime knows how to handle.
@@ -70,6 +71,7 @@ class type_resolver {
   static const std::string* find_first_adapter(const t_type* node) {
     return t_typedef::get_first_annotation_or_null(node, {"cpp.adapter"});
   }
+  static const std::string* find_first_adapter(const t_field* node);
   static const std::string* find_template(const t_type* node) {
     return node->get_annotation_or_null({"cpp.template", "cpp2.template"});
   }
@@ -85,6 +87,8 @@ class type_resolver {
   // does not have an std::hash specialization).
   std::map<std::pair<const t_type*, reference_type>, std::string>
       storage_type_cache_;
+  std::map<std::pair<const t_type*, const std::string*>, std::string>
+      adapter_storage_type_cache_;
 
   static const std::string& default_type(t_base_type::type btype);
   static const std::string& default_template(t_container::type ctype);
@@ -92,7 +96,7 @@ class type_resolver {
   const std::string& get_namespace(const t_program* program);
 
   // Generatating functions.
-  std::string gen_type(const t_type* node);
+  std::string gen_type(const t_type* node, const std::string* adapter);
   std::string gen_standard_type(const t_type* node);
   std::string gen_storage_type(
       const std::pair<const t_type*, reference_type>& ref_type);

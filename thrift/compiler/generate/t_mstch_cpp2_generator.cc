@@ -591,6 +591,7 @@ class mstch_cpp2_field : public mstch_field {
             {"field:cpp_ref_shared?", &mstch_cpp2_field::cpp_ref_shared},
             {"field:cpp_ref_shared_const?",
              &mstch_cpp2_field::cpp_ref_shared_const},
+            {"field:cpp_adapter", &mstch_cpp2_field::cpp_adapter},
             {"field:zero_copy_arg", &mstch_cpp2_field::zero_copy_arg},
             {"field:cpp_noncopyable?", &mstch_cpp2_field::cpp_noncopyable},
             {"field:enum_has_value", &mstch_cpp2_field::enum_has_value},
@@ -629,7 +630,7 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node has_deprecated_accessors() {
     return !cpp2::is_explicit_ref(field_) && !cpp2::is_lazy(field_) &&
-        !gen::cpp::type_resolver::find_first_adapter(&*field_->type());
+        !gen::cpp::type_resolver::find_first_adapter(field_);
   }
   mstch::node cpp_ref() { return cpp2::is_explicit_ref(field_); }
   mstch::node non_opt_cpp_ref() {
@@ -651,6 +652,13 @@ class mstch_cpp2_field : public mstch_field {
   mstch::node cpp_ref_shared_const() {
     return gen::cpp::find_ref_type(*field_) ==
         gen::cpp::reference_type::shared_const;
+  }
+  mstch::node cpp_adapter() {
+    if (const std::string* adapter =
+            gen::cpp::type_resolver::find_first_adapter(field_)) {
+      return *adapter;
+    }
+    return {};
   }
   mstch::node cpp_noncopyable() {
     return field_->get_type()->has_annotation("cpp2.noncopyable");

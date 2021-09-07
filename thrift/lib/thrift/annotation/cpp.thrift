@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+// TODO(viz): Consider moving to a cpp-specific lib directory.
+
 include "thrift/lib/thrift/annotation/scope.thrift"
 
 namespace cpp2 thrift.lib.thrift.annotation
@@ -35,3 +37,18 @@ struct Ref {
 @scope.Field
 struct Lazy {
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Lazy")
+
+// An experimental annotation that applies a C++ adapter to fields. For example:
+//
+//   struct User {
+//     @cpp.ExperimentalAdapter{name = "IdAdapter"}
+//     1: i64 id;
+//   }
+//
+// Here the field `id` has the C++ adapter `IdAdapter`.
+@scope.Field
+struct ExperimentalAdapter {
+  // The name of a C++ adapter type used to convert between Thrift and native
+  // C++ representation.
+  1: string name;
+} (thrift.uri = "facebook.com/thrift/annotation/ExperimentalAdapter")

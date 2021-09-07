@@ -761,6 +761,43 @@ class CompilerFailureTest(unittest.TestCase):
             """)
         )
 
+    def test_experimental_adapter(self):
+        write_file(
+            "thrift/lib/thrift/annotation/cpp.thrift",
+            textwrap.dedent(
+                """\
+                struct ExperimentalAdapter {
+                  1: string name;
+                } (thrift.uri = "facebook.com/thrift/annotation/ExperimentalAdapter")
+                """
+            ),
+        )
+
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/lib/thrift/annotation/cpp.thrift"
+
+                typedef i64 MyI64 (cpp.adapter="MyAdapter")
+
+                struct MyStruct {
+                  @cpp.ExperimentalAdapter{name="MyAdapter"}
+                  1: MyI64 my_field;
+                }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            "[FAILURE:foo.thrift:7] `@cpp.ExperimentalAdapter` cannot be "
+            "combined with `cpp_adapter` in `my_field`.\n",
+        )
+
     def test_mixin_nonstruct_members(self):
         write_file(
             "foo.thrift",

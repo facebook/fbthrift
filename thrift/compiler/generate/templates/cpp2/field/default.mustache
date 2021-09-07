@@ -16,9 +16,9 @@
 
   // The default value for a field.
   // TODO(afuller): Merge with other impls and move to a shared location.
-%><%#type:cpp_adapter%><%!
-%><%type:cpp_adapter%>::fromThrift(<%!
-%><%/type:cpp_adapter%><%!
+%><%#field:cpp_adapter%><%!
+%><%field:cpp_adapter%>::fromThrift(<%!
+%><%/field:cpp_adapter%><%!
 %><%#field:value%><%!
 %><%^type:enum?%><%!
   %><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%!
@@ -32,7 +32,7 @@
 %><%^field:value%><%!
 %><% > module_types_cpp/unset_values%><%!
 %><%/field:value%><%!
-%><%#type:cpp_adapter%><%!
+%><%#field:cpp_adapter%><%!
 %>)<%!
-%><%/type:cpp_adapter%><%!
+%><%/field:cpp_adapter%><%!
 %>
