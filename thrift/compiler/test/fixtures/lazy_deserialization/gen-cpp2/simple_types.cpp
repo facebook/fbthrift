@@ -200,6 +200,7 @@ void TccStructTraits<::apache::thrift::test::LazyFoo>::translateFieldName(
 namespace apache { namespace thrift { namespace test {
 
 LazyFoo::LazyFoo(const LazyFoo& srcObj) {
+  const auto relaxed = std::memory_order::memory_order_relaxed;
   std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
@@ -211,14 +212,18 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field2 = srcObj.__isset.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  __fbthrift_isDeserialized_.field3.store(srcObj.__fbthrift_isDeserialized_.field3.load(std::memory_order::memory_order_relaxed),
-                                                      std::memory_order::memory_order_relaxed);
+  {
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
+    __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+  }
   field3 = srcObj.field3;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field3 = srcObj.__isset.field3;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  __fbthrift_isDeserialized_.field4.store(srcObj.__fbthrift_isDeserialized_.field4.load(std::memory_order::memory_order_relaxed),
-                                                      std::memory_order::memory_order_relaxed);
+  {
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
+    __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
+  }
   field4 = srcObj.field4;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field4 = srcObj.__isset.field4;
@@ -241,10 +246,16 @@ LazyFoo::LazyFoo(LazyFoo&& other) noexcept  :
     __fbthrift_protocol_(other.__fbthrift_protocol_),
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
   const auto relaxed = std::memory_order::memory_order_relaxed;
-  __fbthrift_isDeserialized_.field3.store(other.__fbthrift_isDeserialized_.field3, relaxed);
-  other.__fbthrift_isDeserialized_.field3.store(true, relaxed);
-  __fbthrift_isDeserialized_.field4.store(other.__fbthrift_isDeserialized_.field4, relaxed);
-  other.__fbthrift_isDeserialized_.field4.store(true, relaxed);
+  {
+    const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
+    __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+    other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+  }
+  {
+    const auto isDeserialized = other.__fbthrift_isDeserialized_.field4.load(relaxed);
+    __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
+    other.__fbthrift_isDeserialized_.field4.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+  }
 }
 LazyFoo& LazyFoo::operator=(FOLLY_MAYBE_UNUSED LazyFoo&& other) noexcept {
     const auto relaxed = std::memory_order::memory_order_relaxed;
@@ -253,9 +264,17 @@ LazyFoo& LazyFoo::operator=(FOLLY_MAYBE_UNUSED LazyFoo&& other) noexcept {
     this->field1 = std::move(other.field1);
     this->field2 = std::move(other.field2);
     this->field3 = std::move(other.field3);
-    __fbthrift_isDeserialized_.field3.store(other.__fbthrift_isDeserialized_.field3.exchange(true), relaxed);
+    {
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
+      __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+    }
     this->field4 = std::move(other.field4);
-    __fbthrift_isDeserialized_.field4.store(other.__fbthrift_isDeserialized_.field4.exchange(true), relaxed);
+    {
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.field4.load(relaxed);
+      __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.field4.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+    }
     __isset = other.__isset;
     return *this;
 }
@@ -275,61 +294,79 @@ LazyFoo::LazyFoo(apache::thrift::FragileConstructor, ::std::vector<double> field
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 const ::std::vector<double>& LazyFoo::__fbthrift_read_field_field3() const {
-
-  if (__fbthrift_isDeserialized_.field3) {
-    return field3;
-  }
-
-  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
-  if (!__fbthrift_isDeserialized_.field3) {
-    switch (__fbthrift_protocol_) {
-      case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
-        __fbthrift_read_field_field3_impl<::apache::thrift::CompactProtocolReader>();
-        break;
-      case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
-        __fbthrift_read_field_field3_impl<::apache::thrift::BinaryProtocolReader>();
-        break;
-      default:
-        CHECK(false) << int(__fbthrift_protocol_);
-    }
-    __fbthrift_serializedData_.field3.clear();
-    __fbthrift_isDeserialized_.field3 = true;
+  const auto isDeserialized = __fbthrift_isDeserialized_.field3.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field3_slow();
   }
   return field3;
 }
 
 ::std::vector<double>& LazyFoo::__fbthrift_read_field_field3() {
-  std::as_const(*this).__fbthrift_read_field_field3();
+  const auto isDeserialized = __fbthrift_isDeserialized_.field3.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field3_slow();
+  } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+    __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+  }
   return field3;
 }
-const ::std::vector<::std::int32_t>& LazyFoo::__fbthrift_read_field_field4() const {
 
-  if (__fbthrift_isDeserialized_.field4) {
-    return field4;
-  }
-
+void LazyFoo::__fbthrift_read_field_field3_slow() const {
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
-  if (!__fbthrift_isDeserialized_.field4) {
-    switch (__fbthrift_protocol_) {
-      case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
-        __fbthrift_read_field_field4_impl<::apache::thrift::CompactProtocolReader>();
-        break;
-      case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
-        __fbthrift_read_field_field4_impl<::apache::thrift::BinaryProtocolReader>();
-        break;
-      default:
-        CHECK(false) << int(__fbthrift_protocol_);
-    }
-    __fbthrift_serializedData_.field4.clear();
-    __fbthrift_isDeserialized_.field4 = true;
+  if (__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
+    return;
+  }
+  switch (__fbthrift_protocol_) {
+    case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
+      __fbthrift_read_field_field3_impl<::apache::thrift::CompactProtocolReader>();
+      break;
+    case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+      __fbthrift_read_field_field3_impl<::apache::thrift::BinaryProtocolReader>();
+      break;
+    default:
+      CHECK(false) << int(__fbthrift_protocol_);
+  }
+  __fbthrift_serializedData_.field3.clear();
+  __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+}
+
+const ::std::vector<::std::int32_t>& LazyFoo::__fbthrift_read_field_field4() const {
+  const auto isDeserialized = __fbthrift_isDeserialized_.field4.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field4_slow();
   }
   return field4;
 }
 
 ::std::vector<::std::int32_t>& LazyFoo::__fbthrift_read_field_field4() {
-  std::as_const(*this).__fbthrift_read_field_field4();
+  const auto isDeserialized = __fbthrift_isDeserialized_.field4.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field4_slow();
+  } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+    __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+  }
   return field4;
 }
+
+void LazyFoo::__fbthrift_read_field_field4_slow() const {
+  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
+  if (__fbthrift_isDeserialized_.field4 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
+    return;
+  }
+  switch (__fbthrift_protocol_) {
+    case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
+      __fbthrift_read_field_field4_impl<::apache::thrift::CompactProtocolReader>();
+      break;
+    case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+      __fbthrift_read_field_field4_impl<::apache::thrift::BinaryProtocolReader>();
+      break;
+    default:
+      CHECK(false) << int(__fbthrift_protocol_);
+  }
+  __fbthrift_serializedData_.field4.clear();
+  __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+}
+
 
 void LazyFoo::__clear() {
   // clear all fields
@@ -620,6 +657,7 @@ void TccStructTraits<::apache::thrift::test::OptionalLazyFoo>::translateFieldNam
 namespace apache { namespace thrift { namespace test {
 
 OptionalLazyFoo::OptionalLazyFoo(const OptionalLazyFoo& srcObj) {
+  const auto relaxed = std::memory_order::memory_order_relaxed;
   std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
@@ -631,14 +669,18 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field2 = srcObj.__isset.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  __fbthrift_isDeserialized_.field3.store(srcObj.__fbthrift_isDeserialized_.field3.load(std::memory_order::memory_order_relaxed),
-                                                      std::memory_order::memory_order_relaxed);
+  {
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
+    __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+  }
   field3 = srcObj.field3;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field3 = srcObj.__isset.field3;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
-  __fbthrift_isDeserialized_.field4.store(srcObj.__fbthrift_isDeserialized_.field4.load(std::memory_order::memory_order_relaxed),
-                                                      std::memory_order::memory_order_relaxed);
+  {
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
+    __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
+  }
   field4 = srcObj.field4;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.field4 = srcObj.__isset.field4;
@@ -661,10 +703,16 @@ OptionalLazyFoo::OptionalLazyFoo(OptionalLazyFoo&& other) noexcept  :
     __fbthrift_protocol_(other.__fbthrift_protocol_),
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
   const auto relaxed = std::memory_order::memory_order_relaxed;
-  __fbthrift_isDeserialized_.field3.store(other.__fbthrift_isDeserialized_.field3, relaxed);
-  other.__fbthrift_isDeserialized_.field3.store(true, relaxed);
-  __fbthrift_isDeserialized_.field4.store(other.__fbthrift_isDeserialized_.field4, relaxed);
-  other.__fbthrift_isDeserialized_.field4.store(true, relaxed);
+  {
+    const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
+    __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+    other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+  }
+  {
+    const auto isDeserialized = other.__fbthrift_isDeserialized_.field4.load(relaxed);
+    __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
+    other.__fbthrift_isDeserialized_.field4.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+  }
 }
 OptionalLazyFoo& OptionalLazyFoo::operator=(FOLLY_MAYBE_UNUSED OptionalLazyFoo&& other) noexcept {
     const auto relaxed = std::memory_order::memory_order_relaxed;
@@ -673,9 +721,17 @@ OptionalLazyFoo& OptionalLazyFoo::operator=(FOLLY_MAYBE_UNUSED OptionalLazyFoo&&
     this->field1 = std::move(other.field1);
     this->field2 = std::move(other.field2);
     this->field3 = std::move(other.field3);
-    __fbthrift_isDeserialized_.field3.store(other.__fbthrift_isDeserialized_.field3.exchange(true), relaxed);
+    {
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
+      __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+    }
     this->field4 = std::move(other.field4);
-    __fbthrift_isDeserialized_.field4.store(other.__fbthrift_isDeserialized_.field4.exchange(true), relaxed);
+    {
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.field4.load(relaxed);
+      __fbthrift_isDeserialized_.field4.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.field4.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+    }
     __isset = other.__isset;
     return *this;
 }
@@ -695,61 +751,79 @@ OptionalLazyFoo::OptionalLazyFoo(apache::thrift::FragileConstructor, ::std::vect
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 const ::std::vector<double>& OptionalLazyFoo::__fbthrift_read_field_field3() const {
-
-  if (__fbthrift_isDeserialized_.field3) {
-    return field3;
-  }
-
-  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
-  if (!__fbthrift_isDeserialized_.field3) {
-    switch (__fbthrift_protocol_) {
-      case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
-        __fbthrift_read_field_field3_impl<::apache::thrift::CompactProtocolReader>();
-        break;
-      case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
-        __fbthrift_read_field_field3_impl<::apache::thrift::BinaryProtocolReader>();
-        break;
-      default:
-        CHECK(false) << int(__fbthrift_protocol_);
-    }
-    __fbthrift_serializedData_.field3.clear();
-    __fbthrift_isDeserialized_.field3 = true;
+  const auto isDeserialized = __fbthrift_isDeserialized_.field3.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field3_slow();
   }
   return field3;
 }
 
 ::std::vector<double>& OptionalLazyFoo::__fbthrift_read_field_field3() {
-  std::as_const(*this).__fbthrift_read_field_field3();
+  const auto isDeserialized = __fbthrift_isDeserialized_.field3.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field3_slow();
+  } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+    __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+  }
   return field3;
 }
-const ::std::vector<::std::int32_t>& OptionalLazyFoo::__fbthrift_read_field_field4() const {
 
-  if (__fbthrift_isDeserialized_.field4) {
-    return field4;
-  }
-
+void OptionalLazyFoo::__fbthrift_read_field_field3_slow() const {
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
-  if (!__fbthrift_isDeserialized_.field4) {
-    switch (__fbthrift_protocol_) {
-      case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
-        __fbthrift_read_field_field4_impl<::apache::thrift::CompactProtocolReader>();
-        break;
-      case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
-        __fbthrift_read_field_field4_impl<::apache::thrift::BinaryProtocolReader>();
-        break;
-      default:
-        CHECK(false) << int(__fbthrift_protocol_);
-    }
-    __fbthrift_serializedData_.field4.clear();
-    __fbthrift_isDeserialized_.field4 = true;
+  if (__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
+    return;
+  }
+  switch (__fbthrift_protocol_) {
+    case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
+      __fbthrift_read_field_field3_impl<::apache::thrift::CompactProtocolReader>();
+      break;
+    case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+      __fbthrift_read_field_field3_impl<::apache::thrift::BinaryProtocolReader>();
+      break;
+    default:
+      CHECK(false) << int(__fbthrift_protocol_);
+  }
+  __fbthrift_serializedData_.field3.clear();
+  __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+}
+
+const ::std::vector<::std::int32_t>& OptionalLazyFoo::__fbthrift_read_field_field4() const {
+  const auto isDeserialized = __fbthrift_isDeserialized_.field4.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field4_slow();
   }
   return field4;
 }
 
 ::std::vector<::std::int32_t>& OptionalLazyFoo::__fbthrift_read_field_field4() {
-  std::as_const(*this).__fbthrift_read_field_field4();
+  const auto isDeserialized = __fbthrift_isDeserialized_.field4.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field4_slow();
+  } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+    __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+  }
   return field4;
 }
+
+void OptionalLazyFoo::__fbthrift_read_field_field4_slow() const {
+  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
+  if (__fbthrift_isDeserialized_.field4 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
+    return;
+  }
+  switch (__fbthrift_protocol_) {
+    case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
+      __fbthrift_read_field_field4_impl<::apache::thrift::CompactProtocolReader>();
+      break;
+    case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+      __fbthrift_read_field_field4_impl<::apache::thrift::BinaryProtocolReader>();
+      break;
+    default:
+      CHECK(false) << int(__fbthrift_protocol_);
+  }
+  __fbthrift_serializedData_.field4.clear();
+  __fbthrift_isDeserialized_.field4 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+}
+
 
 void OptionalLazyFoo::__clear() {
   // clear all fields
@@ -876,18 +950,25 @@ void TccStructTraits<::apache::thrift::test::LazyCppRef>::translateFieldName(
 namespace apache { namespace thrift { namespace test {
 
 LazyCppRef::LazyCppRef(const LazyCppRef& srcObj) {
+  const auto relaxed = std::memory_order::memory_order_relaxed;
   std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
-  __fbthrift_isDeserialized_.field1.store(srcObj.__fbthrift_isDeserialized_.field1.load(std::memory_order::memory_order_relaxed),
-                                                      std::memory_order::memory_order_relaxed);
+  {
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field1.load(relaxed);
+    __fbthrift_isDeserialized_.field1.store(isDeserialized, relaxed);
+  }
   field1 = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>>(srcObj.field1);
-  __fbthrift_isDeserialized_.field2.store(srcObj.__fbthrift_isDeserialized_.field2.load(std::memory_order::memory_order_relaxed),
-                                                      std::memory_order::memory_order_relaxed);
+  {
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field2.load(relaxed);
+    __fbthrift_isDeserialized_.field2.store(isDeserialized, relaxed);
+  }
   field2 = srcObj.field2;
-  __fbthrift_isDeserialized_.field3.store(srcObj.__fbthrift_isDeserialized_.field3.load(std::memory_order::memory_order_relaxed),
-                                                      std::memory_order::memory_order_relaxed);
+  {
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
+    __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+  }
   field3 = srcObj.field3;
 }
 
@@ -906,23 +987,44 @@ LazyCppRef::LazyCppRef(LazyCppRef&& other) noexcept  :
     __fbthrift_protocol_(other.__fbthrift_protocol_),
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
   const auto relaxed = std::memory_order::memory_order_relaxed;
-  __fbthrift_isDeserialized_.field1.store(other.__fbthrift_isDeserialized_.field1, relaxed);
-  other.__fbthrift_isDeserialized_.field1.store(true, relaxed);
-  __fbthrift_isDeserialized_.field2.store(other.__fbthrift_isDeserialized_.field2, relaxed);
-  other.__fbthrift_isDeserialized_.field2.store(true, relaxed);
-  __fbthrift_isDeserialized_.field3.store(other.__fbthrift_isDeserialized_.field3, relaxed);
-  other.__fbthrift_isDeserialized_.field3.store(true, relaxed);
+  {
+    const auto isDeserialized = other.__fbthrift_isDeserialized_.field1.load(relaxed);
+    __fbthrift_isDeserialized_.field1.store(isDeserialized, relaxed);
+    other.__fbthrift_isDeserialized_.field1.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+  }
+  {
+    const auto isDeserialized = other.__fbthrift_isDeserialized_.field2.load(relaxed);
+    __fbthrift_isDeserialized_.field2.store(isDeserialized, relaxed);
+    other.__fbthrift_isDeserialized_.field2.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+  }
+  {
+    const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
+    __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+    other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+  }
 }
 LazyCppRef& LazyCppRef::operator=(FOLLY_MAYBE_UNUSED LazyCppRef&& other) noexcept {
     const auto relaxed = std::memory_order::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
     __fbthrift_serializedData_ = std::move(other.__fbthrift_serializedData_);
     this->field1 = std::move(other.field1);
-    __fbthrift_isDeserialized_.field1.store(other.__fbthrift_isDeserialized_.field1.exchange(true), relaxed);
+    {
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.field1.load(relaxed);
+      __fbthrift_isDeserialized_.field1.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.field1.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+    }
     this->field2 = std::move(other.field2);
-    __fbthrift_isDeserialized_.field2.store(other.__fbthrift_isDeserialized_.field2.exchange(true), relaxed);
+    {
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.field2.load(relaxed);
+      __fbthrift_isDeserialized_.field2.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.field2.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+    }
     this->field3 = std::move(other.field3);
-    __fbthrift_isDeserialized_.field3.store(other.__fbthrift_isDeserialized_.field3.exchange(true), relaxed);
+    {
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.field3.load(relaxed);
+      __fbthrift_isDeserialized_.field3.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+    }
     return *this;
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -935,89 +1037,116 @@ LazyCppRef::LazyCppRef(apache::thrift::FragileConstructor, ::std::unique_ptr<::s
     field3(std::move(field3__arg)) {}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 const ::std::unique_ptr<::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_read_field_field1() const {
-
-  if (__fbthrift_isDeserialized_.field1) {
-    return field1;
-  }
-
-  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
-  if (!__fbthrift_isDeserialized_.field1) {
-    switch (__fbthrift_protocol_) {
-      case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
-        __fbthrift_read_field_field1_impl<::apache::thrift::CompactProtocolReader>();
-        break;
-      case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
-        __fbthrift_read_field_field1_impl<::apache::thrift::BinaryProtocolReader>();
-        break;
-      default:
-        CHECK(false) << int(__fbthrift_protocol_);
-    }
-    __fbthrift_serializedData_.field1.clear();
-    __fbthrift_isDeserialized_.field1 = true;
+  const auto isDeserialized = __fbthrift_isDeserialized_.field1.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field1_slow();
   }
   return field1;
 }
 
 ::std::unique_ptr<::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_read_field_field1() {
-  std::as_const(*this).__fbthrift_read_field_field1();
+  const auto isDeserialized = __fbthrift_isDeserialized_.field1.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field1_slow();
+  } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+    __fbthrift_isDeserialized_.field1 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+  }
   return field1;
 }
-const ::std::shared_ptr<::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_read_field_field2() const {
 
-  if (__fbthrift_isDeserialized_.field2) {
-    return field2;
-  }
-
+void LazyCppRef::__fbthrift_read_field_field1_slow() const {
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
-  if (!__fbthrift_isDeserialized_.field2) {
-    switch (__fbthrift_protocol_) {
-      case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
-        __fbthrift_read_field_field2_impl<::apache::thrift::CompactProtocolReader>();
-        break;
-      case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
-        __fbthrift_read_field_field2_impl<::apache::thrift::BinaryProtocolReader>();
-        break;
-      default:
-        CHECK(false) << int(__fbthrift_protocol_);
-    }
-    __fbthrift_serializedData_.field2.clear();
-    __fbthrift_isDeserialized_.field2 = true;
+  if (__fbthrift_isDeserialized_.field1 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
+    return;
+  }
+  switch (__fbthrift_protocol_) {
+    case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
+      __fbthrift_read_field_field1_impl<::apache::thrift::CompactProtocolReader>();
+      break;
+    case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+      __fbthrift_read_field_field1_impl<::apache::thrift::BinaryProtocolReader>();
+      break;
+    default:
+      CHECK(false) << int(__fbthrift_protocol_);
+  }
+  __fbthrift_serializedData_.field1.clear();
+  __fbthrift_isDeserialized_.field1 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+}
+
+const ::std::shared_ptr<::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_read_field_field2() const {
+  const auto isDeserialized = __fbthrift_isDeserialized_.field2.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field2_slow();
   }
   return field2;
 }
 
 ::std::shared_ptr<::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_read_field_field2() {
-  std::as_const(*this).__fbthrift_read_field_field2();
+  const auto isDeserialized = __fbthrift_isDeserialized_.field2.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field2_slow();
+  } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+    __fbthrift_isDeserialized_.field2 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+  }
   return field2;
 }
-const ::std::shared_ptr<const ::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_read_field_field3() const {
 
-  if (__fbthrift_isDeserialized_.field3) {
-    return field3;
-  }
-
+void LazyCppRef::__fbthrift_read_field_field2_slow() const {
   std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
-  if (!__fbthrift_isDeserialized_.field3) {
-    switch (__fbthrift_protocol_) {
-      case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
-        __fbthrift_read_field_field3_impl<::apache::thrift::CompactProtocolReader>();
-        break;
-      case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
-        __fbthrift_read_field_field3_impl<::apache::thrift::BinaryProtocolReader>();
-        break;
-      default:
-        CHECK(false) << int(__fbthrift_protocol_);
-    }
-    __fbthrift_serializedData_.field3.clear();
-    __fbthrift_isDeserialized_.field3 = true;
+  if (__fbthrift_isDeserialized_.field2 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
+    return;
+  }
+  switch (__fbthrift_protocol_) {
+    case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
+      __fbthrift_read_field_field2_impl<::apache::thrift::CompactProtocolReader>();
+      break;
+    case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+      __fbthrift_read_field_field2_impl<::apache::thrift::BinaryProtocolReader>();
+      break;
+    default:
+      CHECK(false) << int(__fbthrift_protocol_);
+  }
+  __fbthrift_serializedData_.field2.clear();
+  __fbthrift_isDeserialized_.field2 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+}
+
+const ::std::shared_ptr<const ::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_read_field_field3() const {
+  const auto isDeserialized = __fbthrift_isDeserialized_.field3.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field3_slow();
   }
   return field3;
 }
 
 ::std::shared_ptr<const ::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_read_field_field3() {
-  std::as_const(*this).__fbthrift_read_field_field3();
+  const auto isDeserialized = __fbthrift_isDeserialized_.field3.load(std::memory_order_relaxed);
+  if (!(isDeserialized & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED)) {
+    __fbthrift_read_field_field3_slow();
+  } else if (isDeserialized & ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+    __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+  }
   return field3;
 }
+
+void LazyCppRef::__fbthrift_read_field_field3_slow() const {
+  std::lock_guard<std::mutex> lock(__fbthrift_deserializationMutex_);
+  if (__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) {
+    return;
+  }
+  switch (__fbthrift_protocol_) {
+    case ::apache::thrift::protocol::T_COMPACT_PROTOCOL:
+      __fbthrift_read_field_field3_impl<::apache::thrift::CompactProtocolReader>();
+      break;
+    case ::apache::thrift::protocol::T_BINARY_PROTOCOL:
+      __fbthrift_read_field_field3_impl<::apache::thrift::BinaryProtocolReader>();
+      break;
+    default:
+      CHECK(false) << int(__fbthrift_protocol_);
+  }
+  __fbthrift_serializedData_.field3.clear();
+  __fbthrift_isDeserialized_.field3 = ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
+}
+
 
 void LazyCppRef::__clear() {
   // clear all fields

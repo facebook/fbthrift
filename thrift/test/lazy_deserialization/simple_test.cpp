@@ -400,10 +400,11 @@ TYPED_TEST(LazyDeserialization, SerializationWithSameProtocol) {
   auto foo1 = Serializer::template deserialize<LazyStruct>(
       Serializer::template serialize<std::string>(foo));
 
+  // Serialize with same protocol, lazy fields won't be deserialized
   EXPECT_FALSE(get_field1(foo).empty());
   EXPECT_FALSE(get_field2(foo).empty());
-  EXPECT_FALSE(get_field3(foo).empty());
-  EXPECT_FALSE(get_field4(foo).empty());
+  EXPECT_TRUE(get_field3(foo).empty());
+  EXPECT_TRUE(get_field4(foo).empty());
 
   EXPECT_EQ(foo1, gen<LazyStruct>());
 }

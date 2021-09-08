@@ -316,8 +316,8 @@ void TerseLazyFoo::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
   if (__fbthrift_protocol_ != iprot->protocolType()) {
-    __fbthrift_read_field_field3();
-    __fbthrift_read_field_field4();
+    std::as_const(*this).__fbthrift_read_field_field3();
+    std::as_const(*this).__fbthrift_read_field_field4();
     __fbthrift_protocol_ = iprot->protocolType();
   }
 
@@ -364,7 +364,7 @@ _readField_field2:
     goto _loop;
   }
 _readField_field3:
-  __fbthrift_read_field_field3();
+  std::as_const(*this).__fbthrift_read_field_field3();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           3,
@@ -372,8 +372,9 @@ _readField_field3:
           apache::thrift::fixed_cost_skip_v<Protocol_,
                                             ::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>,
                                             ::std::vector<double>>)) {
-    __fbthrift_serializedData_.field3 = *iobuf;
-    __fbthrift_isDeserialized_.field3 = false;
+    const auto isDeserialized = __fbthrift_isDeserialized_.field3.load();
+    __fbthrift_serializedData_.field3 = std::move(*iobuf);
+    __fbthrift_isDeserialized_.field3 = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   } else {
     _readState.beforeSubobject(iprot);
     this->field3 = ::std::vector<double>();
@@ -391,7 +392,7 @@ _readField_field3:
     goto _loop;
   }
 _readField_field4:
-  __fbthrift_read_field_field4();
+  std::as_const(*this).__fbthrift_read_field_field4();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           4,
@@ -399,8 +400,9 @@ _readField_field4:
           apache::thrift::fixed_cost_skip_v<Protocol_,
                                             ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
                                             ::std::vector<::std::int32_t>>)) {
-    __fbthrift_serializedData_.field4 = *iobuf;
-    __fbthrift_isDeserialized_.field4 = false;
+    const auto isDeserialized = __fbthrift_isDeserialized_.field4.load();
+    __fbthrift_serializedData_.field4 = std::move(*iobuf);
+    __fbthrift_isDeserialized_.field4 = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   } else {
     _readState.beforeSubobject(iprot);
     this->field4 = ::std::vector<::std::int32_t>();
@@ -512,11 +514,13 @@ uint32_t TerseLazyFoo::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_LIST, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->field2);
   }
-  if (!__fbthrift_isDeserialized_.field3 || !this->field3.empty()) {
+  if (!(__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) || 
+    !this->field3.empty()) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->field3);
   }
-  if (!__fbthrift_isDeserialized_.field4 || !this->field4.empty()) {
+  if (!(__fbthrift_isDeserialized_.field4 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) || 
+    !this->field4.empty()) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_LIST, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->field4);
   }
@@ -538,11 +542,13 @@ uint32_t TerseLazyFoo::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_LIST, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->field2);
   }
-  if (!__fbthrift_isDeserialized_.field3 || !this->field3.empty()) {
+  if (!(__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) || 
+    !this->field3.empty()) {
     xfer += prot_->serializedFieldSize("field3", apache::thrift::protocol::T_LIST, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::serializedSize<false>(*prot_, this->field3);
   }
-  if (!__fbthrift_isDeserialized_.field4 || !this->field4.empty()) {
+  if (!(__fbthrift_isDeserialized_.field4 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) || 
+    !this->field4.empty()) {
     xfer += prot_->serializedFieldSize("field4", apache::thrift::protocol::T_LIST, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::serializedSize<false>(*prot_, this->field4);
   }
@@ -580,25 +586,41 @@ uint32_t TerseLazyFoo::write(Protocol_* prot_) const {
   } else {
     previousFieldHasValue = false;
   }
-  if (!__fbthrift_isDeserialized_.field3 || !this->field3.empty()) {
+  if (!(__fbthrift_isDeserialized_.field3 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) || 
+    !this->field3.empty()) {
     constexpr int16_t kPrevFieldId = 2;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 3, kPrevFieldId>(*prot_, "field3", previousFieldHasValue);
     previousFieldHasValue = true;
     indexWriter.recordFieldStart();
-    __fbthrift_read_field_field3();
+    if constexpr (Protocol_::kHasIndexSupport()) {
+      if (prot_->protocolType() == __fbthrift_protocol_ && __fbthrift_isDeserialized_.field3.load() == ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+        xfer += prot_->writeRaw(__fbthrift_serializedData_.field3);
+        goto written_lazy_field_field3;
+      }
+    }
+    std::as_const(*this).__fbthrift_read_field_field3();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::write(*prot_, this->field3);
+    written_lazy_field_field3:
     indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>{}, this->field3, 3);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
   }
-  if (!__fbthrift_isDeserialized_.field4 || !this->field4.empty()) {
+  if (!(__fbthrift_isDeserialized_.field4 & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) || 
+    !this->field4.empty()) {
     constexpr int16_t kPrevFieldId = 3;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 4, kPrevFieldId>(*prot_, "field4", previousFieldHasValue);
     previousFieldHasValue = true;
     indexWriter.recordFieldStart();
-    __fbthrift_read_field_field4();
+    if constexpr (Protocol_::kHasIndexSupport()) {
+      if (prot_->protocolType() == __fbthrift_protocol_ && __fbthrift_isDeserialized_.field4.load() == ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+        xfer += prot_->writeRaw(__fbthrift_serializedData_.field4);
+        goto written_lazy_field_field4;
+      }
+    }
+    std::as_const(*this).__fbthrift_read_field_field4();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->field4);
+    written_lazy_field_field4:
     indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, this->field4, 4);
     xfer += prot_->writeFieldEnd();
   } else {
@@ -889,8 +911,8 @@ void TerseOptionalLazyFoo::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
   if (__fbthrift_protocol_ != iprot->protocolType()) {
-    __fbthrift_read_field_field3();
-    __fbthrift_read_field_field4();
+    std::as_const(*this).__fbthrift_read_field_field3();
+    std::as_const(*this).__fbthrift_read_field_field4();
     __fbthrift_protocol_ = iprot->protocolType();
   }
 
@@ -937,7 +959,7 @@ _readField_field2:
     goto _loop;
   }
 _readField_field3:
-  __fbthrift_read_field_field3();
+  std::as_const(*this).__fbthrift_read_field_field3();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           3,
@@ -945,8 +967,9 @@ _readField_field3:
           apache::thrift::fixed_cost_skip_v<Protocol_,
                                             ::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>,
                                             ::std::vector<double>>)) {
-    __fbthrift_serializedData_.field3 = *iobuf;
-    __fbthrift_isDeserialized_.field3 = false;
+    const auto isDeserialized = __fbthrift_isDeserialized_.field3.load();
+    __fbthrift_serializedData_.field3 = std::move(*iobuf);
+    __fbthrift_isDeserialized_.field3 = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   } else {
     _readState.beforeSubobject(iprot);
     this->field3 = ::std::vector<double>();
@@ -964,7 +987,7 @@ _readField_field3:
     goto _loop;
   }
 _readField_field4:
-  __fbthrift_read_field_field4();
+  std::as_const(*this).__fbthrift_read_field_field4();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           4,
@@ -972,8 +995,9 @@ _readField_field4:
           apache::thrift::fixed_cost_skip_v<Protocol_,
                                             ::apache::thrift::type_class::list<::apache::thrift::type_class::integral>,
                                             ::std::vector<::std::int32_t>>)) {
-    __fbthrift_serializedData_.field4 = *iobuf;
-    __fbthrift_isDeserialized_.field4 = false;
+    const auto isDeserialized = __fbthrift_isDeserialized_.field4.load();
+    __fbthrift_serializedData_.field4 = std::move(*iobuf);
+    __fbthrift_isDeserialized_.field4 = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   } else {
     _readState.beforeSubobject(iprot);
     this->field4 = ::std::vector<::std::int32_t>();
@@ -1158,8 +1182,15 @@ uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 3, kPrevFieldId>(*prot_, "field3", previousFieldHasValue);
     previousFieldHasValue = true;
     indexWriter.recordFieldStart();
-    __fbthrift_read_field_field3();
+    if constexpr (Protocol_::kHasIndexSupport()) {
+      if (prot_->protocolType() == __fbthrift_protocol_ && __fbthrift_isDeserialized_.field3.load() == ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+        xfer += prot_->writeRaw(__fbthrift_serializedData_.field3);
+        goto written_lazy_field_field3;
+      }
+    }
+    std::as_const(*this).__fbthrift_read_field_field3();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::write(*prot_, this->field3);
+    written_lazy_field_field3:
     indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>{}, this->field3, 3);
     xfer += prot_->writeFieldEnd();
   } else {
@@ -1170,8 +1201,15 @@ uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 4, kPrevFieldId>(*prot_, "field4", previousFieldHasValue);
     previousFieldHasValue = true;
     indexWriter.recordFieldStart();
-    __fbthrift_read_field_field4();
+    if constexpr (Protocol_::kHasIndexSupport()) {
+      if (prot_->protocolType() == __fbthrift_protocol_ && __fbthrift_isDeserialized_.field4.load() == ::apache::thrift::detail::LazyDeserializationState::UNTAINTED) {
+        xfer += prot_->writeRaw(__fbthrift_serializedData_.field4);
+        goto written_lazy_field_field4;
+      }
+    }
+    std::as_const(*this).__fbthrift_read_field_field4();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->field4);
+    written_lazy_field_field4:
     indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, this->field4, 4);
     xfer += prot_->writeFieldEnd();
   } else {

@@ -41,7 +41,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%#struct:fields_in_layout_order%>
     this-><%field:cpp_name%> = std::move(other.<%field:cpp_name%>);
 <%#field:lazy?%>
-    __fbthrift_isDeserialized_.<%field:cpp_name%>.store(other.__fbthrift_isDeserialized_.<%field:cpp_name%>.exchange(true), relaxed);
+    {
+      const auto isDeserialized = other.__fbthrift_isDeserialized_.<%field:cpp_name%>.load(relaxed);
+      __fbthrift_isDeserialized_.<%field:cpp_name%>.store(isDeserialized, relaxed);
+      other.__fbthrift_isDeserialized_.<%field:cpp_name%>.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+    }
 <%/field:lazy?%>
 <%/struct:fields_in_layout_order%>
 <%#struct:isset_fields?%>

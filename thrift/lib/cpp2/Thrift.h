@@ -320,6 +320,15 @@ ExceptionMetadataOverride<std::decay_t<T>> overrideExceptionMetadata(T&& ex) {
   return ExceptionMetadataOverride<std::decay_t<T>>(std::forward<T>(ex));
 }
 
+namespace detail {
+
+enum LazyDeserializationState : uint8_t { // Bitfield.
+  UNTAINTED = 1 << 0,
+  DESERIALIZED = 1 << 1,
+};
+
+} // namespace detail
+
 } // namespace thrift
 } // namespace apache
 

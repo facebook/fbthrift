@@ -28,7 +28,7 @@
   <%! Use double checked locking pattern to deserialize %>
   mutable struct __fbthrift_IsDeserialized {
 <%#struct:fields%><%#field:lazy?%>
-    std::atomic<bool> <%field:cpp_name%>{true};
+    std::atomic<uint8_t> <%field:cpp_name%>{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
 <%/field:lazy?%><%/struct:fields%>
   } __fbthrift_isDeserialized_;
 
@@ -37,6 +37,7 @@
 <%#struct:fields%><%#field:lazy?%>
   const <%field:cpp_storage_type%>& __fbthrift_read_field_<%field:cpp_name%>() const;
   <%field:cpp_storage_type%>& __fbthrift_read_field_<%field:cpp_name%>();
+  void __fbthrift_read_field_<%field:cpp_name%>_slow() const;
   template<class ProtocolReader> void __fbthrift_read_field_<%field:cpp_name%>_impl() const;
 <%/field:lazy?%><%/struct:fields%>
 

@@ -30,7 +30,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
   if (__fbthrift_protocol_ != iprot->protocolType()) {
 <%! Deserialize all lazy fields if new protocol is different that last deserialization protocol %>
 <%#struct:fields%><%#field:lazy?%>
-    __fbthrift_read_field_<%field:cpp_name%>();
+    std::as_const(*this).__fbthrift_read_field_<%field:cpp_name%>();
 <%/field:lazy?%><%/struct:fields%>
     __fbthrift_protocol_ = iprot->protocolType();
   }
@@ -51,7 +51,7 @@ void <%struct:name%>::readNoXfer(Protocol_* iprot) {
 <%/first?%>
 _readField_<%field:cpp_name%>:
 <%#field:lazy?%>
-  __fbthrift_read_field_<%field:cpp_name%>();
+  std::as_const(*this).__fbthrift_read_field_<%field:cpp_name%>();
   if (auto iobuf = _readState.tryFastSkip(
           iprot,
           <%field:key%>,
@@ -59,8 +59,9 @@ _readField_<%field:cpp_name%>:
           apache::thrift::fixed_cost_skip_v<Protocol_,
                                             <% > common/type_class%>,
                                             <% > types/type%>>)) {
-    __fbthrift_serializedData_.<%field:cpp_name%> = *iobuf;
-    __fbthrift_isDeserialized_.<%field:cpp_name%> = false;
+    const auto isDeserialized = __fbthrift_isDeserialized_.<%field:cpp_name%>.load();
+    __fbthrift_serializedData_.<%field:cpp_name%> = std::move(*iobuf);
+    __fbthrift_isDeserialized_.<%field:cpp_name%> = isDeserialized & ~::apache::thrift::detail::LazyDeserializationState::DESERIALIZED;
   } else {
 <%/field:lazy?%>
 <%^field:lazy?%>

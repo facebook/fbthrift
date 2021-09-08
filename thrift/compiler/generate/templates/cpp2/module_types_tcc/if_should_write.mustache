@@ -25,6 +25,7 @@
 %><%#field:optional?%><%!
 %>if (<% > module_types_tcc/optional_has_value%>) <%!
 %><%/field:optional?%><%#field:terse_writes?%><%!
-%>if (<%#field:lazy?%>!__fbthrift_isDeserialized_.<%field:cpp_name%> || <%/field:lazy?%><% > module_types_tcc/terse_has_value %>) <%!
+%>if (<%#field:lazy?%>!(__fbthrift_isDeserialized_.<%field:cpp_name%> & ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED) || 
+    <%/field:lazy?%><% > module_types_tcc/terse_has_value %>) <%!
 %><%/field:terse_writes?%>{
 <%/struct:union?%>

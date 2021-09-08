@@ -16,14 +16,17 @@
 
 %><%struct:name%>::<%struct:name%>(const <%struct:name%>& srcObj) {
 <%#struct:lazy_fields?%>
+  const auto relaxed = std::memory_order::memory_order_relaxed;
   std::lock_guard<std::mutex> lock(srcObj.__fbthrift_deserializationMutex_);
   __fbthrift_protocol_ = srcObj.__fbthrift_protocol_;
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
 <%/struct:lazy_fields?%>
 <%#struct:fields%><%#field:type%>
 <%#field:lazy?%>
-  __fbthrift_isDeserialized_.<%field:cpp_name%>.store(srcObj.__fbthrift_isDeserialized_.<%field:cpp_name%>.load(std::memory_order::memory_order_relaxed),
-                                                      std::memory_order::memory_order_relaxed);
+  {
+    const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.<%field:cpp_name%>.load(relaxed);
+    __fbthrift_isDeserialized_.<%field:cpp_name%>.store(isDeserialized, relaxed);
+  }
 <%/field:lazy?%>
 <%^field:transitively_refers_to_unique?%>
   <%field:cpp_name%> = srcObj.<%field:cpp_name%>;

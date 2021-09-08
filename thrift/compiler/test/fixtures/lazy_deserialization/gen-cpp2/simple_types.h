@@ -578,17 +578,19 @@ class LazyFoo final  {
   } __fbthrift_serializedData_;
 
   mutable struct __fbthrift_IsDeserialized {
-    std::atomic<bool> field3{true};
-    std::atomic<bool> field4{true};
+    std::atomic<uint8_t> field3{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
+    std::atomic<uint8_t> field4{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
   } __fbthrift_isDeserialized_;
 
   mutable std::mutex __fbthrift_deserializationMutex_;
 
   const ::std::vector<double>& __fbthrift_read_field_field3() const;
   ::std::vector<double>& __fbthrift_read_field_field3();
+  void __fbthrift_read_field_field3_slow() const;
   template<class ProtocolReader> void __fbthrift_read_field_field3_impl() const;
   const ::std::vector<::std::int32_t>& __fbthrift_read_field_field4() const;
   ::std::vector<::std::int32_t>& __fbthrift_read_field_field4();
+  void __fbthrift_read_field_field4_slow() const;
   template<class ProtocolReader> void __fbthrift_read_field_field4_impl() const;
 
   template <class Protocol_>
@@ -995,17 +997,19 @@ class OptionalLazyFoo final  {
   } __fbthrift_serializedData_;
 
   mutable struct __fbthrift_IsDeserialized {
-    std::atomic<bool> field3{true};
-    std::atomic<bool> field4{true};
+    std::atomic<uint8_t> field3{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
+    std::atomic<uint8_t> field4{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
   } __fbthrift_isDeserialized_;
 
   mutable std::mutex __fbthrift_deserializationMutex_;
 
   const ::std::vector<double>& __fbthrift_read_field_field3() const;
   ::std::vector<double>& __fbthrift_read_field_field3();
+  void __fbthrift_read_field_field3_slow() const;
   template<class ProtocolReader> void __fbthrift_read_field_field3_impl() const;
   const ::std::vector<::std::int32_t>& __fbthrift_read_field_field4() const;
   ::std::vector<::std::int32_t>& __fbthrift_read_field_field4();
+  void __fbthrift_read_field_field4_slow() const;
   template<class ProtocolReader> void __fbthrift_read_field_field4_impl() const;
 
   template <class Protocol_>
@@ -1126,21 +1130,24 @@ class LazyCppRef final  {
   } __fbthrift_serializedData_;
 
   mutable struct __fbthrift_IsDeserialized {
-    std::atomic<bool> field1{true};
-    std::atomic<bool> field2{true};
-    std::atomic<bool> field3{true};
+    std::atomic<uint8_t> field1{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
+    std::atomic<uint8_t> field2{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
+    std::atomic<uint8_t> field3{::apache::thrift::detail::LazyDeserializationState::UNTAINTED | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED};
   } __fbthrift_isDeserialized_;
 
   mutable std::mutex __fbthrift_deserializationMutex_;
 
   const ::std::unique_ptr<::std::vector<::std::int32_t>>& __fbthrift_read_field_field1() const;
   ::std::unique_ptr<::std::vector<::std::int32_t>>& __fbthrift_read_field_field1();
+  void __fbthrift_read_field_field1_slow() const;
   template<class ProtocolReader> void __fbthrift_read_field_field1_impl() const;
   const ::std::shared_ptr<::std::vector<::std::int32_t>>& __fbthrift_read_field_field2() const;
   ::std::shared_ptr<::std::vector<::std::int32_t>>& __fbthrift_read_field_field2();
+  void __fbthrift_read_field_field2_slow() const;
   template<class ProtocolReader> void __fbthrift_read_field_field2_impl() const;
   const ::std::shared_ptr<const ::std::vector<::std::int32_t>>& __fbthrift_read_field_field3() const;
   ::std::shared_ptr<const ::std::vector<::std::int32_t>>& __fbthrift_read_field_field3();
+  void __fbthrift_read_field_field3_slow() const;
   template<class ProtocolReader> void __fbthrift_read_field_field3_impl() const;
 
   template <class Protocol_>

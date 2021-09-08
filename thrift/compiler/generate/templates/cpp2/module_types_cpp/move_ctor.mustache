@@ -34,8 +34,11 @@
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
   const auto relaxed = std::memory_order::memory_order_relaxed;
 <%#struct:fields%><%#field:lazy?%>
-  __fbthrift_isDeserialized_.<%field:cpp_name%>.store(other.__fbthrift_isDeserialized_.<%field:cpp_name%>, relaxed);
-  other.__fbthrift_isDeserialized_.<%field:cpp_name%>.store(true, relaxed);
+  {
+    const auto isDeserialized = other.__fbthrift_isDeserialized_.<%field:cpp_name%>.load(relaxed);
+    __fbthrift_isDeserialized_.<%field:cpp_name%>.store(isDeserialized, relaxed);
+    other.__fbthrift_isDeserialized_.<%field:cpp_name%>.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
+  }
 <%/field:lazy?%><%/struct:fields%>
 }<%!
 %><%/struct:lazy_fields?%><%/struct:fields?%>
