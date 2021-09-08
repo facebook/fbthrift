@@ -191,8 +191,24 @@ TYPED_TEST(LazyDeserialization, Comparison) {
     auto foo2 = this->template deserialize<LazyStruct>(s);
 
     foo1.field4_ref()->clear();
-
     EXPECT_LT(foo1, foo2);
+  }
+
+  {
+    auto foo1 = this->genLazyStruct();
+    foo1.field1_ref()->clear();
+    foo1.field2_ref()->clear();
+    // Only lazy fields left set.
+
+    auto s = this->serialize(foo1);
+    auto foo2 = this->template deserialize<LazyStruct>(s);
+
+    foo2.field4_ref()->clear();
+    EXPECT_LT(foo2, foo1);
+
+    foo2 = this->template deserialize<LazyStruct>(s);
+    foo2.__clear();
+    EXPECT_LT(foo2, foo1);
   }
 }
 

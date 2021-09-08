@@ -337,6 +337,9 @@ void TerseLazyFoo::__clear() {
   this->field2.clear();
   this->field3.clear();
   this->field4.clear();
+  __fbthrift_serializedData_ = {};
+  __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
+  new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -754,6 +757,9 @@ void TerseOptionalLazyFoo::__clear() {
   this->field2.clear();
   this->field3.clear();
   this->field4.clear();
+  __fbthrift_serializedData_ = {};
+  __fbthrift_isDeserialized_.~__fbthrift_IsDeserialized();
+  new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
