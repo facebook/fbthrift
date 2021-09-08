@@ -1,3 +1,0 @@
-hack:lazy_constants=1,arrays=1 src/module.thrift
-php:lazy_constants=1 src/module.thrift
-mstch_swift src/module.thrift

@@ -1,4 +1,0 @@
----
-InheritParentConfig: true
-Checks: '-facebook-hte-NullableReturn'
-...

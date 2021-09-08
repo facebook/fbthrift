@@ -1,3 +1,0 @@
-hack src/module.thrift
-json:annotate src/module.thrift
-mstch_cpp2 src/module.thrift
