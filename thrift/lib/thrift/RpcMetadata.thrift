@@ -246,6 +246,14 @@ union PayloadMetadata {
 struct ProxiedPayloadMetadata {
 }
 
+struct QueueMetadata {
+  // Total time in milliseconds spent in the executor's queue
+  1: i32 queueingTimeMs;
+  // Whether queue timeout was set (either by the client or the server).
+  // If it is set, this will contain the actual value.
+  2: optional i32 queueTimeoutMs;
+}
+
 struct ResponseRpcMetadata {
   // 1: Deprecated
   // 2: Deprecated
@@ -269,6 +277,8 @@ struct ResponseRpcMetadata {
   // SHOULD be set for streaming RPCs. MUST match the stream id used by the
   // underlying transport (e.g. RSocket).
   9: optional i32 streamId;
+  // Set on a sampled basis for tracking queueing times.
+  10: optional QueueMetadata queueMetadata;
 }
 
 enum ResponseRpcErrorCategory {
