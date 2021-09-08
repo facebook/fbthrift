@@ -90,7 +90,8 @@ struct SkipNoopString {
 // Checks if bool hold a valid value (true or false) and throws exception
 // otherwise. Without the check we may produce undeserializable data.
 inline bool validate_bool(uint8_t value) {
-#if defined(__x86_64__) && defined(__GNUC__)
+#if defined(__x86_64__) && defined(__GNUC__) && \
+    (!defined(__clang_major__) || __clang_major__ >= 9)
   // An optimized version that avoid extra load/store.
   asm volatile goto(
       "cmpb $1, %0\n"
