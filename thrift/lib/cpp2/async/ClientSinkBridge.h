@@ -57,9 +57,14 @@ class ClientSinkBridge : public TwoWayBridge<
  public:
   ~ClientSinkBridge() override;
 
-  folly::coro::Task<folly::Try<FirstResponsePayload>> getFirstThriftResponse();
+  class FirstResponseCallback {
+   public:
+    virtual ~FirstResponseCallback() = default;
+    virtual void onFirstResponse(FirstResponsePayload&&, Ptr) = 0;
+    virtual void onFirstResponseError(folly::exception_wrapper) = 0;
+  };
 
-  static Ptr create();
+  static SinkClientCallback* create(FirstResponseCallback* callback);
 
   void close();
 
@@ -89,16 +94,13 @@ class ClientSinkBridge : public TwoWayBridge<
   void canceled() {}
 
  private:
-  ClientSinkBridge();
+  explicit ClientSinkBridge(FirstResponseCallback* callback);
 
   void processServerMessages();
 
   // TODO(T88629984): These are implemented as static functions because
   // clang-9 + member function coroutines + ASAN == ICE. Revert D27688850
   // once everything using thrift sink is past clang-9.
-  static folly::coro::Task<folly::Try<FirstResponsePayload>>
-  getFirstThriftResponseImpl(ClientSinkBridge&);
-
   static folly::coro::Task<folly::Try<StreamPayload>> sinkImpl(
       ClientSinkBridge& self,
       folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator);
@@ -109,10 +111,10 @@ class ClientSinkBridge : public TwoWayBridge<
       folly::Try<StreamPayload>& finalResponse,
       folly::CancellationToken& clientCancelToken);
 
-  folly::coro::Baton firstResponseBaton_{};
-  folly::Try<FirstResponsePayload> firstResponse_;
-
-  SinkServerCallback* serverCallback_{nullptr};
+  union {
+    FirstResponseCallback* firstResponseCallback_;
+    SinkServerCallback* serverCallback_;
+  };
   folly::Executor::KeepAlive<folly::EventBase> evb_;
   folly::CancellationSource serverCancelSource_;
 };

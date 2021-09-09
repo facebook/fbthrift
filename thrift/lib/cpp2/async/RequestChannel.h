@@ -320,6 +320,48 @@ inline StreamClientCallback* createStreamClientCallback(
           std::move(requestCallback), bufferOptions));
 }
 
+#if FOLLY_HAS_COROUTINES
+inline SinkClientCallback* createSinkClientCallback(
+    RequestClientCallback::Ptr requestCallback) {
+  DCHECK(requestCallback->isInlineSafe());
+  class RequestClientCallbackWrapper
+      : public apache::thrift::detail::ClientSinkBridge::FirstResponseCallback {
+   public:
+    explicit RequestClientCallbackWrapper(
+        RequestClientCallback::Ptr requestCallback)
+        : requestCallback_(std::move(requestCallback)) {}
+
+    void onFirstResponse(
+        FirstResponsePayload&& firstResponse,
+        apache::thrift::detail::ClientSinkBridge::Ptr clientSinkBridge)
+        override {
+      auto tHeader = std::make_unique<transport::THeader>();
+      tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
+      apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(
+          firstResponse.metadata, *tHeader);
+      requestCallback_.release()->onResponse(ClientReceiveState(
+          static_cast<uint16_t>(-1),
+          std::move(firstResponse.payload),
+          std::move(clientSinkBridge),
+          std::move(tHeader),
+          nullptr));
+      delete this;
+    }
+
+    void onFirstResponseError(folly::exception_wrapper ew) override {
+      requestCallback_.release()->onResponseError(std::move(ew));
+      delete this;
+    }
+
+   private:
+    RequestClientCallback::Ptr requestCallback_;
+  };
+
+  return apache::thrift::detail::ClientSinkBridge::create(
+      new RequestClientCallbackWrapper(std::move(requestCallback)));
+}
+#endif
+
 template <class Protocol>
 SerializedRequest preprocessSendT(
     Protocol* prot,

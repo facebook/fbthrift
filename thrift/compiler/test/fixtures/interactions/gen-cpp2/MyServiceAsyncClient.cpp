@@ -751,25 +751,32 @@ folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std
   co_return co_await co_encode(rpcOptions);
 }
 folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteraction::co_encode(apache::thrift::RpcOptions& rpcOptions) {
+  const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+  const bool cancellable = cancelToken.canBeCancelled();
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto [ctx, header] = encodeCtx(&rpcOptions);
-  auto callback = apache::thrift::detail::ClientSinkBridge::create();
-  encodeImpl(rpcOptions, std::move(header), ctx.get(), callback.get());
-  auto firstPayload = co_await callback->getFirstThriftResponse();
-  if (firstPayload.hasException()) {
-    firstPayload.exception().throw_exception();
-  }
+  using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+  auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+  auto wrappedCallback = apache::thrift::createSinkClientCallback(
+    apache::thrift::RequestClientCallback::Ptr(apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback)));
 
-  auto tHeader = std::make_unique<apache::thrift::transport::THeader>();
-  tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
-  apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(firstPayload->metadata, *tHeader);
-  apache::thrift::ClientReceiveState _returnState(
-      protocolId,
-      std::move(firstPayload->payload),
-      std::move(callback),
-      std::move(tHeader),
-      std::move(ctx));
-  co_return recv_encode(_returnState);
+  encodeImpl(rpcOptions, std::move(header), ctx.get(), wrappedCallback);
+
+  if (cancellable) {
+    folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+    co_await callback.co_waitUntilDone();
+  } else {
+    co_await callback.co_waitUntilDone();
+  }
+  if (returnState.isException()) {
+    co_yield folly::coro::co_error(std::move(returnState.exception()));
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::move(ctx));
+  co_return recv_encode(returnState);
 }
 #endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper MyServiceAsyncClient::MyInteraction::recv_wrapped_encode(apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {
@@ -1334,25 +1341,32 @@ folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std
   co_return co_await co_encode(rpcOptions);
 }
 folly::coro::Task<apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>> MyServiceAsyncClient::MyInteractionFast::co_encode(apache::thrift::RpcOptions& rpcOptions) {
+  const folly::CancellationToken& cancelToken =
+        co_await folly::coro::co_current_cancellation_token;
+  const bool cancellable = cancelToken.canBeCancelled();
+  apache::thrift::ClientReceiveState returnState;
+  apache::thrift::ClientSyncCallback<false> callback(&returnState);
   auto protocolId = apache::thrift::GeneratedAsyncClient::getChannel()->getProtocolId();
   auto [ctx, header] = encodeCtx(&rpcOptions);
-  auto callback = apache::thrift::detail::ClientSinkBridge::create();
-  encodeImpl(rpcOptions, std::move(header), ctx.get(), callback.get());
-  auto firstPayload = co_await callback->getFirstThriftResponse();
-  if (firstPayload.hasException()) {
-    firstPayload.exception().throw_exception();
-  }
+  using CancellableCallback = apache::thrift::CancellableRequestClientCallback<false>;
+  auto cancellableCallback = cancellable ? CancellableCallback::create(&callback, channel_) : nullptr;
+  auto wrappedCallback = apache::thrift::createSinkClientCallback(
+    apache::thrift::RequestClientCallback::Ptr(apache::thrift::RequestClientCallback::Ptr(cancellableCallback ? (apache::thrift::RequestClientCallback*)cancellableCallback.get() : &callback)));
 
-  auto tHeader = std::make_unique<apache::thrift::transport::THeader>();
-  tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
-  apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(firstPayload->metadata, *tHeader);
-  apache::thrift::ClientReceiveState _returnState(
-      protocolId,
-      std::move(firstPayload->payload),
-      std::move(callback),
-      std::move(tHeader),
-      std::move(ctx));
-  co_return recv_encode(_returnState);
+  encodeImpl(rpcOptions, std::move(header), ctx.get(), wrappedCallback);
+
+  if (cancellable) {
+    folly::CancellationCallback cb(cancelToken, [&] { CancellableCallback::cancel(std::move(cancellableCallback)); });
+    co_await callback.co_waitUntilDone();
+  } else {
+    co_await callback.co_waitUntilDone();
+  }
+  if (returnState.isException()) {
+    co_yield folly::coro::co_error(std::move(returnState.exception()));
+  }
+  returnState.resetProtocolId(protocolId);
+  returnState.resetCtx(std::move(ctx));
+  co_return recv_encode(returnState);
 }
 #endif // FOLLY_HAS_COROUTINES
 folly::exception_wrapper MyServiceAsyncClient::MyInteractionFast::recv_wrapped_encode(apache::thrift::ResponseAndClientSink<::std::set<float>, ::std::string, ::std::string>& _return, ::apache::thrift::ClientReceiveState& state) {

@@ -29,23 +29,13 @@ template class TwoWayBridge<
     ServerMessage,
     ClientSinkBridge>;
 
-ClientSinkBridge::ClientSinkBridge() {}
+ClientSinkBridge::ClientSinkBridge(FirstResponseCallback* callback)
+    : firstResponseCallback_(callback) {}
 
 ClientSinkBridge::~ClientSinkBridge() {}
 
-folly::coro::Task<folly::Try<FirstResponsePayload>>
-ClientSinkBridge::getFirstThriftResponseImpl(ClientSinkBridge& self) {
-  co_await self.firstResponseBaton_;
-  co_return std::move(self.firstResponse_);
-}
-
-folly::coro::Task<folly::Try<FirstResponsePayload>>
-ClientSinkBridge::getFirstThriftResponse() {
-  return getFirstThriftResponseImpl(*this);
-}
-
-ClientSinkBridge::Ptr ClientSinkBridge::create() {
-  return (new ClientSinkBridge())->copy();
+SinkClientCallback* ClientSinkBridge::create(FirstResponseCallback* callback) {
+  return new ClientSinkBridge(callback);
 }
 
 void ClientSinkBridge::close() {
@@ -159,13 +149,13 @@ bool ClientSinkBridge::onFirstResponse(
     FirstResponsePayload&& firstPayload,
     folly::EventBase* evb,
     SinkServerCallback* serverCallback) {
+  auto firstResponseCallback = firstResponseCallback_;
   serverCallback_ = serverCallback;
   evb_ = folly::getKeepAliveToken(evb);
   bool scheduledWait = serverWait(this);
   DCHECK(scheduledWait);
   auto hasEx = detail::hasException(firstPayload);
-  firstResponse_.emplace(std::move(firstPayload));
-  firstResponseBaton_.post();
+  firstResponseCallback->onFirstResponse(std::move(firstPayload), copy());
   if (hasEx) {
     close();
   }
@@ -173,8 +163,7 @@ bool ClientSinkBridge::onFirstResponse(
 }
 
 void ClientSinkBridge::onFirstResponseError(folly::exception_wrapper ew) {
-  firstResponse_.emplaceException(std::move(ew));
-  firstResponseBaton_.post();
+  firstResponseCallback_->onFirstResponseError(std::move(ew));
   close();
 }
 

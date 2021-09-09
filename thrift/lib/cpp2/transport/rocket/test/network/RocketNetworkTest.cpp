@@ -919,6 +919,42 @@ TEST_F(RocketNetworkTest, RequestStreamNewApiHeadersPush) {
   }
 }
 
+struct SinkFirstResponse {
+  folly::coro::Task<folly::Try<FirstResponsePayload>> getFirstThriftResponse() {
+    co_await baton_;
+    co_return std::move(payload_);
+  }
+
+  folly::coro::Baton baton_;
+  folly::Try<FirstResponsePayload> payload_;
+  apache::thrift::detail::ClientSinkBridge::Ptr sinkBridge_;
+};
+
+struct FirstResponseCallback
+    : apache::thrift::detail::ClientSinkBridge::FirstResponseCallback {
+ public:
+  explicit FirstResponseCallback(SinkFirstResponse& firstResponse)
+      : firstResponse_(firstResponse) {}
+
+  void onFirstResponse(
+      apache::thrift::FirstResponsePayload&& firstPayload,
+      apache::thrift::detail::ClientSinkBridge::Ptr sinkBridge) override {
+    firstResponse_.payload_.emplace(std::move(firstPayload));
+    firstResponse_.baton_.post();
+    firstResponse_.sinkBridge_ = std::move(sinkBridge);
+    delete this;
+  }
+
+  void onFirstResponseError(folly::exception_wrapper ew) override {
+    firstResponse_.payload_.emplaceException(std::move(ew));
+    firstResponse_.baton_.post();
+    delete this;
+  }
+
+ private:
+  SinkFirstResponse& firstResponse_;
+};
+
 TEST_F(RocketNetworkTest, SinkBasic) {
   this->withClient([](RocketTestClient& client) {
     constexpr size_t kNumUploadPayloads = 200;
@@ -929,17 +965,17 @@ TEST_F(RocketNetworkTest, SinkBasic) {
 
     folly::coro::blockingWait(
         folly::coro::co_invoke([&]() -> folly::coro::Task<void> {
-          auto sinkClientCallback =
-              apache::thrift::detail::ClientSinkBridge::create();
+          SinkFirstResponse response;
+          auto callback = new FirstResponseCallback(response);
           client.sendRequestSink(
-              sinkClientCallback.get(),
+              apache::thrift::detail::ClientSinkBridge::create(callback),
               Payload::makeFromMetadataAndData(
                   kMetadata,
                   folly::StringPiece{
                       folly::to<std::string>(data, kNumUploadPayloads)}));
-          co_await sinkClientCallback->getFirstThriftResponse();
+          co_await response.getFirstThriftResponse();
           auto clientSink = ClientSink<int, int>(
-              std::move(sinkClientCallback),
+              std::move(response.sinkBridge_),
               &encode,
               [](folly::Try<StreamPayload>&& payload) -> folly::Try<int> {
                 if (payload.hasValue()) {
@@ -968,11 +1004,10 @@ TEST_F(RocketNetworkTest, SinkCloseClient) {
     // instruct server to append A on each payload client sents, and
     // sends the appended payload back to client
     const auto data = "upload:";
-
-    auto sinkClientCallback =
-        apache::thrift::detail::ClientSinkBridge::create();
+    SinkFirstResponse response;
+    auto callback = new FirstResponseCallback(response);
     client.sendRequestSink(
-        sinkClientCallback.get(),
+        apache::thrift::detail::ClientSinkBridge::create(callback),
         Payload::makeFromMetadataAndData(
             kMetadata,
             folly::StringPiece{
@@ -980,11 +1015,11 @@ TEST_F(RocketNetworkTest, SinkCloseClient) {
 
     folly::coro::blockingWait(
         folly::coro::co_invoke([&]() -> folly::coro::Task<void> {
-          co_await sinkClientCallback->getFirstThriftResponse();
+          co_await response.getFirstThriftResponse();
         }));
 
     auto sink = ClientSink<int, int>(
-        std::move(sinkClientCallback),
+        std::move(response.sinkBridge_),
         &encode,
         [](folly::Try<StreamPayload>&& payload) -> folly::Try<int> {
           if (payload.hasValue()) {
