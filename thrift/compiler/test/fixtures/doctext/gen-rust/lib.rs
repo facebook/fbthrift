@@ -1248,11 +1248,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "C.", "success");
+                    ::tracing::info!(method = "C.f", "success");
                     crate::services::c::FExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::c::FExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "C.", application_exception = ?aexn);
+                    ::tracing::error!(method = "C.f", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1349,11 +1349,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "C.", "success");
+                    ::tracing::info!(method = "C.thing", "success");
                     crate::services::c::ThingExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::c::ThingExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "C.", application_exception = ?aexn);
+                    ::tracing::error!(method = "C.thing", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1364,7 +1364,7 @@ pub mod server {
                     )
                 }
                 ::std::result::Result::Err(exn) => {
-                    ::tracing::error!(method = "C.", exception = ?exn);
+                    ::tracing::error!(method = "C.thing", exception = ?exn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
                     exn
                 }

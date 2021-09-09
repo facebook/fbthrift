@@ -721,11 +721,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "Foo.", "success");
+                    ::tracing::info!(method = "Foo.return", "success");
                     crate::services::foo::ReturnExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::foo::ReturnExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "Foo.", application_exception = ?aexn);
+                    ::tracing::error!(method = "Foo.return", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -804,11 +804,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "Foo.", "success");
+                    ::tracing::info!(method = "Foo.super", "success");
                     crate::services::foo::SuperExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::foo::SuperExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "Foo.", application_exception = ?aexn);
+                    ::tracing::error!(method = "Foo.super", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }

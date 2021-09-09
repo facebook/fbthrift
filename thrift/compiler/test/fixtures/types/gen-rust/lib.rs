@@ -3022,11 +3022,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "SomeService.", "success");
+                    ::tracing::info!(method = "SomeService.bounce_map", "success");
                     crate::services::some_service::BounceMapExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::some_service::BounceMapExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "SomeService.", application_exception = ?aexn);
+                    ::tracing::error!(method = "SomeService.bounce_map", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -3105,11 +3105,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "SomeService.", "success");
+                    ::tracing::info!(method = "SomeService.binary_keyed_map", "success");
                     crate::services::some_service::BinaryKeyedMapExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::some_service::BinaryKeyedMapExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "SomeService.", application_exception = ?aexn);
+                    ::tracing::error!(method = "SomeService.binary_keyed_map", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }

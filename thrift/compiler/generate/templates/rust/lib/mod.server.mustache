@@ -169,11 +169,11 @@
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "{{service:name}}.{{function.name}}", "success");
+                    ::tracing::info!(method = "{{service:name}}.{{function:name}}", "success");
                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res)
                 }
                 ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "{{service:name}}.{{function.name}}", application_exception = ?aexn);
+                    ::tracing::error!(method = "{{service:name}}.{{function:name}}", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -185,7 +185,7 @@
                 }
                 {{#function:exceptions?}}
                 ::std::result::Result::Err(exn) => {
-                    ::tracing::error!(method = "{{service:name}}.{{function.name}}", exception = ?exn);
+                    ::tracing::error!(method = "{{service:name}}.{{function:name}}", exception = ?exn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
                     exn
                 }
@@ -369,7 +369,7 @@
                 }})))
             }
             bad => {
-                ::tracing::error!(method = "{{service:name}}.{{function.name}}", invalid_protocol = ?bad);
+                ::tracing::error!(method = "{{service:name}}.{{function:name}}", invalid_protocol = ?bad);
                 ::std::result::Result::Err(::fbthrift::ApplicationException::invalid_protocol(bad))
             }
         }

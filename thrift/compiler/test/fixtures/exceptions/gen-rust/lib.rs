@@ -1654,11 +1654,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "Raiser.", "success");
+                    ::tracing::info!(method = "Raiser.doBland", "success");
                     crate::services::raiser::DoBlandExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::DoBlandExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "Raiser.", application_exception = ?aexn);
+                    ::tracing::error!(method = "Raiser.doBland", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1728,11 +1728,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "Raiser.", "success");
+                    ::tracing::info!(method = "Raiser.doRaise", "success");
                     crate::services::raiser::DoRaiseExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::DoRaiseExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "Raiser.", application_exception = ?aexn);
+                    ::tracing::error!(method = "Raiser.doRaise", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1743,7 +1743,7 @@ pub mod server {
                     )
                 }
                 ::std::result::Result::Err(exn) => {
-                    ::tracing::error!(method = "Raiser.", exception = ?exn);
+                    ::tracing::error!(method = "Raiser.doRaise", exception = ?exn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
                     exn
                 }
@@ -1807,11 +1807,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "Raiser.", "success");
+                    ::tracing::info!(method = "Raiser.get200", "success");
                     crate::services::raiser::Get200Exn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::Get200Exn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "Raiser.", application_exception = ?aexn);
+                    ::tracing::error!(method = "Raiser.get200", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1881,11 +1881,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "Raiser.", "success");
+                    ::tracing::info!(method = "Raiser.get500", "success");
                     crate::services::raiser::Get500Exn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::raiser::Get500Exn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "Raiser.", application_exception = ?aexn);
+                    ::tracing::error!(method = "Raiser.get500", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1896,7 +1896,7 @@ pub mod server {
                     )
                 }
                 ::std::result::Result::Err(exn) => {
-                    ::tracing::error!(method = "Raiser.", exception = ?exn);
+                    ::tracing::error!(method = "Raiser.get500", exception = ?exn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
                     exn
                 }

@@ -1316,11 +1316,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "NestedContainers.", "success");
+                    ::tracing::info!(method = "NestedContainers.mapList", "success");
                     crate::services::nested_containers::MapListExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::MapListExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "NestedContainers.", application_exception = ?aexn);
+                    ::tracing::error!(method = "NestedContainers.mapList", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1399,11 +1399,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "NestedContainers.", "success");
+                    ::tracing::info!(method = "NestedContainers.mapSet", "success");
                     crate::services::nested_containers::MapSetExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::MapSetExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "NestedContainers.", application_exception = ?aexn);
+                    ::tracing::error!(method = "NestedContainers.mapSet", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1482,11 +1482,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "NestedContainers.", "success");
+                    ::tracing::info!(method = "NestedContainers.listMap", "success");
                     crate::services::nested_containers::ListMapExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::ListMapExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "NestedContainers.", application_exception = ?aexn);
+                    ::tracing::error!(method = "NestedContainers.listMap", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1565,11 +1565,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "NestedContainers.", "success");
+                    ::tracing::info!(method = "NestedContainers.listSet", "success");
                     crate::services::nested_containers::ListSetExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::ListSetExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "NestedContainers.", application_exception = ?aexn);
+                    ::tracing::error!(method = "NestedContainers.listSet", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1648,11 +1648,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "NestedContainers.", "success");
+                    ::tracing::info!(method = "NestedContainers.turtles", "success");
                     crate::services::nested_containers::TurtlesExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::nested_containers::TurtlesExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "NestedContainers.", application_exception = ?aexn);
+                    ::tracing::error!(method = "NestedContainers.turtles", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }

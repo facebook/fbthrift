@@ -1034,11 +1034,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "MyRoot.", "success");
+                    ::tracing::info!(method = "MyRoot.do_root", "success");
                     crate::services::my_root::DoRootExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_root::DoRootExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "MyRoot.", application_exception = ?aexn);
+                    ::tracing::error!(method = "MyRoot.do_root", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1277,11 +1277,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "MyNode.", "success");
+                    ::tracing::info!(method = "MyNode.do_mid", "success");
                     crate::services::my_node::DoMidExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_node::DoMidExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "MyNode.", application_exception = ?aexn);
+                    ::tracing::error!(method = "MyNode.do_mid", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
@@ -1530,11 +1530,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "MyLeaf.", "success");
+                    ::tracing::info!(method = "MyLeaf.do_leaf", "success");
                     crate::services::my_leaf::DoLeafExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::my_leaf::DoLeafExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "MyLeaf.", application_exception = ?aexn);
+                    ::tracing::error!(method = "MyLeaf.do_leaf", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }

@@ -810,11 +810,11 @@ pub mod server {
             .await;
             let res = match res {
                 ::std::result::Result::Ok(res) => {
-                    ::tracing::info!(method = "Service.", "success");
+                    ::tracing::info!(method = "Service.func", "success");
                     crate::services::service::FuncExn::Success(res)
                 }
                 ::std::result::Result::Err(crate::services::service::FuncExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "Service.", application_exception = ?aexn);
+                    ::tracing::error!(method = "Service.func", application_exception = ?aexn);
                     req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
                     return ::std::result::Result::Err(aexn.into())
                 }
