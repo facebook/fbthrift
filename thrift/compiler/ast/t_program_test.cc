@@ -25,7 +25,7 @@ namespace apache::thrift::compiler {
 namespace {
 
 // Simulates parsing a thrift file, only adding the offsets to the program.
-void add_offsets(t_program& program, const std::string& content) {
+void addOffsets(t_program& program, const std::string& content) {
   size_t offset = 0;
   for (const auto& c : content) {
     offset++;
@@ -106,7 +106,7 @@ TEST(TProgram, ComputeNameFromFilePath) {
 TEST(TProgram, GetByteOffset) {
   t_program program("");
 
-  add_offsets(
+  addOffsets(
       program,
       "struct A {\n"
       "  1: optional A a (cpp.ref);\n"

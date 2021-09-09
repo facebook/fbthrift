@@ -31,20 +31,20 @@ namespace thrift {
 namespace compiler {
 namespace {
 
-std::vector<std::string> capture_span(alias_span span) {
+std::vector<std::string> captureSpan(alias_span span) {
   return std::vector<std::string>(span.begin(), span.end());
 }
 
 TEST(AliasSpanTest, AliasSpan) {
   // Fails to work with string literal directly
   // Uncomment next line to produce expected compile time error
-  // EXPECT_THAT(capture_span("hi"), ::testing::ElementsAre("hi"));
+  // EXPECT_THAT(captureSpan("hi"), ::testing::ElementsAre("hi"));
 
   // Works with string literal if wrapped in {}, via a conversion to a string
   // temporary.
-  EXPECT_THAT(capture_span({"hi"}), ::testing::ElementsAre("hi"));
+  EXPECT_THAT(captureSpan({"hi"}), ::testing::ElementsAre("hi"));
 
-  EXPECT_THAT(capture_span({"hi", "bye"}), ::testing::ElementsAre("hi", "bye"));
+  EXPECT_THAT(captureSpan({"hi", "bye"}), ::testing::ElementsAre("hi", "bye"));
 
   std::vector<std::string> vec = {"1", "2", "3"};
   alias_span span = vec;
