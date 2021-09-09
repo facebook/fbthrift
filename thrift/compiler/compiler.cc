@@ -43,7 +43,7 @@
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 #include <thrift/compiler/platform.h>
-#include <thrift/compiler/sema/ast_validator.h>
+#include <thrift/compiler/sema/standard_validator.h>
 #include <thrift/compiler/validator/validator.h>
 
 namespace apache {

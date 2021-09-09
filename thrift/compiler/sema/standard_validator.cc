@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/compiler/sema/ast_validator.h>
+#include <thrift/compiler/sema/standard_validator.h>
 
 #include <string>
 #include <unordered_map>

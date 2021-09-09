@@ -62,7 +62,7 @@ add_library(
   util.cc
 
   parse/parsing_driver.cc
-  sema/ast_validator.cc
+  sema/standard_validator.cc
   sema/scope_validator.cc
   sema/const_checker.cc
 
