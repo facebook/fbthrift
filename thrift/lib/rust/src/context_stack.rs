@@ -14,24 +14,73 @@
  * limitations under the License.
  */
 
+use crate::thrift_protocol::ProtocolID;
 use anyhow::Error;
+use std::marker::PhantomData;
+
+pub struct SerializedMessage<Name, Buffer> {
+    pub protocol: ProtocolID,
+    pub buffer: PhantomData<Buffer>, // Buffer,
+    pub method_name: Name,
+}
 
 pub trait ContextStack {
+    /// Type for method names
+    type Name;
+    /// Type for buffers
+    type Buffer;
+
     /// Called before the request is read.
     fn pre_read(&mut self) -> Result<(), Error>;
+
+    /// Called before post_read after reading arguments (server) / after reading
+    /// reply (client), with the actual (unparsed, serialized) data.
+    fn on_read_data(
+        &mut self,
+        msg: &SerializedMessage<Self::Name, Self::Buffer>,
+    ) -> Result<(), Error>;
 
     /// Called after the request is read.
     fn post_read(&mut self, bytes: u32) -> Result<(), Error>;
 
-    /// Called before a response is writen.
+    /// Called before a response is written.
     fn pre_write(&mut self) -> Result<(), Error>;
+
+    /// Called before post_write, after serializing response (server) / after
+    /// serializing request (client), with the actual (serialized) data.
+    fn on_write_data(
+        &mut self,
+        msg: &SerializedMessage<Self::Name, Self::Buffer>,
+    ) -> Result<(), Error>;
 
     /// Called after a response a written.
     fn post_write(&mut self, bytes: u32) -> Result<(), Error>;
 }
 
-impl ContextStack for () {
+pub struct DummyContextStack<Name, Buffer> {
+    _phantom: PhantomData<(Name, Buffer)>,
+}
+
+impl<Name, Buffer> DummyContextStack<Name, Buffer> {
+    pub fn new() -> Self {
+        Self {
+            _phantom: PhantomData,
+        }
+    }
+}
+
+impl<Name, Buffer> ContextStack for DummyContextStack<Name, Buffer> {
+    type Name = Name;
+    type Buffer = Buffer;
+
     fn pre_read(&mut self) -> Result<(), Error> {
+        Ok(())
+    }
+
+    fn on_read_data(
+        &mut self,
+        _msg: &SerializedMessage<Self::Name, Self::Buffer>,
+    ) -> Result<(), Error> {
         Ok(())
     }
 
@@ -40,6 +89,13 @@ impl ContextStack for () {
     }
 
     fn pre_write(&mut self) -> Result<(), Error> {
+        Ok(())
+    }
+
+    fn on_write_data(
+        &mut self,
+        _msg: &SerializedMessage<Self::Name, Self::Buffer>,
+    ) -> Result<(), Error> {
         Ok(())
     }
 
