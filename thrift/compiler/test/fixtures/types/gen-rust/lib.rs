@@ -2949,6 +2949,63 @@ pub mod server {
         _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
+    struct Args_SomeService_bounce_map {
+        m: include::types::SomeMap,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_SomeService_bounce_map {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "SomeService.bounce_map"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("m", ::fbthrift::TType::Map, 1),
+            ];
+            let mut field_m = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::Map, 1) => field_m = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                m: field_m.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "SomeService.bounce_map", "m"))?,
+            })
+        }
+    }
+
+    struct Args_SomeService_binary_keyed_map {
+        r: ::std::vec::Vec<::std::primitive::i64>,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_SomeService_binary_keyed_map {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "SomeService.binary_keyed_map"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("r", ::fbthrift::TType::List, 1),
+            ];
+            let mut field_r = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::List, 1) => field_r = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                r: field_r.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "SomeService.binary_keyed_map", "r"))?,
+            })
+        }
+    }
+
+
     impl<P, H, R> SomeServiceProcessor<P, H, R>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -2977,7 +3034,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -2989,34 +3045,10 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("m", ::fbthrift::TType::Map, 1),
-            ];
-            let mut field_m = ::std::option::Option::None;
-
-            ::tracing::trace_span!("deserialize_args", method = "SomeService.bounce_map").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (::fbthrift::TType::Map, 1) => field_m = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_SomeService_bounce_map = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.bounce_map(
-                field_m.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "bounce_map",
-                        "m",
-                    )
-                })?,
+                _args.m,
             )
             .instrument(::tracing::info_span!("service_handler", method = "SomeService.bounce_map"))
             .await;
@@ -3060,7 +3092,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -3072,34 +3103,10 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("r", ::fbthrift::TType::List, 1),
-            ];
-            let mut field_r = ::std::option::Option::None;
-
-            ::tracing::trace_span!("deserialize_args", method = "SomeService.binary_keyed_map").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (::fbthrift::TType::List, 1) => field_r = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_SomeService_binary_keyed_map = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.binary_keyed_map(
-                field_r.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "binary_keyed_map",
-                        "r",
-                    )
-                })?,
+                _args.r,
             )
             .instrument(::tracing::info_span!("service_handler", method = "SomeService.binary_keyed_map"))
             .await;

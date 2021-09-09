@@ -970,6 +970,30 @@ pub mod server {
         _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
+    struct Args_MyRoot_do_root {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyRoot_do_root {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyRoot.do_root"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
+
     impl<P, H, R> MyRootProcessor<P, H, R>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -998,7 +1022,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -1010,23 +1033,7 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-            ];
-
-            ::tracing::trace_span!("deserialize_args", method = "MyRoot.do_root").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_MyRoot_do_root = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.do_root(
             )
@@ -1210,6 +1217,30 @@ pub mod server {
         _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
+    struct Args_MyNode_do_mid {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyNode_do_mid {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyNode.do_mid"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
+
     impl<P, H, R, SS> MyNodeProcessor<P, H, R, SS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -1241,7 +1272,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -1253,23 +1283,7 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-            ];
-
-            ::tracing::trace_span!("deserialize_args", method = "MyNode.do_mid").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_MyNode_do_mid = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.do_mid(
             )
@@ -1463,6 +1477,30 @@ pub mod server {
         _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
+    struct Args_MyLeaf_do_leaf {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyLeaf_do_leaf {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyLeaf.do_leaf"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
+
     impl<P, H, R, SS> MyLeafProcessor<P, H, R, SS>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -1494,7 +1532,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -1506,23 +1543,7 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-            ];
-
-            ::tracing::trace_span!("deserialize_args", method = "MyLeaf.do_leaf").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_MyLeaf_do_leaf = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.do_leaf(
             )

@@ -728,6 +728,40 @@ pub mod server {
         _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
+    struct Args_Service_func {
+        arg1: ::std::string::String,
+        arg2: crate::types::Foo,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Service_func {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "Service.func"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("arg1", ::fbthrift::TType::String, 1),
+                ::fbthrift::Field::new("arg2", ::fbthrift::TType::Struct, 2),
+            ];
+            let mut field_arg1 = ::std::option::Option::None;
+            let mut field_arg2 = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::String, 1) => field_arg1 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 2) => field_arg2 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                arg1: field_arg1.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Service.func", "arg1"))?,
+                arg2: field_arg2.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Service.func", "arg2"))?,
+            })
+        }
+    }
+
+
     impl<P, H, R> ServiceProcessor<P, H, R>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -756,7 +790,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -768,43 +801,11 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("arg1", ::fbthrift::TType::String, 1),
-                ::fbthrift::Field::new("arg2", ::fbthrift::TType::Struct, 2),
-            ];
-            let mut field_arg1 = ::std::option::Option::None;
-            let mut field_arg2 = ::std::option::Option::None;
-
-            ::tracing::trace_span!("deserialize_args", method = "Service.func").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (::fbthrift::TType::String, 1) => field_arg1 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (::fbthrift::TType::Struct, 2) => field_arg2 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_Service_func = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.func(
-                field_arg1.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "func",
-                        "arg1",
-                    )
-                })?,
-                field_arg2.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "func",
-                        "arg2",
-                    )
-                })?,
+                _args.arg1,
+                _args.arg2,
             )
             .instrument(::tracing::info_span!("service_handler", method = "Service.func"))
             .await;

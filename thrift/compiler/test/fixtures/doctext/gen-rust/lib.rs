@@ -1184,6 +1184,68 @@ pub mod server {
         _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
+    struct Args_C_f {
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_C_f {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "C.f"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+            ];
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+            })
+        }
+    }
+
+    struct Args_C_thing {
+        a: ::std::primitive::i32,
+        b: ::std::string::String,
+        c: ::std::collections::BTreeSet<::std::primitive::i32>,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_C_thing {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "C.thing"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("a", ::fbthrift::TType::I32, 1),
+                ::fbthrift::Field::new("b", ::fbthrift::TType::String, 2),
+                ::fbthrift::Field::new("c", ::fbthrift::TType::Set, 3),
+            ];
+            let mut field_a = ::std::option::Option::None;
+            let mut field_b = ::std::option::Option::None;
+            let mut field_c = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_a = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_b = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Set, 3) => field_c = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                a: field_a.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "C.thing", "a"))?,
+                b: field_b.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "C.thing", "b"))?,
+                c: field_c.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "C.thing", "c"))?,
+            })
+        }
+    }
+
+
     impl<P, H, R> CProcessor<P, H, R>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -1212,7 +1274,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -1224,23 +1285,7 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-            ];
-
-            ::tracing::trace_span!("deserialize_args", method = "C.f").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_C_f = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.f(
             )
@@ -1286,7 +1331,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -1298,52 +1342,12 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("a", ::fbthrift::TType::I32, 1),
-                ::fbthrift::Field::new("b", ::fbthrift::TType::String, 2),
-                ::fbthrift::Field::new("c", ::fbthrift::TType::Set, 3),
-            ];
-            let mut field_a = ::std::option::Option::None;
-            let mut field_b = ::std::option::Option::None;
-            let mut field_c = ::std::option::Option::None;
-
-            ::tracing::trace_span!("deserialize_args", method = "C.thing").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (::fbthrift::TType::I32, 1) => field_a = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (::fbthrift::TType::String, 2) => field_b = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (::fbthrift::TType::Set, 3) => field_c = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_C_thing = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.thing(
-                field_a.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "thing",
-                        "a",
-                    )
-                })?,
-                field_b.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "thing",
-                        "b",
-                    )
-                })?,
-                field_c.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "thing",
-                        "c",
-                    )
-                })?,
+                _args.a,
+                _args.b,
+                _args.c,
             )
             .instrument(::tracing::info_span!("service_handler", method = "C.thing"))
             .await;

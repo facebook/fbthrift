@@ -1243,6 +1243,147 @@ pub mod server {
         _phantom: ::std::marker::PhantomData<(P, H, R)>,
     }
 
+    struct Args_NestedContainers_mapList {
+        foo: ::std::collections::BTreeMap<::std::primitive::i32, ::std::vec::Vec<::std::primitive::i32>>,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_NestedContainers_mapList {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "NestedContainers.mapList"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("foo", ::fbthrift::TType::Map, 1),
+            ];
+            let mut field_foo = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::Map, 1) => field_foo = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "NestedContainers.mapList", "foo"))?,
+            })
+        }
+    }
+
+    struct Args_NestedContainers_mapSet {
+        foo: ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_NestedContainers_mapSet {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "NestedContainers.mapSet"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("foo", ::fbthrift::TType::Map, 1),
+            ];
+            let mut field_foo = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::Map, 1) => field_foo = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "NestedContainers.mapSet", "foo"))?,
+            })
+        }
+    }
+
+    struct Args_NestedContainers_listMap {
+        foo: ::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>>,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_NestedContainers_listMap {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "NestedContainers.listMap"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
+            ];
+            let mut field_foo = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::List, 1) => field_foo = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "NestedContainers.listMap", "foo"))?,
+            })
+        }
+    }
+
+    struct Args_NestedContainers_listSet {
+        foo: ::std::vec::Vec<::std::collections::BTreeSet<::std::primitive::i32>>,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_NestedContainers_listSet {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "NestedContainers.listSet"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
+            ];
+            let mut field_foo = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::List, 1) => field_foo = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "NestedContainers.listSet", "foo"))?,
+            })
+        }
+    }
+
+    struct Args_NestedContainers_turtles {
+        foo: ::std::vec::Vec<::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>>>>,
+    }
+    impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_NestedContainers_turtles {
+        #[inline]
+        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "NestedContainers.turtles"))]
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static ARGS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
+            ];
+            let mut field_foo = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::List, 1) => field_foo = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                foo: field_foo.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "NestedContainers.turtles", "foo"))?,
+            })
+        }
+    }
+
+
     impl<P, H, R> NestedContainersProcessor<P, H, R>
     where
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
@@ -1271,7 +1412,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -1283,34 +1423,10 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("foo", ::fbthrift::TType::Map, 1),
-            ];
-            let mut field_foo = ::std::option::Option::None;
-
-            ::tracing::trace_span!("deserialize_args", method = "NestedContainers.mapList").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (::fbthrift::TType::Map, 1) => field_foo = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_NestedContainers_mapList = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.mapList(
-                field_foo.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "mapList",
-                        "foo",
-                    )
-                })?,
+                _args.foo,
             )
             .instrument(::tracing::info_span!("service_handler", method = "NestedContainers.mapList"))
             .await;
@@ -1354,7 +1470,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -1366,34 +1481,10 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("foo", ::fbthrift::TType::Map, 1),
-            ];
-            let mut field_foo = ::std::option::Option::None;
-
-            ::tracing::trace_span!("deserialize_args", method = "NestedContainers.mapSet").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (::fbthrift::TType::Map, 1) => field_foo = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_NestedContainers_mapSet = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.mapSet(
-                field_foo.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "mapSet",
-                        "foo",
-                    )
-                })?,
+                _args.foo,
             )
             .instrument(::tracing::info_span!("service_handler", method = "NestedContainers.mapSet"))
             .await;
@@ -1437,7 +1528,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -1449,34 +1539,10 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
-            ];
-            let mut field_foo = ::std::option::Option::None;
-
-            ::tracing::trace_span!("deserialize_args", method = "NestedContainers.listMap").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (::fbthrift::TType::List, 1) => field_foo = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_NestedContainers_listMap = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.listMap(
-                field_foo.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "listMap",
-                        "foo",
-                    )
-                })?,
+                _args.foo,
             )
             .instrument(::tracing::info_span!("service_handler", method = "NestedContainers.listMap"))
             .await;
@@ -1520,7 +1586,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -1532,34 +1597,10 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
-            ];
-            let mut field_foo = ::std::option::Option::None;
-
-            ::tracing::trace_span!("deserialize_args", method = "NestedContainers.listSet").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (::fbthrift::TType::List, 1) => field_foo = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_NestedContainers_listSet = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.listSet(
-                field_foo.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "listSet",
-                        "foo",
-                    )
-                })?,
+                _args.foo,
             )
             .instrument(::tracing::info_span!("service_handler", method = "NestedContainers.listSet"))
             .await;
@@ -1603,7 +1644,6 @@ pub mod server {
             seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::ProtocolReader as _;
             use ::tracing::Instrument as _;
 
             const_cstr! {
@@ -1615,34 +1655,10 @@ pub mod server {
                 &METHOD_NAME,
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
-
-            static ARGS: &[::fbthrift::Field] = &[
-                ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
-            ];
-            let mut field_foo = ::std::option::Option::None;
-
-            ::tracing::trace_span!("deserialize_args", method = "NestedContainers.turtles").in_scope(|| -> ::anyhow::Result<()> {
-                let _ = p.read_struct_begin(|_| ())?;
-                loop {
-                    let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
-                    match (fty, fid as ::std::primitive::i32) {
-                        (::fbthrift::TType::Stop, _) => break,
-                        (::fbthrift::TType::List, 1) => field_foo = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                        (fty, _) => p.skip(fty)?,
-                    }
-                    p.read_field_end()?;
-                }
-                p.read_struct_end()?;
-                Ok(())
-            })?;
+            let _args: self::Args_NestedContainers_turtles = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
             let res = self.service.turtles(
-                field_foo.ok_or_else(|| {
-                    ::fbthrift::ApplicationException::missing_arg(
-                        "turtles",
-                        "foo",
-                    )
-                })?,
+                _args.foo,
             )
             .instrument(::tracing::info_span!("service_handler", method = "NestedContainers.turtles"))
             .await;
