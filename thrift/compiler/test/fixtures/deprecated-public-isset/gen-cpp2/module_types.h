@@ -102,6 +102,18 @@ class Foo final  {
     friend class Foo;
     bool field1;
     bool field2;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return field1;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      field1 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return field2;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      field2 = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -176,7 +188,7 @@ class Foo final  {
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::int32_t& set_field1(::std::int32_t field1_) {
     field1 = field1_;
-    __isset.field1 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return field1;
   }
 
@@ -192,7 +204,7 @@ class Foo final  {
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::int32_t& set_field2(::std::int32_t field2_) {
     field2 = field2_;
-    __isset.field2 = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return field2;
   }
 

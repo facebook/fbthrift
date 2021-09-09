@@ -101,6 +101,24 @@ class MyStruct final  {
     bool MyIncludedField;
     bool MyOtherIncludedField;
     bool MyIncludedInt;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return MyIncludedField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      MyIncludedField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return MyOtherIncludedField;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      MyOtherIncludedField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return MyIncludedInt;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      MyIncludedInt = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -174,7 +192,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyIncludedField_ref() = BAR;` instead of `FOO.set_MyIncludedField(BAR);`")]]
   ::cpp2::Included& set_MyIncludedField(T_MyStruct_MyIncludedField_struct_setter&& MyIncludedField_) {
     MyIncludedField = std::forward<T_MyStruct_MyIncludedField_struct_setter>(MyIncludedField_);
-    __isset.MyIncludedField = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return MyIncludedField;
   }
   const ::cpp2::Included& get_MyOtherIncludedField() const&;
@@ -184,7 +202,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyOtherIncludedField_ref() = BAR;` instead of `FOO.set_MyOtherIncludedField(BAR);`")]]
   ::cpp2::Included& set_MyOtherIncludedField(T_MyStruct_MyOtherIncludedField_struct_setter&& MyOtherIncludedField_) {
     MyOtherIncludedField = std::forward<T_MyStruct_MyOtherIncludedField_struct_setter>(MyOtherIncludedField_);
-    __isset.MyOtherIncludedField = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return MyOtherIncludedField;
   }
 
@@ -195,7 +213,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyIncludedInt_ref() = BAR;` instead of `FOO.set_MyIncludedInt(BAR);`")]]
   ::cpp2::IncludedInt64& set_MyIncludedInt(::cpp2::IncludedInt64 MyIncludedInt_) {
     MyIncludedInt = MyIncludedInt_;
-    __isset.MyIncludedInt = true;
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return MyIncludedInt;
   }
 

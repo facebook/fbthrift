@@ -421,9 +421,9 @@ Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::i
     strVal(std::move(strVal__arg)),
     intVal(std::move(intVal__arg)),
     typedefValue(std::move(typedefValue__arg)) {
-  __isset.strVal = true;
-  __isset.intVal = true;
-  __isset.typedefValue = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -772,7 +772,7 @@ namespace cpp2 {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::int64_t num__arg) :
     num(std::move(num__arg)) {
-  __isset.num = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

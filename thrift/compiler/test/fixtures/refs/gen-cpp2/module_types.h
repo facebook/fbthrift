@@ -897,6 +897,12 @@ class StructWithUnion final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool f;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return f;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      f = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -952,7 +958,7 @@ class StructWithUnion final  {
   [[deprecated("Use `FOO.f_ref() = BAR;` instead of `FOO.set_f(BAR);`")]]
   ::cpp2::MyField& set_f(T_StructWithUnion_f_struct_setter&& f_) {
     f = std::forward<T_StructWithUnion_f_struct_setter>(f_);
-    __isset.f = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return f;
   }
 
@@ -1025,6 +1031,12 @@ class RecursiveStruct final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool mes;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return mes;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      mes = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1059,7 +1071,7 @@ class RecursiveStruct final  {
   [[deprecated("Use `FOO.mes_ref() = BAR;` instead of `FOO.set_mes(BAR);`")]]
   ::std::vector<::cpp2::RecursiveStruct>& set_mes(T_RecursiveStruct_mes_struct_setter&& mes_) {
     mes = std::forward<T_RecursiveStruct_mes_struct_setter>(mes_);
-    __isset.mes = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return mes;
   }
 

@@ -58,7 +58,7 @@ _readField_reasonable:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::readWithContext(*iprot, this->reasonable, _readState);
     
   }
-  this->__isset.reasonable = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -72,7 +72,7 @@ _readField_fine:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::readWithContext(*iprot, this->fine, _readState);
     
   }
-  this->__isset.fine = true;
+ this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -86,7 +86,7 @@ _readField_questionable:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::Metasyntactic>::readWithContext(*iprot, this->questionable, _readState);
     
   }
-  this->__isset.questionable = true;
+ this->__isset.__fbthrift_set(folly::index_constant<2>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -103,7 +103,7 @@ _readField_tags:
     _readState.afterSubobject(iprot);
     
   }
-  this->__isset.tags = true;
+ this->__isset.__fbthrift_set(folly::index_constant<3>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

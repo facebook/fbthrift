@@ -186,7 +186,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 decorated_struct::decorated_struct(apache::thrift::FragileConstructor, ::std::string field__arg) :
     field(std::move(field__arg)) {
-  __isset.field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -311,14 +311,14 @@ ContainerStruct::ContainerStruct(apache::thrift::FragileConstructor, ::std::vect
     fieldF(std::move(fieldF__arg)),
     fieldG(std::move(fieldG__arg)),
     fieldH(std::move(fieldH__arg)) {
-  __isset.fieldA = true;
-  __isset.fieldB = true;
-  __isset.fieldC = true;
-  __isset.fieldD = true;
-  __isset.fieldE = true;
-  __isset.fieldF = true;
-  __isset.fieldG = true;
-  __isset.fieldH = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -503,7 +503,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CppTypeStruct::CppTypeStruct(apache::thrift::FragileConstructor, std::list<int32_t> fieldA__arg) :
     fieldA(std::move(fieldA__arg)) {
-  __isset.fieldA = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -607,7 +607,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 VirtualStruct::VirtualStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg) :
     MyIntField(std::move(MyIntField__arg)) {
-  __isset.MyIntField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -706,8 +706,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructWithForwardRefEnum::MyStructWithForwardRefEnum(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::MyForwardRefEnum a__arg, ::apache::thrift::fixtures::types::MyForwardRefEnum b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
-  __isset.a = true;
-  __isset.b = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -797,8 +797,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TrivialNumeric::TrivialNumeric(apache::thrift::FragileConstructor, ::std::int32_t a__arg, bool b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
-  __isset.a = true;
-  __isset.b = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -888,8 +888,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TrivialNestedWithDefault::TrivialNestedWithDefault(apache::thrift::FragileConstructor, ::std::int32_t z__arg, ::apache::thrift::fixtures::types::TrivialNumeric n__arg) :
     z(std::move(z__arg)),
     n(std::move(n__arg)) {
-  __isset.z = true;
-  __isset.n = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1016,8 +1016,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexString::ComplexString(apache::thrift::FragileConstructor, ::std::string a__arg, ::std::map<::std::string, ::std::int32_t> b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
-  __isset.a = true;
-  __isset.b = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1132,8 +1132,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexNestedWithDefault::ComplexNestedWithDefault(apache::thrift::FragileConstructor, ::std::string z__arg, ::apache::thrift::fixtures::types::ComplexString n__arg) :
     z(std::move(z__arg)),
     n(std::move(n__arg)) {
-  __isset.z = true;
-  __isset.n = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1451,10 +1451,10 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
     MyStringField(std::move(MyStringField__arg)),
     majorVer(std::move(majorVer__arg)),
     data(std::move(data__arg)) {
-  __isset.MyIntField = true;
-  __isset.MyStringField = true;
-  __isset.majorVer = true;
-  __isset.data = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1542,7 +1542,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Renaming::Renaming(apache::thrift::FragileConstructor, ::std::int64_t bar__arg) :
     bar(std::move(bar__arg)) {
-  __isset.bar = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1641,8 +1641,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnnotatedTypes::AnnotatedTypes(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::TBinary binary_field__arg, ::apache::thrift::fixtures::types::SomeListOfTypeMap list_field__arg) :
     binary_field(std::move(binary_field__arg)),
     list_field(std::move(list_field__arg)) {
-  __isset.binary_field = true;
-  __isset.list_field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1741,7 +1741,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageStruct::ForwardUsageStruct(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
     foo(std::move(foo__arg)) {
-  __isset.foo = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1841,7 +1841,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 ForwardUsageRoot::ForwardUsageRoot(const ForwardUsageRoot& srcObj) {
   ForwardUsageStruct = srcObj.ForwardUsageStruct;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.ForwardUsageStruct = srcObj.__isset.ForwardUsageStruct;
+  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   ForwardUsageByRef = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::structure>(srcObj.ForwardUsageByRef);
@@ -1871,7 +1871,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageRoot::ForwardUsageRoot(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageStruct ForwardUsageStruct__arg, ::std::unique_ptr<::apache::thrift::fixtures::types::ForwardUsageByRef> ForwardUsageByRef__arg) :
     ForwardUsageStruct(std::move(ForwardUsageStruct__arg)),
     ForwardUsageByRef(std::move(ForwardUsageByRef__arg)) {
-  __isset.ForwardUsageStruct = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2007,7 +2007,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ForwardUsageByRef::ForwardUsageByRef(apache::thrift::FragileConstructor, ::apache::thrift::fixtures::types::ForwardUsageRoot foo__arg) :
     foo(std::move(foo__arg)) {
-  __isset.foo = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2174,7 +2174,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveSimpleStruct::NoexceptMoveSimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t boolField__arg) :
     boolField(std::move(boolField__arg)) {
-  __isset.boolField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2307,14 +2307,14 @@ NoexceptMoveComplexStruct::NoexceptMoveComplexStruct(apache::thrift::FragileCons
     MyBinaryField3(std::move(MyBinaryField3__arg)),
     MyBinaryListField4(std::move(MyBinaryListField4__arg)),
     MyMapEnumAndInt(std::move(MyMapEnumAndInt__arg)) {
-  __isset.MyBoolField = true;
-  __isset.MyIntField = true;
-  __isset.MyStringField = true;
-  __isset.MyStringField2 = true;
-  __isset.MyBinaryField = true;
-  __isset.MyBinaryField2 = true;
-  __isset.MyBinaryListField4 = true;
-  __isset.MyMapEnumAndInt = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2621,11 +2621,11 @@ AllocatorAware::AllocatorAware(apache::thrift::FragileConstructor, ::std::vector
     aa_map(std::move(aa_map__arg)),
     aa_string(std::move(aa_string__arg)),
     not_a_container(std::move(not_a_container__arg)) {
-  __isset.aa_list = true;
-  __isset.aa_set = true;
-  __isset.aa_map = true;
-  __isset.aa_string = true;
-  __isset.not_a_container = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2777,7 +2777,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware2::AllocatorAware2(apache::thrift::FragileConstructor, ::std::int32_t not_a_container__arg) :
     not_a_container(std::move(not_a_container__arg)) {
-  __isset.not_a_container = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2879,9 +2879,9 @@ TypedefStruct::TypedefStruct(apache::thrift::FragileConstructor, ::std::int32_t 
     i32_field(std::move(i32_field__arg)),
     IntTypedef_field(std::move(IntTypedef_field__arg)),
     UintTypedef_field(std::move(UintTypedef_field__arg)) {
-  __isset.i32_field = true;
-  __isset.IntTypedef_field = true;
-  __isset.UintTypedef_field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2978,7 +2978,7 @@ namespace apache { namespace thrift { namespace fixtures { namespace types {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithDoubleUnderscores::StructWithDoubleUnderscores(apache::thrift::FragileConstructor, ::std::int32_t __field__arg) :
     __field(std::move(__field__arg)) {
-  __isset.__field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

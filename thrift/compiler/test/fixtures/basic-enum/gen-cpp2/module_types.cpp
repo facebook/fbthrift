@@ -139,8 +139,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::test::fixtures::enumstrict::MyEnum myEnum__arg, ::test::fixtures::enumstrict::MyBigEnum myBigEnum__arg) :
     myEnum(std::move(myEnum__arg)),
     myBigEnum(std::move(myBigEnum__arg)) {
-  __isset.myEnum = true;
-  __isset.myBigEnum = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

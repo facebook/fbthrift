@@ -221,6 +221,18 @@ class MyStruct final  {
   struct __isset {
     bool myEnum;
     bool myBigEnum;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return myEnum;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      myEnum = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return myBigEnum;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      myBigEnum = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -275,7 +287,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.myEnum_ref() = BAR;` instead of `FOO.set_myEnum(BAR);`")]]
   ::test::fixtures::enumstrict::MyEnum& set_myEnum(::test::fixtures::enumstrict::MyEnum myEnum_) {
     myEnum = myEnum_;
-    __isset.myEnum = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return myEnum;
   }
 
@@ -286,7 +298,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.myBigEnum_ref() = BAR;` instead of `FOO.set_myBigEnum(BAR);`")]]
   ::test::fixtures::enumstrict::MyBigEnum& set_myBigEnum(::test::fixtures::enumstrict::MyBigEnum myBigEnum_) {
     myBigEnum = myBigEnum_;
-    __isset.myBigEnum = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return myBigEnum;
   }
 

@@ -51,7 +51,7 @@ _readField_fieldA:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->fieldA, _readState);
     
   }
-  this->__isset.fieldA = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

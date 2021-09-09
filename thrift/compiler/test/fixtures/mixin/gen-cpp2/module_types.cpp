@@ -54,7 +54,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin1::Mixin1(apache::thrift::FragileConstructor, ::std::string field1__arg) :
     field1(std::move(field1__arg)) {
-  __isset.field1 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -153,8 +153,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin2::Mixin2(apache::thrift::FragileConstructor, ::cpp2::Mixin1 m1__arg, ::std::string field2__arg) :
     m1(std::move(m1__arg)),
     field2(std::move(field2__arg)) {
-  __isset.m1 = true;
-  __isset.field2 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -278,7 +278,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Mixin3Base::Mixin3Base(apache::thrift::FragileConstructor, ::std::string field3__arg) :
     field3(std::move(field3__arg)) {
-  __isset.field3 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -380,9 +380,9 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::string field4__arg, ::cpp2::
     field4(std::move(field4__arg)),
     m2(std::move(m2__arg)),
     m3(std::move(m3__arg)) {
-  __isset.field4 = true;
-  __isset.m2 = true;
-  __isset.m3 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

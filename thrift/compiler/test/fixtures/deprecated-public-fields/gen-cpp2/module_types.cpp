@@ -39,7 +39,7 @@ namespace cpp2 {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg) :
     bar(std::move(bar__arg)) {
-  __isset.bar = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

@@ -42,9 +42,9 @@ BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first_
     second(std::move(second__arg)),
     third(std::move(third__arg)),
     isTrue(std::move(isTrue__arg)) {
-  __isset.second = true;
-  __isset.third = true;
-  __isset.isTrue = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

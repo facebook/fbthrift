@@ -91,6 +91,18 @@ class IncludedB final  {
   struct __isset {
     bool i32Field;
     bool strField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return i32Field;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      i32Field = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return strField;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      strField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -145,7 +157,7 @@ class IncludedB final  {
   [[deprecated("Use `FOO.i32Field_ref() = BAR;` instead of `FOO.set_i32Field(BAR);`")]]
   ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
     i32Field = i32Field_;
-    __isset.i32Field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return i32Field;
   }
 
@@ -161,7 +173,7 @@ class IncludedB final  {
   [[deprecated("Use `FOO.strField_ref() = BAR;` instead of `FOO.set_strField(BAR);`")]]
   ::std::string& set_strField(T_IncludedB_strField_struct_setter&& strField_) {
     strField = std::forward<T_IncludedB_strField_struct_setter>(strField_);
-    __isset.strField = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return strField;
   }
 

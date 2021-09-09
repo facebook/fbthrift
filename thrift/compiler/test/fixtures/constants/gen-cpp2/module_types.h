@@ -343,6 +343,30 @@ class Internship final  {
     bool employer;
     bool compensation;
     bool school;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return title;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      title = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return employer;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      employer = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return compensation;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      compensation = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return school;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      school = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -472,7 +496,7 @@ class Internship final  {
   [[deprecated("Use `FOO.title_ref() = BAR;` instead of `FOO.set_title(BAR);`")]]
   ::std::string& set_title(T_Internship_title_struct_setter&& title_) {
     title = std::forward<T_Internship_title_struct_setter>(title_);
-    __isset.title = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return title;
   }
 
@@ -488,7 +512,7 @@ class Internship final  {
   [[deprecated("Use `FOO.employer_ref() = BAR;` instead of `FOO.set_employer(BAR);`")]]
   ::cpp2::Company& set_employer(::cpp2::Company employer_) {
     employer = employer_;
-    __isset.employer = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return employer;
   }
 
@@ -504,7 +528,7 @@ class Internship final  {
   [[deprecated("Use `FOO.compensation_ref() = BAR;` instead of `FOO.set_compensation(BAR);`")]]
   double& set_compensation(double compensation_) {
     compensation = compensation_;
-    __isset.compensation = true;
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return compensation;
   }
 
@@ -521,7 +545,7 @@ class Internship final  {
   [[deprecated("Use `FOO.school_ref() = BAR;` instead of `FOO.set_school(BAR);`")]]
   ::std::string& set_school(T_Internship_school_struct_setter&& school_) {
     school = std::forward<T_Internship_school_struct_setter>(school_);
-    __isset.school = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return school;
   }
 
@@ -736,6 +760,18 @@ class struct1 final  {
   struct __isset {
     bool a;
     bool b;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return a;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      a = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return b;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      b = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -790,7 +826,7 @@ class struct1 final  {
   [[deprecated("Use `FOO.a_ref() = BAR;` instead of `FOO.set_a(BAR);`")]]
   ::std::int32_t& set_a(::std::int32_t a_) {
     a = a_;
-    __isset.a = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return a;
   }
 
@@ -806,7 +842,7 @@ class struct1 final  {
   [[deprecated("Use `FOO.b_ref() = BAR;` instead of `FOO.set_b(BAR);`")]]
   ::std::string& set_b(T_struct1_b_struct_setter&& b_) {
     b = std::forward<T_struct1_b_struct_setter>(b_);
-    __isset.b = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return b;
   }
 
@@ -889,6 +925,30 @@ class struct2 final  {
     bool b;
     bool c;
     bool d;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return a;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      a = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return b;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      b = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return c;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      c = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return d;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      d = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -983,7 +1043,7 @@ class struct2 final  {
   [[deprecated("Use `FOO.a_ref() = BAR;` instead of `FOO.set_a(BAR);`")]]
   ::std::int32_t& set_a(::std::int32_t a_) {
     a = a_;
-    __isset.a = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return a;
   }
 
@@ -999,7 +1059,7 @@ class struct2 final  {
   [[deprecated("Use `FOO.b_ref() = BAR;` instead of `FOO.set_b(BAR);`")]]
   ::std::string& set_b(T_struct2_b_struct_setter&& b_) {
     b = std::forward<T_struct2_b_struct_setter>(b_);
-    __isset.b = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return b;
   }
   const ::cpp2::struct1& get_c() const&;
@@ -1009,7 +1069,7 @@ class struct2 final  {
   [[deprecated("Use `FOO.c_ref() = BAR;` instead of `FOO.set_c(BAR);`")]]
   ::cpp2::struct1& set_c(T_struct2_c_struct_setter&& c_) {
     c = std::forward<T_struct2_c_struct_setter>(c_);
-    __isset.c = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return c;
   }
   const ::std::vector<::std::int32_t>& get_d() const&;
@@ -1019,7 +1079,7 @@ class struct2 final  {
   [[deprecated("Use `FOO.d_ref() = BAR;` instead of `FOO.set_d(BAR);`")]]
   ::std::vector<::std::int32_t>& set_d(T_struct2_d_struct_setter&& d_) {
     d = std::forward<T_struct2_d_struct_setter>(d_);
-    __isset.d = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return d;
   }
 
@@ -1099,6 +1159,24 @@ class struct3 final  {
     bool a;
     bool b;
     bool c;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return a;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      a = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return b;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      b = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return c;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      c = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1178,7 +1256,7 @@ class struct3 final  {
   [[deprecated("Use `FOO.a_ref() = BAR;` instead of `FOO.set_a(BAR);`")]]
   ::std::string& set_a(T_struct3_a_struct_setter&& a_) {
     a = std::forward<T_struct3_a_struct_setter>(a_);
-    __isset.a = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return a;
   }
 
@@ -1189,7 +1267,7 @@ class struct3 final  {
   [[deprecated("Use `FOO.b_ref() = BAR;` instead of `FOO.set_b(BAR);`")]]
   ::std::int32_t& set_b(::std::int32_t b_) {
     b = b_;
-    __isset.b = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return b;
   }
   const ::cpp2::struct2& get_c() const&;
@@ -1199,7 +1277,7 @@ class struct3 final  {
   [[deprecated("Use `FOO.c_ref() = BAR;` instead of `FOO.set_c(BAR);`")]]
   ::cpp2::struct2& set_c(T_struct3_c_struct_setter&& c_) {
     c = std::forward<T_struct3_c_struct_setter>(c_);
-    __isset.c = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return c;
   }
 
@@ -1281,6 +1359,24 @@ class struct4 final  {
     bool a;
     bool b;
     bool c;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return a;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      a = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return b;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      b = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return c;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      c = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1355,7 +1451,7 @@ class struct4 final  {
   [[deprecated("Use `FOO.a_ref() = BAR;` instead of `FOO.set_a(BAR);`")]]
   ::std::int32_t& set_a(::std::int32_t a_) {
     a = a_;
-    __isset.a = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return a;
   }
 
@@ -1371,7 +1467,7 @@ class struct4 final  {
   [[deprecated("Use `FOO.b_ref() = BAR;` instead of `FOO.set_b(BAR);`")]]
   double& set_b(double b_) {
     b = b_;
-    __isset.b = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return b;
   }
 
@@ -1387,7 +1483,7 @@ class struct4 final  {
   [[deprecated("Use `FOO.c_ref() = BAR;` instead of `FOO.set_c(BAR);`")]]
   ::std::int8_t& set_c(::std::int8_t c_) {
     c = c_;
-    __isset.c = true;
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return c;
   }
 

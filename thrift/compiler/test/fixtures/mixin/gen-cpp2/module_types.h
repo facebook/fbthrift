@@ -118,6 +118,12 @@ class Mixin1 final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field1;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return field1;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      field1 = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -157,7 +163,7 @@ class Mixin1 final  {
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::string& set_field1(T_Mixin1_field1_struct_setter&& field1_) {
     field1 = std::forward<T_Mixin1_field1_struct_setter>(field1_);
-    __isset.field1 = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return field1;
   }
 
@@ -233,6 +239,18 @@ class Mixin2 final  {
   struct __isset {
     bool m1;
     bool field2;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return m1;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      m1 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return field2;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      field2 = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -290,7 +308,7 @@ class Mixin2 final  {
   [[deprecated("Use `FOO.m1_ref() = BAR;` instead of `FOO.set_m1(BAR);`")]]
   ::cpp2::Mixin1& set_m1(T_Mixin2_m1_struct_setter&& m1_) {
     m1 = std::forward<T_Mixin2_m1_struct_setter>(m1_);
-    __isset.m1 = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return m1;
   }
 
@@ -307,7 +325,7 @@ class Mixin2 final  {
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::string& set_field2(T_Mixin2_field2_struct_setter&& field2_) {
     field2 = std::forward<T_Mixin2_field2_struct_setter>(field2_);
-    __isset.field2 = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return field2;
   }
 
@@ -380,6 +398,12 @@ class Mixin3Base final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool field3;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return field3;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      field3 = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -419,7 +443,7 @@ class Mixin3Base final  {
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::std::string& set_field3(T_Mixin3Base_field3_struct_setter&& field3_) {
     field3 = std::forward<T_Mixin3Base_field3_struct_setter>(field3_);
-    __isset.field3 = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return field3;
   }
 
@@ -498,6 +522,24 @@ class Foo final  {
     bool field4;
     bool m2;
     bool m3;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return field4;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      field4 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return m2;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      m2 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return m3;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      m3 = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -593,7 +635,7 @@ class Foo final  {
   [[deprecated("Use `FOO.field4_ref() = BAR;` instead of `FOO.set_field4(BAR);`")]]
   ::std::string& set_field4(T_Foo_field4_struct_setter&& field4_) {
     field4 = std::forward<T_Foo_field4_struct_setter>(field4_);
-    __isset.field4 = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return field4;
   }
   const ::cpp2::Mixin2& get_m2() const&;
@@ -603,7 +645,7 @@ class Foo final  {
   [[deprecated("Use `FOO.m2_ref() = BAR;` instead of `FOO.set_m2(BAR);`")]]
   ::cpp2::Mixin2& set_m2(T_Foo_m2_struct_setter&& m2_) {
     m2 = std::forward<T_Foo_m2_struct_setter>(m2_);
-    __isset.m2 = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return m2;
   }
   const ::cpp2::Mixin3& get_m3() const&;
@@ -613,7 +655,7 @@ class Foo final  {
   [[deprecated("Use `FOO.m3_ref() = BAR;` instead of `FOO.set_m3(BAR);`")]]
   ::cpp2::Mixin3& set_m3(T_Foo_m3_struct_setter&& m3_) {
     m3 = std::forward<T_Foo_m3_struct_setter>(m3_);
-    __isset.m3 = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return m3;
   }
 

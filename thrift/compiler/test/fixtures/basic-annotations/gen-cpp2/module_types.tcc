@@ -72,7 +72,7 @@ _readField_name:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->name, _readState);
     
   }
-  this->__isset.name = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -198,7 +198,7 @@ _readField_majorVer:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->majorVer, _readState);
     
   }
-  this->__isset.majorVer = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -212,7 +212,7 @@ _readField_package:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->package, _readState);
     
   }
-  this->__isset.package = true;
+ this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -226,7 +226,7 @@ _readField_annotation_with_quote:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->annotation_with_quote, _readState);
     
   }
-  this->__isset.annotation_with_quote = true;
+ this->__isset.__fbthrift_set(folly::index_constant<2>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -240,7 +240,7 @@ _readField_class_:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->class_, _readState);
     
   }
-  this->__isset.class_ = true;
+ this->__isset.__fbthrift_set(folly::index_constant<3>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -254,7 +254,7 @@ _readField_annotation_with_trailing_comma:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->annotation_with_trailing_comma, _readState);
     
   }
-  this->__isset.annotation_with_trailing_comma = true;
+ this->__isset.__fbthrift_set(folly::index_constant<4>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -268,7 +268,7 @@ _readField_empty_annotations:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->empty_annotations, _readState);
     
   }
-  this->__isset.empty_annotations = true;
+ this->__isset.__fbthrift_set(folly::index_constant<5>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -509,7 +509,7 @@ _readField_id:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->id, _readState);
     
   }
-  this->__isset.id = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -523,7 +523,7 @@ _readField_password:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->password, _readState);
     
   }
-  this->__isset.password = true;
+ this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

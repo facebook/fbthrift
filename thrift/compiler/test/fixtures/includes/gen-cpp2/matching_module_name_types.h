@@ -84,6 +84,12 @@ class MyStruct final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool OtherStructField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return OtherStructField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      OtherStructField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -117,7 +123,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.OtherStructField_ref() = BAR;` instead of `FOO.set_OtherStructField(BAR);`")]]
   ::matching_module_name::OtherStruct& set_OtherStructField(T_MyStruct_OtherStructField_struct_setter&& OtherStructField_) {
     OtherStructField = std::forward<T_MyStruct_OtherStructField_struct_setter>(OtherStructField_);
-    __isset.OtherStructField = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return OtherStructField;
   }
 

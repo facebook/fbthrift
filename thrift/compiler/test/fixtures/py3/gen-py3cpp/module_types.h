@@ -287,6 +287,12 @@ class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool err_code;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return err_code;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      err_code = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -321,7 +327,7 @@ class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
   [[deprecated("Use `FOO.err_code_ref() = BAR;` instead of `FOO.set_err_code(BAR);`")]]
   ::std::int16_t& set_err_code(::std::int16_t err_code_) {
     err_code = err_code_;
-    __isset.err_code = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return err_code;
   }
 
@@ -397,6 +403,12 @@ class OptionalRefStruct final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool optional_blob;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return optional_blob;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      optional_blob = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -437,7 +449,7 @@ class OptionalRefStruct final  {
   [[deprecated("Use `FOO.optional_blob_ref() = BAR;` instead of `FOO.set_optional_blob(BAR);`")]]
   ::py3::simple::IOBufPtr& set_optional_blob(T_OptionalRefStruct_optional_blob_struct_setter&& optional_blob_) {
     optional_blob = std::forward<T_OptionalRefStruct_optional_blob_struct_setter>(optional_blob_);
-    __isset.optional_blob = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return optional_blob;
   }
 
@@ -539,6 +551,54 @@ class SimpleStruct final  {
     bool real;
     bool smaller_real;
     bool hidden_field;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return is_on;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      is_on = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return tiny_int;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      tiny_int = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return small_int;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      small_int = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return nice_sized_int;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      nice_sized_int = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return big_int;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      big_int = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return real;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      real = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<6>) const {
+      return smaller_real;
+    }
+    void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
+      smaller_real = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<7>) const {
+      return hidden_field;
+    }
+    void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
+      hidden_field = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -713,7 +773,7 @@ class SimpleStruct final  {
   [[deprecated("Use `FOO.is_on_ref() = BAR;` instead of `FOO.set_is_on(BAR);`")]]
   bool& set_is_on(bool is_on_) {
     is_on = is_on_;
-    __isset.is_on = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return is_on;
   }
 
@@ -724,7 +784,7 @@ class SimpleStruct final  {
   [[deprecated("Use `FOO.tiny_int_ref() = BAR;` instead of `FOO.set_tiny_int(BAR);`")]]
   ::std::int8_t& set_tiny_int(::std::int8_t tiny_int_) {
     tiny_int = tiny_int_;
-    __isset.tiny_int = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return tiny_int;
   }
 
@@ -735,7 +795,7 @@ class SimpleStruct final  {
   [[deprecated("Use `FOO.small_int_ref() = BAR;` instead of `FOO.set_small_int(BAR);`")]]
   ::std::int16_t& set_small_int(::std::int16_t small_int_) {
     small_int = small_int_;
-    __isset.small_int = true;
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return small_int;
   }
 
@@ -746,7 +806,7 @@ class SimpleStruct final  {
   [[deprecated("Use `FOO.nice_sized_int_ref() = BAR;` instead of `FOO.set_nice_sized_int(BAR);`")]]
   ::std::int32_t& set_nice_sized_int(::std::int32_t nice_sized_int_) {
     nice_sized_int = nice_sized_int_;
-    __isset.nice_sized_int = true;
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return nice_sized_int;
   }
 
@@ -757,7 +817,7 @@ class SimpleStruct final  {
   [[deprecated("Use `FOO.big_int_ref() = BAR;` instead of `FOO.set_big_int(BAR);`")]]
   ::std::int64_t& set_big_int(::std::int64_t big_int_) {
     big_int = big_int_;
-    __isset.big_int = true;
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return big_int;
   }
 
@@ -768,7 +828,7 @@ class SimpleStruct final  {
   [[deprecated("Use `FOO.real_ref() = BAR;` instead of `FOO.set_real(BAR);`")]]
   double& set_real(double real_) {
     real = real_;
-    __isset.real = true;
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
     return real;
   }
 
@@ -779,7 +839,7 @@ class SimpleStruct final  {
   [[deprecated("Use `FOO.smaller_real_ref() = BAR;` instead of `FOO.set_smaller_real(BAR);`")]]
   float& set_smaller_real(float smaller_real_) {
     smaller_real = smaller_real_;
-    __isset.smaller_real = true;
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
     return smaller_real;
   }
 
@@ -790,7 +850,7 @@ class SimpleStruct final  {
   [[deprecated("Use `FOO.hidden_field_ref() = BAR;` instead of `FOO.set_hidden_field(BAR);`")]]
   ::std::int16_t& set_hidden_field(::std::int16_t hidden_field_) {
     hidden_field = hidden_field_;
-    __isset.hidden_field = true;
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
     return hidden_field;
   }
 
@@ -890,6 +950,60 @@ class ComplexStruct final  {
     bool from;
     bool cdef;
     bool bytes_with_cpp_type;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return structOne;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      structOne = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return structTwo;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      structTwo = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return an_integer;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      an_integer = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return name;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      name = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return an_enum;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      an_enum = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return some_bytes;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      some_bytes = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<6>) const {
+      return from;
+    }
+    void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
+      from = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<7>) const {
+      return cdef;
+    }
+    void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
+      cdef = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<8>) const {
+      return bytes_with_cpp_type;
+    }
+    void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
+      bytes_with_cpp_type = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1083,7 +1197,7 @@ class ComplexStruct final  {
   [[deprecated("Use `FOO.structOne_ref() = BAR;` instead of `FOO.set_structOne(BAR);`")]]
   ::py3::simple::SimpleStruct& set_structOne(T_ComplexStruct_structOne_struct_setter&& structOne_) {
     structOne = std::forward<T_ComplexStruct_structOne_struct_setter>(structOne_);
-    __isset.structOne = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return structOne;
   }
   const ::py3::simple::SimpleStruct& get_structTwo() const&;
@@ -1093,7 +1207,7 @@ class ComplexStruct final  {
   [[deprecated("Use `FOO.structTwo_ref() = BAR;` instead of `FOO.set_structTwo(BAR);`")]]
   ::py3::simple::SimpleStruct& set_structTwo(T_ComplexStruct_structTwo_struct_setter&& structTwo_) {
     structTwo = std::forward<T_ComplexStruct_structTwo_struct_setter>(structTwo_);
-    __isset.structTwo = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return structTwo;
   }
 
@@ -1104,7 +1218,7 @@ class ComplexStruct final  {
   [[deprecated("Use `FOO.an_integer_ref() = BAR;` instead of `FOO.set_an_integer(BAR);`")]]
   ::std::int32_t& set_an_integer(::std::int32_t an_integer_) {
     an_integer = an_integer_;
-    __isset.an_integer = true;
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return an_integer;
   }
 
@@ -1120,7 +1234,7 @@ class ComplexStruct final  {
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_ComplexStruct_name_struct_setter&& name_) {
     name = std::forward<T_ComplexStruct_name_struct_setter>(name_);
-    __isset.name = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return name;
   }
 
@@ -1131,7 +1245,7 @@ class ComplexStruct final  {
   [[deprecated("Use `FOO.an_enum_ref() = BAR;` instead of `FOO.set_an_enum(BAR);`")]]
   ::py3::simple::AnEnum& set_an_enum(::py3::simple::AnEnum an_enum_) {
     an_enum = an_enum_;
-    __isset.an_enum = true;
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return an_enum;
   }
 
@@ -1147,7 +1261,7 @@ class ComplexStruct final  {
   [[deprecated("Use `FOO.some_bytes_ref() = BAR;` instead of `FOO.set_some_bytes(BAR);`")]]
   ::std::string& set_some_bytes(T_ComplexStruct_some_bytes_struct_setter&& some_bytes_) {
     some_bytes = std::forward<T_ComplexStruct_some_bytes_struct_setter>(some_bytes_);
-    __isset.some_bytes = true;
+    __isset.__fbthrift_set(folly::index_constant<5>(), true);
     return some_bytes;
   }
 
@@ -1163,7 +1277,7 @@ class ComplexStruct final  {
   [[deprecated("Use `FOO.from_ref() = BAR;` instead of `FOO.set_from(BAR);`")]]
   ::std::string& set_from(T_ComplexStruct_from_struct_setter&& from_) {
     from = std::forward<T_ComplexStruct_from_struct_setter>(from_);
-    __isset.from = true;
+    __isset.__fbthrift_set(folly::index_constant<6>(), true);
     return from;
   }
 
@@ -1179,7 +1293,7 @@ class ComplexStruct final  {
   [[deprecated("Use `FOO.cdef_ref() = BAR;` instead of `FOO.set_cdef(BAR);`")]]
   ::std::string& set_cdef(T_ComplexStruct_cdef_struct_setter&& cdef_) {
     cdef = std::forward<T_ComplexStruct_cdef_struct_setter>(cdef_);
-    __isset.cdef = true;
+    __isset.__fbthrift_set(folly::index_constant<7>(), true);
     return cdef;
   }
 
@@ -1195,7 +1309,7 @@ class ComplexStruct final  {
   [[deprecated("Use `FOO.bytes_with_cpp_type_ref() = BAR;` instead of `FOO.set_bytes_with_cpp_type(BAR);`")]]
   ::py3::simple::foo_bar& set_bytes_with_cpp_type(T_ComplexStruct_bytes_with_cpp_type_struct_setter&& bytes_with_cpp_type_) {
     bytes_with_cpp_type = std::forward<T_ComplexStruct_bytes_with_cpp_type_struct_setter>(bytes_with_cpp_type_);
-    __isset.bytes_with_cpp_type = true;
+    __isset.__fbthrift_set(folly::index_constant<8>(), true);
     return bytes_with_cpp_type;
   }
 
@@ -1477,6 +1591,12 @@ class BinaryUnionStruct final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool u;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return u;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      u = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1507,7 +1627,7 @@ class BinaryUnionStruct final  {
   [[deprecated("Use `FOO.u_ref() = BAR;` instead of `FOO.set_u(BAR);`")]]
   ::py3::simple::BinaryUnion& set_u(T_BinaryUnionStruct_u_struct_setter&& u_) {
     u = std::forward<T_BinaryUnionStruct_u_struct_setter>(u_);
-    __isset.u = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return u;
   }
 

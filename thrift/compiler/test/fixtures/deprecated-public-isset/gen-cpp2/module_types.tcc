@@ -51,7 +51,7 @@ _readField_field1:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->field1, _readState);
     
   }
-  this->__isset.field1 = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -65,7 +65,7 @@ _readField_field2:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->field2, _readState);
     
   }
-  this->__isset.field2 = true;
+ this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -148,7 +148,7 @@ uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->field1);
   }
-  if (this->__isset.field2) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<1>())) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->field2);
   }
@@ -170,7 +170,7 @@ uint32_t Foo::serializedSizeZC(Protocol_ const* prot_) const {
     xfer += prot_->serializedFieldSize("field1", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->field1);
   }
-  if (this->__isset.field2) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<1>())) {
     xfer += prot_->serializedFieldSize("field2", apache::thrift::protocol::T_I32, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->field2);
   }
@@ -196,7 +196,7 @@ uint32_t Foo::write(Protocol_* prot_) const {
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::write(*prot_, this->field1);
     xfer += prot_->writeFieldEnd();
   }
-  if (this->__isset.field2) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<1>())) {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
     previousFieldHasValue = true;

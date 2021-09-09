@@ -224,6 +224,18 @@ class structured_annotation_inline final  {
   struct __isset {
     bool count;
     bool name;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return count;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      count = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return name;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      name = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -278,7 +290,7 @@ class structured_annotation_inline final  {
   [[deprecated("Use `FOO.count_ref() = BAR;` instead of `FOO.set_count(BAR);`")]]
   ::std::int64_t& set_count(::std::int64_t count_) {
     count = count_;
-    __isset.count = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return count;
   }
 
@@ -294,7 +306,7 @@ class structured_annotation_inline final  {
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_inline_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_inline_name_struct_setter>(name_);
-    __isset.name = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return name;
   }
 
@@ -368,6 +380,12 @@ class structured_annotation_with_default final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return name;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      name = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -407,7 +425,7 @@ class structured_annotation_with_default final  {
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_with_default_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_with_default_name_struct_setter>(name_);
-    __isset.name = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return name;
   }
 
@@ -482,6 +500,12 @@ class structured_annotation_forward final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool count;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return count;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      count = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -516,7 +540,7 @@ class structured_annotation_forward final  {
   [[deprecated("Use `FOO.count_ref() = BAR;` instead of `FOO.set_count(BAR);`")]]
   ::std::int64_t& set_count(::std::int64_t count_) {
     count = count_;
-    __isset.count = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return count;
   }
 
@@ -595,6 +619,24 @@ class structured_annotation_recursive final  {
     bool name;
     bool recurse;
     bool forward;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return name;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      name = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return recurse;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      recurse = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return forward;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      forward = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -674,7 +716,7 @@ class structured_annotation_recursive final  {
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_recursive_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_recursive_name_struct_setter>(name_);
-    __isset.name = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return name;
   }
   const ::cpp2::structured_annotation_recursive& get_recurse() const&;
@@ -684,7 +726,7 @@ class structured_annotation_recursive final  {
   [[deprecated("Use `FOO.recurse_ref() = BAR;` instead of `FOO.set_recurse(BAR);`")]]
   ::cpp2::structured_annotation_recursive& set_recurse(T_structured_annotation_recursive_recurse_struct_setter&& recurse_) {
     recurse = std::forward<T_structured_annotation_recursive_recurse_struct_setter>(recurse_);
-    __isset.recurse = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return recurse;
   }
   const ::cpp2::structured_annotation_forward& get_forward() const&;
@@ -694,7 +736,7 @@ class structured_annotation_recursive final  {
   [[deprecated("Use `FOO.forward_ref() = BAR;` instead of `FOO.set_forward(BAR);`")]]
   ::cpp2::structured_annotation_forward& set_forward(T_structured_annotation_recursive_forward_struct_setter&& forward_) {
     forward = std::forward<T_structured_annotation_recursive_forward_struct_setter>(forward_);
-    __isset.forward = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return forward;
   }
 
@@ -770,6 +812,18 @@ class structured_annotation_nested final  {
   struct __isset {
     bool name;
     bool nest;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return name;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      name = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return nest;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      nest = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -829,7 +883,7 @@ class structured_annotation_nested final  {
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_nested_name_struct_setter&& name_) {
     name = std::forward<T_structured_annotation_nested_name_struct_setter>(name_);
-    __isset.name = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return name;
   }
   const ::cpp2::structured_annotation_with_default& get_nest() const&;
@@ -839,7 +893,7 @@ class structured_annotation_nested final  {
   [[deprecated("Use `FOO.nest_ref() = BAR;` instead of `FOO.set_nest(BAR);`")]]
   ::cpp2::structured_annotation_with_default& set_nest(T_structured_annotation_nested_nest_struct_setter&& nest_) {
     nest = std::forward<T_structured_annotation_nested_nest_struct_setter>(nest_);
-    __isset.nest = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return nest;
   }
 
@@ -923,6 +977,30 @@ class MyStruct final  {
     bool annotated_type;
     bool annotated_recursive;
     bool annotated_nested;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return annotated_field;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      annotated_field = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return annotated_type;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      annotated_type = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return annotated_recursive;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      annotated_recursive = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return annotated_nested;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      annotated_nested = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1017,7 +1095,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.annotated_field_ref() = BAR;` instead of `FOO.set_annotated_field(BAR);`")]]
   ::std::int64_t& set_annotated_field(::std::int64_t annotated_field_) {
     annotated_field = annotated_field_;
-    __isset.annotated_field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return annotated_field;
   }
 
@@ -1033,7 +1111,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.annotated_type_ref() = BAR;` instead of `FOO.set_annotated_type(BAR);`")]]
   ::cpp2::annotated_inline_string& set_annotated_type(T_MyStruct_annotated_type_struct_setter&& annotated_type_) {
     annotated_type = std::forward<T_MyStruct_annotated_type_struct_setter>(annotated_type_);
-    __isset.annotated_type = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return annotated_type;
   }
 
@@ -1049,7 +1127,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.annotated_recursive_ref() = BAR;` instead of `FOO.set_annotated_recursive(BAR);`")]]
   ::std::string& set_annotated_recursive(T_MyStruct_annotated_recursive_struct_setter&& annotated_recursive_) {
     annotated_recursive = std::forward<T_MyStruct_annotated_recursive_struct_setter>(annotated_recursive_);
-    __isset.annotated_recursive = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return annotated_recursive;
   }
 
@@ -1060,7 +1138,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.annotated_nested_ref() = BAR;` instead of `FOO.set_annotated_nested(BAR);`")]]
   ::std::int64_t& set_annotated_nested(::std::int64_t annotated_nested_) {
     annotated_nested = annotated_nested_;
-    __isset.annotated_nested = true;
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return annotated_nested;
   }
 
@@ -1142,6 +1220,12 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool context;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return context;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      context = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1181,7 +1265,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   [[deprecated("Use `FOO.context_ref() = BAR;` instead of `FOO.set_context(BAR);`")]]
   ::std::string& set_context(T_MyException_context_struct_setter&& context_) {
     context = std::forward<T_MyException_context_struct_setter>(context_);
-    __isset.context = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return context;
   }
 

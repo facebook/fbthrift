@@ -242,6 +242,30 @@ class MyStruct final  {
     bool MyStringField;
     bool MyDataField;
     bool myEnum;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return MyIntField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      MyIntField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return MyStringField;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      MyStringField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return MyDataField;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      MyDataField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return myEnum;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      myEnum = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -336,7 +360,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
-    __isset.MyIntField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return MyIntField;
   }
 
@@ -352,7 +376,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-    __isset.MyStringField = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return MyStringField;
   }
   const ::cpp2::MyDataItem& get_MyDataField() const&;
@@ -362,7 +386,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyDataField_ref() = BAR;` instead of `FOO.set_MyDataField(BAR);`")]]
   ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
     MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
-    __isset.MyDataField = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return MyDataField;
   }
 
@@ -373,7 +397,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.myEnum_ref() = BAR;` instead of `FOO.set_myEnum(BAR);`")]]
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum myEnum_) {
     myEnum = myEnum_;
-    __isset.myEnum = true;
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return myEnum;
   }
 

@@ -253,6 +253,12 @@ class FOLLY_EXPORT Serious : public apache::thrift::TException {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool sonnet;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return sonnet;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      sonnet = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -293,7 +299,7 @@ class FOLLY_EXPORT Serious : public apache::thrift::TException {
   [[deprecated("Use `FOO.sonnet_ref() = BAR;` instead of `FOO.set_sonnet(BAR);`")]]
   ::std::string& set_sonnet(T_Serious_sonnet_struct_setter&& sonnet_) {
     sonnet = std::forward<T_Serious_sonnet_struct_setter>(sonnet_);
-    __isset.sonnet = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return sonnet;
   }
 
@@ -383,6 +389,18 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
   struct __isset {
     bool error_message;
     bool internal_error_message;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return error_message;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      error_message = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return internal_error_message;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      internal_error_message = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -442,7 +460,7 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
   [[deprecated("Use `FOO.error_message_ref() = BAR;` instead of `FOO.set_error_message(BAR);`")]]
   ::std::string& set_error_message(T_ComplexFieldNames_error_message_struct_setter&& error_message_) {
     error_message = std::forward<T_ComplexFieldNames_error_message_struct_setter>(error_message_);
-    __isset.error_message = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return error_message;
   }
 
@@ -458,7 +476,7 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
   [[deprecated("Use `FOO.internal_error_message_ref() = BAR;` instead of `FOO.set_internal_error_message(BAR);`")]]
   ::std::string& set_internal_error_message(T_ComplexFieldNames_internal_error_message_struct_setter&& internal_error_message_) {
     internal_error_message = std::forward<T_ComplexFieldNames_internal_error_message_struct_setter>(internal_error_message_);
-    __isset.internal_error_message = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return internal_error_message;
   }
 
@@ -548,6 +566,18 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
   struct __isset {
     bool error_message;
     bool internal_error_message;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return error_message;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      error_message = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return internal_error_message;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      internal_error_message = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -607,7 +637,7 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
   [[deprecated("Use `FOO.error_message_ref() = BAR;` instead of `FOO.set_error_message(BAR);`")]]
   ::std::string& set_error_message(T_CustomFieldNames_error_message_struct_setter&& error_message_) {
     error_message = std::forward<T_CustomFieldNames_error_message_struct_setter>(error_message_);
-    __isset.error_message = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return error_message;
   }
 
@@ -623,7 +653,7 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
   [[deprecated("Use `FOO.internal_error_message_ref() = BAR;` instead of `FOO.set_internal_error_message(BAR);`")]]
   ::std::string& set_internal_error_message(T_CustomFieldNames_internal_error_message_struct_setter&& internal_error_message_) {
     internal_error_message = std::forward<T_CustomFieldNames_internal_error_message_struct_setter>(internal_error_message_);
-    __isset.internal_error_message = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return internal_error_message;
   }
 
@@ -713,6 +743,18 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
   struct __isset {
     bool message;
     bool error_code;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return message;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      message = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return error_code;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      error_code = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -772,7 +814,7 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
   [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_ExceptionWithPrimitiveField_message_struct_setter&& message_) {
     message = std::forward<T_ExceptionWithPrimitiveField_message_struct_setter>(message_);
-    __isset.message = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return message;
   }
 
@@ -783,7 +825,7 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
   [[deprecated("Use `FOO.error_code_ref() = BAR;` instead of `FOO.set_error_code(BAR);`")]]
   ::std::int32_t& set_error_code(::std::int32_t error_code_) {
     error_code = error_code_;
-    __isset.error_code = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return error_code;
   }
 

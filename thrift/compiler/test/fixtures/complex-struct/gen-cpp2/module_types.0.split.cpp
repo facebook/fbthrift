@@ -96,10 +96,10 @@ MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(apache::thrift::FragileCo
     MyByteField(std::move(MyByteField__arg)),
     myStringField(std::move(myStringField__arg)),
     myFloatField(std::move(myFloatField__arg)) {
-  __isset.myLongField = true;
-  __isset.MyByteField = true;
-  __isset.myStringField = true;
-  __isset.myFloatField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -222,8 +222,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t age__arg, ::std::string name__arg) :
     age(std::move(age__arg)),
     name(std::move(name__arg)) {
-  __isset.age = true;
-  __isset.name = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -452,24 +452,24 @@ ComplexNestedStruct::ComplexNestedStruct(apache::thrift::FragileConstructor, ::s
     mapKeyIntValSet(std::move(mapKeyIntValSet__arg)),
     mapKeySetValInt(std::move(mapKeySetValInt__arg)),
     mapKeyListValSet(std::move(mapKeyListValSet__arg)) {
-  __isset.setOfSetOfInt = true;
-  __isset.listofListOfListOfListOfEnum = true;
-  __isset.listOfListOfMyStruct = true;
-  __isset.setOfListOfListOfLong = true;
-  __isset.setOfSetOfsetOfLong = true;
-  __isset.mapStructListOfListOfLong = true;
-  __isset.mKeyStructValInt = true;
-  __isset.listOfMapKeyIntValInt = true;
-  __isset.listOfMapKeyStrValList = true;
-  __isset.mapKeySetValLong = true;
-  __isset.mapKeyListValLong = true;
-  __isset.mapKeyMapValMap = true;
-  __isset.mapKeySetValMap = true;
-  __isset.NestedMaps = true;
-  __isset.mapKeyIntValList = true;
-  __isset.mapKeyIntValSet = true;
-  __isset.mapKeySetValInt = true;
-  __isset.mapKeyListValSet = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+  __isset.__fbthrift_set(folly::index_constant<9>(), true);
+  __isset.__fbthrift_set(folly::index_constant<10>(), true);
+  __isset.__fbthrift_set(folly::index_constant<11>(), true);
+  __isset.__fbthrift_set(folly::index_constant<12>(), true);
+  __isset.__fbthrift_set(folly::index_constant<13>(), true);
+  __isset.__fbthrift_set(folly::index_constant<14>(), true);
+  __isset.__fbthrift_set(folly::index_constant<15>(), true);
+  __isset.__fbthrift_set(folly::index_constant<16>(), true);
+  __isset.__fbthrift_set(folly::index_constant<17>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

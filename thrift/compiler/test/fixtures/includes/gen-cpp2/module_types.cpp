@@ -60,9 +60,9 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::cpp2::Included MyInclud
     MyIncludedField(std::move(MyIncludedField__arg)),
     MyOtherIncludedField(std::move(MyOtherIncludedField__arg)),
     MyIncludedInt(std::move(MyIncludedInt__arg)) {
-  __isset.MyIncludedField = true;
-  __isset.MyOtherIncludedField = true;
-  __isset.MyIncludedInt = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

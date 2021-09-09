@@ -95,6 +95,12 @@ class MyStruct final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myString;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return myString;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      myString = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -134,7 +140,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.myString_ref() = BAR;` instead of `FOO.set_myString(BAR);`")]]
   ::std::string& set_myString(T_MyStruct_myString_struct_setter&& myString_) {
     myString = std::forward<T_MyStruct_myString_struct_setter>(myString_);
-    __isset.myString = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return myString;
   }
 
@@ -430,6 +436,12 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool myString;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return myString;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      myString = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -469,7 +481,7 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
   [[deprecated("Use `FOO.myString_ref() = BAR;` instead of `FOO.set_myString(BAR);`")]]
   ::std::string& set_myString(T_MyException_myString_struct_setter&& myString_) {
     myString = std::forward<T_MyException_myString_struct_setter>(myString_);
-    __isset.myString = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return myString;
   }
 

@@ -561,8 +561,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structA::structA(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
-  __isset.a = true;
-  __isset.b = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -795,8 +795,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structB::structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg) :
     c(std::move(c__arg)),
     d(std::move(d__arg)) {
-  __isset.c = true;
-  __isset.d = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1000,36 +1000,36 @@ structC::structC(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
     o1(std::move(o1__arg)),
     o2(std::move(o2__arg)),
     o3(std::move(o3__arg)) {
-  __isset.a = true;
-  __isset.b = true;
-  __isset.c = true;
-  __isset.d = true;
-  __isset.e = true;
-  __isset.f = true;
-  __isset.g = true;
-  __isset.h = true;
-  __isset.i = true;
-  __isset.j = true;
-  __isset.j1 = true;
-  __isset.j2 = true;
-  __isset.j3 = true;
-  __isset.k = true;
-  __isset.k1 = true;
-  __isset.k2 = true;
-  __isset.k3 = true;
-  __isset.l = true;
-  __isset.l1 = true;
-  __isset.l2 = true;
-  __isset.l3 = true;
-  __isset.m1 = true;
-  __isset.m2 = true;
-  __isset.m3 = true;
-  __isset.n1 = true;
-  __isset.n2 = true;
-  __isset.n3 = true;
-  __isset.o1 = true;
-  __isset.o2 = true;
-  __isset.o3 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+  __isset.__fbthrift_set(folly::index_constant<9>(), true);
+  __isset.__fbthrift_set(folly::index_constant<10>(), true);
+  __isset.__fbthrift_set(folly::index_constant<11>(), true);
+  __isset.__fbthrift_set(folly::index_constant<12>(), true);
+  __isset.__fbthrift_set(folly::index_constant<13>(), true);
+  __isset.__fbthrift_set(folly::index_constant<14>(), true);
+  __isset.__fbthrift_set(folly::index_constant<15>(), true);
+  __isset.__fbthrift_set(folly::index_constant<16>(), true);
+  __isset.__fbthrift_set(folly::index_constant<17>(), true);
+  __isset.__fbthrift_set(folly::index_constant<18>(), true);
+  __isset.__fbthrift_set(folly::index_constant<19>(), true);
+  __isset.__fbthrift_set(folly::index_constant<20>(), true);
+  __isset.__fbthrift_set(folly::index_constant<21>(), true);
+  __isset.__fbthrift_set(folly::index_constant<22>(), true);
+  __isset.__fbthrift_set(folly::index_constant<23>(), true);
+  __isset.__fbthrift_set(folly::index_constant<24>(), true);
+  __isset.__fbthrift_set(folly::index_constant<25>(), true);
+  __isset.__fbthrift_set(folly::index_constant<26>(), true);
+  __isset.__fbthrift_set(folly::index_constant<27>(), true);
+  __isset.__fbthrift_set(folly::index_constant<28>(), true);
+  __isset.__fbthrift_set(folly::index_constant<29>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1707,10 +1707,10 @@ struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
     field3(std::move(field3__arg)),
     field4(std::move(field4__arg)),
     field5(std::move(field5__arg)) {
-  __isset.field1 = true;
-  __isset.field2 = true;
-  __isset.field4 = true;
-  __isset.field5 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1915,13 +1915,13 @@ struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg,
     fieldE(std::move(fieldE__arg)),
     fieldF(std::move(fieldF__arg)),
     fieldG(std::move(fieldG__arg)) {
-  __isset.fieldA = true;
-  __isset.fieldB = true;
-  __isset.fieldC = true;
-  __isset.fieldD = true;
-  __isset.fieldE = true;
-  __isset.fieldF = true;
-  __isset.fieldG = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2187,24 +2187,24 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg,
     fieldP(std::move(fieldP__arg)),
     fieldQ(std::move(fieldQ__arg)),
     fieldR(std::move(fieldR__arg)) {
-  __isset.fieldA = true;
-  __isset.fieldB = true;
-  __isset.fieldC = true;
-  __isset.fieldD = true;
-  __isset.fieldE = true;
-  __isset.fieldF = true;
-  __isset.fieldG = true;
-  __isset.fieldH = true;
-  __isset.fieldI = true;
-  __isset.fieldJ = true;
-  __isset.fieldK = true;
-  __isset.fieldL = true;
-  __isset.fieldM = true;
-  __isset.fieldN = true;
-  __isset.fieldO = true;
-  __isset.fieldP = true;
-  __isset.fieldQ = true;
-  __isset.fieldR = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+  __isset.__fbthrift_set(folly::index_constant<9>(), true);
+  __isset.__fbthrift_set(folly::index_constant<10>(), true);
+  __isset.__fbthrift_set(folly::index_constant<11>(), true);
+  __isset.__fbthrift_set(folly::index_constant<12>(), true);
+  __isset.__fbthrift_set(folly::index_constant<13>(), true);
+  __isset.__fbthrift_set(folly::index_constant<14>(), true);
+  __isset.__fbthrift_set(folly::index_constant<15>(), true);
+  __isset.__fbthrift_set(folly::index_constant<16>(), true);
+  __isset.__fbthrift_set(folly::index_constant<17>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2629,11 +2629,11 @@ struct4::struct4(const struct4& srcObj) {
   field0 = srcObj.field0;
   field1 = srcObj.field1;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field1 = srcObj.__isset.field1;
+  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   field2 = srcObj.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field2 = srcObj.__isset.field2;
+  __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   field3 = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::structure>(srcObj.field3);
@@ -2669,8 +2669,8 @@ struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)) {
-  __isset.field1 = true;
-  __isset.field2 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2824,10 +2824,10 @@ struct5::struct5(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)),
     field4(std::move(field4__arg)) {
-  __isset.field1 = true;
-  __isset.field2 = true;
-  __isset.field3 = true;
-  __isset.field4 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -2995,7 +2995,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(apache::thrift::FragileConstructor, ::std::string bi__arg) :
     bi(std::move(bi__arg)) {
-  __isset.bi = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -3078,9 +3078,9 @@ dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_
     b(std::move(b__arg)),
     c(std::move(c__arg)),
     i_a(std::move(i_a__arg)) {
-  __isset.b = true;
-  __isset.c = true;
-  __isset.i_a = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -3219,9 +3219,9 @@ dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_
     b(std::move(b__arg)),
     c(std::move(c__arg)),
     i_a(std::move(i_a__arg)) {
-  __isset.b = true;
-  __isset.c = true;
-  __isset.i_a = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -3358,7 +3358,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 annotated::annotated(apache::thrift::FragileConstructor, ::std::int32_t a__arg) :
     a(std::move(a__arg)) {
-  __isset.a = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -3758,34 +3758,34 @@ struct_with_special_names::struct_with_special_names(apache::thrift::FragileCons
     members(std::move(members__arg)),
     field(std::move(field__arg)),
     fields(std::move(fields__arg)) {
-  __isset.get = true;
-  __isset.getter = true;
-  __isset.lists = true;
-  __isset.maps = true;
-  __isset.name = true;
-  __isset.name_to_value = true;
-  __isset.names = true;
-  __isset.prefix_tree = true;
-  __isset.sets = true;
-  __isset.setter = true;
-  __isset.str = true;
-  __isset.strings = true;
-  __isset.type = true;
-  __isset.value = true;
-  __isset.value_to_name = true;
-  __isset.values = true;
-  __isset.id = true;
-  __isset.ids = true;
-  __isset.descriptor = true;
-  __isset.descriptors = true;
-  __isset.key = true;
-  __isset.keys = true;
-  __isset.annotation = true;
-  __isset.annotations = true;
-  __isset.member = true;
-  __isset.members = true;
-  __isset.field = true;
-  __isset.fields = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+  __isset.__fbthrift_set(folly::index_constant<9>(), true);
+  __isset.__fbthrift_set(folly::index_constant<10>(), true);
+  __isset.__fbthrift_set(folly::index_constant<11>(), true);
+  __isset.__fbthrift_set(folly::index_constant<12>(), true);
+  __isset.__fbthrift_set(folly::index_constant<13>(), true);
+  __isset.__fbthrift_set(folly::index_constant<14>(), true);
+  __isset.__fbthrift_set(folly::index_constant<15>(), true);
+  __isset.__fbthrift_set(folly::index_constant<16>(), true);
+  __isset.__fbthrift_set(folly::index_constant<17>(), true);
+  __isset.__fbthrift_set(folly::index_constant<18>(), true);
+  __isset.__fbthrift_set(folly::index_constant<19>(), true);
+  __isset.__fbthrift_set(folly::index_constant<20>(), true);
+  __isset.__fbthrift_set(folly::index_constant<21>(), true);
+  __isset.__fbthrift_set(folly::index_constant<22>(), true);
+  __isset.__fbthrift_set(folly::index_constant<23>(), true);
+  __isset.__fbthrift_set(folly::index_constant<24>(), true);
+  __isset.__fbthrift_set(folly::index_constant<25>(), true);
+  __isset.__fbthrift_set(folly::index_constant<26>(), true);
+  __isset.__fbthrift_set(folly::index_constant<27>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -4121,11 +4121,11 @@ struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstr
     number(std::move(number__arg)),
     result(std::move(result__arg)),
     phrase(std::move(phrase__arg)) {
-  __isset.real = true;
-  __isset.fake = true;
-  __isset.number = true;
-  __isset.result = true;
-  __isset.phrase = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

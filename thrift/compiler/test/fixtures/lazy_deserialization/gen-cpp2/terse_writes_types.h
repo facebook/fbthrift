@@ -169,6 +169,30 @@ class TerseFoo final  {
     bool field2;
     bool field3;
     bool field4;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return field1;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      field1 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return field2;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      field2 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return field3;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      field3 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return field4;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      field4 = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -262,7 +286,7 @@ class TerseFoo final  {
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_TerseFoo_field1_struct_setter&& field1_) {
     field1 = std::forward<T_TerseFoo_field1_struct_setter>(field1_);
-    __isset.field1 = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return field1;
   }
   const ::std::vector<::std::int32_t>& get_field2() const&;
@@ -272,7 +296,7 @@ class TerseFoo final  {
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_TerseFoo_field2_struct_setter&& field2_) {
     field2 = std::forward<T_TerseFoo_field2_struct_setter>(field2_);
-    __isset.field2 = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return field2;
   }
   const ::std::vector<double>& get_field3() const&;
@@ -282,7 +306,7 @@ class TerseFoo final  {
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::std::vector<double>& set_field3(T_TerseFoo_field3_struct_setter&& field3_) {
     field3 = std::forward<T_TerseFoo_field3_struct_setter>(field3_);
-    __isset.field3 = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return field3;
   }
   const ::std::vector<::std::int32_t>& get_field4() const&;
@@ -292,7 +316,7 @@ class TerseFoo final  {
   [[deprecated("Use `FOO.field4_ref() = BAR;` instead of `FOO.set_field4(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field4(T_TerseFoo_field4_struct_setter&& field4_) {
     field4 = std::forward<T_TerseFoo_field4_struct_setter>(field4_);
-    __isset.field4 = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return field4;
   }
 
@@ -373,6 +397,30 @@ class TerseLazyFoo final  {
     bool field2;
     bool field3;
     bool field4;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return field1;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      field1 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return field2;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      field2 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return field3;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      field3 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return field4;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      field4 = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -466,7 +514,7 @@ class TerseLazyFoo final  {
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_TerseLazyFoo_field1_struct_setter&& field1_) {
     field1 = std::forward<T_TerseLazyFoo_field1_struct_setter>(field1_);
-    __isset.field1 = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return field1;
   }
   const ::std::vector<::std::int32_t>& get_field2() const&;
@@ -476,7 +524,7 @@ class TerseLazyFoo final  {
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_TerseLazyFoo_field2_struct_setter&& field2_) {
     field2 = std::forward<T_TerseLazyFoo_field2_struct_setter>(field2_);
-    __isset.field2 = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return field2;
   }
 
@@ -582,6 +630,30 @@ class TerseOptionalFoo final  {
     bool field2;
     bool field3;
     bool field4;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return field1;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      field1 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return field2;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      field2 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return field3;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      field3 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return field4;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      field4 = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -676,7 +748,7 @@ class TerseOptionalFoo final  {
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_TerseOptionalFoo_field1_struct_setter&& field1_) {
     field1 = std::forward<T_TerseOptionalFoo_field1_struct_setter>(field1_);
-    __isset.field1 = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return field1;
   }
   const ::std::vector<::std::int32_t>* get_field2() const&;
@@ -687,7 +759,7 @@ class TerseOptionalFoo final  {
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_TerseOptionalFoo_field2_struct_setter&& field2_) {
     field2 = std::forward<T_TerseOptionalFoo_field2_struct_setter>(field2_);
-    __isset.field2 = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return field2;
   }
   const ::std::vector<double>* get_field3() const&;
@@ -698,7 +770,7 @@ class TerseOptionalFoo final  {
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::std::vector<double>& set_field3(T_TerseOptionalFoo_field3_struct_setter&& field3_) {
     field3 = std::forward<T_TerseOptionalFoo_field3_struct_setter>(field3_);
-    __isset.field3 = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return field3;
   }
   const ::std::vector<::std::int32_t>* get_field4() const&;
@@ -709,7 +781,7 @@ class TerseOptionalFoo final  {
   [[deprecated("Use `FOO.field4_ref() = BAR;` instead of `FOO.set_field4(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field4(T_TerseOptionalFoo_field4_struct_setter&& field4_) {
     field4 = std::forward<T_TerseOptionalFoo_field4_struct_setter>(field4_);
-    __isset.field4 = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return field4;
   }
 
@@ -790,6 +862,30 @@ class TerseOptionalLazyFoo final  {
     bool field2;
     bool field3;
     bool field4;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return field1;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      field1 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return field2;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      field2 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return field3;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      field3 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return field4;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      field4 = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -884,7 +980,7 @@ class TerseOptionalLazyFoo final  {
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_TerseOptionalLazyFoo_field1_struct_setter&& field1_) {
     field1 = std::forward<T_TerseOptionalLazyFoo_field1_struct_setter>(field1_);
-    __isset.field1 = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return field1;
   }
   const ::std::vector<::std::int32_t>* get_field2() const&;
@@ -895,7 +991,7 @@ class TerseOptionalLazyFoo final  {
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_TerseOptionalLazyFoo_field2_struct_setter&& field2_) {
     field2 = std::forward<T_TerseOptionalLazyFoo_field2_struct_setter>(field2_);
-    __isset.field2 = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return field2;
   }
 

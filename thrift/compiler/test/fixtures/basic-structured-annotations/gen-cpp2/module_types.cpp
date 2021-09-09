@@ -90,8 +90,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_inline::structured_annotation_inline(apache::thrift::FragileConstructor, ::std::int64_t count__arg, ::std::string name__arg) :
     count(std::move(count__arg)),
     name(std::move(name__arg)) {
-  __isset.count = true;
-  __isset.name = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -195,7 +195,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_with_default::structured_annotation_with_default(apache::thrift::FragileConstructor, ::std::string name__arg) :
     name(std::move(name__arg)) {
-  __isset.name = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -276,7 +276,7 @@ namespace cpp2 {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_forward::structured_annotation_forward(apache::thrift::FragileConstructor, ::std::int64_t count__arg) :
     count(std::move(count__arg)) {
-  __isset.count = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -378,9 +378,9 @@ structured_annotation_recursive::structured_annotation_recursive(apache::thrift:
     name(std::move(name__arg)),
     recurse(std::move(recurse__arg)),
     forward(std::move(forward__arg)) {
-  __isset.name = true;
-  __isset.recurse = true;
-  __isset.forward = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -535,8 +535,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_nested::structured_annotation_nested(apache::thrift::FragileConstructor, ::std::string name__arg, ::cpp2::structured_annotation_with_default nest__arg) :
     name(std::move(name__arg)),
     nest(std::move(nest__arg)) {
-  __isset.name = true;
-  __isset.nest = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -669,10 +669,10 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_
     annotated_type(std::move(annotated_type__arg)),
     annotated_recursive(std::move(annotated_recursive__arg)),
     annotated_nested(std::move(annotated_nested__arg)) {
-  __isset.annotated_field = true;
-  __isset.annotated_type = true;
-  __isset.annotated_recursive = true;
-  __isset.annotated_nested = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -800,7 +800,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(apache::thrift::FragileConstructor, ::std::string context__arg) :
     context(std::move(context__arg)) {
-  __isset.context = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

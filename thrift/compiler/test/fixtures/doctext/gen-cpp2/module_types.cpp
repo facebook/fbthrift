@@ -72,7 +72,7 @@ namespace cpp2 {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 A::A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg) :
     useless_field(std::move(useless_field__arg)) {
-  __isset.useless_field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -286,7 +286,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bang::Bang(apache::thrift::FragileConstructor, ::std::string message__arg) :
     message(std::move(message__arg)) {
-  __isset.message = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

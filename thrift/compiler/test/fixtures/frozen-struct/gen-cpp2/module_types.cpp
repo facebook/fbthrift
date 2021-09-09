@@ -111,12 +111,12 @@ ModuleA::ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__ar
     mapField(std::move(mapField__arg)),
     inclAField(std::move(inclAField__arg)),
     inclBField(std::move(inclBField__arg)) {
-  __isset.i32Field = true;
-  __isset.strField = true;
-  __isset.listField = true;
-  __isset.mapField = true;
-  __isset.inclAField = true;
-  __isset.inclBField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -294,8 +294,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::some::ns::EnumB inclEnumB__arg) :
     i32Field(std::move(i32Field__arg)),
     inclEnumB(std::move(inclEnumB__arg)) {
-  __isset.i32Field = true;
-  __isset.inclEnumB = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

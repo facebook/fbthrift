@@ -39,7 +39,7 @@
   <%type:cpp_type%>& set_<%field:cpp_name%>(<%type:cpp_type%> <%field:cpp_name%>_) {
     <%field:cpp_name%> = <%field:cpp_name%>_;
 <%^field:required?%>
-    __isset.<%field:cpp_name%> = true;
+  __isset.__fbthrift_set(folly::index_constant<<%field:isset_index%>>(), true);
 <%/field:required?%>
     return <%field:cpp_name%>;
   }
@@ -70,7 +70,7 @@
   <%type:cpp_type%>& set_<%field:cpp_name%>(T_<%struct:name%>_<%field:cpp_name%>_struct_setter&& <%field:cpp_name%>_) {
     <%field:cpp_name%> = std::forward<T_<%struct:name%>_<%field:cpp_name%>_struct_setter>(<%field:cpp_name%>_);
 <%^field:required?%>
-    __isset.<%field:cpp_name%> = true;
+    __isset.__fbthrift_set(folly::index_constant<<%field:isset_index%>>(), true);
 <%/field:required?%>
     return <%field:cpp_name%>;
   }
@@ -92,7 +92,7 @@
   <%type:cpp_type%>& set_<%field:cpp_name%>(T_<%struct:name%>_<%field:cpp_name%>_struct_setter&& <%field:cpp_name%>_) {
     <%field:cpp_name%> = std::forward<T_<%struct:name%>_<%field:cpp_name%>_struct_setter>(<%field:cpp_name%>_);
 <%^field:required?%>
-    __isset.<%field:cpp_name%> = true;
+    __isset.__fbthrift_set(folly::index_constant<<%field:isset_index%>>(), true);
 <%/field:required?%>
     return <%field:cpp_name%>;
   }

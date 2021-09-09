@@ -129,7 +129,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException(apache::thrift::FragileConstructor, ::std::int16_t err_code__arg) :
     err_code(std::move(err_code__arg)) {
-  __isset.err_code = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -210,7 +210,7 @@ OptionalRefStruct::OptionalRefStruct(const OptionalRefStruct& srcObj) {
   optional_blob = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::binary>(srcObj.optional_blob);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.optional_blob = srcObj.__isset.optional_blob;
+  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
@@ -235,7 +235,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 OptionalRefStruct::OptionalRefStruct(apache::thrift::FragileConstructor, ::py3::simple::IOBufPtr optional_blob__arg) :
     optional_blob(std::move(optional_blob__arg)) {
-  __isset.optional_blob = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -352,14 +352,14 @@ SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, bool is_on__arg, 
     real(std::move(real__arg)),
     smaller_real(std::move(smaller_real__arg)),
     hidden_field(std::move(hidden_field__arg)) {
-  __isset.is_on = true;
-  __isset.tiny_int = true;
-  __isset.small_int = true;
-  __isset.nice_sized_int = true;
-  __isset.big_int = true;
-  __isset.real = true;
-  __isset.smaller_real = true;
-  __isset.hidden_field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -545,15 +545,15 @@ ComplexStruct::ComplexStruct(apache::thrift::FragileConstructor, ::py3::simple::
     from(std::move(from__arg)),
     cdef(std::move(cdef__arg)),
     bytes_with_cpp_type(std::move(bytes_with_cpp_type__arg)) {
-  __isset.structOne = true;
-  __isset.structTwo = true;
-  __isset.an_integer = true;
-  __isset.name = true;
-  __isset.an_enum = true;
-  __isset.some_bytes = true;
-  __isset.from = true;
-  __isset.cdef = true;
-  __isset.bytes_with_cpp_type = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.__fbthrift_set(folly::index_constant<8>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -832,7 +832,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BinaryUnionStruct::BinaryUnionStruct(apache::thrift::FragileConstructor, ::py3::simple::BinaryUnion u__arg) :
     u(std::move(u__arg)) {
-  __isset.u = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

@@ -165,7 +165,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) :
     sonnet(std::move(sonnet__arg)) {
-  __isset.sonnet = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -276,8 +276,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :
     error_message(std::move(error_message__arg)),
     internal_error_message(std::move(internal_error_message__arg)) {
-  __isset.error_message = true;
-  __isset.internal_error_message = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -396,8 +396,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::string error_message__arg, ::std::string internal_error_message__arg) :
     error_message(std::move(error_message__arg)),
     internal_error_message(std::move(internal_error_message__arg)) {
-  __isset.error_message = true;
-  __isset.internal_error_message = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -517,8 +517,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t error_code__arg) :
     message(std::move(message__arg)),
     error_code(std::move(error_code__arg)) {
-  __isset.message = true;
-  __isset.error_code = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

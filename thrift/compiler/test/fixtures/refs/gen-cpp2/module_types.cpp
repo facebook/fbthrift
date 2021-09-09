@@ -547,7 +547,7 @@ StructWithUnion::StructWithUnion(const StructWithUnion& srcObj) {
         ::apache::thrift::type_class::floating_point>(srcObj.aDouble);
   f = srcObj.f;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.f = srcObj.__isset.f;
+  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
@@ -578,7 +578,7 @@ StructWithUnion::StructWithUnion(apache::thrift::FragileConstructor, ::std::uniq
     u(std::move(u__arg)),
     aDouble(std::move(aDouble__arg)),
     f(std::move(f__arg)) {
-  __isset.f = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -722,7 +722,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 RecursiveStruct::RecursiveStruct(apache::thrift::FragileConstructor, ::std::vector<::cpp2::RecursiveStruct> mes__arg) :
     mes(std::move(mes__arg)) {
-  __isset.mes = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

@@ -96,10 +96,10 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::cpp2::Metasyntactic
     fine(std::move(fine__arg)),
     questionable(std::move(questionable__arg)),
     tags(std::move(tags__arg)) {
-  __isset.reasonable = true;
-  __isset.fine = true;
-  __isset.questionable = true;
-  __isset.tags = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

@@ -139,6 +139,18 @@ class MyStruct final  {
   struct __isset {
     bool MyIntField;
     bool MyStringField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return MyIntField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      MyIntField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return MyStringField;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      MyStringField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -193,7 +205,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
-    __isset.MyIntField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return MyIntField;
   }
 
@@ -209,7 +221,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-    __isset.MyStringField = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return MyStringField;
   }
 

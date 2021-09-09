@@ -41,8 +41,8 @@ Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t field1__arg, ::std::
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)) {
-  __isset.field1 = true;
-  __isset.field2 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

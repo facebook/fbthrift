@@ -162,10 +162,10 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
     MyStringField(std::move(MyStringField__arg)),
     MyDataField(std::move(MyDataField__arg)),
     myEnum(std::move(myEnum__arg)) {
-  __isset.MyIntField = true;
-  __isset.MyStringField = true;
-  __isset.MyDataField = true;
-  __isset.myEnum = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

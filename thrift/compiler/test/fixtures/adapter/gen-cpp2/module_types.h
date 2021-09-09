@@ -199,6 +199,54 @@ class Foo final  {
     bool mapField;
     bool optionalMapField;
     bool binaryField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return intField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      intField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return optionalIntField;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      optionalIntField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return intFieldWithDefault;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      intFieldWithDefault = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return setField;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      setField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return optionalSetField;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      optionalSetField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return mapField;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      mapField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<6>) const {
+      return optionalMapField;
+    }
+    void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
+      optionalMapField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<7>) const {
+      return binaryField;
+    }
+    void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
+      binaryField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -888,6 +936,42 @@ class Bar final  {
     bool optionalStructListField;
     bool unionField;
     bool optionalUnionField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return structField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      structField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return optionalStructField;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      optionalStructField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return structListField;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      structListField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return optionalStructListField;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      optionalStructListField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return unionField;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      unionField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return optionalUnionField;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      optionalUnionField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1021,7 +1105,7 @@ class Bar final  {
   [[deprecated("Use `FOO.structListField_ref() = BAR;` instead of `FOO.set_structListField(BAR);`")]]
   ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& set_structListField(T_Bar_structListField_struct_setter&& structListField_) {
     structListField = std::forward<T_Bar_structListField_struct_setter>(structListField_);
-    __isset.structListField = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return structListField;
   }
   const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>* get_optionalStructListField() const&;
@@ -1032,7 +1116,7 @@ class Bar final  {
   [[deprecated("Use `FOO.optionalStructListField_ref() = BAR;` instead of `FOO.set_optionalStructListField(BAR);`")]]
   ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& set_optionalStructListField(T_Bar_optionalStructListField_struct_setter&& optionalStructListField_) {
     optionalStructListField = std::forward<T_Bar_optionalStructListField_struct_setter>(optionalStructListField_);
-    __isset.optionalStructListField = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return optionalStructListField;
   }
 

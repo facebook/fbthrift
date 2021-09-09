@@ -98,6 +98,18 @@ class Included final  {
   struct __isset {
     bool MyIntField;
     bool MyTransitiveField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return MyIntField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      MyIntField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return MyTransitiveField;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      MyTransitiveField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -152,7 +164,7 @@ class Included final  {
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
-    __isset.MyIntField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return MyIntField;
   }
   const ::cpp2::Foo& get_MyTransitiveField() const&;
@@ -162,7 +174,7 @@ class Included final  {
   [[deprecated("Use `FOO.MyTransitiveField_ref() = BAR;` instead of `FOO.set_MyTransitiveField(BAR);`")]]
   ::cpp2::Foo& set_MyTransitiveField(T_Included_MyTransitiveField_struct_setter&& MyTransitiveField_) {
     MyTransitiveField = std::forward<T_Included_MyTransitiveField_struct_setter>(MyTransitiveField_);
-    __isset.MyTransitiveField = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return MyTransitiveField;
   }
 

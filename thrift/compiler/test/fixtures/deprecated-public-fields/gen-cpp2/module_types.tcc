@@ -51,7 +51,7 @@ _readField_bar:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::readWithContext(*iprot, this->bar, _readState);
     
   }
-  this->__isset.bar = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -101,7 +101,7 @@ uint32_t Foo::serializedSize(Protocol_ const* prot_) const {
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Foo");
-  if (this->__isset.bar) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("bar", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->bar);
   }
@@ -115,7 +115,7 @@ uint32_t Foo::serializedSizeZC(Protocol_ const* prot_) const {
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Foo");
-  if (this->__isset.bar) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("bar", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->bar);
   }
@@ -130,7 +130,7 @@ uint32_t Foo::write(Protocol_* prot_) const {
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Foo");
   bool previousFieldHasValue = true;
-  if (this->__isset.bar) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
     constexpr int16_t kPrevFieldId = 0;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_I32, 1, kPrevFieldId>(*prot_, "bar", previousFieldHasValue);
     previousFieldHasValue = true;

@@ -86,14 +86,14 @@ Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
     mapField(std::move(mapField__arg)),
     optionalMapField(std::move(optionalMapField__arg)),
     binaryField(std::move(binaryField__arg)) {
-  __isset.intField = true;
-  __isset.optionalIntField = true;
-  __isset.intFieldWithDefault = true;
-  __isset.setField = true;
-  __isset.optionalSetField = true;
-  __isset.mapField = true;
-  __isset.optionalMapField = true;
-  __isset.binaryField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -424,12 +424,12 @@ Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
     optionalStructListField(std::move(optionalStructListField__arg)),
     unionField(std::move(unionField__arg)),
     optionalUnionField(std::move(optionalUnionField__arg)) {
-  __isset.structField = true;
-  __isset.optionalStructField = true;
-  __isset.structListField = true;
-  __isset.optionalStructListField = true;
-  __isset.unionField = true;
-  __isset.optionalUnionField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

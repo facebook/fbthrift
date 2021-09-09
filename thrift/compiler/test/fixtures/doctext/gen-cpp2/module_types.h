@@ -152,6 +152,12 @@ class A final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool useless_field;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return useless_field;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      useless_field = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -186,7 +192,7 @@ class A final  {
   [[deprecated("Use `FOO.useless_field_ref() = BAR;` instead of `FOO.set_useless_field(BAR);`")]]
   ::std::int32_t& set_useless_field(::std::int32_t useless_field_) {
     useless_field = useless_field_;
-    __isset.useless_field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return useless_field;
   }
 
@@ -545,6 +551,12 @@ class FOLLY_EXPORT Bang : public apache::thrift::TException {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool message;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return message;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      message = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -584,7 +596,7 @@ class FOLLY_EXPORT Bang : public apache::thrift::TException {
   [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_Bang_message_struct_setter&& message_) {
     message = std::forward<T_Bang_message_struct_setter>(message_);
-    __isset.message = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return message;
   }
 

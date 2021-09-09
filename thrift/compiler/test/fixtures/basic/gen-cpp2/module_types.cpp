@@ -184,13 +184,13 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
     oneway(std::move(oneway__arg)),
     readonly(std::move(readonly__arg)),
     idempotent(std::move(idempotent__arg)) {
-  __isset.MyIntField = true;
-  __isset.MyStringField = true;
-  __isset.MyDataField = true;
-  __isset.myEnum = true;
-  __isset.oneway = true;
-  __isset.readonly = true;
-  __isset.idempotent = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

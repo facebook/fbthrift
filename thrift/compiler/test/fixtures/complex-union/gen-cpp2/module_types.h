@@ -1364,6 +1364,24 @@ class Val final  {
     bool strVal;
     bool intVal;
     bool typedefValue;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return strVal;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      strVal = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return intVal;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      intVal = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return typedefValue;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      typedefValue = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1443,7 +1461,7 @@ class Val final  {
   [[deprecated("Use `FOO.strVal_ref() = BAR;` instead of `FOO.set_strVal(BAR);`")]]
   ::std::string& set_strVal(T_Val_strVal_struct_setter&& strVal_) {
     strVal = std::forward<T_Val_strVal_struct_setter>(strVal_);
-    __isset.strVal = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return strVal;
   }
 
@@ -1454,7 +1472,7 @@ class Val final  {
   [[deprecated("Use `FOO.intVal_ref() = BAR;` instead of `FOO.set_intVal(BAR);`")]]
   ::std::int32_t& set_intVal(::std::int32_t intVal_) {
     intVal = intVal_;
-    __isset.intVal = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return intVal;
   }
   const ::cpp2::containerTypedef& get_typedefValue() const&;
@@ -1464,7 +1482,7 @@ class Val final  {
   [[deprecated("Use `FOO.typedefValue_ref() = BAR;` instead of `FOO.set_typedefValue(BAR);`")]]
   ::cpp2::containerTypedef& set_typedefValue(T_Val_typedefValue_struct_setter&& typedefValue_) {
     typedefValue = std::forward<T_Val_typedefValue_struct_setter>(typedefValue_);
-    __isset.typedefValue = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return typedefValue;
   }
 
@@ -2118,6 +2136,12 @@ class NonCopyableStruct final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool num;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return num;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      num = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -2152,7 +2176,7 @@ class NonCopyableStruct final  {
   [[deprecated("Use `FOO.num_ref() = BAR;` instead of `FOO.set_num(BAR);`")]]
   ::std::int64_t& set_num(::std::int64_t num_) {
     num = num_;
-    __isset.num = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return num;
   }
 

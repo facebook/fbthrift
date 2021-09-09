@@ -53,7 +53,7 @@ _readField_OtherStructField:
     _readState.afterSubobject(iprot);
     
   }
-  this->__isset.OtherStructField = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

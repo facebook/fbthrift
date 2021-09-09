@@ -36,19 +36,19 @@ uint32_t TrivialTypesStruct::serializedSize(Protocol_ const* prot_) const {
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TrivialTypesStruct");
-  if (this->__isset.fieldA) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->fieldA);
   }
-  if (this->__isset.fieldB) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<1>())) {
     xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldB);
   }
-  if (this->__isset.fieldC) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<2>())) {
     xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_STRING, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<false>(*prot_, this->fieldC);
   }
-  if (this->__isset.fieldD) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<3>())) {
     xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_STRING, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::test::fixtures::tablebased::IOBufPtr>::serializedSize<false>(*prot_, this->fieldD);
   }
@@ -66,19 +66,19 @@ uint32_t TrivialTypesStruct::serializedSizeZC(Protocol_ const* prot_) const {
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TrivialTypesStruct");
-  if (this->__isset.fieldA) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
     xfer += prot_->serializedFieldSize("fieldA", apache::thrift::protocol::T_I32, 1);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int32_t>::serializedSize<false>(*prot_, this->fieldA);
   }
-  if (this->__isset.fieldB) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<1>())) {
     xfer += prot_->serializedFieldSize("fieldB", apache::thrift::protocol::T_STRING, 2);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::serializedSize<false>(*prot_, this->fieldB);
   }
-  if (this->__isset.fieldC) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<2>())) {
     xfer += prot_->serializedFieldSize("fieldC", apache::thrift::protocol::T_STRING, 3);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::std::string>::serializedSize<true>(*prot_, this->fieldC);
   }
-  if (this->__isset.fieldD) {
+  if (this->__isset.__fbthrift_get(folly::index_constant<3>())) {
     xfer += prot_->serializedFieldSize("fieldD", apache::thrift::protocol::T_STRING, 4);
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::test::fixtures::tablebased::IOBufPtr>::serializedSize<true>(*prot_, this->fieldD);
   }

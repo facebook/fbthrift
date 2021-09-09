@@ -53,7 +53,7 @@ _readField_MyIncludedField:
     _readState.afterSubobject(iprot);
     
   }
-  this->__isset.MyIncludedField = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -69,7 +69,7 @@ _readField_MyOtherIncludedField:
     _readState.afterSubobject(iprot);
     
   }
-  this->__isset.MyOtherIncludedField = true;
+ this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -83,7 +83,7 @@ _readField_MyIncludedInt:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::cpp2::IncludedInt64>::readWithContext(*iprot, this->MyIncludedInt, _readState);
     
   }
-  this->__isset.MyIncludedInt = true;
+ this->__isset.__fbthrift_set(folly::index_constant<2>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

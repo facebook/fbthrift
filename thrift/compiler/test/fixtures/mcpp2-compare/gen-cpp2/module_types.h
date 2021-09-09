@@ -1218,6 +1218,12 @@ class ASimpleStruct final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool boolField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return boolField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      boolField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1252,7 +1258,7 @@ class ASimpleStruct final  {
   [[deprecated("Use `FOO.boolField_ref() = BAR;` instead of `FOO.set_boolField(BAR);`")]]
   ::std::int64_t& set_boolField(::std::int64_t boolField_) {
     boolField = boolField_;
-    __isset.boolField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return boolField;
   }
 
@@ -1327,6 +1333,12 @@ class ASimpleStructNoexcept final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool boolField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return boolField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      boolField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1361,7 +1373,7 @@ class ASimpleStructNoexcept final  {
   [[deprecated("Use `FOO.boolField_ref() = BAR;` instead of `FOO.set_boolField(BAR);`")]]
   ::std::int64_t& set_boolField(::std::int64_t boolField_) {
     boolField = boolField_;
-    __isset.boolField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return boolField;
   }
 
@@ -1466,6 +1478,66 @@ class MyStruct final  {
     bool MyMapEnumAndInt;
     bool MyCustomField;
     bool MyOptCustomField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return MyBoolField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      MyBoolField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return MyIntField;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      MyIntField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return MyStringField;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      MyStringField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return MyStringField2;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      MyStringField2 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return MyBinaryField;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      MyBinaryField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return MyBinaryField2;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      MyBinaryField2 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<6>) const {
+      return MyBinaryListField4;
+    }
+    void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
+      MyBinaryListField4 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<7>) const {
+      return MyMapEnumAndInt;
+    }
+    void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
+      MyMapEnumAndInt = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<8>) const {
+      return MyCustomField;
+    }
+    void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
+      MyCustomField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<9>) const {
+      return MyOptCustomField;
+    }
+    void __fbthrift_set(folly::index_constant<9>, bool isset_flag) {
+      MyOptCustomField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -1700,7 +1772,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyBoolField_ref() = BAR;` instead of `FOO.set_MyBoolField(BAR);`")]]
   bool& set_MyBoolField(bool MyBoolField_) {
     MyBoolField = MyBoolField_;
-    __isset.MyBoolField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return MyBoolField;
   }
 
@@ -1711,7 +1783,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
     MyIntField = MyIntField_;
-    __isset.MyIntField = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return MyIntField;
   }
 
@@ -1727,7 +1799,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
     MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-    __isset.MyStringField = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return MyStringField;
   }
 
@@ -1743,7 +1815,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyStringField2_ref() = BAR;` instead of `FOO.set_MyStringField2(BAR);`")]]
   ::std::string& set_MyStringField2(T_MyStruct_MyStringField2_struct_setter&& MyStringField2_) {
     MyStringField2 = std::forward<T_MyStruct_MyStringField2_struct_setter>(MyStringField2_);
-    __isset.MyStringField2 = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return MyStringField2;
   }
 
@@ -1759,7 +1831,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyBinaryField_ref() = BAR;` instead of `FOO.set_MyBinaryField(BAR);`")]]
   ::std::string& set_MyBinaryField(T_MyStruct_MyBinaryField_struct_setter&& MyBinaryField_) {
     MyBinaryField = std::forward<T_MyStruct_MyBinaryField_struct_setter>(MyBinaryField_);
-    __isset.MyBinaryField = true;
+    __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return MyBinaryField;
   }
 
@@ -1776,7 +1848,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyBinaryField2_ref() = BAR;` instead of `FOO.set_MyBinaryField2(BAR);`")]]
   ::std::string& set_MyBinaryField2(T_MyStruct_MyBinaryField2_struct_setter&& MyBinaryField2_) {
     MyBinaryField2 = std::forward<T_MyStruct_MyBinaryField2_struct_setter>(MyBinaryField2_);
-    __isset.MyBinaryField2 = true;
+    __isset.__fbthrift_set(folly::index_constant<5>(), true);
     return MyBinaryField2;
   }
 
@@ -1801,7 +1873,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyBinaryListField4_ref() = BAR;` instead of `FOO.set_MyBinaryListField4(BAR);`")]]
   ::std::vector<::std::string>& set_MyBinaryListField4(T_MyStruct_MyBinaryListField4_struct_setter&& MyBinaryListField4_) {
     MyBinaryListField4 = std::forward<T_MyStruct_MyBinaryListField4_struct_setter>(MyBinaryListField4_);
-    __isset.MyBinaryListField4 = true;
+    __isset.__fbthrift_set(folly::index_constant<6>(), true);
     return MyBinaryListField4;
   }
   const ::std::map<::some::valid::ns::MyEnumA, ::std::string>& get_MyMapEnumAndInt() const&;
@@ -1811,7 +1883,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.MyMapEnumAndInt_ref() = BAR;` instead of `FOO.set_MyMapEnumAndInt(BAR);`")]]
   ::std::map<::some::valid::ns::MyEnumA, ::std::string>& set_MyMapEnumAndInt(T_MyStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
     MyMapEnumAndInt = std::forward<T_MyStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
-    __isset.MyMapEnumAndInt = true;
+    __isset.__fbthrift_set(folly::index_constant<7>(), true);
     return MyMapEnumAndInt;
   }
 
@@ -4444,6 +4516,90 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
     bool a_union_typedef_list;
     bool MyCustomField;
     bool MyOptCustomField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return code;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      code = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return message2;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      message2 = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return exception_list;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      exception_list = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return exception_set;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      exception_set = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return exception_map;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      exception_map = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return enum_field;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      enum_field = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<6>) const {
+      return enum_container;
+    }
+    void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
+      enum_container = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<7>) const {
+      return a_struct;
+    }
+    void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
+      a_struct = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<8>) const {
+      return a_set_struct;
+    }
+    void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
+      a_set_struct = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<9>) const {
+      return a_union_list;
+    }
+    void __fbthrift_set(folly::index_constant<9>, bool isset_flag) {
+      a_union_list = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<10>) const {
+      return union_typedef;
+    }
+    void __fbthrift_set(folly::index_constant<10>, bool isset_flag) {
+      union_typedef = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<11>) const {
+      return a_union_typedef_list;
+    }
+    void __fbthrift_set(folly::index_constant<11>, bool isset_flag) {
+      a_union_typedef_list = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<12>) const {
+      return MyCustomField;
+    }
+    void __fbthrift_set(folly::index_constant<12>, bool isset_flag) {
+      MyCustomField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<13>) const {
+      return MyOptCustomField;
+    }
+    void __fbthrift_set(folly::index_constant<13>, bool isset_flag) {
+      MyOptCustomField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -4798,7 +4954,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.code_ref() = BAR;` instead of `FOO.set_code(BAR);`")]]
   ::std::int32_t& set_code(::std::int32_t code_) {
     code = code_;
-    __isset.code = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return code;
   }
 
@@ -4824,7 +4980,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.message2_ref() = BAR;` instead of `FOO.set_message2(BAR);`")]]
   ::std::string& set_message2(T_AnException_message2_struct_setter&& message2_) {
     message2 = std::forward<T_AnException_message2_struct_setter>(message2_);
-    __isset.message2 = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return message2;
   }
 
@@ -4849,7 +5005,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.exception_list_ref() = BAR;` instead of `FOO.set_exception_list(BAR);`")]]
   ::std::vector<::std::int32_t>& set_exception_list(T_AnException_exception_list_struct_setter&& exception_list_) {
     exception_list = std::forward<T_AnException_exception_list_struct_setter>(exception_list_);
-    __isset.exception_list = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return exception_list;
   }
   const ::std::set<::std::int64_t>& get_exception_set() const&;
@@ -4859,7 +5015,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.exception_set_ref() = BAR;` instead of `FOO.set_exception_set(BAR);`")]]
   ::std::set<::std::int64_t>& set_exception_set(T_AnException_exception_set_struct_setter&& exception_set_) {
     exception_set = std::forward<T_AnException_exception_set_struct_setter>(exception_set_);
-    __isset.exception_set = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return exception_set;
   }
   const ::std::map<::std::string, ::std::int32_t>& get_exception_map() const&;
@@ -4869,7 +5025,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.exception_map_ref() = BAR;` instead of `FOO.set_exception_map(BAR);`")]]
   ::std::map<::std::string, ::std::int32_t>& set_exception_map(T_AnException_exception_map_struct_setter&& exception_map_) {
     exception_map = std::forward<T_AnException_exception_map_struct_setter>(exception_map_);
-    __isset.exception_map = true;
+    __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return exception_map;
   }
   const ::std::map<::std::string, ::std::int32_t>& get_req_exception_map() const&;
@@ -4889,7 +5045,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.enum_field_ref() = BAR;` instead of `FOO.set_enum_field(BAR);`")]]
   ::some::valid::ns::MyEnumA& set_enum_field(::some::valid::ns::MyEnumA enum_field_) {
     enum_field = enum_field_;
-    __isset.enum_field = true;
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
     return enum_field;
   }
   const ::std::vector<::some::valid::ns::MyEnumA>& get_enum_container() const&;
@@ -4899,7 +5055,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.enum_container_ref() = BAR;` instead of `FOO.set_enum_container(BAR);`")]]
   ::std::vector<::some::valid::ns::MyEnumA>& set_enum_container(T_AnException_enum_container_struct_setter&& enum_container_) {
     enum_container = std::forward<T_AnException_enum_container_struct_setter>(enum_container_);
-    __isset.enum_container = true;
+    __isset.__fbthrift_set(folly::index_constant<6>(), true);
     return enum_container;
   }
   const ::some::valid::ns::MyStruct& get_a_struct() const&;
@@ -4909,7 +5065,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.a_struct_ref() = BAR;` instead of `FOO.set_a_struct(BAR);`")]]
   ::some::valid::ns::MyStruct& set_a_struct(T_AnException_a_struct_struct_setter&& a_struct_) {
     a_struct = std::forward<T_AnException_a_struct_struct_setter>(a_struct_);
-    __isset.a_struct = true;
+    __isset.__fbthrift_set(folly::index_constant<7>(), true);
     return a_struct;
   }
   const ::std::set<::some::valid::ns::MyStruct>& get_a_set_struct() const&;
@@ -4919,7 +5075,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.a_set_struct_ref() = BAR;` instead of `FOO.set_a_set_struct(BAR);`")]]
   ::std::set<::some::valid::ns::MyStruct>& set_a_set_struct(T_AnException_a_set_struct_struct_setter&& a_set_struct_) {
     a_set_struct = std::forward<T_AnException_a_set_struct_struct_setter>(a_set_struct_);
-    __isset.a_set_struct = true;
+    __isset.__fbthrift_set(folly::index_constant<8>(), true);
     return a_set_struct;
   }
   const ::std::vector<::some::valid::ns::SimpleUnion>& get_a_union_list() const&;
@@ -4929,7 +5085,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.a_union_list_ref() = BAR;` instead of `FOO.set_a_union_list(BAR);`")]]
   ::std::vector<::some::valid::ns::SimpleUnion>& set_a_union_list(T_AnException_a_union_list_struct_setter&& a_union_list_) {
     a_union_list = std::forward<T_AnException_a_union_list_struct_setter>(a_union_list_);
-    __isset.a_union_list = true;
+    __isset.__fbthrift_set(folly::index_constant<9>(), true);
     return a_union_list;
   }
   const ::some::valid::ns::unionTypeDef& get_union_typedef() const&;
@@ -4939,7 +5095,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.union_typedef_ref() = BAR;` instead of `FOO.set_union_typedef(BAR);`")]]
   ::some::valid::ns::unionTypeDef& set_union_typedef(T_AnException_union_typedef_struct_setter&& union_typedef_) {
     union_typedef = std::forward<T_AnException_union_typedef_struct_setter>(union_typedef_);
-    __isset.union_typedef = true;
+    __isset.__fbthrift_set(folly::index_constant<10>(), true);
     return union_typedef;
   }
   const ::std::vector<::some::valid::ns::unionTypeDef>& get_a_union_typedef_list() const&;
@@ -4949,7 +5105,7 @@ class FOLLY_EXPORT AnException : public apache::thrift::TException {
   [[deprecated("Use `FOO.a_union_typedef_list_ref() = BAR;` instead of `FOO.set_a_union_typedef_list(BAR);`")]]
   ::std::vector<::some::valid::ns::unionTypeDef>& set_a_union_typedef_list(T_AnException_a_union_typedef_list_struct_setter&& a_union_typedef_list_) {
     a_union_typedef_list = std::forward<T_AnException_a_union_typedef_list_struct_setter>(a_union_typedef_list_);
-    __isset.a_union_typedef_list = true;
+    __isset.__fbthrift_set(folly::index_constant<11>(), true);
     return a_union_typedef_list;
   }
 
@@ -5040,6 +5196,18 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
   struct __isset {
     bool code;
     bool message;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return code;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      code = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return message;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      message = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -5114,7 +5282,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
   [[deprecated("Use `FOO.code_ref() = BAR;` instead of `FOO.set_code(BAR);`")]]
   ::std::int32_t& set_code(::std::int32_t code_) {
     code = code_;
-    __isset.code = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return code;
   }
 
@@ -5140,7 +5308,7 @@ class FOLLY_EXPORT AnotherException : public apache::thrift::TException {
   [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_AnotherException_message_struct_setter&& message_) {
     message = std::forward<T_AnotherException_message_struct_setter>(message_);
-    __isset.message = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return message;
   }
 
@@ -5345,6 +5513,240 @@ class containerStruct final  {
     bool fieldAD;
     bool fieldAE;
     bool fieldSD;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return fieldA;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      fieldA = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return opt_fieldA;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      opt_fieldA = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return fieldB;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      fieldB = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return opt_fieldB;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      opt_fieldB = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return fieldC;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      fieldC = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return opt_fieldC;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      opt_fieldC = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<6>) const {
+      return fieldD;
+    }
+    void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
+      fieldD = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<7>) const {
+      return fieldE;
+    }
+    void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
+      fieldE = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<8>) const {
+      return opt_fieldE;
+    }
+    void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
+      opt_fieldE = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<9>) const {
+      return fieldF;
+    }
+    void __fbthrift_set(folly::index_constant<9>, bool isset_flag) {
+      fieldF = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<10>) const {
+      return fieldG;
+    }
+    void __fbthrift_set(folly::index_constant<10>, bool isset_flag) {
+      fieldG = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<11>) const {
+      return fieldH;
+    }
+    void __fbthrift_set(folly::index_constant<11>, bool isset_flag) {
+      fieldH = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<12>) const {
+      return fieldI;
+    }
+    void __fbthrift_set(folly::index_constant<12>, bool isset_flag) {
+      fieldI = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<13>) const {
+      return fieldJ;
+    }
+    void __fbthrift_set(folly::index_constant<13>, bool isset_flag) {
+      fieldJ = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<14>) const {
+      return fieldK;
+    }
+    void __fbthrift_set(folly::index_constant<14>, bool isset_flag) {
+      fieldK = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<15>) const {
+      return fieldL;
+    }
+    void __fbthrift_set(folly::index_constant<15>, bool isset_flag) {
+      fieldL = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<16>) const {
+      return fieldM;
+    }
+    void __fbthrift_set(folly::index_constant<16>, bool isset_flag) {
+      fieldM = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<17>) const {
+      return fieldN;
+    }
+    void __fbthrift_set(folly::index_constant<17>, bool isset_flag) {
+      fieldN = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<18>) const {
+      return fieldO;
+    }
+    void __fbthrift_set(folly::index_constant<18>, bool isset_flag) {
+      fieldO = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<19>) const {
+      return fieldP;
+    }
+    void __fbthrift_set(folly::index_constant<19>, bool isset_flag) {
+      fieldP = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<20>) const {
+      return fieldQ;
+    }
+    void __fbthrift_set(folly::index_constant<20>, bool isset_flag) {
+      fieldQ = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<21>) const {
+      return fieldR;
+    }
+    void __fbthrift_set(folly::index_constant<21>, bool isset_flag) {
+      fieldR = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<22>) const {
+      return opt_fieldR;
+    }
+    void __fbthrift_set(folly::index_constant<22>, bool isset_flag) {
+      opt_fieldR = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<23>) const {
+      return fieldS;
+    }
+    void __fbthrift_set(folly::index_constant<23>, bool isset_flag) {
+      fieldS = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<24>) const {
+      return fieldT;
+    }
+    void __fbthrift_set(folly::index_constant<24>, bool isset_flag) {
+      fieldT = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<25>) const {
+      return fieldU;
+    }
+    void __fbthrift_set(folly::index_constant<25>, bool isset_flag) {
+      fieldU = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<26>) const {
+      return fieldV;
+    }
+    void __fbthrift_set(folly::index_constant<26>, bool isset_flag) {
+      fieldV = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<27>) const {
+      return opt_fieldV;
+    }
+    void __fbthrift_set(folly::index_constant<27>, bool isset_flag) {
+      opt_fieldV = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<28>) const {
+      return fieldW;
+    }
+    void __fbthrift_set(folly::index_constant<28>, bool isset_flag) {
+      fieldW = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<29>) const {
+      return fieldX;
+    }
+    void __fbthrift_set(folly::index_constant<29>, bool isset_flag) {
+      fieldX = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<30>) const {
+      return opt_fieldX;
+    }
+    void __fbthrift_set(folly::index_constant<30>, bool isset_flag) {
+      opt_fieldX = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<31>) const {
+      return fieldY;
+    }
+    void __fbthrift_set(folly::index_constant<31>, bool isset_flag) {
+      fieldY = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<32>) const {
+      return fieldZ;
+    }
+    void __fbthrift_set(folly::index_constant<32>, bool isset_flag) {
+      fieldZ = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<33>) const {
+      return fieldAA;
+    }
+    void __fbthrift_set(folly::index_constant<33>, bool isset_flag) {
+      fieldAA = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<34>) const {
+      return fieldAB;
+    }
+    void __fbthrift_set(folly::index_constant<34>, bool isset_flag) {
+      fieldAB = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<35>) const {
+      return fieldAC;
+    }
+    void __fbthrift_set(folly::index_constant<35>, bool isset_flag) {
+      fieldAC = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<36>) const {
+      return fieldAD;
+    }
+    void __fbthrift_set(folly::index_constant<36>, bool isset_flag) {
+      fieldAD = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<37>) const {
+      return fieldAE;
+    }
+    void __fbthrift_set(folly::index_constant<37>, bool isset_flag) {
+      fieldAE = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<38>) const {
+      return fieldSD;
+    }
+    void __fbthrift_set(folly::index_constant<38>, bool isset_flag) {
+      fieldSD = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -6279,7 +6681,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   bool& set_fieldA(bool fieldA_) {
     fieldA = fieldA_;
-    __isset.fieldA = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return fieldA;
   }
 
@@ -6305,7 +6707,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.opt_fieldA_ref() = BAR;` instead of `FOO.set_opt_fieldA(BAR);`")]]
   bool& set_opt_fieldA(bool opt_fieldA_) {
     opt_fieldA = opt_fieldA_;
-    __isset.opt_fieldA = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return opt_fieldA;
   }
   const ::std::map<::std::string, bool>& get_fieldB() const&;
@@ -6315,7 +6717,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_fieldB(T_containerStruct_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_containerStruct_fieldB_struct_setter>(fieldB_);
-    __isset.fieldB = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return fieldB;
   }
   const ::std::map<::std::string, bool>& get_req_fieldB() const&;
@@ -6335,7 +6737,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.opt_fieldB_ref() = BAR;` instead of `FOO.set_opt_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_opt_fieldB(T_containerStruct_opt_fieldB_struct_setter&& opt_fieldB_) {
     opt_fieldB = std::forward<T_containerStruct_opt_fieldB_struct_setter>(opt_fieldB_);
-    __isset.opt_fieldB = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return opt_fieldB;
   }
   const ::std::set<::std::int32_t>& get_fieldC() const&;
@@ -6345,7 +6747,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
   ::std::set<::std::int32_t>& set_fieldC(T_containerStruct_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_containerStruct_fieldC_struct_setter>(fieldC_);
-    __isset.fieldC = true;
+    __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return fieldC;
   }
   const ::std::set<::std::int32_t>& get_req_fieldC() const&;
@@ -6365,7 +6767,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.opt_fieldC_ref() = BAR;` instead of `FOO.set_opt_fieldC(BAR);`")]]
   ::std::set<::std::int32_t>& set_opt_fieldC(T_containerStruct_opt_fieldC_struct_setter&& opt_fieldC_) {
     opt_fieldC = std::forward<T_containerStruct_opt_fieldC_struct_setter>(opt_fieldC_);
-    __isset.opt_fieldC = true;
+    __isset.__fbthrift_set(folly::index_constant<5>(), true);
     return opt_fieldC;
   }
 
@@ -6381,7 +6783,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
   ::std::string& set_fieldD(T_containerStruct_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_containerStruct_fieldD_struct_setter>(fieldD_);
-    __isset.fieldD = true;
+    __isset.__fbthrift_set(folly::index_constant<6>(), true);
     return fieldD;
   }
 
@@ -6397,7 +6799,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
   ::std::string& set_fieldE(T_containerStruct_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_containerStruct_fieldE_struct_setter>(fieldE_);
-    __isset.fieldE = true;
+    __isset.__fbthrift_set(folly::index_constant<7>(), true);
     return fieldE;
   }
 
@@ -6429,7 +6831,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.opt_fieldE_ref() = BAR;` instead of `FOO.set_opt_fieldE(BAR);`")]]
   ::std::string& set_opt_fieldE(T_containerStruct_opt_fieldE_struct_setter&& opt_fieldE_) {
     opt_fieldE = std::forward<T_containerStruct_opt_fieldE_struct_setter>(opt_fieldE_);
-    __isset.opt_fieldE = true;
+    __isset.__fbthrift_set(folly::index_constant<8>(), true);
     return opt_fieldE;
   }
   const ::std::vector<::std::vector<::std::int32_t>>& get_fieldF() const&;
@@ -6439,7 +6841,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldF_ref() = BAR;` instead of `FOO.set_fieldF(BAR);`")]]
   ::std::vector<::std::vector<::std::int32_t>>& set_fieldF(T_containerStruct_fieldF_struct_setter&& fieldF_) {
     fieldF = std::forward<T_containerStruct_fieldF_struct_setter>(fieldF_);
-    __isset.fieldF = true;
+    __isset.__fbthrift_set(folly::index_constant<9>(), true);
     return fieldF;
   }
   const ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>& get_fieldG() const&;
@@ -6449,7 +6851,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldG_ref() = BAR;` instead of `FOO.set_fieldG(BAR);`")]]
   ::std::map<::std::string, ::std::map<::std::string, ::std::map<::std::string, ::std::int32_t>>>& set_fieldG(T_containerStruct_fieldG_struct_setter&& fieldG_) {
     fieldG = std::forward<T_containerStruct_fieldG_struct_setter>(fieldG_);
-    __isset.fieldG = true;
+    __isset.__fbthrift_set(folly::index_constant<10>(), true);
     return fieldG;
   }
   const ::std::vector<::std::set<::std::int32_t>>& get_fieldH() const&;
@@ -6459,7 +6861,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldH_ref() = BAR;` instead of `FOO.set_fieldH(BAR);`")]]
   ::std::vector<::std::set<::std::int32_t>>& set_fieldH(T_containerStruct_fieldH_struct_setter&& fieldH_) {
     fieldH = std::forward<T_containerStruct_fieldH_struct_setter>(fieldH_);
-    __isset.fieldH = true;
+    __isset.__fbthrift_set(folly::index_constant<11>(), true);
     return fieldH;
   }
 
@@ -6470,7 +6872,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldI_ref() = BAR;` instead of `FOO.set_fieldI(BAR);`")]]
   bool& set_fieldI(bool fieldI_) {
     fieldI = fieldI_;
-    __isset.fieldI = true;
+  __isset.__fbthrift_set(folly::index_constant<12>(), true);
     return fieldI;
   }
   const ::std::map<::std::string, ::std::vector<::std::int32_t>>& get_fieldJ() const&;
@@ -6480,7 +6882,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldJ_ref() = BAR;` instead of `FOO.set_fieldJ(BAR);`")]]
   ::std::map<::std::string, ::std::vector<::std::int32_t>>& set_fieldJ(T_containerStruct_fieldJ_struct_setter&& fieldJ_) {
     fieldJ = std::forward<T_containerStruct_fieldJ_struct_setter>(fieldJ_);
-    __isset.fieldJ = true;
+    __isset.__fbthrift_set(folly::index_constant<13>(), true);
     return fieldJ;
   }
   const ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& get_fieldK() const&;
@@ -6490,7 +6892,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldK_ref() = BAR;` instead of `FOO.set_fieldK(BAR);`")]]
   ::std::vector<::std::vector<::std::vector<::std::vector<::std::int32_t>>>>& set_fieldK(T_containerStruct_fieldK_struct_setter&& fieldK_) {
     fieldK = std::forward<T_containerStruct_fieldK_struct_setter>(fieldK_);
-    __isset.fieldK = true;
+    __isset.__fbthrift_set(folly::index_constant<14>(), true);
     return fieldK;
   }
   const ::std::set<::std::set<::std::set<bool>>>& get_fieldL() const&;
@@ -6500,7 +6902,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldL_ref() = BAR;` instead of `FOO.set_fieldL(BAR);`")]]
   ::std::set<::std::set<::std::set<bool>>>& set_fieldL(T_containerStruct_fieldL_struct_setter&& fieldL_) {
     fieldL = std::forward<T_containerStruct_fieldL_struct_setter>(fieldL_);
-    __isset.fieldL = true;
+    __isset.__fbthrift_set(folly::index_constant<15>(), true);
     return fieldL;
   }
   const ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& get_fieldM() const&;
@@ -6510,7 +6912,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldM_ref() = BAR;` instead of `FOO.set_fieldM(BAR);`")]]
   ::std::map<::std::set<::std::vector<::std::int32_t>>, ::std::map<::std::vector<::std::set<::std::string>>, ::std::string>>& set_fieldM(T_containerStruct_fieldM_struct_setter&& fieldM_) {
     fieldM = std::forward<T_containerStruct_fieldM_struct_setter>(fieldM_);
-    __isset.fieldM = true;
+    __isset.__fbthrift_set(folly::index_constant<16>(), true);
     return fieldM;
   }
 
@@ -6521,7 +6923,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldN_ref() = BAR;` instead of `FOO.set_fieldN(BAR);`")]]
   ::some::valid::ns::simpleTypeDef& set_fieldN(::some::valid::ns::simpleTypeDef fieldN_) {
     fieldN = fieldN_;
-    __isset.fieldN = true;
+  __isset.__fbthrift_set(folly::index_constant<17>(), true);
     return fieldN;
   }
   const ::some::valid::ns::complexStructTypeDef& get_fieldO() const&;
@@ -6531,7 +6933,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldO_ref() = BAR;` instead of `FOO.set_fieldO(BAR);`")]]
   ::some::valid::ns::complexStructTypeDef& set_fieldO(T_containerStruct_fieldO_struct_setter&& fieldO_) {
     fieldO = std::forward<T_containerStruct_fieldO_struct_setter>(fieldO_);
-    __isset.fieldO = true;
+    __isset.__fbthrift_set(folly::index_constant<18>(), true);
     return fieldO;
   }
   const ::std::vector<::some::valid::ns::mostComplexTypeDef>& get_fieldP() const&;
@@ -6541,7 +6943,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldP_ref() = BAR;` instead of `FOO.set_fieldP(BAR);`")]]
   ::std::vector<::some::valid::ns::mostComplexTypeDef>& set_fieldP(T_containerStruct_fieldP_struct_setter&& fieldP_) {
     fieldP = std::forward<T_containerStruct_fieldP_struct_setter>(fieldP_);
-    __isset.fieldP = true;
+    __isset.__fbthrift_set(folly::index_constant<19>(), true);
     return fieldP;
   }
 
@@ -6552,7 +6954,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldQ_ref() = BAR;` instead of `FOO.set_fieldQ(BAR);`")]]
   ::some::valid::ns::MyEnumA& set_fieldQ(::some::valid::ns::MyEnumA fieldQ_) {
     fieldQ = fieldQ_;
-    __isset.fieldQ = true;
+  __isset.__fbthrift_set(folly::index_constant<20>(), true);
     return fieldQ;
   }
 
@@ -6563,7 +6965,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldR_ref() = BAR;` instead of `FOO.set_fieldR(BAR);`")]]
   ::some::valid::ns::MyEnumA& set_fieldR(::some::valid::ns::MyEnumA fieldR_) {
     fieldR = fieldR_;
-    __isset.fieldR = true;
+  __isset.__fbthrift_set(folly::index_constant<21>(), true);
     return fieldR;
   }
 
@@ -6589,7 +6991,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.opt_fieldR_ref() = BAR;` instead of `FOO.set_opt_fieldR(BAR);`")]]
   ::some::valid::ns::MyEnumA& set_opt_fieldR(::some::valid::ns::MyEnumA opt_fieldR_) {
     opt_fieldR = opt_fieldR_;
-    __isset.opt_fieldR = true;
+  __isset.__fbthrift_set(folly::index_constant<22>(), true);
     return opt_fieldR;
   }
 
@@ -6600,7 +7002,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldS_ref() = BAR;` instead of `FOO.set_fieldS(BAR);`")]]
   ::some::valid::ns::MyEnumA& set_fieldS(::some::valid::ns::MyEnumA fieldS_) {
     fieldS = fieldS_;
-    __isset.fieldS = true;
+  __isset.__fbthrift_set(folly::index_constant<23>(), true);
     return fieldS;
   }
   const ::std::vector<::some::valid::ns::MyEnumA>& get_fieldT() const&;
@@ -6610,7 +7012,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldT_ref() = BAR;` instead of `FOO.set_fieldT(BAR);`")]]
   ::std::vector<::some::valid::ns::MyEnumA>& set_fieldT(T_containerStruct_fieldT_struct_setter&& fieldT_) {
     fieldT = std::forward<T_containerStruct_fieldT_struct_setter>(fieldT_);
-    __isset.fieldT = true;
+    __isset.__fbthrift_set(folly::index_constant<24>(), true);
     return fieldT;
   }
   const ::std::vector<::some::valid::ns::MyEnumA>& get_fieldU() const&;
@@ -6620,7 +7022,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldU_ref() = BAR;` instead of `FOO.set_fieldU(BAR);`")]]
   ::std::vector<::some::valid::ns::MyEnumA>& set_fieldU(T_containerStruct_fieldU_struct_setter&& fieldU_) {
     fieldU = std::forward<T_containerStruct_fieldU_struct_setter>(fieldU_);
-    __isset.fieldU = true;
+    __isset.__fbthrift_set(folly::index_constant<25>(), true);
     return fieldU;
   }
   const ::some::valid::ns::MyStruct& get_fieldV() const&;
@@ -6630,7 +7032,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldV_ref() = BAR;` instead of `FOO.set_fieldV(BAR);`")]]
   ::some::valid::ns::MyStruct& set_fieldV(T_containerStruct_fieldV_struct_setter&& fieldV_) {
     fieldV = std::forward<T_containerStruct_fieldV_struct_setter>(fieldV_);
-    __isset.fieldV = true;
+    __isset.__fbthrift_set(folly::index_constant<26>(), true);
     return fieldV;
   }
   const ::some::valid::ns::MyStruct& get_req_fieldV() const&;
@@ -6650,7 +7052,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.opt_fieldV_ref() = BAR;` instead of `FOO.set_opt_fieldV(BAR);`")]]
   ::some::valid::ns::MyStruct& set_opt_fieldV(T_containerStruct_opt_fieldV_struct_setter&& opt_fieldV_) {
     opt_fieldV = std::forward<T_containerStruct_opt_fieldV_struct_setter>(opt_fieldV_);
-    __isset.opt_fieldV = true;
+    __isset.__fbthrift_set(folly::index_constant<27>(), true);
     return opt_fieldV;
   }
   const ::std::set<::some::valid::ns::MyStruct>& get_fieldW() const&;
@@ -6660,7 +7062,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldW_ref() = BAR;` instead of `FOO.set_fieldW(BAR);`")]]
   ::std::set<::some::valid::ns::MyStruct>& set_fieldW(T_containerStruct_fieldW_struct_setter&& fieldW_) {
     fieldW = std::forward<T_containerStruct_fieldW_struct_setter>(fieldW_);
-    __isset.fieldW = true;
+    __isset.__fbthrift_set(folly::index_constant<28>(), true);
     return fieldW;
   }
   const ::some::valid::ns::ComplexUnion& get_fieldX() const&;
@@ -6670,7 +7072,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldX_ref() = BAR;` instead of `FOO.set_fieldX(BAR);`")]]
   ::some::valid::ns::ComplexUnion& set_fieldX(T_containerStruct_fieldX_struct_setter&& fieldX_) {
     fieldX = std::forward<T_containerStruct_fieldX_struct_setter>(fieldX_);
-    __isset.fieldX = true;
+    __isset.__fbthrift_set(folly::index_constant<29>(), true);
     return fieldX;
   }
   const ::some::valid::ns::ComplexUnion& get_req_fieldX() const&;
@@ -6690,7 +7092,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.opt_fieldX_ref() = BAR;` instead of `FOO.set_opt_fieldX(BAR);`")]]
   ::some::valid::ns::ComplexUnion& set_opt_fieldX(T_containerStruct_opt_fieldX_struct_setter&& opt_fieldX_) {
     opt_fieldX = std::forward<T_containerStruct_opt_fieldX_struct_setter>(opt_fieldX_);
-    __isset.opt_fieldX = true;
+    __isset.__fbthrift_set(folly::index_constant<30>(), true);
     return opt_fieldX;
   }
   const ::std::vector<::some::valid::ns::ComplexUnion>& get_fieldY() const&;
@@ -6700,7 +7102,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldY_ref() = BAR;` instead of `FOO.set_fieldY(BAR);`")]]
   ::std::vector<::some::valid::ns::ComplexUnion>& set_fieldY(T_containerStruct_fieldY_struct_setter&& fieldY_) {
     fieldY = std::forward<T_containerStruct_fieldY_struct_setter>(fieldY_);
-    __isset.fieldY = true;
+    __isset.__fbthrift_set(folly::index_constant<31>(), true);
     return fieldY;
   }
   const ::some::valid::ns::unionTypeDef& get_fieldZ() const&;
@@ -6710,7 +7112,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldZ_ref() = BAR;` instead of `FOO.set_fieldZ(BAR);`")]]
   ::some::valid::ns::unionTypeDef& set_fieldZ(T_containerStruct_fieldZ_struct_setter&& fieldZ_) {
     fieldZ = std::forward<T_containerStruct_fieldZ_struct_setter>(fieldZ_);
-    __isset.fieldZ = true;
+    __isset.__fbthrift_set(folly::index_constant<32>(), true);
     return fieldZ;
   }
   const ::std::vector<::some::valid::ns::unionTypeDef>& get_fieldAA() const&;
@@ -6720,7 +7122,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldAA_ref() = BAR;` instead of `FOO.set_fieldAA(BAR);`")]]
   ::std::vector<::some::valid::ns::unionTypeDef>& set_fieldAA(T_containerStruct_fieldAA_struct_setter&& fieldAA_) {
     fieldAA = std::forward<T_containerStruct_fieldAA_struct_setter>(fieldAA_);
-    __isset.fieldAA = true;
+    __isset.__fbthrift_set(folly::index_constant<33>(), true);
     return fieldAA;
   }
   const ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>& get_fieldAB() const&;
@@ -6730,7 +7132,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldAB_ref() = BAR;` instead of `FOO.set_fieldAB(BAR);`")]]
   ::std::map<::some::valid::ns::IndirectionB, ::some::valid::ns::IndirectionC>& set_fieldAB(T_containerStruct_fieldAB_struct_setter&& fieldAB_) {
     fieldAB = std::forward<T_containerStruct_fieldAB_struct_setter>(fieldAB_);
-    __isset.fieldAB = true;
+    __isset.__fbthrift_set(folly::index_constant<34>(), true);
     return fieldAB;
   }
 
@@ -6741,7 +7143,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldAC_ref() = BAR;` instead of `FOO.set_fieldAC(BAR);`")]]
   ::some::valid::ns::MyEnumB& set_fieldAC(::some::valid::ns::MyEnumB fieldAC_) {
     fieldAC = fieldAC_;
-    __isset.fieldAC = true;
+  __isset.__fbthrift_set(folly::index_constant<35>(), true);
     return fieldAC;
   }
 
@@ -6752,7 +7154,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldAD_ref() = BAR;` instead of `FOO.set_fieldAD(BAR);`")]]
   ::a::different::ns::AnEnum& set_fieldAD(::a::different::ns::AnEnum fieldAD_) {
     fieldAD = fieldAD_;
-    __isset.fieldAD = true;
+  __isset.__fbthrift_set(folly::index_constant<36>(), true);
     return fieldAD;
   }
   const ::std::map<::std::string, ::std::int32_t>& get_fieldAE() const&;
@@ -6762,7 +7164,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldAE_ref() = BAR;` instead of `FOO.set_fieldAE(BAR);`")]]
   ::std::map<::std::string, ::std::int32_t>& set_fieldAE(T_containerStruct_fieldAE_struct_setter&& fieldAE_) {
     fieldAE = std::forward<T_containerStruct_fieldAE_struct_setter>(fieldAE_);
-    __isset.fieldAE = true;
+    __isset.__fbthrift_set(folly::index_constant<37>(), true);
     return fieldAE;
   }
 
@@ -6778,7 +7180,7 @@ class containerStruct final  {
   [[deprecated("Use `FOO.fieldSD_ref() = BAR;` instead of `FOO.set_fieldSD(BAR);`")]]
   ::some::valid::ns::IndirectionD& set_fieldSD(T_containerStruct_fieldSD_struct_setter&& fieldSD_) {
     fieldSD = std::forward<T_containerStruct_fieldSD_struct_setter>(fieldSD_);
-    __isset.fieldSD = true;
+    __isset.__fbthrift_set(folly::index_constant<38>(), true);
     return fieldSD;
   }
 
@@ -6861,6 +7263,18 @@ class MyIncludedStruct final  {
   struct __isset {
     bool MyIncludedInt;
     bool MyIncludedStruct;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return MyIncludedInt;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      MyIncludedInt = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return MyIncludedStruct;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      MyIncludedStruct = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -6946,7 +7360,7 @@ class MyIncludedStruct final  {
   [[deprecated("Use `FOO.MyIncludedInt_ref() = BAR;` instead of `FOO.set_MyIncludedInt(BAR);`")]]
   ::a::different::ns::IncludedInt64& set_MyIncludedInt(::a::different::ns::IncludedInt64 MyIncludedInt_) {
     MyIncludedInt = MyIncludedInt_;
-    __isset.MyIncludedInt = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return MyIncludedInt;
   }
   const ::some::valid::ns::AStruct& get_MyIncludedStruct() const&;
@@ -6956,7 +7370,7 @@ class MyIncludedStruct final  {
   [[deprecated("Use `FOO.MyIncludedStruct_ref() = BAR;` instead of `FOO.set_MyIncludedStruct(BAR);`")]]
   ::some::valid::ns::AStruct& set_MyIncludedStruct(T_MyIncludedStruct_MyIncludedStruct_struct_setter&& MyIncludedStruct_) {
     MyIncludedStruct = std::forward<T_MyIncludedStruct_MyIncludedStruct_struct_setter>(MyIncludedStruct_);
-    __isset.MyIncludedStruct = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return MyIncludedStruct;
   }
   const ::some::valid::ns::AStruct& get_ARequiredField() const&;
@@ -7137,6 +7551,138 @@ class AnnotatedStruct  {
     bool iobuf_type_val;
     bool iobuf_ptr_val;
     bool struct_struct;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return no_annotation;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      no_annotation = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return base_type;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      base_type = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return list_type;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      list_type = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return set_type;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      set_type = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return map_type;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      map_type = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return map_struct_type;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      map_struct_type = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<6>) const {
+      return iobuf_type;
+    }
+    void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
+      iobuf_type = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<7>) const {
+      return iobuf_ptr;
+    }
+    void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
+      iobuf_ptr = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<8>) const {
+      return list_i32_template;
+    }
+    void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
+      list_i32_template = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<9>) const {
+      return list_string_template;
+    }
+    void __fbthrift_set(folly::index_constant<9>, bool isset_flag) {
+      list_string_template = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<10>) const {
+      return set_template;
+    }
+    void __fbthrift_set(folly::index_constant<10>, bool isset_flag) {
+      set_template = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<11>) const {
+      return map_template;
+    }
+    void __fbthrift_set(folly::index_constant<11>, bool isset_flag) {
+      map_template = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<12>) const {
+      return typedef_list_template;
+    }
+    void __fbthrift_set(folly::index_constant<12>, bool isset_flag) {
+      typedef_list_template = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<13>) const {
+      return typedef_deque_template;
+    }
+    void __fbthrift_set(folly::index_constant<13>, bool isset_flag) {
+      typedef_deque_template = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<14>) const {
+      return typedef_set_template;
+    }
+    void __fbthrift_set(folly::index_constant<14>, bool isset_flag) {
+      typedef_set_template = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<15>) const {
+      return typedef_map_template;
+    }
+    void __fbthrift_set(folly::index_constant<15>, bool isset_flag) {
+      typedef_map_template = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<16>) const {
+      return indirection_a;
+    }
+    void __fbthrift_set(folly::index_constant<16>, bool isset_flag) {
+      indirection_a = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<17>) const {
+      return indirection_b;
+    }
+    void __fbthrift_set(folly::index_constant<17>, bool isset_flag) {
+      indirection_b = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<18>) const {
+      return indirection_c;
+    }
+    void __fbthrift_set(folly::index_constant<18>, bool isset_flag) {
+      indirection_c = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<19>) const {
+      return iobuf_type_val;
+    }
+    void __fbthrift_set(folly::index_constant<19>, bool isset_flag) {
+      iobuf_type_val = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<20>) const {
+      return iobuf_ptr_val;
+    }
+    void __fbthrift_set(folly::index_constant<20>, bool isset_flag) {
+      iobuf_ptr_val = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<21>) const {
+      return struct_struct;
+    }
+    void __fbthrift_set(folly::index_constant<21>, bool isset_flag) {
+      struct_struct = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -7788,7 +8334,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.no_annotation_ref() = BAR;` instead of `FOO.set_no_annotation(BAR);`")]]
   ::some::valid::ns::containerStruct& set_no_annotation(T_AnnotatedStruct_no_annotation_struct_setter&& no_annotation_) {
     no_annotation = std::forward<T_AnnotatedStruct_no_annotation_struct_setter>(no_annotation_);
-    __isset.no_annotation = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return no_annotation;
   }
 
@@ -7799,7 +8345,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.base_type_ref() = BAR;` instead of `FOO.set_base_type(BAR);`")]]
   ::some::valid::ns::CppFakeI32& set_base_type(::some::valid::ns::CppFakeI32 base_type_) {
     base_type = base_type_;
-    __isset.base_type = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return base_type;
   }
   const ::some::valid::ns::FollySmallVectorI64& get_list_type() const&;
@@ -7809,7 +8355,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.list_type_ref() = BAR;` instead of `FOO.set_list_type(BAR);`")]]
   ::some::valid::ns::FollySmallVectorI64& set_list_type(T_AnnotatedStruct_list_type_struct_setter&& list_type_) {
     list_type = std::forward<T_AnnotatedStruct_list_type_struct_setter>(list_type_);
-    __isset.list_type = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return list_type;
   }
   const ::some::valid::ns::SortedVectorSetString& get_set_type() const&;
@@ -7819,7 +8365,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.set_type_ref() = BAR;` instead of `FOO.set_set_type(BAR);`")]]
   ::some::valid::ns::SortedVectorSetString& set_set_type(T_AnnotatedStruct_set_type_struct_setter&& set_type_) {
     set_type = std::forward<T_AnnotatedStruct_set_type_struct_setter>(set_type_);
-    __isset.set_type = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return set_type;
   }
   const ::some::valid::ns::FakeMap& get_map_type() const&;
@@ -7829,7 +8375,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.map_type_ref() = BAR;` instead of `FOO.set_map_type(BAR);`")]]
   ::some::valid::ns::FakeMap& set_map_type(T_AnnotatedStruct_map_type_struct_setter&& map_type_) {
     map_type = std::forward<T_AnnotatedStruct_map_type_struct_setter>(map_type_);
-    __isset.map_type = true;
+    __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return map_type;
   }
   const ::some::valid::ns::UnorderedMapStruct& get_map_struct_type() const&;
@@ -7839,7 +8385,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.map_struct_type_ref() = BAR;` instead of `FOO.set_map_struct_type(BAR);`")]]
   ::some::valid::ns::UnorderedMapStruct& set_map_struct_type(T_AnnotatedStruct_map_struct_type_struct_setter&& map_struct_type_) {
     map_struct_type = std::forward<T_AnnotatedStruct_map_struct_type_struct_setter>(map_struct_type_);
-    __isset.map_struct_type = true;
+    __isset.__fbthrift_set(folly::index_constant<5>(), true);
     return map_struct_type;
   }
 
@@ -7855,7 +8401,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.iobuf_type_ref() = BAR;` instead of `FOO.set_iobuf_type(BAR);`")]]
   ::some::valid::ns::IOBuf& set_iobuf_type(T_AnnotatedStruct_iobuf_type_struct_setter&& iobuf_type_) {
     iobuf_type = std::forward<T_AnnotatedStruct_iobuf_type_struct_setter>(iobuf_type_);
-    __isset.iobuf_type = true;
+    __isset.__fbthrift_set(folly::index_constant<6>(), true);
     return iobuf_type;
   }
 
@@ -7871,7 +8417,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.iobuf_ptr_ref() = BAR;` instead of `FOO.set_iobuf_ptr(BAR);`")]]
   ::some::valid::ns::IOBufPtr& set_iobuf_ptr(T_AnnotatedStruct_iobuf_ptr_struct_setter&& iobuf_ptr_) {
     iobuf_ptr = std::forward<T_AnnotatedStruct_iobuf_ptr_struct_setter>(iobuf_ptr_);
-    __isset.iobuf_ptr = true;
+    __isset.__fbthrift_set(folly::index_constant<7>(), true);
     return iobuf_ptr;
   }
   const std::list<::std::int32_t>& get_list_i32_template() const&;
@@ -7881,7 +8427,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.list_i32_template_ref() = BAR;` instead of `FOO.set_list_i32_template(BAR);`")]]
   std::list<::std::int32_t>& set_list_i32_template(T_AnnotatedStruct_list_i32_template_struct_setter&& list_i32_template_) {
     list_i32_template = std::forward<T_AnnotatedStruct_list_i32_template_struct_setter>(list_i32_template_);
-    __isset.list_i32_template = true;
+    __isset.__fbthrift_set(folly::index_constant<8>(), true);
     return list_i32_template;
   }
   const std::deque<::std::string>& get_list_string_template() const&;
@@ -7891,7 +8437,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.list_string_template_ref() = BAR;` instead of `FOO.set_list_string_template(BAR);`")]]
   std::deque<::std::string>& set_list_string_template(T_AnnotatedStruct_list_string_template_struct_setter&& list_string_template_) {
     list_string_template = std::forward<T_AnnotatedStruct_list_string_template_struct_setter>(list_string_template_);
-    __isset.list_string_template = true;
+    __isset.__fbthrift_set(folly::index_constant<9>(), true);
     return list_string_template;
   }
   const folly::sorted_vector_set<::std::string>& get_set_template() const&;
@@ -7901,7 +8447,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.set_template_ref() = BAR;` instead of `FOO.set_set_template(BAR);`")]]
   folly::sorted_vector_set<::std::string>& set_set_template(T_AnnotatedStruct_set_template_struct_setter&& set_template_) {
     set_template = std::forward<T_AnnotatedStruct_set_template_struct_setter>(set_template_);
-    __isset.set_template = true;
+    __isset.__fbthrift_set(folly::index_constant<10>(), true);
     return set_template;
   }
   const folly::sorted_vector_map<::std::int64_t, ::std::string>& get_map_template() const&;
@@ -7911,7 +8457,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.map_template_ref() = BAR;` instead of `FOO.set_map_template(BAR);`")]]
   folly::sorted_vector_map<::std::int64_t, ::std::string>& set_map_template(T_AnnotatedStruct_map_template_struct_setter&& map_template_) {
     map_template = std::forward<T_AnnotatedStruct_map_template_struct_setter>(map_template_);
-    __isset.map_template = true;
+    __isset.__fbthrift_set(folly::index_constant<11>(), true);
     return map_template;
   }
   const ::some::valid::ns::std_list& get_typedef_list_template() const&;
@@ -7921,7 +8467,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.typedef_list_template_ref() = BAR;` instead of `FOO.set_typedef_list_template(BAR);`")]]
   ::some::valid::ns::std_list& set_typedef_list_template(T_AnnotatedStruct_typedef_list_template_struct_setter&& typedef_list_template_) {
     typedef_list_template = std::forward<T_AnnotatedStruct_typedef_list_template_struct_setter>(typedef_list_template_);
-    __isset.typedef_list_template = true;
+    __isset.__fbthrift_set(folly::index_constant<12>(), true);
     return typedef_list_template;
   }
   const ::some::valid::ns::std_deque& get_typedef_deque_template() const&;
@@ -7931,7 +8477,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.typedef_deque_template_ref() = BAR;` instead of `FOO.set_typedef_deque_template(BAR);`")]]
   ::some::valid::ns::std_deque& set_typedef_deque_template(T_AnnotatedStruct_typedef_deque_template_struct_setter&& typedef_deque_template_) {
     typedef_deque_template = std::forward<T_AnnotatedStruct_typedef_deque_template_struct_setter>(typedef_deque_template_);
-    __isset.typedef_deque_template = true;
+    __isset.__fbthrift_set(folly::index_constant<13>(), true);
     return typedef_deque_template;
   }
   const ::some::valid::ns::folly_set& get_typedef_set_template() const&;
@@ -7941,7 +8487,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.typedef_set_template_ref() = BAR;` instead of `FOO.set_typedef_set_template(BAR);`")]]
   ::some::valid::ns::folly_set& set_typedef_set_template(T_AnnotatedStruct_typedef_set_template_struct_setter&& typedef_set_template_) {
     typedef_set_template = std::forward<T_AnnotatedStruct_typedef_set_template_struct_setter>(typedef_set_template_);
-    __isset.typedef_set_template = true;
+    __isset.__fbthrift_set(folly::index_constant<14>(), true);
     return typedef_set_template;
   }
   const ::some::valid::ns::folly_map& get_typedef_map_template() const&;
@@ -7951,7 +8497,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.typedef_map_template_ref() = BAR;` instead of `FOO.set_typedef_map_template(BAR);`")]]
   ::some::valid::ns::folly_map& set_typedef_map_template(T_AnnotatedStruct_typedef_map_template_struct_setter&& typedef_map_template_) {
     typedef_map_template = std::forward<T_AnnotatedStruct_typedef_map_template_struct_setter>(typedef_map_template_);
-    __isset.typedef_map_template = true;
+    __isset.__fbthrift_set(folly::index_constant<15>(), true);
     return typedef_map_template;
   }
 
@@ -7962,7 +8508,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.indirection_a_ref() = BAR;` instead of `FOO.set_indirection_a(BAR);`")]]
   ::some::valid::ns::IndirectionA& set_indirection_a(::some::valid::ns::IndirectionA indirection_a_) {
     indirection_a = indirection_a_;
-    __isset.indirection_a = true;
+  __isset.__fbthrift_set(folly::index_constant<16>(), true);
     return indirection_a;
   }
   const ::std::vector<::some::valid::ns::IndirectionB>& get_indirection_b() const&;
@@ -7972,7 +8518,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.indirection_b_ref() = BAR;` instead of `FOO.set_indirection_b(BAR);`")]]
   ::std::vector<::some::valid::ns::IndirectionB>& set_indirection_b(T_AnnotatedStruct_indirection_b_struct_setter&& indirection_b_) {
     indirection_b = std::forward<T_AnnotatedStruct_indirection_b_struct_setter>(indirection_b_);
-    __isset.indirection_b = true;
+    __isset.__fbthrift_set(folly::index_constant<17>(), true);
     return indirection_b;
   }
   const ::std::set<::some::valid::ns::IndirectionC>& get_indirection_c() const&;
@@ -7982,7 +8528,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.indirection_c_ref() = BAR;` instead of `FOO.set_indirection_c(BAR);`")]]
   ::std::set<::some::valid::ns::IndirectionC>& set_indirection_c(T_AnnotatedStruct_indirection_c_struct_setter&& indirection_c_) {
     indirection_c = std::forward<T_AnnotatedStruct_indirection_c_struct_setter>(indirection_c_);
-    __isset.indirection_c = true;
+    __isset.__fbthrift_set(folly::index_constant<18>(), true);
     return indirection_c;
   }
 
@@ -7998,7 +8544,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.iobuf_type_val_ref() = BAR;` instead of `FOO.set_iobuf_type_val(BAR);`")]]
   ::some::valid::ns::IOBuf& set_iobuf_type_val(T_AnnotatedStruct_iobuf_type_val_struct_setter&& iobuf_type_val_) {
     iobuf_type_val = std::forward<T_AnnotatedStruct_iobuf_type_val_struct_setter>(iobuf_type_val_);
-    __isset.iobuf_type_val = true;
+    __isset.__fbthrift_set(folly::index_constant<19>(), true);
     return iobuf_type_val;
   }
 
@@ -8014,7 +8560,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.iobuf_ptr_val_ref() = BAR;` instead of `FOO.set_iobuf_ptr_val(BAR);`")]]
   ::some::valid::ns::IOBufPtr& set_iobuf_ptr_val(T_AnnotatedStruct_iobuf_ptr_val_struct_setter&& iobuf_ptr_val_) {
     iobuf_ptr_val = std::forward<T_AnnotatedStruct_iobuf_ptr_val_struct_setter>(iobuf_ptr_val_);
-    __isset.iobuf_ptr_val = true;
+    __isset.__fbthrift_set(folly::index_constant<20>(), true);
     return iobuf_ptr_val;
   }
   const ::some::valid::ns::containerStruct& get_struct_struct() const&;
@@ -8024,7 +8570,7 @@ class AnnotatedStruct  {
   [[deprecated("Use `FOO.struct_struct_ref() = BAR;` instead of `FOO.set_struct_struct(BAR);`")]]
   ::some::valid::ns::containerStruct& set_struct_struct(T_AnnotatedStruct_struct_struct_struct_setter&& struct_struct_) {
     struct_struct = std::forward<T_AnnotatedStruct_struct_struct_struct_setter>(struct_struct_);
-    __isset.struct_struct = true;
+    __isset.__fbthrift_set(folly::index_constant<21>(), true);
     return struct_struct;
   }
 
@@ -8101,6 +8647,18 @@ class ComplexContainerStruct final  {
   struct __isset {
     bool map_of_iobufs;
     bool map_of_iobuf_ptrs;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return map_of_iobufs;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      map_of_iobufs = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return map_of_iobuf_ptrs;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      map_of_iobuf_ptrs = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -8154,7 +8712,7 @@ class ComplexContainerStruct final  {
   [[deprecated("Use `FOO.map_of_iobufs_ref() = BAR;` instead of `FOO.set_map_of_iobufs(BAR);`")]]
   ::std::map<::std::string, ::some::valid::ns::IOBuf>& set_map_of_iobufs(T_ComplexContainerStruct_map_of_iobufs_struct_setter&& map_of_iobufs_) {
     map_of_iobufs = std::forward<T_ComplexContainerStruct_map_of_iobufs_struct_setter>(map_of_iobufs_);
-    __isset.map_of_iobufs = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return map_of_iobufs;
   }
   const ::std::map<::std::string, ::some::valid::ns::IOBufPtr>& get_map_of_iobuf_ptrs() const&;
@@ -8164,7 +8722,7 @@ class ComplexContainerStruct final  {
   [[deprecated("Use `FOO.map_of_iobuf_ptrs_ref() = BAR;` instead of `FOO.set_map_of_iobuf_ptrs(BAR);`")]]
   ::std::map<::std::string, ::some::valid::ns::IOBufPtr>& set_map_of_iobuf_ptrs(T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter&& map_of_iobuf_ptrs_) {
     map_of_iobuf_ptrs = std::forward<T_ComplexContainerStruct_map_of_iobuf_ptrs_struct_setter>(map_of_iobuf_ptrs_);
-    __isset.map_of_iobuf_ptrs = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return map_of_iobuf_ptrs;
   }
 
@@ -8243,6 +8801,18 @@ class FloatStruct final  {
   struct __isset {
     bool floatField;
     bool doubleField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return floatField;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      floatField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return doubleField;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      doubleField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -8297,7 +8867,7 @@ class FloatStruct final  {
   [[deprecated("Use `FOO.floatField_ref() = BAR;` instead of `FOO.set_floatField(BAR);`")]]
   float& set_floatField(float floatField_) {
     floatField = floatField_;
-    __isset.floatField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return floatField;
   }
 
@@ -8308,7 +8878,7 @@ class FloatStruct final  {
   [[deprecated("Use `FOO.doubleField_ref() = BAR;` instead of `FOO.set_doubleField(BAR);`")]]
   double& set_doubleField(double doubleField_) {
     doubleField = doubleField_;
-    __isset.doubleField = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return doubleField;
   }
 

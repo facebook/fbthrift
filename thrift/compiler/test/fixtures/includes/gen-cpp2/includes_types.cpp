@@ -40,8 +40,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Included::Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField__arg, ::cpp2::Foo MyTransitiveField__arg) :
     MyIntField(std::move(MyIntField__arg)),
     MyTransitiveField(std::move(MyTransitiveField__arg)) {
-  __isset.MyIntField = true;
-  __isset.MyTransitiveField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

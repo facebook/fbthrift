@@ -72,7 +72,7 @@ namespace a { namespace different { namespace ns {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStruct::AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg) :
     FieldA(std::move(FieldA__arg)) {
-  __isset.FieldA = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

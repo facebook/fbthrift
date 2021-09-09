@@ -91,6 +91,12 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool message;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return message;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      message = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -130,7 +136,7 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
   [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_CustomException_message_struct_setter&& message_) {
     message = std::forward<T_CustomException_message_struct_setter>(message_);
-    __isset.message = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return message;
   }
 

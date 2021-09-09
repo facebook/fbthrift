@@ -240,6 +240,30 @@ class Color final  {
     bool green;
     bool blue;
     bool alpha;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return red;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      red = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return green;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      green = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return blue;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      blue = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return alpha;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      alpha = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -334,7 +358,7 @@ class Color final  {
   [[deprecated("Use `FOO.red_ref() = BAR;` instead of `FOO.set_red(BAR);`")]]
   double& set_red(double red_) {
     red = red_;
-    __isset.red = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return red;
   }
 
@@ -345,7 +369,7 @@ class Color final  {
   [[deprecated("Use `FOO.green_ref() = BAR;` instead of `FOO.set_green(BAR);`")]]
   double& set_green(double green_) {
     green = green_;
-    __isset.green = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return green;
   }
 
@@ -356,7 +380,7 @@ class Color final  {
   [[deprecated("Use `FOO.blue_ref() = BAR;` instead of `FOO.set_blue(BAR);`")]]
   double& set_blue(double blue_) {
     blue = blue_;
-    __isset.blue = true;
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return blue;
   }
 
@@ -367,7 +391,7 @@ class Color final  {
   [[deprecated("Use `FOO.alpha_ref() = BAR;` instead of `FOO.set_alpha(BAR);`")]]
   double& set_alpha(double alpha_) {
     alpha = alpha_;
-    __isset.alpha = true;
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return alpha;
   }
 
@@ -455,6 +479,36 @@ class Vehicle final  {
     bool description;
     bool name;
     bool hasAC;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return color;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      color = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return licensePlate;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      licensePlate = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return description;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      description = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return name;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      name = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return hasAC;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      hasAC = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -568,7 +622,7 @@ class Vehicle final  {
   [[deprecated("Use `FOO.color_ref() = BAR;` instead of `FOO.set_color(BAR);`")]]
   ::cpp2::Color& set_color(T_Vehicle_color_struct_setter&& color_) {
     color = std::forward<T_Vehicle_color_struct_setter>(color_);
-    __isset.color = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return color;
   }
 
@@ -585,7 +639,7 @@ class Vehicle final  {
   [[deprecated("Use `FOO.licensePlate_ref() = BAR;` instead of `FOO.set_licensePlate(BAR);`")]]
   ::std::string& set_licensePlate(T_Vehicle_licensePlate_struct_setter&& licensePlate_) {
     licensePlate = std::forward<T_Vehicle_licensePlate_struct_setter>(licensePlate_);
-    __isset.licensePlate = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return licensePlate;
   }
 
@@ -602,7 +656,7 @@ class Vehicle final  {
   [[deprecated("Use `FOO.description_ref() = BAR;` instead of `FOO.set_description(BAR);`")]]
   ::std::string& set_description(T_Vehicle_description_struct_setter&& description_) {
     description = std::forward<T_Vehicle_description_struct_setter>(description_);
-    __isset.description = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return description;
   }
 
@@ -619,7 +673,7 @@ class Vehicle final  {
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_Vehicle_name_struct_setter&& name_) {
     name = std::forward<T_Vehicle_name_struct_setter>(name_);
-    __isset.name = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return name;
   }
 
@@ -635,7 +689,7 @@ class Vehicle final  {
   [[deprecated("Use `FOO.hasAC_ref() = BAR;` instead of `FOO.set_hasAC(BAR);`")]]
   bool& set_hasAC(bool hasAC_) {
     hasAC = hasAC_;
-    __isset.hasAC = true;
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return hasAC;
   }
 
@@ -738,6 +792,66 @@ class Person final  {
     bool petNames;
     bool afraidOfAnimal;
     bool vehicles;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return id;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      id = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return name;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      name = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return age;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      age = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return address;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      address = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return favoriteColor;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      favoriteColor = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return friends;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      friends = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<6>) const {
+      return bestFriend;
+    }
+    void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
+      bestFriend = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<7>) const {
+      return petNames;
+    }
+    void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
+      petNames = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<8>) const {
+      return afraidOfAnimal;
+    }
+    void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
+      afraidOfAnimal = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<9>) const {
+      return vehicles;
+    }
+    void __fbthrift_set(folly::index_constant<9>, bool isset_flag) {
+      vehicles = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -952,7 +1066,7 @@ class Person final  {
   [[deprecated("Use `FOO.id_ref() = BAR;` instead of `FOO.set_id(BAR);`")]]
   ::cpp2::PersonID& set_id(::cpp2::PersonID id_) {
     id = id_;
-    __isset.id = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return id;
   }
 
@@ -968,7 +1082,7 @@ class Person final  {
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_Person_name_struct_setter&& name_) {
     name = std::forward<T_Person_name_struct_setter>(name_);
-    __isset.name = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return name;
   }
 
@@ -984,7 +1098,7 @@ class Person final  {
   [[deprecated("Use `FOO.age_ref() = BAR;` instead of `FOO.set_age(BAR);`")]]
   ::std::int16_t& set_age(::std::int16_t age_) {
     age = age_;
-    __isset.age = true;
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return age;
   }
 
@@ -1001,7 +1115,7 @@ class Person final  {
   [[deprecated("Use `FOO.address_ref() = BAR;` instead of `FOO.set_address(BAR);`")]]
   ::std::string& set_address(T_Person_address_struct_setter&& address_) {
     address = std::forward<T_Person_address_struct_setter>(address_);
-    __isset.address = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return address;
   }
   const ::cpp2::Color* get_favoriteColor() const&;
@@ -1012,7 +1126,7 @@ class Person final  {
   [[deprecated("Use `FOO.favoriteColor_ref() = BAR;` instead of `FOO.set_favoriteColor(BAR);`")]]
   ::cpp2::Color& set_favoriteColor(T_Person_favoriteColor_struct_setter&& favoriteColor_) {
     favoriteColor = std::forward<T_Person_favoriteColor_struct_setter>(favoriteColor_);
-    __isset.favoriteColor = true;
+    __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return favoriteColor;
   }
   const ::std::set<::cpp2::PersonID>* get_friends() const&;
@@ -1023,7 +1137,7 @@ class Person final  {
   [[deprecated("Use `FOO.friends_ref() = BAR;` instead of `FOO.set_friends(BAR);`")]]
   ::std::set<::cpp2::PersonID>& set_friends(T_Person_friends_struct_setter&& friends_) {
     friends = std::forward<T_Person_friends_struct_setter>(friends_);
-    __isset.friends = true;
+    __isset.__fbthrift_set(folly::index_constant<5>(), true);
     return friends;
   }
 
@@ -1039,7 +1153,7 @@ class Person final  {
   [[deprecated("Use `FOO.bestFriend_ref() = BAR;` instead of `FOO.set_bestFriend(BAR);`")]]
   ::cpp2::PersonID& set_bestFriend(::cpp2::PersonID bestFriend_) {
     bestFriend = bestFriend_;
-    __isset.bestFriend = true;
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
     return bestFriend;
   }
   const ::std::map<::cpp2::Animal, ::std::string>* get_petNames() const&;
@@ -1050,7 +1164,7 @@ class Person final  {
   [[deprecated("Use `FOO.petNames_ref() = BAR;` instead of `FOO.set_petNames(BAR);`")]]
   ::std::map<::cpp2::Animal, ::std::string>& set_petNames(T_Person_petNames_struct_setter&& petNames_) {
     petNames = std::forward<T_Person_petNames_struct_setter>(petNames_);
-    __isset.petNames = true;
+    __isset.__fbthrift_set(folly::index_constant<7>(), true);
     return petNames;
   }
 
@@ -1066,7 +1180,7 @@ class Person final  {
   [[deprecated("Use `FOO.afraidOfAnimal_ref() = BAR;` instead of `FOO.set_afraidOfAnimal(BAR);`")]]
   ::cpp2::Animal& set_afraidOfAnimal(::cpp2::Animal afraidOfAnimal_) {
     afraidOfAnimal = afraidOfAnimal_;
-    __isset.afraidOfAnimal = true;
+  __isset.__fbthrift_set(folly::index_constant<8>(), true);
     return afraidOfAnimal;
   }
   const ::std::vector<::cpp2::Vehicle>* get_vehicles() const&;
@@ -1077,7 +1191,7 @@ class Person final  {
   [[deprecated("Use `FOO.vehicles_ref() = BAR;` instead of `FOO.set_vehicles(BAR);`")]]
   ::std::vector<::cpp2::Vehicle>& set_vehicles(T_Person_vehicles_struct_setter&& vehicles_) {
     vehicles = std::forward<T_Person_vehicles_struct_setter>(vehicles_);
-    __isset.vehicles = true;
+    __isset.__fbthrift_set(folly::index_constant<9>(), true);
     return vehicles;
   }
 

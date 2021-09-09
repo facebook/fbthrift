@@ -87,7 +87,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructNestedAnnotation::MyStructNestedAnnotation(apache::thrift::FragileConstructor, ::std::string name__arg) :
     name(std::move(name__arg)) {
-  __isset.name = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -207,12 +207,12 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t majorVer__
     class_(std::move(class___arg)),
     annotation_with_trailing_comma(std::move(annotation_with_trailing_comma__arg)),
     empty_annotations(std::move(empty_annotations__arg)) {
-  __isset.majorVer = true;
-  __isset.package = true;
-  __isset.annotation_with_quote = true;
-  __isset.class_ = true;
-  __isset.annotation_with_trailing_comma = true;
-  __isset.empty_annotations = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -351,8 +351,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SecretStruct::SecretStruct(apache::thrift::FragileConstructor, ::std::int64_t id__arg, ::std::string password__arg) :
     id(std::move(id__arg)),
     password(std::move(password__arg)) {
-  __isset.id = true;
-  __isset.password = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

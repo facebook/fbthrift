@@ -75,10 +75,10 @@ Color::Color(apache::thrift::FragileConstructor, double red__arg, double green__
     green(std::move(green__arg)),
     blue(std::move(blue__arg)),
     alpha(std::move(alpha__arg)) {
-  __isset.red = true;
-  __isset.green = true;
-  __isset.blue = true;
-  __isset.alpha = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -219,11 +219,11 @@ Vehicle::Vehicle(apache::thrift::FragileConstructor, ::cpp2::Color color__arg, :
     description(std::move(description__arg)),
     name(std::move(name__arg)),
     hasAC(std::move(hasAC__arg)) {
-  __isset.color = true;
-  __isset.licensePlate = true;
-  __isset.description = true;
-  __isset.name = true;
-  __isset.hasAC = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -410,16 +410,16 @@ Person::Person(apache::thrift::FragileConstructor, ::cpp2::PersonID id__arg, ::s
     petNames(std::move(petNames__arg)),
     afraidOfAnimal(std::move(afraidOfAnimal__arg)),
     vehicles(std::move(vehicles__arg)) {
-  __isset.id = true;
-  __isset.name = true;
-  __isset.age = true;
-  __isset.address = true;
-  __isset.favoriteColor = true;
-  __isset.friends = true;
-  __isset.bestFriend = true;
-  __isset.petNames = true;
-  __isset.afraidOfAnimal = true;
-  __isset.vehicles = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+  __isset.__fbthrift_set(folly::index_constant<9>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

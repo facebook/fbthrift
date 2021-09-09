@@ -103,6 +103,18 @@ class Struct final  {
   struct __isset {
     bool first;
     bool second;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return first;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      first = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return second;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      second = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -156,7 +168,7 @@ class Struct final  {
   [[deprecated("Use `FOO.first_ref() = BAR;` instead of `FOO.set_first(BAR);`")]]
   ::module0::Struct& set_first(T_Struct_first_struct_setter&& first_) {
     first = std::forward<T_Struct_first_struct_setter>(first_);
-    __isset.first = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return first;
   }
   const ::module1::Struct& get_second() const&;
@@ -166,7 +178,7 @@ class Struct final  {
   [[deprecated("Use `FOO.second_ref() = BAR;` instead of `FOO.set_second(BAR);`")]]
   ::module1::Struct& set_second(T_Struct_second_struct_setter&& second_) {
     second = std::forward<T_Struct_second_struct_setter>(second_);
-    __isset.second = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return second;
   }
 
@@ -243,6 +255,18 @@ class BigStruct final  {
   struct __isset {
     bool s;
     bool id;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return s;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      s = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return id;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      id = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -296,7 +320,7 @@ class BigStruct final  {
   [[deprecated("Use `FOO.s_ref() = BAR;` instead of `FOO.set_s(BAR);`")]]
   ::module2::Struct& set_s(T_BigStruct_s_struct_setter&& s_) {
     s = std::forward<T_BigStruct_s_struct_setter>(s_);
-    __isset.s = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return s;
   }
 
@@ -307,7 +331,7 @@ class BigStruct final  {
   [[deprecated("Use `FOO.id_ref() = BAR;` instead of `FOO.set_id(BAR);`")]]
   ::std::int32_t& set_id(::std::int32_t id_) {
     id = id_;
-    __isset.id = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return id;
   }
 

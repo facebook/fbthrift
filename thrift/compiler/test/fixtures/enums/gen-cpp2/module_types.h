@@ -159,6 +159,30 @@ class SomeStruct final  {
     bool fine;
     bool questionable;
     bool tags;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return reasonable;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      reasonable = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return fine;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      fine = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return questionable;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      questionable = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return tags;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      tags = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -253,7 +277,7 @@ class SomeStruct final  {
   [[deprecated("Use `FOO.reasonable_ref() = BAR;` instead of `FOO.set_reasonable(BAR);`")]]
   ::cpp2::Metasyntactic& set_reasonable(::cpp2::Metasyntactic reasonable_) {
     reasonable = reasonable_;
-    __isset.reasonable = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return reasonable;
   }
 
@@ -264,7 +288,7 @@ class SomeStruct final  {
   [[deprecated("Use `FOO.fine_ref() = BAR;` instead of `FOO.set_fine(BAR);`")]]
   ::cpp2::Metasyntactic& set_fine(::cpp2::Metasyntactic fine_) {
     fine = fine_;
-    __isset.fine = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return fine;
   }
 
@@ -275,7 +299,7 @@ class SomeStruct final  {
   [[deprecated("Use `FOO.questionable_ref() = BAR;` instead of `FOO.set_questionable(BAR);`")]]
   ::cpp2::Metasyntactic& set_questionable(::cpp2::Metasyntactic questionable_) {
     questionable = questionable_;
-    __isset.questionable = true;
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return questionable;
   }
   const ::std::set<::std::int32_t>& get_tags() const&;
@@ -285,7 +309,7 @@ class SomeStruct final  {
   [[deprecated("Use `FOO.tags_ref() = BAR;` instead of `FOO.set_tags(BAR);`")]]
   ::std::set<::std::int32_t>& set_tags(T_SomeStruct_tags_struct_setter&& tags_) {
     tags = std::forward<T_SomeStruct_tags_struct_setter>(tags_);
-    __isset.tags = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return tags;
   }
 

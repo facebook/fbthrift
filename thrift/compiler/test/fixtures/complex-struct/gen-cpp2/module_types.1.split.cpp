@@ -57,8 +57,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(apache::thrift::FragileConstructor, ::std::int64_t myLongField__arg, ::std::map<::std::int32_t, ::std::vector<::std::vector<::cpp2::floatTypedef>>> mapListOfFloats__arg) :
     myLongField(std::move(myLongField__arg)),
     mapListOfFloats(std::move(mapListOfFloats__arg)) {
-  __isset.myLongField = true;
-  __isset.mapListOfFloats = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -280,28 +280,28 @@ defaultStruct::defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t 
     mapJavaTypeDFset(std::move(mapJavaTypeDFset__arg)),
     emptyMap(std::move(emptyMap__arg)),
     enumMapDFset(std::move(enumMapDFset__arg)) {
-  __isset.myLongDFset = true;
-  __isset.myLongDF = true;
-  __isset.portDFset = true;
-  __isset.portNum = true;
-  __isset.myBinaryDFset = true;
-  __isset.myBinary = true;
-  __isset.myByteDFSet = true;
-  __isset.myByte = true;
-  __isset.myDoubleDFset = true;
-  __isset.myDoubleDFZero = true;
-  __isset.myDouble = true;
-  __isset.field3 = true;
-  __isset.myList = true;
-  __isset.mySet = true;
-  __isset.simpleStruct = true;
-  __isset.listStructDFset = true;
-  __isset.myUnion = true;
-  __isset.listUnionDFset = true;
-  __isset.mapNestlistStructDfSet = true;
-  __isset.mapJavaTypeDFset = true;
-  __isset.emptyMap = true;
-  __isset.enumMapDFset = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+  __isset.__fbthrift_set(folly::index_constant<9>(), true);
+  __isset.__fbthrift_set(folly::index_constant<10>(), true);
+  __isset.__fbthrift_set(folly::index_constant<11>(), true);
+  __isset.__fbthrift_set(folly::index_constant<12>(), true);
+  __isset.__fbthrift_set(folly::index_constant<13>(), true);
+  __isset.__fbthrift_set(folly::index_constant<14>(), true);
+  __isset.__fbthrift_set(folly::index_constant<15>(), true);
+  __isset.__fbthrift_set(folly::index_constant<16>(), true);
+  __isset.__fbthrift_set(folly::index_constant<17>(), true);
+  __isset.__fbthrift_set(folly::index_constant<18>(), true);
+  __isset.__fbthrift_set(folly::index_constant<19>(), true);
+  __isset.__fbthrift_set(folly::index_constant<20>(), true);
+  __isset.__fbthrift_set(folly::index_constant<21>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -884,10 +884,10 @@ TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<::std:
     ioMap(std::move(ioMap__arg)),
     BigInteger(std::move(BigInteger__arg)),
     binaryTestBuffer(std::move(binaryTestBuffer__arg)) {
-  __isset.lsMap = true;
-  __isset.ioMap = true;
-  __isset.BigInteger = true;
-  __isset.binaryTestBuffer = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1035,8 +1035,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 optXcep::optXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg) :
     message(std::move(message__arg)),
     errorCode(std::move(errorCode__arg)) {
-  __isset.message = true;
-  __isset.errorCode = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

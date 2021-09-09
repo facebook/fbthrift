@@ -173,6 +173,12 @@ class MyStructNestedAnnotation final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool name;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return name;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      name = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -212,7 +218,7 @@ class MyStructNestedAnnotation final  {
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_MyStructNestedAnnotation_name_struct_setter&& name_) {
     name = std::forward<T_MyStructNestedAnnotation_name_struct_setter>(name_);
-    __isset.name = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return name;
   }
 
@@ -309,6 +315,42 @@ class MyStruct final  {
     bool class_;
     bool annotation_with_trailing_comma;
     bool empty_annotations;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return majorVer;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      majorVer = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return package;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      package = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return annotation_with_quote;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      annotation_with_quote = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return class_;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      class_ = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return annotation_with_trailing_comma;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      annotation_with_trailing_comma = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return empty_annotations;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      empty_annotations = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -443,7 +485,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.majorVer_ref() = BAR;` instead of `FOO.set_majorVer(BAR);`")]]
   ::std::int64_t& set_majorVer(::std::int64_t majorVer_) {
     majorVer = majorVer_;
-    __isset.majorVer = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return majorVer;
   }
 
@@ -459,7 +501,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.package_ref() = BAR;` instead of `FOO.set_package(BAR);`")]]
   ::std::string& set_package(T_MyStruct_package_struct_setter&& package_) {
     package = std::forward<T_MyStruct_package_struct_setter>(package_);
-    __isset.package = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return package;
   }
 
@@ -475,7 +517,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.annotation_with_quote_ref() = BAR;` instead of `FOO.set_annotation_with_quote(BAR);`")]]
   ::std::string& set_annotation_with_quote(T_MyStruct_annotation_with_quote_struct_setter&& annotation_with_quote_) {
     annotation_with_quote = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
-    __isset.annotation_with_quote = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return annotation_with_quote;
   }
 
@@ -491,7 +533,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.class__ref() = BAR;` instead of `FOO.set_class_(BAR);`")]]
   ::std::string& set_class_(T_MyStruct_class__struct_setter&& class__) {
     class_ = std::forward<T_MyStruct_class__struct_setter>(class__);
-    __isset.class_ = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return class_;
   }
 
@@ -507,7 +549,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.annotation_with_trailing_comma_ref() = BAR;` instead of `FOO.set_annotation_with_trailing_comma(BAR);`")]]
   ::std::string& set_annotation_with_trailing_comma(T_MyStruct_annotation_with_trailing_comma_struct_setter&& annotation_with_trailing_comma_) {
     annotation_with_trailing_comma = std::forward<T_MyStruct_annotation_with_trailing_comma_struct_setter>(annotation_with_trailing_comma_);
-    __isset.annotation_with_trailing_comma = true;
+    __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return annotation_with_trailing_comma;
   }
 
@@ -523,7 +565,7 @@ class MyStruct final  {
   [[deprecated("Use `FOO.empty_annotations_ref() = BAR;` instead of `FOO.set_empty_annotations(BAR);`")]]
   ::std::string& set_empty_annotations(T_MyStruct_empty_annotations_struct_setter&& empty_annotations_) {
     empty_annotations = std::forward<T_MyStruct_empty_annotations_struct_setter>(empty_annotations_);
-    __isset.empty_annotations = true;
+    __isset.__fbthrift_set(folly::index_constant<5>(), true);
     return empty_annotations;
   }
 
@@ -600,6 +642,18 @@ class SecretStruct final  {
   struct __isset {
     bool id;
     bool password;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return id;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      id = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return password;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      password = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -654,7 +708,7 @@ class SecretStruct final  {
   [[deprecated("Use `FOO.id_ref() = BAR;` instead of `FOO.set_id(BAR);`")]]
   ::std::int64_t& set_id(::std::int64_t id_) {
     id = id_;
-    __isset.id = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return id;
   }
 
@@ -670,7 +724,7 @@ class SecretStruct final  {
   [[deprecated("Use `FOO.password_ref() = BAR;` instead of `FOO.set_password(BAR);`")]]
   ::std::string& set_password(T_SecretStruct_password_struct_setter&& password_) {
     password = std::forward<T_SecretStruct_password_struct_setter>(password_);
-    __isset.password = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return password;
   }
 

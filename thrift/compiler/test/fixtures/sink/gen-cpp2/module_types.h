@@ -118,6 +118,12 @@ class InitialResponse final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return content;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      content = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -157,7 +163,7 @@ class InitialResponse final  {
   [[deprecated("Use `FOO.content_ref() = BAR;` instead of `FOO.set_content(BAR);`")]]
   ::std::string& set_content(T_InitialResponse_content_struct_setter&& content_) {
     content = std::forward<T_InitialResponse_content_struct_setter>(content_);
-    __isset.content = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return content;
   }
 
@@ -230,6 +236,12 @@ class FinalResponse final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return content;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      content = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -269,7 +281,7 @@ class FinalResponse final  {
   [[deprecated("Use `FOO.content_ref() = BAR;` instead of `FOO.set_content(BAR);`")]]
   ::std::string& set_content(T_FinalResponse_content_struct_setter&& content_) {
     content = std::forward<T_FinalResponse_content_struct_setter>(content_);
-    __isset.content = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return content;
   }
 
@@ -342,6 +354,12 @@ class SinkPayload final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool content;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return content;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      content = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -381,7 +399,7 @@ class SinkPayload final  {
   [[deprecated("Use `FOO.content_ref() = BAR;` instead of `FOO.set_content(BAR);`")]]
   ::std::string& set_content(T_SinkPayload_content_struct_setter&& content_) {
     content = std::forward<T_SinkPayload_content_struct_setter>(content_);
-    __isset.content = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return content;
   }
 
@@ -454,6 +472,12 @@ class CompatibleWithKeywordSink final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool sink;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return sink;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      sink = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -493,7 +517,7 @@ class CompatibleWithKeywordSink final  {
   [[deprecated("Use `FOO.sink_ref() = BAR;` instead of `FOO.set_sink(BAR);`")]]
   ::std::string& set_sink(T_CompatibleWithKeywordSink_sink_struct_setter&& sink_) {
     sink = std::forward<T_CompatibleWithKeywordSink_sink_struct_setter>(sink_);
-    __isset.sink = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return sink;
   }
 
@@ -575,6 +599,12 @@ class FOLLY_EXPORT InitialException : public apache::thrift::TException {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return reason;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      reason = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -614,7 +644,7 @@ class FOLLY_EXPORT InitialException : public apache::thrift::TException {
   [[deprecated("Use `FOO.reason_ref() = BAR;` instead of `FOO.set_reason(BAR);`")]]
   ::std::string& set_reason(T_InitialException_reason_struct_setter&& reason_) {
     reason = std::forward<T_InitialException_reason_struct_setter>(reason_);
-    __isset.reason = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return reason;
   }
 
@@ -700,6 +730,12 @@ class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return reason;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      reason = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -739,7 +775,7 @@ class FOLLY_EXPORT SinkException1 : public apache::thrift::TException {
   [[deprecated("Use `FOO.reason_ref() = BAR;` instead of `FOO.set_reason(BAR);`")]]
   ::std::string& set_reason(T_SinkException1_reason_struct_setter&& reason_) {
     reason = std::forward<T_SinkException1_reason_struct_setter>(reason_);
-    __isset.reason = true;
+    __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return reason;
   }
 
@@ -825,6 +861,12 @@ class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool reason;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return reason;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      reason = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -859,7 +901,7 @@ class FOLLY_EXPORT SinkException2 : public apache::thrift::TException {
   [[deprecated("Use `FOO.reason_ref() = BAR;` instead of `FOO.set_reason(BAR);`")]]
   ::std::int64_t& set_reason(::std::int64_t reason_) {
     reason = reason_;
-    __isset.reason = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return reason;
   }
 

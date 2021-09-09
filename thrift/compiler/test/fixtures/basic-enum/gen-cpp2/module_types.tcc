@@ -72,7 +72,7 @@ _readField_myEnum:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enumstrict::MyEnum>::readWithContext(*iprot, this->myEnum, _readState);
     
   }
-  this->__isset.myEnum = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -86,7 +86,7 @@ _readField_myBigEnum:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::test::fixtures::enumstrict::MyBigEnum>::readWithContext(*iprot, this->myBigEnum, _readState);
     
   }
-  this->__isset.myBigEnum = true;
+ this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

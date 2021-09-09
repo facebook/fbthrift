@@ -185,6 +185,42 @@ class ModuleA final  {
     bool mapField;
     bool inclAField;
     bool inclBField;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return i32Field;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      i32Field = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return strField;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      strField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return listField;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      listField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return mapField;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      mapField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return inclAField;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      inclAField = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return inclBField;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      inclBField = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -319,7 +355,7 @@ class ModuleA final  {
   [[deprecated("Use `FOO.i32Field_ref() = BAR;` instead of `FOO.set_i32Field(BAR);`")]]
   ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
     i32Field = i32Field_;
-    __isset.i32Field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return i32Field;
   }
 
@@ -335,7 +371,7 @@ class ModuleA final  {
   [[deprecated("Use `FOO.strField_ref() = BAR;` instead of `FOO.set_strField(BAR);`")]]
   ::std::string& set_strField(T_ModuleA_strField_struct_setter&& strField_) {
     strField = std::forward<T_ModuleA_strField_struct_setter>(strField_);
-    __isset.strField = true;
+    __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return strField;
   }
   const ::std::vector<::std::int16_t>& get_listField() const&;
@@ -345,7 +381,7 @@ class ModuleA final  {
   [[deprecated("Use `FOO.listField_ref() = BAR;` instead of `FOO.set_listField(BAR);`")]]
   ::std::vector<::std::int16_t>& set_listField(T_ModuleA_listField_struct_setter&& listField_) {
     listField = std::forward<T_ModuleA_listField_struct_setter>(listField_);
-    __isset.listField = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return listField;
   }
   const ::std::map<::std::string, ::std::int32_t>& get_mapField() const&;
@@ -355,7 +391,7 @@ class ModuleA final  {
   [[deprecated("Use `FOO.mapField_ref() = BAR;` instead of `FOO.set_mapField(BAR);`")]]
   ::std::map<::std::string, ::std::int32_t>& set_mapField(T_ModuleA_mapField_struct_setter&& mapField_) {
     mapField = std::forward<T_ModuleA_mapField_struct_setter>(mapField_);
-    __isset.mapField = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return mapField;
   }
   const ::some::ns::IncludedA& get_inclAField() const&;
@@ -365,7 +401,7 @@ class ModuleA final  {
   [[deprecated("Use `FOO.inclAField_ref() = BAR;` instead of `FOO.set_inclAField(BAR);`")]]
   ::some::ns::IncludedA& set_inclAField(T_ModuleA_inclAField_struct_setter&& inclAField_) {
     inclAField = std::forward<T_ModuleA_inclAField_struct_setter>(inclAField_);
-    __isset.inclAField = true;
+    __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return inclAField;
   }
   const ::some::ns::IncludedB& get_inclBField() const&;
@@ -375,7 +411,7 @@ class ModuleA final  {
   [[deprecated("Use `FOO.inclBField_ref() = BAR;` instead of `FOO.set_inclBField(BAR);`")]]
   ::some::ns::IncludedB& set_inclBField(T_ModuleA_inclBField_struct_setter&& inclBField_) {
     inclBField = std::forward<T_ModuleA_inclBField_struct_setter>(inclBField_);
-    __isset.inclBField = true;
+    __isset.__fbthrift_set(folly::index_constant<5>(), true);
     return inclBField;
   }
 
@@ -454,6 +490,18 @@ class ModuleB final  {
   struct __isset {
     bool i32Field;
     bool inclEnumB;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return i32Field;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      i32Field = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return inclEnumB;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      inclEnumB = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -508,7 +556,7 @@ class ModuleB final  {
   [[deprecated("Use `FOO.i32Field_ref() = BAR;` instead of `FOO.set_i32Field(BAR);`")]]
   ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
     i32Field = i32Field_;
-    __isset.i32Field = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return i32Field;
   }
 
@@ -519,7 +567,7 @@ class ModuleB final  {
   [[deprecated("Use `FOO.inclEnumB_ref() = BAR;` instead of `FOO.set_inclEnumB(BAR);`")]]
   ::some::ns::EnumB& set_inclEnumB(::some::ns::EnumB inclEnumB_) {
     inclEnumB = inclEnumB_;
-    __isset.inclEnumB = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return inclEnumB;
   }
 

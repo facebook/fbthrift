@@ -62,7 +62,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomException::CustomException(apache::thrift::FragileConstructor, ::std::string message__arg) :
     message(std::move(message__arg)) {
-  __isset.message = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

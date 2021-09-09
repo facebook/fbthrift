@@ -142,6 +142,12 @@ class AStruct final  {
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
     bool FieldA;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return FieldA;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      FieldA = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -176,7 +182,7 @@ class AStruct final  {
   [[deprecated("Use `FOO.FieldA_ref() = BAR;` instead of `FOO.set_FieldA(BAR);`")]]
   ::std::int32_t& set_FieldA(::std::int32_t FieldA_) {
     FieldA = FieldA_;
-    __isset.FieldA = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return FieldA;
   }
 

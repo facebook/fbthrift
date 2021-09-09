@@ -176,10 +176,10 @@ Internship::Internship(apache::thrift::FragileConstructor, ::std::int32_t weeks_
     employer(std::move(employer__arg)),
     compensation(std::move(compensation__arg)),
     school(std::move(school__arg)) {
-  __isset.title = true;
-  __isset.employer = true;
-  __isset.compensation = true;
-  __isset.school = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -392,8 +392,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::std::string b__arg) :
     a(std::move(a__arg)),
     b(std::move(b__arg)) {
-  __isset.a = true;
-  __isset.b = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -506,10 +506,10 @@ struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
     b(std::move(b__arg)),
     c(std::move(c__arg)),
     d(std::move(d__arg)) {
-  __isset.a = true;
-  __isset.b = true;
-  __isset.c = true;
-  __isset.d = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -663,9 +663,9 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::string a__arg, ::std
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)) {
-  __isset.a = true;
-  __isset.b = true;
-  __isset.c = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -803,9 +803,9 @@ struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t a__arg, doub
     a(std::move(a__arg)),
     b(std::move(b__arg)),
     c(std::move(c__arg)) {
-  __isset.a = true;
-  __isset.b = true;
-  __isset.c = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

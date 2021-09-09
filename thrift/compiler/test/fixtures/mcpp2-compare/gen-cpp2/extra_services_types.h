@@ -178,6 +178,60 @@ class containerStruct2 final  {
     bool fieldD;
     bool fieldE;
     bool opt_fieldE;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return fieldA;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      fieldA = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return opt_fieldA;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      opt_fieldA = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return fieldB;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      fieldB = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<3>) const {
+      return opt_fieldB;
+    }
+    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
+      opt_fieldB = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<4>) const {
+      return fieldC;
+    }
+    void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
+      fieldC = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<5>) const {
+      return opt_fieldC;
+    }
+    void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
+      opt_fieldC = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<6>) const {
+      return fieldD;
+    }
+    void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
+      fieldD = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<7>) const {
+      return fieldE;
+    }
+    void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
+      fieldE = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<8>) const {
+      return opt_fieldE;
+    }
+    void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
+      opt_fieldE = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -452,7 +506,7 @@ class containerStruct2 final  {
   [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   bool& set_fieldA(bool fieldA_) {
     fieldA = fieldA_;
-    __isset.fieldA = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return fieldA;
   }
 
@@ -478,7 +532,7 @@ class containerStruct2 final  {
   [[deprecated("Use `FOO.opt_fieldA_ref() = BAR;` instead of `FOO.set_opt_fieldA(BAR);`")]]
   bool& set_opt_fieldA(bool opt_fieldA_) {
     opt_fieldA = opt_fieldA_;
-    __isset.opt_fieldA = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return opt_fieldA;
   }
   const ::std::map<::std::string, bool>& get_fieldB() const&;
@@ -488,7 +542,7 @@ class containerStruct2 final  {
   [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_fieldB(T_containerStruct2_fieldB_struct_setter&& fieldB_) {
     fieldB = std::forward<T_containerStruct2_fieldB_struct_setter>(fieldB_);
-    __isset.fieldB = true;
+    __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return fieldB;
   }
   const ::std::map<::std::string, bool>& get_req_fieldB() const&;
@@ -508,7 +562,7 @@ class containerStruct2 final  {
   [[deprecated("Use `FOO.opt_fieldB_ref() = BAR;` instead of `FOO.set_opt_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_opt_fieldB(T_containerStruct2_opt_fieldB_struct_setter&& opt_fieldB_) {
     opt_fieldB = std::forward<T_containerStruct2_opt_fieldB_struct_setter>(opt_fieldB_);
-    __isset.opt_fieldB = true;
+    __isset.__fbthrift_set(folly::index_constant<3>(), true);
     return opt_fieldB;
   }
   const ::std::set<::std::int32_t>& get_fieldC() const&;
@@ -518,7 +572,7 @@ class containerStruct2 final  {
   [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
   ::std::set<::std::int32_t>& set_fieldC(T_containerStruct2_fieldC_struct_setter&& fieldC_) {
     fieldC = std::forward<T_containerStruct2_fieldC_struct_setter>(fieldC_);
-    __isset.fieldC = true;
+    __isset.__fbthrift_set(folly::index_constant<4>(), true);
     return fieldC;
   }
   const ::std::set<::std::int32_t>& get_req_fieldC() const&;
@@ -538,7 +592,7 @@ class containerStruct2 final  {
   [[deprecated("Use `FOO.opt_fieldC_ref() = BAR;` instead of `FOO.set_opt_fieldC(BAR);`")]]
   ::std::set<::std::int32_t>& set_opt_fieldC(T_containerStruct2_opt_fieldC_struct_setter&& opt_fieldC_) {
     opt_fieldC = std::forward<T_containerStruct2_opt_fieldC_struct_setter>(opt_fieldC_);
-    __isset.opt_fieldC = true;
+    __isset.__fbthrift_set(folly::index_constant<5>(), true);
     return opt_fieldC;
   }
 
@@ -554,7 +608,7 @@ class containerStruct2 final  {
   [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
   ::std::string& set_fieldD(T_containerStruct2_fieldD_struct_setter&& fieldD_) {
     fieldD = std::forward<T_containerStruct2_fieldD_struct_setter>(fieldD_);
-    __isset.fieldD = true;
+    __isset.__fbthrift_set(folly::index_constant<6>(), true);
     return fieldD;
   }
 
@@ -570,7 +624,7 @@ class containerStruct2 final  {
   [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
   ::std::string& set_fieldE(T_containerStruct2_fieldE_struct_setter&& fieldE_) {
     fieldE = std::forward<T_containerStruct2_fieldE_struct_setter>(fieldE_);
-    __isset.fieldE = true;
+    __isset.__fbthrift_set(folly::index_constant<7>(), true);
     return fieldE;
   }
 
@@ -602,7 +656,7 @@ class containerStruct2 final  {
   [[deprecated("Use `FOO.opt_fieldE_ref() = BAR;` instead of `FOO.set_opt_fieldE(BAR);`")]]
   ::std::string& set_opt_fieldE(T_containerStruct2_opt_fieldE_struct_setter&& opt_fieldE_) {
     opt_fieldE = std::forward<T_containerStruct2_opt_fieldE_struct_setter>(opt_fieldE_);
-    __isset.opt_fieldE = true;
+    __isset.__fbthrift_set(folly::index_constant<8>(), true);
     return opt_fieldE;
   }
 

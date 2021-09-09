@@ -150,34 +150,34 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
     sString(std::move(sString__arg)),
     sByte(std::move(sByte__arg)),
     mListList(std::move(mListList__arg)) {
-  __isset.MyIntField = true;
-  __isset.MyStringField = true;
-  __isset.MyDataField = true;
-  __isset.myEnum = true;
-  __isset.MyBoolField = true;
-  __isset.MyByteField = true;
-  __isset.MyShortField = true;
-  __isset.MyLongField = true;
-  __isset.MyDoubleField = true;
-  __isset.lDouble = true;
-  __isset.lShort = true;
-  __isset.lInteger = true;
-  __isset.lLong = true;
-  __isset.lString = true;
-  __isset.lBool = true;
-  __isset.lByte = true;
-  __isset.mShortString = true;
-  __isset.mIntegerString = true;
-  __isset.mStringMyStruct = true;
-  __isset.mStringBool = true;
-  __isset.mIntegerInteger = true;
-  __isset.mIntegerBool = true;
-  __isset.sShort = true;
-  __isset.sMyStruct = true;
-  __isset.sLong = true;
-  __isset.sString = true;
-  __isset.sByte = true;
-  __isset.mListList = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+  __isset.__fbthrift_set(folly::index_constant<9>(), true);
+  __isset.__fbthrift_set(folly::index_constant<10>(), true);
+  __isset.__fbthrift_set(folly::index_constant<11>(), true);
+  __isset.__fbthrift_set(folly::index_constant<12>(), true);
+  __isset.__fbthrift_set(folly::index_constant<13>(), true);
+  __isset.__fbthrift_set(folly::index_constant<14>(), true);
+  __isset.__fbthrift_set(folly::index_constant<15>(), true);
+  __isset.__fbthrift_set(folly::index_constant<16>(), true);
+  __isset.__fbthrift_set(folly::index_constant<17>(), true);
+  __isset.__fbthrift_set(folly::index_constant<18>(), true);
+  __isset.__fbthrift_set(folly::index_constant<19>(), true);
+  __isset.__fbthrift_set(folly::index_constant<20>(), true);
+  __isset.__fbthrift_set(folly::index_constant<21>(), true);
+  __isset.__fbthrift_set(folly::index_constant<22>(), true);
+  __isset.__fbthrift_set(folly::index_constant<23>(), true);
+  __isset.__fbthrift_set(folly::index_constant<24>(), true);
+  __isset.__fbthrift_set(folly::index_constant<25>(), true);
+  __isset.__fbthrift_set(folly::index_constant<26>(), true);
+  __isset.__fbthrift_set(folly::index_constant<27>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -694,15 +694,15 @@ MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int6
     myListField(std::move(myListField__arg)),
     myListTypedef(std::move(myListTypedef__arg)),
     myMapListOfTypeDef(std::move(myMapListOfTypeDef__arg)) {
-  __isset.myLongField = true;
-  __isset.myLongTypeDef = true;
-  __isset.myStringField = true;
-  __isset.myStringTypedef = true;
-  __isset.myMapField = true;
-  __isset.myMapTypedef = true;
-  __isset.myListField = true;
-  __isset.myListTypedef = true;
-  __isset.myMapListOfTypeDef = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+  __isset.__fbthrift_set(folly::index_constant<8>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -1159,12 +1159,12 @@ complexException::complexException(apache::thrift::FragileConstructor, ::std::st
     unionError(std::move(unionError__arg)),
     structError(std::move(structError__arg)),
     lsMap(std::move(lsMap__arg)) {
-  __isset.message = true;
-  __isset.listStrings = true;
-  __isset.errorEnum = true;
-  __isset.unionError = true;
-  __isset.structError = true;
-  __isset.lsMap = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+  __isset.__fbthrift_set(folly::index_constant<5>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

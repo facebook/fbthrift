@@ -57,8 +57,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Struct::Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg, ::module1::Struct second__arg) :
     first(std::move(first__arg)),
     second(std::move(second__arg)) {
-  __isset.first = true;
-  __isset.second = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -205,8 +205,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BigStruct::BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__arg, ::std::int32_t id__arg) :
     s(std::move(s__arg)),
     id(std::move(id__arg)) {
-  __isset.s = true;
-  __isset.id = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

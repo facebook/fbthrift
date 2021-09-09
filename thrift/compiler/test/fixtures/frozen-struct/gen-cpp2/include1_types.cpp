@@ -57,8 +57,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IncludedA::IncludedA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__arg, ::std::string strField__arg) :
     i32Field(std::move(i32Field__arg)),
     strField(std::move(strField__arg)) {
-  __isset.i32Field = true;
-  __isset.strField = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 

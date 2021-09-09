@@ -157,7 +157,7 @@ _readField_MyIntField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::integral, ::std::int64_t>::readWithContext(*iprot, this->MyIntField, _readState);
     
   }
-  this->__isset.MyIntField = true;
+ this->__isset.__fbthrift_set(folly::index_constant<0>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -171,7 +171,7 @@ _readField_MyStringField:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::string, ::std::string>::readWithContext(*iprot, this->MyStringField, _readState);
     
   }
-  this->__isset.MyStringField = true;
+ this->__isset.__fbthrift_set(folly::index_constant<1>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -187,7 +187,7 @@ _readField_MyDataField:
     _readState.afterSubobject(iprot);
     
   }
-  this->__isset.MyDataField = true;
+ this->__isset.__fbthrift_set(folly::index_constant<2>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
@@ -201,7 +201,7 @@ _readField_myEnum:
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::enumeration, ::cpp2::MyEnum>::readWithContext(*iprot, this->myEnum, _readState);
     
   }
-  this->__isset.myEnum = true;
+ this->__isset.__fbthrift_set(folly::index_constant<3>(), true);
 
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,

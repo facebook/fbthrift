@@ -74,7 +74,7 @@ _readField_<%field:cpp_name%>:
   isset_<%field:cpp_name%> = true;
 <%/field:required?%><%/program:enforce_required?%>
 <%#field:has_isset?%>
-  this->__isset.<%field:cpp_name%> = true;
+ this->__isset.__fbthrift_set(folly::index_constant<<%field:isset_index%>>(), true);
 <%/field:has_isset?%>
 
 <%^last?%>

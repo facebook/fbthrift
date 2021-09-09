@@ -63,10 +63,10 @@ TerseFoo::TerseFoo(apache::thrift::FragileConstructor, ::std::vector<double> fie
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)),
     field4(std::move(field4__arg)) {
-  __isset.field1 = true;
-  __isset.field2 = true;
-  __isset.field3 = true;
-  __isset.field4 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -206,11 +206,11 @@ TerseLazyFoo::TerseLazyFoo(const TerseLazyFoo& srcObj) {
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
   field1 = srcObj.field1;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field1 = srcObj.__isset.field1;
+  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   field2 = srcObj.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field2 = srcObj.__isset.field2;
+  __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
@@ -218,7 +218,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
   field3 = srcObj.field3;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field3 = srcObj.__isset.field3;
+  __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
@@ -226,7 +226,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
   field4 = srcObj.field4;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field4 = srcObj.__isset.field4;
+  __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
@@ -287,10 +287,10 @@ TerseLazyFoo::TerseLazyFoo(apache::thrift::FragileConstructor, ::std::vector<dou
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)),
     field4(std::move(field4__arg)) {
-  __isset.field1 = true;
-  __isset.field2 = true;
-  __isset.field3 = true;
-  __isset.field4 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 const ::std::vector<double>& TerseLazyFoo::__fbthrift_read_field_field3() const {
@@ -520,10 +520,10 @@ TerseOptionalFoo::TerseOptionalFoo(apache::thrift::FragileConstructor, ::std::ve
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)),
     field4(std::move(field4__arg)) {
-  __isset.field1 = true;
-  __isset.field2 = true;
-  __isset.field3 = true;
-  __isset.field4 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
@@ -663,11 +663,11 @@ TerseOptionalLazyFoo::TerseOptionalLazyFoo(const TerseOptionalLazyFoo& srcObj) {
   __fbthrift_serializedData_ = srcObj.__fbthrift_serializedData_;
   field1 = srcObj.field1;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field1 = srcObj.__isset.field1;
+  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   field2 = srcObj.field2;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field2 = srcObj.__isset.field2;
+  __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field3.load(relaxed);
@@ -675,7 +675,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
   field3 = srcObj.field3;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field3 = srcObj.__isset.field3;
+  __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
   {
     const auto isDeserialized = srcObj.__fbthrift_isDeserialized_.field4.load(relaxed);
@@ -683,7 +683,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
   }
   field4 = srcObj.field4;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-  __isset.field4 = srcObj.__isset.field4;
+  __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
@@ -744,10 +744,10 @@ TerseOptionalLazyFoo::TerseOptionalLazyFoo(apache::thrift::FragileConstructor, :
     field2(std::move(field2__arg)),
     field3(std::move(field3__arg)),
     field4(std::move(field4__arg)) {
-  __isset.field1 = true;
-  __isset.field2 = true;
-  __isset.field3 = true;
-  __isset.field4 = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+  __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 const ::std::vector<double>& TerseOptionalLazyFoo::__fbthrift_read_field_field3() const {

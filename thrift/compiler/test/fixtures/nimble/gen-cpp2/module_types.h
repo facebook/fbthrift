@@ -110,6 +110,24 @@ class BasicTypes final  {
     bool second;
     bool third;
     bool isTrue;
+    bool __fbthrift_get(folly::index_constant<0>) const {
+      return second;
+    }
+    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
+      second = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<1>) const {
+      return third;
+    }
+    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
+      third = isset_flag;
+    }
+    bool __fbthrift_get(folly::index_constant<2>) const {
+      return isTrue;
+    }
+    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
+      isTrue = isset_flag;
+    }
   } __isset = {};
 
  public:
@@ -219,7 +237,7 @@ class BasicTypes final  {
   [[deprecated("Use `FOO.second_ref() = BAR;` instead of `FOO.set_second(BAR);`")]]
   ::std::int32_t& set_second(::std::int32_t second_) {
     second = second_;
-    __isset.second = true;
+  __isset.__fbthrift_set(folly::index_constant<0>(), true);
     return second;
   }
 
@@ -235,7 +253,7 @@ class BasicTypes final  {
   [[deprecated("Use `FOO.third_ref() = BAR;` instead of `FOO.set_third(BAR);`")]]
   ::std::int64_t& set_third(::std::int64_t third_) {
     third = third_;
-    __isset.third = true;
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
     return third;
   }
 
@@ -246,7 +264,7 @@ class BasicTypes final  {
   [[deprecated("Use `FOO.isTrue_ref() = BAR;` instead of `FOO.set_isTrue(BAR);`")]]
   bool& set_isTrue(bool isTrue_) {
     isTrue = isTrue_;
-    __isset.isTrue = true;
+  __isset.__fbthrift_set(folly::index_constant<2>(), true);
     return isTrue;
   }
 

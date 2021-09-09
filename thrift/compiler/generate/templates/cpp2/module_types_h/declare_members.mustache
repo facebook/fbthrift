@@ -37,5 +37,13 @@
 <%#struct:isset_fields%>
     bool <%field:cpp_name%>;
 <%/struct:isset_fields%>
+<%#struct:isset_fields%>
+    bool __fbthrift_get(folly::index_constant<<%field:isset_index%>>) const {
+      return <%field:cpp_name%>;
+    }
+    void __fbthrift_set(folly::index_constant<<%field:isset_index%>>, bool isset_flag) {
+      <%field:cpp_name%> = isset_flag;
+    }
+<%/struct:isset_fields%>
   } __isset = {};
 <%/struct:isset_fields?%>
