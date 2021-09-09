@@ -494,9 +494,44 @@ class RequestParams {
  * callbacks).
  */
 class ServiceHandler {
+ private:
+#if FOLLY_HAS_COROUTINES
+  class MethodNotImplemented : public std::logic_error {
+   public:
+    MethodNotImplemented() : std::logic_error("Method not implemented") {}
+  };
+#endif
+
  public:
-  virtual folly::SemiFuture<folly::Unit> semifuture_onStartServing() = 0;
-  virtual folly::SemiFuture<folly::Unit> semifuture_onStopServing() = 0;
+#if FOLLY_HAS_COROUTINES
+  virtual folly::coro::Task<void> co_onStartServing() { co_return; }
+  virtual folly::coro::Task<void> co_onStopServing() {
+    throw MethodNotImplemented();
+  }
+#endif
+
+  virtual folly::SemiFuture<folly::Unit> semifuture_onStartServing() {
+#if FOLLY_HAS_COROUTINES
+    if constexpr (folly::kIsLinux) {
+      return co_onStartServing().semi();
+    }
+#endif
+    return folly::makeSemiFuture();
+  }
+
+  virtual folly::SemiFuture<folly::Unit> semifuture_onStopServing() {
+#if FOLLY_HAS_COROUTINES
+    if constexpr (folly::kIsLinux) {
+      // TODO: onStopServing should be implemented similar to onStartServing
+      try {
+        return co_onStopServing().semi();
+      } catch (MethodNotImplemented&) {
+        // If co_onStopServing() is not implemented we just return
+      }
+    }
+#endif
+    return folly::makeSemiFuture();
+  }
 
   virtual ~ServiceHandler() = default;
 };
@@ -570,13 +605,6 @@ class ServerInterface : public virtual AsyncProcessorFactory,
   concurrency::ThreadManager::ExecutionScope getRequestExecutionScope(
       Cpp2RequestContext* ctx) {
     return getRequestExecutionScope(ctx, concurrency::NORMAL);
-  }
-
-  folly::SemiFuture<folly::Unit> semifuture_onStartServing() override {
-    return folly::makeSemiFuture();
-  }
-  folly::SemiFuture<folly::Unit> semifuture_onStopServing() override {
-    return folly::makeSemiFuture();
   }
 
   std::vector<ServiceHandler*> getServiceHandlers() override { return {this}; }

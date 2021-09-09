@@ -781,14 +781,16 @@ void ThriftServer::ensureDecoratedProcessorFactoryInitialized() {
 
 void ThriftServer::callOnStartServing() {
   auto handlerList = getDecoratedProcessorFactory().getServiceHandlers();
+  // Exception is handled in setup()
   std::vector<folly::SemiFuture<folly::Unit>> futures;
   futures.reserve(handlerList.size());
   for (auto handler : handlerList) {
-    futures.emplace_back(handler->semifuture_onStartServing());
+    futures.emplace_back(
+        folly::makeSemiFuture().deferValue([handler](folly::Unit) {
+          return handler->semifuture_onStartServing();
+        }));
   }
-  folly::collectAll(futures.begin(), futures.end())
-      .via(getThreadManager().get())
-      .get();
+  folly::collectAll(futures).via(getThreadManager().get()).get();
 }
 
 void ThriftServer::callOnStopServing() {
@@ -798,9 +800,12 @@ void ThriftServer::callOnStopServing() {
   for (auto handler : handlerList) {
     futures.emplace_back(handler->semifuture_onStopServing());
   }
-  folly::collectAll(futures.begin(), futures.end())
-      .via(getThreadManager().get())
-      .get();
+  auto result =
+      folly::collectAll(futures).via(getThreadManager().get()).getTry();
+  if (result.hasException()) {
+    LOG(FATAL) << "Exception thrown by onStopServing(): "
+               << folly::exceptionStr(result.exception());
+  }
 }
 
 void ThriftServer::stopCPUWorkers() {
