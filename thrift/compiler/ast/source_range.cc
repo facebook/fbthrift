@@ -16,6 +16,7 @@
 
 #include <thrift/compiler/ast/source_range.h>
 
+#include <ostream>
 #include <thrift/compiler/ast/t_program.h>
 
 namespace apache {
@@ -78,6 +79,19 @@ int source_loc::compare(const source_loc& lhs, const source_loc& rhs) noexcept {
   }
   // Then column.
   return cmp(lhs.col_, rhs.col_);
+}
+
+std::ostream& operator<<(std::ostream& os, const source_loc& rhs) {
+  if (rhs.program_ != nullptr) {
+    os << rhs.program_->path();
+    if (rhs.line_ > 0) {
+      os << ":" << rhs.line_;
+      if (rhs.col_ > 0) {
+        os << ":" << rhs.col_;
+      }
+    }
+  }
+  return os;
 }
 
 source_range::source_range(const source_loc& begin, const source_loc& end)

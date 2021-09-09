@@ -50,6 +50,13 @@ void TestOrdering(int expected_cmp, const T& lhs, const T& rhs) {
   EXPECT_EQ(rhs >= lhs, 0 >= expected_cmp);
 }
 
+template <typename T>
+std::string ToString(const T& rhs) {
+  std::ostringstream os;
+  os << rhs;
+  return os.str();
+}
+
 class SourceLocTest : public ::testing::Test {
  protected:
   void TestLocOrdering(
@@ -115,6 +122,14 @@ TEST_F(SourceLocTest, Order) {
       &prog1 > &prog1b ? 1 : -1,
       source_loc(prog1, 1, 1),
       source_loc(prog1b, 1, 1));
+}
+
+TEST_F(SourceLocTest, Print) {
+  t_program prog1("prog/1/src.thrift");
+  EXPECT_EQ(ToString(source_loc()), "");
+  EXPECT_EQ(ToString(source_loc(prog1, 0, 0)), "prog/1/src.thrift");
+  EXPECT_EQ(ToString(source_loc(prog1, 7, 0)), "prog/1/src.thrift:7");
+  EXPECT_EQ(ToString(source_loc(prog1, 7, 13)), "prog/1/src.thrift:7:13");
 }
 
 TEST_F(SourceRangeTest, ProgramMismatch) {

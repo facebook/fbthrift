@@ -17,6 +17,7 @@
 #pragma once
 
 #include <cassert>
+#include <iosfwd>
 #include <stdexcept>
 
 namespace apache {
@@ -109,6 +110,8 @@ class source_loc final {
       const source_loc& lhs, const source_loc& rhs) noexcept {
     return compare(lhs, rhs) >= 0;
   }
+
+  friend std::ostream& operator<<(std::ostream& os, const source_loc& rhs);
 };
 
 /**
