@@ -18,7 +18,6 @@
 
 #include <folly/MapUtil.h>
 #include <folly/Optional.h>
-#include <folly/Random.h>
 #include <folly/Range.h>
 #include <folly/Traits.h>
 #include <folly/container/F14Map.h>
@@ -104,7 +103,6 @@ class IndexWriterImpl {
  public:
   IndexWriterImpl(Protocol* prot, uint32_t& writtenBytes)
       : prot_(prot), writtenBytes_(writtenBytes) {
-    writeRandomNumberField();
     writeIndexOffsetField();
   }
 
@@ -140,17 +138,6 @@ class IndexWriterImpl {
     writtenBytes_ += prot_->writeDouble(0);
     writtenBytes_ += prot_->writeFieldEnd();
     sizeFieldEnd_ = writtenBytes_;
-  }
-
-  void writeRandomNumberField() {
-    const int64_t randomNumber = static_cast<int64_t>(folly::Random::rand64());
-    writtenBytes_ += prot_->writeFieldBegin(
-        kExpectedRandomNumberField.name,
-        kExpectedRandomNumberField.type,
-        kExpectedRandomNumberField.id);
-    writtenBytes_ += prot_->writeI64(randomNumber);
-    writtenBytes_ += prot_->writeFieldEnd();
-    fieldIdAndSize_.push_back({kActualRandomNumberFieldId, randomNumber});
   }
 
   void writeIndexField() {
