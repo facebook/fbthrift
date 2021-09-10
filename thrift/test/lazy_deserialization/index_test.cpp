@@ -116,14 +116,16 @@ IndexedStruct genIndexedStruct(Serializer ser) {
   auto obj = gen<IndexedStruct>();
   auto tokens = tokenize(obj, ser);
   obj.serialized_data_size_ref() =
-      tokens[1].size() + tokens[2].size() + tokens[3].size() + tokens[4].size();
+      tokens[2].size() + tokens[3].size() + tokens[4].size() + tokens[5].size();
   if (!cheapToSkipListOfDouble(ser)) {
     // Only add index field if list<double> is not cheap to skip
     obj.field_id_to_size_ref() = {
-        {2, tokens[2].value.size()},
-        {4, tokens[4].value.size()},
+        {2, tokens[3].value.size()},
+        {4, tokens[5].value.size()},
     };
   }
+  obj.random_number_ref() = kRandomValue;
+  obj.field_id_to_size_ref()[detail::kActualRandomNumberFieldId] = kRandomValue;
 
   return obj;
 }
@@ -157,7 +159,11 @@ TYPED_TEST(LazyDeserialization, IndexedFooToLazyFoo) {
   auto tokens = tokenize(indexedFoo, Serializer{});
 
   // Replace header with internal field ids
-  tokens.begin()->header = genFieldHeader(
+  tokens[0].header = genFieldHeader(
+      detail::kExpectedRandomNumberField.type,
+      detail::kExpectedRandomNumberField.id,
+      Serializer{});
+  tokens[1].header = genFieldHeader(
       detail::kSizeField.type, detail::kSizeField.id, Serializer{});
   tokens.rbegin()->header = genFieldHeader(
       detail::kIndexField.type, detail::kIndexField.id, Serializer{});
@@ -188,7 +194,11 @@ TYPED_TEST(LazyDeserialization, LazyFooToIndexedFoo) {
   auto lazyFoo = this->genLazyStruct();
   auto tokens = tokenize(lazyFoo, Serializer{});
 
-  tokens.begin()->header = genFieldHeader(
+  tokens[0].header = genFieldHeader(
+      detail::kExpectedRandomNumberField.type,
+      simple_constants::kRandomNumberId(),
+      Serializer{});
+  tokens[1].header = genFieldHeader(
       detail::kSizeField.type, simple_constants::kSizeId(), Serializer{});
   tokens.rbegin()->header = genFieldHeader(
       detail::kIndexField.type, simple_constants::kIndexId(), Serializer{});
@@ -200,6 +210,10 @@ TYPED_TEST(LazyDeserialization, LazyFooToIndexedFoo) {
   EXPECT_EQ(lazyFoo.field3_ref(), indexedFoo.field3_ref());
   EXPECT_EQ(lazyFoo.field4_ref(), indexedFoo.field4_ref());
 
+  indexedFoo.random_number_ref() = kRandomValue;
+  indexedFoo.field_id_to_size_ref()[detail::kActualRandomNumberFieldId] =
+      kRandomValue;
+
   EXPECT_THRIFT_EQ(indexedFoo, genIndexedStruct<IndexedStruct>(Serializer{}));
 }
 
@@ -209,12 +223,7 @@ TYPED_TEST(LazyDeserialization, ReadRandomNumber) {
   using IndexedStruct = typename TypeParam::IndexedStruct;
 
   auto indexedFoo = genIndexedStruct<IndexedStruct>(Serializer{});
-  indexedFoo.field_id_to_size_ref()[detail::kActualRandomNumberFieldId] =
-      kRandomValue;
   auto tokens = tokenize(indexedFoo, Serializer{});
-
-  // add random field
-  tokens.insert(tokens.begin(), FieldToken{});
 
   // Replace header with internal field ids
   tokens[0].header = genFieldHeader(
@@ -228,7 +237,6 @@ TYPED_TEST(LazyDeserialization, ReadRandomNumber) {
 
   {
     // Random number matches
-    tokens[0].value = writeI64(kRandomValue, Serializer{});
     auto lazyFoo = this->template deserialize<LazyStruct>(merge(tokens));
 
     EXPECT_TRUE(get_field4(lazyFoo).empty());
@@ -244,5 +252,85 @@ TYPED_TEST(LazyDeserialization, ReadRandomNumber) {
         get_field4(lazyFoo).empty(), cheapToSkipListOfDouble(Serializer{}));
     EXPECT_EQ(lazyFoo.field4_ref(), indexedFoo.field4_ref());
   }
+}
+
+TYPED_TEST(LazyDeserialization, MissingRandomNumberField) {
+  using Serializer = typename TypeParam::Serializer;
+  using LazyStruct = typename TypeParam::LazyStruct;
+  using IndexedStruct = typename TypeParam::IndexedStruct;
+
+  auto indexedFoo = genIndexedStruct<IndexedStruct>(Serializer{});
+  auto tokens = tokenize(indexedFoo, Serializer{});
+
+  // Replace header with internal field ids
+  tokens[1].header = genFieldHeader(
+      detail::kSizeField.type, detail::kSizeField.id, Serializer{});
+  tokens.rbegin()->header = genFieldHeader(
+      detail::kIndexField.type, detail::kIndexField.id, Serializer{});
+
+  // remove random number field
+  tokens.erase(tokens.begin());
+
+  auto lazyFoo = this->template deserialize<LazyStruct>(merge(tokens));
+
+  // TODO: enforce random number after migration
+  EXPECT_TRUE(get_field4(lazyFoo).empty());
+  EXPECT_EQ(lazyFoo.field4_ref(), indexedFoo.field4_ref());
+}
+
+TYPED_TEST(LazyDeserialization, MissingRandomNumberInIndexField) {
+  using Serializer = typename TypeParam::Serializer;
+  using LazyStruct = typename TypeParam::LazyStruct;
+  using IndexedStruct = typename TypeParam::IndexedStruct;
+
+  auto indexedFoo = genIndexedStruct<IndexedStruct>(Serializer{});
+
+  // remove random number from key
+  indexedFoo.field_id_to_size_ref()->erase(detail::kActualRandomNumberFieldId);
+  auto tokens = tokenize(indexedFoo, Serializer{});
+
+  // Replace header with internal field ids
+  tokens[0].header = genFieldHeader(
+      detail::kExpectedRandomNumberField.type,
+      detail::kExpectedRandomNumberField.id,
+      Serializer{});
+  tokens[1].header = genFieldHeader(
+      detail::kSizeField.type, detail::kSizeField.id, Serializer{});
+  tokens.rbegin()->header = genFieldHeader(
+      detail::kIndexField.type, detail::kIndexField.id, Serializer{});
+
+  auto lazyFoo = this->template deserialize<LazyStruct>(merge(tokens));
+
+  // If random number is missing in index field, we don't use index
+  EXPECT_EQ(get_field4(lazyFoo).empty(), cheapToSkipListOfDouble(Serializer{}));
+  EXPECT_EQ(lazyFoo.field4_ref(), indexedFoo.field4_ref());
+}
+
+TYPED_TEST(LazyDeserialization, MismatchedRandomNumberInIndexField) {
+  using Serializer = typename TypeParam::Serializer;
+  using LazyStruct = typename TypeParam::LazyStruct;
+  using IndexedStruct = typename TypeParam::IndexedStruct;
+
+  auto indexedFoo = genIndexedStruct<IndexedStruct>(Serializer{});
+
+  // Modify random number so that it doesn't match expected number
+  ++indexedFoo.field_id_to_size_ref()[detail::kActualRandomNumberFieldId];
+  auto tokens = tokenize(indexedFoo, Serializer{});
+
+  // Replace header with internal field ids
+  tokens[0].header = genFieldHeader(
+      detail::kExpectedRandomNumberField.type,
+      detail::kExpectedRandomNumberField.id,
+      Serializer{});
+  tokens[1].header = genFieldHeader(
+      detail::kSizeField.type, detail::kSizeField.id, Serializer{});
+  tokens.rbegin()->header = genFieldHeader(
+      detail::kIndexField.type, detail::kIndexField.id, Serializer{});
+
+  auto lazyFoo = this->template deserialize<LazyStruct>(merge(tokens));
+
+  // If random number mismatches, we don't use index
+  EXPECT_EQ(get_field4(lazyFoo).empty(), cheapToSkipListOfDouble(Serializer{}));
+  EXPECT_EQ(lazyFoo.field4_ref(), indexedFoo.field4_ref());
 }
 } // namespace apache::thrift::test

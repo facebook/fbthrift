@@ -68,6 +68,7 @@ struct LazyCppRef {
 // Since we can't use negative as index field, we will change id
 // in serialized data manually
 struct IndexedFoo {
+  102: i64 random_number;
   100: double serialized_data_size;
 
   1: list<double> field1;
@@ -79,6 +80,7 @@ struct IndexedFoo {
 }
 
 struct OptionalIndexedFoo {
+  102: i64 random_number;
   100: double serialized_data_size;
 
   1: optional list<double> field1;
@@ -94,3 +96,4 @@ struct Empty {
 
 const i32 kSizeId = 100;
 const i32 kIndexId = 101;
+const i32 kRandomNumberId = 102;
