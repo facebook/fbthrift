@@ -320,7 +320,6 @@ inline StreamClientCallback* createStreamClientCallback(
           std::move(requestCallback), bufferOptions));
 }
 
-#if FOLLY_HAS_COROUTINES
 inline SinkClientCallback* createSinkClientCallback(
     RequestClientCallback::Ptr requestCallback) {
   DCHECK(requestCallback->isInlineSafe());
@@ -360,7 +359,6 @@ inline SinkClientCallback* createSinkClientCallback(
   return apache::thrift::detail::ClientSinkBridge::create(
       new RequestClientCallbackWrapper(std::move(requestCallback)));
 }
-#endif
 
 template <class Protocol>
 SerializedRequest preprocessSendT(

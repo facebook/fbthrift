@@ -25,6 +25,8 @@
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/Task.h>
+#else
+#include <folly/CancellationToken.h>
 #endif
 
 #include <thrift/lib/cpp2/async/SinkBridgeUtil.h>
@@ -36,19 +38,18 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-#if FOLLY_HAS_COROUTINES
 class ClientSinkBridge;
 
 // Instantiated in ClientSinkBridge.cpp
 extern template class TwoWayBridge<
-    CoroConsumer,
+    ClientSinkConsumer,
     ClientMessage,
     ClientSinkBridge,
     ServerMessage,
     ClientSinkBridge>;
 
 class ClientSinkBridge : public TwoWayBridge<
-                             CoroConsumer,
+                             ClientSinkConsumer,
                              ClientMessage,
                              ClientSinkBridge,
                              ServerMessage,
@@ -68,8 +69,10 @@ class ClientSinkBridge : public TwoWayBridge<
 
   void close();
 
+#if FOLLY_HAS_COROUTINES
   folly::coro::Task<folly::Try<StreamPayload>> sink(
       folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator);
+#endif
 
   void cancel(folly::Try<StreamPayload> payload);
 
@@ -98,6 +101,7 @@ class ClientSinkBridge : public TwoWayBridge<
 
   void processServerMessages();
 
+#if FOLLY_HAS_COROUTINES
   // TODO(T88629984): These are implemented as static functions because
   // clang-9 + member function coroutines + ASAN == ICE. Revert D27688850
   // once everything using thrift sink is past clang-9.
@@ -110,6 +114,7 @@ class ClientSinkBridge : public TwoWayBridge<
       int64_t& credit,
       folly::Try<StreamPayload>& finalResponse,
       folly::CancellationToken& clientCancelToken);
+#endif
 
   union {
     FirstResponseCallback* firstResponseCallback_;
@@ -118,12 +123,6 @@ class ClientSinkBridge : public TwoWayBridge<
   folly::Executor::KeepAlive<folly::EventBase> evb_;
   folly::CancellationSource serverCancelSource_;
 };
-#else
-class ClientSinkBridge {
- public:
-  using Ptr = std::unique_ptr<ClientSinkBridge>;
-};
-#endif
 
 } // namespace detail
 } // namespace thrift

@@ -18,11 +18,12 @@
 
 #include <folly/Portability.h>
 
-#if FOLLY_HAS_COROUTINES
 #include <boost/variant.hpp>
 
+#if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/Baton.h>
 #include <folly/experimental/coro/Task.h>
+#endif
 
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 
@@ -34,7 +35,14 @@ using ClientMessage = boost::variant<folly::Try<StreamPayload>, int64_t>;
 struct SinkComplete {};
 using ServerMessage = boost::variant<folly::Try<StreamPayload>, SinkComplete>;
 
-class CoroConsumer {
+class ClientSinkConsumer {
+ public:
+  virtual ~ClientSinkConsumer() = default;
+  virtual void consume() = 0;
+  virtual void canceled() = 0;
+};
+#if FOLLY_HAS_COROUTINES
+class CoroConsumer final : public ClientSinkConsumer {
  public:
   void consume() { baton_.post(); }
 
@@ -51,9 +59,7 @@ class CoroConsumer {
   }
   folly::coro::Baton baton_;
 };
-
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
-
-#endif

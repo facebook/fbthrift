@@ -20,10 +20,9 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-#if FOLLY_HAS_COROUTINES
 // Explicitly instantiate the base of ClientSinkBridge
 template class TwoWayBridge<
-    CoroConsumer,
+    ClientSinkConsumer,
     ClientMessage,
     ClientSinkBridge,
     ServerMessage,
@@ -45,6 +44,7 @@ void ClientSinkBridge::close() {
   Ptr(this);
 }
 
+#if FOLLY_HAS_COROUTINES
 folly::coro::Task<void> ClientSinkBridge::waitEventImpl(
     ClientSinkBridge& self,
     int64_t& credit,
@@ -138,6 +138,7 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sink(
     folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator) {
   return sinkImpl(*this, std::move(generator));
 }
+#endif
 
 void ClientSinkBridge::cancel(folly::Try<StreamPayload> payload) {
   CHECK(payload.hasException());
@@ -233,7 +234,6 @@ void ClientSinkBridge::processServerMessages() {
     }
   } while (!serverWait(this));
 }
-#endif
 
 } // namespace detail
 } // namespace thrift
