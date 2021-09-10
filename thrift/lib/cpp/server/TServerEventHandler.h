@@ -84,6 +84,11 @@ class TServerEventHandler {
    */
   virtual void connectionDestroyed(TConnectionContext* ctx) { (void)ctx; }
 
+  /**
+   * Called after the server stops.
+   */
+  virtual void postStop() {}
+
  protected:
   /**
    * Prevent direct instantiation.

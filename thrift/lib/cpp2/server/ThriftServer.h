@@ -654,7 +654,16 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   folly::coro::CancellableAsyncScope* getAsyncScope() {
     return asyncScope_.get();
   }
+
+  /**
+   * Get the global CancellableAsyncScope, it is usally the AsyncScope
+   * associated with the global server Cancellation is requested when the
+   * global server is stopping.
+   */
+  static folly::coro::CancellableAsyncScope& getGlobalAsyncScope();
 #endif
+
+  static void setGlobalServer(ThriftServer* server);
 
   void setAcceptorFactory(
       const std::shared_ptr<wangle::AcceptorFactory>& acceptorFactory) {

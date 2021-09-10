@@ -817,17 +817,40 @@ void ThriftServer::callOnStopServing() {
   }
 }
 
-void ThriftServer::stopCPUWorkers() {
+ThriftServer* globalServer;
+
 #if FOLLY_HAS_COROUTINES
-  // Wait for tasks running on AsyncScope to join
-  folly::coro::blockingWait(asyncScope_->joinAsync());
-  asyncScope_.reset();
+folly::coro::CancellableAsyncScope& ThriftServer::getGlobalAsyncScope() {
+  DCHECK(globalServer);
+  auto asyncScope = globalServer->getAsyncScope();
+  DCHECK(asyncScope);
+  return *asyncScope;
+}
 #endif
+
+void ThriftServer::setGlobalServer(ThriftServer* server) {
+  globalServer = server;
+}
+
+void ThriftServer::stopCPUWorkers() {
   // Wait for any tasks currently running on the task queue workers to
   // finish, then stop the task queue workers. Have to do this now, so
   // there aren't tasks completing and trying to write to i/o thread
   // workers after we've stopped the i/o workers.
   threadManager_->join();
+#if FOLLY_HAS_COROUTINES
+  // Wait for tasks running on AsyncScope to join
+  folly::coro::blockingWait(asyncScope_->joinAsync());
+#endif
+
+  // Notify handler of the postStop event
+  for (const auto& eventHandler : getEventHandlersUnsafe()) {
+    eventHandler->postStop();
+  }
+
+#if FOLLY_HAS_COROUTINES
+  asyncScope_.reset();
+#endif
 }
 
 void ThriftServer::handleSetupFailure(void) {
