@@ -20,9 +20,13 @@
 include "thrift/lib/thrift/annotation/scope.thrift"
 
 namespace cpp2 thrift.lib.thrift.annotation.meta
-namespace py3 thrift.lib.thrift.annotation
+namespace php apache_thrift
 namespace py thrift.lib.thrift.annotation.meta
+namespace py.asyncio thrift_asyncio.annotation.meta
+namespace py3 thrift.lib.thrift.annotation
 namespace java.swift org.apache.thrift.annotation.meta
+namespace java org.apache.thrift.annotation.meta
+namespace go thrift.annotation.meta
 
 // A meta-annotation that applies its sibling annotations through the one it
 // annotates. For example:
