@@ -134,6 +134,12 @@ std::unique_ptr<AsyncProcessorFactory> createDecoratedProcessorFactory(
 }
 } // namespace
 
+#if FOLLY_HAS_COROUTINES
+folly::coro::CancellableAsyncScope* ServiceHandler::getAsyncScope() {
+  return server_->getAsyncScope();
+}
+#endif
+
 TLSCredentialWatcher::TLSCredentialWatcher(ThriftServer* server)
     : credProcessor_() {
   credProcessor_.addCertCallback([server] { server->updateTLSCert(); });
@@ -447,6 +453,13 @@ void ThriftServer::setup() {
       startDuplex();
     }
 
+#if FOLLY_HAS_COROUTINES
+    asyncScope_ = std::make_unique<folly::coro::CancellableAsyncScope>();
+#endif
+    for (auto handler : getDecoratedProcessorFactory().getServiceHandlers()) {
+      handler->setServer(this);
+    }
+
     DCHECK(
         internalStatus_.load(std::memory_order_relaxed) ==
         ServerStatus::NOT_RUNNING);
@@ -461,10 +474,6 @@ void ThriftServer::setup() {
     }
 
     internalStatus_.store(ServerStatus::STARTING, std::memory_order_release);
-
-#if FOLLY_HAS_COROUTINES
-    asyncScope_ = std::make_unique<folly::coro::CancellableAsyncScope>();
-#endif
 
     // Called after setup
     callOnStartServing();
@@ -812,6 +821,7 @@ void ThriftServer::stopCPUWorkers() {
 #if FOLLY_HAS_COROUTINES
   // Wait for tasks running on AsyncScope to join
   folly::coro::blockingWait(asyncScope_->joinAsync());
+  asyncScope_.reset();
 #endif
   // Wait for any tasks currently running on the task queue workers to
   // finish, then stop the task queue workers. Have to do this now, so

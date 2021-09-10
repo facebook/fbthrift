@@ -49,8 +49,16 @@
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 #include <thrift/lib/thrift/gen-cpp2/metadata_types.h>
 
+namespace folly {
+namespace coro {
+class CancellableAsyncScope;
+}
+} // namespace folly
+
 namespace apache {
 namespace thrift {
+
+class ThriftServer;
 
 namespace detail {
 template <typename T>
@@ -533,7 +541,17 @@ class ServiceHandler {
     return folly::makeSemiFuture();
   }
 
+  void setServer(ThriftServer* server) { server_ = server; }
+
   virtual ~ServiceHandler() = default;
+
+ protected:
+#if FOLLY_HAS_COROUTINES
+  folly::coro::CancellableAsyncScope* getAsyncScope();
+#endif
+
+ private:
+  ThriftServer* server_;
 };
 
 /**

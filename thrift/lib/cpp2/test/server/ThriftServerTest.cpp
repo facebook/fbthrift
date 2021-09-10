@@ -2964,7 +2964,8 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
    public:
     folly::Baton<> startEnter;
     folly::Baton<> stopEnter;
-    folly::coro::Baton startExit, stopExit;
+    folly::Baton<> backgroundEnter;
+    folly::coro::Baton startExit, stopExit, backgroundExit;
 
     void voidResponse() override {}
 
@@ -2974,7 +2975,22 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
 
     folly::coro::Task<void> co_onStartServing() override {
       startEnter.post();
+      co_await getAsyncScope()->co_schedule(co_backgroundTask());
       co_await startExit;
+      co_return;
+    }
+
+    folly::coro::Task<void> co_backgroundTask() {
+      backgroundEnter.post();
+      co_await backgroundExit;
+      // Wait for cancellation
+      const folly::CancellationToken& ct =
+          co_await folly::coro::co_current_cancellation_token;
+      for (size_t retry = 0; retry < 20 && !ct.isCancellationRequested();
+           retry++) {
+        co_await folly::coro::sleepReturnEarlyOnCancel(100ms);
+      }
+      EXPECT_TRUE(ct.isCancellationRequested());
       co_return;
     }
 
@@ -3072,29 +3088,10 @@ TEST_P(HeaderOrRocket, OnStartStopServingTest) {
   client.semifuture_voidResponse().get();
   EXPECT_EQ("echo", client.semifuture_echoRequest("echo").get());
 
-  folly::Baton<> backgroundEnter, backgroundExit;
-
-  auto backgroundTask = [&]() -> folly::coro::Task<void> {
-    backgroundEnter.post();
-    EXPECT_TRUE(backgroundExit.try_wait_for(2s));
-    // Wait for cancellation
-    const folly::CancellationToken& ct =
-        co_await folly::coro::co_current_cancellation_token;
-    for (size_t retry = 0; retry < 20 && !ct.isCancellationRequested();
-         retry++) {
-      co_await folly::coro::sleepReturnEarlyOnCancel(100ms);
-    }
-    EXPECT_TRUE(ct.isCancellationRequested());
-    co_return;
-  };
-
-  auto& server = dynamic_cast<ThriftServer&>(runner->getThriftServer());
-  server.getAsyncScope().add(
-      backgroundTask().scheduleOn(server.getThreadManager().get()));
   // Wait for backgroundTask to start
-  EXPECT_TRUE(backgroundEnter.try_wait_for(2s));
+  EXPECT_TRUE(testIf->backgroundEnter.try_wait_for(2s));
   client.semifuture_voidResponse().get();
-  backgroundExit.post();
+  testIf->backgroundExit.post();
 
   // Stop the server on a different thread
   folly::getGlobalIOExecutor()->getEventBase()->runInEventBaseThread(

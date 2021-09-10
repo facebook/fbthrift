@@ -649,8 +649,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   /**
    * Get CancellableAsyncScope that will be maintained by the Thrift Server.
    * Cancellation is requested when the server is stopping.
+   * Returns nullptr, before server setup and after server stops.
    */
-  folly::coro::CancellableAsyncScope& getAsyncScope() { return *asyncScope_; }
+  folly::coro::CancellableAsyncScope* getAsyncScope() {
+    return asyncScope_.get();
+  }
 #endif
 
   void setAcceptorFactory(
