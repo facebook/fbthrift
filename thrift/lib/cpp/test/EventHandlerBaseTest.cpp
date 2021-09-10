@@ -126,3 +126,29 @@ TEST_F(TProcessorEventHandlerTest, registerProcessorHandler) {
   EXPECT_FALSE(countProcessor(h));
   EXPECT_FALSE(countClient(h));
 }
+
+TEST_F(TProcessorEventHandlerTest, registrationActivity) {
+  auto count = []() { return TProcessorTester().getEventHandlers().size(); };
+
+  auto h1 = std::make_shared<EventHandler>();
+  auto h2 = std::make_shared<EventHandler>();
+  auto h3 = std::make_shared<EventHandler>();
+
+  EXPECT_EQ(count(), 0);
+  TProcessorBase::addProcessorEventHandler(h1);
+  EXPECT_EQ(count(), 1);
+  TProcessorBase::removeProcessorEventHandler(h1);
+  EXPECT_EQ(count(), 0);
+  TProcessorBase::addProcessorEventHandler(h1);
+  EXPECT_EQ(count(), 1);
+  TProcessorBase::addProcessorEventHandler(h2);
+  EXPECT_EQ(count(), 2);
+  TProcessorBase::removeProcessorEventHandler(h1);
+  EXPECT_EQ(count(), 1);
+  TProcessorBase::addProcessorEventHandler(h3);
+  EXPECT_EQ(count(), 2);
+  TProcessorBase::removeProcessorEventHandler(h3);
+  EXPECT_EQ(count(), 1);
+  TProcessorBase::removeProcessorEventHandler(h2);
+  EXPECT_EQ(count(), 0);
+}
