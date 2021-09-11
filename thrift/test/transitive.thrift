@@ -16,8 +16,8 @@
 
 namespace cpp2 apache.thrift.test
 
-include "thrift/lib/thrift/annotation/cpp.thrift"
-include "thrift/lib/thrift/annotation/meta.thrift"
+include "thrift/annotation/cpp.thrift"
+include "thrift/annotation/meta.thrift"
 
 cpp_include "thrift/test/AdapterTest.h"
 

@@ -30,7 +30,7 @@ const std::string* find_ref_type_annot(const t_node& node) {
   return node.find_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"});
 }
 
-// Since we can not include `thrift/lib/thrift/annotation/cpp.thrift`
+// Since we can not include `thrift/annotation/cpp.thrift`
 // This is a copy of apache::thrift::annotation::RefType
 enum class RefType {
   Unique = 0,

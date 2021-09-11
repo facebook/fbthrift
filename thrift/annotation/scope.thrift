@@ -14,20 +14,20 @@
  * limitations under the License.
  */
 
-namespace cpp2 thrift.lib.thrift.annotation
-namespace php apache_thrift
-namespace py thrift.lib.thrift.annotation.scope
-namespace py.asyncio thrift_asyncio.annotation.scope
-namespace py3 thrift.lib.thrift.annotation
-namespace java.swift org.apache.thrift.annotation
-namespace java org.apache.thrift.annotation
+namespace cpp2 facebook.thrift.annotation
+namespace py3 facebook.thrift.annotation
+namespace php facebook_thrift_annotation
+namespace java.swift com.facebook.thrift.annotation
+namespace java com.facebook.thrift.annotation
+namespace py.asyncio facebook_thrift_asyncio.annotation.scope
 namespace go thrift.annotation.scope
+namespace py thrift.annotation.scope
 
 // Annotations that indicate which IDL definition a structured annotation can
 // be place on.
 //
 // For example:
-//     include "thrift/lib/thrift/annotation/scope.thrift"
+//     include "thrift/annotation/scope.thrift"
 //
 //     @scope.Struct
 //     struct MyStructAnnotation {...}

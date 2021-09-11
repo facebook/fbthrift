@@ -17,16 +17,16 @@
 // This file defines meta-annotations targeted at Thrift framework authors
 // rather than general Thrift users.
 
-include "thrift/lib/thrift/annotation/scope.thrift"
+include "thrift/annotation/scope.thrift"
 
-namespace cpp2 thrift.lib.thrift.annotation.meta
-namespace php apache_thrift
-namespace py thrift.lib.thrift.annotation.meta
-namespace py.asyncio thrift_asyncio.annotation.meta
-namespace py3 thrift.lib.thrift.annotation
-namespace java.swift org.apache.thrift.annotation.meta
-namespace java org.apache.thrift.annotation.meta
+namespace cpp2 facebook.thrift.annotation
+namespace py3 facebook.thrift.annotation
+namespace php facebook_thrift_annotation
+namespace java.swift com.facebook.thrift.annotation
+namespace java com.facebook.thrift.annotation
+namespace py.asyncio facebook_thrift_asyncio.annotation.meta
 namespace go thrift.annotation.meta
+namespace py thrift.annotation.meta
 
 // A meta-annotation that applies its sibling annotations through the one it
 // annotates. For example:
@@ -51,4 +51,4 @@ namespace go thrift.annotation.meta
 //   struct MyAnnotation {}
 @scope.Struct
 struct Transitive {
-} (thrift.uri = "facebook.com/thrift/annotation/meta/Transitive")
+} (thrift.uri = "facebook.com/thrift/annotation/Transitive")

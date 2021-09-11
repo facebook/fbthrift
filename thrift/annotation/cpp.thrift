@@ -14,18 +14,16 @@
  * limitations under the License.
  */
 
-// TODO(viz): Consider moving to a cpp-specific lib directory.
+include "thrift/annotation/scope.thrift"
 
-include "thrift/lib/thrift/annotation/scope.thrift"
-
-namespace cpp2 thrift.lib.thrift.annotation
-namespace php apache_thrift
-namespace py thrift.lib.thrift.annotation.cpp
-namespace py.asyncio thrift_asyncio.annotation.cpp
-namespace py3 thrift.lib.thrift.annotation
-namespace java.swift org.apache.thrift.annotation
-namespace java org.apache.thrift.annotation
+namespace cpp2 facebook.thrift.annotation.cpp
+namespace py3 facebook.thrift.annotation.cpp
+namespace php facebook_thrift_annotation_cpp
+namespace java.swift com.facebook.thrift.annotation.cpp
+namespace java com.facebook.thrift.annotation.cpp
+namespace py.asyncio facebook_thrift_asyncio.annotation.cpp
 namespace go thrift.annotation.cpp
+namespace py thrift.annotation.cpp
 
 enum RefType {
   Unique = 0,
@@ -55,4 +53,4 @@ struct ExperimentalAdapter {
   // The name of a C++ adapter type used to convert between Thrift and native
   // C++ representation.
   1: string name;
-} (thrift.uri = "facebook.com/thrift/annotation/ExperimentalAdapter")
+} (thrift.uri = "facebook.com/thrift/annotation/cpp/ExperimentalAdapter")

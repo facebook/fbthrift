@@ -715,7 +715,7 @@ class CompilerFailureTest(unittest.TestCase):
 
     def test_structured_ref(self):
         write_file(
-            "thrift/lib/thrift/annotation/cpp.thrift",
+            "thrift/annotation/cpp.thrift",
             textwrap.dedent(
                 """\
                 enum RefType {Unique, SharedConst, SharedMutable}
@@ -730,7 +730,7 @@ class CompilerFailureTest(unittest.TestCase):
             "foo.thrift",
             textwrap.dedent(
                 """\
-                include "thrift/lib/thrift/annotation/cpp.thrift"
+                include "thrift/annotation/cpp.thrift"
 
                 struct Foo {
                   1: optional Foo field1 (cpp.ref);
@@ -763,12 +763,12 @@ class CompilerFailureTest(unittest.TestCase):
 
     def test_experimental_adapter(self):
         write_file(
-            "thrift/lib/thrift/annotation/cpp.thrift",
+            "thrift/annotation/cpp.thrift",
             textwrap.dedent(
                 """\
                 struct ExperimentalAdapter {
                   1: string name;
-                } (thrift.uri = "facebook.com/thrift/annotation/ExperimentalAdapter")
+                } (thrift.uri = "facebook.com/thrift/annotation/cpp/ExperimentalAdapter")
                 """
             ),
         )
@@ -777,7 +777,7 @@ class CompilerFailureTest(unittest.TestCase):
             "foo.thrift",
             textwrap.dedent(
                 """\
-                include "thrift/lib/thrift/annotation/cpp.thrift"
+                include "thrift/annotation/cpp.thrift"
 
                 typedef i64 MyI64 (cpp.adapter="MyAdapter")
 

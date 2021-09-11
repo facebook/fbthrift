@@ -52,7 +52,7 @@ class CppRefToUnstructured(unittest.TestCase):
             read_file("foo.thrift"),
             textwrap.dedent(
                 """\
-                include "thrift/lib/thrift/annotation/cpp.thrift"
+                include "thrift/annotation/cpp.thrift"
                 struct Faa {
                     1: i32 faa1;
                     @cpp.Ref{type = cpp.RefType.Unique}
@@ -94,7 +94,7 @@ class CppRefToUnstructured(unittest.TestCase):
                 include "a.thrift"
                 include "b.thrift"
                 include "c.thrift"
-                include "thrift/lib/thrift/annotation/cpp.thrift"
+                include "thrift/annotation/cpp.thrift"
 
                 struct Faa {
                     1: i32 faa1;
@@ -159,7 +159,7 @@ class CppRefToUnstructured(unittest.TestCase):
             read_file("foo.thrift"),
             textwrap.dedent(
                 """\
-                include "thrift/lib/thrift/annotation/cpp.thrift"
+                include "thrift/annotation/cpp.thrift"
                 struct Faa {
                     1: i32 faa1;
                     @cpp.Ref{type = cpp.RefType.Unique}

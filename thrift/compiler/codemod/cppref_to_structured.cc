@@ -52,7 +52,7 @@ static void cppref_to_structured(
     return;
   }
 
-  fm.add_include("thrift/lib/thrift/annotation/cpp.thrift");
+  fm.add_include("thrift/annotation/cpp.thrift");
 
   const auto field_begin_offset = field.src_range().begin().offset();
 

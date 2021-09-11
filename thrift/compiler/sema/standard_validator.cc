@@ -462,7 +462,7 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
   const t_const* adapter_annotation = nullptr;
   for (const t_const* annotation : node.structured_annotations()) {
     if (annotation->type()->uri() ==
-        "facebook.com/thrift/annotation/ExperimentalAdapter") {
+        "facebook.com/thrift/annotation/cpp/ExperimentalAdapter") {
       adapter_annotation = annotation;
       break;
     }

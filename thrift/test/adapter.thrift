@@ -16,7 +16,7 @@
 
 namespace cpp2 apache.thrift.test.basic
 
-include "thrift/lib/thrift/annotation/cpp.thrift"
+include "thrift/annotation/cpp.thrift"
 cpp_include "thrift/test/AdapterTest.h"
 
 typedef i64 DurationMs (

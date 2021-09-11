@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-include "thrift/lib/thrift/annotation/cpp.thrift"
+include "thrift/annotation/cpp.thrift"
 
 cpp_include "<deque>"
 cpp_include "folly/container/F14Map.h"

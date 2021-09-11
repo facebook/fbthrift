@@ -1,5 +1,11 @@
+### annotation
+Built-in Thrift annotations
+
 ### compiler
 A binary to parse .thrift files and to generate corresponding client and server code in each target language
+
+### conformance
+Thirft conformance test suite
 
 ### doc
 The official Facebook Thrift documentation

@@ -52,7 +52,7 @@ bool is_transitive_annotation(const t_named& node) {
   for (const auto* annotation : node.structured_annotations()) {
     const std::string* uri =
         annotation->type()->find_annotation_or_null("thrift.uri");
-    if (uri && *uri == "facebook.com/thrift/annotation/meta/Transitive") {
+    if (uri && *uri == "facebook.com/thrift/annotation/Transitive") {
       return true;
     }
   }

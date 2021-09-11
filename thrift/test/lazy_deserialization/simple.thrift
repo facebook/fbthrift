@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-include "thrift/lib/thrift/annotation/cpp.thrift"
+include "thrift/annotation/cpp.thrift"
 
 namespace cpp2 apache.thrift.test
 namespace py3 thrift.test.lazy_deserialization

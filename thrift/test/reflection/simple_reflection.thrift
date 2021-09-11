@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-include "thrift/lib/thrift/annotation/cpp.thrift"
+include "thrift/annotation/cpp.thrift"
 
 namespace cpp2 test_cpp2.simple_cpp_reflection
 
