@@ -1109,7 +1109,7 @@ void t_hack_generator::generate_enum(const t_enum* tenum) {
     hack_enum = true;
     typehint = hack_name(tenum, true);
     if (std::string const* attributes =
-            tenum->get_annotation_or_null("hack.attributes")) {
+            tenum->find_annotation_or_null("hack.attributes")) {
       f_types_ << "<<" << *attributes << ">>\n";
     }
     f_types_ << "enum " << hack_name(tenum, true) << ": int"
@@ -2152,7 +2152,7 @@ void t_hack_generator::generate_php_struct_struct_trait(
     std::ofstream& out, const t_struct* tstruct, const std::string& name) {
   std::string traitName;
   if (const auto* structtrait =
-          tstruct->get_annotation_or_null("php.structtrait")) {
+          tstruct->find_annotation_or_null("php.structtrait")) {
     if (structtrait->empty() || *structtrait == "1") {
       traitName = hack_name(name, tstruct->program()) + "Trait";
     } else {
@@ -2818,7 +2818,7 @@ void t_hack_generator::generate_php_union_enum(
   //   field1 = 1;
   // }
   if (std::string const* union_enum_attributes =
-          tstruct->get_annotation_or_null("hack.union_enum_attributes")) {
+          tstruct->find_annotation_or_null("hack.union_enum_attributes")) {
     indent(out) << "<<" << *union_enum_attributes << ">>\n";
   }
   out << "enum " << union_enum_name(name, tstruct->program(), true)
@@ -3082,7 +3082,7 @@ void t_hack_generator::_generate_php_struct_definition(
     generate_php_docstring(out, tstruct, is_exception);
   }
   if (std::string const* attributes =
-          tstruct->get_annotation_or_null("hack.attributes")) {
+          tstruct->find_annotation_or_null("hack.attributes")) {
     f_types_ << "<<" << *attributes << ">>\n";
   }
   out << (generateAsTrait ? "trait " : "class ")
@@ -3166,7 +3166,7 @@ void t_hack_generator::_generate_php_struct_definition(
     }
 
     if (std::string const* field_attributes =
-            field.get_annotation_or_null("hack.attributes")) {
+            field.find_annotation_or_null("hack.attributes")) {
       indent(out) << "<<" << *field_attributes << ">>\n";
     }
 

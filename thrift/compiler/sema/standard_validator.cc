@@ -389,7 +389,7 @@ void validate_structured_annotation_thrift_uri(
     diagnostic_context& ctx, const t_named& node) {
   std::unordered_map<std::string, const t_const*> uri_to_annotation;
   for (const auto* annot : node.structured_annotations()) {
-    const auto* uri = annot->get_type()->get_annotation_or_null("thrift.uri");
+    const auto* uri = annot->get_type()->find_annotation_or_null("thrift.uri");
     if (!uri) {
       continue;
     }
@@ -447,7 +447,7 @@ void validate_compatibility_with_lazy_field(
 }
 
 void validate_ref_annotation(diagnostic_context& ctx, const t_field& node) {
-  if (node.get_structured_annotation_or_null(
+  if (node.find_structured_annotation_or_null(
           "facebook.com/thrift/annotation/cpp/Ref") &&
       node.has_annotation(
           {"cpp.ref", "cpp2.ref", "cpp.ref_type", "cpp2.ref_type"})) {

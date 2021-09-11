@@ -67,7 +67,7 @@ class t_node {
 
   // Returns true if there exists an annotation with the given name.
   bool has_annotation(alias_span name) const {
-    return get_annotation_or_null(name) != nullptr;
+    return find_annotation_or_null(name) != nullptr;
   }
   bool has_annotation(const char* name) const {
     return has_annotation(alias_span{name});
@@ -77,9 +77,9 @@ class t_node {
   // given name.
   //
   // If not found returns nullptr.
-  const std::string* get_annotation_or_null(alias_span name) const;
-  const std::string* get_annotation_or_null(const char* name) const {
-    return get_annotation_or_null(alias_span{name});
+  const std::string* find_annotation_or_null(alias_span name) const;
+  const std::string* find_annotation_or_null(const char* name) const {
+    return find_annotation_or_null(alias_span{name});
   }
 
   // Returns the value of an annotation with the given name.
@@ -91,7 +91,7 @@ class t_node {
   decltype(auto) get_annotation(
       const T& name, D&& default_value = nullptr) const {
     return annotation_or(
-        get_annotation_or_null(alias_span{name}),
+        find_annotation_or_null(alias_span{name}),
         std::forward<D>(default_value));
   }
 

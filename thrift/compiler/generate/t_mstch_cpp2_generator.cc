@@ -918,7 +918,7 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node cpp_allocator_via() {
     if (const auto* name =
-            strct_->get_annotation_or_null("cpp.allocator_via")) {
+            strct_->find_annotation_or_null("cpp.allocator_via")) {
       for (const auto& field : strct_->fields()) {
         if (cpp2::get_name(&field) == *name) {
           return *name;

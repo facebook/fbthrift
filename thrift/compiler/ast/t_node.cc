@@ -22,7 +22,7 @@ namespace compiler {
 
 const std::string t_node::kEmptyString{};
 
-const std::string* t_node::get_annotation_or_null(alias_span name) const {
+const std::string* t_node::find_annotation_or_null(alias_span name) const {
   for (const auto& alias : name) {
     auto itr = annotations_.find(alias);
     if (itr != annotations_.end()) {

@@ -27,7 +27,7 @@ namespace cpp {
 namespace {
 
 const std::string* find_ref_type_annot(const t_node& node) {
-  return node.get_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"});
+  return node.find_annotation_or_null({"cpp.ref_type", "cpp2.ref_type"});
 }
 
 // Since we can not include `thrift/lib/thrift/annotation/cpp.thrift`
@@ -71,7 +71,7 @@ reference_type find_ref_type(const t_field& node) {
     return reference_type::unique;
   }
 
-  if (const t_const* anno = node.get_structured_annotation_or_null(
+  if (const t_const* anno = node.find_structured_annotation_or_null(
           "facebook.com/thrift/annotation/cpp/Ref")) {
     for (const auto& kv : anno->value()->get_map()) {
       if (kv.first->get_string() == "type") {

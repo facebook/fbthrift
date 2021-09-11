@@ -53,7 +53,7 @@ std::string get_py3_name(const T& node) {
       "ctypedef",
   };
 
-  if (const auto* name = node.get_annotation_or_null("py3.name")) {
+  if (const auto* name = node.find_annotation_or_null("py3.name")) {
     return *name;
   }
   const auto& name = node.get_name();

@@ -63,17 +63,17 @@ class type_resolver {
   const std::string& get_storage_type_name(const t_field* node);
 
   static const std::string* find_type(const t_type* node) {
-    return node->get_annotation_or_null({"cpp.type", "cpp2.type"});
+    return node->find_annotation_or_null({"cpp.type", "cpp2.type"});
   }
   static const std::string* find_adapter(const t_type* node) {
-    return node->get_annotation_or_null("cpp.adapter");
+    return node->find_annotation_or_null("cpp.adapter");
   }
   static const std::string* find_first_adapter(const t_type* node) {
     return t_typedef::get_first_annotation_or_null(node, {"cpp.adapter"});
   }
   static const std::string* find_first_adapter(const t_field* node);
   static const std::string* find_template(const t_type* node) {
-    return node->get_annotation_or_null({"cpp.template", "cpp2.template"});
+    return node->find_annotation_or_null({"cpp.template", "cpp2.template"});
   }
 
  private:

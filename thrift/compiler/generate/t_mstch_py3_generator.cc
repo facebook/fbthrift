@@ -76,7 +76,7 @@ const t_type* get_map_val_type(const t_type& type) {
 
 std::string get_cpp_template(const t_type& type) {
   if (const auto* val =
-          type.get_annotation_or_null({"cpp.template", "cpp2.template"})) {
+          type.find_annotation_or_null({"cpp.template", "cpp2.template"})) {
     return *val;
   } else if (type.is_list()) {
     return "std::vector";
