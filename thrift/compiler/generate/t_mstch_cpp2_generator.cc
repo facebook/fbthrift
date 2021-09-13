@@ -661,7 +661,8 @@ class mstch_cpp2_field : public mstch_field {
     return {};
   }
   mstch::node cpp_noncopyable() {
-    return field_->get_type()->has_annotation("cpp2.noncopyable");
+    return field_->get_type()->has_annotation(
+        {"cpp.noncopyable", "cpp2.noncopyable"});
   }
   mstch::node enum_has_value() {
     if (auto enm = dynamic_cast<t_enum const*>(field_->get_type())) {
@@ -868,12 +869,13 @@ class mstch_cpp2_struct : public mstch_struct {
         {"cpp.declare_equal_to", "cpp2.declare_equal_to"});
   }
   mstch::node cpp_noncopyable() {
-    if (strct_->has_annotation("cpp2.noncopyable")) {
+    if (strct_->has_annotation({"cpp.noncopyable", "cpp2.noncopyable"})) {
       return true;
     }
     bool result = false;
     cpp2::for_each_transitive_field(strct_, [&result](const t_field* field) {
-      if (!field->get_type()->has_annotation("cpp2.noncopyable")) {
+      if (!field->get_type()->has_annotation(
+              {"cpp.noncopyable", "cpp2.noncopyable"})) {
         return true;
       }
       switch (gen::cpp::find_ref_type(*field)) {
@@ -894,7 +896,7 @@ class mstch_cpp2_struct : public mstch_struct {
     return result;
   }
   mstch::node cpp_noncomparable() {
-    return strct_->has_annotation("cpp2.noncomparable");
+    return strct_->has_annotation({"cpp.noncomparable", "cpp2.noncomparable"});
   }
   mstch::node is_eligible_for_constexpr() {
     return is_eligible_for_constexpr_(strct_) ||

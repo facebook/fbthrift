@@ -937,11 +937,11 @@ class mstch_py3_struct : public mstch_struct {
   }
 
   mstch::node cppNonComparable() {
-    return strct_->has_annotation("cpp2.noncomparable");
+    return strct_->has_annotation({"cpp.noncomparable", "cpp2.noncomparable"});
   }
 
   mstch::node cppNonCopyable() {
-    return strct_->has_annotation("cpp2.noncopyable");
+    return strct_->has_annotation({"cpp.noncopyable", "cpp2.noncopyable"});
   }
 
   mstch::node hasExceptionMessage() {
