@@ -16,7 +16,9 @@
 
 #include <thrift/lib/cpp2/protocol/detail/index.h>
 
+#include <limits>
 #include <memory>
+#include <random>
 
 #include <xxhash.h>
 
@@ -39,6 +41,13 @@ int64_t xxh3_64bits(folly::io::Cursor cursor) {
     cursor += buf.size();
   }
   return XXH3_64bits_digest(state.get());
+}
+
+int64_t random_64bits_integer() {
+  thread_local std::default_random_engine engine(std::random_device{}());
+  thread_local std::uniform_int_distribution<int64_t> dist(
+      std::numeric_limits<int64_t>::min(), std::numeric_limits<int64_t>::max());
+  return dist(engine);
 }
 
 } // namespace detail

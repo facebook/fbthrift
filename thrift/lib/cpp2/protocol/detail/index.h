@@ -97,12 +97,15 @@ struct DummyIndexWriter {
   void finalize() {}
 };
 
+int64_t random_64bits_integer();
+
 // Utility class to inject index fields to serialized data
 template <class Protocol>
 class IndexWriterImpl {
  public:
   IndexWriterImpl(Protocol* prot, uint32_t& writtenBytes)
       : prot_(prot), writtenBytes_(writtenBytes) {
+    writeRandomNumberField();
     writeIndexOffsetField();
   }
 
@@ -138,6 +141,17 @@ class IndexWriterImpl {
     writtenBytes_ += prot_->writeDouble(0);
     writtenBytes_ += prot_->writeFieldEnd();
     sizeFieldEnd_ = writtenBytes_;
+  }
+
+  void writeRandomNumberField() {
+    const int64_t randomNumber = random_64bits_integer();
+    writtenBytes_ += prot_->writeFieldBegin(
+        kExpectedRandomNumberField.name,
+        kExpectedRandomNumberField.type,
+        kExpectedRandomNumberField.id);
+    writtenBytes_ += prot_->writeI64(randomNumber);
+    writtenBytes_ += prot_->writeFieldEnd();
+    fieldIdAndSize_.push_back({kActualRandomNumberFieldId, randomNumber});
   }
 
   void writeIndexField() {
