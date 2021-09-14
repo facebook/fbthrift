@@ -2734,6 +2734,95 @@ TEST(ThriftServer, QueueTimeoutStressTest) {
   EXPECT_EQ(received_reply, server_reply);
 }
 
+class ServerResponseEnqueuedInterface : public TestInterface {
+ public:
+  explicit ServerResponseEnqueuedInterface(
+      folly::Baton<>& responseEnqueuedBaton)
+      : responseEnqueuedBaton_(responseEnqueuedBaton) {}
+
+  void async_eb_eventBaseAsync(
+      std::unique_ptr<
+          apache::thrift::HandlerCallback<std::unique_ptr<::std::string>>>
+          callback) override {
+    callback->getEventBase()->runInEventBaseThread(
+        [&]() mutable { responseEnqueuedBaton_.post(); });
+
+    callback->result(folly::make_unique<std::string>("done"));
+  }
+
+  folly::Baton<>& responseEnqueuedBaton_;
+};
+
+class WriteBatchingTest : public testing::Test {
+ protected:
+  std::unique_ptr<ScopedServerInterfaceThread> runner_;
+  std::unique_ptr<TestServiceAsyncClient> client_;
+  folly::Baton<> baton_;
+  size_t tearDownDummyRequestCount_ = 0;
+
+  void init(
+      std::chrono::milliseconds batchingInterval,
+      size_t batchingSize,
+      size_t tearDownDummyRequestCount) {
+    tearDownDummyRequestCount_ = tearDownDummyRequestCount;
+
+    runner_ = folly::make_unique<ScopedServerInterfaceThread>(
+        std::make_shared<ServerResponseEnqueuedInterface>(baton_));
+    runner_->getThriftServer().setWriteBatchingInterval(batchingInterval);
+    runner_->getThriftServer().setWriteBatchingSize(batchingSize);
+
+    client_ = runner_->newStickyClient<TestServiceAsyncClient>(
+        nullptr, [](auto socket) mutable {
+          return RocketClientChannel::newChannel(std::move(socket));
+        });
+  }
+
+  void waitUntilServerWriteScheduled() {
+    baton_.wait();
+    baton_.reset();
+  }
+
+  void TearDown() override {
+    // Since we have configured the Thrift Server to use write batching, the
+    // last ErrorFrame that is sent by the server during destruction will be
+    // buffered and will cause the test to wait until the buffer is flushed. We
+    // can avoid this by sending dummy requests before the ErrorFrame is queued
+    // so that the buffer is flushed immediately after the ErrorFrame is queued.
+    for (size_t i = 0; i < tearDownDummyRequestCount_; ++i) {
+      client_->semifuture_eventBaseAsync();
+      waitUntilServerWriteScheduled();
+    }
+  }
+};
+
+TEST_F(WriteBatchingTest, SizeEarlyFlushTest) {
+  init(std::chrono::seconds{1}, 3, 2);
+
+  // Send first request. This will cause 2 writes to be buffered on the server
+  // (1 SetupFrame and 1 response). Ensure we don't get a response.
+  auto f = client_->semifuture_eventBaseAsync();
+  waitUntilServerWriteScheduled();
+  bool isFulfilled = std::move(f).wait(std::chrono::milliseconds{50});
+  EXPECT_FALSE(isFulfilled);
+
+  // Send second request. This will cause batching size limit to be reached and
+  // buffered writes will be flushed. Ensure we get a response.
+  f = client_->semifuture_eventBaseAsync();
+  waitUntilServerWriteScheduled();
+  isFulfilled = std::move(f).wait(std::chrono::milliseconds{50});
+  EXPECT_TRUE(isFulfilled);
+}
+
+TEST_F(WriteBatchingTest, IntervalTest) {
+  init(std::chrono::milliseconds{100}, 3, 2);
+
+  // Send first request. This will cause 2 writes to be buffered on the server
+  // (1 SetupFrame and 1 response). Ensure we get a response after batching
+  // interval has elapsed even if batching size has not been reached.
+  auto f = client_->semifuture_sendResponse(0).wait();
+  EXPECT_TRUE(f.hasValue());
+}
+
 TEST_P(HeaderOrRocket, PreprocessHeaders) {
   ScopedServerInterfaceThread runner(std::make_shared<TestInterface>());
   folly::EventBase base;
