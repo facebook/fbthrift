@@ -25,7 +25,7 @@
     %>)<%/field:type%><%^last?%>,<%/last?%><%#last?%> {}<%/last?%>
 <%/struct:fields_in_layout_order%>
 
-  explicit <%struct:name%>(const <%struct:name%>& other, const allocator_type& alloc) noexcept :
+  explicit <%struct:name%>(const <%struct:name%>& other, const allocator_type& alloc) :
 <%^struct:cpp_allocator_via%>
     __fbthrift_alloc(alloc),
 <%/struct:cpp_allocator_via%>
@@ -40,7 +40,7 @@
     __isset(other.__isset) {}
 <%/struct:isset_fields?%>
 
-  explicit <%struct:name%>(<%struct:name%>&& other, const allocator_type& alloc) noexcept :
+  explicit <%struct:name%>(<%struct:name%>&& other, const allocator_type& alloc) :
 <%^struct:cpp_allocator_via%>
     __fbthrift_alloc(alloc),
 <%/struct:cpp_allocator_via%>

@@ -4187,7 +4187,7 @@ class AllocatorAware final  {
     aa_string(alloc),
     not_a_container() {}
 
-  explicit AllocatorAware(const AllocatorAware& other, const allocator_type& alloc) noexcept :
+  explicit AllocatorAware(const AllocatorAware& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
     aa_list(other.aa_list, alloc),
     aa_set(other.aa_set, alloc),
@@ -4196,7 +4196,7 @@ class AllocatorAware final  {
     not_a_container(other.not_a_container),
     __isset(other.__isset) {}
 
-  explicit AllocatorAware(AllocatorAware&& other, const allocator_type& alloc) noexcept :
+  explicit AllocatorAware(AllocatorAware&& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
     aa_list(std::move(other.aa_list), alloc),
     aa_set(std::move(other.aa_set), alloc),
@@ -4494,12 +4494,12 @@ class AllocatorAware2 final  {
     __fbthrift_alloc(alloc),
     not_a_container() {}
 
-  explicit AllocatorAware2(const AllocatorAware2& other, const allocator_type& alloc) noexcept :
+  explicit AllocatorAware2(const AllocatorAware2& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
     not_a_container(other.not_a_container),
     __isset(other.__isset) {}
 
-  explicit AllocatorAware2(AllocatorAware2&& other, const allocator_type& alloc) noexcept :
+  explicit AllocatorAware2(AllocatorAware2&& other, const allocator_type& alloc) :
     __fbthrift_alloc(alloc),
     not_a_container(std::move(other.not_a_container)),
     __isset(other.__isset) {}
