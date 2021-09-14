@@ -9,3 +9,4 @@ mstch_swift src/module.thrift
 mstch_pyi src/module.thrift
 mstch_py3 src/module.thrift
 json src/module.thrift
+mstch_py3lite src/module.thrift
