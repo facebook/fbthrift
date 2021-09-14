@@ -94,7 +94,7 @@ class HeaderClientChannel : public ClientChannel,
       useAsHttpClient(host, uri);
       return std::move(*this);
     }
-    std::string agentName;
+    std::string agentName{"HeaderClientChannel.cpp"};
     /**
      * Optional RequestSetupMetadata for transport upgrade from header
      * to rocket. If this is provided, then the upgrade mechanism will call

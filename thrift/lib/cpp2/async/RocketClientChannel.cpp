@@ -593,11 +593,14 @@ rocket::SetupFrame RocketClientChannel::makeSetupFrame(
   meta.maxVersion_ref() =
       std::min(kRocketClientMaxVersion, THRIFT_FLAG(rocket_client_max_version));
   meta.minVersion_ref() = kRocketClientMinVersion;
+  auto& clientMetadata = meta.clientMetadata_ref().ensure();
   if (const auto& hostMetadata = ClientChannel::getHostMetadata()) {
-    meta.clientMetadata_ref().ensure().hostname_ref().from_optional(
-        hostMetadata->hostname);
-    meta.clientMetadata_ref()->otherMetadata_ref().from_optional(
+    clientMetadata.hostname_ref().from_optional(hostMetadata->hostname);
+    clientMetadata.otherMetadata_ref().from_optional(
         hostMetadata->otherMetadata);
+  }
+  if (!clientMetadata.agent_ref()) {
+    clientMetadata.agent_ref() = "RocketClientChannel.cpp";
   }
   CompactProtocolWriter compactProtocolWriter;
   folly::IOBufQueue paramQueue;
