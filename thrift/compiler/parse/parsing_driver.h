@@ -399,10 +399,6 @@ class parsing_driver {
       std::unique_ptr<t_function_list> functions,
       std::unique_ptr<t_annotations> annotations);
 
-  bool is_white_space(const char& c) {
-    return c == ' ' || c == '\t' || c == '\r' || c == '\n';
-  }
-
   void reset_locations() {
     yylloc_.begin.line = 1;
     yylloc_.begin.column = 1;
@@ -413,40 +409,8 @@ class parsing_driver {
 
   void compute_location(YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {
     /* Only computing locations during second pass. */
-    if (mode != parsing_mode::PROGRAM) {
-      return;
-    }
-
-    int i = 0;
-
-    /* Updating current begin to previous end. */
-    yylloc.begin = yylloc.end;
-
-    /* Getting rid of useless whitespaces on begin position. */
-    for (; is_white_space(text[i]); i++) {
-      yylval++;
-      if (text[i] == '\n') {
-        yylloc.begin.line++;
-        yylloc.begin.column = 1;
-        program->add_line_offset(yylval);
-      } else {
-        yylloc.begin.column++;
-      }
-    }
-
-    /* Avoid scanning whitespaces twice. */
-    yylloc.end = yylloc.begin;
-
-    /* Updating current end position. */
-    for (; text[i] != '\0'; i++) {
-      yylval++;
-      if (text[i] == '\n') {
-        yylloc.end.line++;
-        yylloc.end.column = 1;
-        program->add_line_offset(yylval);
-      } else {
-        yylloc.end.column++;
-      }
+    if (mode == parsing_mode::PROGRAM) {
+      compute_location_impl(yylloc, yylval, text);
     }
   }
 
@@ -546,6 +510,9 @@ class parsing_driver {
     const void* ptr_;
     void (*delete_)(const void*);
   };
+
+  void compute_location_impl(
+      YYLTYPE& yylloc, YYSTYPE& yylval, const char* text);
 
   std::set<std::string> already_parsed_paths_;
   std::set<std::string> circular_deps_;

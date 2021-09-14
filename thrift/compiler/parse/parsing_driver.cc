@@ -41,6 +41,11 @@ class parsing_terminator : public std::runtime_error {
             "Internal exception used to terminate the parsing process.") {}
 };
 
+// We don't use std::isspace since it's locale-dependent
+bool is_white_space(char c) {
+  return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+}
+
 } // namespace
 
 parsing_driver::parsing_driver(
@@ -758,6 +763,41 @@ void parsing_driver::reserve_field_id(t_field_id id) {
      * The FieldList parsing will catch any duplicate id values.
      */
     next_field_id_ = id - 1;
+  }
+}
+
+void parsing_driver::compute_location_impl(
+    YYLTYPE& yylloc, YYSTYPE& yylval, const char* text) {
+  int i = 0;
+
+  /* Updating current begin to previous end. */
+  yylloc.begin = yylloc.end;
+
+  /* Getting rid of useless whitespaces on begin position. */
+  for (; is_white_space(text[i]); i++) {
+    yylval++;
+    if (text[i] == '\n') {
+      yylloc.begin.line++;
+      yylloc.begin.column = 1;
+      program->add_line_offset(yylval);
+    } else {
+      yylloc.begin.column++;
+    }
+  }
+
+  /* Avoid scanning whitespaces twice. */
+  yylloc.end = yylloc.begin;
+
+  /* Updating current end position. */
+  for (; text[i] != '\0'; i++) {
+    yylval++;
+    if (text[i] == '\n') {
+      yylloc.end.line++;
+      yylloc.end.column = 1;
+      program->add_line_offset(yylval);
+    } else {
+      yylloc.end.column++;
+    }
   }
 }
 
