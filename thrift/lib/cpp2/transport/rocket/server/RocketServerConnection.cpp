@@ -72,7 +72,11 @@ RocketServerConnection::RocketServerConnection(
       egressBufferRecoverySize_(
           cfg.egressBufferBackpressureThreshold *
           cfg.egressBufferBackpressureRecoveryFactor),
-      writeBatcher_(*this, cfg.writeBatchingInterval, cfg.writeBatchingSize),
+      writeBatcher_(
+          *this,
+          cfg.writeBatchingInterval,
+          cfg.writeBatchingSize,
+          cfg.writeBatchingByteSize),
       socketDrainer_(*this),
       ingressMemoryTracker_(ingressMemoryTracker),
       egressMemoryTracker_(egressMemoryTracker) {

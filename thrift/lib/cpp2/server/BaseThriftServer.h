@@ -318,6 +318,12 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   ServerAttributeDynamic<size_t> writeBatchingSize_{0};
 
+  /**
+   * Trigger early flush when the total number of bytes queued equals or exceeds
+   * this value. Ignored if write batching interval is not set. (0 == disabled)
+   */
+  ServerAttributeDynamic<size_t> writeBatchingByteSize_{0};
+
   ServerAttributeStatic<folly::sorted_vector_set<std::string>>
       methodsBypassMaxRequestsLimit_{{}};
 
@@ -1192,6 +1198,23 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Get write batching size
    */
   size_t getWriteBatchingSize() const { return writeBatchingSize_.get(); }
+
+  /**
+   * Set write batching byte size. Ignored if write batching interval is not
+   * set.
+   */
+  void setWriteBatchingByteSize(
+      size_t batchingByteSize,
+      AttributeSource source = AttributeSource::OVERRIDE) {
+    writeBatchingByteSize_.set(batchingByteSize, source);
+  }
+
+  /**
+   * Get write batching byte size
+   */
+  size_t getWriteBatchingByteSize() const {
+    return writeBatchingByteSize_.get();
+  }
 
   const Metadata& metadata() const { return metadata_; }
 

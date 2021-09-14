@@ -2763,6 +2763,7 @@ class WriteBatchingTest : public testing::Test {
   void init(
       std::chrono::milliseconds batchingInterval,
       size_t batchingSize,
+      size_t batchingByteSize,
       size_t tearDownDummyRequestCount) {
     tearDownDummyRequestCount_ = tearDownDummyRequestCount;
 
@@ -2770,6 +2771,7 @@ class WriteBatchingTest : public testing::Test {
         std::make_shared<ServerResponseEnqueuedInterface>(baton_));
     runner_->getThriftServer().setWriteBatchingInterval(batchingInterval);
     runner_->getThriftServer().setWriteBatchingSize(batchingSize);
+    runner_->getThriftServer().setWriteBatchingByteSize(batchingByteSize);
 
     client_ = runner_->newStickyClient<TestServiceAsyncClient>(
         nullptr, [](auto socket) mutable {
@@ -2796,7 +2798,7 @@ class WriteBatchingTest : public testing::Test {
 };
 
 TEST_F(WriteBatchingTest, SizeEarlyFlushTest) {
-  init(std::chrono::seconds{1}, 3, 2);
+  init(std::chrono::seconds{1}, 3, 0, 2);
 
   // Send first request. This will cause 2 writes to be buffered on the server
   // (1 SetupFrame and 1 response). Ensure we don't get a response.
@@ -2813,8 +2815,27 @@ TEST_F(WriteBatchingTest, SizeEarlyFlushTest) {
   EXPECT_TRUE(isFulfilled);
 }
 
+TEST_F(WriteBatchingTest, ByteSizeEarlyFlushTest) {
+  init(std::chrono::seconds{1}, 4, 60, 2);
+
+  // Send first request. This will cause 2 writes to be buffered on the server
+  // (1 SetupFrame - 14 bytes and 1 response - 25 bytes). Ensure we don't get
+  // a response.
+  auto f = client_->semifuture_eventBaseAsync();
+  waitUntilServerWriteScheduled();
+  bool isFulfilled = std::move(f).wait(std::chrono::milliseconds{50});
+  EXPECT_FALSE(isFulfilled);
+
+  // Send second request. This will cause batching byte size limit to be
+  // reached and buffered writes will be flushed. Ensure we get a response.
+  f = client_->semifuture_eventBaseAsync();
+  waitUntilServerWriteScheduled();
+  isFulfilled = std::move(f).wait(std::chrono::milliseconds{50});
+  EXPECT_TRUE(isFulfilled);
+}
+
 TEST_F(WriteBatchingTest, IntervalTest) {
-  init(std::chrono::milliseconds{100}, 3, 2);
+  init(std::chrono::milliseconds{100}, 3, 0, 2);
 
   // Send first request. This will cause 2 writes to be buffered on the server
   // (1 SetupFrame and 1 response). Ensure we get a response after batching

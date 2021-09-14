@@ -130,6 +130,7 @@ void RocketRoutingHandler::handleConnection(
   cfg.streamStarvationTimeout = server->getStreamExpireTime();
   cfg.writeBatchingInterval = server->getWriteBatchingInterval();
   cfg.writeBatchingSize = server->getWriteBatchingSize();
+  cfg.writeBatchingByteSize = server->getWriteBatchingByteSize();
   cfg.egressBufferBackpressureThreshold =
       server->getEgressBufferBackpressureThreshold();
   cfg.egressBufferBackpressureRecoveryFactor =

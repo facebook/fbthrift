@@ -72,6 +72,7 @@ class RocketServerConnection final
     std::chrono::milliseconds writeBatchingInterval{
         std::chrono::milliseconds::zero()};
     size_t writeBatchingSize{0};
+    size_t writeBatchingByteSize{0};
     size_t egressBufferBackpressureThreshold{0};
     double egressBufferBackpressureRecoveryFactor{0.0};
   };
@@ -298,10 +299,12 @@ class RocketServerConnection final
     WriteBatcher(
         RocketServerConnection& connection,
         std::chrono::milliseconds batchingInterval,
-        size_t batchingSize)
+        size_t batchingSize,
+        size_t batchingByteSize)
         : connection_(connection),
           batchingInterval_(batchingInterval),
-          batchingSize_(batchingSize) {}
+          batchingSize_(batchingSize),
+          batchingByteSize_(batchingByteSize) {}
 
     void enqueueWrite(
         std::unique_ptr<folly::IOBuf> data,
@@ -309,6 +312,9 @@ class RocketServerConnection final
       if (cb) {
         cb->sendQueued();
         bufferedWritesContext_.sendCallbacks.push_back(std::move(cb));
+      }
+      if (batchingByteSize_) {
+        totalBytesBuffered_ += data->computeChainDataLength();
       }
       if (!bufferedWrites_) {
         bufferedWrites_ = std::move(data);
@@ -323,7 +329,11 @@ class RocketServerConnection final
       }
       ++bufferedWritesCount_;
       if (batchingInterval_ != std::chrono::milliseconds::zero() &&
-          bufferedWritesCount_ == batchingSize_) {
+          (bufferedWritesCount_ == batchingSize_ ||
+           (batchingByteSize_ != 0 &&
+            totalBytesBuffered_ >= batchingByteSize_ &&
+            !earlyFlushRequested_))) {
+        earlyFlushRequested_ = true;
         cancelTimeout();
         connection_.getEventBase().runInLoop(this, true /* thisIteration */);
       }
@@ -352,6 +362,8 @@ class RocketServerConnection final
 
     void flushPendingWrites() noexcept {
       bufferedWritesCount_ = 0;
+      totalBytesBuffered_ = 0;
+      earlyFlushRequested_ = false;
       connection_.flushWrites(
           std::move(bufferedWrites_),
           std::exchange(bufferedWritesContext_, WriteBatchContext{}));
@@ -360,9 +372,12 @@ class RocketServerConnection final
     RocketServerConnection& connection_;
     std::chrono::milliseconds batchingInterval_;
     size_t batchingSize_;
+    size_t batchingByteSize_;
     // Callback is scheduled iff bufferedWrites_ is not empty.
     std::unique_ptr<folly::IOBuf> bufferedWrites_;
     size_t bufferedWritesCount_{0};
+    size_t totalBytesBuffered_{0};
+    bool earlyFlushRequested_{false};
     WriteBatchContext bufferedWritesContext_;
   };
   WriteBatcher writeBatcher_;
