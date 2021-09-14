@@ -37,7 +37,7 @@ from thrift.py3lite.types import BadEnum
 
 
 class TablebasedTest(TestCase):
-    def test_simple_struct(self):
+    def test_simple_struct(self) -> None:
         s1 = MyStruct(
             intField=456,
             listOfIntField=[34, 59, 28],
@@ -50,7 +50,7 @@ class TablebasedTest(TestCase):
         self.assertEqual(s1, s2)
         self.assertIsNone(s2.optionalField)
 
-    def test_complex_struct(self):
+    def test_complex_struct(self) -> None:
         included = IncludedStruct(intField=456, listOfIntField=[34, 59, 28])
         s1 = MyStruct(intField=456, listOfIntField=[34, 59, 28], enumField=MyEnum.ONE)
         s2 = AnotherStruct(
@@ -65,7 +65,7 @@ class TablebasedTest(TestCase):
         self.assertEqual(s3.listOfStructField, (s1,))
         self.assertEqual(s3.listOflistOfStructField, ((s1,),))
 
-    def test_union(self):
+    def test_union(self) -> None:
         type_enum_pairs = [(v.value, v.name) for v in MyUnion.Type]
         self.assertEqual(
             type_enum_pairs,
@@ -89,7 +89,7 @@ class TablebasedTest(TestCase):
         s4 = MyUnion()
         self.assertFalse(s4)
 
-    def test_primitive_types(self):
+    def test_primitive_types(self) -> None:
         s1 = PrimitiveStruct(
             boolField=True,
             byteField=127,
@@ -103,7 +103,7 @@ class TablebasedTest(TestCase):
         s2 = deserialize(PrimitiveStruct, serialized)
         self.assertEqual(s1, s2)
 
-    def test_string_types(self):
+    def test_string_types(self) -> None:
         s1 = StringStruct(
             stringField="a string",
             binaryField=b"some bytes",
@@ -113,7 +113,7 @@ class TablebasedTest(TestCase):
         self.assertEqual(s2.stringField, "a string")
         self.assertEqual(s2.binaryField, b"some bytes")
 
-    def test_set_type(self):
+    def test_set_type(self) -> None:
         s1 = MyStruct(intField=456, listOfIntField=[34, 59, 28], enumField=MyEnum.ONE)
         s2 = MyStruct(intField=123, listOfIntField=[12, 23], enumField=MyEnum.TWO)
         s3 = SetStruct(
@@ -126,7 +126,7 @@ class TablebasedTest(TestCase):
         s4 = deserialize(SetStruct, serialized)
         self.assertEqual(s3, s4)
 
-    def test_map_type(self):
+    def test_map_type(self) -> None:
         s1 = MyStruct(intField=456, listOfIntField=[34, 59, 28], enumField=MyEnum.ONE)
         s2 = MyStruct(intField=123, listOfIntField=[12, 23], enumField=MyEnum.TWO)
         s3 = MapStruct(
@@ -138,7 +138,7 @@ class TablebasedTest(TestCase):
         s4 = deserialize(MapStruct, serialized)
         self.assertEqual(s3, s4)
 
-    def test_default_construction(self):
+    def test_default_construction(self) -> None:
         my_struct = MyStruct()
         self.assertEqual(my_struct.intField, 0)  # int field defaults to 0
         self.assertEqual(
@@ -172,7 +172,7 @@ class TablebasedTest(TestCase):
         self.assertEqual(SetStruct().setOfI32Field, frozenset())
         self.assertEqual(MapStruct().mapOfStrStructField, MappingProxyType({}))
 
-    def test_call_replace(self):
+    def test_call_replace(self) -> None:
         s1 = MyStruct(intField=456, listOfIntField=[34, 59, 28], enumField=MyEnum.ONE)
         s2 = s1(intField=678, enumField=MyEnum.TWO)
         self.assertEqual(s2.intField, 678)
@@ -193,7 +193,7 @@ class TablebasedTest(TestCase):
         self.assertEqual(s6.listOfStructField, (s1, s2))
         self.assertEqual(s6.listOflistOfStructField, ())
 
-    def test_copy(self):
+    def test_copy(self) -> None:
         s1 = MyStruct(intField=456, listOfIntField=[34, 59, 28], enumField=MyEnum.ONE)
         s2 = copy.copy(s1)
         self.assertEqual(s1, s2)
@@ -209,7 +209,7 @@ class TablebasedTest(TestCase):
         self.assertEqual(e1, e2)
         self.assertIsNot(e1, e2)
 
-    def test_iter(self):
+    def test_iter(self) -> None:
         s1 = MyStruct(
             intField=456,
             listOfIntField=[34, 59, 28],
@@ -225,7 +225,7 @@ class TablebasedTest(TestCase):
             ],
         )
 
-    def test_recursive(self):
+    def test_recursive(self) -> None:
         s1 = RecursiveStruct(
             recursiveField=RecursiveStruct(), AnotherStructField=AnotherStruct()
         )
@@ -233,13 +233,13 @@ class TablebasedTest(TestCase):
         s3 = deserialize(RecursiveStruct, s2)
         self.assertEqual(s1, s3)
 
-    def test_exception(self):
+    def test_exception(self) -> None:
         ex = MyException(error_message="error", internal_error_message="internal error")
         self.assertEqual(ex.error_message, "error")
         self.assertEqual(ex.internal_error_message, "internal error")
         self.assertEqual(str(ex), "internal error")
 
-    def test_default_values(self):
+    def test_default_values(self) -> None:
         s1 = StructWithDefaults()
         self.assertEqual(s1.intField, 42)
         self.assertEqual(s1.listOfIntField, (12, 34))
