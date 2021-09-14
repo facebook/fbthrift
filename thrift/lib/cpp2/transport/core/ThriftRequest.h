@@ -35,6 +35,7 @@
 #include <thrift/lib/cpp/protocol/TProtocolException.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/async/ResponseChannel.h>
 #if FOLLY_HAS_COROUTINES
 #include <thrift/lib/cpp2/async/Sink.h>
@@ -45,6 +46,8 @@
 #include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
+
+THRIFT_FLAG_DECLARE_int64(queue_time_logging_threshold_ms);
 
 namespace apache {
 namespace thrift {
@@ -350,10 +353,9 @@ class ThriftRequestCore : public ResponseChannelRequest {
   void scheduleTimeouts() {
     queueTimeout_.request_ = this;
     taskTimeout_.request_ = this;
-    std::chrono::milliseconds queueTimeout;
     std::chrono::milliseconds taskTimeout;
     auto differentTimeouts = serverConfigs_.getTaskExpireTimeForRequest(
-        clientQueueTimeout_, clientTimeout_, queueTimeout, taskTimeout);
+        clientQueueTimeout_, clientTimeout_, queueTimeoutUsed_, taskTimeout);
 
     auto reqContext = getRequestContext();
     if (clientTimeout_ > std::chrono::milliseconds::zero()) {
@@ -363,14 +365,18 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
 
     if (differentTimeouts) {
-      if (queueTimeout > std::chrono::milliseconds(0)) {
-        getEventBase()->timer().scheduleTimeout(&queueTimeout_, queueTimeout);
+      if (queueTimeoutUsed_ > std::chrono::milliseconds(0)) {
+        getEventBase()->timer().scheduleTimeout(
+            &queueTimeout_, queueTimeoutUsed_);
       }
     }
     if (taskTimeout > std::chrono::milliseconds(0)) {
       getEventBase()->timer().scheduleTimeout(&taskTimeout_, taskTimeout);
     }
   }
+
+  ResponseRpcMetadata makeResponseRpcMetadata(
+      transport::THeader::StringToStringMap&& writeHeaders);
 
  private:
   static bool includeInRecentRequestsCount(const std::string_view);
@@ -442,21 +448,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
             "Response size too big"),
         kResponseTooBigErrorCode,
         header_.extractAllWriteHeaders());
-  }
-
-  ResponseRpcMetadata makeResponseRpcMetadata(
-      transport::THeader::StringToStringMap&& writeHeaders) {
-    ResponseRpcMetadata metadata;
-
-    if (loadMetric_) {
-      metadata.load_ref() = serverConfigs_.getLoad(*loadMetric_);
-    }
-
-    if (!writeHeaders.empty()) {
-      metadata.otherMetadata_ref() = std::move(writeHeaders);
-    }
-
-    return metadata;
   }
 
   void sendErrorWrappedInternal(
@@ -560,6 +551,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
   QueueTimeout queueTimeout_;
   TaskTimeout taskTimeout_;
+  std::chrono::milliseconds queueTimeoutUsed_{0};
   std::chrono::milliseconds clientQueueTimeout_{0};
   std::chrono::milliseconds clientTimeout_{0};
 

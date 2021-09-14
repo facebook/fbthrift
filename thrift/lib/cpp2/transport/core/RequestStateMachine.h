@@ -80,6 +80,8 @@ class RequestStateMachine {
       return false;
     }
     infoStartedProcessing_.store(true, std::memory_order_relaxed);
+    dequeued_.store(
+        std::chrono::steady_clock::now(), std::memory_order_relaxed);
     return true;
   }
 
@@ -88,8 +90,13 @@ class RequestStateMachine {
   // handling can begin. A return value of false indicates that queue timeout
   // handling should be aborted.
   [[nodiscard]] bool tryStopProcessing() {
-    return !startProcessingOrQueueTimeout_.exchange(
-        true, std::memory_order_relaxed);
+    if (!startProcessingOrQueueTimeout_.exchange(
+            true, std::memory_order_relaxed)) {
+      dequeued_.store(
+          std::chrono::steady_clock::now(), std::memory_order_relaxed);
+      return true;
+    }
+    return false;
   }
 
   bool getStartedProcessing() const {
@@ -102,6 +109,19 @@ class RequestStateMachine {
 
   std::chrono::steady_clock::time_point started() const { return started_; }
 
+  std::chrono::steady_clock::time_point dequeued() const {
+    return dequeued_.load(std::memory_order_relaxed);
+  }
+
+  folly::Optional<std::chrono::milliseconds> queueingTime() const {
+    using namespace std::chrono;
+    if (auto dequeuedTime = dequeued();
+        dequeuedTime != steady_clock::time_point::min()) {
+      return duration_cast<milliseconds>(dequeuedTime - started());
+    }
+    return folly::none;
+  }
+
  private:
   std::atomic<bool> startProcessingOrQueueTimeout_{false};
   std::atomic<bool> cancelled_{false};
@@ -110,6 +130,8 @@ class RequestStateMachine {
   const bool includeInRecentRequests_;
   const std::chrono::steady_clock::time_point started_{
       std::chrono::steady_clock::now()};
+  std::atomic<std::chrono::steady_clock::time_point> dequeued_{
+      std::chrono::steady_clock::time_point::min()};
   AdaptiveConcurrencyController& adaptiveConcurrencyController_;
 };
 
