@@ -269,6 +269,14 @@ mstch::node mstch_type::get_typedef_type() {
   return mstch::node();
 }
 
+mstch::node mstch_type::get_typedef() {
+  if (type_->is_typedef()) {
+    return generators_->typedef_generator_->generate(
+        dynamic_cast<const t_typedef*>(type_), generators_, cache_, pos_);
+  }
+  return mstch::node();
+}
+
 mstch::node mstch_type::get_sink_elem_type() {
   if (type_->is_sink()) {
     return generators_->type_generator_->generate(

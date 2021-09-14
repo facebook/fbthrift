@@ -138,7 +138,7 @@ void ServiceMetadata<::cpp2::CSvIf>::gen_numbers(ThriftMetadata& metadata, Thrif
   ::apache::thrift::metadata::ThriftFunction func;
   (void)metadata;
   func.name_ref() = "numbers";
-  auto func_ret_type = std::make_unique<Stream>(std::make_unique<Typedef>("module.number", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE)));
+  auto func_ret_type = std::make_unique<Stream>(std::make_unique<Typedef>("module.number", std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}));
   func_ret_type->writeAndGenType(*func.return_type_ref(), metadata);
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));

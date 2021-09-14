@@ -284,7 +284,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_doRaise(ThriftMetadata& metadata, 
   module_Raiser_doRaise_b_1.id_ref() = 1;
   module_Raiser_doRaise_b_1.name_ref() = "b";
   module_Raiser_doRaise_b_1.is_optional_ref() = false;
-  auto module_Raiser_doRaise_b_1_type = std::make_unique<Typedef>("module.Banal", std::make_unique<Struct< ::cpp2::Banal>>("module.Banal"));
+  auto module_Raiser_doRaise_b_1_type = std::make_unique<Typedef>("module.Banal", std::make_unique<Struct< ::cpp2::Banal>>("module.Banal"), std::vector<ThriftConstStruct>{});
   module_Raiser_doRaise_b_1_type->writeAndGenType(*module_Raiser_doRaise_b_1.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(module_Raiser_doRaise_b_1));
   ExceptionMetadata< ::cpp2::Banal>::gen(metadata);
@@ -334,7 +334,7 @@ void ServiceMetadata<::cpp2::RaiserSvIf>::gen_get500(ThriftMetadata& metadata, T
   module_Raiser_get500_b_2.id_ref() = 2;
   module_Raiser_get500_b_2.name_ref() = "b";
   module_Raiser_get500_b_2.is_optional_ref() = false;
-  auto module_Raiser_get500_b_2_type = std::make_unique<Typedef>("module.Banal", std::make_unique<Struct< ::cpp2::Banal>>("module.Banal"));
+  auto module_Raiser_get500_b_2_type = std::make_unique<Typedef>("module.Banal", std::make_unique<Struct< ::cpp2::Banal>>("module.Banal"), std::vector<ThriftConstStruct>{});
   module_Raiser_get500_b_2_type->writeAndGenType(*module_Raiser_get500_b_2.type_ref(), metadata);
   func.exceptions_ref()->push_back(std::move(module_Raiser_get500_b_2));
   ExceptionMetadata< ::cpp2::Banal>::gen(metadata);

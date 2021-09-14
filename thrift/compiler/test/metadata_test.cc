@@ -103,9 +103,19 @@ TEST_F(MetadataCodegenTest, structTest) {
   checkFieldString(s.fields_ref()[0], 1, "name");
 
   s = getStruct("metadata.ThriftTypedefType");
-  EXPECT_EQ(s.fields_ref()->size(), 2);
+  EXPECT_EQ(s.fields_ref()->size(), 3);
   checkFieldString(s.fields_ref()[0], 1, "name");
   checkFieldUnion(
       s.fields_ref()[1], 2, "underlyingType", "metadata.ThriftType");
+
+  auto td = s.fields_ref()[2];
+  EXPECT_EQ(td.name_ref(), "structured_annotations");
+  EXPECT_EQ(td.type_ref()->getType(), ThriftType::t_list);
+  EXPECT_EQ(
+      td.type_ref()->t_list_ref()->valueType_ref()->getType(),
+      ThriftType::t_struct);
+  EXPECT_EQ(
+      td.type_ref()->t_list_ref()->valueType_ref()->t_struct_ref()->name_ref(),
+      "metadata.ThriftConstStruct");
 }
 } // namespace

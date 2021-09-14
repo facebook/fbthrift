@@ -111,6 +111,7 @@ struct ThriftTypedefType {
     rust.box,
     swift.recursive_reference = "true",
   );
+  3: list<ThriftConstStruct> structured_annotations;
 }
 
 struct ThriftStreamType {

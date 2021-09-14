@@ -760,6 +760,7 @@ class mstch_type : public mstch_base {
             {"type:key_type", &mstch_type::get_key_type},
             {"type:value_type", &mstch_type::get_value_type},
             {"type:typedef_type", &mstch_type::get_typedef_type},
+            {"type:typedef", &mstch_type::get_typedef},
             {"type:interaction?", &mstch_type::is_interaction},
         });
   }
@@ -814,6 +815,7 @@ class mstch_type : public mstch_base {
   mstch::node get_key_type();
   mstch::node get_value_type();
   mstch::node get_typedef_type();
+  mstch::node get_typedef();
   mstch::node get_sink_first_response_type();
   mstch::node get_sink_elem_type();
   mstch::node get_sink_final_reponse_type();
@@ -1201,12 +1203,17 @@ class mstch_typedef : public mstch_base {
             {"typedef:type", &mstch_typedef::type},
             {"typedef:is_same_type", &mstch_typedef::is_same_type},
             {"typedef:name", &mstch_typedef::name},
+            {"typedef:structured_annotations",
+             &mstch_typedef::structured_annotations},
         });
   }
   mstch::node type();
   mstch::node name() { return typedf_->name(); }
   mstch::node is_same_type() {
     return typedf_->get_name() == typedf_->get_type()->get_name();
+  }
+  mstch::node structured_annotations() {
+    return mstch_base::structured_annotations(typedf_);
   }
 
  protected:

@@ -23,6 +23,9 @@ struct Nat {
 
 typedef Nat NatTypedef
 
+@NatTypedef{data = "Abbr_typedef"}
+typedef list<string> Abbreviations
+
 struct Map {
   1: map<i64, string> value;
 }
@@ -31,6 +34,8 @@ struct Country {
   1: string name;
   3: string capital;
   10: double population;
+  @NatTypedef{data = "Abbr_field"}
+  4: Abbreviations abbreviations;
 }
 
 @Nat{data = "struct"}

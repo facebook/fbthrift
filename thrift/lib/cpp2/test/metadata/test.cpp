@@ -154,6 +154,25 @@ TEST_F(ServiceMetadataTest, SimpleStructsTest) {
       s1.fields_ref()[2].type_ref()->get_t_primitive(),
       ThriftPrimitiveType::THRIFT_DOUBLE_TYPE);
 
+  EXPECT_EQ(*s1.fields_ref()[3].id_ref(), 4);
+  EXPECT_EQ(*s1.fields_ref()[3].name_ref(), "abbreviations");
+  EXPECT_EQ(
+      s1.fields_ref()[3].type_ref()->getType(), ThriftType::Type::t_typedef);
+
+  // structured annotation of the field
+  EXPECT_EQ(
+      s1.fields_ref()[3].structured_annotations_ref()->at(0),
+      *cons("Abbr_field").cv_struct_ref());
+  EXPECT_EQ(s1.fields_ref()[3].structured_annotations_ref()->size(), 1);
+
+  // structured annotation of the typedef
+  auto tf = s1.fields_ref()[3].type_ref()->get_t_typedef();
+  EXPECT_EQ(tf.name_ref(), "simple_structs_test.Abbreviations");
+  EXPECT_EQ(
+      tf.structured_annotations_ref()->at(0),
+      *cons("Abbr_typedef").cv_struct_ref());
+  EXPECT_EQ(tf.structured_annotations_ref()->size(), 1);
+
   auto s2 = metadata.structs_ref()->at("simple_structs_test.City");
   EXPECT_EQ(*s2.name_ref(), "simple_structs_test.City");
   EXPECT_EQ(s2.structured_annotations_ref()->size(), 1);

@@ -33,10 +33,10 @@ StructMetadata<::cpp2::Foo>::gen(ThriftMetadata& metadata) {
     {1, "intField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {2, "optionalIntField", true, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
     {3, "intFieldWithDefault", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
-    {4, "setField", false, std::make_unique<Typedef>("module.SetWithAdapter", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::vector<ThriftConstStruct>{}},
-    {5, "optionalSetField", true, std::make_unique<Typedef>("module.SetWithAdapter", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::vector<ThriftConstStruct>{}},
-    {6, "mapField", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))))), std::vector<ThriftConstStruct>{}},
-    {7, "optionalMapField", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))))), std::vector<ThriftConstStruct>{}},
+    {4, "setField", false, std::make_unique<Typedef>("module.SetWithAdapter", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {5, "optionalSetField", true, std::make_unique<Typedef>("module.SetWithAdapter", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {6, "mapField", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {7, "optionalMapField", true, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
     {8, "binaryField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_Foo_fields) {
@@ -62,8 +62,8 @@ StructMetadata<::cpp2::Baz>::gen(ThriftMetadata& metadata) {
   static const EncodedThriftField
   module_Baz_fields[] = {
     {1, "intField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_I32_TYPE), std::vector<ThriftConstStruct>{}},
-    {4, "setField", false, std::make_unique<Typedef>("module.SetWithAdapter", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))), std::vector<ThriftConstStruct>{}},
-    {6, "mapField", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE))))), std::vector<ThriftConstStruct>{}},
+    {4, "setField", false, std::make_unique<Typedef>("module.SetWithAdapter", std::make_unique<Set>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {6, "mapField", false, std::make_unique<Map>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE), std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<Typedef>("module.ListWithElemAdapter", std::make_unique<List>(std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE)), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
     {8, "binaryField", false, std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_BINARY_TYPE), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_Baz_fields) {
@@ -88,12 +88,12 @@ StructMetadata<::cpp2::Bar>::gen(ThriftMetadata& metadata) {
   module_Bar.is_union_ref() = false;
   static const EncodedThriftField
   module_Bar_fields[] = {
-    {1, "structField", false, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo")), std::vector<ThriftConstStruct>{}},
-    {2, "optionalStructField", true, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo")), std::vector<ThriftConstStruct>{}},
-    {3, "structListField", false, std::make_unique<List>(std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo"))), std::vector<ThriftConstStruct>{}},
-    {4, "optionalStructListField", true, std::make_unique<List>(std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo"))), std::vector<ThriftConstStruct>{}},
-    {5, "unionField", false, std::make_unique<Typedef>("module.Baz", std::make_unique<Union< ::cpp2::Baz>>("module.Baz")), std::vector<ThriftConstStruct>{}},
-    {6, "optionalUnionField", true, std::make_unique<Typedef>("module.Baz", std::make_unique<Union< ::cpp2::Baz>>("module.Baz")), std::vector<ThriftConstStruct>{}},
+    {1, "structField", false, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {2, "optionalStructField", true, std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {3, "structListField", false, std::make_unique<List>(std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {4, "optionalStructListField", true, std::make_unique<List>(std::make_unique<Typedef>("module.Foo", std::make_unique<Struct< ::cpp2::Foo>>("module.Foo"), std::vector<ThriftConstStruct>{})), std::vector<ThriftConstStruct>{}},
+    {5, "unionField", false, std::make_unique<Typedef>("module.Baz", std::make_unique<Union< ::cpp2::Baz>>("module.Baz"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
+    {6, "optionalUnionField", true, std::make_unique<Typedef>("module.Baz", std::make_unique<Union< ::cpp2::Baz>>("module.Baz"), std::vector<ThriftConstStruct>{}), std::vector<ThriftConstStruct>{}},
   };
   for (const auto& f : module_Bar_fields) {
     ::apache::thrift::metadata::ThriftField field;
