@@ -853,6 +853,24 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * monitoring interface).
    *
    * This is the factory that all transports should use to handle requests.
+   *
+   * Logically, this is an apache::thrift::MultiplexAsyncProcessorFactory with
+   * the following composition:
+   *
+   *    ┌────────────────────────┐
+   *    │      User Service      │
+   *    │ (setProcessorFactory)  │  │
+   *    └────────────────────────┘  │
+   *                                │
+   *    ┌────────────────────────┐  │
+   *    │    Status Interface    │  │   Method
+   *    │  (setStatusInterface)  │  │ precedence
+   *    └────────────────────────┘  │
+   *                                │
+   *    ┌────────────────────────┐  │
+   *    │  Monitoring Interface  │  ▼
+   *    │(setMonitoringInterface)│
+   *    └────────────────────────┘
    */
   AsyncProcessorFactory& getDecoratedProcessorFactory() const {
     CHECK(decoratedProcessorFactory_)
