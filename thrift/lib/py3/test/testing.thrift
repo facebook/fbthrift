@@ -116,6 +116,11 @@ struct File {
   3: Kind type = Kind.REGULAR;
 }
 
+struct OptionalFile {
+  1: optional string name;
+  3: optional i32 type;
+}
+
 struct Digits {
   1: optional list<Integers> data;
 }
@@ -227,6 +232,12 @@ struct ColorGroups {
   1: list<Color> color_list;
   2: set<Color> color_set;
   3: map<Color, Color> color_map;
+}
+
+struct OptionalColorGroups {
+  1: optional list<i32> color_list;
+  2: optional set<i32> color_set;
+  3: optional map<i32, i32> color_map;
 }
 
 typedef list<i32> (cpp.type = "std::deque<int>") list_typedef
