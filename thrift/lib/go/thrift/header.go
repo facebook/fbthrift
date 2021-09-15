@@ -27,12 +27,14 @@ import (
 
 // Header keys
 const (
-	IdentityHeader      string = "identity"
-	IDVersionHeader     string = "id_version"
-	IDVersion           string = "1"
-	PriorityHeader      string = "thrift_priority"
-	ClientTimeoutHeader string = "client_timeout"
-	QueueTimeoutHeader  string = "queue_timeout"
+	IdentityHeader       string = "identity"
+	IDVersionHeader      string = "id_version"
+	IDVersion            string = "1"
+	PriorityHeader       string = "thrift_priority"
+	ClientTimeoutHeader  string = "client_timeout"
+	QueueTimeoutHeader   string = "queue_timeout"
+	ClientMetadataHeader string = "client_metadata"
+	ClientMetadata       string = "{\"agent\":\"header_transport.go\"}"
 	// Header Magicks
 	// 0 and 16th bits must be 0 to differentiate from framed & unframed
 	HeaderMagic         uint32 = 0x0FFF0000

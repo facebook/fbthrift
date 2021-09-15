@@ -66,6 +66,7 @@ type HeaderTransport struct {
 	flags              uint16
 	clientType         ClientType
 	writeTransforms    []TransformID
+	firstRequest       bool
 }
 
 // NewHeaderTransport Create a new transport with defaults.
@@ -84,6 +85,7 @@ func NewHeaderTransport(transport Transport) *HeaderTransport {
 		flags:           0,
 		clientType:      DefaultClientType,
 		writeTransforms: []TransformID{},
+		firstRequest:    true,
 	}
 }
 
@@ -393,6 +395,11 @@ func (t *HeaderTransport) flushHeader() error {
 	hdr.pHeaders = t.persistentWriteInfoHeaders
 	if t.seqIDExplicitlySet {
 		t.seqIDExplicitlySet = false
+		// seqID is only explicitly set for requests
+		if t.firstRequest {
+			t.firstRequest = false
+			hdr.headers[ClientMetadataHeader] = ClientMetadata
+		}
 		hdr.seq = t.writeSeqID
 	} else {
 		hdr.seq = t.readSeqID
