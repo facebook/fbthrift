@@ -330,8 +330,8 @@ TEST(ObserverTest, OrderOfCalls) {
 }
 
 TEST(ObserverTest, VisitContext) {
-  static_assert(ast_detail::is_observer<visit_context&>::value, "");
-  using ctx_ast_visitor = basic_ast_visitor<false, visit_context&>;
+  static_assert(ast_detail::is_observer<visitor_context&>::value, "");
+  using ctx_ast_visitor = basic_ast_visitor<false, visitor_context&>;
 
   t_program program("path/to/program.thrift");
   auto* tunion = new t_union(&program, "Union");
@@ -341,23 +341,23 @@ TEST(ObserverTest, VisitContext) {
 
   int calls = 0;
   ctx_ast_visitor visitor;
-  visitor.add_program_visitor([&](visit_context& ctx, t_program& node) {
+  visitor.add_program_visitor([&](visitor_context& ctx, t_program& node) {
     EXPECT_EQ(&node, &program);
     EXPECT_EQ(ctx.parent(), nullptr);
     ++calls;
   });
-  visitor.add_union_visitor([&](visit_context& ctx, t_union& node) {
+  visitor.add_union_visitor([&](visitor_context& ctx, t_union& node) {
     EXPECT_EQ(&node, tunion);
     EXPECT_EQ(ctx.parent(), &program);
     ++calls;
   });
-  visitor.add_field_visitor([&](visit_context& ctx, t_field& node) {
+  visitor.add_field_visitor([&](visitor_context& ctx, t_field& node) {
     EXPECT_EQ(&node, field);
     EXPECT_EQ(ctx.parent(), tunion);
     ++calls;
   });
 
-  visit_context ctx;
+  visitor_context ctx;
   EXPECT_EQ(ctx.parent(), nullptr);
   visitor(ctx, program);
   EXPECT_EQ(calls, 3);

@@ -304,17 +304,24 @@ class basic_ast_visitor {
 };
 
 template <bool is_const, typename N = t_node>
-class basic_visit_context {
+class basic_visitor_context {
   using node_type = ast_detail::node_type<is_const, N>;
 
  public:
+  // The first node visited.
+  node_type* root() const noexcept {
+    assert(!context_.empty());
+    return context_.empty() ? nullptr : context_.front();
+  }
+
   // The node currently being visited, or nullptr.
-  node_type* current() const {
+  node_type* current() const noexcept {
+    assert(!context_.empty());
     return context_.empty() ? nullptr : context_.back();
   }
 
   // The parent of the current node, or nullptr.
-  node_type* parent() const {
+  node_type* parent() const noexcept {
     return context_.size() < 2 ? nullptr : context_[context_.size() - 2];
   }
 
@@ -325,8 +332,8 @@ class basic_visit_context {
   std::vector<node_type*> context_;
 };
 
-using visit_context = basic_visit_context<false>;
-using const_visit_context = basic_visit_context<true>;
+using visitor_context = basic_visitor_context<false>;
+using const_visitor_context = basic_visitor_context<true>;
 
 } // namespace compiler
 } // namespace thrift
