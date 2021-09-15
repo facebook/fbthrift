@@ -22,8 +22,6 @@
 
 #include <openssl/sha.h>
 
-#include <thrift/compiler/ast/endianness.h>
-
 #include <thrift/compiler/generate/t_generator.h>
 
 using namespace std;
@@ -152,17 +150,17 @@ std::string t_concat_generator::generate_structural_id(
   std::string hashable_keys_list = ss.str();
 
   // Hash the string and generate a portable hash number.
-  union {
-    uint64_t val;
-    unsigned char buf[SHA_DIGEST_LENGTH];
-  } u;
+  unsigned char buf[SHA_DIGEST_LENGTH] = {};
   SHA1(
       reinterpret_cast<const unsigned char*>(hashable_keys_list.data()),
       hashable_keys_list.size(),
-      u.buf);
-  const uint64_t hash =
-      (apache::thrift::compiler::bswap_host_to_little_endian(u.val) &
-       0x7FFFFFFFFFFFFFFFull); // 63 bits
+      buf);
+  uint64_t hash = 0;
+  std::memcpy(&hash, &buf, sizeof(hash));
+#if !defined(_WIN32) && __BYTE_ORDER__ != __ORDER_LITTLE_ENDIAN__
+  hash = __builtin_bswap64(hash);
+#endif
+  hash &= 0x7FFFFFFFFFFFFFFFull; // 63 bits
 
   // Generate a readable number.
   char structural_id[21];

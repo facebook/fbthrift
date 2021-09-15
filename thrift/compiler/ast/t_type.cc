@@ -23,7 +23,6 @@
 
 #include <openssl/sha.h>
 
-#include <thrift/compiler/ast/endianness.h>
 #include <thrift/compiler/ast/t_program.h>
 #include <thrift/compiler/ast/t_typedef.h>
 
@@ -60,19 +59,15 @@ const std::string& t_type::type_name(type t) {
 }
 
 uint64_t t_type::get_type_id() const {
-  // This union allows the conversion of the SHA char buffer to a 64bit uint
-  union {
-    uint64_t val;
-    unsigned char buf[SHA_DIGEST_LENGTH];
-  } u;
-
   std::string name = get_full_name();
-  SHA1(reinterpret_cast<const unsigned char*>(name.data()), name.size(), u.buf);
-  const auto hash =
-      apache::thrift::compiler::bswap_host_to_little_endian(u.val);
-  type tv = get_type_value();
-
-  return (hash & ~t_type::kTypeMask) | int(tv);
+  unsigned char buf[SHA_DIGEST_LENGTH] = {};
+  SHA1(reinterpret_cast<const unsigned char*>(name.data()), name.size(), buf);
+  uint64_t hash = 0;
+  std::memcpy(&hash, &buf, sizeof(hash));
+#if !defined(_WIN32) && __BYTE_ORDER__ != __ORDER_LITTLE_ENDIAN__
+  hash = __builtin_bswap64(hash);
+#endif
+  return (hash & ~t_type::kTypeMask) | static_cast<int>(get_type_value());
 }
 
 std::string t_type::get_scoped_name() const {
