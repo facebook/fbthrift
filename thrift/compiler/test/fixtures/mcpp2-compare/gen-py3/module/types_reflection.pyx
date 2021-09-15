@@ -884,7 +884,7 @@ cdef __StructSpec get_reflection__containerStruct():
         name="containerStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.methods""": """void foo(const std::string& bar) {}""",            """cpp2.noncopyable""": """1""",        },
+            """cpp.methods""": """void foo(const std::string& bar) {}""",            """cpp.noncopyable""": """1""",        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -1510,7 +1510,7 @@ cdef __StructSpec get_reflection__AnnotatedStruct():
         name="AnnotatedStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp.declare_equal_to""": """1""",            """cpp.declare_hash""": """1""",            """cpp.virtual""": """1""",            """cpp2.methods""": """void foo(const std::string& bar) {}""",            """cpp2.noncopyable""": """1""",        },
+            """cpp.declare_equal_to""": """1""",            """cpp.declare_hash""": """1""",            """cpp.noncopyable""": """1""",            """cpp.virtual""": """1""",            """cpp2.methods""": """void foo(const std::string& bar) {}""",        },
     )
     spec.add_field(
         __FieldSpec.create(

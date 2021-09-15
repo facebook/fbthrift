@@ -231,7 +231,7 @@ struct containerStruct {
   31: includes.AnEnum fieldAD;
   32: map<string, i32> fieldAE = {};
   33: IndirectionD fieldSD;
-} (cpp2.noncopyable, cpp.methods = "void foo(const std::string& bar) {}")
+} (cpp.noncopyable, cpp.methods = "void foo(const std::string& bar) {}")
 
 enum MyEnumB {
   AField = 0,
@@ -312,7 +312,7 @@ struct AnnotatedStruct {
   };
 } (
   cpp.virtual,
-  cpp2.noncopyable,
+  cpp.noncopyable,
   cpp.declare_hash,
   cpp.declare_equal_to = 1,
   cpp2.methods = "void foo(const std::string& bar) {}",

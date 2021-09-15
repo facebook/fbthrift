@@ -23,7 +23,7 @@ typedef binary (cpp2.type = "test::Buffer") Buffer
 
 union BinaryUnion {
   1: IOBuf iobuf_val;
-} (cpp2.noncomparable)
+} (cpp.noncomparable)
 
 struct Binaries {
   1: binary no_special_type;

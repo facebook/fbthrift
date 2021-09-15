@@ -111,10 +111,10 @@ struct MyStruct {
   2: string MyStringField;
   3: i64 majorVer;
   4: MyDataItem data;
-} (cpp2.noncomparable)
+} (cpp.noncomparable)
 
 struct MyDataItem {
-} (cpp2.noncomparable)
+} (cpp.noncomparable)
 
 struct Renaming {
   1: i64 foo (cpp.name = 'bar');

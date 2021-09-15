@@ -296,7 +296,7 @@ cdef __StructSpec get_reflection__BinaryUnion():
         name="BinaryUnion",
         kind=__StructType.UNION,
         annotations={
-            """cpp2.noncomparable""": """1""",        },
+            """cpp.noncomparable""": """1""",        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -321,7 +321,7 @@ cdef __StructSpec get_reflection__BinaryUnionStruct():
         name="BinaryUnionStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp2.noncomparable""": """1""",        },
+            """cpp.noncomparable""": """1""",        },
     )
     spec.add_field(
         __FieldSpec.create(

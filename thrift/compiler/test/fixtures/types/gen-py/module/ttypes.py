@@ -2985,7 +2985,7 @@ MyStruct.thrift_spec = (
 )
 
 MyStruct.thrift_struct_annotations = {
-  "cpp2.noncomparable": "1",
+  "cpp.noncomparable": "1",
 }
 MyStruct.thrift_field_annotations = {
 }
@@ -3013,7 +3013,7 @@ MyDataItem.thrift_spec = (
 )
 
 MyDataItem.thrift_struct_annotations = {
-  "cpp2.noncomparable": "1",
+  "cpp.noncomparable": "1",
 }
 MyDataItem.thrift_field_annotations = {
 }

@@ -55,8 +55,8 @@ union VirtualComplexUnion {
 
 struct NonCopyableStruct {
   1: i64 num;
-} (cpp2.noncopyable)
+} (cpp.noncopyable)
 
 union NonCopyableUnion {
   1: NonCopyableStruct s;
-} (cpp2.noncopyable)
+} (cpp.noncopyable)

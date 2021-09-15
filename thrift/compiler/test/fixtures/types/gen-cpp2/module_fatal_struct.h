@@ -703,18 +703,18 @@ class MyDataItem_struct_traits {
     };
 
     struct __fbthrift_keys {
-      using cpp2_noncomparable = __fbthrift_strings_module::cpp2_noncomparable;
+      using cpp_noncomparable = __fbthrift_strings_module::cpp_noncomparable;
     };
 
     struct __fbthrift_values {
-      using cpp2_noncomparable = ::fatal::sequence<char, '1'>;
+      using cpp_noncomparable = ::fatal::sequence<char, '1'>;
     };
 
    public:
     using keys = __fbthrift_keys;
     using values = __fbthrift_values;
     using map = ::fatal::list<
-        ::apache::thrift::annotation<keys::cpp2_noncomparable, values::cpp2_noncomparable>
+        ::apache::thrift::annotation<keys::cpp_noncomparable, values::cpp_noncomparable>
     >;
     using members = __fbthrift_members;
   };
@@ -747,18 +747,18 @@ class MyStruct_struct_traits {
     };
 
     struct __fbthrift_keys {
-      using cpp2_noncomparable = __fbthrift_strings_module::cpp2_noncomparable;
+      using cpp_noncomparable = __fbthrift_strings_module::cpp_noncomparable;
     };
 
     struct __fbthrift_values {
-      using cpp2_noncomparable = ::fatal::sequence<char, '1'>;
+      using cpp_noncomparable = ::fatal::sequence<char, '1'>;
     };
 
    public:
     using keys = __fbthrift_keys;
     using values = __fbthrift_values;
     using map = ::fatal::list<
-        ::apache::thrift::annotation<keys::cpp2_noncomparable, values::cpp2_noncomparable>
+        ::apache::thrift::annotation<keys::cpp_noncomparable, values::cpp_noncomparable>
     >;
     using members = __fbthrift_members;
   };

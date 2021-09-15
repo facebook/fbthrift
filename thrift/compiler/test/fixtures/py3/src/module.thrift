@@ -70,11 +70,11 @@ struct ComplexStruct {
 
 union BinaryUnion {
   1: IOBuf iobuf_val;
-} (cpp2.noncomparable)
+} (cpp.noncomparable)
 
 struct BinaryUnionStruct {
   1: BinaryUnion u;
-} (cpp2.noncomparable)
+} (cpp.noncomparable)
 
 const bool A_BOOL = true;
 const byte A_BYTE = 8;

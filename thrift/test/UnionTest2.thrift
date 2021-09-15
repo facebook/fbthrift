@@ -65,13 +65,13 @@ struct StructWithAUnion {
 
 struct NonCopyableStruct {
   1: i64 num;
-} (cpp2.noncopyable)
+} (cpp.noncopyable)
 
 union NonCopyableUnion {
   1: i32 a;
   2: IOBuf buf;
   3: NonCopyableStruct ncs;
-} (cpp2.noncopyable, cpp2.noncomparable)
+} (cpp.noncopyable, cpp.noncomparable)
 
 union NoExceptMoveUnion {
   1: string string_field;

@@ -476,7 +476,7 @@ cdef __StructSpec get_reflection__MyStruct():
         name="MyStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp2.noncomparable""": """1""",        },
+            """cpp.noncomparable""": """1""",        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -537,7 +537,7 @@ cdef __StructSpec get_reflection__MyDataItem():
         name="MyDataItem",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp2.noncomparable""": """1""",        },
+            """cpp.noncomparable""": """1""",        },
     )
     return spec
 cdef __StructSpec get_reflection__Renaming():

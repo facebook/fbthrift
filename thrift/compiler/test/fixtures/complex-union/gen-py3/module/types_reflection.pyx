@@ -290,7 +290,7 @@ cdef __StructSpec get_reflection__NonCopyableStruct():
         name="NonCopyableStruct",
         kind=__StructType.STRUCT,
         annotations={
-            """cpp2.noncopyable""": """1""",        },
+            """cpp.noncopyable""": """1""",        },
     )
     spec.add_field(
         __FieldSpec.create(
@@ -310,7 +310,7 @@ cdef __StructSpec get_reflection__NonCopyableUnion():
         name="NonCopyableUnion",
         kind=__StructType.UNION,
         annotations={
-            """cpp2.noncopyable""": """1""",        },
+            """cpp.noncopyable""": """1""",        },
     )
     spec.add_field(
         __FieldSpec.create(

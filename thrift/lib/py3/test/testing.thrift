@@ -187,7 +187,7 @@ union ComplexUnion {
 
 union IOBufUnion {
   1: binary (cpp2.type = "folly::IOBuf") buf;
-} (cpp2.noncomparable)
+} (cpp.noncomparable)
 
 struct hard {
   1: required i32 val;
@@ -274,11 +274,11 @@ struct SlowCompare {
   1: string field1;
   2: i32 field2;
   3: Color field3;
-} (cpp2.noncomparable)
+} (cpp.noncomparable)
 
 struct NonCopyable {
   1: i64 num;
-} (cpp2.noncopyable)
+} (cpp.noncopyable)
 
 struct Messy {
   1: optional string opt_field (some = "annotation", a.b.c = "d.e.f");
