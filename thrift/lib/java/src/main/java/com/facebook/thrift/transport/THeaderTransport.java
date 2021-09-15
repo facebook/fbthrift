@@ -120,8 +120,12 @@ public class THeaderTransport extends TFramedTransport {
   private static final String IDENTITY_HEADER = "identity";
   private static final String ID_VERSION_HEADER = "id_version";
   private static final String ID_VERSION = "1";
+  private static final String CLIENT_METADATA_HEADER = "client_metadata";
+  private static final String CLIENT_METADATA = "{\"agent\":\"THeaderTransport.java\"}";
 
   private String identity;
+
+  private boolean firstRequest = true;
 
   public THeaderTransport(TTransport transport) {
     super(transport);
@@ -431,6 +435,7 @@ public class THeaderTransport extends TFramedTransport {
         break;
       }
     }
+    readHeaders.remove(CLIENT_METADATA_HEADER);
     readHeaders.putAll(readPersistentHeaders);
 
     // Read in the data section.
@@ -613,6 +618,11 @@ public class THeaderTransport extends TFramedTransport {
       }
       transformData.limit(transformData.position());
       transformData.position(0);
+
+      if (firstRequest) {
+        firstRequest = false;
+        writeHeaders.put(CLIENT_METADATA_HEADER, CLIENT_METADATA);
+      }
 
       if (identity != null && identity.length() > 0) {
         writeHeaders.put(ID_VERSION_HEADER, ID_VERSION);
