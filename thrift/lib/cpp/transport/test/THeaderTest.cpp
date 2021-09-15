@@ -147,6 +147,18 @@ TEST(THeaderTest, defaultTimeoutAndPriority) {
   EXPECT_EQ(concurrency::PRIORITY::N_PRIORITIES, header.getCallPriority());
 }
 
+TEST(THeaderTest, serverQueueingMetadataTest) {
+  static constexpr std::chrono::milliseconds kQueueTimeout(10);
+  static constexpr std::chrono::milliseconds kTimeQueued(6);
+  THeader hdr1, hdr2;
+  hdr1.setServerQueueTimeout(kQueueTimeout);
+  hdr1.setProcessDelay(kTimeQueued);
+  EXPECT_EQ(kQueueTimeout, hdr1.getServerQueueTimeout().value());
+  EXPECT_EQ(kTimeQueued, hdr1.getProcessDelay().value());
+  EXPECT_FALSE(hdr2.getServerQueueTimeout().hasValue());
+  EXPECT_FALSE(hdr2.getProcessDelay().hasValue());
+}
+
 void testAsciiHeaderData(const std::string& data, const std::string& expected) {
   auto buf = folly::IOBuf::copyBuffer(data);
   THeader::StringToStringMap persistentHeaders;

@@ -2674,6 +2674,62 @@ TEST(ThriftServer, ClientOnlyTimeouts) {
   base.loop();
 }
 
+TEST(ThriftServerTest, QueueTimeHeaderTest) {
+  using namespace ::testing;
+  // Tests that queue time metadata is returned in the THeader when
+  // queueing delay on server side is greater than pre-defined threshold.
+  static constexpr std::chrono::milliseconds kDefaultQueueTimeout{100};
+  class QueueTimeTestHandler : public TestServiceSvIf {
+   public:
+    void sendResponse(std::string& _return, int64_t size) override {
+      _return = folly::to<std::string>(size);
+    }
+  };
+
+  auto handler = std::make_shared<QueueTimeTestHandler>();
+  ScopedServerInterfaceThread runner(handler);
+  folly::EventBase eb;
+  auto client = runner.newClient<TestServiceAsyncClient>(
+      &eb, RocketClientChannel::newChannel);
+  // Queue a task on the runner's ThreadManager to block it from
+  // executing the Thrift request.
+  auto tServer = dynamic_cast<ThriftServer*>(&runner.getThriftServer());
+  tServer->setQueueTimeout(kDefaultQueueTimeout);
+  auto threadManager = tServer->getThreadManager();
+
+  folly::Baton<> startedBaton;
+  threadManager->add([&startedBaton]() {
+    startedBaton.post();
+    /* sleep override */
+    std::this_thread::sleep_for(50ms);
+  });
+
+  startedBaton.wait();
+  // Send the request with a high queue timeout to make sure it succeeds.
+  RpcOptions options;
+  options.setTimeout(std::chrono::milliseconds(1000));
+  auto [resp, header] =
+      client->header_semifuture_sendResponse(options, 42).get();
+  EXPECT_EQ(resp, "42");
+  // Check that queue time headers are set
+  auto queueTimeout = header->getServerQueueTimeout();
+  auto queueingTime = header->getProcessDelay();
+  EXPECT_TRUE(queueTimeout.hasValue() && queueingTime.hasValue());
+  EXPECT_EQ(queueTimeout.value(), kDefaultQueueTimeout);
+  EXPECT_THAT(
+      queueingTime.value(),
+      AllOf(
+          Gt(std::chrono::milliseconds(5)), Lt(std::chrono::milliseconds(50))));
+
+  // Now send a request that will complete without any queueing.
+  // Verify that the headers are not present.
+  auto [resp2, header2] =
+      client->header_semifuture_sendResponse(options, 100).get();
+  EXPECT_EQ(resp2, "100");
+  EXPECT_FALSE(header2->getServerQueueTimeout().hasValue());
+  EXPECT_FALSE(header2->getProcessDelay().hasValue());
+}
+
 TEST(ThriftServer, QueueTimeoutStressTest) {
   // Make sure we only open one connection to the server.
   auto ioExecutor = std::make_shared<folly::IOThreadPoolExecutor>(1);

@@ -124,6 +124,13 @@ void fillTHeaderFromResponseRpcMetadata(
       header.setReadTransform(static_cast<uint16_t>(transform));
     }
   }
+  if (auto queueMetadata = responseMetadata.queueMetadata_ref()) {
+    header.setProcessDelay(
+        std::chrono::milliseconds(*queueMetadata->queueingTimeMs_ref()));
+    if (auto queueTimeout = queueMetadata->queueTimeoutMs_ref()) {
+      header.setServerQueueTimeout(std::chrono::milliseconds(*queueTimeout));
+    }
+  }
 }
 
 void fillResponseRpcMetadataFromTHeader(

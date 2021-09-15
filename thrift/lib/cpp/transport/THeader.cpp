@@ -1036,6 +1036,15 @@ std::chrono::milliseconds THeader::getClientQueueTimeout() const {
   }
 }
 
+folly::Optional<std::chrono::milliseconds> THeader::getServerQueueTimeout()
+    const {
+  return serverQueueTimeout_;
+}
+
+folly::Optional<std::chrono::milliseconds> THeader::getProcessDelay() const {
+  return processDelay_;
+}
+
 const folly::Optional<std::string>& THeader::clientId() const {
   return clientId_;
 }
@@ -1054,6 +1063,14 @@ void THeader::setClientTimeout(std::chrono::milliseconds timeout) {
 
 void THeader::setClientQueueTimeout(std::chrono::milliseconds timeout) {
   queueTimeout_ = timeout;
+}
+
+void THeader::setServerQueueTimeout(std::chrono::milliseconds timeout) {
+  serverQueueTimeout_ = timeout;
+}
+
+void THeader::setProcessDelay(std::chrono::milliseconds timeQueued) {
+  processDelay_ = timeQueued;
 }
 
 void THeader::setCallPriority(apache::thrift::concurrency::PRIORITY priority) {

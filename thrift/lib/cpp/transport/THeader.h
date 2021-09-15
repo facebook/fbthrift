@@ -324,6 +324,14 @@ class THeader final {
 
   std::chrono::milliseconds getClientQueueTimeout() const;
 
+  // Overall queue timeout (either set by client or server override)
+  // This is set on the server side in responses.
+  folly::Optional<std::chrono::milliseconds> getServerQueueTimeout() const;
+
+  // This is populated by the server and reflects the time the request spent
+  // in the queue prior to processing.
+  folly::Optional<std::chrono::milliseconds> getProcessDelay() const;
+
   const folly::Optional<std::string>& clientId() const;
   const folly::Optional<std::string>& serviceTraceMeta() const;
 
@@ -332,6 +340,8 @@ class THeader final {
 
   void setClientTimeout(std::chrono::milliseconds timeout);
   void setClientQueueTimeout(std::chrono::milliseconds timeout);
+  void setServerQueueTimeout(std::chrono::milliseconds timeout);
+  void setProcessDelay(std::chrono::milliseconds timeQueued);
   void setCallPriority(apache::thrift::concurrency::PRIORITY priority);
   void setClientId(const std::string& clientId);
   void setServiceTraceMeta(const std::string& serviceTraceMeta);
@@ -434,6 +444,8 @@ class THeader final {
   // the header map.
   folly::Optional<std::chrono::milliseconds> clientTimeout_;
   folly::Optional<std::chrono::milliseconds> queueTimeout_;
+  folly::Optional<std::chrono::milliseconds> processDelay_;
+  folly::Optional<std::chrono::milliseconds> serverQueueTimeout_;
   folly::Optional<apache::thrift::concurrency::PRIORITY> priority_;
   folly::Optional<std::string> clientId_;
   folly::Optional<std::string> serviceTraceMeta_;
