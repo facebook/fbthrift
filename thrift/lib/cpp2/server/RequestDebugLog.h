@@ -30,7 +30,7 @@ namespace thrift {
 void appendRequestDebugLog(std::string&&);
 void appendRequestDebugLog(const std::string&);
 std::vector<std::string> collectRequestDebugLog(
-    std::shared_ptr<folly::RequestContext>);
+    const std::shared_ptr<folly::RequestContext>&);
 std::vector<std::string> collectRequestDebugLog(
     const RequestsRegistry::DebugStub&);
 

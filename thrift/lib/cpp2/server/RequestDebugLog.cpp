@@ -102,7 +102,7 @@ void appendRequestDebugLog(const std::string& msg) {
 }
 
 std::vector<std::string> collectRequestDebugLog(
-    std::shared_ptr<folly::RequestContext> rctx) {
+    const std::shared_ptr<folly::RequestContext>& rctx) {
   DCHECK(rctx.get() != nullptr);
   auto log = dynamic_cast<RequestDebugLog*>(rctx->getContextData(getToken()));
   if (log == nullptr) {
@@ -117,7 +117,7 @@ std::vector<std::string> collectRequestDebugLog(
   if (rctx == nullptr) {
     return {};
   }
-  return collectRequestDebugLog(std::move(rctx));
+  return collectRequestDebugLog(rctx);
 }
 
 } // namespace thrift
