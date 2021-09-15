@@ -43,6 +43,7 @@
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/parse/parsing_driver.h>
 #include <thrift/compiler/platform.h>
+#include <thrift/compiler/sema/standard_mutator.h>
 #include <thrift/compiler/sema/standard_validator.h>
 #include <thrift/compiler/validator/validator.h>
 
@@ -451,6 +452,10 @@ compile_result compile(const std::vector<std::string>& arguments) {
     mutator::mutate(program->root_program());
   } catch (MutatorException& e) {
     ctx.report(std::move(e.message));
+    return result;
+  }
+  standard_mutator().mutate(ctx, *program->root_program());
+  if (result.detail.has_failure()) {
     return result;
   }
 

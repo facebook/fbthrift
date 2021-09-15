@@ -16,30 +16,14 @@
 
 #pragma once
 
-#include <thrift/compiler/ast/ast_visitor.h>
-#include <thrift/compiler/ast/diagnostic_context.h>
+#include <thrift/compiler/sema/ast_mutator.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
 
-// Mutators have mutable access to the AST.
-using mutator_context = visitor_context;
-
-// An AST mutator is a ast_visitor that collects diagnostics and can
-// change the ast.
-class ast_mutator
-    : public basic_ast_visitor<false, diagnostic_context&, mutator_context&> {
-  using base = basic_ast_visitor<false, diagnostic_context&, mutator_context&>;
-
- public:
-  using base::base;
-
-  void mutate(diagnostic_context& ctx, t_program& program) {
-    mutator_context mctx;
-    operator()(ctx, mctx, program);
-  }
-};
+// The standard mutator for Thrift.
+ast_mutator standard_mutator();
 
 } // namespace compiler
 } // namespace thrift
