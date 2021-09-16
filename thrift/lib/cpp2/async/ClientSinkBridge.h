@@ -58,12 +58,7 @@ class ClientSinkBridge : public TwoWayBridge<
  public:
   ~ClientSinkBridge() override;
 
-  class FirstResponseCallback {
-   public:
-    virtual ~FirstResponseCallback() = default;
-    virtual void onFirstResponse(FirstResponsePayload&&, Ptr) = 0;
-    virtual void onFirstResponseError(folly::exception_wrapper) = 0;
-  };
+  using FirstResponseCallback = FirstResponseClientCallback<Ptr>;
 
   static SinkClientCallback* create(FirstResponseCallback* callback);
 

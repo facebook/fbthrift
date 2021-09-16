@@ -271,94 +271,12 @@ class ClientSyncCallback : public RequestClientCallback {
   folly::fibers::Baton doneBaton_;
 };
 
-inline StreamClientCallback* createStreamClientCallback(
+StreamClientCallback* createStreamClientCallback(
     RequestClientCallback::Ptr requestCallback,
-    const BufferOptions& bufferOptions) {
-  DCHECK(requestCallback->isInlineSafe())
-      << "Streaming methods do not support the callback client method flavor. "
-         "Use co_, sync_, or semifuture_ instead.";
-  class RequestClientCallbackWrapper
-      : public apache::thrift::detail::ClientStreamBridge::
-            FirstResponseCallback {
-   public:
-    RequestClientCallbackWrapper(
-        RequestClientCallback::Ptr requestCallback,
-        const BufferOptions& bufferOptions)
-        : requestCallback_(std::move(requestCallback)),
-          bufferOptions_(bufferOptions) {}
+    const BufferOptions& bufferOptions);
 
-    void onFirstResponse(
-        FirstResponsePayload&& firstResponse,
-        apache::thrift::detail::ClientStreamBridge::ClientPtr
-            clientStreamBridge) override {
-      auto tHeader = std::make_unique<transport::THeader>();
-      tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
-      apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(
-          firstResponse.metadata, *tHeader);
-      requestCallback_.release()->onResponse(ClientReceiveState(
-          static_cast<uint16_t>(-1),
-          std::move(firstResponse.payload),
-          std::move(tHeader),
-          nullptr,
-          std::move(clientStreamBridge),
-          bufferOptions_));
-      delete this;
-    }
-
-    void onFirstResponseError(folly::exception_wrapper ew) override {
-      requestCallback_.release()->onResponseError(std::move(ew));
-      delete this;
-    }
-
-   private:
-    RequestClientCallback::Ptr requestCallback_;
-    BufferOptions bufferOptions_;
-  };
-
-  return apache::thrift::detail::ClientStreamBridge::create(
-      new RequestClientCallbackWrapper(
-          std::move(requestCallback), bufferOptions));
-}
-
-inline SinkClientCallback* createSinkClientCallback(
-    RequestClientCallback::Ptr requestCallback) {
-  DCHECK(requestCallback->isInlineSafe());
-  class RequestClientCallbackWrapper
-      : public apache::thrift::detail::ClientSinkBridge::FirstResponseCallback {
-   public:
-    explicit RequestClientCallbackWrapper(
-        RequestClientCallback::Ptr requestCallback)
-        : requestCallback_(std::move(requestCallback)) {}
-
-    void onFirstResponse(
-        FirstResponsePayload&& firstResponse,
-        apache::thrift::detail::ClientSinkBridge::Ptr clientSinkBridge)
-        override {
-      auto tHeader = std::make_unique<transport::THeader>();
-      tHeader->setClientType(THRIFT_ROCKET_CLIENT_TYPE);
-      apache::thrift::detail::fillTHeaderFromResponseRpcMetadata(
-          firstResponse.metadata, *tHeader);
-      requestCallback_.release()->onResponse(ClientReceiveState(
-          static_cast<uint16_t>(-1),
-          std::move(firstResponse.payload),
-          std::move(clientSinkBridge),
-          std::move(tHeader),
-          nullptr));
-      delete this;
-    }
-
-    void onFirstResponseError(folly::exception_wrapper ew) override {
-      requestCallback_.release()->onResponseError(std::move(ew));
-      delete this;
-    }
-
-   private:
-    RequestClientCallback::Ptr requestCallback_;
-  };
-
-  return apache::thrift::detail::ClientSinkBridge::create(
-      new RequestClientCallbackWrapper(std::move(requestCallback)));
-}
+SinkClientCallback* createSinkClientCallback(
+    RequestClientCallback::Ptr requestCallback);
 
 template <class Protocol>
 SerializedRequest preprocessSendT(

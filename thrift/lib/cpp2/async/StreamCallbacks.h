@@ -70,6 +70,15 @@ struct HeadersPayload {
   }
 };
 
+template <typename ClientBridgePtr>
+class FirstResponseClientCallback {
+ public:
+  virtual ~FirstResponseClientCallback() = default;
+  virtual void onFirstResponse(
+      FirstResponsePayload&&, ClientBridgePtr bridge) = 0;
+  virtual void onFirstResponseError(folly::exception_wrapper) = 0;
+};
+
 namespace detail {
 
 template <typename T>

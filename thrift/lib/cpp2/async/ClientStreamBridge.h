@@ -63,13 +63,7 @@ class ClientStreamBridge : public TwoWayBridge<
   };
   using ClientPtr = std::unique_ptr<ClientStreamBridge, ClientDeleter>;
 
-  class FirstResponseCallback {
-   public:
-    virtual ~FirstResponseCallback() = default;
-    virtual void onFirstResponse(
-        FirstResponsePayload&&, ClientPtr clientStreamBridge) = 0;
-    virtual void onFirstResponseError(folly::exception_wrapper) = 0;
-  };
+  using FirstResponseCallback = FirstResponseClientCallback<ClientPtr>;
 
   static StreamClientCallback* create(FirstResponseCallback* callback);
 

@@ -168,6 +168,35 @@ class ClientReceiveState {
 
   const RpcSizeStats& getRpcSizeStats() const { return rpcSizeStats_; }
 
+  static ClientReceiveState create(
+      std::unique_ptr<folly::IOBuf> buf,
+      std::unique_ptr<apache::thrift::transport::THeader> tHeader,
+      apache::thrift::detail::ClientStreamBridge::ClientPtr clientStreamBridge,
+      BufferOptions bufferOptions = BufferOptions(),
+      uint16_t protocolId = static_cast<uint16_t>(-1)) {
+    return ClientReceiveState(
+        protocolId,
+        std::move(buf),
+        std::move(tHeader),
+        nullptr,
+        std::move(clientStreamBridge),
+        bufferOptions);
+  }
+
+  static ClientReceiveState create(
+      std::unique_ptr<folly::IOBuf> buf,
+      std::unique_ptr<apache::thrift::transport::THeader> tHeader,
+      apache::thrift::detail::ClientSinkBridge::Ptr clientSinkBridge,
+      BufferOptions,
+      uint16_t protocolId = static_cast<uint16_t>(-1)) {
+    return ClientReceiveState(
+        protocolId,
+        std::move(buf),
+        std::move(clientSinkBridge),
+        std::move(tHeader),
+        nullptr);
+  }
+
  private:
   uint16_t protocolId_;
   MessageType messageType_{MessageType::T_CALL};
