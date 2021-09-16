@@ -21,7 +21,7 @@ from thrift.transport.THeaderTransport import (
     CLIENT_TYPE, THeaderTransport, MAX_FRAME_SIZE, BIG_FRAME_MAGIC, TRANSFORM
 )
 
-MIN_HEADER_SIZE = 14
+MIN_HEADER_SIZE = 128
 
 
 class BigFrame(unittest.TestCase):

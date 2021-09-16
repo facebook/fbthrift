@@ -108,8 +108,8 @@ class TestTCppServerTestManager(BaseTest):
             )
 
         # make sure we saw the headers in the handler's postRead
-        self.assertEqual(
-            message, "headers: {b'fruit': b'orange', b'client_timeout': b'0'}"
+        self.assertTrue(
+            message.startswith("headers: {b'fruit': b'orange'")
         )
 
         # make sure they were reset after the method call

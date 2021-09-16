@@ -136,9 +136,11 @@ class THeaderTransport(TTransportBase, CReadableTransport):
 
     # Defaults to current user, but there is also a setter below.
     __identity = None
+    __first_request = True
     IDENTITY_HEADER = "identity"
     ID_VERSION_HEADER = "id_version"
     ID_VERSION = "1"
+    CLIENT_METADATA_HEADER = "client_metadata";
 
     def __init__(self, trans, client_types=None, client_type=None):
         self.__trans = trans
@@ -422,6 +424,9 @@ class THeaderTransport(TTransportBase, CReadableTransport):
                 self.__write_transforms.append(trans_id)
         return buf
 
+    def disable_client_metadata(self):
+        self.__first_request = False
+
     def flush(self):
         self.flushImpl(False)
 
@@ -445,6 +450,12 @@ class THeaderTransport(TTransportBase, CReadableTransport):
         if self.__identity:
             self.__write_headers[self.ID_VERSION_HEADER] = self.ID_VERSION
             self.__write_headers[self.IDENTITY_HEADER] = self.__identity
+
+        if self.__first_request:
+            self.__first_request = False
+            self.__write_headers[self.CLIENT_METADATA_HEADER] = \
+                "{\"agent\":\"THeaderTransport.py\"}"
+
 
         info_data = StringIO()
 
