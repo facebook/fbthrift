@@ -171,12 +171,12 @@ class Typedef : public MetadataTypeInterface {
       ::std::vector<ThriftConstStruct> structured_annotations)
       : name_(name),
         underlyingType_(::std::move(underlyingType)),
-        structured_annotations_(structured_annotations) {}
+        structured_annotations_(::std::move(structured_annotations)) {}
   void writeAndGenType(ThriftType& ty, ThriftMetadata& metadata) override {
     ::apache::thrift::metadata::ThriftTypedefType tyTypedef;
     tyTypedef.name_ref() = name_;
     tyTypedef.underlyingType = ::std::make_unique<ThriftType>();
-    tyTypedef.structured_annotations_ref() = std::move(structured_annotations_);
+    tyTypedef.structured_annotations_ref() = structured_annotations_;
     underlyingType_->writeAndGenType(*tyTypedef.underlyingType, metadata);
     ty.t_typedef_ref() = ::std::move(tyTypedef);
   }

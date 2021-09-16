@@ -63,4 +63,15 @@ TEST(City, structured_metadata) {
   }
 }
 
+TEST(Country, AccessMetadataTwice) {
+  // Previously we had bug that some data are moved out when generating
+  // metadata. In which case you will get empty fields when generating metadata
+  // the second time. This unit-test makes sure this won't happen again.
+  using ::metadata::test::simple_structs::Country;
+  metadata::ThriftMetadata md1, md2;
+  auto s1 = StructMetadata<Country>::gen(md1);
+  auto s2 = StructMetadata<Country>::gen(md2);
+  EXPECT_EQ(s1, s2);
+}
+
 } // namespace apache::thrift::detail::md
