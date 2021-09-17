@@ -1194,7 +1194,13 @@ string t_go_generator::render_const_value(
             t_base_type::t_base_name(tbase));
     }
   } else if (type->is_enum()) {
-    indent(out) << value->get_integer();
+    if (is_optional) {
+      f_const_vars_ << "var const_lit_" << name << " " << type_to_go_type(type)
+                    << " = " << value->get_integer() << endl;
+      out << "&const_lit_" << name;
+    } else {
+      out << value->get_integer();
+    }
   } else if (type->is_struct() || type->is_xception()) {
     out << "&" << publicize(type_name(type)) << "{";
     indent_up();

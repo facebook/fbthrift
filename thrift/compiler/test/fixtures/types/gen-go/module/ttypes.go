@@ -1186,8 +1186,8 @@ type MyStructWithForwardRefEnum struct {
 
 func NewMyStructWithForwardRefEnum() *MyStructWithForwardRefEnum {
   return &MyStructWithForwardRefEnum{
-    A:     12,
-    B:     12,
+    A: 12,
+    B: 12,
   }
 }
 
@@ -3583,8 +3583,8 @@ func NewNoexceptMoveComplexStruct() *NoexceptMoveComplexStruct {
     MyIntField: 12,
     MyStringField: "test",
     MyMapEnumAndInt: map[MyEnumA]string{
-            1: "fieldA",
-            4: "fieldC",
+      1: "fieldA",
+      4: "fieldC",
     },
   }
 }

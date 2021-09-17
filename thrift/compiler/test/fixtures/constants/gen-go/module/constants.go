@@ -78,10 +78,13 @@ var EmptyIntIntMap map[int32]int32
 var EmptyIntStringMap map[int32]string
 var EmptyStringIntMap map[string]int32
 var EmptyStringStringMap map[string]string
+var const_lit_Instagram_employer Company = 3
 var const_lit_Instagram_compensation float64 = 1200
 var const_lit_Instagram_school string = "Monters University"
+var const_lit_InternList_0_employer Company = 3
 var const_lit_InternList_0_compensation float64 = 1200
 var const_lit_InternList_0_school string = "Monters University"
+var const_lit_InternList_1_employer Company = 0
 var const_lit_InternList_1_compensation float64 = 1000
 var const_lit_Pod_4_b float64 = 0.333
 var const_lit_Pod_4_c int8 = 25
@@ -118,7 +121,7 @@ Mymap = map[string]string{
 Instagram = &Internship{
   Weeks: 12,
   Title: "Software Engineer",
-  Employer:   3,
+  Employer: &const_lit_Instagram_employer,
   Compensation: &const_lit_Instagram_compensation,
   School: &const_lit_Instagram_school,
 }
@@ -143,14 +146,14 @@ InternList = []*Internship{
   &Internship{
     Weeks: 12,
     Title: "Software Engineer",
-    Employer:     3,
+    Employer: &const_lit_InternList_0_employer,
     Compensation: &const_lit_InternList_0_compensation,
     School: &const_lit_InternList_0_school,
   },
   &Internship{
     Weeks: 10,
     Title: "Sales Intern",
-    Employer:     0,
+    Employer: &const_lit_InternList_1_employer,
     Compensation: &const_lit_InternList_1_compensation,
   },
 }
