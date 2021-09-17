@@ -35,27 +35,16 @@ pub trait Framing {
     /// Buffer type we decode from
     type DecBuf: BufExt + Send + 'static;
 
-    /// Arbitrary metadata associated with a frame. This is passed to server methods, but
-    /// they need to specify some particular concrete type (ie, be implemented for a specific
-    /// kind of framing) in order to make use of it.
-    type Meta;
-
     /// Allocate a new encoding buffer with a given capacity
     /// FIXME: need &self?
     fn enc_with_capacity(cap: usize) -> Self::EncBuf;
-
-    /// Get the metadata associated with this frame.
-    fn get_meta(&self) -> Self::Meta;
 }
 
 impl Framing for Bytes {
     type EncBuf = BytesMut;
     type DecBuf = Cursor<Bytes>;
-    type Meta = ();
 
     fn enc_with_capacity(cap: usize) -> Self::EncBuf {
         BytesMut::with_capacity(cap)
     }
-
-    fn get_meta(&self) {}
 }
