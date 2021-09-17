@@ -779,7 +779,13 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
 
   // Clear the decorated processor factory so that it's re-created if the server
   // is restarted.
-  decoratedProcessorFactory_.reset();
+  // Note that duplex servers drain connections in the destructor so we need to
+  // keep the AsyncProcessorFactory alive until then. Duplex servers also don't
+  // support restarting the server so extending its lifetime should not cause
+  // issues.
+  if (!isDuplex()) {
+    decoratedProcessorFactory_.reset();
+  }
 
   internalStatus_.store(ServerStatus::NOT_RUNNING, std::memory_order_release);
 }
