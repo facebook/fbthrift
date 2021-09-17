@@ -141,12 +141,12 @@ class AStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool FieldA;
+    uint8_t FieldA;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return FieldA;
+      return FieldA == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      FieldA = isset_flag;
+      FieldA = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

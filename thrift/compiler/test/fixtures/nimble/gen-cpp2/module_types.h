@@ -107,26 +107,26 @@ class BasicTypes final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool second;
-    bool third;
-    bool isTrue;
+    uint8_t second;
+    uint8_t third;
+    uint8_t isTrue;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return second;
+      return second == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      second = isset_flag;
+      second = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return third;
+      return third == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      third = isset_flag;
+      third = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return isTrue;
+      return isTrue == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      isTrue = isset_flag;
+      isTrue = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

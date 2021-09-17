@@ -238,33 +238,33 @@ class MyStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool MyIntField;
-    bool MyStringField;
-    bool MyDataField;
-    bool myEnum;
+    uint8_t MyIntField;
+    uint8_t MyStringField;
+    uint8_t MyDataField;
+    uint8_t myEnum;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return MyIntField;
+      return MyIntField == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      MyIntField = isset_flag;
+      MyIntField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return MyStringField;
+      return MyStringField == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      MyStringField = isset_flag;
+      MyStringField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return MyDataField;
+      return MyDataField == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      MyDataField = isset_flag;
+      MyDataField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return myEnum;
+      return myEnum == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      myEnum = isset_flag;
+      myEnum = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

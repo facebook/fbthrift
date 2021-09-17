@@ -703,33 +703,33 @@ class MyStructFloatFieldThrowExp final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool myLongField;
-    bool MyByteField;
-    bool myStringField;
-    bool myFloatField;
+    uint8_t myLongField;
+    uint8_t MyByteField;
+    uint8_t myStringField;
+    uint8_t myFloatField;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return myLongField;
+      return myLongField == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      myLongField = isset_flag;
+      myLongField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return MyByteField;
+      return MyByteField == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      MyByteField = isset_flag;
+      MyByteField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return myStringField;
+      return myStringField == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      myStringField = isset_flag;
+      myStringField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return myFloatField;
+      return myFloatField == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      myFloatField = isset_flag;
+      myFloatField = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -938,19 +938,19 @@ class MyStructMapFloatThrowExp final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool myLongField;
-    bool mapListOfFloats;
+    uint8_t myLongField;
+    uint8_t mapListOfFloats;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return myLongField;
+      return myLongField == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      myLongField = isset_flag;
+      myLongField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return mapListOfFloats;
+      return mapListOfFloats == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      mapListOfFloats = isset_flag;
+      mapListOfFloats = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -1214,201 +1214,201 @@ class MyStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool MyIntField;
-    bool MyStringField;
-    bool MyDataField;
-    bool myEnum;
-    bool MyBoolField;
-    bool MyByteField;
-    bool MyShortField;
-    bool MyLongField;
-    bool MyDoubleField;
-    bool lDouble;
-    bool lShort;
-    bool lInteger;
-    bool lLong;
-    bool lString;
-    bool lBool;
-    bool lByte;
-    bool mShortString;
-    bool mIntegerString;
-    bool mStringMyStruct;
-    bool mStringBool;
-    bool mIntegerInteger;
-    bool mIntegerBool;
-    bool sShort;
-    bool sMyStruct;
-    bool sLong;
-    bool sString;
-    bool sByte;
-    bool mListList;
+    uint8_t MyIntField;
+    uint8_t MyStringField;
+    uint8_t MyDataField;
+    uint8_t myEnum;
+    uint8_t MyBoolField;
+    uint8_t MyByteField;
+    uint8_t MyShortField;
+    uint8_t MyLongField;
+    uint8_t MyDoubleField;
+    uint8_t lDouble;
+    uint8_t lShort;
+    uint8_t lInteger;
+    uint8_t lLong;
+    uint8_t lString;
+    uint8_t lBool;
+    uint8_t lByte;
+    uint8_t mShortString;
+    uint8_t mIntegerString;
+    uint8_t mStringMyStruct;
+    uint8_t mStringBool;
+    uint8_t mIntegerInteger;
+    uint8_t mIntegerBool;
+    uint8_t sShort;
+    uint8_t sMyStruct;
+    uint8_t sLong;
+    uint8_t sString;
+    uint8_t sByte;
+    uint8_t mListList;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return MyIntField;
+      return MyIntField == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      MyIntField = isset_flag;
+      MyIntField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return MyStringField;
+      return MyStringField == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      MyStringField = isset_flag;
+      MyStringField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return MyDataField;
+      return MyDataField == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      MyDataField = isset_flag;
+      MyDataField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return myEnum;
+      return myEnum == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      myEnum = isset_flag;
+      myEnum = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<4>) const {
-      return MyBoolField;
+      return MyBoolField == 1;
     }
     void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
-      MyBoolField = isset_flag;
+      MyBoolField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<5>) const {
-      return MyByteField;
+      return MyByteField == 1;
     }
     void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
-      MyByteField = isset_flag;
+      MyByteField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<6>) const {
-      return MyShortField;
+      return MyShortField == 1;
     }
     void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
-      MyShortField = isset_flag;
+      MyShortField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<7>) const {
-      return MyLongField;
+      return MyLongField == 1;
     }
     void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
-      MyLongField = isset_flag;
+      MyLongField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<8>) const {
-      return MyDoubleField;
+      return MyDoubleField == 1;
     }
     void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
-      MyDoubleField = isset_flag;
+      MyDoubleField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<9>) const {
-      return lDouble;
+      return lDouble == 1;
     }
     void __fbthrift_set(folly::index_constant<9>, bool isset_flag) {
-      lDouble = isset_flag;
+      lDouble = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<10>) const {
-      return lShort;
+      return lShort == 1;
     }
     void __fbthrift_set(folly::index_constant<10>, bool isset_flag) {
-      lShort = isset_flag;
+      lShort = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<11>) const {
-      return lInteger;
+      return lInteger == 1;
     }
     void __fbthrift_set(folly::index_constant<11>, bool isset_flag) {
-      lInteger = isset_flag;
+      lInteger = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<12>) const {
-      return lLong;
+      return lLong == 1;
     }
     void __fbthrift_set(folly::index_constant<12>, bool isset_flag) {
-      lLong = isset_flag;
+      lLong = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<13>) const {
-      return lString;
+      return lString == 1;
     }
     void __fbthrift_set(folly::index_constant<13>, bool isset_flag) {
-      lString = isset_flag;
+      lString = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<14>) const {
-      return lBool;
+      return lBool == 1;
     }
     void __fbthrift_set(folly::index_constant<14>, bool isset_flag) {
-      lBool = isset_flag;
+      lBool = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<15>) const {
-      return lByte;
+      return lByte == 1;
     }
     void __fbthrift_set(folly::index_constant<15>, bool isset_flag) {
-      lByte = isset_flag;
+      lByte = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<16>) const {
-      return mShortString;
+      return mShortString == 1;
     }
     void __fbthrift_set(folly::index_constant<16>, bool isset_flag) {
-      mShortString = isset_flag;
+      mShortString = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<17>) const {
-      return mIntegerString;
+      return mIntegerString == 1;
     }
     void __fbthrift_set(folly::index_constant<17>, bool isset_flag) {
-      mIntegerString = isset_flag;
+      mIntegerString = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<18>) const {
-      return mStringMyStruct;
+      return mStringMyStruct == 1;
     }
     void __fbthrift_set(folly::index_constant<18>, bool isset_flag) {
-      mStringMyStruct = isset_flag;
+      mStringMyStruct = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<19>) const {
-      return mStringBool;
+      return mStringBool == 1;
     }
     void __fbthrift_set(folly::index_constant<19>, bool isset_flag) {
-      mStringBool = isset_flag;
+      mStringBool = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<20>) const {
-      return mIntegerInteger;
+      return mIntegerInteger == 1;
     }
     void __fbthrift_set(folly::index_constant<20>, bool isset_flag) {
-      mIntegerInteger = isset_flag;
+      mIntegerInteger = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<21>) const {
-      return mIntegerBool;
+      return mIntegerBool == 1;
     }
     void __fbthrift_set(folly::index_constant<21>, bool isset_flag) {
-      mIntegerBool = isset_flag;
+      mIntegerBool = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<22>) const {
-      return sShort;
+      return sShort == 1;
     }
     void __fbthrift_set(folly::index_constant<22>, bool isset_flag) {
-      sShort = isset_flag;
+      sShort = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<23>) const {
-      return sMyStruct;
+      return sMyStruct == 1;
     }
     void __fbthrift_set(folly::index_constant<23>, bool isset_flag) {
-      sMyStruct = isset_flag;
+      sMyStruct = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<24>) const {
-      return sLong;
+      return sLong == 1;
     }
     void __fbthrift_set(folly::index_constant<24>, bool isset_flag) {
-      sLong = isset_flag;
+      sLong = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<25>) const {
-      return sString;
+      return sString == 1;
     }
     void __fbthrift_set(folly::index_constant<25>, bool isset_flag) {
-      sString = isset_flag;
+      sString = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<26>) const {
-      return sByte;
+      return sByte == 1;
     }
     void __fbthrift_set(folly::index_constant<26>, bool isset_flag) {
-      sByte = isset_flag;
+      sByte = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<27>) const {
-      return mListList;
+      return mListList == 1;
     }
     void __fbthrift_set(folly::index_constant<27>, bool isset_flag) {
-      mListList = isset_flag;
+      mListList = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -2342,19 +2342,19 @@ class SimpleStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool age;
-    bool name;
+    uint8_t age;
+    uint8_t name;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return age;
+      return age == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      age = isset_flag;
+      age = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return name;
+      return name == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      name = isset_flag;
+      name = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -2535,131 +2535,131 @@ class ComplexNestedStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool setOfSetOfInt;
-    bool listofListOfListOfListOfEnum;
-    bool listOfListOfMyStruct;
-    bool setOfListOfListOfLong;
-    bool setOfSetOfsetOfLong;
-    bool mapStructListOfListOfLong;
-    bool mKeyStructValInt;
-    bool listOfMapKeyIntValInt;
-    bool listOfMapKeyStrValList;
-    bool mapKeySetValLong;
-    bool mapKeyListValLong;
-    bool mapKeyMapValMap;
-    bool mapKeySetValMap;
-    bool NestedMaps;
-    bool mapKeyIntValList;
-    bool mapKeyIntValSet;
-    bool mapKeySetValInt;
-    bool mapKeyListValSet;
+    uint8_t setOfSetOfInt;
+    uint8_t listofListOfListOfListOfEnum;
+    uint8_t listOfListOfMyStruct;
+    uint8_t setOfListOfListOfLong;
+    uint8_t setOfSetOfsetOfLong;
+    uint8_t mapStructListOfListOfLong;
+    uint8_t mKeyStructValInt;
+    uint8_t listOfMapKeyIntValInt;
+    uint8_t listOfMapKeyStrValList;
+    uint8_t mapKeySetValLong;
+    uint8_t mapKeyListValLong;
+    uint8_t mapKeyMapValMap;
+    uint8_t mapKeySetValMap;
+    uint8_t NestedMaps;
+    uint8_t mapKeyIntValList;
+    uint8_t mapKeyIntValSet;
+    uint8_t mapKeySetValInt;
+    uint8_t mapKeyListValSet;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return setOfSetOfInt;
+      return setOfSetOfInt == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      setOfSetOfInt = isset_flag;
+      setOfSetOfInt = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return listofListOfListOfListOfEnum;
+      return listofListOfListOfListOfEnum == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      listofListOfListOfListOfEnum = isset_flag;
+      listofListOfListOfListOfEnum = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return listOfListOfMyStruct;
+      return listOfListOfMyStruct == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      listOfListOfMyStruct = isset_flag;
+      listOfListOfMyStruct = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return setOfListOfListOfLong;
+      return setOfListOfListOfLong == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      setOfListOfListOfLong = isset_flag;
+      setOfListOfListOfLong = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<4>) const {
-      return setOfSetOfsetOfLong;
+      return setOfSetOfsetOfLong == 1;
     }
     void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
-      setOfSetOfsetOfLong = isset_flag;
+      setOfSetOfsetOfLong = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<5>) const {
-      return mapStructListOfListOfLong;
+      return mapStructListOfListOfLong == 1;
     }
     void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
-      mapStructListOfListOfLong = isset_flag;
+      mapStructListOfListOfLong = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<6>) const {
-      return mKeyStructValInt;
+      return mKeyStructValInt == 1;
     }
     void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
-      mKeyStructValInt = isset_flag;
+      mKeyStructValInt = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<7>) const {
-      return listOfMapKeyIntValInt;
+      return listOfMapKeyIntValInt == 1;
     }
     void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
-      listOfMapKeyIntValInt = isset_flag;
+      listOfMapKeyIntValInt = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<8>) const {
-      return listOfMapKeyStrValList;
+      return listOfMapKeyStrValList == 1;
     }
     void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
-      listOfMapKeyStrValList = isset_flag;
+      listOfMapKeyStrValList = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<9>) const {
-      return mapKeySetValLong;
+      return mapKeySetValLong == 1;
     }
     void __fbthrift_set(folly::index_constant<9>, bool isset_flag) {
-      mapKeySetValLong = isset_flag;
+      mapKeySetValLong = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<10>) const {
-      return mapKeyListValLong;
+      return mapKeyListValLong == 1;
     }
     void __fbthrift_set(folly::index_constant<10>, bool isset_flag) {
-      mapKeyListValLong = isset_flag;
+      mapKeyListValLong = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<11>) const {
-      return mapKeyMapValMap;
+      return mapKeyMapValMap == 1;
     }
     void __fbthrift_set(folly::index_constant<11>, bool isset_flag) {
-      mapKeyMapValMap = isset_flag;
+      mapKeyMapValMap = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<12>) const {
-      return mapKeySetValMap;
+      return mapKeySetValMap == 1;
     }
     void __fbthrift_set(folly::index_constant<12>, bool isset_flag) {
-      mapKeySetValMap = isset_flag;
+      mapKeySetValMap = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<13>) const {
-      return NestedMaps;
+      return NestedMaps == 1;
     }
     void __fbthrift_set(folly::index_constant<13>, bool isset_flag) {
-      NestedMaps = isset_flag;
+      NestedMaps = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<14>) const {
-      return mapKeyIntValList;
+      return mapKeyIntValList == 1;
     }
     void __fbthrift_set(folly::index_constant<14>, bool isset_flag) {
-      mapKeyIntValList = isset_flag;
+      mapKeyIntValList = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<15>) const {
-      return mapKeyIntValSet;
+      return mapKeyIntValSet == 1;
     }
     void __fbthrift_set(folly::index_constant<15>, bool isset_flag) {
-      mapKeyIntValSet = isset_flag;
+      mapKeyIntValSet = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<16>) const {
-      return mapKeySetValInt;
+      return mapKeySetValInt == 1;
     }
     void __fbthrift_set(folly::index_constant<16>, bool isset_flag) {
-      mapKeySetValInt = isset_flag;
+      mapKeySetValInt = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<17>) const {
-      return mapKeyListValSet;
+      return mapKeyListValSet == 1;
     }
     void __fbthrift_set(folly::index_constant<17>, bool isset_flag) {
-      mapKeyListValSet = isset_flag;
+      mapKeyListValSet = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -3886,159 +3886,159 @@ class defaultStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool myLongDFset;
-    bool myLongDF;
-    bool portDFset;
-    bool portNum;
-    bool myBinaryDFset;
-    bool myBinary;
-    bool myByteDFSet;
-    bool myByte;
-    bool myDoubleDFset;
-    bool myDoubleDFZero;
-    bool myDouble;
-    bool field3;
-    bool myList;
-    bool mySet;
-    bool simpleStruct;
-    bool listStructDFset;
-    bool myUnion;
-    bool listUnionDFset;
-    bool mapNestlistStructDfSet;
-    bool mapJavaTypeDFset;
-    bool emptyMap;
-    bool enumMapDFset;
+    uint8_t myLongDFset;
+    uint8_t myLongDF;
+    uint8_t portDFset;
+    uint8_t portNum;
+    uint8_t myBinaryDFset;
+    uint8_t myBinary;
+    uint8_t myByteDFSet;
+    uint8_t myByte;
+    uint8_t myDoubleDFset;
+    uint8_t myDoubleDFZero;
+    uint8_t myDouble;
+    uint8_t field3;
+    uint8_t myList;
+    uint8_t mySet;
+    uint8_t simpleStruct;
+    uint8_t listStructDFset;
+    uint8_t myUnion;
+    uint8_t listUnionDFset;
+    uint8_t mapNestlistStructDfSet;
+    uint8_t mapJavaTypeDFset;
+    uint8_t emptyMap;
+    uint8_t enumMapDFset;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return myLongDFset;
+      return myLongDFset == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      myLongDFset = isset_flag;
+      myLongDFset = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return myLongDF;
+      return myLongDF == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      myLongDF = isset_flag;
+      myLongDF = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return portDFset;
+      return portDFset == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      portDFset = isset_flag;
+      portDFset = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return portNum;
+      return portNum == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      portNum = isset_flag;
+      portNum = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<4>) const {
-      return myBinaryDFset;
+      return myBinaryDFset == 1;
     }
     void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
-      myBinaryDFset = isset_flag;
+      myBinaryDFset = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<5>) const {
-      return myBinary;
+      return myBinary == 1;
     }
     void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
-      myBinary = isset_flag;
+      myBinary = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<6>) const {
-      return myByteDFSet;
+      return myByteDFSet == 1;
     }
     void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
-      myByteDFSet = isset_flag;
+      myByteDFSet = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<7>) const {
-      return myByte;
+      return myByte == 1;
     }
     void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
-      myByte = isset_flag;
+      myByte = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<8>) const {
-      return myDoubleDFset;
+      return myDoubleDFset == 1;
     }
     void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
-      myDoubleDFset = isset_flag;
+      myDoubleDFset = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<9>) const {
-      return myDoubleDFZero;
+      return myDoubleDFZero == 1;
     }
     void __fbthrift_set(folly::index_constant<9>, bool isset_flag) {
-      myDoubleDFZero = isset_flag;
+      myDoubleDFZero = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<10>) const {
-      return myDouble;
+      return myDouble == 1;
     }
     void __fbthrift_set(folly::index_constant<10>, bool isset_flag) {
-      myDouble = isset_flag;
+      myDouble = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<11>) const {
-      return field3;
+      return field3 == 1;
     }
     void __fbthrift_set(folly::index_constant<11>, bool isset_flag) {
-      field3 = isset_flag;
+      field3 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<12>) const {
-      return myList;
+      return myList == 1;
     }
     void __fbthrift_set(folly::index_constant<12>, bool isset_flag) {
-      myList = isset_flag;
+      myList = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<13>) const {
-      return mySet;
+      return mySet == 1;
     }
     void __fbthrift_set(folly::index_constant<13>, bool isset_flag) {
-      mySet = isset_flag;
+      mySet = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<14>) const {
-      return simpleStruct;
+      return simpleStruct == 1;
     }
     void __fbthrift_set(folly::index_constant<14>, bool isset_flag) {
-      simpleStruct = isset_flag;
+      simpleStruct = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<15>) const {
-      return listStructDFset;
+      return listStructDFset == 1;
     }
     void __fbthrift_set(folly::index_constant<15>, bool isset_flag) {
-      listStructDFset = isset_flag;
+      listStructDFset = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<16>) const {
-      return myUnion;
+      return myUnion == 1;
     }
     void __fbthrift_set(folly::index_constant<16>, bool isset_flag) {
-      myUnion = isset_flag;
+      myUnion = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<17>) const {
-      return listUnionDFset;
+      return listUnionDFset == 1;
     }
     void __fbthrift_set(folly::index_constant<17>, bool isset_flag) {
-      listUnionDFset = isset_flag;
+      listUnionDFset = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<18>) const {
-      return mapNestlistStructDfSet;
+      return mapNestlistStructDfSet == 1;
     }
     void __fbthrift_set(folly::index_constant<18>, bool isset_flag) {
-      mapNestlistStructDfSet = isset_flag;
+      mapNestlistStructDfSet = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<19>) const {
-      return mapJavaTypeDFset;
+      return mapJavaTypeDFset == 1;
     }
     void __fbthrift_set(folly::index_constant<19>, bool isset_flag) {
-      mapJavaTypeDFset = isset_flag;
+      mapJavaTypeDFset = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<20>) const {
-      return emptyMap;
+      return emptyMap == 1;
     }
     void __fbthrift_set(folly::index_constant<20>, bool isset_flag) {
-      emptyMap = isset_flag;
+      emptyMap = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<21>) const {
-      return enumMapDFset;
+      return enumMapDFset == 1;
     }
     void __fbthrift_set(folly::index_constant<21>, bool isset_flag) {
-      enumMapDFset = isset_flag;
+      enumMapDFset = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -4815,68 +4815,68 @@ class MyStructTypeDef final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool myLongField;
-    bool myLongTypeDef;
-    bool myStringField;
-    bool myStringTypedef;
-    bool myMapField;
-    bool myMapTypedef;
-    bool myListField;
-    bool myListTypedef;
-    bool myMapListOfTypeDef;
+    uint8_t myLongField;
+    uint8_t myLongTypeDef;
+    uint8_t myStringField;
+    uint8_t myStringTypedef;
+    uint8_t myMapField;
+    uint8_t myMapTypedef;
+    uint8_t myListField;
+    uint8_t myListTypedef;
+    uint8_t myMapListOfTypeDef;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return myLongField;
+      return myLongField == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      myLongField = isset_flag;
+      myLongField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return myLongTypeDef;
+      return myLongTypeDef == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      myLongTypeDef = isset_flag;
+      myLongTypeDef = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return myStringField;
+      return myStringField == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      myStringField = isset_flag;
+      myStringField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return myStringTypedef;
+      return myStringTypedef == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      myStringTypedef = isset_flag;
+      myStringTypedef = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<4>) const {
-      return myMapField;
+      return myMapField == 1;
     }
     void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
-      myMapField = isset_flag;
+      myMapField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<5>) const {
-      return myMapTypedef;
+      return myMapTypedef == 1;
     }
     void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
-      myMapTypedef = isset_flag;
+      myMapTypedef = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<6>) const {
-      return myListField;
+      return myListField == 1;
     }
     void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
-      myListField = isset_flag;
+      myListField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<7>) const {
-      return myListTypedef;
+      return myListTypedef == 1;
     }
     void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
-      myListTypedef = isset_flag;
+      myListTypedef = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<8>) const {
-      return myMapListOfTypeDef;
+      return myMapListOfTypeDef == 1;
     }
     void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
-      myMapListOfTypeDef = isset_flag;
+      myMapListOfTypeDef = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -5679,33 +5679,33 @@ class TypeRemapped final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool lsMap;
-    bool ioMap;
-    bool BigInteger;
-    bool binaryTestBuffer;
+    uint8_t lsMap;
+    uint8_t ioMap;
+    uint8_t BigInteger;
+    uint8_t binaryTestBuffer;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return lsMap;
+      return lsMap == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      lsMap = isset_flag;
+      lsMap = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return ioMap;
+      return ioMap == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      ioMap = isset_flag;
+      ioMap = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return BigInteger;
+      return BigInteger == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      BigInteger = isset_flag;
+      BigInteger = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return binaryTestBuffer;
+      return binaryTestBuffer == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      binaryTestBuffer = isset_flag;
+      binaryTestBuffer = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -6153,19 +6153,19 @@ class FOLLY_EXPORT optXcep : public apache::thrift::TException {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool message;
-    bool errorCode;
+    uint8_t message;
+    uint8_t errorCode;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return message;
+      return message == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      message = isset_flag;
+      message = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return errorCode;
+      return errorCode == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      errorCode = isset_flag;
+      errorCode = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -6338,47 +6338,47 @@ class FOLLY_EXPORT complexException : public apache::thrift::TException {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool message;
-    bool listStrings;
-    bool errorEnum;
-    bool unionError;
-    bool structError;
-    bool lsMap;
+    uint8_t message;
+    uint8_t listStrings;
+    uint8_t errorEnum;
+    uint8_t unionError;
+    uint8_t structError;
+    uint8_t lsMap;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return message;
+      return message == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      message = isset_flag;
+      message = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return listStrings;
+      return listStrings == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      listStrings = isset_flag;
+      listStrings = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return errorEnum;
+      return errorEnum == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      errorEnum = isset_flag;
+      errorEnum = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return unionError;
+      return unionError == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      unionError = isset_flag;
+      unionError = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<4>) const {
-      return structError;
+      return structError == 1;
     }
     void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
-      structError = isset_flag;
+      structError = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<5>) const {
-      return lsMap;
+      return lsMap == 1;
     }
     void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
-      lsMap = isset_flag;
+      lsMap = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

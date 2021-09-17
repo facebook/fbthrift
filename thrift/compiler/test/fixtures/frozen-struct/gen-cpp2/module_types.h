@@ -179,47 +179,47 @@ class ModuleA final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool i32Field;
-    bool strField;
-    bool listField;
-    bool mapField;
-    bool inclAField;
-    bool inclBField;
+    uint8_t i32Field;
+    uint8_t strField;
+    uint8_t listField;
+    uint8_t mapField;
+    uint8_t inclAField;
+    uint8_t inclBField;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return i32Field;
+      return i32Field == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      i32Field = isset_flag;
+      i32Field = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return strField;
+      return strField == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      strField = isset_flag;
+      strField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return listField;
+      return listField == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      listField = isset_flag;
+      listField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return mapField;
+      return mapField == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      mapField = isset_flag;
+      mapField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<4>) const {
-      return inclAField;
+      return inclAField == 1;
     }
     void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
-      inclAField = isset_flag;
+      inclAField = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<5>) const {
-      return inclBField;
+      return inclBField == 1;
     }
     void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
-      inclBField = isset_flag;
+      inclBField = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -488,19 +488,19 @@ class ModuleB final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool i32Field;
-    bool inclEnumB;
+    uint8_t i32Field;
+    uint8_t inclEnumB;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return i32Field;
+      return i32Field == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      i32Field = isset_flag;
+      i32Field = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return inclEnumB;
+      return inclEnumB == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      inclEnumB = isset_flag;
+      inclEnumB = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

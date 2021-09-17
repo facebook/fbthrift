@@ -123,15 +123,16 @@ void heterogeneousComparisonsTest(T opt1, U opt2) {
 }
 
 TEST(OptionalFieldRefTest, HeterogeneousComparisons) {
-  auto genOptionalFieldRef = [i_ = int8_t(0), b_ = false](auto... i) mutable {
-    return optional_field_ref<const int8_t&>(i_ = int(i...), b_ = sizeof...(i));
+  auto genOptionalFieldRef = [i_ = int8_t(0),
+                              b_ = uint8_t(0)](auto... i) mutable {
+    return detail::make_optional_field_ref(i_ = int(i...), b_ = sizeof...(i));
   };
   heterogeneousComparisonsTest(genOptionalFieldRef, genOptionalFieldRef);
 }
 
 TEST(FieldRefTest, HeterogeneousComparisons) {
-  auto genFieldRef = [i_ = int8_t(0), b_ = false](auto... i) mutable {
-    return field_ref<const int8_t&>(i_ = int(i...), b_ = sizeof...(i));
+  auto genFieldRef = [i_ = int8_t(0), b_ = uint8_t(0)](auto... i) mutable {
+    return detail::make_field_ref(i_ = int(i...), b_ = sizeof...(i));
   };
   heterogeneousComparisonsTest(genFieldRef, genFieldRef);
 }
@@ -173,7 +174,7 @@ template <template <class...> class Hasher, template <class> class Optional>
 void StatelessHashTest() {
   Hasher<Optional<int&>> hash;
   int x = 0;
-  bool y = false;
+  uint8_t y = 0;
   Optional<int&> f(x, y);
   if (std::is_same<Optional<int&>, apache::thrift::field_ref<int&>>::value) {
     EXPECT_EQ(hash(f), Hasher<int>()(0));
@@ -191,7 +192,7 @@ template <template <class...> class Hasher, template <class> class Optional>
 void StatefulHashTest() {
   Hasher<Optional<Tag&>> hash(42);
   Tag x;
-  bool y = false;
+  uint8_t y = 0;
   Optional<Tag&> f(x, y);
   if (std::is_same<Optional<int&>, apache::thrift::field_ref<int&>>::value) {
     EXPECT_EQ(hash(f), 42);

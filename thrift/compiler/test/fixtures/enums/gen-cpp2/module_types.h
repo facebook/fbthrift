@@ -155,33 +155,33 @@ class SomeStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool reasonable;
-    bool fine;
-    bool questionable;
-    bool tags;
+    uint8_t reasonable;
+    uint8_t fine;
+    uint8_t questionable;
+    uint8_t tags;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return reasonable;
+      return reasonable == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      reasonable = isset_flag;
+      reasonable = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return fine;
+      return fine == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      fine = isset_flag;
+      fine = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return questionable;
+      return questionable == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      questionable = isset_flag;
+      questionable = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return tags;
+      return tags == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      tags = isset_flag;
+      tags = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

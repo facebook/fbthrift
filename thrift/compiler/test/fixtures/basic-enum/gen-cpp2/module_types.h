@@ -219,19 +219,19 @@ class MyStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool myEnum;
-    bool myBigEnum;
+    uint8_t myEnum;
+    uint8_t myBigEnum;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return myEnum;
+      return myEnum == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      myEnum = isset_flag;
+      myEnum = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return myBigEnum;
+      return myBigEnum == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      myBigEnum = isset_flag;
+      myBigEnum = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

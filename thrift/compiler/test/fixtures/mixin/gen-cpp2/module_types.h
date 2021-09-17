@@ -117,12 +117,12 @@ class Mixin1 final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool field1;
+    uint8_t field1;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return field1;
+      return field1 == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      field1 = isset_flag;
+      field1 = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -237,19 +237,19 @@ class Mixin2 final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool m1;
-    bool field2;
+    uint8_t m1;
+    uint8_t field2;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return m1;
+      return m1 == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      m1 = isset_flag;
+      m1 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return field2;
+      return field2 == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      field2 = isset_flag;
+      field2 = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -397,12 +397,12 @@ class Mixin3Base final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool field3;
+    uint8_t field3;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return field3;
+      return field3 == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      field3 = isset_flag;
+      field3 = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -519,26 +519,26 @@ class Foo final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool field4;
-    bool m2;
-    bool m3;
+    uint8_t field4;
+    uint8_t m2;
+    uint8_t m3;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return field4;
+      return field4 == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      field4 = isset_flag;
+      field4 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return m2;
+      return m2 == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      m2 = isset_flag;
+      m2 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return m3;
+      return m3 == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      m3 = isset_flag;
+      m3 = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

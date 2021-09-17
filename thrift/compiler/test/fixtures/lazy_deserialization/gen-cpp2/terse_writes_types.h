@@ -165,33 +165,33 @@ class TerseFoo final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool field1;
-    bool field2;
-    bool field3;
-    bool field4;
+    uint8_t field1;
+    uint8_t field2;
+    uint8_t field3;
+    uint8_t field4;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return field1;
+      return field1 == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      field1 = isset_flag;
+      field1 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return field2;
+      return field2 == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      field2 = isset_flag;
+      field2 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return field3;
+      return field3 == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      field3 = isset_flag;
+      field3 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return field4;
+      return field4 == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      field4 = isset_flag;
+      field4 = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -393,33 +393,33 @@ class TerseLazyFoo final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool field1;
-    bool field2;
-    bool field3;
-    bool field4;
+    uint8_t field1;
+    uint8_t field2;
+    uint8_t field3;
+    uint8_t field4;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return field1;
+      return field1 == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      field1 = isset_flag;
+      field1 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return field2;
+      return field2 == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      field2 = isset_flag;
+      field2 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return field3;
+      return field3 == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      field3 = isset_flag;
+      field3 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return field4;
+      return field4 == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      field4 = isset_flag;
+      field4 = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -626,33 +626,33 @@ class TerseOptionalFoo final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool field1;
-    bool field2;
-    bool field3;
-    bool field4;
+    uint8_t field1;
+    uint8_t field2;
+    uint8_t field3;
+    uint8_t field4;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return field1;
+      return field1 == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      field1 = isset_flag;
+      field1 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return field2;
+      return field2 == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      field2 = isset_flag;
+      field2 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return field3;
+      return field3 == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      field3 = isset_flag;
+      field3 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return field4;
+      return field4 == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      field4 = isset_flag;
+      field4 = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -858,33 +858,33 @@ class TerseOptionalLazyFoo final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool field1;
-    bool field2;
-    bool field3;
-    bool field4;
+    uint8_t field1;
+    uint8_t field2;
+    uint8_t field3;
+    uint8_t field4;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return field1;
+      return field1 == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      field1 = isset_flag;
+      field1 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return field2;
+      return field2 == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      field2 = isset_flag;
+      field2 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return field3;
+      return field3 == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      field3 = isset_flag;
+      field3 = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return field4;
+      return field4 == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      field4 = isset_flag;
+      field4 = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

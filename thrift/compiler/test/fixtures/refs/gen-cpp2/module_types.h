@@ -896,12 +896,12 @@ class StructWithUnion final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool f;
+    uint8_t f;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return f;
+      return f == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      f = isset_flag;
+      f = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -1030,12 +1030,12 @@ class RecursiveStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool mes;
+    uint8_t mes;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return mes;
+      return mes == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      mes = isset_flag;
+      mes = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

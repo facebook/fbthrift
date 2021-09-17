@@ -172,12 +172,12 @@ class MyStructNestedAnnotation final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool name;
+    uint8_t name;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return name;
+      return name == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      name = isset_flag;
+      name = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -309,47 +309,47 @@ class MyStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool majorVer;
-    bool package;
-    bool annotation_with_quote;
-    bool class_;
-    bool annotation_with_trailing_comma;
-    bool empty_annotations;
+    uint8_t majorVer;
+    uint8_t package;
+    uint8_t annotation_with_quote;
+    uint8_t class_;
+    uint8_t annotation_with_trailing_comma;
+    uint8_t empty_annotations;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return majorVer;
+      return majorVer == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      majorVer = isset_flag;
+      majorVer = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return package;
+      return package == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      package = isset_flag;
+      package = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return annotation_with_quote;
+      return annotation_with_quote == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      annotation_with_quote = isset_flag;
+      annotation_with_quote = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return class_;
+      return class_ == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      class_ = isset_flag;
+      class_ = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<4>) const {
-      return annotation_with_trailing_comma;
+      return annotation_with_trailing_comma == 1;
     }
     void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
-      annotation_with_trailing_comma = isset_flag;
+      annotation_with_trailing_comma = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<5>) const {
-      return empty_annotations;
+      return empty_annotations == 1;
     }
     void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
-      empty_annotations = isset_flag;
+      empty_annotations = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -640,19 +640,19 @@ class SecretStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool id;
-    bool password;
+    uint8_t id;
+    uint8_t password;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return id;
+      return id == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      id = isset_flag;
+      id = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return password;
+      return password == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      password = isset_flag;
+      password = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

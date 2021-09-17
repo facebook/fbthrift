@@ -259,12 +259,12 @@ class SomeStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool fieldA;
+    uint8_t fieldA;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return fieldA;
+      return fieldA == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      fieldA = isset_flag;
+      fieldA = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

@@ -101,19 +101,19 @@ class Struct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool first;
-    bool second;
+    uint8_t first;
+    uint8_t second;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return first;
+      return first == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      first = isset_flag;
+      first = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return second;
+      return second == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      second = isset_flag;
+      second = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -253,19 +253,19 @@ class BigStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool s;
-    bool id;
+    uint8_t s;
+    uint8_t id;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return s;
+      return s == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      s = isset_flag;
+      s = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return id;
+      return id == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      id = isset_flag;
+      id = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

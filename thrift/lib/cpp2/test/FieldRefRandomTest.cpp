@@ -17,6 +17,7 @@
 #include <optional>
 #include <random>
 #include <string>
+#include <thrift/lib/cpp2/FieldRef.h>
 
 #include <folly/portability/GTest.h>
 
@@ -95,10 +96,11 @@ TEST_P(RandomTestWithSeed, test) {
   mt19937 rng(GetParam());
 
   string p1, p2;
-  bool q1 = false, q2 = false;
+  uint8_t q1 = 0, q2 = 0;
 
   // Defining 2 variables since we want to test comparison operators
-  optional_field_ref<string&> a1{p1, q1}, a2{p2, q2};
+  auto a1 = apache::thrift::detail::make_optional_field_ref(p1, q1);
+  auto a2 = apache::thrift::detail::make_optional_field_ref(p2, q2);
 
   optional<string> b1, b2;
 

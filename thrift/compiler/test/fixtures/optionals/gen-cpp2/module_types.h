@@ -236,33 +236,33 @@ class Color final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool red;
-    bool green;
-    bool blue;
-    bool alpha;
+    uint8_t red;
+    uint8_t green;
+    uint8_t blue;
+    uint8_t alpha;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return red;
+      return red == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      red = isset_flag;
+      red = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return green;
+      return green == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      green = isset_flag;
+      green = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return blue;
+      return blue == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      blue = isset_flag;
+      blue = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return alpha;
+      return alpha == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      alpha = isset_flag;
+      alpha = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -474,40 +474,40 @@ class Vehicle final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool color;
-    bool licensePlate;
-    bool description;
-    bool name;
-    bool hasAC;
+    uint8_t color;
+    uint8_t licensePlate;
+    uint8_t description;
+    uint8_t name;
+    uint8_t hasAC;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return color;
+      return color == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      color = isset_flag;
+      color = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return licensePlate;
+      return licensePlate == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      licensePlate = isset_flag;
+      licensePlate = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return description;
+      return description == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      description = isset_flag;
+      description = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return name;
+      return name == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      name = isset_flag;
+      name = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<4>) const {
-      return hasAC;
+      return hasAC == 1;
     }
     void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
-      hasAC = isset_flag;
+      hasAC = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -782,75 +782,75 @@ class Person final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool id;
-    bool name;
-    bool age;
-    bool address;
-    bool favoriteColor;
-    bool friends;
-    bool bestFriend;
-    bool petNames;
-    bool afraidOfAnimal;
-    bool vehicles;
+    uint8_t id;
+    uint8_t name;
+    uint8_t age;
+    uint8_t address;
+    uint8_t favoriteColor;
+    uint8_t friends;
+    uint8_t bestFriend;
+    uint8_t petNames;
+    uint8_t afraidOfAnimal;
+    uint8_t vehicles;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return id;
+      return id == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      id = isset_flag;
+      id = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return name;
+      return name == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      name = isset_flag;
+      name = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return age;
+      return age == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      age = isset_flag;
+      age = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<3>) const {
-      return address;
+      return address == 1;
     }
     void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      address = isset_flag;
+      address = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<4>) const {
-      return favoriteColor;
+      return favoriteColor == 1;
     }
     void __fbthrift_set(folly::index_constant<4>, bool isset_flag) {
-      favoriteColor = isset_flag;
+      favoriteColor = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<5>) const {
-      return friends;
+      return friends == 1;
     }
     void __fbthrift_set(folly::index_constant<5>, bool isset_flag) {
-      friends = isset_flag;
+      friends = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<6>) const {
-      return bestFriend;
+      return bestFriend == 1;
     }
     void __fbthrift_set(folly::index_constant<6>, bool isset_flag) {
-      bestFriend = isset_flag;
+      bestFriend = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<7>) const {
-      return petNames;
+      return petNames == 1;
     }
     void __fbthrift_set(folly::index_constant<7>, bool isset_flag) {
-      petNames = isset_flag;
+      petNames = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<8>) const {
-      return afraidOfAnimal;
+      return afraidOfAnimal == 1;
     }
     void __fbthrift_set(folly::index_constant<8>, bool isset_flag) {
-      afraidOfAnimal = isset_flag;
+      afraidOfAnimal = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<9>) const {
-      return vehicles;
+      return vehicles == 1;
     }
     void __fbthrift_set(folly::index_constant<9>, bool isset_flag) {
-      vehicles = isset_flag;
+      vehicles = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

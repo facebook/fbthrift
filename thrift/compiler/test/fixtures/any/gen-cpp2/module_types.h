@@ -94,12 +94,12 @@ class MyStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool myString;
+    uint8_t myString;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return myString;
+      return myString == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      myString = isset_flag;
+      myString = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -435,12 +435,12 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool myString;
+    uint8_t myString;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return myString;
+      return myString == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      myString = isset_flag;
+      myString = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

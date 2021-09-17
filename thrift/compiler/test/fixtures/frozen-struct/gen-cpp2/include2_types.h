@@ -89,19 +89,19 @@ class IncludedB final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool i32Field;
-    bool strField;
+    uint8_t i32Field;
+    uint8_t strField;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return i32Field;
+      return i32Field == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      i32Field = isset_flag;
+      i32Field = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return strField;
+      return strField == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      strField = isset_flag;
+      strField = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

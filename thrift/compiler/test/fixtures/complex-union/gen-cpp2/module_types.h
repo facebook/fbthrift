@@ -1361,26 +1361,26 @@ class Val final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool strVal;
-    bool intVal;
-    bool typedefValue;
+    uint8_t strVal;
+    uint8_t intVal;
+    uint8_t typedefValue;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return strVal;
+      return strVal == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      strVal = isset_flag;
+      strVal = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return intVal;
+      return intVal == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      intVal = isset_flag;
+      intVal = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<2>) const {
-      return typedefValue;
+      return typedefValue == 1;
     }
     void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      typedefValue = isset_flag;
+      typedefValue = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -2135,12 +2135,12 @@ class NonCopyableStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool num;
+    uint8_t num;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return num;
+      return num == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      num = isset_flag;
+      num = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

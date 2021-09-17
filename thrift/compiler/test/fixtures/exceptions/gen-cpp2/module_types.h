@@ -252,12 +252,12 @@ class FOLLY_EXPORT Serious : public apache::thrift::TException {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool sonnet;
+    uint8_t sonnet;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return sonnet;
+      return sonnet == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      sonnet = isset_flag;
+      sonnet = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -387,19 +387,19 @@ class FOLLY_EXPORT ComplexFieldNames : public apache::thrift::TException {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool error_message;
-    bool internal_error_message;
+    uint8_t error_message;
+    uint8_t internal_error_message;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return error_message;
+      return error_message == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      error_message = isset_flag;
+      error_message = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return internal_error_message;
+      return internal_error_message == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      internal_error_message = isset_flag;
+      internal_error_message = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -564,19 +564,19 @@ class FOLLY_EXPORT CustomFieldNames : public apache::thrift::TException {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool error_message;
-    bool internal_error_message;
+    uint8_t error_message;
+    uint8_t internal_error_message;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return error_message;
+      return error_message == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      error_message = isset_flag;
+      error_message = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return internal_error_message;
+      return internal_error_message == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      internal_error_message = isset_flag;
+      internal_error_message = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -741,19 +741,19 @@ class FOLLY_EXPORT ExceptionWithPrimitiveField : public apache::thrift::TExcepti
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool message;
-    bool error_code;
+    uint8_t message;
+    uint8_t error_code;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return message;
+      return message == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      message = isset_flag;
+      message = isset_flag ? 1 : 0;
     }
     bool __fbthrift_get(folly::index_constant<1>) const {
-      return error_code;
+      return error_code == 1;
     }
     void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      error_code = isset_flag;
+      error_code = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

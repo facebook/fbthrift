@@ -90,12 +90,12 @@ class FOLLY_EXPORT CustomException : public apache::thrift::TException {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    bool message;
+    uint8_t message;
     bool __fbthrift_get(folly::index_constant<0>) const {
-      return message;
+      return message == 1;
     }
     void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      message = isset_flag;
+      message = isset_flag ? 1 : 0;
     }
   } __isset = {};
 

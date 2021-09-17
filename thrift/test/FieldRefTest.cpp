@@ -124,13 +124,13 @@ class TestStruct {
   Nested nested_;
 
   struct __isset {
-    bool name;
-    bool int_assign;
-    bool ptr;
-    bool int_val;
-    bool uptr;
-    bool vec;
-    bool nested;
+    uint8_t name;
+    uint8_t int_assign;
+    uint8_t ptr;
+    uint8_t int_val;
+    uint8_t uptr;
+    uint8_t vec;
+    uint8_t nested;
   } __isset = {};
 };
 

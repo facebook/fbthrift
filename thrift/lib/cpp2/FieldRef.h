@@ -40,7 +40,8 @@ namespace thrift {
 namespace detail {
 
 template <typename T>
-using is_set_t = std::conditional_t<std::is_const<T>::value, const bool, bool>;
+using is_set_t =
+    std::conditional_t<std::is_const<T>::value, const uint8_t, uint8_t>;
 
 [[noreturn]] void throw_on_bad_field_access();
 
@@ -86,7 +87,7 @@ class field_ref {
       operator=(U&& value) noexcept(
           std::is_nothrow_assignable<value_type&, U&&>::value) {
     value_ = static_cast<U&&>(value);
-    is_set_ = true;
+    is_set_ = 1;
     return *this;
   }
 
@@ -94,7 +95,7 @@ class field_ref {
   FOLLY_ERASE field_ref& operator=(value_type&& value) noexcept(
       std::is_nothrow_assignable<value_type&, value_type&&>::value) {
     value_ = static_cast<value_type&&>(value);
-    is_set_ = true;
+    is_set_ = 1;
     return *this;
     value.~value_type(); // Force emit destructor...
   }
@@ -111,13 +112,13 @@ class field_ref {
 
   [[deprecated("Use is_set() method instead")]] FOLLY_ERASE bool has_value()
       const noexcept {
-    return is_set_;
+    return is_set_ == 1;
   }
 
   // Returns true iff the field is set. field_ref doesn't provide conversion to
   // bool to avoid confusion between checking if the field is set and getting
   // the field's value, particularly for bool fields.
-  FOLLY_ERASE bool is_set() const noexcept { return is_set_; }
+  FOLLY_ERASE bool is_set() const noexcept { return is_set_ == 1; }
 
   // Returns a reference to the value.
   FOLLY_ERASE reference_type value() const noexcept {
@@ -131,7 +132,7 @@ class field_ref {
   FOLLY_ERASE value_type* operator->() const noexcept { return &value_; }
 
   FOLLY_ERASE reference_type ensure() noexcept {
-    is_set_ = true;
+    is_set_ = 1;
     return static_cast<reference_type>(value_);
   }
 
@@ -142,10 +143,10 @@ class field_ref {
 
   template <typename... Args>
   FOLLY_ERASE value_type& emplace(Args&&... args) {
-    is_set_ = false; // C++ Standard requires *this to be empty if
-                     // `std::optional::emplace(...)` throws
+    is_set_ = 0; // C++ Standard requires *this to be empty if
+                 // `std::optional::emplace(...)` throws
     value_ = value_type(static_cast<Args&&>(args)...);
-    is_set_ = true;
+    is_set_ = 1;
     return value_;
   }
 
@@ -155,9 +156,9 @@ class field_ref {
           value,
       value_type&>
   emplace(std::initializer_list<U> ilist, Args&&... args) {
-    is_set_ = false;
+    is_set_ = 0;
     value_ = value_type(ilist, static_cast<Args&&>(args)...);
-    is_set_ = true;
+    is_set_ = 1;
     return value_;
   }
 
@@ -305,7 +306,7 @@ class optional_field_ref {
   operator=(U&& value) noexcept(
       std::is_nothrow_assignable<value_type&, U&&>::value) {
     value_ = static_cast<U&&>(value);
-    is_set_ = true;
+    is_set_ = 1;
     return *this;
   }
 
@@ -313,7 +314,7 @@ class optional_field_ref {
   FOLLY_ERASE optional_field_ref& operator=(value_type&& value) noexcept(
       std::is_nothrow_assignable<value_type&, value_type&&>::value) {
     value_ = static_cast<value_type&&>(value);
-    is_set_ = true;
+    is_set_ = 1;
     return *this;
     value.~value_type(); // Force emit destructor...
   }
@@ -328,7 +329,7 @@ class optional_field_ref {
   FOLLY_ERASE void copy_from(const optional_field_ref<U>& other) noexcept(
       std::is_nothrow_assignable<value_type&, U>::value) {
     value_ = other.value_unchecked();
-    is_set_ = other.has_value();
+    is_set_ = other.has_value() ? 1 : 0;
   }
 
   template <typename U>
@@ -350,7 +351,7 @@ class optional_field_ref {
     } else {
       value_ = {};
     }
-    is_set_ = other.has_value();
+    is_set_ = other.has_value() ? 1 : 0;
   }
 
   // Moves the value from std::optional. As std::optional's move constructor,
@@ -365,7 +366,7 @@ class optional_field_ref {
     } else {
       value_ = {};
     }
-    is_set_ = other.has_value();
+    is_set_ = other.has_value() ? 1 : 0;
   }
 
   FOLLY_ERASE std::optional<std::remove_const_t<value_type>> to_optional()
@@ -375,13 +376,13 @@ class optional_field_ref {
   }
 #endif
 
-  FOLLY_ERASE bool has_value() const noexcept { return is_set_; }
+  FOLLY_ERASE bool has_value() const noexcept { return is_set_ == 1; }
 
-  FOLLY_ERASE explicit operator bool() const noexcept { return is_set_; }
+  FOLLY_ERASE explicit operator bool() const noexcept { return is_set_ == 1; }
 
   FOLLY_ERASE void reset() noexcept {
     value_ = value_type();
-    is_set_ = false;
+    is_set_ = 0;
   }
 
   // Returns a reference to the value if this optional_field_ref has one; throws
@@ -395,8 +396,8 @@ class optional_field_ref {
   FOLLY_ERASE std::remove_const_t<value_type> value_or(
       U&& default_value) const {
     using type = std::remove_const_t<value_type>;
-    return is_set_ ? type(static_cast<reference_type>(value_))
-                   : type(static_cast<U&&>(default_value));
+    return is_set_ == 1 ? type(static_cast<reference_type>(value_))
+                        : type(static_cast<U&&>(default_value));
   }
 
   // Returns a reference to the value without checking whether it is available.
@@ -412,7 +413,7 @@ class optional_field_ref {
   }
 
   FOLLY_ERASE reference_type ensure() noexcept {
-    if (!is_set_) {
+    if (is_set_ == 0) {
       emplace();
     }
     return static_cast<reference_type>(value_);
@@ -423,7 +424,7 @@ class optional_field_ref {
     reset(); // C++ Standard requires *this to be empty if
              // `std::optional::emplace(...)` throws
     value_ = value_type(static_cast<Args&&>(args)...);
-    is_set_ = true;
+    is_set_ = 1;
     return value_;
   }
 
@@ -435,13 +436,13 @@ class optional_field_ref {
   emplace(std::initializer_list<U> ilist, Args&&... args) {
     reset();
     value_ = value_type(ilist, static_cast<Args&&>(args)...);
-    is_set_ = true;
+    is_set_ = 1;
     return value_;
   }
 
  private:
   FOLLY_ERASE void throw_if_unset() const {
-    if (!is_set_) {
+    if (is_set_ == 0) {
       apache::thrift::detail::throw_on_bad_field_access();
     }
   }
@@ -886,19 +887,19 @@ struct can_throw_fn {
 struct ensure_isset_unsafe_fn {
   template <typename T>
   void operator()(optional_field_ref<T> ref) const noexcept {
-    ref.is_set_ = true;
+    ref.is_set_ = 1;
   }
 };
 
 struct unset_unsafe_fn {
   template <typename T>
   void operator()(field_ref<T> ref) const noexcept {
-    ref.is_set_ = false;
+    ref.is_set_ = 0;
   }
 
   template <typename T>
   void operator()(optional_field_ref<T> ref) const noexcept {
-    ref.is_set_ = false;
+    ref.is_set_ = 0;
   }
 };
 
@@ -911,6 +912,20 @@ struct alias_isset_fn {
         static_cast<decltype(result)>(result), ref.is_set_);
   }
 };
+
+template <typename T>
+FOLLY_ERASE apache::thrift::optional_field_ref<T&&> make_optional_field_ref(
+    T&& ref,
+    apache::thrift::detail::is_set_t<std::remove_reference_t<T>>& is_set) {
+  return {std::forward<T>(ref), is_set};
+}
+
+template <typename T>
+FOLLY_ERASE apache::thrift::field_ref<T&&> make_field_ref(
+    T&& ref,
+    apache::thrift::detail::is_set_t<std::remove_reference_t<T>>& is_set) {
+  return {std::forward<T>(ref), is_set};
+}
 
 } // namespace detail
 
