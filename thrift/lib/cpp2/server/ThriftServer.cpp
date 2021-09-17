@@ -817,7 +817,9 @@ void ThriftServer::callOnStopServing() {
   }
 }
 
-ThriftServer* globalServer;
+namespace {
+ThriftServer* globalServer = nullptr;
+}
 
 #if FOLLY_HAS_COROUTINES
 folly::coro::CancellableAsyncScope& ThriftServer::getGlobalAsyncScope() {
