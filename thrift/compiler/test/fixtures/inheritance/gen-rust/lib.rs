@@ -313,7 +313,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "MyRoot.do_root", skip_all, fields())]
+        #[::tracing::instrument(name = "MyRoot.do_root", skip_all)]
         fn do_root(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>> {
@@ -532,7 +532,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "MyNode.do_mid", skip_all, fields())]
+        #[::tracing::instrument(name = "MyNode.do_mid", skip_all)]
         fn do_mid(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>> {
@@ -766,7 +766,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "MyLeaf.do_leaf", skip_all, fields())]
+        #[::tracing::instrument(name = "MyLeaf.do_leaf", skip_all)]
         fn do_leaf(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>> {

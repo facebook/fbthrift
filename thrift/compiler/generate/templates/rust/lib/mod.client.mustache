@@ -115,8 +115,7 @@
         }}{{#service:rustFunctions}}
         {{^function:starts_interaction?}}
 
-        #[::tracing::instrument(name = "{{service:name}}.{{function:name}}", skip_all, {{!
-            }}fields({{#function:args}}r#{{field:name}} = ?arg_{{field:name}},{{/function:args}}))]
+        #[::tracing::instrument(name = "{{service:name}}.{{function:name}}", skip_all)]
         fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}

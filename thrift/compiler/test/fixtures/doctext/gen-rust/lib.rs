@@ -735,7 +735,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "C.f", skip_all, fields())]
+        #[::tracing::instrument(name = "C.f", skip_all)]
         fn f(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::c::FError>> + ::std::marker::Send + 'static>> {
@@ -847,7 +847,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "C.numbers", skip_all, fields())]
+        #[::tracing::instrument(name = "C.numbers", skip_all)]
         fn numbers(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::errors::c::NumbersError>> + ::std::marker::Send + 'static>> {
@@ -931,7 +931,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "C.thing", skip_all, fields(r#a = ?arg_a,r#b = ?arg_b,r#c = ?arg_c,))]
+        #[::tracing::instrument(name = "C.thing", skip_all)]
         fn thing(
             &self,
             arg_a: ::std::primitive::i32,

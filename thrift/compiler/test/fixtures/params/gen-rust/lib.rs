@@ -494,7 +494,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "NestedContainers.mapList", skip_all, fields(r#foo = ?arg_foo,))]
+        #[::tracing::instrument(name = "NestedContainers.mapList", skip_all)]
         fn mapList(
             &self,
             arg_foo: &::std::collections::BTreeMap<::std::primitive::i32, ::std::vec::Vec<::std::primitive::i32>>,
@@ -610,7 +610,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "NestedContainers.mapSet", skip_all, fields(r#foo = ?arg_foo,))]
+        #[::tracing::instrument(name = "NestedContainers.mapSet", skip_all)]
         fn mapSet(
             &self,
             arg_foo: &::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>,
@@ -726,7 +726,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "NestedContainers.listMap", skip_all, fields(r#foo = ?arg_foo,))]
+        #[::tracing::instrument(name = "NestedContainers.listMap", skip_all)]
         fn listMap(
             &self,
             arg_foo: &[::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>],
@@ -842,7 +842,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "NestedContainers.listSet", skip_all, fields(r#foo = ?arg_foo,))]
+        #[::tracing::instrument(name = "NestedContainers.listSet", skip_all)]
         fn listSet(
             &self,
             arg_foo: &[::std::collections::BTreeSet<::std::primitive::i32>],
@@ -958,7 +958,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "NestedContainers.turtles", skip_all, fields(r#foo = ?arg_foo,))]
+        #[::tracing::instrument(name = "NestedContainers.turtles", skip_all)]
         fn turtles(
             &self,
             arg_foo: &[::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>>>],

@@ -2605,7 +2605,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "SomeService.bounce_map", skip_all, fields(r#m = ?arg_m,))]
+        #[::tracing::instrument(name = "SomeService.bounce_map", skip_all)]
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
@@ -2721,7 +2721,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "SomeService.binary_keyed_map", skip_all, fields(r#r = ?arg_r,))]
+        #[::tracing::instrument(name = "SomeService.binary_keyed_map", skip_all)]
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],

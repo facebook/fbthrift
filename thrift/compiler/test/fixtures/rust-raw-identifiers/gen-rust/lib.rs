@@ -304,7 +304,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "Foo.return", skip_all, fields(r#bar = ?arg_bar,))]
+        #[::tracing::instrument(name = "Foo.return", skip_all)]
         fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
@@ -420,7 +420,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "Foo.super", skip_all, fields(r#bar = ?arg_bar,))]
+        #[::tracing::instrument(name = "Foo.super", skip_all)]
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,

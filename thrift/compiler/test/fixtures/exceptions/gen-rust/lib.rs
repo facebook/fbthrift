@@ -980,7 +980,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "Raiser.doBland", skip_all, fields())]
+        #[::tracing::instrument(name = "Raiser.doBland", skip_all)]
         fn doBland(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoBlandError>> + ::std::marker::Send + 'static>> {
@@ -1092,7 +1092,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "Raiser.doRaise", skip_all, fields())]
+        #[::tracing::instrument(name = "Raiser.doRaise", skip_all)]
         fn doRaise(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoRaiseError>> + ::std::marker::Send + 'static>> {
@@ -1216,7 +1216,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "Raiser.get200", skip_all, fields())]
+        #[::tracing::instrument(name = "Raiser.get200", skip_all)]
         fn get200(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get200Error>> + ::std::marker::Send + 'static>> {
@@ -1328,7 +1328,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "Raiser.get500", skip_all, fields())]
+        #[::tracing::instrument(name = "Raiser.get500", skip_all)]
         fn get500(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>> {

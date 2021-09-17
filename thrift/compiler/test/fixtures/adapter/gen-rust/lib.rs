@@ -512,7 +512,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "Service.func", skip_all, fields(r#arg1 = ?arg_arg1,r#arg2 = ?arg_arg2,))]
+        #[::tracing::instrument(name = "Service.func", skip_all)]
         fn func(
             &self,
             arg_arg1: &::std::primitive::str,
