@@ -31,11 +31,16 @@ class PluggableFunctionMetadata {
       folly::StringPiece name, std::type_index functionTag) noexcept
       : name_(std::string{name}), functionTag_(functionTag) {}
   void setDefault(intptr_t defaultImpl) {
+    // idempotent with a unique value of defaultImpl, error with divergent value
+    if (defaultImpl == defaultImpl_) {
+      return;
+    }
     CHECK(!locked_) << "Pluggable function '" << name_
                     << "' can't be updated once locked";
     CHECK(!std::exchange(defaultImpl_, defaultImpl))
         << "Pluggable function '" << name_ << "' can be registered only once";
   }
+  intptr_t getDefault() const { return defaultImpl_; }
   void set(intptr_t impl) {
     CHECK(!locked_) << "Pluggable function '" << name_
                     << "' can't be updated once locked";
@@ -84,6 +89,7 @@ PluggableFunctionMetadata* registerPluggableFunction(
     std::type_index tag,
     std::type_index functionTag,
     intptr_t defaultImpl) {
+  // idempotent with a unique value of defaultImpl, error with divergent value
   auto& metadata = getPluggableFunctionMetadata(name, tag, functionTag);
   metadata.setDefault(defaultImpl);
   return &metadata;
@@ -93,8 +99,14 @@ void setPluggableFunction(
     folly::StringPiece name,
     std::type_index tag,
     std::type_index functionTag,
+    intptr_t defaultImpl,
     intptr_t impl) {
-  auto& metadata = getPluggableFunctionMetadata(name, tag, functionTag);
+  // the linker may decide the override happens before true registration so
+  // register here just in case; double-registration should not be a problem
+  // since registration with a unique value of defaultImpl is idempotent
+  auto& metadata =
+      *registerPluggableFunction(name, tag, functionTag, defaultImpl);
+  CHECK_EQ(metadata.getDefault(), defaultImpl);
   metadata.set(impl);
 }
 

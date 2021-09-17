@@ -64,6 +64,7 @@ void setPluggableFunction(
     folly::StringPiece name,
     std::type_index tag,
     std::type_index functionTag,
+    intptr_t defaultImpl,
     intptr_t impl);
 
 intptr_t getPluggableFunction(PluggableFunctionMetadata* metadata);
@@ -99,11 +100,15 @@ struct SetterPluggableFunction {
   using Func = Ret (*)(Args...);
 
   SetterPluggableFunction(
-      folly::StringPiece name, std::type_index tag, Func impl) {
+      folly::StringPiece name,
+      std::type_index tag,
+      Func defaultImpl,
+      Func impl) {
     setPluggableFunction(
         name,
         tag,
         typeid(PluggableFunctionTag<Ret, Args...>),
+        reinterpret_cast<intptr_t>(defaultImpl),
         reinterpret_cast<intptr_t>(impl));
   }
 };
@@ -117,9 +122,13 @@ auto registerPluggableFunction(
 }
 
 template <typename Tag, typename Ret, typename... Args>
-auto setPluggableFunction(folly::StringPiece name, Tag*, Ret (*impl)(Args...)) {
+auto setPluggableFunction(
+    folly::StringPiece name,
+    Tag*,
+    Ret (*defaultImpl)(Args...),
+    Ret (*impl)(Args...)) {
   return apache::thrift::detail::SetterPluggableFunction(
-      name, typeid(Tag*), impl);
+      name, typeid(Tag*), defaultImpl, impl);
 }
 
 #define THRIFT_PLUGGABLE_FUNC(_name) THRIFT__PLUGGABLE_FUNC_##_name
@@ -136,11 +145,13 @@ auto setPluggableFunction(folly::StringPiece name, Tag*, Ret (*impl)(Args...)) {
 
 #define THRIFT_PLUGGABLE_FUNC_SET(_ret, _name, ...)                  \
   struct THRIFT__PLUGGABLE_FUNC_TAG_##_name;                         \
+  _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__);          \
   _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__);             \
   static auto THRIFT__PLUGGABLE_FUNC_SETTER##_name =                 \
       ::apache::thrift::setPluggableFunction(                        \
           #_name,                                                    \
           static_cast<THRIFT__PLUGGABLE_FUNC_TAG_##_name*>(nullptr), \
+          THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name,                    \
           THRIFT__PLUGGABLE_FUNC_IMPL_##_name);                      \
   _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__)
 } // namespace thrift
