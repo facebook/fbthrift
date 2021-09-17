@@ -19,7 +19,6 @@
 #include <memory>
 
 #include <folly/Function.h>
-#include <folly/Random.h>
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncSocket.h>
 
@@ -76,7 +75,7 @@ class ScopedServerInterfaceThread {
   template <class AsyncClientT>
   std::unique_ptr<AsyncClientT> newClient(
       folly::Executor* callbackExecutor = nullptr,
-      MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
+      MakeChannelFunc channelFunc = RocketClientChannel::newChannel) const;
 
   /**
    * Like newClient but invokes injectFault before each request and
@@ -87,7 +86,7 @@ class ScopedServerInterfaceThread {
   std::unique_ptr<AsyncClientT> newClientWithFaultInjection(
       FaultInjectionFunc injectFault,
       folly::Executor* callbackExecutor = nullptr,
-      MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
+      MakeChannelFunc channelFunc = RocketClientChannel::newChannel) const;
 
   /**
    * Like newClient but sends all requests over a single internal channel
@@ -95,7 +94,7 @@ class ScopedServerInterfaceThread {
   template <class AsyncClientT>
   std::unique_ptr<AsyncClientT> newStickyClient(
       folly::Executor* callbackExecutor = nullptr,
-      MakeChannelFunc channelFunc = makeRocketOrHeaderChannel) const;
+      MakeChannelFunc channelFunc = RocketClientChannel::newChannel) const;
 
   static std::shared_ptr<RequestChannel> makeTestClientChannel(
       std::shared_ptr<AsyncProcessorFactory> apf,
@@ -107,17 +106,9 @@ class ScopedServerInterfaceThread {
 
   RequestChannel::Ptr newChannel(
       folly::Executor* callbackExecutor = nullptr,
-      MakeChannelFunc channelFunc = makeRocketOrHeaderChannel,
+      MakeChannelFunc channelFunc = RocketClientChannel::newChannel,
       std::weak_ptr<folly::IOExecutor> executor =
           folly::getUnsafeMutableGlobalIOExecutor()) const;
-
-  static RequestChannel::Ptr makeRocketOrHeaderChannel(
-      folly::AsyncSocket::UniquePtr socket) {
-    if (folly::Random::oneIn(2)) {
-      return RocketClientChannel::newChannel(std::move(socket));
-    }
-    return HeaderClientChannel::newChannel(std::move(socket));
-  }
 };
 
 /**
