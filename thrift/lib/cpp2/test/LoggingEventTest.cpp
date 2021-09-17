@@ -124,13 +124,15 @@ class TestEventRegistry : public LoggingEventRegistry {
   std::unordered_map<std::string_view, std::unique_ptr<ServerTrackerHandler>>
       serverTrackerMap_;
 };
+} // namespace
 
+namespace apache::thrift::detail {
 THRIFT_PLUGGABLE_FUNC_SET(
     std::unique_ptr<apache::thrift::LoggingEventRegistry>,
     makeLoggingEventRegistry) {
   return std::make_unique<TestEventRegistry>();
 }
-} // namespace
+} // namespace apache::thrift::detail
 
 namespace {
 enum class TransportType { Header, Rocket };

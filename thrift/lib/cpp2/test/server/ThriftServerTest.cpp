@@ -855,9 +855,15 @@ std::chrono::milliseconds requestedDumpSnapshotDelay = 0ms;
 // Dummy exit code to signal that we did manage to finish the (fake) snapshot
 constexpr int kExitCode = 156;
 
+} // namespace
+} // namespace long_shutdown
+
+namespace apache::thrift::detail {
+
 THRIFT_PLUGGABLE_FUNC_SET(
     apache::thrift::ThriftServer::DumpSnapshotOnLongShutdownResult,
     dumpSnapshotOnLongShutdown) {
+  using namespace long_shutdown;
   return {
       folly::futures::sleep(actualDumpSnapshotDelay).defer([](auto&&) {
         std::quick_exit(kExitCode);
@@ -865,8 +871,7 @@ THRIFT_PLUGGABLE_FUNC_SET(
       requestedDumpSnapshotDelay};
 }
 
-} // namespace
-} // namespace long_shutdown
+} // namespace apache::thrift::detail
 
 TEST(ThriftServerDeathTest, LongShutdown_DumpSnapshot) {
   EXPECT_EXIT(
@@ -3074,12 +3079,20 @@ namespace {
 folly::observer::SimpleObservable<AdaptiveConcurrencyController::Config>
     oConfig{AdaptiveConcurrencyController::Config{}};
 
+}
+
+namespace apache::thrift::detail {
+
 THRIFT_PLUGGABLE_FUNC_SET(
     folly::observer::Observer<
         apache::thrift::AdaptiveConcurrencyController::Config>,
     makeAdaptiveConcurrencyConfig) {
   return oConfig.getObserver();
 }
+
+} // namespace apache::thrift::detail
+
+namespace {
 
 static auto makeConfig(size_t concurrency, double jitter = 0.0) {
   AdaptiveConcurrencyController::Config config;

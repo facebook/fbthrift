@@ -29,16 +29,18 @@ using namespace apache::thrift;
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::transport;
 
-namespace {
+namespace apache {
+namespace thrift {
+
+namespace detail {
+
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     bool, includeInRecentRequestsCount, const std::string_view /*methodName*/) {
   // Users of the module will override the behavior
   return true;
 }
-} // namespace
 
-namespace apache {
-namespace thrift {
+} // namespace detail
 
 namespace detail {
 namespace ac {
@@ -294,7 +296,8 @@ TApplicationException toTApplicationException(
 }
 
 bool includeInRecentRequestsCount(const std::string_view methodName) {
-  return THRIFT_PLUGGABLE_FUNC(includeInRecentRequestsCount)(methodName);
+  return apache::thrift::detail::THRIFT_PLUGGABLE_FUNC(
+      includeInRecentRequestsCount)(methodName);
 }
 
 } // namespace util

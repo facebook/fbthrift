@@ -69,6 +69,9 @@ folly::Synchronized<RegistryIdManager>& registryIdManager() {
       new folly::Synchronized<RegistryIdManager>();
   return *registryIdManagerPtr;
 }
+} // namespace
+
+namespace detail {
 
 THRIFT_PLUGGABLE_FUNC_REGISTER(uint64_t, getCurrentServerTick) {
   // Returns the current "tick" of the Thrift server -- a monotonically
@@ -76,7 +79,8 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(uint64_t, getCurrentServerTick) {
   // interval for each bucket in the RecentRequestCounter.
   return 0;
 }
-} // namespace
+
+} // namespace detail
 
 void RecentRequestCounter::increment() {
   auto currBucket = getCurrentBucket();
@@ -105,7 +109,7 @@ RecentRequestCounter::Values RecentRequestCounter::get() const {
 
 uint64_t RecentRequestCounter::getCurrentBucket() const {
   // Remove old request counts from counts_ and update lastTick_
-  uint64_t currentTick = THRIFT_PLUGGABLE_FUNC(getCurrentServerTick)();
+  uint64_t currentTick = detail::THRIFT_PLUGGABLE_FUNC(getCurrentServerTick)();
 
   if (lastTick_ < currentTick) {
     uint64_t tickDiff = currentTick - lastTick_;

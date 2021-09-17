@@ -36,7 +36,7 @@ THRIFT_FLAG_DEFINE_int64(server_default_socket_queue_timeout_ms, 0);
 namespace apache {
 namespace thrift {
 
-namespace {
+namespace detail {
 
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     folly::observer::Observer<AdaptiveConcurrencyController::Config>,
@@ -45,7 +45,7 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
       AdaptiveConcurrencyController::Config{});
 }
 
-} // namespace
+} // namespace detail
 
 using namespace apache::thrift::protocol;
 using namespace apache::thrift::server;
@@ -57,7 +57,7 @@ const size_t BaseThriftServer::T_ASYNC_DEFAULT_WORKER_THREADS =
     std::thread::hardware_concurrency();
 
 BaseThriftServer::BaseThriftServer()
-    : adaptiveConcurrencyController_{THRIFT_PLUGGABLE_FUNC(
+    : adaptiveConcurrencyController_{apache::thrift::detail::THRIFT_PLUGGABLE_FUNC(
           makeAdaptiveConcurrencyConfig()), maxRequests_.getObserver()},
       addresses_(1) {}
 

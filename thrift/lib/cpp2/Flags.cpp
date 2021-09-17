@@ -36,12 +36,12 @@ class FlagsBackendDummy : public apache::thrift::detail::FlagsBackend {
         []() -> folly::Optional<int64_t> { return folly::none; });
   }
 };
+} // namespace
 
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     std::unique_ptr<FlagsBackend>, createFlagsBackend) {
   return {};
 }
-} // namespace
 
 apache::thrift::detail::FlagsBackend& getFlagsBackend() {
   static auto& obj = *[] {

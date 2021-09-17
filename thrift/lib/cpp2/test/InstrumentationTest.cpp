@@ -233,6 +233,11 @@ class DebuggingFrameHandler : public rocket::SetupFrameHandler {
 
 namespace {
 static std::atomic<uint64_t> currentTick = 0;
+std::set<std::string> excludeFromRecentRequestsCount;
+folly::Function<ThriftServer::DumpSnapshotOnLongShutdownResult()> snapshotFunc;
+} // namespace
+
+namespace apache::thrift::detail {
 
 THRIFT_PLUGGABLE_FUNC_SET(
     std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>,
@@ -245,20 +250,18 @@ THRIFT_PLUGGABLE_FUNC_SET(uint64_t, getCurrentServerTick) {
   return currentTick;
 }
 
-std::set<std::string> excludeFromRecentRequestsCount;
 THRIFT_PLUGGABLE_FUNC_SET(
     bool, includeInRecentRequestsCount, const std::string_view methodName) {
   return !excludeFromRecentRequestsCount.count(std::string{methodName});
 }
 
-folly::Function<ThriftServer::DumpSnapshotOnLongShutdownResult()> snapshotFunc;
 THRIFT_PLUGGABLE_FUNC_SET(
     ThriftServer::DumpSnapshotOnLongShutdownResult,
     dumpSnapshotOnLongShutdown) {
   return snapshotFunc();
 }
 
-} // namespace
+} // namespace apache::thrift::detail
 
 class RequestInstrumentationTest : public testing::Test {
  protected:

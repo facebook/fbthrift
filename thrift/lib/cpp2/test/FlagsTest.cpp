@@ -79,6 +79,9 @@ class TestFlagsBackend : public apache::thrift::detail::FlagsBackend {
 namespace {
 TestFlagsBackend* testBackendPtr;
 bool useDummyBackend{false};
+} // namespace
+
+namespace apache::thrift::detail {
 
 THRIFT_PLUGGABLE_FUNC_SET(
     std::unique_ptr<apache::thrift::detail::FlagsBackend>, createFlagsBackend) {
@@ -89,7 +92,8 @@ THRIFT_PLUGGABLE_FUNC_SET(
   testBackendPtr = testBackend.get();
   return testBackend;
 }
-} // namespace
+
+} // namespace apache::thrift::detail
 
 TEST(Flags, Get) {
   EXPECT_EQ(true, THRIFT_FLAG(test_flag_bool));

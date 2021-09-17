@@ -466,7 +466,9 @@ INSTANTIATE_TEST_SUITE_P(
     ::testing::Values(
         TransportType::HEADER, TransportType::ROCKET, TransportType::HTTP2));
 
-namespace {
+} // namespace apache::thrift::test
+
+namespace apache::thrift::detail {
 // Setup monitoring interface handler for test below
 THRIFT_PLUGGABLE_FUNC_SET(
     std::unique_ptr<rocket::SetupFrameHandler>,
@@ -498,7 +500,9 @@ THRIFT_PLUGGABLE_FUNC_SET(
   };
   return std::make_unique<MonitoringConnectionHandler>(server);
 }
-} // namespace
+} // namespace apache::thrift::detail
+
+namespace apache::thrift::test {
 
 TEST(AsyncProcessorMethodResolutionTest, MultipleService) {
   class Monitor : public ChildSvIf, public MonitoringServerInterface {

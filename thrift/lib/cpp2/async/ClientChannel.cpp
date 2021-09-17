@@ -24,7 +24,7 @@
 
 namespace apache {
 namespace thrift {
-namespace {
+namespace detail {
 THRIFT_PLUGGABLE_FUNC_REGISTER(ClientHostMetadata, getClientHostMetadata) {
   ClientHostMetadata hostMetadata;
 #ifdef __linux__
@@ -34,12 +34,12 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(ClientHostMetadata, getClientHostMetadata) {
 #endif
   return hostMetadata;
 }
-} // namespace
+} // namespace detail
 
 /* static */ const std::optional<ClientHostMetadata>&
 ClientChannel::getHostMetadata() {
   static const auto& hostMetadata = *new std::optional<ClientHostMetadata>{
-      THRIFT_PLUGGABLE_FUNC(getClientHostMetadata)()};
+      detail::THRIFT_PLUGGABLE_FUNC(getClientHostMetadata)()};
   return hostMetadata;
 }
 } // namespace thrift

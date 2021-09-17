@@ -50,16 +50,21 @@ class DefaultLoggingEventRegistry : public LoggingEventRegistry {
     return *handler;
   }
 };
+} // namespace
 
+namespace detail {
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     std::unique_ptr<apache::thrift::LoggingEventRegistry>,
     makeLoggingEventRegistry) {
   return std::make_unique<DefaultLoggingEventRegistry>();
 }
+} // namespace detail
 
+namespace {
 class Registry {
  public:
-  Registry() : reg_(THRIFT_PLUGGABLE_FUNC(makeLoggingEventRegistry)()) {}
+  Registry()
+      : reg_(detail::THRIFT_PLUGGABLE_FUNC(makeLoggingEventRegistry)()) {}
 
   LoggingEventRegistry& getRegistry() const { return *reg_.get(); }
 

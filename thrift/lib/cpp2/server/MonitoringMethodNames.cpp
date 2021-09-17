@@ -20,17 +20,18 @@
 
 namespace apache::thrift {
 
-namespace {
+namespace detail {
 THRIFT_PLUGGABLE_FUNC_REGISTER(
     const folly::sorted_vector_set<std::string_view>&,
     getMonitoringMethodNames) {
   static const auto& kEmpty = *new folly::sorted_vector_set<std::string_view>{};
   return kEmpty;
 }
-} // namespace
+} // namespace detail
 
 const folly::sorted_vector_set<std::string_view>& getMonitoringMethodNames() {
-  static auto& methodNames = THRIFT_PLUGGABLE_FUNC(getMonitoringMethodNames)();
+  static auto& methodNames =
+      detail::THRIFT_PLUGGABLE_FUNC(getMonitoringMethodNames)();
   return methodNames;
 }
 

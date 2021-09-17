@@ -24,11 +24,16 @@ namespace {
 static uint32_t getCurrentServerTickCallCount = 0;
 static uint64_t currentTick = 0;
 
+} // namespace
+
+namespace apache::thrift::detail {
+
 THRIFT_PLUGGABLE_FUNC_SET(uint64_t, getCurrentServerTick) {
   ++getCurrentServerTickCallCount;
   return currentTick;
 }
-} // namespace
+
+} // namespace apache::thrift::detail
 
 // RecentRequestCounter tests
 class RecentRequestCounterTest : public testing::Test {
