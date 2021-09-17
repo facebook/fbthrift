@@ -765,15 +765,19 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
         return a->first < b->first;
       });
       for (auto it : iters) {
+        xfer += writeMapValueBegin(protocol);
         xfer += key_methods::write(protocol, it->first);
         xfer += mapped_methods::write(protocol, it->second);
+        xfer += writeMapValueEnd(protocol);
       }
     } else {
       // Support containers with defined but non-FIFO iteration order.
       auto get_view = folly::order_preserving_reinsertion_view_or_default;
       for (auto const& elem_pair : get_view(out)) {
+        xfer += writeMapValueBegin(protocol);
         xfer += key_methods::write(protocol, elem_pair.first);
         xfer += mapped_methods::write(protocol, elem_pair.second);
+        xfer += writeMapValueEnd(protocol);
       }
     }
     xfer += protocol.writeMapEnd();
@@ -796,6 +800,41 @@ struct protocol_methods<type_class::map<KeyClass, MappedClass>, Type> {
     }
     xfer += protocol.serializedSizeMapEnd();
     return xfer;
+  }
+
+ private:
+  template <typename Protocol>
+  using map_value_begin_t =
+      decltype(std::declval<Protocol>().writeMapValueBegin());
+
+  template <typename Protocol>
+  using map_value_end_t = decltype(std::declval<Protocol>().writeMapValueEnd());
+
+  template <typename Protocol>
+  static constexpr bool map_value_api_v =
+      folly::is_detected_v<map_value_begin_t, Protocol>&&
+          folly::is_detected_v<map_value_end_t, Protocol>;
+
+  template <typename Protocol>
+  static std::size_t writeMapValueBegin(Protocol& protocol) {
+    const auto writeMapValueBeginFunc =
+        std::get<map_value_api_v<Protocol&>>(std::make_pair(
+            [](auto&) { return 0; },
+            [](auto& protocolWithMapValueApi) {
+              return protocolWithMapValueApi.writeMapValueBegin();
+            }));
+    return writeMapValueBeginFunc(protocol);
+  }
+
+  template <typename Protocol>
+  static std::size_t writeMapValueEnd(Protocol& protocol) {
+    const auto writeMapValueEndFunc =
+        std::get<map_value_api_v<Protocol&>>(std::make_pair(
+            [](auto&) { return 0; },
+            [](auto& protocolWithMapValueApi) {
+              return protocolWithMapValueApi.writeMapValueEnd();
+            }));
+    return writeMapValueEndFunc(protocol);
   }
 };
 
