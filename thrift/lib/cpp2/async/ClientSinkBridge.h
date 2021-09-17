@@ -64,6 +64,12 @@ class ClientSinkBridge : public TwoWayBridge<
 
   void close();
 
+  bool wait(ClientSinkConsumer* consumer);
+
+  void push(ServerMessage&& value);
+
+  ClientQueue getMessages();
+
 #if FOLLY_HAS_COROUTINES
   folly::coro::Task<folly::Try<StreamPayload>> sink(
       folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator);
@@ -88,6 +94,8 @@ class ClientSinkBridge : public TwoWayBridge<
   void resetServerCallback(SinkServerCallback& serverCallback) override;
 
   void consume();
+
+  bool hasServerCancelled();
 
   void canceled() {}
 

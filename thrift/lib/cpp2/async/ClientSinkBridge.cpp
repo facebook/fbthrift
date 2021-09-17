@@ -44,6 +44,18 @@ void ClientSinkBridge::close() {
   Ptr(this);
 }
 
+bool ClientSinkBridge::wait(ClientSinkConsumer* consumer) {
+  return clientWait(consumer);
+}
+
+void ClientSinkBridge::push(ServerMessage&& value) {
+  clientPush(std::move(value));
+}
+
+ClientSinkBridge::ClientQueue ClientSinkBridge::getMessages() {
+  return clientGetMessages();
+}
+
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<void> ClientSinkBridge::waitEventImpl(
     ClientSinkBridge& self,
@@ -233,6 +245,10 @@ void ClientSinkBridge::processServerMessages() {
       }
     }
   } while (!serverWait(this));
+}
+
+bool ClientSinkBridge::hasServerCancelled() {
+  return serverCancelSource_.isCancellationRequested();
 }
 
 } // namespace detail
