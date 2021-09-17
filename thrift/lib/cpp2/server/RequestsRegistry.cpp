@@ -214,6 +214,16 @@ const folly::SocketAddress* RequestsRegistry::DebugStub::getPeerAddress()
                                  : &peerAddressIfFinished_;
 }
 
+const std::optional<ClientMetadataRef>
+RequestsRegistry::DebugStub::getClientMetadataRef() const {
+  if (auto reqContext = getCpp2RequestContext()) {
+    if (auto connContext = reqContext->getConnectionContext()) {
+      return connContext->getClientMetadataRef();
+    }
+  }
+  return std::nullopt;
+}
+
 void RequestsRegistry::DebugStub::prepareAsFinished() {
   finished_ = std::chrono::steady_clock::now();
   rctx_.reset();

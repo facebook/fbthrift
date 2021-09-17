@@ -18,6 +18,7 @@
 
 #include <array>
 #include <chrono>
+#include <optional>
 #include <fmt/core.h>
 #include <folly/IntrusiveList.h>
 #include <folly/SocketAddress.h>
@@ -30,6 +31,7 @@
 namespace apache {
 namespace thrift {
 
+class ClientMetadataRef;
 class Cpp2RequestContext;
 class ResponseChannelRequest;
 
@@ -139,6 +141,7 @@ class RequestsRegistry {
     const std::string& getMethodName() const;
     const folly::SocketAddress* getLocalAddress() const;
     const folly::SocketAddress* getPeerAddress() const;
+    const std::optional<ClientMetadataRef> getClientMetadataRef() const;
 
     /**
      * Clones the payload buffer to data accessors. If the buffer is already
