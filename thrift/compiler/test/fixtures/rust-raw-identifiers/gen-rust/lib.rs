@@ -304,7 +304,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "Foo.return", skip(self, arg_bar), fields(r#bar = ?arg_bar,))]
+        #[::tracing::instrument(name = "Foo.return", skip_all, fields(r#bar = ?arg_bar,))]
         fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
@@ -420,7 +420,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "Foo.super", skip(self, arg_bar), fields(r#bar = ?arg_bar,))]
+        #[::tracing::instrument(name = "Foo.super", skip_all, fields(r#bar = ?arg_bar,))]
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
@@ -653,7 +653,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Foo_return {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "Foo.return"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "Foo.return"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("bar", ::fbthrift::TType::Struct, 1),
@@ -681,7 +681,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Foo_super {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "Foo.super"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "Foo.super"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("bar", ::fbthrift::TType::Struct, 1),
@@ -726,7 +726,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Foo.return"))]
+        #[::tracing::instrument(skip_all, fields(method = "Foo.return"))]
         async fn handle_return<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -795,7 +795,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Foo.super"))]
+        #[::tracing::instrument(skip_all, fields(method = "Foo.super"))]
         async fn handle_super<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -919,7 +919,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "Foo"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "Foo"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -968,7 +968,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_Foo_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,

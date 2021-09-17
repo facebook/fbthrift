@@ -76,7 +76,7 @@
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_{{service:name}}_{{function:name}} {
         #[inline]{{! No cost because there's only one caller; with luck will mitigate move cost of args. }}
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "{{service:name}}.{{function:name}}"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "{{service:name}}.{{function:name}}"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 {{#function:args_by_name}}
@@ -148,7 +148,7 @@
         }{{!
         }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "{{service:name}}.{{function:name}}"))]
+        #[::tracing::instrument(skip_all, fields(method = "{{service:name}}.{{function:name}}"))]
         async fn handle_{{function:name}}<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -307,7 +307,7 @@
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "{{service:name}}"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "{{service:name}}"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -356,7 +356,7 @@
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler{{#service:extends?}}, supa{{/service:extends?}}))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_{{service:name}}_server<F, H, R{{!
         }}{{#service:extends?}}, SMAKE, SS{{/service:extends?}}{{!
     }}>(

@@ -1343,7 +1343,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "MyService.ping", skip(self), fields())]
+        #[::tracing::instrument(name = "MyService.ping", skip_all, fields())]
         fn ping(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
@@ -1455,7 +1455,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.getRandomData", skip(self), fields())]
+        #[::tracing::instrument(name = "MyService.getRandomData", skip_all, fields())]
         fn getRandomData(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
@@ -1567,7 +1567,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.sink", skip(self, arg_sink), fields(r#sink = ?arg_sink,))]
+        #[::tracing::instrument(name = "MyService.sink", skip_all, fields(r#sink = ?arg_sink,))]
         fn sink(
             &self,
             arg_sink: ::std::primitive::i64,
@@ -1683,7 +1683,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.putDataById", skip(self, arg_id, arg_data), fields(r#id = ?arg_id,r#data = ?arg_data,))]
+        #[::tracing::instrument(name = "MyService.putDataById", skip_all, fields(r#id = ?arg_id,r#data = ?arg_data,))]
         fn putDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -1803,7 +1803,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.hasDataById", skip(self, arg_id), fields(r#id = ?arg_id,))]
+        #[::tracing::instrument(name = "MyService.hasDataById", skip_all, fields(r#id = ?arg_id,))]
         fn hasDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -1919,7 +1919,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.getDataById", skip(self, arg_id), fields(r#id = ?arg_id,))]
+        #[::tracing::instrument(name = "MyService.getDataById", skip_all, fields(r#id = ?arg_id,))]
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2035,7 +2035,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.deleteDataById", skip(self, arg_id), fields(r#id = ?arg_id,))]
+        #[::tracing::instrument(name = "MyService.deleteDataById", skip_all, fields(r#id = ?arg_id,))]
         fn deleteDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2151,7 +2151,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.lobDataById", skip(self, arg_id, arg_data), fields(r#id = ?arg_id,r#data = ?arg_data,))]
+        #[::tracing::instrument(name = "MyService.lobDataById", skip_all, fields(r#id = ?arg_id,r#data = ?arg_data,))]
         fn lobDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2430,7 +2430,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "DbMixedStackArguments.getDataByKey0", skip(self, arg_key), fields(r#key = ?arg_key,))]
+        #[::tracing::instrument(name = "DbMixedStackArguments.getDataByKey0", skip_all, fields(r#key = ?arg_key,))]
         fn getDataByKey0(
             &self,
             arg_key: &::std::primitive::str,
@@ -2546,7 +2546,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "DbMixedStackArguments.getDataByKey1", skip(self, arg_key), fields(r#key = ?arg_key,))]
+        #[::tracing::instrument(name = "DbMixedStackArguments.getDataByKey1", skip_all, fields(r#key = ?arg_key,))]
         fn getDataByKey1(
             &self,
             arg_key: &::std::primitive::str,
@@ -2844,7 +2844,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_ping {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyService.ping"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.ping"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -2867,7 +2867,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_getRandomData {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyService.getRandomData"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.getRandomData"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -2891,7 +2891,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_sink {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyService.sink"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.sink"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("sink", ::fbthrift::TType::I64, 1),
@@ -2920,7 +2920,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_putDataById {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyService.putDataById"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.putDataById"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("data", ::fbthrift::TType::String, 2),
@@ -2952,7 +2952,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_hasDataById {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyService.hasDataById"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.hasDataById"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
@@ -2980,7 +2980,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_getDataById {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyService.getDataById"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.getDataById"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
@@ -3008,7 +3008,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_deleteDataById {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyService.deleteDataById"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.deleteDataById"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("id", ::fbthrift::TType::I64, 1),
@@ -3037,7 +3037,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyService_lobDataById {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyService.lobDataById"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyService.lobDataById"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("data", ::fbthrift::TType::String, 2),
@@ -3086,7 +3086,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyService.ping"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyService.ping"))]
         async fn handle_ping<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3154,7 +3154,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyService.getRandomData"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyService.getRandomData"))]
         async fn handle_getRandomData<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3222,7 +3222,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyService.sink"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyService.sink"))]
         async fn handle_sink<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3291,7 +3291,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyService.putDataById"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyService.putDataById"))]
         async fn handle_putDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3361,7 +3361,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyService.hasDataById"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyService.hasDataById"))]
         async fn handle_hasDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3430,7 +3430,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyService.getDataById"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyService.getDataById"))]
         async fn handle_getDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3499,7 +3499,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyService.deleteDataById"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyService.deleteDataById"))]
         async fn handle_deleteDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3568,7 +3568,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyService.lobDataById"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyService.lobDataById"))]
         async fn handle_lobDataById<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3705,7 +3705,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "MyService"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "MyService"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -3754,7 +3754,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_MyService_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -3817,7 +3817,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_DbMixedStackArguments_getDataByKey0 {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "DbMixedStackArguments.getDataByKey0"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "DbMixedStackArguments.getDataByKey0"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("key", ::fbthrift::TType::String, 1),
@@ -3845,7 +3845,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_DbMixedStackArguments_getDataByKey1 {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "DbMixedStackArguments.getDataByKey1"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "DbMixedStackArguments.getDataByKey1"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("key", ::fbthrift::TType::String, 1),
@@ -3890,7 +3890,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "DbMixedStackArguments.getDataByKey0"))]
+        #[::tracing::instrument(skip_all, fields(method = "DbMixedStackArguments.getDataByKey0"))]
         async fn handle_getDataByKey0<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3959,7 +3959,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "DbMixedStackArguments.getDataByKey1"))]
+        #[::tracing::instrument(skip_all, fields(method = "DbMixedStackArguments.getDataByKey1"))]
         async fn handle_getDataByKey1<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -4083,7 +4083,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "DbMixedStackArguments"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "DbMixedStackArguments"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -4132,7 +4132,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_DbMixedStackArguments_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,

@@ -494,7 +494,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "NestedContainers.mapList", skip(self, arg_foo), fields(r#foo = ?arg_foo,))]
+        #[::tracing::instrument(name = "NestedContainers.mapList", skip_all, fields(r#foo = ?arg_foo,))]
         fn mapList(
             &self,
             arg_foo: &::std::collections::BTreeMap<::std::primitive::i32, ::std::vec::Vec<::std::primitive::i32>>,
@@ -610,7 +610,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "NestedContainers.mapSet", skip(self, arg_foo), fields(r#foo = ?arg_foo,))]
+        #[::tracing::instrument(name = "NestedContainers.mapSet", skip_all, fields(r#foo = ?arg_foo,))]
         fn mapSet(
             &self,
             arg_foo: &::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>,
@@ -726,7 +726,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "NestedContainers.listMap", skip(self, arg_foo), fields(r#foo = ?arg_foo,))]
+        #[::tracing::instrument(name = "NestedContainers.listMap", skip_all, fields(r#foo = ?arg_foo,))]
         fn listMap(
             &self,
             arg_foo: &[::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>],
@@ -842,7 +842,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "NestedContainers.listSet", skip(self, arg_foo), fields(r#foo = ?arg_foo,))]
+        #[::tracing::instrument(name = "NestedContainers.listSet", skip_all, fields(r#foo = ?arg_foo,))]
         fn listSet(
             &self,
             arg_foo: &[::std::collections::BTreeSet<::std::primitive::i32>],
@@ -958,7 +958,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "NestedContainers.turtles", skip(self, arg_foo), fields(r#foo = ?arg_foo,))]
+        #[::tracing::instrument(name = "NestedContainers.turtles", skip_all, fields(r#foo = ?arg_foo,))]
         fn turtles(
             &self,
             arg_foo: &[::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>>>],
@@ -1248,7 +1248,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_NestedContainers_mapList {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "NestedContainers.mapList"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "NestedContainers.mapList"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("foo", ::fbthrift::TType::Map, 1),
@@ -1276,7 +1276,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_NestedContainers_mapSet {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "NestedContainers.mapSet"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "NestedContainers.mapSet"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("foo", ::fbthrift::TType::Map, 1),
@@ -1304,7 +1304,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_NestedContainers_listMap {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "NestedContainers.listMap"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "NestedContainers.listMap"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
@@ -1332,7 +1332,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_NestedContainers_listSet {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "NestedContainers.listSet"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "NestedContainers.listSet"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
@@ -1360,7 +1360,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_NestedContainers_turtles {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "NestedContainers.turtles"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "NestedContainers.turtles"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("foo", ::fbthrift::TType::List, 1),
@@ -1405,7 +1405,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "NestedContainers.mapList"))]
+        #[::tracing::instrument(skip_all, fields(method = "NestedContainers.mapList"))]
         async fn handle_mapList<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1474,7 +1474,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "NestedContainers.mapSet"))]
+        #[::tracing::instrument(skip_all, fields(method = "NestedContainers.mapSet"))]
         async fn handle_mapSet<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1543,7 +1543,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "NestedContainers.listMap"))]
+        #[::tracing::instrument(skip_all, fields(method = "NestedContainers.listMap"))]
         async fn handle_listMap<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1612,7 +1612,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "NestedContainers.listSet"))]
+        #[::tracing::instrument(skip_all, fields(method = "NestedContainers.listSet"))]
         async fn handle_listSet<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1681,7 +1681,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "NestedContainers.turtles"))]
+        #[::tracing::instrument(skip_all, fields(method = "NestedContainers.turtles"))]
         async fn handle_turtles<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1811,7 +1811,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "NestedContainers"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "NestedContainers"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -1860,7 +1860,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_NestedContainers_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,

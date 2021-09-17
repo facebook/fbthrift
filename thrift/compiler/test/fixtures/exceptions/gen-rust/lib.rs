@@ -980,7 +980,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "Raiser.doBland", skip(self), fields())]
+        #[::tracing::instrument(name = "Raiser.doBland", skip_all, fields())]
         fn doBland(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoBlandError>> + ::std::marker::Send + 'static>> {
@@ -1092,7 +1092,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "Raiser.doRaise", skip(self), fields())]
+        #[::tracing::instrument(name = "Raiser.doRaise", skip_all, fields())]
         fn doRaise(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoRaiseError>> + ::std::marker::Send + 'static>> {
@@ -1216,7 +1216,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "Raiser.get200", skip(self), fields())]
+        #[::tracing::instrument(name = "Raiser.get200", skip_all, fields())]
         fn get200(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get200Error>> + ::std::marker::Send + 'static>> {
@@ -1328,7 +1328,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "Raiser.get500", skip(self), fields())]
+        #[::tracing::instrument(name = "Raiser.get500", skip_all, fields())]
         fn get500(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>> {
@@ -1594,7 +1594,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Raiser_doBland {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "Raiser.doBland"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "Raiser.doBland"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -1617,7 +1617,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Raiser_doRaise {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "Raiser.doRaise"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "Raiser.doRaise"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -1640,7 +1640,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Raiser_get200 {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "Raiser.get200"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "Raiser.get200"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -1663,7 +1663,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Raiser_get500 {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "Raiser.get500"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "Raiser.get500"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -1704,7 +1704,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Raiser.doBland"))]
+        #[::tracing::instrument(skip_all, fields(method = "Raiser.doBland"))]
         async fn handle_doBland<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1772,7 +1772,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Raiser.doRaise"))]
+        #[::tracing::instrument(skip_all, fields(method = "Raiser.doRaise"))]
         async fn handle_doRaise<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1845,7 +1845,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Raiser.get200"))]
+        #[::tracing::instrument(skip_all, fields(method = "Raiser.get200"))]
         async fn handle_get200<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1913,7 +1913,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Raiser.get500"))]
+        #[::tracing::instrument(skip_all, fields(method = "Raiser.get500"))]
         async fn handle_get500<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -2045,7 +2045,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "Raiser"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "Raiser"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -2094,7 +2094,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_Raiser_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,

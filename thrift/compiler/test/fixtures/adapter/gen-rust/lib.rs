@@ -512,7 +512,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "Service.func", skip(self, arg_arg1, arg_arg2), fields(r#arg1 = ?arg_arg1,r#arg2 = ?arg_arg2,))]
+        #[::tracing::instrument(name = "Service.func", skip_all, fields(r#arg1 = ?arg_arg1,r#arg2 = ?arg_arg2,))]
         fn func(
             &self,
             arg_arg1: &::std::primitive::str,
@@ -734,7 +734,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Service_func {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "Service.func"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "Service.func"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("arg1", ::fbthrift::TType::String, 1),
@@ -783,7 +783,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "Service.func"))]
+        #[::tracing::instrument(skip_all, fields(method = "Service.func"))]
         async fn handle_func<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -906,7 +906,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "Service"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "Service"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -955,7 +955,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_Service_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,

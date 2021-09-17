@@ -2605,7 +2605,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "SomeService.bounce_map", skip(self, arg_m), fields(r#m = ?arg_m,))]
+        #[::tracing::instrument(name = "SomeService.bounce_map", skip_all, fields(r#m = ?arg_m,))]
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
@@ -2721,7 +2721,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "SomeService.binary_keyed_map", skip(self, arg_r), fields(r#r = ?arg_r,))]
+        #[::tracing::instrument(name = "SomeService.binary_keyed_map", skip_all, fields(r#r = ?arg_r,))]
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],
@@ -2954,7 +2954,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_SomeService_bounce_map {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "SomeService.bounce_map"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "SomeService.bounce_map"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("m", ::fbthrift::TType::Map, 1),
@@ -2982,7 +2982,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_SomeService_binary_keyed_map {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "SomeService.binary_keyed_map"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "SomeService.binary_keyed_map"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("r", ::fbthrift::TType::List, 1),
@@ -3027,7 +3027,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "SomeService.bounce_map"))]
+        #[::tracing::instrument(skip_all, fields(method = "SomeService.bounce_map"))]
         async fn handle_bounce_map<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3096,7 +3096,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "SomeService.binary_keyed_map"))]
+        #[::tracing::instrument(skip_all, fields(method = "SomeService.binary_keyed_map"))]
         async fn handle_binary_keyed_map<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -3220,7 +3220,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "SomeService"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "SomeService"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -3269,7 +3269,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_SomeService_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,

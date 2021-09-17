@@ -953,7 +953,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "MyService.ping", skip(self), fields())]
+        #[::tracing::instrument(name = "MyService.ping", skip_all, fields())]
         fn ping(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
@@ -1065,7 +1065,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.getRandomData", skip(self), fields())]
+        #[::tracing::instrument(name = "MyService.getRandomData", skip_all, fields())]
         fn getRandomData(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
@@ -1177,7 +1177,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.hasDataById", skip(self, arg_id), fields(r#id = ?arg_id,))]
+        #[::tracing::instrument(name = "MyService.hasDataById", skip_all, fields(r#id = ?arg_id,))]
         fn hasDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -1293,7 +1293,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.getDataById", skip(self, arg_id), fields(r#id = ?arg_id,))]
+        #[::tracing::instrument(name = "MyService.getDataById", skip_all, fields(r#id = ?arg_id,))]
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -1409,7 +1409,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.putDataById", skip(self, arg_id, arg_data), fields(r#id = ?arg_id,r#data = ?arg_data,))]
+        #[::tracing::instrument(name = "MyService.putDataById", skip_all, fields(r#id = ?arg_id,r#data = ?arg_data,))]
         fn putDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -1529,7 +1529,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "MyService.lobDataById", skip(self, arg_id, arg_data), fields(r#id = ?arg_id,r#data = ?arg_data,))]
+        #[::tracing::instrument(name = "MyService.lobDataById", skip_all, fields(r#id = ?arg_id,r#data = ?arg_data,))]
         fn lobDataById(
             &self,
             arg_id: ::std::primitive::i64,

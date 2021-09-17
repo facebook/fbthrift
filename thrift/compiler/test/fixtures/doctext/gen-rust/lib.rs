@@ -735,7 +735,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "C.f", skip(self), fields())]
+        #[::tracing::instrument(name = "C.f", skip_all, fields())]
         fn f(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::c::FError>> + ::std::marker::Send + 'static>> {
@@ -847,7 +847,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "C.numbers", skip(self), fields())]
+        #[::tracing::instrument(name = "C.numbers", skip_all, fields())]
         fn numbers(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::errors::c::NumbersError>> + ::std::marker::Send + 'static>> {
@@ -931,7 +931,7 @@ pub mod client {
                 .boxed()
         }
 
-        #[::tracing::instrument(name = "C.thing", skip(self, arg_a, arg_b, arg_c), fields(r#a = ?arg_a,r#b = ?arg_b,r#c = ?arg_c,))]
+        #[::tracing::instrument(name = "C.thing", skip_all, fields(r#a = ?arg_a,r#b = ?arg_b,r#c = ?arg_c,))]
         fn thing(
             &self,
             arg_a: ::std::primitive::i32,
@@ -1188,7 +1188,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_C_f {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "C.f"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "C.f"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -1214,7 +1214,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_C_thing {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "C.thing"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "C.thing"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("a", ::fbthrift::TType::I32, 1),
@@ -1267,7 +1267,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "C.f"))]
+        #[::tracing::instrument(skip_all, fields(method = "C.f"))]
         async fn handle_f<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1335,7 +1335,7 @@ pub mod server {
             ::std::result::Result::Ok(res)
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "C.thing"))]
+        #[::tracing::instrument(skip_all, fields(method = "C.thing"))]
         async fn handle_thing<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1466,7 +1466,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "C"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "C"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -1515,7 +1515,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_C_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,

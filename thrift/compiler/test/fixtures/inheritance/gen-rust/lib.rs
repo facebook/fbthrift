@@ -313,7 +313,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "MyRoot.do_root", skip(self), fields())]
+        #[::tracing::instrument(name = "MyRoot.do_root", skip_all, fields())]
         fn do_root(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>> {
@@ -532,7 +532,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "MyNode.do_mid", skip(self), fields())]
+        #[::tracing::instrument(name = "MyNode.do_mid", skip_all, fields())]
         fn do_mid(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>> {
@@ -766,7 +766,7 @@ pub mod client {
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
     {
-        #[::tracing::instrument(name = "MyLeaf.do_leaf", skip(self), fields())]
+        #[::tracing::instrument(name = "MyLeaf.do_leaf", skip_all, fields())]
         fn do_leaf(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>> {
@@ -974,7 +974,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyRoot_do_root {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyRoot.do_root"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyRoot.do_root"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -1015,7 +1015,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyRoot.do_root"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyRoot.do_root"))]
         async fn handle_do_root<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1136,7 +1136,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "MyRoot"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "MyRoot"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -1185,7 +1185,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_MyRoot_server<F, H, R>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -1235,7 +1235,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyNode_do_mid {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyNode.do_mid"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyNode.do_mid"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -1279,7 +1279,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyNode.do_mid"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyNode.do_mid"))]
         async fn handle_do_mid<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1406,7 +1406,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "MyNode"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "MyNode"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -1455,7 +1455,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler, supa))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_MyNode_server<F, H, R, SMAKE, SS>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
@@ -1509,7 +1509,7 @@ pub mod server {
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_MyLeaf_do_leaf {
         #[inline]
-        #[::tracing::instrument(skip(p), level = "trace", name = "deserialize_args", fields(method = "MyLeaf.do_leaf"))]
+        #[::tracing::instrument(skip_all, level = "trace", name = "deserialize_args", fields(method = "MyLeaf.do_leaf"))]
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
             ];
@@ -1553,7 +1553,7 @@ pub mod server {
             self.service
         }
 
-        #[::tracing::instrument(skip(self, p, req_ctxt, seqid), fields(method = "MyLeaf.do_leaf"))]
+        #[::tracing::instrument(skip_all, fields(method = "MyLeaf.do_leaf"))]
         async fn handle_do_leaf<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
@@ -1680,7 +1680,7 @@ pub mod server {
         type Handler = H;
         type RequestContext = R;
 
-        #[tracing::instrument(level="trace", skip(self, req, req_ctxt), fields(service = "MyLeaf"))]
+        #[tracing::instrument(level="trace", skip_all, fields(service = "MyLeaf"))]
         async fn call(
             &self,
             req: ::fbthrift::ProtocolDecoded<P>,
@@ -1729,7 +1729,7 @@ pub mod server {
     ///
     /// This is called when a new instance of a Thrift service Processor
     /// is needed for a particular Thrift protocol.
-    #[::tracing::instrument(level="debug", skip(handler, supa))]
+    #[::tracing::instrument(level="debug", skip_all, fields(proto = ?proto))]
     pub fn make_MyLeaf_server<F, H, R, SMAKE, SS>(
         proto: ::fbthrift::ProtocolID,
         handler: H,
