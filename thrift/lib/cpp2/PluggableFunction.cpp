@@ -27,7 +27,9 @@ namespace detail {
 
 class PluggableFunctionMetadata {
  public:
-  explicit PluggableFunctionMetadata(folly::StringPiece name) : name_(name) {}
+  explicit PluggableFunctionMetadata(
+      folly::StringPiece name, std::type_index functionTag) noexcept
+      : name_(std::string{name}), functionTag_(functionTag) {}
   void setDefault(intptr_t defaultImpl) {
     CHECK(!locked_) << "Pluggable function '" << name_
                     << "' can't be updated once locked";
@@ -48,47 +50,51 @@ class PluggableFunctionMetadata {
     CHECK(defaultImpl_);
     return defaultImpl_;
   }
+  std::type_index getFunctionTag() const { return functionTag_; }
 
  private:
   std::atomic<bool> locked_{false};
   intptr_t defaultImpl_{};
   intptr_t impl_{};
   const std::string name_;
+  const std::type_index functionTag_;
 };
 
 namespace {
 PluggableFunctionMetadata& getPluggableFunctionMetadata(
-    folly::StringPiece name, std::type_index functionTag) {
-  using Map = std::unordered_map<
-      std::string,
-      std::pair<std::type_index, std::unique_ptr<PluggableFunctionMetadata>>>;
+    folly::StringPiece name, std::type_index tag, std::type_index functionTag) {
+  using Map = std::unordered_map<std::type_index, PluggableFunctionMetadata>;
   static auto& map = *new folly::Synchronized<Map>();
   auto wMap = map.wlock();
-  auto entryAndInserted = wMap->emplace(std::make_pair(
-      name.str(),
-      std::make_pair(
-          functionTag, std::make_unique<PluggableFunctionMetadata>(name))));
-  auto& entry = entryAndInserted.first->second;
-  CHECK(entry.first == functionTag)
+  auto emplacement = wMap->emplace(
+      std::piecewise_construct,
+      std::forward_as_tuple(tag),
+      std::forward_as_tuple(name, functionTag));
+  auto& metadata = emplacement.first->second;
+  CHECK(metadata.getFunctionTag() == functionTag)
       << "Type mismatch for pluggable function " << name << ". Types are "
-      << folly::demangle(entry.first.name()) << " and "
+      << folly::demangle(metadata.getFunctionTag().name()) << " and "
       << folly::demangle(functionTag.name());
-  return *entry.second;
+  return metadata;
 }
 } // namespace
 
 PluggableFunctionMetadata* registerPluggableFunction(
     folly::StringPiece name,
+    std::type_index tag,
     std::type_index functionTag,
     intptr_t defaultImpl) {
-  auto& metadata = getPluggableFunctionMetadata(name, functionTag);
+  auto& metadata = getPluggableFunctionMetadata(name, tag, functionTag);
   metadata.setDefault(defaultImpl);
   return &metadata;
 }
 
 void setPluggableFunction(
-    folly::StringPiece name, std::type_index functionTag, intptr_t impl) {
-  auto& metadata = getPluggableFunctionMetadata(name, functionTag);
+    folly::StringPiece name,
+    std::type_index tag,
+    std::type_index functionTag,
+    intptr_t impl) {
+  auto& metadata = getPluggableFunctionMetadata(name, tag, functionTag);
   metadata.set(impl);
 }
 
