@@ -36,6 +36,10 @@ class TypeResolverTest : public ::testing::Test {
     program_.set_namespace("cpp2", "path.to");
   }
 
+  bool can_resolve_to_scalar(const t_type& node) {
+    return resolver_.can_resolve_to_scalar(&node);
+  }
+
   const std::string& get_type_name(const t_type& node) {
     return resolver_.get_type_name(&node);
   }
@@ -64,6 +68,17 @@ TEST_F(TypeResolverTest, BaseTypes) {
   EXPECT_EQ(get_type_name(t_base_type::t_double()), "double");
   EXPECT_EQ(get_type_name(t_base_type::t_string()), "::std::string");
   EXPECT_EQ(get_type_name(t_base_type::t_binary()), "::std::string");
+
+  EXPECT_FALSE(can_resolve_to_scalar(t_base_type::t_void()));
+  EXPECT_TRUE(can_resolve_to_scalar(t_base_type::t_bool()));
+  EXPECT_TRUE(can_resolve_to_scalar(t_base_type::t_byte()));
+  EXPECT_TRUE(can_resolve_to_scalar(t_base_type::t_i16()));
+  EXPECT_TRUE(can_resolve_to_scalar(t_base_type::t_i32()));
+  EXPECT_TRUE(can_resolve_to_scalar(t_base_type::t_i64()));
+  EXPECT_TRUE(can_resolve_to_scalar(t_base_type::t_float()));
+  EXPECT_TRUE(can_resolve_to_scalar(t_base_type::t_double()));
+  EXPECT_FALSE(can_resolve_to_scalar(t_base_type::t_string()));
+  EXPECT_FALSE(can_resolve_to_scalar(t_base_type::t_binary()));
 }
 
 TEST_F(TypeResolverTest, BaseTypes_Adapter) {
@@ -75,6 +90,7 @@ TEST_F(TypeResolverTest, BaseTypes_Adapter) {
   EXPECT_EQ(
       get_type_name(dbl),
       "::apache::thrift::adapt_detail::adapted_t<DblAdapter, double>");
+  EXPECT_TRUE(can_resolve_to_scalar(dbl));
 
   // cpp.type overrides the 'default' standard type.
   t_base_type ui64(t_base_type::t_i64());
@@ -84,36 +100,53 @@ TEST_F(TypeResolverTest, BaseTypes_Adapter) {
   EXPECT_EQ(
       get_type_name(ui64),
       "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>");
+  EXPECT_TRUE(can_resolve_to_scalar(ui64));
+
+  // cpp.adapter could resolve to a scalar.
+  t_base_type str(t_base_type::t_string());
+  str.set_annotation("cpp.adapter", "HashAdapter");
+  EXPECT_TRUE(can_resolve_to_scalar(str));
 }
 
 TEST_F(TypeResolverTest, Containers) {
+  // A container could not resolve to a scalar.
   t_map tmap(t_base_type::t_string(), t_base_type::t_i32());
   EXPECT_EQ(get_type_name(tmap), "::std::map<::std::string, ::std::int32_t>");
+  EXPECT_FALSE(can_resolve_to_scalar(tmap));
   t_list tlist(t_base_type::t_double());
   EXPECT_EQ(get_type_name(tlist), "::std::vector<double>");
+  EXPECT_FALSE(can_resolve_to_scalar(tlist));
   t_set tset(tmap);
   EXPECT_EQ(
       get_type_name(tset),
       "::std::set<::std::map<::std::string, ::std::int32_t>>");
+  EXPECT_FALSE(can_resolve_to_scalar(tset));
 }
 
 TEST_F(TypeResolverTest, Containers_CustomTemplate) {
+  // cpp.template could not resolve to a scalar since it can be only used for
+  // container fields.
   t_map tmap(t_base_type::t_string(), t_base_type::t_i32());
   tmap.set_annotation("cpp.template", "std::unordered_map");
   EXPECT_EQ(
       get_type_name(tmap), "std::unordered_map<::std::string, ::std::int32_t>");
+  EXPECT_FALSE(can_resolve_to_scalar(tmap));
   t_list tlist(t_base_type::t_double());
   tlist.set_annotation("cpp2.template", "std::list");
   EXPECT_EQ(get_type_name(tlist), "std::list<double>");
+  EXPECT_FALSE(can_resolve_to_scalar(tlist));
   t_set tset(t_base_type::t_binary());
   tset.set_annotation("cpp2.template", "::std::unordered_set");
   EXPECT_EQ(get_type_name(tset), "::std::unordered_set<::std::string>");
+  EXPECT_FALSE(can_resolve_to_scalar(tset));
 }
 
 TEST_F(TypeResolverTest, Containers_Adapter) {
+  // cpp.adapter could resolve to a scalar.
   t_base_type ui64(t_base_type::t_i64());
   ui64.set_annotation("cpp.type", "uint64_t");
   ui64.set_annotation("cpp.adapter", "HashAdapter");
+  EXPECT_TRUE(can_resolve_to_scalar(ui64));
 
   // Adapters work on container type arguments.
   t_map tmap(t_base_type::t_i16(), ui64);
@@ -125,6 +158,7 @@ TEST_F(TypeResolverTest, Containers_Adapter) {
       "::apache::thrift::adapt_detail::adapted_t<"
       "MapAdapter, "
       "::std::map<::std::int16_t, ::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>>");
+  EXPECT_TRUE(can_resolve_to_scalar(tmap));
 
   // The container can also be addapted.
   t_set tset(ui64);
@@ -137,6 +171,7 @@ TEST_F(TypeResolverTest, Containers_Adapter) {
       "::apache::thrift::adapt_detail::adapted_t<"
       "SetAdapter, "
       "std::unordered_set<::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>>>");
+  EXPECT_TRUE(can_resolve_to_scalar(tset));
 
   // cpp.type on the container overrides the 'default' standard type.
   t_list tlist(ui64);
@@ -146,20 +181,47 @@ TEST_F(TypeResolverTest, Containers_Adapter) {
   EXPECT_EQ(
       get_type_name(tlist),
       "::apache::thrift::adapt_detail::adapted_t<ListAdapter, MyList>");
+  EXPECT_TRUE(can_resolve_to_scalar(tlist));
 }
 
 TEST_F(TypeResolverTest, Structs) {
   t_struct tstruct(&program_, "Foo");
   EXPECT_EQ(get_type_name(tstruct), "::path::to::Foo");
+  EXPECT_FALSE(can_resolve_to_scalar(tstruct));
   t_union tunion(&program_, "Bar");
   EXPECT_EQ(get_type_name(tunion), "::path::to::Bar");
+  EXPECT_FALSE(can_resolve_to_scalar(tunion));
   t_exception texcept(&program_, "Baz");
   EXPECT_EQ(get_type_name(texcept), "::path::to::Baz");
+  EXPECT_FALSE(can_resolve_to_scalar(texcept));
 }
 
 TEST_F(TypeResolverTest, TypeDefs) {
-  t_typedef ttypedef(&program_, "Foo", t_base_type::t_bool());
-  EXPECT_EQ(get_type_name(ttypedef), "::path::to::Foo");
+  // Scalar
+  t_typedef ttypedef1(&program_, "Foo", t_base_type::t_bool());
+  EXPECT_EQ(get_type_name(ttypedef1), "::path::to::Foo");
+  EXPECT_TRUE(can_resolve_to_scalar(ttypedef1));
+
+  // Non-scalar
+  t_typedef ttypedef2(&program_, "Foo", t_base_type::t_string());
+  EXPECT_EQ(get_type_name(ttypedef2), "::path::to::Foo");
+  EXPECT_FALSE(can_resolve_to_scalar(ttypedef2));
+}
+
+TEST_F(TypeResolverTest, TypeDefs_Nested) {
+  // Scalar
+  t_typedef ttypedef1(&program_, "Foo", t_base_type::t_bool());
+  t_typedef ttypedef2(&program_, "Bar", ttypedef1);
+  EXPECT_EQ(get_type_name(ttypedef2), "::path::to::Bar");
+  EXPECT_TRUE(can_resolve_to_scalar(ttypedef1));
+  EXPECT_TRUE(can_resolve_to_scalar(ttypedef2));
+
+  // Non-scalar
+  t_typedef ttypedef3(&program_, "Foo", t_base_type::t_string());
+  t_typedef ttypedef4(&program_, "Bar", ttypedef3);
+  EXPECT_EQ(get_type_name(ttypedef4), "::path::to::Bar");
+  EXPECT_FALSE(can_resolve_to_scalar(ttypedef3));
+  EXPECT_FALSE(can_resolve_to_scalar(ttypedef4));
 }
 
 TEST_F(TypeResolverTest, TypeDefs_Adapter) {
@@ -176,6 +238,7 @@ TEST_F(TypeResolverTest, TypeDefs_Adapter) {
   EXPECT_EQ(
       get_type_name(*ttypedef1.type()),
       "::apache::thrift::adapt_detail::adapted_t<HashAdapter, uint64_t>");
+  EXPECT_TRUE(can_resolve_to_scalar(ttypedef1));
 
   // Type defs can also be adapted.
   t_typedef ttypedef2(ttypedef1);
@@ -184,6 +247,7 @@ TEST_F(TypeResolverTest, TypeDefs_Adapter) {
   EXPECT_EQ(
       get_type_name(ttypedef2),
       "::apache::thrift::adapt_detail::adapted_t<TypeDefAdapter, ::path::to::MyHash>");
+  EXPECT_TRUE(can_resolve_to_scalar(ttypedef2));
 }
 
 TEST_F(TypeResolverTest, CustomType) {
@@ -191,17 +255,26 @@ TEST_F(TypeResolverTest, CustomType) {
   tui64.set_name("ui64");
   tui64.set_annotation("cpp2.type", "::std::uint64_t");
   EXPECT_EQ(get_type_name(tui64), "::std::uint64_t");
+  EXPECT_TRUE(can_resolve_to_scalar(tui64));
 
   t_union tunion(&program_, "Bar");
   tunion.set_annotation("cpp2.type", "Other");
   EXPECT_EQ(get_type_name(tunion), "Other");
+  EXPECT_TRUE(can_resolve_to_scalar(tunion));
 
-  t_typedef ttypedef(&program_, "Foo", t_base_type::t_bool());
-  ttypedef.set_annotation("cpp2.type", "Other");
-  EXPECT_EQ(get_type_name(ttypedef), "Other");
+  t_typedef ttypedef1(&program_, "Foo", t_base_type::t_bool());
+  ttypedef1.set_annotation("cpp2.type", "Other");
+  EXPECT_EQ(get_type_name(ttypedef1), "Other");
+  EXPECT_TRUE(can_resolve_to_scalar(ttypedef1));
+
+  t_typedef ttypedef2(&program_, "FooBar", t_base_type::t_string());
+  ttypedef2.set_annotation("cpp2.type", "Other");
+  EXPECT_EQ(get_type_name(ttypedef2), "Other");
+  EXPECT_TRUE(can_resolve_to_scalar(ttypedef2));
 
   t_map tmap1(t_base_type::t_string(), tui64);
   EXPECT_EQ(get_type_name(tmap1), "::std::map<::std::string, ::std::uint64_t>");
+  EXPECT_FALSE(can_resolve_to_scalar(tmap1));
 
   // Can be combined with template.
   t_map tmap2(tmap1);
@@ -209,11 +282,13 @@ TEST_F(TypeResolverTest, CustomType) {
   EXPECT_EQ(
       get_type_name(tmap2),
       "std::unordered_map<::std::string, ::std::uint64_t>");
+  EXPECT_FALSE(can_resolve_to_scalar(tmap2));
 
   // Custom type overrides template.
   t_map tmap3(tmap2);
   tmap3.set_annotation("cpp.type", "MyMap");
   EXPECT_EQ(get_type_name(tmap3), "MyMap");
+  EXPECT_TRUE(can_resolve_to_scalar(tmap3));
 }
 
 TEST_F(TypeResolverTest, StreamingRes) {
@@ -335,6 +410,8 @@ TEST_F(TypeResolverTest, StorageType) {
 }
 
 TEST_F(TypeResolverTest, Typedef_cpptemplate) {
+  // cpp.template could not resolve to a scalar since it can be only used for
+  // container fields.
   t_map imap(t_base_type::t_i32(), t_base_type::t_string());
   t_typedef iumap(&program_, "iumap", imap);
   iumap.set_annotation("cpp.template", "std::unorderd_map");
@@ -344,6 +421,7 @@ TEST_F(TypeResolverTest, Typedef_cpptemplate) {
   EXPECT_EQ(
       get_standard_type_name(imap),
       "::std::map<::std::int32_t, ::std::string>");
+  EXPECT_FALSE(can_resolve_to_scalar(imap));
 
   // The 'cpp.template' annotations is applied to the typedef; however, the type
   // resolver only looks for it on container types.
@@ -351,9 +429,11 @@ TEST_F(TypeResolverTest, Typedef_cpptemplate) {
   // the typedef.
   EXPECT_EQ(get_type_name(iumap), "::path::to::iumap");
   EXPECT_EQ(get_standard_type_name(iumap), "::path::to::iumap");
+  EXPECT_FALSE(can_resolve_to_scalar(iumap));
 
   EXPECT_EQ(get_type_name(tiumap), "::path::to::tiumap");
   EXPECT_EQ(get_standard_type_name(tiumap), "::path::to::tiumap");
+  EXPECT_FALSE(can_resolve_to_scalar(tiumap));
 }
 
 TEST_F(TypeResolverTest, Typedef_cpptype) {
@@ -367,6 +447,7 @@ TEST_F(TypeResolverTest, Typedef_cpptype) {
   EXPECT_EQ(
       get_standard_type_name(imap),
       "::std::map<::std::int32_t, ::std::string>");
+  EXPECT_FALSE(can_resolve_to_scalar(imap));
 
   // The 'cpp.type' annotation is respected on the typedef.
   // TODO(afuller): It seems like this annotation is applied incorrectly and the
@@ -378,9 +459,11 @@ TEST_F(TypeResolverTest, Typedef_cpptype) {
   EXPECT_EQ(
       get_standard_type_name(iumap),
       "std::unorderd_map<::std::int32_t, ::std::string>");
+  EXPECT_TRUE(can_resolve_to_scalar(iumap));
 
   EXPECT_EQ(get_type_name(tiumap), "::path::to::tiumap");
   EXPECT_EQ(get_standard_type_name(tiumap), "::path::to::tiumap");
+  EXPECT_TRUE(can_resolve_to_scalar(tiumap));
 }
 
 TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
@@ -393,6 +476,7 @@ TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
   iobuf_type.set_annotation("cpp.type", "folly::IOBuf");
   EXPECT_EQ(get_type_name(iobuf_type), "folly::IOBuf");
   EXPECT_EQ(get_standard_type_name(iobuf_type), "folly::IOBuf");
+  EXPECT_TRUE(can_resolve_to_scalar(iobuf_type));
 
   // Then adapt it:
   //   binary (cpp.type="folly::IOBuf", cpp.adapter="MyAdapter1")
@@ -402,6 +486,7 @@ TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
       get_type_name(adapated_type),
       "::apache::thrift::adapt_detail::adapted_t<MyAdapter1, folly::IOBuf>");
   EXPECT_EQ(get_standard_type_name(adapated_type), "folly::IOBuf");
+  EXPECT_TRUE(can_resolve_to_scalar(adapated_type));
 
   // Give the adapated type an alias:
   //   typedef binary (cpp.type="folly::IOBuf", cpp.adapter="MyAdapter2")
@@ -411,11 +496,13 @@ TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
   EXPECT_EQ(
       get_type_name(adapted_type_typedef), "::path::to::AdaptedTypeTypeDef");
   EXPECT_EQ(get_standard_type_name(adapted_type_typedef), "folly::IOBuf");
+  EXPECT_TRUE(can_resolve_to_scalar(adapted_type_typedef));
 
   // Use the alias for the adapted type for field 1.
   // 1: AdaptedTypeTypeDef field1
   t_field field1(adapted_type_typedef, "field1", 1);
   EXPECT_EQ(get_storage_type_name(field1), "::path::to::AdaptedTypeTypeDef");
+  EXPECT_TRUE(can_resolve_to_scalar(*field1.type()));
 
   // Give the type an alias, then adapt the alias:
   //   typedef binary (cpp.type="folly::IOBuf") AdaptedTypeDef
@@ -430,12 +517,14 @@ TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
       get_type_name(adapted_typedef),
       "::apache::thrift::adapt_detail::adapted_t<MyAdapter2, ::path::to::AdaptedTypeDef>");
   EXPECT_EQ(get_standard_type_name(adapted_typedef), "folly::IOBuf");
+  EXPECT_TRUE(can_resolve_to_scalar(adapted_typedef));
 
   // 2: AdaptedTypeDef field2
   t_field field2(adapted_typedef, "field2", 2);
   EXPECT_EQ(
       get_storage_type_name(field2),
       "::apache::thrift::adapt_detail::adapted_t<MyAdapter2, ::path::to::AdaptedTypeDef>");
+  EXPECT_TRUE(can_resolve_to_scalar(*field2.type()));
 }
 
 } // namespace

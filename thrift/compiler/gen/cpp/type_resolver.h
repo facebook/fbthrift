@@ -56,6 +56,24 @@ class type_resolver {
         standard_type_cache_, node, [&]() { return gen_standard_type(node); });
   }
 
+  // Checks whether a t_type could resolve to a scalar.
+  //
+  // A type could resolve to a scalar if t_type is
+  // a scalar, or has an 'cpp.type' and 'cpp.adapter' annotation.
+  // Note, the 'cpp.template' annotation only applies to container
+  // types, so it could never resolve to a scalar.
+  // In C++, scalars sometimes require a special treatment. For
+  // example, they are not initialized unless the default
+  // constructor is expicitly invoked. So if we declare
+  // two variables, like:
+  //   int i, j{};
+  // At this point, i could be any value, as it has not been
+  // explicitly initalized, while j is guarnteed to be 0, the
+  // intrinsic default for an int. On the other hand, if i
+  // had not been a scalar, it would have been initalized
+  // implicitly.
+  static bool can_resolve_to_scalar(const t_type* node);
+
   // Returns the c++ type that should be used to store the field's value.
   //
   // This differs from the type name, when a 'cpp.ref' or 'cpp.ref_type'
@@ -67,6 +85,10 @@ class type_resolver {
   }
   static const std::string* find_adapter(const t_type* node) {
     return node->find_annotation_or_null("cpp.adapter");
+  }
+  static const std::string* find_first_type(const t_type* node) {
+    return t_typedef::get_first_annotation_or_null(
+        node, {"cpp.type", "cpp2.type"});
   }
   static const std::string* find_first_adapter(const t_type* node) {
     return t_typedef::get_first_annotation_or_null(node, {"cpp.adapter"});

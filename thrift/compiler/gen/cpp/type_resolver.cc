@@ -78,6 +78,11 @@ const std::string* type_resolver::find_first_adapter(const t_field* field) {
   return nullptr;
 }
 
+bool type_resolver::can_resolve_to_scalar(const t_type* node) {
+  return node->get_true_type()->is_scalar() || find_first_adapter(node) ||
+      find_first_type(node);
+}
+
 const std::string& type_resolver::default_template(t_container::type ctype) {
   switch (ctype) {
     case t_container::type::t_list: {

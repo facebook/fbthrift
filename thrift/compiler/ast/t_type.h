@@ -177,6 +177,10 @@ class t_type : public t_named {
   bool is_string_or_binary() const { return is_string() || is_binary(); }
   bool is_any_int() const { return is_i16() || is_i32() || is_i64(); }
   bool is_floating_point() const { return is_double() || is_float(); }
+  bool is_scalar() const {
+    return is_enum() || is_any_int() || is_byte() || is_bool() ||
+        is_floating_point();
+  }
 
   /**
    * Create a unique hash number based on t_type's properties.
