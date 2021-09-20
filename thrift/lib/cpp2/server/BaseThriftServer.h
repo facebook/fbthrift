@@ -362,7 +362,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   /**
    * The thread manager used for sync calls.
    */
-  std::mutex threadManagerMutex_;
+  mutable std::mutex threadManagerMutex_;
   std::shared_ptr<apache::thrift::concurrency::ThreadManager> threadManager_;
 
   // If set, the thread factory that should be used to create worker threads.
@@ -542,8 +542,7 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    *
    * @return a shared pointer to the thread manager
    */
-  std::shared_ptr<apache::thrift::concurrency::ThreadManager>
-  getThreadManager() {
+  std::shared_ptr<concurrency::ThreadManager> getThreadManager() const {
     std::lock_guard<std::mutex> lock(threadManagerMutex_);
     return threadManager_;
   }

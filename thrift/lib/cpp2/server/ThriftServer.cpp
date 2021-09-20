@@ -319,8 +319,6 @@ void ThriftServer::touchRequestTimestamp() noexcept {
 }
 
 void ThriftServer::setup() {
-  THRIFT_SERVER_EVENT(serve).log(*this);
-
   ensureDecoratedProcessorFactoryInitialized();
 
   auto nWorkers = getNumIOWorkerThreads();
@@ -503,6 +501,8 @@ void ThriftServer::setup() {
     handleSetupFailure();
     throw;
   }
+
+  THRIFT_SERVER_EVENT(serve).log(*this);
 }
 
 void ThriftServer::setupThreadManager() {
