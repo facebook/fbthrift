@@ -65,15 +65,27 @@ void report_redef_failure(
     diagnostic_context& ctx,
     const char* kind,
     const std::string& name,
+    const std::string& path,
     const t_named& parent,
     const t_node& child,
     const t_node& /*existing*/) {
   // TODO(afuller): Use `existing` to provide more detail in the
   // diagnostic.
-  ctx.failure(child, [&](auto& o) {
+  ctx.failure(child, path, [&](auto& o) {
     o << kind << " `" << name << "` is already defined for `" << parent.name()
       << "`.";
   });
+}
+
+void report_redef_failure(
+    diagnostic_context& ctx,
+    const char* kind,
+    const std::string& name,
+    const t_named& parent,
+    const t_node& child,
+    const t_node& existing) {
+  report_redef_failure(
+      ctx, kind, name, ctx.program()->path(), parent, child, existing);
 }
 
 // Helper for checking for the redefinition of a name in the context of a node.
@@ -385,26 +397,26 @@ void validate_structured_annotation(
   }
 }
 
-void validate_structured_annotation_thrift_uri(
-    diagnostic_context& ctx, const t_named& node) {
-  std::unordered_map<std::string, const t_const*> uri_to_annotation;
-  for (const auto* annot : node.structured_annotations()) {
-    const auto* uri = annot->get_type()->find_annotation_or_null("thrift.uri");
-    if (!uri) {
-      continue;
-    }
-
-    auto result = uri_to_annotation.emplace(*uri, annot);
-    if (!result.second) {
-      report_redef_failure(
-          ctx,
-          "Structured annotation thrift.uri",
-          *uri,
-          node,
-          *annot,
-          *result.first->second);
-    }
+void validate_uri_uniqueness(diagnostic_context& ctx, const t_program& prog) {
+  // TODO: use string_view as map key
+  std::unordered_map<std::string, const t_named*> uri_to_node;
+  basic_ast_visitor<true, const std::string&> visit;
+  visit.add_definition_visitor(
+      [&](const std::string& path, const t_named& node) {
+        const auto& uri = node.uri();
+        if (uri.empty()) {
+          return;
+        }
+        auto result = uri_to_node.emplace(uri, &node);
+        if (!result.second) {
+          report_redef_failure(
+              ctx, "thrift.uri", uri, path, node, node, *result.first->second);
+        }
+      });
+  for (const auto* p : prog.get_included_programs()) {
+    visit(p->path(), *p);
   }
+  visit(prog.path(), prog);
 }
 
 void validate_field_id(diagnostic_context& ctx, const t_field& node) {
@@ -503,9 +515,10 @@ ast_validator standard_validator() {
   validator.add_enum_value_visitor(&validate_enum_value);
 
   validator.add_definition_visitor(&validate_structured_annotation);
-  validator.add_definition_visitor(&validate_structured_annotation_thrift_uri);
   validator.add_definition_visitor(&validate_annotation_scopes);
+
   validator.add_const_visitor(&validate_const_type);
+  validator.add_program_visitor(&validate_uri_uniqueness);
   return validator;
 }
 

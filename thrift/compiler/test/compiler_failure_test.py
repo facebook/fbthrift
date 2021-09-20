@@ -757,7 +757,6 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent("""
                 [FAILURE:foo.thrift:10] The @cpp.Ref annotation cannot be combined with the `cpp.ref` or `cpp.ref_type` annotations. Remove one of the annotations from `field3`.
                 [FAILURE:foo.thrift:13] Structured annotation `Ref` is already defined for `field4`.
-                [FAILURE:foo.thrift:13] Structured annotation thrift.uri `facebook.com/thrift/annotation/cpp/Ref` is already defined for `field4`.
             """)
         )
 
@@ -1350,36 +1349,54 @@ class CompilerFailureTest(unittest.TestCase):
             ),
         )
 
-    def test_structured_annotation_thrift_uri(self):
+    def test_thrift_uri_uniqueness(self):
         write_file(
-            "foo.thrift",
+            "file1.thrift",
             textwrap.dedent(
-                """\
-                struct Struct1 {
-                } (thrift.uri = "facebook.com/thrift/annotation/Struct")
-                struct Struct2 {
-                } (thrift.uri = "facebook.com/thrift/annotation/Struct")
-
-                @Struct1
-                struct Struct3 {}
-
-                @Struct2
-                struct Struct4 {}
-
-                @Struct1
-                @Struct2
-                struct Struct5 {}
+                """
+                struct Foo1 {
+                } (thrift.uri = "facebook.com/thrift/annotation/Foo")
                 """
             ),
         )
 
-        ret, out, err = self.run_thrift("foo.thrift")
+        write_file(
+            "file2.thrift",
+            textwrap.dedent(
+                """
+                struct Foo2 {
+                } (thrift.uri = "facebook.com/thrift/annotation/Foo")
+                struct Bar1 {
+                } (thrift.uri = "facebook.com/thrift/annotation/Bar")
+                """
+            ),
+        )
+
+        write_file(
+            "main.thrift",
+            textwrap.dedent(
+                """\
+                include "file1.thrift"
+                include "file2.thrift"
+                struct Bar2 {
+                } (thrift.uri = "facebook.com/thrift/annotation/Bar")
+                struct Baz1 {
+                } (thrift.uri = "facebook.com/thrift/annotation/Baz")
+                struct Baz2 {
+                } (thrift.uri = "facebook.com/thrift/annotation/Baz")
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("main.thrift")
         self.assertEqual(ret, 1)
         self.assertEqual(
             "\n" + err,
             textwrap.dedent(
                 """
-                [FAILURE:foo.thrift:14] Structured annotation thrift.uri `facebook.com/thrift/annotation/Struct` is already defined for `Struct5`.
+                [FAILURE:file2.thrift:2] thrift.uri `facebook.com/thrift/annotation/Foo` is already defined for `Foo2`.
+                [FAILURE:main.thrift:3] thrift.uri `facebook.com/thrift/annotation/Bar` is already defined for `Bar2`.
+                [FAILURE:main.thrift:7] thrift.uri `facebook.com/thrift/annotation/Baz` is already defined for `Baz2`.
                 """
             ),
         )

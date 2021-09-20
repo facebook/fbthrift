@@ -194,7 +194,11 @@ class diagnostic_context : public const_visitor_context {
       typename With,
       typename = decltype(std::declval<With&>()(std::declval<std::ostream&>()))>
   void report(
-      diagnostic_level level, int lineno, std::string token, With&& with) {
+      diagnostic_level level,
+      std::string path,
+      int lineno,
+      std::string token,
+      With&& with) {
     if (!params_.should_report(level)) {
       return;
     }
@@ -204,15 +208,38 @@ class diagnostic_context : public const_visitor_context {
     report_cb_({
         level,
         o.str(),
-        program()->path(),
+        std::move(path),
         lineno,
         std::move(token),
     });
   }
 
+  template <
+      typename With,
+      typename = decltype(std::declval<With&>()(std::declval<std::ostream&>()))>
+  void report(
+      diagnostic_level level, int lineno, std::string token, With&& with) {
+    report(
+        level,
+        program()->path(),
+        lineno,
+        std::move(token),
+        std::forward<With>(with));
+  }
+
   template <typename With>
   void report(diagnostic_level level, const t_node& node, With&& with) {
     report(level, node.lineno(), {}, std::forward<With>(with));
+  }
+
+  // TODO(ytj): use path in t_node and delete this function overload
+  template <typename With>
+  void report(
+      diagnostic_level level,
+      const t_node& node,
+      std::string path,
+      With&& with) {
+    report(level, std::move(path), node.lineno(), {}, std::forward<With>(with));
   }
 
   template <typename With>
