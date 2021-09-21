@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "thrift/lib/cpp/concurrency/SFQThreadManager.h"
 #include <memory>
 #include <vector>
 
@@ -42,6 +43,12 @@ SFQThreadManager::SFQThreadManager(SFQThreadManagerConfig config)
 
 SFQThreadManager::~SFQThreadManager() {
   perturbationSchedule_.shutdown();
+}
+
+size_t SFQThreadManager::getTaskCount(ExecutionScope es) {
+  auto pri = es.getPriority();
+  auto tenantId = es.getTenantId().value_or(kDefaultTenantId);
+  return getMeteredExecutor(pri, tenantId)->pendingTasks();
 }
 
 void SFQThreadManager::initQueues() {

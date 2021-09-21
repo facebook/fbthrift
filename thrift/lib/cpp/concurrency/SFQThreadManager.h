@@ -122,6 +122,9 @@ class SFQThreadManager : public ThreadManagerExecutorAdapter {
         << "add*() is unsupported in SFQThreadManager, use getKeepAlive()";
   }
 
+  // Return size of tenantQueue for a given priority and tenantId
+  size_t getTaskCount(ExecutionScope es);
+
  private:
   using ExecutorPtr = std::unique_ptr<folly::DefaultKeepAliveExecutor>;
 

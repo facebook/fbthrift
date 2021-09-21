@@ -14,6 +14,7 @@
  * limitations under the License.
  */
 
+#include "thrift/lib/cpp/concurrency/SFQThreadManager.h"
 #include <chrono>
 #include <condition_variable>
 #include <deque>
@@ -108,7 +109,9 @@ TEST_F(SFQThreadManagerTest, FairnessPreemptTest) {
     ++c1;
     c1Baton[1].post();
   });
-
+  // Check that task count is 2 for tenantId=1.
+  auto sfqTM = dynamic_cast<SFQThreadManager*>(tm.get());
+  EXPECT_EQ(2, sfqTM->getTaskCount(es));
   // No tasks have run at this point.
   EXPECT_EQ(0, c0);
   EXPECT_EQ(0, c1);
