@@ -68,8 +68,7 @@ class NullServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
  public:
   NullServiceAsyncProcessor(NullServiceSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~NullServiceAsyncProcessor() {}
+  ~NullServiceAsyncProcessor() override {}
 };
 
 } // cpp2

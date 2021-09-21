@@ -181,8 +181,7 @@ class SinkServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
  public:
   SinkServiceAsyncProcessor(SinkServiceSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~SinkServiceAsyncProcessor() {}
+  ~SinkServiceAsyncProcessor() override {}
 };
 
 } // cpp2

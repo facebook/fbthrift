@@ -102,8 +102,7 @@ class MyServicePrioParentAsyncProcessor : public ::apache::thrift::GeneratedAsyn
  public:
   MyServicePrioParentAsyncProcessor(MyServicePrioParentSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~MyServicePrioParentAsyncProcessor() {}
+  ~MyServicePrioParentAsyncProcessor() override {}
 };
 
 } // cpp2

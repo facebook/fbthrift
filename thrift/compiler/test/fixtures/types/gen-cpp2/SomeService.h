@@ -103,8 +103,7 @@ class SomeServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcess
  public:
   SomeServiceAsyncProcessor(SomeServiceSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~SomeServiceAsyncProcessor() {}
+  ~SomeServiceAsyncProcessor() override {}
 };
 
 }}}} // apache::thrift::fixtures::types

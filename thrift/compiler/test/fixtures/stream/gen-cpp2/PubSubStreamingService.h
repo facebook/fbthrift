@@ -143,8 +143,7 @@ class PubSubStreamingServiceAsyncProcessor : public ::apache::thrift::GeneratedA
  public:
   PubSubStreamingServiceAsyncProcessor(PubSubStreamingServiceSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~PubSubStreamingServiceAsyncProcessor() {}
+  ~PubSubStreamingServiceAsyncProcessor() override {}
 };
 
 } // cpp2

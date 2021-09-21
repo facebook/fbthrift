@@ -183,8 +183,7 @@ class MyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor
  public:
   MyServiceAsyncProcessor(MyServiceSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~MyServiceAsyncProcessor() {}
+  ~MyServiceAsyncProcessor() override {}
 };
 
 } // cpp2

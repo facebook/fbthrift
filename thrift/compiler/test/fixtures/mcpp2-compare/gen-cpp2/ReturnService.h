@@ -385,8 +385,7 @@ class ReturnServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
  public:
   ReturnServiceAsyncProcessor(ReturnServiceSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~ReturnServiceAsyncProcessor() {}
+  ~ReturnServiceAsyncProcessor() override {}
 };
 
 }}} // some::valid::ns

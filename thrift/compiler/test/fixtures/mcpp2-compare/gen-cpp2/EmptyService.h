@@ -70,8 +70,7 @@ class EmptyServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
  public:
   EmptyServiceAsyncProcessor(EmptyServiceSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~EmptyServiceAsyncProcessor() {}
+  ~EmptyServiceAsyncProcessor() override {}
 };
 
 }}} // some::valid::ns

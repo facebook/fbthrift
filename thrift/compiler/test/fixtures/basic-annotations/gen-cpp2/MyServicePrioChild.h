@@ -87,8 +87,7 @@ class MyServicePrioChildAsyncProcessor : public ::cpp2::MyServicePrioParentAsync
   MyServicePrioChildAsyncProcessor(MyServicePrioChildSvIf* iface) :
       ::cpp2::MyServicePrioParentAsyncProcessor(iface),
       iface_(iface) {}
-
-  virtual ~MyServicePrioChildAsyncProcessor() {}
+  ~MyServicePrioChildAsyncProcessor() override {}
 };
 
 } // cpp2

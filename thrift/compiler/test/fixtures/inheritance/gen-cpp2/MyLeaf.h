@@ -87,8 +87,7 @@ class MyLeafAsyncProcessor : public ::cpp2::MyNodeAsyncProcessor {
   MyLeafAsyncProcessor(MyLeafSvIf* iface) :
       ::cpp2::MyNodeAsyncProcessor(iface),
       iface_(iface) {}
-
-  virtual ~MyLeafAsyncProcessor() {}
+  ~MyLeafAsyncProcessor() override {}
 };
 
 } // cpp2

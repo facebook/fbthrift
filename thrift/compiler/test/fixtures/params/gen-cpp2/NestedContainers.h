@@ -153,8 +153,7 @@ class NestedContainersAsyncProcessor : public ::apache::thrift::GeneratedAsyncPr
  public:
   NestedContainersAsyncProcessor(NestedContainersSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~NestedContainersAsyncProcessor() {}
+  ~NestedContainersAsyncProcessor() override {}
 };
 
 } // cpp2

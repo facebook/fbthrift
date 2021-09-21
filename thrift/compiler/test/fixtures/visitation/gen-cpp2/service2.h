@@ -173,8 +173,7 @@ class service2AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
  public:
   service2AsyncProcessor(service2SvIf* iface) :
       iface_(iface) {}
-
-  virtual ~service2AsyncProcessor() {}
+  ~service2AsyncProcessor() override {}
 };
 
 }} // test_cpp2::cpp_reflection

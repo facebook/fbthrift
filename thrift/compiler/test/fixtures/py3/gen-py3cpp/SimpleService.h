@@ -765,8 +765,7 @@ class SimpleServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProce
  public:
   SimpleServiceAsyncProcessor(SimpleServiceSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~SimpleServiceAsyncProcessor() {}
+  ~SimpleServiceAsyncProcessor() override {}
 };
 
 }} // py3::simple

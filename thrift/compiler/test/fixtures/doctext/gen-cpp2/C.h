@@ -119,8 +119,7 @@ class CAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
   CAsyncProcessor(CSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~CAsyncProcessor() {}
+  ~CAsyncProcessor() override {}
 };
 
 } // cpp2

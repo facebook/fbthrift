@@ -102,8 +102,7 @@ class DbMixedStackArgumentsAsyncProcessor : public ::apache::thrift::GeneratedAs
  public:
   DbMixedStackArgumentsAsyncProcessor(DbMixedStackArgumentsSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~DbMixedStackArgumentsAsyncProcessor() {}
+  ~DbMixedStackArgumentsAsyncProcessor() override {}
 };
 
 } // cpp2

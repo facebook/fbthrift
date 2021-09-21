@@ -85,8 +85,7 @@ class MyRootAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
   MyRootAsyncProcessor(MyRootSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~MyRootAsyncProcessor() {}
+  ~MyRootAsyncProcessor() override {}
 };
 
 } // cpp2

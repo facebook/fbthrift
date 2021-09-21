@@ -547,8 +547,7 @@ class service_with_special_namesAsyncProcessor : public ::apache::thrift::Genera
  public:
   service_with_special_namesAsyncProcessor(service_with_special_namesSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~service_with_special_namesAsyncProcessor() {}
+  ~service_with_special_namesAsyncProcessor() override {}
 };
 
 }} // test_cpp2::cpp_reflection

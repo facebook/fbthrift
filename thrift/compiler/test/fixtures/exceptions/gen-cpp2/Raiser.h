@@ -136,8 +136,7 @@ class RaiserAsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor {
  public:
   RaiserAsyncProcessor(RaiserSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~RaiserAsyncProcessor() {}
+  ~RaiserAsyncProcessor() override {}
 };
 
 } // cpp2

@@ -535,8 +535,7 @@ class ParamServiceAsyncProcessor : public ::apache::thrift::GeneratedAsyncProces
  public:
   ParamServiceAsyncProcessor(ParamServiceSvIf* iface) :
       iface_(iface) {}
-
-  virtual ~ParamServiceAsyncProcessor() {}
+  ~ParamServiceAsyncProcessor() override {}
 };
 
 }}} // some::valid::ns

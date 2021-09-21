@@ -87,8 +87,7 @@ class RederivedServiceAsyncProcessor : public ::py3::simple::DerivedServiceAsync
   RederivedServiceAsyncProcessor(RederivedServiceSvIf* iface) :
       ::py3::simple::DerivedServiceAsyncProcessor(iface),
       iface_(iface) {}
-
-  virtual ~RederivedServiceAsyncProcessor() {}
+  ~RederivedServiceAsyncProcessor() override {}
 };
 
 }} // py3::simple

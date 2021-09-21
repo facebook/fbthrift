@@ -87,8 +87,7 @@ class DerivedServiceAsyncProcessor : public ::py3::simple::SimpleServiceAsyncPro
   DerivedServiceAsyncProcessor(DerivedServiceSvIf* iface) :
       ::py3::simple::SimpleServiceAsyncProcessor(iface),
       iface_(iface) {}
-
-  virtual ~DerivedServiceAsyncProcessor() {}
+  ~DerivedServiceAsyncProcessor() override {}
 };
 
 }} // py3::simple

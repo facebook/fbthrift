@@ -173,8 +173,7 @@ class service3AsyncProcessor : public ::apache::thrift::GeneratedAsyncProcessor 
  public:
   service3AsyncProcessor(service3SvIf* iface) :
       iface_(iface) {}
-
-  virtual ~service3AsyncProcessor() {}
+  ~service3AsyncProcessor() override {}
 };
 
 }} // test_cpp2::cpp_reflection

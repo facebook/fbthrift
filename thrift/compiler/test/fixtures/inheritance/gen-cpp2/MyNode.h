@@ -87,8 +87,7 @@ class MyNodeAsyncProcessor : public ::cpp2::MyRootAsyncProcessor {
   MyNodeAsyncProcessor(MyNodeSvIf* iface) :
       ::cpp2::MyRootAsyncProcessor(iface),
       iface_(iface) {}
-
-  virtual ~MyNodeAsyncProcessor() {}
+  ~MyNodeAsyncProcessor() override {}
 };
 
 } // cpp2

@@ -190,8 +190,7 @@ class ExtraServiceAsyncProcessor : public ::some::valid::ns::ParamServiceAsyncPr
   ExtraServiceAsyncProcessor(ExtraServiceSvIf* iface) :
       ::some::valid::ns::ParamServiceAsyncProcessor(iface),
       iface_(iface) {}
-
-  virtual ~ExtraServiceAsyncProcessor() {}
+  ~ExtraServiceAsyncProcessor() override {}
 };
 
 }} // extra::svc
