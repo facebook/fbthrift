@@ -1041,7 +1041,8 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    */
   int getListenBacklog() const { return listenBacklog_.get(); }
 
-  void setIsOverloaded(IsOverloadedFunc isOverloaded) {
+  [[deprecated("Use setPreprocess instead")]] void setIsOverloaded(
+      IsOverloadedFunc isOverloaded) {
     isOverloaded_ = std::move(isOverloaded);
   }
 
