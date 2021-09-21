@@ -344,7 +344,7 @@ struct StreamPayloadMetadata {
   1: optional CompressionAlgorithm compression;
   // Arbitrary metadata that MAY be used by application or Thrift extensions.
   // MAY be set.
-  2: optional map<string, string> otherMetadata;
+  2: optional map<string, string (java.swift.binary_string)> otherMetadata;
   // Metadata describing the type of stream payload. MUST be set for protocol
   // version 8+.
   3: optional PayloadMetadata payloadMetadata;
