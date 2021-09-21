@@ -22,9 +22,9 @@
 <%^struct:union?%>
 <%#struct:union?%>  <%/struct:union?%>    previousFieldHasValue = true;
 <%/struct:union?%>
-<%#struct:indexing?%>
+<%#field:lazy?%>
 <%#struct:union?%>  <%/struct:union?%>    indexWriter.recordFieldStart();
-<%/struct:indexing?%>
+<%/field:lazy?%>
 <%^field:non_opt_cpp_ref?%>
 <%#field:lazy?%>
 <%#struct:union?%>  <%/struct:union?%>    if constexpr (Protocol_::kHasIndexSupport()) {
@@ -56,10 +56,8 @@
 <%/field:non_opt_cpp_ref?%>
 <%#field:lazy?%>
 <%#struct:union?%>  <%/struct:union?%>    written_lazy_field_<%field:cpp_name%>:
-<%/field:lazy?%>
-<%#struct:indexing?%>
 <%#struct:union?%>  <%/struct:union?%>    indexWriter.recordFieldEnd(<% > common/type_class%>{}, <% > module_types_tcc/pm_value%>, <%field:key%>);
-<%/struct:indexing?%>
+<%/field:lazy?%>
 <%#struct:union?%>  <%/struct:union?%>    xfer += prot_->writeFieldEnd();
 <%#struct:union?%>
 <% > module_types_tcc/if_should_write_end%>

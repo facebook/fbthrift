@@ -120,7 +120,6 @@ IndexedStruct genIndexedStruct(Serializer ser) {
   if (!cheapToSkipListOfDouble(ser)) {
     // Only add index field if list<double> is not cheap to skip
     obj.field_id_to_size_ref() = {
-        {2, tokens[3].value.size()},
         {4, tokens[5].value.size()},
     };
   }

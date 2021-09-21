@@ -568,9 +568,7 @@ uint32_t TerseLazyFoo::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = ::apache::thrift::detail::kSizeField.id;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, kPrevFieldId>(*prot_, "field1", previousFieldHasValue);
     previousFieldHasValue = true;
-    indexWriter.recordFieldStart();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::write(*prot_, this->field1);
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>{}, this->field1, 1);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -579,9 +577,7 @@ uint32_t TerseLazyFoo::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
     previousFieldHasValue = true;
-    indexWriter.recordFieldStart();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->field2);
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, this->field2, 2);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -1159,9 +1155,7 @@ uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = ::apache::thrift::detail::kSizeField.id;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 1, kPrevFieldId>(*prot_, "field1", previousFieldHasValue);
     previousFieldHasValue = true;
-    indexWriter.recordFieldStart();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>, ::std::vector<double>>::write(*prot_, this->field1);
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::floating_point>{}, this->field1, 1);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
@@ -1170,9 +1164,7 @@ uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
     constexpr int16_t kPrevFieldId = 1;
     xfer += ::apache::thrift::detail::writeFieldBegin<apache::thrift::protocol::T_LIST, 2, kPrevFieldId>(*prot_, "field2", previousFieldHasValue);
     previousFieldHasValue = true;
-    indexWriter.recordFieldStart();
     xfer += ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::list<::apache::thrift::type_class::integral>, ::std::vector<::std::int32_t>>::write(*prot_, this->field2);
-    indexWriter.recordFieldEnd(::apache::thrift::type_class::list<::apache::thrift::type_class::integral>{}, this->field2, 2);
     xfer += prot_->writeFieldEnd();
   } else {
     previousFieldHasValue = false;
