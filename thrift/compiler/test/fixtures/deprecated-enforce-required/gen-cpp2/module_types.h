@@ -62,7 +62,7 @@ class Foo final  {
  public:
 
   Foo() :
-      bar(0) {
+      bar() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

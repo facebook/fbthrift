@@ -211,8 +211,8 @@ class MyStruct final  {
  public:
 
   MyStruct() :
-      MyIntField(0),
-      myEnum( ::cpp2::MyEnum::MyValue1) {
+      MyIntField(),
+      myEnum() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

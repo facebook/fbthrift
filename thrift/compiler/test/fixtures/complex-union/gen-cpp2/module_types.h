@@ -1337,7 +1337,7 @@ class Val final  {
  public:
 
   Val() :
-      intVal(0) {
+      intVal() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2118,7 +2118,7 @@ class NonCopyableStruct final  {
  public:
 
   NonCopyableStruct() :
-      num(0) {
+      num() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

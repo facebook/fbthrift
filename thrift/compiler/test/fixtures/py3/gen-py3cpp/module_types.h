@@ -502,14 +502,14 @@ class SimpleStruct final  {
  public:
 
   SimpleStruct() :
-      is_on(0),
-      tiny_int(0),
-      small_int(0),
-      nice_sized_int(0),
-      big_int(0),
-      real(0),
-      smaller_real(0),
-      hidden_field(0) {
+      is_on(),
+      tiny_int(),
+      small_int(),
+      nice_sized_int(),
+      big_int(),
+      real(),
+      smaller_real(),
+      hidden_field() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

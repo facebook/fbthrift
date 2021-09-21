@@ -140,9 +140,9 @@ Internship& Internship::operator=(const Internship&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Internship::Internship() :
-      weeks(0),
-      employer( ::cpp2::Company::FACEBOOK),
-      compensation(0) {
+      weeks(),
+      employer(),
+      compensation() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

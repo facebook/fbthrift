@@ -1252,7 +1252,7 @@ IndexedFoo& IndexedFoo::operator=(const IndexedFoo&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IndexedFoo::IndexedFoo() :
-      serialized_data_size(0) {
+      serialized_data_size() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1457,7 +1457,7 @@ OptionalIndexedFoo& OptionalIndexedFoo::operator=(const OptionalIndexedFoo&) = d
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 OptionalIndexedFoo::OptionalIndexedFoo() :
-      serialized_data_size(0) {
+      serialized_data_size() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -1191,7 +1191,7 @@ class VirtualStruct  {
  public:
 
   VirtualStruct() :
-      MyIntField(0) {
+      MyIntField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1463,8 +1463,8 @@ class TrivialNumeric final  {
  public:
 
   TrivialNumeric() :
-      a(0),
-      b(0) {
+      a(),
+      b() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2090,11 +2090,11 @@ class MinPadding final  {
  public:
 
   MinPadding() :
-      big(0),
-      biggish(0),
-      medium(0),
-      small(0),
-      tiny(0) {
+      big(),
+      biggish(),
+      medium(),
+      small(),
+      tiny() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2391,8 +2391,8 @@ class MyStruct final  {
  public:
 
   MyStruct() :
-      MyIntField(0),
-      majorVer(0) {
+      MyIntField(),
+      majorVer() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2627,7 +2627,7 @@ class Renaming final  {
  public:
 
   Renaming() :
-      bar(0) {
+      bar() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -3319,7 +3319,7 @@ class NoexceptMoveSimpleStruct final  {
  public:
 
   NoexceptMoveSimpleStruct() :
-      boolField(0) {
+      boolField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -4480,7 +4480,7 @@ class AllocatorAware2 final  {
  public:
 
   AllocatorAware2() :
-      not_a_container(0) {
+      not_a_container() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -4607,9 +4607,9 @@ class TypedefStruct final  {
  public:
 
   TypedefStruct() :
-      i32_field(0),
-      IntTypedef_field(0),
-      UintTypedef_field(0) {
+      i32_field(),
+      IntTypedef_field(),
+      UintTypedef_field() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -4803,7 +4803,7 @@ class StructWithDoubleUnderscores final  {
  public:
 
   StructWithDoubleUnderscores() :
-      __field(0) {
+      __field() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

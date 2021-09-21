@@ -199,7 +199,7 @@ class structured_annotation_inline final  {
  public:
 
   structured_annotation_inline() :
-      count(0),
+      count(),
       name(apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba")) {
   }
   // FragileConstructor for use in initialization lists only.
@@ -478,7 +478,7 @@ class structured_annotation_forward final  {
  public:
 
   structured_annotation_forward() :
-      count(0) {
+      count() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -946,8 +946,8 @@ class MyStruct final  {
  public:
 
   MyStruct() :
-      annotated_field(0),
-      annotated_nested(0) {
+      annotated_field(),
+      annotated_nested() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

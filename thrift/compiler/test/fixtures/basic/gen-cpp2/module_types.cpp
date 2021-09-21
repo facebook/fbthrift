@@ -140,11 +140,11 @@ MyStruct& MyStruct::operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
-      MyIntField(0),
-      myEnum( ::cpp2::MyEnum::MyValue1),
-      oneway(0),
-      readonly(0),
-      idempotent(0) {
+      MyIntField(),
+      myEnum(),
+      oneway(),
+      readonly(),
+      idempotent() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

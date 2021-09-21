@@ -170,7 +170,7 @@ MyStruct& MyStruct::operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
-      majorVer(0) {
+      majorVer() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

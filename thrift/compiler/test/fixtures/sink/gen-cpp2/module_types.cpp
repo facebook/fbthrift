@@ -633,7 +633,7 @@ SinkException2& SinkException2::operator=(const SinkException2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SinkException2::SinkException2() :
-      reason(0) {
+      reason() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -120,7 +120,7 @@ class AStruct final  {
  public:
 
   AStruct() :
-      FieldA(0) {
+      FieldA() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

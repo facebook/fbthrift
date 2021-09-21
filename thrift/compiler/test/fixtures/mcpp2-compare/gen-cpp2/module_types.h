@@ -1196,7 +1196,7 @@ class ASimpleStruct final  {
  public:
 
   ASimpleStruct() :
-      boolField(0) {
+      boolField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1311,7 +1311,7 @@ class ASimpleStructNoexcept final  {
  public:
 
   ASimpleStructNoexcept() :
-      boolField(0) {
+      boolField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -8775,8 +8775,8 @@ class FloatStruct final  {
  public:
 
   FloatStruct() :
-      floatField(0),
-      doubleField(0) {
+      floatField(),
+      doubleField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -9194,7 +9194,7 @@ class AllRequiredNoExceptMoveCtrStruct final  {
  public:
 
   AllRequiredNoExceptMoveCtrStruct() :
-      intField(0) {
+      intField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

@@ -675,9 +675,9 @@ class MyStructFloatFieldThrowExp final  {
  public:
 
   MyStructFloatFieldThrowExp() :
-      myLongField(0),
-      MyByteField(0),
-      myFloatField(0) {
+      myLongField(),
+      MyByteField(),
+      myFloatField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -916,7 +916,7 @@ class MyStructMapFloatThrowExp final  {
  public:
 
   MyStructMapFloatThrowExp() :
-      myLongField(0) {
+      myLongField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -5653,7 +5653,7 @@ class TypeRemapped final  {
  public:
 
   TypeRemapped() :
-      BigInteger(0) {
+      BigInteger() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

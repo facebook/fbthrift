@@ -41,13 +41,13 @@ MyStruct& MyStruct::operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
-      MyIntField(0),
-      myEnum( ::cpp2::MyEnum::MyValue1),
-      MyBoolField(0),
-      MyByteField(0),
-      MyShortField(0),
-      MyLongField(0),
-      MyDoubleField(0) {
+      MyIntField(),
+      myEnum(),
+      MyBoolField(),
+      MyByteField(),
+      MyShortField(),
+      MyLongField(),
+      MyDoubleField() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -647,8 +647,8 @@ MyStructTypeDef& MyStructTypeDef::operator=(const MyStructTypeDef&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructTypeDef::MyStructTypeDef() :
-      myLongField(0),
-      myLongTypeDef(0) {
+      myLongField(),
+      myLongTypeDef() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1122,7 +1122,7 @@ complexException& complexException::operator=(const complexException&) = default
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 complexException::complexException() :
-      errorEnum( ::cpp2::MyEnum::MyValue1) {
+      errorEnum() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

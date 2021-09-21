@@ -598,8 +598,8 @@ class Range final  {
  public:
 
   Range() :
-      min(0),
-      max(0) {
+      min(),
+      max() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -895,7 +895,7 @@ class struct2 final  {
  public:
 
   struct2() :
-      a(0) {
+      a() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1132,7 +1132,7 @@ class struct3 final  {
  public:
 
   struct3() :
-      b(0) {
+      b() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1330,9 +1330,9 @@ class struct4 final  {
  public:
 
   struct4() :
-      a(0),
-      b(0),
-      c(0) {
+      a(),
+      b(),
+      c() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

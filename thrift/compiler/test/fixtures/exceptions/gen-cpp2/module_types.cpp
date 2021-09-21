@@ -488,7 +488,7 @@ ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(const Except
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField() :
-      error_code(0) {
+      error_code() {
 }
 
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(std::string __message) : ExceptionWithPrimitiveField() {

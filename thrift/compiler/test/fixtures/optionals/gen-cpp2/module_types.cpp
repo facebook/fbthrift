@@ -358,10 +358,10 @@ Person& Person::operator=(const Person&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Person::Person() :
-      id(0),
-      age(0),
-      bestFriend(0),
-      afraidOfAnimal(static_cast< ::cpp2::Animal>(0)) {
+      id(),
+      age(),
+      bestFriend(),
+      afraidOfAnimal() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

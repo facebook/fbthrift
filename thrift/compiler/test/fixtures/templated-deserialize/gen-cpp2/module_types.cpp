@@ -246,7 +246,7 @@ containerStruct& containerStruct::operator=(const containerStruct& src) {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct::containerStruct() :
-      fieldA(0),
+      fieldA(),
       fieldC(std::initializer_list<::std::int32_t>{1,
   2,
   3,
@@ -261,7 +261,7 @@ containerStruct::containerStruct() :
   5,
   9,
   13}}}),
-      fieldQ(static_cast< ::cpp2::MyEnumA>(0)),
+      fieldQ(),
       fieldR(std::make_unique<::std::map<::std::string, bool>>()),
       fieldS(std::make_unique<::cpp2::SmallStruct>()),
       fieldT(std::make_shared<::cpp2::SmallStruct>()),

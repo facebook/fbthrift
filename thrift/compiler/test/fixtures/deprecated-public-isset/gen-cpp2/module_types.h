@@ -72,9 +72,9 @@ class Foo final  {
  public:
 
   Foo() :
-      field1(0),
-      field2(0),
-      field3(0) {
+      field1(),
+      field2(),
+      field3() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

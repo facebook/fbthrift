@@ -2281,7 +2281,7 @@ class structA final  {
  public:
 
   structA() :
-      a(0) {
+      a() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -2926,8 +2926,8 @@ class structB final  {
  public:
 
   structB() :
-      c(0),
-      d(0) {
+      c(),
+      d() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -5789,8 +5789,8 @@ class struct4 final  {
  public:
 
   struct4() :
-      field0(0),
-      field2( ::test_cpp2::cpp_reflection::enum1::field0),
+      field0(),
+      field2(),
       field3(std::make_unique<::test_cpp2::cpp_reflection::structA>()) {
   }
   // FragileConstructor for use in initialization lists only.
@@ -6385,7 +6385,7 @@ class dep_A_struct final  {
  public:
 
   dep_A_struct() :
-      i_a(0) {
+      i_a() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -6578,7 +6578,7 @@ class dep_B_struct final  {
  public:
 
   dep_B_struct() :
-      i_a(0) {
+      i_a() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -6771,7 +6771,7 @@ class annotated final  {
  public:
 
   annotated() :
-      a(0) {
+      a() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -8839,34 +8839,34 @@ class struct_with_special_names final  {
  public:
 
   struct_with_special_names() :
-      get(0),
-      getter(0),
-      lists(0),
-      maps(0),
-      name(0),
-      name_to_value(0),
-      names(0),
-      prefix_tree(0),
-      sets(0),
-      setter(0),
-      str(0),
-      strings(0),
-      type(0),
-      value(0),
-      value_to_name(0),
-      values(0),
-      id(0),
-      ids(0),
-      descriptor(0),
-      descriptors(0),
-      key(0),
-      keys(0),
-      annotation(0),
-      annotations(0),
-      member(0),
-      members(0),
-      field(0),
-      fields(0) {
+      get(),
+      getter(),
+      lists(),
+      maps(),
+      name(),
+      name_to_value(),
+      names(),
+      prefix_tree(),
+      sets(),
+      setter(),
+      str(),
+      strings(),
+      type(),
+      value(),
+      value_to_name(),
+      values(),
+      id(),
+      ids(),
+      descriptor(),
+      descriptors(),
+      key(),
+      keys(),
+      annotation(),
+      annotations(),
+      member(),
+      members(),
+      field(),
+      fields() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

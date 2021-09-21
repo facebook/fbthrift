@@ -77,10 +77,10 @@ class BasicTypes final  {
  public:
 
   BasicTypes() :
-      first(0),
-      second(0),
-      third(0),
-      isTrue(0) {
+      first(),
+      second(),
+      third(),
+      isTrue() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

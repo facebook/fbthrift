@@ -232,8 +232,8 @@ class SmallStruct final  {
  public:
 
   SmallStruct() :
-      small_A(0),
-      small_B(0) {
+      small_A(),
+      small_B() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

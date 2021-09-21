@@ -887,11 +887,11 @@ structC& structC::operator=(const structC&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC() :
-      a(0),
-      c(0),
-      d(0),
-      e( ::test_cpp2::cpp_reflection::enum1::field0),
-      f( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+      a(),
+      c(),
+      d(),
+      e(),
+      f() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1668,9 +1668,9 @@ struct1& struct1::operator=(const struct1&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1() :
-      field0(0),
-      field2( ::test_cpp2::cpp_reflection::enum1::field0),
-      field3( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+      field0(),
+      field2(),
+      field3() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1873,9 +1873,9 @@ struct2& struct2::operator=(const struct2&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2() :
-      fieldA(0),
-      fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
-      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+      fieldA(),
+      fieldC(),
+      fieldD() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2112,9 +2112,9 @@ struct3& struct3::operator=(const struct3&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3() :
-      fieldA(0),
-      fieldC( ::test_cpp2::cpp_reflection::enum1::field0),
-      fieldD( ::test_cpp2::cpp_reflection::enum2::field0_2) {
+      fieldA(),
+      fieldC(),
+      fieldD() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2789,8 +2789,8 @@ struct5& struct5::operator=(const struct5&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5() :
-      field0(0),
-      field2( ::test_cpp2::cpp_reflection::enum1::field0) {
+      field0(),
+      field2() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -4084,10 +4084,10 @@ struct_with_indirections& struct_with_indirections::operator=(const struct_with_
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections() :
-      real(0),
-      fake(0),
-      number(0),
-      result(0) {
+      real(),
+      fake(),
+      number(),
+      result() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

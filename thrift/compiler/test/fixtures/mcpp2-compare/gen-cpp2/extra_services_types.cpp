@@ -41,9 +41,9 @@ containerStruct2& containerStruct2::operator=(const containerStruct2&) = default
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct2::containerStruct2() :
-      fieldA(0),
-      req_fieldA(0),
-      opt_fieldA(0),
+      fieldA(),
+      req_fieldA(),
+      opt_fieldA(),
       fieldC(std::initializer_list<::std::int32_t>{1,
   2,
   3,

@@ -892,7 +892,7 @@ reqXcep& reqXcep::operator=(const reqXcep&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 reqXcep::reqXcep() :
-      errorCode(0) {
+      errorCode() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

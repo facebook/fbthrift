@@ -107,7 +107,7 @@ SimpleException& SimpleException::operator=(const SimpleException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException() :
-      err_code(0) {
+      err_code() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -498,8 +498,8 @@ ComplexStruct& ComplexStruct::operator=(const ComplexStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexStruct::ComplexStruct() :
-      an_integer(0),
-      an_enum( ::py3::simple::AnEnum::None) {
+      an_integer(),
+      an_enum() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

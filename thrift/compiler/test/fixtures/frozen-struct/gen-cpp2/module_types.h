@@ -464,8 +464,8 @@ class ModuleB final  {
  public:
 
   ModuleB() :
-      i32Field(0),
-      inclEnumB(static_cast< ::some::ns::EnumB>(0)) {
+      i32Field(),
+      inclEnumB() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

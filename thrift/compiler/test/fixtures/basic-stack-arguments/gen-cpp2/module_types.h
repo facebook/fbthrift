@@ -115,7 +115,7 @@ class MyStruct final  {
  public:
 
   MyStruct() :
-      MyIntField(0) {
+      MyIntField() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

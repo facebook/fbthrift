@@ -67,7 +67,7 @@ class IncludedB final  {
  public:
 
   IncludedB() :
-      i32Field(0) {
+      i32Field() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

@@ -238,7 +238,7 @@ class SomeStruct final  {
  public:
 
   SomeStruct() :
-      fieldA(0) {
+      fieldA() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

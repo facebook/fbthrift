@@ -130,7 +130,7 @@ class A final  {
  public:
 
   A() :
-      useless_field(0) {
+      useless_field() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

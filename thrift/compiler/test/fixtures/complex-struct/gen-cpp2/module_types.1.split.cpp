@@ -158,15 +158,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 defaultStruct::defaultStruct() :
       myLongDFset(10LL),
-      myLongDF(0),
+      myLongDF(),
       portDFset(3456),
-      portNum(0),
+      portNum(),
       myBinaryDFset(apache::thrift::StringTraits<std::string>::fromStringLiteral("abc")),
       myByteDFSet(static_cast<int8_t>(17)),
-      myByte(0),
+      myByte(),
       myDoubleDFset(99.7678),
       myDoubleDFZero(0),
-      myDouble(0),
+      myDouble(),
       field3(std::initializer_list<std::pair<const ::std::int32_t, ::std::string>>{{15, apache::thrift::StringTraits<std::string>::fromStringLiteral("a_value")},
   {2, apache::thrift::StringTraits<std::string>::fromStringLiteral("b_value")}}),
       myList(std::initializer_list<::cpp2::MyEnum>{ ::cpp2::MyEnum::MyValue1,
@@ -1010,7 +1010,7 @@ optXcep& optXcep::operator=(const optXcep&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 optXcep::optXcep() :
-      errorCode(0) {
+      errorCode() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

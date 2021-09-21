@@ -403,7 +403,7 @@ MyStruct& MyStruct::operator=(const MyStruct&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
-      MyBoolField(0),
+      MyBoolField(),
       MyIntField(12LL),
       MyStringField(apache::thrift::StringTraits<std::string>::fromStringLiteral("test")),
       MyMapEnumAndInt(std::initializer_list<std::pair<const ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
@@ -1192,12 +1192,12 @@ AnException& AnException::operator=(const AnException&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnException::AnException() :
-      code(0),
-      req_code(0),
+      code(),
+      req_code(),
       exception_list(std::initializer_list<::std::int32_t>{1,
   2,
   3}),
-      enum_field(static_cast< ::some::valid::ns::MyEnumA>(0)) {
+      enum_field() {
 }
 
 AnException::AnException(std::string __message) : AnException() {
@@ -1627,8 +1627,8 @@ AnotherException& AnotherException::operator=(const AnotherException&) = default
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnotherException::AnotherException() :
-      code(0),
-      req_code(0) {
+      code(),
+      req_code() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1756,9 +1756,9 @@ namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct::containerStruct() :
-      fieldA(0),
-      req_fieldA(0),
-      opt_fieldA(0),
+      fieldA(),
+      req_fieldA(),
+      opt_fieldA(),
       fieldC(std::initializer_list<::std::int32_t>{1,
   2,
   3,
@@ -1793,8 +1793,8 @@ containerStruct::containerStruct() :
   5,
   9,
   13}}}),
-      fieldN(0),
-      fieldQ(static_cast< ::some::valid::ns::MyEnumA>(0)),
+      fieldN(),
+      fieldQ(),
       fieldR( ::some::valid::ns::MyEnumA::fieldB),
       req_fieldR( ::some::valid::ns::MyEnumA::fieldB),
       opt_fieldR( ::some::valid::ns::MyEnumA::fieldB),
@@ -1802,8 +1802,8 @@ containerStruct::containerStruct() :
       fieldU(std::initializer_list<::some::valid::ns::MyEnumA>{ ::some::valid::ns::MyEnumA::fieldC,
    ::some::valid::ns::MyEnumA::fieldB,
    ::some::valid::ns::MyEnumA::fieldA}),
-      fieldAC( ::some::valid::ns::MyEnumB::AField),
-      fieldAD(static_cast< ::a::different::ns::AnEnum>(0)) {
+      fieldAC(),
+      fieldAD() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2906,8 +2906,8 @@ AnnotatedStruct::AnnotatedStruct() :
       req_ref_type_shared(std::make_shared<::some::valid::ns::containerStruct>()),
       req_ref_type_const(std::make_shared<::some::valid::ns::containerStruct>()),
       req_ref_type_unique(std::make_unique<::std::vector<::std::string>>()),
-      base_type(0),
-      indirection_a(0),
+      base_type(),
+      indirection_a(),
       iobuf_type_val(apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("value")),
       iobuf_ptr_val(apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
       struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits<std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(false))) {

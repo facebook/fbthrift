@@ -195,7 +195,7 @@ class MyStruct final  {
  public:
 
   MyStruct() :
-      myEnum(static_cast< ::test::fixtures::enumstrict::MyEnum>(0)),
+      myEnum(),
       myBigEnum( ::test::fixtures::enumstrict::MyBigEnum::ONE) {
   }
   // FragileConstructor for use in initialization lists only.

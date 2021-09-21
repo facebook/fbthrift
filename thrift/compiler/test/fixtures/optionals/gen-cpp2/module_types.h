@@ -206,10 +206,10 @@ class Color final  {
  public:
 
   Color() :
-      red(0),
-      green(0),
-      blue(0),
-      alpha(0) {
+      red(),
+      green(),
+      blue(),
+      alpha() {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

@@ -41,8 +41,8 @@ Foo& Foo::operator=(const Foo&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo() :
-      intField(my::Adapter1::fromThrift(0)),
-      optionalIntField(my::Adapter1::fromThrift(0)),
+      intField(),
+      optionalIntField(),
       intFieldWithDefault(my::Adapter1::fromThrift(13)) {
 }
 

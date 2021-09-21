@@ -2257,7 +2257,7 @@ NoexceptMoveComplexStruct& NoexceptMoveComplexStruct::operator=(const NoexceptMo
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
-      MyBoolField(0),
+      MyBoolField(),
       MyIntField(12LL),
       MyStringField(apache::thrift::StringTraits<std::string>::fromStringLiteral("test")),
       MyMapEnumAndInt(std::initializer_list<std::pair<const ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
@@ -2587,7 +2587,7 @@ AllocatorAware& AllocatorAware::operator=(const AllocatorAware&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllocatorAware::AllocatorAware() :
-      not_a_container(0) {
+      not_a_container() {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
