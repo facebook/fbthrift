@@ -18,8 +18,10 @@
 #define THRIFT_SERVER_TSERVEROBSERVER_H_ 1
 
 #include <stdint.h>
+
 #include <chrono>
 #include <memory>
+#include <string>
 
 #include <folly/Optional.h>
 
@@ -136,7 +138,7 @@ class TServerObserver {
 
   virtual void serverOverloaded() {}
 
-  virtual void receivedRequest() {}
+  virtual void receivedRequest(const std::string* /*method*/) {}
 
   virtual void queuedRequests(int32_t /*numRequests*/) {}
 

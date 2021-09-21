@@ -84,7 +84,9 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
     ++serverOverloaded_;
   }
 
-  void receivedRequest() override { ++receivedRequest_; }
+  void receivedRequest(const std::string* /*method*/) override {
+    ++receivedRequest_;
+  }
 
   void queuedRequests(int32_t numRequests) override {
     queuedRequests_ = numRequests;
@@ -108,5 +110,6 @@ class FakeServerObserver : public apache::thrift::server::TServerObserver {
 
   void tlsWithClientCert() override {}
 };
+
 } // namespace thrift
 } // namespace apache

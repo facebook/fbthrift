@@ -544,8 +544,9 @@ void Cpp2Connection::requestReceived(
 
   activeRequests_.insert(t2r.get());
 
+  auto reqContext = t2r->getContext();
   if (observer) {
-    observer->receivedRequest();
+    observer->receivedRequest(&reqContext->getMethodName());
   }
 
   if (differentTimeouts) {
@@ -557,7 +558,6 @@ void Cpp2Connection::requestReceived(
     scheduleTimeout(&t2r->taskTimeout_, taskTimeout);
   }
 
-  auto reqContext = t2r->getContext();
   if (clientTimeout > std::chrono::milliseconds::zero()) {
     reqContext->setRequestTimeout(clientTimeout);
   } else {

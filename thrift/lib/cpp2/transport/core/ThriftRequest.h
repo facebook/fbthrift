@@ -121,7 +121,7 @@ class ThriftRequestCore : public ResponseChannelRequest {
     }
 
     if (auto* observer = serverConfigs_.getObserver()) {
-      observer->receivedRequest();
+      observer->receivedRequest(&reqContext_.getMethodName());
     }
   }
 
