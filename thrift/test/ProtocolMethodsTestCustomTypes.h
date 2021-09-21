@@ -26,7 +26,8 @@ namespace thrift {
 namespace test {
 
 struct MyInt {
-  int value = 0;
+  int value{};
+  constexpr MyInt() = default;
   MyInt(int value) : value(value) {}
   bool operator==(const MyInt& other) const { return value == other.value; }
 };

@@ -33,13 +33,13 @@ namespace test {
 template <typename RawType, typename Tag>
 class Opaque {
  private:
-  RawType val_;
+  RawType val_{};
 
  public:
   FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(__value());
 
+  Opaque() = default;
   explicit Opaque(const RawType& val) : val_(val) {}
-  Opaque() {}
   RawType& __value() { return val_; }
   const RawType& __value() const { return val_; }
   explicit operator RawType() const { return val_; }
