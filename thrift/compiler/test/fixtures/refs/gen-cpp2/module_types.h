@@ -896,12 +896,16 @@ class StructWithUnion final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t f;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return f == 1;
+    std::array<uint8_t,1> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 1, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      f = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 1, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -934,22 +938,22 @@ class StructWithUnion final  {
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> f_ref() const& {
-    return {this->f, __isset.f};
+    return {this->f, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> f_ref() const&& {
-    return {std::move(this->f), __isset.f};
+    return {std::move(this->f), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> f_ref() & {
-    return {this->f, __isset.f};
+    return {this->f, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> f_ref() && {
-    return {std::move(this->f), __isset.f};
+    return {std::move(this->f), __isset.array_isset.at(folly::index_constant<0>())};
   }
   const ::cpp2::MyField& get_f() const&;
   ::cpp2::MyField get_f() &&;
@@ -1030,12 +1034,16 @@ class RecursiveStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t mes;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return mes == 1;
+    std::array<uint8_t,1> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 1, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      mes = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 1, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -1046,22 +1054,22 @@ class RecursiveStruct final  {
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> mes_ref() const& {
-    return {this->mes, __isset.mes};
+    return {this->mes, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> mes_ref() const&& {
-    return {std::move(this->mes), __isset.mes};
+    return {std::move(this->mes), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> mes_ref() & {
-    return {this->mes, __isset.mes};
+    return {this->mes, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> mes_ref() && {
-    return {std::move(this->mes), __isset.mes};
+    return {std::move(this->mes), __isset.array_isset.at(folly::index_constant<0>())};
   }
   const ::std::vector<::cpp2::RecursiveStruct>* get_mes() const&;
   ::std::vector<::cpp2::RecursiveStruct>* get_mes() &;

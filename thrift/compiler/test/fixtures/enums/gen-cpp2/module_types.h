@@ -155,33 +155,16 @@ class SomeStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t reasonable;
-    uint8_t fine;
-    uint8_t questionable;
-    uint8_t tags;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return reasonable == 1;
+    std::array<uint8_t,4> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 4, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      reasonable = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<1>) const {
-      return fine == 1;
-    }
-    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      fine = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<2>) const {
-      return questionable == 1;
-    }
-    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      questionable = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<3>) const {
-      return tags == 1;
-    }
-    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      tags = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 4, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -192,82 +175,82 @@ class SomeStruct final  {
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> reasonable_ref() const& {
-    return {this->reasonable, __isset.reasonable};
+    return {this->reasonable, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> reasonable_ref() const&& {
-    return {std::move(this->reasonable), __isset.reasonable};
+    return {std::move(this->reasonable), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> reasonable_ref() & {
-    return {this->reasonable, __isset.reasonable};
+    return {this->reasonable, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> reasonable_ref() && {
-    return {std::move(this->reasonable), __isset.reasonable};
+    return {std::move(this->reasonable), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> fine_ref() const& {
-    return {this->fine, __isset.fine};
+    return {this->fine, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> fine_ref() const&& {
-    return {std::move(this->fine), __isset.fine};
+    return {std::move(this->fine), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> fine_ref() & {
-    return {this->fine, __isset.fine};
+    return {this->fine, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> fine_ref() && {
-    return {std::move(this->fine), __isset.fine};
+    return {std::move(this->fine), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> questionable_ref() const& {
-    return {this->questionable, __isset.questionable};
+    return {this->questionable, __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> questionable_ref() const&& {
-    return {std::move(this->questionable), __isset.questionable};
+    return {std::move(this->questionable), __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> questionable_ref() & {
-    return {this->questionable, __isset.questionable};
+    return {this->questionable, __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::Metasyntactic>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> questionable_ref() && {
-    return {std::move(this->questionable), __isset.questionable};
+    return {std::move(this->questionable), __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> tags_ref() const& {
-    return {this->tags, __isset.tags};
+    return {this->tags, __isset.array_isset.at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> tags_ref() const&& {
-    return {std::move(this->tags), __isset.tags};
+    return {std::move(this->tags), __isset.array_isset.at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> tags_ref() & {
-    return {this->tags, __isset.tags};
+    return {this->tags, __isset.array_isset.at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::set<::std::int32_t>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> tags_ref() && {
-    return {std::move(this->tags), __isset.tags};
+    return {std::move(this->tags), __isset.array_isset.at(folly::index_constant<3>())};
   }
 
   ::cpp2::Metasyntactic get_reasonable() const {

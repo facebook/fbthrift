@@ -34,16 +34,16 @@
   class __isset {
     friend class <%struct:name%>;
 <%/struct:private_isset?%>
-<%#struct:isset_fields%>
-    uint8_t <%field:cpp_name%>;
-<%/struct:isset_fields%>
-<%#struct:isset_fields%>
-    bool __fbthrift_get(folly::index_constant<<%field:isset_index%>>) const {
-      return <%field:cpp_name%> == 1;
+    std::array<uint8_t,<%struct:isset_fields_size%>> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < <%struct:isset_fields_size%>, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<<%field:isset_index%>>, bool isset_flag) {
-      <%field:cpp_name%> = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < <%struct:isset_fields_size%>, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
-<%/struct:isset_fields%>
   } __isset = {};
 <%/struct:isset_fields?%>

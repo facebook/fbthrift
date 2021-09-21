@@ -222,19 +222,16 @@ class structured_annotation_inline final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t count;
-    uint8_t name;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return count == 1;
+    std::array<uint8_t,2> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 2, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      count = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<1>) const {
-      return name == 1;
-    }
-    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      name = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 2, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -245,42 +242,42 @@ class structured_annotation_inline final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
-    return {this->count, __isset.count};
+    return {this->count, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> count_ref() const&& {
-    return {std::move(this->count), __isset.count};
+    return {std::move(this->count), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> count_ref() & {
-    return {this->count, __isset.count};
+    return {this->count, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
-    return {std::move(this->count), __isset.count};
+    return {std::move(this->count), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
-    return {this->name, __isset.name};
+    return {this->name, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
-    return {std::move(this->name), __isset.name};
+    return {std::move(this->name), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
-    return {this->name, __isset.name};
+    return {this->name, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
-    return {std::move(this->name), __isset.name};
+    return {std::move(this->name), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   ::std::int64_t get_count() const {
@@ -379,12 +376,16 @@ class structured_annotation_with_default final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t name;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return name == 1;
+    std::array<uint8_t,1> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 1, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      name = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 1, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -395,22 +396,22 @@ class structured_annotation_with_default final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
-    return {this->name, __isset.name};
+    return {this->name, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
-    return {std::move(this->name), __isset.name};
+    return {std::move(this->name), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
-    return {this->name, __isset.name};
+    return {this->name, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
-    return {std::move(this->name), __isset.name};
+    return {std::move(this->name), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   const ::std::string& get_name() const& {
@@ -499,12 +500,16 @@ class structured_annotation_forward final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t count;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return count == 1;
+    std::array<uint8_t,1> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 1, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      count = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 1, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -515,22 +520,22 @@ class structured_annotation_forward final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> count_ref() const& {
-    return {this->count, __isset.count};
+    return {this->count, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> count_ref() const&& {
-    return {std::move(this->count), __isset.count};
+    return {std::move(this->count), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> count_ref() & {
-    return {this->count, __isset.count};
+    return {this->count, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> count_ref() && {
-    return {std::move(this->count), __isset.count};
+    return {std::move(this->count), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   ::std::int64_t get_count() const {
@@ -616,26 +621,16 @@ class structured_annotation_recursive final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t name;
-    uint8_t recurse;
-    uint8_t forward;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return name == 1;
+    std::array<uint8_t,3> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 3, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      name = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<1>) const {
-      return recurse == 1;
-    }
-    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      recurse = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<2>) const {
-      return forward == 1;
-    }
-    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      forward = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 3, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -646,62 +641,62 @@ class structured_annotation_recursive final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
-    return {this->name, __isset.name};
+    return {this->name, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
-    return {std::move(this->name), __isset.name};
+    return {std::move(this->name), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
-    return {this->name, __isset.name};
+    return {this->name, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
-    return {std::move(this->name), __isset.name};
+    return {std::move(this->name), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> recurse_ref() const& {
-    return {this->recurse, __isset.recurse};
+    return {this->recurse, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> recurse_ref() const&& {
-    return {std::move(this->recurse), __isset.recurse};
+    return {std::move(this->recurse), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> recurse_ref() & {
-    return {this->recurse, __isset.recurse};
+    return {this->recurse, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_recursive>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> recurse_ref() && {
-    return {std::move(this->recurse), __isset.recurse};
+    return {std::move(this->recurse), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> forward_ref() const& {
-    return {this->forward, __isset.forward};
+    return {this->forward, __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> forward_ref() const&& {
-    return {std::move(this->forward), __isset.forward};
+    return {std::move(this->forward), __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> forward_ref() & {
-    return {this->forward, __isset.forward};
+    return {this->forward, __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_forward>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> forward_ref() && {
-    return {std::move(this->forward), __isset.forward};
+    return {std::move(this->forward), __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   const ::std::string& get_name() const& {
@@ -810,19 +805,16 @@ class structured_annotation_nested final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t name;
-    uint8_t nest;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return name == 1;
+    std::array<uint8_t,2> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 2, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      name = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<1>) const {
-      return nest == 1;
-    }
-    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      nest = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 2, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -833,42 +825,42 @@ class structured_annotation_nested final  {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> name_ref() const& {
-    return {this->name, __isset.name};
+    return {this->name, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> name_ref() const&& {
-    return {std::move(this->name), __isset.name};
+    return {std::move(this->name), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> name_ref() & {
-    return {this->name, __isset.name};
+    return {this->name, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> name_ref() && {
-    return {std::move(this->name), __isset.name};
+    return {std::move(this->name), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> nest_ref() const& {
-    return {this->nest, __isset.nest};
+    return {this->nest, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> nest_ref() const&& {
-    return {std::move(this->nest), __isset.nest};
+    return {std::move(this->nest), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> nest_ref() & {
-    return {this->nest, __isset.nest};
+    return {this->nest, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::structured_annotation_with_default>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> nest_ref() && {
-    return {std::move(this->nest), __isset.nest};
+    return {std::move(this->nest), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   const ::std::string& get_name() const& {
@@ -973,33 +965,16 @@ class MyStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t annotated_field;
-    uint8_t annotated_type;
-    uint8_t annotated_recursive;
-    uint8_t annotated_nested;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return annotated_field == 1;
+    std::array<uint8_t,4> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 4, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      annotated_field = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<1>) const {
-      return annotated_type == 1;
-    }
-    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      annotated_type = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<2>) const {
-      return annotated_recursive == 1;
-    }
-    void __fbthrift_set(folly::index_constant<2>, bool isset_flag) {
-      annotated_recursive = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<3>) const {
-      return annotated_nested == 1;
-    }
-    void __fbthrift_set(folly::index_constant<3>, bool isset_flag) {
-      annotated_nested = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 4, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -1010,82 +985,82 @@ class MyStruct final  {
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_field_ref() const& {
-    return {this->annotated_field, __isset.annotated_field};
+    return {this->annotated_field, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_field_ref() const&& {
-    return {std::move(this->annotated_field), __isset.annotated_field};
+    return {std::move(this->annotated_field), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_field_ref() & {
-    return {this->annotated_field, __isset.annotated_field};
+    return {this->annotated_field, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_field_ref() && {
-    return {std::move(this->annotated_field), __isset.annotated_field};
+    return {std::move(this->annotated_field), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_type_ref() const& {
-    return {this->annotated_type, __isset.annotated_type};
+    return {this->annotated_type, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_type_ref() const&& {
-    return {std::move(this->annotated_type), __isset.annotated_type};
+    return {std::move(this->annotated_type), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_type_ref() & {
-    return {this->annotated_type, __isset.annotated_type};
+    return {this->annotated_type, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::cpp2::annotated_inline_string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_type_ref() && {
-    return {std::move(this->annotated_type), __isset.annotated_type};
+    return {std::move(this->annotated_type), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_recursive_ref() const& {
-    return {this->annotated_recursive, __isset.annotated_recursive};
+    return {this->annotated_recursive, __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_recursive_ref() const&& {
-    return {std::move(this->annotated_recursive), __isset.annotated_recursive};
+    return {std::move(this->annotated_recursive), __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_recursive_ref() & {
-    return {this->annotated_recursive, __isset.annotated_recursive};
+    return {this->annotated_recursive, __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_recursive_ref() && {
-    return {std::move(this->annotated_recursive), __isset.annotated_recursive};
+    return {std::move(this->annotated_recursive), __isset.array_isset.at(folly::index_constant<2>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> annotated_nested_ref() const& {
-    return {this->annotated_nested, __isset.annotated_nested};
+    return {this->annotated_nested, __isset.array_isset.at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> annotated_nested_ref() const&& {
-    return {std::move(this->annotated_nested), __isset.annotated_nested};
+    return {std::move(this->annotated_nested), __isset.array_isset.at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> annotated_nested_ref() & {
-    return {this->annotated_nested, __isset.annotated_nested};
+    return {this->annotated_nested, __isset.array_isset.at(folly::index_constant<3>())};
   }
 
   template <typename..., typename T = ::std::int64_t>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> annotated_nested_ref() && {
-    return {std::move(this->annotated_nested), __isset.annotated_nested};
+    return {std::move(this->annotated_nested), __isset.array_isset.at(folly::index_constant<3>())};
   }
 
   ::std::int64_t get_annotated_field() const {
@@ -1219,12 +1194,16 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t context;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return context == 1;
+    std::array<uint8_t,1> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 1, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      context = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 1, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -1235,22 +1214,22 @@ class FOLLY_EXPORT MyException : public apache::thrift::TException {
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> context_ref() const& {
-    return {this->context, __isset.context};
+    return {this->context, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> context_ref() const&& {
-    return {std::move(this->context), __isset.context};
+    return {std::move(this->context), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> context_ref() & {
-    return {this->context, __isset.context};
+    return {this->context, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::string>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> context_ref() && {
-    return {std::move(this->context), __isset.context};
+    return {std::move(this->context), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   const ::std::string& get_context() const& {

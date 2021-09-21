@@ -219,19 +219,16 @@ class MyStruct final  {
  private:
   [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
   struct __isset {
-    uint8_t myEnum;
-    uint8_t myBigEnum;
-    bool __fbthrift_get(folly::index_constant<0>) const {
-      return myEnum == 1;
+    std::array<uint8_t,2> array_isset;
+    template<size_t field_index>
+    bool __fbthrift_get(folly::index_constant<field_index>) const {
+      static_assert(field_index < 2, "Isset index is out of boundary");
+      return array_isset[field_index] == 1;
     }
-    void __fbthrift_set(folly::index_constant<0>, bool isset_flag) {
-      myEnum = isset_flag ? 1 : 0;
-    }
-    bool __fbthrift_get(folly::index_constant<1>) const {
-      return myBigEnum == 1;
-    }
-    void __fbthrift_set(folly::index_constant<1>, bool isset_flag) {
-      myBigEnum = isset_flag ? 1 : 0;
+    template<size_t field_index>
+    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+      static_assert(field_index < 2, "Isset index is out of boundary");
+      array_isset[field_index] = isset_flag ? 1 : 0;
     }
   } __isset = {};
 
@@ -242,42 +239,42 @@ class MyStruct final  {
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myEnum_ref() const& {
-    return {this->myEnum, __isset.myEnum};
+    return {this->myEnum, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myEnum_ref() const&& {
-    return {std::move(this->myEnum), __isset.myEnum};
+    return {std::move(this->myEnum), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> myEnum_ref() & {
-    return {this->myEnum, __isset.myEnum};
+    return {this->myEnum, __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myEnum_ref() && {
-    return {std::move(this->myEnum), __isset.myEnum};
+    return {std::move(this->myEnum), __isset.array_isset.at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> myBigEnum_ref() const& {
-    return {this->myBigEnum, __isset.myBigEnum};
+    return {this->myBigEnum, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> myBigEnum_ref() const&& {
-    return {std::move(this->myBigEnum), __isset.myBigEnum};
+    return {std::move(this->myBigEnum), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> myBigEnum_ref() & {
-    return {this->myBigEnum, __isset.myBigEnum};
+    return {this->myBigEnum, __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   template <typename..., typename T = ::test::fixtures::enumstrict::MyBigEnum>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> myBigEnum_ref() && {
-    return {std::move(this->myBigEnum), __isset.myBigEnum};
+    return {std::move(this->myBigEnum), __isset.array_isset.at(folly::index_constant<1>())};
   }
 
   ::test::fixtures::enumstrict::MyEnum get_myEnum() const {

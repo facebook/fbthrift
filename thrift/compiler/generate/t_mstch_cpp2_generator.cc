@@ -788,6 +788,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
             {"struct:private_isset?", &mstch_cpp2_struct::private_isset},
+            {"struct:isset_fields_size", &mstch_cpp2_struct::isset_fields_size},
             {"struct:lazy_fields?", &mstch_cpp2_struct::has_lazy_fields},
             {"struct:indexing?", &mstch_cpp2_struct::indexing},
             {"struct:is_large?", &mstch_cpp2_struct::is_large},
@@ -958,6 +959,15 @@ class mstch_cpp2_struct : public mstch_struct {
       return mstch::node();
     }
     return generate_fields(fields);
+  }
+  mstch::node isset_fields_size() {
+    std::size_t size = 0;
+    for (const auto& field : strct_->fields()) {
+      if (cpp2::field_has_isset(&field)) {
+        size++;
+      }
+    }
+    return std::to_string(size);
   }
   mstch::node is_large() {
     // Outline constructors and destructors if the struct has
