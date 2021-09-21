@@ -187,12 +187,14 @@ void parsing_driver::parse_file() {
 // else (e.g. `util.{h|cc}`) once everything gets consolidated into `parse/`.
 /* static */ std::string parsing_driver::directory_name(
     const std::string& filename) {
-  std::string::size_type slash = filename.rfind('/');
-  // No slash, just use the current directory
-  if (slash == std::string::npos) {
+  boost::filesystem::path fullpath = filename;
+  auto parent_path = fullpath.parent_path();
+  auto result = parent_path.string();
+  // No parent dir, just use the current directory
+  if (result.empty()) {
     return ".";
   }
-  return filename.substr(0, slash);
+  return result;
 }
 
 std::string parsing_driver::include_file(const std::string& filename) {
@@ -211,16 +213,15 @@ std::string parsing_driver::include_file(const std::string& filename) {
     // new search path with current dir global
     std::vector<std::string> sp = params.incl_searchpath;
     sp.insert(sp.begin(), directory_name(program->path()));
-
     // iterate through paths
     std::vector<std::string>::iterator it;
     for (it = sp.begin(); it != sp.end(); it++) {
-      std::string sfilename = filename;
+      boost::filesystem::path sfilename = filename;
       if ((*it) != "." && (*it) != "") {
-        sfilename = *(it) + "/" + filename;
+        sfilename = boost::filesystem::path(*(it)) / filename;
       }
       if (boost::filesystem::exists(sfilename)) {
-        return sfilename;
+        return sfilename.string();
       } else {
         debug([&](auto& o) { o << "Could not find: " << filename << "."; });
       }
