@@ -487,23 +487,23 @@ class RocketClient : public virtual folly::DelayedDestruction,
       std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
-  StreamChannelStatus handlePayloadFrame(
+  StreamChannelStatusResponse handlePayloadFrame(
       CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
-  StreamChannelStatus handleErrorFrame(
+  StreamChannelStatusResponse handleErrorFrame(
       CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
-  StreamChannelStatus handleRequestNFrame(
+  StreamChannelStatusResponse handleRequestNFrame(
       CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
-  StreamChannelStatus handleCancelFrame(
+  StreamChannelStatusResponse handleCancelFrame(
       CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   template <typename CallbackType>
-  StreamChannelStatus handleExtFrame(
+  StreamChannelStatusResponse handleExtFrame(
       CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame);
 
   void handleError(RocketException&& rex);

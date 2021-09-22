@@ -240,7 +240,7 @@ void RocketClient::handleStreamChannelFrame(
     notifyIfDetachable();
     return;
   }
-  StreamChannelStatus status = it->match([&](auto* serverCallbackPtr) {
+  StreamChannelStatusResponse status = it->match([&](auto* serverCallbackPtr) {
     auto& serverCallback = *serverCallbackPtr;
     switch (frameType) {
       case FrameType::PAYLOAD:
@@ -260,11 +260,11 @@ void RocketClient::handleStreamChannelFrame(
             folly::to<std::string>(
                 "Client attempting to handle unhandleable frame type: ",
                 static_cast<uint8_t>(frameType))));
-        return StreamChannelStatus::Alive;
+        return StreamChannelStatusResponse{StreamChannelStatus::Alive};
     }
   });
 
-  switch (status) {
+  switch (status.getStatus()) {
     case StreamChannelStatus::Alive:
       break;
     case StreamChannelStatus::Complete:
@@ -275,13 +275,15 @@ void RocketClient::handleStreamChannelFrame(
       close(transport::TTransportException(
           transport::TTransportException::TTransportExceptionType::
               STREAMING_CONTRACT_VIOLATION,
-          "Streaming contract violation. Closing the connection."));
+          fmt::format(
+              "Streaming contract violation: {}. Closing the connection.",
+              std::move(status).getErrorMsg())));
       break;
   };
 }
 
 template <typename CallbackType>
-StreamChannelStatus RocketClient::handlePayloadFrame(
+StreamChannelStatusResponse RocketClient::handlePayloadFrame(
     CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
   PayloadFrame payloadFrame{std::move(frame)};
   const auto streamId = payloadFrame.streamId();
@@ -293,12 +295,14 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
     if (isFirstResponse(streamId)) {
       acknowledgeFirstResponse(streamId);
       if (!next) {
+        constexpr auto kErrorMsg =
+            "Received payload frame but missing initial response";
         serverCallback.onInitialError(
             folly::make_exception_wrapper<transport::TTransportException>(
                 transport::TTransportException::TTransportExceptionType::
                     STREAMING_CONTRACT_VIOLATION,
-                "Missing initial response"));
-        return StreamChannelStatus::ContractViolation;
+                kErrorMsg));
+        return {StreamChannelStatus::ContractViolation, kErrorMsg};
       }
       auto firstResponse =
           unpack<FirstResponsePayload>(std::move(*fullPayload));
@@ -308,7 +312,7 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
       }
       auto status =
           serverCallback.onInitialPayload(std::move(*firstResponse), evb_);
-      if (status != StreamChannelStatus::Alive) {
+      if (status.getStatus() != StreamChannelStatus::Alive) {
         return status;
       }
       if (complete) {
@@ -337,18 +341,20 @@ StreamChannelStatus RocketClient::handlePayloadFrame(
     if (complete) {
       return serverCallback.onStreamComplete();
     }
+    constexpr auto kErrorMsg =
+        "Received payload frame with both next and complete flags not set";
     serverCallback.onStreamError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
                 STREAMING_CONTRACT_VIOLATION,
-            "Both next and complete flags not set"));
-    return StreamChannelStatus::ContractViolation;
+            kErrorMsg));
+    return {StreamChannelStatus::ContractViolation, kErrorMsg};
   }
   return StreamChannelStatus::Alive;
 }
 
 template <typename CallbackType>
-StreamChannelStatus RocketClient::handleErrorFrame(
+StreamChannelStatusResponse RocketClient::handleErrorFrame(
     CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
   ErrorFrame errorFrame{std::move(frame)};
   const auto streamId = errorFrame.streamId();
@@ -363,46 +369,52 @@ StreamChannelStatus RocketClient::handleErrorFrame(
 }
 
 template <typename CallbackType>
-StreamChannelStatus RocketClient::handleRequestNFrame(
+StreamChannelStatusResponse RocketClient::handleRequestNFrame(
     CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
   RequestNFrame requestNFrame{std::move(frame)};
   if (isFirstResponse(requestNFrame.streamId())) {
+    constexpr auto kErrorMsg =
+        "Received RequestN frame but missing initial response";
     serverCallback.onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
                 STREAMING_CONTRACT_VIOLATION,
-            "Missing initial response: handleRequestNFrame"));
-    return StreamChannelStatus::ContractViolation;
+            kErrorMsg));
+    return {StreamChannelStatus::ContractViolation, kErrorMsg};
   }
   return serverCallback.onSinkRequestN(std::move(requestNFrame).requestN());
 }
 
 template <typename CallbackType>
-StreamChannelStatus RocketClient::handleCancelFrame(
+StreamChannelStatusResponse RocketClient::handleCancelFrame(
     CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
   CancelFrame cancelFrame{std::move(frame)};
   if (isFirstResponse(cancelFrame.streamId())) {
+    constexpr auto kErrorMsg =
+        "Received Cancel frame but missing initial response";
     serverCallback.onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
                 STREAMING_CONTRACT_VIOLATION,
-            "Missing initial response: handleCancelFrame"));
-    return StreamChannelStatus::ContractViolation;
+            kErrorMsg));
+    return {StreamChannelStatus::ContractViolation, kErrorMsg};
   }
   return serverCallback.onSinkCancel();
 }
 
 template <typename CallbackType>
-StreamChannelStatus RocketClient::handleExtFrame(
+StreamChannelStatusResponse RocketClient::handleExtFrame(
     CallbackType& serverCallback, std::unique_ptr<folly::IOBuf> frame) {
   ExtFrame extFrame{std::move(frame)};
   if (isFirstResponse(extFrame.streamId())) {
+    constexpr auto kErrorMsg =
+        "Received Ext frame but missing initial response";
     serverCallback.onInitialError(
         folly::make_exception_wrapper<transport::TTransportException>(
             transport::TTransportException::TTransportExceptionType::
                 STREAMING_CONTRACT_VIOLATION,
-            "Missing initial response: handleExtFrame"));
-    return StreamChannelStatus::ContractViolation;
+            kErrorMsg));
+    return {StreamChannelStatus::ContractViolation, kErrorMsg};
   }
 
   if (extFrame.extFrameType() == ExtFrameType::HEADERS_PUSH) {
@@ -420,12 +432,13 @@ StreamChannelStatus RocketClient::handleExtFrame(
     return StreamChannelStatus::Alive;
   }
 
+  auto errorMsg = fmt::format(
+      "Received unhandleable ext frame type ({}) without ignore flag",
+      static_cast<uint32_t>(extFrame.extFrameType()));
   close(transport::TTransportException(
       transport::TTransportException::TTransportExceptionType::NOT_SUPPORTED,
-      fmt::format(
-          "Received unhandleable ext frame type ({}) without ignore flag",
-          static_cast<uint32_t>(extFrame.extFrameType()))));
-  return StreamChannelStatus::ContractViolation;
+      errorMsg));
+  return {StreamChannelStatus::ContractViolation, std::move(errorMsg)};
 }
 
 void RocketClient::handleError(RocketException&& rex) {
