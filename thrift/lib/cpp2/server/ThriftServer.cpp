@@ -795,7 +795,6 @@ void ThriftServer::ensureDecoratedProcessorFactoryInitialized() {
   if (decoratedProcessorFactory_ == nullptr) {
     decoratedProcessorFactory_ = createDecoratedProcessorFactory(
         getProcessorFactory(), getStatusInterface(), getMonitoringInterface());
-    ;
   }
 }
 
