@@ -25,6 +25,7 @@
 
 #include <folly/ExceptionWrapper.h>
 #include <folly/Function.h>
+#include <folly/Random.h>
 #include <folly/String.h>
 #include <folly/Utility.h>
 #include <folly/fibers/FiberManager.h>
@@ -210,9 +211,16 @@ class RequestChannel : virtual public folly::DelayedDestruction {
   using Ptr =
       std::unique_ptr<RequestChannel, folly::DelayedDestruction::Destructor>;
 
+  uint64_t getChecksumSamplingRate() const;
+
  protected:
   static InteractionId createInteractionId(int64_t id);
   static void releaseInteractionId(InteractionId&& id);
+
+  void setChecksumSamplingRate(uint64_t samplingRate);
+
+ private:
+  uint64_t checksumSamplingRate_{0};
 };
 
 template <bool oneWay>
@@ -286,7 +294,8 @@ SerializedRequest preprocessSendT(
     apache::thrift::transport::THeader& header,
     folly::StringPiece methodName,
     folly::FunctionRef<void(Protocol*)> writefunc,
-    folly::FunctionRef<size_t(Protocol*)> sizefunc) {
+    folly::FunctionRef<size_t(Protocol*)> sizefunc,
+    uint64_t checksumSamplingRate) {
   return folly::fibers::runInMainContext([&] {
     size_t bufSize = sizefunc(prot);
     folly::IOBufQueue queue(folly::IOBufQueue::cacheChainLength());
@@ -321,7 +330,9 @@ SerializedRequest preprocessSendT(
       throw;
     }
 
-    if (rpcOptions.getEnableChecksum()) {
+    if (rpcOptions.getEnableChecksum() ||
+        (checksumSamplingRate &&
+         folly::Random::rand64(checksumSamplingRate) == 0)) {
       header.setCrc32c(apache::thrift::checksum::crc32c(*queue.front()));
     }
 
@@ -400,7 +411,8 @@ void clientSendT(
       *header,
       methodMetadata.name_view(),
       writefunc,
-      sizefunc);
+      sizefunc,
+      channel->getChecksumSamplingRate());
 
   channel->sendRequestAsync<Kind>(
       std::forward<RpcOptions>(rpcOptions),

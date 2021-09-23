@@ -113,7 +113,7 @@ class TransportCompatibilityTest {
   void TestOneway_UnexpectedException();
   void TestOneway_Connection_CloseNow();
   void TestOneway_ServerQueueTimeout();
-  void TestOneway_Checksumming();
+  void TestOneway_Checksumming(bool usingSampling = false);
 
   void TestRequestContextIsPreserved();
   void TestBadPayload();

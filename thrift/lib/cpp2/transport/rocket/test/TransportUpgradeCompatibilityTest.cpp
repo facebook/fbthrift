@@ -196,6 +196,14 @@ TEST_P(TransportUpgradeCompatibilityTest, Oneway_Checksumming) {
   compatibilityTest_->TestOneway_Checksumming();
 }
 
+TEST_P(TransportUpgradeCompatibilityTest, Oneway_Sampled_Checksumming) {
+  // Checksum not implemented for header transport
+  if (!GetParam()) {
+    return;
+  }
+  compatibilityTest_->TestOneway_Checksumming(true);
+}
+
 TEST_P(TransportUpgradeCompatibilityTest, RequestContextIsPreserved) {
   compatibilityTest_->TestRequestContextIsPreserved();
 }

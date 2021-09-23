@@ -253,6 +253,10 @@ TEST_F(RocketCompatibilityTest, Oneway_Checksumming) {
   compatibilityTest_->TestOneway_Checksumming();
 }
 
+TEST_F(RocketCompatibilityTest, Oneway_Sampled_Checksumming) {
+  compatibilityTest_->TestOneway_Checksumming(true);
+}
+
 TEST_F(RocketCompatibilityTest, RequestContextIsPreserved) {
   compatibilityTest_->TestRequestContextIsPreserved();
 }

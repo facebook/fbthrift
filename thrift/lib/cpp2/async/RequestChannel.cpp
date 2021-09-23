@@ -154,6 +154,13 @@ void RequestChannel::releaseInteractionId(InteractionId&& id) {
   id.release();
 }
 
+uint64_t RequestChannel::getChecksumSamplingRate() const {
+  return checksumSamplingRate_;
+}
+void RequestChannel::setChecksumSamplingRate(uint64_t samplingRate) {
+  checksumSamplingRate_ = samplingRate;
+}
+
 template <typename ClientBridgePtr>
 class RequestClientCallbackWrapper
     : public FirstResponseClientCallback<ClientBridgePtr> {

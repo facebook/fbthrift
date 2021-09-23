@@ -35,7 +35,7 @@ struct ClientHostMetadata {
  */
 class ClientChannel : public RequestChannel, public HeaderChannel {
  public:
-  ClientChannel() {}
+  ClientChannel();
   ~ClientChannel() override {}
 
   struct SaturationStatus {

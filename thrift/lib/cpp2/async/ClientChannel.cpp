@@ -20,10 +20,18 @@
 #include <sys/utsname.h>
 #endif
 
+#include <thrift/lib/cpp2/Flags.h>
 #include <thrift/lib/cpp2/PluggableFunction.h>
+
+THRIFT_FLAG_DEFINE_int64(thrift_client_checksum_sampling_rate, 0);
 
 namespace apache {
 namespace thrift {
+
+ClientChannel::ClientChannel() {
+  setChecksumSamplingRate(THRIFT_FLAG(thrift_client_checksum_sampling_rate));
+}
+
 namespace detail {
 THRIFT_PLUGGABLE_FUNC_REGISTER(ClientHostMetadata, getClientHostMetadata) {
   ClientHostMetadata hostMetadata;

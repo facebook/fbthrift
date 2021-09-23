@@ -52,6 +52,7 @@ DEFINE_string(host, "::1", "host to connect to");
 
 THRIFT_FLAG_DECLARE_bool(raw_client_rocket_upgrade_enabled_v2);
 THRIFT_FLAG_DECLARE_bool(server_rocket_upgrade_enabled);
+THRIFT_FLAG_DECLARE_int64(thrift_client_checksum_sampling_rate);
 
 namespace apache {
 namespace thrift {
@@ -958,41 +959,46 @@ void TransportCompatibilityTest::TestOneway_ServerQueueTimeout() {
       });
 }
 
-void TransportCompatibilityTest::TestOneway_Checksumming() {
-  connectToServer([this](std::unique_ptr<TestServiceAsyncClient> client) {
-    EXPECT_CALL(*handler_.get(), onewayLogBlob_(_));
+void TransportCompatibilityTest::TestOneway_Checksumming(bool usingSampling) {
+  if (usingSampling) {
+    THRIFT_FLAG_SET_MOCK(thrift_client_checksum_sampling_rate, 1);
+  }
+  connectToServer(
+      [this, usingSampling](std::unique_ptr<TestServiceAsyncClient> client) {
+        EXPECT_CALL(*handler_.get(), onewayLogBlob_(_));
 
-    auto setCorruption = [&](bool val) {
-      auto channel = static_cast<ClientChannel*>(client->getChannel());
-      channel->getEventBase()->runInEventBaseThreadAndWait([&]() {
-        auto p = std::make_shared<TAsyncSocketIntercepted::Params>();
-        p->corruptLastWriteByte_ = val;
-        dynamic_cast<TAsyncSocketIntercepted*>(channel->getTransport())
-            ->setParams(p);
+        auto setCorruption = [&](bool val) {
+          auto channel = static_cast<ClientChannel*>(client->getChannel());
+          channel->getEventBase()->runInEventBaseThreadAndWait([&]() {
+            auto p = std::make_shared<TAsyncSocketIntercepted::Params>();
+            p->corruptLastWriteByte_ = val;
+            dynamic_cast<TAsyncSocketIntercepted*>(channel->getTransport())
+                ->setParams(p);
+          });
+        };
+
+        for (bool shouldCorrupt : {false, true}) {
+          static const int kSize = 32 << 10; // > IOBuf buf sharing thresh
+          std::string asString(kSize, 'a');
+
+          setCorruption(shouldCorrupt);
+
+          auto payload = folly::IOBuf::copyBuffer(asString);
+          client
+              ->future_onewayLogBlob(
+                  RpcOptions().setEnableChecksum(!usingSampling), *payload)
+              .get();
+          // Unlike request/response case, no exception is thrown here for
+          // a one-way RPC.
+          /* sleep override */
+          std::this_thread::sleep_for(std::chrono::milliseconds(200));
+
+          if (shouldCorrupt) {
+            EXPECT_EQ(1, server_->observer_->taskKilled_);
+          }
+        }
+        setCorruption(false);
       });
-    };
-
-    for (bool shouldCorrupt : {false, true}) {
-      static const int kSize = 32 << 10; // > IOBuf buf sharing thresh
-      std::string asString(kSize, 'a');
-
-      setCorruption(shouldCorrupt);
-
-      auto payload = folly::IOBuf::copyBuffer(asString);
-      client
-          ->future_onewayLogBlob(RpcOptions().setEnableChecksum(true), *payload)
-          .get();
-      // Unlike request/response case, no exception is thrown here for
-      // a one-way RPC.
-      /* sleep override */
-      std::this_thread::sleep_for(std::chrono::milliseconds(200));
-
-      if (shouldCorrupt) {
-        EXPECT_EQ(1, server_->observer_->taskKilled_);
-      }
-    }
-    setCorruption(false);
-  });
 }
 
 void TransportCompatibilityTest::TestRequestContextIsPreserved() {
