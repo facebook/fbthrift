@@ -150,7 +150,8 @@ folly::AsyncTransport* H2ClientConnection::getTransport() {
 bool H2ClientConnection::good() {
   DCHECK(evb_ && evb_->isInEventBaseThread());
   auto transport = httpSession_ ? httpSession_->getTransport() : nullptr;
-  return transport && transport->good();
+  // Check that the transport is good and that the connection is not draining.
+  return transport && transport->good() && !httpSession_->isDraining();
 }
 
 ClientChannel::SaturationStatus H2ClientConnection::getSaturationStatus() {
