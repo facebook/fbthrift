@@ -156,7 +156,7 @@ DbMixedStackArgumentsAsyncClient::sync_complete_getDataByKey0(
   callback.waitUntilDone(
     evb,
     [&] {
-      getDataByKey0Impl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_key);
+      getDataByKey0Impl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_key, true);
     });
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::move(ctxAndHeader.first));
@@ -389,7 +389,7 @@ DbMixedStackArgumentsAsyncClient::sync_complete_getDataByKey1(
   callback.waitUntilDone(
     evb,
     [&] {
-      getDataByKey1Impl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_key);
+      getDataByKey1Impl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_key, true);
     });
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::move(ctxAndHeader.first));

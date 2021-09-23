@@ -104,7 +104,7 @@ folly::Try<apache::thrift::RpcResponseComplete<<% > types/semi_type%>>>
   callback.waitUntilDone(
     evb,
     [&] {
-      <%function:cpp_name%>Impl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>);
+      <%function:cpp_name%>Impl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback)<%function:comma%><% > service_common/param_list%>, true);
     });
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::move(ctxAndHeader.first));

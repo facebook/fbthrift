@@ -191,7 +191,7 @@ MyServiceAsyncClient::sync_complete_hasDataById(
   callback.waitUntilDone(
     evb,
     [&] {
-      hasDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id);
+      hasDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id, true);
     });
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::move(ctxAndHeader.first));
@@ -426,7 +426,7 @@ MyServiceAsyncClient::sync_complete_getDataById(
   callback.waitUntilDone(
     evb,
     [&] {
-      getDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id);
+      getDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id, true);
     });
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::move(ctxAndHeader.first));
@@ -659,7 +659,7 @@ MyServiceAsyncClient::sync_complete_putDataById(
   callback.waitUntilDone(
     evb,
     [&] {
-      putDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id, p_data);
+      putDataByIdImpl(rpcOptions, std::move(ctxAndHeader.second), ctxAndHeader.first.get(), std::move(wrappedCallback), p_id, p_data, true);
     });
   returnState.resetProtocolId(protocolId);
   returnState.resetCtx(std::move(ctxAndHeader.first));
