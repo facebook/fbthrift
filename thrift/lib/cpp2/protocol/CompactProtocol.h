@@ -335,8 +335,8 @@ class CompactProtocolReader {
       uint8_t byte, TType type, uint8_t diff);
 
   FOLLY_ALWAYS_INLINE bool advanceToNextField(
-      int32_t currFieldId,
-      int32_t nextFieldId,
+      int16_t currFieldId,
+      int16_t nextFieldId,
       TType type,
       StructReadState& state);
 
@@ -386,8 +386,8 @@ struct CompactProtocolReader::StructReadState {
 
   FOLLY_ALWAYS_INLINE bool advanceToNextField(
       CompactProtocolReader* iprot,
-      int32_t currFieldId,
-      int32_t nextFieldId,
+      int16_t currFieldId,
+      int16_t nextFieldId,
       TType nextFieldType) {
     return iprot->advanceToNextField(
         currFieldId, nextFieldId, nextFieldType, *this);

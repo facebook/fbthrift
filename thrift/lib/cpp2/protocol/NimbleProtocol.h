@@ -256,8 +256,8 @@ class NimbleProtocolReader {
     // Consumes the bytes on success
     FOLLY_ALWAYS_INLINE bool advanceToNextField(
         NimbleProtocolReader* /* iprot */,
-        int32_t /* currFieldId */,
-        int32_t nextFieldId,
+        int16_t /* currFieldId */,
+        int16_t nextFieldId,
         TType nextFieldType) {
       detail::nimble::FieldBytes expected = fieldBeginBytes(
           detail::nimble::ttypeToNimbleType(nextFieldType), nextFieldId);

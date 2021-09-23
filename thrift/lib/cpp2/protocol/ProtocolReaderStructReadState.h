@@ -68,8 +68,8 @@ struct ProtocolReaderStructReadState {
    */
   FOLLY_ALWAYS_INLINE bool advanceToNextField(
       Protocol* iprot,
-      int32_t currFieldId,
-      int32_t /*nextFieldId*/,
+      int16_t currFieldId,
+      int16_t /*nextFieldId*/,
       TType /*nextFieldType*/) {
     if (currFieldId != 0) {
       iprot->readFieldEnd();
