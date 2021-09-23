@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <functional>
 #include <utility>
 
 #include <folly/Traits.h>
@@ -105,6 +106,38 @@ struct adapter_less<
   }
 };
 
+// Hash based on the thrift type.
+template <typename Adapter, typename AdaptedT>
+struct thrift_hash {
+  constexpr size_t operator()(const AdaptedT& value) const {
+    auto&& tvalue = Adapter::toThrift(value);
+    return std::hash<folly::remove_cvref_t<decltype(tvalue)>>()(tvalue);
+  }
+};
+
+// Hash based on the adapted types, with a fallback on thrift_hash.
+template <typename Adapter, typename AdaptedT, typename = void>
+struct adapted_hash : thrift_hash<Adapter, AdaptedT> {};
+template <typename Adapter, typename AdaptedT>
+struct adapted_hash<
+    Adapter,
+    AdaptedT,
+    folly::void_t<decltype(std::hash<std::decay_t<AdaptedT>>())>>
+    : std::hash<std::decay_t<AdaptedT>> {};
+
+// Hash based on the adapter, with a fallback on adapted_hash.
+template <typename Adapter, typename AdaptedT, typename = void>
+struct adapter_hash : adapted_hash<Adapter, AdaptedT> {};
+template <typename Adapter, typename AdaptedT>
+struct adapter_hash<
+    Adapter,
+    AdaptedT,
+    folly::void_t<decltype(Adapter::hash(cr<AdaptedT>()))>> {
+  constexpr size_t operator()(const AdaptedT& value) const {
+    return Adapter::hash(value);
+  }
+};
+
 template <typename Adapter, typename AdaptedT>
 constexpr bool equal(const AdaptedT& lhs, const AdaptedT& rhs) {
   return adapter_equal<Adapter, AdaptedT>()(lhs, rhs);
@@ -118,6 +151,11 @@ constexpr bool not_equal(const AdaptedT& lhs, const AdaptedT& rhs) {
 template <typename Adapter, typename AdaptedT>
 constexpr bool less(const AdaptedT& lhs, const AdaptedT& rhs) {
   return adapter_less<Adapter, AdaptedT>()(lhs, rhs);
+}
+
+template <typename Adapter, typename AdaptedT>
+constexpr size_t hash(const AdaptedT& value) {
+  return adapter_hash<Adapter, AdaptedT>()(value);
 }
 
 } // namespace adapt_detail
