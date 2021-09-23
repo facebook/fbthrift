@@ -25,18 +25,18 @@
 
 namespace apache {
 namespace thrift {
-template <typename T>
+template <typename T, bool WithHeader = false>
 class ServerStreamPublisher;
 
 namespace detail {
-template <typename T>
+template <typename T, bool WithHeader = false>
 class ServerPublisherStream : private StreamServerCallback {
   struct Deleter {
-    void operator()(ServerPublisherStream<T>* ptr) { ptr->decref(); }
+    void operator()(ServerPublisherStream* ptr) { ptr->decref(); }
   };
 
   struct CancelDeleter {
-    void operator()(ServerPublisherStream<T>* ptr) {
+    void operator()(ServerPublisherStream* ptr) {
       ptr->onStreamCompleteOrCancel_.call();
       ptr->decref();
     }
@@ -191,16 +191,16 @@ class ServerPublisherStream : private StreamServerCallback {
   };
 
  public:
-  using Ptr = std::unique_ptr<ServerPublisherStream<T>, Deleter>;
+  using Ptr = std::unique_ptr<ServerPublisherStream, Deleter>;
 
   template <typename Func>
-  static std::pair<ServerStreamFn<T>, ServerStreamPublisher<T>> create(
-      Func onStreamCompleteOrCancel) {
+  static std::pair<ServerStreamFn<T>, ServerStreamPublisher<T, WithHeader>>
+  create(Func onStreamCompleteOrCancel) {
     auto stream =
-        new ServerPublisherStream<T>(std::move(onStreamCompleteOrCancel));
+        new ServerPublisherStream(std::move(onStreamCompleteOrCancel));
     return {
         [stream =
-             std::unique_ptr<ServerPublisherStream<T>, CancelDeleter>(stream)](
+             std::unique_ptr<ServerPublisherStream, CancelDeleter>(stream)](
             folly::Executor::KeepAlive<> serverExecutor,
             apache::thrift::detail::StreamElementEncoder<T>* encode) mutable {
           stream->serverExecutor_ = std::move(serverExecutor);
@@ -210,7 +210,22 @@ class ServerPublisherStream : private StreamServerCallback {
             for (; !messages.empty(); messages.pop()) {
               auto message = std::move(messages.front());
               if (message.hasValue()) {
-                stream->queue_.push((*encode)(std::move(message.value())));
+                if constexpr (WithHeader) {
+                  if (!message->payload) {
+                    StreamPayloadMetadata md;
+                    md.otherMetadata_ref() = std::move(message->metadata);
+                    stream->queue_.push(folly::Try<StreamPayload>(
+                        folly::in_place, nullptr, std::move(md)));
+                  } else {
+                    folly::Try<StreamPayload> sp =
+                        (*encode)(std::move(*message->payload));
+                    sp->metadata.otherMetadata_ref() =
+                        std::move(message->metadata);
+                    stream->queue_.push(std::move(sp));
+                  }
+                } else {
+                  stream->queue_.push((*encode)(std::move(message.value())));
+                }
               } else if (message.hasException()) {
                 stream->queue_.push((*encode)(std::move(message.exception())));
               } else {
@@ -232,17 +247,33 @@ class ServerPublisherStream : private StreamServerCallback {
                 std::move(payload), clientEb, stream.release());
           });
         },
-        ServerStreamPublisher<T>(stream->copy())};
+        ServerStreamPublisher<T, WithHeader>(stream->copy())};
   }
 
-  void publish(folly::Try<T>&& payload) {
+  void publish(
+      folly::Try<std::conditional_t<WithHeader, PayloadAndHeader<T>, T>>&&
+          payload) {
     bool close = !payload.hasValue();
 
     // pushOrGetClosedPayload only moves from payload on success
     if (auto encode =
             encodeOrQueue_.pushOrGetClosedPayload(std::move(payload))) {
       if (payload.hasValue()) {
-        queue_.push((*encode)(std::move(payload.value())));
+        if constexpr (WithHeader) {
+          if (!payload->payload) {
+            StreamPayloadMetadata md;
+            md.otherMetadata_ref() = std::move(payload->metadata);
+            queue_.push(folly::Try<StreamPayload>(
+                folly::in_place, nullptr, std::move(md)));
+          } else {
+            folly::Try<StreamPayload> sp =
+                (*encode)(std::move(*payload->payload));
+            sp->metadata.otherMetadata_ref() = std::move(payload->metadata);
+            queue_.push(std::move(sp));
+          }
+        } else {
+          queue_.push((*encode)(std::move(payload.value())));
+        }
       } else if (payload.hasException()) {
         queue_.push((*encode)(std::move(payload.exception())));
       } else {
@@ -330,12 +361,17 @@ class ServerPublisherStream : private StreamServerCallback {
         DCHECK(!queue_.isClosed());
         auto payload = std::move(buffer.front());
         if (payload.hasValue()) {
-          auto alive =
-              streamClientCallback_->onStreamNext(std::move(payload.value()));
+          bool hasPayload = payload->payload != nullptr;
+          auto alive = hasPayload
+              ? streamClientCallback_->onStreamNext(std::move(payload.value()))
+              : streamClientCallback_->onStreamHeaders(
+                    HeadersPayload(std::move(payload->metadata)));
           if (!alive) {
             return false;
           }
-          creditBuffer_.addCredits(-1);
+          if (hasPayload) {
+            creditBuffer_.addCredits(-1);
+          }
         } else if (payload.hasException()) {
           streamClientCallback_->onStreamError(std::move(payload.exception()));
           close();
@@ -391,7 +427,9 @@ class ServerPublisherStream : private StreamServerCallback {
   CallOnceFunction onStreamCompleteOrCancel_;
 
   using EncodeFn = apache::thrift::detail::StreamElementEncoder<T>;
-  typename twowaybridge_detail::AtomicQueueOrPtr<folly::Try<T>, EncodeFn>
+  typename twowaybridge_detail::AtomicQueueOrPtr<
+      folly::Try<std::conditional_t<WithHeader, PayloadAndHeader<T>, T>>,
+      EncodeFn>
       encodeOrQueue_;
 
   // must only be read/written on client thread
@@ -402,21 +440,25 @@ class ServerPublisherStream : private StreamServerCallback {
 
 } // namespace detail
 
-template <typename T>
+template <typename T, bool WithHeader>
 class ServerStreamPublisher {
  public:
-  void next(T payload) const {
-    impl_->publish(folly::Try<T>(std::move(payload)));
+  using ConditionalPayload =
+      std::conditional_t<WithHeader, detail::PayloadAndHeader<T>, T>;
+  void next(ConditionalPayload payload) const {
+    impl_->publish(folly::Try<ConditionalPayload>(std::move(payload)));
   }
   void complete(folly::exception_wrapper ew) && {
-    std::exchange(impl_, nullptr)->publish(folly::Try<T>(std::move(ew)));
+    std::exchange(impl_, nullptr)
+        ->publish(folly::Try<ConditionalPayload>(std::move(ew)));
   }
   void complete() && {
-    std::exchange(impl_, nullptr)->publish(folly::Try<T>{});
+    std::exchange(impl_, nullptr)->publish(folly::Try<ConditionalPayload>{});
   }
 
   explicit ServerStreamPublisher(
-      typename apache::thrift::detail::ServerPublisherStream<T>::Ptr impl)
+      typename apache::thrift::detail::ServerPublisherStream<T, WithHeader>::Ptr
+          impl)
       : impl_(std::move(impl)) {}
   ServerStreamPublisher(ServerStreamPublisher&&) = default;
   ServerStreamPublisher& operator=(ServerStreamPublisher&&) = default;
@@ -426,7 +468,8 @@ class ServerStreamPublisher {
   }
 
  private:
-  typename apache::thrift::detail::ServerPublisherStream<T>::Ptr impl_;
+  typename apache::thrift::detail::ServerPublisherStream<T, WithHeader>::Ptr
+      impl_;
 };
 
 } // namespace thrift

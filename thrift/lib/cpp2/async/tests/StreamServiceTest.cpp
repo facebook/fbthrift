@@ -29,7 +29,8 @@ class StreamServiceTest
 using TestTypes = ::testing::Types<
     TestStreamGeneratorService,
     TestStreamPublisherService,
-    TestStreamGeneratorWithHeaderService>;
+    TestStreamGeneratorWithHeaderService,
+    TestStreamPublisherWithHeaderService>;
 TYPED_TEST_CASE(StreamServiceTest, TestTypes);
 
 TYPED_TEST(StreamServiceTest, Basic) {

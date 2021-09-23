@@ -115,5 +115,47 @@ TestStreamGeneratorWithHeaderService::rangeThrowUDE(int32_t from, int32_t to) {
   });
 }
 
+apache::thrift::ServerStream<int32_t>
+TestStreamPublisherWithHeaderService::range(int32_t from, int32_t to) {
+  auto [stream, publisher] =
+      apache::thrift::ServerStream<int32_t>::createPublisherWithHeader([] {});
+
+  for (int i = from; i <= to; i++) {
+    publisher.next(Pair{i, {{"val", std::to_string(i)}}});
+    publisher.next(Pair{std::nullopt, {{"val", std::to_string(i)}}});
+  }
+  std::move(publisher).complete();
+
+  return std::move(stream);
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamPublisherWithHeaderService::rangeThrow(int32_t from, int32_t to) {
+  auto [stream, publisher] =
+      apache::thrift::ServerStream<int32_t>::createPublisherWithHeader([] {});
+
+  for (int i = from; i <= to; i++) {
+    publisher.next(Pair{i, {{"val", std::to_string(i)}}});
+    publisher.next(Pair{std::nullopt, {{"val", std::to_string(i)}}});
+  }
+  std::move(publisher).complete(std::runtime_error("I am a search bar"));
+
+  return std::move(stream);
+}
+
+apache::thrift::ServerStream<int32_t>
+TestStreamPublisherWithHeaderService::rangeThrowUDE(int32_t from, int32_t to) {
+  auto [stream, publisher] =
+      apache::thrift::ServerStream<int32_t>::createPublisherWithHeader([] {});
+
+  for (int i = from; i <= to; i++) {
+    publisher.next(Pair{i, {{"val", std::to_string(i)}}});
+    publisher.next(Pair{std::nullopt, {{"val", std::to_string(i)}}});
+  }
+  std::move(publisher).complete(UserDefinedException());
+
+  return std::move(stream);
+}
+
 } // namespace testservice
 } // namespace testutil
