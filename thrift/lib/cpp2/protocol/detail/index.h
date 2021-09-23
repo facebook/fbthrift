@@ -84,7 +84,16 @@ constexpr auto kIndexField = InternalField{
     static_cast<int16_t>(ReservedId::kIndex),
     TType::T_MAP};
 
-int64_t xxh3_64bits(folly::io::Cursor cursor);
+class Xxh3Hasher {
+ public:
+  Xxh3Hasher();
+  ~Xxh3Hasher();
+  void update(folly::io::Cursor);
+  operator int64_t();
+
+ private:
+  void* state;
+};
 
 struct DummyIndexWriter {
   DummyIndexWriter(void*, uint32_t&) {}

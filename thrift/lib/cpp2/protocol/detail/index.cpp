@@ -31,16 +31,26 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-int64_t xxh3_64bits(folly::io::Cursor cursor) {
-  thread_local std::unique_ptr<XXH3_state_t, decltype(&XXH3_freeState)> state{
-      XXH3_createState(), &XXH3_freeState};
-  XXH3_64bits_reset(state.get());
+Xxh3Hasher::Xxh3Hasher() {
+  state = static_cast<void*>(XXH3_createState());
+  XXH3_64bits_reset(static_cast<XXH3_state_t*>(state));
+}
+
+Xxh3Hasher::~Xxh3Hasher() {
+  XXH3_freeState(static_cast<XXH3_state_t*>(state));
+}
+
+void Xxh3Hasher::update(folly::io::Cursor cursor) {
   while (!cursor.isAtEnd()) {
     const auto buf = cursor.peekBytes();
-    XXH3_64bits_update(state.get(), buf.data(), buf.size());
+    XXH3_64bits_update(
+        static_cast<XXH3_state_t*>(state), buf.data(), buf.size());
     cursor += buf.size();
   }
-  return XXH3_64bits_digest(state.get());
+}
+
+Xxh3Hasher::operator int64_t() {
+  return XXH3_64bits_digest(static_cast<XXH3_state_t*>(state));
 }
 
 int64_t random_64bits_integer() {
