@@ -329,7 +329,8 @@ struct BinaryProtocolReader::StructReadState {
       int16_t /*currFieldId*/,
       int16_t nextFieldId,
       TType nextFieldType) {
-    return iprot->advanceToNextField(nextFieldId, nextFieldType, *this);
+    return iprot->advanceToNextField(
+        static_cast<int16_t>(nextFieldId), nextFieldType, *this);
   }
 
   /*
