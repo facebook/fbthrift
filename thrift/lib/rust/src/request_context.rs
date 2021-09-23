@@ -20,22 +20,24 @@ use std::marker::PhantomData;
 
 pub trait RequestContext {
     type ContextStack;
-    type Name;
+    type Name: ?Sized;
 
+    // This should return a ContextStack with a lifetime bounded by &self and the
+    // names, but that needs GATs, so require 'static for now.
     fn get_context_stack(
         &self,
-        service_name: &Self::Name,
-        fn_name: &Self::Name,
+        service_name: &'static Self::Name,
+        fn_name: &'static Self::Name,
     ) -> Result<Self::ContextStack, Error>;
 
     fn set_user_exception_header(&self, ex_type: &str, ex_reason: &str) -> Result<(), Error>;
 }
 
-pub struct DummyRequestContext<Name, Buffer> {
-    _phantom: PhantomData<(Name, Buffer)>,
+pub struct DummyRequestContext<Name: ?Sized, Buffer> {
+    _phantom: PhantomData<(Buffer, Name)>,
 }
 
-impl<Name, Buffer> DummyRequestContext<Name, Buffer> {
+impl<Name: ?Sized, Buffer> DummyRequestContext<Name, Buffer> {
     pub fn new() -> Self {
         Self {
             _phantom: PhantomData,
@@ -43,7 +45,7 @@ impl<Name, Buffer> DummyRequestContext<Name, Buffer> {
     }
 }
 
-impl<Name, Buffer> RequestContext for DummyRequestContext<Name, Buffer> {
+impl<Name: ?Sized, Buffer> RequestContext for DummyRequestContext<Name, Buffer> {
     type ContextStack = crate::context_stack::DummyContextStack<Name, Buffer>;
     type Name = Name;
 
@@ -58,4 +60,11 @@ impl<Name, Buffer> RequestContext for DummyRequestContext<Name, Buffer> {
     fn set_user_exception_header(&self, _ex_type: &str, _ex_reason: &str) -> Result<(), Error> {
         Ok(())
     }
+}
+
+fn _assert_context_stack(_: &impl RequestContext) {}
+
+#[test]
+fn check_unsized() {
+    _assert_context_stack(&DummyRequestContext::<std::ffi::CStr, Vec<u8>>::new());
 }

@@ -527,7 +527,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "NestedContainers.mapList"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -643,7 +643,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "NestedContainers.mapSet"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -759,7 +759,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "NestedContainers.listMap"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -875,7 +875,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "NestedContainers.listSet"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -991,7 +991,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "NestedContainers.turtles"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -1389,7 +1389,7 @@ pub mod server {
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: NestedContainers,
-        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Sync,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Sync,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync,
     {
@@ -1421,14 +1421,14 @@ pub mod server {
                 METHOD_NAME = "NestedContainers.mapList";
             }
             let mut ctx_stack = req_ctxt.get_context_stack(
-                &SERVICE_NAME,
-                &METHOD_NAME,
+                SERVICE_NAME.as_cstr(),
+                METHOD_NAME.as_cstr(),
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
             let _args: self::Args_NestedContainers_mapList = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                 protocol: P::PROTOCOL_ID,
-                method_name: METHOD_NAME,
+                method_name: METHOD_NAME.as_cstr(),
                 buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
@@ -1465,7 +1465,7 @@ pub mod server {
                 ));
                 ::fbthrift::ContextStack::on_write_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                     protocol: P::PROTOCOL_ID,
-                    method_name: METHOD_NAME,
+                    method_name: METHOD_NAME.as_cstr(),
                     buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
                 })?;
                 ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
@@ -1490,14 +1490,14 @@ pub mod server {
                 METHOD_NAME = "NestedContainers.mapSet";
             }
             let mut ctx_stack = req_ctxt.get_context_stack(
-                &SERVICE_NAME,
-                &METHOD_NAME,
+                SERVICE_NAME.as_cstr(),
+                METHOD_NAME.as_cstr(),
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
             let _args: self::Args_NestedContainers_mapSet = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                 protocol: P::PROTOCOL_ID,
-                method_name: METHOD_NAME,
+                method_name: METHOD_NAME.as_cstr(),
                 buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
@@ -1534,7 +1534,7 @@ pub mod server {
                 ));
                 ::fbthrift::ContextStack::on_write_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                     protocol: P::PROTOCOL_ID,
-                    method_name: METHOD_NAME,
+                    method_name: METHOD_NAME.as_cstr(),
                     buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
                 })?;
                 ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
@@ -1559,14 +1559,14 @@ pub mod server {
                 METHOD_NAME = "NestedContainers.listMap";
             }
             let mut ctx_stack = req_ctxt.get_context_stack(
-                &SERVICE_NAME,
-                &METHOD_NAME,
+                SERVICE_NAME.as_cstr(),
+                METHOD_NAME.as_cstr(),
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
             let _args: self::Args_NestedContainers_listMap = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                 protocol: P::PROTOCOL_ID,
-                method_name: METHOD_NAME,
+                method_name: METHOD_NAME.as_cstr(),
                 buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
@@ -1603,7 +1603,7 @@ pub mod server {
                 ));
                 ::fbthrift::ContextStack::on_write_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                     protocol: P::PROTOCOL_ID,
-                    method_name: METHOD_NAME,
+                    method_name: METHOD_NAME.as_cstr(),
                     buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
                 })?;
                 ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
@@ -1628,14 +1628,14 @@ pub mod server {
                 METHOD_NAME = "NestedContainers.listSet";
             }
             let mut ctx_stack = req_ctxt.get_context_stack(
-                &SERVICE_NAME,
-                &METHOD_NAME,
+                SERVICE_NAME.as_cstr(),
+                METHOD_NAME.as_cstr(),
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
             let _args: self::Args_NestedContainers_listSet = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                 protocol: P::PROTOCOL_ID,
-                method_name: METHOD_NAME,
+                method_name: METHOD_NAME.as_cstr(),
                 buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
@@ -1672,7 +1672,7 @@ pub mod server {
                 ));
                 ::fbthrift::ContextStack::on_write_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                     protocol: P::PROTOCOL_ID,
-                    method_name: METHOD_NAME,
+                    method_name: METHOD_NAME.as_cstr(),
                     buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
                 })?;
                 ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
@@ -1697,14 +1697,14 @@ pub mod server {
                 METHOD_NAME = "NestedContainers.turtles";
             }
             let mut ctx_stack = req_ctxt.get_context_stack(
-                &SERVICE_NAME,
-                &METHOD_NAME,
+                SERVICE_NAME.as_cstr(),
+                METHOD_NAME.as_cstr(),
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
             let _args: self::Args_NestedContainers_turtles = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                 protocol: P::PROTOCOL_ID,
-                method_name: METHOD_NAME,
+                method_name: METHOD_NAME.as_cstr(),
                 buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
@@ -1741,7 +1741,7 @@ pub mod server {
                 ));
                 ::fbthrift::ContextStack::on_write_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                     protocol: P::PROTOCOL_ID,
-                    method_name: METHOD_NAME,
+                    method_name: METHOD_NAME.as_cstr(),
                     buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
                 })?;
                 ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
@@ -1757,7 +1757,7 @@ pub mod server {
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: NestedContainers,
-        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
     {
@@ -1804,7 +1804,7 @@ pub mod server {
         P::Deserializer: ::std::marker::Send,
         P::Frame: ::std::marker::Send + 'static,
         H: NestedContainers,
-        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
     {
@@ -1868,7 +1868,7 @@ pub mod server {
     where
         F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: NestedContainers,
-        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = F::DecBuf> + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         match proto {

@@ -17,6 +17,7 @@
 use crate::{Framing, FramingDecoded, FramingEncodedFinal, Protocol};
 use futures::stream::Stream;
 use futures::{future, FutureExt};
+use std::ffi::CStr;
 use std::future::Future;
 use std::pin::Pin;
 use std::sync::Arc;
@@ -34,15 +35,15 @@ pub trait ClientFactory {
 pub trait Transport: Framing + Send + 'static {
     fn call(
         &self,
-        service_name: const_cstr::ConstCStr,
-        fn_name: const_cstr::ConstCStr,
+        service_name: &'static CStr,
+        fn_name: &'static CStr,
         req: FramingEncodedFinal<Self>,
     ) -> Pin<Box<dyn Future<Output = Result<FramingDecoded<Self>, anyhow::Error>> + Send + 'static>>;
 
     fn call_stream(
         &self,
-        _service_name: const_cstr::ConstCStr,
-        _fn_name: const_cstr::ConstCStr,
+        _service_name: &'static CStr,
+        _fn_name: &'static CStr,
         _req: FramingEncodedFinal<Self>,
     ) -> Pin<
         Box<

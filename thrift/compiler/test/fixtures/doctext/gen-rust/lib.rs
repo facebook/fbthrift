@@ -764,7 +764,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "C.f"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -878,7 +878,7 @@ pub mod client {
             use futures::StreamExt;
 
             self.transport()
-                .call_stream(SERVICE_NAME, METHOD_NAME, request)
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call_stream", method = "C.numbers"))
                 .map_err(::std::convert::From::from)
                 .and_then(|(_initial_response, stream)|
@@ -972,7 +972,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "C.thing"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -1251,7 +1251,7 @@ pub mod server {
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: C,
-        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Sync,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Sync,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync,
     {
@@ -1283,14 +1283,14 @@ pub mod server {
                 METHOD_NAME = "C.f";
             }
             let mut ctx_stack = req_ctxt.get_context_stack(
-                &SERVICE_NAME,
-                &METHOD_NAME,
+                SERVICE_NAME.as_cstr(),
+                METHOD_NAME.as_cstr(),
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
             let _args: self::Args_C_f = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                 protocol: P::PROTOCOL_ID,
-                method_name: METHOD_NAME,
+                method_name: METHOD_NAME.as_cstr(),
                 buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
@@ -1326,7 +1326,7 @@ pub mod server {
                 ));
                 ::fbthrift::ContextStack::on_write_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                     protocol: P::PROTOCOL_ID,
-                    method_name: METHOD_NAME,
+                    method_name: METHOD_NAME.as_cstr(),
                     buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
                 })?;
                 ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
@@ -1351,14 +1351,14 @@ pub mod server {
                 METHOD_NAME = "C.thing";
             }
             let mut ctx_stack = req_ctxt.get_context_stack(
-                &SERVICE_NAME,
-                &METHOD_NAME,
+                SERVICE_NAME.as_cstr(),
+                METHOD_NAME.as_cstr(),
             )?;
             ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
             let _args: self::Args_C_thing = ::fbthrift::Deserialize::read(p)?;
             ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                 protocol: P::PROTOCOL_ID,
-                method_name: METHOD_NAME,
+                method_name: METHOD_NAME.as_cstr(),
                 buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
             })?;
             ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
@@ -1402,7 +1402,7 @@ pub mod server {
                 ));
                 ::fbthrift::ContextStack::on_write_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
                     protocol: P::PROTOCOL_ID,
-                    method_name: METHOD_NAME,
+                    method_name: METHOD_NAME.as_cstr(),
                     buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
                 })?;
                 ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
@@ -1418,7 +1418,7 @@ pub mod server {
         P: ::fbthrift::Protocol + ::std::marker::Send + ::std::marker::Sync + 'static,
         P::Deserializer: ::std::marker::Send,
         H: C,
-        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
     {
@@ -1459,7 +1459,7 @@ pub mod server {
         P::Deserializer: ::std::marker::Send,
         P::Frame: ::std::marker::Send + 'static,
         H: C,
-        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = ::fbthrift::ProtocolDecoded<P>>
             + ::std::marker::Send + ::std::marker::Sync + 'static
     {
@@ -1523,7 +1523,7 @@ pub mod server {
     where
         F: ::fbthrift::Framing + ::std::marker::Send + ::std::marker::Sync + 'static,
         H: C,
-        R: ::fbthrift::RequestContext<Name = ::const_cstr::ConstCStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
+        R: ::fbthrift::RequestContext<Name = ::std::ffi::CStr> + ::std::marker::Send + ::std::marker::Sync + 'static,
         <R as ::fbthrift::RequestContext>::ContextStack: ::fbthrift::ContextStack<Name = R::Name, Buffer = F::DecBuf> + ::std::marker::Send + ::std::marker::Sync + 'static
     {
         match proto {

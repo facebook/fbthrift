@@ -162,7 +162,7 @@
             use futures::StreamExt;
 
             self.transport()
-                .call_stream(SERVICE_NAME, METHOD_NAME, request)
+                .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call_stream", method = "{{service:name}}.{{function:name}}"))
                 .map_err(::std::convert::From::from)
                 .and_then(|({{^function:stream_has_first_response?}}_{{/function:stream_has_first_response?}}initial_response, stream)|
@@ -300,7 +300,7 @@
                 .boxed()
             {{/function:returns_streams?}}{{^function:returns_streams?}}
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "{{service:name}}.{{function:name}}"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {

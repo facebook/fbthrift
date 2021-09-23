@@ -18,15 +18,15 @@ use crate::thrift_protocol::ProtocolID;
 use anyhow::Error;
 use std::marker::PhantomData;
 
-pub struct SerializedMessage<Name, Buffer> {
+pub struct SerializedMessage<'a, Name: ?Sized, Buffer> {
     pub protocol: ProtocolID,
     pub buffer: PhantomData<Buffer>, // Buffer,
-    pub method_name: Name,
+    pub method_name: &'a Name,
 }
 
 pub trait ContextStack {
     /// Type for method names
-    type Name;
+    type Name: ?Sized;
     /// Type for buffers
     type Buffer;
 
@@ -57,11 +57,11 @@ pub trait ContextStack {
     fn post_write(&mut self, bytes: u32) -> Result<(), Error>;
 }
 
-pub struct DummyContextStack<Name, Buffer> {
-    _phantom: PhantomData<(Name, Buffer)>,
+pub struct DummyContextStack<Name: ?Sized, Buffer> {
+    _phantom: PhantomData<(Buffer, Name)>,
 }
 
-impl<Name, Buffer> DummyContextStack<Name, Buffer> {
+impl<Name: ?Sized, Buffer> DummyContextStack<Name, Buffer> {
     pub fn new() -> Self {
         Self {
             _phantom: PhantomData,
@@ -69,7 +69,7 @@ impl<Name, Buffer> DummyContextStack<Name, Buffer> {
     }
 }
 
-impl<Name, Buffer> ContextStack for DummyContextStack<Name, Buffer> {
+impl<Name: ?Sized, Buffer> ContextStack for DummyContextStack<Name, Buffer> {
     type Name = Name;
     type Buffer = Buffer;
 
@@ -102,4 +102,11 @@ impl<Name, Buffer> ContextStack for DummyContextStack<Name, Buffer> {
     fn post_write(&mut self, _bytes: u32) -> Result<(), Error> {
         Ok(())
     }
+}
+
+fn _assert_context_stack(_: &impl ContextStack) {}
+
+#[test]
+fn check_unsized() {
+    _assert_context_stack(&DummyContextStack::<std::ffi::CStr, Vec<u8>>::new());
 }

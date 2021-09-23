@@ -982,7 +982,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.ping"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -1094,7 +1094,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.getRandomData"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -1210,7 +1210,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.hasDataById"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -1326,7 +1326,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.getDataById"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -1446,7 +1446,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.putDataById"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
@@ -1566,7 +1566,7 @@ pub mod client {
                 ))
             });
             self.transport()
-                .call(SERVICE_NAME, METHOD_NAME, request)
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.lobDataById"))
                 .map_err(::std::convert::From::from)
                 .and_then(|reply| {
