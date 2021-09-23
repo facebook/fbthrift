@@ -32,8 +32,10 @@
 namespace apache {
 namespace thrift {
 
-using PreprocessResult =
-    folly::Optional<boost::variant<AppClientException, AppServerException>>;
+using PreprocessResult = folly::Optional<boost::variant<
+    AppClientException,
+    AppServerException,
+    AppOverloadedException>>;
 
 class Cpp2ConnContext;
 class AdaptiveConcurrencyController;

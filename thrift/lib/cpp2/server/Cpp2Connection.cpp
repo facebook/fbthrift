@@ -466,6 +466,13 @@ void Cpp2Connection::requestReceived(
               handleAppError(
                   std::move(hreq), ace.name(), ace.getMessage(), true);
             })
+            .with([&](AppOverloadedException& aoe) {
+              killRequest(
+                  std::move(hreq),
+                  TApplicationException::LOADSHEDDING,
+                  kAppOverloadedErrorCode,
+                  aoe.getMessage().c_str());
+            })
             .with([&](AppServerException& ase) {
               handleAppError(
                   std::move(hreq), ase.name(), ase.getMessage(), false);

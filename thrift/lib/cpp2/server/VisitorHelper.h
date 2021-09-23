@@ -42,13 +42,21 @@ class VisitorHelper : public boost::static_visitor<> {
     return *this;
   }
 
+  VisitorHelper& with(
+      folly::Function<void(AppOverloadedException&) const>&& f) {
+    aoeFunc_ = std::move(f);
+    return *this;
+  }
+
   void operator()(AppServerException& value) const { aseFunc_(value); }
 
   void operator()(AppClientException& value) const { aceFunc_(value); }
+  void operator()(AppOverloadedException& value) const { aoeFunc_(value); }
 
  private:
   folly::Function<void(AppClientException&) const> aceFunc_;
   folly::Function<void(AppServerException&) const> aseFunc_;
+  folly::Function<void(AppOverloadedException&) const> aoeFunc_;
 };
 } // namespace detail
 } // namespace thrift

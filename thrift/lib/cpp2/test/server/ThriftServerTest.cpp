@@ -947,7 +947,14 @@ TEST(ThriftServerDeathTest, OnStopServingException) {
 namespace {
 enum class TransportType { Header, Rocket };
 enum class Compression { Enabled, Disabled };
-enum class ErrorType { Overload, AppOverload, MethodOverload, Client, Server };
+enum class ErrorType {
+  Overload,
+  AppOverload,
+  MethodOverload,
+  Client,
+  Server,
+  PreprocessorOverload,
+};
 } // namespace
 
 class HeaderOrRocketTest : public testing::Test {
@@ -1006,7 +1013,9 @@ class OverloadTest : public HeaderOrRocketTest,
     } else if (errorType == ErrorType::Server) {
       EXPECT_EQ(*folly::get_ptr(headers, "uex"), "name");
       EXPECT_EQ(*folly::get_ptr(headers, "uexw"), "message");
-    } else if (errorType == ErrorType::AppOverload) {
+    } else if (
+        errorType == ErrorType::AppOverload ||
+        errorType == ErrorType::PreprocessorOverload) {
       EXPECT_EQ(*folly::get_ptr(headers, "ex"), kAppOverloadedErrorCode);
       EXPECT_EQ(folly::get_ptr(headers, "uex"), nullptr);
       EXPECT_EQ(folly::get_ptr(headers, "uexw"), nullptr);
@@ -1642,6 +1651,8 @@ TEST_P(OverloadTest, Test) {
       return {AppClientException("name", "message")};
     } else if (errorType == ErrorType::Server) {
       return {AppServerException("name", "message")};
+    } else if (errorType == ErrorType::PreprocessorOverload) {
+      return {AppOverloadedException("name", "loadshedding request")};
     }
     return {};
   });
@@ -1701,7 +1712,8 @@ INSTANTIATE_TEST_CASE_P(
             ErrorType::MethodOverload,
             ErrorType::AppOverload,
             ErrorType::Client,
-            ErrorType::Server)));
+            ErrorType::Server,
+            ErrorType::PreprocessorOverload)));
 
 TEST(ThriftServer, LatencyHeader_ClientTimeout) {
   ScopedServerInterfaceThread runner(

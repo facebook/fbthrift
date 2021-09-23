@@ -501,6 +501,10 @@ void ThriftRocketServerHandler::handleRequestCommon(
               handleAppError(
                   std::move(request), ace.name(), ace.getMessage(), true);
             })
+            .with([&](AppOverloadedException&) {
+              handleRequestOverloadedServer(
+                  std::move(request), kAppOverloadedErrorCode);
+            })
             .with([&](const AppServerException& ase) {
               handleAppError(
                   std::move(request), ase.name(), ase.getMessage(), false);
