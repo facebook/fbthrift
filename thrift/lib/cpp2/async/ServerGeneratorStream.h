@@ -24,8 +24,8 @@
 #include <folly/experimental/coro/Task.h>
 #endif // FOLLY_HAS_COROUTINES
 #include <folly/Try.h>
-#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/async/ServerStreamDetail.h>
+#include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/async/TwoWayBridge.h>
 
 namespace apache {
@@ -64,11 +64,6 @@ class ServerGeneratorStream : public TwoWayBridge<
   ~ServerGeneratorStream() override;
 
 #if FOLLY_HAS_COROUTINES
-  template <typename T>
-  struct PayloadAndHeader {
-    std::optional<T> payload; // empty for header packet
-    transport::THeader::StringToStringMap metadata;
-  };
   template <bool WithHeader, typename T>
   static ServerStreamFn<T> fromAsyncGenerator(
       folly::coro::AsyncGenerator<

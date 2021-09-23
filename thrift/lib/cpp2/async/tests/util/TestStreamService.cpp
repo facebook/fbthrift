@@ -81,7 +81,7 @@ apache::thrift::ServerStream<int32_t> TestStreamPublisherService::rangeThrowUDE(
   return std::move(stream);
 }
 
-using Pair = apache::thrift::ServerStream<int32_t>::PayloadAndHeader;
+using Pair = apache::thrift::detail::PayloadAndHeader<int32_t>;
 
 apache::thrift::ServerStream<int32_t>
 TestStreamGeneratorWithHeaderService::range(int32_t from, int32_t to) {

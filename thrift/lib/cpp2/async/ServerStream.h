@@ -45,8 +45,7 @@ class ServerStream {
       : fn_(apache::thrift::detail::ServerGeneratorStream::
                 fromAsyncGenerator<false, T>(std::move(gen))) {}
 
-  using PayloadAndHeader =
-      apache::thrift::detail::ServerGeneratorStream::PayloadAndHeader<T>;
+  using PayloadAndHeader = apache::thrift::detail::PayloadAndHeader<T>;
   /* implicit */ ServerStream(
       folly::coro::AsyncGenerator<PayloadAndHeader&&>&& gen)
       : fn_(apache::thrift::detail::ServerGeneratorStream::

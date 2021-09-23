@@ -26,6 +26,7 @@
 #include <folly/io/async/EventBase.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
+#include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
@@ -91,6 +92,12 @@ class StreamElementEncoder {
 
  protected:
   ~StreamElementEncoder() = default;
+};
+
+template <typename T>
+struct PayloadAndHeader {
+  std::optional<T> payload; // empty for header packet
+  transport::THeader::StringToStringMap metadata;
 };
 
 struct FOLLY_EXPORT EncodedError : std::exception {
