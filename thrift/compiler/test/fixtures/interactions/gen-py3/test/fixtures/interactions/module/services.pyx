@@ -222,6 +222,7 @@ async def MyService_foo_coro(
             result = await self.foo(ctx,)
         else:
             result = await self.foo()
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -241,6 +242,4 @@ async def MyService_foo_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 

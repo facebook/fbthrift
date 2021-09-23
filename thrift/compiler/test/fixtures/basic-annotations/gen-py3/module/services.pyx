@@ -326,6 +326,7 @@ async def MyService_ping_coro(
             result = await self.ping(ctx,)
         else:
             result = await self.ping()
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -345,8 +346,6 @@ async def MyService_ping_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyService_getRandomData(
     object self,
@@ -378,6 +377,7 @@ async def MyService_getRandomData_coro(
             result = await self.getRandomData(ctx,)
         else:
             result = await self.getRandomData()
+        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -397,8 +397,6 @@ async def MyService_getRandomData_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef api void call_cy_MyService_hasDataById(
     object self,
@@ -436,6 +434,7 @@ async def MyService_hasDataById_coro(
         else:
             result = await self.hasDataById(
                       id)
+        promise.cPromise.setValue(<cbool> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -455,8 +454,6 @@ async def MyService_hasDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cbool> result)
 
 cdef api void call_cy_MyService_getDataById(
     object self,
@@ -494,6 +491,7 @@ async def MyService_getDataById_coro(
         else:
             result = await self.getDataById(
                       id)
+        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -513,8 +511,6 @@ async def MyService_getDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef api void call_cy_MyService_putDataById(
     object self,
@@ -558,6 +554,7 @@ async def MyService_putDataById_coro(
             result = await self.putDataById(
                       id,
                       data)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -577,8 +574,6 @@ async def MyService_putDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyService_lobDataById(
     object self,
@@ -622,6 +617,7 @@ async def MyService_lobDataById_coro(
             result = await self.lobDataById(
                       id,
                       data)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -641,8 +637,6 @@ async def MyService_lobDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyService_doNothing(
     object self,
@@ -674,6 +668,7 @@ async def MyService_doNothing_coro(
             result = await self.doNothing(ctx,)
         else:
             result = await self.doNothing()
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -693,8 +688,6 @@ async def MyService_doNothing_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyServicePrioParent_ping(
     object self,
@@ -726,6 +719,7 @@ async def MyServicePrioParent_ping_coro(
             result = await self.ping(ctx,)
         else:
             result = await self.ping()
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -745,8 +739,6 @@ async def MyServicePrioParent_ping_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyServicePrioParent_pong(
     object self,
@@ -778,6 +770,7 @@ async def MyServicePrioParent_pong_coro(
             result = await self.pong(ctx,)
         else:
             result = await self.pong()
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -797,8 +790,6 @@ async def MyServicePrioParent_pong_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyServicePrioChild_pang(
     object self,
@@ -830,6 +821,7 @@ async def MyServicePrioChild_pang_coro(
             result = await self.pang(ctx,)
         else:
             result = await self.pang()
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -849,6 +841,4 @@ async def MyServicePrioChild_pang_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 

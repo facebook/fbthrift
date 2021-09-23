@@ -188,6 +188,7 @@ async def SomeService_bounce_map_coro(
             result = await self.bounce_map(
                       m)
         result = _module_types.std_unordered_map__Map__i32_string(result)
+        promise.cPromise.setValue(make_unique[_module_types.std_unordered_map[cint32_t,string]](deref((<_module_types.std_unordered_map__Map__i32_string?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -207,8 +208,6 @@ async def SomeService_bounce_map_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[_module_types.std_unordered_map[cint32_t,string]](deref((<_module_types.std_unordered_map__Map__i32_string?> result)._cpp_obj)))
 
 cdef api void call_cy_SomeService_binary_keyed_map(
     object self,
@@ -247,6 +246,7 @@ async def SomeService_binary_keyed_map_coro(
             result = await self.binary_keyed_map(
                       r)
         result = _module_types.Map__binary_i64(result)
+        promise.cPromise.setValue(make_unique[cmap[string,cint64_t]](deref((<_module_types.Map__binary_i64?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -266,6 +266,4 @@ async def SomeService_binary_keyed_map_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[cmap[string,cint64_t]](deref((<_module_types.Map__binary_i64?> result)._cpp_obj)))
 

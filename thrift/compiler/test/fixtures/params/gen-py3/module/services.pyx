@@ -196,6 +196,7 @@ async def NestedContainers_mapList_coro(
         else:
             result = await self.mapList(
                       foo)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -215,8 +216,6 @@ async def NestedContainers_mapList_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_NestedContainers_mapSet(
     object self,
@@ -254,6 +253,7 @@ async def NestedContainers_mapSet_coro(
         else:
             result = await self.mapSet(
                       foo)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -273,8 +273,6 @@ async def NestedContainers_mapSet_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_NestedContainers_listMap(
     object self,
@@ -312,6 +310,7 @@ async def NestedContainers_listMap_coro(
         else:
             result = await self.listMap(
                       foo)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -331,8 +330,6 @@ async def NestedContainers_listMap_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_NestedContainers_listSet(
     object self,
@@ -370,6 +367,7 @@ async def NestedContainers_listSet_coro(
         else:
             result = await self.listSet(
                       foo)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -389,8 +387,6 @@ async def NestedContainers_listSet_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_NestedContainers_turtles(
     object self,
@@ -428,6 +424,7 @@ async def NestedContainers_turtles_coro(
         else:
             result = await self.turtles(
                       foo)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -447,6 +444,4 @@ async def NestedContainers_turtles_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 

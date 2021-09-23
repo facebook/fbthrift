@@ -164,6 +164,7 @@ async def ExtendTestService_check_coro(
         else:
             result = await self.check(
                       struct1)
+        promise.cPromise.setValue(<cbool> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -183,6 +184,4 @@ async def ExtendTestService_check_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cbool> result)
 

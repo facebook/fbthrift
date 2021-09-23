@@ -1809,7 +1809,7 @@ cdef class Set__string(thrift.py3.types.Set):
             for item in items:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
-                deref(c_inst).insert(item.encode('UTF-8'))
+                deref(c_inst).insert((<str?> item).encode('UTF-8'))
         return c_inst
 
     def __contains__(self, item):
@@ -1817,7 +1817,7 @@ cdef class Set__string(thrift.py3.types.Set):
             return False
         if not isinstance(item, str):
             return False
-        return pbool(deref(self._cpp_obj).count(item.encode('UTF-8')))
+        return pbool(deref(self._cpp_obj).count((<str?> item).encode('UTF-8')))
 
 
     def __iter__(self):
@@ -1977,7 +1977,7 @@ cdef class Map__List__Set__string_string(thrift.py3.types.Map):
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst)[deref((<List__Set__string>key)._cpp_obj)] = item.encode('UTF-8')
+                deref(c_inst)[deref((<List__Set__string>key)._cpp_obj)] = (<str?> item).encode('UTF-8')
         return c_inst
 
     cdef _check_key_type(self, key):

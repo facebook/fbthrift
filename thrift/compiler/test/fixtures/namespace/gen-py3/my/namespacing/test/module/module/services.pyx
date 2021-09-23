@@ -160,6 +160,7 @@ async def TestService_init_coro(
         else:
             result = await self.init(
                       int1)
+        promise.cPromise.setValue(<cint64_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -179,6 +180,4 @@ async def TestService_init_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint64_t> result)
 

@@ -912,6 +912,7 @@ async def SimpleService_get_five_coro(
             result = await self.get_five(ctx,)
         else:
             result = await self.get_five()
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -931,8 +932,6 @@ async def SimpleService_get_five_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_add_five(
     object self,
@@ -970,6 +969,7 @@ async def SimpleService_add_five_coro(
         else:
             result = await self.add_five(
                       num)
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -989,8 +989,6 @@ async def SimpleService_add_five_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_do_nothing(
     object self,
@@ -1022,6 +1020,7 @@ async def SimpleService_do_nothing_coro(
             result = await self.do_nothing(ctx,)
         else:
             result = await self.do_nothing()
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1041,8 +1040,6 @@ async def SimpleService_do_nothing_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_SimpleService_concat(
     object self,
@@ -1086,6 +1083,7 @@ async def SimpleService_concat_coro(
             result = await self.concat(
                       first,
                       second)
+        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1105,8 +1103,6 @@ async def SimpleService_concat_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef api void call_cy_SimpleService_get_value(
     object self,
@@ -1144,6 +1140,7 @@ async def SimpleService_get_value_coro(
         else:
             result = await self.get_value(
                       simple_struct)
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1163,8 +1160,6 @@ async def SimpleService_get_value_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_negate(
     object self,
@@ -1202,6 +1197,7 @@ async def SimpleService_negate_coro(
         else:
             result = await self.negate(
                       input)
+        promise.cPromise.setValue(<cbool> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1221,8 +1217,6 @@ async def SimpleService_negate_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cbool> result)
 
 cdef api void call_cy_SimpleService_tiny(
     object self,
@@ -1260,6 +1254,7 @@ async def SimpleService_tiny_coro(
         else:
             result = await self.tiny(
                       input)
+        promise.cPromise.setValue(<cint8_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1279,8 +1274,6 @@ async def SimpleService_tiny_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint8_t> result)
 
 cdef api void call_cy_SimpleService_small(
     object self,
@@ -1318,6 +1311,7 @@ async def SimpleService_small_coro(
         else:
             result = await self.small(
                       input)
+        promise.cPromise.setValue(<cint16_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1337,8 +1331,6 @@ async def SimpleService_small_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint16_t> result)
 
 cdef api void call_cy_SimpleService_big(
     object self,
@@ -1376,6 +1368,7 @@ async def SimpleService_big_coro(
         else:
             result = await self.big(
                       input)
+        promise.cPromise.setValue(<cint64_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1395,8 +1388,6 @@ async def SimpleService_big_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint64_t> result)
 
 cdef api void call_cy_SimpleService_two(
     object self,
@@ -1434,6 +1425,7 @@ async def SimpleService_two_coro(
         else:
             result = await self.two(
                       input)
+        promise.cPromise.setValue(<double> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1453,8 +1445,6 @@ async def SimpleService_two_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<double> result)
 
 cdef api void call_cy_SimpleService_expected_exception(
     object self,
@@ -1486,6 +1476,7 @@ async def SimpleService_expected_exception_coro(
             result = await self.expected_exception(ctx,)
         else:
             result = await self.expected_exception()
+        promise.cPromise.setValue(c_unit)
     except _module_types.SimpleException as ex:
         promise.cPromise.setException(deref((<_module_types.SimpleException> ex)._cpp_obj))
     except __ApplicationError as ex:
@@ -1507,8 +1498,6 @@ async def SimpleService_expected_exception_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_SimpleService_unexpected_exception(
     object self,
@@ -1540,6 +1529,7 @@ async def SimpleService_unexpected_exception_coro(
             result = await self.unexpected_exception(ctx,)
         else:
             result = await self.unexpected_exception()
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1559,8 +1549,6 @@ async def SimpleService_unexpected_exception_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_sum_i16_list(
     object self,
@@ -1598,6 +1586,7 @@ async def SimpleService_sum_i16_list_coro(
         else:
             result = await self.sum_i16_list(
                       numbers)
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1617,8 +1606,6 @@ async def SimpleService_sum_i16_list_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_sum_i32_list(
     object self,
@@ -1656,6 +1643,7 @@ async def SimpleService_sum_i32_list_coro(
         else:
             result = await self.sum_i32_list(
                       numbers)
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1675,8 +1663,6 @@ async def SimpleService_sum_i32_list_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_sum_i64_list(
     object self,
@@ -1714,6 +1700,7 @@ async def SimpleService_sum_i64_list_coro(
         else:
             result = await self.sum_i64_list(
                       numbers)
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1733,8 +1720,6 @@ async def SimpleService_sum_i64_list_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_concat_many(
     object self,
@@ -1772,6 +1757,7 @@ async def SimpleService_concat_many_coro(
         else:
             result = await self.concat_many(
                       words)
+        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1791,8 +1777,6 @@ async def SimpleService_concat_many_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef api void call_cy_SimpleService_count_structs(
     object self,
@@ -1830,6 +1814,7 @@ async def SimpleService_count_structs_coro(
         else:
             result = await self.count_structs(
                       items)
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1849,8 +1834,6 @@ async def SimpleService_count_structs_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_sum_set(
     object self,
@@ -1888,6 +1871,7 @@ async def SimpleService_sum_set_coro(
         else:
             result = await self.sum_set(
                       numbers)
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1907,8 +1891,6 @@ async def SimpleService_sum_set_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_contains_word(
     object self,
@@ -1952,6 +1934,7 @@ async def SimpleService_contains_word_coro(
             result = await self.contains_word(
                       words,
                       word)
+        promise.cPromise.setValue(<cbool> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1971,8 +1954,6 @@ async def SimpleService_contains_word_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cbool> result)
 
 cdef api void call_cy_SimpleService_get_map_value(
     object self,
@@ -2016,6 +1997,7 @@ async def SimpleService_get_map_value_coro(
             result = await self.get_map_value(
                       words,
                       key)
+        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2035,8 +2017,6 @@ async def SimpleService_get_map_value_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef api void call_cy_SimpleService_map_length(
     object self,
@@ -2074,6 +2054,7 @@ async def SimpleService_map_length_coro(
         else:
             result = await self.map_length(
                       items)
+        promise.cPromise.setValue(<cint16_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2093,8 +2074,6 @@ async def SimpleService_map_length_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint16_t> result)
 
 cdef api void call_cy_SimpleService_sum_map_values(
     object self,
@@ -2132,6 +2111,7 @@ async def SimpleService_sum_map_values_coro(
         else:
             result = await self.sum_map_values(
                       items)
+        promise.cPromise.setValue(<cint16_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2151,8 +2131,6 @@ async def SimpleService_sum_map_values_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint16_t> result)
 
 cdef api void call_cy_SimpleService_complex_sum_i32(
     object self,
@@ -2190,6 +2168,7 @@ async def SimpleService_complex_sum_i32_coro(
         else:
             result = await self.complex_sum_i32(
                       counter)
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2209,8 +2188,6 @@ async def SimpleService_complex_sum_i32_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_repeat_name(
     object self,
@@ -2248,6 +2225,7 @@ async def SimpleService_repeat_name_coro(
         else:
             result = await self.repeat_name(
                       counter)
+        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2267,8 +2245,6 @@ async def SimpleService_repeat_name_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef api void call_cy_SimpleService_get_struct(
     object self,
@@ -2300,6 +2276,7 @@ async def SimpleService_get_struct_coro(
             result = await self.get_struct(ctx,)
         else:
             result = await self.get_struct()
+        promise.cPromise.setValue(make_unique[_module_types.cSimpleStruct](deref((<_module_types.SimpleStruct?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2319,8 +2296,6 @@ async def SimpleService_get_struct_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[_module_types.cSimpleStruct](deref((<_module_types.SimpleStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_fib(
     object self,
@@ -2359,6 +2334,7 @@ async def SimpleService_fib_coro(
             result = await self.fib(
                       n)
         result = _module_types.List__i32(result)
+        promise.cPromise.setValue(make_unique[vector[cint32_t]](deref((<_module_types.List__i32?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2378,8 +2354,6 @@ async def SimpleService_fib_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[vector[cint32_t]](deref((<_module_types.List__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_unique_words(
     object self,
@@ -2418,6 +2392,7 @@ async def SimpleService_unique_words_coro(
             result = await self.unique_words(
                       words)
         result = _module_types.Set__string(result)
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<_module_types.Set__string?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2437,8 +2412,6 @@ async def SimpleService_unique_words_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<_module_types.Set__string?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_words_count(
     object self,
@@ -2477,6 +2450,7 @@ async def SimpleService_words_count_coro(
             result = await self.words_count(
                       words)
         result = _module_types.Map__string_i16(result)
+        promise.cPromise.setValue(make_unique[cmap[string,cint16_t]](deref((<_module_types.Map__string_i16?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2496,8 +2470,6 @@ async def SimpleService_words_count_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[cmap[string,cint16_t]](deref((<_module_types.Map__string_i16?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_set_enum(
     object self,
@@ -2535,6 +2507,7 @@ async def SimpleService_set_enum_coro(
         else:
             result = await self.set_enum(
                       in_enum)
+        promise.cPromise.setValue(<_module_types.cAnEnum><int>result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2554,8 +2527,6 @@ async def SimpleService_set_enum_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<_module_types.cAnEnum><int>result)
 
 cdef api void call_cy_SimpleService_list_of_lists(
     object self,
@@ -2600,6 +2571,7 @@ async def SimpleService_list_of_lists_coro(
                       num_lists,
                       num_items)
         result = _module_types.List__List__i32(result)
+        promise.cPromise.setValue(make_unique[vector[vector[cint32_t]]](deref((<_module_types.List__List__i32?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2619,8 +2591,6 @@ async def SimpleService_list_of_lists_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[vector[vector[cint32_t]]](deref((<_module_types.List__List__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_word_character_frequency(
     object self,
@@ -2659,6 +2629,7 @@ async def SimpleService_word_character_frequency_coro(
             result = await self.word_character_frequency(
                       sentence)
         result = _module_types.Map__string_Map__string_i32(result)
+        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,cint32_t]]](deref((<_module_types.Map__string_Map__string_i32?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2678,8 +2649,6 @@ async def SimpleService_word_character_frequency_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[cmap[string,cmap[string,cint32_t]]](deref((<_module_types.Map__string_Map__string_i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_list_of_sets(
     object self,
@@ -2718,6 +2687,7 @@ async def SimpleService_list_of_sets_coro(
             result = await self.list_of_sets(
                       some_words)
         result = _module_types.List__Set__string(result)
+        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<_module_types.List__Set__string?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2737,8 +2707,6 @@ async def SimpleService_list_of_sets_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[vector[cset[string]]](deref((<_module_types.List__Set__string?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_nested_map_argument(
     object self,
@@ -2776,6 +2744,7 @@ async def SimpleService_nested_map_argument_coro(
         else:
             result = await self.nested_map_argument(
                       struct_map)
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2795,8 +2764,6 @@ async def SimpleService_nested_map_argument_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_SimpleService_make_sentence(
     object self,
@@ -2834,6 +2801,7 @@ async def SimpleService_make_sentence_coro(
         else:
             result = await self.make_sentence(
                       word_chars)
+        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2853,8 +2821,6 @@ async def SimpleService_make_sentence_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef api void call_cy_SimpleService_get_union(
     object self,
@@ -2893,6 +2859,7 @@ async def SimpleService_get_union_coro(
             result = await self.get_union(
                       sets)
         result = _module_types.Set__i32(result)
+        promise.cPromise.setValue(make_unique[cset[cint32_t]](deref((<_module_types.Set__i32?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2912,8 +2879,6 @@ async def SimpleService_get_union_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[cset[cint32_t]](deref((<_module_types.Set__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_get_keys(
     object self,
@@ -2952,6 +2917,7 @@ async def SimpleService_get_keys_coro(
             result = await self.get_keys(
                       string_map)
         result = _module_types.Set__string(result)
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<_module_types.Set__string?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2971,8 +2937,6 @@ async def SimpleService_get_keys_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<_module_types.Set__string?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_lookup_double(
     object self,
@@ -3010,6 +2974,7 @@ async def SimpleService_lookup_double_coro(
         else:
             result = await self.lookup_double(
                       key)
+        promise.cPromise.setValue(<double> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3029,8 +2994,6 @@ async def SimpleService_lookup_double_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<double> result)
 
 cdef api void call_cy_SimpleService_retrieve_binary(
     object self,
@@ -3068,6 +3031,7 @@ async def SimpleService_retrieve_binary_coro(
         else:
             result = await self.retrieve_binary(
                       something)
+        promise.cPromise.setValue(make_unique[string](<string?> result))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3087,8 +3051,6 @@ async def SimpleService_retrieve_binary_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result))
 
 cdef api void call_cy_SimpleService_contain_binary(
     object self,
@@ -3127,6 +3089,7 @@ async def SimpleService_contain_binary_coro(
             result = await self.contain_binary(
                       binaries)
         result = _module_types.Set__binary(result)
+        promise.cPromise.setValue(make_unique[cset[string]](deref((<_module_types.Set__binary?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3146,8 +3109,6 @@ async def SimpleService_contain_binary_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[cset[string]](deref((<_module_types.Set__binary?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_contain_enum(
     object self,
@@ -3186,6 +3147,7 @@ async def SimpleService_contain_enum_coro(
             result = await self.contain_enum(
                       the_enum)
         result = _module_types.List__AnEnum(result)
+        promise.cPromise.setValue(make_unique[vector[_module_types.cAnEnum]](deref((<_module_types.List__AnEnum?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3205,8 +3167,6 @@ async def SimpleService_contain_enum_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[vector[_module_types.cAnEnum]](deref((<_module_types.List__AnEnum?> result)._cpp_obj)))
 
 cdef api void call_cy_SimpleService_get_binary_union_struct(
     object self,
@@ -3244,6 +3204,7 @@ async def SimpleService_get_binary_union_struct_coro(
         else:
             result = await self.get_binary_union_struct(
                       u)
+        promise.cPromise.setValue(make_unique[_module_types.cBinaryUnionStruct](deref((<_module_types.BinaryUnionStruct?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3263,8 +3224,6 @@ async def SimpleService_get_binary_union_struct_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[_module_types.cBinaryUnionStruct](deref((<_module_types.BinaryUnionStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_DerivedService_get_six(
     object self,
@@ -3296,6 +3255,7 @@ async def DerivedService_get_six_coro(
             result = await self.get_six(ctx,)
         else:
             result = await self.get_six()
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3315,8 +3275,6 @@ async def DerivedService_get_six_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_RederivedService_get_seven(
     object self,
@@ -3348,6 +3306,7 @@ async def RederivedService_get_seven_coro(
             result = await self.get_seven(ctx,)
         else:
             result = await self.get_seven()
+        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3367,6 +3326,4 @@ async def RederivedService_get_seven_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cint32_t> result)
 

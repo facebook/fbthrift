@@ -101,6 +101,7 @@ async def {{service:name}}_{{function:name}}_coro(
             {{/type:stream_elem_type}}
         {{/type:streamresponse?}}
         {{/function:return_type}}
+        promise.cPromise.setValue({{#function:return_type}}{{> services/CythonReturnValue}}{{/function:return_type}})
     {{#function:exceptions}}
     {{#field:type}}
     except {{> types/CythonPythonType}} as ex:
@@ -126,8 +127,6 @@ async def {{service:name}}_{{function:name}}_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue({{#function:return_type}}{{> services/CythonReturnValue}}{{/function:return_type}})
 
 {{/service:supportedFunctions}}
 {{/program:services}}

@@ -371,6 +371,7 @@ async def MyService_hasDataById_coro(
         else:
             result = await self.hasDataById(
                       id)
+        promise.cPromise.setValue(<cbool> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -390,8 +391,6 @@ async def MyService_hasDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cbool> result)
 
 cdef api void call_cy_MyService_getDataById(
     object self,
@@ -429,6 +428,7 @@ async def MyService_getDataById_coro(
         else:
             result = await self.getDataById(
                       id)
+        promise.cPromise.setValue(<string?> (<str?> result).encode('UTF-8'))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -448,8 +448,6 @@ async def MyService_getDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<string?> result.encode('UTF-8'))
 
 cdef api void call_cy_MyService_putDataById(
     object self,
@@ -493,6 +491,7 @@ async def MyService_putDataById_coro(
             result = await self.putDataById(
                       id,
                       data)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -512,8 +511,6 @@ async def MyService_putDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyService_lobDataById(
     object self,
@@ -557,6 +554,7 @@ async def MyService_lobDataById_coro(
             result = await self.lobDataById(
                       id,
                       data)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -576,8 +574,6 @@ async def MyService_lobDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyServiceFast_hasDataById(
     object self,
@@ -615,6 +611,7 @@ async def MyServiceFast_hasDataById_coro(
         else:
             result = await self.hasDataById(
                       id)
+        promise.cPromise.setValue(<cbool> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -634,8 +631,6 @@ async def MyServiceFast_hasDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<cbool> result)
 
 cdef api void call_cy_MyServiceFast_getDataById(
     object self,
@@ -673,6 +668,7 @@ async def MyServiceFast_getDataById_coro(
         else:
             result = await self.getDataById(
                       id)
+        promise.cPromise.setValue(<string?> (<str?> result).encode('UTF-8'))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -692,8 +688,6 @@ async def MyServiceFast_getDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<string?> result.encode('UTF-8'))
 
 cdef api void call_cy_MyServiceFast_putDataById(
     object self,
@@ -737,6 +731,7 @@ async def MyServiceFast_putDataById_coro(
             result = await self.putDataById(
                       id,
                       data)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -756,8 +751,6 @@ async def MyServiceFast_putDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyServiceFast_lobDataById(
     object self,
@@ -801,6 +794,7 @@ async def MyServiceFast_lobDataById_coro(
             result = await self.lobDataById(
                       id,
                       data)
+        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -820,8 +814,6 @@ async def MyServiceFast_lobDataById_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_DbMixedStackArguments_getDataByKey0(
     object self,
@@ -859,6 +851,7 @@ async def DbMixedStackArguments_getDataByKey0_coro(
         else:
             result = await self.getDataByKey0(
                       key)
+        promise.cPromise.setValue(make_unique[string](<string?> result))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -878,8 +871,6 @@ async def DbMixedStackArguments_getDataByKey0_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(make_unique[string](<string?> result))
 
 cdef api void call_cy_DbMixedStackArguments_getDataByKey1(
     object self,
@@ -917,6 +908,7 @@ async def DbMixedStackArguments_getDataByKey1_coro(
         else:
             result = await self.getDataByKey1(
                       key)
+        promise.cPromise.setValue(<string?> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -936,6 +928,4 @@ async def DbMixedStackArguments_getDataByKey1_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
-    else:
-        promise.cPromise.setValue(<string?> result)
 
