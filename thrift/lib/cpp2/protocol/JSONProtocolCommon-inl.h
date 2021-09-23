@@ -706,7 +706,7 @@ void JSONProtocolReaderCommon::readJSONEscapeChar(uint8_t& out) {
   ensureCharNoWhitespace(apache::thrift::detail::json::kJSONZeroChar);
   b1 = in_.read<uint8_t>();
   b2 = in_.read<uint8_t>();
-  out = (hexVal(b1) << 4) + hexVal(b2);
+  out = static_cast<uint8_t>((hexVal(b1) << 4) + hexVal(b2));
 }
 
 template <typename StrType>
