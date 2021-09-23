@@ -180,7 +180,7 @@ inline FieldBytes stopBytes() {
 inline FieldBytes mapBeginByte(NimbleType key, NimbleType value) {
   FieldBytes result;
   result.len = 1;
-  result.bytes[0] = (int)key | ((int)value << 5);
+  result.bytes[0] = static_cast<std::uint8_t>((int)key | ((int)value << 5));
   return result;
 }
 
@@ -199,7 +199,7 @@ inline void mapTypesFromByte(
 inline FieldBytes listBeginByte(NimbleType elem) {
   FieldBytes result;
   result.len = 1;
-  result.bytes[0] = (int)elem;
+  result.bytes[0] = static_cast<std::uint8_t>((int)elem);
   return result;
 }
 
@@ -222,7 +222,8 @@ FieldBytes fieldBeginBytes(NimbleType type, std::uint16_t fieldId) {
   std::uint16_t adjustedFieldId = fieldId - 1;
   if (adjustedFieldId < 32) {
     result.len = 1;
-    result.bytes[0] = (adjustedFieldId << 3) | (int)type;
+    result.bytes[0] =
+        static_cast<std::uint8_t>((adjustedFieldId << 3) | (int)type);
   } else {
     std::uint8_t lengthBit;
     if (adjustedFieldId < 256) {
@@ -232,8 +233,9 @@ FieldBytes fieldBeginBytes(NimbleType type, std::uint16_t fieldId) {
       lengthBit = (1 << 3);
       result.len = 3;
     }
-    std::uint8_t lowTypeBits = (int)NimbleType::INVALID;
-    std::uint8_t highTypeBits = (int)type << 5;
+    std::uint8_t lowTypeBits =
+        static_cast<std::uint8_t>((int)NimbleType::INVALID);
+    std::uint8_t highTypeBits = static_cast<std::uint8_t>((int)type << 5);
     result.bytes[0] = lowTypeBits | highTypeBits | lengthBit;
     result.bytes[1] = adjustedFieldId & 0xFF;
     result.bytes[2] = adjustedFieldId >> 8;
