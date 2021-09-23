@@ -467,31 +467,6 @@ class ClientServerTests(unittest.TestCase):
 
         loop.run_until_complete(inner_test())
 
-    def test_wrong_type(self) -> None:
-        """
-        This tests whether cancelled tasks are handled properly.
-        """
-
-        class BadTypeHandler(Handler):
-            async def getName(self) -> str:
-                return 8
-
-        loop = asyncio.get_event_loop()
-
-        async def inner_test() -> None:
-            async with TestServer(handler=BadTypeHandler(), ip="::1") as sa:
-                ip, port = sa.ip, sa.port
-                assert ip and port
-                async with get_client(TestingService, host=ip, port=port) as client:
-                    with self.assertRaises(ApplicationError) as ex:
-                        await client.getName()
-                    self.assertEqual(
-                        ex.exception.message,
-                        "TypeError('Expected unicode, got int')",
-                    )
-
-        loop.run_until_complete(inner_test())
-
 
 class StackHandler(StackServiceInterface):
     async def add_to(self, lst: Sequence[int], value: int) -> Sequence[int]:

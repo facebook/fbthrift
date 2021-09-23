@@ -148,7 +148,6 @@ cdef class ServerStream_{{> types/CythonCppTypeIdent}}(ServerStream):
 async def runGenerator_{{service:name}}_{{function:name}}(object generator, Promise_{{> types/CythonCppTypeIdent}}_Stream promise):
     try:
         item = await generator.asend(None)
-        promise.cPromise.setValue(optional[{{> types/CythonCppType}}](<{{> types/CythonCppType}}?>{{> CythonPythonToCppItem}}))
     except StopAsyncIteration:
         promise.cPromise.setValue(optional[{{> types/CythonCppType}}]())
     {{#function:stream_exceptions}}
@@ -176,6 +175,8 @@ async def runGenerator_{{service:name}}_{{function:name}}(object generator, Prom
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(optional[{{> types/CythonCppType}}](<{{> types/CythonCppType}}?>{{> CythonPythonToCppItem}}))
 
 cdef void getNextGenerator_{{service:name}}_{{function:name}}(object generator, cFollyPromise[optional[{{> types/CythonCppType}}]] cPromise):
     cdef Promise_{{> types/CythonCppTypeIdent}}_Stream __promise = Promise_{{> types/CythonCppTypeIdent}}_Stream.create(cmove(cPromise))

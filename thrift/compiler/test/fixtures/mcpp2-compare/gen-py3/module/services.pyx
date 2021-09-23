@@ -1004,7 +1004,6 @@ async def ReturnService_noReturn_coro(
             result = await self.noReturn(ctx,)
         else:
             result = await self.noReturn()
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1024,6 +1023,8 @@ async def ReturnService_noReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_ReturnService_boolReturn(
     object self,
@@ -1055,7 +1056,6 @@ async def ReturnService_boolReturn_coro(
             result = await self.boolReturn(ctx,)
         else:
             result = await self.boolReturn()
-        promise.cPromise.setValue(<cbool> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1075,6 +1075,8 @@ async def ReturnService_boolReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cbool> result)
 
 cdef api void call_cy_ReturnService_i16Return(
     object self,
@@ -1106,7 +1108,6 @@ async def ReturnService_i16Return_coro(
             result = await self.i16Return(ctx,)
         else:
             result = await self.i16Return()
-        promise.cPromise.setValue(<cint16_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1126,6 +1127,8 @@ async def ReturnService_i16Return_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cint16_t> result)
 
 cdef api void call_cy_ReturnService_i32Return(
     object self,
@@ -1157,7 +1160,6 @@ async def ReturnService_i32Return_coro(
             result = await self.i32Return(ctx,)
         else:
             result = await self.i32Return()
-        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1177,6 +1179,8 @@ async def ReturnService_i32Return_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_ReturnService_i64Return(
     object self,
@@ -1208,7 +1212,6 @@ async def ReturnService_i64Return_coro(
             result = await self.i64Return(ctx,)
         else:
             result = await self.i64Return()
-        promise.cPromise.setValue(<cint64_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1228,6 +1231,8 @@ async def ReturnService_i64Return_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cint64_t> result)
 
 cdef api void call_cy_ReturnService_floatReturn(
     object self,
@@ -1259,7 +1264,6 @@ async def ReturnService_floatReturn_coro(
             result = await self.floatReturn(ctx,)
         else:
             result = await self.floatReturn()
-        promise.cPromise.setValue(<float> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1279,6 +1283,8 @@ async def ReturnService_floatReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<float> result)
 
 cdef api void call_cy_ReturnService_doubleReturn(
     object self,
@@ -1310,7 +1316,6 @@ async def ReturnService_doubleReturn_coro(
             result = await self.doubleReturn(ctx,)
         else:
             result = await self.doubleReturn()
-        promise.cPromise.setValue(<double> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1330,6 +1335,8 @@ async def ReturnService_doubleReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<double> result)
 
 cdef api void call_cy_ReturnService_stringReturn(
     object self,
@@ -1361,7 +1368,6 @@ async def ReturnService_stringReturn_coro(
             result = await self.stringReturn(ctx,)
         else:
             result = await self.stringReturn()
-        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1381,6 +1387,8 @@ async def ReturnService_stringReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef api void call_cy_ReturnService_binaryReturn(
     object self,
@@ -1412,7 +1420,6 @@ async def ReturnService_binaryReturn_coro(
             result = await self.binaryReturn(ctx,)
         else:
             result = await self.binaryReturn()
-        promise.cPromise.setValue(make_unique[string](<string?> result))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1432,6 +1439,8 @@ async def ReturnService_binaryReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result))
 
 cdef api void call_cy_ReturnService_mapReturn(
     object self,
@@ -1464,7 +1473,6 @@ async def ReturnService_mapReturn_coro(
         else:
             result = await self.mapReturn()
         result = _module_types.Map__string_i64(result)
-        promise.cPromise.setValue(make_unique[cmap[string,cint64_t]](deref((<_module_types.Map__string_i64?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1484,6 +1492,8 @@ async def ReturnService_mapReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[cmap[string,cint64_t]](deref((<_module_types.Map__string_i64?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_simpleTypedefReturn(
     object self,
@@ -1515,7 +1525,6 @@ async def ReturnService_simpleTypedefReturn_coro(
             result = await self.simpleTypedefReturn(ctx,)
         else:
             result = await self.simpleTypedefReturn()
-        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1535,6 +1544,8 @@ async def ReturnService_simpleTypedefReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_ReturnService_complexTypedefReturn(
     object self,
@@ -1567,7 +1578,6 @@ async def ReturnService_complexTypedefReturn_coro(
         else:
             result = await self.complexTypedefReturn()
         result = _module_types.List__Map__Empty_MyStruct(result)
-        promise.cPromise.setValue(make_unique[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]](deref((<_module_types.List__Map__Empty_MyStruct?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1587,6 +1597,8 @@ async def ReturnService_complexTypedefReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]](deref((<_module_types.List__Map__Empty_MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_list_mostComplexTypedefReturn(
     object self,
@@ -1619,7 +1631,6 @@ async def ReturnService_list_mostComplexTypedefReturn_coro(
         else:
             result = await self.list_mostComplexTypedefReturn()
         result = _module_types.List__List__List__Map__Empty_MyStruct(result)
-        promise.cPromise.setValue(make_unique[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]](deref((<_module_types.List__List__List__Map__Empty_MyStruct?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1639,6 +1650,8 @@ async def ReturnService_list_mostComplexTypedefReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[vector[vector[cmap[_module_types.cEmpty,_module_types.cMyStruct]]]]](deref((<_module_types.List__List__List__Map__Empty_MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_enumReturn(
     object self,
@@ -1670,7 +1683,6 @@ async def ReturnService_enumReturn_coro(
             result = await self.enumReturn(ctx,)
         else:
             result = await self.enumReturn()
-        promise.cPromise.setValue(<_module_types.cMyEnumA><int>result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1690,6 +1702,8 @@ async def ReturnService_enumReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<_module_types.cMyEnumA><int>result)
 
 cdef api void call_cy_ReturnService_list_EnumReturn(
     object self,
@@ -1722,7 +1736,6 @@ async def ReturnService_list_EnumReturn_coro(
         else:
             result = await self.list_EnumReturn()
         result = _module_types.List__MyEnumA(result)
-        promise.cPromise.setValue(make_unique[vector[_module_types.cMyEnumA]](deref((<_module_types.List__MyEnumA?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1742,6 +1755,8 @@ async def ReturnService_list_EnumReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[_module_types.cMyEnumA]](deref((<_module_types.List__MyEnumA?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_structReturn(
     object self,
@@ -1773,7 +1788,6 @@ async def ReturnService_structReturn_coro(
             result = await self.structReturn(ctx,)
         else:
             result = await self.structReturn()
-        promise.cPromise.setValue(make_unique[_module_types.cMyStruct](deref((<_module_types.MyStruct?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1793,6 +1807,8 @@ async def ReturnService_structReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[_module_types.cMyStruct](deref((<_module_types.MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_set_StructReturn(
     object self,
@@ -1825,7 +1841,6 @@ async def ReturnService_set_StructReturn_coro(
         else:
             result = await self.set_StructReturn()
         result = _module_types.Set__MyStruct(result)
-        promise.cPromise.setValue(make_unique[cset[_module_types.cMyStruct]](deref((<_module_types.Set__MyStruct?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1845,6 +1860,8 @@ async def ReturnService_set_StructReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[_module_types.cMyStruct]](deref((<_module_types.Set__MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_unionReturn(
     object self,
@@ -1876,7 +1893,6 @@ async def ReturnService_unionReturn_coro(
             result = await self.unionReturn(ctx,)
         else:
             result = await self.unionReturn()
-        promise.cPromise.setValue(make_unique[_module_types.cComplexUnion](deref((<_module_types.ComplexUnion?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1896,6 +1912,8 @@ async def ReturnService_unionReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[_module_types.cComplexUnion](deref((<_module_types.ComplexUnion?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_list_UnionReturn(
     object self,
@@ -1928,7 +1946,6 @@ async def ReturnService_list_UnionReturn_coro(
         else:
             result = await self.list_UnionReturn()
         result = _module_types.List__ComplexUnion(result)
-        promise.cPromise.setValue(make_unique[vector[_module_types.cComplexUnion]](deref((<_module_types.List__ComplexUnion?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1948,6 +1965,8 @@ async def ReturnService_list_UnionReturn_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[_module_types.cComplexUnion]](deref((<_module_types.List__ComplexUnion?> result)._cpp_obj)))
 
 cdef api void call_cy_ReturnService_readDataEb(
     object self,
@@ -1985,7 +2004,6 @@ async def ReturnService_readDataEb_coro(
         else:
             result = await self.readDataEb(
                       size)
-        promise.cPromise.setValue(((<_fbthrift_iobuf.IOBuf>result).c_clone()))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2005,6 +2023,8 @@ async def ReturnService_readDataEb_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(((<_fbthrift_iobuf.IOBuf>result).c_clone()))
 
 cdef api void call_cy_ReturnService_readData(
     object self,
@@ -2042,7 +2062,6 @@ async def ReturnService_readData_coro(
         else:
             result = await self.readData(
                       size)
-        promise.cPromise.setValue(make_unique[unique_ptr[_fbthrift_iobuf.cIOBuf]](((<_fbthrift_iobuf.IOBuf>result).c_clone())))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2062,6 +2081,8 @@ async def ReturnService_readData_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[unique_ptr[_fbthrift_iobuf.cIOBuf]](((<_fbthrift_iobuf.IOBuf>result).c_clone())))
 
 cdef api void call_cy_ParamService_void_ret_i16_param(
     object self,
@@ -2099,7 +2120,6 @@ async def ParamService_void_ret_i16_param_coro(
         else:
             result = await self.void_ret_i16_param(
                       param1)
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2119,6 +2139,8 @@ async def ParamService_void_ret_i16_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_ParamService_void_ret_byte_i16_param(
     object self,
@@ -2162,7 +2184,6 @@ async def ParamService_void_ret_byte_i16_param_coro(
             result = await self.void_ret_byte_i16_param(
                       param1,
                       param2)
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2182,6 +2203,8 @@ async def ParamService_void_ret_byte_i16_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_ParamService_void_ret_map_param(
     object self,
@@ -2219,7 +2242,6 @@ async def ParamService_void_ret_map_param_coro(
         else:
             result = await self.void_ret_map_param(
                       param1)
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2239,6 +2261,8 @@ async def ParamService_void_ret_map_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_ParamService_void_ret_map_setlist_param(
     object self,
@@ -2282,7 +2306,6 @@ async def ParamService_void_ret_map_setlist_param_coro(
             result = await self.void_ret_map_setlist_param(
                       param1,
                       param2)
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2302,6 +2325,8 @@ async def ParamService_void_ret_map_setlist_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_ParamService_void_ret_map_typedef_param(
     object self,
@@ -2339,7 +2364,6 @@ async def ParamService_void_ret_map_typedef_param_coro(
         else:
             result = await self.void_ret_map_typedef_param(
                       param1)
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2359,6 +2383,8 @@ async def ParamService_void_ret_map_typedef_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_ParamService_void_ret_enum_param(
     object self,
@@ -2396,7 +2422,6 @@ async def ParamService_void_ret_enum_param_coro(
         else:
             result = await self.void_ret_enum_param(
                       param1)
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2416,6 +2441,8 @@ async def ParamService_void_ret_enum_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_ParamService_void_ret_struct_param(
     object self,
@@ -2453,7 +2480,6 @@ async def ParamService_void_ret_struct_param_coro(
         else:
             result = await self.void_ret_struct_param(
                       param1)
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2473,6 +2499,8 @@ async def ParamService_void_ret_struct_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_ParamService_void_ret_listunion_param(
     object self,
@@ -2510,7 +2538,6 @@ async def ParamService_void_ret_listunion_param_coro(
         else:
             result = await self.void_ret_listunion_param(
                       param1)
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2530,6 +2557,8 @@ async def ParamService_void_ret_listunion_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_ParamService_bool_ret_i32_i64_param(
     object self,
@@ -2573,7 +2602,6 @@ async def ParamService_bool_ret_i32_i64_param_coro(
             result = await self.bool_ret_i32_i64_param(
                       param1,
                       param2)
-        promise.cPromise.setValue(<cbool> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2593,6 +2621,8 @@ async def ParamService_bool_ret_i32_i64_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cbool> result)
 
 cdef api void call_cy_ParamService_bool_ret_map_param(
     object self,
@@ -2630,7 +2660,6 @@ async def ParamService_bool_ret_map_param_coro(
         else:
             result = await self.bool_ret_map_param(
                       param1)
-        promise.cPromise.setValue(<cbool> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2650,6 +2679,8 @@ async def ParamService_bool_ret_map_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cbool> result)
 
 cdef api void call_cy_ParamService_bool_ret_union_param(
     object self,
@@ -2687,7 +2718,6 @@ async def ParamService_bool_ret_union_param_coro(
         else:
             result = await self.bool_ret_union_param(
                       param1)
-        promise.cPromise.setValue(<cbool> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2707,6 +2737,8 @@ async def ParamService_bool_ret_union_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cbool> result)
 
 cdef api void call_cy_ParamService_i64_ret_float_double_param(
     object self,
@@ -2750,7 +2782,6 @@ async def ParamService_i64_ret_float_double_param_coro(
             result = await self.i64_ret_float_double_param(
                       param1,
                       param2)
-        promise.cPromise.setValue(<cint64_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2770,6 +2801,8 @@ async def ParamService_i64_ret_float_double_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cint64_t> result)
 
 cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
     object self,
@@ -2813,7 +2846,6 @@ async def ParamService_i64_ret_string_typedef_param_coro(
             result = await self.i64_ret_string_typedef_param(
                       param1,
                       param2)
-        promise.cPromise.setValue(<cint64_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2833,6 +2865,8 @@ async def ParamService_i64_ret_string_typedef_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cint64_t> result)
 
 cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
     object self,
@@ -2894,7 +2928,6 @@ async def ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
                       param3,
                       param4,
                       param5)
-        promise.cPromise.setValue(<cint64_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2914,6 +2947,8 @@ async def ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cint64_t> result)
 
 cdef api void call_cy_ParamService_double_ret_setstruct_param(
     object self,
@@ -2951,7 +2986,6 @@ async def ParamService_double_ret_setstruct_param_coro(
         else:
             result = await self.double_ret_setstruct_param(
                       param1)
-        promise.cPromise.setValue(<double> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2971,6 +3005,8 @@ async def ParamService_double_ret_setstruct_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<double> result)
 
 cdef api void call_cy_ParamService_string_ret_string_param(
     object self,
@@ -3008,7 +3044,6 @@ async def ParamService_string_ret_string_param_coro(
         else:
             result = await self.string_ret_string_param(
                       param1)
-        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3028,6 +3063,8 @@ async def ParamService_string_ret_string_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef api void call_cy_ParamService_binary_ret_binary_param(
     object self,
@@ -3065,7 +3102,6 @@ async def ParamService_binary_ret_binary_param_coro(
         else:
             result = await self.binary_ret_binary_param(
                       param1)
-        promise.cPromise.setValue(make_unique[string](<string?> result))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3085,6 +3121,8 @@ async def ParamService_binary_ret_binary_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result))
 
 cdef api void call_cy_ParamService_map_ret_bool_param(
     object self,
@@ -3123,7 +3161,6 @@ async def ParamService_map_ret_bool_param_coro(
             result = await self.map_ret_bool_param(
                       param1)
         result = _module_types.Map__string_i64(result)
-        promise.cPromise.setValue(make_unique[cmap[string,cint64_t]](deref((<_module_types.Map__string_i64?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3143,6 +3180,8 @@ async def ParamService_map_ret_bool_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[cmap[string,cint64_t]](deref((<_module_types.Map__string_i64?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_list_ret_map_setlist_param(
     object self,
@@ -3187,7 +3226,6 @@ async def ParamService_list_ret_map_setlist_param_coro(
                       param1,
                       param2)
         result = _module_types.List__bool(result)
-        promise.cPromise.setValue(make_unique[vector[cbool]](deref((<_module_types.List__bool?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3207,6 +3245,8 @@ async def ParamService_list_ret_map_setlist_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[cbool]](deref((<_module_types.List__bool?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_param(
     object self,
@@ -3245,7 +3285,6 @@ async def ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
             result = await self.mapsetlistmapliststring_ret_listlistlist_param(
                       param1)
         result = _module_types.Map__Set__List__i32_Map__List__Set__string_string(result)
-        promise.cPromise.setValue(make_unique[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]](deref((<_module_types.Map__Set__List__i32_Map__List__Set__string_string?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3265,6 +3304,8 @@ async def ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[cmap[cset[vector[cint32_t]],cmap[vector[cset[string]],string]]](deref((<_module_types.Map__Set__List__i32_Map__List__Set__string_string?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_typedef_ret_i32_param(
     object self,
@@ -3302,7 +3343,6 @@ async def ParamService_typedef_ret_i32_param_coro(
         else:
             result = await self.typedef_ret_i32_param(
                       param1)
-        promise.cPromise.setValue(<cint32_t> result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3322,6 +3362,8 @@ async def ParamService_typedef_ret_i32_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<cint32_t> result)
 
 cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
     object self,
@@ -3360,7 +3402,6 @@ async def ParamService_listtypedef_ret_typedef_param_coro(
             result = await self.listtypedef_ret_typedef_param(
                       param1)
         result = _module_types.List__i32(result)
-        promise.cPromise.setValue(make_unique[vector[cint32_t]](deref((<_module_types.List__i32?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3380,6 +3421,8 @@ async def ParamService_listtypedef_ret_typedef_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[cint32_t]](deref((<_module_types.List__i32?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_enum_ret_double_param(
     object self,
@@ -3417,7 +3460,6 @@ async def ParamService_enum_ret_double_param_coro(
         else:
             result = await self.enum_ret_double_param(
                       param1)
-        promise.cPromise.setValue(<_module_types.cMyEnumA><int>result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3437,6 +3479,8 @@ async def ParamService_enum_ret_double_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<_module_types.cMyEnumA><int>result)
 
 cdef api void call_cy_ParamService_enum_ret_double_enum_param(
     object self,
@@ -3480,7 +3524,6 @@ async def ParamService_enum_ret_double_enum_param_coro(
             result = await self.enum_ret_double_enum_param(
                       param1,
                       param2)
-        promise.cPromise.setValue(<_module_types.cMyEnumA><int>result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3500,6 +3543,8 @@ async def ParamService_enum_ret_double_enum_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(<_module_types.cMyEnumA><int>result)
 
 cdef api void call_cy_ParamService_listenum_ret_map_param(
     object self,
@@ -3538,7 +3583,6 @@ async def ParamService_listenum_ret_map_param_coro(
             result = await self.listenum_ret_map_param(
                       param1)
         result = _module_types.List__MyEnumA(result)
-        promise.cPromise.setValue(make_unique[vector[_module_types.cMyEnumA]](deref((<_module_types.List__MyEnumA?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3558,6 +3602,8 @@ async def ParamService_listenum_ret_map_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[_module_types.cMyEnumA]](deref((<_module_types.List__MyEnumA?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_struct_ret_i16_param(
     object self,
@@ -3595,7 +3641,6 @@ async def ParamService_struct_ret_i16_param_coro(
         else:
             result = await self.struct_ret_i16_param(
                       param1)
-        promise.cPromise.setValue(make_unique[_module_types.cMyStruct](deref((<_module_types.MyStruct?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3615,6 +3660,8 @@ async def ParamService_struct_ret_i16_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[_module_types.cMyStruct](deref((<_module_types.MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_setstruct_ret_set_param(
     object self,
@@ -3653,7 +3700,6 @@ async def ParamService_setstruct_ret_set_param_coro(
             result = await self.setstruct_ret_set_param(
                       param1)
         result = _module_types.Set__MyStruct(result)
-        promise.cPromise.setValue(make_unique[cset[_module_types.cMyStruct]](deref((<_module_types.Set__MyStruct?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3673,6 +3719,8 @@ async def ParamService_setstruct_ret_set_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[cset[_module_types.cMyStruct]](deref((<_module_types.Set__MyStruct?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_union_ret_i32_i32_param(
     object self,
@@ -3716,7 +3764,6 @@ async def ParamService_union_ret_i32_i32_param_coro(
             result = await self.union_ret_i32_i32_param(
                       param1,
                       param2)
-        promise.cPromise.setValue(make_unique[_module_types.cComplexUnion](deref((<_module_types.ComplexUnion?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3736,6 +3783,8 @@ async def ParamService_union_ret_i32_i32_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[_module_types.cComplexUnion](deref((<_module_types.ComplexUnion?> result)._cpp_obj)))
 
 cdef api void call_cy_ParamService_listunion_string_param(
     object self,
@@ -3774,7 +3823,6 @@ async def ParamService_listunion_string_param_coro(
             result = await self.listunion_string_param(
                       param1)
         result = _module_types.List__ComplexUnion(result)
-        promise.cPromise.setValue(make_unique[vector[_module_types.cComplexUnion]](deref((<_module_types.List__ComplexUnion?> result)._cpp_obj)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3794,4 +3842,6 @@ async def ParamService_listunion_string_param_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[vector[_module_types.cComplexUnion]](deref((<_module_types.List__ComplexUnion?> result)._cpp_obj)))
 

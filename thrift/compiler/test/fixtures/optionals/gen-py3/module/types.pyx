@@ -629,7 +629,7 @@ cdef class Map__Animal_string(thrift.py3.types.Map):
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
 
-                deref(c_inst)[<cAnimal><int>key] = (<str?> item).encode('UTF-8')
+                deref(c_inst)[<cAnimal><int>key] = item.encode('UTF-8')
         return c_inst
 
     cdef _check_key_type(self, key):

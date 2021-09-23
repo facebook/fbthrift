@@ -231,7 +231,6 @@ async def MyRoot_do_root_coro(
             result = await self.do_root(ctx,)
         else:
             result = await self.do_root()
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -251,6 +250,8 @@ async def MyRoot_do_root_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyNode_do_mid(
     object self,
@@ -282,7 +283,6 @@ async def MyNode_do_mid_coro(
             result = await self.do_mid(ctx,)
         else:
             result = await self.do_mid()
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -302,6 +302,8 @@ async def MyNode_do_mid_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyLeaf_do_leaf(
     object self,
@@ -333,7 +335,6 @@ async def MyLeaf_do_leaf_coro(
             result = await self.do_leaf(ctx,)
         else:
             result = await self.do_leaf()
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -353,4 +354,6 @@ async def MyLeaf_do_leaf_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 

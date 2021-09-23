@@ -193,7 +193,6 @@ async def Raiser_doBland_coro(
             result = await self.doBland(ctx,)
         else:
             result = await self.doBland()
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -213,6 +212,8 @@ async def Raiser_doBland_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_Raiser_doRaise(
     object self,
@@ -244,7 +245,6 @@ async def Raiser_doRaise_coro(
             result = await self.doRaise(ctx,)
         else:
             result = await self.doRaise()
-        promise.cPromise.setValue(c_unit)
     except _module_types.Banal as ex:
         promise.cPromise.setException(deref((<_module_types.Banal> ex)._cpp_obj))
     except _module_types.Fiery as ex:
@@ -270,6 +270,8 @@ async def Raiser_doRaise_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_Raiser_get200(
     object self,
@@ -301,7 +303,6 @@ async def Raiser_get200_coro(
             result = await self.get200(ctx,)
         else:
             result = await self.get200()
-        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -321,6 +322,8 @@ async def Raiser_get200_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 
 cdef api void call_cy_Raiser_get500(
     object self,
@@ -352,7 +355,6 @@ async def Raiser_get500_coro(
             result = await self.get500(ctx,)
         else:
             result = await self.get500()
-        promise.cPromise.setValue(make_unique[string](<string?> (<str?> result).encode('UTF-8')))
     except _module_types.Fiery as ex:
         promise.cPromise.setException(deref((<_module_types.Fiery> ex)._cpp_obj))
     except _module_types.Banal as ex:
@@ -378,4 +380,6 @@ async def Raiser_get500_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(make_unique[string](<string?> result.encode('UTF-8')))
 

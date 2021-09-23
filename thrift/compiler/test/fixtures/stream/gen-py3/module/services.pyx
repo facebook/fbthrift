@@ -95,7 +95,6 @@ cdef class ServerStream_cint32_t(ServerStream):
 async def runGenerator_PubSubStreamingService_returnstream(object generator, Promise_cint32_t_Stream promise):
     try:
         item = await generator.asend(None)
-        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
     except StopAsyncIteration:
         promise.cPromise.setValue(optional[cint32_t]())
     except __ApplicationError as ex:
@@ -117,6 +116,8 @@ async def runGenerator_PubSubStreamingService_returnstream(object generator, Pro
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
 cdef void getNextGenerator_PubSubStreamingService_returnstream(object generator, cFollyPromise[optional[cint32_t]] cPromise):
     cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream.create(cmove(cPromise))
@@ -129,7 +130,6 @@ cdef void getNextGenerator_PubSubStreamingService_returnstream(object generator,
 async def runGenerator_PubSubStreamingService_streamthrows(object generator, Promise_cint32_t_Stream promise):
     try:
         item = await generator.asend(None)
-        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
     except StopAsyncIteration:
         promise.cPromise.setValue(optional[cint32_t]())
     except _module_types.FooEx as ex:
@@ -153,6 +153,8 @@ async def runGenerator_PubSubStreamingService_streamthrows(object generator, Pro
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
 cdef void getNextGenerator_PubSubStreamingService_streamthrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
     cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream.create(cmove(cPromise))
@@ -165,7 +167,6 @@ cdef void getNextGenerator_PubSubStreamingService_streamthrows(object generator,
 async def runGenerator_PubSubStreamingService_boththrows(object generator, Promise_cint32_t_Stream promise):
     try:
         item = await generator.asend(None)
-        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
     except StopAsyncIteration:
         promise.cPromise.setValue(optional[cint32_t]())
     except _module_types.FooEx as ex:
@@ -189,6 +190,8 @@ async def runGenerator_PubSubStreamingService_boththrows(object generator, Promi
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
 cdef void getNextGenerator_PubSubStreamingService_boththrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
     cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream.create(cmove(cPromise))
@@ -201,7 +204,6 @@ cdef void getNextGenerator_PubSubStreamingService_boththrows(object generator, c
 async def runGenerator_PubSubStreamingService_responseandstreamthrows(object generator, Promise_cint32_t_Stream promise):
     try:
         item = await generator.asend(None)
-        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
     except StopAsyncIteration:
         promise.cPromise.setValue(optional[cint32_t]())
     except _module_types.FooEx as ex:
@@ -225,6 +227,8 @@ async def runGenerator_PubSubStreamingService_responseandstreamthrows(object gen
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
 cdef void getNextGenerator_PubSubStreamingService_responseandstreamthrows(object generator, cFollyPromise[optional[cint32_t]] cPromise):
     cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream.create(cmove(cPromise))
@@ -237,7 +241,6 @@ cdef void getNextGenerator_PubSubStreamingService_responseandstreamthrows(object
 async def runGenerator_PubSubStreamingService_returnstreamFast(object generator, Promise_cint32_t_Stream promise):
     try:
         item = await generator.asend(None)
-        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
     except StopAsyncIteration:
         promise.cPromise.setValue(optional[cint32_t]())
     except __ApplicationError as ex:
@@ -259,6 +262,8 @@ async def runGenerator_PubSubStreamingService_returnstreamFast(object generator,
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(optional[cint32_t](<cint32_t?>item))
 
 cdef void getNextGenerator_PubSubStreamingService_returnstreamFast(object generator, cFollyPromise[optional[cint32_t]] cPromise):
     cdef Promise_cint32_t_Stream __promise = Promise_cint32_t_Stream.create(cmove(cPromise))
@@ -467,7 +472,6 @@ async def PubSubStreamingService_returnstream_coro(
             result = await result
         if isinstance(result, AsyncIterator):
             result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_returnstream)))
-        promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -487,6 +491,8 @@ async def PubSubStreamingService_returnstream_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
 
 cdef api void call_cy_PubSubStreamingService_streamthrows(
     object self,
@@ -528,7 +534,6 @@ async def PubSubStreamingService_streamthrows_coro(
             result = await result
         if isinstance(result, AsyncIterator):
             result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_streamthrows)))
-        promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -548,6 +553,8 @@ async def PubSubStreamingService_streamthrows_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
 
 cdef api void call_cy_PubSubStreamingService_boththrows(
     object self,
@@ -589,7 +596,6 @@ async def PubSubStreamingService_boththrows_coro(
             result = await result
         if isinstance(result, AsyncIterator):
             result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_boththrows)))
-        promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
     except _module_types.FooEx as ex:
         promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
     except __ApplicationError as ex:
@@ -611,6 +617,8 @@ async def PubSubStreamingService_boththrows_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
 
 cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
     object self,
@@ -654,7 +662,6 @@ async def PubSubStreamingService_responseandstreamthrows_coro(
             result = await result
         if isinstance(result, AsyncIterator):
             result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_responseandstreamthrows)))
-        promise.cPromise.setValue(createResponseAndServerStream[cint32_t,cint32_t]((<cint32_t?> item), cmove(deref((<ServerStream_cint32_t?>result).cStream))))
     except _module_types.FooEx as ex:
         promise.cPromise.setException(deref((<_module_types.FooEx> ex)._cpp_obj))
     except __ApplicationError as ex:
@@ -676,6 +683,8 @@ async def PubSubStreamingService_responseandstreamthrows_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(createResponseAndServerStream[cint32_t,cint32_t]((<cint32_t?> item), cmove(deref((<ServerStream_cint32_t?>result).cStream))))
 
 cdef api void call_cy_PubSubStreamingService_returnstreamFast(
     object self,
@@ -723,7 +732,6 @@ async def PubSubStreamingService_returnstreamFast_coro(
             result = await result
         if isinstance(result, AsyncIterator):
             result = ServerStream_cint32_t.create(cmove(createAsyncIteratorFromPyIterator[cint32_t](result, get_executor(), &getNextGenerator_PubSubStreamingService_returnstreamFast)))
-        promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -743,4 +751,6 @@ async def PubSubStreamingService_returnstreamFast_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(cmove(deref((<ServerStream_cint32_t?>result).cStream)))
 

@@ -42,7 +42,7 @@ key, include the parallel CythonPythonToCppKey file instead.
 }}{{#type:i64?}}item{{/type:i64?}}{{!
 }}{{#type:double?}}item{{/type:double?}}{{!
 }}{{#type:float?}}item{{/type:float?}}{{!
-}}{{#type:string?}}(<str?> item).encode('UTF-8'){{/type:string?}}{{!
+}}{{#type:string?}}item.encode('UTF-8'){{/type:string?}}{{!
 }}{{#type:binary?}}item{{/type:binary?}}{{!
 }}{{#type:struct}}{{!
   }}deref((<{{> types/CythonPythonType}}>item)._cpp_obj){{!

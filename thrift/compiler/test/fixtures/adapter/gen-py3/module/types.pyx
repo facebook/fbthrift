@@ -597,7 +597,7 @@ cdef class Set__string(thrift.py3.types.Set):
             for item in items:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
-                deref(c_inst).insert((<str?> item).encode('UTF-8'))
+                deref(c_inst).insert(item.encode('UTF-8'))
         return c_inst
 
     def __contains__(self, item):
@@ -605,7 +605,7 @@ cdef class Set__string(thrift.py3.types.Set):
             return False
         if not isinstance(item, str):
             return False
-        return pbool(deref(self._cpp_obj).count((<str?> item).encode('UTF-8')))
+        return pbool(deref(self._cpp_obj).count(item.encode('UTF-8')))
 
 
     def __iter__(self):
@@ -679,7 +679,7 @@ cdef class List__string(thrift.py3.types.List):
             for item in items:
                 if not isinstance(item, str):
                     raise TypeError(f"{item!r} is not of type str")
-                deref(c_inst).push_back((<str?> item).encode('UTF-8'))
+                deref(c_inst).push_back(item.encode('UTF-8'))
         return c_inst
 
     cdef _get_slice(self, slice index_obj):
@@ -706,7 +706,7 @@ cdef class List__string(thrift.py3.types.List):
         if item is None:
             raise err
         cdef (int, int, int) indices = slice(start, stop).indices(deref(self._cpp_obj).size())
-        cdef string citem = (<str?> item).encode('UTF-8')
+        cdef string citem = item.encode('UTF-8')
         cdef std_libcpp.optional[size_t] found = __list_index[vector[string]](self._cpp_obj, indices[0], indices[1], citem)
         if not found.has_value():
             raise err
@@ -716,7 +716,7 @@ cdef class List__string(thrift.py3.types.List):
         item = self._check_item_type(item)
         if item is None:
             return 0
-        cdef string citem = (<str?> item).encode('UTF-8')
+        cdef string citem = item.encode('UTF-8')
         return __list_count[vector[string]](self._cpp_obj, citem)
 
     @staticmethod

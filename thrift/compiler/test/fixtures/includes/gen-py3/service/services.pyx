@@ -183,7 +183,6 @@ async def MyService_query_coro(
             result = await self.query(
                       s,
                       i)
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -203,6 +202,8 @@ async def MyService_query_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
 cdef api void call_cy_MyService_has_arg_docs(
     object self,
@@ -246,7 +247,6 @@ async def MyService_has_arg_docs_coro(
             result = await self.has_arg_docs(
                       s,
                       i)
-        promise.cPromise.setValue(c_unit)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -266,4 +266,6 @@ async def MyService_has_arg_docs_coro(
         promise.cPromise.setException(cTApplicationException(
             cTApplicationExceptionType__UNKNOWN, (f'Application was cancelled on the server with message: {str(ex)}').encode('UTF-8')
         ))
+    else:
+        promise.cPromise.setValue(c_unit)
 
