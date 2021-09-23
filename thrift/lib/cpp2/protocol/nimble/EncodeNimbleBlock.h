@@ -115,7 +115,8 @@ inline unsigned char controlByteFromVector(const __m128i& input) {
   // packs 2-bit codes in byte 1
   tmp = _mm_madd_epi16(tmp, codesPackingMultiple);
 
-  unsigned short result = _mm_extract_epi16(tmp, 0);
+  unsigned short result =
+      static_cast<unsigned short>(_mm_extract_epi16(tmp, 0));
   return (unsigned char)(result >> 8);
 }
 #endif
