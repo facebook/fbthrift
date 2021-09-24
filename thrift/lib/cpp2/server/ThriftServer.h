@@ -64,6 +64,7 @@ DECLARE_bool(thrift_abort_if_exceeds_shutdown_deadline);
 DECLARE_string(service_identity);
 
 THRIFT_FLAG_DECLARE_bool(dump_snapshot_on_long_shutdown);
+THRIFT_FLAG_DECLARE_bool(alpn_allow_mismatch);
 
 namespace apache {
 namespace thrift {
@@ -469,9 +470,11 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setSSLConfig(
       folly::observer::Observer<wangle::SSLContextConfig> contextObserver) {
     sslContextObserver_ = folly::observer::makeObserver(
-        [observer = std::move(contextObserver)]() {
+        [observer = std::move(contextObserver),
+         alpnObserver = ThriftServer::alpnAllowMismatch()]() {
           auto context = **observer;
           context.isDefault = true;
+          context.alpnAllowMismatch = **alpnObserver;
           return context;
         });
   }
@@ -919,6 +922,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
   void setQuickExitOnShutdownTimeout(bool quickExitOnShutdownTimeout) {
     quickExitOnShutdownTimeout_ = quickExitOnShutdownTimeout;
   }
+
+  static folly::observer::Observer<bool> alpnAllowMismatch();
 
   /**
    * For each request debug stub, a snapshot information can be constructed to

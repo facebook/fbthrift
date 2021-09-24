@@ -2340,6 +2340,16 @@ void setupServerSSL(ThriftServer& server) {
   server.setSSLConfig(std::move(sslConfig));
 }
 
+void setupServerSSLWithAlpn(
+    ThriftServer& server, std::list<std::string> nextProtocols) {
+  auto sslConfig = std::make_shared<wangle::SSLContextConfig>();
+  sslConfig->setCertificate(folly::kTestCert, folly::kTestKey, "");
+  sslConfig->clientCAFile = folly::kTestCA;
+  sslConfig->sessionContext = "ThriftServerTest";
+  sslConfig->setNextProtocols(nextProtocols);
+  server.setSSLConfig(std::move(sslConfig));
+}
+
 std::shared_ptr<folly::SSLContext> makeClientSslContext() {
   auto ctx = std::make_shared<folly::SSLContext>();
   ctx->loadCertificate(folly::kTestCert);
@@ -3013,6 +3023,59 @@ TEST(ThriftServer, RocketOverSSLNoALPN) {
   std::string response;
   client.sync_sendResponse(response, 64);
   EXPECT_EQ(response, "test64");
+}
+
+TEST(ThriftServer, AlpnAllowMismatch) {
+  THRIFT_FLAG_SET_MOCK(alpn_allow_mismatch, true);
+
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setSSLPolicy(SSLPolicy::REQUIRED);
+  setupServerSSLWithAlpn(*server, {"rs"});
+  ScopedServerThread sst(std::move(server));
+
+  folly::EventBase base;
+  auto port = sst.getAddress()->getPort();
+  folly::SocketAddress loopback("::1", port);
+
+  auto ctx = makeClientSslContext();
+  ctx->setAdvertisedNextProtocols({"h2"});
+  folly::AsyncSSLSocket::UniquePtr sslSock(
+      new folly::AsyncSSLSocket(ctx, &base));
+  sslSock->connect(nullptr /* connect callback */, loopback);
+
+  TestServiceAsyncClient client(
+      RocketClientChannel::newChannel(std::move(sslSock)));
+
+  std::string response;
+  client.sync_sendResponse(response, 64);
+  EXPECT_EQ(response, "test64");
+}
+
+TEST(ThriftServer, AlpnNotAllowMismatch) {
+  THRIFT_FLAG_SET_MOCK(alpn_allow_mismatch, false);
+
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setSSLPolicy(SSLPolicy::REQUIRED);
+  setupServerSSLWithAlpn(*server, {"rs"});
+  ScopedServerThread sst(std::move(server));
+
+  folly::EventBase base;
+  auto port = sst.getAddress()->getPort();
+  folly::SocketAddress loopback("::1", port);
+
+  auto ctx = makeClientSslContext();
+  ctx->setAdvertisedNextProtocols({"h2"});
+  folly::AsyncSSLSocket::UniquePtr sslSock(
+      new folly::AsyncSSLSocket(ctx, &base));
+  sslSock->connect(nullptr /* connect callback */, loopback);
+
+  TestServiceAsyncClient client(
+      RocketClientChannel::newChannel(std::move(sslSock)));
+
+  std::string response;
+  EXPECT_THROW(client.sync_sendResponse(response, 64), TTransportException);
 }
 
 TEST(ThriftServer, SocketQueueTimeout) {
