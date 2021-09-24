@@ -142,7 +142,8 @@ uint32_t CompactProtocolWriter::writeFieldBeginInternal(
   // check if we can use delta encoding for the field id
   if (fieldId > previousId && fieldId - previousId <= 15) {
     // write them together
-    wsize += writeByte((fieldId - previousId) << 4 | typeToWrite);
+    wsize += writeByte(
+        static_cast<int8_t>((fieldId - previousId) << 4) | typeToWrite);
   } else {
     // write them separate
     wsize += writeByte(typeToWrite);
@@ -182,7 +183,8 @@ uint32_t CompactProtocolWriter::writeMapBegin(
   } else {
     wsize += apache::thrift::util::writeVarint(out_, size);
     wsize += writeByte(
-        apache::thrift::detail::compact::TTypeToCType[keyType] << 4 |
+        static_cast<int8_t>(
+            apache::thrift::detail::compact::TTypeToCType[keyType] << 4) |
         apache::thrift::detail::compact::TTypeToCType[valType]);
   }
   return wsize;
@@ -196,8 +198,8 @@ uint32_t CompactProtocolWriter::writeCollectionBegin(
     int8_t elemType, int32_t size) {
   uint32_t wsize = 0;
   if (size <= 14) {
-    wsize += writeByte(
-        size << 4 | apache::thrift::detail::compact::TTypeToCType[elemType]);
+    wsize += writeByte(static_cast<int8_t>(
+        size << 4 | apache::thrift::detail::compact::TTypeToCType[elemType]));
   } else {
     wsize += writeByte(
         0xf0 | apache::thrift::detail::compact::TTypeToCType[elemType]);
@@ -770,7 +772,9 @@ bool CompactProtocolReader::advanceToNextField(
       }
     } else if (nextFieldId > currFieldId && (nextFieldId - currFieldId <= 15)) {
       if (matchTypeHeader(
-              *in_.data(), nextFieldType, nextFieldId - currFieldId)) {
+              *in_.data(),
+              nextFieldType,
+              static_cast<int8_t>(nextFieldId - currFieldId))) {
         in_.skipNoAdvance(1);
         return true;
       }
