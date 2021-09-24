@@ -2789,7 +2789,7 @@ TEST(ThriftServer, QueueTimeoutStressTest) {
   {
     ScopedServerInterfaceThread runner(
         std::make_shared<SendResponseInterface>());
-    runner.getThriftServer().setQueueTimeout(std::chrono::milliseconds{10});
+    THRIFT_FLAG_SET_MOCK(server_default_queue_timeout_ms, 10);
 
     auto client = runner.newClient<TestServiceAsyncClient>(
         nullptr /* executor */, [](auto socket) mutable {

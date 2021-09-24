@@ -46,6 +46,7 @@
 #include <thrift/lib/cpp2/server/StatusServerInterface.h>
 
 THRIFT_FLAG_DECLARE_int64(server_default_socket_queue_timeout_ms);
+THRIFT_FLAG_DECLARE_int64(server_default_queue_timeout_ms);
 
 namespace wangle {
 class ConnectionManager;
@@ -227,8 +228,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * (0 == infinite)
    */
   ServerAttributeDynamic<std::chrono::milliseconds> queueTimeout_{
-      DEFAULT_QUEUE_TIMEOUT};
-
+      folly::observer::makeValueObserver(
+          [o = THRIFT_FLAG_OBSERVE(server_default_queue_timeout_ms)]() {
+            return std::chrono::milliseconds(**o);
+          })};
   /**
    * The time we'll allow a new connection socket to wait on the queue before
    * closing the connection. See `folly::AsyncServerSocket::setQueueTimeout`.

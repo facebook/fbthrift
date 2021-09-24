@@ -33,6 +33,8 @@
 #include <thrift/lib/cpp2/PluggableFunction.h>
 
 THRIFT_FLAG_DEFINE_int64(server_default_socket_queue_timeout_ms, 0);
+THRIFT_FLAG_DEFINE_int64(server_default_queue_timeout_ms, 0);
+
 namespace apache {
 namespace thrift {
 
