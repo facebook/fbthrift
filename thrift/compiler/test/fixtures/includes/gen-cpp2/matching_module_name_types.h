@@ -79,22 +79,8 @@ class MyStruct final  {
   void __clear();
  private:
   ::matching_module_name::OtherStruct OtherStructField;
-
- private:
-  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
-  struct __isset {
-    std::array<uint8_t,1> array_isset;
-    template<size_t field_index>
-    bool __fbthrift_get(folly::index_constant<field_index>) const {
-      static_assert(field_index < 1, "Isset index is out of boundary");
-      return array_isset[field_index] == 1;
-    }
-    template<size_t field_index>
-    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
-      static_assert(field_index < 1, "Isset index is out of boundary");
-      array_isset[field_index] = isset_flag ? 1 : 0;
-    }
-  } __isset = {};
+private:
+  apache::thrift::detail::isset_bitset<1> __isset;
 
  public:
 
@@ -103,22 +89,22 @@ class MyStruct final  {
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> OtherStructField_ref() const& {
-    return {this->OtherStructField, __isset.array_isset.at(folly::index_constant<0>())};
+    return {this->OtherStructField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> OtherStructField_ref() const&& {
-    return {std::move(this->OtherStructField), __isset.array_isset.at(folly::index_constant<0>())};
+    return {std::move(this->OtherStructField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> OtherStructField_ref() & {
-    return {this->OtherStructField, __isset.array_isset.at(folly::index_constant<0>())};
+    return {this->OtherStructField, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::matching_module_name::OtherStruct>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> OtherStructField_ref() && {
-    return {std::move(this->OtherStructField), __isset.array_isset.at(folly::index_constant<0>())};
+    return {std::move(this->OtherStructField), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
   const ::matching_module_name::OtherStruct& get_OtherStructField() const&;
   ::matching_module_name::OtherStruct get_OtherStructField() &&;

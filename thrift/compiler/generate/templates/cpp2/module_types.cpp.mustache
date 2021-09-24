@@ -71,7 +71,7 @@ constexpr ptrdiff_t issetOffset<<% > common/namespace_cpp2 %><%struct:name%>>(st
   constexpr ptrdiff_t offsets[] = {
     <%#struct:fields_in_key_order%>
     <%#field:has_isset?%><%!
-    %>offsetof(<% > common/namespace_cpp2 %><%struct:name%>, __isset.array_isset) + <%field:isset_index%><%!
+    %>offsetof(<% > common/namespace_cpp2 %><%struct:name%>, __isset) + isset_bitset<<%struct:isset_fields_size%>>::get_offset() + <%field:isset_index%><%!
     %><%/field:has_isset?%><%!
     %><%^field:has_isset?%><%!
     %>0<%/field:has_isset?%><% > common/comma_newline%><%/struct:fields_in_key_order%>};

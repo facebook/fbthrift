@@ -671,16 +671,3 @@ TEST_F(StructTest, CppDataMethod) {
   EXPECT_EQ(std::as_const(obj)._data().foo_ref(), 20);
   EXPECT_EQ(std::move(obj)._data().foo_ref(), 20);
 }
-
-template <class T>
-using DetectIsset = decltype(&T::__isset);
-static_assert(folly::is_detected_v<DetectIsset, PublicIsset>);
-static_assert(!folly::is_detected_v<DetectIsset, Basic>);
-
-TEST_F(StructTest, PublicIsset) {
-  PublicIsset obj;
-  ASSERT_EQ(sizeof(bool), sizeof(obj.__isset));
-  EXPECT_FALSE(reinterpret_cast<bool&>(obj.__isset));
-  obj.foo_ref() = 10;
-  EXPECT_TRUE(reinterpret_cast<bool&>(obj.__isset));
-}

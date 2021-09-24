@@ -63,11 +63,11 @@ constexpr ptrdiff_t fieldOffset<::test::fixtures::tablebased::TrivialTypesStruct
 template<>
 constexpr ptrdiff_t issetOffset<::test::fixtures::tablebased::TrivialTypesStruct>(std::int16_t fieldIndex) {
   constexpr ptrdiff_t offsets[] = {
-    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset.array_isset) + 0,
-    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset.array_isset) + 1,
-    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset.array_isset) + 2,
-    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset.array_isset) + 3,
-    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset.array_isset) + 4};
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset) + isset_bitset<5>::get_offset() + 0,
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset) + isset_bitset<5>::get_offset() + 1,
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset) + isset_bitset<5>::get_offset() + 2,
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset) + isset_bitset<5>::get_offset() + 3,
+    offsetof(::test::fixtures::tablebased::TrivialTypesStruct, __isset) + isset_bitset<5>::get_offset() + 4};
   return offsets[fieldIndex];
 }
 
@@ -88,14 +88,14 @@ constexpr ptrdiff_t fieldOffset<::test::fixtures::tablebased::ContainerStruct>(s
 template<>
 constexpr ptrdiff_t issetOffset<::test::fixtures::tablebased::ContainerStruct>(std::int16_t fieldIndex) {
   constexpr ptrdiff_t offsets[] = {
-    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.array_isset) + 1,
-    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.array_isset) + 2,
-    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.array_isset) + 3,
-    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.array_isset) + 4,
-    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.array_isset) + 5,
-    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.array_isset) + 6,
-    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.array_isset) + 7,
-    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset.array_isset) + 0};
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset) + isset_bitset<8>::get_offset() + 1,
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset) + isset_bitset<8>::get_offset() + 2,
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset) + isset_bitset<8>::get_offset() + 3,
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset) + isset_bitset<8>::get_offset() + 4,
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset) + isset_bitset<8>::get_offset() + 5,
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset) + isset_bitset<8>::get_offset() + 6,
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset) + isset_bitset<8>::get_offset() + 7,
+    offsetof(::test::fixtures::tablebased::ContainerStruct, __isset) + isset_bitset<8>::get_offset() + 0};
   return offsets[fieldIndex];
 }
 

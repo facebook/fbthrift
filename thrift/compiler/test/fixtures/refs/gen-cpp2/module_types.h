@@ -640,8 +640,6 @@ class MyField final  {
  public:
   ::std::unique_ptr<::cpp2::MyEnum> req_enum_value;
 
- private:
-
  public:
 
   bool operator==(const MyField&) const;
@@ -783,8 +781,6 @@ class MyStruct final  {
  public:
   ::std::unique_ptr<::cpp2::MyField> req_ref;
 
- private:
-
  public:
 
   bool operator==(const MyStruct&) const;
@@ -892,22 +888,8 @@ class StructWithUnion final  {
   ::std::unique_ptr<double> aDouble;
  private:
   ::cpp2::MyField f;
-
- private:
-  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
-  struct __isset {
-    std::array<uint8_t,1> array_isset;
-    template<size_t field_index>
-    bool __fbthrift_get(folly::index_constant<field_index>) const {
-      static_assert(field_index < 1, "Isset index is out of boundary");
-      return array_isset[field_index] == 1;
-    }
-    template<size_t field_index>
-    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
-      static_assert(field_index < 1, "Isset index is out of boundary");
-      array_isset[field_index] = isset_flag ? 1 : 0;
-    }
-  } __isset = {};
+private:
+  apache::thrift::detail::isset_bitset<1> __isset;
 
  public:
 
@@ -938,22 +920,22 @@ class StructWithUnion final  {
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> f_ref() const& {
-    return {this->f, __isset.array_isset.at(folly::index_constant<0>())};
+    return {this->f, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> f_ref() const&& {
-    return {std::move(this->f), __isset.array_isset.at(folly::index_constant<0>())};
+    return {std::move(this->f), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> f_ref() & {
-    return {this->f, __isset.array_isset.at(folly::index_constant<0>())};
+    return {this->f, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::cpp2::MyField>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> f_ref() && {
-    return {std::move(this->f), __isset.array_isset.at(folly::index_constant<0>())};
+    return {std::move(this->f), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
   const ::cpp2::MyField& get_f() const&;
   ::cpp2::MyField get_f() &&;
@@ -1030,22 +1012,8 @@ class RecursiveStruct final  {
   void __clear();
  private:
   ::std::vector<::cpp2::RecursiveStruct> mes;
-
- private:
-  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
-  struct __isset {
-    std::array<uint8_t,1> array_isset;
-    template<size_t field_index>
-    bool __fbthrift_get(folly::index_constant<field_index>) const {
-      static_assert(field_index < 1, "Isset index is out of boundary");
-      return array_isset[field_index] == 1;
-    }
-    template<size_t field_index>
-    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
-      static_assert(field_index < 1, "Isset index is out of boundary");
-      array_isset[field_index] = isset_flag ? 1 : 0;
-    }
-  } __isset = {};
+private:
+  apache::thrift::detail::isset_bitset<1> __isset;
 
  public:
 
@@ -1054,22 +1022,22 @@ class RecursiveStruct final  {
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&> mes_ref() const& {
-    return {this->mes, __isset.array_isset.at(folly::index_constant<0>())};
+    return {this->mes, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<const T&&> mes_ref() const&& {
-    return {std::move(this->mes), __isset.array_isset.at(folly::index_constant<0>())};
+    return {std::move(this->mes), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&> mes_ref() & {
-    return {this->mes, __isset.array_isset.at(folly::index_constant<0>())};
+    return {this->mes, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   template <typename..., typename T = ::std::vector<::cpp2::RecursiveStruct>>
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> mes_ref() && {
-    return {std::move(this->mes), __isset.array_isset.at(folly::index_constant<0>())};
+    return {std::move(this->mes), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
   const ::std::vector<::cpp2::RecursiveStruct>* get_mes() const&;
   ::std::vector<::cpp2::RecursiveStruct>* get_mes() &;
@@ -1159,8 +1127,6 @@ class StructWithContainers final  {
   ::std::shared_ptr<::std::set<::std::int32_t>> set_ref_shared;
  public:
   ::std::shared_ptr<const ::std::vector<::std::int32_t>> list_ref_shared_const;
-
- private:
 
  public:
 
@@ -1303,8 +1269,6 @@ class StructWithSharedConst final  {
   ::std::shared_ptr<const ::cpp2::MyField> shared_const;
  public:
   ::std::shared_ptr<const ::cpp2::MyField> req_shared_const;
-
- private:
 
  public:
 
@@ -1483,8 +1447,6 @@ class StructWithRef final  {
  public:
   ::std::unique_ptr<::cpp2::Empty> req_field;
 
- private:
-
  public:
 
   bool operator==(const StructWithRef&) const;
@@ -1592,8 +1554,6 @@ class StructWithRefTypeUnique final  {
   ::std::unique_ptr<::cpp2::Empty> opt_field;
  public:
   ::std::unique_ptr<::cpp2::Empty> req_field;
-
- private:
 
  public:
 
@@ -1704,8 +1664,6 @@ class StructWithRefTypeShared final  {
  public:
   ::std::shared_ptr<::cpp2::Empty> req_field;
 
- private:
-
  public:
 
   bool operator==(const StructWithRefTypeShared&) const;
@@ -1815,8 +1773,6 @@ class StructWithRefTypeSharedConst final  {
  public:
   ::std::shared_ptr<const ::cpp2::Empty> req_field;
 
- private:
-
  public:
 
   bool operator==(const StructWithRefTypeSharedConst&) const;
@@ -1919,8 +1875,6 @@ class StructWithRefAndAnnotCppNoexceptMoveCtor final  {
   void __clear();
  public:
   ::std::unique_ptr<::cpp2::Empty> def_field;
-
- private:
 
  public:
 

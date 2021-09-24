@@ -18,32 +18,7 @@
  <%field:visibility%>:
   <%#field:lazy?%>mutable <%/field:lazy?%><%field:cpp_storage_type%> <%field:cpp_name%>;
 <%/field:type%><%/struct:fields_in_layout_order%>
-
-<%#struct:private_isset?%>
- private:
-<%/struct:private_isset?%>
-<%^struct:private_isset?%>
- public:
-<%/struct:private_isset?%>
 <%#struct:isset_fields?%>
-  [[deprecated("__isset field is deprecated in Thrift struct. Use _ref() accessors instead.")]]
-<%#struct:private_isset?%>
-  struct __isset {
-<%/struct:private_isset?%>
-<%^struct:private_isset?%>
-  class __isset {
-    friend class <%struct:name%>;
-<%/struct:private_isset?%>
-    std::array<uint8_t,<%struct:isset_fields_size%>> array_isset;
-    template<size_t field_index>
-    bool __fbthrift_get(folly::index_constant<field_index>) const {
-      static_assert(field_index < <%struct:isset_fields_size%>, "Isset index is out of boundary");
-      return array_isset[field_index] == 1;
-    }
-    template<size_t field_index>
-    void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
-      static_assert(field_index < <%struct:isset_fields_size%>, "Isset index is out of boundary");
-      array_isset[field_index] = isset_flag ? 1 : 0;
-    }
-  } __isset = {};
+private:
+  apache::thrift::detail::isset_bitset<<%struct:isset_fields_size%>> __isset;
 <%/struct:isset_fields?%>

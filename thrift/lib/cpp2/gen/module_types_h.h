@@ -204,6 +204,36 @@ template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
 constexpr bool operator>=(const T& lhs, const T& rhs) {
   return !(lhs < rhs);
 }
+template <size_t NumBits>
+class isset_bitset {
+ public:
+  template <size_t field_index>
+  bool __fbthrift_get(folly::index_constant<field_index>) const {
+    static_assert(field_index < NumBits, "Isset index is out of boundary");
+    return array_isset[field_index] == 1;
+  }
+  template <size_t field_index>
+  void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
+    static_assert(field_index < NumBits, "Isset index is out of boundary");
+    array_isset[field_index] = isset_flag ? 1 : 0;
+  }
+  template <size_t field_index>
+  const uint8_t& __fbthrift_at(folly::index_constant<field_index>) const {
+    static_assert(field_index < NumBits, "Isset index is out of boundary");
+    return array_isset[field_index];
+  }
+  template <size_t field_index>
+  uint8_t& __fbthrift_at(folly::index_constant<field_index>) {
+    static_assert(field_index < NumBits, "Isset index is out of boundary");
+    return array_isset[field_index];
+  }
+  static constexpr ptrdiff_t get_offset() {
+    return offsetof(isset_bitset, array_isset);
+  }
+
+ private:
+  std::array<uint8_t, NumBits> array_isset{};
+};
 
 } // namespace detail
 } // namespace thrift
