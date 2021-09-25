@@ -459,7 +459,7 @@ void ThriftServer::setup() {
 #if FOLLY_HAS_COROUTINES
     asyncScope_ = std::make_unique<folly::coro::CancellableAsyncScope>();
 #endif
-    for (auto handler : getDecoratedProcessorFactory().getServiceHandlers()) {
+    for (auto handler : collectServiceHandlers()) {
       handler->setServer(this);
     }
 
@@ -800,7 +800,7 @@ void ThriftServer::ensureDecoratedProcessorFactoryInitialized() {
 }
 
 void ThriftServer::callOnStartServing() {
-  auto handlerList = getDecoratedProcessorFactory().getServiceHandlers();
+  auto handlerList = collectServiceHandlers();
   // Exception is handled in setup()
   std::vector<folly::SemiFuture<folly::Unit>> futures;
   futures.reserve(handlerList.size());
@@ -814,7 +814,7 @@ void ThriftServer::callOnStartServing() {
 }
 
 void ThriftServer::callOnStopServing() {
-  auto handlerList = getDecoratedProcessorFactory().getServiceHandlers();
+  auto handlerList = collectServiceHandlers();
   std::vector<folly::SemiFuture<folly::Unit>> futures;
   futures.reserve(handlerList.size());
   for (auto handler : handlerList) {

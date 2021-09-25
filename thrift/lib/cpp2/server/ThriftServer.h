@@ -348,6 +348,27 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 
   std::unique_ptr<AsyncProcessorFactory> decoratedProcessorFactory_;
 
+  /**
+   * Collects service handlers of the current service of a specific type.
+   */
+  template <
+      typename TServiceHandler = ServiceHandler,
+      typename =
+          std::enable_if_t<std::is_base_of_v<ServiceHandler, TServiceHandler>>>
+  std::vector<TServiceHandler*> collectServiceHandlers() const {
+    if constexpr (std::is_same_v<TServiceHandler, ServiceHandler>) {
+      return getDecoratedProcessorFactory().getServiceHandlers();
+    }
+    std::vector<TServiceHandler*> matchedServiceHandlers;
+    for (auto* serviceHandler :
+         getDecoratedProcessorFactory().getServiceHandlers()) {
+      if (auto matched = dynamic_cast<TServiceHandler*>(serviceHandler)) {
+        matchedServiceHandlers.push_back(matched);
+      }
+    }
+    return matchedServiceHandlers;
+  }
+
  public:
   ThriftServer();
 
