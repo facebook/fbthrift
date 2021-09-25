@@ -64,7 +64,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyStructMapFloatThrowExp::__clear() {
   // clear all fields
-  this->myLongField = 0;
+  this->myLongField = ::std::int64_t();
   this->mapListOfFloats.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -308,16 +308,16 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void defaultStruct::__clear() {
   // clear all fields
   this->myLongDFset = 10LL;
-  this->myLongDF = 0;
+  this->myLongDF = ::std::int64_t();
   this->portDFset = 3456;
-  this->portNum = 0;
+  this->portNum = ::std::int32_t();
   this->myBinaryDFset = apache::thrift::StringTraits<std::string>::fromStringLiteral("abc");
   this->myBinary = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->myByteDFSet = static_cast<int8_t>(17);
-  this->myByte = 0;
+  this->myByte = ::std::int8_t();
   this->myDoubleDFset = 99.7678;
   this->myDoubleDFZero = 0;
-  this->myDouble = 0;
+  this->myDouble = double();
   this->field3.clear();
   this->myList.clear();
   this->mySet.clear();
@@ -895,7 +895,7 @@ void TypeRemapped::__clear() {
   // clear all fields
   this->lsMap.clear();
   this->ioMap.clear();
-  this->BigInteger = 0;
+  this->BigInteger = ::std::int32_t();
   this->binaryTestBuffer = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -1043,7 +1043,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void optXcep::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->errorCode = 0;
+  this->errorCode = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

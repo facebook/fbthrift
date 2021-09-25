@@ -146,7 +146,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyStruct::__clear() {
   // clear all fields
-  this->myEnum = static_cast< ::test::fixtures::enumstrict::MyEnum>(0);
+  this->myEnum = ::test::fixtures::enumstrict::MyEnum();
   this->myBigEnum =  ::test::fixtures::enumstrict::MyBigEnum::ONE;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

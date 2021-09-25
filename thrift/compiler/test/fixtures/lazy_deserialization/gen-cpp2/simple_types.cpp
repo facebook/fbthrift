@@ -1300,7 +1300,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void IndexedFoo::__clear() {
   // clear all fields
-  this->serialized_data_size = 0;
+  this->serialized_data_size = double();
   this->field1.clear();
   this->field2.clear();
   this->field3.clear();
@@ -1505,7 +1505,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void OptionalIndexedFoo::__clear() {
   // clear all fields
-  this->serialized_data_size = 0;
+  this->serialized_data_size = double();
   this->field1.clear();
   this->field2.clear();
   this->field3.clear();

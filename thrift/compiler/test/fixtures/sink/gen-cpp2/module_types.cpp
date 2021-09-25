@@ -661,7 +661,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void SinkException2::__clear() {
   // clear all fields
-  this->reason = 0;
+  this->reason = ::std::int64_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

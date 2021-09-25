@@ -135,7 +135,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void SimpleException::__clear() {
   // clear all fields
-  this->err_code = 0;
+  this->err_code = ::std::int16_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -365,14 +365,14 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void SimpleStruct::__clear() {
   // clear all fields
-  this->is_on = 0;
-  this->tiny_int = 0;
-  this->small_int = 0;
-  this->nice_sized_int = 0;
-  this->big_int = 0;
-  this->real = 0;
-  this->smaller_real = 0;
-  this->hidden_field = 0;
+  this->is_on = bool();
+  this->tiny_int = ::std::int8_t();
+  this->small_int = ::std::int16_t();
+  this->nice_sized_int = ::std::int32_t();
+  this->big_int = ::std::int64_t();
+  this->real = double();
+  this->smaller_real = float();
+  this->hidden_field = ::std::int16_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -561,9 +561,9 @@ void ComplexStruct::__clear() {
   // clear all fields
   this->structOne.__clear();
   this->structTwo.__clear();
-  this->an_integer = 0;
+  this->an_integer = ::std::int32_t();
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->an_enum =  ::py3::simple::AnEnum::None;
+  this->an_enum = ::py3::simple::AnEnum();
   this->some_bytes = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->from = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->cdef = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

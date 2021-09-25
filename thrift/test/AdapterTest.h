@@ -24,6 +24,27 @@
 
 namespace apache::thrift::test {
 
+template <typename T>
+struct Wrapper {
+  T value;
+
+  bool operator==(const Wrapper& other) const { return value == other.value; }
+
+  bool operator<(const Wrapper& other) const { return value < other.value; }
+};
+
+struct TemplatedTestAdapter {
+  template <typename T>
+  static Wrapper<T> fromThrift(T value) {
+    return {value};
+  }
+
+  template <typename T>
+  static T toThrift(Wrapper<T> wrapper) {
+    return wrapper.value;
+  }
+};
+
 struct AdaptTestMsAdapter {
   static std::chrono::milliseconds fromThrift(int64_t ms) {
     return std::chrono::milliseconds{ms};
@@ -50,7 +71,7 @@ struct String {
   std::string val;
 };
 
-struct OverloadedAdatper {
+struct OverloadedAdapter {
   static Num fromThrift(int64_t val) { return Num{val}; }
   static String fromThrift(std::string&& val) { return String{std::move(val)}; }
 

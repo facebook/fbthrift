@@ -122,7 +122,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void ModuleA::__clear() {
   // clear all fields
-  this->i32Field = 0;
+  this->i32Field = ::std::int32_t();
   this->strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->listField.clear();
   this->mapField.clear();
@@ -301,8 +301,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void ModuleB::__clear() {
   // clear all fields
-  this->i32Field = 0;
-  this->inclEnumB = static_cast< ::some::ns::EnumB>(0);
+  this->i32Field = ::std::int32_t();
+  this->inclEnumB = ::some::ns::EnumB();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

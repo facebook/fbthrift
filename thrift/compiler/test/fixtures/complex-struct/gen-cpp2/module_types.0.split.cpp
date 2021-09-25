@@ -105,10 +105,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyStructFloatFieldThrowExp::__clear() {
   // clear all fields
-  this->myLongField = 0;
-  this->MyByteField = 0;
+  this->myLongField = ::std::int64_t();
+  this->MyByteField = ::std::int8_t();
   this->myStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->myFloatField = 0;
+  this->myFloatField = float();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -921,7 +921,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void reqXcep::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->errorCode = 0;
+  this->errorCode = ::std::int32_t();
 }
 
 bool reqXcep::operator==(const reqXcep& rhs) const {

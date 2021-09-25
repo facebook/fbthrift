@@ -279,12 +279,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyField::__clear() {
   // clear all fields
-  this->opt_value = 0;
-  this->value = 0;
-  this->req_value = 0;
-  this->opt_enum_value =  ::cpp2::MyEnum::Zero;
-  this->enum_value =  ::cpp2::MyEnum::Zero;
-  this->req_enum_value =  ::cpp2::MyEnum::Zero;
 }
 
 bool MyField::operator==(const MyField& rhs) const {
@@ -585,7 +579,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void StructWithUnion::__clear() {
   // clear all fields
   if (this->u) this->u->__clear();
-  this->aDouble = 0;
   this->f.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

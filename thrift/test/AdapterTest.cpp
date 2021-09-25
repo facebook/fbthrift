@@ -33,9 +33,9 @@ template <typename T>
 struct AssertSameType<T, T> {};
 
 TEST(AdaptTest, AdaptedT) {
-  AssertSameType<adapt_detail::adapted_t<OverloadedAdatper, int64_t>, Num>();
+  AssertSameType<adapt_detail::adapted_t<OverloadedAdapter, int64_t>, Num>();
   AssertSameType<
-      adapt_detail::adapted_t<OverloadedAdatper, std::string>,
+      adapt_detail::adapted_t<OverloadedAdapter, std::string>,
       String>();
 }
 
@@ -297,6 +297,69 @@ TEST(AdaptTest, UnionCodeGen_Custom) {
   EXPECT_FALSE(obj2b.custom_ref() < obj2a.custom_ref());
   EXPECT_TRUE(obj2a < obj2b);
   EXPECT_FALSE(obj2b < obj2a);
+}
+
+TEST(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
+  auto obj = AdaptTemplatedTestStruct();
+
+  obj.adaptedBool_ref() = Wrapper<bool>{true};
+  obj.adaptedByte_ref() = Wrapper<int8_t>{1};
+  obj.adaptedShort_ref() = Wrapper<int16_t>{2};
+  obj.adaptedInteger_ref() = Wrapper<int32_t>{3};
+  obj.adaptedLong_ref() = Wrapper<int64_t>{1};
+  obj.adaptedDouble_ref() = Wrapper<double>{2};
+  obj.adaptedString_ref() = Wrapper<std::string>{"3"};
+  EXPECT_EQ(obj.adaptedBool_ref()->value, true);
+  EXPECT_EQ(obj.adaptedByte_ref()->value, 1);
+  EXPECT_EQ(obj.adaptedShort_ref()->value, 2);
+  EXPECT_EQ(obj.adaptedInteger_ref()->value, 3);
+  EXPECT_EQ(obj.adaptedLong_ref()->value, 1);
+  EXPECT_EQ(obj.adaptedDouble_ref()->value, 2);
+  EXPECT_EQ(obj.adaptedString_ref()->value, "3");
+
+  auto objs = CompactSerializer::serialize<std::string>(obj);
+  AdaptTemplatedTestStruct objd;
+  CompactSerializer::deserialize(objs, objd);
+  EXPECT_EQ(objd.adaptedBool_ref()->value, true);
+  EXPECT_EQ(objd.adaptedByte_ref()->value, 1);
+  EXPECT_EQ(objd.adaptedShort_ref()->value, 2);
+  EXPECT_EQ(objd.adaptedInteger_ref()->value, 3);
+  EXPECT_EQ(objd.adaptedLong_ref()->value, 1);
+  EXPECT_EQ(objd.adaptedDouble_ref()->value, 2);
+  EXPECT_EQ(objd.adaptedString_ref()->value, "3");
+  EXPECT_EQ(obj, objd);
+}
+
+TEST(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
+  auto obj = AdaptTemplatedNestedTestStruct();
+
+  obj.adaptedStruct_ref()->adaptedBool_ref() = Wrapper<bool>{true};
+  obj.adaptedStruct_ref()->adaptedByte_ref() = Wrapper<int8_t>{1};
+  obj.adaptedStruct_ref()->adaptedShort_ref() = Wrapper<int16_t>{2};
+  obj.adaptedStruct_ref()->adaptedInteger_ref() = Wrapper<int32_t>{3};
+  obj.adaptedStruct_ref()->adaptedLong_ref() = Wrapper<int64_t>{1};
+  obj.adaptedStruct_ref()->adaptedDouble_ref() = Wrapper<double>{2};
+  obj.adaptedStruct_ref()->adaptedString_ref() = Wrapper<std::string>{"3"};
+
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedBool_ref()->value, true);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedByte_ref()->value, 1);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedShort_ref()->value, 2);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedInteger_ref()->value, 3);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedLong_ref()->value, 1);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedDouble_ref()->value, 2);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedString_ref()->value, "3");
+
+  auto objs = CompactSerializer::serialize<std::string>(obj);
+  AdaptTemplatedNestedTestStruct objd;
+  CompactSerializer::deserialize(objs, objd);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedBool_ref()->value, true);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedByte_ref()->value, 1);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedShort_ref()->value, 2);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedInteger_ref()->value, 3);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedLong_ref()->value, 1);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedDouble_ref()->value, 2);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedString_ref()->value, "3");
+  EXPECT_EQ(obj, objd);
 }
 } // namespace basic
 

@@ -97,7 +97,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void structured_annotation_inline::__clear() {
   // clear all fields
-  this->count = 0;
+  this->count = ::std::int64_t();
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -282,7 +282,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void structured_annotation_forward::__clear() {
   // clear all fields
-  this->count = 0;
+  this->count = ::std::int64_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -678,10 +678,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyStruct::__clear() {
   // clear all fields
-  this->annotated_field = 0;
+  this->annotated_field = ::std::int64_t();
   this->annotated_type = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->annotated_recursive = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->annotated_nested = 0;
+  this->annotated_nested = ::std::int64_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

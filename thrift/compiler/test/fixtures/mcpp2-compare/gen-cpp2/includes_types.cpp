@@ -78,7 +78,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void AStruct::__clear() {
   // clear all fields
-  this->FieldA = 0;
+  this->FieldA = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

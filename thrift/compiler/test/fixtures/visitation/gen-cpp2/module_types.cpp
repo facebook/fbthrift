@@ -568,7 +568,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void structA::__clear() {
   // clear all fields
-  this->a = 0;
+  this->a = ::std::int32_t();
   this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -802,8 +802,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void structB::__clear() {
   // clear all fields
-  this->c = 0;
-  this->d = 0;
+  this->c = double();
+  this->d = bool();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1035,12 +1035,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void structC::__clear() {
   // clear all fields
-  this->a = 0;
+  this->a = ::std::int32_t();
   this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->c = 0;
-  this->d = 0;
-  this->e =  ::test_cpp2::cpp_reflection::enum1::field0;
-  this->f =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->c = double();
+  this->d = bool();
+  this->e = ::test_cpp2::cpp_reflection::enum1();
+  this->f = ::test_cpp2::cpp_reflection::enum2();
   this->g.__clear();
   this->h.__clear();
   this->i.__clear();
@@ -1716,10 +1716,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void struct1::__clear() {
   // clear all fields
-  this->field0 = 0;
+  this->field0 = ::std::int32_t();
   this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
-  this->field3 =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->field2 = ::test_cpp2::cpp_reflection::enum1();
+  this->field3 = ::test_cpp2::cpp_reflection::enum2();
   this->field4.__clear();
   this->field5.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1927,10 +1927,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void struct2::__clear() {
   // clear all fields
-  this->fieldA = 0;
+  this->fieldA = ::std::int32_t();
   this->fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
-  this->fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->fieldC = ::test_cpp2::cpp_reflection::enum1();
+  this->fieldD = ::test_cpp2::cpp_reflection::enum2();
   this->fieldE.__clear();
   this->fieldF.__clear();
   this->fieldG.__clear();
@@ -2210,10 +2210,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void struct3::__clear() {
   // clear all fields
-  this->fieldA = 0;
+  this->fieldA = ::std::int32_t();
   this->fieldB = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->fieldC =  ::test_cpp2::cpp_reflection::enum1::field0;
-  this->fieldD =  ::test_cpp2::cpp_reflection::enum2::field0_2;
+  this->fieldC = ::test_cpp2::cpp_reflection::enum1();
+  this->fieldD = ::test_cpp2::cpp_reflection::enum2();
   this->fieldE.__clear();
   this->fieldF.__clear();
   this->fieldG.__clear();
@@ -2676,9 +2676,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void struct4::__clear() {
   // clear all fields
-  this->field0 = 0;
+  this->field0 = ::std::int32_t();
   this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->field2 = ::test_cpp2::cpp_reflection::enum1();
   if (this->field3) this->field3->__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -2833,9 +2833,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void struct5::__clear() {
   // clear all fields
-  this->field0 = 0;
+  this->field0 = ::std::int32_t();
   this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->field2 =  ::test_cpp2::cpp_reflection::enum1::field0;
+  this->field2 = ::test_cpp2::cpp_reflection::enum1();
   this->field3.__clear();
   this->field4.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -3088,7 +3088,7 @@ void dep_A_struct::__clear() {
   // clear all fields
   this->b.__clear();
   this->c.__clear();
-  this->i_a = 0;
+  this->i_a = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3229,7 +3229,7 @@ void dep_B_struct::__clear() {
   // clear all fields
   this->b.__clear();
   this->c.__clear();
-  this->i_a = 0;
+  this->i_a = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3364,7 +3364,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void annotated::__clear() {
   // clear all fields
-  this->a = 0;
+  this->a = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3791,34 +3791,34 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void struct_with_special_names::__clear() {
   // clear all fields
-  this->get = 0;
-  this->getter = 0;
-  this->lists = 0;
-  this->maps = 0;
-  this->name = 0;
-  this->name_to_value = 0;
-  this->names = 0;
-  this->prefix_tree = 0;
-  this->sets = 0;
-  this->setter = 0;
-  this->str = 0;
-  this->strings = 0;
-  this->type = 0;
-  this->value = 0;
-  this->value_to_name = 0;
-  this->values = 0;
-  this->id = 0;
-  this->ids = 0;
-  this->descriptor = 0;
-  this->descriptors = 0;
-  this->key = 0;
-  this->keys = 0;
-  this->annotation = 0;
-  this->annotations = 0;
-  this->member = 0;
-  this->members = 0;
-  this->field = 0;
-  this->fields = 0;
+  this->get = ::std::int32_t();
+  this->getter = ::std::int32_t();
+  this->lists = ::std::int32_t();
+  this->maps = ::std::int32_t();
+  this->name = ::std::int32_t();
+  this->name_to_value = ::std::int32_t();
+  this->names = ::std::int32_t();
+  this->prefix_tree = ::std::int32_t();
+  this->sets = ::std::int32_t();
+  this->setter = ::std::int32_t();
+  this->str = ::std::int32_t();
+  this->strings = ::std::int32_t();
+  this->type = ::std::int32_t();
+  this->value = ::std::int32_t();
+  this->value_to_name = ::std::int32_t();
+  this->values = ::std::int32_t();
+  this->id = ::std::int32_t();
+  this->ids = ::std::int32_t();
+  this->descriptor = ::std::int32_t();
+  this->descriptors = ::std::int32_t();
+  this->key = ::std::int32_t();
+  this->keys = ::std::int32_t();
+  this->annotation = ::std::int32_t();
+  this->annotations = ::std::int32_t();
+  this->member = ::std::int32_t();
+  this->members = ::std::int32_t();
+  this->field = ::std::int32_t();
+  this->fields = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -4131,8 +4131,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void struct_with_indirections::__clear() {
   // clear all fields
-  this->real = 0;
-  this->fake = 0;
+  this->real = ::std::int32_t();
+  this->fake = ::test_cpp2::cpp_reflection::FakeI32();
   ::apache::thrift::apply_indirection(this->number) = 0;
   ::apache::thrift::apply_indirection(this->result) = 0;
   ::apache::thrift::apply_indirection(this->phrase) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, CppHasAPhrase const&>>>::fromStringLiteral("");

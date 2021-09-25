@@ -63,10 +63,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void <%struct:name%>::__clear() {
   // clear all fields
-<%#struct:fields%><%#field:type%>
-<%#type:resolves_to_base_or_enum?%>
-  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <%#type:cpp_adapter%>{}<%/type:cpp_adapter%><%^type:cpp_adapter%><% > field/default%><%/type:cpp_adapter%>;
+<%#struct:fields%><%#field:type%><%!
+%><%^field:cpp_ref?%><%!
+%><%#type:resolves_to_base_or_enum?%><%!
+  TODO(dokwon) replace special cases after replacing StringTraits and cpp.indirection with cpp.adapter.
+  %>  <% > types/apply_indirection_pre%><% > field/member%><% > types/apply_indirection_post%> = <%!
+  %><%#type:cpp_adapter%>{}<%/type:cpp_adapter%><%!
+  %><%^type:cpp_adapter%><% > field/default%><%/type:cpp_adapter%>;
 <%/type:resolves_to_base_or_enum?%>
+<%/field:cpp_ref?%>
 <%#type:resolves_to_container?%>
 <%#field:cpp_ref?%>
 <%^field:optional?%>

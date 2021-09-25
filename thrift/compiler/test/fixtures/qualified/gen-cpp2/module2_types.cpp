@@ -213,7 +213,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void BigStruct::__clear() {
   // clear all fields
   this->s.__clear();
-  this->id = 0;
+  this->id = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

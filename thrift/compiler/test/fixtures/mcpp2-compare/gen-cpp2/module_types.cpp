@@ -247,7 +247,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void ASimpleStruct::__clear() {
   // clear all fields
-  this->boolField = 0;
+  this->boolField = ::std::int64_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -322,7 +322,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void ASimpleStructNoexcept::__clear() {
   // clear all fields
-  this->boolField = 0;
+  this->boolField = ::std::int64_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -475,7 +475,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyStruct::__clear() {
   // clear all fields
-  this->MyBoolField = 0;
+  this->MyBoolField = bool();
   this->MyIntField = 12LL;
   this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
   this->MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -1290,15 +1290,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void AnException::__clear() {
   // clear all fields
-  this->code = 0;
-  this->req_code = 0;
+  this->code = ::std::int32_t();
+  this->req_code = ::std::int32_t();
   this->message2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->req_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->exception_list.clear();
   this->exception_set.clear();
   this->exception_map.clear();
   this->req_exception_map.clear();
-  this->enum_field = static_cast< ::some::valid::ns::MyEnumA>(0);
+  this->enum_field = ::some::valid::ns::MyEnumA();
   this->enum_container.clear();
   this->a_struct.__clear();
   this->a_set_struct.clear();
@@ -1663,8 +1663,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void AnotherException::__clear() {
   // clear all fields
-  this->code = 0;
-  this->req_code = 0;
+  this->code = ::std::int32_t();
+  this->req_code = ::std::int32_t();
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -1903,9 +1903,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void containerStruct::__clear() {
   // clear all fields
-  this->fieldA = 0;
-  this->req_fieldA = 0;
-  this->opt_fieldA = 0;
+  this->fieldA = bool();
+  this->req_fieldA = bool();
+  this->opt_fieldA = bool();
   this->fieldB.clear();
   this->req_fieldB.clear();
   this->opt_fieldB.clear();
@@ -1924,10 +1924,10 @@ void containerStruct::__clear() {
   this->fieldK.clear();
   this->fieldL.clear();
   this->fieldM.clear();
-  this->fieldN = 0;
+  this->fieldN = ::some::valid::ns::simpleTypeDef();
   this->fieldO.clear();
   this->fieldP.clear();
-  this->fieldQ = static_cast< ::some::valid::ns::MyEnumA>(0);
+  this->fieldQ = ::some::valid::ns::MyEnumA();
   this->fieldR =  ::some::valid::ns::MyEnumA::fieldB;
   this->req_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
   this->opt_fieldR =  ::some::valid::ns::MyEnumA::fieldB;
@@ -1945,8 +1945,8 @@ void containerStruct::__clear() {
   this->fieldZ.clear();
   this->fieldAA.clear();
   this->fieldAB.clear();
-  this->fieldAC =  ::some::valid::ns::MyEnumB::AField;
-  this->fieldAD = static_cast< ::a::different::ns::AnEnum>(0);
+  this->fieldAC = ::some::valid::ns::MyEnumB();
+  this->fieldAD = ::a::different::ns::AnEnum();
   this->fieldAE.clear();
   ::apache::thrift::apply_indirection(this->fieldSD) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -3006,7 +3006,7 @@ void AnnotatedStruct::__clear() {
   this->opt_ref_type_const.reset();
   this->opt_ref_type_unique.reset();
   this->opt_ref_type_shared.reset();
-  this->base_type = 0;
+  this->base_type = ::some::valid::ns::CppFakeI32();
   this->list_type.clear();
   this->set_type.clear();
   this->map_type.clear();
@@ -3709,8 +3709,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void FloatStruct::__clear() {
   // clear all fields
-  this->floatField = 0;
-  this->doubleField = 0;
+  this->floatField = float();
+  this->doubleField = double();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -3914,7 +3914,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void AllRequiredNoExceptMoveCtrStruct::__clear() {
   // clear all fields
-  this->intField = 0;
+  this->intField = ::std::int64_t();
 }
 
 bool AllRequiredNoExceptMoveCtrStruct::operator==(const AllRequiredNoExceptMoveCtrStruct& rhs) const {

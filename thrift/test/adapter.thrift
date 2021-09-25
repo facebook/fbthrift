@@ -23,6 +23,34 @@ typedef i64 DurationMs (
   cpp.adapter = "::apache::thrift::test::AdaptTestMsAdapter",
 )
 
+typedef bool AdaptedBool (
+  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
+)
+
+typedef byte AdaptedByte (
+  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
+)
+
+typedef i16 AdaptedShort (
+  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
+)
+
+typedef i32 AdaptedInteger (
+  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
+)
+
+typedef i64 AdaptedLong (
+  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
+)
+
+typedef double AdaptedDouble (
+  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
+)
+
+typedef string AdaptedString (
+  cpp.adapter = "::apache::thrift::test::TemplatedTestAdapter",
+)
+
 typedef binary (
   cpp.type = "::folly::IOBuf",
   cpp.adapter = "::apache::thrift::test::CustomProtocolAdapter",
@@ -35,6 +63,20 @@ struct AdaptTestStruct {
 
   @cpp.ExperimentalAdapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
   3: i64 timeout;
+}
+
+struct AdaptTemplatedTestStruct {
+  1: AdaptedBool adaptedBool;
+  2: AdaptedByte adaptedByte;
+  3: AdaptedShort adaptedShort;
+  4: AdaptedInteger adaptedInteger;
+  5: AdaptedLong adaptedLong;
+  6: AdaptedDouble adaptedDouble;
+  7: AdaptedString adaptedString;
+}
+
+struct AdaptTemplatedNestedTestStruct {
+  1: AdaptTemplatedTestStruct adaptedStruct;
 }
 
 union AdaptTestUnion {

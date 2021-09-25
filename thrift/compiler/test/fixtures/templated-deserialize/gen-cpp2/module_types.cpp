@@ -80,8 +80,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void SmallStruct::__clear() {
   // clear all fields
-  this->small_A = 0;
-  this->small_B = 0;
+  this->small_A = bool();
+  this->small_B = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -373,7 +373,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void containerStruct::__clear() {
   // clear all fields
-  this->fieldA = 0;
+  this->fieldA = bool();
   this->fieldB.clear();
   this->fieldC.clear();
   this->fieldD = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -389,7 +389,7 @@ void containerStruct::__clear() {
   this->fieldN.clear();
   this->fieldO.clear();
   this->fieldP.clear();
-  this->fieldQ = static_cast< ::cpp2::MyEnumA>(0);
+  this->fieldQ = ::cpp2::MyEnumA();
   this->fieldR = ::apache::thrift::detail::make_mutable_smart_ptr<::std::unique_ptr<::std::map<::std::string, bool>>>();
   if (this->fieldS) this->fieldS->__clear();
   if (this->fieldT) this->fieldT->__clear();

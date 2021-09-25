@@ -218,7 +218,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyStruct::__clear() {
   // clear all fields
-  this->majorVer = 0;
+  this->majorVer = ::std::int64_t();
   this->package = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->annotation_with_quote = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->class_ = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -358,7 +358,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void SecretStruct::__clear() {
   // clear all fields
-  this->id = 0;
+  this->id = ::std::int64_t();
   this->password = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

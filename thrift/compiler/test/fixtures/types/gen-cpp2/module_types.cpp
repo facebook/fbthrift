@@ -613,7 +613,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void VirtualStruct::__clear() {
   // clear all fields
-  this->MyIntField = 0;
+  this->MyIntField = ::std::int64_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -804,8 +804,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void TrivialNumeric::__clear() {
   // clear all fields
-  this->a = 0;
-  this->b = 0;
+  this->a = ::std::int32_t();
+  this->b = bool();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1272,11 +1272,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MinPadding::__clear() {
   // clear all fields
-  this->small = 0;
-  this->big = 0;
-  this->medium = 0;
-  this->biggish = 0;
-  this->tiny = 0;
+  this->small = ::std::int8_t();
+  this->big = ::std::int64_t();
+  this->medium = ::std::int16_t();
+  this->biggish = ::std::int32_t();
+  this->tiny = ::std::int8_t();
 }
 
 bool MinPadding::operator==(const MinPadding& rhs) const {
@@ -1460,9 +1460,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyStruct::__clear() {
   // clear all fields
-  this->MyIntField = 0;
+  this->MyIntField = ::std::int64_t();
   this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->majorVer = 0;
+  this->majorVer = ::std::int64_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -1548,7 +1548,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Renaming::__clear() {
   // clear all fields
-  this->bar = 0;
+  this->bar = ::std::int64_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2180,7 +2180,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void NoexceptMoveSimpleStruct::__clear() {
   // clear all fields
-  this->boolField = 0;
+  this->boolField = ::std::int64_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2320,7 +2320,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void NoexceptMoveComplexStruct::__clear() {
   // clear all fields
-  this->MyBoolField = 0;
+  this->MyBoolField = bool();
   this->MyIntField = 12LL;
   this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
   this->MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -2635,7 +2635,7 @@ void AllocatorAware::__clear() {
   this->aa_set.clear();
   this->aa_map.clear();
   this->aa_string = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->not_a_container = 0;
+  this->not_a_container = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2783,7 +2783,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void AllocatorAware2::__clear() {
   // clear all fields
-  this->not_a_container = 0;
+  this->not_a_container = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2887,9 +2887,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void TypedefStruct::__clear() {
   // clear all fields
-  this->i32_field = 0;
-  this->IntTypedef_field = 0;
-  this->UintTypedef_field = 0;
+  this->i32_field = ::std::int32_t();
+  this->IntTypedef_field = ::apache::thrift::fixtures::types::IntTypedef();
+  this->UintTypedef_field = std::uint32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2984,7 +2984,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void StructWithDoubleUnderscores::__clear() {
   // clear all fields
-  this->__field = 0;
+  this->__field = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

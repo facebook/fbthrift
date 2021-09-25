@@ -525,7 +525,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void ExceptionWithPrimitiveField::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->error_code = 0;
+  this->error_code = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -50,10 +50,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void BasicTypes::__clear() {
   // clear all fields
-  this->first = 0;
-  this->second = 0;
-  this->third = 0;
-  this->isTrue = 0;
+  this->first = ::std::int32_t();
+  this->second = ::std::int32_t();
+  this->third = ::std::int64_t();
+  this->isTrue = bool();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

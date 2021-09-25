@@ -84,10 +84,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Color::__clear() {
   // clear all fields
-  this->red = 0;
-  this->green = 0;
-  this->blue = 0;
-  this->alpha = 0;
+  this->red = double();
+  this->green = double();
+  this->blue = double();
+  this->alpha = double();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -425,15 +425,15 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Person::__clear() {
   // clear all fields
-  this->id = 0;
+  this->id = ::cpp2::PersonID();
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->age = 0;
+  this->age = ::std::int16_t();
   this->address = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->favoriteColor.__clear();
   this->friends.clear();
-  this->bestFriend = 0;
+  this->bestFriend = ::cpp2::PersonID();
   this->petNames.clear();
-  this->afraidOfAnimal = static_cast< ::cpp2::Animal>(0);
+  this->afraidOfAnimal = ::cpp2::Animal();
   this->vehicles.clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

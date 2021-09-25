@@ -78,7 +78,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void A::__clear() {
   // clear all fields
-  this->useless_field = 0;
+  this->useless_field = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

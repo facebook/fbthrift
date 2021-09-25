@@ -48,9 +48,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Foo::__clear() {
   // clear all fields
-  this->field1 = 0;
-  this->field2 = 0;
-  this->field3 = 0;
+  this->field1 = ::std::int32_t();
+  this->field2 = ::std::int32_t();
+  this->field3 = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

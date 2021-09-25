@@ -185,10 +185,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Internship::__clear() {
   // clear all fields
-  this->weeks = 0;
+  this->weeks = ::std::int32_t();
   this->title = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->employer =  ::cpp2::Company::FACEBOOK;
-  this->compensation = 0;
+  this->employer = ::cpp2::Company();
+  this->compensation = double();
   this->school = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -297,8 +297,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Range::__clear() {
   // clear all fields
-  this->min = 0;
-  this->max = 0;
+  this->min = ::std::int32_t();
+  this->max = ::std::int32_t();
 }
 
 bool Range::operator==(const Range& rhs) const {
@@ -515,7 +515,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void struct2::__clear() {
   // clear all fields
-  this->a = 0;
+  this->a = ::std::int32_t();
   this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->c.__clear();
   this->d.clear();
@@ -672,7 +672,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void struct3::__clear() {
   // clear all fields
   this->a = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->b = 0;
+  this->b = ::std::int32_t();
   this->c.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -811,9 +811,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void struct4::__clear() {
   // clear all fields
-  this->a = 0;
-  this->b = 0;
-  this->c = 0;
+  this->a = ::std::int32_t();
+  this->b = double();
+  this->c = ::std::int8_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

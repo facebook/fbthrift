@@ -130,9 +130,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void containerStruct2::__clear() {
   // clear all fields
-  this->fieldA = 0;
-  this->req_fieldA = 0;
-  this->opt_fieldA = 0;
+  this->fieldA = bool();
+  this->req_fieldA = bool();
+  this->opt_fieldA = bool();
   this->fieldB.clear();
   this->req_fieldB.clear();
   this->opt_fieldB.clear();
