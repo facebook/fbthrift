@@ -72,8 +72,8 @@ class Included final  {
  public:
 
   Included() :
-      MyIntField(0LL),
-      MyTransitiveField(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(2LL))) {
+      MyIntField(static_cast<::std::int64_t>(0)),
+      MyTransitiveField(static_cast<::cpp2::Foo>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(static_cast<::std::int64_t>(2))))) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

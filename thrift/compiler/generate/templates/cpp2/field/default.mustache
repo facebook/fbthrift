@@ -20,10 +20,8 @@
   %><%field:cpp_adapter%>::fromThrift(<%!
 %><%/field:cpp_adapter%><%!
 %><%#field:value%><%!
-  %><% > common/cxx_value_prefix%><%!
     %><%#type:enum?%><% > common/const_value%><%/type:enum?%><%!
-    %><%^type:enum?%><% > common/iterate_const_values%><%/type:enum?%><%!
-  %><% > common/cxx_value_suffix%><%!
+    %><%^type:enum?%><% > common/cxx_value_prefix%><% > common/iterate_const_values%><% > common/cxx_value_suffix%><%/type:enum?%><%!
 %><%/field:value%><%!
 %><%^field:value%><%!
   %><%#type:string_or_binary?%><%!

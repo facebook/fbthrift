@@ -14,7 +14,7 @@ namespace cpp2 {
 
 struct module_constants {
 
-  static constexpr ::std::int32_t const myInt_ = 1337;
+  static constexpr ::std::int32_t const myInt_ = static_cast<::std::int32_t>(1337);
 
   static constexpr ::std::int32_t myInt() {
     return myInt_;
@@ -45,31 +45,31 @@ multi line string.
 
   static ::std::vector<::std::map<::std::string, ::std::int32_t>> const& states();
 
-  static constexpr double const x_ = 1;
+  static constexpr double const x_ = static_cast<double>(1);
 
   static constexpr double x() {
     return x_;
   }
 
-  static constexpr double const y_ = 1000000;
+  static constexpr double const y_ = static_cast<double>(1000000);
 
   static constexpr double y() {
     return y_;
   }
 
-  static constexpr double const z_ = 1000000000;
+  static constexpr double const z_ = static_cast<double>(1000000000);
 
   static constexpr double z() {
     return z_;
   }
 
-  static constexpr double const zeroDoubleValue_ = 0;
+  static constexpr double const zeroDoubleValue_ = static_cast<double>(0);
 
   static constexpr double zeroDoubleValue() {
     return zeroDoubleValue_;
   }
 
-  static constexpr double const longDoubleValue_ = 2.59961000990301e-05;
+  static constexpr double const longDoubleValue_ = static_cast<double>(2.59961000990301e-05);
 
   static constexpr double longDoubleValue() {
     return longDoubleValue_;
@@ -91,7 +91,7 @@ multi line string.
     return foo_;
   }
 
-  static constexpr ::cpp2::MyIntIdentifier const bar_ = 42;
+  static constexpr ::cpp2::MyIntIdentifier const bar_ = static_cast<::cpp2::MyIntIdentifier>(42);
 
   static constexpr ::cpp2::MyIntIdentifier bar() {
     return bar_;
@@ -199,43 +199,43 @@ multi line string.
 
   static ::std::vector<::std::string> const& escaped_strings();
 
-  static constexpr bool const false_c_ = false;
+  static constexpr bool const false_c_ = static_cast<bool>(false);
 
   static constexpr bool false_c() {
     return false_c_;
   }
 
-  static constexpr bool const true_c_ = true;
+  static constexpr bool const true_c_ = static_cast<bool>(true);
 
   static constexpr bool true_c() {
     return true_c_;
   }
 
-  static constexpr ::std::int8_t const zero_byte_ = static_cast<int8_t>(0);
+  static constexpr ::std::int8_t const zero_byte_ = static_cast<::std::int8_t>(0);
 
   static constexpr ::std::int8_t zero_byte() {
     return zero_byte_;
   }
 
-  static constexpr ::std::int16_t const zero16_ = static_cast<int16_t>(0);
+  static constexpr ::std::int16_t const zero16_ = static_cast<::std::int16_t>(0);
 
   static constexpr ::std::int16_t zero16() {
     return zero16_;
   }
 
-  static constexpr ::std::int32_t const zero32_ = 0;
+  static constexpr ::std::int32_t const zero32_ = static_cast<::std::int32_t>(0);
 
   static constexpr ::std::int32_t zero32() {
     return zero32_;
   }
 
-  static constexpr ::std::int64_t const zero64_ = 0LL;
+  static constexpr ::std::int64_t const zero64_ = static_cast<::std::int64_t>(0);
 
   static constexpr ::std::int64_t zero64() {
     return zero64_;
   }
 
-  static constexpr double const zero_dot_zero_ = 0;
+  static constexpr double const zero_dot_zero_ = static_cast<double>(0);
 
   static constexpr double zero_dot_zero() {
     return zero_dot_zero_;

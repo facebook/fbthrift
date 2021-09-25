@@ -14,13 +14,13 @@ namespace apache { namespace thrift { namespace test {
 
 struct simple_constants {
 
-  static constexpr ::std::int32_t const kSizeId_ = 100;
+  static constexpr ::std::int32_t const kSizeId_ = static_cast<::std::int32_t>(100);
 
   static constexpr ::std::int32_t kSizeId() {
     return kSizeId_;
   }
 
-  static constexpr ::std::int32_t const kIndexId_ = 101;
+  static constexpr ::std::int32_t const kIndexId_ = static_cast<::std::int32_t>(101);
 
   static constexpr ::std::int32_t kIndexId() {
     return kIndexId_;

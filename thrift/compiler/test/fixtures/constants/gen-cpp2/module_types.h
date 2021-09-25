@@ -702,7 +702,7 @@ class struct1 final  {
  public:
 
   struct1() :
-      a(1234567),
+      a(static_cast<::std::int32_t>(1234567)),
       b(apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>")) {
   }
   // FragileConstructor for use in initialization lists only.

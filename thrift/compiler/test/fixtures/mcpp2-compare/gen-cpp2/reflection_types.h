@@ -62,7 +62,7 @@ class ReflectionStruct final  {
  public:
 
   ReflectionStruct() :
-      fieldA(5) {
+      fieldA(static_cast<::std::int32_t>(5)) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

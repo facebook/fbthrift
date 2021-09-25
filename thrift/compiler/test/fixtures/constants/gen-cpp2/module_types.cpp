@@ -399,7 +399,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void struct1::__clear() {
   // clear all fields
-  this->a = 1234567;
+  this->a = static_cast<::std::int32_t>(1234567);
   this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("<uninitialized>");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

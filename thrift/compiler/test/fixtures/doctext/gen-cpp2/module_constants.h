@@ -24,19 +24,19 @@ struct module_constants {
     return FOO_;
   }
 
-  static constexpr ::std::int32_t const BAR_ = 123;
+  static constexpr ::std::int32_t const BAR_ = static_cast<::std::int32_t>(123);
 
   static constexpr ::std::int32_t BAR() {
     return BAR_;
   }
 
-  static constexpr ::std::int32_t const BIFF_ = 0;
+  static constexpr ::std::int32_t const BIFF_ = static_cast<::std::int32_t>(0);
 
   static constexpr ::std::int32_t BIFF() {
     return BIFF_;
   }
 
-  static constexpr ::std::int32_t const SHOUTY_ = 11;
+  static constexpr ::std::int32_t const SHOUTY_ = static_cast<::std::int32_t>(11);
 
   static constexpr ::std::int32_t SHOUTY() {
     return SHOUTY_;

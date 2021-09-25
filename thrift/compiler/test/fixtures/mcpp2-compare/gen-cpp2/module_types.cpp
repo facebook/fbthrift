@@ -404,11 +404,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
       MyBoolField(),
-      MyIntField(12LL),
+      MyIntField(static_cast<::std::int64_t>(12)),
       MyStringField(apache::thrift::StringTraits<std::string>::fromStringLiteral("test")),
-      MyMapEnumAndInt(std::initializer_list<std::pair<const ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
+      MyMapEnumAndInt(static_cast<::std::map<::some::valid::ns::MyEnumA, ::std::string>>(std::initializer_list<std::pair<const ::some::valid::ns::MyEnumA, ::std::string>>{{ ::some::valid::ns::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
   { ::some::valid::ns::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")},
-  {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits<std::string>::fromStringLiteral("nothing")}}) {
+  {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits<std::string>::fromStringLiteral("nothing")}})) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -476,7 +476,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void MyStruct::__clear() {
   // clear all fields
   this->MyBoolField = bool();
-  this->MyIntField = 12LL;
+  this->MyIntField = static_cast<::std::int64_t>(12);
   this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
   this->MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
@@ -1194,9 +1194,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnException::AnException() :
       code(),
       req_code(),
-      exception_list(std::initializer_list<::std::int32_t>{1,
+      exception_list(static_cast<::std::vector<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
   2,
-  3}),
+  3})),
       enum_field() {
 }
 
@@ -1759,22 +1759,22 @@ containerStruct::containerStruct() :
       fieldA(),
       req_fieldA(),
       opt_fieldA(),
-      fieldC(std::initializer_list<::std::int32_t>{1,
+      fieldC(static_cast<::std::set<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
   2,
   3,
-  4}),
-      req_fieldC(std::initializer_list<::std::int32_t>{1,
+  4})),
+      req_fieldC(static_cast<::std::set<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
   2,
   3,
-  4}),
-      opt_fieldC(std::initializer_list<::std::int32_t>{1,
+  4})),
+      opt_fieldC(static_cast<::std::set<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
   2,
   3,
-  4}),
+  4})),
       fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
       req_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
       opt_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
-      fieldF(std::initializer_list<::std::vector<::std::int32_t>>{std::initializer_list<::std::int32_t>{1,
+      fieldF(static_cast<::std::vector<::std::vector<::std::int32_t>>>(std::initializer_list<::std::vector<::std::int32_t>>{std::initializer_list<::std::int32_t>{1,
   3,
   5,
   7,
@@ -1783,25 +1783,25 @@ containerStruct::containerStruct() :
   4,
   8,
   10,
-  12}}),
-      fieldI(true),
-      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
+  12}})),
+      fieldI(static_cast<bool>(true)),
+      fieldJ(static_cast<::std::map<::std::string, ::std::vector<::std::int32_t>>>(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
   4,
   8,
   12}},
   {apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldB"), std::initializer_list<::std::int32_t>{2,
   5,
   9,
-  13}}}),
+  13}}})),
       fieldN(),
       fieldQ(),
       fieldR( ::some::valid::ns::MyEnumA::fieldB),
       req_fieldR( ::some::valid::ns::MyEnumA::fieldB),
       opt_fieldR( ::some::valid::ns::MyEnumA::fieldB),
       fieldS( ::some::valid::ns::MyEnumA::fieldB),
-      fieldU(std::initializer_list<::some::valid::ns::MyEnumA>{ ::some::valid::ns::MyEnumA::fieldC,
+      fieldU(static_cast<::std::vector<::some::valid::ns::MyEnumA>>(std::initializer_list<::some::valid::ns::MyEnumA>{ ::some::valid::ns::MyEnumA::fieldC,
    ::some::valid::ns::MyEnumA::fieldB,
-   ::some::valid::ns::MyEnumA::fieldA}),
+   ::some::valid::ns::MyEnumA::fieldA})),
       fieldAC(),
       fieldAD() {
 }
@@ -1919,7 +1919,7 @@ void containerStruct::__clear() {
   this->fieldF.clear();
   this->fieldG.clear();
   this->fieldH.clear();
-  this->fieldI = true;
+  this->fieldI = static_cast<bool>(true);
   this->fieldJ.clear();
   this->fieldK.clear();
   this->fieldL.clear();
@@ -2741,7 +2741,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyIncludedStruct::__clear() {
   // clear all fields
-  this->MyIncludedInt = 42LL;
+  this->MyIncludedInt = static_cast<::a::different::ns::IncludedInt64>(42);
   this->MyIncludedStruct.__clear();
   if (this->ARefField) this->ARefField->__clear();
   this->ARequiredField.__clear();
@@ -2910,7 +2910,7 @@ AnnotatedStruct::AnnotatedStruct() :
       indirection_a(),
       iobuf_type_val(apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("value")),
       iobuf_ptr_val(apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2")),
-      struct_struct(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits<std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(false))) {
+      struct_struct(static_cast<::some::valid::ns::containerStruct>(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits<std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(static_cast<bool>(false))))) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

@@ -1496,8 +1496,8 @@ class TrivialNestedWithDefault final  {
  public:
 
   TrivialNestedWithDefault() :
-      z(4),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(3), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(true))) {
+      z(static_cast<::std::int32_t>(4)),
+      n(static_cast<::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::TrivialNumeric>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(static_cast<::std::int32_t>(3)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(static_cast<bool>(true))))) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
@@ -1775,7 +1775,7 @@ class ComplexNestedWithDefault final  {
 
   ComplexNestedWithDefault() :
       z(apache::thrift::StringTraits<std::string>::fromStringLiteral("4")),
-      n(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits<std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(std::initializer_list<std::pair<const ::std::string, ::std::int32_t>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("a"), 3}}))) {
+      n(static_cast<::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::detail::make_constant< ::apache::thrift::fixtures::types::ComplexString>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(apache::thrift::StringTraits<std::string>::fromStringLiteral("3")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::b>(static_cast<::std::map<::std::string, ::std::int32_t>>(std::initializer_list<std::pair<const ::std::string, ::std::int32_t>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("a"), 3}}))))) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

@@ -14,5 +14,4 @@
   See the License for the specific language governing permissions and
   limitations under the License.
 
-%><%#type:byte?%>static_cast<int8_t>(<%/type:byte?%><%!
-%><%#type:i16?%>static_cast<int16_t>(<%/type:i16?%>
+%><%^type:string_or_binary?%>static_cast<<%type:cpp_standard_type%>>(<%/type:string_or_binary?%>

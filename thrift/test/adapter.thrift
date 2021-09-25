@@ -73,6 +73,13 @@ struct AdaptTemplatedTestStruct {
   5: AdaptedLong adaptedLong;
   6: AdaptedDouble adaptedDouble;
   7: AdaptedString adaptedString;
+  8: AdaptedBool adaptedBoolDefault = true;
+  9: AdaptedByte adaptedByteDefault = 1;
+  10: AdaptedShort adaptedShortDefault = 2;
+  11: AdaptedInteger adaptedIntegerDefault = 3;
+  12: AdaptedLong adaptedLongDefault = 4;
+  13: AdaptedDouble adaptedDoubleDefault = 5;
+  14: AdaptedString adaptedStringDefault = "6";
 }
 
 struct AdaptTemplatedNestedTestStruct {

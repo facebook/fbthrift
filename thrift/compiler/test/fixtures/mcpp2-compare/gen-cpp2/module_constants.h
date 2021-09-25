@@ -14,43 +14,43 @@ namespace some { namespace valid { namespace ns {
 
 struct module_constants {
 
-  static constexpr bool const aBool_ = true;
+  static constexpr bool const aBool_ = static_cast<bool>(true);
 
   static constexpr bool aBool() {
     return aBool_;
   }
 
-  static constexpr ::std::int8_t const aByte_ = static_cast<int8_t>(1);
+  static constexpr ::std::int8_t const aByte_ = static_cast<::std::int8_t>(1);
 
   static constexpr ::std::int8_t aByte() {
     return aByte_;
   }
 
-  static constexpr ::std::int16_t const a16BitInt_ = static_cast<int16_t>(12);
+  static constexpr ::std::int16_t const a16BitInt_ = static_cast<::std::int16_t>(12);
 
   static constexpr ::std::int16_t a16BitInt() {
     return a16BitInt_;
   }
 
-  static constexpr ::std::int32_t const a32BitInt_ = 123;
+  static constexpr ::std::int32_t const a32BitInt_ = static_cast<::std::int32_t>(123);
 
   static constexpr ::std::int32_t a32BitInt() {
     return a32BitInt_;
   }
 
-  static constexpr ::std::int64_t const a64BitInt_ = 1234LL;
+  static constexpr ::std::int64_t const a64BitInt_ = static_cast<::std::int64_t>(1234);
 
   static constexpr ::std::int64_t a64BitInt() {
     return a64BitInt_;
   }
 
-  static constexpr float const aFloat_ = 0.1;
+  static constexpr float const aFloat_ = static_cast<float>(0.1);
 
   static constexpr float aFloat() {
     return aFloat_;
   }
 
-  static constexpr double const aDouble_ = 0.12;
+  static constexpr double const aDouble_ = static_cast<double>(0.12);
 
   static constexpr double aDouble() {
     return aDouble_;
@@ -80,7 +80,7 @@ struct module_constants {
 
   static ::std::vector<::some::valid::ns::MyEnumA> const& AConstList();
 
-  static constexpr ::std::int32_t const AnIntegerEnum2_ = 2;
+  static constexpr ::std::int32_t const AnIntegerEnum2_ = static_cast<::std::int32_t>(2);
 
   static constexpr ::std::int32_t AnIntegerEnum2() {
     return AnIntegerEnum2_;

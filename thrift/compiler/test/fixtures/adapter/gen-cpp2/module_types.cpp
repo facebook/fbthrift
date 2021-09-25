@@ -43,7 +43,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo() :
       intField(),
       optionalIntField(),
-      intFieldWithDefault(my::Adapter1::fromThrift(13)) {
+      intFieldWithDefault(my::Adapter1::fromThrift(static_cast<::std::int32_t>(13))) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

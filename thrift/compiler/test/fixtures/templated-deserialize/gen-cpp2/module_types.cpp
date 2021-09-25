@@ -247,20 +247,20 @@ containerStruct& containerStruct::operator=(const containerStruct& src) {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct::containerStruct() :
       fieldA(),
-      fieldC(std::initializer_list<::std::int32_t>{1,
+      fieldC(static_cast<::std::set<::std::int32_t>>(std::initializer_list<::std::int32_t>{1,
   2,
   3,
-  4}),
+  4})),
       fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")),
-      fieldI(true),
-      fieldJ(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
+      fieldI(static_cast<bool>(true)),
+      fieldJ(static_cast<::std::map<::std::string, ::std::vector<::std::int32_t>>>(std::initializer_list<std::pair<const ::std::string, ::std::vector<::std::int32_t>>>{{apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldA"), std::initializer_list<::std::int32_t>{1,
   4,
   8,
   12}},
   {apache::thrift::StringTraits<std::string>::fromStringLiteral("subfieldB"), std::initializer_list<::std::int32_t>{2,
   5,
   9,
-  13}}}),
+  13}}})),
       fieldQ(),
       fieldR(std::make_unique<::std::map<::std::string, bool>>()),
       fieldS(std::make_unique<::cpp2::SmallStruct>()),
@@ -381,7 +381,7 @@ void containerStruct::__clear() {
   this->fieldF.clear();
   this->fieldG.clear();
   this->fieldH.clear();
-  this->fieldI = true;
+  this->fieldI = static_cast<bool>(true);
   this->fieldJ.clear();
   this->fieldK.clear();
   this->fieldL.clear();

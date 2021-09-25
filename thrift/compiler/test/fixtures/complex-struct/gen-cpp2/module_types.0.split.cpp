@@ -229,7 +229,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void SimpleStruct::__clear() {
   // clear all fields
-  this->age = 60LL;
+  this->age = static_cast<::std::int64_t>(60);
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman");
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

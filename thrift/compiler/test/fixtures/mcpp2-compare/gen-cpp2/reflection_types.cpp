@@ -45,7 +45,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void ReflectionStruct::__clear() {
   // clear all fields
-  this->fieldA = 5;
+  this->fieldA = static_cast<::std::int32_t>(5);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

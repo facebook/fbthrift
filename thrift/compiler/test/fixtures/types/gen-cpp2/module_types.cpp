@@ -895,7 +895,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void TrivialNestedWithDefault::__clear() {
   // clear all fields
-  this->z = 4;
+  this->z = static_cast<::std::int32_t>(4);
   this->n.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -2258,10 +2258,10 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 NoexceptMoveComplexStruct::NoexceptMoveComplexStruct() :
       MyBoolField(),
-      MyIntField(12LL),
+      MyIntField(static_cast<::std::int64_t>(12)),
       MyStringField(apache::thrift::StringTraits<std::string>::fromStringLiteral("test")),
-      MyMapEnumAndInt(std::initializer_list<std::pair<const ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
-  { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")}}) {
+      MyMapEnumAndInt(static_cast<::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>(std::initializer_list<std::pair<const ::apache::thrift::fixtures::types::MyEnumA, ::std::string>>{{ ::apache::thrift::fixtures::types::MyEnumA::fieldA, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldA")},
+  { ::apache::thrift::fixtures::types::MyEnumA::fieldC, apache::thrift::StringTraits<std::string>::fromStringLiteral("fieldC")}})) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -2321,7 +2321,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 void NoexceptMoveComplexStruct::__clear() {
   // clear all fields
   this->MyBoolField = bool();
-  this->MyIntField = 12LL;
+  this->MyIntField = static_cast<::std::int64_t>(12);
   this->MyStringField = apache::thrift::StringTraits<std::string>::fromStringLiteral("test");
   this->MyStringField2 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->MyBinaryField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");

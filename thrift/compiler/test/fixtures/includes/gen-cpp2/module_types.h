@@ -73,8 +73,8 @@ class MyStruct final  {
  public:
 
   MyStruct() :
-      MyIncludedField(::apache::thrift::detail::make_constant< ::cpp2::Included>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::MyIntField>(2LL), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::MyTransitiveField>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(2LL))))),
-      MyIncludedInt(42LL) {
+      MyIncludedField(static_cast<::cpp2::Included>(::apache::thrift::detail::make_constant< ::cpp2::Included>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::MyIntField>(static_cast<::std::int64_t>(2)), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::MyTransitiveField>(static_cast<::cpp2::Foo>(::apache::thrift::detail::make_constant< ::cpp2::Foo>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::a>(static_cast<::std::int64_t>(2)))))))),
+      MyIncludedInt(static_cast<::cpp2::IncludedInt64>(42)) {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

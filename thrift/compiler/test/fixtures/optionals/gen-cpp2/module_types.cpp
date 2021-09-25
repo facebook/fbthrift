@@ -185,7 +185,7 @@ Vehicle& Vehicle::operator=(const Vehicle&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Vehicle::Vehicle() :
-      hasAC(false) {
+      hasAC(static_cast<bool>(false)) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -233,7 +233,7 @@ void Vehicle::__clear() {
   this->licensePlate = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->description = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-  this->hasAC = false;
+  this->hasAC = static_cast<bool>(false);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

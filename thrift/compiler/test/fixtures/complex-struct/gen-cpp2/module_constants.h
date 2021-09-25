@@ -14,7 +14,7 @@ namespace cpp2 {
 
 struct module_constants {
 
-  static constexpr ::std::int32_t const DEFAULT_PORT_NUM_ = 3456;
+  static constexpr ::std::int32_t const DEFAULT_PORT_NUM_ = static_cast<::std::int32_t>(3456);
 
   static constexpr ::std::int32_t DEFAULT_PORT_NUM() {
     return DEFAULT_PORT_NUM_;

@@ -14,7 +14,7 @@ namespace a { namespace different { namespace ns {
 
 struct includes_constants {
 
-  static constexpr ::std::int64_t const IncludedConstant_ = 42LL;
+  static constexpr ::std::int64_t const IncludedConstant_ = static_cast<::std::int64_t>(42);
 
   static constexpr ::std::int64_t IncludedConstant() {
     return IncludedConstant_;

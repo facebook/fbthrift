@@ -14,7 +14,7 @@ namespace test_cpp2 { namespace cpp_reflection {
 
 struct module_constants {
 
-  static constexpr ::std::int32_t const constant1_ = 1357;
+  static constexpr ::std::int32_t const constant1_ = static_cast<::std::int32_t>(1357);
 
   static constexpr ::std::int32_t constant1() {
     return constant1_;
@@ -36,7 +36,7 @@ struct module_constants {
     return constant3_;
   }
 
-  static constexpr ::std::int32_t const constant_with_special_name_ = 42;
+  static constexpr ::std::int32_t const constant_with_special_name_ = static_cast<::std::int32_t>(42);
 
   static constexpr ::std::int32_t constant_with_special_name() {
     return constant_with_special_name_;

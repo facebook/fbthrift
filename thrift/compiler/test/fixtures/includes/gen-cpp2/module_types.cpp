@@ -70,7 +70,7 @@ void MyStruct::__clear() {
   // clear all fields
   this->MyIncludedField.__clear();
   this->MyOtherIncludedField.__clear();
-  this->MyIncludedInt = 42LL;
+  this->MyIncludedInt = static_cast<::cpp2::IncludedInt64>(42);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

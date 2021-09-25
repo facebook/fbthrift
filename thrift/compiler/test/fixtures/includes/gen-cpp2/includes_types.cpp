@@ -47,7 +47,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Included::__clear() {
   // clear all fields
-  this->MyIntField = 0LL;
+  this->MyIntField = static_cast<::std::int64_t>(0);
   this->MyTransitiveField.__clear();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};

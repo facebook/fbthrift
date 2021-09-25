@@ -2072,7 +2072,7 @@ class SimpleStruct final  {
  public:
 
   SimpleStruct() :
-      age(60LL),
+      age(static_cast<::std::int64_t>(60)),
       name(apache::thrift::StringTraits<std::string>::fromStringLiteral("Batman")) {
   }
   // FragileConstructor for use in initialization lists only.

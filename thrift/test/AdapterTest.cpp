@@ -301,6 +301,13 @@ TEST(AdaptTest, UnionCodeGen_Custom) {
 
 TEST(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   auto obj = AdaptTemplatedTestStruct();
+  EXPECT_EQ(obj.adaptedBoolDefault_ref()->value, true);
+  EXPECT_EQ(obj.adaptedByteDefault_ref()->value, 1);
+  EXPECT_EQ(obj.adaptedShortDefault_ref()->value, 2);
+  EXPECT_EQ(obj.adaptedIntegerDefault_ref()->value, 3);
+  EXPECT_EQ(obj.adaptedLongDefault_ref()->value, 4);
+  EXPECT_EQ(obj.adaptedDoubleDefault_ref()->value, 5);
+  EXPECT_EQ(obj.adaptedStringDefault_ref()->value, "6");
 
   obj.adaptedBool_ref() = Wrapper<bool>{true};
   obj.adaptedByte_ref() = Wrapper<int8_t>{1};
@@ -332,6 +339,13 @@ TEST(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
 
 TEST(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   auto obj = AdaptTemplatedNestedTestStruct();
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedBoolDefault_ref()->value, true);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedByteDefault_ref()->value, 1);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedShortDefault_ref()->value, 2);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedIntegerDefault_ref()->value, 3);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedLongDefault_ref()->value, 4);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedDoubleDefault_ref()->value, 5);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedStringDefault_ref()->value, "6");
 
   obj.adaptedStruct_ref()->adaptedBool_ref() = Wrapper<bool>{true};
   obj.adaptedStruct_ref()->adaptedByte_ref() = Wrapper<int8_t>{1};
@@ -352,6 +366,15 @@ TEST(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   auto objs = CompactSerializer::serialize<std::string>(obj);
   AdaptTemplatedNestedTestStruct objd;
   CompactSerializer::deserialize(objs, objd);
+
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedBoolDefault_ref()->value, true);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedByteDefault_ref()->value, 1);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedShortDefault_ref()->value, 2);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedIntegerDefault_ref()->value, 3);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedLongDefault_ref()->value, 4);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedDoubleDefault_ref()->value, 5);
+  EXPECT_EQ(objd.adaptedStruct_ref()->adaptedStringDefault_ref()->value, "6");
+
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedBool_ref()->value, true);
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedByte_ref()->value, 1);
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedShort_ref()->value, 2);

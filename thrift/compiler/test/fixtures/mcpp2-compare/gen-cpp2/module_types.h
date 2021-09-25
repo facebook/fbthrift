@@ -6748,7 +6748,7 @@ class MyIncludedStruct final  {
  public:
 
   MyIncludedStruct() :
-      MyIncludedInt(42LL),
+      MyIncludedInt(static_cast<::a::different::ns::IncludedInt64>(42)),
       ARefField(std::make_unique<::some::valid::ns::AStruct>()) {
   }
   // FragileConstructor for use in initialization lists only.
