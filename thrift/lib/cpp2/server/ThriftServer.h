@@ -46,6 +46,7 @@
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
 #include <thrift/lib/cpp2/server/BaseThriftServer.h>
+#include <thrift/lib/cpp2/server/PolledServiceHealth.h>
 #include <thrift/lib/cpp2/server/PreprocessParams.h>
 #include <thrift/lib/cpp2/server/RequestDebugLog.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
@@ -291,6 +292,8 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     DRAINING_UNTIL_STOPPED,
   };
 
+  using ServiceHealth = PolledServiceHealth::ServiceHealth;
+
   ServerStatus getServerStatus() const {
     auto status = internalStatus_.load(std::memory_order_acquire);
     if (status == ServerStatus::RUNNING && !getEnabled()) {
@@ -300,6 +303,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
       return ServerStatus::STARTING;
     }
     return status;
+  }
+
+  ServiceHealth getServiceHealth() const {
+    return cachedServiceHealth_.load(std::memory_order_relaxed);
   }
 
   RequestHandlingCapability shouldHandleRequests() const override {
@@ -334,6 +341,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * represents the source of truth for the status reported by the server.
    */
   std::atomic<ServerStatus> internalStatus_{ServerStatus::NOT_RUNNING};
+  /**
+   * Thrift server's latest view of the running service's reported health.
+   */
+  std::atomic<ServiceHealth> cachedServiceHealth_{};
 
   std::unique_ptr<AsyncProcessorFactory> decoratedProcessorFactory_;
 
