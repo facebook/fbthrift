@@ -37,6 +37,7 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
   using ProtocolReader = CompactV1ProtocolReader;
 
   using CompactProtocolWriter::CompactProtocolWriter;
+  using CompactProtocolWriter::kHasIndexSupport;
   using CompactProtocolWriter::kSortKeys;
   using CompactProtocolWriter::protocolType;
   using CompactProtocolWriter::setOutput;
@@ -63,6 +64,7 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
   inline uint32_t writeDouble(double dub);
   using CompactProtocolWriter::writeBinary;
   using CompactProtocolWriter::writeFloat;
+  using CompactProtocolWriter::writeRaw;
   using CompactProtocolWriter::writeString;
 
   using CompactProtocolWriter::serializedFieldSize;
@@ -85,6 +87,8 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
   using CompactProtocolWriter::serializedSizeString;
   using CompactProtocolWriter::serializedSizeZCBinary;
   using CompactProtocolWriter::serializedStructSize;
+
+  inline void rewriteDouble(double dub, int64_t offset);
 };
 
 class CompactV1ProtocolReader : protected CompactProtocolReader {

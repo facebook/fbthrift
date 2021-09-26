@@ -49,6 +49,13 @@ inline uint32_t CompactV1ProtocolWriter::writeDouble(double dub) {
   return sizeof(bits);
 }
 
+inline void CompactV1ProtocolWriter::rewriteDouble(double dub, int64_t offset) {
+  auto cursor = RWCursor(out_);
+  cursor.advanceToEnd();
+  cursor -= offset;
+  cursor.writeLE(folly::bit_cast<uint64_t>(dub));
+}
+
 inline void CompactV1ProtocolReader::readMessageBegin(
     std::string& name, MessageType& messageType, int32_t& seqid) {
   int8_t protocolId;
