@@ -37,6 +37,7 @@ void for_each_id(F f) {
       case ReservedId::kOffset:
       case ReservedId::kExpectedRandomNumber:
       case ReservedId::kActualRandomNumber:
+      case ReservedId::kXxh3Checksum:
         f(i);
     };
   }

@@ -62,6 +62,13 @@ struct Structs<TerseOptionalFoo> {
   using IndexedStruct = OptionalIndexedFoo;
 };
 
+template <>
+struct Structs<FooNoChecksum> {
+  using Struct = FooNoChecksum;
+  using LazyStruct = LazyFooNoChecksum;
+  using IndexedStruct = IndexedFoo;
+};
+
 template <class Serializer_, class Struct>
 struct TypeParam : Structs<Struct> {
   using Serializer = Serializer_;
@@ -72,10 +79,12 @@ using TypeParams = ::testing::Types<
     TypeParam<CompactSerializer, OptionalFoo>,
     TypeParam<CompactSerializer, TerseFoo>,
     TypeParam<CompactSerializer, TerseOptionalFoo>,
+    TypeParam<CompactSerializer, FooNoChecksum>,
     TypeParam<BinarySerializer, Foo>,
     TypeParam<BinarySerializer, OptionalFoo>,
     TypeParam<BinarySerializer, TerseFoo>,
-    TypeParam<BinarySerializer, TerseOptionalFoo>>;
+    TypeParam<BinarySerializer, TerseOptionalFoo>,
+    TypeParam<BinarySerializer, FooNoChecksum>>;
 
 template <typename T>
 struct LazyDeserialization : testing::Test {

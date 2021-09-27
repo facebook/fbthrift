@@ -40,6 +40,10 @@ struct Ref {
 struct Lazy {
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Lazy")
 
+@scope.Struct
+struct DisableLazyChecksum {
+} (thrift.uri = "facebook.com/thrift/annotation/cpp/DisableLazyChecksum")
+
 // An experimental annotation that applies a C++ adapter to fields. For example:
 //
 //   struct User {

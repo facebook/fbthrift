@@ -791,6 +791,8 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:isset_fields_size", &mstch_cpp2_struct::isset_fields_size},
             {"struct:lazy_fields?", &mstch_cpp2_struct::has_lazy_fields},
             {"struct:indexing?", &mstch_cpp2_struct::indexing},
+            {"struct:write_lazy_field_checksum",
+             &mstch_cpp2_struct::write_lazy_field_checksum},
             {"struct:is_large?", &mstch_cpp2_struct::is_large},
             {"struct:fatal_annotations?",
              &mstch_cpp2_struct::has_fatal_annotations},
@@ -940,6 +942,14 @@ class mstch_cpp2_struct : public mstch_struct {
     return false;
   }
   mstch::node indexing() { return has_lazy_fields(); }
+  mstch::node write_lazy_field_checksum() {
+    if (strct_->find_structured_annotation_or_null(
+            "facebook.com/thrift/annotation/cpp/DisableLazyChecksum")) {
+      return std::string("false");
+    }
+
+    return std::string("true");
+  }
   mstch::node has_isset_fields() {
     for (const auto& field : strct_->fields()) {
       if (cpp2::field_has_isset(&field)) {

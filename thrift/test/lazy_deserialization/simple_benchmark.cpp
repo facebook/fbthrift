@@ -40,6 +40,11 @@ const folly::IOBuf kListDoubleWithoutIndex = genListDouble<Foo>();
 const folly::IOBuf kListI32WithIndex = genListI32<LazyFoo>();
 const folly::IOBuf kListI32WithoutIndex = genListI32<Foo>();
 
+// We only need to disable checksum for list<i32> with index, since
+// `list<double>` is cheap to skip, we won't compute its index and checksum.
+const folly::IOBuf kListI32WithIndexNoChecksum =
+    genListI32<LazyFooNoChecksum>();
+
 BENCHMARK(list_double_with_index_eager) {
   CompactSerializer::deserialize<Foo>(&kListDoubleWithIndex);
 }
@@ -55,8 +60,18 @@ BENCHMARK(list_i32_with_index_eager) {
 BENCHMARK_RELATIVE(list_i32_with_index_lazy) {
   CompactSerializer::deserialize<LazyFoo>(&kListI32WithIndex);
 }
+BENCHMARK_RELATIVE(list_i32_with_index_lazy_without_checksum) {
+  CompactSerializer::deserialize<LazyFooNoChecksum>(
+      &kListI32WithIndexNoChecksum);
+}
 BENCHMARK_RELATIVE(list_i32_with_index_lazy_then_access_field) {
   CompactSerializer::deserialize<LazyFoo>(&kListI32WithIndex).field4_ref();
+}
+BENCHMARK_RELATIVE(
+    list_i32_with_index_lazy_then_access_field_without_checksum) {
+  CompactSerializer::deserialize<LazyFooNoChecksum>(
+      &kListI32WithIndexNoChecksum)
+      .field4_ref();
 }
 BENCHMARK(list_double_without_index_eager) {
   CompactSerializer::deserialize<Foo>(&kListDoubleWithIndex);

@@ -114,6 +114,16 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, TerseOptionalLazyFoo, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, TerseOptionalLazyFoo, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, TerseOptionalLazyFoo, field4);
 
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, FooNoChecksum, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, FooNoChecksum, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, FooNoChecksum, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, FooNoChecksum, field4);
+
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, LazyFooNoChecksum, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyFooNoChecksum, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyFooNoChecksum, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyFooNoChecksum, field4);
+
 TYPED_TEST(LazyDeserialization, CheckDataMember) {
   using LazyStruct = typename TypeParam::LazyStruct;
 

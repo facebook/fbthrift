@@ -84,6 +84,22 @@ constexpr auto kIndexField = InternalField{
     static_cast<int16_t>(ReservedId::kIndex),
     TType::T_MAP};
 
+// If user modified lazy fields in serialized data directly without
+// deserialization, we should not use index, otherwise we might read the data
+// incorrectly.
+//
+// To validate data integrity, we added checksum of lazy fields in serialized
+// data, and stored it as value in index map with kXxh3Checksum as key.
+//
+// Note this field is not an actual field in serialized data.
+// It's only a sentinel to check whether checksum exists.
+//
+// The reason we don't use actual field to store checksum is because
+// user might modify the serialized data and delete checksum field,
+// in which case we might still use index even data is tampered
+constexpr int16_t kXxh3ChecksumFieldId =
+    static_cast<int16_t>(ReservedId::kXxh3Checksum);
+
 class Xxh3Hasher {
  public:
   Xxh3Hasher();
@@ -96,7 +112,7 @@ class Xxh3Hasher {
 };
 
 struct DummyIndexWriter {
-  DummyIndexWriter(void*, uint32_t&) {}
+  DummyIndexWriter(void*, uint32_t&, bool) {}
 
   void recordFieldStart() {}
 
@@ -112,8 +128,10 @@ int64_t random_64bits_integer();
 template <class Protocol>
 class IndexWriterImpl {
  public:
-  IndexWriterImpl(Protocol* prot, uint32_t& writtenBytes)
-      : prot_(prot), writtenBytes_(writtenBytes) {
+  IndexWriterImpl(Protocol* prot, uint32_t& writtenBytes, bool writeChecksum)
+      : prot_(prot),
+        writtenBytes_(writtenBytes),
+        writeChecksum_(writeChecksum) {
     writeRandomNumberField();
     writeIndexOffsetField();
   }
@@ -178,6 +196,7 @@ class IndexWriterImpl {
 
   Protocol* prot_;
   uint32_t& writtenBytes_;
+  bool writeChecksum_;
   uint32_t indexOffsetLocation_ = 0;
   uint32_t sizeFieldEnd_ = 0;
   uint32_t fieldStart_ = 0;

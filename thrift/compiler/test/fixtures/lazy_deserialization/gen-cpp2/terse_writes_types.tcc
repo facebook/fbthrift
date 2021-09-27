@@ -562,7 +562,7 @@ uint32_t TerseLazyFoo::write(Protocol_* prot_) const {
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("TerseLazyFoo");
-  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer);
+  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, true);
   bool previousFieldHasValue = true;
   if (!this->field1.empty()) {
     constexpr int16_t kPrevFieldId = ::apache::thrift::detail::kSizeField.id;
@@ -1149,7 +1149,7 @@ uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("TerseOptionalLazyFoo");
-  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer);
+  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, true);
   bool previousFieldHasValue = true;
   if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
     constexpr int16_t kPrevFieldId = ::apache::thrift::detail::kSizeField.id;

@@ -149,6 +149,16 @@ FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, TerseOptionalLazyFoo, field2);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, TerseOptionalLazyFoo, field3);
 FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, TerseOptionalLazyFoo, field4);
 
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, FooNoChecksum, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, FooNoChecksum, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, FooNoChecksum, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, FooNoChecksum, field4);
+
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field1, LazyFooNoChecksum, field1);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field2, LazyFooNoChecksum, field2);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field3, LazyFooNoChecksum, field3);
+FBTHRIFT_DEFINE_MEMBER_ACCESSOR(get_field4, LazyFooNoChecksum, field4);
+
 TYPED_TEST(LazyDeserialization, IndexedFooToLazyFoo) {
   using Serializer = typename TypeParam::Serializer;
   using LazyStruct = typename TypeParam::LazyStruct;
@@ -213,7 +223,12 @@ TYPED_TEST(LazyDeserialization, LazyFooToIndexedFoo) {
   indexedFoo.field_id_to_size_ref()[detail::kActualRandomNumberFieldId] =
       kRandomValue;
 
-  EXPECT_THRIFT_EQ(indexedFoo, genIndexedStruct<IndexedStruct>(Serializer{}));
+  auto expected = genIndexedStruct<IndexedStruct>(Serializer{});
+  if (std::is_same_v<typename TypeParam::Struct, FooNoChecksum>) {
+    expected.field_id_to_size_ref()->erase(detail::kXxh3ChecksumFieldId);
+  }
+
+  EXPECT_THRIFT_EQ(indexedFoo, expected);
 }
 
 TYPED_TEST(LazyDeserialization, ReadRandomNumber) {

@@ -578,7 +578,7 @@ uint32_t LazyFoo::write(Protocol_* prot_) const {
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("LazyFoo");
-  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer);
+  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, true);
   bool previousFieldHasValue = true;
   {
     constexpr int16_t kPrevFieldId = ::apache::thrift::detail::kSizeField.id;
@@ -1155,7 +1155,7 @@ uint32_t OptionalLazyFoo::write(Protocol_* prot_) const {
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("OptionalLazyFoo");
-  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer);
+  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, true);
   bool previousFieldHasValue = true;
   if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
     constexpr int16_t kPrevFieldId = ::apache::thrift::detail::kSizeField.id;
@@ -1476,7 +1476,7 @@ uint32_t LazyCppRef::write(Protocol_* prot_) const {
   THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("LazyCppRef");
-  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer);
+  ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, true);
   bool previousFieldHasValue = true;
   if (this->field1) {
     constexpr int16_t kPrevFieldId = ::apache::thrift::detail::kSizeField.id;
