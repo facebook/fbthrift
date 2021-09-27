@@ -52,7 +52,7 @@ enum B {
   /**
    * EnumDef doctext.
    */
-  HELLO = 0,
+  HELLO = 0, // This comment will not be added to the generated code
 }
 
 /** Union U */
