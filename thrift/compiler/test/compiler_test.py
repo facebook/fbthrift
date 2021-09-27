@@ -157,6 +157,8 @@ class CompilerTest(unittest.TestCase):
             args = [
                 thrift,
                 "-r",
+                "-I",
+                os.path.abspath(FIXTURE_ROOT),
                 "--allow-experimental-features",
                 "all",
                 "--gen",
