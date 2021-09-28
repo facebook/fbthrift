@@ -31,9 +31,6 @@ namespace apache {
 namespace thrift {
 namespace compiler {
 
-// version.h
-#define THRIFT_VERSION "facebook"
-
 class t_generation_context {
  public:
   t_generation_context() : out_path_("./"), is_out_path_absolute_(false) {}
