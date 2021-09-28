@@ -19,7 +19,9 @@ struct VisitByFieldId<::cpp2::Foo> {
   void operator()(FOLLY_MAYBE_UNUSED F&& f, int32_t fieldId, FOLLY_MAYBE_UNUSED T&& t) const {
     switch (fieldId) {
     case 1:
-      return f(0, static_cast<T&&>(t).bar_ref());
+      return f(0, static_cast<T&&>(t).foo_ref());
+    case 2:
+      return f(1, static_cast<T&&>(t).bar_ref());
     default:
       throwInvalidThriftId(fieldId, "::cpp2::Foo");
     }

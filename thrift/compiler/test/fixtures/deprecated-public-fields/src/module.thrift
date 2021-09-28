@@ -15,5 +15,6 @@
  */
 
 struct Foo {
-  1: optional i32 bar;
+  1: optional i32 foo;
+  2: i32 bar;
 }

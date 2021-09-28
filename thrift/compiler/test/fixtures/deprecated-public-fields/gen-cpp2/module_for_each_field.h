@@ -17,7 +17,8 @@ template <>
 struct ForEachField<::cpp2::Foo> {
   template <typename F, typename... T>
   void operator()(FOLLY_MAYBE_UNUSED F&& f, FOLLY_MAYBE_UNUSED T&&... t) const {
-    f(0, static_cast<T&&>(t).bar_ref()...);
+    f(0, static_cast<T&&>(t).foo_ref()...);
+    f(1, static_cast<T&&>(t).bar_ref()...);
   }
 };
 } // namespace detail

@@ -37,14 +37,17 @@ namespace cpp2 {
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t bar__arg) :
+Foo::Foo(apache::thrift::FragileConstructor, ::std::int32_t foo__arg, ::std::int32_t bar__arg) :
+    foo(std::move(foo__arg)),
     bar(std::move(bar__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
+  __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Foo::__clear() {
   // clear all fields
+  this->foo = ::std::int32_t();
   this->bar = ::std::int32_t();
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
@@ -55,6 +58,9 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
+  if (!(lhs.foo_ref() == rhs.foo_ref())) {
+    return false;
+  }
   if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return false;
   }
@@ -65,6 +71,9 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
+  if (!(lhs.foo_ref() == rhs.foo_ref())) {
+    return lhs.foo_ref() < rhs.foo_ref();
+  }
   if (!(lhs.bar_ref() == rhs.bar_ref())) {
     return lhs.bar_ref() < rhs.bar_ref();
   }
@@ -74,7 +83,8 @@ bool Foo::operator<(const Foo& rhs) const {
 
 void swap(Foo& a, Foo& b) {
   using ::std::swap;
-  swap(a.bar_ref().value_unchecked(), b.bar_ref().value_unchecked());
+  swap(a.foo_ref().value_unchecked(), b.foo_ref().value_unchecked());
+  swap(a.bar_ref().value(), b.bar_ref().value());
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
 THRIFT_IGNORE_ISSET_USE_WARNING_END
