@@ -132,3 +132,4 @@ class RequestContext:
     def set_header(self, key: str, value: str) -> None: ...
     method_name: str
     request_id: str
+    request_timeout: float

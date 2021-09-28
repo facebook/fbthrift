@@ -165,6 +165,7 @@ cdef extern from "thrift/lib/cpp2/server/Cpp2ConnContext.h" \
         cPriority getCallPriority()
         THeader* getHeader()
         string getMethodName()
+        milliseconds getRequestTimeout()
 
 
 cdef class AsyncProcessorFactory:

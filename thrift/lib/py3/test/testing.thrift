@@ -335,6 +335,7 @@ service TestingService {
   string getName();
   string getMethodName();
   string getRequestId();
+  float getRequestTimeout();
   oneway void shutdown();
   bool invert(1: bool value);
   i32 complex_action(

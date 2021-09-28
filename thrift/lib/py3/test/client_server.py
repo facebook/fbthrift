@@ -65,6 +65,10 @@ class Handler(TestingServiceInterface):
         ctx = get_context()
         return ctx.request_id
 
+    async def getRequestTimeout(self) -> float:
+        ctx = get_context()
+        return ctx.request_timeout
+
     async def shutdown(self) -> None:
         pass
 
@@ -140,6 +144,8 @@ class ClientServerTests(unittest.TestCase):
                 assert ip and port
                 async with get_client(TestingService, host=ip, port=port) as client:
                     options = RpcOptions()
+                    options.timeout = 100.0
+
                     self.assertEqual(
                         "Testing", await client.getName(rpc_options=options)
                     )
@@ -152,6 +158,10 @@ class ClientServerTests(unittest.TestCase):
                     self.assertEqual(
                         len(await client.getRequestId()),
                         16,
+                    )
+                    self.assertEqual(
+                        100.0,
+                        await client.getRequestTimeout(rpc_options=options),
                     )
 
         loop.run_until_complete(inner_test())

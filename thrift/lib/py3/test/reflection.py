@@ -181,6 +181,14 @@ class ReflectionTests(unittest.TestCase):
                 annotations={},
             ),
             MethodSpec(
+                name="getRequestTimeout",
+                arguments=[],
+                result=float,
+                result_kind=NumberType.FLOAT,
+                exceptions=[],
+                annotations={},
+            ),
+            MethodSpec(
                 name="shutdown",
                 arguments=[],
                 result=None,

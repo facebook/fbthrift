@@ -387,3 +387,7 @@ cdef class RequestContext:
     @property
     def request_id(self):
         return self._requestId.decode('utf-8')
+
+    @property
+    def request_timeout(self):
+        return float(self._ctx.getRequestTimeout().count() / 1000)
