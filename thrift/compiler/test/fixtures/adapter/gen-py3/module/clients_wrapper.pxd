@@ -26,6 +26,7 @@ from thrift.py3.client cimport cClientWrapper
 
 cimport module.types as _module_types
 
+cimport facebook.thrift.annotation.cpp.cpp.types as _facebook_thrift_annotation_cpp_cpp_types
 
 cdef extern from "src/gen-cpp2/Service.h" namespace "::cpp2":
   cdef cppclass cServiceAsyncClient "::cpp2::ServiceAsyncClient":
@@ -45,5 +46,6 @@ cdef extern from "src/gen-py3/module/clients_wrapper.h" namespace "::cpp2":
 
     cFollyFuture[cint32_t] func(cRpcOptions, 
       string arg_arg1,
-      _module_types.cFoo arg_arg2,)
+      string arg_arg2,
+      _module_types.cFoo arg_arg3,)
 

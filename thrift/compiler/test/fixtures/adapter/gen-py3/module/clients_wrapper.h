@@ -30,7 +30,8 @@ class ServiceClientWrapper : public ::thrift::py3::ClientWrapper {
     folly::Future<int32_t> func(
       apache::thrift::RpcOptions& rpcOptions,
       std::string arg_arg1,
-      ::cpp2::Foo arg_arg2);
+      std::string arg_arg2,
+      ::cpp2::Foo arg_arg3);
 };
 
 

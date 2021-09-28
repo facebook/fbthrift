@@ -9,16 +9,17 @@ import typing as __T
 from thrift import Thrift
 from thrift.protocol.TProtocol import TProtocolBase
 
+import thrift.annotation.cpp.ttypes
 import my
 from module.ttypes import *
 
 
 class Iface:  # Service
-    def func(self, arg1: str, arg2: Foo) -> int: ...
+    def func(self, arg1: str, arg2: str, arg3: Foo) -> int: ...
 
 class Client(Iface, __T.ContextManager[Client]):  # Service
     def __init__(self, iprot: TProtocolBase, oprot: __T.Optional[TProtocolBase] = None) -> None: ...
-    def send_func(self, arg1: __T.Optional[str] = ..., arg2: __T.Optional[Foo] = ...) -> None: ...
+    def send_func(self, arg1: __T.Optional[str] = ..., arg2: __T.Optional[str] = ..., arg3: __T.Optional[Foo] = ...) -> None: ...
     def recv_func(self) -> int: ...
 
 class Processor(Iface, Thrift.TProcessor):  # Service
@@ -39,10 +40,12 @@ class func_args:
     def __init__(
         self,
         arg1: __T.Optional[str] = ...,
-        arg2: __T.Optional[Foo] = ...
+        arg2: __T.Optional[str] = ...,
+        arg3: __T.Optional[Foo] = ...
     ) -> None:
         self.arg1: __T.Optional[str]
-        self.arg2: __T.Optional[Foo]
+        self.arg2: __T.Optional[str]
+        self.arg3: __T.Optional[Foo]
 
     def isUnion(self) -> bool: ...
     def checkRequired(self) -> None: ...

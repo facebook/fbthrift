@@ -1,0 +1,221 @@
+{
+  "__fbthrift": {"@generated": 0},
+  "thrift_module" : "scope",
+  "typedefs" : {
+    "Enum" : {
+      "lineno" : 66,
+      "type_enum" : "STRUCT",
+      "spec_args" : "FbthriftInternalEnum",
+      "source_range" : {
+        "begin" : {
+          "line" : 66,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 68,
+          "column" : 2
+        }
+      }
+    }
+  },
+  "structs" : {
+    "Struct" : {
+      "lineno" : 41,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 41,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 42,
+          "column" : 57
+        }
+      }
+    },
+    "Union" : {
+      "lineno" : 43,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 43,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 44,
+          "column" : 56
+        }
+      }
+    },
+    "Exception" : {
+      "lineno" : 45,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 45,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 46,
+          "column" : 60
+        }
+      }
+    },
+    "Field" : {
+      "lineno" : 47,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 47,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 48,
+          "column" : 56
+        }
+      }
+    },
+    "Typedef" : {
+      "lineno" : 49,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 49,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 50,
+          "column" : 58
+        }
+      }
+    },
+    "Service" : {
+      "lineno" : 51,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 51,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 52,
+          "column" : 58
+        }
+      }
+    },
+    "Interaction" : {
+      "lineno" : 53,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 53,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 54,
+          "column" : 62
+        }
+      }
+    },
+    "Function" : {
+      "lineno" : 55,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 55,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 56,
+          "column" : 59
+        }
+      }
+    },
+    "EnumValue" : {
+      "lineno" : 57,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 57,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 58,
+          "column" : 60
+        }
+      }
+    },
+    "Const" : {
+      "lineno" : 59,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 59,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 60,
+          "column" : 56
+        }
+      }
+    },
+    "FbthriftInternalEnum" : {
+      "lineno" : 64,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 64,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 65,
+          "column" : 2
+        }
+      }
+    }
+  }
+}

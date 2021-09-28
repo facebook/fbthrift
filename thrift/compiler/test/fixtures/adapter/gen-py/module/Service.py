@@ -17,6 +17,8 @@ if sys.version_info[0] >= 3:
   long = int
 
 from .ttypes import UTF8STRINGS, Foo, Baz, Bar, SetWithAdapter, ListWithElemAdapter, StructWithAdapter, UnionWithAdapter
+import thrift.annotation.cpp.ttypes
+
 import my
 
 from thrift.Thrift import TProcessor
@@ -46,21 +48,23 @@ from thrift.util.Decorators import (
 )
 
 class Iface:
-  def func(self, arg1=None, arg2=None):
+  def func(self, arg1=None, arg2=None, arg3=None):
     """
     Parameters:
      - arg1
      - arg2
+     - arg3
     """
     pass
 
 
 class ContextIface:
-  def func(self, handler_ctx, arg1=None, arg2=None):
+  def func(self, handler_ctx, arg1=None, arg2=None, arg3=None):
     """
     Parameters:
      - arg1
      - arg2
+     - arg3
     """
     pass
 
@@ -72,6 +76,7 @@ class func_args:
   Attributes:
    - arg1
    - arg2
+   - arg3
   """
 
   thrift_spec = None
@@ -100,9 +105,14 @@ class func_args:
         else:
           iprot.skip(ftype)
       elif fid == 2:
+        if ftype == TType.STRING:
+          self.arg2 = iprot.readString().decode('utf-8') if UTF8STRINGS else iprot.readString()
+        else:
+          iprot.skip(ftype)
+      elif fid == 3:
         if ftype == TType.STRUCT:
-          self.arg2 = Foo()
-          self.arg2.read(iprot)
+          self.arg3 = Foo()
+          self.arg3.read(iprot)
         else:
           iprot.skip(ftype)
       else:
@@ -123,8 +133,12 @@ class func_args:
       oprot.writeString(self.arg1.encode('utf-8')) if UTF8STRINGS and not isinstance(self.arg1, bytes) else oprot.writeString(self.arg1)
       oprot.writeFieldEnd()
     if self.arg2 != None:
-      oprot.writeFieldBegin('arg2', TType.STRUCT, 2)
-      self.arg2.write(oprot)
+      oprot.writeFieldBegin('arg2', TType.STRING, 2)
+      oprot.writeString(self.arg2.encode('utf-8')) if UTF8STRINGS and not isinstance(self.arg2, bytes) else oprot.writeString(self.arg2)
+      oprot.writeFieldEnd()
+    if self.arg3 != None:
+      oprot.writeFieldBegin('arg3', TType.STRUCT, 3)
+      self.arg3.write(oprot)
       oprot.writeFieldEnd()
     oprot.writeFieldStop()
     oprot.writeStructEnd()
@@ -144,8 +158,10 @@ class func_args:
     if 'arg1' in json_obj and json_obj['arg1'] is not None:
       self.arg1 = json_obj['arg1']
     if 'arg2' in json_obj and json_obj['arg2'] is not None:
-      self.arg2 = Foo()
-      self.arg2.readFromJson(json_obj['arg2'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
+      self.arg2 = json_obj['arg2']
+    if 'arg3' in json_obj and json_obj['arg3'] is not None:
+      self.arg3 = Foo()
+      self.arg3.readFromJson(json_obj['arg3'], is_text=False, relax_enum_validation=relax_enum_validation, custom_set_cls=set_cls, custom_dict_cls=dict_cls)
 
   def __repr__(self):
     L = []
@@ -158,6 +174,10 @@ class func_args:
       value = pprint.pformat(self.arg2, indent=0)
       value = padding.join(value.splitlines(True))
       L.append('    arg2=%s' % (value))
+    if self.arg3 is not None:
+      value = pprint.pformat(self.arg3, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    arg3=%s' % (value))
     return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
 
   def __eq__(self, other):
@@ -176,7 +196,8 @@ all_structs.append(func_args)
 func_args.thrift_spec = (
   None, # 0
   (1, TType.STRING, 'arg1', True, None, 2, ), # 1
-  (2, TType.STRUCT, 'arg2', [Foo, Foo.thrift_spec, False], None, 2, ), # 2
+  (2, TType.STRING, 'arg2', True, None, 2, ), # 2
+  (3, TType.STRUCT, 'arg3', [Foo, Foo.thrift_spec, False], None, 2, ), # 3
 )
 
 func_args.thrift_struct_annotations = {
@@ -184,15 +205,17 @@ func_args.thrift_struct_annotations = {
 func_args.thrift_field_annotations = {
 }
 
-def func_args__init__(self, arg1=None, arg2=None,):
+def func_args__init__(self, arg1=None, arg2=None, arg3=None,):
   self.arg1 = arg1
   self.arg2 = arg2
+  self.arg3 = arg3
 
 func_args.__init__ = func_args__init__
 
 def func_args__setstate__(self, state):
   state.setdefault('arg1', None)
   state.setdefault('arg2', None)
+  state.setdefault('arg3', None)
   self.__dict__ = state
 
 func_args.__getstate__ = lambda self: self.__dict__.copy()
@@ -324,20 +347,22 @@ class Client(Iface):
       self._oprot = oprot
     self._seqid = 0
 
-  def func(self, arg1=None, arg2=None):
+  def func(self, arg1=None, arg2=None, arg3=None):
     """
     Parameters:
      - arg1
      - arg2
+     - arg3
     """
-    self.send_func(arg1, arg2)
+    self.send_func(arg1, arg2, arg3)
     return self.recv_func()
 
-  def send_func(self, arg1=None, arg2=None):
+  def send_func(self, arg1=None, arg2=None, arg3=None):
     self._oprot.writeMessageBegin('func', TMessageType.CALL, self._seqid)
     args = func_args()
     args.arg1 = arg1
     args.arg2 = arg2
+    args.arg3 = arg3
     args.write(self._oprot)
     self._oprot.writeMessageEnd()
     self._oprot.trans.flush()
@@ -380,7 +405,7 @@ class Processor(Iface, TProcessor):
   def process_func(self, args, handler_ctx):
     result = func_result()
     try:
-      result.success = self._handler.func(args.arg1, args.arg2)
+      result.success = self._handler.func(args.arg1, args.arg2, args.arg3)
     except:
       ex = sys.exc_info()[1]
       self._event_handler.handlerError(handler_ctx, 'func', ex)
@@ -412,7 +437,7 @@ class ContextProcessor(ContextIface, TProcessor):
   def process_func(self, args, handler_ctx):
     result = func_result()
     try:
-      result.success = self._handler.func(handler_ctx, args.arg1, args.arg2)
+      result.success = self._handler.func(handler_ctx, args.arg1, args.arg2, args.arg3)
     except:
       ex = sys.exc_info()[1]
       self._event_handler.handlerError(handler_ctx, 'func', ex)

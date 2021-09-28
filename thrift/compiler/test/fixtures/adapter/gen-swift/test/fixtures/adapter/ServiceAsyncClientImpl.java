@@ -77,25 +77,28 @@ public class ServiceAsyncClientImpl extends AbstractThriftClient implements Serv
     @java.lang.Override
     public ListenableFuture<Integer> func(
         String arg1,
-        test.fixtures.adapter.Foo arg2) {
-        return func(arg1, arg2, RpcOptions.EMPTY);
+        String arg2,
+        test.fixtures.adapter.Foo arg3) {
+        return func(arg1, arg2, arg3, RpcOptions.EMPTY);
     }
 
     @java.lang.Override
     public ListenableFuture<Integer> func(
         String arg1,
-        test.fixtures.adapter.Foo arg2,
+        String arg2,
+        test.fixtures.adapter.Foo arg3,
         RpcOptions rpcOptions) {
-        return FutureUtil.transform(funcWrapper(arg1, arg2, rpcOptions));
+        return FutureUtil.transform(funcWrapper(arg1, arg2, arg3, rpcOptions));
     }
 
     @java.lang.Override
     public ListenableFuture<ResponseWrapper<Integer>> funcWrapper(
         String arg1,
-        test.fixtures.adapter.Foo arg2,
+        String arg2,
+        test.fixtures.adapter.Foo arg3,
         RpcOptions rpcOptions) {
         try {
-          return executeWrapperWithOptions(funcMethodHandler, funcExceptions, rpcOptions, arg1, arg2);
+          return executeWrapperWithOptions(funcMethodHandler, funcExceptions, rpcOptions, arg1, arg2, arg3);
         } catch (Throwable t) {
           throw new RuntimeTException(t.getMessage(), t);
         }

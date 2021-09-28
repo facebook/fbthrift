@@ -1,0 +1,126 @@
+{
+  "__fbthrift": {"@generated": 0},
+  "thrift_module" : "cpp",
+  "enumerations" : {
+    "RefType" : {
+      "lineno" : 28,
+      "constants" : {
+        "Unique" : 0,
+        "Shared" : 1,
+        "SharedMutable" : 2
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 28,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 32,
+          "column" : 2
+        }
+      }
+    }
+  },
+  "structs" : {
+    "Ref" : {
+      "lineno" : 35,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "type" : {
+          "type_enum" : "ENUM",
+          "spec_args" : "RefType",
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 36,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 36,
+              "column" : 19
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 34,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 37,
+          "column" : 58
+        }
+      }
+    },
+    "Lazy" : {
+      "lineno" : 40,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 39,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 41,
+          "column" : 59
+        }
+      }
+    },
+    "DisableLazyChecksum" : {
+      "lineno" : 44,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 43,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 45,
+          "column" : 74
+        }
+      }
+    },
+    "ExperimentalAdapter" : {
+      "lineno" : 56,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "name" : {
+          "type_enum" : "STRING",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 59,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 59,
+              "column" : 18
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 55,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 60,
+          "column" : 74
+        }
+      }
+    }
+  }
+}

@@ -76,25 +76,28 @@ public class ServiceClientImpl extends AbstractThriftClient implements Service {
     @java.lang.Override
     public int func(
         String arg1,
-        test.fixtures.adapter.Foo arg2) throws org.apache.thrift.TException {
-      return funcWrapper(arg1, arg2, RpcOptions.EMPTY).getData();
+        String arg2,
+        test.fixtures.adapter.Foo arg3) throws org.apache.thrift.TException {
+      return funcWrapper(arg1, arg2, arg3, RpcOptions.EMPTY).getData();
     }
 
     @java.lang.Override
     public int func(
         String arg1,
-        test.fixtures.adapter.Foo arg2,
+        String arg2,
+        test.fixtures.adapter.Foo arg3,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return funcWrapper(arg1, arg2, rpcOptions).getData();
+      return funcWrapper(arg1, arg2, arg3, rpcOptions).getData();
     }
 
     @java.lang.Override
     public ResponseWrapper<Integer> funcWrapper(
         String arg1,
-        test.fixtures.adapter.Foo arg2,
+        String arg2,
+        test.fixtures.adapter.Foo arg3,
         RpcOptions rpcOptions) throws org.apache.thrift.TException {
       try {
-        return FutureUtil.get(executeWrapperWithOptions(funcMethodHandler, funcExceptions, rpcOptions, arg1, arg2));
+        return FutureUtil.get(executeWrapperWithOptions(funcMethodHandler, funcExceptions, rpcOptions, arg1, arg2, arg3));
       } catch (Throwable t) {
         if (t instanceof org.apache.thrift.TException) {
           throw (org.apache.thrift.TException) t;

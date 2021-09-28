@@ -42,7 +42,7 @@ from thrift.util.remote import Function
 from thrift.remote import Remote
 
 FUNCTIONS = {
-    'func': Function('func', 'Service', 'i32', [('string', 'arg1', 'string'), ('Foo', 'arg2', 'Foo')]),
+    'func': Function('func', 'Service', 'i32', [('string', 'arg1', 'string'), ('string', 'arg2', 'string'), ('Foo', 'arg3', 'Foo')]),
 }
 
 SERVICE_NAMES = ['Service', ]

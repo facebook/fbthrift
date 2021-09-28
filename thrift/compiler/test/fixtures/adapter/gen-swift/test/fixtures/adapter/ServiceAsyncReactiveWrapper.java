@@ -25,8 +25,8 @@ public class ServiceAsyncReactiveWrapper
     }
 
     @java.lang.Override
-    public reactor.core.publisher.Mono<Integer> func(final String arg1, final test.fixtures.adapter.Foo arg2) {
-        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.func(arg1, arg2));
+    public reactor.core.publisher.Mono<Integer> func(final String arg1, final String arg2, final test.fixtures.adapter.Foo arg3) {
+        return com.facebook.thrift.util.FutureUtil.toMono(_delegate.func(arg1, arg2, arg3));
     }
 
 }

@@ -28,24 +28,26 @@ public class ServiceReactiveAsyncWrapper
   }
 
   @java.lang.Override
-  public com.google.common.util.concurrent.ListenableFuture<Integer> func(final String arg1, final test.fixtures.adapter.Foo arg2) {
-      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.func(arg1, arg2));
+  public com.google.common.util.concurrent.ListenableFuture<Integer> func(final String arg1, final String arg2, final test.fixtures.adapter.Foo arg3) {
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.func(arg1, arg2, arg3));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<Integer> func(
     final String arg1,
-    final test.fixtures.adapter.Foo arg2,
+    final String arg2,
+    final test.fixtures.adapter.Foo arg3,
     com.facebook.thrift.client.RpcOptions rpcOptions) {
-      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.func(arg1,arg2, rpcOptions));
+      return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.func(arg1,arg2,arg3, rpcOptions));
   }
 
   @java.lang.Override
   public com.google.common.util.concurrent.ListenableFuture<com.facebook.thrift.client.ResponseWrapper<Integer>> funcWrapper(
     final String arg1,
-    final test.fixtures.adapter.Foo arg2,
+    final String arg2,
+    final test.fixtures.adapter.Foo arg3,
     com.facebook.thrift.client.RpcOptions rpcOptions) {
-    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.funcWrapper(arg1,arg2, rpcOptions));
+    return com.facebook.thrift.util.FutureUtil.toListenableFuture(_delegate.funcWrapper(arg1,arg2,arg3, rpcOptions));
   }
 
 }

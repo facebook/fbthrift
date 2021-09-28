@@ -15,9 +15,10 @@ interface ServiceAsyncIf extends \IThriftAsyncIf {
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: Foo arg2);
+   *        2: string arg2,
+   *        3: Foo arg3);
    */
-  public function func(\Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType>;
+  public function func(\Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType>;
 }
 
 /**
@@ -29,9 +30,10 @@ interface ServiceIf extends \IThriftSyncIf {
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: Foo arg2);
+   *        2: string arg2,
+   *        3: Foo arg3);
    */
-  public function func(\Adapter2::THackType $arg1, ?Foo $arg2): \Adapter1::THackType;
+  public function func(\Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): \Adapter1::THackType;
 }
 
 /**
@@ -43,9 +45,10 @@ interface ServiceClientIf extends \IThriftSyncIf {
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: Foo arg2);
+   *        2: string arg2,
+   *        3: Foo arg3);
    */
-  public function func(\Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType>;
+  public function func(\Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType>;
 }
 
 /**
@@ -57,9 +60,10 @@ interface ServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: Foo arg2);
+   *        2: string arg2,
+   *        3: Foo arg3);
    */
-  public function func(\RpcOptions $rpc_options, \Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType>;
+  public function func(\RpcOptions $rpc_options, \Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType>;
 }
 
 /**
@@ -69,11 +73,12 @@ interface ServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
 trait ServiceClientBase {
   require extends \ThriftClientBase;
 
-  protected function sendImpl_func(\Adapter2::THackType $arg1, ?Foo $arg2): int {
+  protected function sendImpl_func(\Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): int {
     $currentseqid = $this->getNextSequenceID();
     $args = Service_func_args::fromShape(shape(
       'arg1' => $arg1,
       'arg2' => $arg2,
+      'arg3' => $arg3,
     ));
     try {
       $this->eventHandler_->preSend('func', $args, $currentseqid);
@@ -180,15 +185,16 @@ class ServiceAsyncClient extends \ThriftClientBase implements ServiceAsyncIf {
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: Foo arg2);
+   *        2: string arg2,
+   *        3: Foo arg3);
    */
-  public async function func(\Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType> {
+  public async function func(\Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Service", "func");
-    $currentseqid = $this->sendImpl_func($arg1, $arg2);
+    $currentseqid = $this->sendImpl_func($arg1, $arg2, $arg3);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -213,15 +219,16 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: Foo arg2);
+   *        2: string arg2,
+   *        3: Foo arg3);
    */
-  public async function func(\Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType> {
+  public async function func(\Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Service", "func");
-    $currentseqid = $this->sendImpl_func($arg1, $arg2);
+    $currentseqid = $this->sendImpl_func($arg1, $arg2, $arg3);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -238,8 +245,8 @@ class ServiceClient extends \ThriftClientBase implements ServiceClientIf {
   }
 
   /* send and recv functions */
-  public function send_func(\Adapter2::THackType $arg1, ?Foo $arg2): int {
-    return $this->sendImpl_func($arg1, $arg2);
+  public function send_func(\Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): int {
+    return $this->sendImpl_func($arg1, $arg2, $arg3);
   }
   public function recv_func(?int $expectedsequenceid = null): \Adapter1::THackType {
     return $this->recvImpl_func($expectedsequenceid);
@@ -253,15 +260,16 @@ class ServiceAsyncRpcOptionsClient extends \ThriftClientBase implements ServiceA
    * Original thrift definition:-
    * i32
    *   func(1: string arg1,
-   *        2: Foo arg2);
+   *        2: string arg2,
+   *        3: Foo arg3);
    */
-  public async function func(\RpcOptions $rpc_options, \Adapter2::THackType $arg1, ?Foo $arg2): Awaitable<\Adapter1::THackType> {
+  public async function func(\RpcOptions $rpc_options, \Adapter2::THackType $arg1, string $arg2, ?Foo $arg3): Awaitable<\Adapter1::THackType> {
     $hh_frame_metadata = $this->getHHFrameMetadata();
     if ($hh_frame_metadata !== null) {
       \HH\set_frame_metadata($hh_frame_metadata);
     }
     await $this->asyncHandler_->genBefore("Service", "func");
-    $currentseqid = $this->sendImpl_func($arg1, $arg2);
+    $currentseqid = $this->sendImpl_func($arg1, $arg2, $arg3);
     $channel = $this->channel_;
     $out_transport = $this->output_->getTransport();
     $in_transport = $this->input_->getTransport();
@@ -292,6 +300,10 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
     ),
     2 => shape(
       'var' => 'arg2',
+      'type' => \TType::STRING,
+    ),
+    3 => shape(
+      'var' => 'arg3',
       'type' => \TType::STRUCT,
       'class' => Foo::class,
     ),
@@ -299,24 +311,29 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
   const dict<string, int> FIELDMAP = dict[
     'arg1' => 1,
     'arg2' => 2,
+    'arg3' => 3,
   ];
 
   const type TConstructorShape = shape(
     ?'arg1' => ?\Adapter2::THackType,
-    ?'arg2' => ?Foo,
+    ?'arg2' => ?string,
+    ?'arg3' => ?Foo,
   );
 
   const type TShape = shape(
     'arg1' => \Adapter2::THackType,
-    ?'arg2' => ?Foo::TShape,
+    'arg2' => string,
+    ?'arg3' => ?Foo::TShape,
   );
-  const int STRUCTURAL_ID = 9020910946086583191;
+  const int STRUCTURAL_ID = 4920103480497340778;
   public \Adapter2::THackType $arg1;
-  public ?Foo $arg2;
+  public string $arg2;
+  public ?Foo $arg3;
 
-  public function __construct(?\Adapter2::THackType $arg1 = null, ?Foo $arg2 = null  )[] {
+  public function __construct(?\Adapter2::THackType $arg1 = null, ?string $arg2 = null, ?Foo $arg3 = null  )[] {
     $this->arg1 = $arg1 ?? \Adapter2::fromThrift('');
-    $this->arg2 = $arg2;
+    $this->arg2 = $arg2 ?? '';
+    $this->arg3 = $arg3;
   }
 
   public static function withDefaultValues()[]: this {
@@ -327,6 +344,7 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
     return new static(
       Shapes::idx($shape, 'arg1'),
       Shapes::idx($shape, 'arg2'),
+      Shapes::idx($shape, 'arg3'),
     );
   }
 
@@ -355,6 +373,17 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
               "id" => 2,
               "type" => tmeta_ThriftType::fromShape(
                 shape(
+                  "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                )
+              ),
+              "name" => "arg2",
+            )
+          ),
+          tmeta_ThriftField::fromShape(
+            shape(
+              "id" => 3,
+              "type" => tmeta_ThriftType::fromShape(
+                shape(
                   "t_struct" => tmeta_ThriftStructType::fromShape(
                     shape(
                       "name" => "module.Foo",
@@ -362,7 +391,7 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
                   ),
                 )
               ),
-              "name" => "arg2",
+              "name" => "arg3",
             )
           ),
         ],
@@ -375,6 +404,16 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
     return shape(
       'struct' => dict[],
       'fields' => dict[
+        'arg2' => shape(
+          'field' => dict[
+            'facebook_thrift_annotation_cpp_ExperimentalAdapter' => facebook_thrift_annotation_cpp_ExperimentalAdapter::fromShape(
+              shape(
+                "name" => "my::Adapter2",
+              )
+            ),
+          ],
+          'type' => dict[],
+        ),
       ],
     );
   }
@@ -382,14 +421,16 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
   public static function __fromShape(self::TShape $shape)[]: this {
     return new static(
       $shape['arg1'],
-      Shapes::idx($shape, 'arg2') === null ? null : (Foo::__fromShape($shape['arg2'])),
+      $shape['arg2'],
+      Shapes::idx($shape, 'arg3') === null ? null : (Foo::__fromShape($shape['arg3'])),
     );
   }
 
   public function __toShape()[]: self::TShape {
     return shape(
       'arg1' => $this->arg1,
-      'arg2' => $this->arg2?->__toShape(),
+      'arg2' => $this->arg2,
+      'arg3' => $this->arg3?->__toShape(),
     );
   }
   public function readFromJson(string $jsonText): void {
@@ -403,10 +444,13 @@ class Service_func_args implements \IThriftStruct, \IThriftShapishStruct {
       $this->arg1 = /* HH_FIXME[4110] */ $parsed['arg1'];
     }    
     if (idx($parsed, 'arg2') !== null) {
-      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['arg2']);
+      $this->arg2 = /* HH_FIXME[4110] */ $parsed['arg2'];
+    }    
+    if (idx($parsed, 'arg3') !== null) {
+      $_tmp0 = json_encode(/* HH_FIXME[4110] */ $parsed['arg3']);
       $_tmp1 = Foo::withDefaultValues();
       $_tmp1->readFromJson($_tmp0);
-      $this->arg2 = $_tmp1;
+      $this->arg3 = $_tmp1;
     }    
   }
 
@@ -538,6 +582,17 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                     "id" => 2,
                     "type" => tmeta_ThriftType::fromShape(
                       shape(
+                        "t_primitive" => tmeta_ThriftPrimitiveType::THRIFT_STRING_TYPE,
+                      )
+                    ),
+                    "name" => "arg2",
+                  )
+                ),
+                tmeta_ThriftField::fromShape(
+                  shape(
+                    "id" => 3,
+                    "type" => tmeta_ThriftType::fromShape(
+                      shape(
                         "t_struct" => tmeta_ThriftStructType::fromShape(
                           shape(
                             "name" => "module.Foo",
@@ -545,7 +600,7 @@ class ServiceStaticMetadata implements \IThriftServiceStaticMetadata {
                         ),
                       )
                     ),
-                    "name" => "arg2",
+                    "name" => "arg3",
                   )
                 ),
               ],

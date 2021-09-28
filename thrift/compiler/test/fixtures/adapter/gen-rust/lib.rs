@@ -375,6 +375,7 @@ pub mod types {
 
 #[doc(hidden)]
 pub mod dependencies {
+    pub use cpp as cpp;
 }
 
 pub mod services {
@@ -500,7 +501,8 @@ pub mod client {
         fn func(
             &self,
             arg_arg1: &::std::primitive::str,
-            arg_arg2: &crate::types::Foo,
+            arg_arg2: &::std::primitive::str,
+            arg_arg3: &crate::types::Foo,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>>;
     }
 
@@ -516,7 +518,8 @@ pub mod client {
         fn func(
             &self,
             arg_arg1: &::std::primitive::str,
-            arg_arg2: &crate::types::Foo,
+            arg_arg2: &::std::primitive::str,
+            arg_arg3: &crate::types::Foo,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
             use ::fbthrift::{ProtocolWriter as _};
@@ -540,8 +543,11 @@ pub mod client {
                         p.write_field_begin("arg_arg1", ::fbthrift::TType::String, 1i16);
                         ::fbthrift::Serialize::write(&arg_arg1, p);
                         p.write_field_end();
-                        p.write_field_begin("arg_arg2", ::fbthrift::TType::Struct, 2i16);
+                        p.write_field_begin("arg_arg2", ::fbthrift::TType::String, 2i16);
                         ::fbthrift::Serialize::write(&arg_arg2, p);
+                        p.write_field_end();
+                        p.write_field_begin("arg_arg3", ::fbthrift::TType::Struct, 3i16);
+                        ::fbthrift::Serialize::write(&arg_arg3, p);
                         p.write_field_end();
                         p.write_field_stop();
                         p.write_struct_end();
@@ -641,11 +647,13 @@ pub mod client {
         fn func(
             &self,
             arg_arg1: &::std::primitive::str,
-            arg_arg2: &crate::types::Foo,
+            arg_arg2: &::std::primitive::str,
+            arg_arg3: &crate::types::Foo,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
             self.as_ref().func(
                 arg_arg1,
                 arg_arg2,
+                arg_arg3,
             )
         }
     }
@@ -709,7 +717,8 @@ pub mod server {
         async fn func(
             &self,
             _arg1: ::std::string::String,
-            _arg2: crate::types::Foo,
+            _arg2: ::std::string::String,
+            _arg3: crate::types::Foo,
         ) -> ::std::result::Result<::std::primitive::i32, crate::services::service::FuncExn> {
             ::std::result::Result::Err(crate::services::service::FuncExn::ApplicationException(
                 ::fbthrift::ApplicationException::unimplemented_method(
@@ -730,7 +739,8 @@ pub mod server {
 
     struct Args_Service_func {
         arg1: ::std::string::String,
-        arg2: crate::types::Foo,
+        arg2: ::std::string::String,
+        arg3: crate::types::Foo,
     }
     impl<P: ::fbthrift::ProtocolReader> ::fbthrift::Deserialize<P> for self::Args_Service_func {
         #[inline]
@@ -738,17 +748,20 @@ pub mod server {
         fn read(p: &mut P) -> ::anyhow::Result<Self> {
             static ARGS: &[::fbthrift::Field] = &[
                 ::fbthrift::Field::new("arg1", ::fbthrift::TType::String, 1),
-                ::fbthrift::Field::new("arg2", ::fbthrift::TType::Struct, 2),
+                ::fbthrift::Field::new("arg2", ::fbthrift::TType::String, 2),
+                ::fbthrift::Field::new("arg3", ::fbthrift::TType::Struct, 3),
             ];
             let mut field_arg1 = ::std::option::Option::None;
             let mut field_arg2 = ::std::option::Option::None;
+            let mut field_arg3 = ::std::option::Option::None;
             let _ = p.read_struct_begin(|_| ())?;
             loop {
                 let (_, fty, fid) = p.read_field_begin(|_| (), ARGS)?;
                 match (fty, fid as ::std::primitive::i32) {
                     (::fbthrift::TType::Stop, _) => break,
                     (::fbthrift::TType::String, 1) => field_arg1 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
-                    (::fbthrift::TType::Struct, 2) => field_arg2 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::String, 2) => field_arg2 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (::fbthrift::TType::Struct, 3) => field_arg3 = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
                     (fty, _) => p.skip(fty)?,
                 }
                 p.read_field_end()?;
@@ -757,6 +770,7 @@ pub mod server {
             ::std::result::Result::Ok(Self {
                 arg1: field_arg1.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Service.func", "arg1"))?,
                 arg2: field_arg2.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Service.func", "arg2"))?,
+                arg3: field_arg3.ok_or_else(|| ::anyhow::anyhow!("`{}` missing arg `{}`", "Service.func", "arg3"))?,
             })
         }
     }
@@ -813,6 +827,7 @@ pub mod server {
             let res = self.service.func(
                 _args.arg1,
                 _args.arg2,
+                _args.arg3,
             )
             .instrument(::tracing::info_span!("service_handler", method = "Service.func"))
             .await;
@@ -1094,11 +1109,12 @@ pub mod mock {
         fn func(
             &self,
             arg_arg1: &::std::primitive::str,
-            arg_arg2: &crate::types::Foo,
+            arg_arg2: &::std::primitive::str,
+            arg_arg3: &crate::types::Foo,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError>> + ::std::marker::Send + 'static>> {
             let mut closure = self.func.closure.lock().unwrap();
-            let closure: &mut dyn ::std::ops::FnMut(::std::string::String, crate::types::Foo) -> _ = &mut **closure;
-            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_arg1.to_owned(), arg_arg2.clone())))
+            let closure: &mut dyn ::std::ops::FnMut(::std::string::String, ::std::string::String, crate::types::Foo) -> _ = &mut **closure;
+            ::std::boxed::Box::pin(::futures::future::ready(closure(arg_arg1.to_owned(), arg_arg2.to_owned(), arg_arg3.clone())))
         }
     }
 
@@ -1107,7 +1123,7 @@ pub mod mock {
 
             pub struct func<'mock> {
                 pub(crate) closure: ::std::sync::Mutex<::std::boxed::Box<
-                    dyn ::std::ops::FnMut(::std::string::String, crate::types::Foo) -> ::std::result::Result<
+                    dyn ::std::ops::FnMut(::std::string::String, ::std::string::String, crate::types::Foo) -> ::std::result::Result<
                         ::std::primitive::i32,
                         crate::errors::service::FuncError,
                     > + ::std::marker::Send + ::std::marker::Sync + 'mock,
@@ -1117,7 +1133,7 @@ pub mod mock {
             impl<'mock> func<'mock> {
                 pub fn unimplemented() -> Self {
                     func {
-                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::string::String, _: crate::types::Foo| panic!(
+                        closure: ::std::sync::Mutex::new(::std::boxed::Box::new(|_: ::std::string::String, _: ::std::string::String, _: crate::types::Foo| panic!(
                             "{}::{} is not mocked",
                             "Service",
                             "func",
@@ -1126,17 +1142,17 @@ pub mod mock {
                 }
 
                 pub fn ret(&self, value: ::std::primitive::i32) {
-                    self.mock(move |_: ::std::string::String, _: crate::types::Foo| value.clone());
+                    self.mock(move |_: ::std::string::String, _: ::std::string::String, _: crate::types::Foo| value.clone());
                 }
 
-                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::string::String, crate::types::Foo) -> ::std::primitive::i32 + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock(&self, mut mock: impl ::std::ops::FnMut(::std::string::String, ::std::string::String, crate::types::Foo) -> ::std::primitive::i32 + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
-                    *closure = ::std::boxed::Box::new(move |arg1, arg2| ::std::result::Result::Ok(mock(arg1, arg2)));
+                    *closure = ::std::boxed::Box::new(move |arg1, arg2, arg3| ::std::result::Result::Ok(mock(arg1, arg2, arg3)));
                 }
 
-                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::string::String, crate::types::Foo) -> ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
+                pub fn mock_result(&self, mut mock: impl ::std::ops::FnMut(::std::string::String, ::std::string::String, crate::types::Foo) -> ::std::result::Result<::std::primitive::i32, crate::errors::service::FuncError> + ::std::marker::Send + ::std::marker::Sync + 'mock) {
                     let mut closure = self.closure.lock().unwrap();
-                    *closure = ::std::boxed::Box::new(move |arg1, arg2| mock(arg1, arg2));
+                    *closure = ::std::boxed::Box::new(move |arg1, arg2, arg3| mock(arg1, arg2, arg3));
                 }
 
                 pub fn throw<E>(&self, exception: E)
@@ -1145,7 +1161,7 @@ pub mod mock {
                     E: ::std::clone::Clone + ::std::marker::Send + ::std::marker::Sync + 'mock,
                 {
                     let mut closure = self.closure.lock().unwrap();
-                    *closure = ::std::boxed::Box::new(move |_: ::std::string::String, _: crate::types::Foo| ::std::result::Result::Err(exception.clone().into()));
+                    *closure = ::std::boxed::Box::new(move |_: ::std::string::String, _: ::std::string::String, _: crate::types::Foo| ::std::result::Result::Err(exception.clone().into()));
                 }
             }
         }

@@ -31,13 +31,13 @@ public class Service {
 
   public interface Iface {
 
-    public Integer func(String arg1, Foo arg2) throws TException;
+    public Integer func(String arg1, String arg2, Foo arg3) throws TException;
 
   }
 
   public interface AsyncIface {
 
-    public void func(String arg1, Foo arg2, AsyncMethodCallback resultHandler) throws TException;
+    public void func(String arg1, String arg2, Foo arg3, AsyncMethodCallback resultHandler) throws TException;
 
   }
 
@@ -70,15 +70,15 @@ public class Service {
       return this.oprot_;
     }
 
-    public Integer func(String arg1, Foo arg2) throws TException
+    public Integer func(String arg1, String arg2, Foo arg3) throws TException
     {
       ContextStack ctx = getContextStack("Service.func", null);
       this.setContextStack(ctx);
-      send_func(arg1, arg2);
+      send_func(arg1, arg2, arg3);
       return recv_func();
     }
 
-    public void send_func(String arg1, Foo arg2) throws TException
+    public void send_func(String arg1, String arg2, Foo arg3) throws TException
     {
       ContextStack ctx = this.getContextStack();
       super.preWrite(ctx, "Service.func", null);
@@ -86,6 +86,7 @@ public class Service {
       func_args args = new func_args();
       args.arg1 = arg1;
       args.arg2 = arg2;
+      args.arg3 = arg3;
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
@@ -134,20 +135,22 @@ public class Service {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void func(String arg1, Foo arg2, AsyncMethodCallback resultHandler51) throws TException {
+    public void func(String arg1, String arg2, Foo arg3, AsyncMethodCallback resultHandler51) throws TException {
       checkReady();
-      func_call method_call = new func_call(arg1, arg2, resultHandler51, this, ___protocolFactory, ___transport);
+      func_call method_call = new func_call(arg1, arg2, arg3, resultHandler51, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class func_call extends TAsyncMethodCall {
       private String arg1;
-      private Foo arg2;
-      public func_call(String arg1, Foo arg2, AsyncMethodCallback resultHandler52, TAsyncClient client48, TProtocolFactory protocolFactory49, TNonblockingTransport transport50) throws TException {
+      private String arg2;
+      private Foo arg3;
+      public func_call(String arg1, String arg2, Foo arg3, AsyncMethodCallback resultHandler52, TAsyncClient client48, TProtocolFactory protocolFactory49, TNonblockingTransport transport50) throws TException {
         super(client48, protocolFactory49, transport50, resultHandler52, false);
         this.arg1 = arg1;
         this.arg2 = arg2;
+        this.arg3 = arg3;
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -155,6 +158,7 @@ public class Service {
         func_args args = new func_args();
         args.setArg1(arg1);
         args.setArg2(arg2);
+        args.setArg3(arg3);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -220,7 +224,7 @@ public class Service {
         iprot.readMessageEnd();
         event_handler_.postRead(handler_ctx, "Service.func", args);
         func_result result = new func_result();
-        result.success = iface_.func(args.arg1, args.arg2);
+        result.success = iface_.func(args.arg1, args.arg2, args.arg3);
         event_handler_.preWrite(handler_ctx, "Service.func", result);
         oprot.writeMessageBegin(new TMessage("func", TMessageType.REPLY, seqid));
         result.write(oprot);
@@ -236,12 +240,15 @@ public class Service {
   public static class func_args implements TBase, java.io.Serializable, Cloneable   {
     private static final TStruct STRUCT_DESC = new TStruct("func_args");
     private static final TField ARG1_FIELD_DESC = new TField("arg1", TType.STRING, (short)1);
-    private static final TField ARG2_FIELD_DESC = new TField("arg2", TType.STRUCT, (short)2);
+    private static final TField ARG2_FIELD_DESC = new TField("arg2", TType.STRING, (short)2);
+    private static final TField ARG3_FIELD_DESC = new TField("arg3", TType.STRUCT, (short)3);
 
     public String arg1;
-    public Foo arg2;
+    public String arg2;
+    public Foo arg3;
     public static final int ARG1 = 1;
     public static final int ARG2 = 2;
+    public static final int ARG3 = 3;
 
     // isset id assignments
 
@@ -251,9 +258,11 @@ public class Service {
 
     public func_args(
         String arg1,
-        Foo arg2) {
+        String arg2,
+        Foo arg3) {
       this.arg1 = arg1;
       this.arg2 = arg2;
+      this.arg3 = arg3;
     }
 
     /**
@@ -265,6 +274,9 @@ public class Service {
       }
       if (other.isSetArg2()) {
         this.arg2 = TBaseHelper.deepCopy(other.arg2);
+      }
+      if (other.isSetArg3()) {
+        this.arg3 = TBaseHelper.deepCopy(other.arg3);
       }
     }
 
@@ -296,11 +308,11 @@ public class Service {
       }
     }
 
-    public Foo getArg2() {
+    public String getArg2() {
       return this.arg2;
     }
 
-    public func_args setArg2(Foo arg2) {
+    public func_args setArg2(String arg2) {
       this.arg2 = arg2;
       return this;
     }
@@ -320,6 +332,30 @@ public class Service {
       }
     }
 
+    public Foo getArg3() {
+      return this.arg3;
+    }
+
+    public func_args setArg3(Foo arg3) {
+      this.arg3 = arg3;
+      return this;
+    }
+
+    public void unsetArg3() {
+      this.arg3 = null;
+    }
+
+    // Returns true if field arg3 is set (has been assigned a value) and false otherwise
+    public boolean isSetArg3() {
+      return this.arg3 != null;
+    }
+
+    public void setArg3IsSet(boolean __value) {
+      if (!__value) {
+        this.arg3 = null;
+      }
+    }
+
     @Override
     public boolean equals(Object _that) {
       if (_that == null)
@@ -334,12 +370,14 @@ public class Service {
 
       if (!TBaseHelper.equalsNobinary(this.isSetArg2(), that.isSetArg2(), this.arg2, that.arg2)) { return false; }
 
+      if (!TBaseHelper.equalsNobinary(this.isSetArg3(), that.isSetArg3(), this.arg3, that.arg3)) { return false; }
+
       return true;
     }
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {arg1, arg2});
+      return Arrays.deepHashCode(new Object[] {arg1, arg2, arg3});
     }
 
     // This is required to satisfy the TBase interface, but can't be implemented on immutable struture.
@@ -349,7 +387,8 @@ public class Service {
 
     public static func_args deserialize(TProtocol iprot) throws TException {
       String tmp_arg1 = null;
-      Foo tmp_arg2 = null;
+      String tmp_arg2 = null;
+      Foo tmp_arg3 = null;
       TField __field;
       iprot.readStructBegin();
       while (true)
@@ -368,8 +407,15 @@ public class Service {
             }
             break;
           case ARG2:
+            if (__field.type == TType.STRING) {
+              tmp_arg2 = iprot.readString();
+            } else { 
+              TProtocolUtil.skip(iprot, __field.type);
+            }
+            break;
+          case ARG3:
             if (__field.type == TType.STRUCT) {
-              tmp_arg2 = Foo.deserialize(iprot);
+              tmp_arg3 = Foo.deserialize(iprot);
             } else { 
               TProtocolUtil.skip(iprot, __field.type);
             }
@@ -386,6 +432,7 @@ public class Service {
       _that = new func_args(
         tmp_arg1
         ,tmp_arg2
+        ,tmp_arg3
       );
       _that.validate();
       return _that;
@@ -402,7 +449,12 @@ public class Service {
       }
       if (this.arg2 != null) {
         oprot.writeFieldBegin(ARG2_FIELD_DESC);
-        this.arg2.write(oprot);
+        oprot.writeString(this.arg2);
+        oprot.writeFieldEnd();
+      }
+      if (this.arg3 != null) {
+        oprot.writeFieldBegin(ARG3_FIELD_DESC);
+        this.arg3.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();

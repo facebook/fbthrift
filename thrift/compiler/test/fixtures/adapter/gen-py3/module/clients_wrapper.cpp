@@ -14,7 +14,8 @@ folly::Future<int32_t>
 ServiceClientWrapper::func(
     apache::thrift::RpcOptions& rpcOptions,
     std::string arg_arg1,
-    ::cpp2::Foo arg_arg2) {
+    std::string arg_arg2,
+    ::cpp2::Foo arg_arg3) {
   auto* client = static_cast<::cpp2::ServiceAsyncClient*>(async_client_.get());
   folly::Promise<int32_t> _promise;
   auto _future = _promise.getFuture();
@@ -24,7 +25,8 @@ ServiceClientWrapper::func(
     rpcOptions,
     std::move(callback),
     arg_arg1,
-    arg_arg2
+    arg_arg2,
+    arg_arg3
   );
   return _future;
 }

@@ -49,6 +49,8 @@ from asyncio import get_event_loop as asyncio_get_event_loop, shield as asyncio_
 
 cimport module.types as _module_types
 import module.types as _module_types
+cimport facebook.thrift.annotation.cpp.cpp.types as _facebook_thrift_annotation_cpp_cpp_types
+import facebook.thrift.annotation.cpp.cpp.types as _facebook_thrift_annotation_cpp_cpp_types
 
 cimport module.services_reflection as _services_reflection
 
@@ -89,7 +91,8 @@ cdef class Service(thrift.py3.client.Client):
     def func(
             Service self,
             str arg1 not None,
-            _module_types.Foo arg2 not None,
+            str arg2 not None,
+            _module_types.Foo arg3 not None,
             __RpcOptions rpc_options=None
     ):
         if rpc_options is None:
@@ -102,7 +105,8 @@ cdef class Service(thrift.py3.client.Client):
             self._executor,
             down_cast_ptr[cServiceClientWrapper, cClientWrapper](self._client.get()).func(rpc_options._cpp_obj, 
                 arg1.encode('UTF-8'),
-                deref((<_module_types.Foo>arg2)._cpp_obj),
+                arg2.encode('UTF-8'),
+                deref((<_module_types.Foo>arg3)._cpp_obj),
             ),
             Service_func_callback,
             <PyObject *> __userdata

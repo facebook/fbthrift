@@ -124,9 +124,16 @@ void ServiceMetadata<::cpp2::ServiceSvIf>::gen_func(ThriftMetadata& metadata, Th
   module_Service_func_arg2_2.id_ref() = 2;
   module_Service_func_arg2_2.name_ref() = "arg2";
   module_Service_func_arg2_2.is_optional_ref() = false;
-  auto module_Service_func_arg2_2_type = std::make_unique<Struct< ::cpp2::Foo>>("module.Foo");
+  auto module_Service_func_arg2_2_type = std::make_unique<Primitive>(ThriftPrimitiveType::THRIFT_STRING_TYPE);
   module_Service_func_arg2_2_type->writeAndGenType(*module_Service_func_arg2_2.type_ref(), metadata);
   func.arguments_ref()->push_back(std::move(module_Service_func_arg2_2));
+  ::apache::thrift::metadata::ThriftField module_Service_func_arg3_3;
+  module_Service_func_arg3_3.id_ref() = 3;
+  module_Service_func_arg3_3.name_ref() = "arg3";
+  module_Service_func_arg3_3.is_optional_ref() = false;
+  auto module_Service_func_arg3_3_type = std::make_unique<Struct< ::cpp2::Foo>>("module.Foo");
+  module_Service_func_arg3_3_type->writeAndGenType(*module_Service_func_arg3_3.type_ref(), metadata);
+  func.arguments_ref()->push_back(std::move(module_Service_func_arg3_3));
   func.is_oneway_ref() = false;
   service.functions_ref()->push_back(std::move(func));
 }

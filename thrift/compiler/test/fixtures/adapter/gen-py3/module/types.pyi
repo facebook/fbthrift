@@ -14,6 +14,7 @@ from typing_extensions import Final
 
 import sys
 import itertools
+import facebook.thrift.annotation.cpp.cpp.types as _facebook_thrift_annotation_cpp_cpp_types
 
 
 __property__ = property

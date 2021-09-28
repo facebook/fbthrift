@@ -10,6 +10,8 @@ import (
 	"sync"
 	"fmt"
 	thrift "github.com/facebook/fbthrift/thrift/lib/go/thrift"
+	cpp0 "thrift/annotation/cpp"
+
 )
 
 // (needed to ensure safety because of naive import list construction.)
@@ -19,11 +21,13 @@ var _ = sync.Mutex{}
 var _ = bytes.Equal
 var _ = context.Background
 
+var _ = cpp0.GoUnusedProtection__
 type Service interface {
   // Parameters:
   //  - Arg1
   //  - Arg2
-  Func(arg1 string, arg2 *Foo) (_r int32, err error)
+  //  - Arg3
+  Func(arg1 string, arg2 string, arg3 *Foo) (_r int32, err error)
 }
 
 type ServiceClientInterface interface {
@@ -31,7 +35,8 @@ type ServiceClientInterface interface {
   // Parameters:
   //  - Arg1
   //  - Arg2
-  Func(arg1 string, arg2 *Foo) (_r int32, err error)
+  //  - Arg3
+  Func(arg1 string, arg2 string, arg3 *Foo) (_r int32, err error)
 }
 
 type ServiceClient struct {
@@ -66,10 +71,12 @@ func NewServiceClientProtocol(prot thrift.Protocol) *ServiceClient {
 // Parameters:
 //  - Arg1
 //  - Arg2
-func (p *ServiceClient) Func(arg1 string, arg2 *Foo) (_r int32, err error) {
+//  - Arg3
+func (p *ServiceClient) Func(arg1 string, arg2 string, arg3 *Foo) (_r int32, err error) {
   args := ServiceFuncArgs{
     Arg1 : arg1,
     Arg2 : arg2,
+    Arg3 : arg3,
   }
   err = p.CC.SendMsg("func", &args, thrift.CALL)
   if err != nil { return }
@@ -125,12 +132,14 @@ func NewServiceThreadsafeClientProtocol(prot thrift.Protocol) *ServiceThreadsafe
 // Parameters:
 //  - Arg1
 //  - Arg2
-func (p *ServiceThreadsafeClient) Func(arg1 string, arg2 *Foo) (_r int32, err error) {
+//  - Arg3
+func (p *ServiceThreadsafeClient) Func(arg1 string, arg2 string, arg3 *Foo) (_r int32, err error) {
   p.Mu.Lock()
   defer p.Mu.Unlock()
   args := ServiceFuncArgs{
     Arg1 : arg1,
     Arg2 : arg2,
+    Arg3 : arg3,
   }
   err = p.CC.SendMsg("func", &args, thrift.CALL)
   if err != nil { return }
@@ -170,10 +179,12 @@ func NewServiceChannelClient(channel thrift.RequestChannel) *ServiceChannelClien
 // Parameters:
 //  - Arg1
 //  - Arg2
-func (p *ServiceChannelClient) Func(ctx context.Context, arg1 string, arg2 *Foo) (_r int32, err error) {
+//  - Arg3
+func (p *ServiceChannelClient) Func(ctx context.Context, arg1 string, arg2 string, arg3 *Foo) (_r int32, err error) {
   args := ServiceFuncArgs{
     Arg1 : arg1,
     Arg2 : arg2,
+    Arg3 : arg3,
   }
   var result ServiceFuncResult
   err = p.RequestChannel.Call(ctx, "func", &args, &result)
@@ -213,10 +224,10 @@ func (p *ServiceProcessor) FunctionServiceMap() map[string]string {
 }
 
 func NewServiceProcessor(handler Service) *ServiceProcessor {
-  self14 := &ServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
-  self14.processorMap["func"] = &serviceProcessorFunc{handler:handler}
-  self14.functionServiceMap["func"] = "Service"
-  return self14
+  self15 := &ServiceProcessor{handler:handler, processorMap:make(map[string]thrift.ProcessorFunction), functionServiceMap:make(map[string]string)}
+  self15.processorMap["func"] = &serviceProcessorFunc{handler:handler}
+  self15.functionServiceMap["func"] = "Service"
+  return self15
 }
 
 type serviceProcessorFunc struct {
@@ -262,7 +273,7 @@ func (p *serviceProcessorFunc) Write(seqId int32, result thrift.WritableStruct, 
 func (p *serviceProcessorFunc) Run(argStruct thrift.Struct) (thrift.WritableStruct, thrift.ApplicationException) {
   args := argStruct.(*ServiceFuncArgs)
   var result ServiceFuncResult
-  if retval, err := p.handler.Func(args.Arg1, args.Arg2); err != nil {
+  if retval, err := p.handler.Func(args.Arg1, args.Arg2, args.Arg3); err != nil {
     switch err.(type) {
     default:
       x := thrift.NewApplicationException(thrift.INTERNAL_ERROR, "Internal error processing func: " + err.Error())
@@ -280,15 +291,17 @@ func (p *serviceProcessorFunc) Run(argStruct thrift.Struct) (thrift.WritableStru
 // Attributes:
 //  - Arg1
 //  - Arg2
+//  - Arg3
 type ServiceFuncArgs struct {
   thrift.IRequest
   Arg1 string `thrift:"arg1,1" db:"arg1" json:"arg1"`
-  Arg2 *Foo `thrift:"arg2,2" db:"arg2" json:"arg2"`
+  Arg2 string `thrift:"arg2,2" db:"arg2" json:"arg2"`
+  Arg3 *Foo `thrift:"arg3,3" db:"arg3" json:"arg3"`
 }
 
 func NewServiceFuncArgs() *ServiceFuncArgs {
   return &ServiceFuncArgs{
-    Arg2: NewFoo(),
+    Arg3: NewFoo(),
   }
 }
 
@@ -296,15 +309,19 @@ func NewServiceFuncArgs() *ServiceFuncArgs {
 func (p *ServiceFuncArgs) GetArg1() string {
   return p.Arg1
 }
-var ServiceFuncArgs_Arg2_DEFAULT *Foo
-func (p *ServiceFuncArgs) GetArg2() *Foo {
-  if !p.IsSetArg2() {
-    return ServiceFuncArgs_Arg2_DEFAULT
-  }
-return p.Arg2
+
+func (p *ServiceFuncArgs) GetArg2() string {
+  return p.Arg2
 }
-func (p *ServiceFuncArgs) IsSetArg2() bool {
-  return p != nil && p.Arg2 != nil
+var ServiceFuncArgs_Arg3_DEFAULT *Foo
+func (p *ServiceFuncArgs) GetArg3() *Foo {
+  if !p.IsSetArg3() {
+    return ServiceFuncArgs_Arg3_DEFAULT
+  }
+return p.Arg3
+}
+func (p *ServiceFuncArgs) IsSetArg3() bool {
+  return p != nil && p.Arg3 != nil
 }
 
 type ServiceFuncArgsBuilder struct {
@@ -321,6 +338,7 @@ func (p ServiceFuncArgsBuilder) Emit() *ServiceFuncArgs{
   return &ServiceFuncArgs{
     Arg1: p.obj.Arg1,
     Arg2: p.obj.Arg2,
+    Arg3: p.obj.Arg3,
   }
 }
 
@@ -329,8 +347,13 @@ func (s *ServiceFuncArgsBuilder) Arg1(arg1 string) *ServiceFuncArgsBuilder {
   return s
 }
 
-func (s *ServiceFuncArgsBuilder) Arg2(arg2 *Foo) *ServiceFuncArgsBuilder {
+func (s *ServiceFuncArgsBuilder) Arg2(arg2 string) *ServiceFuncArgsBuilder {
   s.obj.Arg2 = arg2
+  return s
+}
+
+func (s *ServiceFuncArgsBuilder) Arg3(arg3 *Foo) *ServiceFuncArgsBuilder {
+  s.obj.Arg3 = arg3
   return s
 }
 
@@ -339,8 +362,13 @@ func (s *ServiceFuncArgs) SetArg1(arg1 string) *ServiceFuncArgs {
   return s
 }
 
-func (s *ServiceFuncArgs) SetArg2(arg2 *Foo) *ServiceFuncArgs {
+func (s *ServiceFuncArgs) SetArg2(arg2 string) *ServiceFuncArgs {
   s.Arg2 = arg2
+  return s
+}
+
+func (s *ServiceFuncArgs) SetArg3(arg3 *Foo) *ServiceFuncArgs {
+  s.Arg3 = arg3
   return s
 }
 
@@ -363,6 +391,10 @@ func (p *ServiceFuncArgs) Read(iprot thrift.Protocol) error {
       }
     case 2:
       if err := p.ReadField2(iprot); err != nil {
+        return err
+      }
+    case 3:
+      if err := p.ReadField3(iprot); err != nil {
         return err
       }
     default:
@@ -390,9 +422,18 @@ func (p *ServiceFuncArgs)  ReadField1(iprot thrift.Protocol) error {
 }
 
 func (p *ServiceFuncArgs)  ReadField2(iprot thrift.Protocol) error {
-  p.Arg2 = NewFoo()
-  if err := p.Arg2.Read(iprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Arg2), err)
+  if v, err := iprot.ReadString(); err != nil {
+    return thrift.PrependError("error reading field 2: ", err)
+  } else {
+    p.Arg2 = v
+  }
+  return nil
+}
+
+func (p *ServiceFuncArgs)  ReadField3(iprot thrift.Protocol) error {
+  p.Arg3 = NewFoo()
+  if err := p.Arg3.Read(iprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error reading struct: ", p.Arg3), err)
   }
   return nil
 }
@@ -402,6 +443,7 @@ func (p *ServiceFuncArgs) Write(oprot thrift.Protocol) error {
     return thrift.PrependError(fmt.Sprintf("%T write struct begin error: ", p), err) }
   if err := p.writeField1(oprot); err != nil { return err }
   if err := p.writeField2(oprot); err != nil { return err }
+  if err := p.writeField3(oprot); err != nil { return err }
   if err := oprot.WriteFieldStop(); err != nil {
     return thrift.PrependError("write field stop error: ", err) }
   if err := oprot.WriteStructEnd(); err != nil {
@@ -420,13 +462,23 @@ func (p *ServiceFuncArgs) writeField1(oprot thrift.Protocol) (err error) {
 }
 
 func (p *ServiceFuncArgs) writeField2(oprot thrift.Protocol) (err error) {
-  if err := oprot.WriteFieldBegin("arg2", thrift.STRUCT, 2); err != nil {
+  if err := oprot.WriteFieldBegin("arg2", thrift.STRING, 2); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field begin error 2:arg2: ", p), err) }
-  if err := p.Arg2.Write(oprot); err != nil {
-    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Arg2), err)
-  }
+  if err := oprot.WriteString(string(p.Arg2)); err != nil {
+  return thrift.PrependError(fmt.Sprintf("%T.arg2 (2) field write error: ", p), err) }
   if err := oprot.WriteFieldEnd(); err != nil {
     return thrift.PrependError(fmt.Sprintf("%T write field end error 2:arg2: ", p), err) }
+  return err
+}
+
+func (p *ServiceFuncArgs) writeField3(oprot thrift.Protocol) (err error) {
+  if err := oprot.WriteFieldBegin("arg3", thrift.STRUCT, 3); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field begin error 3:arg3: ", p), err) }
+  if err := p.Arg3.Write(oprot); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T error writing struct: ", p.Arg3), err)
+  }
+  if err := oprot.WriteFieldEnd(); err != nil {
+    return thrift.PrependError(fmt.Sprintf("%T write field end error 3:arg3: ", p), err) }
   return err
 }
 
@@ -436,13 +488,14 @@ func (p *ServiceFuncArgs) String() string {
   }
 
   arg1Val := fmt.Sprintf("%v", p.Arg1)
-  var arg2Val string
-  if p.Arg2 == nil {
-    arg2Val = "<nil>"
+  arg2Val := fmt.Sprintf("%v", p.Arg2)
+  var arg3Val string
+  if p.Arg3 == nil {
+    arg3Val = "<nil>"
   } else {
-    arg2Val = fmt.Sprintf("%v", p.Arg2)
+    arg3Val = fmt.Sprintf("%v", p.Arg3)
   }
-  return fmt.Sprintf("ServiceFuncArgs({Arg1:%s Arg2:%s})", arg1Val, arg2Val)
+  return fmt.Sprintf("ServiceFuncArgs({Arg1:%s Arg2:%s Arg3:%s})", arg1Val, arg2Val, arg3Val)
 }
 
 // Attributes:

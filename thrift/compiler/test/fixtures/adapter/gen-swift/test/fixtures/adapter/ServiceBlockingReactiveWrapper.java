@@ -25,10 +25,10 @@ public class ServiceBlockingReactiveWrapper
     }
 
     @java.lang.Override
-    public reactor.core.publisher.Mono<Integer> func(final String arg1, final test.fixtures.adapter.Foo arg2) {
+    public reactor.core.publisher.Mono<Integer> func(final String arg1, final String arg2, final test.fixtures.adapter.Foo arg3) {
         return reactor.core.publisher.Mono.fromSupplier(() -> {
                 try {
-                    return _delegate.func(arg1, arg2);
+                    return _delegate.func(arg1, arg2, arg3);
                 } catch (Throwable _e) {
                     throw reactor.core.Exceptions.propagate(_e);
                 }

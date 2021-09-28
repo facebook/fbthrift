@@ -28,24 +28,26 @@ public class ServiceReactiveBlockingWrapper
   }
 
   @java.lang.Override
-  public int func( final String arg1, final test.fixtures.adapter.Foo arg2) throws org.apache.thrift.TException {
-      return _delegate.func(arg1, arg2).block();
+  public int func( final String arg1, final String arg2, final test.fixtures.adapter.Foo arg3) throws org.apache.thrift.TException {
+      return _delegate.func(arg1, arg2, arg3).block();
   }
 
   @java.lang.Override
   public int func(
         final String arg1,
-        final test.fixtures.adapter.Foo arg2,
+        final String arg2,
+        final test.fixtures.adapter.Foo arg3,
         com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.func(arg1, arg2).block();
+      return _delegate.func(arg1, arg2, arg3).block();
   }
 
   @java.lang.Override
   public com.facebook.thrift.client.ResponseWrapper<Integer> funcWrapper(
     final String arg1,
-    final test.fixtures.adapter.Foo arg2,
+    final String arg2,
+    final test.fixtures.adapter.Foo arg3,
     com.facebook.thrift.client.RpcOptions rpcOptions) throws org.apache.thrift.TException {
-      return _delegate.funcWrapper(arg1, arg2, rpcOptions).block();
+      return _delegate.funcWrapper(arg1, arg2, arg3, rpcOptions).block();
   }
 
 }

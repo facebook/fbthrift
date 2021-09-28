@@ -31,7 +31,8 @@ public class ServiceReactiveClient
   private final Set<Long> _activeInteractions;
 
   private static final TField _func_ARG1_FIELD_DESC = new TField("arg1", TType.STRING, (short)1);
-  private static final TField _func_ARG2_FIELD_DESC = new TField("arg2", TType.STRUCT, (short)2);
+  private static final TField _func_ARG2_FIELD_DESC = new TField("arg2", TType.STRING, (short)2);
+  private static final TField _func_ARG3_FIELD_DESC = new TField("arg3", TType.STRUCT, (short)3);
   private static final java.util.Map<Short, com.facebook.thrift.payload.Reader> _func_EXCEPTION_READERS = java.util.Collections.emptyMap();
 
   static {
@@ -62,7 +63,7 @@ public class ServiceReactiveClient
   @java.lang.Override
   public void dispose() {}
 
-  private com.facebook.thrift.payload.Writer _createfuncWriter(final String arg1, final test.fixtures.adapter.Foo arg2) {
+  private com.facebook.thrift.payload.Writer _createfuncWriter(final String arg1, final String arg2, final test.fixtures.adapter.Foo arg3) {
     return oprot -> {
       try {
         {
@@ -77,7 +78,16 @@ public class ServiceReactiveClient
         {
           oprot.writeFieldBegin(_func_ARG2_FIELD_DESC);
 
-          test.fixtures.adapter.Foo _iter0 = arg2;
+          String _iter0 = arg2;
+
+          oprot.writeString(arg2);
+          oprot.writeFieldEnd();
+        }
+
+        {
+          oprot.writeFieldBegin(_func_ARG3_FIELD_DESC);
+
+          test.fixtures.adapter.Foo _iter0 = arg3;
 
           _iter0.write0(oprot);
           oprot.writeFieldEnd();
@@ -104,7 +114,7 @@ public class ServiceReactiveClient
 
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Integer>> funcWrapper(final String arg1, final test.fixtures.adapter.Foo arg2,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
+  public reactor.core.publisher.Mono<com.facebook.thrift.client.ResponseWrapper<Integer>> funcWrapper(final String arg1, final String arg2, final test.fixtures.adapter.Foo arg3,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
     return _rpcClient
       .flatMap(_rpc -> {
         org.apache.thrift.RequestRpcMetadata _metadata = new org.apache.thrift.RequestRpcMetadata.Builder()
@@ -116,7 +126,7 @@ public class ServiceReactiveClient
 
             com.facebook.thrift.payload.ClientRequestPayload<Integer> _crp =
                 com.facebook.thrift.payload.ClientRequestPayload.create(
-                    _createfuncWriter(arg1, arg2),
+                    _createfuncWriter(arg1, arg2, arg3),
                     _func_READER,
                     _func_EXCEPTION_READERS,
                     _metadata,
@@ -128,13 +138,13 @@ public class ServiceReactiveClient
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Integer> func(final String arg1, final test.fixtures.adapter.Foo arg2,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
-    return funcWrapper(arg1, arg2,  rpcOptions).map(_p -> _p.getData());
+  public reactor.core.publisher.Mono<Integer> func(final String arg1, final String arg2, final test.fixtures.adapter.Foo arg3,  final com.facebook.thrift.client.RpcOptions rpcOptions) {
+    return funcWrapper(arg1, arg2, arg3,  rpcOptions).map(_p -> _p.getData());
   }
 
   @java.lang.Override
-  public reactor.core.publisher.Mono<Integer> func(final String arg1, final test.fixtures.adapter.Foo arg2) {
-    return func(arg1, arg2,  com.facebook.thrift.client.RpcOptions.EMPTY);
+  public reactor.core.publisher.Mono<Integer> func(final String arg1, final String arg2, final test.fixtures.adapter.Foo arg3) {
+    return func(arg1, arg2, arg3,  com.facebook.thrift.client.RpcOptions.EMPTY);
   }
 
 

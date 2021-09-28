@@ -13,6 +13,7 @@ import typing as _typing
 from types import TracebackType
 
 import module.types as _module_types
+import facebook.thrift.annotation.cpp.cpp.types as _facebook_thrift_annotation_cpp_cpp_types
 
 
 _ServiceT = _typing.TypeVar('_ServiceT', bound='Service')
@@ -23,7 +24,8 @@ class Service(thrift.py3.client.Client):
     async def func(
         self,
         arg1: str,
-        arg2: _module_types.Foo,
+        arg2: str,
+        arg3: _module_types.Foo,
         rpc_options: _typing.Optional[thrift.py3.common.RpcOptions]=None
     ) -> int: ...
 

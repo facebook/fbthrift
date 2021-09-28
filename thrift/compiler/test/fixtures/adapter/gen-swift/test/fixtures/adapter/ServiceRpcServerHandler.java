@@ -59,6 +59,16 @@ public class ServiceRpcServerHandler
     
     _readerList.add(oprot -> {
       try {
+        String _r = oprot.readString();
+        return _r;
+
+      } catch (Throwable _e) {
+        throw reactor.core.Exceptions.propagate(_e);
+      }
+    });
+    
+    _readerList.add(oprot -> {
+      try {
         test.fixtures.adapter.Foo _r = test.fixtures.adapter.Foo.read0(oprot);
         return _r;
 
@@ -108,13 +118,14 @@ oprot.writeI32(_iter0);
           java.util.Iterator<Object> _iterator = _data.iterator();
 
           String arg1 = (String) _iterator.next();
-          test.fixtures.adapter.Foo arg2 = (test.fixtures.adapter.Foo) _iterator.next();
+          String arg2 = (String) _iterator.next();
+          test.fixtures.adapter.Foo arg3 = (test.fixtures.adapter.Foo) _iterator.next();
 
           _chain.postRead(_data);
 
           reactor.core.publisher.Mono<com.facebook.thrift.payload.ServerResponsePayload> _internalResponse =
             _delegate
-            .func(arg1, arg2)
+            .func(arg1, arg2, arg3)
             .map(_response -> {
               _chain.preWrite(_response);
               com.facebook.thrift.payload.ServerResponsePayload _serverResponsePayload =

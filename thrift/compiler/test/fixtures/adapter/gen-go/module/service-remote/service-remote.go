@@ -21,7 +21,7 @@ func Usage() {
   fmt.Fprintln(os.Stderr, "Usage of ", os.Args[0], " [-h host:port] [-u url] [-f[ramed]] function [arg1 [arg2...]]:")
   flag.PrintDefaults()
   fmt.Fprintln(os.Stderr, "\nFunctions:")
-  fmt.Fprintln(os.Stderr, "  i32 func(string arg1, Foo arg2)")
+  fmt.Fprintln(os.Stderr, "  i32 func(string arg1, string arg2, Foo arg3)")
   fmt.Fprintln(os.Stderr)
   os.Exit(0)
 }
@@ -117,30 +117,32 @@ func main() {
   
   switch cmd {
   case "func":
-    if flag.NArg() - 1 != 2 {
-      fmt.Fprintln(os.Stderr, "Func requires 2 args")
+    if flag.NArg() - 1 != 3 {
+      fmt.Fprintln(os.Stderr, "Func requires 3 args")
       flag.Usage()
     }
     argvalue0 := flag.Arg(1)
     value0 := argvalue0
-    arg17 := flag.Arg(2)
-    mbTrans18 := thrift.NewMemoryBufferLen(len(arg17))
-    defer mbTrans18.Close()
-    _, err19 := mbTrans18.WriteString(arg17)
-    if err19 != nil {
-      Usage()
-      return
-    }
-    factory20 := thrift.NewSimpleJSONProtocolFactory()
-    jsProt21 := factory20.GetProtocol(mbTrans18)
-    argvalue1 := module.NewFoo()
-    err22 := argvalue1.Read(jsProt21)
-    if err22 != nil {
-      Usage()
-      return
-    }
+    argvalue1 := flag.Arg(2)
     value1 := argvalue1
-    fmt.Print(client.Func(value0, value1))
+    arg19 := flag.Arg(3)
+    mbTrans20 := thrift.NewMemoryBufferLen(len(arg19))
+    defer mbTrans20.Close()
+    _, err21 := mbTrans20.WriteString(arg19)
+    if err21 != nil {
+      Usage()
+      return
+    }
+    factory22 := thrift.NewSimpleJSONProtocolFactory()
+    jsProt23 := factory22.GetProtocol(mbTrans20)
+    argvalue2 := module.NewFoo()
+    err24 := argvalue2.Read(jsProt23)
+    if err24 != nil {
+      Usage()
+      return
+    }
+    value2 := argvalue2
+    fmt.Print(client.Func(value0, value1, value2))
     fmt.Print("\n")
     break
   case "":

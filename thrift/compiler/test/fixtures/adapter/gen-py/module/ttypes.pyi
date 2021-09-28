@@ -14,6 +14,7 @@ from thrift.protocol.TProtocol import TProtocolBase
 
 __property__ = property  # sometimes `property` is used as a field name
 
+import thrift.annotation.cpp.ttypes
 import my
 
 UTF8STRINGS: bool

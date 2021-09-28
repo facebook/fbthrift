@@ -22,7 +22,8 @@ class ServiceWrapper : virtual public ServiceSvIf {
     explicit ServiceWrapper(PyObject *if_object, folly::Executor *exc);
     void async_tm_func(std::unique_ptr<apache::thrift::HandlerCallback<int32_t>> callback
         , std::unique_ptr<std::string> arg1
-        , std::unique_ptr<::cpp2::Foo> arg2
+        , std::unique_ptr<std::string> arg2
+        , std::unique_ptr<::cpp2::Foo> arg3
     ) override;
 };
 

@@ -11,7 +11,7 @@
 #include <thrift/lib/cpp2/gen/service_tcc.h>
 
 namespace cpp2 {
-typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::structure, ::cpp2::Foo*>> Service_func_pargs;
+typedef apache::thrift::ThriftPresult<false, apache::thrift::FieldData<1, ::apache::thrift::type_class::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>*>, apache::thrift::FieldData<2, ::apache::thrift::type_class::string, ::std::string*>, apache::thrift::FieldData<3, ::apache::thrift::type_class::structure, ::cpp2::Foo*>> Service_func_pargs;
 typedef apache::thrift::ThriftPresult<true, apache::thrift::FieldData<0, ::apache::thrift::type_class::integral, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>*>> Service_func_presult;
 template <typename ProtocolIn_, typename ProtocolOut_>
 void ServiceAsyncProcessor::setUpAndProcess_func(apache::thrift::ResponseChannelRequest::UniquePtr req, apache::thrift::SerializedCompressedRequest&& serializedRequest, apache::thrift::Cpp2RequestContext* ctx, folly::EventBase* eb, apache::thrift::concurrency::ThreadManager* tm) {
@@ -35,8 +35,10 @@ void ServiceAsyncProcessor::process_func(apache::thrift::ResponseChannelRequest:
   Service_func_pargs args;
   auto uarg_arg1 = std::make_unique<::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::string>>();
   args.get<0>().value = uarg_arg1.get();
-  auto uarg_arg2 = std::make_unique<::cpp2::Foo>();
+  auto uarg_arg2 = std::make_unique<::std::string>();
   args.get<1>().value = uarg_arg2.get();
+  auto uarg_arg3 = std::make_unique<::cpp2::Foo>();
+  args.get<2>().value = uarg_arg3.get();
   std::unique_ptr<apache::thrift::ContextStack> ctxStack(this->getContextStack(this->getServiceName(), "Service.func", ctx));
   try {
     deserializeRequest<ProtocolIn_>(args, ctx->getMethodName(), std::move(serializedRequest).uncompress(), ctxStack.get());
@@ -48,7 +50,7 @@ void ServiceAsyncProcessor::process_func(apache::thrift::ResponseChannelRequest:
     return;
   }
   auto callback = std::make_unique<apache::thrift::HandlerCallback<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>>(std::move(req), std::move(ctxStack), return_func<ProtocolIn_,ProtocolOut_>, throw_wrapped_func<ProtocolIn_, ProtocolOut_>, ctx->getProtoSeqId(), eb, tm, ctx);
-  iface_->async_tm_func(std::move(callback), std::move(uarg_arg1), std::move(uarg_arg2));
+  iface_->async_tm_func(std::move(callback), std::move(uarg_arg1), std::move(uarg_arg2), std::move(uarg_arg3));
 }
 
 template <class ProtocolIn_, class ProtocolOut_>

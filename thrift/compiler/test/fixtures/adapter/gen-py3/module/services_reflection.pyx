@@ -13,6 +13,7 @@ from thrift.py3.reflection cimport (
 
 import folly.iobuf as _fbthrift_iobuf
 
+cimport facebook.thrift.annotation.cpp.cpp.types as _facebook_thrift_annotation_cpp_cpp_types
 
 cimport module.types as _module_types
 
@@ -36,6 +37,13 @@ cdef __InterfaceSpec get_reflection__Service(bint for_clients):
                 ),
                 __ArgumentSpec.create(
                     name="arg2",
+                    type=str,
+                    kind=__NumberType.NOT_A_NUMBER,
+                    annotations={
+                    },
+                ),
+                __ArgumentSpec.create(
+                    name="arg3",
                     type=_module_types.Foo,
                     kind=__NumberType.NOT_A_NUMBER,
                     annotations={

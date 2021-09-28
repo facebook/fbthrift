@@ -31,13 +31,13 @@ public class Service {
 
   public interface Iface {
 
-    public int func(String arg1, Foo arg2) throws TException;
+    public int func(String arg1, String arg2, Foo arg3) throws TException;
 
   }
 
   public interface AsyncIface {
 
-    public void func(String arg1, Foo arg2, AsyncMethodCallback resultHandler) throws TException;
+    public void func(String arg1, String arg2, Foo arg3, AsyncMethodCallback resultHandler) throws TException;
 
   }
 
@@ -70,15 +70,15 @@ public class Service {
       return this.oprot_;
     }
 
-    public int func(String arg1, Foo arg2) throws TException
+    public int func(String arg1, String arg2, Foo arg3) throws TException
     {
       ContextStack ctx = getContextStack("Service.func", null);
       this.setContextStack(ctx);
-      send_func(arg1, arg2);
+      send_func(arg1, arg2, arg3);
       return recv_func();
     }
 
-    public void send_func(String arg1, Foo arg2) throws TException
+    public void send_func(String arg1, String arg2, Foo arg3) throws TException
     {
       ContextStack ctx = this.getContextStack();
       super.preWrite(ctx, "Service.func", null);
@@ -86,6 +86,7 @@ public class Service {
       func_args args = new func_args();
       args.arg1 = arg1;
       args.arg2 = arg2;
+      args.arg3 = arg3;
       args.write(oprot_);
       oprot_.writeMessageEnd();
       oprot_.getTransport().flush();
@@ -134,20 +135,22 @@ public class Service {
       super(protocolFactory, clientManager, transport);
     }
 
-    public void func(String arg1, Foo arg2, AsyncMethodCallback resultHandler51) throws TException {
+    public void func(String arg1, String arg2, Foo arg3, AsyncMethodCallback resultHandler51) throws TException {
       checkReady();
-      func_call method_call = new func_call(arg1, arg2, resultHandler51, this, ___protocolFactory, ___transport);
+      func_call method_call = new func_call(arg1, arg2, arg3, resultHandler51, this, ___protocolFactory, ___transport);
       this.___currentMethod = method_call;
       ___manager.call(method_call);
     }
 
     public static class func_call extends TAsyncMethodCall {
       private String arg1;
-      private Foo arg2;
-      public func_call(String arg1, Foo arg2, AsyncMethodCallback resultHandler52, TAsyncClient client48, TProtocolFactory protocolFactory49, TNonblockingTransport transport50) throws TException {
+      private String arg2;
+      private Foo arg3;
+      public func_call(String arg1, String arg2, Foo arg3, AsyncMethodCallback resultHandler52, TAsyncClient client48, TProtocolFactory protocolFactory49, TNonblockingTransport transport50) throws TException {
         super(client48, protocolFactory49, transport50, resultHandler52, false);
         this.arg1 = arg1;
         this.arg2 = arg2;
+        this.arg3 = arg3;
       }
 
       public void write_args(TProtocol prot) throws TException {
@@ -155,6 +158,7 @@ public class Service {
         func_args args = new func_args();
         args.setArg1(arg1);
         args.setArg2(arg2);
+        args.setArg3(arg3);
         args.write(prot);
         prot.writeMessageEnd();
       }
@@ -220,7 +224,7 @@ public class Service {
         iprot.readMessageEnd();
         event_handler_.postRead(handler_ctx, "Service.func", args);
         func_result result = new func_result();
-        result.success = iface_.func(args.arg1, args.arg2);
+        result.success = iface_.func(args.arg1, args.arg2, args.arg3);
         result.setSuccessIsSet(true);
         event_handler_.preWrite(handler_ctx, "Service.func", result);
         oprot.writeMessageBegin(new TMessage("func", TMessageType.REPLY, seqid));
@@ -237,12 +241,15 @@ public class Service {
   public static class func_args implements TBase, java.io.Serializable, Cloneable, Comparable<func_args>   {
     private static final TStruct STRUCT_DESC = new TStruct("func_args");
     private static final TField ARG1_FIELD_DESC = new TField("arg1", TType.STRING, (short)1);
-    private static final TField ARG2_FIELD_DESC = new TField("arg2", TType.STRUCT, (short)2);
+    private static final TField ARG2_FIELD_DESC = new TField("arg2", TType.STRING, (short)2);
+    private static final TField ARG3_FIELD_DESC = new TField("arg3", TType.STRUCT, (short)3);
 
     public String arg1;
-    public Foo arg2;
+    public String arg2;
+    public Foo arg3;
     public static final int ARG1 = 1;
     public static final int ARG2 = 2;
+    public static final int ARG3 = 3;
 
     // isset id assignments
 
@@ -253,6 +260,8 @@ public class Service {
       tmpMetaDataMap.put(ARG1, new FieldMetaData("arg1", TFieldRequirementType.DEFAULT, 
           new FieldValueMetaData(TType.STRING)));
       tmpMetaDataMap.put(ARG2, new FieldMetaData("arg2", TFieldRequirementType.DEFAULT, 
+          new FieldValueMetaData(TType.STRING)));
+      tmpMetaDataMap.put(ARG3, new FieldMetaData("arg3", TFieldRequirementType.DEFAULT, 
           new StructMetaData(TType.STRUCT, Foo.class)));
       metaDataMap = Collections.unmodifiableMap(tmpMetaDataMap);
     }
@@ -266,10 +275,12 @@ public class Service {
 
     public func_args(
         String arg1,
-        Foo arg2) {
+        String arg2,
+        Foo arg3) {
       this();
       this.arg1 = arg1;
       this.arg2 = arg2;
+      this.arg3 = arg3;
     }
 
     /**
@@ -281,6 +292,9 @@ public class Service {
       }
       if (other.isSetArg2()) {
         this.arg2 = TBaseHelper.deepCopy(other.arg2);
+      }
+      if (other.isSetArg3()) {
+        this.arg3 = TBaseHelper.deepCopy(other.arg3);
       }
     }
 
@@ -312,11 +326,11 @@ public class Service {
       }
     }
 
-    public Foo getArg2() {
+    public String getArg2() {
       return this.arg2;
     }
 
-    public func_args setArg2(Foo arg2) {
+    public func_args setArg2(String arg2) {
       this.arg2 = arg2;
       return this;
     }
@@ -336,6 +350,30 @@ public class Service {
       }
     }
 
+    public Foo getArg3() {
+      return this.arg3;
+    }
+
+    public func_args setArg3(Foo arg3) {
+      this.arg3 = arg3;
+      return this;
+    }
+
+    public void unsetArg3() {
+      this.arg3 = null;
+    }
+
+    // Returns true if field arg3 is set (has been assigned a value) and false otherwise
+    public boolean isSetArg3() {
+      return this.arg3 != null;
+    }
+
+    public void setArg3IsSet(boolean __value) {
+      if (!__value) {
+        this.arg3 = null;
+      }
+    }
+
     public void setFieldValue(int fieldID, Object __value) {
       switch (fieldID) {
       case ARG1:
@@ -350,7 +388,15 @@ public class Service {
         if (__value == null) {
           unsetArg2();
         } else {
-          setArg2((Foo)__value);
+          setArg2((String)__value);
+        }
+        break;
+
+      case ARG3:
+        if (__value == null) {
+          unsetArg3();
+        } else {
+          setArg3((Foo)__value);
         }
         break;
 
@@ -366,6 +412,9 @@ public class Service {
 
       case ARG2:
         return getArg2();
+
+      case ARG3:
+        return getArg3();
 
       default:
         throw new IllegalArgumentException("Field " + fieldID + " doesn't exist!");
@@ -386,12 +435,14 @@ public class Service {
 
       if (!TBaseHelper.equalsNobinary(this.isSetArg2(), that.isSetArg2(), this.arg2, that.arg2)) { return false; }
 
+      if (!TBaseHelper.equalsNobinary(this.isSetArg3(), that.isSetArg3(), this.arg3, that.arg3)) { return false; }
+
       return true;
     }
 
     @Override
     public int hashCode() {
-      return Arrays.deepHashCode(new Object[] {arg1, arg2});
+      return Arrays.deepHashCode(new Object[] {arg1, arg2, arg3});
     }
 
     @Override
@@ -422,6 +473,14 @@ public class Service {
       if (lastComparison != 0) { 
         return lastComparison;
       }
+      lastComparison = Boolean.valueOf(isSetArg3()).compareTo(other.isSetArg3());
+      if (lastComparison != 0) {
+        return lastComparison;
+      }
+      lastComparison = TBaseHelper.compareTo(arg3, other.arg3);
+      if (lastComparison != 0) { 
+        return lastComparison;
+      }
       return 0;
     }
 
@@ -444,9 +503,16 @@ public class Service {
             }
             break;
           case ARG2:
+            if (__field.type == TType.STRING) {
+              this.arg2 = iprot.readString();
+            } else { 
+              TProtocolUtil.skip(iprot, __field.type);
+            }
+            break;
+          case ARG3:
             if (__field.type == TType.STRUCT) {
-              this.arg2 = new Foo();
-              this.arg2.read(iprot);
+              this.arg3 = new Foo();
+              this.arg3.read(iprot);
             } else { 
               TProtocolUtil.skip(iprot, __field.type);
             }
@@ -475,7 +541,12 @@ public class Service {
       }
       if (this.arg2 != null) {
         oprot.writeFieldBegin(ARG2_FIELD_DESC);
-        this.arg2.write(oprot);
+        oprot.writeString(this.arg2);
+        oprot.writeFieldEnd();
+      }
+      if (this.arg3 != null) {
+        oprot.writeFieldBegin(ARG3_FIELD_DESC);
+        this.arg3.write(oprot);
         oprot.writeFieldEnd();
       }
       oprot.writeFieldStop();
@@ -517,6 +588,17 @@ public class Service {
         sb.append("null");
       } else {
         sb.append(TBaseHelper.toString(this.getArg2(), indent + 1, prettyPrint));
+      }
+      first = false;
+      if (!first) sb.append("," + newLine);
+      sb.append(indentStr);
+      sb.append("arg3");
+      sb.append(space);
+      sb.append(":").append(space);
+      if (this.getArg3() == null) {
+        sb.append("null");
+      } else {
+        sb.append(TBaseHelper.toString(this.getArg3(), indent + 1, prettyPrint));
       }
       first = false;
       sb.append(newLine + TBaseHelper.reduceIndent(indentStr));
