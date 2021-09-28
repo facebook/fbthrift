@@ -321,56 +321,6 @@ class CompilerFailureTest(unittest.TestCase):
         )
         self.assertEqual(ret, -6)
 
-    def test_idempotent_requires_experimental(self):
-        write_file(
-            "foo.thrift",
-            textwrap.dedent(
-                """\
-                service MyService {
-                    idempotent void deleteDataById(1: i64 id);
-                }
-                """
-            ),
-        )
-        ret, out, err = self.run_thrift("foo.thrift")
-        self.assertEqual(ret, 1)
-        self.assertEqual(
-            err,
-            "[FAILURE:foo.thrift:2] 'idempotency' is an experimental feature.\n",
-        )
-        ret, out, err = self.run_thrift(
-            "--allow-experimental-features", "idempotency", "--strict", "foo.thrift"
-        )
-        self.assertEqual(ret, 0, err)
-        # TODO(afuller): Figure out why this is outputing twice. (Are we parsing twice?)
-        self.assertEqual(
-            err,
-            "[WARNING:foo.thrift:2] 'idempotency' is an experimental feature.\n"
-            "[WARNING:foo.thrift:2] 'idempotency' is an experimental feature.\n",
-        )
-
-    def test_readonly_requires_experimental(self):
-        write_file(
-            "foo.thrift",
-            textwrap.dedent(
-                """\
-                service MyService {
-                    readonly string getDataById(1: i64 id);
-                }
-                """
-            ),
-        )
-        ret, out, err = self.run_thrift("foo.thrift")
-        self.assertEqual(ret, 1)
-        self.assertEqual(
-            err,
-            "[FAILURE:foo.thrift:2] 'idempotency' is an experimental feature.\n",
-        )
-        ret, out, err = self.run_thrift(
-            "--allow-experimental-features", "idempotency", "foo.thrift"
-        )
-        self.assertEqual(ret, 0, err)
-
     def test_enum_wrong_default_value(self):
         # tests initializing enum with default value of wrong type
         write_file(

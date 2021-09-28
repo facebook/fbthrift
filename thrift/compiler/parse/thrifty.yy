@@ -883,7 +883,6 @@ Exception:
 ErrorSafety:
   tok_safe
     {
-      driver.require_experimental_feature("error-classification");
       $$ = t_error_safety::safe;
     }
 |
@@ -894,19 +893,16 @@ ErrorSafety:
 ErrorKind:
   tok_transient
     {
-      driver.require_experimental_feature("error-classification");
       $$ = t_error_kind::transient;
     }
 |
   tok_stateful
     {
-      driver.require_experimental_feature("error-classification");
       $$ = t_error_kind::stateful;
     }
 |
   tok_permanent
     {
-      driver.require_experimental_feature("error-classification");
       $$ = t_error_kind::permanent;
     }
 |
@@ -917,13 +913,11 @@ ErrorKind:
 ErrorBlame:
   tok_client
     {
-      driver.require_experimental_feature("error-classification");
       $$ = t_error_blame::client;
     }
 |
   tok_server
     {
-      driver.require_experimental_feature("error-classification");
       $$ = t_error_blame::server;
     }
 |
@@ -1099,12 +1093,10 @@ FunctionQualifier:
     }
 | tok_idempotent
     {
-      driver.require_experimental_feature("idempotency");
       $$ = t_function_qualifier::idempotent;
     }
 | tok_readonly
     {
-      driver.require_experimental_feature("idempotency");
       $$ = t_function_qualifier::read_only;
     }
 |
