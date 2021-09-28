@@ -29,8 +29,12 @@ class Protocol(Enum):
 def serialize_iobuf(strct: sT, protocol: Protocol = Protocol.COMPACT) -> IOBuf: ...
 def serialize(struct: sT, protocol: Protocol = Protocol.COMPACT) -> bytes: ...
 def deserialize_with_length(
-    klass: typing.Type[sT], buf: IOBuf, protocol: Protocol = Protocol.COMPACT
+    klass: typing.Type[sT],
+    buf: typing.Union[bytes, bytearray, IOBuf, memoryview],
+    protocol: Protocol = Protocol.COMPACT,
 ) -> typing.Tuple[sT, int]: ...
 def deserialize(
-    klass: typing.Type[sT], buf: IOBuf, protocol: Protocol = Protocol.COMPACT
+    klass: typing.Type[sT],
+    buf: typing.Union[bytes, bytearray, IOBuf, memoryview],
+    protocol: Protocol = Protocol.COMPACT,
 ) -> sT: ...

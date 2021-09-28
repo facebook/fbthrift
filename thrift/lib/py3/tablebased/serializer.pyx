@@ -12,11 +12,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from cython.view cimport memoryview
+from folly.iobuf cimport IOBuf
 from thrift.py3lite.types cimport Struct, Union
 
 import cython
 
 StructOrUnion = cython.fused_type(Struct, Union)
+Buf = cython.fused_type(IOBuf, bytes, bytearray, memoryview)
 
 def serialize_iobuf(StructOrUnion strct, Protocol protocol=Protocol.COMPACT):
     return strct._serialize(protocol)
@@ -24,14 +27,15 @@ def serialize_iobuf(StructOrUnion strct, Protocol protocol=Protocol.COMPACT):
 def serialize(StructOrUnion struct, Protocol protocol=Protocol.COMPACT):
     return b''.join(serialize_iobuf(struct, protocol))
 
-def deserialize_with_length(klass, folly.iobuf.IOBuf buf not None, Protocol protocol=Protocol.COMPACT):
+def deserialize_with_length(klass, Buf buf, Protocol protocol=Protocol.COMPACT):
     if not issubclass(klass, (Struct, Union)):
         raise TypeError("Only Struct or Union classes can be deserialized")
+    cdef IOBuf iobuf = buf if isinstance(buf, IOBuf) else IOBuf(buf)
     inst = klass.__new__(klass)
     cdef uint32_t length = (<Struct>inst)._deserialize(
-        buf, protocol) if issubclass(klass, Struct) else (
-        <Union>inst)._deserialize(buf, protocol)
+        iobuf, protocol) if issubclass(klass, Struct) else (
+        <Union>inst)._deserialize(iobuf, protocol)
     return inst, length
 
-def deserialize(klass, folly.iobuf.IOBuf buf not None, Protocol protocol=Protocol.COMPACT):
+def deserialize(klass, Buf buf, Protocol protocol=Protocol.COMPACT):
     return deserialize_with_length(klass, buf, protocol)[0]
