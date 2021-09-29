@@ -42,3 +42,7 @@ cdef class Bar_Builder(thrift.py3.builder.StructBuilder):
     cdef public object optionalUnionField
 
 
+cdef class StructWithFieldAdapter_Builder(thrift.py3.builder.StructBuilder):
+    cdef public pint field
+
+

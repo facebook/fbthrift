@@ -100,5 +100,15 @@ const std::array<protocol::TType, 6> TStructDataStorage<::cpp2::Bar>::fields_typ
   TType::T_STRUCT,
 }};
 
+const std::array<folly::StringPiece, 1> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_names = {{
+  "field",
+}};
+const std::array<int16_t, 1> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_ids = {{
+  1,
+}};
+const std::array<protocol::TType, 1> TStructDataStorage<::cpp2::StructWithFieldAdapter>::fields_types = {{
+  TType::T_I32,
+}};
+
 } // namespace thrift
 } // namespace apache

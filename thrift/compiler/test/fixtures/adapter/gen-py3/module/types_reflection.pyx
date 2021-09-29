@@ -274,6 +274,31 @@ cdef __StructSpec get_reflection__Bar():
         ),
     )
     return spec
+cdef __StructSpec get_reflection__StructWithFieldAdapter():
+    cdef _module_types.StructWithFieldAdapter defaults = _module_types.StructWithFieldAdapter.create(
+        constant_shared_ptr[_module_types.cStructWithFieldAdapter](
+            default_inst[_module_types.cStructWithFieldAdapter]()
+        )
+    )
+    cdef __StructSpec spec = __StructSpec.create(
+        name="StructWithFieldAdapter",
+        kind=__StructType.STRUCT,
+        annotations={
+        },
+    )
+    spec.add_field(
+        __FieldSpec.create(
+            id=1,
+            name="field",
+            type=int,
+            kind=__NumberType.I32,
+            qualifier=__Qualifier.UNQUALIFIED,
+            default=None,
+            annotations={
+            },
+        ),
+    )
+    return spec
 cdef __SetSpec get_reflection__Set__string():
     return __SetSpec.create(
         value=str,

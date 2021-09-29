@@ -37,6 +37,11 @@ class StructMetadata<::cpp2::Bar> {
   static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
 };
 template <>
+class StructMetadata<::cpp2::StructWithFieldAdapter> {
+ public:
+  static const ::apache::thrift::metadata::ThriftStruct& gen(ThriftMetadata& metadata);
+};
+template <>
 class ServiceMetadata<::cpp2::ServiceSvIf> {
  public:
   static void gen(ThriftServiceMetadataResponse& response);

@@ -568,6 +568,101 @@ cdef class Bar(thrift.py3.types.Struct):
 
 
 @__cython.auto_pickle(False)
+cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
+    def __init__(StructWithFieldAdapter self, **kwargs):
+        self._cpp_obj = make_shared[cStructWithFieldAdapter]()
+        self._fields_setter = _fbthrift_types_fields.__StructWithFieldAdapter_FieldsSetter.create(self._cpp_obj.get())
+        super().__init__(**kwargs)
+
+    def __call__(StructWithFieldAdapter self, **kwargs):
+        if not kwargs:
+            return self
+        cdef StructWithFieldAdapter __fbthrift_inst = StructWithFieldAdapter.__new__(StructWithFieldAdapter)
+        __fbthrift_inst._cpp_obj = make_shared[cStructWithFieldAdapter](deref(self._cpp_obj))
+        __fbthrift_inst._fields_setter = _fbthrift_types_fields.__StructWithFieldAdapter_FieldsSetter.create(__fbthrift_inst._cpp_obj.get())
+        for __fbthrift_name, _fbthrift_value in kwargs.items():
+            __fbthrift_inst._fbthrift_set_field(__fbthrift_name, _fbthrift_value)
+        return __fbthrift_inst
+
+    cdef void _fbthrift_set_field(self, str name, object value) except *:
+        self._fields_setter.set_field(name.encode("utf-8"), value)
+
+    cdef object _fbthrift_isset(self):
+        return thrift.py3.types._IsSet("StructWithFieldAdapter", {
+          "field": deref(self._cpp_obj).field_ref().has_value(),
+        })
+
+    @staticmethod
+    cdef create(shared_ptr[cStructWithFieldAdapter] cpp_obj):
+        __fbthrift_inst = <StructWithFieldAdapter>StructWithFieldAdapter.__new__(StructWithFieldAdapter)
+        __fbthrift_inst._cpp_obj = cmove(cpp_obj)
+        return __fbthrift_inst
+
+    @property
+    def field(self):
+
+        return deref(self._cpp_obj).field_ref().value()
+
+
+    def __hash__(StructWithFieldAdapter self):
+        return super().__hash__()
+
+    def __repr__(StructWithFieldAdapter self):
+        return super().__repr__()
+
+    def __str__(StructWithFieldAdapter self):
+        return super().__str__()
+
+
+    def __copy__(StructWithFieldAdapter self):
+        cdef shared_ptr[cStructWithFieldAdapter] cpp_obj = make_shared[cStructWithFieldAdapter](
+            deref(self._cpp_obj)
+        )
+        return StructWithFieldAdapter.create(cmove(cpp_obj))
+
+    def __richcmp__(self, other, int op):
+        r = self._fbthrift_cmp_sametype(other, op)
+        return __richcmp[cStructWithFieldAdapter](
+            self._cpp_obj,
+            (<StructWithFieldAdapter>other)._cpp_obj,
+            op,
+        ) if r is None else r
+
+    @staticmethod
+    def __get_reflection__():
+        return _types_reflection.get_reflection__StructWithFieldAdapter()
+
+    @staticmethod
+    def __get_metadata__():
+        cdef __fbthrift_cThriftMetadata meta
+        StructMetadata[cStructWithFieldAdapter].gen(meta)
+        return __MetadataBox.box(cmove(meta))
+
+    @staticmethod
+    def __get_thrift_name__():
+        return "module.StructWithFieldAdapter"
+
+    cdef __cstring_view _fbthrift_get_field_name_by_index(self, size_t idx):
+        return __get_field_name_by_index[cStructWithFieldAdapter](idx)
+
+    def __cinit__(self):
+        self._fbthrift_struct_size = 1
+
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(StructWithFieldAdapter self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cStructWithFieldAdapter](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(StructWithFieldAdapter self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cStructWithFieldAdapter]()
+        with nogil:
+            needed = serializer.cdeserialize[cStructWithFieldAdapter](buf, self._cpp_obj.get(), proto)
+        return needed
+
+
+@__cython.auto_pickle(False)
 cdef class Set__string(thrift.py3.types.Set):
     def __init__(self, items=None):
         if isinstance(items, Set__string):

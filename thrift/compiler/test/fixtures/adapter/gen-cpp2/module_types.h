@@ -32,6 +32,7 @@ struct structListField;
 struct optionalStructListField;
 struct unionField;
 struct optionalUnionField;
+struct field;
 } // namespace tag
 namespace detail {
 #ifndef APACHE_THRIFT_ACCESSOR_intField
@@ -106,6 +107,10 @@ APACHE_THRIFT_DEFINE_ACCESSOR(unionField);
 #define APACHE_THRIFT_ACCESSOR_optionalUnionField
 APACHE_THRIFT_DEFINE_ACCESSOR(optionalUnionField);
 #endif
+#ifndef APACHE_THRIFT_ACCESSOR_field
+#define APACHE_THRIFT_ACCESSOR_field
+APACHE_THRIFT_DEFINE_ACCESSOR(field);
+#endif
 } // namespace detail
 } // namespace thrift
 } // namespace apache
@@ -118,6 +123,7 @@ namespace cpp2 {
 class Foo;
 class Baz;
 class Bar;
+class StructWithFieldAdapter;
 } // cpp2
 // END forward_declare
 // BEGIN typedefs
@@ -1036,6 +1042,100 @@ private:
 
 template <class Protocol_>
 uint32_t Bar::read(Protocol_* iprot) {
+  auto _xferStart = iprot->getCursorPosition();
+  readNoXfer(iprot);
+  return iprot->getCursorPosition() - _xferStart;
+}
+
+} // cpp2
+namespace cpp2 {
+using ::apache::thrift::detail::operator!=;
+using ::apache::thrift::detail::operator>;
+using ::apache::thrift::detail::operator<=;
+using ::apache::thrift::detail::operator>=;
+
+class StructWithFieldAdapter final  {
+ private:
+  friend struct ::apache::thrift::detail::st::struct_private_access;
+
+  //  used by a static_assert in the corresponding source
+  static constexpr bool __fbthrift_cpp2_gen_json = false;
+  static constexpr bool __fbthrift_cpp2_gen_nimble = false;
+  static constexpr bool __fbthrift_cpp2_gen_has_thrift_uri = false;
+
+ public:
+  using __fbthrift_cpp2_type = StructWithFieldAdapter;
+  static constexpr bool __fbthrift_cpp2_is_union =
+    false;
+
+
+ public:
+
+  StructWithFieldAdapter() :
+      field() {
+  }
+  // FragileConstructor for use in initialization lists only.
+  [[deprecated("This constructor is deprecated")]]
+  StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> field__arg);
+
+  StructWithFieldAdapter(StructWithFieldAdapter&&) = default;
+
+  StructWithFieldAdapter(const StructWithFieldAdapter&) = default;
+
+
+  StructWithFieldAdapter& operator=(StructWithFieldAdapter&&) = default;
+
+  StructWithFieldAdapter& operator=(const StructWithFieldAdapter&) = default;
+  void __clear();
+ private:
+  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> field;
+private:
+  apache::thrift::detail::isset_bitset<1> __isset;
+
+ public:
+
+  bool operator==(const StructWithFieldAdapter&) const;
+  bool operator<(const StructWithFieldAdapter&) const;
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&> field_ref() const& {
+    return {this->field, __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field_ref() const&& {
+    return {std::move(this->field), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&> field_ref() & {
+    return {this->field, __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
+  FOLLY_ERASE ::apache::thrift::field_ref<T&&> field_ref() && {
+    return {std::move(this->field), __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
+
+  template <class Protocol_>
+  uint32_t read(Protocol_* iprot);
+  template <class Protocol_>
+  uint32_t serializedSize(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t serializedSizeZC(Protocol_ const* prot_) const;
+  template <class Protocol_>
+  uint32_t write(Protocol_* prot_) const;
+
+ private:
+  template <class Protocol_>
+  void readNoXfer(Protocol_* iprot);
+
+  friend class ::apache::thrift::Cpp2Ops<StructWithFieldAdapter>;
+  friend void swap(StructWithFieldAdapter& a, StructWithFieldAdapter& b);
+};
+
+template <class Protocol_>
+uint32_t StructWithFieldAdapter::read(Protocol_* iprot) {
   auto _xferStart = iprot->getCursorPosition();
   readNoXfer(iprot);
   return iprot->getCursorPosition() - _xferStart;

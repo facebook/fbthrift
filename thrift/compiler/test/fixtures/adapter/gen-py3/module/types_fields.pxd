@@ -77,3 +77,14 @@ cdef class __Bar_FieldsSetter(__StructFieldsSetter):
     cdef void _set_field_4(self, _fbthrift_value) except *
     cdef void _set_field_5(self, _fbthrift_value) except *
 
+
+ctypedef void (*__StructWithFieldAdapter_FieldsSetterFunc)(__StructWithFieldAdapter_FieldsSetter, object) except *
+
+cdef class __StructWithFieldAdapter_FieldsSetter(__StructFieldsSetter):
+    cdef _module_types.cStructWithFieldAdapter* _struct_cpp_obj
+    cdef cumap[__cstring_view, __StructWithFieldAdapter_FieldsSetterFunc] _setters
+
+    @staticmethod
+    cdef __StructWithFieldAdapter_FieldsSetter create(_module_types.cStructWithFieldAdapter* struct_cpp_obj)
+    cdef void _set_field_0(self, _fbthrift_value) except *
+

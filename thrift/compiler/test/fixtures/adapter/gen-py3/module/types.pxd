@@ -135,6 +135,19 @@ cdef extern from "src/gen-cpp2/module_types_custom_protocol.h" namespace "::cpp2
         cBaz optionalUnionField
 
 
+    cdef cppclass cStructWithFieldAdapter "::cpp2::StructWithFieldAdapter":
+        cStructWithFieldAdapter() except +
+        cStructWithFieldAdapter(const cStructWithFieldAdapter&) except +
+        bint operator==(cStructWithFieldAdapter&)
+        bint operator!=(cStructWithFieldAdapter&)
+        bint operator<(cStructWithFieldAdapter&)
+        bint operator>(cStructWithFieldAdapter&)
+        bint operator<=(cStructWithFieldAdapter&)
+        bint operator>=(cStructWithFieldAdapter&)
+        __field_ref[cint32_t] field_ref()
+        cint32_t field
+
+
 
 
 cdef class Foo(thrift.py3.types.Struct):
@@ -186,6 +199,15 @@ cdef class Bar(thrift.py3.types.Struct):
 
     @staticmethod
     cdef create(shared_ptr[cBar])
+
+
+
+cdef class StructWithFieldAdapter(thrift.py3.types.Struct):
+    cdef shared_ptr[cStructWithFieldAdapter] _cpp_obj
+    cdef _fbthrift_types_fields.__StructWithFieldAdapter_FieldsSetter _fields_setter
+
+    @staticmethod
+    cdef create(shared_ptr[cStructWithFieldAdapter])
 
 
 cdef class Set__string(thrift.py3.types.Set):

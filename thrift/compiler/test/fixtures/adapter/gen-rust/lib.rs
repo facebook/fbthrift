@@ -51,6 +51,11 @@ pub mod types {
         pub optionalUnionField: ::std::option::Option<crate::types::Baz>,
     }
 
+    #[derive(Clone, Debug, PartialEq, Eq, PartialOrd, Ord, Hash)]
+    pub struct StructWithFieldAdapter {
+        pub field: ::std::primitive::i32,
+    }
+
 
 
 
@@ -367,6 +372,62 @@ pub mod types {
                 optionalStructListField: field_optionalStructListField,
                 unionField: field_unionField.unwrap_or_default(),
                 optionalUnionField: field_optionalUnionField,
+            })
+        }
+    }
+
+
+    impl ::std::default::Default for self::StructWithFieldAdapter {
+        fn default() -> Self {
+            Self {
+                field: ::std::default::Default::default(),
+            }
+        }
+    }
+
+    unsafe impl ::std::marker::Send for self::StructWithFieldAdapter {}
+    unsafe impl ::std::marker::Sync for self::StructWithFieldAdapter {}
+
+    impl ::fbthrift::GetTType for self::StructWithFieldAdapter {
+        const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
+    }
+
+    impl<P> ::fbthrift::Serialize<P> for self::StructWithFieldAdapter
+    where
+        P: ::fbthrift::ProtocolWriter,
+    {
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("StructWithFieldAdapter");
+            p.write_field_begin("field", ::fbthrift::TType::I32, 1);
+            ::fbthrift::Serialize::write(&self.field, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    impl<P> ::fbthrift::Deserialize<P> for self::StructWithFieldAdapter
+    where
+        P: ::fbthrift::ProtocolReader,
+    {
+        fn read(p: &mut P) -> ::anyhow::Result<Self> {
+            static FIELDS: &[::fbthrift::Field] = &[
+                ::fbthrift::Field::new("field", ::fbthrift::TType::I32, 1),
+            ];
+            let mut field_field = ::std::option::Option::None;
+            let _ = p.read_struct_begin(|_| ())?;
+            loop {
+                let (_, fty, fid) = p.read_field_begin(|_| (), FIELDS)?;
+                match (fty, fid as ::std::primitive::i32) {
+                    (::fbthrift::TType::Stop, _) => break,
+                    (::fbthrift::TType::I32, 1) => field_field = ::std::option::Option::Some(::fbthrift::Deserialize::read(p)?),
+                    (fty, _) => p.skip(fty)?,
+                }
+                p.read_field_end()?;
+            }
+            p.read_struct_end()?;
+            ::std::result::Result::Ok(Self {
+                field: field_field.unwrap_or_default(),
             })
         }
     }

@@ -33,31 +33,31 @@
       }
     },
     "StructWithAdapter" : {
-      "lineno" : 152,
+      "lineno" : 157,
       "type_enum" : "TYPEDEF",
       "spec_args" : "Bar",
       "source_range" : {
         "begin" : {
-          "line" : 148,
+          "line" : 153,
           "column" : 1
         },
         "end" : {
-          "line" : 152,
+          "line" : 157,
           "column" : 20
         }
       }
     },
     "UnionWithAdapter" : {
-      "lineno" : 158,
+      "lineno" : 163,
       "type_enum" : "TYPEDEF",
       "spec_args" : "Baz",
       "source_range" : {
         "begin" : {
-          "line" : 154,
+          "line" : 159,
           "column" : 1
         },
         "end" : {
-          "line" : 158,
+          "line" : 163,
           "column" : 19
         }
       }
@@ -385,11 +385,43 @@
           "column" : 2
         }
       }
+    },
+    "StructWithFieldAdapter" : {
+      "lineno" : 148,
+      "is_exception" : false,
+      "is_union" : false,
+      "fields" : {
+        "field" : {
+          "type_enum" : "I32",
+          "spec_args" : null,
+          "required" : true,
+          "source_range" : {
+            "begin" : {
+              "line" : 149,
+              "column" : 3
+            },
+            "end" : {
+              "line" : 150,
+              "column" : 16
+            }
+          }
+        }
+      },
+      "source_range" : {
+        "begin" : {
+          "line" : 148,
+          "column" : 1
+        },
+        "end" : {
+          "line" : 151,
+          "column" : 2
+        }
+      }
     }
   },
   "services" : {
     "Service" : {
-      "lineno" : 160,
+      "lineno" : 165,
       "functions" : {
         "Service.func" : {
           "return_type" : {
@@ -413,11 +445,11 @@
           "throws" : [],
           "source_range" : {
             "begin" : {
-              "line" : 160,
+              "line" : 165,
               "column" : 18
             },
             "end" : {
-              "line" : 174,
+              "line" : 179,
               "column" : 4
             }
           }
@@ -425,11 +457,11 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 160,
+          "line" : 165,
           "column" : 1
         },
         "end" : {
-          "line" : 175,
+          "line" : 180,
           "column" : 2
         }
       }

@@ -145,6 +145,11 @@ struct Bar {
   ) optionalUnionField;
 }
 
+struct StructWithFieldAdapter {
+  @cpp.ExperimentalAdapter{name = "my::Adapter1"}
+  1: i32 field;
+}
+
 typedef Bar (
   hack.adapter = '\Adapter2',
   cpp.adapter = 'my::Adapter2',

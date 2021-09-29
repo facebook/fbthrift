@@ -86,6 +86,16 @@ void reset_field<::cpp2::Bar>(
 }
 
 template<>
+void reset_field<::cpp2::StructWithFieldAdapter>(
+    ::cpp2::StructWithFieldAdapter& obj, uint16_t index) {
+  switch (index) {
+    case 0:
+      obj.field_ref().copy_from(default_inst<::cpp2::StructWithFieldAdapter>().field_ref());
+      return;
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::Foo>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -108,6 +118,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::cpp2::Bar>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::cpp2::StructWithFieldAdapter>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }
