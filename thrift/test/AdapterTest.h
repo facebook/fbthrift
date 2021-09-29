@@ -21,6 +21,7 @@
 #include <string>
 
 #include <folly/io/IOBuf.h>
+#include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache::thrift::test {
 
@@ -29,7 +30,6 @@ struct Wrapper {
   T value;
 
   bool operator==(const Wrapper& other) const { return value == other.value; }
-
   bool operator<(const Wrapper& other) const { return value < other.value; }
 };
 
@@ -71,6 +71,11 @@ struct String {
   std::string val;
 };
 
+struct StringWithIndirection {
+  FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(val);
+  std::string val;
+};
+
 struct OverloadedAdapter {
   static Num fromThrift(int64_t val) { return Num{val}; }
   static String fromThrift(std::string&& val) { return String{std::move(val)}; }
@@ -89,6 +94,22 @@ struct CustomProtocolAdapter {
 
   static folly::IOBuf toThrift(const Num& num) {
     return folly::IOBuf::wrapBufferAsValue(&num.val, sizeof(int64_t));
+  }
+};
+
+// TODO(afuller): Move this to a shared location.
+template <typename AdaptedT>
+struct IndirectionAdapter {
+  template <typename ThriftT>
+  FOLLY_ERASE static constexpr AdaptedT fromThrift(ThriftT&& value) {
+    AdaptedT adapted;
+    toThrift(adapted) = std::forward<ThriftT>(value);
+    return adapted;
+  }
+  FOLLY_ERASE static constexpr decltype(auto)
+  toThrift(AdaptedT& adapted) noexcept(
+      noexcept(::apache::thrift::apply_indirection(adapted))) {
+    return ::apache::thrift::apply_indirection(adapted);
   }
 };
 

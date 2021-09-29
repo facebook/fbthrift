@@ -17,6 +17,7 @@
 #pragma once
 
 #include <functional>
+#include <type_traits>
 #include <utility>
 
 #include <folly/Traits.h>
@@ -29,14 +30,29 @@ namespace adapt_detail {
 template <typename T>
 const T& cr();
 
-template <typename Adapter, typename AdaptedT, typename NativeT>
-void fromThrift(AdaptedT& adapted, NativeT&& native) {
-  adapted = Adapter::fromThrift(std::forward<NativeT>(native));
-}
+template <typename T>
+using is_mutable_ref = folly::Conjunction<
+    std::is_reference<T>,
+    folly::Negation<std::is_const<std::remove_reference_t<T>>>>;
 
 // The type returned by the adapter for the given thrift type.
 template <typename Adapter, typename ThriftT>
 using adapted_t = decltype(Adapter::fromThrift(std::declval<ThriftT&&>()));
+
+// The type returned by the adapter for the given adapted type.
+template <typename Adapter, typename AdaptedT>
+using thrift_t = decltype(Adapter::toThrift(std::declval<AdaptedT&>()));
+
+// If the adapter exposes access to the standard thrift value
+// from the toThrift method.
+template <typename Adapter, typename AdaptedT, typename = void>
+using has_inplace_toThrift =
+    is_mutable_ref<folly::detected_t<thrift_t, Adapter, AdaptedT>>;
+
+template <typename Adapter, typename AdaptedT, typename ThriftT>
+void fromThrift(AdaptedT& adapted, ThriftT&& value) {
+  adapted = Adapter::fromThrift(std::forward<ThriftT>(value));
+}
 
 // Equal op based on the thrift types.
 template <typename Adapter, typename AdaptedT>

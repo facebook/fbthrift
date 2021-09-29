@@ -32,15 +32,47 @@ struct AssertSameType;
 template <typename T>
 struct AssertSameType<T, T> {};
 
-TEST(AdaptTest, AdaptedT) {
+struct AdapterTest : ::testing::Test {};
+
+TEST_F(AdapterTest, AdaptedT) {
   AssertSameType<adapt_detail::adapted_t<OverloadedAdapter, int64_t>, Num>();
   AssertSameType<
       adapt_detail::adapted_t<OverloadedAdapter, std::string>,
       String>();
 }
 
+TEST_F(AdapterTest, IsMutableRef) {
+  EXPECT_FALSE(adapt_detail::is_mutable_ref<int>::value);
+  EXPECT_FALSE(adapt_detail::is_mutable_ref<const int>::value);
+  EXPECT_FALSE(adapt_detail::is_mutable_ref<const int&>::value);
+  EXPECT_FALSE(adapt_detail::is_mutable_ref<const int&&>::value);
+  EXPECT_TRUE(adapt_detail::is_mutable_ref<int&>::value);
+  EXPECT_TRUE(adapt_detail::is_mutable_ref<int&&>::value);
+  EXPECT_TRUE(adapt_detail::is_mutable_ref<volatile int&&>::value);
+}
+
+TEST_F(AdapterTest, HasInplaceToThrift) {
+  EXPECT_TRUE((adapt_detail::has_inplace_toThrift<
+               IndirectionAdapter<StringWithIndirection>,
+               StringWithIndirection>::value));
+  // Does not return a mutable ref.
+  EXPECT_FALSE(
+      (adapt_detail::has_inplace_toThrift<OverloadedAdapter, Num>::value));
+
+  // Indirection currently defaults to the identity function if illformed.
+  AssertSameType<decltype(apply_indirection(std::declval<int&>())), int&>();
+  EXPECT_TRUE((
+      adapt_detail::has_inplace_toThrift<IndirectionAdapter<int>, int>::value));
+
+  // `IndirectionAdapter<StringWithIndirection>::toThrift(int&&)`
+  // is invalid, so we get false.
+  EXPECT_FALSE((adapt_detail::has_inplace_toThrift<
+                IndirectionAdapter<IndirectionAdapter<StringWithIndirection>>,
+                int>::value));
+}
+
 namespace basic {
-TEST(AdaptTest, StructCodeGen_Empty) {
+TEST_F(AdapterTest, StructCodeGen_Empty) {
   AdaptTestStruct obj0a;
   EXPECT_EQ(obj0a.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0a.custom_ref()->val, 13); // Defined in Num.
@@ -56,7 +88,7 @@ TEST(AdaptTest, StructCodeGen_Empty) {
   EXPECT_EQ(obj0b, obj0a);
 }
 
-TEST(AdaptTest, StructCodeGen_Zero) {
+TEST_F(AdapterTest, StructCodeGen_Zero) {
   AdaptTestStruct obj0a;
   EXPECT_EQ(obj0a.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0a.custom_ref()->val, 13); // Defined in Num.
@@ -73,7 +105,7 @@ TEST(AdaptTest, StructCodeGen_Zero) {
   EXPECT_EQ(obj0b, obj0a);
 }
 
-TEST(AdaptTest, StructCodeGen) {
+TEST_F(AdapterTest, StructCodeGen) {
   AdaptTestStruct obj1a;
   AssertSameType<decltype(*obj1a.delay_ref()), std::chrono::milliseconds&>();
   AssertSameType<decltype(*obj1a.custom_ref()), Num&>();
@@ -130,7 +162,7 @@ TEST(AdaptTest, StructCodeGen) {
 } // namespace basic
 
 namespace terse {
-TEST(AdaptTest, StructCodeGen_Empty_Terse) {
+TEST_F(AdapterTest, StructCodeGen_Empty_Terse) {
   AdaptTestStruct obj0a;
   EXPECT_EQ(obj0a.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0a.custom_ref()->val, 13); // Defined in Num.
@@ -144,7 +176,7 @@ TEST(AdaptTest, StructCodeGen_Empty_Terse) {
   EXPECT_EQ(obj0b, obj0a);
 }
 
-TEST(AdaptTest, StructCodeGen_Zero_Terse) {
+TEST_F(AdapterTest, StructCodeGen_Zero_Terse) {
   AdaptTestStruct obj0a;
   EXPECT_EQ(obj0a.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0a.custom_ref()->val, 13); // Defined in Num.
@@ -159,7 +191,7 @@ TEST(AdaptTest, StructCodeGen_Zero_Terse) {
   EXPECT_EQ(obj0b, obj0a);
 }
 
-TEST(AdaptTest, StructCodeGen_Terse) {
+TEST_F(AdapterTest, StructCodeGen_Terse) {
   AdaptTestStruct obj1a;
   AssertSameType<decltype(*obj1a.delay_ref()), std::chrono::milliseconds&>();
   AssertSameType<decltype(*obj1a.custom_ref()), Num&>();
@@ -202,7 +234,7 @@ TEST(AdaptTest, StructCodeGen_Terse) {
 } // namespace terse
 
 namespace basic {
-TEST(AdaptTest, UnionCodeGen_Empty) {
+TEST_F(AdapterTest, UnionCodeGen_Empty) {
   AdaptTestUnion obj0a;
   EXPECT_EQ(obj0a.getType(), AdaptTestUnion::__EMPTY__);
 
@@ -215,7 +247,7 @@ TEST(AdaptTest, UnionCodeGen_Empty) {
   EXPECT_FALSE(obj0b < obj0a);
 }
 
-TEST(AdaptTest, UnionCodeGen_Delay_Default) {
+TEST_F(AdapterTest, UnionCodeGen_Delay_Default) {
   AdaptTestUnion obj1a;
   EXPECT_EQ(obj1a.delay_ref().ensure(), std::chrono::milliseconds(0));
 
@@ -228,7 +260,7 @@ TEST(AdaptTest, UnionCodeGen_Delay_Default) {
   EXPECT_FALSE(obj1b < obj1a);
 }
 
-TEST(AdaptTest, UnionCodeGen_Delay) {
+TEST_F(AdapterTest, UnionCodeGen_Delay) {
   AdaptTestUnion obj1a;
   EXPECT_EQ(obj1a.delay_ref().ensure(), std::chrono::milliseconds(0));
   obj1a.delay_ref() = std::chrono::milliseconds(7);
@@ -250,7 +282,7 @@ TEST(AdaptTest, UnionCodeGen_Delay) {
   EXPECT_FALSE(obj1a < obj1b);
 }
 
-TEST(AdaptTest, UnionCodeGen_Custom_Default) {
+TEST_F(AdapterTest, UnionCodeGen_Custom_Default) {
   AdaptTestUnion obj2a;
   EXPECT_EQ(obj2a.custom_ref().ensure().val, 13); // Defined in Num.
 
@@ -263,7 +295,7 @@ TEST(AdaptTest, UnionCodeGen_Custom_Default) {
   EXPECT_FALSE(obj2b < obj2a);
 }
 
-TEST(AdaptTest, UnionCodeGen_Custom_Zero) {
+TEST_F(AdapterTest, UnionCodeGen_Custom_Zero) {
   AdaptTestUnion obj2a;
   EXPECT_EQ(obj2a.custom_ref().ensure().val, 13); // Defined in Num.
   obj2a.custom_ref()->val = 0;
@@ -277,7 +309,7 @@ TEST(AdaptTest, UnionCodeGen_Custom_Zero) {
   EXPECT_FALSE(obj2b < obj2a);
 }
 
-TEST(AdaptTest, UnionCodeGen_Custom) {
+TEST_F(AdapterTest, UnionCodeGen_Custom) {
   AdaptTestUnion obj2a;
   EXPECT_EQ(obj2a.custom_ref().ensure().val, 13); // Defined in Num.
   obj2a.custom_ref() = Num{std::numeric_limits<int64_t>::min()};
@@ -299,7 +331,7 @@ TEST(AdaptTest, UnionCodeGen_Custom) {
   EXPECT_FALSE(obj2b < obj2a);
 }
 
-TEST(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
+TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   auto obj = AdaptTemplatedTestStruct();
   EXPECT_EQ(obj.adaptedBoolDefault_ref()->value, true);
   EXPECT_EQ(obj.adaptedByteDefault_ref()->value, 1);
@@ -337,7 +369,7 @@ TEST(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   EXPECT_EQ(obj, objd);
 }
 
-TEST(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
+TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   auto obj = AdaptTemplatedNestedTestStruct();
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedBoolDefault_ref()->value, true);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedByteDefault_ref()->value, 1);
@@ -387,7 +419,7 @@ TEST(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
 } // namespace basic
 
 namespace terse {
-TEST(AdaptTest, UnionCodeGen_Empty_Terse) {
+TEST_F(AdapterTest, UnionCodeGen_Empty_Terse) {
   AdaptTestUnion obj0a;
   EXPECT_EQ(obj0a.getType(), AdaptTestUnion::__EMPTY__);
 
@@ -400,7 +432,7 @@ TEST(AdaptTest, UnionCodeGen_Empty_Terse) {
   EXPECT_FALSE(obj0b < obj0a);
 }
 
-TEST(AdaptTest, UnionCodeGen_Delay_Default_Terse) {
+TEST_F(AdapterTest, UnionCodeGen_Delay_Default_Terse) {
   AdaptTestUnion obj1a;
   EXPECT_EQ(obj1a.delay_ref().ensure(), std::chrono::milliseconds(0));
 
@@ -413,7 +445,7 @@ TEST(AdaptTest, UnionCodeGen_Delay_Default_Terse) {
   EXPECT_FALSE(obj1b < obj1a);
 }
 
-TEST(AdaptTest, UnionCodeGen_Delay_Terse) {
+TEST_F(AdapterTest, UnionCodeGen_Delay_Terse) {
   AdaptTestUnion obj1a;
   EXPECT_EQ(obj1a.delay_ref().ensure(), std::chrono::milliseconds(0));
   obj1a.delay_ref() = std::chrono::milliseconds(7);
@@ -435,7 +467,7 @@ TEST(AdaptTest, UnionCodeGen_Delay_Terse) {
   EXPECT_FALSE(obj1a < obj1b);
 }
 
-TEST(AdaptTest, UnionCodeGen_Custom_Default_Terse) {
+TEST_F(AdapterTest, UnionCodeGen_Custom_Default_Terse) {
   AdaptTestUnion obj2a;
   EXPECT_EQ(obj2a.custom_ref().ensure().val, 13); // Defined in Num.
 
@@ -448,7 +480,7 @@ TEST(AdaptTest, UnionCodeGen_Custom_Default_Terse) {
   EXPECT_FALSE(obj2b < obj2a);
 }
 
-TEST(AdaptTest, UnionCodeGen_Custom_Zero_Terse) {
+TEST_F(AdapterTest, UnionCodeGen_Custom_Zero_Terse) {
   AdaptTestUnion obj2a;
   EXPECT_EQ(obj2a.custom_ref().ensure().val, 13); // Defined in Num.
   obj2a.custom_ref()->val = 0;
@@ -462,7 +494,7 @@ TEST(AdaptTest, UnionCodeGen_Custom_Zero_Terse) {
   EXPECT_FALSE(obj2b < obj2a);
 }
 
-TEST(AdaptTest, UnionCodeGen_Custom_Terse) {
+TEST_F(AdapterTest, UnionCodeGen_Custom_Terse) {
   AdaptTestUnion obj2a;
   EXPECT_EQ(obj2a.custom_ref().ensure().val, 13); // Defined in Num.
   obj2a.custom_ref() = Num{std::numeric_limits<int64_t>::min()};
