@@ -406,6 +406,7 @@ namespace detail {
 namespace ap {
 
 template <
+    ErrorBlame Blame,
     typename Protocol,
     typename PResult,
     typename T,
@@ -619,6 +620,7 @@ template <
 ClientSink<SinkType, FinalResponseType> createSink(
     apache::thrift::detail::ClientSinkBridge::Ptr impl) {
   static apache::thrift::detail::ap::StreamElementEncoderImpl<
+      ErrorBlame::CLIENT,
       ProtocolWriter,
       SinkPResult,
       SinkType,
@@ -1064,7 +1066,11 @@ std::unique_ptr<folly::IOBuf> encode_stream_payload(folly::IOBuf&& _item) {
   return std::make_unique<folly::IOBuf>(std::move(_item));
 }
 
-template <typename Protocol, typename PResult, typename ErrorMapFunc>
+template <
+    ErrorBlame Blame,
+    typename Protocol,
+    typename PResult,
+    typename ErrorMapFunc>
 EncodedStreamError encode_stream_exception(folly::exception_wrapper ew) {
   ErrorMapFunc mapException;
   Protocol prot;
@@ -1084,7 +1090,7 @@ EncodedStreamError encode_stream_exception(folly::exception_wrapper ew) {
     exceptionMetadataBase.what_utf8_ref() = ex.what();
     apache::thrift::detail::serializeExceptionBody(&prot, &ex);
     PayloadAppUnknownExceptionMetdata aue;
-    aue.errorClassification_ref().ensure().blame_ref() = ErrorBlame::SERVER;
+    aue.errorClassification_ref().ensure().blame_ref() = Blame;
     exceptionMetadata.set_appUnknownException(std::move(aue));
   }
 
@@ -1098,6 +1104,7 @@ EncodedStreamError encode_stream_exception(folly::exception_wrapper ew) {
 }
 
 template <
+    ErrorBlame Blame,
     typename Protocol,
     typename PResult,
     typename T,
@@ -1116,7 +1123,7 @@ class StreamElementEncoderImpl final
 
   folly::Try<StreamPayload> operator()(folly::exception_wrapper&& e) override {
     return folly::Try<StreamPayload>(folly::exception_wrapper(
-        encode_stream_exception<Protocol, PResult, ErrorMapFunc>(e)));
+        encode_stream_exception<Blame, Protocol, PResult, ErrorMapFunc>(e)));
   }
 
   folly::Try<StreamPayload> operator()() override {
@@ -1247,7 +1254,13 @@ template <
 ServerStreamFactory encode_server_stream(
     apache::thrift::ServerStream<T>&& stream,
     folly::Executor::KeepAlive<> serverExecutor) {
-  static StreamElementEncoderImpl<Protocol, PResult, T, ErrorMapFunc> encode;
+  static StreamElementEncoderImpl<
+      ErrorBlame::SERVER,
+      Protocol,
+      PResult,
+      T,
+      ErrorMapFunc>
+      encode;
   return stream(std::move(serverExecutor), &encode);
 }
 
@@ -1317,6 +1330,7 @@ apache::thrift::detail::SinkConsumerImpl toSinkConsumerImpl(
       ew = folly::exception_wrapper(std::current_exception());
     }
     co_return folly::Try<StreamPayload>(ap::encode_stream_exception<
+                                        ErrorBlame::SERVER,
                                         ProtocolWriter,
                                         FinalResponsePResult,
                                         ErrorMapFunc>(std::move(ew)));
