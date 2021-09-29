@@ -105,3 +105,137 @@ _fbthrift_py3lite_types.fill_specs(
     MyDataItem,
     MyUnion,
 )
+
+
+class _fbthrift_MyService_ping_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_MyService_getRandomData_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_MyService_sink_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "sink",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            None,  # default value
+        ),
+    )
+
+
+class _fbthrift_MyService_putDataById_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "id",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            None,  # default value
+        ),
+        (
+            2,  # id
+            True,  # isUnqualified
+            "data",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
+    )
+
+
+class _fbthrift_MyService_hasDataById_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "id",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            None,  # default value
+        ),
+    )
+
+
+class _fbthrift_MyService_getDataById_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "id",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            None,  # default value
+        ),
+    )
+
+
+class _fbthrift_MyService_deleteDataById_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "id",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            None,  # default value
+        ),
+    )
+
+
+class _fbthrift_MyService_lobDataById_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "id",  # name
+            _fbthrift_py3lite_types.typeinfo_i64,  # typeinfo
+            None,  # default value
+        ),
+        (
+            2,  # id
+            True,  # isUnqualified
+            "data",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
+    )
+
+
+class _fbthrift_DbMixedStackArguments_getDataByKey0_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "key",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
+    )
+
+
+class _fbthrift_DbMixedStackArguments_getDataByKey1_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            True,  # isUnqualified
+            "key",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+        ),
+    )
+
+
+_fbthrift_py3lite_types.fill_specs(
+    _fbthrift_MyService_ping_args,
+    _fbthrift_MyService_getRandomData_args,
+    _fbthrift_MyService_sink_args,
+    _fbthrift_MyService_putDataById_args,
+    _fbthrift_MyService_hasDataById_args,
+    _fbthrift_MyService_getDataById_args,
+    _fbthrift_MyService_deleteDataById_args,
+    _fbthrift_MyService_lobDataById_args,
+    _fbthrift_DbMixedStackArguments_getDataByKey0_args,
+    _fbthrift_DbMixedStackArguments_getDataByKey1_args,
+)

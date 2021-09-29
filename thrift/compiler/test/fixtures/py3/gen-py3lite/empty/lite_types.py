@@ -6,3 +6,7 @@
 #
 import thrift.py3lite.types as _fbthrift_py3lite_types
 import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
+
+
+_fbthrift_py3lite_types.fill_specs(
+)

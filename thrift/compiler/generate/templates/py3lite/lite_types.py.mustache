@@ -101,3 +101,32 @@ _fbthrift_py3lite_types.fill_specs(
 {{typedef:name}} = {{#typedef:type}}{{> types/PythonType}}{{/typedef:type}}
 {{/program:typedefs}}
 {{/program:typedefs?}}
+{{#program:services?}}
+{{#program:services}}
+{{#service:functions}}
+
+
+class {{> types/function_args_struct_name}}(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        {{#function:args}}
+        (
+            {{field:key}},  # id
+            True,  # isUnqualified
+            "{{field:py_name}}",  # name
+            {{#field:type}}{{^type:base?}}lambda: {{/type:base?}}{{ >types/typeinfo }}{{/field:type}},  # typeinfo
+            None,  # default value
+        ),
+        {{/function:args}}
+    )
+{{/service:functions}}
+{{/program:services}}
+
+
+_fbthrift_py3lite_types.fill_specs(
+    {{#program:services}}
+    {{#service:functions}}
+    {{> types/function_args_struct_name}},
+    {{/service:functions}}
+    {{/program:services}}
+)
+{{/program:services?}}

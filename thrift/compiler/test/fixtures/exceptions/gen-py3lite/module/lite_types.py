@@ -137,3 +137,31 @@ _fbthrift_py3lite_types.fill_specs(
     ExceptionWithPrimitiveField,
     Banal,
 )
+
+
+class _fbthrift_Raiser_doBland_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Raiser_doRaise_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Raiser_get200_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+class _fbthrift_Raiser_get500_args(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
+
+_fbthrift_py3lite_types.fill_specs(
+    _fbthrift_Raiser_doBland_args,
+    _fbthrift_Raiser_doRaise_args,
+    _fbthrift_Raiser_get200_args,
+    _fbthrift_Raiser_get500_args,
+)
