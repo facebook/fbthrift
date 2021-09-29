@@ -2,5 +2,5 @@ mstch_cpp2:py3cpp src/module.thrift
 mstch_cpp2:py3cpp src/empty.thrift
 mstch_py3:py3cpp src/module.thrift
 mstch_py3:py3cpp src/empty.thrift
-mstch_py3lite src/module.thrift
 mstch_py3lite src/empty.thrift
+mstch_py3lite:base_library_package=fbcode.thrift.py3lite src/module.thrift

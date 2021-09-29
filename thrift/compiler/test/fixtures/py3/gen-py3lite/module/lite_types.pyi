@@ -9,8 +9,8 @@ import typing as _typing
 
 import enum
 
-import thrift.py3lite.types as _fbthrift_py3lite_types
-import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
+import fbcode.thrift.py3lite.types as _fbthrift_py3lite_types
+import fbcode.thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 
 
 class AnEnum(enum.Enum):

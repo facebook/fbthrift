@@ -28,8 +28,8 @@ import enum
 import enum
 
 {{/program:unions?}}{{/program:enums?}}
-import thrift.py3lite.types as _fbthrift_py3lite_types
-import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
+import {{program:base_library_package}}.types as _fbthrift_py3lite_types
+import {{program:base_library_package}}.exceptions as _fbthrift_py3lite_exceptions
 {{#program:include_namespaces}}
 {{#has_types?}}
 
