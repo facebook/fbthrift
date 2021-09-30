@@ -2393,7 +2393,6 @@ pub mod services {
 
         impl ::fbthrift::ExceptionInfo for BounceMapExn {
             fn exn_name(&self) -> &'static str {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     BounceMapExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
                     BounceMapExn::ApplicationException(aexn) => aexn.exn_name(),
@@ -2401,7 +2400,6 @@ pub mod services {
             }
 
             fn exn_value(&self) -> String {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     BounceMapExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
                     BounceMapExn::ApplicationException(aexn) => aexn.exn_value(),
@@ -2409,10 +2407,18 @@ pub mod services {
             }
 
             fn exn_is_declared(&self) -> bool {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     BounceMapExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
                     BounceMapExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for BounceMapExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    BounceMapExn::Success(_) => ::fbthrift::ResultType::Return,
+                    BounceMapExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
@@ -2426,6 +2432,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let BounceMapExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("BounceMap");
                 match self {
                     BounceMapExn::Success(inner) => {
@@ -2437,11 +2446,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    BounceMapExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    BounceMapExn::ApplicationException(_aexn) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -2510,7 +2515,6 @@ pub mod services {
 
         impl ::fbthrift::ExceptionInfo for BinaryKeyedMapExn {
             fn exn_name(&self) -> &'static str {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     BinaryKeyedMapExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
                     BinaryKeyedMapExn::ApplicationException(aexn) => aexn.exn_name(),
@@ -2518,7 +2522,6 @@ pub mod services {
             }
 
             fn exn_value(&self) -> String {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     BinaryKeyedMapExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
                     BinaryKeyedMapExn::ApplicationException(aexn) => aexn.exn_value(),
@@ -2526,10 +2529,18 @@ pub mod services {
             }
 
             fn exn_is_declared(&self) -> bool {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     BinaryKeyedMapExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
                     BinaryKeyedMapExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for BinaryKeyedMapExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    BinaryKeyedMapExn::Success(_) => ::fbthrift::ResultType::Return,
+                    BinaryKeyedMapExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
@@ -2543,6 +2554,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let BinaryKeyedMapExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("BinaryKeyedMap");
                 match self {
                     BinaryKeyedMapExn::Success(inner) => {
@@ -2554,11 +2568,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    BinaryKeyedMapExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    BinaryKeyedMapExn::ApplicationException(_aexn) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -3083,43 +3093,35 @@ pub mod server {
         async fn handle_bounce_map<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            req_ctxt: &R,
-            seqid: ::std::primitive::u32,
-        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::some_service::BounceMapExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
-            //use ::fbthrift::BufExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "SomeService";
                 METHOD_NAME = "SomeService.bounce_map";
             }
-            let mut ctx_stack = req_ctxt.get_context_stack(
-                SERVICE_NAME.as_cstr(),
-                METHOD_NAME.as_cstr(),
-            )?;
-            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
             let _args: self::Args_SomeService_bounce_map = ::fbthrift::Deserialize::read(p)?;
-            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
                 protocol: P::PROTOCOL_ID,
                 method_name: METHOD_NAME.as_cstr(),
                 buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
             })?;
-            ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
             let res = self.service.bounce_map(
                 _args.m,
             )
             .instrument(::tracing::info_span!("service_handler", method = "SomeService.bounce_map"))
             .await;
+
             let res = match res {
                 ::std::result::Result::Ok(res) => {
                     ::tracing::info!(method = "SomeService.bounce_map", "success");
                     crate::services::some_service::BounceMapExn::Success(res)
-                }
-                ::std::result::Result::Err(crate::services::some_service::BounceMapExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "SomeService.bounce_map", application_exception = ?aexn);
-                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
-                    return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::some_service::BounceMapExn::Success(_)) => {
                     panic!(
@@ -3127,24 +3129,12 @@ pub mod server {
                         "bounce_map",
                     )
                 }
+                ::std::result::Result::Err(exn) => {
+                    ::tracing::error!(method = "SomeService.bounce_map", exception = ?exn);
+                    exn
+                }
             };
-            let res = ::tracing::trace_span!("serialize_result", method = "SomeService.bounce_map").in_scope(|| -> ::anyhow::Result<_> {
-                ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
-                let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "bounce_map",
-                    ::fbthrift::MessageType::Reply,
-                    seqid,
-                    |p| ::fbthrift::Serialize::write(&res, p),
-                ));
-                ::fbthrift::ContextStack::on_write_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
-                    protocol: P::PROTOCOL_ID,
-                    method_name: METHOD_NAME.as_cstr(),
-                    buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
-                })?;
-                ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
-                Ok(res)
-            })?;
+
             ::std::result::Result::Ok(res)
         }
 
@@ -3152,43 +3142,35 @@ pub mod server {
         async fn handle_binary_keyed_map<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            req_ctxt: &R,
-            seqid: ::std::primitive::u32,
-        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<crate::services::some_service::BinaryKeyedMapExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
-            //use ::fbthrift::BufExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "SomeService";
                 METHOD_NAME = "SomeService.binary_keyed_map";
             }
-            let mut ctx_stack = req_ctxt.get_context_stack(
-                SERVICE_NAME.as_cstr(),
-                METHOD_NAME.as_cstr(),
-            )?;
-            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
             let _args: self::Args_SomeService_binary_keyed_map = ::fbthrift::Deserialize::read(p)?;
-            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
                 protocol: P::PROTOCOL_ID,
                 method_name: METHOD_NAME.as_cstr(),
                 buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
             })?;
-            ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
             let res = self.service.binary_keyed_map(
                 _args.r,
             )
             .instrument(::tracing::info_span!("service_handler", method = "SomeService.binary_keyed_map"))
             .await;
+
             let res = match res {
                 ::std::result::Result::Ok(res) => {
                     ::tracing::info!(method = "SomeService.binary_keyed_map", "success");
                     crate::services::some_service::BinaryKeyedMapExn::Success(res)
-                }
-                ::std::result::Result::Err(crate::services::some_service::BinaryKeyedMapExn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "SomeService.binary_keyed_map", application_exception = ?aexn);
-                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
-                    return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err(crate::services::some_service::BinaryKeyedMapExn::Success(_)) => {
                     panic!(
@@ -3196,24 +3178,12 @@ pub mod server {
                         "binary_keyed_map",
                     )
                 }
+                ::std::result::Result::Err(exn) => {
+                    ::tracing::error!(method = "SomeService.binary_keyed_map", exception = ?exn);
+                    exn
+                }
             };
-            let res = ::tracing::trace_span!("serialize_result", method = "SomeService.binary_keyed_map").in_scope(|| -> ::anyhow::Result<_> {
-                ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
-                let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "binary_keyed_map",
-                    ::fbthrift::MessageType::Reply,
-                    seqid,
-                    |p| ::fbthrift::Serialize::write(&res, p),
-                ));
-                ::fbthrift::ContextStack::on_write_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
-                    protocol: P::PROTOCOL_ID,
-                    method_name: METHOD_NAME.as_cstr(),
-                    buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
-                })?;
-                ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
-                Ok(res)
-            })?;
+
             ::std::result::Result::Ok(res)
         }
     }
@@ -3247,8 +3217,48 @@ pub mod server {
             _seqid: ::std::primitive::u32,
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {
-                0usize => self.handle_bounce_map(_p, _r, _seqid).await,
-                1usize => self.handle_binary_keyed_map(_p, _r, _seqid).await,
+                0usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "SomeService";
+                        METHOD_NAME = "SomeService.bounce_map";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_bounce_map(_p, _r, &mut ctx_stack).await?;
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "bounce_map",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        _r,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    Ok(env)
+                }
+                1usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "SomeService";
+                        METHOD_NAME = "SomeService.binary_keyed_map";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_binary_keyed_map(_p, _r, &mut ctx_stack).await?;
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "binary_keyed_map",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        _r,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    Ok(env)
+                }
                 bad => panic!(
                     "{}: unexpected method idx {}",
                     "SomeServiceProcessor",
@@ -3294,26 +3304,10 @@ pub mod server {
                     return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await?;
             p.read_message_end()?;
-            match res {
-                ::std::result::Result::Ok(bytes) => ::std::result::Result::Ok(bytes),
-                ::std::result::Result::Err(err) => match err.downcast_ref::<::fbthrift::ProtocolError>() {
-                    ::std::option::Option::Some(::fbthrift::ProtocolError::ApplicationException(ae)) => {
-                        let res = ::fbthrift::serialize!(P, |p| {
-                            ::fbthrift::protocol::write_message(
-                                p,
-                                "SomeServiceProcessor",
-                                ::fbthrift::MessageType::Exception,
-                                seqid,
-                                |p| ::fbthrift::Serialize::write(&ae, p),
-                            )
-                        });
-                        ::std::result::Result::Ok(res)
-                    }
-                    _ => ::std::result::Result::Err(err),
-                },
-            }
+
+            Ok(res)
         }
     }
 

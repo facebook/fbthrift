@@ -15,12 +15,14 @@
  */
 
 use crate::application_exception::{ApplicationException, ApplicationExceptionErrorCode};
+use crate::context_stack::ContextStack;
 use crate::framing::{Framing, FramingDecoded, FramingEncodedFinal};
-use crate::protocol::{self, Protocol, ProtocolDecoded, ProtocolEncodedFinal, ProtocolReader};
-use crate::serialize::Serialize;
-use crate::thrift_protocol::MessageType;
+use crate::protocol::{Protocol, ProtocolDecoded, ProtocolEncodedFinal, ProtocolReader};
+use crate::request_context::RequestContext;
 use anyhow::Error;
 use async_trait::async_trait;
+use const_cstr::const_cstr;
+use std::ffi::{CStr, CString};
 use std::marker::PhantomData;
 
 #[async_trait]
@@ -139,7 +141,8 @@ impl<P, R> ThriftService<P::Frame> for NullServiceProcessor<P, R>
 where
     P: Protocol + Send + Sync + 'static,
     P::Frame: Send + 'static,
-    R: Send + Sync + 'static,
+    R: RequestContext<Name = CStr> + Send + Sync + 'static,
+    R::ContextStack: ContextStack<Name = CStr>,
 {
     type Handler = ();
     type RequestContext = R;
@@ -147,23 +150,38 @@ where
     async fn call(
         &self,
         req: ProtocolDecoded<P>,
-        _ctxt: &R,
+        rctxt: &R,
     ) -> Result<ProtocolEncodedFinal<P>, Error> {
         let mut p = P::deserializer(req);
 
+        const SERVICE_NAME: &str = "NullService";
+
+        const_cstr! {
+            C_SERVICE_NAME = "NullService";
+            C_METHOD_NAME = "nullmethod";
+        }
+
         let ((name, ae), _, seqid) = p.read_message_begin(|name| {
             let name = String::from_utf8_lossy(name).into_owned();
-            let ae = ApplicationException::unimplemented_method("NullService", &name);
+            let ae = ApplicationException::unimplemented_method(SERVICE_NAME, &name);
             (name, ae)
         })?;
 
-        let res = serialize!(P, |p| protocol::write_message(
-            p,
+        let method_name =
+            CString::new(format!("{}:{}", SERVICE_NAME, name)).expect("bad method name");
+
+        // get_context_stack needs static lifetime for service and method names
+        let mut ctx_stack =
+            rctxt.get_context_stack(C_SERVICE_NAME.as_cstr(), C_METHOD_NAME.as_cstr())?;
+
+        let res = crate::help::serialize_result_envelope::<P, R, _>(
             &name,
-            MessageType::Exception,
+            &*method_name,
             seqid,
-            |p| ae.write(p),
-        ));
+            rctxt,
+            &mut ctx_stack,
+            ae,
+        )?;
 
         Ok(res)
     }

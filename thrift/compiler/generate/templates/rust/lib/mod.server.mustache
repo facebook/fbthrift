@@ -152,32 +152,28 @@
         async fn handle_{{function:name}}<'a>(
             &'a self,
             p: &'a mut P::Deserializer,
-            req_ctxt: &R,
-            seqid: ::std::primitive::u32,
-        ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
+            _req_ctxt: &R,
+            ctx_stack: &mut R::ContextStack,
+        ) -> ::anyhow::Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
-            //use ::fbthrift::BufExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "{{service:name}}";
                 METHOD_NAME = "{{service:name}}.{{function:name}}";
             }
-            let mut ctx_stack = req_ctxt.get_context_stack(
-                SERVICE_NAME.as_cstr(),
-                METHOD_NAME.as_cstr(),
-            )?;
-            ::fbthrift::ContextStack::pre_read(&mut ctx_stack)?;
+            ::fbthrift::ContextStack::pre_read(ctx_stack)?;
             let _args: self::Args_{{service:name}}_{{function:name}} = ::fbthrift::Deserialize::read(p)?;
-            ::fbthrift::ContextStack::on_read_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
+            ::fbthrift::ContextStack::on_read_data(ctx_stack, &::fbthrift::SerializedMessage {
                 protocol: P::PROTOCOL_ID,
                 method_name: METHOD_NAME.as_cstr(),
                 buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
             })?;
-            ::fbthrift::ContextStack::post_read(&mut ctx_stack, 0)?;
+            ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
+
             let res = self.service.{{function:rust_name}}({{!
                 }}{{#service:requestContext?}}
-                req_ctxt,{{!
+                _req_ctxt,{{!
                 }}{{/service:requestContext?}}{{!
                 }}{{#function:args}}
                 _args.{{field:rust_name}},{{!
@@ -185,15 +181,11 @@
             )
             .instrument(::tracing::info_span!("service_handler", method = "{{service:name}}.{{function:name}}"))
             .await;
+
             let res = match res {
                 ::std::result::Result::Ok(res) => {
                     ::tracing::info!(method = "{{service:name}}.{{function:name}}", "success");
                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res)
-                }
-                ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)) => {
-                    ::tracing::error!(method = "{{service:name}}.{{function:name}}", application_exception = ?aexn);
-                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&aexn), &format!("{:?}", aexn))?;
-                    return ::std::result::Result::Err(aexn.into())
                 }
                 ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(_)) => {
                     panic!(
@@ -201,31 +193,12 @@
                         "{{function:rust_name}}",
                     )
                 }
-                {{#function:exceptions?}}
                 ::std::result::Result::Err(exn) => {
                     ::tracing::error!(method = "{{service:name}}.{{function:name}}", exception = ?exn);
-                    req_ctxt.set_user_exception_header(::fbthrift::help::type_name_of_val(&exn), &format!("{:?}", exn))?;
                     exn
                 }
-                {{/function:exceptions?}}
             };
-            let res = ::tracing::trace_span!("serialize_result", method = "{{service:name}}.{{function:name}}").in_scope(|| -> ::anyhow::Result<_> {
-                ::fbthrift::ContextStack::pre_write(&mut ctx_stack)?;
-                let res = ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "{{function:name}}",
-                    ::fbthrift::MessageType::Reply,
-                    seqid,
-                    |p| ::fbthrift::Serialize::write(&res, p),
-                ));
-                ::fbthrift::ContextStack::on_write_data(&mut ctx_stack, &::fbthrift::SerializedMessage {
-                    protocol: P::PROTOCOL_ID,
-                    method_name: METHOD_NAME.as_cstr(),
-                    buffer: ::std::marker::PhantomData, // FIXME P::into_buffer(p).reset(),
-                })?;
-                ::fbthrift::ContextStack::post_write(&mut ctx_stack, 0)?;
-                Ok(res)
-            })?;
+
             ::std::result::Result::Ok(res)
         }{{!
         }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
@@ -272,7 +245,27 @@
         ) -> ::anyhow::Result<::fbthrift::ProtocolEncodedFinal<P>> {
             match idx {{>lib/block}}{{!
                 }}{{#service:rustFunctions}}{{^function:starts_interaction?}}{{^function:returns_streams?}}
-                {{function:index}}usize => self.handle_{{function:name}}(_p, _r, _seqid).await,{{!
+                {{function:index}}usize => {
+                    use const_cstr::const_cstr;
+                    const_cstr! {
+                        SERVICE_NAME = "{{service:name}}";
+                        METHOD_NAME = "{{service:name}}.{{function:name}}";
+                    }
+                    let mut ctx_stack = _r.get_context_stack(
+                        SERVICE_NAME.as_cstr(),
+                        METHOD_NAME.as_cstr(),
+                    )?;
+                    let res = self.handle_{{function:name}}(_p, _r, &mut ctx_stack).await?;
+                    let env = ::fbthrift::help::serialize_result_envelope::<P, R, _>(
+                        "{{function:name}}",
+                        METHOD_NAME.as_cstr(),
+                        _seqid,
+                        _r,
+                        &mut ctx_stack,
+                        res
+                    )?;
+                    Ok(env)
+                }{{!
                 }}{{/function:returns_streams?}}{{/function:starts_interaction?}}{{/service:rustFunctions}}
                 bad => panic!(
                     "{}: unexpected method idx {}",
@@ -329,26 +322,10 @@
                     return self.supa.call(cur, req_ctxt).await;
                 }
             };
-            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await;
+            let res = self.handle_method(idx, &mut p, req_ctxt, seqid).await?;
             p.read_message_end()?;
-            match res {
-                ::std::result::Result::Ok(bytes) => ::std::result::Result::Ok(bytes),
-                ::std::result::Result::Err(err) => match err.downcast_ref::<::fbthrift::ProtocolError>() {
-                    ::std::option::Option::Some(::fbthrift::ProtocolError::ApplicationException(ae)) => {
-                        let res = ::fbthrift::serialize!(P, |p| {
-                            ::fbthrift::protocol::write_message(
-                                p,
-                                "{{service:name}}Processor",
-                                ::fbthrift::MessageType::Exception,
-                                seqid,
-                                |p| ::fbthrift::Serialize::write(&ae, p),
-                            )
-                        });
-                        ::std::result::Result::Ok(res)
-                    }
-                    _ => ::std::result::Result::Err(err),
-                },
-            }
+
+            Ok(res)
         }
     }
 

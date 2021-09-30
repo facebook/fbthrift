@@ -14,12 +14,12 @@
  * limitations under the License.
  */
 
-use crate::context_stack::DummyContextStack;
+use crate::context_stack::{ContextStack, DummyContextStack};
 use anyhow::Error;
 use std::marker::PhantomData;
 
 pub trait RequestContext {
-    type ContextStack;
+    type ContextStack: ContextStack;
     type Name: ?Sized;
 
     // This should return a ContextStack with a lifetime bounded by &self and the

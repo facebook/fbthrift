@@ -379,7 +379,6 @@ pub mod services {
 
         impl ::fbthrift::ExceptionInfo for PingExn {
             fn exn_name(&self) -> &'static str {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     PingExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
                     PingExn::ApplicationException(aexn) => aexn.exn_name(),
@@ -387,7 +386,6 @@ pub mod services {
             }
 
             fn exn_value(&self) -> String {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     PingExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
                     PingExn::ApplicationException(aexn) => aexn.exn_value(),
@@ -395,10 +393,18 @@ pub mod services {
             }
 
             fn exn_is_declared(&self) -> bool {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     PingExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
                     PingExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for PingExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    PingExn::Success(_) => ::fbthrift::ResultType::Return,
+                    PingExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
@@ -412,6 +418,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let PingExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("Ping");
                 match self {
                     PingExn::Success(inner) => {
@@ -423,11 +432,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    PingExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    PingExn::ApplicationException(_aexn) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -490,7 +495,6 @@ pub mod services {
 
         impl ::fbthrift::ExceptionInfo for GetRandomDataExn {
             fn exn_name(&self) -> &'static str {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     GetRandomDataExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
                     GetRandomDataExn::ApplicationException(aexn) => aexn.exn_name(),
@@ -498,7 +502,6 @@ pub mod services {
             }
 
             fn exn_value(&self) -> String {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     GetRandomDataExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
                     GetRandomDataExn::ApplicationException(aexn) => aexn.exn_value(),
@@ -506,10 +509,18 @@ pub mod services {
             }
 
             fn exn_is_declared(&self) -> bool {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     GetRandomDataExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
                     GetRandomDataExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for GetRandomDataExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    GetRandomDataExn::Success(_) => ::fbthrift::ResultType::Return,
+                    GetRandomDataExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
@@ -523,6 +534,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let GetRandomDataExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("GetRandomData");
                 match self {
                     GetRandomDataExn::Success(inner) => {
@@ -534,11 +548,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    GetRandomDataExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    GetRandomDataExn::ApplicationException(_aexn) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -607,7 +617,6 @@ pub mod services {
 
         impl ::fbthrift::ExceptionInfo for HasDataByIdExn {
             fn exn_name(&self) -> &'static str {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     HasDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
                     HasDataByIdExn::ApplicationException(aexn) => aexn.exn_name(),
@@ -615,7 +624,6 @@ pub mod services {
             }
 
             fn exn_value(&self) -> String {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     HasDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
                     HasDataByIdExn::ApplicationException(aexn) => aexn.exn_value(),
@@ -623,10 +631,18 @@ pub mod services {
             }
 
             fn exn_is_declared(&self) -> bool {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     HasDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
                     HasDataByIdExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for HasDataByIdExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    HasDataByIdExn::Success(_) => ::fbthrift::ResultType::Return,
+                    HasDataByIdExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
@@ -640,6 +656,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let HasDataByIdExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("HasDataById");
                 match self {
                     HasDataByIdExn::Success(inner) => {
@@ -651,11 +670,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    HasDataByIdExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    HasDataByIdExn::ApplicationException(_aexn) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -724,7 +739,6 @@ pub mod services {
 
         impl ::fbthrift::ExceptionInfo for GetDataByIdExn {
             fn exn_name(&self) -> &'static str {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     GetDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
                     GetDataByIdExn::ApplicationException(aexn) => aexn.exn_name(),
@@ -732,7 +746,6 @@ pub mod services {
             }
 
             fn exn_value(&self) -> String {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     GetDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
                     GetDataByIdExn::ApplicationException(aexn) => aexn.exn_value(),
@@ -740,10 +753,18 @@ pub mod services {
             }
 
             fn exn_is_declared(&self) -> bool {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     GetDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
                     GetDataByIdExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for GetDataByIdExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    GetDataByIdExn::Success(_) => ::fbthrift::ResultType::Return,
+                    GetDataByIdExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
@@ -757,6 +778,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let GetDataByIdExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("GetDataById");
                 match self {
                     GetDataByIdExn::Success(inner) => {
@@ -768,11 +792,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    GetDataByIdExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    GetDataByIdExn::ApplicationException(_aexn) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -841,7 +861,6 @@ pub mod services {
 
         impl ::fbthrift::ExceptionInfo for PutDataByIdExn {
             fn exn_name(&self) -> &'static str {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     PutDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
                     PutDataByIdExn::ApplicationException(aexn) => aexn.exn_name(),
@@ -849,7 +868,6 @@ pub mod services {
             }
 
             fn exn_value(&self) -> String {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     PutDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
                     PutDataByIdExn::ApplicationException(aexn) => aexn.exn_value(),
@@ -857,10 +875,18 @@ pub mod services {
             }
 
             fn exn_is_declared(&self) -> bool {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     PutDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
                     PutDataByIdExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for PutDataByIdExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    PutDataByIdExn::Success(_) => ::fbthrift::ResultType::Return,
+                    PutDataByIdExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
@@ -874,6 +900,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let PutDataByIdExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("PutDataById");
                 match self {
                     PutDataByIdExn::Success(inner) => {
@@ -885,11 +914,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    PutDataByIdExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    PutDataByIdExn::ApplicationException(_aexn) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();
@@ -952,7 +977,6 @@ pub mod services {
 
         impl ::fbthrift::ExceptionInfo for LobDataByIdExn {
             fn exn_name(&self) -> &'static str {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     LobDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
                     LobDataByIdExn::ApplicationException(aexn) => aexn.exn_name(),
@@ -960,7 +984,6 @@ pub mod services {
             }
 
             fn exn_value(&self) -> String {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     LobDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
                     LobDataByIdExn::ApplicationException(aexn) => aexn.exn_value(),
@@ -968,10 +991,18 @@ pub mod services {
             }
 
             fn exn_is_declared(&self) -> bool {
-                use ::fbthrift::ExceptionInfo as _;
                 match self {
                     LobDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
                     LobDataByIdExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
+        impl ::fbthrift::ResultInfo for LobDataByIdExn {
+            fn result_type(&self) -> ::fbthrift::ResultType {
+                match self {
+                    LobDataByIdExn::Success(_) => ::fbthrift::ResultType::Return,
+                    LobDataByIdExn::ApplicationException(_aexn) => ::fbthrift::ResultType::Exception,
                 }
             }
         }
@@ -985,6 +1016,9 @@ pub mod services {
             P: ::fbthrift::ProtocolWriter,
         {
             fn write(&self, p: &mut P) {
+                if let LobDataByIdExn::ApplicationException(aexn) = self {
+                    return aexn.write(p);
+                }
                 p.write_struct_begin("LobDataById");
                 match self {
                     LobDataByIdExn::Success(inner) => {
@@ -996,11 +1030,7 @@ pub mod services {
                         inner.write(p);
                         p.write_field_end();
                     }
-                    LobDataByIdExn::ApplicationException(_) => panic!(
-                        "Bad union Alt field {} id {}",
-                        "ApplicationException",
-                        -2147483648i32,
-                    ),
+                    LobDataByIdExn::ApplicationException(_aexn) => unreachable!(),
                 }
                 p.write_field_stop();
                 p.write_struct_end();

@@ -15,7 +15,7 @@
  */
 
 use crate::deserialize::Deserialize;
-use crate::exceptions::ExceptionInfo;
+use crate::exceptions::{ExceptionInfo, ResultInfo, ResultType};
 use crate::protocol::{Field, ProtocolReader, ProtocolWriter};
 use crate::serialize::Serialize;
 use crate::thrift_protocol::ProtocolID;
@@ -134,6 +134,12 @@ impl ExceptionInfo for ApplicationException {
     #[inline]
     fn exn_is_declared(&self) -> bool {
         false
+    }
+}
+
+impl ResultInfo for ApplicationException {
+    fn result_type(&self) -> ResultType {
+        ResultType::Exception
     }
 }
 

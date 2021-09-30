@@ -283,7 +283,7 @@ macro_rules! serialize {
     };
 }
 
-/// Helper for wrapping a response in a message envelope
+/// Helper for wrapping a response in a message envelope. Deprecated.
 pub fn write_message<P, F>(p: &mut P, name: &str, messagetype: MessageType, seqid: u32, body: F)
 where
     P: ProtocolWriter,
