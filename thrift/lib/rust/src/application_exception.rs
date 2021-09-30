@@ -15,6 +15,7 @@
  */
 
 use crate::deserialize::Deserialize;
+use crate::exceptions::ExceptionInfo;
 use crate::protocol::{Field, ProtocolReader, ProtocolWriter};
 use crate::serialize::Serialize;
 use crate::thrift_protocol::ProtocolID;
@@ -102,6 +103,37 @@ impl ApplicationException {
             type_: ApplicationExceptionErrorCode::InvalidProtocol,
             message: format!("Invalid protocol {:?}", badproto),
         }
+    }
+}
+
+impl ExceptionInfo for ApplicationException {
+    #[rustfmt::skip]
+    fn exn_name(&self) -> &'static str {
+        match self.type_ {
+            ApplicationExceptionErrorCode::Unknown => "ApplicationExceptionErrorCode::Unknown",
+            ApplicationExceptionErrorCode::UnknownMethod => "ApplicationExceptionErrorCode::UnknownMethod",
+            ApplicationExceptionErrorCode::InvalidMessageType => "ApplicationExceptionErrorCode::InvalidMessageType",
+            ApplicationExceptionErrorCode::WrongMethodName => "ApplicationExceptionErrorCode::WrongMethodName",
+            ApplicationExceptionErrorCode::BadSequenceID => "ApplicationExceptionErrorCode::BadSequenceID",
+            ApplicationExceptionErrorCode::MissingResult => "ApplicationExceptionErrorCode::MissingResult",
+            ApplicationExceptionErrorCode::InternalError => "ApplicationExceptionErrorCode::InternalError",
+            ApplicationExceptionErrorCode::ProtocolError => "ApplicationExceptionErrorCode::ProtocolError",
+            ApplicationExceptionErrorCode::InvalidTransform => "ApplicationExceptionErrorCode::InvalidTransform",
+            ApplicationExceptionErrorCode::InvalidProtocol => "ApplicationExceptionErrorCode::InvalidProtocol",
+            ApplicationExceptionErrorCode::UnsupportedClientType => "ApplicationExceptionErrorCode::UnsupportedClientType",
+            ApplicationExceptionErrorCode::Loadshedding => "ApplicationExceptionErrorCode::Loadshedding",
+            ApplicationExceptionErrorCode::Timeout => "ApplicationExceptionErrorCode::Timeout",
+            ApplicationExceptionErrorCode::InjectedFailure => "ApplicationExceptionErrorCode::InjectedFailure",
+        }
+    }
+
+    fn exn_value(&self) -> String {
+        self.message.clone()
+    }
+
+    #[inline]
+    fn exn_is_declared(&self) -> bool {
+        false
     }
 }
 

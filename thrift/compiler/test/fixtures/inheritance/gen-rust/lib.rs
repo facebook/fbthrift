@@ -25,6 +25,32 @@ pub mod services {
             }
         }
 
+        impl ::fbthrift::ExceptionInfo for DoRootExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    DoRootExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    DoRootExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    DoRootExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    DoRootExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    DoRootExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    DoRootExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
         impl ::fbthrift::GetTType for DoRootExn {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
@@ -113,6 +139,32 @@ pub mod services {
             }
         }
 
+        impl ::fbthrift::ExceptionInfo for DoMidExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    DoMidExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    DoMidExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    DoMidExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    DoMidExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    DoMidExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    DoMidExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
         impl ::fbthrift::GetTType for DoMidExn {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
@@ -198,6 +250,32 @@ pub mod services {
         impl ::std::convert::From<::fbthrift::ApplicationException> for DoLeafExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 DoLeafExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for DoLeafExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    DoLeafExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    DoLeafExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    DoLeafExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    DoLeafExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    DoLeafExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    DoLeafExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
             }
         }
 

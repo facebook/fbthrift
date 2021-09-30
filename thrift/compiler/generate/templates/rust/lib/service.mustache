@@ -32,6 +32,41 @@
         }{{!
         }}{{#function:uniqueStreamExceptions}}
 
+        impl ::fbthrift::ExceptionInfo for {{function:upcamel}}StreamExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    {{function:upcamel}}StreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    {{function:upcamel}}StreamExn::ApplicationException(aexn) => aexn.exn_name(),
+                    {{#function:stream_exceptions}}
+                    {{function:upcamel}}StreamExn::{{field:rust_name}}(exn) => exn.exn_name(),
+                    {{/function:stream_exceptions}}
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    {{function:upcamel}}StreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    {{function:upcamel}}StreamExn::ApplicationException(aexn) => aexn.exn_value(),
+                    {{#function:stream_exceptions}}
+                    {{function:upcamel}}StreamExn::{{field:rust_name}}(exn) => exn.exn_value(),
+                    {{/function:stream_exceptions}}
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    {{function:upcamel}}StreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    {{function:upcamel}}StreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    {{#function:stream_exceptions}}
+                    {{function:upcamel}}StreamExn::{{field:rust_name}}(exn) => exn.exn_is_declared(),
+                    {{/function:stream_exceptions}}
+                }
+            }
+        }
+
         impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}StreamExn {
             fn from(exn: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
                 {{function:upcamel}}StreamExn::{{field:rust_name}}(exn)
@@ -170,6 +205,42 @@
             ApplicationException(::fbthrift::ApplicationException),
         }{{!
         }}{{#function:uniqueExceptions}}
+
+
+        impl ::fbthrift::ExceptionInfo for {{function:upcamel}}Exn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    {{function:upcamel}}Exn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    {{function:upcamel}}Exn::ApplicationException(aexn) => aexn.exn_name(),
+                    {{#function:exceptions}}
+                    {{function:upcamel}}Exn::{{field:rust_name}}(exn) => exn.exn_name(),
+                    {{/function:exceptions}}
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    {{function:upcamel}}Exn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    {{function:upcamel}}Exn::ApplicationException(aexn) => aexn.exn_value(),
+                    {{#function:exceptions}}
+                    {{function:upcamel}}Exn::{{field:rust_name}}(exn) => exn.exn_value(),
+                    {{/function:exceptions}}
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    {{function:upcamel}}Exn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    {{function:upcamel}}Exn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    {{#function:exceptions}}
+                    {{function:upcamel}}Exn::{{field:rust_name}}(exn) => exn.exn_is_declared(),
+                    {{/function:exceptions}}
+                }
+            }
+        }
 
         impl ::std::convert::From<{{#field:type}}{{>lib/type}}{{/field:type}}> for {{function:upcamel}}Exn {
             fn from(exn: {{#field:type}}{{>lib/type}}{{/field:type}}) -> Self {
@@ -322,6 +393,41 @@
         impl ::std::convert::From<::fbthrift::ApplicationException> for {{function:upcamel}}Exn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 {{function:upcamel}}Exn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for {{function:upcamel}}Exn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    {{function:upcamel}}Exn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    {{function:upcamel}}Exn::ApplicationException(aexn) => aexn.exn_name(),
+                    {{#function:exceptions}}
+                    {{function:upcamel}}Exn::{{field:rust_name}}(exn) => exn.exn_name(),
+                    {{/function:exceptions}}
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    {{function:upcamel}}Exn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    {{function:upcamel}}Exn::ApplicationException(aexn) => aexn.exn_value(),
+                    {{#function:exceptions}}
+                    {{function:upcamel}}Exn::{{field:rust_name}}(exn) => exn.exn_value(),
+                    {{/function:exceptions}}
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    {{function:upcamel}}Exn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    {{function:upcamel}}Exn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    {{#function:exceptions}}
+                    {{function:upcamel}}Exn::{{field:rust_name}}(exn) => exn.exn_is_declared(),
+                    {{/function:exceptions}}
+                }
             }
         }
 

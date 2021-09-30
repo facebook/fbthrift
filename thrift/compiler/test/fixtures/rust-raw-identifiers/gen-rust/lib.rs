@@ -102,6 +102,32 @@ pub mod services {
             }
         }
 
+        impl ::fbthrift::ExceptionInfo for ReturnExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    ReturnExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    ReturnExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    ReturnExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    ReturnExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    ReturnExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    ReturnExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
         impl ::fbthrift::GetTType for ReturnExn {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
@@ -184,6 +210,32 @@ pub mod services {
         impl ::std::convert::From<::fbthrift::ApplicationException> for SuperExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 SuperExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for SuperExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    SuperExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    SuperExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    SuperExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    SuperExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    SuperExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    SuperExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
             }
         }
 

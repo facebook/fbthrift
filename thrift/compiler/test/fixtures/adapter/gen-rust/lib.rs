@@ -454,6 +454,32 @@ pub mod services {
             }
         }
 
+        impl ::fbthrift::ExceptionInfo for FuncExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    FuncExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    FuncExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    FuncExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    FuncExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    FuncExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    FuncExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
         impl ::fbthrift::GetTType for FuncExn {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }

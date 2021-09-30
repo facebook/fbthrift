@@ -58,6 +58,15 @@ pub mod types {
         pub message: ::std::string::String,
     }
 
+    impl ::fbthrift::ExceptionInfo for Bang {
+        fn exn_value(&self) -> String {
+            format!("{:?}", self)
+        }
+
+        #[inline]
+        fn exn_is_declared(&self) -> bool { true }
+    }
+
     impl ::std::error::Error for Bang {}
 
     impl ::std::fmt::Display for Bang {
@@ -407,6 +416,32 @@ pub mod services {
             }
         }
 
+        impl ::fbthrift::ExceptionInfo for FExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    FExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    FExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    FExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    FExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    FExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    FExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
         impl ::fbthrift::GetTType for FExn {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
@@ -587,6 +622,35 @@ pub mod services {
         impl ::std::convert::From<::fbthrift::ApplicationException> for ThingExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 ThingExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for ThingExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    ThingExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    ThingExn::ApplicationException(aexn) => aexn.exn_name(),
+                    ThingExn::bang(exn) => exn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    ThingExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    ThingExn::ApplicationException(aexn) => aexn.exn_value(),
+                    ThingExn::bang(exn) => exn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    ThingExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    ThingExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    ThingExn::bang(exn) => exn.exn_is_declared(),
+                }
             }
         }
 

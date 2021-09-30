@@ -42,6 +42,15 @@
     }
     {{#struct:exception?}}
 
+    impl ::fbthrift::ExceptionInfo for {{struct:rust_name}} {
+        fn exn_value(&self) -> String {
+            format!("{:?}", self)
+        }
+
+        #[inline]
+        fn exn_is_declared(&self) -> bool { true }
+    }
+
     impl ::std::error::Error for {{struct:rust_name}} {}
 
     impl ::std::fmt::Display for {{struct:rust_name}} {{>lib/block}}

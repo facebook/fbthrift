@@ -36,6 +36,15 @@ pub mod types {
     pub struct MyException {
     }
 
+    impl ::fbthrift::ExceptionInfo for MyException {
+        fn exn_value(&self) -> String {
+            format!("{:?}", self)
+        }
+
+        #[inline]
+        fn exn_is_declared(&self) -> bool { true }
+    }
+
     impl ::std::error::Error for MyException {}
 
     impl ::std::fmt::Display for MyException {
@@ -437,6 +446,32 @@ pub mod services {
             }
         }
 
+        impl ::fbthrift::ExceptionInfo for PingExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    PingExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    PingExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    PingExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    PingExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    PingExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    PingExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
         impl ::fbthrift::GetTType for PingExn {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
@@ -519,6 +554,32 @@ pub mod services {
         impl ::std::convert::From<::fbthrift::ApplicationException> for GetRandomDataExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 GetRandomDataExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for GetRandomDataExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    GetRandomDataExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    GetRandomDataExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    GetRandomDataExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    GetRandomDataExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    GetRandomDataExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    GetRandomDataExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
             }
         }
 
@@ -613,6 +674,32 @@ pub mod services {
             }
         }
 
+        impl ::fbthrift::ExceptionInfo for HasDataByIdExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    HasDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    HasDataByIdExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    HasDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    HasDataByIdExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    HasDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    HasDataByIdExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
         impl ::fbthrift::GetTType for HasDataByIdExn {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
@@ -701,6 +788,32 @@ pub mod services {
         impl ::std::convert::From<::fbthrift::ApplicationException> for GetDataByIdExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 GetDataByIdExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for GetDataByIdExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    GetDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    GetDataByIdExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    GetDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    GetDataByIdExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    GetDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    GetDataByIdExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
             }
         }
 
@@ -795,6 +908,32 @@ pub mod services {
             }
         }
 
+        impl ::fbthrift::ExceptionInfo for PutDataByIdExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    PutDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    PutDataByIdExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    PutDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    PutDataByIdExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    PutDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    PutDataByIdExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
+            }
+        }
+
         impl ::fbthrift::GetTType for PutDataByIdExn {
             const TTYPE: ::fbthrift::TType = ::fbthrift::TType::Struct;
         }
@@ -877,6 +1016,32 @@ pub mod services {
         impl ::std::convert::From<::fbthrift::ApplicationException> for LobDataByIdExn {
             fn from(exn: ::fbthrift::ApplicationException) -> Self {
                 LobDataByIdExn::ApplicationException(exn)
+            }
+        }
+
+        impl ::fbthrift::ExceptionInfo for LobDataByIdExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    LobDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    LobDataByIdExn::ApplicationException(aexn) => aexn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    LobDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    LobDataByIdExn::ApplicationException(aexn) => aexn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    LobDataByIdExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    LobDataByIdExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                }
             }
         }
 
@@ -1048,6 +1213,35 @@ pub mod services {
             Success(crate::types::MyStruct),
             e(crate::types::MyException),
             ApplicationException(::fbthrift::ApplicationException),
+        }
+
+        impl ::fbthrift::ExceptionInfo for StreamByIdWithExceptionStreamExn {
+            fn exn_name(&self) -> &'static str {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    StreamByIdWithExceptionStreamExn::Success(_) => panic!("ExceptionInfo::exn_name called on Success"),
+                    StreamByIdWithExceptionStreamExn::ApplicationException(aexn) => aexn.exn_name(),
+                    StreamByIdWithExceptionStreamExn::e(exn) => exn.exn_name(),
+                }
+            }
+
+            fn exn_value(&self) -> String {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    StreamByIdWithExceptionStreamExn::Success(_) => panic!("ExceptionInfo::exn_value called on Success"),
+                    StreamByIdWithExceptionStreamExn::ApplicationException(aexn) => aexn.exn_value(),
+                    StreamByIdWithExceptionStreamExn::e(exn) => exn.exn_value(),
+                }
+            }
+
+            fn exn_is_declared(&self) -> bool {
+                use ::fbthrift::ExceptionInfo as _;
+                match self {
+                    StreamByIdWithExceptionStreamExn::Success(_) => panic!("ExceptionInfo::exn_is_declared called on Success"),
+                    StreamByIdWithExceptionStreamExn::ApplicationException(aexn) => aexn.exn_is_declared(),
+                    StreamByIdWithExceptionStreamExn::e(exn) => exn.exn_is_declared(),
+                }
+            }
         }
 
         impl ::std::convert::From<crate::types::MyException> for StreamByIdWithExceptionStreamExn {
