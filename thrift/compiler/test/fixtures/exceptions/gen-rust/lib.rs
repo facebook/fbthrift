@@ -1915,6 +1915,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::raiser::DoBlandExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -1929,25 +1930,33 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.doBland(
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.doBland(
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "Raiser.doBland"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "Raiser.doBland", "success");
                     crate::services::raiser::DoBlandExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::raiser::DoBlandExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::raiser::DoBlandExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "doBland",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "Raiser.doBland", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("Raiser.doBland", exn);
+                    crate::services::raiser::DoBlandExn::ApplicationException(aexn)
                 }
             };
 
@@ -1963,6 +1972,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::raiser::DoRaiseExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -1977,25 +1987,33 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.doRaise(
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.doRaise(
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "Raiser.doRaise"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "Raiser.doRaise", "success");
                     crate::services::raiser::DoRaiseExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::raiser::DoRaiseExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::raiser::DoRaiseExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "doRaise",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "Raiser.doRaise", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("Raiser.doRaise", exn);
+                    crate::services::raiser::DoRaiseExn::ApplicationException(aexn)
                 }
             };
 
@@ -2011,6 +2029,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::raiser::Get200Exn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -2025,25 +2044,33 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.get200(
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.get200(
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "Raiser.get200"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "Raiser.get200", "success");
                     crate::services::raiser::Get200Exn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::raiser::Get200Exn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::raiser::Get200Exn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "get200",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "Raiser.get200", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("Raiser.get200", exn);
+                    crate::services::raiser::Get200Exn::ApplicationException(aexn)
                 }
             };
 
@@ -2059,6 +2086,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::raiser::Get500Exn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Raiser";
@@ -2073,25 +2101,33 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.get500(
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.get500(
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "Raiser.get500"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "Raiser.get500", "success");
                     crate::services::raiser::Get500Exn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::raiser::Get500Exn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::raiser::Get500Exn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "get500",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "Raiser.get500", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("Raiser.get500", exn);
+                    crate::services::raiser::Get500Exn::ApplicationException(aexn)
                 }
             };
 

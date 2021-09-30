@@ -898,6 +898,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::service::FuncExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Service";
@@ -912,28 +913,36 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.func(
-                _args.arg1,
-                _args.arg2,
-                _args.arg3,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.func(
+                    _args.arg1,
+                    _args.arg2,
+                    _args.arg3,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "Service.func"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "Service.func", "success");
                     crate::services::service::FuncExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::service::FuncExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::service::FuncExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "func",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "Service.func", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("Service.func", exn);
+                    crate::services::service::FuncExn::ApplicationException(aexn)
                 }
             };
 

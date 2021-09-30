@@ -797,6 +797,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::foo::ReturnExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Foo";
@@ -811,26 +812,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.r#return(
-                _args.bar,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.r#return(
+                    _args.bar,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "Foo.return"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "Foo.return", "success");
                     crate::services::foo::ReturnExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::foo::ReturnExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::foo::ReturnExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "r#return",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "Foo.return", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("Foo.return", exn);
+                    crate::services::foo::ReturnExn::ApplicationException(aexn)
                 }
             };
 
@@ -846,6 +855,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::foo::SuperExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "Foo";
@@ -860,26 +870,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.super_(
-                _args.bar,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.super_(
+                    _args.bar,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "Foo.super"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "Foo.super", "success");
                     crate::services::foo::SuperExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::foo::SuperExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::foo::SuperExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "super_",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "Foo.super", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("Foo.super", exn);
+                    crate::services::foo::SuperExn::ApplicationException(aexn)
                 }
             };
 

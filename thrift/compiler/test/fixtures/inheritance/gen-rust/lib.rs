@@ -1117,6 +1117,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_root::DoRootExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyRoot";
@@ -1131,25 +1132,33 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.do_root(
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.do_root(
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyRoot.do_root"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyRoot.do_root", "success");
                     crate::services::my_root::DoRootExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_root::DoRootExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_root::DoRootExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "do_root",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyRoot.do_root", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyRoot.do_root", exn);
+                    crate::services::my_root::DoRootExn::ApplicationException(aexn)
                 }
             };
 
@@ -1365,6 +1374,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_node::DoMidExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyNode";
@@ -1379,25 +1389,33 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.do_mid(
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.do_mid(
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyNode.do_mid"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyNode.do_mid", "success");
                     crate::services::my_node::DoMidExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_node::DoMidExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_node::DoMidExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "do_mid",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyNode.do_mid", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyNode.do_mid", exn);
+                    crate::services::my_node::DoMidExn::ApplicationException(aexn)
                 }
             };
 
@@ -1623,6 +1641,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_leaf::DoLeafExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyLeaf";
@@ -1637,25 +1656,33 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.do_leaf(
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.do_leaf(
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyLeaf.do_leaf"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyLeaf.do_leaf", "success");
                     crate::services::my_leaf::DoLeafExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_leaf::DoLeafExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_leaf::DoLeafExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "do_leaf",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyLeaf.do_leaf", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyLeaf.do_leaf", exn);
+                    crate::services::my_leaf::DoLeafExn::ApplicationException(aexn)
                 }
             };
 

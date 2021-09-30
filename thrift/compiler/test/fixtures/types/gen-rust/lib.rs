@@ -3098,6 +3098,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::some_service::BounceMapExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "SomeService";
@@ -3112,26 +3113,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.bounce_map(
-                _args.m,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.bounce_map(
+                    _args.m,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "SomeService.bounce_map"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "SomeService.bounce_map", "success");
                     crate::services::some_service::BounceMapExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::some_service::BounceMapExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::some_service::BounceMapExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "bounce_map",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "SomeService.bounce_map", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("SomeService.bounce_map", exn);
+                    crate::services::some_service::BounceMapExn::ApplicationException(aexn)
                 }
             };
 
@@ -3147,6 +3156,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::some_service::BinaryKeyedMapExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "SomeService";
@@ -3161,26 +3171,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.binary_keyed_map(
-                _args.r,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.binary_keyed_map(
+                    _args.r,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "SomeService.binary_keyed_map"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "SomeService.binary_keyed_map", "success");
                     crate::services::some_service::BinaryKeyedMapExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::some_service::BinaryKeyedMapExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::some_service::BinaryKeyedMapExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "binary_keyed_map",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "SomeService.binary_keyed_map", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("SomeService.binary_keyed_map", exn);
+                    crate::services::some_service::BinaryKeyedMapExn::ApplicationException(aexn)
                 }
             };
 

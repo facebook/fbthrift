@@ -3405,6 +3405,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_service::PingExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -3419,25 +3420,33 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.ping(
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.ping(
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyService.ping"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyService.ping", "success");
                     crate::services::my_service::PingExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_service::PingExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::PingExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "ping",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyService.ping", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.ping", exn);
+                    crate::services::my_service::PingExn::ApplicationException(aexn)
                 }
             };
 
@@ -3453,6 +3462,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_service::GetRandomDataExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -3467,25 +3477,33 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.getRandomData(
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.getRandomData(
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyService.getRandomData"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyService.getRandomData", "success");
                     crate::services::my_service::GetRandomDataExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_service::GetRandomDataExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::GetRandomDataExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "getRandomData",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyService.getRandomData", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.getRandomData", exn);
+                    crate::services::my_service::GetRandomDataExn::ApplicationException(aexn)
                 }
             };
 
@@ -3501,6 +3519,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_service::SinkExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -3515,26 +3534,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.sink(
-                _args.sink,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.sink(
+                    _args.sink,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyService.sink"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyService.sink", "success");
                     crate::services::my_service::SinkExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_service::SinkExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::SinkExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "sink",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyService.sink", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.sink", exn);
+                    crate::services::my_service::SinkExn::ApplicationException(aexn)
                 }
             };
 
@@ -3550,6 +3577,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_service::PutDataByIdExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -3564,27 +3592,35 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.putDataById(
-                _args.id,
-                _args.data,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.putDataById(
+                    _args.id,
+                    _args.data,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyService.putDataById"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyService.putDataById", "success");
                     crate::services::my_service::PutDataByIdExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_service::PutDataByIdExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::PutDataByIdExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "putDataById",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyService.putDataById", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.putDataById", exn);
+                    crate::services::my_service::PutDataByIdExn::ApplicationException(aexn)
                 }
             };
 
@@ -3600,6 +3636,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_service::HasDataByIdExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -3614,26 +3651,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.hasDataById(
-                _args.id,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.hasDataById(
+                    _args.id,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyService.hasDataById"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyService.hasDataById", "success");
                     crate::services::my_service::HasDataByIdExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_service::HasDataByIdExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::HasDataByIdExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "hasDataById",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyService.hasDataById", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.hasDataById", exn);
+                    crate::services::my_service::HasDataByIdExn::ApplicationException(aexn)
                 }
             };
 
@@ -3649,6 +3694,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_service::GetDataByIdExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -3663,26 +3709,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.getDataById(
-                _args.id,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.getDataById(
+                    _args.id,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyService.getDataById"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyService.getDataById", "success");
                     crate::services::my_service::GetDataByIdExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_service::GetDataByIdExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::GetDataByIdExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "getDataById",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyService.getDataById", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.getDataById", exn);
+                    crate::services::my_service::GetDataByIdExn::ApplicationException(aexn)
                 }
             };
 
@@ -3698,6 +3752,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_service::DeleteDataByIdExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -3712,26 +3767,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.deleteDataById(
-                _args.id,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.deleteDataById(
+                    _args.id,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyService.deleteDataById"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyService.deleteDataById", "success");
                     crate::services::my_service::DeleteDataByIdExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_service::DeleteDataByIdExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::DeleteDataByIdExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "deleteDataById",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyService.deleteDataById", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.deleteDataById", exn);
+                    crate::services::my_service::DeleteDataByIdExn::ApplicationException(aexn)
                 }
             };
 
@@ -3747,6 +3810,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::my_service::LobDataByIdExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "MyService";
@@ -3761,27 +3825,35 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.lobDataById(
-                _args.id,
-                _args.data,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.lobDataById(
+                    _args.id,
+                    _args.data,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "MyService.lobDataById"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "MyService.lobDataById", "success");
                     crate::services::my_service::LobDataByIdExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::my_service::LobDataByIdExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::my_service::LobDataByIdExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "lobDataById",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "MyService.lobDataById", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("MyService.lobDataById", exn);
+                    crate::services::my_service::LobDataByIdExn::ApplicationException(aexn)
                 }
             };
 
@@ -4193,6 +4265,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::db_mixed_stack_arguments::GetDataByKey0Exn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "DbMixedStackArguments";
@@ -4207,26 +4280,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.getDataByKey0(
-                _args.key,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.getDataByKey0(
+                    _args.key,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "DbMixedStackArguments.getDataByKey0"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "DbMixedStackArguments.getDataByKey0", "success");
                     crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "getDataByKey0",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "DbMixedStackArguments.getDataByKey0", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("DbMixedStackArguments.getDataByKey0", exn);
+                    crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::ApplicationException(aexn)
                 }
             };
 
@@ -4242,6 +4323,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::db_mixed_stack_arguments::GetDataByKey1Exn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "DbMixedStackArguments";
@@ -4256,26 +4338,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.getDataByKey1(
-                _args.key,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.getDataByKey1(
+                    _args.key,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "DbMixedStackArguments.getDataByKey1"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "DbMixedStackArguments.getDataByKey1", "success");
                     crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "getDataByKey1",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "DbMixedStackArguments.getDataByKey1", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("DbMixedStackArguments.getDataByKey1", exn);
+                    crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::ApplicationException(aexn)
                 }
             };
 

@@ -157,6 +157,7 @@
         ) -> ::anyhow::Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "{{service:name}}";
@@ -171,31 +172,39 @@
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.{{function:rust_name}}({{!
-                }}{{#service:requestContext?}}
-                _req_ctxt,{{!
-                }}{{/service:requestContext?}}{{!
-                }}{{#function:args}}
-                _args.{{field:rust_name}},{{!
-                }}{{/function:args}}
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.{{function:rust_name}}({{!
+                    }}{{#service:requestContext?}}
+                    _req_ctxt,{{!
+                    }}{{/service:requestContext?}}{{!
+                    }}{{#function:args}}
+                    _args.{{field:rust_name}},{{!
+                    }}{{/function:args}}
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "{{service:name}}.{{function:name}}"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "{{service:name}}.{{function:name}}", "success");
                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res)
                 }
-                ::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err({{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "{{function:rust_name}}",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "{{service:name}}.{{function:name}}", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("{{service:name}}.{{function:name}}", exn);
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn)
                 }
             };
 

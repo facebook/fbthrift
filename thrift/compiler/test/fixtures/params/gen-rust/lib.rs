@@ -1569,6 +1569,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::nested_containers::MapListExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "NestedContainers";
@@ -1583,26 +1584,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.mapList(
-                _args.foo,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.mapList(
+                    _args.foo,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "NestedContainers.mapList"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "NestedContainers.mapList", "success");
                     crate::services::nested_containers::MapListExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::nested_containers::MapListExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::nested_containers::MapListExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "mapList",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "NestedContainers.mapList", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("NestedContainers.mapList", exn);
+                    crate::services::nested_containers::MapListExn::ApplicationException(aexn)
                 }
             };
 
@@ -1618,6 +1627,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::nested_containers::MapSetExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "NestedContainers";
@@ -1632,26 +1642,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.mapSet(
-                _args.foo,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.mapSet(
+                    _args.foo,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "NestedContainers.mapSet"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "NestedContainers.mapSet", "success");
                     crate::services::nested_containers::MapSetExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::nested_containers::MapSetExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::nested_containers::MapSetExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "mapSet",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "NestedContainers.mapSet", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("NestedContainers.mapSet", exn);
+                    crate::services::nested_containers::MapSetExn::ApplicationException(aexn)
                 }
             };
 
@@ -1667,6 +1685,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::nested_containers::ListMapExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "NestedContainers";
@@ -1681,26 +1700,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.listMap(
-                _args.foo,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.listMap(
+                    _args.foo,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "NestedContainers.listMap"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "NestedContainers.listMap", "success");
                     crate::services::nested_containers::ListMapExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::nested_containers::ListMapExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::nested_containers::ListMapExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "listMap",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "NestedContainers.listMap", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("NestedContainers.listMap", exn);
+                    crate::services::nested_containers::ListMapExn::ApplicationException(aexn)
                 }
             };
 
@@ -1716,6 +1743,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::nested_containers::ListSetExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "NestedContainers";
@@ -1730,26 +1758,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.listSet(
-                _args.foo,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.listSet(
+                    _args.foo,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "NestedContainers.listSet"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "NestedContainers.listSet", "success");
                     crate::services::nested_containers::ListSetExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::nested_containers::ListSetExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::nested_containers::ListSetExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "listSet",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "NestedContainers.listSet", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("NestedContainers.listSet", exn);
+                    crate::services::nested_containers::ListSetExn::ApplicationException(aexn)
                 }
             };
 
@@ -1765,6 +1801,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::nested_containers::TurtlesExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "NestedContainers";
@@ -1779,26 +1816,34 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.turtles(
-                _args.foo,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.turtles(
+                    _args.foo,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "NestedContainers.turtles"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "NestedContainers.turtles", "success");
                     crate::services::nested_containers::TurtlesExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::nested_containers::TurtlesExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::nested_containers::TurtlesExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "turtles",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "NestedContainers.turtles", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("NestedContainers.turtles", exn);
+                    crate::services::nested_containers::TurtlesExn::ApplicationException(aexn)
                 }
             };
 

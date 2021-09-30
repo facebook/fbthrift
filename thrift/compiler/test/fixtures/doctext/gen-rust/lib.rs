@@ -1351,6 +1351,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::c::FExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "C";
@@ -1365,25 +1366,33 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.f(
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.f(
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "C.f"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "C.f", "success");
                     crate::services::c::FExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::c::FExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::c::FExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "f",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "C.f", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("C.f", exn);
+                    crate::services::c::FExn::ApplicationException(aexn)
                 }
             };
 
@@ -1399,6 +1408,7 @@ pub mod server {
         ) -> ::anyhow::Result<crate::services::c::ThingExn> {
             use ::const_cstr::const_cstr;
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
 
             const_cstr! {
                 SERVICE_NAME = "C";
@@ -1413,28 +1423,36 @@ pub mod server {
             })?;
             ::fbthrift::ContextStack::post_read(ctx_stack, 0)?;
 
-            let res = self.service.thing(
-                _args.a,
-                _args.b,
-                _args.c,
+            let res = ::std::panic::AssertUnwindSafe(
+                self.service.thing(
+                    _args.a,
+                    _args.b,
+                    _args.c,
+                )
             )
+            .catch_unwind()
             .instrument(::tracing::info_span!("service_handler", method = "C.thing"))
             .await;
 
+            // nested results - panic catch on the outside, method on the inside
             let res = match res {
-                ::std::result::Result::Ok(res) => {
+                ::std::result::Result::Ok(::std::result::Result::Ok(res)) => {
                     ::tracing::info!(method = "C.thing", "success");
                     crate::services::c::ThingExn::Success(res)
                 }
-                ::std::result::Result::Err(crate::services::c::ThingExn::Success(_)) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(crate::services::c::ThingExn::Success(_))) => {
                     panic!(
                         "{} attempted to return success via error",
                         "thing",
                     )
                 }
-                ::std::result::Result::Err(exn) => {
+                ::std::result::Result::Ok(::std::result::Result::Err(exn)) => {
                     ::tracing::error!(method = "C.thing", exception = ?exn);
                     exn
+                }
+                ::std::result::Result::Err(exn) => {
+                    let aexn = ::fbthrift::ApplicationException::handler_panic("C.thing", exn);
+                    crate::services::c::ThingExn::ApplicationException(aexn)
                 }
             };
 
