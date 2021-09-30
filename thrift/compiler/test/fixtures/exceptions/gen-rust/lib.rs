@@ -1174,6 +1174,62 @@ pub mod client {
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>>;
     }
 
+    struct Args_Raiser_doBland<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Raiser_doBland<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Raiser.doBland"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_Raiser_doRaise<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Raiser_doRaise<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Raiser.doRaise"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_Raiser_get200<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Raiser_get200<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Raiser.get200"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_Raiser_get500<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Raiser_get500<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Raiser.get500"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
     impl<P, T> Raiser for RaiserImpl<P, T>
     where
         P: ::fbthrift::Protocol,
@@ -1187,29 +1243,18 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoBlandError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Raiser";
                 METHOD_NAME = "Raiser.doBland";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "doBland",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_Raiser_doBland {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("doBland", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "Raiser.doBland"))
@@ -1299,29 +1344,18 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoRaiseError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Raiser";
                 METHOD_NAME = "Raiser.doRaise";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "doRaise",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_Raiser_doRaise {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("doRaise", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "Raiser.doRaise"))
@@ -1423,29 +1457,18 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get200Error>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Raiser";
                 METHOD_NAME = "Raiser.get200";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "get200",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_Raiser_get200 {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("get200", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "Raiser.get200"))
@@ -1535,29 +1558,18 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Raiser";
                 METHOD_NAME = "Raiser.get500";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "get500",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_Raiser_get500 {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("get500", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "Raiser.get500"))

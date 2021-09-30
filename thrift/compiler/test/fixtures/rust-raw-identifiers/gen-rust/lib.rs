@@ -358,6 +358,42 @@ pub mod client {
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>>;
     }
 
+    struct Args_Foo_return<'a> {
+        bar: &'a crate::types::ThereAreNoPascalCaseKeywords,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Foo_return<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Foo.return"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("bar", ::fbthrift::TType::Struct, 1i16);
+            ::fbthrift::Serialize::write(&self.bar, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_Foo_super<'a> {
+        bar: &'a crate::types::ThereAreNoPascalCaseKeywords,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_Foo_super<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "Foo.super"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("bar", ::fbthrift::TType::Struct, 1i16);
+            ::fbthrift::Serialize::write(&self.bar, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
     impl<P, T> Foo for FooImpl<P, T>
     where
         P: ::fbthrift::Protocol,
@@ -372,32 +408,19 @@ pub mod client {
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::ReturnError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Foo";
                 METHOD_NAME = "Foo.return";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "return",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_bar", ::fbthrift::TType::Struct, 1i16);
-                        ::fbthrift::Serialize::write(&arg_bar, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_Foo_return {
+                bar: arg_bar,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("return", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "Foo.return"))
@@ -488,32 +511,19 @@ pub mod client {
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::foo::SuperError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "Foo";
                 METHOD_NAME = "Foo.super";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "super",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_bar", ::fbthrift::TType::Struct, 1i16);
-                        ::fbthrift::Serialize::write(&arg_bar, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_Foo_super {
+                bar: arg_bar,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("super", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "Foo.super"))

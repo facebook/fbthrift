@@ -2659,6 +2659,42 @@ pub mod client {
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>>;
     }
 
+    struct Args_SomeService_bounce_map<'a> {
+        m: &'a include::types::SomeMap,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_SomeService_bounce_map<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "SomeService.bounce_map"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("m", ::fbthrift::TType::Map, 1i16);
+            ::fbthrift::Serialize::write(&self.m, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_SomeService_binary_keyed_map<'a> {
+        r: &'a [::std::primitive::i64],
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_SomeService_binary_keyed_map<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "SomeService.binary_keyed_map"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("r", ::fbthrift::TType::List, 1i16);
+            ::fbthrift::Serialize::write(&self.r, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
     impl<P, T> SomeService for SomeServiceImpl<P, T>
     where
         P: ::fbthrift::Protocol,
@@ -2673,32 +2709,19 @@ pub mod client {
             arg_m: &include::types::SomeMap,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "SomeService";
                 METHOD_NAME = "SomeService.bounce_map";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "bounce_map",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_m", ::fbthrift::TType::Map, 1i16);
-                        ::fbthrift::Serialize::write(&arg_m, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_SomeService_bounce_map {
+                m: arg_m,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("bounce_map", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "SomeService.bounce_map"))
@@ -2789,32 +2812,19 @@ pub mod client {
             arg_r: &[::std::primitive::i64],
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "SomeService";
                 METHOD_NAME = "SomeService.binary_keyed_map";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "binary_keyed_map",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_r", ::fbthrift::TType::List, 1i16);
-                        ::fbthrift::Serialize::write(&arg_r, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_SomeService_binary_keyed_map {
+                r: arg_r,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("binary_keyed_map", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "SomeService.binary_keyed_map"))

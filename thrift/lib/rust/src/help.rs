@@ -18,8 +18,8 @@
 // code generator.
 
 use crate::{
-    serialize, ContextStack, Protocol, ProtocolEncodedFinal, ProtocolWriter, RequestContext,
-    ResultInfo, ResultType, Serialize, SerializedMessage,
+    serialize, ContextStack, MessageType, Protocol, ProtocolEncodedFinal, ProtocolWriter,
+    RequestContext, ResultInfo, ResultType, Serialize, SerializedMessage,
 };
 use anyhow::{bail, Result};
 use std::ffi::CStr;
@@ -89,6 +89,27 @@ where
         buffer: PhantomData,
     })?;
     ctx_stack.post_write(0)?;
+
+    Ok(envelope)
+}
+
+/// Serialize a request with envelope.
+pub fn serialize_request_envelope<P, ARGS>(
+    name: &str,
+    args: &ARGS,
+) -> anyhow::Result<ProtocolEncodedFinal<P>>
+where
+    P: Protocol,
+    ARGS: Serialize<P::Sizer> + Serialize<P::Serializer>,
+{
+    let envelope = serialize!(P, |p| {
+        // Note: we send a 0 message sequence ID from clients because
+        // this field should not be used by the server (except for some
+        // language implementations).
+        p.write_message_begin(name, MessageType::Call, 0);
+        args.write(p);
+        p.write_message_end();
+    });
 
     Ok(envelope)
 }

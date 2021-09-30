@@ -1645,6 +1645,150 @@ pub mod client {
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>>;
     }
 
+    struct Args_MyService_ping<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_ping<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.ping"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_getRandomData<'a> {
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_getRandomData<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.getRandomData"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_sink<'a> {
+        sink: ::std::primitive::i64,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_sink<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.sink"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("sink", ::fbthrift::TType::I64, 1i16);
+            ::fbthrift::Serialize::write(&self.sink, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_putDataById<'a> {
+        id: ::std::primitive::i64,
+        data: &'a ::std::primitive::str,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_putDataById<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.putDataById"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("id", ::fbthrift::TType::I64, 1i16);
+            ::fbthrift::Serialize::write(&self.id, p);
+            p.write_field_end();
+            p.write_field_begin("data", ::fbthrift::TType::String, 2i16);
+            ::fbthrift::Serialize::write(&self.data, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_hasDataById<'a> {
+        id: ::std::primitive::i64,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_hasDataById<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.hasDataById"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("id", ::fbthrift::TType::I64, 1i16);
+            ::fbthrift::Serialize::write(&self.id, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_getDataById<'a> {
+        id: ::std::primitive::i64,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_getDataById<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.getDataById"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("id", ::fbthrift::TType::I64, 1i16);
+            ::fbthrift::Serialize::write(&self.id, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_deleteDataById<'a> {
+        id: ::std::primitive::i64,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_deleteDataById<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.deleteDataById"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("id", ::fbthrift::TType::I64, 1i16);
+            ::fbthrift::Serialize::write(&self.id, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_MyService_lobDataById<'a> {
+        id: ::std::primitive::i64,
+        data: &'a ::std::primitive::str,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_MyService_lobDataById<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "MyService.lobDataById"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("id", ::fbthrift::TType::I64, 1i16);
+            ::fbthrift::Serialize::write(&self.id, p);
+            p.write_field_end();
+            p.write_field_begin("data", ::fbthrift::TType::String, 2i16);
+            ::fbthrift::Serialize::write(&self.data, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
     impl<P, T> MyService for MyServiceImpl<P, T>
     where
         P: ::fbthrift::Protocol,
@@ -1658,29 +1802,18 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.ping";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "ping",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_MyService_ping {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("ping", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.ping"))
@@ -1770,29 +1903,18 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.getRandomData";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "getRandomData",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_MyService_getRandomData {
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("getRandomData", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.getRandomData"))
@@ -1883,32 +2005,19 @@ pub mod client {
             arg_sink: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::SinkError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.sink";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "sink",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_sink", ::fbthrift::TType::I64, 1i16);
-                        ::fbthrift::Serialize::write(&arg_sink, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_MyService_sink {
+                sink: arg_sink,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("sink", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.sink"))
@@ -2000,35 +2109,20 @@ pub mod client {
             arg_data: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PutDataByIdError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.putDataById";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "putDataById",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
-                        ::fbthrift::Serialize::write(&arg_id, p);
-                        p.write_field_end();
-                        p.write_field_begin("arg_data", ::fbthrift::TType::String, 2i16);
-                        ::fbthrift::Serialize::write(&arg_data, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_MyService_putDataById {
+                id: arg_id,
+                data: arg_data,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("putDataById", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.putDataById"))
@@ -2119,32 +2213,19 @@ pub mod client {
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::primitive::bool, crate::errors::my_service::HasDataByIdError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.hasDataById";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "hasDataById",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
-                        ::fbthrift::Serialize::write(&arg_id, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_MyService_hasDataById {
+                id: arg_id,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("hasDataById", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.hasDataById"))
@@ -2235,32 +2316,19 @@ pub mod client {
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetDataByIdError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.getDataById";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "getDataById",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
-                        ::fbthrift::Serialize::write(&arg_id, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_MyService_getDataById {
+                id: arg_id,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("getDataById", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.getDataById"))
@@ -2351,32 +2419,19 @@ pub mod client {
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::DeleteDataByIdError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.deleteDataById";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "deleteDataById",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
-                        ::fbthrift::Serialize::write(&arg_id, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_MyService_deleteDataById {
+                id: arg_id,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("deleteDataById", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.deleteDataById"))
@@ -2468,35 +2523,20 @@ pub mod client {
             arg_data: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::LobDataByIdError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.lobDataById";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "lobDataById",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_id", ::fbthrift::TType::I64, 1i16);
-                        ::fbthrift::Serialize::write(&arg_id, p);
-                        p.write_field_end();
-                        p.write_field_begin("arg_data", ::fbthrift::TType::String, 2i16);
-                        ::fbthrift::Serialize::write(&arg_data, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_MyService_lobDataById {
+                id: arg_id,
+                data: arg_data,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("lobDataById", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "MyService.lobDataById"))
@@ -2732,6 +2772,42 @@ pub mod client {
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey1Error>> + ::std::marker::Send + 'static>>;
     }
 
+    struct Args_DbMixedStackArguments_getDataByKey0<'a> {
+        key: &'a ::std::primitive::str,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_DbMixedStackArguments_getDataByKey0<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "DbMixedStackArguments.getDataByKey0"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("key", ::fbthrift::TType::String, 1i16);
+            ::fbthrift::Serialize::write(&self.key, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
+    struct Args_DbMixedStackArguments_getDataByKey1<'a> {
+        key: &'a ::std::primitive::str,
+        _phantom: ::std::marker::PhantomData<&'a ()>,
+    }
+
+    impl<'a, P: ::fbthrift::ProtocolWriter> ::fbthrift::Serialize<P> for self::Args_DbMixedStackArguments_getDataByKey1<'a> {
+        #[inline]
+        #[::tracing::instrument(skip_all, level = "trace", name = "serialize_args", fields(method = "DbMixedStackArguments.getDataByKey1"))]
+        fn write(&self, p: &mut P) {
+            p.write_struct_begin("args");
+            p.write_field_begin("key", ::fbthrift::TType::String, 1i16);
+            ::fbthrift::Serialize::write(&self.key, p);
+            p.write_field_end();
+            p.write_field_stop();
+            p.write_struct_end();
+        }
+    }
+
     impl<P, T> DbMixedStackArguments for DbMixedStackArgumentsImpl<P, T>
     where
         P: ::fbthrift::Protocol,
@@ -2746,32 +2822,19 @@ pub mod client {
             arg_key: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey0Error>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "DbMixedStackArguments";
                 METHOD_NAME = "DbMixedStackArguments.getDataByKey0";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "getDataByKey0",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_key", ::fbthrift::TType::String, 1i16);
-                        ::fbthrift::Serialize::write(&arg_key, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_DbMixedStackArguments_getDataByKey0 {
+                key: arg_key,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("getDataByKey0", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "DbMixedStackArguments.getDataByKey0"))
@@ -2862,32 +2925,19 @@ pub mod client {
             arg_key: &::std::primitive::str,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, crate::errors::db_mixed_stack_arguments::GetDataByKey1Error>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::fbthrift::{ProtocolWriter as _};
             use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
             const_cstr! {
                 SERVICE_NAME = "DbMixedStackArguments";
                 METHOD_NAME = "DbMixedStackArguments.getDataByKey1";
             }
-            let request = ::tracing::trace_span!("serialize_args").in_scope(|| {
-                ::fbthrift::serialize!(P, |p| ::fbthrift::protocol::write_message(
-                    p,
-                    "getDataByKey1",
-                    ::fbthrift::MessageType::Call,
-                    // Note: we send a 0 message sequence ID from clients because
-                    // this field should not be used by the server (except for some
-                    // language implementations).
-                    0,
-                    |p| {
-                        p.write_struct_begin("args");
-                        p.write_field_begin("arg_key", ::fbthrift::TType::String, 1i16);
-                        ::fbthrift::Serialize::write(&arg_key, p);
-                        p.write_field_end();
-                        p.write_field_stop();
-                        p.write_struct_end();
-                    },
-                ))
-            });
+            let args = self::Args_DbMixedStackArguments_getDataByKey1 {
+                key: arg_key,
+                _phantom: ::std::marker::PhantomData,
+            };
+
+            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("getDataByKey1", &args).expect("serialize failed");
+
             self.transport()
                 .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
                 .instrument(::tracing::info_span!("call", function = "DbMixedStackArguments.getDataByKey1"))
