@@ -45,7 +45,6 @@
         }
     }
 
-    #[::async_trait::async_trait]
     impl<'mock> super::client::{{service:name}} for {{service:name}}<'mock> {{>lib/block}}{{!
         }}{{#service:rustFunctions}}
         {{^function:starts_interaction?}}

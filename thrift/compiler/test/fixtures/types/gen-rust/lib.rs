@@ -2709,8 +2709,9 @@ pub mod client {
             arg_m: &include::types::SomeMap,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<include::types::SomeMap, crate::errors::some_service::BounceMapError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
             const_cstr! {
                 SERVICE_NAME = "SomeService";
                 METHOD_NAME = "SomeService.bounce_map";
@@ -2720,91 +2721,33 @@ pub mod client {
                 _phantom: ::std::marker::PhantomData,
             };
 
-            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("bounce_map", &args).expect("serialize failed");
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("bounce_map", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
 
-            self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
-                .instrument(::tracing::info_span!("call", function = "SomeService.bounce_map"))
-                .map_err(::std::convert::From::from)
-                .and_then(|reply| {
-                        let de = P::deserializer(reply);
-                        (move |mut p: P::Deserializer| {
-                            use ::fbthrift::{ProtocolReader as _};
-                            let (_, message_type, _) = match p.read_message_begin(|_| ()) {
-                                Ok(res) => res,
-                                Err(e) => {
-                                    ::tracing::error!(error = ?e);
-                                    return ::futures::future::Either::Left(
-                                        ::futures::future::ready(
-                                            ::std::result::Result::Err(e.into())
-                                        )
-                                    )
-                                }
-                            };
-                            match message_type {
-                                ::fbthrift::MessageType::Reply => {
-                                    let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::some_service::BounceMapExn, _>, _)> =
-                                        ::tokio_shim::task::spawn_blocking_fallback_inline(move || (::fbthrift::Deserialize::read(&mut p), p));
-                                    ::futures::future::Either::Right(exn.then(
-                                        |exn| {
-                                            let result = (move || {
-                                                let (exn, mut p) = match exn {
-                                                    Ok(res) => res,
-                                                    Err(e) => {
-                                                        // spawn_blocking threads can't be cancelled, so any
-                                                        // error is a panic. This shouldn't happen, but we propagate if it does
-                                                        ::std::panic::resume_unwind(e.into_panic())
-                                                    }
-                                                };
-                                                let exn = exn?;
-                                                let result = match exn {
-                                                    crate::services::some_service::BounceMapExn::Success(x) => {
-                                                        ::tracing::info!("success");
-                                                        ::std::result::Result::Ok(x)
-                                                    },
-                                                    crate::services::some_service::BounceMapExn::ApplicationException(ae) => {
-                                                        ::tracing::error!(application_exception = ?ae);
-                                                        ::std::result::Result::Err(crate::errors::some_service::BounceMapError::ApplicationException(ae))
-                                                    }
-                                                };
-                                                p.read_message_end()?;
-                                                result
-                                            })();
-                                            ::futures::future::ready(result)
-                                        }
-                                    ))
-                                }
-                                ::fbthrift::MessageType::Exception => {
-                                    let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
-                                    ::futures::future::Either::Left(
-                                        ::futures::future::ready(
-                                            ae.map_err(|e| e.into()).and_then(|ae| {
-                                                p.read_message_end().map_err(|e| e.into()).and_then(|_| {
-                                                    ::std::result::Result::Err(crate::errors::some_service::BounceMapError::ApplicationException(ae))
-                                                })
-                                            })
-                                        )
-                                    )
-                                }
-                                ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
-                                    let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                    ::futures::future::Either::Left(
-                                        ::futures::future::ready(
-                                            p.read_message_end().map_err(|e| e.into()).and_then(
-                                            |_| {
-                                                ::std::result::Result::Err(crate::errors::some_service::BounceMapError::ThriftError(err))
-                                            }
-                                            )
-                                        )
-                                    )
-                                }
-                            }
-                        })(de)
-                    }
-                    .instrument(::tracing::trace_span!("deserialize_response", method = "SomeService.bounce_map"))
-                )
-                .boxed()
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .instrument(::tracing::trace_span!("call", function = "SomeService.bounce_map"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let mut de = P::deserializer(reply_env);
+                // TODO: spawn deserialization
+                let res: ::std::result::Result<crate::services::some_service::BounceMapExn, _> =
+                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::some_service::BounceMapError::ApplicationException(aexn))
+                }
+            }
+            .boxed()
         }
+
 
         #[::tracing::instrument(name = "SomeService.binary_keyed_map", skip_all)]
         fn binary_keyed_map(
@@ -2812,8 +2755,9 @@ pub mod client {
             arg_r: &[::std::primitive::i64],
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, crate::errors::some_service::BinaryKeyedMapError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::futures::future::{FutureExt as _, TryFutureExt as _};
             use ::tracing::Instrument as _;
+            use ::futures::FutureExt as _;
+
             const_cstr! {
                 SERVICE_NAME = "SomeService";
                 METHOD_NAME = "SomeService.binary_keyed_map";
@@ -2823,91 +2767,33 @@ pub mod client {
                 _phantom: ::std::marker::PhantomData,
             };
 
-            let request = ::fbthrift::help::serialize_request_envelope::<P, _>("binary_keyed_map", &args).expect("serialize failed");
+            // need to do call setup outside of async block because T: Transport isn't Send
+            let request_env = match ::fbthrift::help::serialize_request_envelope::<P, _>("binary_keyed_map", &args) {
+                ::std::result::Result::Ok(res) => res,
+                ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
+            };
 
-            self.transport()
-                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request)
-                .instrument(::tracing::info_span!("call", function = "SomeService.binary_keyed_map"))
-                .map_err(::std::convert::From::from)
-                .and_then(|reply| {
-                        let de = P::deserializer(reply);
-                        (move |mut p: P::Deserializer| {
-                            use ::fbthrift::{ProtocolReader as _};
-                            let (_, message_type, _) = match p.read_message_begin(|_| ()) {
-                                Ok(res) => res,
-                                Err(e) => {
-                                    ::tracing::error!(error = ?e);
-                                    return ::futures::future::Either::Left(
-                                        ::futures::future::ready(
-                                            ::std::result::Result::Err(e.into())
-                                        )
-                                    )
-                                }
-                            };
-                            match message_type {
-                                ::fbthrift::MessageType::Reply => {
-                                    let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::some_service::BinaryKeyedMapExn, _>, _)> =
-                                        ::tokio_shim::task::spawn_blocking_fallback_inline(move || (::fbthrift::Deserialize::read(&mut p), p));
-                                    ::futures::future::Either::Right(exn.then(
-                                        |exn| {
-                                            let result = (move || {
-                                                let (exn, mut p) = match exn {
-                                                    Ok(res) => res,
-                                                    Err(e) => {
-                                                        // spawn_blocking threads can't be cancelled, so any
-                                                        // error is a panic. This shouldn't happen, but we propagate if it does
-                                                        ::std::panic::resume_unwind(e.into_panic())
-                                                    }
-                                                };
-                                                let exn = exn?;
-                                                let result = match exn {
-                                                    crate::services::some_service::BinaryKeyedMapExn::Success(x) => {
-                                                        ::tracing::info!("success");
-                                                        ::std::result::Result::Ok(x)
-                                                    },
-                                                    crate::services::some_service::BinaryKeyedMapExn::ApplicationException(ae) => {
-                                                        ::tracing::error!(application_exception = ?ae);
-                                                        ::std::result::Result::Err(crate::errors::some_service::BinaryKeyedMapError::ApplicationException(ae))
-                                                    }
-                                                };
-                                                p.read_message_end()?;
-                                                result
-                                            })();
-                                            ::futures::future::ready(result)
-                                        }
-                                    ))
-                                }
-                                ::fbthrift::MessageType::Exception => {
-                                    let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
-                                    ::futures::future::Either::Left(
-                                        ::futures::future::ready(
-                                            ae.map_err(|e| e.into()).and_then(|ae| {
-                                                p.read_message_end().map_err(|e| e.into()).and_then(|_| {
-                                                    ::std::result::Result::Err(crate::errors::some_service::BinaryKeyedMapError::ApplicationException(ae))
-                                                })
-                                            })
-                                        )
-                                    )
-                                }
-                                ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
-                                    let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                    ::futures::future::Either::Left(
-                                        ::futures::future::ready(
-                                            p.read_message_end().map_err(|e| e.into()).and_then(
-                                            |_| {
-                                                ::std::result::Result::Err(crate::errors::some_service::BinaryKeyedMapError::ThriftError(err))
-                                            }
-                                            )
-                                        )
-                                    )
-                                }
-                            }
-                        })(de)
-                    }
-                    .instrument(::tracing::trace_span!("deserialize_response", method = "SomeService.binary_keyed_map"))
-                )
-                .boxed()
+            let call = self.transport()
+                .call(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
+                .instrument(::tracing::trace_span!("call", function = "SomeService.binary_keyed_map"));
+
+            async move {
+                let reply_env = call.await?;
+
+                let mut de = P::deserializer(reply_env);
+                // TODO: spawn deserialization
+                let res: ::std::result::Result<crate::services::some_service::BinaryKeyedMapExn, _> =
+                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+
+                match res {
+                    ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
+                    ::std::result::Result::Err(aexn) =>
+                        ::std::result::Result::Err(crate::errors::some_service::BinaryKeyedMapError::ApplicationException(aexn))
+                }
+            }
+            .boxed()
         }
+
     }
 
     impl<'a, T> SomeService for T
@@ -3479,7 +3365,6 @@ pub mod mock {
         }
     }
 
-    #[::async_trait::async_trait]
     impl<'mock> super::client::SomeService for SomeService<'mock> {
         fn bounce_map(
             &self,
@@ -3600,7 +3485,35 @@ pub mod errors {
 
         pub type BounceMapError = ::fbthrift::NonthrowingFunctionError;
 
+        impl ::std::convert::From<crate::services::some_service::BounceMapExn> for
+            ::std::result::Result<
+                include::types::SomeMap,
+                BounceMapError
+            > {
+            fn from(e: crate::services::some_service::BounceMapExn) -> Self {
+                match e {
+                    crate::services::some_service::BounceMapExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::some_service::BounceMapExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(BounceMapError::ApplicationException(aexn)),
+                }
+            }
+        }
+
         pub type BinaryKeyedMapError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::some_service::BinaryKeyedMapExn> for
+            ::std::result::Result<
+                ::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>,
+                BinaryKeyedMapError
+            > {
+            fn from(e: crate::services::some_service::BinaryKeyedMapExn) -> Self {
+                match e {
+                    crate::services::some_service::BinaryKeyedMapExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::some_service::BinaryKeyedMapExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(BinaryKeyedMapError::ApplicationException(aexn)),
+                }
+            }
+        }
 
     }
 

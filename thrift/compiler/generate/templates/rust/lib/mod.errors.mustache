@@ -44,7 +44,7 @@
         {{#service:rustFunctions}}
         {{^function:starts_interaction?}}
         {{#function:exceptions?}}
-        /// Errors for {{function:rust_name}}.
+        /// Errors for {{function:rust_name}} (client side).
         #[derive(Debug, ::thiserror::Error)]
         pub enum {{function:upcamel}}Error {
             {{#function:exceptions}}
@@ -88,9 +88,50 @@
         {{/function:exceptions?}}
         {{^function:exceptions?}}
         pub type {{function:upcamel}}Error = ::fbthrift::NonthrowingFunctionError;
-        {{/function:exceptions?}}
 
-        {{#function:returns_stream?}}{{#function:stream_exceptions?}}
+        {{/function:exceptions?}}
+        {{^function:returns_stream?}}
+        impl ::std::convert::From<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn> for
+            ::std::result::Result<
+                {{#function:return_type}}{{>lib/type}}{{/function:return_type}},
+                {{function:upcamel}}Error
+            > {
+            fn from(e: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn) -> Self {
+                match e {
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => ::std::result::Result::Ok(res),
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err({{function:upcamel}}Error::ApplicationException(aexn)),
+                    {{#function:exceptions}}
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::{{field:rust_name}}(exn) =>
+                        ::std::result::Result::Err({{function:upcamel}}Error::{{field:rust_name}}(exn)),
+                    {{/function:exceptions}}
+                }
+            }
+        }
+
+        {{/function:returns_stream?}}{{!
+        }}{{#function:returns_stream?}}{{!
+        }}{{#function:stream_has_first_response?}}
+        impl ::std::convert::From<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn> for
+            ::std::result::Result<
+                {{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/type}}{{/type:stream_first_response_type}}{{/function:return_type}},
+                {{function:upcamel}}Error
+            > {
+            fn from(e: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn) -> Self {
+                match e {
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => ::std::result::Result::Ok(res),
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err({{function:upcamel}}Error::ApplicationException(aexn)),
+                    {{#function:exceptions}}
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::{{field:rust_name}}(exn) =>
+                        ::std::result::Result::Err({{function:upcamel}}Error::{{field:rust_name}}(exn)),
+                    {{/function:exceptions}}
+                }
+            }
+        }
+
+        {{/function:stream_has_first_response?}}{{!
+        }}{{#function:stream_exceptions?}}
         #[derive(Debug, ::thiserror::Error)]
         pub enum {{function:upcamel}}StreamError {
             {{#function:stream_exceptions}}
@@ -122,9 +163,11 @@
                 {{function:upcamel}}StreamError::ApplicationException(ae)
             }
         }
+
         {{/function:stream_exceptions?}}
         {{^function:stream_exceptions?}}
         pub type {{function:upcamel}}StreamError = ::fbthrift::NonthrowingFunctionError;
+
         {{/function:stream_exceptions?}}{{/function:returns_stream?}}
         {{/function:starts_interaction?}}
         {{/service:rustFunctions}}

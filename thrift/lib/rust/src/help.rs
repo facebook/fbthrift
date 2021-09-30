@@ -18,8 +18,9 @@
 // code generator.
 
 use crate::{
-    serialize, ContextStack, MessageType, Protocol, ProtocolEncodedFinal, ProtocolWriter,
-    RequestContext, ResultInfo, ResultType, Serialize, SerializedMessage,
+    serialize, ApplicationException, ContextStack, Deserialize, MessageType, Protocol,
+    ProtocolEncodedFinal, ProtocolReader, ProtocolWriter, RequestContext, ResultInfo, ResultType,
+    Serialize, SerializedMessage,
 };
 use anyhow::{bail, Result};
 use std::ffi::CStr;
@@ -112,4 +113,28 @@ where
     });
 
     Ok(envelope)
+}
+
+/// Deserialize a client response. This deserializes the envelope then
+/// deserializes eitehr a reply or an ApplicationException.
+pub fn deserialize_response_envelope<P, T>(
+    p: &mut P::Deserializer,
+) -> anyhow::Result<Result<T, ApplicationException>>
+where
+    P: Protocol,
+    T: Deserialize<P::Deserializer>,
+{
+    let (_, message_type, _) = p.read_message_begin(|_| ())?;
+
+    let res = match message_type {
+        MessageType::Reply => Ok(T::read(p)?),
+        MessageType::Exception => Err(ApplicationException::read(p)?),
+        MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
+            bail!("Unwanted message type `{:?}`", message_type)
+        }
+    };
+
+    p.read_message_end()?;
+
+    Ok(res)
 }
