@@ -2481,13 +2481,12 @@ pub mod errors {
         pub type DoBlandError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::raiser::DoBlandExn> for
-            ::std::result::Result<
-                (),
-                DoBlandError
-            > {
+            ::std::result::Result<(), DoBlandError>
+        {
             fn from(e: crate::services::raiser::DoBlandExn) -> Self {
                 match e {
-                    crate::services::raiser::DoBlandExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::raiser::DoBlandExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::raiser::DoBlandExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DoBlandError::ApplicationException(aexn)),
                 }
@@ -2566,13 +2565,12 @@ pub mod errors {
             }
         }
         impl ::std::convert::From<crate::services::raiser::DoRaiseExn> for
-            ::std::result::Result<
-                (),
-                DoRaiseError
-            > {
+            ::std::result::Result<(), DoRaiseError>
+        {
             fn from(e: crate::services::raiser::DoRaiseExn) -> Self {
                 match e {
-                    crate::services::raiser::DoRaiseExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::raiser::DoRaiseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::raiser::DoRaiseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DoRaiseError::ApplicationException(aexn)),
                     crate::services::raiser::DoRaiseExn::b(exn) =>
@@ -2588,13 +2586,12 @@ pub mod errors {
         pub type Get200Error = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::raiser::Get200Exn> for
-            ::std::result::Result<
-                ::std::string::String,
-                Get200Error
-            > {
+            ::std::result::Result<::std::string::String, Get200Error>
+        {
             fn from(e: crate::services::raiser::Get200Exn) -> Self {
                 match e {
-                    crate::services::raiser::Get200Exn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::raiser::Get200Exn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::raiser::Get200Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(Get200Error::ApplicationException(aexn)),
                 }
@@ -2673,13 +2670,12 @@ pub mod errors {
             }
         }
         impl ::std::convert::From<crate::services::raiser::Get500Exn> for
-            ::std::result::Result<
-                ::std::string::String,
-                Get500Error
-            > {
+            ::std::result::Result<::std::string::String, Get500Error>
+        {
             fn from(e: crate::services::raiser::Get500Exn) -> Self {
                 match e {
-                    crate::services::raiser::Get500Exn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::raiser::Get500Exn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::raiser::Get500Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(Get500Error::ApplicationException(aexn)),
                     crate::services::raiser::Get500Exn::f(exn) =>

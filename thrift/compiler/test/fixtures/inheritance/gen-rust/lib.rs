@@ -2015,13 +2015,12 @@ pub mod errors {
         pub type DoRootError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_root::DoRootExn> for
-            ::std::result::Result<
-                (),
-                DoRootError
-            > {
+            ::std::result::Result<(), DoRootError>
+        {
             fn from(e: crate::services::my_root::DoRootExn) -> Self {
                 match e {
-                    crate::services::my_root::DoRootExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_root::DoRootExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_root::DoRootExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DoRootError::ApplicationException(aexn)),
                 }
@@ -2036,13 +2035,12 @@ pub mod errors {
         pub type DoMidError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_node::DoMidExn> for
-            ::std::result::Result<
-                (),
-                DoMidError
-            > {
+            ::std::result::Result<(), DoMidError>
+        {
             fn from(e: crate::services::my_node::DoMidExn) -> Self {
                 match e {
-                    crate::services::my_node::DoMidExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_node::DoMidExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_node::DoMidExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DoMidError::ApplicationException(aexn)),
                 }
@@ -2057,13 +2055,12 @@ pub mod errors {
         pub type DoLeafError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_leaf::DoLeafExn> for
-            ::std::result::Result<
-                (),
-                DoLeafError
-            > {
+            ::std::result::Result<(), DoLeafError>
+        {
             fn from(e: crate::services::my_leaf::DoLeafExn) -> Self {
                 match e {
-                    crate::services::my_leaf::DoLeafExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_leaf::DoLeafExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_leaf::DoLeafExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DoLeafError::ApplicationException(aexn)),
                 }

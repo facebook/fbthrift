@@ -92,13 +92,12 @@
         {{/function:exceptions?}}
         {{^function:returns_stream?}}
         impl ::std::convert::From<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn> for
-            ::std::result::Result<
-                {{#function:return_type}}{{>lib/type}}{{/function:return_type}},
-                {{function:upcamel}}Error
-            > {
+            ::std::result::Result<{{#function:return_type}}{{>lib/type}}{{/function:return_type}}, {{function:upcamel}}Error>
+        {
             fn from(e: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn) -> Self {
                 match e {
-                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => ::std::result::Result::Ok(res),
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err({{function:upcamel}}Error::ApplicationException(aexn)),
                     {{#function:exceptions}}
@@ -113,13 +112,12 @@
         }}{{#function:returns_stream?}}{{!
         }}{{#function:stream_has_first_response?}}
         impl ::std::convert::From<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn> for
-            ::std::result::Result<
-                {{#function:return_type}}{{#type:stream_first_response_type}}{{>lib/type}}{{/type:stream_first_response_type}}{{/function:return_type}},
-                {{function:upcamel}}Error
-            > {
+            ::std::result::Result<{{>lib/function_stream_first_response_type}}, {{function:upcamel}}Error>
+        {
             fn from(e: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn) -> Self {
                 match e {
-                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) => ::std::result::Result::Ok(res),
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err({{function:upcamel}}Error::ApplicationException(aexn)),
                     {{#function:exceptions}}
@@ -168,7 +166,25 @@
         {{^function:stream_exceptions?}}
         pub type {{function:upcamel}}StreamError = ::fbthrift::NonthrowingFunctionError;
 
-        {{/function:stream_exceptions?}}{{/function:returns_stream?}}
+        {{/function:stream_exceptions?}}
+        impl ::std::convert::From<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn> for
+            ::std::result::Result<{{>lib/function_stream_elem_type}}, {{function:upcamel}}StreamError>
+        {
+            fn from(e: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn) -> Self {
+                match e {
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err({{function:upcamel}}StreamError::ApplicationException(aexn)),
+                    {{#function:stream_exceptions}}
+                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::{{field:rust_name}}(exn) =>
+                        ::std::result::Result::Err({{function:upcamel}}StreamError::{{field:rust_name}}(exn)),
+                    {{/function:stream_exceptions}}
+                }
+            }
+        }
+
+        {{/function:returns_stream?}}
         {{/function:starts_interaction?}}
         {{/service:rustFunctions}}
     }

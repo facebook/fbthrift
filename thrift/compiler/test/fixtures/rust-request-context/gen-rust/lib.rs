@@ -2083,8 +2083,11 @@ pub mod client {
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
+            use ::futures::StreamExt as _;
+            use ::fbthrift::Deserialize as _;
+
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.streamById";
@@ -2099,60 +2102,34 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
-            use futures::StreamExt;
-
-            self.transport()
+            let call_stream = self.transport()
                 .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
-                .instrument(::tracing::info_span!("call_stream", method = "MyService.streamById"))
-                .map_err(::std::convert::From::from)
-                .and_then(|(_initial_response, stream)|
-                    ::tracing::trace_span!("deserialize_result").in_scope(|| {
-                    let new_stream: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream<
-                    Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError>> + ::std::marker::Send + 'static >> = ::std::boxed::Box::pin(stream.then(
-                        |stream_item_response| {
-                            match stream_item_response {
-                                Err(e) => {
-                                    ::futures::future::Either::Left(
-                                        ::futures::future::ready(
-                                            ::std::result::Result::Err(crate::errors::my_service::StreamByIdStreamError::from(e))
-                                        )
-                                    )
-                                },
-                                Ok(stream_item) => {
-                                    let de = P::deserializer(stream_item);
-                                    (move |mut p: P::Deserializer| {
-                                        let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::StreamByIdStreamExn, _>, _)> =
-                                            ::tokio_shim::task::spawn_blocking_fallback_inline(|| (::fbthrift::Deserialize::read(&mut p), p));
-                                        ::futures::future::Either::Right(exn.then(
-                                            |exn| {
-                                                let result = (move || {
-                                                    let (exn, _) = match exn {
-                                                      Ok(res) => res,
-                                                      Err(e) => {
-                                                          // spawn_blocking threads can't be cancelled, so any
-                                                          // error is a panic. This shouldn't happen, but we propagate if it does
-                                                          ::std::panic::resume_unwind(e.into_panic())
-                                                      }
-                                                  };
-                                                  let exn = exn?;
-                                                  let result = match exn {
-                                                      crate::services::my_service::StreamByIdStreamExn::Success(x) => ::std::result::Result::Ok(x),
-                                                      crate::services::my_service::StreamByIdStreamExn::ApplicationException(ae) => {
-                                                          ::std::result::Result::Err(crate::errors::my_service::StreamByIdStreamError::ApplicationException(ae))
-                                                      }
-                                                  };
-                                                  result
-                                                })();
-                                                ::futures::future::ready(result)
-                                              }))
-                                    })(de)
-                                }
+                .instrument(::tracing::trace_span!("call_stream", method = "MyService.streamById"));
+
+            async move {
+                let (_initial, stream) = call_stream.await?;
+
+                let new_stream = stream.then(|item_res| {
+                    async move {
+                        match item_res {
+                            ::std::result::Result::Err(err) =>
+                                ::std::result::Result::Err(crate::errors::my_service::StreamByIdStreamError::from(err)),
+                            ::std::result::Result::Ok(item_enc) => {
+                                let mut de = P::deserializer(item_enc);
+                                let res = crate::services::my_service::StreamByIdStreamExn::read(&mut de)?;
+
+                                let item: ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError> =
+                                    ::std::convert::From::from(res);
+                                item
                             }
                         }
-                    ));
-                    ::futures::future::ready(::std::result::Result::Ok(new_stream))
-                }))
-                .boxed()
+                    }
+                })
+                .boxed();
+
+                ::std::result::Result::Ok(new_stream)
+            }
+            .boxed()
         }
 
 
@@ -2162,8 +2139,11 @@ pub mod client {
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >>, crate::errors::my_service::StreamByIdWithExceptionError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
+            use ::futures::StreamExt as _;
+            use ::fbthrift::Deserialize as _;
+
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.streamByIdWithException";
@@ -2178,63 +2158,34 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
-            use futures::StreamExt;
-
-            self.transport()
+            let call_stream = self.transport()
                 .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
-                .instrument(::tracing::info_span!("call_stream", method = "MyService.streamByIdWithException"))
-                .map_err(::std::convert::From::from)
-                .and_then(|(_initial_response, stream)|
-                    ::tracing::trace_span!("deserialize_result").in_scope(|| {
-                    let new_stream: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream<
-                    Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError>> + ::std::marker::Send + 'static >> = ::std::boxed::Box::pin(stream.then(
-                        |stream_item_response| {
-                            match stream_item_response {
-                                Err(e) => {
-                                    ::futures::future::Either::Left(
-                                        ::futures::future::ready(
-                                            ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithExceptionStreamError::from(e))
-                                        )
-                                    )
-                                },
-                                Ok(stream_item) => {
-                                    let de = P::deserializer(stream_item);
-                                    (move |mut p: P::Deserializer| {
-                                        let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::StreamByIdWithExceptionStreamExn, _>, _)> =
-                                            ::tokio_shim::task::spawn_blocking_fallback_inline(|| (::fbthrift::Deserialize::read(&mut p), p));
-                                        ::futures::future::Either::Right(exn.then(
-                                            |exn| {
-                                                let result = (move || {
-                                                    let (exn, _) = match exn {
-                                                      Ok(res) => res,
-                                                      Err(e) => {
-                                                          // spawn_blocking threads can't be cancelled, so any
-                                                          // error is a panic. This shouldn't happen, but we propagate if it does
-                                                          ::std::panic::resume_unwind(e.into_panic())
-                                                      }
-                                                  };
-                                                  let exn = exn?;
-                                                  let result = match exn {
-                                                      crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(x) => ::std::result::Result::Ok(x),
-                                                      crate::services::my_service::StreamByIdWithExceptionStreamExn::e(err) => {
-                                                          ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithExceptionStreamError::e(err))
-                                                      }
-                                                      crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(ae) => {
-                                                          ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithExceptionStreamError::ApplicationException(ae))
-                                                      }
-                                                  };
-                                                  result
-                                                })();
-                                                ::futures::future::ready(result)
-                                              }))
-                                    })(de)
-                                }
+                .instrument(::tracing::trace_span!("call_stream", method = "MyService.streamByIdWithException"));
+
+            async move {
+                let (_initial, stream) = call_stream.await?;
+
+                let new_stream = stream.then(|item_res| {
+                    async move {
+                        match item_res {
+                            ::std::result::Result::Err(err) =>
+                                ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithExceptionStreamError::from(err)),
+                            ::std::result::Result::Ok(item_enc) => {
+                                let mut de = P::deserializer(item_enc);
+                                let res = crate::services::my_service::StreamByIdWithExceptionStreamExn::read(&mut de)?;
+
+                                let item: ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError> =
+                                    ::std::convert::From::from(res);
+                                item
                             }
                         }
-                    ));
-                    ::futures::future::ready(::std::result::Result::Ok(new_stream))
-                }))
-                .boxed()
+                    }
+                })
+                .boxed();
+
+                ::std::result::Result::Ok(new_stream)
+            }
+            .boxed()
         }
 
 
@@ -2244,8 +2195,11 @@ pub mod client {
             arg_id: ::std::primitive::i64,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(crate::types::MyDataItem, ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >>), crate::errors::my_service::StreamByIdWithResponseError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
+            use ::futures::StreamExt as _;
+            use ::fbthrift::Deserialize as _;
+
             const_cstr! {
                 SERVICE_NAME = "MyService";
                 METHOD_NAME = "MyService.streamByIdWithResponse";
@@ -2260,130 +2214,40 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
-            use futures::StreamExt;
-
-            self.transport()
+            let call_stream = self.transport()
                 .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
-                .instrument(::tracing::info_span!("call_stream", method = "MyService.streamByIdWithResponse"))
-                .map_err(::std::convert::From::from)
-                .and_then(|(initial_response, stream)|
-                    ::tracing::trace_span!("deserialize_result").in_scope(|| {
-                    let new_stream: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream<
-                    Item = ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError>> + ::std::marker::Send + 'static >> = ::std::boxed::Box::pin(stream.then(
-                        |stream_item_response| {
-                            match stream_item_response {
-                                Err(e) => {
-                                    ::futures::future::Either::Left(
-                                        ::futures::future::ready(
-                                            ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseStreamError::from(e))
-                                        )
-                                    )
-                                },
-                                Ok(stream_item) => {
-                                    let de = P::deserializer(stream_item);
-                                    (move |mut p: P::Deserializer| {
-                                        let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::StreamByIdWithResponseStreamExn, _>, _)> =
-                                            ::tokio_shim::task::spawn_blocking_fallback_inline(|| (::fbthrift::Deserialize::read(&mut p), p));
-                                        ::futures::future::Either::Right(exn.then(
-                                            |exn| {
-                                                let result = (move || {
-                                                    let (exn, _) = match exn {
-                                                      Ok(res) => res,
-                                                      Err(e) => {
-                                                          // spawn_blocking threads can't be cancelled, so any
-                                                          // error is a panic. This shouldn't happen, but we propagate if it does
-                                                          ::std::panic::resume_unwind(e.into_panic())
-                                                      }
-                                                  };
-                                                  let exn = exn?;
-                                                  let result = match exn {
-                                                      crate::services::my_service::StreamByIdWithResponseStreamExn::Success(x) => ::std::result::Result::Ok(x),
-                                                      crate::services::my_service::StreamByIdWithResponseStreamExn::ApplicationException(ae) => {
-                                                          ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseStreamError::ApplicationException(ae))
-                                                      }
-                                                  };
-                                                  result
-                                                })();
-                                                ::futures::future::ready(result)
-                                              }))
-                                    })(de)
-                                }
+                .instrument(::tracing::trace_span!("call_stream", method = "MyService.streamByIdWithResponse"));
+
+            async move {
+                let (_initial, stream) = call_stream.await?;
+
+                let new_stream = stream.then(|item_res| {
+                    async move {
+                        match item_res {
+                            ::std::result::Result::Err(err) =>
+                                ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseStreamError::from(err)),
+                            ::std::result::Result::Ok(item_enc) => {
+                                let mut de = P::deserializer(item_enc);
+                                let res = crate::services::my_service::StreamByIdWithResponseStreamExn::read(&mut de)?;
+
+                                let item: ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError> =
+                                    ::std::convert::From::from(res);
+                                item
                             }
                         }
-                    ));
-                    let de = P::deserializer(initial_response);
-                    (move |mut p: P::Deserializer| {
-                        use ::fbthrift::{ProtocolReader as _};
-                        let (_, message_type, _) = match p.read_message_begin(|_| ()) {
-                            Ok(res) => res,
-                            Err(e) => return ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ::std::result::Result::Err(e.into())
-                                    )
-                                )
-                        };
-                        match message_type {
-                            ::fbthrift::MessageType::Reply => {
-                                let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::my_service::StreamByIdWithResponseExn, _>, _)> = ::tokio_shim::task::spawn_blocking_fallback_inline(move || {
-                                  (::fbthrift::Deserialize::read(&mut p), p)
-                                });
-                                ::futures::future::Either::Right(exn.then(
-                                    |exn| {
-                                        let result = (move || {
-                                            let (exn, mut p) = match exn {
-                                                Ok(res) => res,
-                                                Err(e) => {
-                                                    // spawn_blocking threads can't be cancelled, so any
-                                                    // error is a panic. This shouldn't happen, but we propagate if it does
-                                                    ::std::panic::resume_unwind(e.into_panic())
-                                                }
-                                            };
-                                            let exn = exn?;
-                                            let result = match exn {
-                                                crate::services::my_service::StreamByIdWithResponseExn::Success(x) => ::std::result::Result::Ok(
-                                                    (x, new_stream)
-                                                ),
-                                                crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(ae) => {
-                                                    ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseError::ApplicationException(ae))
-                                                }
-                                            };
-                                            p.read_message_end()?;
-                                            result
-                                        })();
-                                        ::futures::future::ready(result)
-                                    }
-                                ))
-                            }
-                            ::fbthrift::MessageType::Exception => {
-                                let ae: ::std::result::Result<::fbthrift::ApplicationException, _> = ::fbthrift::Deserialize::read(&mut p);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        ae.map_err(|e| e.into()).and_then(|ae| {
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                              ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseError::ApplicationException(ae))
-                                          }
-                                        )
-                                        })
-                                    )
-                                )
-                            }
-                            ::fbthrift::MessageType::Call | ::fbthrift::MessageType::Oneway | ::fbthrift::MessageType::InvalidMessageType => {
-                                let err = ::anyhow::anyhow!("Unexpected message type {:?}", message_type);
-                                ::futures::future::Either::Left(
-                                    ::futures::future::ready(
-                                        p.read_message_end().map_err(|e| e.into()).and_then(
-                                          |_| {
-                                            ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseError::ThriftError(err))
-                                          }
-                                        )
-                                    )
-                                )
-                            }
-                        }
-                    })(de)
-                }))
-                .boxed()
+                    }
+                })
+                .boxed();
+
+                let mut de = P::deserializer(_initial);
+                let res: crate::services::my_service::StreamByIdWithResponseExn =
+                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)??;
+
+                let initial: ::std::result::Result<crate::types::MyDataItem, crate::errors::my_service::StreamByIdWithResponseError> =
+                    ::std::convert::From::from(res);
+                initial.map(move |initial| (initial, new_stream))
+            }
+            .boxed()
         }
     }
 
@@ -4004,13 +3868,12 @@ pub mod errors {
         pub type PingError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::PingExn> for
-            ::std::result::Result<
-                (),
-                PingError
-            > {
+            ::std::result::Result<(), PingError>
+        {
             fn from(e: crate::services::my_service::PingExn) -> Self {
                 match e {
-                    crate::services::my_service::PingExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::PingExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::PingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PingError::ApplicationException(aexn)),
                 }
@@ -4020,13 +3883,12 @@ pub mod errors {
         pub type GetRandomDataError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::GetRandomDataExn> for
-            ::std::result::Result<
-                ::std::string::String,
-                GetRandomDataError
-            > {
+            ::std::result::Result<::std::string::String, GetRandomDataError>
+        {
             fn from(e: crate::services::my_service::GetRandomDataExn) -> Self {
                 match e {
-                    crate::services::my_service::GetRandomDataExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::GetRandomDataExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::GetRandomDataExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetRandomDataError::ApplicationException(aexn)),
                 }
@@ -4036,13 +3898,12 @@ pub mod errors {
         pub type HasDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::HasDataByIdExn> for
-            ::std::result::Result<
-                ::std::primitive::bool,
-                HasDataByIdError
-            > {
+            ::std::result::Result<::std::primitive::bool, HasDataByIdError>
+        {
             fn from(e: crate::services::my_service::HasDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::HasDataByIdExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::HasDataByIdExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::HasDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(HasDataByIdError::ApplicationException(aexn)),
                 }
@@ -4052,13 +3913,12 @@ pub mod errors {
         pub type GetDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::GetDataByIdExn> for
-            ::std::result::Result<
-                ::std::string::String,
-                GetDataByIdError
-            > {
+            ::std::result::Result<::std::string::String, GetDataByIdError>
+        {
             fn from(e: crate::services::my_service::GetDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::GetDataByIdExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::GetDataByIdExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::GetDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetDataByIdError::ApplicationException(aexn)),
                 }
@@ -4068,13 +3928,12 @@ pub mod errors {
         pub type PutDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::PutDataByIdExn> for
-            ::std::result::Result<
-                (),
-                PutDataByIdError
-            > {
+            ::std::result::Result<(), PutDataByIdError>
+        {
             fn from(e: crate::services::my_service::PutDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::PutDataByIdExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::PutDataByIdExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::PutDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PutDataByIdError::ApplicationException(aexn)),
                 }
@@ -4084,13 +3943,12 @@ pub mod errors {
         pub type LobDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::LobDataByIdExn> for
-            ::std::result::Result<
-                (),
-                LobDataByIdError
-            > {
+            ::std::result::Result<(), LobDataByIdError>
+        {
             fn from(e: crate::services::my_service::LobDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::LobDataByIdExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::LobDataByIdExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::LobDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(LobDataByIdError::ApplicationException(aexn)),
                 }
@@ -4100,6 +3958,19 @@ pub mod errors {
         pub type StreamByIdError = ::fbthrift::NonthrowingFunctionError;
 
         pub type StreamByIdStreamError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::my_service::StreamByIdStreamExn> for
+            ::std::result::Result<crate::types::MyStruct, StreamByIdStreamError>
+        {
+            fn from(e: crate::services::my_service::StreamByIdStreamExn) -> Self {
+                match e {
+                    crate::services::my_service::StreamByIdStreamExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdStreamExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(StreamByIdStreamError::ApplicationException(aexn)),
+                }
+            }
+        }
 
         pub type StreamByIdWithExceptionError = ::fbthrift::NonthrowingFunctionError;
 
@@ -4131,16 +4002,30 @@ pub mod errors {
             }
         }
 
+        impl ::std::convert::From<crate::services::my_service::StreamByIdWithExceptionStreamExn> for
+            ::std::result::Result<crate::types::MyStruct, StreamByIdWithExceptionStreamError>
+        {
+            fn from(e: crate::services::my_service::StreamByIdWithExceptionStreamExn) -> Self {
+                match e {
+                    crate::services::my_service::StreamByIdWithExceptionStreamExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdWithExceptionStreamExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(StreamByIdWithExceptionStreamError::ApplicationException(aexn)),
+                    crate::services::my_service::StreamByIdWithExceptionStreamExn::e(exn) =>
+                        ::std::result::Result::Err(StreamByIdWithExceptionStreamError::e(exn)),
+                }
+            }
+        }
+
         pub type StreamByIdWithResponseError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::StreamByIdWithResponseExn> for
-            ::std::result::Result<
-                crate::types::MyDataItem,
-                StreamByIdWithResponseError
-            > {
+            ::std::result::Result<crate::types::MyDataItem, StreamByIdWithResponseError>
+        {
             fn from(e: crate::services::my_service::StreamByIdWithResponseExn) -> Self {
                 match e {
-                    crate::services::my_service::StreamByIdWithResponseExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdWithResponseExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::StreamByIdWithResponseExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(StreamByIdWithResponseError::ApplicationException(aexn)),
                 }
@@ -4148,6 +4033,19 @@ pub mod errors {
         }
 
         pub type StreamByIdWithResponseStreamError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::my_service::StreamByIdWithResponseStreamExn> for
+            ::std::result::Result<crate::types::MyStruct, StreamByIdWithResponseStreamError>
+        {
+            fn from(e: crate::services::my_service::StreamByIdWithResponseStreamExn) -> Self {
+                match e {
+                    crate::services::my_service::StreamByIdWithResponseStreamExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::my_service::StreamByIdWithResponseStreamExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(StreamByIdWithResponseStreamError::ApplicationException(aexn)),
+                }
+            }
+        }
 
     }
 

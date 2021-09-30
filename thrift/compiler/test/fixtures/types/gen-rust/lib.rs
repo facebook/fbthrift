@@ -3486,13 +3486,12 @@ pub mod errors {
         pub type BounceMapError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::some_service::BounceMapExn> for
-            ::std::result::Result<
-                include::types::SomeMap,
-                BounceMapError
-            > {
+            ::std::result::Result<include::types::SomeMap, BounceMapError>
+        {
             fn from(e: crate::services::some_service::BounceMapExn) -> Self {
                 match e {
-                    crate::services::some_service::BounceMapExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::some_service::BounceMapExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::some_service::BounceMapExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(BounceMapError::ApplicationException(aexn)),
                 }
@@ -3502,13 +3501,12 @@ pub mod errors {
         pub type BinaryKeyedMapError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::some_service::BinaryKeyedMapExn> for
-            ::std::result::Result<
-                ::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>,
-                BinaryKeyedMapError
-            > {
+            ::std::result::Result<::std::collections::BTreeMap<crate::types::TBinary, ::std::primitive::i64>, BinaryKeyedMapError>
+        {
             fn from(e: crate::services::some_service::BinaryKeyedMapExn) -> Self {
                 match e {
-                    crate::services::some_service::BinaryKeyedMapExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::some_service::BinaryKeyedMapExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::some_service::BinaryKeyedMapExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(BinaryKeyedMapError::ApplicationException(aexn)),
                 }

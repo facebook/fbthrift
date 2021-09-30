@@ -914,8 +914,11 @@ pub mod client {
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::errors::c::NumbersError>> + ::std::marker::Send + 'static>> {
             use ::const_cstr::const_cstr;
-            use ::futures::future::{FutureExt as _, TryFutureExt as _};
+            use ::futures::future::FutureExt as _;
             use ::tracing::Instrument as _;
+            use ::futures::StreamExt as _;
+            use ::fbthrift::Deserialize as _;
+
             const_cstr! {
                 SERVICE_NAME = "C";
                 METHOD_NAME = "C.numbers";
@@ -929,60 +932,34 @@ pub mod client {
                 ::std::result::Result::Err(err) => return ::futures::future::err(err.into()).boxed(),
             };
 
-            use futures::StreamExt;
-
-            self.transport()
+            let call_stream = self.transport()
                 .call_stream(SERVICE_NAME.as_cstr(), METHOD_NAME.as_cstr(), request_env)
-                .instrument(::tracing::info_span!("call_stream", method = "C.numbers"))
-                .map_err(::std::convert::From::from)
-                .and_then(|(_initial_response, stream)|
-                    ::tracing::trace_span!("deserialize_result").in_scope(|| {
-                    let new_stream: ::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream<
-                    Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >> = ::std::boxed::Box::pin(stream.then(
-                        |stream_item_response| {
-                            match stream_item_response {
-                                Err(e) => {
-                                    ::futures::future::Either::Left(
-                                        ::futures::future::ready(
-                                            ::std::result::Result::Err(crate::errors::c::NumbersStreamError::from(e))
-                                        )
-                                    )
-                                },
-                                Ok(stream_item) => {
-                                    let de = P::deserializer(stream_item);
-                                    (move |mut p: P::Deserializer| {
-                                        let exn: ::tokio_shim::task::JoinHandle<(Result<crate::services::c::NumbersStreamExn, _>, _)> =
-                                            ::tokio_shim::task::spawn_blocking_fallback_inline(|| (::fbthrift::Deserialize::read(&mut p), p));
-                                        ::futures::future::Either::Right(exn.then(
-                                            |exn| {
-                                                let result = (move || {
-                                                    let (exn, _) = match exn {
-                                                      Ok(res) => res,
-                                                      Err(e) => {
-                                                          // spawn_blocking threads can't be cancelled, so any
-                                                          // error is a panic. This shouldn't happen, but we propagate if it does
-                                                          ::std::panic::resume_unwind(e.into_panic())
-                                                      }
-                                                  };
-                                                  let exn = exn?;
-                                                  let result = match exn {
-                                                      crate::services::c::NumbersStreamExn::Success(x) => ::std::result::Result::Ok(x),
-                                                      crate::services::c::NumbersStreamExn::ApplicationException(ae) => {
-                                                          ::std::result::Result::Err(crate::errors::c::NumbersStreamError::ApplicationException(ae))
-                                                      }
-                                                  };
-                                                  result
-                                                })();
-                                                ::futures::future::ready(result)
-                                              }))
-                                    })(de)
-                                }
+                .instrument(::tracing::trace_span!("call_stream", method = "C.numbers"));
+
+            async move {
+                let (_initial, stream) = call_stream.await?;
+
+                let new_stream = stream.then(|item_res| {
+                    async move {
+                        match item_res {
+                            ::std::result::Result::Err(err) =>
+                                ::std::result::Result::Err(crate::errors::c::NumbersStreamError::from(err)),
+                            ::std::result::Result::Ok(item_enc) => {
+                                let mut de = P::deserializer(item_enc);
+                                let res = crate::services::c::NumbersStreamExn::read(&mut de)?;
+
+                                let item: ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError> =
+                                    ::std::convert::From::from(res);
+                                item
                             }
                         }
-                    ));
-                    ::futures::future::ready(::std::result::Result::Ok(new_stream))
-                }))
-                .boxed()
+                    }
+                })
+                .boxed();
+
+                ::std::result::Result::Ok(new_stream)
+            }
+            .boxed()
         }
 
         #[::tracing::instrument(name = "C.thing", skip_all)]
@@ -1814,13 +1791,12 @@ pub mod errors {
         pub type FError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::c::FExn> for
-            ::std::result::Result<
-                (),
-                FError
-            > {
+            ::std::result::Result<(), FError>
+        {
             fn from(e: crate::services::c::FExn) -> Self {
                 match e {
-                    crate::services::c::FExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::c::FExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::c::FExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(FError::ApplicationException(aexn)),
                 }
@@ -1830,6 +1806,19 @@ pub mod errors {
         pub type NumbersError = ::fbthrift::NonthrowingFunctionError;
 
         pub type NumbersStreamError = ::fbthrift::NonthrowingFunctionError;
+
+        impl ::std::convert::From<crate::services::c::NumbersStreamExn> for
+            ::std::result::Result<crate::types::number, NumbersStreamError>
+        {
+            fn from(e: crate::services::c::NumbersStreamExn) -> Self {
+                match e {
+                    crate::services::c::NumbersStreamExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
+                    crate::services::c::NumbersStreamExn::ApplicationException(aexn) =>
+                        ::std::result::Result::Err(NumbersStreamError::ApplicationException(aexn)),
+                }
+            }
+        }
 
         /// Errors for thing (client side).
         #[derive(Debug, ::thiserror::Error)]
@@ -1869,13 +1858,12 @@ pub mod errors {
             }
         }
         impl ::std::convert::From<crate::services::c::ThingExn> for
-            ::std::result::Result<
-                ::std::string::String,
-                ThingError
-            > {
+            ::std::result::Result<::std::string::String, ThingError>
+        {
             fn from(e: crate::services::c::ThingExn) -> Self {
                 match e {
-                    crate::services::c::ThingExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::c::ThingExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::c::ThingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ThingError::ApplicationException(aexn)),
                     crate::services::c::ThingExn::bang(exn) =>

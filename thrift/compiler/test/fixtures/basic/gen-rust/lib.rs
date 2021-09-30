@@ -4687,13 +4687,12 @@ pub mod errors {
         pub type PingError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::PingExn> for
-            ::std::result::Result<
-                (),
-                PingError
-            > {
+            ::std::result::Result<(), PingError>
+        {
             fn from(e: crate::services::my_service::PingExn) -> Self {
                 match e {
-                    crate::services::my_service::PingExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::PingExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::PingExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PingError::ApplicationException(aexn)),
                 }
@@ -4703,13 +4702,12 @@ pub mod errors {
         pub type GetRandomDataError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::GetRandomDataExn> for
-            ::std::result::Result<
-                ::std::string::String,
-                GetRandomDataError
-            > {
+            ::std::result::Result<::std::string::String, GetRandomDataError>
+        {
             fn from(e: crate::services::my_service::GetRandomDataExn) -> Self {
                 match e {
-                    crate::services::my_service::GetRandomDataExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::GetRandomDataExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::GetRandomDataExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetRandomDataError::ApplicationException(aexn)),
                 }
@@ -4719,13 +4717,12 @@ pub mod errors {
         pub type SinkError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::SinkExn> for
-            ::std::result::Result<
-                (),
-                SinkError
-            > {
+            ::std::result::Result<(), SinkError>
+        {
             fn from(e: crate::services::my_service::SinkExn) -> Self {
                 match e {
-                    crate::services::my_service::SinkExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::SinkExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::SinkExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(SinkError::ApplicationException(aexn)),
                 }
@@ -4735,13 +4732,12 @@ pub mod errors {
         pub type PutDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::PutDataByIdExn> for
-            ::std::result::Result<
-                (),
-                PutDataByIdError
-            > {
+            ::std::result::Result<(), PutDataByIdError>
+        {
             fn from(e: crate::services::my_service::PutDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::PutDataByIdExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::PutDataByIdExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::PutDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(PutDataByIdError::ApplicationException(aexn)),
                 }
@@ -4751,13 +4747,12 @@ pub mod errors {
         pub type HasDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::HasDataByIdExn> for
-            ::std::result::Result<
-                ::std::primitive::bool,
-                HasDataByIdError
-            > {
+            ::std::result::Result<::std::primitive::bool, HasDataByIdError>
+        {
             fn from(e: crate::services::my_service::HasDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::HasDataByIdExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::HasDataByIdExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::HasDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(HasDataByIdError::ApplicationException(aexn)),
                 }
@@ -4767,13 +4762,12 @@ pub mod errors {
         pub type GetDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::GetDataByIdExn> for
-            ::std::result::Result<
-                ::std::string::String,
-                GetDataByIdError
-            > {
+            ::std::result::Result<::std::string::String, GetDataByIdError>
+        {
             fn from(e: crate::services::my_service::GetDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::GetDataByIdExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::GetDataByIdExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::GetDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetDataByIdError::ApplicationException(aexn)),
                 }
@@ -4783,13 +4777,12 @@ pub mod errors {
         pub type DeleteDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::DeleteDataByIdExn> for
-            ::std::result::Result<
-                (),
-                DeleteDataByIdError
-            > {
+            ::std::result::Result<(), DeleteDataByIdError>
+        {
             fn from(e: crate::services::my_service::DeleteDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::DeleteDataByIdExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::DeleteDataByIdExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::DeleteDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(DeleteDataByIdError::ApplicationException(aexn)),
                 }
@@ -4799,13 +4792,12 @@ pub mod errors {
         pub type LobDataByIdError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::my_service::LobDataByIdExn> for
-            ::std::result::Result<
-                (),
-                LobDataByIdError
-            > {
+            ::std::result::Result<(), LobDataByIdError>
+        {
             fn from(e: crate::services::my_service::LobDataByIdExn) -> Self {
                 match e {
-                    crate::services::my_service::LobDataByIdExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::my_service::LobDataByIdExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::my_service::LobDataByIdExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(LobDataByIdError::ApplicationException(aexn)),
                 }
@@ -4820,13 +4812,12 @@ pub mod errors {
         pub type GetDataByKey0Error = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::db_mixed_stack_arguments::GetDataByKey0Exn> for
-            ::std::result::Result<
-                ::std::vec::Vec<::std::primitive::u8>,
-                GetDataByKey0Error
-            > {
+            ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, GetDataByKey0Error>
+        {
             fn from(e: crate::services::db_mixed_stack_arguments::GetDataByKey0Exn) -> Self {
                 match e {
-                    crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::db_mixed_stack_arguments::GetDataByKey0Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetDataByKey0Error::ApplicationException(aexn)),
                 }
@@ -4836,13 +4827,12 @@ pub mod errors {
         pub type GetDataByKey1Error = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::db_mixed_stack_arguments::GetDataByKey1Exn> for
-            ::std::result::Result<
-                ::std::vec::Vec<::std::primitive::u8>,
-                GetDataByKey1Error
-            > {
+            ::std::result::Result<::std::vec::Vec<::std::primitive::u8>, GetDataByKey1Error>
+        {
             fn from(e: crate::services::db_mixed_stack_arguments::GetDataByKey1Exn) -> Self {
                 match e {
-                    crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::db_mixed_stack_arguments::GetDataByKey1Exn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(GetDataByKey1Error::ApplicationException(aexn)),
                 }

@@ -1212,13 +1212,12 @@ pub mod errors {
         pub type FuncError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::service::FuncExn> for
-            ::std::result::Result<
-                ::std::primitive::i32,
-                FuncError
-            > {
+            ::std::result::Result<::std::primitive::i32, FuncError>
+        {
             fn from(e: crate::services::service::FuncExn) -> Self {
                 match e {
-                    crate::services::service::FuncExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::service::FuncExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::service::FuncExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(FuncError::ApplicationException(aexn)),
                 }

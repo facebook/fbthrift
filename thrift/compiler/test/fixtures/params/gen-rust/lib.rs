@@ -2203,13 +2203,12 @@ pub mod errors {
         pub type MapListError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::nested_containers::MapListExn> for
-            ::std::result::Result<
-                (),
-                MapListError
-            > {
+            ::std::result::Result<(), MapListError>
+        {
             fn from(e: crate::services::nested_containers::MapListExn) -> Self {
                 match e {
-                    crate::services::nested_containers::MapListExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::nested_containers::MapListExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::nested_containers::MapListExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(MapListError::ApplicationException(aexn)),
                 }
@@ -2219,13 +2218,12 @@ pub mod errors {
         pub type MapSetError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::nested_containers::MapSetExn> for
-            ::std::result::Result<
-                (),
-                MapSetError
-            > {
+            ::std::result::Result<(), MapSetError>
+        {
             fn from(e: crate::services::nested_containers::MapSetExn) -> Self {
                 match e {
-                    crate::services::nested_containers::MapSetExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::nested_containers::MapSetExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::nested_containers::MapSetExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(MapSetError::ApplicationException(aexn)),
                 }
@@ -2235,13 +2233,12 @@ pub mod errors {
         pub type ListMapError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::nested_containers::ListMapExn> for
-            ::std::result::Result<
-                (),
-                ListMapError
-            > {
+            ::std::result::Result<(), ListMapError>
+        {
             fn from(e: crate::services::nested_containers::ListMapExn) -> Self {
                 match e {
-                    crate::services::nested_containers::ListMapExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::nested_containers::ListMapExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::nested_containers::ListMapExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ListMapError::ApplicationException(aexn)),
                 }
@@ -2251,13 +2248,12 @@ pub mod errors {
         pub type ListSetError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::nested_containers::ListSetExn> for
-            ::std::result::Result<
-                (),
-                ListSetError
-            > {
+            ::std::result::Result<(), ListSetError>
+        {
             fn from(e: crate::services::nested_containers::ListSetExn) -> Self {
                 match e {
-                    crate::services::nested_containers::ListSetExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::nested_containers::ListSetExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::nested_containers::ListSetExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(ListSetError::ApplicationException(aexn)),
                 }
@@ -2267,13 +2263,12 @@ pub mod errors {
         pub type TurtlesError = ::fbthrift::NonthrowingFunctionError;
 
         impl ::std::convert::From<crate::services::nested_containers::TurtlesExn> for
-            ::std::result::Result<
-                (),
-                TurtlesError
-            > {
+            ::std::result::Result<(), TurtlesError>
+        {
             fn from(e: crate::services::nested_containers::TurtlesExn) -> Self {
                 match e {
-                    crate::services::nested_containers::TurtlesExn::Success(res) => ::std::result::Result::Ok(res),
+                    crate::services::nested_containers::TurtlesExn::Success(res) =>
+                        ::std::result::Result::Ok(res),
                     crate::services::nested_containers::TurtlesExn::ApplicationException(aexn) =>
                         ::std::result::Result::Err(TurtlesError::ApplicationException(aexn)),
                 }
