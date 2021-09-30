@@ -18,7 +18,7 @@ ghost = "0.1"
 num-derive = "0.3"
 num-traits = "0.2"
 ordered-float = { version = "1.1.1", features = ["serde"] }
-serde_json = { version = "1.0", features = ["float_roundtrip"] }
+serde_json = { version = "1.0", features = ["float_roundtrip", "unbounded_depth"] }
 thiserror = "1.0.29"
 
 [dev-dependencies]
