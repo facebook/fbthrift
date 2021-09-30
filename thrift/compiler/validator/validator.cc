@@ -71,6 +71,7 @@ void validator::set_ref_diagnostics(diagnostics_t& diagnostics) {
 
 static void fill_validators(validator_list& vs) {
   vs.add<struct_names_uniqueness_validator>();
+  vs.add<interactions_validator>();
 }
 
 bool struct_names_uniqueness_validator::visit(t_program* p) {
