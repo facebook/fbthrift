@@ -372,12 +372,12 @@ pub mod services {
 /// Client implementation for each service in `module`.
 pub mod client {
 
-    pub struct MyRootImpl<P, T> {
+    pub struct MyRootImpl<P, T, S> {
         transport: T,
-        _phantom: ::std::marker::PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
 
-    impl<P, T> MyRootImpl<P, T> {
+    impl<P, T, S> MyRootImpl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
@@ -412,13 +412,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> MyRoot for MyRootImpl<P, T>
+    impl<P, T, S> MyRoot for MyRootImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         #[::tracing::instrument(name = "MyRoot.do_root", skip_all)]
         fn do_root(
@@ -449,10 +450,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_root::DoRootExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_root::DoRootExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -495,7 +495,7 @@ pub mod client {
     /// # };
     /// ```
     impl dyn MyRoot {
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl MyRoot + ::std::marker::Send + 'static>
@@ -503,9 +503,10 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new(MyRootImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyRootImpl::<P, T, S>::new(transport))
         }
     }
 
@@ -517,24 +518,25 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_MyRoot {
         type Api = dyn MyRoot + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn MyRoot>::new(protocol, transport)
+            <dyn MyRoot>::new::<P, T, S>(protocol, transport)
         }
     }
-    pub struct MyNodeImpl<P, T> {
-        parent: crate::client::MyRootImpl<P, T>,
+    pub struct MyNodeImpl<P, T, S> {
+        parent: crate::client::MyRootImpl<P, T, S>,
     }
 
-    impl<P, T> MyNodeImpl<P, T> {
+    impl<P, T, S> MyNodeImpl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
-            let parent = crate::client::MyRootImpl::<P, T>::new(transport);
+            let parent = crate::client::MyRootImpl::<P, T, S>::new(transport);
             Self { parent }
         }
 
@@ -543,13 +545,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> ::std::convert::AsRef<dyn crate::client::MyRoot + 'static> for MyNodeImpl<P, T>
+    impl<P, T, S> ::std::convert::AsRef<dyn crate::client::MyRoot + 'static> for MyNodeImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'static)
         {
@@ -577,13 +580,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> MyNode for MyNodeImpl<P, T>
+    impl<P, T, S> MyNode for MyNodeImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         #[::tracing::instrument(name = "MyNode.do_mid", skip_all)]
         fn do_mid(
@@ -614,10 +618,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_node::DoMidExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_node::DoMidExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -661,7 +664,7 @@ pub mod client {
     /// # };
     /// ```
     impl dyn MyNode {
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl MyNode + ::std::marker::Send + 'static>
@@ -669,9 +672,10 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new(MyNodeImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyNodeImpl::<P, T, S>::new(transport))
         }
     }
 
@@ -683,24 +687,25 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_MyNode {
         type Api = dyn MyNode + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn MyNode>::new(protocol, transport)
+            <dyn MyNode>::new::<P, T, S>(protocol, transport)
         }
     }
-    pub struct MyLeafImpl<P, T> {
-        parent: crate::client::MyNodeImpl<P, T>,
+    pub struct MyLeafImpl<P, T, S> {
+        parent: crate::client::MyNodeImpl<P, T, S>,
     }
 
-    impl<P, T> MyLeafImpl<P, T> {
+    impl<P, T, S> MyLeafImpl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
-            let parent = crate::client::MyNodeImpl::<P, T>::new(transport);
+            let parent = crate::client::MyNodeImpl::<P, T, S>::new(transport);
             Self { parent }
         }
 
@@ -709,13 +714,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> ::std::convert::AsRef<dyn crate::client::MyNode + 'static> for MyLeafImpl<P, T>
+    impl<P, T, S> ::std::convert::AsRef<dyn crate::client::MyNode + 'static> for MyLeafImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         fn as_ref(&self) -> &(dyn crate::client::MyNode + 'static)
         {
@@ -723,13 +729,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> ::std::convert::AsRef<dyn crate::client::MyRoot + 'static> for MyLeafImpl<P, T>
+    impl<P, T, S> ::std::convert::AsRef<dyn crate::client::MyRoot + 'static> for MyLeafImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         fn as_ref(&self) -> &(dyn crate::client::MyRoot + 'static)
         {
@@ -757,13 +764,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> MyLeaf for MyLeafImpl<P, T>
+    impl<P, T, S> MyLeaf for MyLeafImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         #[::tracing::instrument(name = "MyLeaf.do_leaf", skip_all)]
         fn do_leaf(
@@ -794,10 +802,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_leaf::DoLeafExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_leaf::DoLeafExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -842,7 +849,7 @@ pub mod client {
     /// # };
     /// ```
     impl dyn MyLeaf {
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl MyLeaf + ::std::marker::Send + 'static>
@@ -850,9 +857,10 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new(MyLeafImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyLeafImpl::<P, T, S>::new(transport))
         }
     }
 
@@ -864,13 +872,14 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_MyLeaf {
         type Api = dyn MyLeaf + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn MyLeaf>::new(protocol, transport)
+            <dyn MyLeaf>::new::<P, T, S>(protocol, transport)
         }
     }
 

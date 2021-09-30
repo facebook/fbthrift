@@ -1139,12 +1139,12 @@ pub mod services {
 /// Client implementation for each service in `module`.
 pub mod client {
 
-    pub struct RaiserImpl<P, T> {
+    pub struct RaiserImpl<P, T, S> {
         transport: T,
-        _phantom: ::std::marker::PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
 
-    impl<P, T> RaiserImpl<P, T> {
+    impl<P, T, S> RaiserImpl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
@@ -1230,13 +1230,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> Raiser for RaiserImpl<P, T>
+    impl<P, T, S> Raiser for RaiserImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         #[::tracing::instrument(name = "Raiser.doBland", skip_all)]
         fn doBland(
@@ -1267,10 +1268,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::raiser::DoBlandExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::raiser::DoBlandExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1311,10 +1311,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::raiser::DoRaiseExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::raiser::DoRaiseExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1355,10 +1354,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::raiser::Get200Exn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::raiser::Get200Exn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1399,10 +1397,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::raiser::Get500Exn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::raiser::Get500Exn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1463,7 +1460,7 @@ pub mod client {
     /// # };
     /// ```
     impl dyn Raiser {
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl Raiser + ::std::marker::Send + 'static>
@@ -1471,9 +1468,10 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new(RaiserImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(RaiserImpl::<P, T, S>::new(transport))
         }
     }
 
@@ -1485,13 +1483,14 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_Raiser {
         type Api = dyn Raiser + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn Raiser>::new(protocol, transport)
+            <dyn Raiser>::new::<P, T, S>(protocol, transport)
         }
     }
 

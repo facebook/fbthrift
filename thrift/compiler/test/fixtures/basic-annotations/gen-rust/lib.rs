@@ -1562,12 +1562,12 @@ pub mod services {
 /// Client implementation for each service in `module`.
 pub mod client {
 
-    pub struct MyServiceImpl<P, T> {
+    pub struct MyServiceImpl<P, T, S> {
         transport: T,
-        _phantom: ::std::marker::PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
 
-    impl<P, T> MyServiceImpl<P, T> {
+    impl<P, T, S> MyServiceImpl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
@@ -1734,13 +1734,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> MyService for MyServiceImpl<P, T>
+    impl<P, T, S> MyService for MyServiceImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         #[::tracing::instrument(name = "MyService.ping", skip_all)]
         fn ping(
@@ -1771,10 +1772,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::PingExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::PingExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1815,10 +1815,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::GetRandomDataExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::GetRandomDataExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1861,10 +1860,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::HasDataByIdExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::HasDataByIdExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1907,10 +1905,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::GetDataByIdExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::GetDataByIdExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1955,10 +1952,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::PutDataByIdExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::PutDataByIdExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -2003,10 +1999,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::LobDataByIdExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::LobDataByIdExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -2047,10 +2042,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::DoNothingExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::DoNothingExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -2141,7 +2135,7 @@ pub mod client {
     /// # };
     /// ```
     impl dyn MyService {
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl MyService + ::std::marker::Send + 'static>
@@ -2149,9 +2143,10 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new(MyServiceImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyServiceImpl::<P, T, S>::new(transport))
         }
     }
 
@@ -2163,21 +2158,22 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_MyService {
         type Api = dyn MyService + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn MyService>::new(protocol, transport)
+            <dyn MyService>::new::<P, T, S>(protocol, transport)
         }
     }
-    pub struct MyServicePrioParentImpl<P, T> {
+    pub struct MyServicePrioParentImpl<P, T, S> {
         transport: T,
-        _phantom: ::std::marker::PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
 
-    impl<P, T> MyServicePrioParentImpl<P, T> {
+    impl<P, T, S> MyServicePrioParentImpl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
@@ -2229,13 +2225,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> MyServicePrioParent for MyServicePrioParentImpl<P, T>
+    impl<P, T, S> MyServicePrioParent for MyServicePrioParentImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         #[::tracing::instrument(name = "MyServicePrioParent.ping", skip_all)]
         fn ping(
@@ -2266,10 +2263,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service_prio_parent::PingExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service_prio_parent::PingExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -2310,10 +2306,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service_prio_parent::PongExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service_prio_parent::PongExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -2363,7 +2358,7 @@ pub mod client {
     /// ```
     impl dyn MyServicePrioParent {
         pub const priority: &'static ::std::primitive::str = "HIGH";
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl MyServicePrioParent + ::std::marker::Send + 'static>
@@ -2371,9 +2366,10 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new(MyServicePrioParentImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyServicePrioParentImpl::<P, T, S>::new(transport))
         }
     }
 
@@ -2385,24 +2381,25 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_MyServicePrioParent {
         type Api = dyn MyServicePrioParent + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn MyServicePrioParent>::new(protocol, transport)
+            <dyn MyServicePrioParent>::new::<P, T, S>(protocol, transport)
         }
     }
-    pub struct MyServicePrioChildImpl<P, T> {
-        parent: crate::client::MyServicePrioParentImpl<P, T>,
+    pub struct MyServicePrioChildImpl<P, T, S> {
+        parent: crate::client::MyServicePrioParentImpl<P, T, S>,
     }
 
-    impl<P, T> MyServicePrioChildImpl<P, T> {
+    impl<P, T, S> MyServicePrioChildImpl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
-            let parent = crate::client::MyServicePrioParentImpl::<P, T>::new(transport);
+            let parent = crate::client::MyServicePrioParentImpl::<P, T, S>::new(transport);
             Self { parent }
         }
 
@@ -2411,13 +2408,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> ::std::convert::AsRef<dyn crate::client::MyServicePrioParent + 'static> for MyServicePrioChildImpl<P, T>
+    impl<P, T, S> ::std::convert::AsRef<dyn crate::client::MyServicePrioParent + 'static> for MyServicePrioChildImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         fn as_ref(&self) -> &(dyn crate::client::MyServicePrioParent + 'static)
         {
@@ -2445,13 +2443,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> MyServicePrioChild for MyServicePrioChildImpl<P, T>
+    impl<P, T, S> MyServicePrioChild for MyServicePrioChildImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         #[::tracing::instrument(name = "MyServicePrioChild.pang", skip_all)]
         fn pang(
@@ -2482,10 +2481,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service_prio_child::PangExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service_prio_child::PangExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -2529,7 +2527,7 @@ pub mod client {
     /// # };
     /// ```
     impl dyn MyServicePrioChild {
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl MyServicePrioChild + ::std::marker::Send + 'static>
@@ -2537,9 +2535,10 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new(MyServicePrioChildImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyServicePrioChildImpl::<P, T, S>::new(transport))
         }
     }
 
@@ -2551,13 +2550,14 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_MyServicePrioChild {
         type Api = dyn MyServicePrioChild + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn MyServicePrioChild>::new(protocol, transport)
+            <dyn MyServicePrioChild>::new::<P, T, S>(protocol, transport)
         }
     }
 

@@ -1571,12 +1571,12 @@ pub mod services {
 /// Client implementation for each service in `module`.
 pub mod client {
 
-    pub struct MyServiceImpl<P, T> {
+    pub struct MyServiceImpl<P, T, S> {
         transport: T,
-        _phantom: ::std::marker::PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
 
-    impl<P, T> MyServiceImpl<P, T> {
+    impl<P, T, S> MyServiceImpl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
@@ -1792,13 +1792,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> MyService for MyServiceImpl<P, T>
+    impl<P, T, S> MyService for MyServiceImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         #[::tracing::instrument(name = "MyService.ping", skip_all)]
         fn ping(
@@ -1829,10 +1830,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::PingExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::PingExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1873,10 +1873,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::GetRandomDataExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::GetRandomDataExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1919,10 +1918,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::HasDataByIdExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::HasDataByIdExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1965,10 +1963,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::GetDataByIdExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::GetDataByIdExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -2013,10 +2010,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::PutDataByIdExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::PutDataByIdExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -2061,10 +2057,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::my_service::LobDataByIdExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::my_service::LobDataByIdExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -2115,8 +2110,10 @@ pub mod client {
                             ::std::result::Result::Err(err) =>
                                 ::std::result::Result::Err(crate::errors::my_service::StreamByIdStreamError::from(err)),
                             ::std::result::Result::Ok(item_enc) => {
-                                let mut de = P::deserializer(item_enc);
-                                let res = crate::services::my_service::StreamByIdStreamExn::read(&mut de)?;
+                                let res = S::spawn(move || {
+                                    let mut de = P::deserializer(item_enc);
+                                    crate::services::my_service::StreamByIdStreamExn::read(&mut de)
+                                }).await?;
 
                                 let item: ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdStreamError> =
                                     ::std::convert::From::from(res);
@@ -2171,8 +2168,10 @@ pub mod client {
                             ::std::result::Result::Err(err) =>
                                 ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithExceptionStreamError::from(err)),
                             ::std::result::Result::Ok(item_enc) => {
-                                let mut de = P::deserializer(item_enc);
-                                let res = crate::services::my_service::StreamByIdWithExceptionStreamExn::read(&mut de)?;
+                                let res = S::spawn(move || {
+                                    let mut de = P::deserializer(item_enc);
+                                    crate::services::my_service::StreamByIdWithExceptionStreamExn::read(&mut de)
+                                }).await?;
 
                                 let item: ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithExceptionStreamError> =
                                     ::std::convert::From::from(res);
@@ -2227,8 +2226,10 @@ pub mod client {
                             ::std::result::Result::Err(err) =>
                                 ::std::result::Result::Err(crate::errors::my_service::StreamByIdWithResponseStreamError::from(err)),
                             ::std::result::Result::Ok(item_enc) => {
-                                let mut de = P::deserializer(item_enc);
-                                let res = crate::services::my_service::StreamByIdWithResponseStreamExn::read(&mut de)?;
+                                let res = S::spawn(move || {
+                                    let mut de = P::deserializer(item_enc);
+                                    crate::services::my_service::StreamByIdWithResponseStreamExn::read(&mut de)
+                                }).await?;
 
                                 let item: ::std::result::Result<crate::types::MyStruct, crate::errors::my_service::StreamByIdWithResponseStreamError> =
                                     ::std::convert::From::from(res);
@@ -2239,9 +2240,9 @@ pub mod client {
                 })
                 .boxed();
 
-                let mut de = P::deserializer(_initial);
+                let de = P::deserializer(_initial);
                 let res: crate::services::my_service::StreamByIdWithResponseExn =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)??;
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
                 let initial: ::std::result::Result<crate::types::MyDataItem, crate::errors::my_service::StreamByIdWithResponseError> =
                     ::std::convert::From::from(res);
@@ -2348,7 +2349,7 @@ pub mod client {
     /// ```
     impl dyn MyService {
         pub const rust_request_context: &'static ::std::primitive::str = "1";
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl MyService + ::std::marker::Send + 'static>
@@ -2356,9 +2357,10 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new(MyServiceImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(MyServiceImpl::<P, T, S>::new(transport))
         }
     }
 
@@ -2370,13 +2372,14 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_MyService {
         type Api = dyn MyService + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn MyService>::new(protocol, transport)
+            <dyn MyService>::new::<P, T, S>(protocol, transport)
         }
     }
 

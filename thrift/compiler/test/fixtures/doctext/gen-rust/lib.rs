@@ -763,12 +763,12 @@ pub mod services {
 /// Client implementation for each service in `module`.
 pub mod client {
 
-    pub struct CImpl<P, T> {
+    pub struct CImpl<P, T, S> {
         transport: T,
-        _phantom: ::std::marker::PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
 
-    impl<P, T> CImpl<P, T> {
+    impl<P, T, S> CImpl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
@@ -856,13 +856,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> C for CImpl<P, T>
+    impl<P, T, S> C for CImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         #[::tracing::instrument(name = "C.f", skip_all)]
         fn f(
@@ -893,10 +894,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::c::FExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::c::FExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -945,8 +945,10 @@ pub mod client {
                             ::std::result::Result::Err(err) =>
                                 ::std::result::Result::Err(crate::errors::c::NumbersStreamError::from(err)),
                             ::std::result::Result::Ok(item_enc) => {
-                                let mut de = P::deserializer(item_enc);
-                                let res = crate::services::c::NumbersStreamExn::read(&mut de)?;
+                                let res = S::spawn(move || {
+                                    let mut de = P::deserializer(item_enc);
+                                    crate::services::c::NumbersStreamExn::read(&mut de)
+                                }).await?;
 
                                 let item: ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError> =
                                     ::std::convert::From::from(res);
@@ -997,10 +999,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::c::ThingExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::c::ThingExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -1061,7 +1062,7 @@ pub mod client {
     /// # };
     /// ```
     impl dyn C {
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl C + ::std::marker::Send + 'static>
@@ -1069,9 +1070,10 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new(CImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(CImpl::<P, T, S>::new(transport))
         }
     }
 
@@ -1083,13 +1085,14 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_C {
         type Api = dyn C + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn C>::new(protocol, transport)
+            <dyn C>::new::<P, T, S>(protocol, transport)
         }
     }
 

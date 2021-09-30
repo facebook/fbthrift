@@ -569,12 +569,12 @@ pub mod services {
 /// Client implementation for each service in `module`.
 pub mod client {
 
-    pub struct ServiceImpl<P, T> {
+    pub struct ServiceImpl<P, T, S> {
         transport: T,
-        _phantom: ::std::marker::PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
 
-    impl<P, T> ServiceImpl<P, T> {
+    impl<P, T, S> ServiceImpl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
@@ -624,13 +624,14 @@ pub mod client {
         }
     }
 
-    impl<P, T> Service for ServiceImpl<P, T>
+    impl<P, T, S> Service for ServiceImpl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         #[::tracing::instrument(name = "Service.func", skip_all)]
         fn func(
@@ -667,10 +668,9 @@ pub mod client {
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<crate::services::service::FuncExn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<crate::services::service::FuncExn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -719,7 +719,7 @@ pub mod client {
     /// # };
     /// ```
     impl dyn Service {
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl Service + ::std::marker::Send + 'static>
@@ -727,9 +727,10 @@ pub mod client {
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new(ServiceImpl::<P, T>::new(transport))
+            ::std::sync::Arc::new(ServiceImpl::<P, T, S>::new(transport))
         }
     }
 
@@ -741,13 +742,14 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_Service {
         type Api = dyn Service + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn Service>::new(protocol, transport)
+            <dyn Service>::new::<P, T, S>(protocol, transport)
         }
     }
 

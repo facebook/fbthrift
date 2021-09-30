@@ -23,9 +23,12 @@ use crate::{
     Serialize, SerializedMessage,
 };
 use anyhow::{bail, Result};
+use futures::future::FutureExt;
 use std::ffi::CStr;
 use std::fmt;
+use std::future::Future;
 use std::marker::PhantomData;
+use std::pin::Pin;
 
 // Note: `variants_by_number` must be sorted by the i32 values.
 pub fn enum_display(
@@ -116,25 +119,63 @@ where
 }
 
 /// Deserialize a client response. This deserializes the envelope then
-/// deserializes eitehr a reply or an ApplicationException.
+/// deserializes either a reply or an ApplicationException.
 pub fn deserialize_response_envelope<P, T>(
-    p: &mut P::Deserializer,
+    de: &mut P::Deserializer,
 ) -> anyhow::Result<Result<T, ApplicationException>>
 where
     P: Protocol,
     T: Deserialize<P::Deserializer>,
 {
-    let (_, message_type, _) = p.read_message_begin(|_| ())?;
+    let (_, message_type, _) = de.read_message_begin(|_| ())?;
 
     let res = match message_type {
-        MessageType::Reply => Ok(T::read(p)?),
-        MessageType::Exception => Err(ApplicationException::read(p)?),
+        MessageType::Reply => Ok(T::read(de)?),
+        MessageType::Exception => Err(ApplicationException::read(de)?),
         MessageType::Call | MessageType::Oneway | MessageType::InvalidMessageType => {
             bail!("Unwanted message type `{:?}`", message_type)
         }
     };
 
-    p.read_message_end()?;
+    de.read_message_end()?;
 
     Ok(res)
+}
+
+/// Abstract spawning some potentially CPU-heavy work onto a CPU thread
+pub trait Spawner: 'static {
+    fn spawn<F, R>(func: F) -> Pin<Box<dyn Future<Output = R> + Send>>
+    where
+        F: FnOnce() -> R + Send + 'static,
+        R: Send + 'static;
+}
+
+/// No-op implementation of Spawner - just run on current thread
+pub enum NoopSpawner {}
+impl Spawner for NoopSpawner {
+    #[inline]
+    fn spawn<F, R>(func: F) -> Pin<Box<dyn Future<Output = R> + Send>>
+    where
+        F: FnOnce() -> R + Send + 'static,
+        R: Send + 'static,
+    {
+        async { func() }.boxed()
+    }
+}
+
+pub async fn async_deserialize_response_envelope<P, T, S>(
+    de: P::Deserializer,
+) -> anyhow::Result<(Result<T, ApplicationException>, P::Deserializer)>
+where
+    P: Protocol,
+    P::Deserializer: Send,
+    T: Deserialize<P::Deserializer> + Send + 'static,
+    S: Spawner,
+{
+    S::spawn(move || {
+        let mut de = de;
+        let res = deserialize_response_envelope::<P, T>(&mut de);
+        res.map(|res| (res, de))
+    })
+    .await
 }

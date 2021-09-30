@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-use crate::{Framing, FramingDecoded, FramingEncodedFinal, Protocol};
+use crate::{help::Spawner, Framing, FramingDecoded, FramingEncodedFinal, Protocol};
 use futures::stream::Stream;
 use futures::{future, FutureExt};
 use std::ffi::CStr;
@@ -25,11 +25,12 @@ use std::sync::Arc;
 pub trait ClientFactory {
     type Api: ?Sized;
 
-    fn new<P, T>(protocol: P, transport: T) -> Arc<Self::Api>
+    fn new<P, T, S>(protocol: P, transport: T) -> Arc<Self::Api>
     where
         P: Protocol<Frame = T> + 'static,
         T: Transport + Sync,
-        P::Deserializer: Send;
+        P::Deserializer: Send,
+        S: Spawner;
 }
 
 pub trait Transport: Framing + Send + 'static {

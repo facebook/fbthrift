@@ -18,22 +18,22 @@
 
 {{#program:services}}
 
-    pub struct {{service:name}}Impl<P, T> {
+    pub struct {{service:name}}Impl<P, T, S> {
         {{#service:extends}}
-        parent: {{service:package}}::client::{{service:name}}Impl<P, T>,
+        parent: {{service:package}}::client::{{service:name}}Impl<P, T, S>,
         {{/service:extends}}
         {{^service:extends}}
         transport: T,
-        _phantom: ::std::marker::PhantomData<fn() -> P>,
+        _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
         {{/service:extends}}
     }
 
-    impl<P, T> {{service:name}}Impl<P, T> {
+    impl<P, T, S> {{service:name}}Impl<P, T, S> {
         pub fn new(
             transport: T,
         ) -> Self {
             {{#service:extends}}
-            let parent = {{service:package}}::client::{{service:name}}Impl::<P, T>::new(transport);
+            let parent = {{service:package}}::client::{{service:name}}Impl::<P, T, S>::new(transport);
             Self { parent }
             {{/service:extends}}
             {{^service:extends}}
@@ -55,11 +55,11 @@
     }
 
     {{#service:extendedServices}}
-    impl<P, T> {{!
+    impl<P, T, S> {{!
         }}{{#extendedService:service}}{{!
         }}::std::convert::AsRef<dyn {{extendedService:packagePrefix}}::client::{{service:name}} + 'static> {{!
         }}{{/extendedService:service}}{{!
-        }}for {{service:name}}Impl<P, T>
+        }}for {{service:name}}Impl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
@@ -67,6 +67,7 @@
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {
         fn as_ref(&self) -> &(dyn {{#extendedService:service}}{{!
             }}{{extendedService:packagePrefix}}::client::{{service:name}}{{!
@@ -131,7 +132,7 @@
     }
     {{/function:starts_interaction?}}{{/service:rustFunctions}}
 
-    impl<P, T> {{service:name}} for {{service:name}}Impl<P, T>
+    impl<P, T, S> {{service:name}} for {{service:name}}Impl<P, T, S>
     where
         P: ::fbthrift::Protocol,
         T: ::fbthrift::Transport,
@@ -139,6 +140,7 @@
         P::Frame: ::fbthrift::Framing<DecBuf = ::fbthrift::FramingDecoded<T>>,
         ::fbthrift::ProtocolEncoded<P>: ::fbthrift::BufMutExt<Final = ::fbthrift::FramingEncodedFinal<T>>,
         P::Deserializer: ::std::marker::Send,
+        S: ::fbthrift::help::Spawner,
     {{>lib/block}}{{!
         }}{{#service:rustFunctions}}
         {{^function:starts_interaction?}}
@@ -182,10 +184,9 @@
             async move {
                 let reply_env = call.await?;
 
-                let mut de = P::deserializer(reply_env);
-                // TODO: spawn deserialization
-                let res: ::std::result::Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn, _> =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)?;
+                let de = P::deserializer(reply_env);
+                let (res, _de): (::std::result::Result<{{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn, _>, _) =
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?;
 
                 match res {
                     ::std::result::Result::Ok(exn) => ::std::convert::From::from(exn),
@@ -243,8 +244,10 @@
                             ::std::result::Result::Err(err) =>
                                 ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}StreamError::from(err)),
                             ::std::result::Result::Ok(item_enc) => {
-                                let mut de = P::deserializer(item_enc);
-                                let res = {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::read(&mut de)?;
+                                let res = S::spawn(move || {
+                                    let mut de = P::deserializer(item_enc);
+                                    {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}StreamExn::read(&mut de)
+                                }).await?;
 
                                 let item: ::std::result::Result<{{!
                                     }}{{>lib/function_stream_elem_type}}, {{!
@@ -258,9 +261,9 @@
                 .boxed();
 
                 {{#function:stream_has_first_response?}}
-                let mut de = P::deserializer(_initial);
+                let de = P::deserializer(_initial);
                 let res: {{program:crate}}::services::{{service:snake}}::{{function:upcamel}}Exn =
-                    ::fbthrift::help::deserialize_response_envelope::<P, _>(&mut de)??;
+                    ::fbthrift::help::async_deserialize_response_envelope::<P, _, S>(de).await?.0?;
 
                 let initial: ::std::result::Result<{{>lib/function_stream_first_response_type}}, {{!
                     }}{{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error> =
@@ -331,7 +334,7 @@
         pub const {{annotation:rust_name}}: &'static ::std::primitive::str = {{annotation:rust_value}};
         {{/annotation:value?}}
         {{/service:annotations}}
-        pub fn new<P, T>(
+        pub fn new<P, T, S>(
             protocol: P,
             transport: T,
         ) -> ::std::sync::Arc<impl {{service:name}} + ::std::marker::Send + 'static>
@@ -339,9 +342,10 @@
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
-            ::std::sync::Arc::new({{service:name}}Impl::<P, T>::new(transport))
+            ::std::sync::Arc::new({{service:name}}Impl::<P, T, S>::new(transport))
         }
     }
 
@@ -353,13 +357,14 @@
     impl ::fbthrift::ClientFactory for make_{{service:name}} {
         type Api = dyn {{service:name}} + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
+            S: ::fbthrift::help::Spawner,
         {
-            <dyn {{service:name}}>::new(protocol, transport)
+            <dyn {{service:name}}>::new::<P, T, S>(protocol, transport)
         }
     }{{!
 }}{{/program:services}}
