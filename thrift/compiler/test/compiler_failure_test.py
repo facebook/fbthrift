@@ -583,9 +583,9 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 struct Foo {
-                1: i32 a;
-                2: i32 b;
-                3: i64 a;
+                    1: i32 a;
+                    2: i32 b;
+                    3: i64 a;
                 }
                 """
             ),
@@ -606,8 +606,8 @@ class CompilerFailureTest(unittest.TestCase):
                 struct A { 1: i32 i }
                 struct B { 2: i64 i }
                 struct C {
-                1: A a (cpp.mixin);
-                2: B b (cpp.mixin);
+                    1: A a (cpp.mixin);
+                    2: B b (cpp.mixin);
                 }
                 """
             ),
@@ -628,8 +628,8 @@ class CompilerFailureTest(unittest.TestCase):
                 struct A { 1: i32 i }
 
                 struct C {
-                1: A a (cpp.mixin);
-                2: i64 i;
+                    1: A a (cpp.mixin);
+                    2: i64 i;
                 }
                 """
             ),
@@ -649,7 +649,7 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 struct A {
-                1: A rec (cpp.ref);
+                    1: A rec (cpp.ref);
                 }
                 """
             ),
@@ -670,7 +670,7 @@ class CompilerFailureTest(unittest.TestCase):
                 """\
                 enum RefType {Unique, SharedConst, SharedMutable}
                 struct Ref {
-                  1: RefType type;
+                    1: RefType type;
                 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Ref")
                 """
             ),
@@ -683,17 +683,17 @@ class CompilerFailureTest(unittest.TestCase):
                 include "thrift/annotation/cpp.thrift"
 
                 struct Foo {
-                  1: optional Foo field1 (cpp.ref);
+                    1: optional Foo field1 (cpp.ref);
 
-                  @cpp.Ref{type = cpp.RefType.Unique}
-                  2: optional Foo field2;
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    2: optional Foo field2;
 
-                  @cpp.Ref{type = cpp.RefType.Unique}
-                  3: optional Foo field3 (cpp.ref);
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    3: optional Foo field3 (cpp.ref);
 
-                  @cpp.Ref{type = cpp.RefType.Unique}
-                  @cpp.Ref{type = cpp.RefType.Unique}
-                  4: optional Foo field4;
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    @cpp.Ref{type = cpp.RefType.Unique}
+                    4: optional Foo field4;
                 }
                 """
             ),
@@ -716,7 +716,7 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 struct ExperimentalAdapter {
-                  1: string name;
+                    1: string name;
                 } (thrift.uri = "facebook.com/thrift/annotation/cpp/ExperimentalAdapter")
                 """
             ),
@@ -731,8 +731,8 @@ class CompilerFailureTest(unittest.TestCase):
                 typedef i64 MyI64 (cpp.adapter="MyAdapter")
 
                 struct MyStruct {
-                  @cpp.ExperimentalAdapter{name="MyAdapter"}
-                  1: MyI64 my_field;
+                    @cpp.ExperimentalAdapter{name="MyAdapter"}
+                    1: MyI64 my_field;
                 }
                 """
             ),
@@ -753,7 +753,7 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 struct A {
-                1: i32 i (cpp.mixin);
+                    1: i32 i (cpp.mixin);
                 }
                 """
             ),
@@ -774,7 +774,7 @@ class CompilerFailureTest(unittest.TestCase):
                 """\
                 struct A { 1: i32 i }
                 union B {
-                1: A a (cpp.mixin);
+                    1: A a (cpp.mixin);
                 }
                 """
             ),
@@ -794,7 +794,7 @@ class CompilerFailureTest(unittest.TestCase):
                 """\
                 struct A { 1: i32 i }
                 struct B {
-                1: A a (cpp.ref = "true", cpp.mixin);
+                    1: A a (cpp.ref = "true", cpp.mixin);
                 }
                 """
             ),
@@ -873,7 +873,7 @@ class CompilerFailureTest(unittest.TestCase):
                 """\
                 struct A { 1: i32 i }
                 struct B {
-                1: optional A a (cpp.mixin);
+                    1: optional A a (cpp.mixin);
                 }
                 """
             ),
@@ -1257,7 +1257,7 @@ class CompilerFailureTest(unittest.TestCase):
             textwrap.dedent(
                 """\
                 struct Foo {
-                  1: list<i32> field (cpp.experimental.lazy)
+                    1: list<i32> field (cpp.experimental.lazy)
                 } (cpp.methods = "")
                 """
             ),
