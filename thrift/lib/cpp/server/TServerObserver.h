@@ -140,6 +140,8 @@ class TServerObserver {
 
   virtual void receivedRequest(const std::string* /*method*/) {}
 
+  virtual void admittedRequest(const std::string* /*method*/) {}
+
   virtual void queuedRequests(int32_t /*numRequests*/) {}
 
   virtual void queueTimeout() {}

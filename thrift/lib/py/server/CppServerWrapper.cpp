@@ -183,6 +183,9 @@ class CppServerObserver : public TServerObserver {
   void receivedRequest(const std::string* /*method*/) override {
     this->call("receivedRequest");
   }
+  void admittedRequest(const std::string* /*method*/) override {
+    this->call("admittedRequest");
+  }
   void queuedRequests(int32_t n) override { this->call("queuedRequests", n); }
   void queueTimeout() override { this->call("queueTimeout"); }
   void sentReply() override { this->call("sentReply"); }
