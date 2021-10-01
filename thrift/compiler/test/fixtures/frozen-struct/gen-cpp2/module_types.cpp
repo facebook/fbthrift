@@ -356,3 +356,8 @@ template uint32_t ModuleB::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 
 }} // some::ns
+
+namespace {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+}
+}

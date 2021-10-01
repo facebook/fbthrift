@@ -287,3 +287,8 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // module2
+
+namespace {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+}
+}

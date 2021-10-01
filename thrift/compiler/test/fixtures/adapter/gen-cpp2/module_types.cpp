@@ -43,7 +43,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo() :
       intField(),
       optionalIntField(),
-      intFieldWithDefault(my::Adapter1::fromThrift(static_cast<::std::int32_t>(13))) {
+      intFieldWithDefault(::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 3>(static_cast<::std::int32_t>(13), *this)) {
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -644,7 +644,7 @@ namespace cpp2 {
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> field__arg) :
+StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> field__arg) :
     field(std::move(field__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
@@ -652,7 +652,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void StructWithFieldAdapter::__clear() {
   // clear all fields
-  this->field = my::Adapter1::fromThrift(::std::int32_t());
+  this->field = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 1>(::std::int32_t(), *this);
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -701,9 +701,26 @@ template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::Com
 } // cpp2
 
 namespace {
-[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
-  ::apache::thrift::adapt_detail::validate<my::Adapter2, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::set<::std::string>>>();
-  ::apache::thrift::adapt_detail::validate<my::Adapter2, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Bar>>();
-  ::apache::thrift::adapt_detail::validate<my::Adapter2, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Baz>>();
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::cpp2::Foo>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::std::int32_t, ::cpp2::Foo>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 3, ::std::int32_t, ::cpp2::Foo>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter2, 4, ::std::set<::std::string>, ::cpp2::Foo>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter2, 5, ::std::set<::std::string>, ::cpp2::Foo>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter3, 6, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>, ::cpp2::Foo>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter3, 7, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>, ::cpp2::Foo>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 8, ::std::string, ::cpp2::Foo>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::cpp2::Baz>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter2, 4, ::std::set<::std::string>, ::cpp2::Baz>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter3, 6, ::std::map<::std::string, ::cpp2::ListWithElemAdapter>, ::cpp2::Baz>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 8, ::std::string, ::cpp2::Baz>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::cpp2::Foo, ::cpp2::Bar>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::cpp2::Foo, ::cpp2::Bar>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 5, ::cpp2::Baz, ::cpp2::Bar>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 6, ::cpp2::Baz, ::cpp2::Bar>();
+  ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::cpp2::StructWithFieldAdapter>();
+  ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::std::set<::std::string>>();
+  ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::cpp2::Bar>();
+  ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::cpp2::Baz>();
 }
 }

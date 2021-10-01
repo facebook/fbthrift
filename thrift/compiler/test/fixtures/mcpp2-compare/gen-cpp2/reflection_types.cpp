@@ -96,3 +96,8 @@ template uint32_t ReflectionStruct::serializedSizeZC<>(apache::thrift::SimpleJSO
 
 
 } // cpp2
+
+namespace {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+}
+}

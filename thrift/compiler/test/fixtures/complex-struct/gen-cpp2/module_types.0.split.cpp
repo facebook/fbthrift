@@ -971,6 +971,6 @@ template uint32_t reqXcep::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 } // cpp2
 
 namespace {
-[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
 }

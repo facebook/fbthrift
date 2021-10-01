@@ -11,3 +11,8 @@
 
 #include "thrift/compiler/test/fixtures/inheritance/gen-cpp2/module_data.h"
 
+
+namespace {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+}
+}

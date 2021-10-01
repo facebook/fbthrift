@@ -493,6 +493,6 @@ static_assert(
 } // cpp2
 
 namespace {
-[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
 }

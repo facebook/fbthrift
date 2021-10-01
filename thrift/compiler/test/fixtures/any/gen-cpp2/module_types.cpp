@@ -347,3 +347,8 @@ template uint32_t MyException::serializedSizeZC<>(apache::thrift::CompactProtoco
 
 
 } // cpp2
+
+namespace {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+}
+}

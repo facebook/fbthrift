@@ -113,4 +113,31 @@ struct IndirectionAdapter {
   }
 };
 
+struct AdaptedWithContext {
+  int64_t value = 0;
+  int16_t fieldId = 0;
+  std::string* meta = nullptr;
+};
+
+inline bool operator==(
+    const AdaptedWithContext& lhs, const AdaptedWithContext& rhs) {
+  return lhs.value == rhs.value;
+}
+
+inline bool operator<(
+    const AdaptedWithContext& lhs, const AdaptedWithContext& rhs) {
+  return lhs.value < rhs.value;
+}
+
+struct AdapterWithContext {
+  template <typename Context>
+  static AdaptedWithContext fromThriftField(int64_t value, Context&& ctx) {
+    return {value, Context::kFieldId, &*ctx.object.meta_ref()};
+  }
+
+  static int64_t toThrift(const AdaptedWithContext& adapted) {
+    return adapted.value;
+  }
+};
+
 } // namespace apache::thrift::test

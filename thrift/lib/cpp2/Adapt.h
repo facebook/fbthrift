@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <stddef.h>
 #include <functional>
 #include <type_traits>
 #include <utility>
@@ -24,9 +25,16 @@
 
 namespace apache {
 namespace thrift {
+
+template <typename Struct, int16_t FieldId>
+struct FieldAdapterContext {
+  static constexpr int16_t kFieldId = FieldId;
+  Struct& object;
+};
+
 namespace adapt_detail {
 
-// Identical to std::declval<const T&>
+// Identical to std::declval<const T&>.
 template <typename T>
 const T& cr();
 
@@ -35,9 +43,53 @@ using is_mutable_ref = folly::Conjunction<
     std::is_reference<T>,
     folly::Negation<std::is_const<std::remove_reference_t<T>>>>;
 
+// Used to detect if Adapter has the fromThriftField function which takes an
+// additional FieldAdapterContext argument.
+template <typename Adapter, typename ThriftT, typename Struct>
+using FromThriftFieldType = decltype(Adapter::fromThriftField(
+    std::declval<ThriftT>(), std::declval<FieldAdapterContext<Struct, 0>>()));
+
+// Converts a Thrift field value into an adapted type via Adapter.
+// This overload passes additional context containing the reference to the
+// Thrift object containing the field and the field ID as a second argument
+// to Adapter::fromThriftField.
+template <
+    typename Adapter,
+    int16_t FieldId,
+    typename ThriftT,
+    typename Struct,
+    std::enable_if_t<
+        folly::is_detected_v<FromThriftFieldType, Adapter, ThriftT, Struct>,
+        int> = 0>
+constexpr decltype(auto) fromThriftField(ThriftT&& value, Struct& object) {
+  return Adapter::fromThriftField(
+      std::forward<ThriftT>(value),
+      FieldAdapterContext<Struct, FieldId>{object});
+}
+
+// Converts a Thrift field value into an adapted type via Adapter.
+// This overloads does the conversion via Adapter::fromThrift and is used when
+// Adapter::fromThriftField is unavailable.
+template <
+    typename Adapter,
+    int16_t FieldId,
+    typename ThriftT,
+    typename Struct,
+    std::enable_if_t<
+        !folly::is_detected_v<FromThriftFieldType, Adapter, ThriftT, Struct>,
+        int> = 0>
+constexpr decltype(auto) fromThriftField(ThriftT&& value, Struct&) {
+  return Adapter::fromThrift(std::forward<ThriftT>(value));
+}
+
 // The type returned by the adapter for the given thrift type.
 template <typename Adapter, typename ThriftT>
 using adapted_t = decltype(Adapter::fromThrift(std::declval<ThriftT&&>()));
+
+// The type returned by the adapter for the given thrift type of a struct field.
+template <typename Adapter, int16_t FieldId, typename ThriftT, typename Struct>
+using adapted_field_t = decltype(fromThriftField<Adapter, FieldId>(
+    std::declval<ThriftT&&>(), std::declval<Struct&>()));
 
 // The type returned by the adapter for the given adapted type.
 template <typename Adapter, typename AdaptedT>
@@ -182,6 +234,16 @@ void validate() {
   equal<Adapter>(adapted, adapted);
   not_equal<Adapter>(adapted, adapted);
   less<Adapter>(adapted, adapted);
+}
+
+template <typename Adapter, typename ThriftT>
+void validateAdapter() {
+  validate<Adapter, adapted_t<Adapter, ThriftT>>();
+}
+
+template <typename Adapter, int16_t FieldID, typename ThriftT, typename Struct>
+void validateFieldAdapter() {
+  validate<Adapter, adapted_field_t<Adapter, FieldID, ThriftT, Struct>>();
 }
 
 } // namespace adapt_detail

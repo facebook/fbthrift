@@ -1076,7 +1076,7 @@ class StructWithFieldAdapter final  {
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]
-  StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> field__arg);
+  StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> field__arg);
 
   StructWithFieldAdapter(StructWithFieldAdapter&&) = default;
 
@@ -1088,7 +1088,7 @@ class StructWithFieldAdapter final  {
   StructWithFieldAdapter& operator=(const StructWithFieldAdapter&) = default;
   void __clear();
  private:
-  ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t> field;
+  ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> field;
 private:
   apache::thrift::detail::isset_bitset<1> __isset;
 
@@ -1097,22 +1097,22 @@ private:
   bool operator==(const StructWithFieldAdapter&) const;
   bool operator<(const StructWithFieldAdapter&) const;
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&> field_ref() const& {
     return {this->field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type>>
   FOLLY_ERASE ::apache::thrift::field_ref<const T&&> field_ref() const&& {
     return {std::move(this->field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&> field_ref() & {
     return {this->field, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
-  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::std::int32_t>>
+  template <typename..., typename T = ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type>>
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> field_ref() && {
     return {std::move(this->field), __isset.__fbthrift_at(folly::index_constant<0>())};
   }

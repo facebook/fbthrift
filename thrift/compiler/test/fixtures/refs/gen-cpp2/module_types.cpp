@@ -1853,3 +1853,8 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
+namespace {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+}
+}

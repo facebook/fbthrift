@@ -52,7 +52,7 @@ const std::string& type_resolver::get_storage_type_name(const t_field* node) {
     const t_type* type = &*node->type();
     auto key = std::make_pair(type, adapter);
     return detail::get_or_gen(adapter_storage_type_cache_, key, [&]() {
-      return gen_type(type, adapter);
+      return gen_type(type, adapter, node->id());
     });
   }
 
@@ -147,7 +147,9 @@ const std::string& type_resolver::default_type(t_base_type::type btype) {
 }
 
 std::string type_resolver::gen_type(
-    const t_type* node, const std::string* adapter) {
+    const t_type* node,
+    const std::string* adapter,
+    boost::optional<int16_t> field_id) {
   std::string name;
   // Find the base name.
   if (const auto* type = find_type(node)) {
@@ -159,7 +161,7 @@ std::string type_resolver::gen_type(
   }
 
   // Adapt the base name.
-  return adapter ? gen_adapted_type(*adapter, std::move(name)) : name;
+  return adapter ? gen_adapted_type(*adapter, std::move(name), field_id) : name;
 }
 
 std::string type_resolver::gen_standard_type(const t_type* node) {
@@ -286,9 +288,19 @@ std::string type_resolver::gen_sink_type(
 }
 
 std::string type_resolver::gen_adapted_type(
-    const std::string& adapter, const std::string& standard_type) {
+    const std::string& adapter,
+    const std::string& standard_type,
+    boost::optional<int16_t> field_id) {
+  if (field_id == boost::none) {
+    return detail::gen_template_type(
+        "::apache::thrift::adapt_detail::adapted_t", {adapter, standard_type});
+  }
   return detail::gen_template_type(
-      "::apache::thrift::adapt_detail::adapted_t", {adapter, standard_type});
+      "::apache::thrift::adapt_detail::adapted_field_t",
+      {adapter,
+       std::to_string(*field_id),
+       standard_type,
+       "__fbthrift_cpp2_type"});
 }
 
 } // namespace cpp

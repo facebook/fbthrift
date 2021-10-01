@@ -22,6 +22,8 @@
 #include <unordered_map>
 #include <utility>
 
+#include <boost/optional.hpp>
+
 #include <thrift/compiler/ast/t_base_type.h>
 #include <thrift/compiler/ast/t_container.h>
 #include <thrift/compiler/ast/t_field.h>
@@ -118,7 +120,10 @@ class type_resolver {
   const std::string& get_namespace(const t_program* program);
 
   // Generatating functions.
-  std::string gen_type(const t_type* node, const std::string* adapter);
+  std::string gen_type(
+      const t_type* node,
+      const std::string* adapter,
+      boost::optional<int16_t> field_id = {});
   std::string gen_standard_type(const t_type* node);
   std::string gen_storage_type(
       const std::pair<const t_type*, reference_type>& ref_type);
@@ -131,7 +136,9 @@ class type_resolver {
       const t_stream_response* node, type_resolve_fn resolve_fn);
 
   static std::string gen_adapted_type(
-      const std::string& adapter, const std::string& standard_type);
+      const std::string& adapter,
+      const std::string& standard_type,
+      boost::optional<int16_t> field_id);
 
   const std::string& resolve(type_resolve_fn resolve_fn, const t_type* node) {
     return (this->*resolve_fn)(node);

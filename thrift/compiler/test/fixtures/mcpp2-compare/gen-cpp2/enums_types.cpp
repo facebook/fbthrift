@@ -261,3 +261,8 @@ template uint32_t SomeStruct::serializedSizeZC<>(apache::thrift::SimpleJSONProto
 
 
 }}} // facebook::ns::qwerty
+
+namespace {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+}
+}

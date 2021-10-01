@@ -3033,6 +3033,6 @@ template uint32_t StructWithDoubleUnderscores::serializedSizeZC<>(apache::thrift
 }}}} // apache::thrift::fixtures::types
 
 namespace {
-[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
 }

@@ -413,3 +413,8 @@ template uint32_t SecretStruct::serializedSizeZC<>(apache::thrift::CompactProtoc
 
 
 } // cpp2
+
+namespace {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+}
+}

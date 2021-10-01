@@ -63,6 +63,11 @@ struct AdaptTestStruct {
 
   @cpp.ExperimentalAdapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
   3: i64 timeout;
+
+
+  @cpp.ExperimentalAdapter{name = "::apache::thrift::test::AdapterWithContext"}
+  4: i64 data;
+  5: string meta;
 }
 
 struct AdaptTemplatedTestStruct {

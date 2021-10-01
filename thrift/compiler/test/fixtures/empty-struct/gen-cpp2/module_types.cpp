@@ -173,3 +173,8 @@ template uint32_t Nada::serializedSizeZC<>(apache::thrift::CompactProtocolWriter
 
 
 } // cpp2
+
+namespace {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+}
+}

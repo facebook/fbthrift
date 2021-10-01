@@ -259,19 +259,24 @@ static_assert(
 
 <%/program:structs%><%!
 
-%><%! Validate adapters in typedefs.
-%><%#program:typedefs?%>
+%><%! Validate adapters in typedefs and fields. %>
 
 namespace {
-[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+<%#program:structs%><%#struct:fields%>
+<%#field:cpp_adapter%><%#field:type%>
+  ::apache::thrift::adapt_detail::validateFieldAdapter<<%!
+      %><%field:cpp_adapter%>, <%field:key%>, <%type:cpp_standard_type%>, <% > common/namespace_cpp2 %><%struct:name%>>();
+<%/field:type%><%/field:cpp_adapter%>
+<%/struct:fields%><%/program:structs%>
 <%#program:typedefs%><%#typedef:type%>
 <%#type:cpp_adapter%>
-  ::apache::thrift::adapt_detail::validate<<%type:cpp_adapter%>, <%type:cpp_type%>>();
+  ::apache::thrift::adapt_detail::validateAdapter<<%type:cpp_adapter%>, <%type:cpp_standard_type%>>();
 <%/type:cpp_adapter%>
 <%/typedef:type%><%/program:typedefs%>
 }
 }
-<%/program:typedefs?%><%!
+<%!
 
 %><%#program:tablebased?%>
 

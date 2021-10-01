@@ -517,4 +517,41 @@ TEST_F(AdapterTest, UnionCodeGen_Custom_Terse) {
 }
 } // namespace terse
 
+struct ReferenceAdapter {
+  static const int32_t& fromThrift(const int32_t&);
+};
+struct ReferenceAdapterWithContext {
+  template <typename Context>
+  static const int64_t& fromThriftField(const int64_t&, Context&&);
+};
+
+TEST_F(AdapterTest, FromThriftField) {
+  auto obj = basic::AdaptTestStruct();
+  AssertSameType<
+    decltype(adapt_detail::fromThriftField<ReferenceAdapter, 0>(0, obj)),
+    const int32_t&>();
+  AssertSameType<
+    decltype(adapt_detail::fromThriftField<ReferenceAdapterWithContext, 0>(0, obj)),
+    const int64_t&>();
+}
+
+TEST(AdaptTest, AdapterWithContext) {
+  static_assert(folly::is_detected_v<
+                adapt_detail::FromThriftFieldType,
+                AdapterWithContext,
+                int64_t,
+                basic::AdaptTestStruct>);
+
+  auto obj = basic::AdaptTestStruct();
+  obj.data_ref() = {};
+  obj.data_ref()->value = 42;
+  obj.meta_ref() = "foo";
+  auto serialized = CompactSerializer::serialize<std::string>(obj);
+  auto obj2 = basic::AdaptTestStruct();
+  CompactSerializer::deserialize(serialized, obj2);
+  EXPECT_EQ(obj2.data_ref()->value, 42);
+  EXPECT_EQ(obj2.data_ref()->fieldId, 4);
+  EXPECT_EQ(*obj2.data_ref()->meta, "foo");
+}
+
 } // namespace apache::thrift::test

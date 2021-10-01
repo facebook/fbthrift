@@ -125,3 +125,8 @@ template uint32_t BasicTypes::serializedSizeZC<>(apache::thrift::NimbleProtocolW
 
 
 } // cpp2
+
+namespace {
+FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
+}
+}

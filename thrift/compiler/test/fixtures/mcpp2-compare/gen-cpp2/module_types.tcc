@@ -660,7 +660,7 @@ _readField_MyCustomField:
   {
     ::folly::IOBuf tvalue;
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::readWithContext(*iprot, tvalue, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<CustomProtocolAdapter>(this->MyCustomField, ::std::move(tvalue));
+    this->MyCustomField = ::apache::thrift::adapt_detail::fromThriftField<CustomProtocolAdapter, 10>(::std::move(tvalue), *this);
     
   }
  this->__isset.__fbthrift_set(folly::index_constant<8>(), true);
@@ -676,7 +676,7 @@ _readField_MyOptCustomField:
   {
     ::folly::IOBuf tvalue;
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::readWithContext(*iprot, tvalue, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<CustomProtocolAdapter>(this->MyOptCustomField, ::std::move(tvalue));
+    this->MyOptCustomField = ::apache::thrift::adapt_detail::fromThriftField<CustomProtocolAdapter, 11>(::std::move(tvalue), *this);
     
   }
  this->__isset.__fbthrift_set(folly::index_constant<9>(), true);
@@ -1543,7 +1543,7 @@ void ComplexUnion::readNoXfer(Protocol_* iprot) {
           this->set_MyCustomField();
           ::folly::IOBuf tvalue;
           ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::readWithContext(*iprot, tvalue, _readState);
-          ::apache::thrift::adapt_detail::fromThrift<CustomProtocolAdapter>(value_.MyCustomField, ::std::move(tvalue));
+          value_.MyCustomField = ::apache::thrift::adapt_detail::fromThriftField<CustomProtocolAdapter, 27>(::std::move(tvalue), *this);
           
         } else {
           _readState.skip(iprot);
@@ -2464,7 +2464,7 @@ _readField_MyCustomField:
   {
     ::folly::IOBuf tvalue;
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::readWithContext(*iprot, tvalue, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<CustomProtocolAdapter>(this->MyCustomField, ::std::move(tvalue));
+    this->MyCustomField = ::apache::thrift::adapt_detail::fromThriftField<CustomProtocolAdapter, 20>(::std::move(tvalue), *this);
     
   }
  this->__isset.__fbthrift_set(folly::index_constant<12>(), true);
@@ -2480,7 +2480,7 @@ _readField_MyOptCustomField:
   {
     ::folly::IOBuf tvalue;
     ::apache::thrift::detail::pm::protocol_methods<::apache::thrift::type_class::binary, ::folly::IOBuf>::readWithContext(*iprot, tvalue, _readState);
-    ::apache::thrift::adapt_detail::fromThrift<CustomProtocolAdapter>(this->MyOptCustomField, ::std::move(tvalue));
+    this->MyOptCustomField = ::apache::thrift::adapt_detail::fromThriftField<CustomProtocolAdapter, 21>(::std::move(tvalue), *this);
     
   }
  this->__isset.__fbthrift_set(folly::index_constant<13>(), true);
