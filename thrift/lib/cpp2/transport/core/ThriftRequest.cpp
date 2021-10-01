@@ -18,7 +18,7 @@
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
 
-THRIFT_FLAG_DEFINE_int64(queue_time_logging_threshold_ms, 5);
+THRIFT_FLAG_DEFINE_int64(queue_time_logging_sample_rate, 1000);
 
 namespace apache {
 namespace thrift {
@@ -174,10 +174,9 @@ ResponseRpcMetadata ThriftRequestCore::makeResponseRpcMetadata(
     metadata.otherMetadata_ref() = std::move(writeHeaders);
   }
 
-  // Queueing times are only recorded if they exceed a pre-defined threshold.
-  const int64_t thresholdMs = THRIFT_FLAG(queue_time_logging_threshold_ms);
+  // Queueing times are recorded on a sampled basis.
   if (auto queueTime = stateMachine_.queueingTime(); queueTime.hasValue() &&
-      queueTime.value() > std::chrono::milliseconds(thresholdMs)) {
+      shouldSample(THRIFT_FLAG(queue_time_logging_sample_rate))) {
     auto& queueMetadata = metadata.queueMetadata_ref().ensure();
     queueMetadata.queueingTimeMs_ref() = queueTime.value().count();
     if (queueTimeoutUsed_ > std::chrono::milliseconds(0)) {
@@ -186,6 +185,13 @@ ResponseRpcMetadata ThriftRequestCore::makeResponseRpcMetadata(
   }
 
   return metadata;
+}
+
+/* static */ bool ThriftRequestCore::shouldSample(int64_t sampleRate) {
+  if (sampleRate <= 0) {
+    return false;
+  }
+  return folly::Random::oneIn(sampleRate);
 }
 
 } // namespace thrift

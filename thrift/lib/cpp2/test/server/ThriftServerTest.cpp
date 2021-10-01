@@ -2703,8 +2703,9 @@ TEST(ThriftServer, ClientOnlyTimeouts) {
 
 TEST(ThriftServerTest, QueueTimeHeaderTest) {
   using namespace ::testing;
-  // Tests that queue time metadata is returned in the THeader when
-  // queueing delay on server side is greater than pre-defined threshold.
+  // Tests that queue time metadata is returned in the THeader.
+  // Since the logging is sampled, override the sampling rate to always log.
+  THRIFT_FLAG_SET_MOCK(queue_time_logging_sample_rate, 1);
   static constexpr std::chrono::milliseconds kDefaultQueueTimeout{100};
   class QueueTimeTestHandler : public TestServiceSvIf {
    public:
@@ -2749,12 +2750,19 @@ TEST(ThriftServerTest, QueueTimeHeaderTest) {
           Gt(std::chrono::milliseconds(5)), Lt(std::chrono::milliseconds(50))));
 
   // Now send a request that will complete without any queueing.
-  // Verify that the headers are not present.
+  // Verify that the headers are still present.
   auto [resp2, header2] =
       client->header_semifuture_sendResponse(options, 100).get();
   EXPECT_EQ(resp2, "100");
-  EXPECT_FALSE(header2->getServerQueueTimeout().hasValue());
-  EXPECT_FALSE(header2->getProcessDelay().hasValue());
+  EXPECT_TRUE(header2->getServerQueueTimeout().hasValue());
+  EXPECT_TRUE(header2->getProcessDelay().hasValue());
+  // Verify that we can turn off the sampling if necessary.
+  THRIFT_FLAG_SET_MOCK(queue_time_logging_sample_rate, 0);
+  auto [resp3, header3] =
+      client->header_semifuture_sendResponse(options, 100).get();
+  EXPECT_EQ(resp3, "100");
+  EXPECT_FALSE(header3->getServerQueueTimeout().hasValue());
+  EXPECT_FALSE(header3->getProcessDelay().hasValue());
 }
 
 TEST(ThriftServer, QueueTimeoutStressTest) {
