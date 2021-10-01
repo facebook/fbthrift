@@ -112,7 +112,6 @@ struct SetterPluggableFunction {
         reinterpret_cast<intptr_t>(impl));
   }
 };
-} // namespace detail
 
 template <typename Tag, typename Ret, typename... Args>
 auto registerPluggableFunction(
@@ -131,13 +130,17 @@ auto setPluggableFunction(
       name, typeid(Tag*), defaultImpl, impl);
 }
 
+} // namespace detail
+} // namespace thrift
+} // namespace apache
+
 #define THRIFT_PLUGGABLE_FUNC(_name) THRIFT__PLUGGABLE_FUNC_##_name
 
 #define THRIFT_PLUGGABLE_FUNC_REGISTER(_ret, _name, ...)             \
   struct THRIFT__PLUGGABLE_FUNC_TAG_##_name;                         \
   _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__);          \
   static auto THRIFT_PLUGGABLE_FUNC(_name) =                         \
-      ::apache::thrift::registerPluggableFunction(                   \
+      ::apache::thrift::detail::registerPluggableFunction(           \
           #_name,                                                    \
           static_cast<THRIFT__PLUGGABLE_FUNC_TAG_##_name*>(nullptr), \
           THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name);                   \
@@ -148,11 +151,9 @@ auto setPluggableFunction(
   _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__);          \
   _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__);             \
   static auto THRIFT__PLUGGABLE_FUNC_SETTER##_name =                 \
-      ::apache::thrift::setPluggableFunction(                        \
+      ::apache::thrift::detail::setPluggableFunction(                \
           #_name,                                                    \
           static_cast<THRIFT__PLUGGABLE_FUNC_TAG_##_name*>(nullptr), \
           THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name,                    \
           THRIFT__PLUGGABLE_FUNC_IMPL_##_name);                      \
   _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__)
-} // namespace thrift
-} // namespace apache
