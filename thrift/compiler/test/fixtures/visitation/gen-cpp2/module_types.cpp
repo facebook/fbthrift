@@ -4211,7 +4211,7 @@ template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::C
 
 }} // test_cpp2::cpp_reflection
 
-namespace {
+namespace test_cpp2 { namespace cpp_reflection { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}}} // test_cpp2::cpp_reflection

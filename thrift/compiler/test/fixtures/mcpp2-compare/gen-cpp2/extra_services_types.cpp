@@ -326,7 +326,7 @@ template uint32_t containerStruct2::serializedSizeZC<>(apache::thrift::SimpleJSO
 
 }} // extra::svc
 
-namespace {
+namespace extra { namespace svc { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}}} // extra::svc

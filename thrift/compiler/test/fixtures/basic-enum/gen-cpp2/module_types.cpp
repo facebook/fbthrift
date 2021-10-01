@@ -202,7 +202,7 @@ template uint32_t MyStruct::serializedSizeZC<>(apache::thrift::CompactProtocolWr
 
 }}} // test::fixtures::enumstrict
 
-namespace {
+namespace test { namespace fixtures { namespace enumstrict { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}}}} // test::fixtures::enumstrict

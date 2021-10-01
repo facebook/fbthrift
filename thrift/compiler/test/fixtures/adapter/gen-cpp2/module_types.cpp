@@ -700,7 +700,7 @@ template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::Com
 
 } // cpp2
 
-namespace {
+namespace cpp2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 1, ::std::int32_t, ::cpp2::Foo>();
   ::apache::thrift::adapt_detail::validateFieldAdapter<my::Adapter1, 2, ::std::int32_t, ::cpp2::Foo>();
@@ -723,4 +723,4 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::cpp2::Bar>();
   ::apache::thrift::adapt_detail::validateAdapter<my::Adapter2, ::cpp2::Baz>();
 }
-}
+}} // cpp2

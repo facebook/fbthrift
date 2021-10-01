@@ -665,7 +665,7 @@ template uint32_t Banal::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 
 } // cpp2
 
-namespace {
+namespace cpp2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}} // cpp2

@@ -261,7 +261,7 @@ static_assert(
 
 %><%! Validate adapters in typedefs and fields. %>
 
-namespace {
+<% > common/namespace_cpp2_begin%> namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 <%#program:structs%><%#struct:fields%>
 <%#field:cpp_adapter%><%#field:type%>
@@ -275,7 +275,7 @@ FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 <%/type:cpp_adapter%>
 <%/typedef:type%><%/program:typedefs%>
 }
-}
+}<% > common/namespace_cpp2_end%>
 <%!
 
 %><%#program:tablebased?%>

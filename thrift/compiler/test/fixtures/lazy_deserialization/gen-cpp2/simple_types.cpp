@@ -1699,7 +1699,7 @@ template uint32_t Empty::serializedSizeZC<>(apache::thrift::CompactProtocolWrite
 
 }}} // apache::thrift::test
 
-namespace {
+namespace apache { namespace thrift { namespace test { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}}}} // apache::thrift::test

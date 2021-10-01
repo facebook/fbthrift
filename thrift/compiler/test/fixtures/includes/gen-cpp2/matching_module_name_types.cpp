@@ -113,7 +113,7 @@ static_assert(
 
 } // matching_module_name
 
-namespace {
+namespace matching_module_name { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}} // matching_module_name

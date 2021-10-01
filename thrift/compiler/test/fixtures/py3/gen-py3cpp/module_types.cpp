@@ -888,7 +888,7 @@ static_assert(
 
 }} // py3::simple
 
-namespace {
+namespace py3 { namespace simple { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}}} // py3::simple

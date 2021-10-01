@@ -288,7 +288,7 @@ static_assert(
 
 } // module2
 
-namespace {
+namespace module2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}} // module2

@@ -120,7 +120,7 @@ template uint32_t IncludedA::serializedSizeZC<>(apache::thrift::CompactProtocolW
 
 }} // some::ns
 
-namespace {
+namespace some { namespace ns { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}}} // some::ns

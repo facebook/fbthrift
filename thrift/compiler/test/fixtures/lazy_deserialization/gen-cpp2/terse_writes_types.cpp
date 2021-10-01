@@ -926,7 +926,7 @@ template uint32_t TerseOptionalLazyFoo::serializedSizeZC<>(apache::thrift::Compa
 
 }}} // apache::thrift::test
 
-namespace {
+namespace apache { namespace thrift { namespace test { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}}}} // apache::thrift::test

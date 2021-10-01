@@ -3032,7 +3032,7 @@ template uint32_t StructWithDoubleUnderscores::serializedSizeZC<>(apache::thrift
 
 }}}} // apache::thrift::fixtures::types
 
-namespace {
+namespace apache { namespace thrift { namespace fixtures { namespace types { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}}}}} // apache::thrift::fixtures::types

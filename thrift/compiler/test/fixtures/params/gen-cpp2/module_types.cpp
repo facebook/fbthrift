@@ -12,7 +12,7 @@
 #include "thrift/compiler/test/fixtures/params/gen-cpp2/module_data.h"
 
 
-namespace {
+namespace cpp2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}} // cpp2

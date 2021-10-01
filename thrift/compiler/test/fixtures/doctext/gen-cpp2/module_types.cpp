@@ -340,7 +340,7 @@ template uint32_t Bang::serializedSizeZC<>(apache::thrift::CompactProtocolWriter
 
 } // cpp2
 
-namespace {
+namespace cpp2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}} // cpp2

@@ -742,10 +742,10 @@ static_assert(
 
 }}} // test::fixtures::tablebased
 
-namespace {
+namespace test { namespace fixtures { namespace tablebased { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}}}} // test::fixtures::tablebased
 
 namespace apache {
 namespace thrift {

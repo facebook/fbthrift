@@ -1098,7 +1098,7 @@ template uint32_t optXcep::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 } // cpp2
 
-namespace {
+namespace cpp2 { namespace {
 FOLLY_MAYBE_UNUSED FOLLY_ERASE void validateAdapters() {
 }
-}
+}} // cpp2
