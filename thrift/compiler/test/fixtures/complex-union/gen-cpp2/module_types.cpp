@@ -940,3 +940,8 @@ static_assert(
     "inconsistent use of nimble option");
 
 } // cpp2
+
+namespace {
+[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+}
+}

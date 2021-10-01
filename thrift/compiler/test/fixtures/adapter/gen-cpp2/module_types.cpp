@@ -699,3 +699,11 @@ template uint32_t StructWithFieldAdapter::serializedSizeZC<>(apache::thrift::Com
 
 
 } // cpp2
+
+namespace {
+[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+  ::apache::thrift::adapt_detail::validate<my::Adapter2, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::std::set<::std::string>>>();
+  ::apache::thrift::adapt_detail::validate<my::Adapter2, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Bar>>();
+  ::apache::thrift::adapt_detail::validate<my::Adapter2, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::Baz>>();
+}
+}

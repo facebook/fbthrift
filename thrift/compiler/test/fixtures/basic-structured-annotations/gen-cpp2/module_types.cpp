@@ -963,3 +963,8 @@ template uint32_t MyUnion::serializedSizeZC<>(apache::thrift::CompactProtocolWri
 
 
 } // cpp2
+
+namespace {
+[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+}
+}

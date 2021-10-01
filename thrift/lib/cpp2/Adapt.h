@@ -174,6 +174,16 @@ constexpr size_t hash(const AdaptedT& value) {
   return adapter_hash<Adapter, AdaptedT>()(value);
 }
 
+// Validates an adapter.
+// Checking decltype(equal<Adapter>(...)) is not sufficient for validation.
+template <typename Adapter, typename AdaptedT>
+void validate() {
+  const auto adapted = AdaptedT();
+  equal<Adapter>(adapted, adapted);
+  not_equal<Adapter>(adapted, adapted);
+  less<Adapter>(adapted, adapted);
+}
+
 } // namespace adapt_detail
 } // namespace thrift
 } // namespace apache

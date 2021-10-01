@@ -3959,3 +3959,9 @@ template uint32_t AllRequiredNoExceptMoveCtrStruct::serializedSizeZC<>(apache::t
 
 
 }}} // some::valid::ns
+
+namespace {
+[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+  ::apache::thrift::adapt_detail::validate<CustomProtocolAdapter, ::apache::thrift::adapt_detail::adapted_t<CustomProtocolAdapter, ::folly::IOBuf>>();
+}
+}

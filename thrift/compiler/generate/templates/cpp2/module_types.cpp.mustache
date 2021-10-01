@@ -225,8 +225,8 @@ constexpr ::apache::thrift::detail::StructInfoN<<%struct:fields_size%>> __fbthri
   %><%/struct:fields_in_key_order%>}
 };
 <%/program:tablebased?%>
-<%! enforce that if this thrift file is generated with extern template instances
-    for simple-json protocol then all its dependencies are too %>
+<%! Enforce that if this thrift file is generated with extern template instances
+    for simple-json protocol then all its dependencies are too. %>
 <%#struct:fields%>
 <%#field:type%>
 <%#type:transitively_refers_to_struct?%>
@@ -240,8 +240,8 @@ static_assert(
 <%/field:type%>
 <%/struct:fields%>
 
-<%! if this struct is generated with extern template instances for nimble
-    protocol, enforce that all its dependencies are too %>
+<%! If this struct is generated with extern template instances for nimble
+    protocol, enforce that all its dependencies are too. %>
 <%#struct:fields%>
 <%#field:type%>
 <%#type:transitively_refers_to_struct?%>
@@ -258,6 +258,20 @@ static_assert(
 <% > common/namespace_cpp2_end%>
 
 <%/program:structs%><%!
+
+%><%! Validate adapters in typedefs.
+%><%#program:typedefs?%>
+
+namespace {
+[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+<%#program:typedefs%><%#typedef:type%>
+<%#type:cpp_adapter%>
+  ::apache::thrift::adapt_detail::validate<<%type:cpp_adapter%>, <%type:cpp_type%>>();
+<%/type:cpp_adapter%>
+<%/typedef:type%><%/program:typedefs%>
+}
+}
+<%/program:typedefs?%><%!
 
 %><%#program:tablebased?%>
 

@@ -887,3 +887,8 @@ static_assert(
     "inconsistent use of nimble option");
 
 }} // py3::simple
+
+namespace {
+[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+}
+}

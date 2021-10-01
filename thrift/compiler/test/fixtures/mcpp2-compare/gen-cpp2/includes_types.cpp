@@ -232,3 +232,8 @@ static_assert(
     "inconsistent use of nimble option");
 
 }}} // a::different::ns
+
+namespace {
+[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+}
+}

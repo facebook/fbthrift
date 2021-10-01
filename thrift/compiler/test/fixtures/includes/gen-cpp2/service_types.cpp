@@ -11,3 +11,8 @@
 
 #include "thrift/compiler/test/fixtures/includes/gen-cpp2/service_data.h"
 
+
+namespace {
+[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+}
+}

@@ -4210,3 +4210,8 @@ template uint32_t struct_with_indirections::serializedSizeZC<>(apache::thrift::C
 
 
 }} // test_cpp2::cpp_reflection
+
+namespace {
+[[maybe_unused]] FOLLY_ERASE void validate_typedefs() {
+}
+}
