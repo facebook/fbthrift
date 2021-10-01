@@ -139,6 +139,8 @@ std::unique_ptr<AsyncProcessorFactory> createDecoratedProcessorFactory(
 } // namespace
 
 #if FOLLY_HAS_COROUTINES
+// HACK: To avoid circular header includes, we define this in ThriftServer.h
+// instead of AsyncProcessor.h
 folly::coro::CancellableAsyncScope* ServiceHandler::getAsyncScope() {
   return server_->getAsyncScope();
 }
