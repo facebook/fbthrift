@@ -528,11 +528,12 @@ struct ReferenceAdapterWithContext {
 TEST_F(AdapterTest, FromThriftField) {
   auto obj = basic::AdaptTestStruct();
   AssertSameType<
-    decltype(adapt_detail::fromThriftField<ReferenceAdapter, 0>(0, obj)),
-    const int32_t&>();
+      decltype(adapt_detail::fromThriftField<ReferenceAdapter, 0>(0, obj)),
+      const int32_t&>();
   AssertSameType<
-    decltype(adapt_detail::fromThriftField<ReferenceAdapterWithContext, 0>(0, obj)),
-    const int64_t&>();
+      decltype(adapt_detail::fromThriftField<ReferenceAdapterWithContext, 0>(
+          0, obj)),
+      const int64_t&>();
 }
 
 TEST(AdaptTest, AdapterWithContext) {
