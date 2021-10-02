@@ -529,6 +529,8 @@ void Cpp2Connection::requestReceived(
     }
   });
 
+  context_.setClientType(hreq->getHeader()->getClientType());
+
   auto t2r = RequestsRegistry::makeRequest<Cpp2Request>(
       std::move(hreq),
       std::move(reqCtx),

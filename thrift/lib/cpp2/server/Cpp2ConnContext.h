@@ -248,6 +248,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
     return transportType_;
   }
 
+  std::optional<CLIENT_TYPE> getClientType() const { return clientType_; }
+
   std::optional<ClientMetadataRef> getClientMetadataRef() const {
     if (!clientMetadata_) {
       return {};
@@ -300,6 +302,8 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   void setTransportType(TransportType transportType) {
     transportType_ = transportType;
   }
+
+  void setClientType(CLIENT_TYPE clientType) { clientType_ = clientType; }
 
   void readSetupMetadata(const RequestSetupMetadata& meta) {
     if (const auto& md = meta.clientMetadata_ref()) {
@@ -401,6 +405,7 @@ class Cpp2ConnContext : public apache::thrift::server::TConnectionContext {
   const Cpp2Worker* worker_;
   InterfaceKind interfaceKind_{InterfaceKind::USER};
   std::optional<TransportType> transportType_;
+  std::optional<CLIENT_TYPE> clientType_;
   std::optional<ClientMetadata> clientMetadata_;
 };
 
