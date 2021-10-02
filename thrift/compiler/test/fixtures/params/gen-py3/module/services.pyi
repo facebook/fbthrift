@@ -20,16 +20,6 @@ class NestedContainersInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_mapList(
-        fn: _typing.Callable[
-                [_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.Sequence[int]]],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_NestedContainersInterfaceT, _typing.Mapping[int, _typing.Sequence[int]]],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def mapList(
@@ -37,16 +27,6 @@ class NestedContainersInterface(
         foo: _typing.Mapping[int, _typing.Sequence[int]]
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_mapSet(
-        fn: _typing.Callable[
-                [_NestedContainersInterfaceT, RequestContext, _typing.Mapping[int, _typing.AbstractSet[int]]],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_NestedContainersInterfaceT, _typing.Mapping[int, _typing.AbstractSet[int]]],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def mapSet(
@@ -54,16 +34,6 @@ class NestedContainersInterface(
         foo: _typing.Mapping[int, _typing.AbstractSet[int]]
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_listMap(
-        fn: _typing.Callable[
-                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Mapping[int, int]]],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_NestedContainersInterfaceT, _typing.Sequence[_typing.Mapping[int, int]]],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def listMap(
@@ -71,16 +41,6 @@ class NestedContainersInterface(
         foo: _typing.Sequence[_typing.Mapping[int, int]]
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_listSet(
-        fn: _typing.Callable[
-                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.AbstractSet[int]]],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_NestedContainersInterfaceT, _typing.Sequence[_typing.AbstractSet[int]]],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def listSet(
@@ -88,16 +48,6 @@ class NestedContainersInterface(
         foo: _typing.Sequence[_typing.AbstractSet[int]]
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_turtles(
-        fn: _typing.Callable[
-                [_NestedContainersInterfaceT, RequestContext, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_NestedContainersInterfaceT, _typing.Sequence[_typing.Sequence[_typing.Mapping[int, _typing.Mapping[int, _typing.AbstractSet[int]]]]]],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def turtles(

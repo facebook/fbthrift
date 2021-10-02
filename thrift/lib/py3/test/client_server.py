@@ -35,7 +35,6 @@ from thrift.py3.client import ClientType, get_client
 from thrift.py3.common import Protocol, RpcOptions
 from thrift.py3.exceptions import ApplicationError, TransportError
 from thrift.py3.server import (
-    RequestContext,
     ServiceInterface,
     SocketAddress,
     ThriftServer,
@@ -45,16 +44,15 @@ from thrift.py3.test.cpp_handler import CppHandler
 
 
 class Handler(TestingServiceInterface):
-    @TestingServiceInterface.pass_context_invert
-    async def invert(self, ctx: RequestContext, value: bool) -> bool:
+    async def invert(self, value: bool) -> bool:
+        ctx = get_context()
         if "from client" in ctx.read_headers:
             ctx.set_header("from server", "with love")
         return not value
 
     async def getName(self) -> str:
-        if sys.version_info[:2] >= (3, 7):
-            ctx = get_context()
-            ctx.set_header("contextvar", "true")
+        ctx = get_context()
+        ctx.set_header("contextvar", "true")
         return "Testing"
 
     async def getMethodName(self) -> str:

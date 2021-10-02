@@ -30,7 +30,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext, pass_context
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -42,8 +42,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -99,45 +98,25 @@ cdef class NestedContainersInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_mapList(fn):
-        return pass_context(fn)
-
     async def mapList(
             self,
             foo):
         raise NotImplementedError("async def mapList is not implemented")
-
-    @staticmethod
-    def pass_context_mapSet(fn):
-        return pass_context(fn)
 
     async def mapSet(
             self,
             foo):
         raise NotImplementedError("async def mapSet is not implemented")
 
-    @staticmethod
-    def pass_context_listMap(fn):
-        return pass_context(fn)
-
     async def listMap(
             self,
             foo):
         raise NotImplementedError("async def listMap is not implemented")
 
-    @staticmethod
-    def pass_context_listSet(fn):
-        return pass_context(fn)
-
     async def listSet(
             self,
             foo):
         raise NotImplementedError("async def listSet is not implemented")
-
-    @staticmethod
-    def pass_context_turtles(fn):
-        return pass_context(fn)
 
     async def turtles(
             self,
@@ -169,33 +148,24 @@ cdef api void call_cy_NestedContainers_mapList(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_foo = _module_types.Map__i32_List__i32.create(__to_shared_ptr(cmove(foo)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         NestedContainers_mapList_coro(
             self,
-            __context,
             __promise,
             arg_foo
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_mapList_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     foo
 ):
     try:
-        if ctx and getattr(self.mapList, "pass_context", False):
-            result = await self.mapList(ctx,
-                      foo)
-        else:
-            result = await self.mapList(
-                      foo)
+        result = await self.mapList(
+                    foo)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -227,33 +197,24 @@ cdef api void call_cy_NestedContainers_mapSet(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_foo = _module_types.Map__i32_Set__i32.create(__to_shared_ptr(cmove(foo)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         NestedContainers_mapSet_coro(
             self,
-            __context,
             __promise,
             arg_foo
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_mapSet_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     foo
 ):
     try:
-        if ctx and getattr(self.mapSet, "pass_context", False):
-            result = await self.mapSet(ctx,
-                      foo)
-        else:
-            result = await self.mapSet(
-                      foo)
+        result = await self.mapSet(
+                    foo)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -285,33 +246,24 @@ cdef api void call_cy_NestedContainers_listMap(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_foo = _module_types.List__Map__i32_i32.create(__to_shared_ptr(cmove(foo)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         NestedContainers_listMap_coro(
             self,
-            __context,
             __promise,
             arg_foo
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_listMap_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     foo
 ):
     try:
-        if ctx and getattr(self.listMap, "pass_context", False):
-            result = await self.listMap(ctx,
-                      foo)
-        else:
-            result = await self.listMap(
-                      foo)
+        result = await self.listMap(
+                    foo)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -343,33 +295,24 @@ cdef api void call_cy_NestedContainers_listSet(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_foo = _module_types.List__Set__i32.create(__to_shared_ptr(cmove(foo)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         NestedContainers_listSet_coro(
             self,
-            __context,
             __promise,
             arg_foo
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_listSet_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     foo
 ):
     try:
-        if ctx and getattr(self.listSet, "pass_context", False):
-            result = await self.listSet(ctx,
-                      foo)
-        else:
-            result = await self.listSet(
-                      foo)
+        result = await self.listSet(
+                    foo)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -401,33 +344,24 @@ cdef api void call_cy_NestedContainers_turtles(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_foo = _module_types.List__List__Map__i32_Map__i32_Set__i32.create(__to_shared_ptr(cmove(foo)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         NestedContainers_turtles_coro(
             self,
-            __context,
             __promise,
             arg_foo
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def NestedContainers_turtles_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     foo
 ):
     try:
-        if ctx and getattr(self.turtles, "pass_context", False):
-            result = await self.turtles(ctx,
-                      foo)
-        else:
-            result = await self.turtles(
-                      foo)
+        result = await self.turtles(
+                    foo)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(

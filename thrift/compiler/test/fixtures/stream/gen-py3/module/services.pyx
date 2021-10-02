@@ -30,7 +30,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext, pass_context
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -42,8 +42,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -333,10 +332,6 @@ cdef class PubSubStreamingServiceInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_returnstream(fn):
-        return pass_context(fn)
-
     async def returnstream(
             self,
             i32_from,
@@ -349,10 +344,6 @@ cdef class PubSubStreamingServiceInterface(
 
         return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
 
-    @staticmethod
-    def pass_context_streamthrows(fn):
-        return pass_context(fn)
-
     async def streamthrows(
             self,
             foo):
@@ -363,10 +354,6 @@ cdef class PubSubStreamingServiceInterface(
         cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
 
         return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
-
-    @staticmethod
-    def pass_context_boththrows(fn):
-        return pass_context(fn)
 
     async def boththrows(
             self,
@@ -379,10 +366,6 @@ cdef class PubSubStreamingServiceInterface(
 
         return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
 
-    @staticmethod
-    def pass_context_responseandstreamthrows(fn):
-        return pass_context(fn)
-
     async def responseandstreamthrows(
             self,
             foo):
@@ -393,10 +376,6 @@ cdef class PubSubStreamingServiceInterface(
         cdef unique_ptr[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]] streams = make_unique[pair[cServerStream[cint32_t], cServerStreamPublisher[cint32_t]]](cServerStream[cint32_t].createPublisher(pythonFuncToCppFunc(callback)))
 
         return (ServerStream_cint32_t.create(cmove(deref(streams).first)), ServerPublisher_cint32_t.create(cmove(deref(streams).second)))
-
-    @staticmethod
-    def pass_context_returnstreamFast(fn):
-        return pass_context(fn)
 
     async def returnstreamFast(
             self,
@@ -437,37 +416,27 @@ cdef api void call_cy_PubSubStreamingService_returnstream(
     arg_i32_from = i32_from
     arg_i32_to = i32_to
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         PubSubStreamingService_returnstream_coro(
             self,
-            __context,
             __promise,
             arg_i32_from,
             arg_i32_to
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def PubSubStreamingService_returnstream_coro(
     object self,
-    object ctx,
     Promise_cServerStream__cint32_t promise,
     i32_from,
     i32_to
 ):
     try:
-        if ctx and getattr(self.returnstream, "pass_context", False):
-            result = self.returnstream(ctx,
-                      i32_from,
-                      i32_to)
-        else:
-            result = self.returnstream(
-                      i32_from,
-                      i32_to)
+        result = self.returnstream(
+                    i32_from,
+                    i32_to)
         if not isinstance(result, (ServerStream, AsyncIterator)):
             result = await result
         if isinstance(result, AsyncIterator):
@@ -503,33 +472,24 @@ cdef api void call_cy_PubSubStreamingService_streamthrows(
     cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
     arg_foo = foo
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         PubSubStreamingService_streamthrows_coro(
             self,
-            __context,
             __promise,
             arg_foo
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def PubSubStreamingService_streamthrows_coro(
     object self,
-    object ctx,
     Promise_cServerStream__cint32_t promise,
     foo
 ):
     try:
-        if ctx and getattr(self.streamthrows, "pass_context", False):
-            result = self.streamthrows(ctx,
-                      foo)
-        else:
-            result = self.streamthrows(
-                      foo)
+        result = self.streamthrows(
+                    foo)
         if not isinstance(result, (ServerStream, AsyncIterator)):
             result = await result
         if isinstance(result, AsyncIterator):
@@ -565,33 +525,24 @@ cdef api void call_cy_PubSubStreamingService_boththrows(
     cdef Promise_cServerStream__cint32_t __promise = Promise_cServerStream__cint32_t.create(cmove(cPromise))
     arg_foo = foo
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         PubSubStreamingService_boththrows_coro(
             self,
-            __context,
             __promise,
             arg_foo
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def PubSubStreamingService_boththrows_coro(
     object self,
-    object ctx,
     Promise_cServerStream__cint32_t promise,
     foo
 ):
     try:
-        if ctx and getattr(self.boththrows, "pass_context", False):
-            result = self.boththrows(ctx,
-                      foo)
-        else:
-            result = self.boththrows(
-                      foo)
+        result = self.boththrows(
+                    foo)
         if not isinstance(result, (ServerStream, AsyncIterator)):
             result = await result
         if isinstance(result, AsyncIterator):
@@ -629,33 +580,24 @@ cdef api void call_cy_PubSubStreamingService_responseandstreamthrows(
     cdef Promise_cResponseAndServerStream__cint32_t_cint32_t __promise = Promise_cResponseAndServerStream__cint32_t_cint32_t.create(cmove(cPromise))
     arg_foo = foo
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         PubSubStreamingService_responseandstreamthrows_coro(
             self,
-            __context,
             __promise,
             arg_foo
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def PubSubStreamingService_responseandstreamthrows_coro(
     object self,
-    object ctx,
     Promise_cResponseAndServerStream__cint32_t_cint32_t promise,
     foo
 ):
     try:
-        if ctx and getattr(self.responseandstreamthrows, "pass_context", False):
-            result = self.responseandstreamthrows(ctx,
-                      foo)
-        else:
-            result = self.responseandstreamthrows(
-                      foo)
+        result = self.responseandstreamthrows(
+                    foo)
         result = await result
         item, result = result
         if not isinstance(result, (ServerStream, AsyncIterator)):
@@ -697,37 +639,27 @@ cdef api void call_cy_PubSubStreamingService_returnstreamFast(
     arg_i32_from = i32_from
     arg_i32_to = i32_to
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         PubSubStreamingService_returnstreamFast_coro(
             self,
-            __context,
             __promise,
             arg_i32_from,
             arg_i32_to
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def PubSubStreamingService_returnstreamFast_coro(
     object self,
-    object ctx,
     Promise_cServerStream__cint32_t promise,
     i32_from,
     i32_to
 ):
     try:
-        if ctx and getattr(self.returnstreamFast, "pass_context", False):
-            result = self.returnstreamFast(ctx,
-                      i32_from,
-                      i32_to)
-        else:
-            result = self.returnstreamFast(
-                      i32_from,
-                      i32_to)
+        result = self.returnstreamFast(
+                    i32_from,
+                    i32_to)
         if not isinstance(result, (ServerStream, AsyncIterator)):
             result = await result
         if isinstance(result, AsyncIterator):

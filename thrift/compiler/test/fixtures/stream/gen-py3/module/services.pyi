@@ -26,16 +26,6 @@ class PubSubStreamingServiceInterface(
         _module_types.ServerPublisher_cint32_t
     ]: ...
 
-    @staticmethod
-    def pass_context_returnstream(
-        fn: _typing.Callable[
-                [_PubSubStreamingServiceInterfaceT, RequestContext, int, int],
-                _typing.Coroutine[_typing.Any, int, _typing.Any]
-        ]
-    ) -> _typing.Callable[
-        [_PubSubStreamingServiceInterfaceT, int, int],
-        _typing.Coroutine[_typing.Any, int, _typing.Any]
-    ]: ...
 
     @abstractmethod
     def returnstream(
@@ -50,16 +40,6 @@ class PubSubStreamingServiceInterface(
         _module_types.ServerPublisher_cint32_t
     ]: ...
 
-    @staticmethod
-    def pass_context_streamthrows(
-        fn: _typing.Callable[
-                [_PubSubStreamingServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, int, _typing.Any]
-        ]
-    ) -> _typing.Callable[
-        [_PubSubStreamingServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, int, _typing.Any]
-    ]: ...
 
     @abstractmethod
     def streamthrows(
@@ -73,16 +53,6 @@ class PubSubStreamingServiceInterface(
         _module_types.ServerPublisher_cint32_t
     ]: ...
 
-    @staticmethod
-    def pass_context_boththrows(
-        fn: _typing.Callable[
-                [_PubSubStreamingServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, int, _typing.Any]
-        ]
-    ) -> _typing.Callable[
-        [_PubSubStreamingServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, int, _typing.Any]
-    ]: ...
 
     @abstractmethod
     def boththrows(
@@ -96,16 +66,6 @@ class PubSubStreamingServiceInterface(
         _module_types.ServerPublisher_cint32_t
     ]: ...
 
-    @staticmethod
-    def pass_context_responseandstreamthrows(
-        fn: _typing.Callable[
-                [_PubSubStreamingServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, int, _typing.Any]
-        ]
-    ) -> _typing.Callable[
-        [_PubSubStreamingServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, int, _typing.Any]
-    ]: ...
 
     @abstractmethod
     async def responseandstreamthrows(
@@ -119,16 +79,6 @@ class PubSubStreamingServiceInterface(
         _module_types.ServerPublisher_cint32_t
     ]: ...
 
-    @staticmethod
-    def pass_context_returnstreamFast(
-        fn: _typing.Callable[
-                [_PubSubStreamingServiceInterfaceT, RequestContext, int, int],
-                _typing.Coroutine[_typing.Any, int, _typing.Any]
-        ]
-    ) -> _typing.Callable[
-        [_PubSubStreamingServiceInterfaceT, int, int],
-        _typing.Coroutine[_typing.Any, int, _typing.Any]
-    ]: ...
 
     @abstractmethod
     def returnstreamFast(

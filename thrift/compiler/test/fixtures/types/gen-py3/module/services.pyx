@@ -30,7 +30,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext, pass_context
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -42,8 +42,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -117,18 +116,10 @@ cdef class SomeServiceInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_bounce_map(fn):
-        return pass_context(fn)
-
     async def bounce_map(
             self,
             m):
         raise NotImplementedError("async def bounce_map is not implemented")
-
-    @staticmethod
-    def pass_context_binary_keyed_map(fn):
-        return pass_context(fn)
 
     async def binary_keyed_map(
             self,
@@ -160,33 +151,24 @@ cdef api void call_cy_SomeService_bounce_map(
     cdef Promise__module_types_std_unordered_map__cint32_t_string __promise = Promise__module_types_std_unordered_map__cint32_t_string.create(cmove(cPromise))
     arg_m = _module_types.std_unordered_map__Map__i32_string.create(__to_shared_ptr(cmove(m)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SomeService_bounce_map_coro(
             self,
-            __context,
             __promise,
             arg_m
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SomeService_bounce_map_coro(
     object self,
-    object ctx,
     Promise__module_types_std_unordered_map__cint32_t_string promise,
     m
 ):
     try:
-        if ctx and getattr(self.bounce_map, "pass_context", False):
-            result = await self.bounce_map(ctx,
-                      m)
-        else:
-            result = await self.bounce_map(
-                      m)
+        result = await self.bounce_map(
+                    m)
         result = _module_types.std_unordered_map__Map__i32_string(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -219,33 +201,24 @@ cdef api void call_cy_SomeService_binary_keyed_map(
     cdef Promise_cmap__binary_cint64_t __promise = Promise_cmap__binary_cint64_t.create(cmove(cPromise))
     arg_r = _module_types.List__i64.create(__to_shared_ptr(cmove(r)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SomeService_binary_keyed_map_coro(
             self,
-            __context,
             __promise,
             arg_r
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SomeService_binary_keyed_map_coro(
     object self,
-    object ctx,
     Promise_cmap__binary_cint64_t promise,
     r
 ):
     try:
-        if ctx and getattr(self.binary_keyed_map, "pass_context", False):
-            result = await self.binary_keyed_map(ctx,
-                      r)
-        else:
-            result = await self.binary_keyed_map(
-                      r)
+        result = await self.binary_keyed_map(
+                    r)
         result = _module_types.Map__binary_i64(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one

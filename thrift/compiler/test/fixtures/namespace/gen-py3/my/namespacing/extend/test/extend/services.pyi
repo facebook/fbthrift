@@ -22,16 +22,6 @@ class ExtendTestServiceInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_check(
-        fn: _typing.Callable[
-                [_ExtendTestServiceInterfaceT, RequestContext, _hsmodule_types.HsFoo],
-                _typing.Coroutine[_typing.Any, _typing.Any, bool]
-        ]
-    ) -> _typing.Callable[
-        [_ExtendTestServiceInterfaceT, _hsmodule_types.HsFoo],
-        _typing.Coroutine[_typing.Any, _typing.Any, bool]
-    ]: ...
 
     @abstractmethod
     async def check(

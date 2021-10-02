@@ -20,16 +20,6 @@ class TestServiceInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_init(
-        fn: _typing.Callable[
-                [_TestServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, int]
-        ]
-    ) -> _typing.Callable[
-        [_TestServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, int]
-    ]: ...
 
     @abstractmethod
     async def init(

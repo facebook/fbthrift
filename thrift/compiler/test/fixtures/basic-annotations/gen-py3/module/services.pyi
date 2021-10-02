@@ -20,48 +20,18 @@ class MyServiceInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_ping(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def ping(
         self
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_getRandomData(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext],
-                _typing.Coroutine[_typing.Any, _typing.Any, str]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT],
-        _typing.Coroutine[_typing.Any, _typing.Any, str]
-    ]: ...
 
     @abstractmethod
     async def getRandomData(
         self
     ) -> str: ...
 
-    @staticmethod
-    def pass_context_hasDataById(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, bool]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, bool]
-    ]: ...
 
     @abstractmethod
     async def hasDataById(
@@ -69,16 +39,6 @@ class MyServiceInterface(
         id: int
     ) -> bool: ...
 
-    @staticmethod
-    def pass_context_getDataById(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, str]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, str]
-    ]: ...
 
     @abstractmethod
     async def getDataById(
@@ -86,16 +46,6 @@ class MyServiceInterface(
         id: int
     ) -> str: ...
 
-    @staticmethod
-    def pass_context_putDataById(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int, str],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int, str],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def putDataById(
@@ -104,16 +54,6 @@ class MyServiceInterface(
         data: str
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_lobDataById(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int, str],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int, str],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def lobDataById(
@@ -122,16 +62,6 @@ class MyServiceInterface(
         data: str
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_doNothing(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def doNothing(
@@ -148,32 +78,12 @@ class MyServicePrioParentInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_ping(
-        fn: _typing.Callable[
-                [_MyServicePrioParentInterfaceT, RequestContext],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServicePrioParentInterfaceT],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def ping(
         self
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_pong(
-        fn: _typing.Callable[
-                [_MyServicePrioParentInterfaceT, RequestContext],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServicePrioParentInterfaceT],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def pong(
@@ -190,16 +100,6 @@ MyServicePrioParentInterface,
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_pang(
-        fn: _typing.Callable[
-                [_MyServicePrioChildInterfaceT, RequestContext],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServicePrioChildInterfaceT],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def pang(

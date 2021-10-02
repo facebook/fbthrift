@@ -30,7 +30,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext, pass_context
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -42,8 +42,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -485,170 +484,86 @@ cdef class ReturnServiceInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_noReturn(fn):
-        return pass_context(fn)
-
     async def noReturn(
             self):
         raise NotImplementedError("async def noReturn is not implemented")
-
-    @staticmethod
-    def pass_context_boolReturn(fn):
-        return pass_context(fn)
 
     async def boolReturn(
             self):
         raise NotImplementedError("async def boolReturn is not implemented")
 
-    @staticmethod
-    def pass_context_i16Return(fn):
-        return pass_context(fn)
-
     async def i16Return(
             self):
         raise NotImplementedError("async def i16Return is not implemented")
-
-    @staticmethod
-    def pass_context_i32Return(fn):
-        return pass_context(fn)
 
     async def i32Return(
             self):
         raise NotImplementedError("async def i32Return is not implemented")
 
-    @staticmethod
-    def pass_context_i64Return(fn):
-        return pass_context(fn)
-
     async def i64Return(
             self):
         raise NotImplementedError("async def i64Return is not implemented")
-
-    @staticmethod
-    def pass_context_floatReturn(fn):
-        return pass_context(fn)
 
     async def floatReturn(
             self):
         raise NotImplementedError("async def floatReturn is not implemented")
 
-    @staticmethod
-    def pass_context_doubleReturn(fn):
-        return pass_context(fn)
-
     async def doubleReturn(
             self):
         raise NotImplementedError("async def doubleReturn is not implemented")
-
-    @staticmethod
-    def pass_context_stringReturn(fn):
-        return pass_context(fn)
 
     async def stringReturn(
             self):
         raise NotImplementedError("async def stringReturn is not implemented")
 
-    @staticmethod
-    def pass_context_binaryReturn(fn):
-        return pass_context(fn)
-
     async def binaryReturn(
             self):
         raise NotImplementedError("async def binaryReturn is not implemented")
-
-    @staticmethod
-    def pass_context_mapReturn(fn):
-        return pass_context(fn)
 
     async def mapReturn(
             self):
         raise NotImplementedError("async def mapReturn is not implemented")
 
-    @staticmethod
-    def pass_context_simpleTypedefReturn(fn):
-        return pass_context(fn)
-
     async def simpleTypedefReturn(
             self):
         raise NotImplementedError("async def simpleTypedefReturn is not implemented")
-
-    @staticmethod
-    def pass_context_complexTypedefReturn(fn):
-        return pass_context(fn)
 
     async def complexTypedefReturn(
             self):
         raise NotImplementedError("async def complexTypedefReturn is not implemented")
 
-    @staticmethod
-    def pass_context_list_mostComplexTypedefReturn(fn):
-        return pass_context(fn)
-
     async def list_mostComplexTypedefReturn(
             self):
         raise NotImplementedError("async def list_mostComplexTypedefReturn is not implemented")
-
-    @staticmethod
-    def pass_context_enumReturn(fn):
-        return pass_context(fn)
 
     async def enumReturn(
             self):
         raise NotImplementedError("async def enumReturn is not implemented")
 
-    @staticmethod
-    def pass_context_list_EnumReturn(fn):
-        return pass_context(fn)
-
     async def list_EnumReturn(
             self):
         raise NotImplementedError("async def list_EnumReturn is not implemented")
-
-    @staticmethod
-    def pass_context_structReturn(fn):
-        return pass_context(fn)
 
     async def structReturn(
             self):
         raise NotImplementedError("async def structReturn is not implemented")
 
-    @staticmethod
-    def pass_context_set_StructReturn(fn):
-        return pass_context(fn)
-
     async def set_StructReturn(
             self):
         raise NotImplementedError("async def set_StructReturn is not implemented")
-
-    @staticmethod
-    def pass_context_unionReturn(fn):
-        return pass_context(fn)
 
     async def unionReturn(
             self):
         raise NotImplementedError("async def unionReturn is not implemented")
 
-    @staticmethod
-    def pass_context_list_UnionReturn(fn):
-        return pass_context(fn)
-
     async def list_UnionReturn(
             self):
         raise NotImplementedError("async def list_UnionReturn is not implemented")
-
-    @staticmethod
-    def pass_context_readDataEb(fn):
-        return pass_context(fn)
 
     async def readDataEb(
             self,
             size):
         raise NotImplementedError("async def readDataEb is not implemented")
-
-    @staticmethod
-    def pass_context_readData(fn):
-        return pass_context(fn)
 
     async def readData(
             self,
@@ -685,18 +600,10 @@ cdef class ParamServiceInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_void_ret_i16_param(fn):
-        return pass_context(fn)
-
     async def void_ret_i16_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_i16_param is not implemented")
-
-    @staticmethod
-    def pass_context_void_ret_byte_i16_param(fn):
-        return pass_context(fn)
 
     async def void_ret_byte_i16_param(
             self,
@@ -704,18 +611,10 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def void_ret_byte_i16_param is not implemented")
 
-    @staticmethod
-    def pass_context_void_ret_map_param(fn):
-        return pass_context(fn)
-
     async def void_ret_map_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_map_param is not implemented")
-
-    @staticmethod
-    def pass_context_void_ret_map_setlist_param(fn):
-        return pass_context(fn)
 
     async def void_ret_map_setlist_param(
             self,
@@ -723,45 +622,25 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def void_ret_map_setlist_param is not implemented")
 
-    @staticmethod
-    def pass_context_void_ret_map_typedef_param(fn):
-        return pass_context(fn)
-
     async def void_ret_map_typedef_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_map_typedef_param is not implemented")
-
-    @staticmethod
-    def pass_context_void_ret_enum_param(fn):
-        return pass_context(fn)
 
     async def void_ret_enum_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_enum_param is not implemented")
 
-    @staticmethod
-    def pass_context_void_ret_struct_param(fn):
-        return pass_context(fn)
-
     async def void_ret_struct_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_struct_param is not implemented")
 
-    @staticmethod
-    def pass_context_void_ret_listunion_param(fn):
-        return pass_context(fn)
-
     async def void_ret_listunion_param(
             self,
             param1):
         raise NotImplementedError("async def void_ret_listunion_param is not implemented")
-
-    @staticmethod
-    def pass_context_bool_ret_i32_i64_param(fn):
-        return pass_context(fn)
 
     async def bool_ret_i32_i64_param(
             self,
@@ -769,27 +648,15 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def bool_ret_i32_i64_param is not implemented")
 
-    @staticmethod
-    def pass_context_bool_ret_map_param(fn):
-        return pass_context(fn)
-
     async def bool_ret_map_param(
             self,
             param1):
         raise NotImplementedError("async def bool_ret_map_param is not implemented")
 
-    @staticmethod
-    def pass_context_bool_ret_union_param(fn):
-        return pass_context(fn)
-
     async def bool_ret_union_param(
             self,
             param1):
         raise NotImplementedError("async def bool_ret_union_param is not implemented")
-
-    @staticmethod
-    def pass_context_i64_ret_float_double_param(fn):
-        return pass_context(fn)
 
     async def i64_ret_float_double_param(
             self,
@@ -797,19 +664,11 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def i64_ret_float_double_param is not implemented")
 
-    @staticmethod
-    def pass_context_i64_ret_string_typedef_param(fn):
-        return pass_context(fn)
-
     async def i64_ret_string_typedef_param(
             self,
             param1,
             param2):
         raise NotImplementedError("async def i64_ret_string_typedef_param is not implemented")
-
-    @staticmethod
-    def pass_context_i64_ret_i32_i32_i32_i32_i32_param(fn):
-        return pass_context(fn)
 
     async def i64_ret_i32_i32_i32_i32_i32_param(
             self,
@@ -820,45 +679,25 @@ cdef class ParamServiceInterface(
             param5):
         raise NotImplementedError("async def i64_ret_i32_i32_i32_i32_i32_param is not implemented")
 
-    @staticmethod
-    def pass_context_double_ret_setstruct_param(fn):
-        return pass_context(fn)
-
     async def double_ret_setstruct_param(
             self,
             param1):
         raise NotImplementedError("async def double_ret_setstruct_param is not implemented")
-
-    @staticmethod
-    def pass_context_string_ret_string_param(fn):
-        return pass_context(fn)
 
     async def string_ret_string_param(
             self,
             param1):
         raise NotImplementedError("async def string_ret_string_param is not implemented")
 
-    @staticmethod
-    def pass_context_binary_ret_binary_param(fn):
-        return pass_context(fn)
-
     async def binary_ret_binary_param(
             self,
             param1):
         raise NotImplementedError("async def binary_ret_binary_param is not implemented")
 
-    @staticmethod
-    def pass_context_map_ret_bool_param(fn):
-        return pass_context(fn)
-
     async def map_ret_bool_param(
             self,
             param1):
         raise NotImplementedError("async def map_ret_bool_param is not implemented")
-
-    @staticmethod
-    def pass_context_list_ret_map_setlist_param(fn):
-        return pass_context(fn)
 
     async def list_ret_map_setlist_param(
             self,
@@ -866,45 +705,25 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def list_ret_map_setlist_param is not implemented")
 
-    @staticmethod
-    def pass_context_mapsetlistmapliststring_ret_listlistlist_param(fn):
-        return pass_context(fn)
-
     async def mapsetlistmapliststring_ret_listlistlist_param(
             self,
             param1):
         raise NotImplementedError("async def mapsetlistmapliststring_ret_listlistlist_param is not implemented")
-
-    @staticmethod
-    def pass_context_typedef_ret_i32_param(fn):
-        return pass_context(fn)
 
     async def typedef_ret_i32_param(
             self,
             param1):
         raise NotImplementedError("async def typedef_ret_i32_param is not implemented")
 
-    @staticmethod
-    def pass_context_listtypedef_ret_typedef_param(fn):
-        return pass_context(fn)
-
     async def listtypedef_ret_typedef_param(
             self,
             param1):
         raise NotImplementedError("async def listtypedef_ret_typedef_param is not implemented")
 
-    @staticmethod
-    def pass_context_enum_ret_double_param(fn):
-        return pass_context(fn)
-
     async def enum_ret_double_param(
             self,
             param1):
         raise NotImplementedError("async def enum_ret_double_param is not implemented")
-
-    @staticmethod
-    def pass_context_enum_ret_double_enum_param(fn):
-        return pass_context(fn)
 
     async def enum_ret_double_enum_param(
             self,
@@ -912,46 +731,26 @@ cdef class ParamServiceInterface(
             param2):
         raise NotImplementedError("async def enum_ret_double_enum_param is not implemented")
 
-    @staticmethod
-    def pass_context_listenum_ret_map_param(fn):
-        return pass_context(fn)
-
     async def listenum_ret_map_param(
             self,
             param1):
         raise NotImplementedError("async def listenum_ret_map_param is not implemented")
-
-    @staticmethod
-    def pass_context_struct_ret_i16_param(fn):
-        return pass_context(fn)
 
     async def struct_ret_i16_param(
             self,
             param1):
         raise NotImplementedError("async def struct_ret_i16_param is not implemented")
 
-    @staticmethod
-    def pass_context_setstruct_ret_set_param(fn):
-        return pass_context(fn)
-
     async def setstruct_ret_set_param(
             self,
             param1):
         raise NotImplementedError("async def setstruct_ret_set_param is not implemented")
-
-    @staticmethod
-    def pass_context_union_ret_i32_i32_param(fn):
-        return pass_context(fn)
 
     async def union_ret_i32_i32_param(
             self,
             param1,
             param2):
         raise NotImplementedError("async def union_ret_i32_i32_param is not implemented")
-
-    @staticmethod
-    def pass_context_listunion_string_param(fn):
-        return pass_context(fn)
 
     async def listunion_string_param(
             self,
@@ -981,29 +780,21 @@ cdef api void call_cy_ReturnService_noReturn(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_noReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_noReturn_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.noReturn, "pass_context", False):
-            result = await self.noReturn(ctx,)
-        else:
-            result = await self.noReturn()
+        result = await self.noReturn()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1033,29 +824,21 @@ cdef api void call_cy_ReturnService_boolReturn(
 ):
     cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_boolReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_boolReturn_coro(
     object self,
-    object ctx,
     Promise_cbool promise
 ):
     try:
-        if ctx and getattr(self.boolReturn, "pass_context", False):
-            result = await self.boolReturn(ctx,)
-        else:
-            result = await self.boolReturn()
+        result = await self.boolReturn()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1085,29 +868,21 @@ cdef api void call_cy_ReturnService_i16Return(
 ):
     cdef Promise_cint16_t __promise = Promise_cint16_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_i16Return_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_i16Return_coro(
     object self,
-    object ctx,
     Promise_cint16_t promise
 ):
     try:
-        if ctx and getattr(self.i16Return, "pass_context", False):
-            result = await self.i16Return(ctx,)
-        else:
-            result = await self.i16Return()
+        result = await self.i16Return()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1137,29 +912,21 @@ cdef api void call_cy_ReturnService_i32Return(
 ):
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_i32Return_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_i32Return_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise
 ):
     try:
-        if ctx and getattr(self.i32Return, "pass_context", False):
-            result = await self.i32Return(ctx,)
-        else:
-            result = await self.i32Return()
+        result = await self.i32Return()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1189,29 +956,21 @@ cdef api void call_cy_ReturnService_i64Return(
 ):
     cdef Promise_cint64_t __promise = Promise_cint64_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_i64Return_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_i64Return_coro(
     object self,
-    object ctx,
     Promise_cint64_t promise
 ):
     try:
-        if ctx and getattr(self.i64Return, "pass_context", False):
-            result = await self.i64Return(ctx,)
-        else:
-            result = await self.i64Return()
+        result = await self.i64Return()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1241,29 +1000,21 @@ cdef api void call_cy_ReturnService_floatReturn(
 ):
     cdef Promise_float __promise = Promise_float.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_floatReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_floatReturn_coro(
     object self,
-    object ctx,
     Promise_float promise
 ):
     try:
-        if ctx and getattr(self.floatReturn, "pass_context", False):
-            result = await self.floatReturn(ctx,)
-        else:
-            result = await self.floatReturn()
+        result = await self.floatReturn()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1293,29 +1044,21 @@ cdef api void call_cy_ReturnService_doubleReturn(
 ):
     cdef Promise_double __promise = Promise_double.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_doubleReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_doubleReturn_coro(
     object self,
-    object ctx,
     Promise_double promise
 ):
     try:
-        if ctx and getattr(self.doubleReturn, "pass_context", False):
-            result = await self.doubleReturn(ctx,)
-        else:
-            result = await self.doubleReturn()
+        result = await self.doubleReturn()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1345,29 +1088,21 @@ cdef api void call_cy_ReturnService_stringReturn(
 ):
     cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_stringReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_stringReturn_coro(
     object self,
-    object ctx,
     Promise_string promise
 ):
     try:
-        if ctx and getattr(self.stringReturn, "pass_context", False):
-            result = await self.stringReturn(ctx,)
-        else:
-            result = await self.stringReturn()
+        result = await self.stringReturn()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1397,29 +1132,21 @@ cdef api void call_cy_ReturnService_binaryReturn(
 ):
     cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_binaryReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_binaryReturn_coro(
     object self,
-    object ctx,
     Promise_binary promise
 ):
     try:
-        if ctx and getattr(self.binaryReturn, "pass_context", False):
-            result = await self.binaryReturn(ctx,)
-        else:
-            result = await self.binaryReturn()
+        result = await self.binaryReturn()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1449,29 +1176,21 @@ cdef api void call_cy_ReturnService_mapReturn(
 ):
     cdef Promise_cmap__string_cint64_t __promise = Promise_cmap__string_cint64_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_mapReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_mapReturn_coro(
     object self,
-    object ctx,
     Promise_cmap__string_cint64_t promise
 ):
     try:
-        if ctx and getattr(self.mapReturn, "pass_context", False):
-            result = await self.mapReturn(ctx,)
-        else:
-            result = await self.mapReturn()
+        result = await self.mapReturn()
         result = _module_types.Map__string_i64(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -1502,29 +1221,21 @@ cdef api void call_cy_ReturnService_simpleTypedefReturn(
 ):
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_simpleTypedefReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_simpleTypedefReturn_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise
 ):
     try:
-        if ctx and getattr(self.simpleTypedefReturn, "pass_context", False):
-            result = await self.simpleTypedefReturn(ctx,)
-        else:
-            result = await self.simpleTypedefReturn()
+        result = await self.simpleTypedefReturn()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1554,29 +1265,21 @@ cdef api void call_cy_ReturnService_complexTypedefReturn(
 ):
     cdef Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct __promise = Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_complexTypedefReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_complexTypedefReturn_coro(
     object self,
-    object ctx,
     Promise_vector__cmap___module_types_cEmpty__module_types_cMyStruct promise
 ):
     try:
-        if ctx and getattr(self.complexTypedefReturn, "pass_context", False):
-            result = await self.complexTypedefReturn(ctx,)
-        else:
-            result = await self.complexTypedefReturn()
+        result = await self.complexTypedefReturn()
         result = _module_types.List__Map__Empty_MyStruct(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -1607,29 +1310,21 @@ cdef api void call_cy_ReturnService_list_mostComplexTypedefReturn(
 ):
     cdef Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct __promise = Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_list_mostComplexTypedefReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_list_mostComplexTypedefReturn_coro(
     object self,
-    object ctx,
     Promise_vector__vector__vector__cmap___module_types_cEmpty__module_types_cMyStruct promise
 ):
     try:
-        if ctx and getattr(self.list_mostComplexTypedefReturn, "pass_context", False):
-            result = await self.list_mostComplexTypedefReturn(ctx,)
-        else:
-            result = await self.list_mostComplexTypedefReturn()
+        result = await self.list_mostComplexTypedefReturn()
         result = _module_types.List__List__List__Map__Empty_MyStruct(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -1660,29 +1355,21 @@ cdef api void call_cy_ReturnService_enumReturn(
 ):
     cdef Promise__module_types_cMyEnumA __promise = Promise__module_types_cMyEnumA.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_enumReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_enumReturn_coro(
     object self,
-    object ctx,
     Promise__module_types_cMyEnumA promise
 ):
     try:
-        if ctx and getattr(self.enumReturn, "pass_context", False):
-            result = await self.enumReturn(ctx,)
-        else:
-            result = await self.enumReturn()
+        result = await self.enumReturn()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1712,29 +1399,21 @@ cdef api void call_cy_ReturnService_list_EnumReturn(
 ):
     cdef Promise_vector___module_types_cMyEnumA __promise = Promise_vector___module_types_cMyEnumA.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_list_EnumReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_list_EnumReturn_coro(
     object self,
-    object ctx,
     Promise_vector___module_types_cMyEnumA promise
 ):
     try:
-        if ctx and getattr(self.list_EnumReturn, "pass_context", False):
-            result = await self.list_EnumReturn(ctx,)
-        else:
-            result = await self.list_EnumReturn()
+        result = await self.list_EnumReturn()
         result = _module_types.List__MyEnumA(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -1765,29 +1444,21 @@ cdef api void call_cy_ReturnService_structReturn(
 ):
     cdef Promise__module_types_cMyStruct __promise = Promise__module_types_cMyStruct.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_structReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_structReturn_coro(
     object self,
-    object ctx,
     Promise__module_types_cMyStruct promise
 ):
     try:
-        if ctx and getattr(self.structReturn, "pass_context", False):
-            result = await self.structReturn(ctx,)
-        else:
-            result = await self.structReturn()
+        result = await self.structReturn()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1817,29 +1488,21 @@ cdef api void call_cy_ReturnService_set_StructReturn(
 ):
     cdef Promise_cset___module_types_cMyStruct __promise = Promise_cset___module_types_cMyStruct.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_set_StructReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_set_StructReturn_coro(
     object self,
-    object ctx,
     Promise_cset___module_types_cMyStruct promise
 ):
     try:
-        if ctx and getattr(self.set_StructReturn, "pass_context", False):
-            result = await self.set_StructReturn(ctx,)
-        else:
-            result = await self.set_StructReturn()
+        result = await self.set_StructReturn()
         result = _module_types.Set__MyStruct(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -1870,29 +1533,21 @@ cdef api void call_cy_ReturnService_unionReturn(
 ):
     cdef Promise__module_types_cComplexUnion __promise = Promise__module_types_cComplexUnion.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_unionReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_unionReturn_coro(
     object self,
-    object ctx,
     Promise__module_types_cComplexUnion promise
 ):
     try:
-        if ctx and getattr(self.unionReturn, "pass_context", False):
-            result = await self.unionReturn(ctx,)
-        else:
-            result = await self.unionReturn()
+        result = await self.unionReturn()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1922,29 +1577,21 @@ cdef api void call_cy_ReturnService_list_UnionReturn(
 ):
     cdef Promise_vector___module_types_cComplexUnion __promise = Promise_vector___module_types_cComplexUnion.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_list_UnionReturn_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_list_UnionReturn_coro(
     object self,
-    object ctx,
     Promise_vector___module_types_cComplexUnion promise
 ):
     try:
-        if ctx and getattr(self.list_UnionReturn, "pass_context", False):
-            result = await self.list_UnionReturn(ctx,)
-        else:
-            result = await self.list_UnionReturn()
+        result = await self.list_UnionReturn()
         result = _module_types.List__ComplexUnion(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -1977,33 +1624,24 @@ cdef api void call_cy_ReturnService_readDataEb(
     cdef Promise___iobuf_cIOBuf __promise = Promise___iobuf_cIOBuf.create(cmove(cPromise))
     arg_size = size
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_readDataEb_coro(
             self,
-            __context,
             __promise,
             arg_size
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_readDataEb_coro(
     object self,
-    object ctx,
     Promise___iobuf_cIOBuf promise,
     size
 ):
     try:
-        if ctx and getattr(self.readDataEb, "pass_context", False):
-            result = await self.readDataEb(ctx,
-                      size)
-        else:
-            result = await self.readDataEb(
-                      size)
+        result = await self.readDataEb(
+                    size)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2035,33 +1673,24 @@ cdef api void call_cy_ReturnService_readData(
     cdef Promise_unique_ptr__iobuf_cIOBuf __promise = Promise_unique_ptr__iobuf_cIOBuf.create(cmove(cPromise))
     arg_size = size
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ReturnService_readData_coro(
             self,
-            __context,
             __promise,
             arg_size
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ReturnService_readData_coro(
     object self,
-    object ctx,
     Promise_unique_ptr__iobuf_cIOBuf promise,
     size
 ):
     try:
-        if ctx and getattr(self.readData, "pass_context", False):
-            result = await self.readData(ctx,
-                      size)
-        else:
-            result = await self.readData(
-                      size)
+        result = await self.readData(
+                    size)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2093,33 +1722,24 @@ cdef api void call_cy_ParamService_void_ret_i16_param(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_i16_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_void_ret_i16_param_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     param1
 ):
     try:
-        if ctx and getattr(self.void_ret_i16_param, "pass_context", False):
-            result = await self.void_ret_i16_param(ctx,
-                      param1)
-        else:
-            result = await self.void_ret_i16_param(
-                      param1)
+        result = await self.void_ret_i16_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2153,37 +1773,27 @@ cdef api void call_cy_ParamService_void_ret_byte_i16_param(
     arg_param1 = param1
     arg_param2 = param2
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_byte_i16_param_coro(
             self,
-            __context,
             __promise,
             arg_param1,
             arg_param2
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_void_ret_byte_i16_param_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     param1,
     param2
 ):
     try:
-        if ctx and getattr(self.void_ret_byte_i16_param, "pass_context", False):
-            result = await self.void_ret_byte_i16_param(ctx,
-                      param1,
-                      param2)
-        else:
-            result = await self.void_ret_byte_i16_param(
-                      param1,
-                      param2)
+        result = await self.void_ret_byte_i16_param(
+                    param1,
+                    param2)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2215,33 +1825,24 @@ cdef api void call_cy_ParamService_void_ret_map_param(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_void_ret_map_param_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     param1
 ):
     try:
-        if ctx and getattr(self.void_ret_map_param, "pass_context", False):
-            result = await self.void_ret_map_param(ctx,
-                      param1)
-        else:
-            result = await self.void_ret_map_param(
-                      param1)
+        result = await self.void_ret_map_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2275,37 +1876,27 @@ cdef api void call_cy_ParamService_void_ret_map_setlist_param(
     arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     arg_param2 = _module_types.Set__List__string.create(__to_shared_ptr(cmove(param2)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_setlist_param_coro(
             self,
-            __context,
             __promise,
             arg_param1,
             arg_param2
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_void_ret_map_setlist_param_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     param1,
     param2
 ):
     try:
-        if ctx and getattr(self.void_ret_map_setlist_param, "pass_context", False):
-            result = await self.void_ret_map_setlist_param(ctx,
-                      param1,
-                      param2)
-        else:
-            result = await self.void_ret_map_setlist_param(
-                      param1,
-                      param2)
+        result = await self.void_ret_map_setlist_param(
+                    param1,
+                    param2)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2337,33 +1928,24 @@ cdef api void call_cy_ParamService_void_ret_map_typedef_param(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_map_typedef_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_void_ret_map_typedef_param_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     param1
 ):
     try:
-        if ctx and getattr(self.void_ret_map_typedef_param, "pass_context", False):
-            result = await self.void_ret_map_typedef_param(ctx,
-                      param1)
-        else:
-            result = await self.void_ret_map_typedef_param(
-                      param1)
+        result = await self.void_ret_map_typedef_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2395,33 +1977,24 @@ cdef api void call_cy_ParamService_void_ret_enum_param(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = _module_types.MyEnumA(<int> param1)
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_enum_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_void_ret_enum_param_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     param1
 ):
     try:
-        if ctx and getattr(self.void_ret_enum_param, "pass_context", False):
-            result = await self.void_ret_enum_param(ctx,
-                      param1)
-        else:
-            result = await self.void_ret_enum_param(
-                      param1)
+        result = await self.void_ret_enum_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2453,33 +2026,24 @@ cdef api void call_cy_ParamService_void_ret_struct_param(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = _module_types.MyStruct.create(shared_ptr[_module_types.cMyStruct](param1.release()))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_struct_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_void_ret_struct_param_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     param1
 ):
     try:
-        if ctx and getattr(self.void_ret_struct_param, "pass_context", False):
-            result = await self.void_ret_struct_param(ctx,
-                      param1)
-        else:
-            result = await self.void_ret_struct_param(
-                      param1)
+        result = await self.void_ret_struct_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2511,33 +2075,24 @@ cdef api void call_cy_ParamService_void_ret_listunion_param(
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     arg_param1 = _module_types.List__ComplexUnion.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_void_ret_listunion_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_void_ret_listunion_param_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     param1
 ):
     try:
-        if ctx and getattr(self.void_ret_listunion_param, "pass_context", False):
-            result = await self.void_ret_listunion_param(ctx,
-                      param1)
-        else:
-            result = await self.void_ret_listunion_param(
-                      param1)
+        result = await self.void_ret_listunion_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2571,37 +2126,27 @@ cdef api void call_cy_ParamService_bool_ret_i32_i64_param(
     arg_param1 = param1
     arg_param2 = param2
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_i32_i64_param_coro(
             self,
-            __context,
             __promise,
             arg_param1,
             arg_param2
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_bool_ret_i32_i64_param_coro(
     object self,
-    object ctx,
     Promise_cbool promise,
     param1,
     param2
 ):
     try:
-        if ctx and getattr(self.bool_ret_i32_i64_param, "pass_context", False):
-            result = await self.bool_ret_i32_i64_param(ctx,
-                      param1,
-                      param2)
-        else:
-            result = await self.bool_ret_i32_i64_param(
-                      param1,
-                      param2)
+        result = await self.bool_ret_i32_i64_param(
+                    param1,
+                    param2)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2633,33 +2178,24 @@ cdef api void call_cy_ParamService_bool_ret_map_param(
     cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_map_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_bool_ret_map_param_coro(
     object self,
-    object ctx,
     Promise_cbool promise,
     param1
 ):
     try:
-        if ctx and getattr(self.bool_ret_map_param, "pass_context", False):
-            result = await self.bool_ret_map_param(ctx,
-                      param1)
-        else:
-            result = await self.bool_ret_map_param(
-                      param1)
+        result = await self.bool_ret_map_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2691,33 +2227,24 @@ cdef api void call_cy_ParamService_bool_ret_union_param(
     cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     arg_param1 = _module_types.ComplexUnion.create(shared_ptr[_module_types.cComplexUnion](param1.release()))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_bool_ret_union_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_bool_ret_union_param_coro(
     object self,
-    object ctx,
     Promise_cbool promise,
     param1
 ):
     try:
-        if ctx and getattr(self.bool_ret_union_param, "pass_context", False):
-            result = await self.bool_ret_union_param(ctx,
-                      param1)
-        else:
-            result = await self.bool_ret_union_param(
-                      param1)
+        result = await self.bool_ret_union_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2751,37 +2278,27 @@ cdef api void call_cy_ParamService_i64_ret_float_double_param(
     arg_param1 = param1
     arg_param2 = param2
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_float_double_param_coro(
             self,
-            __context,
             __promise,
             arg_param1,
             arg_param2
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_i64_ret_float_double_param_coro(
     object self,
-    object ctx,
     Promise_cint64_t promise,
     param1,
     param2
 ):
     try:
-        if ctx and getattr(self.i64_ret_float_double_param, "pass_context", False):
-            result = await self.i64_ret_float_double_param(ctx,
-                      param1,
-                      param2)
-        else:
-            result = await self.i64_ret_float_double_param(
-                      param1,
-                      param2)
+        result = await self.i64_ret_float_double_param(
+                    param1,
+                    param2)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2815,37 +2332,27 @@ cdef api void call_cy_ParamService_i64_ret_string_typedef_param(
     arg_param1 = (deref(param1)).data().decode('UTF-8')
     arg_param2 = _module_types.Set__List__List__Map__Empty_MyStruct.create(__to_shared_ptr(cmove(param2)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_string_typedef_param_coro(
             self,
-            __context,
             __promise,
             arg_param1,
             arg_param2
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_i64_ret_string_typedef_param_coro(
     object self,
-    object ctx,
     Promise_cint64_t promise,
     param1,
     param2
 ):
     try:
-        if ctx and getattr(self.i64_ret_string_typedef_param, "pass_context", False):
-            result = await self.i64_ret_string_typedef_param(ctx,
-                      param1,
-                      param2)
-        else:
-            result = await self.i64_ret_string_typedef_param(
-                      param1,
-                      param2)
+        result = await self.i64_ret_string_typedef_param(
+                    param1,
+                    param2)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2885,13 +2392,10 @@ cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
     arg_param4 = param4
     arg_param5 = param5
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
             self,
-            __context,
             __promise,
             arg_param1,
             arg_param2,
@@ -2900,12 +2404,10 @@ cdef api void call_cy_ParamService_i64_ret_i32_i32_i32_i32_i32_param(
             arg_param5
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
     object self,
-    object ctx,
     Promise_cint64_t promise,
     param1,
     param2,
@@ -2914,20 +2416,12 @@ async def ParamService_i64_ret_i32_i32_i32_i32_i32_param_coro(
     param5
 ):
     try:
-        if ctx and getattr(self.i64_ret_i32_i32_i32_i32_i32_param, "pass_context", False):
-            result = await self.i64_ret_i32_i32_i32_i32_i32_param(ctx,
-                      param1,
-                      param2,
-                      param3,
-                      param4,
-                      param5)
-        else:
-            result = await self.i64_ret_i32_i32_i32_i32_i32_param(
-                      param1,
-                      param2,
-                      param3,
-                      param4,
-                      param5)
+        result = await self.i64_ret_i32_i32_i32_i32_i32_param(
+                    param1,
+                    param2,
+                    param3,
+                    param4,
+                    param5)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2959,33 +2453,24 @@ cdef api void call_cy_ParamService_double_ret_setstruct_param(
     cdef Promise_double __promise = Promise_double.create(cmove(cPromise))
     arg_param1 = _module_types.Set__MyStruct.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_double_ret_setstruct_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_double_ret_setstruct_param_coro(
     object self,
-    object ctx,
     Promise_double promise,
     param1
 ):
     try:
-        if ctx and getattr(self.double_ret_setstruct_param, "pass_context", False):
-            result = await self.double_ret_setstruct_param(ctx,
-                      param1)
-        else:
-            result = await self.double_ret_setstruct_param(
-                      param1)
+        result = await self.double_ret_setstruct_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3017,33 +2502,24 @@ cdef api void call_cy_ParamService_string_ret_string_param(
     cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_string_ret_string_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_string_ret_string_param_coro(
     object self,
-    object ctx,
     Promise_string promise,
     param1
 ):
     try:
-        if ctx and getattr(self.string_ret_string_param, "pass_context", False):
-            result = await self.string_ret_string_param(ctx,
-                      param1)
-        else:
-            result = await self.string_ret_string_param(
-                      param1)
+        result = await self.string_ret_string_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3075,33 +2551,24 @@ cdef api void call_cy_ParamService_binary_ret_binary_param(
     cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
     arg_param1 = (deref(param1))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_binary_ret_binary_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_binary_ret_binary_param_coro(
     object self,
-    object ctx,
     Promise_binary promise,
     param1
 ):
     try:
-        if ctx and getattr(self.binary_ret_binary_param, "pass_context", False):
-            result = await self.binary_ret_binary_param(ctx,
-                      param1)
-        else:
-            result = await self.binary_ret_binary_param(
-                      param1)
+        result = await self.binary_ret_binary_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3133,33 +2600,24 @@ cdef api void call_cy_ParamService_map_ret_bool_param(
     cdef Promise_cmap__string_cint64_t __promise = Promise_cmap__string_cint64_t.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_map_ret_bool_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_map_ret_bool_param_coro(
     object self,
-    object ctx,
     Promise_cmap__string_cint64_t promise,
     param1
 ):
     try:
-        if ctx and getattr(self.map_ret_bool_param, "pass_context", False):
-            result = await self.map_ret_bool_param(ctx,
-                      param1)
-        else:
-            result = await self.map_ret_bool_param(
-                      param1)
+        result = await self.map_ret_bool_param(
+                    param1)
         result = _module_types.Map__string_i64(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -3194,37 +2652,27 @@ cdef api void call_cy_ParamService_list_ret_map_setlist_param(
     arg_param1 = _module_types.Map__i32_List__string.create(__to_shared_ptr(cmove(param1)))
     arg_param2 = _module_types.List__string.create(__to_shared_ptr(cmove(param2)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_list_ret_map_setlist_param_coro(
             self,
-            __context,
             __promise,
             arg_param1,
             arg_param2
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_list_ret_map_setlist_param_coro(
     object self,
-    object ctx,
     Promise_vector__cbool promise,
     param1,
     param2
 ):
     try:
-        if ctx and getattr(self.list_ret_map_setlist_param, "pass_context", False):
-            result = await self.list_ret_map_setlist_param(ctx,
-                      param1,
-                      param2)
-        else:
-            result = await self.list_ret_map_setlist_param(
-                      param1,
-                      param2)
+        result = await self.list_ret_map_setlist_param(
+                    param1,
+                    param2)
         result = _module_types.List__bool(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -3257,33 +2705,24 @@ cdef api void call_cy_ParamService_mapsetlistmapliststring_ret_listlistlist_para
     cdef Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string __promise = Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string.create(cmove(cPromise))
     arg_param1 = _module_types.List__List__List__List__i32.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_mapsetlistmapliststring_ret_listlistlist_param_coro(
     object self,
-    object ctx,
     Promise_cmap__cset__vector__cint32_t_cmap__vector__cset__string_string promise,
     param1
 ):
     try:
-        if ctx and getattr(self.mapsetlistmapliststring_ret_listlistlist_param, "pass_context", False):
-            result = await self.mapsetlistmapliststring_ret_listlistlist_param(ctx,
-                      param1)
-        else:
-            result = await self.mapsetlistmapliststring_ret_listlistlist_param(
-                      param1)
+        result = await self.mapsetlistmapliststring_ret_listlistlist_param(
+                    param1)
         result = _module_types.Map__Set__List__i32_Map__List__Set__string_string(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -3316,33 +2755,24 @@ cdef api void call_cy_ParamService_typedef_ret_i32_param(
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_typedef_ret_i32_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_typedef_ret_i32_param_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     param1
 ):
     try:
-        if ctx and getattr(self.typedef_ret_i32_param, "pass_context", False):
-            result = await self.typedef_ret_i32_param(ctx,
-                      param1)
-        else:
-            result = await self.typedef_ret_i32_param(
-                      param1)
+        result = await self.typedef_ret_i32_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3374,33 +2804,24 @@ cdef api void call_cy_ParamService_listtypedef_ret_typedef_param(
     cdef Promise_vector__cint32_t __promise = Promise_vector__cint32_t.create(cmove(cPromise))
     arg_param1 = _module_types.List__Map__Empty_MyStruct.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_listtypedef_ret_typedef_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_listtypedef_ret_typedef_param_coro(
     object self,
-    object ctx,
     Promise_vector__cint32_t promise,
     param1
 ):
     try:
-        if ctx and getattr(self.listtypedef_ret_typedef_param, "pass_context", False):
-            result = await self.listtypedef_ret_typedef_param(ctx,
-                      param1)
-        else:
-            result = await self.listtypedef_ret_typedef_param(
-                      param1)
+        result = await self.listtypedef_ret_typedef_param(
+                    param1)
         result = _module_types.List__i32(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -3433,33 +2854,24 @@ cdef api void call_cy_ParamService_enum_ret_double_param(
     cdef Promise__module_types_cMyEnumA __promise = Promise__module_types_cMyEnumA.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_enum_ret_double_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_enum_ret_double_param_coro(
     object self,
-    object ctx,
     Promise__module_types_cMyEnumA promise,
     param1
 ):
     try:
-        if ctx and getattr(self.enum_ret_double_param, "pass_context", False):
-            result = await self.enum_ret_double_param(ctx,
-                      param1)
-        else:
-            result = await self.enum_ret_double_param(
-                      param1)
+        result = await self.enum_ret_double_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3493,37 +2905,27 @@ cdef api void call_cy_ParamService_enum_ret_double_enum_param(
     arg_param1 = param1
     arg_param2 = _module_types.MyEnumA(<int> param2)
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_enum_ret_double_enum_param_coro(
             self,
-            __context,
             __promise,
             arg_param1,
             arg_param2
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_enum_ret_double_enum_param_coro(
     object self,
-    object ctx,
     Promise__module_types_cMyEnumA promise,
     param1,
     param2
 ):
     try:
-        if ctx and getattr(self.enum_ret_double_enum_param, "pass_context", False):
-            result = await self.enum_ret_double_enum_param(ctx,
-                      param1,
-                      param2)
-        else:
-            result = await self.enum_ret_double_enum_param(
-                      param1,
-                      param2)
+        result = await self.enum_ret_double_enum_param(
+                    param1,
+                    param2)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3555,33 +2957,24 @@ cdef api void call_cy_ParamService_listenum_ret_map_param(
     cdef Promise_vector___module_types_cMyEnumA __promise = Promise_vector___module_types_cMyEnumA.create(cmove(cPromise))
     arg_param1 = _module_types.Map__string_i64.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_listenum_ret_map_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_listenum_ret_map_param_coro(
     object self,
-    object ctx,
     Promise_vector___module_types_cMyEnumA promise,
     param1
 ):
     try:
-        if ctx and getattr(self.listenum_ret_map_param, "pass_context", False):
-            result = await self.listenum_ret_map_param(ctx,
-                      param1)
-        else:
-            result = await self.listenum_ret_map_param(
-                      param1)
+        result = await self.listenum_ret_map_param(
+                    param1)
         result = _module_types.List__MyEnumA(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -3614,33 +3007,24 @@ cdef api void call_cy_ParamService_struct_ret_i16_param(
     cdef Promise__module_types_cMyStruct __promise = Promise__module_types_cMyStruct.create(cmove(cPromise))
     arg_param1 = param1
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_struct_ret_i16_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_struct_ret_i16_param_coro(
     object self,
-    object ctx,
     Promise__module_types_cMyStruct promise,
     param1
 ):
     try:
-        if ctx and getattr(self.struct_ret_i16_param, "pass_context", False):
-            result = await self.struct_ret_i16_param(ctx,
-                      param1)
-        else:
-            result = await self.struct_ret_i16_param(
-                      param1)
+        result = await self.struct_ret_i16_param(
+                    param1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3672,33 +3056,24 @@ cdef api void call_cy_ParamService_setstruct_ret_set_param(
     cdef Promise_cset___module_types_cMyStruct __promise = Promise_cset___module_types_cMyStruct.create(cmove(cPromise))
     arg_param1 = _module_types.Set__string.create(__to_shared_ptr(cmove(param1)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_setstruct_ret_set_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_setstruct_ret_set_param_coro(
     object self,
-    object ctx,
     Promise_cset___module_types_cMyStruct promise,
     param1
 ):
     try:
-        if ctx and getattr(self.setstruct_ret_set_param, "pass_context", False):
-            result = await self.setstruct_ret_set_param(ctx,
-                      param1)
-        else:
-            result = await self.setstruct_ret_set_param(
-                      param1)
+        result = await self.setstruct_ret_set_param(
+                    param1)
         result = _module_types.Set__MyStruct(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -3733,37 +3108,27 @@ cdef api void call_cy_ParamService_union_ret_i32_i32_param(
     arg_param1 = param1
     arg_param2 = param2
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_union_ret_i32_i32_param_coro(
             self,
-            __context,
             __promise,
             arg_param1,
             arg_param2
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_union_ret_i32_i32_param_coro(
     object self,
-    object ctx,
     Promise__module_types_cComplexUnion promise,
     param1,
     param2
 ):
     try:
-        if ctx and getattr(self.union_ret_i32_i32_param, "pass_context", False):
-            result = await self.union_ret_i32_i32_param(ctx,
-                      param1,
-                      param2)
-        else:
-            result = await self.union_ret_i32_i32_param(
-                      param1,
-                      param2)
+        result = await self.union_ret_i32_i32_param(
+                    param1,
+                    param2)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3795,33 +3160,24 @@ cdef api void call_cy_ParamService_listunion_string_param(
     cdef Promise_vector___module_types_cComplexUnion __promise = Promise_vector___module_types_cComplexUnion.create(cmove(cPromise))
     arg_param1 = (deref(param1)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ParamService_listunion_string_param_coro(
             self,
-            __context,
             __promise,
             arg_param1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ParamService_listunion_string_param_coro(
     object self,
-    object ctx,
     Promise_vector___module_types_cComplexUnion promise,
     param1
 ):
     try:
-        if ctx and getattr(self.listunion_string_param, "pass_context", False):
-            result = await self.listunion_string_param(ctx,
-                      param1)
-        else:
-            result = await self.listunion_string_param(
-                      param1)
+        result = await self.listunion_string_param(
+                    param1)
         result = _module_types.List__ComplexUnion(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one

@@ -54,7 +54,6 @@ class ClientTests(unittest.TestCase):
     def test_annotations(self) -> None:
         annotations = TestingService.annotations
         self.assertIsInstance(annotations, types.MappingProxyType)
-        self.assertTrue(annotations.get("py3.pass_context"))
         self.assertFalse(annotations.get("NotAnAnnotation"))
         self.assertEqual(annotations["fun_times"], "yes")
         with self.assertRaises(TypeError):

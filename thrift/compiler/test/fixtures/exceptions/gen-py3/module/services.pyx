@@ -30,7 +30,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext, pass_context
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -42,8 +42,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -115,33 +114,17 @@ cdef class RaiserInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_doBland(fn):
-        return pass_context(fn)
-
     async def doBland(
             self):
         raise NotImplementedError("async def doBland is not implemented")
-
-    @staticmethod
-    def pass_context_doRaise(fn):
-        return pass_context(fn)
 
     async def doRaise(
             self):
         raise NotImplementedError("async def doRaise is not implemented")
 
-    @staticmethod
-    def pass_context_get200(fn):
-        return pass_context(fn)
-
     async def get200(
             self):
         raise NotImplementedError("async def get200 is not implemented")
-
-    @staticmethod
-    def pass_context_get500(fn):
-        return pass_context(fn)
 
     async def get500(
             self):
@@ -170,29 +153,21 @@ cdef api void call_cy_Raiser_doBland(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         Raiser_doBland_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def Raiser_doBland_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.doBland, "pass_context", False):
-            result = await self.doBland(ctx,)
-        else:
-            result = await self.doBland()
+        result = await self.doBland()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -222,29 +197,21 @@ cdef api void call_cy_Raiser_doRaise(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         Raiser_doRaise_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def Raiser_doRaise_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.doRaise, "pass_context", False):
-            result = await self.doRaise(ctx,)
-        else:
-            result = await self.doRaise()
+        result = await self.doRaise()
     except _module_types.Banal as ex:
         promise.cPromise.setException(deref((<_module_types.Banal> ex)._cpp_obj))
     except _module_types.Fiery as ex:
@@ -280,29 +247,21 @@ cdef api void call_cy_Raiser_get200(
 ):
     cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         Raiser_get200_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def Raiser_get200_coro(
     object self,
-    object ctx,
     Promise_string promise
 ):
     try:
-        if ctx and getattr(self.get200, "pass_context", False):
-            result = await self.get200(ctx,)
-        else:
-            result = await self.get200()
+        result = await self.get200()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -332,29 +291,21 @@ cdef api void call_cy_Raiser_get500(
 ):
     cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         Raiser_get500_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def Raiser_get500_coro(
     object self,
-    object ctx,
     Promise_string promise
 ):
     try:
-        if ctx and getattr(self.get500, "pass_context", False):
-            result = await self.get500(ctx,)
-        else:
-            result = await self.get500()
+        result = await self.get500()
     except _module_types.Fiery as ex:
         promise.cPromise.setException(deref((<_module_types.Fiery> ex)._cpp_obj))
     except _module_types.Banal as ex:

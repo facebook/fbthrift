@@ -37,8 +37,7 @@ class Handler(TestingServiceInterface):
         self.initalized = True
         return self
 
-    @TestingServiceInterface.pass_context_invert
-    async def invert(self, ctx: RequestContext, value: bool) -> bool:
+    async def invert(self, value: bool) -> bool:
         return not value
 
     async def getName(self) -> str:
@@ -110,7 +109,6 @@ class ServicesTests(unittest.TestCase):
     def test_annotations(self) -> None:
         annotations = TestingServiceInterface.annotations
         self.assertIsInstance(annotations, types.MappingProxyType)
-        self.assertTrue(annotations.get("py3.pass_context"))
         self.assertFalse(annotations.get("NotAnAnnotation"))
         self.assertEqual(annotations["fun_times"], "yes")
         self.assertEqual(annotations["single_quote"], "'")
@@ -118,21 +116,6 @@ class ServicesTests(unittest.TestCase):
         with self.assertRaises(TypeError):
             # You can't set attributes on builtin/extension types
             TestingServiceInterface.annotations = {}
-
-    # pyre-fixme[56]: Argument `sys.version_info[slice(None, 2, None)] >= (3, 7)` to
-    #  decorator factory `unittest.skipIf` could not be resolved in a global scope.
-    @unittest.skipIf(
-        sys.version_info[:2] >= (3, 7), "py3.7 will use get_context() instead"
-    )
-    def test_ctx_unittest_call(self) -> None:
-        # Create a broken client
-        # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.
-        h = Handler()
-        loop = asyncio.get_event_loop()
-        # pyre-fixme[19]: Expected 1 positional argument.
-        coro = h.invert(RequestContext(), False)
-        value = loop.run_until_complete(coro)
-        self.assertTrue(value)
 
     def test_unittest_call(self) -> None:
         # pyre-fixme[45]: Cannot instantiate abstract class `Handler`.

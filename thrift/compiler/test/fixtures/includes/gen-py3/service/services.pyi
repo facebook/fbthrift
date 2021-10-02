@@ -23,16 +23,6 @@ class MyServiceInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_query(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, _module_types.MyStruct, _includes_types.Included],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT, _module_types.MyStruct, _includes_types.Included],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def query(
@@ -41,16 +31,6 @@ class MyServiceInterface(
         i: _includes_types.Included
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_has_arg_docs(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, _module_types.MyStruct, _includes_types.Included],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT, _module_types.MyStruct, _includes_types.Included],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def has_arg_docs(

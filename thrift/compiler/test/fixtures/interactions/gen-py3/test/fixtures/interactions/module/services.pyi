@@ -20,16 +20,6 @@ class MyServiceInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_foo(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def foo(

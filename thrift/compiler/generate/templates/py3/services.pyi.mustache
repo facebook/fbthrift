@@ -62,18 +62,6 @@ class {{service:name}}Interface(
 
     {{/type:streamresponse?}}
     {{/function:return_type}}
-    @staticmethod
-    def pass_context_{{function:name}}(
-        fn: _typing.Callable[
-                [_{{service:name}}InterfaceT, RequestContext{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
-                {{#function:return_type}}{{^type:streamresponse?}}_typing.Coroutine[_typing.Any, _typing.Any, {{> services/ReturnTypePEP484Type}}]{{/type:streamresponse?}}{{!
-                }}{{#type:streamresponse?}}_typing.Coroutine[_typing.Any, {{#type:stream_elem_type}}{{> services/ReturnTypePEP484Type}}{{/type:stream_elem_type}}, _typing.Any]{{/type:streamresponse?}}{{/function:return_type}}
-        ]
-    ) -> _typing.Callable[
-        [_{{service:name}}InterfaceT{{#function:args}}, {{#field:type}}{{> types/PEP484Type}}{{/field:type}}{{/function:args}}],
-        {{#function:return_type}}{{^type:streamresponse?}}_typing.Coroutine[_typing.Any, _typing.Any, {{> services/ReturnTypePEP484Type}}]{{/type:streamresponse?}}{{!
-        }}{{#type:streamresponse?}}_typing.Coroutine[_typing.Any, {{#type:stream_elem_type}}{{> services/ReturnTypePEP484Type}}{{/type:stream_elem_type}}, _typing.Any]{{/type:streamresponse?}}{{/function:return_type}}
-    ]: ...
 
     @abstractmethod
     {{#function:return_type}}{{^type:streamresponse?}}async {{/type:streamresponse?}}{{#type:stream_has_first_response?}}async {{/type:stream_has_first_response?}}{{/function:return_type}}def {{function:name}}(

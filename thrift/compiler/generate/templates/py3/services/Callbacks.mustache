@@ -54,36 +54,25 @@ cdef api void call_cy_{{service:name}}_{{function:name}}(
         }}{{/field:type}}
     {{/function:args}}
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        {{! python 3.7 contextvars support }}
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         {{service:name}}_{{function:name}}_coro(
             self,
-            __context,
             __promise{{#function:args}},
             arg_{{field:py_name}}{{/function:args}}
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def {{service:name}}_{{function:name}}_coro(
     object self,
-    object ctx,
     {{#function:return_type}}{{> services/PromiseName}}{{/function:return_type}}{{!
     }} promise{{#function:args}},
     {{field:py_name}}{{/function:args}}
 ):
     try:
-        {{! only use this path if python < 3.7.2 Final (where ctx is not None) and has pass_context }}
-        if ctx and getattr(self.{{function:name}}, "pass_context", False):
-            result = {{#function:return_type}}{{^type:streamresponse?}}await {{/type:streamresponse?}}{{/function:return_type}}self.{{function:name}}(ctx,{{#function:args}}
-                      {{field:py_name}}{{^last?}},{{/last?}}{{/function:args}})
-        else:
-            result = {{#function:return_type}}{{^type:streamresponse?}}await {{/type:streamresponse?}}{{/function:return_type}}self.{{function:name}}({{#function:args}}
-                      {{field:py_name}}{{^last?}},{{/last?}}{{/function:args}})
+        result = {{#function:return_type}}{{^type:streamresponse?}}await {{/type:streamresponse?}}{{/function:return_type}}self.{{function:name}}({{#function:args}}
+                    {{field:py_name}}{{^last?}},{{/last?}}{{/function:args}})
         {{#function:return_type}}
         {{#type:container?}}
         result = {{> types/CythonPythonType}}(result)

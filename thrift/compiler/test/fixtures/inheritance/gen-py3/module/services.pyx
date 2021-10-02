@@ -30,7 +30,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext, pass_context
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -42,8 +42,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -101,10 +100,6 @@ cdef class MyRootInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_do_root(fn):
-        return pass_context(fn)
-
     async def do_root(
             self):
         raise NotImplementedError("async def do_root is not implemented")
@@ -138,10 +133,6 @@ MyRootInterface
             <PyObject *> self,
             get_executor()
         )
-
-    @staticmethod
-    def pass_context_do_mid(fn):
-        return pass_context(fn)
 
     async def do_mid(
             self):
@@ -177,10 +168,6 @@ MyNodeInterface
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_do_leaf(fn):
-        return pass_context(fn)
-
     async def do_leaf(
             self):
         raise NotImplementedError("async def do_leaf is not implemented")
@@ -208,29 +195,21 @@ cdef api void call_cy_MyRoot_do_root(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyRoot_do_root_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyRoot_do_root_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.do_root, "pass_context", False):
-            result = await self.do_root(ctx,)
-        else:
-            result = await self.do_root()
+        result = await self.do_root()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -260,29 +239,21 @@ cdef api void call_cy_MyNode_do_mid(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyNode_do_mid_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyNode_do_mid_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.do_mid, "pass_context", False):
-            result = await self.do_mid(ctx,)
-        else:
-            result = await self.do_mid()
+        result = await self.do_mid()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -312,29 +283,21 @@ cdef api void call_cy_MyLeaf_do_leaf(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyLeaf_do_leaf_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyLeaf_do_leaf_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.do_leaf, "pass_context", False):
-            result = await self.do_leaf(ctx,)
-        else:
-            result = await self.do_leaf()
+        result = await self.do_leaf()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(

@@ -20,16 +20,6 @@ class MyServiceInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_hasDataById(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, bool]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, bool]
-    ]: ...
 
     @abstractmethod
     async def hasDataById(
@@ -37,16 +27,6 @@ class MyServiceInterface(
         id: int
     ) -> bool: ...
 
-    @staticmethod
-    def pass_context_getDataById(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, str]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, str]
-    ]: ...
 
     @abstractmethod
     async def getDataById(
@@ -54,16 +34,6 @@ class MyServiceInterface(
         id: int
     ) -> str: ...
 
-    @staticmethod
-    def pass_context_putDataById(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int, str],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int, str],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def putDataById(
@@ -72,16 +42,6 @@ class MyServiceInterface(
         data: str
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_lobDataById(
-        fn: _typing.Callable[
-                [_MyServiceInterfaceT, RequestContext, int, str],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceInterfaceT, int, str],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def lobDataById(
@@ -100,16 +60,6 @@ class MyServiceFastInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_hasDataById(
-        fn: _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, bool]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceFastInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, bool]
-    ]: ...
 
     @abstractmethod
     async def hasDataById(
@@ -117,16 +67,6 @@ class MyServiceFastInterface(
         id: int
     ) -> bool: ...
 
-    @staticmethod
-    def pass_context_getDataById(
-        fn: _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, str]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceFastInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, str]
-    ]: ...
 
     @abstractmethod
     async def getDataById(
@@ -134,16 +74,6 @@ class MyServiceFastInterface(
         id: int
     ) -> str: ...
 
-    @staticmethod
-    def pass_context_putDataById(
-        fn: _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext, int, str],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceFastInterfaceT, int, str],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def putDataById(
@@ -152,16 +82,6 @@ class MyServiceFastInterface(
         data: str
     ) -> None: ...
 
-    @staticmethod
-    def pass_context_lobDataById(
-        fn: _typing.Callable[
-                [_MyServiceFastInterfaceT, RequestContext, int, str],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyServiceFastInterfaceT, int, str],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def lobDataById(
@@ -180,16 +100,6 @@ class DbMixedStackArgumentsInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_getDataByKey0(
-        fn: _typing.Callable[
-                [_DbMixedStackArgumentsInterfaceT, RequestContext, str],
-                _typing.Coroutine[_typing.Any, _typing.Any, bytes]
-        ]
-    ) -> _typing.Callable[
-        [_DbMixedStackArgumentsInterfaceT, str],
-        _typing.Coroutine[_typing.Any, _typing.Any, bytes]
-    ]: ...
 
     @abstractmethod
     async def getDataByKey0(
@@ -197,16 +107,6 @@ class DbMixedStackArgumentsInterface(
         key: str
     ) -> bytes: ...
 
-    @staticmethod
-    def pass_context_getDataByKey1(
-        fn: _typing.Callable[
-                [_DbMixedStackArgumentsInterfaceT, RequestContext, str],
-                _typing.Coroutine[_typing.Any, _typing.Any, bytes]
-        ]
-    ) -> _typing.Callable[
-        [_DbMixedStackArgumentsInterfaceT, str],
-        _typing.Coroutine[_typing.Any, _typing.Any, bytes]
-    ]: ...
 
     @abstractmethod
     async def getDataByKey1(

@@ -20,16 +20,6 @@ class MyRootInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_do_root(
-        fn: _typing.Callable[
-                [_MyRootInterfaceT, RequestContext],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyRootInterfaceT],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def do_root(
@@ -46,16 +36,6 @@ MyRootInterface,
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_do_mid(
-        fn: _typing.Callable[
-                [_MyNodeInterfaceT, RequestContext],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyNodeInterfaceT],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def do_mid(
@@ -72,16 +52,6 @@ MyNodeInterface,
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_do_leaf(
-        fn: _typing.Callable[
-                [_MyLeafInterfaceT, RequestContext],
-                _typing.Coroutine[_typing.Any, _typing.Any, None]
-        ]
-    ) -> _typing.Callable[
-        [_MyLeafInterfaceT],
-        _typing.Coroutine[_typing.Any, _typing.Any, None]
-    ]: ...
 
     @abstractmethod
     async def do_leaf(

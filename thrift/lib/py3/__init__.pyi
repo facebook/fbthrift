@@ -30,7 +30,6 @@ from thrift.py3.server import (
     SSLPolicy as SSLPolicy,
     ThriftServer as ThriftServer,
     get_context as get_context,
-    pass_context as pass_context,
 )
 from thrift.py3.types import (
     BadEnum as BadEnum,

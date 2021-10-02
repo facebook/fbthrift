@@ -30,7 +30,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext, pass_context
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -42,8 +42,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -133,43 +132,23 @@ cdef class MyServiceInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_ping(fn):
-        return pass_context(fn)
-
     async def ping(
             self):
         raise NotImplementedError("async def ping is not implemented")
 
-    @staticmethod
-    def pass_context_getRandomData(fn):
-        return pass_context(fn)
-
     async def getRandomData(
             self):
         raise NotImplementedError("async def getRandomData is not implemented")
-
-    @staticmethod
-    def pass_context_hasDataById(fn):
-        return pass_context(fn)
 
     async def hasDataById(
             self,
             id):
         raise NotImplementedError("async def hasDataById is not implemented")
 
-    @staticmethod
-    def pass_context_getDataById(fn):
-        return pass_context(fn)
-
     async def getDataById(
             self,
             id):
         raise NotImplementedError("async def getDataById is not implemented")
-
-    @staticmethod
-    def pass_context_putDataById(fn):
-        return pass_context(fn)
 
     async def putDataById(
             self,
@@ -177,19 +156,11 @@ cdef class MyServiceInterface(
             data):
         raise NotImplementedError("async def putDataById is not implemented")
 
-    @staticmethod
-    def pass_context_lobDataById(fn):
-        return pass_context(fn)
-
     async def lobDataById(
             self,
             id,
             data):
         raise NotImplementedError("async def lobDataById is not implemented")
-
-    @staticmethod
-    def pass_context_doNothing(fn):
-        return pass_context(fn)
 
     async def doNothing(
             self):
@@ -226,17 +197,9 @@ cdef class MyServicePrioParentInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_ping(fn):
-        return pass_context(fn)
-
     async def ping(
             self):
         raise NotImplementedError("async def ping is not implemented")
-
-    @staticmethod
-    def pass_context_pong(fn):
-        return pass_context(fn)
 
     async def pong(
             self):
@@ -272,10 +235,6 @@ MyServicePrioParentInterface
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_pang(fn):
-        return pass_context(fn)
-
     async def pang(
             self):
         raise NotImplementedError("async def pang is not implemented")
@@ -303,29 +262,21 @@ cdef api void call_cy_MyService_ping(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_ping_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_ping_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.ping, "pass_context", False):
-            result = await self.ping(ctx,)
-        else:
-            result = await self.ping()
+        result = await self.ping()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -355,29 +306,21 @@ cdef api void call_cy_MyService_getRandomData(
 ):
     cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_getRandomData_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_getRandomData_coro(
     object self,
-    object ctx,
     Promise_string promise
 ):
     try:
-        if ctx and getattr(self.getRandomData, "pass_context", False):
-            result = await self.getRandomData(ctx,)
-        else:
-            result = await self.getRandomData()
+        result = await self.getRandomData()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -409,33 +352,24 @@ cdef api void call_cy_MyService_hasDataById(
     cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_hasDataById_coro(
             self,
-            __context,
             __promise,
             arg_id
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_hasDataById_coro(
     object self,
-    object ctx,
     Promise_cbool promise,
     id
 ):
     try:
-        if ctx and getattr(self.hasDataById, "pass_context", False):
-            result = await self.hasDataById(ctx,
-                      id)
-        else:
-            result = await self.hasDataById(
-                      id)
+        result = await self.hasDataById(
+                    id)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -467,33 +401,24 @@ cdef api void call_cy_MyService_getDataById(
     cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_id = id
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_getDataById_coro(
             self,
-            __context,
             __promise,
             arg_id
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_getDataById_coro(
     object self,
-    object ctx,
     Promise_string promise,
     id
 ):
     try:
-        if ctx and getattr(self.getDataById, "pass_context", False):
-            result = await self.getDataById(ctx,
-                      id)
-        else:
-            result = await self.getDataById(
-                      id)
+        result = await self.getDataById(
+                    id)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -527,37 +452,27 @@ cdef api void call_cy_MyService_putDataById(
     arg_id = id
     arg_data = (deref(data)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_putDataById_coro(
             self,
-            __context,
             __promise,
             arg_id,
             arg_data
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_putDataById_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     id,
     data
 ):
     try:
-        if ctx and getattr(self.putDataById, "pass_context", False):
-            result = await self.putDataById(ctx,
-                      id,
-                      data)
-        else:
-            result = await self.putDataById(
-                      id,
-                      data)
+        result = await self.putDataById(
+                    id,
+                    data)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -591,37 +506,27 @@ cdef api void call_cy_MyService_lobDataById(
     arg_id = id
     arg_data = (deref(data)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_lobDataById_coro(
             self,
-            __context,
             __promise,
             arg_id,
             arg_data
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_lobDataById_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise,
     id,
     data
 ):
     try:
-        if ctx and getattr(self.lobDataById, "pass_context", False):
-            result = await self.lobDataById(ctx,
-                      id,
-                      data)
-        else:
-            result = await self.lobDataById(
-                      id,
-                      data)
+        result = await self.lobDataById(
+                    id,
+                    data)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -651,29 +556,21 @@ cdef api void call_cy_MyService_doNothing(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyService_doNothing_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyService_doNothing_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.doNothing, "pass_context", False):
-            result = await self.doNothing(ctx,)
-        else:
-            result = await self.doNothing()
+        result = await self.doNothing()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -703,29 +600,21 @@ cdef api void call_cy_MyServicePrioParent_ping(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyServicePrioParent_ping_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyServicePrioParent_ping_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.ping, "pass_context", False):
-            result = await self.ping(ctx,)
-        else:
-            result = await self.ping()
+        result = await self.ping()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -755,29 +644,21 @@ cdef api void call_cy_MyServicePrioParent_pong(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyServicePrioParent_pong_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyServicePrioParent_pong_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.pong, "pass_context", False):
-            result = await self.pong(ctx,)
-        else:
-            result = await self.pong()
+        result = await self.pong()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -807,29 +688,21 @@ cdef api void call_cy_MyServicePrioChild_pang(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         MyServicePrioChild_pang_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def MyServicePrioChild_pang_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.pang, "pass_context", False):
-            result = await self.pang(ctx,)
-        else:
-            result = await self.pang()
+        result = await self.pang()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(

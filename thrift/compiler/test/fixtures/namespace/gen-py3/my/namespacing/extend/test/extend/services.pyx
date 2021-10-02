@@ -30,7 +30,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext, pass_context
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -42,8 +42,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -103,10 +102,6 @@ cdef class ExtendTestServiceInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_check(fn):
-        return pass_context(fn)
-
     async def check(
             self,
             struct1):
@@ -137,33 +132,24 @@ cdef api void call_cy_ExtendTestService_check(
     cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     arg_struct1 = _hsmodule_types.HsFoo.create(shared_ptr[_hsmodule_types.cHsFoo](struct1.release()))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         ExtendTestService_check_coro(
             self,
-            __context,
             __promise,
             arg_struct1
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def ExtendTestService_check_coro(
     object self,
-    object ctx,
     Promise_cbool promise,
     struct1
 ):
     try:
-        if ctx and getattr(self.check, "pass_context", False):
-            result = await self.check(ctx,
-                      struct1)
-        else:
-            result = await self.check(
-                      struct1)
+        result = await self.check(
+                    struct1)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(

@@ -30,7 +30,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext, pass_context
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -42,8 +42,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -421,34 +420,18 @@ cdef class SimpleServiceInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_get_five(fn):
-        return pass_context(fn)
-
     async def get_five(
             self):
         raise NotImplementedError("async def get_five is not implemented")
-
-    @staticmethod
-    def pass_context_add_five(fn):
-        return pass_context(fn)
 
     async def add_five(
             self,
             num):
         raise NotImplementedError("async def add_five is not implemented")
 
-    @staticmethod
-    def pass_context_do_nothing(fn):
-        return pass_context(fn)
-
     async def do_nothing(
             self):
         raise NotImplementedError("async def do_nothing is not implemented")
-
-    @staticmethod
-    def pass_context_concat(fn):
-        return pass_context(fn)
 
     async def concat(
             self,
@@ -456,133 +439,73 @@ cdef class SimpleServiceInterface(
             second):
         raise NotImplementedError("async def concat is not implemented")
 
-    @staticmethod
-    def pass_context_get_value(fn):
-        return pass_context(fn)
-
     async def get_value(
             self,
             simple_struct):
         raise NotImplementedError("async def get_value is not implemented")
-
-    @staticmethod
-    def pass_context_negate(fn):
-        return pass_context(fn)
 
     async def negate(
             self,
             input):
         raise NotImplementedError("async def negate is not implemented")
 
-    @staticmethod
-    def pass_context_tiny(fn):
-        return pass_context(fn)
-
     async def tiny(
             self,
             input):
         raise NotImplementedError("async def tiny is not implemented")
-
-    @staticmethod
-    def pass_context_small(fn):
-        return pass_context(fn)
 
     async def small(
             self,
             input):
         raise NotImplementedError("async def small is not implemented")
 
-    @staticmethod
-    def pass_context_big(fn):
-        return pass_context(fn)
-
     async def big(
             self,
             input):
         raise NotImplementedError("async def big is not implemented")
-
-    @staticmethod
-    def pass_context_two(fn):
-        return pass_context(fn)
 
     async def two(
             self,
             input):
         raise NotImplementedError("async def two is not implemented")
 
-    @staticmethod
-    def pass_context_expected_exception(fn):
-        return pass_context(fn)
-
     async def expected_exception(
             self):
         raise NotImplementedError("async def expected_exception is not implemented")
 
-    @staticmethod
-    def pass_context_unexpected_exception(fn):
-        return pass_context(fn)
-
     async def unexpected_exception(
             self):
         raise NotImplementedError("async def unexpected_exception is not implemented")
-
-    @staticmethod
-    def pass_context_sum_i16_list(fn):
-        return pass_context(fn)
 
     async def sum_i16_list(
             self,
             numbers):
         raise NotImplementedError("async def sum_i16_list is not implemented")
 
-    @staticmethod
-    def pass_context_sum_i32_list(fn):
-        return pass_context(fn)
-
     async def sum_i32_list(
             self,
             numbers):
         raise NotImplementedError("async def sum_i32_list is not implemented")
-
-    @staticmethod
-    def pass_context_sum_i64_list(fn):
-        return pass_context(fn)
 
     async def sum_i64_list(
             self,
             numbers):
         raise NotImplementedError("async def sum_i64_list is not implemented")
 
-    @staticmethod
-    def pass_context_concat_many(fn):
-        return pass_context(fn)
-
     async def concat_many(
             self,
             words):
         raise NotImplementedError("async def concat_many is not implemented")
-
-    @staticmethod
-    def pass_context_count_structs(fn):
-        return pass_context(fn)
 
     async def count_structs(
             self,
             items):
         raise NotImplementedError("async def count_structs is not implemented")
 
-    @staticmethod
-    def pass_context_sum_set(fn):
-        return pass_context(fn)
-
     async def sum_set(
             self,
             numbers):
         raise NotImplementedError("async def sum_set is not implemented")
-
-    @staticmethod
-    def pass_context_contains_word(fn):
-        return pass_context(fn)
 
     async def contains_word(
             self,
@@ -590,99 +513,55 @@ cdef class SimpleServiceInterface(
             word):
         raise NotImplementedError("async def contains_word is not implemented")
 
-    @staticmethod
-    def pass_context_get_map_value(fn):
-        return pass_context(fn)
-
     async def get_map_value(
             self,
             words,
             key):
         raise NotImplementedError("async def get_map_value is not implemented")
 
-    @staticmethod
-    def pass_context_map_length(fn):
-        return pass_context(fn)
-
     async def map_length(
             self,
             items):
         raise NotImplementedError("async def map_length is not implemented")
-
-    @staticmethod
-    def pass_context_sum_map_values(fn):
-        return pass_context(fn)
 
     async def sum_map_values(
             self,
             items):
         raise NotImplementedError("async def sum_map_values is not implemented")
 
-    @staticmethod
-    def pass_context_complex_sum_i32(fn):
-        return pass_context(fn)
-
     async def complex_sum_i32(
             self,
             counter):
         raise NotImplementedError("async def complex_sum_i32 is not implemented")
-
-    @staticmethod
-    def pass_context_repeat_name(fn):
-        return pass_context(fn)
 
     async def repeat_name(
             self,
             counter):
         raise NotImplementedError("async def repeat_name is not implemented")
 
-    @staticmethod
-    def pass_context_get_struct(fn):
-        return pass_context(fn)
-
     async def get_struct(
             self):
         raise NotImplementedError("async def get_struct is not implemented")
-
-    @staticmethod
-    def pass_context_fib(fn):
-        return pass_context(fn)
 
     async def fib(
             self,
             n):
         raise NotImplementedError("async def fib is not implemented")
 
-    @staticmethod
-    def pass_context_unique_words(fn):
-        return pass_context(fn)
-
     async def unique_words(
             self,
             words):
         raise NotImplementedError("async def unique_words is not implemented")
-
-    @staticmethod
-    def pass_context_words_count(fn):
-        return pass_context(fn)
 
     async def words_count(
             self,
             words):
         raise NotImplementedError("async def words_count is not implemented")
 
-    @staticmethod
-    def pass_context_set_enum(fn):
-        return pass_context(fn)
-
     async def set_enum(
             self,
             in_enum):
         raise NotImplementedError("async def set_enum is not implemented")
-
-    @staticmethod
-    def pass_context_list_of_lists(fn):
-        return pass_context(fn)
 
     async def list_of_lists(
             self,
@@ -690,99 +569,55 @@ cdef class SimpleServiceInterface(
             num_items):
         raise NotImplementedError("async def list_of_lists is not implemented")
 
-    @staticmethod
-    def pass_context_word_character_frequency(fn):
-        return pass_context(fn)
-
     async def word_character_frequency(
             self,
             sentence):
         raise NotImplementedError("async def word_character_frequency is not implemented")
-
-    @staticmethod
-    def pass_context_list_of_sets(fn):
-        return pass_context(fn)
 
     async def list_of_sets(
             self,
             some_words):
         raise NotImplementedError("async def list_of_sets is not implemented")
 
-    @staticmethod
-    def pass_context_nested_map_argument(fn):
-        return pass_context(fn)
-
     async def nested_map_argument(
             self,
             struct_map):
         raise NotImplementedError("async def nested_map_argument is not implemented")
-
-    @staticmethod
-    def pass_context_make_sentence(fn):
-        return pass_context(fn)
 
     async def make_sentence(
             self,
             word_chars):
         raise NotImplementedError("async def make_sentence is not implemented")
 
-    @staticmethod
-    def pass_context_get_union(fn):
-        return pass_context(fn)
-
     async def get_union(
             self,
             sets):
         raise NotImplementedError("async def get_union is not implemented")
-
-    @staticmethod
-    def pass_context_get_keys(fn):
-        return pass_context(fn)
 
     async def get_keys(
             self,
             string_map):
         raise NotImplementedError("async def get_keys is not implemented")
 
-    @staticmethod
-    def pass_context_lookup_double(fn):
-        return pass_context(fn)
-
     async def lookup_double(
             self,
             key):
         raise NotImplementedError("async def lookup_double is not implemented")
-
-    @staticmethod
-    def pass_context_retrieve_binary(fn):
-        return pass_context(fn)
 
     async def retrieve_binary(
             self,
             something):
         raise NotImplementedError("async def retrieve_binary is not implemented")
 
-    @staticmethod
-    def pass_context_contain_binary(fn):
-        return pass_context(fn)
-
     async def contain_binary(
             self,
             binaries):
         raise NotImplementedError("async def contain_binary is not implemented")
 
-    @staticmethod
-    def pass_context_contain_enum(fn):
-        return pass_context(fn)
-
     async def contain_enum(
             self,
             the_enum):
         raise NotImplementedError("async def contain_enum is not implemented")
-
-    @staticmethod
-    def pass_context_get_binary_union_struct(fn):
-        return pass_context(fn)
 
     async def get_binary_union_struct(
             self,
@@ -820,10 +655,6 @@ SimpleServiceInterface
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_get_six(fn):
-        return pass_context(fn)
-
     async def get_six(
             self):
         raise NotImplementedError("async def get_six is not implemented")
@@ -858,10 +689,6 @@ DerivedServiceInterface
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_get_seven(fn):
-        return pass_context(fn)
-
     async def get_seven(
             self):
         raise NotImplementedError("async def get_seven is not implemented")
@@ -889,29 +716,21 @@ cdef api void call_cy_SimpleService_get_five(
 ):
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_get_five_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_five_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise
 ):
     try:
-        if ctx and getattr(self.get_five, "pass_context", False):
-            result = await self.get_five(ctx,)
-        else:
-            result = await self.get_five()
+        result = await self.get_five()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -943,33 +762,24 @@ cdef api void call_cy_SimpleService_add_five(
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_num = num
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_add_five_coro(
             self,
-            __context,
             __promise,
             arg_num
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_add_five_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     num
 ):
     try:
-        if ctx and getattr(self.add_five, "pass_context", False):
-            result = await self.add_five(ctx,
-                      num)
-        else:
-            result = await self.add_five(
-                      num)
+        result = await self.add_five(
+                    num)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -999,29 +809,21 @@ cdef api void call_cy_SimpleService_do_nothing(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_do_nothing_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_do_nothing_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.do_nothing, "pass_context", False):
-            result = await self.do_nothing(ctx,)
-        else:
-            result = await self.do_nothing()
+        result = await self.do_nothing()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1055,37 +857,27 @@ cdef api void call_cy_SimpleService_concat(
     arg_first = (deref(first)).data().decode('UTF-8')
     arg_second = (deref(second)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_concat_coro(
             self,
-            __context,
             __promise,
             arg_first,
             arg_second
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_concat_coro(
     object self,
-    object ctx,
     Promise_string promise,
     first,
     second
 ):
     try:
-        if ctx and getattr(self.concat, "pass_context", False):
-            result = await self.concat(ctx,
-                      first,
-                      second)
-        else:
-            result = await self.concat(
-                      first,
-                      second)
+        result = await self.concat(
+                    first,
+                    second)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1117,33 +909,24 @@ cdef api void call_cy_SimpleService_get_value(
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_simple_struct = _module_types.SimpleStruct.create(shared_ptr[_module_types.cSimpleStruct](simple_struct.release()))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_get_value_coro(
             self,
-            __context,
             __promise,
             arg_simple_struct
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_value_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     simple_struct
 ):
     try:
-        if ctx and getattr(self.get_value, "pass_context", False):
-            result = await self.get_value(ctx,
-                      simple_struct)
-        else:
-            result = await self.get_value(
-                      simple_struct)
+        result = await self.get_value(
+                    simple_struct)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1175,33 +958,24 @@ cdef api void call_cy_SimpleService_negate(
     cdef Promise_cbool __promise = Promise_cbool.create(cmove(cPromise))
     arg_input = input
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_negate_coro(
             self,
-            __context,
             __promise,
             arg_input
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_negate_coro(
     object self,
-    object ctx,
     Promise_cbool promise,
     input
 ):
     try:
-        if ctx and getattr(self.negate, "pass_context", False):
-            result = await self.negate(ctx,
-                      input)
-        else:
-            result = await self.negate(
-                      input)
+        result = await self.negate(
+                    input)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1233,33 +1007,24 @@ cdef api void call_cy_SimpleService_tiny(
     cdef Promise_cint8_t __promise = Promise_cint8_t.create(cmove(cPromise))
     arg_input = input
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_tiny_coro(
             self,
-            __context,
             __promise,
             arg_input
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_tiny_coro(
     object self,
-    object ctx,
     Promise_cint8_t promise,
     input
 ):
     try:
-        if ctx and getattr(self.tiny, "pass_context", False):
-            result = await self.tiny(ctx,
-                      input)
-        else:
-            result = await self.tiny(
-                      input)
+        result = await self.tiny(
+                    input)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1291,33 +1056,24 @@ cdef api void call_cy_SimpleService_small(
     cdef Promise_cint16_t __promise = Promise_cint16_t.create(cmove(cPromise))
     arg_input = input
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_small_coro(
             self,
-            __context,
             __promise,
             arg_input
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_small_coro(
     object self,
-    object ctx,
     Promise_cint16_t promise,
     input
 ):
     try:
-        if ctx and getattr(self.small, "pass_context", False):
-            result = await self.small(ctx,
-                      input)
-        else:
-            result = await self.small(
-                      input)
+        result = await self.small(
+                    input)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1349,33 +1105,24 @@ cdef api void call_cy_SimpleService_big(
     cdef Promise_cint64_t __promise = Promise_cint64_t.create(cmove(cPromise))
     arg_input = input
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_big_coro(
             self,
-            __context,
             __promise,
             arg_input
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_big_coro(
     object self,
-    object ctx,
     Promise_cint64_t promise,
     input
 ):
     try:
-        if ctx and getattr(self.big, "pass_context", False):
-            result = await self.big(ctx,
-                      input)
-        else:
-            result = await self.big(
-                      input)
+        result = await self.big(
+                    input)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1407,33 +1154,24 @@ cdef api void call_cy_SimpleService_two(
     cdef Promise_double __promise = Promise_double.create(cmove(cPromise))
     arg_input = input
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_two_coro(
             self,
-            __context,
             __promise,
             arg_input
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_two_coro(
     object self,
-    object ctx,
     Promise_double promise,
     input
 ):
     try:
-        if ctx and getattr(self.two, "pass_context", False):
-            result = await self.two(ctx,
-                      input)
-        else:
-            result = await self.two(
-                      input)
+        result = await self.two(
+                    input)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1463,29 +1201,21 @@ cdef api void call_cy_SimpleService_expected_exception(
 ):
     cdef Promise_cFollyUnit __promise = Promise_cFollyUnit.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_expected_exception_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_expected_exception_coro(
     object self,
-    object ctx,
     Promise_cFollyUnit promise
 ):
     try:
-        if ctx and getattr(self.expected_exception, "pass_context", False):
-            result = await self.expected_exception(ctx,)
-        else:
-            result = await self.expected_exception()
+        result = await self.expected_exception()
     except _module_types.SimpleException as ex:
         promise.cPromise.setException(deref((<_module_types.SimpleException> ex)._cpp_obj))
     except __ApplicationError as ex:
@@ -1517,29 +1247,21 @@ cdef api void call_cy_SimpleService_unexpected_exception(
 ):
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_unexpected_exception_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_unexpected_exception_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise
 ):
     try:
-        if ctx and getattr(self.unexpected_exception, "pass_context", False):
-            result = await self.unexpected_exception(ctx,)
-        else:
-            result = await self.unexpected_exception()
+        result = await self.unexpected_exception()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1571,33 +1293,24 @@ cdef api void call_cy_SimpleService_sum_i16_list(
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_numbers = _module_types.List__i16.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_i16_list_coro(
             self,
-            __context,
             __promise,
             arg_numbers
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_sum_i16_list_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     numbers
 ):
     try:
-        if ctx and getattr(self.sum_i16_list, "pass_context", False):
-            result = await self.sum_i16_list(ctx,
-                      numbers)
-        else:
-            result = await self.sum_i16_list(
-                      numbers)
+        result = await self.sum_i16_list(
+                    numbers)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1629,33 +1342,24 @@ cdef api void call_cy_SimpleService_sum_i32_list(
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_numbers = _module_types.List__i32.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_i32_list_coro(
             self,
-            __context,
             __promise,
             arg_numbers
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_sum_i32_list_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     numbers
 ):
     try:
-        if ctx and getattr(self.sum_i32_list, "pass_context", False):
-            result = await self.sum_i32_list(ctx,
-                      numbers)
-        else:
-            result = await self.sum_i32_list(
-                      numbers)
+        result = await self.sum_i32_list(
+                    numbers)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1687,33 +1391,24 @@ cdef api void call_cy_SimpleService_sum_i64_list(
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_numbers = _module_types.List__i64.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_i64_list_coro(
             self,
-            __context,
             __promise,
             arg_numbers
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_sum_i64_list_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     numbers
 ):
     try:
-        if ctx and getattr(self.sum_i64_list, "pass_context", False):
-            result = await self.sum_i64_list(ctx,
-                      numbers)
-        else:
-            result = await self.sum_i64_list(
-                      numbers)
+        result = await self.sum_i64_list(
+                    numbers)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1745,33 +1440,24 @@ cdef api void call_cy_SimpleService_concat_many(
     cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_words = _module_types.List__string.create(__to_shared_ptr(cmove(words)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_concat_many_coro(
             self,
-            __context,
             __promise,
             arg_words
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_concat_many_coro(
     object self,
-    object ctx,
     Promise_string promise,
     words
 ):
     try:
-        if ctx and getattr(self.concat_many, "pass_context", False):
-            result = await self.concat_many(ctx,
-                      words)
-        else:
-            result = await self.concat_many(
-                      words)
+        result = await self.concat_many(
+                    words)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1803,33 +1489,24 @@ cdef api void call_cy_SimpleService_count_structs(
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_items = _module_types.List__SimpleStruct.create(__to_shared_ptr(cmove(items)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_count_structs_coro(
             self,
-            __context,
             __promise,
             arg_items
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_count_structs_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     items
 ):
     try:
-        if ctx and getattr(self.count_structs, "pass_context", False):
-            result = await self.count_structs(ctx,
-                      items)
-        else:
-            result = await self.count_structs(
-                      items)
+        result = await self.count_structs(
+                    items)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1861,33 +1538,24 @@ cdef api void call_cy_SimpleService_sum_set(
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_numbers = _module_types.Set__i32.create(__to_shared_ptr(cmove(numbers)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_set_coro(
             self,
-            __context,
             __promise,
             arg_numbers
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_sum_set_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     numbers
 ):
     try:
-        if ctx and getattr(self.sum_set, "pass_context", False):
-            result = await self.sum_set(ctx,
-                      numbers)
-        else:
-            result = await self.sum_set(
-                      numbers)
+        result = await self.sum_set(
+                    numbers)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1921,37 +1589,27 @@ cdef api void call_cy_SimpleService_contains_word(
     arg_words = _module_types.Set__string.create(__to_shared_ptr(cmove(words)))
     arg_word = (deref(word)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_contains_word_coro(
             self,
-            __context,
             __promise,
             arg_words,
             arg_word
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_contains_word_coro(
     object self,
-    object ctx,
     Promise_cbool promise,
     words,
     word
 ):
     try:
-        if ctx and getattr(self.contains_word, "pass_context", False):
-            result = await self.contains_word(ctx,
-                      words,
-                      word)
-        else:
-            result = await self.contains_word(
-                      words,
-                      word)
+        result = await self.contains_word(
+                    words,
+                    word)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -1985,37 +1643,27 @@ cdef api void call_cy_SimpleService_get_map_value(
     arg_words = _module_types.Map__string_string.create(__to_shared_ptr(cmove(words)))
     arg_key = (deref(key)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_get_map_value_coro(
             self,
-            __context,
             __promise,
             arg_words,
             arg_key
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_map_value_coro(
     object self,
-    object ctx,
     Promise_string promise,
     words,
     key
 ):
     try:
-        if ctx and getattr(self.get_map_value, "pass_context", False):
-            result = await self.get_map_value(ctx,
-                      words,
-                      key)
-        else:
-            result = await self.get_map_value(
-                      words,
-                      key)
+        result = await self.get_map_value(
+                    words,
+                    key)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2047,33 +1695,24 @@ cdef api void call_cy_SimpleService_map_length(
     cdef Promise_cint16_t __promise = Promise_cint16_t.create(cmove(cPromise))
     arg_items = _module_types.Map__string_SimpleStruct.create(__to_shared_ptr(cmove(items)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_map_length_coro(
             self,
-            __context,
             __promise,
             arg_items
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_map_length_coro(
     object self,
-    object ctx,
     Promise_cint16_t promise,
     items
 ):
     try:
-        if ctx and getattr(self.map_length, "pass_context", False):
-            result = await self.map_length(ctx,
-                      items)
-        else:
-            result = await self.map_length(
-                      items)
+        result = await self.map_length(
+                    items)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2105,33 +1744,24 @@ cdef api void call_cy_SimpleService_sum_map_values(
     cdef Promise_cint16_t __promise = Promise_cint16_t.create(cmove(cPromise))
     arg_items = _module_types.Map__string_i16.create(__to_shared_ptr(cmove(items)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_sum_map_values_coro(
             self,
-            __context,
             __promise,
             arg_items
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_sum_map_values_coro(
     object self,
-    object ctx,
     Promise_cint16_t promise,
     items
 ):
     try:
-        if ctx and getattr(self.sum_map_values, "pass_context", False):
-            result = await self.sum_map_values(ctx,
-                      items)
-        else:
-            result = await self.sum_map_values(
-                      items)
+        result = await self.sum_map_values(
+                    items)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2163,33 +1793,24 @@ cdef api void call_cy_SimpleService_complex_sum_i32(
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_complex_sum_i32_coro(
             self,
-            __context,
             __promise,
             arg_counter
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_complex_sum_i32_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     counter
 ):
     try:
-        if ctx and getattr(self.complex_sum_i32, "pass_context", False):
-            result = await self.complex_sum_i32(ctx,
-                      counter)
-        else:
-            result = await self.complex_sum_i32(
-                      counter)
+        result = await self.complex_sum_i32(
+                    counter)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2221,33 +1842,24 @@ cdef api void call_cy_SimpleService_repeat_name(
     cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_counter = _module_types.ComplexStruct.create(shared_ptr[_module_types.cComplexStruct](counter.release()))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_repeat_name_coro(
             self,
-            __context,
             __promise,
             arg_counter
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_repeat_name_coro(
     object self,
-    object ctx,
     Promise_string promise,
     counter
 ):
     try:
-        if ctx and getattr(self.repeat_name, "pass_context", False):
-            result = await self.repeat_name(ctx,
-                      counter)
-        else:
-            result = await self.repeat_name(
-                      counter)
+        result = await self.repeat_name(
+                    counter)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2277,29 +1889,21 @@ cdef api void call_cy_SimpleService_get_struct(
 ):
     cdef Promise__module_types_cSimpleStruct __promise = Promise__module_types_cSimpleStruct.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_get_struct_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_struct_coro(
     object self,
-    object ctx,
     Promise__module_types_cSimpleStruct promise
 ):
     try:
-        if ctx and getattr(self.get_struct, "pass_context", False):
-            result = await self.get_struct(ctx,)
-        else:
-            result = await self.get_struct()
+        result = await self.get_struct()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2331,33 +1935,24 @@ cdef api void call_cy_SimpleService_fib(
     cdef Promise_vector__cint32_t __promise = Promise_vector__cint32_t.create(cmove(cPromise))
     arg_n = n
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_fib_coro(
             self,
-            __context,
             __promise,
             arg_n
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_fib_coro(
     object self,
-    object ctx,
     Promise_vector__cint32_t promise,
     n
 ):
     try:
-        if ctx and getattr(self.fib, "pass_context", False):
-            result = await self.fib(ctx,
-                      n)
-        else:
-            result = await self.fib(
-                      n)
+        result = await self.fib(
+                    n)
         result = _module_types.List__i32(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -2390,33 +1985,24 @@ cdef api void call_cy_SimpleService_unique_words(
     cdef Promise_cset__string __promise = Promise_cset__string.create(cmove(cPromise))
     arg_words = _module_types.List__string.create(__to_shared_ptr(cmove(words)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_unique_words_coro(
             self,
-            __context,
             __promise,
             arg_words
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_unique_words_coro(
     object self,
-    object ctx,
     Promise_cset__string promise,
     words
 ):
     try:
-        if ctx and getattr(self.unique_words, "pass_context", False):
-            result = await self.unique_words(ctx,
-                      words)
-        else:
-            result = await self.unique_words(
-                      words)
+        result = await self.unique_words(
+                    words)
         result = _module_types.Set__string(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -2449,33 +2035,24 @@ cdef api void call_cy_SimpleService_words_count(
     cdef Promise_cmap__string_cint16_t __promise = Promise_cmap__string_cint16_t.create(cmove(cPromise))
     arg_words = _module_types.List__string.create(__to_shared_ptr(cmove(words)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_words_count_coro(
             self,
-            __context,
             __promise,
             arg_words
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_words_count_coro(
     object self,
-    object ctx,
     Promise_cmap__string_cint16_t promise,
     words
 ):
     try:
-        if ctx and getattr(self.words_count, "pass_context", False):
-            result = await self.words_count(ctx,
-                      words)
-        else:
-            result = await self.words_count(
-                      words)
+        result = await self.words_count(
+                    words)
         result = _module_types.Map__string_i16(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -2508,33 +2085,24 @@ cdef api void call_cy_SimpleService_set_enum(
     cdef Promise__module_types_cAnEnum __promise = Promise__module_types_cAnEnum.create(cmove(cPromise))
     arg_in_enum = _module_types.AnEnum(<int> in_enum)
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_set_enum_coro(
             self,
-            __context,
             __promise,
             arg_in_enum
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_set_enum_coro(
     object self,
-    object ctx,
     Promise__module_types_cAnEnum promise,
     in_enum
 ):
     try:
-        if ctx and getattr(self.set_enum, "pass_context", False):
-            result = await self.set_enum(ctx,
-                      in_enum)
-        else:
-            result = await self.set_enum(
-                      in_enum)
+        result = await self.set_enum(
+                    in_enum)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2568,37 +2136,27 @@ cdef api void call_cy_SimpleService_list_of_lists(
     arg_num_lists = num_lists
     arg_num_items = num_items
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_list_of_lists_coro(
             self,
-            __context,
             __promise,
             arg_num_lists,
             arg_num_items
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_list_of_lists_coro(
     object self,
-    object ctx,
     Promise_vector__vector__cint32_t promise,
     num_lists,
     num_items
 ):
     try:
-        if ctx and getattr(self.list_of_lists, "pass_context", False):
-            result = await self.list_of_lists(ctx,
-                      num_lists,
-                      num_items)
-        else:
-            result = await self.list_of_lists(
-                      num_lists,
-                      num_items)
+        result = await self.list_of_lists(
+                    num_lists,
+                    num_items)
         result = _module_types.List__List__i32(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -2631,33 +2189,24 @@ cdef api void call_cy_SimpleService_word_character_frequency(
     cdef Promise_cmap__string_cmap__string_cint32_t __promise = Promise_cmap__string_cmap__string_cint32_t.create(cmove(cPromise))
     arg_sentence = (deref(sentence)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_word_character_frequency_coro(
             self,
-            __context,
             __promise,
             arg_sentence
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_word_character_frequency_coro(
     object self,
-    object ctx,
     Promise_cmap__string_cmap__string_cint32_t promise,
     sentence
 ):
     try:
-        if ctx and getattr(self.word_character_frequency, "pass_context", False):
-            result = await self.word_character_frequency(ctx,
-                      sentence)
-        else:
-            result = await self.word_character_frequency(
-                      sentence)
+        result = await self.word_character_frequency(
+                    sentence)
         result = _module_types.Map__string_Map__string_i32(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -2690,33 +2239,24 @@ cdef api void call_cy_SimpleService_list_of_sets(
     cdef Promise_vector__cset__string __promise = Promise_vector__cset__string.create(cmove(cPromise))
     arg_some_words = (deref(some_words)).data().decode('UTF-8')
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_list_of_sets_coro(
             self,
-            __context,
             __promise,
             arg_some_words
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_list_of_sets_coro(
     object self,
-    object ctx,
     Promise_vector__cset__string promise,
     some_words
 ):
     try:
-        if ctx and getattr(self.list_of_sets, "pass_context", False):
-            result = await self.list_of_sets(ctx,
-                      some_words)
-        else:
-            result = await self.list_of_sets(
-                      some_words)
+        result = await self.list_of_sets(
+                    some_words)
         result = _module_types.List__Set__string(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -2749,33 +2289,24 @@ cdef api void call_cy_SimpleService_nested_map_argument(
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     arg_struct_map = _module_types.Map__string_List__SimpleStruct.create(__to_shared_ptr(cmove(struct_map)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_nested_map_argument_coro(
             self,
-            __context,
             __promise,
             arg_struct_map
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_nested_map_argument_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     struct_map
 ):
     try:
-        if ctx and getattr(self.nested_map_argument, "pass_context", False):
-            result = await self.nested_map_argument(ctx,
-                      struct_map)
-        else:
-            result = await self.nested_map_argument(
-                      struct_map)
+        result = await self.nested_map_argument(
+                    struct_map)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2807,33 +2338,24 @@ cdef api void call_cy_SimpleService_make_sentence(
     cdef Promise_string __promise = Promise_string.create(cmove(cPromise))
     arg_word_chars = _module_types.List__List__string.create(__to_shared_ptr(cmove(word_chars)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_make_sentence_coro(
             self,
-            __context,
             __promise,
             arg_word_chars
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_make_sentence_coro(
     object self,
-    object ctx,
     Promise_string promise,
     word_chars
 ):
     try:
-        if ctx and getattr(self.make_sentence, "pass_context", False):
-            result = await self.make_sentence(ctx,
-                      word_chars)
-        else:
-            result = await self.make_sentence(
-                      word_chars)
+        result = await self.make_sentence(
+                    word_chars)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -2865,33 +2387,24 @@ cdef api void call_cy_SimpleService_get_union(
     cdef Promise_cset__cint32_t __promise = Promise_cset__cint32_t.create(cmove(cPromise))
     arg_sets = _module_types.List__Set__i32.create(__to_shared_ptr(cmove(sets)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_get_union_coro(
             self,
-            __context,
             __promise,
             arg_sets
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_union_coro(
     object self,
-    object ctx,
     Promise_cset__cint32_t promise,
     sets
 ):
     try:
-        if ctx and getattr(self.get_union, "pass_context", False):
-            result = await self.get_union(ctx,
-                      sets)
-        else:
-            result = await self.get_union(
-                      sets)
+        result = await self.get_union(
+                    sets)
         result = _module_types.Set__i32(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -2924,33 +2437,24 @@ cdef api void call_cy_SimpleService_get_keys(
     cdef Promise_cset__string __promise = Promise_cset__string.create(cmove(cPromise))
     arg_string_map = _module_types.List__Map__string_string.create(__to_shared_ptr(cmove(string_map)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_get_keys_coro(
             self,
-            __context,
             __promise,
             arg_string_map
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_keys_coro(
     object self,
-    object ctx,
     Promise_cset__string promise,
     string_map
 ):
     try:
-        if ctx and getattr(self.get_keys, "pass_context", False):
-            result = await self.get_keys(ctx,
-                      string_map)
-        else:
-            result = await self.get_keys(
-                      string_map)
+        result = await self.get_keys(
+                    string_map)
         result = _module_types.Set__string(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -2983,33 +2487,24 @@ cdef api void call_cy_SimpleService_lookup_double(
     cdef Promise_double __promise = Promise_double.create(cmove(cPromise))
     arg_key = key
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_lookup_double_coro(
             self,
-            __context,
             __promise,
             arg_key
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_lookup_double_coro(
     object self,
-    object ctx,
     Promise_double promise,
     key
 ):
     try:
-        if ctx and getattr(self.lookup_double, "pass_context", False):
-            result = await self.lookup_double(ctx,
-                      key)
-        else:
-            result = await self.lookup_double(
-                      key)
+        result = await self.lookup_double(
+                    key)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3041,33 +2536,24 @@ cdef api void call_cy_SimpleService_retrieve_binary(
     cdef Promise_binary __promise = Promise_binary.create(cmove(cPromise))
     arg_something = (deref(something))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_retrieve_binary_coro(
             self,
-            __context,
             __promise,
             arg_something
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_retrieve_binary_coro(
     object self,
-    object ctx,
     Promise_binary promise,
     something
 ):
     try:
-        if ctx and getattr(self.retrieve_binary, "pass_context", False):
-            result = await self.retrieve_binary(ctx,
-                      something)
-        else:
-            result = await self.retrieve_binary(
-                      something)
+        result = await self.retrieve_binary(
+                    something)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3099,33 +2585,24 @@ cdef api void call_cy_SimpleService_contain_binary(
     cdef Promise_cset__binary __promise = Promise_cset__binary.create(cmove(cPromise))
     arg_binaries = _module_types.List__binary.create(__to_shared_ptr(cmove(binaries)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_contain_binary_coro(
             self,
-            __context,
             __promise,
             arg_binaries
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_contain_binary_coro(
     object self,
-    object ctx,
     Promise_cset__binary promise,
     binaries
 ):
     try:
-        if ctx and getattr(self.contain_binary, "pass_context", False):
-            result = await self.contain_binary(ctx,
-                      binaries)
-        else:
-            result = await self.contain_binary(
-                      binaries)
+        result = await self.contain_binary(
+                    binaries)
         result = _module_types.Set__binary(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -3158,33 +2635,24 @@ cdef api void call_cy_SimpleService_contain_enum(
     cdef Promise_vector___module_types_cAnEnum __promise = Promise_vector___module_types_cAnEnum.create(cmove(cPromise))
     arg_the_enum = _module_types.List__AnEnum.create(__to_shared_ptr(cmove(the_enum)))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_contain_enum_coro(
             self,
-            __context,
             __promise,
             arg_the_enum
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_contain_enum_coro(
     object self,
-    object ctx,
     Promise_vector___module_types_cAnEnum promise,
     the_enum
 ):
     try:
-        if ctx and getattr(self.contain_enum, "pass_context", False):
-            result = await self.contain_enum(ctx,
-                      the_enum)
-        else:
-            result = await self.contain_enum(
-                      the_enum)
+        result = await self.contain_enum(
+                    the_enum)
         result = _module_types.List__AnEnum(result)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
@@ -3217,33 +2685,24 @@ cdef api void call_cy_SimpleService_get_binary_union_struct(
     cdef Promise__module_types_cBinaryUnionStruct __promise = Promise__module_types_cBinaryUnionStruct.create(cmove(cPromise))
     arg_u = _module_types.BinaryUnion.create(shared_ptr[_module_types.cBinaryUnion](u.release()))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         SimpleService_get_binary_union_struct_coro(
             self,
-            __context,
             __promise,
             arg_u
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def SimpleService_get_binary_union_struct_coro(
     object self,
-    object ctx,
     Promise__module_types_cBinaryUnionStruct promise,
     u
 ):
     try:
-        if ctx and getattr(self.get_binary_union_struct, "pass_context", False):
-            result = await self.get_binary_union_struct(ctx,
-                      u)
-        else:
-            result = await self.get_binary_union_struct(
-                      u)
+        result = await self.get_binary_union_struct(
+                    u)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3273,29 +2732,21 @@ cdef api void call_cy_DerivedService_get_six(
 ):
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         DerivedService_get_six_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def DerivedService_get_six_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise
 ):
     try:
-        if ctx and getattr(self.get_six, "pass_context", False):
-            result = await self.get_six(ctx,)
-        else:
-            result = await self.get_six()
+        result = await self.get_six()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(
@@ -3325,29 +2776,21 @@ cdef api void call_cy_RederivedService_get_seven(
 ):
     cdef Promise_cint32_t __promise = Promise_cint32_t.create(cmove(cPromise))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         RederivedService_get_seven_coro(
             self,
-            __context,
             __promise
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def RederivedService_get_seven_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise
 ):
     try:
-        if ctx and getattr(self.get_seven, "pass_context", False):
-            result = await self.get_seven(ctx,)
-        else:
-            result = await self.get_seven()
+        result = await self.get_seven()
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(

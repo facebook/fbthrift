@@ -21,16 +21,6 @@ class SomeServiceInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_bounce_map(
-        fn: _typing.Callable[
-                [_SomeServiceInterfaceT, RequestContext, _typing.Mapping[int, str]],
-                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[int, str]]
-        ]
-    ) -> _typing.Callable[
-        [_SomeServiceInterfaceT, _typing.Mapping[int, str]],
-        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[int, str]]
-    ]: ...
 
     @abstractmethod
     async def bounce_map(
@@ -38,16 +28,6 @@ class SomeServiceInterface(
         m: _typing.Mapping[int, str]
     ) -> _typing.Mapping[int, str]: ...
 
-    @staticmethod
-    def pass_context_binary_keyed_map(
-        fn: _typing.Callable[
-                [_SomeServiceInterfaceT, RequestContext, _typing.Sequence[int]],
-                _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[bytes, int]]
-        ]
-    ) -> _typing.Callable[
-        [_SomeServiceInterfaceT, _typing.Sequence[int]],
-        _typing.Coroutine[_typing.Any, _typing.Any, _typing.Mapping[bytes, int]]
-    ]: ...
 
     @abstractmethod
     async def binary_keyed_map(

@@ -29,13 +29,10 @@ try:
         ThriftServer,
         SSLPolicy,
         get_context,
-        pass_context,
         RequestContext,
     )
 
-    __all__.extend(
-        ["ThriftServer", "get_context", "pass_context", "SSLPolicy", "RequestContext"]
-    )
+    __all__.extend(["ThriftServer", "get_context", "SSLPolicy", "RequestContext"])
 except ModuleNotFoundError:
     pass
 

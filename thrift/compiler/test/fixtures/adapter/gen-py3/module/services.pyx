@@ -30,7 +30,7 @@ from thrift.py3.exceptions cimport (
     ApplicationError as __ApplicationError,
     cTApplicationExceptionType__UNKNOWN)
 from thrift.py3.server cimport ServiceInterface, RequestContext, Cpp2RequestContext
-from thrift.py3.server import RequestContext, pass_context
+from thrift.py3.server import RequestContext
 from folly cimport (
   cFollyPromise,
   cFollyUnit,
@@ -42,8 +42,7 @@ from thrift.py3.common cimport (
     MetadataBox as __MetadataBox,
 )
 
-if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-    from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
+from thrift.py3.server cimport THRIFT_REQUEST_CONTEXT as __THRIFT_REQUEST_CONTEXT
 
 cimport folly.futures
 from folly.executor cimport get_executor
@@ -101,10 +100,6 @@ cdef class ServiceInterface(
             get_executor()
         )
 
-    @staticmethod
-    def pass_context_func(fn):
-        return pass_context(fn)
-
     async def func(
             self,
             arg1,
@@ -141,41 +136,30 @@ cdef api void call_cy_Service_func(
     arg_arg2 = (deref(arg2)).data().decode('UTF-8')
     arg_arg3 = _module_types.Foo.create(shared_ptr[_module_types.cFoo](arg3.release()))
     __context = RequestContext.create(ctx)
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
-        __context = None
+    __context_token = __THRIFT_REQUEST_CONTEXT.set(__context)
     asyncio.get_event_loop().create_task(
         Service_func_coro(
             self,
-            __context,
             __promise,
             arg_arg1,
             arg_arg2,
             arg_arg3
         )
     )
-    if PY_VERSION_HEX >= 0x030702F0:  # 3.7.2 Final
-        __THRIFT_REQUEST_CONTEXT.reset(__context_token)
+    __THRIFT_REQUEST_CONTEXT.reset(__context_token)
 
 async def Service_func_coro(
     object self,
-    object ctx,
     Promise_cint32_t promise,
     arg1,
     arg2,
     arg3
 ):
     try:
-        if ctx and getattr(self.func, "pass_context", False):
-            result = await self.func(ctx,
-                      arg1,
-                      arg2,
-                      arg3)
-        else:
-            result = await self.func(
-                      arg1,
-                      arg2,
-                      arg3)
+        result = await self.func(
+                    arg1,
+                    arg2,
+                    arg3)
     except __ApplicationError as ex:
         # If the handler raised an ApplicationError convert it to a C++ one
         promise.cPromise.setException(cTApplicationException(

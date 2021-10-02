@@ -151,7 +151,6 @@ class ReflectionTests(unittest.TestCase):
                 "fun_times": "yes",
                 "single_quote": "'",
                 "double_quotes": '"""',
-                "py3.pass_context": "1",
             },
         )
 

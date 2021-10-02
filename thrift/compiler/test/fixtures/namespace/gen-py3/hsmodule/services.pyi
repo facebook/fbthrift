@@ -20,16 +20,6 @@ class HsTestServiceInterface(
     metaclass=ABCMeta,
 ):
 
-    @staticmethod
-    def pass_context_init(
-        fn: _typing.Callable[
-                [_HsTestServiceInterfaceT, RequestContext, int],
-                _typing.Coroutine[_typing.Any, _typing.Any, int]
-        ]
-    ) -> _typing.Callable[
-        [_HsTestServiceInterfaceT, int],
-        _typing.Coroutine[_typing.Any, _typing.Any, int]
-    ]: ...
 
     @abstractmethod
     async def init(
