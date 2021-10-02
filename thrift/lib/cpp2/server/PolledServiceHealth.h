@@ -16,12 +16,12 @@
 
 #pragma once
 
-#include <folly/GLog.h>
 #include <folly/Portability.h>
 #include <folly/experimental/coro/Task.h>
-#include <folly/futures/Future.h>
 
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
+
+#if FOLLY_HAS_COROUTINES
 
 namespace apache::thrift {
 /**
@@ -39,8 +39,6 @@ class PolledServiceHealth : public virtual ServiceHandler {
     ERROR,
   };
 
-// macOS crashes with coroutines at the moment
-#if FOLLY_HAS_COROUTINES && defined(__linux__)
   /**
    * Gets the current health of the service.
    *
@@ -49,16 +47,8 @@ class PolledServiceHealth : public virtual ServiceHandler {
    * PolledServiceHealth instances. In that case, the "most alarming"
    * ServiceHealth value is the one picked by ThriftServer.
    */
-  virtual folly::coro::Task<ServiceHealth> co_getServiceHealth() {
-    LOG(FATAL) << "You must override co_getServiceHealth";
-  }
-  virtual folly::SemiFuture<ServiceHealth> semifuture_getServiceHealth() {
-    return co_getServiceHealth().semi();
-  }
-#else
-  virtual folly::SemiFuture<ServiceHealth> semifuture_getServiceHealth() {
-    LOG(FATAL) << "You must override semifuture_getServiceHealth";
-  }
-#endif
+  virtual folly::coro::Task<ServiceHealth> co_getServiceHealth() = 0;
 };
 } // namespace apache::thrift
+
+#endif

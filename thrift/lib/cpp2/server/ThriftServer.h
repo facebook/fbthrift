@@ -292,8 +292,6 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     DRAINING_UNTIL_STOPPED,
   };
 
-  using ServiceHealth = PolledServiceHealth::ServiceHealth;
-
   ServerStatus getServerStatus() const {
     auto status = internalStatus_.load(std::memory_order_acquire);
     if (status == ServerStatus::RUNNING && !getEnabled()) {
@@ -305,9 +303,13 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
     return status;
   }
 
+#if FOLLY_HAS_COROUTINES
+  using ServiceHealth = PolledServiceHealth::ServiceHealth;
+
   ServiceHealth getServiceHealth() const {
     return cachedServiceHealth_.load(std::memory_order_relaxed);
   }
+#endif
 
   RequestHandlingCapability shouldHandleRequests() const override {
     auto status = getServerStatus();
@@ -341,10 +343,12 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
    * represents the source of truth for the status reported by the server.
    */
   std::atomic<ServerStatus> internalStatus_{ServerStatus::NOT_RUNNING};
+#if FOLLY_HAS_COROUTINES
   /**
    * Thrift server's latest view of the running service's reported health.
    */
   std::atomic<ServiceHealth> cachedServiceHealth_{};
+#endif
 
   std::unique_ptr<AsyncProcessorFactory> decoratedProcessorFactory_;
 
