@@ -204,35 +204,52 @@ template <typename T, std::enable_if_t<st::IsThriftClass<T>{}, int> = 0>
 constexpr bool operator>=(const T& lhs, const T& rhs) {
   return !(lhs < rhs);
 }
-template <size_t NumBits>
+template <size_t NumBits, bool packed = false>
 class isset_bitset {
  public:
   template <size_t field_index>
   bool __fbthrift_get(folly::index_constant<field_index>) const {
-    static_assert(field_index < NumBits, "Isset index is out of boundary");
-    return array_isset[field_index] == 1;
+    check<field_index>();
+    return array_isset[field_index / kBits] >> (field_index % kBits) & 1;
   }
   template <size_t field_index>
   void __fbthrift_set(folly::index_constant<field_index>, bool isset_flag) {
-    static_assert(field_index < NumBits, "Isset index is out of boundary");
-    array_isset[field_index] = isset_flag ? 1 : 0;
+    check<field_index>();
+    if (isset_flag) {
+      array_isset[field_index / kBits] |= 1 << (field_index % kBits);
+    } else {
+      array_isset[field_index / kBits] &= ~(1 << (field_index % kBits));
+    }
   }
   template <size_t field_index>
   const uint8_t& __fbthrift_at(folly::index_constant<field_index>) const {
-    static_assert(field_index < NumBits, "Isset index is out of boundary");
-    return array_isset[field_index];
+    check<field_index>();
+    return array_isset[field_index / kBits];
   }
   template <size_t field_index>
   uint8_t& __fbthrift_at(folly::index_constant<field_index>) {
-    static_assert(field_index < NumBits, "Isset index is out of boundary");
-    return array_isset[field_index];
+    check<field_index>();
+    return array_isset[field_index / kBits];
+  }
+  template <size_t field_index>
+  uint8_t __fbthrift_bit(folly::index_constant<field_index>) const {
+    check<field_index>();
+    return field_index % kBits;
   }
   static constexpr ptrdiff_t get_offset() {
     return offsetof(isset_bitset, array_isset);
   }
 
  private:
-  std::array<uint8_t, NumBits> array_isset{};
+  template <size_t field_index>
+  static void check() {
+    static_assert(
+        field_index / kBits < NumBits, "Isset index is out of boundary");
+  }
+
+ private:
+  static constexpr size_t kBits = packed ? 8 : 1;
+  std::array<uint8_t, (NumBits + kBits) / kBits> array_isset{};
 };
 
 } // namespace detail
