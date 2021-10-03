@@ -176,6 +176,7 @@ add_library(
   server/RequestDebugLog.cpp
   server/RequestsRegistry.cpp
   server/ServerInstrumentation.cpp
+  server/ServiceHealthPoller.cpp
   server/ThriftProcessor.cpp
   server/ThriftServer.cpp
   server/peeking/TLSHelper.cpp
