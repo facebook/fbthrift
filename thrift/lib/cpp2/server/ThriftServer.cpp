@@ -29,6 +29,8 @@
 #include <folly/executors/CPUThreadPoolExecutor.h>
 #include <folly/executors/IOThreadPoolDeadlockDetectorObserver.h>
 #include <folly/experimental/coro/BlockingWait.h>
+#include <folly/experimental/coro/CurrentExecutor.h>
+#include <folly/experimental/coro/Invoke.h>
 #include <folly/io/GlobalShutdownSocketSet.h>
 #include <folly/portability/Sockets.h>
 #include <thrift/lib/cpp/concurrency/PosixThreadFactory.h>
@@ -487,6 +489,27 @@ void ThriftServer::setup() {
     // requests, at least from the server's perspective.
     internalStatus_.store(ServerStatus::RUNNING, std::memory_order_release);
 
+#if FOLLY_HAS_COROUTINES
+    // Set up polling for PolledServiceHealth handlers if necessary
+    {
+      DCHECK(!getServiceHealth().has_value());
+      auto handlers = collectServiceHandlers<PolledServiceHealth>();
+      if (!handlers.empty()) {
+        auto poll = ServiceHealthPoller::poll(
+            std::move(handlers), getPolledServiceHealthLivenessObserver());
+        auto loop = folly::coro::co_invoke(
+            [this,
+             poll = std::move(poll)]() mutable -> folly::coro::Task<void> {
+              while (auto value = co_await poll.next()) {
+                co_await folly::coro::co_safe_point;
+                cachedServiceHealth_.store(*value, std::memory_order_relaxed);
+              }
+            });
+        asyncScope_->add(std::move(loop).scheduleOn(threadManager_.get()));
+      }
+    }
+#endif
+
     // Notify handler of the preServe event
     for (const auto& eventHandler : getEventHandlersUnsafe()) {
       eventHandler->preServe(&addresses_.at(0));
@@ -856,6 +879,7 @@ void ThriftServer::stopCPUWorkers() {
 #if FOLLY_HAS_COROUTINES
   // Wait for tasks running on AsyncScope to join
   folly::coro::blockingWait(asyncScope_->joinAsync());
+  cachedServiceHealth_.store(ServiceHealth{}, std::memory_order_relaxed);
 #endif
 
   // Notify handler of the postStop event

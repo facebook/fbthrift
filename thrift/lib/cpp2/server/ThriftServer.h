@@ -51,6 +51,7 @@
 #include <thrift/lib/cpp2/server/RequestDebugLog.h>
 #include <thrift/lib/cpp2/server/RequestsRegistry.h>
 #include <thrift/lib/cpp2/server/ServerInstrumentation.h>
+#include <thrift/lib/cpp2/server/ServiceHealthPoller.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/PayloadUtils.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
@@ -306,8 +307,10 @@ class ThriftServer : public apache::thrift::BaseThriftServer,
 #if FOLLY_HAS_COROUTINES
   using ServiceHealth = PolledServiceHealth::ServiceHealth;
 
-  ServiceHealth getServiceHealth() const {
-    return cachedServiceHealth_.load(std::memory_order_relaxed);
+  std::optional<ServiceHealth> getServiceHealth() const {
+    auto health = cachedServiceHealth_.load(std::memory_order_relaxed);
+    return health == ServiceHealth{} ? std::nullopt
+                                     : std::make_optional(health);
   }
 #endif
 
