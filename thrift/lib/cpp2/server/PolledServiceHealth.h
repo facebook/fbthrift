@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 #include <folly/Portability.h>
 #include <folly/experimental/coro/Task.h>
 
@@ -33,7 +35,7 @@ namespace apache::thrift {
  */
 class PolledServiceHealth : public virtual ServiceHandler {
  public:
-  enum class ServiceHealth {
+  enum class ServiceHealth : std::uint8_t {
     // 0 is used to represent an uninitialized value
     OK = 1,
     ERROR,
