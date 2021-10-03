@@ -48,6 +48,8 @@
 THRIFT_FLAG_DECLARE_int64(server_default_socket_queue_timeout_ms);
 THRIFT_FLAG_DECLARE_int64(server_default_queue_timeout_ms);
 
+THRIFT_FLAG_DECLARE_int64(server_polled_service_health_liveness_ms);
+
 namespace wangle {
 class ConnectionManager;
 }
@@ -350,6 +352,20 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
    * Ignored if backpressure threshold is disabled.
    */
   ServerAttributeDynamic<double> egressBufferRecoveryFactor_{0.75};
+
+  /**
+   * The duration of time that a polled ServiceHealth value is considered
+   * current. i.e. another poll will only be scheduled after this amount of
+   * time has passed since the last poll completed.
+   *
+   * @see apache::thrift::PolledServiceHealth
+   */
+  ServerAttributeDynamic<std::chrono::milliseconds>
+      polledServiceHealthLiveness_{folly::observer::makeObserver(
+          [livenessMs = THRIFT_FLAG_OBSERVE(
+               server_polled_service_health_liveness_ms)]() {
+            return std::chrono::milliseconds(**livenessMs);
+          })};
 
   std::shared_ptr<server::TServerEventHandler> eventHandler_;
   std::vector<std::shared_ptr<server::TServerEventHandler>> eventHandlers_;
@@ -1310,6 +1326,18 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
       DynamicAttributeTag = DynamicAttributeTag{}) {
     recoveryFactor = std::max(0.0, std::min(1.0, recoveryFactor));
     egressBufferRecoveryFactor_.set(recoveryFactor, source);
+  }
+
+  folly::observer::Observer<std::chrono::milliseconds>
+  getPolledServiceHealthLivenessObserver() const {
+    return polledServiceHealthLiveness_.getObserver();
+  }
+
+  void setPolledServiceHealthLiveness(
+      std::chrono::milliseconds liveness,
+      AttributeSource source = AttributeSource::OVERRIDE,
+      DynamicAttributeTag = DynamicAttributeTag{}) {
+    polledServiceHealthLiveness_.set(liveness, source);
   }
 
   const auto& adaptiveConcurrencyController() const {
