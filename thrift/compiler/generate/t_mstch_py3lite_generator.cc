@@ -782,6 +782,7 @@ class t_mstch_py3lite_generator : public t_mstch_generator {
   void generate_program() override {
     set_mstch_generators();
     generate_types();
+    generate_clients();
   }
 
   void fill_validator_list(validator_list& vl) const override {
@@ -795,6 +796,7 @@ class t_mstch_py3lite_generator : public t_mstch_generator {
   void generate_file(
       const std::string& file, const boost::filesystem::path& base);
   void generate_types();
+  void generate_clients();
   boost::filesystem::path package_to_path();
 
   const boost::filesystem::path generate_root_path_;
@@ -838,6 +840,11 @@ void t_mstch_py3lite_generator::generate_file(
 void t_mstch_py3lite_generator::generate_types() {
   generate_file("lite_types.py", generate_root_path_);
   generate_file("lite_types.pyi", generate_root_path_);
+}
+
+void t_mstch_py3lite_generator::generate_clients() {
+  generate_file("lite_clients.py", generate_root_path_);
+  generate_file("lite_clients.pyi", generate_root_path_);
 }
 
 THRIFT_REGISTER_GENERATOR(
