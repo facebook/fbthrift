@@ -25,7 +25,7 @@ cdef extern from "<thrift/lib/cpp2/protocol/TableBasedSerializer.h>" namespace "
     cdef struct cStructInfo "::apache::thrift::detail::StructInfo":
         pass
 
-cdef extern from "<thrift/lib/py3/tablebased/PythonTableBased.h>" namespace "::apache::thrift::python":
+cdef extern from "<thrift/lib/py3lite/PythonTableBased.h>" namespace "::apache::thrift::python":
     cdef cppclass cDynamicStructInfo "::apache::thrift::python::DynamicStructInfo":
         cDynamicStructInfo(const char* name, int16_t numFields, bint isUnion)
         const cStructInfo& getStructInfo()

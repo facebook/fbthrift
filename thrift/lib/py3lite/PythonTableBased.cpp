@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/py3/tablebased/PythonTableBased.h"
+#include "thrift/lib/py3lite/PythonTableBased.h"
 
 #include <folly/Indestructible.h>
 #include <folly/Memory.h>
