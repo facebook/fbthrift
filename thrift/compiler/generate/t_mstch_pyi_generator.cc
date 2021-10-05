@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <set>
 
 #include <boost/algorithm/string/classification.hpp>
 #include <boost/algorithm/string/join.hpp>

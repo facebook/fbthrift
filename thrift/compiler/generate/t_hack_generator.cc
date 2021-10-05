@@ -37,6 +37,20 @@
 namespace apache {
 namespace thrift {
 namespace compiler {
+namespace {
+
+class t_name_generator {
+ public:
+  std::string operator()() { return operator()("tmp_"); }
+
+  std::string operator()(const char* prefix) {
+    return prefix + std::to_string(counter_++);
+  }
+
+ private:
+  int counter_ = 0;
+};
+} // namespace
 
 /**
  * Hack code generator.

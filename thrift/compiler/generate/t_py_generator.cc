@@ -30,6 +30,7 @@
 #include <boost/filesystem.hpp>
 
 #include <thrift/compiler/ast/t_typedef.h>
+#include <thrift/compiler/common.h>
 #include <thrift/compiler/generate/common.h>
 #include <thrift/compiler/generate/t_concat_generator.h>
 #include <thrift/compiler/generate/t_generator.h>

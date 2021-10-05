@@ -18,6 +18,7 @@
 
 #include <cinttypes>
 #include <cstdio>
+#include <fstream>
 #include <iterator>
 
 #include <openssl/sha.h>

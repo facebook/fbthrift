@@ -15,6 +15,7 @@
  */
 
 #include <cctype>
+#include <set>
 
 #include <boost/algorithm/string.hpp>
 #include <boost/algorithm/string/predicate.hpp>

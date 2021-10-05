@@ -18,6 +18,7 @@
 #include <array>
 #include <memory>
 #include <queue>
+#include <set>
 #include <vector>
 
 #include <boost/algorithm/string/replace.hpp>

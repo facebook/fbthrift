@@ -39,6 +39,7 @@
 
 #include <thrift/compiler/ast/diagnostic.h>
 #include <thrift/compiler/ast/diagnostic_context.h>
+#include <thrift/compiler/common.h>
 #include <thrift/compiler/generate/t_generator.h>
 #include <thrift/compiler/mutator/mutator.h>
 #include <thrift/compiler/parse/parsing_driver.h>
