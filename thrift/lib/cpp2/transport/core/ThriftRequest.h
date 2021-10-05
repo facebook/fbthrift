@@ -29,7 +29,6 @@
 #include <folly/Portability.h>
 
 #include <folly/Optional.h>
-#include <folly/Random.h>
 #include <folly/io/IOBuf.h>
 
 #include <thrift/lib/cpp/TApplicationException.h>
@@ -48,7 +47,7 @@
 #include <thrift/lib/cpp2/transport/core/ThriftChannelIf.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
-THRIFT_FLAG_DECLARE_int64(queue_time_logging_sample_rate);
+THRIFT_FLAG_DECLARE_int64(queue_time_logging_threshold_ms);
 
 namespace apache {
 namespace thrift {
@@ -381,8 +380,6 @@ class ThriftRequestCore : public ResponseChannelRequest {
 
  private:
   static bool includeInRecentRequestsCount(const std::string_view);
-
-  static bool shouldSample(int64_t sampleRate);
 
   MessageChannel::SendCallbackPtr prepareSendCallback(
       MessageChannel::SendCallbackPtr&& sendCallback,
