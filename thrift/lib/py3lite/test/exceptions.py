@@ -21,8 +21,13 @@ from testing.lite_types import (
     SimpleError,
     UnfriendlyError,
     UnusedError,
+    ValueOrError,
 )
 from thrift.py3lite.exceptions import Error
+from thrift.py3lite.serializer import (
+    deserialize,
+    serialize_iobuf,
+)
 
 
 class ExceptionTests(unittest.TestCase):
@@ -78,3 +83,11 @@ class ExceptionTests(unittest.TestCase):
         self.assertEqual(str(y), "Color.red")
         y2 = SimpleError(color=Color.red)
         self.assertEqual(str(y2), "Color.red")
+
+    def test_serialize_deserialize(self) -> None:
+        err = HardError(errortext="err", code=2)
+        x = ValueOrError(error=err)
+        serialized = serialize_iobuf(x)
+        y = deserialize(ValueOrError, serialized)
+        self.assertIsNot(x, y)
+        self.assertEqual(x, y)

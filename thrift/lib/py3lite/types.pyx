@@ -269,7 +269,13 @@ cdef class StructTypeInfo:
     def to_internal_data(self, value):
         if not isinstance(value, self._class):
             raise TypeError(f"value {value} is not a {self._class !r}.")
-        return (<Struct>value)._fbthrift_data
+        if isinstance(value, Struct):
+            return (<Struct>value)._fbthrift_data
+        if isinstance(value, GeneratedError):
+            return (<GeneratedError>value)._fbthrift_data
+        if isinstance(value, Union):
+            return (<Union>value)._fbthrift_data
+        raise TypeError(f"{self._class} not supported")
 
     # convert deserialized data to user format
     def to_python_value(self, object value):

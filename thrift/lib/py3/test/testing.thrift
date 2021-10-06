@@ -135,13 +135,9 @@ union Integers {
   7: Digits digits (cpp.ref = "True");
 }
 
-struct Error {
-  1: string message;
-}
-
 union ValueOrError {
   1: File value (py3.name = "value_");
-  2: Error error;
+  3: HardError error;
 }
 
 struct easy {
