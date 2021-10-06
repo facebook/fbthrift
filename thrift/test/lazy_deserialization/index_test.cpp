@@ -203,29 +203,33 @@ TYPED_TEST(LazyDeserialization, LazyFooToIndexedFoo) {
   auto lazyFoo = this->genLazyStruct();
   auto tokens = tokenize(lazyFoo, Serializer{});
 
-  tokens[0].header = genFieldHeader(
-      detail::kExpectedRandomNumberField.type,
-      simple_constants::kRandomNumberId(),
-      Serializer{});
-  tokens[1].header = genFieldHeader(
+  size_t i = 0;
+  if (!std::is_same_v<typename TypeParam::Struct, FooNoChecksum>) {
+    tokens[i++].header = genFieldHeader(
+        detail::kExpectedRandomNumberField.type,
+        simple_constants::kRandomNumberId(),
+        Serializer{});
+  }
+  tokens[i++].header = genFieldHeader(
       detail::kSizeField.type, simple_constants::kSizeId(), Serializer{});
   tokens.rbegin()->header = genFieldHeader(
       detail::kIndexField.type, simple_constants::kIndexId(), Serializer{});
 
   auto indexedFoo = this->template deserialize<IndexedStruct>(merge(tokens));
+  indexedFoo.random_number_ref() = kRandomValue;
 
   EXPECT_EQ(lazyFoo.field1_ref(), indexedFoo.field1_ref());
   EXPECT_EQ(lazyFoo.field2_ref(), indexedFoo.field2_ref());
   EXPECT_EQ(lazyFoo.field3_ref(), indexedFoo.field3_ref());
   EXPECT_EQ(lazyFoo.field4_ref(), indexedFoo.field4_ref());
 
-  indexedFoo.random_number_ref() = kRandomValue;
-  indexedFoo.field_id_to_size_ref()[detail::kActualRandomNumberFieldId] =
-      kRandomValue;
-
   auto expected = genIndexedStruct<IndexedStruct>(Serializer{});
   if (std::is_same_v<typename TypeParam::Struct, FooNoChecksum>) {
     expected.field_id_to_size_ref()->erase(detail::kXxh3ChecksumFieldId);
+    expected.field_id_to_size_ref()->erase(detail::kActualRandomNumberFieldId);
+  } else {
+    indexedFoo.field_id_to_size_ref()[detail::kActualRandomNumberFieldId] =
+        kRandomValue;
   }
 
   EXPECT_THRIFT_EQ(indexedFoo, expected);

@@ -48,7 +48,7 @@ namespace detail {
  *   map<i16, i64> representing field id to field size
  *
  * During deserialization, we will use __fbthrift_index_offset to
- * extract __fbthrift_field_id_to_size before deserializating other fields.
+ * extract __fbthrift_field_id_to_size before deserializing other fields.
  * Then use __fbthrift_field_id_to_size to skip fields efficiently.
  */
 
@@ -58,7 +58,7 @@ struct InternalField {
   TType type;
 };
 
-// This is randomly generated 64 bit integer for each thrif struct
+// This is randomly generated 64 bit integer for each thrift struct
 // serialization. The same random number will be added to index field to
 // validate whether we are using the correct index field
 constexpr auto kExpectedRandomNumberField = InternalField{
@@ -128,11 +128,14 @@ int64_t random_64bits_integer();
 template <class Protocol>
 class IndexWriterImpl {
  public:
-  IndexWriterImpl(Protocol* prot, uint32_t& writtenBytes, bool writeChecksum)
+  IndexWriterImpl(
+      Protocol* prot, uint32_t& writtenBytes, bool writeValidationFields)
       : prot_(prot),
         writtenBytes_(writtenBytes),
-        writeChecksum_(writeChecksum) {
-    writeRandomNumberField();
+        writeValidationFields_(writeValidationFields) {
+    if (writeValidationFields_) {
+      writeRandomNumberField();
+    }
     writeIndexOffsetField();
   }
 
@@ -196,7 +199,7 @@ class IndexWriterImpl {
 
   Protocol* prot_;
   uint32_t& writtenBytes_;
-  bool writeChecksum_;
+  bool writeValidationFields_;
   uint32_t indexOffsetLocation_ = 0;
   uint32_t sizeFieldEnd_ = 0;
   uint32_t fieldStart_ = 0;
@@ -271,7 +274,6 @@ class ProtocolReaderStructReadStateWithIndexImpl
 
     p.readFieldBegin(name, fieldType, fieldId);
 
-    // TODO(ytj): enforce random number after migration
     if (fieldId == kExpectedRandomNumberField.id) {
       if (fieldType != kExpectedRandomNumberField.type) {
         return false;
