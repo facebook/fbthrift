@@ -18,6 +18,7 @@ namespace cpp2 apache.thrift.test.basic
 
 include "thrift/annotation/cpp.thrift"
 cpp_include "thrift/test/AdapterTest.h"
+cpp_include "thrift/lib/cpp2/Adapt.h"
 
 typedef i64 DurationMs (
   cpp.adapter = "::apache::thrift::test::AdaptTestMsAdapter",
@@ -56,6 +57,10 @@ typedef binary (
   cpp.adapter = "::apache::thrift::test::CustomProtocolAdapter",
 ) CustomProtocolType
 
+typedef string (
+  cpp.adapter = "::apache::thrift::IndirectionAdapter<::apache::thrift::test::IndirectionString>",
+) IndirectionString
+
 struct AdaptTestStruct {
   1: DurationMs delay;
   2: CustomProtocolType custom;
@@ -68,6 +73,7 @@ struct AdaptTestStruct {
   @cpp.ExperimentalAdapter{name = "::apache::thrift::test::AdapterWithContext"}
   4: i64 data;
   5: string meta;
+  6: IndirectionString indirectionString;
 }
 
 struct AdaptTemplatedTestStruct {

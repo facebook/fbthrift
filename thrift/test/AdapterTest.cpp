@@ -17,8 +17,8 @@
 #include <thrift/test/AdapterTest.h>
 
 #include <chrono>
-
 #include <limits>
+
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/Adapt.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
@@ -53,8 +53,8 @@ TEST_F(AdapterTest, IsMutableRef) {
 
 TEST_F(AdapterTest, HasInplaceToThrift) {
   EXPECT_TRUE((adapt_detail::has_inplace_toThrift<
-               IndirectionAdapter<StringWithIndirection>,
-               StringWithIndirection>::value));
+               IndirectionAdapter<IndirectionString>,
+               IndirectionString>::value));
   // Does not return a mutable ref.
   EXPECT_FALSE(
       (adapt_detail::has_inplace_toThrift<OverloadedAdapter, Num>::value));
@@ -64,10 +64,10 @@ TEST_F(AdapterTest, HasInplaceToThrift) {
   EXPECT_TRUE((
       adapt_detail::has_inplace_toThrift<IndirectionAdapter<int>, int>::value));
 
-  // `IndirectionAdapter<StringWithIndirection>::toThrift(int&&)`
+  // `IndirectionAdapter<IndirectionString>::toThrift(int&&)`
   // is invalid, so we get false.
   EXPECT_FALSE((adapt_detail::has_inplace_toThrift<
-                IndirectionAdapter<IndirectionAdapter<StringWithIndirection>>,
+                IndirectionAdapter<IndirectionAdapter<IndirectionString>>,
                 int>::value));
 }
 
@@ -77,6 +77,7 @@ TEST_F(AdapterTest, StructCodeGen_Empty) {
   EXPECT_EQ(obj0a.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0a.custom_ref()->val, 13); // Defined in Num.
   EXPECT_EQ(obj0a.timeout_ref(), std::chrono::milliseconds(0));
+  EXPECT_EQ(obj0a.indirectionString_ref()->val, "");
 
   auto data0 = CompactSerializer::serialize<std::string>(obj0a);
   AdaptTestStruct obj0b;
@@ -84,6 +85,7 @@ TEST_F(AdapterTest, StructCodeGen_Empty) {
   EXPECT_EQ(obj0b.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0b.custom_ref()->val, 13);
   EXPECT_EQ(obj0b.timeout_ref(), std::chrono::milliseconds(0));
+  EXPECT_EQ(obj0a.indirectionString_ref()->val, "");
 
   EXPECT_EQ(obj0b, obj0a);
 }
@@ -94,6 +96,7 @@ TEST_F(AdapterTest, StructCodeGen_Zero) {
   EXPECT_EQ(obj0a.custom_ref()->val, 13); // Defined in Num.
   obj0a.custom_ref()->val = 0;
   EXPECT_EQ(obj0a.timeout_ref(), std::chrono::milliseconds(0));
+  EXPECT_EQ(obj0a.indirectionString_ref()->val, "");
 
   auto data0 = CompactSerializer::serialize<std::string>(obj0a);
   AdaptTestStruct obj0b;
@@ -101,6 +104,7 @@ TEST_F(AdapterTest, StructCodeGen_Zero) {
   EXPECT_EQ(obj0b.delay_ref(), std::chrono::milliseconds(0));
   EXPECT_EQ(obj0b.custom_ref()->val, 0);
   EXPECT_EQ(obj0b.timeout_ref(), std::chrono::milliseconds(0));
+  EXPECT_EQ(obj0a.indirectionString_ref()->val, "");
 
   EXPECT_EQ(obj0b, obj0a);
 }
@@ -110,6 +114,9 @@ TEST_F(AdapterTest, StructCodeGen) {
   AssertSameType<decltype(*obj1a.delay_ref()), std::chrono::milliseconds&>();
   AssertSameType<decltype(*obj1a.custom_ref()), Num&>();
   AssertSameType<decltype(*obj1a.timeout_ref()), std::chrono::milliseconds&>();
+  AssertSameType<
+      decltype(*obj1a.indirectionString_ref()),
+      IndirectionString&>();
 
   EXPECT_EQ(obj1a.delay_ref(), std::chrono::milliseconds(0));
   obj1a.delay_ref() = std::chrono::milliseconds(7);
@@ -123,12 +130,17 @@ TEST_F(AdapterTest, StructCodeGen) {
   obj1a.timeout_ref() = std::chrono::milliseconds(7);
   EXPECT_EQ(obj1a.timeout_ref(), std::chrono::milliseconds(7));
 
+  EXPECT_EQ(obj1a.indirectionString_ref()->val, "");
+  obj1a.indirectionString_ref()->val = "hi";
+  EXPECT_EQ(obj1a.indirectionString_ref()->val, "hi");
+
   auto data1 = CompactSerializer::serialize<std::string>(obj1a);
   AdaptTestStruct obj1b;
   CompactSerializer::deserialize(data1, obj1b);
   EXPECT_EQ(obj1b.delay_ref(), std::chrono::milliseconds(7));
   EXPECT_EQ(obj1b.custom_ref()->val, std::numeric_limits<int64_t>::min());
   EXPECT_EQ(obj1b.timeout_ref(), std::chrono::milliseconds(7));
+  EXPECT_EQ(obj1a.indirectionString_ref()->val, "hi");
 
   EXPECT_EQ(obj1b, obj1b);
   EXPECT_FALSE(obj1b < obj1a);
@@ -522,7 +534,7 @@ struct ReferenceAdapter {
 };
 struct ReferenceAdapterWithContext {
   template <typename Context>
-  static const int64_t& fromThriftField(const int64_t&, Context&&);
+  static int64_t&& fromThriftField(const int64_t&, Context&&);
 };
 
 TEST_F(AdapterTest, FromThriftField) {
@@ -533,7 +545,7 @@ TEST_F(AdapterTest, FromThriftField) {
   AssertSameType<
       decltype(adapt_detail::fromThriftField<ReferenceAdapterWithContext, 0>(
           0, obj)),
-      const int64_t&>();
+      int64_t&&>();
 }
 
 TEST(AdaptTest, AdapterWithContext) {

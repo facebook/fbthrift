@@ -71,7 +71,7 @@ struct String {
   std::string val;
 };
 
-struct StringWithIndirection {
+struct IndirectionString {
   FBTHRIFT_CPP_DEFINE_MEMBER_INDIRECTION_FN(val);
   std::string val;
 };

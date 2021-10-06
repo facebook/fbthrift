@@ -22,6 +22,7 @@
 #include <utility>
 
 #include <folly/Traits.h>
+#include <thrift/lib/cpp2/Thrift.h>
 
 namespace apache {
 namespace thrift {
@@ -271,5 +272,26 @@ void validateFieldAdapter() {
 }
 
 } // namespace adapt_detail
+
+template <typename AdaptedT>
+struct IndirectionAdapter {
+  template <typename ThriftT>
+  static constexpr AdaptedT fromThrift(ThriftT&& value) {
+    AdaptedT adapted;
+    toThrift(adapted) = std::forward<ThriftT>(value);
+    return adapted;
+  }
+  FOLLY_ERASE static constexpr decltype(auto)
+  toThrift(AdaptedT& adapted) noexcept(
+      noexcept(::apache::thrift::apply_indirection(adapted))) {
+    return ::apache::thrift::apply_indirection(adapted);
+  }
+  FOLLY_ERASE static constexpr decltype(auto)
+  toThrift(const AdaptedT& adapted) noexcept(
+      noexcept(::apache::thrift::apply_indirection(adapted))) {
+    return ::apache::thrift::apply_indirection(adapted);
+  }
+};
+
 } // namespace thrift
 } // namespace apache
