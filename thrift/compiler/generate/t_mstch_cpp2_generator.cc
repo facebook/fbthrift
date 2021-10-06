@@ -172,9 +172,7 @@ std::string get_out_dir_base(
 
 class cpp2_generator_context {
  public:
-  static cpp2_generator_context create(t_program const*) {
-    return cpp2_generator_context();
-  }
+  static cpp2_generator_context create() { return cpp2_generator_context(); }
 
   cpp2_generator_context(cpp2_generator_context&&) = default;
   cpp2_generator_context& operator=(cpp2_generator_context&&) = default;
@@ -1895,7 +1893,7 @@ t_mstch_cpp2_generator::t_mstch_cpp2_generator(
     : t_mstch_generator(
           program, std::move(context), "cpp2", parsed_options, true),
       context_(std::make_shared<cpp2_generator_context>(
-          cpp2_generator_context::create(program))) {
+          cpp2_generator_context::create())) {
   out_dir_base_ = get_out_dir_base(parsed_options);
 }
 
