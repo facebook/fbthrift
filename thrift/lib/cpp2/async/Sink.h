@@ -128,7 +128,7 @@ struct SinkConsumer {
   using Consumer = folly::Function<folly::coro::Task<FinalResponse>(
       folly::coro::AsyncGenerator<SinkElement&&>)>;
   Consumer consumer;
-  uint64_t bufferSize;
+  uint64_t bufferSize{100};
   SinkOptions sinkOptions{std::chrono::milliseconds(0)};
   SinkConsumer&& setChunkTimeout(const std::chrono::milliseconds& timeout) && {
     sinkOptions.chunkTimeout = timeout;
