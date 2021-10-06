@@ -541,6 +541,8 @@ class ServiceHandler {
     return folly::makeSemiFuture();
   }
 
+  ThriftServer* getServer() { return server_; }
+  const ThriftServer* getServer() const { return server_; }
   void setServer(ThriftServer* server) { server_ = server; }
 
   virtual ~ServiceHandler() = default;
@@ -551,7 +553,7 @@ class ServiceHandler {
 #endif
 
  private:
-  ThriftServer* server_;
+  ThriftServer* server_{nullptr};
 };
 
 /**
