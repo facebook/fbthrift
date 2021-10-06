@@ -37,6 +37,16 @@ void EventHandlerBase::addEventHandler(
   handlers_->push_back(handler);
 }
 
+void EventHandlerBase::addNotNullEventHandler(
+    const folly::not_null_shared_ptr<TProcessorEventHandler>& handler) {
+  if (!handlers_) {
+    handlers_ = std::make_shared<
+        std::vector<std::shared_ptr<TProcessorEventHandler>>>();
+  }
+  handlers_->push_back(
+      static_cast<const std::shared_ptr<TProcessorEventHandler>>(handler));
+}
+
 folly::Range<std::shared_ptr<TProcessorEventHandler>*>
 EventHandlerBase::getEventHandlers() const {
   if (!handlers_) {
@@ -54,14 +64,15 @@ TProcessorBase::TProcessorBase() {
     }
   }
   for (const auto& handler : getHandlers()) {
-    if (handler) {
-      addEventHandler(handler);
-    }
+    addNotNullEventHandler(handler);
   }
 }
 
 void TProcessorBase::addProcessorEventHandler(
     std::shared_ptr<TProcessorEventHandler> handler) {
+  if (!handler) {
+    return;
+  }
   WLock lock{getRWMutex()};
   assert(
       find(getHandlers().begin(), getHandlers().end(), handler) ==
@@ -111,9 +122,10 @@ TProcessorBase::getFactories() {
       new vector<shared_ptr<TProcessorEventHandlerFactory>>();
   return *factories;
 }
-vector<std::shared_ptr<TProcessorEventHandler>>& TProcessorBase::getHandlers() {
-  static vector<std::shared_ptr<TProcessorEventHandler>>* handlers =
-      new vector<std::shared_ptr<TProcessorEventHandler>>();
+vector<folly::not_null_shared_ptr<TProcessorEventHandler>>&
+TProcessorBase::getHandlers() {
+  static vector<folly::not_null_shared_ptr<TProcessorEventHandler>>* handlers =
+      new vector<folly::not_null_shared_ptr<TProcessorEventHandler>>();
   return *handlers;
 }
 
@@ -128,14 +140,15 @@ TClientBase::TClientBase() {
     }
   }
   for (const auto& handler : getHandlers()) {
-    if (handler) {
-      addEventHandler(handler);
-    }
+    addNotNullEventHandler(handler);
   }
 }
 
 void TClientBase::addClientEventHandler(
     std::shared_ptr<TProcessorEventHandler> handler) {
+  if (!handler) {
+    return;
+  }
   WLock lock{getRWMutex()};
   assert(
       find(getHandlers().begin(), getHandlers().end(), handler) ==
@@ -182,9 +195,10 @@ vector<shared_ptr<TProcessorEventHandlerFactory>>& TClientBase::getFactories() {
       new vector<shared_ptr<TProcessorEventHandlerFactory>>();
   return *factories;
 }
-vector<std::shared_ptr<TProcessorEventHandler>>& TClientBase::getHandlers() {
-  static vector<std::shared_ptr<TProcessorEventHandler>>* handlers =
-      new vector<std::shared_ptr<TProcessorEventHandler>>();
+vector<folly::not_null_shared_ptr<TProcessorEventHandler>>&
+TClientBase::getHandlers() {
+  static vector<folly::not_null_shared_ptr<TProcessorEventHandler>>* handlers =
+      new vector<folly::not_null_shared_ptr<TProcessorEventHandler>>();
   return *handlers;
 }
 

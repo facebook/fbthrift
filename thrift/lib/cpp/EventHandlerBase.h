@@ -22,6 +22,7 @@
 
 #include <folly/Range.h>
 #include <folly/SharedMutex.h>
+#include <folly/memory/not_null.h>
 
 #include <thrift/lib/cpp/ContextStack.h>
 
@@ -31,6 +32,8 @@ namespace thrift {
 class EventHandlerBase {
  public:
   void addEventHandler(const std::shared_ptr<TProcessorEventHandler>& handler);
+  void addNotNullEventHandler(
+      const folly::not_null_shared_ptr<TProcessorEventHandler>& handler);
 
   void clearEventHandlers() { handlers_.reset(); }
 
@@ -84,7 +87,8 @@ class TProcessorBase : public EventHandlerBase {
  private:
   static folly::SharedMutex& getRWMutex();
 
-  static std::vector<std::shared_ptr<TProcessorEventHandler>>& getHandlers();
+  static std::vector<folly::not_null_shared_ptr<TProcessorEventHandler>>&
+  getHandlers();
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
   getFactories();
 };
@@ -113,7 +117,8 @@ class TClientBase : public EventHandlerBase {
  private:
   static folly::SharedMutex& getRWMutex();
 
-  static std::vector<std::shared_ptr<TProcessorEventHandler>>& getHandlers();
+  static std::vector<folly::not_null_shared_ptr<TProcessorEventHandler>>&
+  getHandlers();
   static std::vector<std::shared_ptr<TProcessorEventHandlerFactory>>&
   getFactories();
 };
