@@ -211,14 +211,38 @@ constexpr bool equal(const AdaptedT& lhs, const AdaptedT& rhs) {
   return adapter_equal<Adapter, AdaptedT>()(lhs, rhs);
 }
 
+// Helper for optional fields.
+template <typename Adapter, typename FieldRefT>
+constexpr bool equal_opt(const FieldRefT& lhs, const FieldRefT& rhs) {
+  using AdaptedT = decltype(lhs.value());
+  return lhs.has_value() == rhs.has_value() &&
+      (!lhs.has_value() || equal<Adapter, AdaptedT>(lhs.value(), rhs.value()));
+}
+
 template <typename Adapter, typename AdaptedT>
 constexpr bool not_equal(const AdaptedT& lhs, const AdaptedT& rhs) {
   return !adapter_equal<Adapter, AdaptedT>()(lhs, rhs);
 }
 
+// Helper for optional fields.
+template <typename Adapter, typename FieldRefT>
+constexpr bool not_equal_opt(const FieldRefT& lhs, const FieldRefT& rhs) {
+  return !equal_opt<Adapter, FieldRefT>(lhs, rhs);
+}
+
 template <typename Adapter, typename AdaptedT>
 constexpr bool less(const AdaptedT& lhs, const AdaptedT& rhs) {
   return adapter_less<Adapter, AdaptedT>()(lhs, rhs);
+}
+
+// A less comparision when the values are already known to be not equal.
+// Helper for optional fields.
+template <typename Adapter, typename FieldRefT>
+constexpr bool neq_less_opt(const FieldRefT& lhs, const FieldRefT& rhs) {
+  using AdaptedT = decltype(lhs.value());
+  return !lhs.has_value() ||
+      (rhs.has_value() &&
+       adapter_less<Adapter, AdaptedT>()(lhs.value(), rhs.value()));
 }
 
 template <typename Adapter, typename AdaptedT>

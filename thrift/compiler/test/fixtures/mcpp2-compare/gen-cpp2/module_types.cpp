@@ -522,10 +522,10 @@ bool MyStruct::operator==(const MyStruct& rhs) const {
   if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
     return false;
   }
-  if (!(lhs.MyCustomField_ref() == rhs.MyCustomField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField)) {
     return false;
   }
-  if (!(lhs.MyOptCustomField_ref() == rhs.MyOptCustomField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref())) {
     return false;
   }
   return true;
@@ -562,11 +562,11 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
   if (!(lhs.MyMapEnumAndInt_ref() == rhs.MyMapEnumAndInt_ref())) {
     return lhs.MyMapEnumAndInt_ref() < rhs.MyMapEnumAndInt_ref();
   }
-  if (!(lhs.MyCustomField_ref() == rhs.MyCustomField_ref())) {
-    return lhs.MyCustomField_ref() < rhs.MyCustomField_ref();
+  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField)) {
+    return ::apache::thrift::adapt_detail::less<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField);
   }
-  if (!(lhs.MyOptCustomField_ref() == rhs.MyOptCustomField_ref())) {
-    return lhs.MyOptCustomField_ref() < rhs.MyOptCustomField_ref();
+  if (::apache::thrift::adapt_detail::not_equal_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref())) {
+    return ::apache::thrift::adapt_detail::neq_less_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref());
   }
   return false;
 }
@@ -1361,10 +1361,10 @@ bool AnException::operator==(const AnException& rhs) const {
   if (!(lhs.a_union_typedef_list_ref() == rhs.a_union_typedef_list_ref())) {
     return false;
   }
-  if (!(lhs.MyCustomField_ref() == rhs.MyCustomField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField)) {
     return false;
   }
-  if (!(lhs.MyOptCustomField_ref() == rhs.MyOptCustomField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref())) {
     return false;
   }
   return true;
@@ -1419,11 +1419,11 @@ bool AnException::operator<(const AnException& rhs) const {
   if (!(lhs.a_union_typedef_list_ref() == rhs.a_union_typedef_list_ref())) {
     return lhs.a_union_typedef_list_ref() < rhs.a_union_typedef_list_ref();
   }
-  if (!(lhs.MyCustomField_ref() == rhs.MyCustomField_ref())) {
-    return lhs.MyCustomField_ref() < rhs.MyCustomField_ref();
+  if (::apache::thrift::adapt_detail::not_equal<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField)) {
+    return ::apache::thrift::adapt_detail::less<CustomProtocolAdapter>(lhs.MyCustomField, rhs.MyCustomField);
   }
-  if (!(lhs.MyOptCustomField_ref() == rhs.MyOptCustomField_ref())) {
-    return lhs.MyOptCustomField_ref() < rhs.MyOptCustomField_ref();
+  if (::apache::thrift::adapt_detail::not_equal_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref())) {
+    return ::apache::thrift::adapt_detail::neq_less_opt<CustomProtocolAdapter>(lhs.MyOptCustomField_ref(), rhs.MyOptCustomField_ref());
   }
   return false;
 }

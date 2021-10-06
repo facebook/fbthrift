@@ -17,6 +17,7 @@
 #include <thrift/lib/cpp2/Adapt.h>
 
 #include <functional>
+#include <optional>
 #include <ostream>
 #include <unordered_set>
 
@@ -133,16 +134,57 @@ class AdaptTest : public ::testing::Test {
 
   template <typename Adapter, typename Adapted>
   bool equal(int lhs, int rhs) {
-    return adapt_detail::equal<Adapter>(val<Adapted>(lhs), val<Adapted>(rhs));
+    const auto lhsVal = val<Adapted>(lhs);
+    const auto rhsVal = val<Adapted>(rhs);
+    bool result = adapt_detail::equal<Adapter>(lhsVal, rhsVal);
+    EXPECT_EQ(
+        adapt_detail::equal_opt<Adapter>(
+            std::make_optional(lhsVal), std::make_optional(rhsVal)),
+        result);
+    EXPECT_FALSE(
+        adapt_detail::equal_opt<Adapter>(std::make_optional(lhsVal), {}));
+    EXPECT_FALSE(
+        adapt_detail::equal_opt<Adapter>({}, std::make_optional(rhsVal)));
+    EXPECT_TRUE(
+        (adapt_detail::equal_opt<Adapter, std::optional<Adapted>>({}, {})));
+    return result;
   }
+
   template <typename Adapter, typename Adapted>
   bool notEqual(int lhs, int rhs) {
-    return adapt_detail::not_equal<Adapter>(
-        val<Adapted>(lhs), val<Adapted>(rhs));
+    const auto lhsVal = val<Adapted>(lhs);
+    const auto rhsVal = val<Adapted>(rhs);
+    bool result = adapt_detail::not_equal<Adapter>(lhsVal, rhsVal);
+    EXPECT_EQ(
+        adapt_detail::not_equal_opt<Adapter>(
+            std::make_optional(lhsVal), std::make_optional(rhsVal)),
+        result);
+    EXPECT_TRUE(
+        adapt_detail::not_equal_opt<Adapter>(std::make_optional(lhsVal), {}));
+    EXPECT_TRUE(
+        adapt_detail::not_equal_opt<Adapter>({}, std::make_optional(rhsVal)));
+    EXPECT_FALSE(
+        (adapt_detail::not_equal_opt<Adapter, std::optional<Adapted>>({}, {})));
+    return result;
+    ;
   }
+
   template <typename Adapter, typename Adapted>
   bool less(int lhs, int rhs) {
-    return adapt_detail::less<Adapter>(val<Adapted>(lhs), val<Adapted>(rhs));
+    const auto lhsVal = val<Adapted>(lhs);
+    const auto rhsVal = val<Adapted>(rhs);
+    bool result = adapt_detail::less<Adapter>(lhsVal, rhsVal);
+    if (adapt_detail::not_equal<Adapter>(lhsVal, rhsVal)) {
+      EXPECT_EQ(
+          adapt_detail::neq_less_opt<Adapter>(
+              std::make_optional(lhsVal), std::make_optional(rhsVal)),
+          result);
+      EXPECT_FALSE(
+          adapt_detail::neq_less_opt<Adapter>(std::make_optional(lhsVal), {}));
+      EXPECT_TRUE(
+          adapt_detail::neq_less_opt<Adapter>({}, std::make_optional(rhsVal)));
+    }
+    return result;
   }
 
   template <typename Adapter, typename Adapted>
@@ -153,19 +195,19 @@ class AdaptTest : public ::testing::Test {
 
 TEST_F(AdaptTest, Equal) {
   // Uses the thrift type.
-  EXPECT_CALL(tracker_, toThrift()).Times(4);
+  EXPECT_CALL(tracker_, toThrift()).Times(::testing::AtLeast(1));
   EXPECT_TRUE((equal<MinAdapter, MinType>(1, 1)));
   EXPECT_FALSE((equal<MinAdapter, MinType>(1, 2)));
   testing::Mock::VerifyAndClearExpectations(&tracker_);
 
   // Uses operator==()
-  EXPECT_CALL(tracker_, equal(OpType::Adapted)).Times(2);
+  EXPECT_CALL(tracker_, equal(OpType::Adapted)).Times(::testing::AtLeast(1));
   EXPECT_TRUE((equal<MinAdapter, FullType>(1, 1)));
   EXPECT_FALSE((equal<MinAdapter, FullType>(1, 2)));
   testing::Mock::VerifyAndClearExpectations(&tracker_);
 
-  // Uses adpater.
-  EXPECT_CALL(tracker_, equal(OpType::Adapter)).Times(2);
+  // Uses adapter.
+  EXPECT_CALL(tracker_, equal(OpType::Adapter)).Times(::testing::AtLeast(1));
   EXPECT_TRUE((equal<FullAdapter, FullType>(1, 1)));
   EXPECT_FALSE((equal<FullAdapter, FullType>(1, 2)));
   testing::Mock::VerifyAndClearExpectations(&tracker_);
@@ -173,7 +215,7 @@ TEST_F(AdaptTest, Equal) {
 
 TEST_F(AdaptTest, NotEqual) {
   // Uses !operator==()
-  EXPECT_CALL(tracker_, equal(OpType::Adapted)).Times(2);
+  EXPECT_CALL(tracker_, equal(OpType::Adapted)).Times(::testing::AtLeast(1));
   EXPECT_FALSE((notEqual<MinAdapter, FullType>(1, 1)));
   EXPECT_TRUE((notEqual<MinAdapter, FullType>(1, 2)));
   testing::Mock::VerifyAndClearExpectations(&tracker_);
@@ -181,19 +223,21 @@ TEST_F(AdaptTest, NotEqual) {
 
 TEST_F(AdaptTest, Less) {
   // Uses the thrift type.
-  EXPECT_CALL(tracker_, toThrift()).Times(4);
+  EXPECT_CALL(tracker_, toThrift()).Times(::testing::AtLeast(1));
   EXPECT_TRUE((less<MinAdapter, MinType>(1, 2)));
   EXPECT_FALSE((less<MinAdapter, MinType>(1, 1)));
   testing::Mock::VerifyAndClearExpectations(&tracker_);
 
   // Uses operator<()
-  EXPECT_CALL(tracker_, less(OpType::Adapted)).Times(2);
+  EXPECT_CALL(tracker_, less(OpType::Adapted)).Times(::testing::AtLeast(1));
+  EXPECT_CALL(tracker_, equal(OpType::Adapted)).Times(::testing::AnyNumber());
   EXPECT_TRUE((less<MinAdapter, FullType>(1, 2)));
   EXPECT_FALSE((less<MinAdapter, FullType>(1, 1)));
   testing::Mock::VerifyAndClearExpectations(&tracker_);
 
-  // Uses adpater.
-  EXPECT_CALL(tracker_, less(OpType::Adapter)).Times(2);
+  // Uses adapter.
+  EXPECT_CALL(tracker_, less(OpType::Adapter)).Times(::testing::AtLeast(1));
+  EXPECT_CALL(tracker_, equal(OpType::Adapter)).Times(::testing::AnyNumber());
   EXPECT_TRUE((less<FullAdapter, FullType>(1, 2)));
   EXPECT_FALSE((less<FullAdapter, FullType>(1, 1)));
   testing::Mock::VerifyAndClearExpectations(&tracker_);

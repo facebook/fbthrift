@@ -116,28 +116,28 @@ bool Foo::operator==(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.intField_ref() == rhs.intField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.intField, rhs.intField)) {
     return false;
   }
-  if (!(lhs.optionalIntField_ref() == rhs.optionalIntField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter1>(lhs.optionalIntField_ref(), rhs.optionalIntField_ref())) {
     return false;
   }
-  if (!(lhs.intFieldWithDefault_ref() == rhs.intFieldWithDefault_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.intFieldWithDefault, rhs.intFieldWithDefault)) {
     return false;
   }
-  if (!(lhs.setField_ref() == rhs.setField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter2>(lhs.setField, rhs.setField)) {
     return false;
   }
-  if (!(lhs.optionalSetField_ref() == rhs.optionalSetField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter2>(lhs.optionalSetField_ref(), rhs.optionalSetField_ref())) {
     return false;
   }
-  if (!(lhs.mapField_ref() == rhs.mapField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter3>(lhs.mapField, rhs.mapField)) {
     return false;
   }
-  if (!(lhs.optionalMapField_ref() == rhs.optionalMapField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter3>(lhs.optionalMapField_ref(), rhs.optionalMapField_ref())) {
     return false;
   }
-  if (!(lhs.binaryField_ref() == rhs.binaryField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.binaryField, rhs.binaryField)) {
     return false;
   }
   return true;
@@ -147,29 +147,29 @@ bool Foo::operator<(const Foo& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.intField_ref() == rhs.intField_ref())) {
-    return lhs.intField_ref() < rhs.intField_ref();
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.intField, rhs.intField)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.intField, rhs.intField);
   }
-  if (!(lhs.optionalIntField_ref() == rhs.optionalIntField_ref())) {
-    return lhs.optionalIntField_ref() < rhs.optionalIntField_ref();
+  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter1>(lhs.optionalIntField_ref(), rhs.optionalIntField_ref())) {
+    return ::apache::thrift::adapt_detail::neq_less_opt<my::Adapter1>(lhs.optionalIntField_ref(), rhs.optionalIntField_ref());
   }
-  if (!(lhs.intFieldWithDefault_ref() == rhs.intFieldWithDefault_ref())) {
-    return lhs.intFieldWithDefault_ref() < rhs.intFieldWithDefault_ref();
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.intFieldWithDefault, rhs.intFieldWithDefault)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.intFieldWithDefault, rhs.intFieldWithDefault);
   }
-  if (!(lhs.setField_ref() == rhs.setField_ref())) {
-    return lhs.setField_ref() < rhs.setField_ref();
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter2>(lhs.setField, rhs.setField)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter2>(lhs.setField, rhs.setField);
   }
-  if (!(lhs.optionalSetField_ref() == rhs.optionalSetField_ref())) {
-    return lhs.optionalSetField_ref() < rhs.optionalSetField_ref();
+  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter2>(lhs.optionalSetField_ref(), rhs.optionalSetField_ref())) {
+    return ::apache::thrift::adapt_detail::neq_less_opt<my::Adapter2>(lhs.optionalSetField_ref(), rhs.optionalSetField_ref());
   }
-  if (!(lhs.mapField_ref() == rhs.mapField_ref())) {
-    return lhs.mapField_ref() < rhs.mapField_ref();
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter3>(lhs.mapField, rhs.mapField)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter3>(lhs.mapField, rhs.mapField);
   }
-  if (!(lhs.optionalMapField_ref() == rhs.optionalMapField_ref())) {
-    return lhs.optionalMapField_ref() < rhs.optionalMapField_ref();
+  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter3>(lhs.optionalMapField_ref(), rhs.optionalMapField_ref())) {
+    return ::apache::thrift::adapt_detail::neq_less_opt<my::Adapter3>(lhs.optionalMapField_ref(), rhs.optionalMapField_ref());
   }
-  if (!(lhs.binaryField_ref() == rhs.binaryField_ref())) {
-    return lhs.binaryField_ref() < rhs.binaryField_ref();
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.binaryField, rhs.binaryField)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.binaryField, rhs.binaryField);
   }
   return false;
 }
@@ -450,10 +450,10 @@ bool Bar::operator==(const Bar& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.structField_ref() == rhs.structField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.structField, rhs.structField)) {
     return false;
   }
-  if (!(lhs.optionalStructField_ref() == rhs.optionalStructField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter1>(lhs.optionalStructField_ref(), rhs.optionalStructField_ref())) {
     return false;
   }
   if (!(lhs.structListField_ref() == rhs.structListField_ref())) {
@@ -462,10 +462,10 @@ bool Bar::operator==(const Bar& rhs) const {
   if (!(lhs.optionalStructListField_ref() == rhs.optionalStructListField_ref())) {
     return false;
   }
-  if (!(lhs.unionField_ref() == rhs.unionField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.unionField, rhs.unionField)) {
     return false;
   }
-  if (!(lhs.optionalUnionField_ref() == rhs.optionalUnionField_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter1>(lhs.optionalUnionField_ref(), rhs.optionalUnionField_ref())) {
     return false;
   }
   return true;
@@ -475,11 +475,11 @@ bool Bar::operator<(const Bar& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.structField_ref() == rhs.structField_ref())) {
-    return lhs.structField_ref() < rhs.structField_ref();
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.structField, rhs.structField)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.structField, rhs.structField);
   }
-  if (!(lhs.optionalStructField_ref() == rhs.optionalStructField_ref())) {
-    return lhs.optionalStructField_ref() < rhs.optionalStructField_ref();
+  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter1>(lhs.optionalStructField_ref(), rhs.optionalStructField_ref())) {
+    return ::apache::thrift::adapt_detail::neq_less_opt<my::Adapter1>(lhs.optionalStructField_ref(), rhs.optionalStructField_ref());
   }
   if (!(lhs.structListField_ref() == rhs.structListField_ref())) {
     return lhs.structListField_ref() < rhs.structListField_ref();
@@ -487,11 +487,11 @@ bool Bar::operator<(const Bar& rhs) const {
   if (!(lhs.optionalStructListField_ref() == rhs.optionalStructListField_ref())) {
     return lhs.optionalStructListField_ref() < rhs.optionalStructListField_ref();
   }
-  if (!(lhs.unionField_ref() == rhs.unionField_ref())) {
-    return lhs.unionField_ref() < rhs.unionField_ref();
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.unionField, rhs.unionField)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.unionField, rhs.unionField);
   }
-  if (!(lhs.optionalUnionField_ref() == rhs.optionalUnionField_ref())) {
-    return lhs.optionalUnionField_ref() < rhs.optionalUnionField_ref();
+  if (::apache::thrift::adapt_detail::not_equal_opt<my::Adapter1>(lhs.optionalUnionField_ref(), rhs.optionalUnionField_ref())) {
+    return ::apache::thrift::adapt_detail::neq_less_opt<my::Adapter1>(lhs.optionalUnionField_ref(), rhs.optionalUnionField_ref());
   }
   return false;
 }
@@ -662,7 +662,7 @@ bool StructWithFieldAdapter::operator==(const StructWithFieldAdapter& rhs) const
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field_ref() == rhs.field_ref())) {
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.field, rhs.field)) {
     return false;
   }
   return true;
@@ -672,8 +672,8 @@ bool StructWithFieldAdapter::operator<(const StructWithFieldAdapter& rhs) const 
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if (!(lhs.field_ref() == rhs.field_ref())) {
-    return lhs.field_ref() < rhs.field_ref();
+  if (::apache::thrift::adapt_detail::not_equal<my::Adapter1>(lhs.field, rhs.field)) {
+    return ::apache::thrift::adapt_detail::less<my::Adapter1>(lhs.field, rhs.field);
   }
   return false;
 }

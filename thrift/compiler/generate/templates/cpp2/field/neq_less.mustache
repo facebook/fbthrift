@@ -33,7 +33,17 @@
     %><%#field:optional?%>)<%/field:optional?%><%
   %><%/type:raw_binary?%><%
   %><%^type:raw_binary?%><%
-    // Just use the field_ref impl.
-    %>lhs.<%field:cpp_name%>_ref() < rhs.<%field:cpp_name%>_ref()<%
+    %><%#field:cpp_adapter%><%
+      %><%#field:optional?%><%
+        %>::apache::thrift::adapt_detail::neq_less_opt<<%field:cpp_adapter%>>(lhs.<%field:cpp_name%>_ref(), rhs.<%field:cpp_name%>_ref())<%
+      %><%/field:optional?%><%
+      %><%^field:optional?%><%
+        %>::apache::thrift::adapt_detail::less<<%field:cpp_adapter%>>(lhs.<%field:cpp_name%>, rhs.<%field:cpp_name%>)<%
+      %><%/field:optional?%><%
+    %><%/field:cpp_adapter%><%
+    %><%^field:cpp_adapter%><%
+      // Just use the field_ref impl.
+      %>lhs.<%field:cpp_name%>_ref() < rhs.<%field:cpp_name%>_ref()<%
+    %><%/field:cpp_adapter%><%
   %><%/type:raw_binary?%><%
 %><%/field:cpp_ref?%>
