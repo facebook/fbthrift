@@ -15,6 +15,10 @@
  */
 
 namespace cpp2 apache.thrift.test
+
+cpp_include "<unordered_set>"
+cpp_include "<unordered_map>"
+
 cpp_include "folly/container/F14Map.h"
 cpp_include "folly/container/F14Set.h"
 
@@ -97,4 +101,26 @@ struct DebugList {
 struct StructWithF14VectorContainers {
   1: map<i32, i32> (cpp.template = 'folly::F14VectorMap') m;
   2: set<i32> (cpp.template = 'folly::F14VectorSet') s;
+}
+
+struct OrderedFields {
+  1: map<string, i64> f1 = {"a": 1, "b": 2, "c": 3};
+  3: string f3 = "d";
+  2: set<string> f2 = ["a", "b", "c"];
+}
+
+struct UnorderedFields {
+  2: set<string> (cpp.template = "std::unordered_set") f2 = ["a", "b", "c"];
+  1: map<string, i64> (cpp.template = "std::unordered_map") f1 = {
+    "a": 1,
+    "b": 2,
+    "c": 3,
+  };
+  3: string f3 = "d";
+}
+
+struct OptionalFields {
+  1: optional string f1;
+  2: optional set<string> f2;
+  3: optional list<string> f3;
 }
