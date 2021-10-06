@@ -143,9 +143,38 @@ class _fbthrift_Raiser_doBland_args(metaclass=_fbthrift_py3lite_types.StructMeta
     _fbthrift_SPEC = (
     )
 
+class _fbthrift_Raiser_doBland_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+    )
+
 
 class _fbthrift_Raiser_doRaise_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
+    )
+
+class _fbthrift_Raiser_doRaise_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            1,  # id
+            False,  # isUnqualified
+            "b",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(Banal),  # typeinfo
+            None,  # default value
+        ),
+        (
+            2,  # id
+            False,  # isUnqualified
+            "f",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(Fiery),  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            False,  # isUnqualified
+            "s",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(Serious),  # typeinfo
+            None,  # default value
+        ),
     )
 
 
@@ -153,15 +182,64 @@ class _fbthrift_Raiser_get200_args(metaclass=_fbthrift_py3lite_types.StructMeta)
     _fbthrift_SPEC = (
     )
 
+class _fbthrift_Raiser_get200_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            False,  # isUnqualified
+            "success",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+
+        ),
+    )
+
 
 class _fbthrift_Raiser_get500_args(metaclass=_fbthrift_py3lite_types.StructMeta):
     _fbthrift_SPEC = (
     )
 
+class _fbthrift_Raiser_get500_result(metaclass=_fbthrift_py3lite_types.StructMeta):
+    _fbthrift_SPEC = (
+        (
+            0,  # id
+            False,  # isUnqualified
+            "success",  # name
+            _fbthrift_py3lite_types.typeinfo_string,  # typeinfo
+            None,  # default value
+
+        ),
+        (
+            1,  # id
+            False,  # isUnqualified
+            "f",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(Fiery),  # typeinfo
+            None,  # default value
+        ),
+        (
+            2,  # id
+            False,  # isUnqualified
+            "b",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(Banal),  # typeinfo
+            None,  # default value
+        ),
+        (
+            3,  # id
+            False,  # isUnqualified
+            "s",  # name
+            lambda: _fbthrift_py3lite_types.StructTypeInfo(Serious),  # typeinfo
+            None,  # default value
+        ),
+    )
+
 
 _fbthrift_py3lite_types.fill_specs(
     _fbthrift_Raiser_doBland_args,
+    _fbthrift_Raiser_doBland_result,
     _fbthrift_Raiser_doRaise_args,
+    _fbthrift_Raiser_doRaise_result,
     _fbthrift_Raiser_get200_args,
+    _fbthrift_Raiser_get200_result,
     _fbthrift_Raiser_get500_args,
+    _fbthrift_Raiser_get500_result,
 )

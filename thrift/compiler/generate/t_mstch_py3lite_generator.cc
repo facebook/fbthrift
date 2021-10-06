@@ -56,6 +56,11 @@ std::vector<std::string> get_py3_namespace_with_name(const t_program* prog) {
   return ns;
 }
 
+bool is_func_supported(const t_function* func) {
+  return !func->returns_stream() && !func->returns_sink() &&
+      !func->get_returntype()->is_service();
+}
+
 class mstch_py3lite_type : public mstch_type {
  public:
   mstch_py3lite_type(
@@ -584,6 +589,8 @@ class mstch_py3lite_service : public mstch_service {
             {"service:program_name", &mstch_py3lite_service::program_name},
             {"service:parent_service_name",
              &mstch_py3lite_service::parent_service_name},
+            {"service:supported_functions",
+             &mstch_py3lite_service::get_supported_functions},
         });
   }
 
@@ -595,6 +602,16 @@ class mstch_py3lite_service : public mstch_service {
 
   mstch::node parent_service_name() {
     return cache_->parsed_options_.at("parent_service_name");
+  }
+
+  mstch::node get_supported_functions() {
+    std::vector<t_function*> funcs;
+    for (auto func : service_->get_functions()) {
+      if (is_func_supported(func)) {
+        funcs.push_back(func);
+      }
+    }
+    return generate_functions(funcs);
   }
 
  protected:
