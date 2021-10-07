@@ -65,7 +65,11 @@ folly::coro::Task<void> ClientSinkBridge::waitEventImpl(
   CoroConsumer consumer;
   if (self.clientWait(&consumer)) {
     folly::CancellationCallback cb{
-        clientCancelToken, [&]() { self.serverClose(); }};
+        clientCancelToken, [&]() {
+          if (auto* cancelledCb = self.cancelClientWait()) {
+            cancelledCb->canceled();
+          }
+        }};
     co_await consumer.wait();
   }
   auto queue = self.clientGetMessages();
