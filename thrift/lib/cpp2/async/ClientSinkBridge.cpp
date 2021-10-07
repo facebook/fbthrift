@@ -139,7 +139,7 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sinkImpl(
           co_return folly::Try<StreamPayload>();
         }
       } else {
-        self.clientPush(SinkComplete{});
+        self.clientPush({});
         sinkComplete = true;
         // release generator
         generator = {};
@@ -228,21 +228,16 @@ void ClientSinkBridge::processServerMessages() {
     for (auto messages = serverGetMessages(); !messages.empty();
          messages.pop()) {
       bool terminated = false;
-      ServerMessage message = std::move(messages.front());
-      folly::variant_match(
-          message,
-          [&](folly::Try<StreamPayload>& payload) {
-            if (payload.hasException()) {
-              serverCallback_->onSinkError(std::move(payload).exception());
-              terminated = true;
-            } else {
-              terminated =
-                  !serverCallback_->onSinkNext(std::move(payload).value());
-            }
-          },
-          [&](const SinkComplete&) {
-            terminated = !serverCallback_->onSinkComplete();
-          });
+      auto& payload = messages.front();
+      if (payload.hasException()) {
+        serverCallback_->onSinkError(std::move(payload).exception());
+        terminated = true;
+      } else if (payload.hasValue()) {
+        terminated = !serverCallback_->onSinkNext(std::move(payload).value());
+      } else {
+        terminated = !serverCallback_->onSinkComplete();
+      }
+
       if (terminated) {
         close();
         return;

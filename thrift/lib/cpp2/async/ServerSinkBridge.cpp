@@ -71,7 +71,7 @@ void ServerSinkBridge::onSinkError(folly::exception_wrapper ew) {
 }
 
 bool ServerSinkBridge::onSinkComplete() {
-  clientPush(SinkComplete{});
+  clientPush({});
   sinkComplete_ = true;
   return true;
 }
@@ -118,26 +118,18 @@ ServerSinkBridge::makeGenerator(ServerSinkBridge& self) {
     co_await folly::coro::co_safe_point;
     for (auto messages = self.serverGetMessages(); !messages.empty();
          messages.pop()) {
-      auto& message = messages.front();
-      folly::Try<StreamPayload> ele;
-
-      folly::variant_match(
-          message,
-          [&](folly::Try<StreamPayload>& payload) { ele = std::move(payload); },
-          [](SinkComplete&) {});
-
-      // empty Try represent the normal completion of the sink
-      if (!ele.hasValue() && !ele.hasException()) {
+      folly::Try<StreamPayload> payload = std::move(messages.front());
+      if (!payload.hasValue() && !payload.hasException()) {
         co_return;
       }
 
-      if (ele.hasException()) {
+      if (payload.hasException()) {
         self.clientException_ = true;
-        co_yield std::move(ele);
+        co_yield std::move(payload);
         co_return;
       }
 
-      co_yield std::move(ele);
+      co_yield std::move(payload);
       counter++;
       if (counter > self.consumer_.bufferSize / 2) {
         self.serverPush(counter);

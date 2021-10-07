@@ -32,8 +32,7 @@ namespace thrift {
 namespace detail {
 
 using ClientMessage = boost::variant<folly::Try<StreamPayload>, int64_t>;
-struct SinkComplete {};
-using ServerMessage = boost::variant<folly::Try<StreamPayload>, SinkComplete>;
+using ServerMessage = folly::Try<StreamPayload>;
 
 class ClientSinkConsumer {
  public:
