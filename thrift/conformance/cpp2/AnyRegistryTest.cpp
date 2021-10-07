@@ -21,9 +21,11 @@
 #include <thrift/conformance/cpp2/Any.h>
 #include <thrift/conformance/cpp2/Object.h>
 #include <thrift/conformance/cpp2/Testing.h>
-#include <thrift/conformance/cpp2/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalType.h>
 
 namespace apache::thrift::conformance {
+using type::kDefaultTypeHashBytes;
+using type::kDisableTypeHash;
 
 namespace {
 
@@ -69,7 +71,7 @@ void checkLongType(int typeBytes, int expectedOutBytes) {
         expectedOutBytes);
     EXPECT_EQ(
         registry.getSerializerByHash(
-            TypeHashAlgorithm::Sha2_256,
+            type::TypeHashAlgorithm::Sha2_256,
             *any.get_typeHashPrefixSha2_256(),
             intCodec.getProtocol()),
         &intCodec);

@@ -21,8 +21,8 @@
 
 #include <fatal/type/same_reference_as.h>
 #include <folly/CPortability.h>
-#include <thrift/conformance/cpp2/ThriftTypes.h>
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
+#include <thrift/lib/cpp2/type/ThriftType.h>
 
 namespace apache::thrift::conformance::detail {
 
@@ -36,23 +36,23 @@ struct ValueHelper {
   template <typename T>
   static void set(Value& result, T&& value) {
     if constexpr (false) {
-    } else if constexpr (TT::kBaseType == BaseType::Bool) {
+    } else if constexpr (TT::kBaseType == type::BaseType::Bool) {
       result.set_boolValue(value);
-    } else if constexpr (TT::kBaseType == BaseType::Byte) {
+    } else if constexpr (TT::kBaseType == type::BaseType::Byte) {
       result.set_byteValue(value);
-    } else if constexpr (TT::kBaseType == BaseType::I16) {
+    } else if constexpr (TT::kBaseType == type::BaseType::I16) {
       result.set_i16Value(value);
-    } else if constexpr (TT::kBaseType == BaseType::I32) {
+    } else if constexpr (TT::kBaseType == type::BaseType::I32) {
       result.set_i32Value(value);
-    } else if constexpr (TT::kBaseType == BaseType::I64) {
+    } else if constexpr (TT::kBaseType == type::BaseType::I64) {
       result.set_i64Value(value);
-    } else if constexpr (TT::kBaseType == BaseType::Enum) {
+    } else if constexpr (TT::kBaseType == type::BaseType::Enum) {
       result.set_i32Value(static_cast<int32_t>(value));
-    } else if constexpr (TT::kBaseType == BaseType::Float) {
+    } else if constexpr (TT::kBaseType == type::BaseType::Float) {
       result.set_floatValue(value);
-    } else if constexpr (TT::kBaseType == BaseType::Double) {
+    } else if constexpr (TT::kBaseType == type::BaseType::Double) {
       result.set_doubleValue(value);
-    } else if constexpr (TT::kBaseType == BaseType::String) {
+    } else if constexpr (TT::kBaseType == type::BaseType::String) {
       result.set_stringValue(std::forward<T>(value));
     }
   }
@@ -265,7 +265,7 @@ class ObjectWriter : public BaseObjectAdapter {
 
 // Specialization for all structured types.
 template <typename TT>
-struct ValueHelper<TT, if_structured<TT>> {
+struct ValueHelper<TT, type::if_structured<TT>> {
   template <typename T>
   static void set(Value& result, T&& value) {
     // TODO(afuller): Using the Visitor reflection API + ValueHelper instead.

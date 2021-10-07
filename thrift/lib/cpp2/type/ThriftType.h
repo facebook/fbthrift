@@ -16,13 +16,16 @@
 
 // Utilities for describing the 'shape' of thrift types at compile-time.
 //
-// TODO(afuller): Simplify as much as possible, and merging into
-// TypeClass.h. The classes defined here are a natural extension
-// of the ones in TypeClass.h
-
+// _t indicates a concrete type.
+// _c indicates a class of types.
+// no sufix means it is dependent on the parameters.
+//
+// TODO(afuller): Lots more docs (for now see tests for usage).
+// TODO(afuller): Split the traits out of the tag classes, so
+// `type::bool_t::getName()` becomes `type::getName<type::bool_t>()`.
 #pragma once
 
-#include <thrift/conformance/cpp2/internal/ThriftTypes.h>
+#include <thrift/lib/cpp2/type/detail/ThriftType.h>
 
 #include <cstddef>
 #include <stdexcept>
@@ -34,12 +37,7 @@
 #include <folly/io/IOBuf.h>
 #include <thrift/lib/cpp/protocol/TType.h>
 
-namespace apache::thrift::conformance {
-
-// _t indicates a concrete type.
-// _c indicates a class of types.
-// no sufix means it is dependent on the parameters.
-namespace type {
+namespace apache::thrift::type {
 
 // Type tags for all primitive types.
 using bool_t = detail::primitive_type<BaseType::Bool, bool>;
@@ -94,8 +92,6 @@ using set = detail::set<VT>;
 using map_c = detail::base_type<BaseType::Map>;
 template <typename KT, typename VT>
 using map = detail::map<KT, VT>;
-
-} // namespace type
 
 // If a given type tag refers to concrete type and not a class of types.
 // For example:
@@ -249,4 +245,4 @@ constexpr inline BaseType toThriftBaseType(TType type) {
   }
 }
 
-} // namespace apache::thrift::conformance
+} // namespace apache::thrift::type

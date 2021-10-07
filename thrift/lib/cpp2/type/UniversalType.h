@@ -21,11 +21,10 @@
 #include <folly/FBString.h>
 #include <folly/Range.h>
 
-#include <thrift/conformance/if/gen-cpp2/type_constants.h>
-#include <thrift/conformance/if/gen-cpp2/type_types.h>
+#include <thrift/lib/thrift/gen-cpp2/type_constants.h>
+#include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
-namespace apache::thrift::conformance {
-
+namespace apache::thrift::type {
 using type_hash_size_t = int8_t;
 inline constexpr type_hash_size_t kDisableTypeHash = 0;
 inline constexpr type_hash_size_t kMinTypeHashBytes =
@@ -98,4 +97,4 @@ auto findByTypeHash(C& sortedMap, const K& typeHashPrefix) {
   return itr;
 }
 
-} // namespace apache::thrift::conformance
+} // namespace apache::thrift::type

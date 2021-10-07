@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/conformance/cpp2/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalType.h>
 
 #include <regex>
 #include <string>
@@ -28,7 +28,7 @@
 #include <folly/portability/GTest.h>
 #include <thrift/conformance/if/gen-cpp2/type_constants.h>
 
-namespace apache::thrift::conformance {
+namespace apache::thrift::type {
 namespace {
 
 template <typename LHS, typename RHS>
@@ -281,4 +281,4 @@ TEST(UniversalTypeTest, FindByTypeHash) {
 }
 
 } // namespace
-} // namespace apache::thrift::conformance
+} // namespace apache::thrift::type

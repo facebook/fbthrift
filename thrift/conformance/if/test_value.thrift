@@ -24,9 +24,9 @@ namespace py3 thrift.conformance
 namespace java.swift org.apache.thrift.conformance
 namespace go thrift.conformance.test_value
 
-include "thrift/conformance/if/type.thrift"
+include "thrift/lib/thrift/type.thrift"
 
-// A value defined via calls to a protocol implemenation.
+// A value defined via calls to a protocol implementation.
 struct EncodeValue {
   // The unique uri of the type represented by this encoding.
   1: string type;

@@ -29,6 +29,7 @@ get_property(metadata-cpp2-SOURCES GLOBAL PROPERTY metadata-cpp2-SOURCES)
 get_property(frozen-cpp2-SOURCES GLOBAL PROPERTY frozen-cpp2-SOURCES)
 get_property(reflection-cpp2-SOURCES GLOBAL PROPERTY reflection-cpp2-SOURCES)
 get_property(RocketUpgrade-cpp2-SOURCES GLOBAL PROPERTY RocketUpgrade-cpp2-SOURCES)
+get_property(type-cpp2-SOURCES GLOBAL PROPERTY type-cpp2-SOURCES)
 
 bypass_source_check("${metadata-cpp2-SOURCES}")
 add_library(
@@ -65,6 +66,19 @@ target_link_libraries(
     thriftprotocol
     ${GLOG_LIBRARIES}
     ${LIBGFLAGS_LIBRARY}
+)
+
+bypass_source_check("${type-cpp2-SOURCES}")
+add_library(
+  thrifttype
+
+  ${type-cpp2-SOURCES}
+)
+add_dependencies(thrifttype type-cpp2-target)
+target_link_libraries(
+  thrifttype
+  PUBLIC
+    Folly::folly
 )
 
 bypass_source_check("${RpcMetadata-cpp2-SOURCES}")
@@ -202,6 +216,7 @@ add_library(
   transport/rocket/server/RocketStreamClientCallback.cpp
   transport/rocket/server/RocketThriftRequests.cpp
   transport/rocket/server/ThriftRocketServerHandler.cpp
+  type/UniversalType.cpp
   util/Checksum.cpp
   util/DebugString.cpp
   util/EmptyAsyncProcessor.cpp
@@ -215,6 +230,7 @@ add_dependencies(
   rpcmetadata
   thriftmetadata
   RocketUpgrade-cpp2-target
+  thrifttype
 )
 target_link_libraries(
   thriftcpp2
@@ -224,6 +240,7 @@ target_link_libraries(
     thriftmetadata
     thriftfrozen2
     thriftprotocol
+    thrifttype
 )
 
 # Install includes
@@ -243,7 +260,7 @@ install(
 
 if (BUILD_SHARED_LIBS)
   set_target_properties(rpcmetadata thriftmetadata thriftfrozen2 thriftprotocol
-    thriftcpp2
+    thriftcpp2 thrifttype
     PROPERTIES VERSION ${PROJECT_VERSION}
     )
 endif()
@@ -253,6 +270,7 @@ install(
     rpcmetadata
     thriftmetadata
     thriftfrozen2
+    thrifttype
     thriftprotocol
     thriftcpp2
   EXPORT fbthrift-exports

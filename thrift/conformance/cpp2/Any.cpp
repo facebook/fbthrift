@@ -18,9 +18,10 @@
 
 #include <fmt/core.h>
 #include <folly/lang/Exception.h>
-#include <thrift/conformance/cpp2/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalType.h>
 
 namespace apache::thrift::conformance {
+using type::validateUniversalType;
 
 Protocol getProtocol(const Any& any) noexcept {
   if (!any.protocol_ref()) {

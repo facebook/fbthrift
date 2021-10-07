@@ -22,7 +22,8 @@
 #include <thrift/conformance/if/gen-cpp2/any_constants.h>
 
 namespace apache::thrift::conformance {
-
+using type::getTypeHashSize;
+using type::kMinTypeHashBytes;
 const Protocol Number1Serializer::kProtocol = Protocol(thriftType("Number1"));
 const Protocol kFollyToStringProtocol = Protocol(thriftType("FollyToString"));
 
@@ -84,7 +85,7 @@ ThriftTypeInfo longThriftType(int ordinal) {
       fmt::format("seriously.long.type/seriously/long/type/{}", ordinal));
   assert(
       type.get_uri().size() >
-      size_t(getTypeHashSize(TypeHashAlgorithm::Sha2_256)));
+      size_t(getTypeHashSize(type::TypeHashAlgorithm::Sha2_256)));
   return type;
 }
 

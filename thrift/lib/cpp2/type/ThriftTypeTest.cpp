@@ -14,13 +14,15 @@
  * limitations under the License.
  */
 
-#include <thrift/conformance/cpp2/ThriftTypes.h>
+#include <thrift/lib/cpp2/type/ThriftType.h>
 
 #include <folly/portability/GTest.h>
 #include <thrift/conformance/if/gen-cpp2/object_fatal_all.h>
 #include <thrift/conformance/if/gen-cpp2/object_types.h>
 
-namespace apache::thrift::conformance {
+namespace apache::thrift::type {
+using conformance::Object;
+using conformance::Value;
 namespace {
 
 template <typename actual, typename expected>
@@ -479,4 +481,4 @@ TEST(ThriftTypesTest, ConcreteType_Bound) {
 }
 
 } // namespace
-} // namespace apache::thrift::conformance
+} // namespace apache::thrift::type

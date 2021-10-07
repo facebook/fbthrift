@@ -32,7 +32,7 @@ void addStringValues(NamedValues<TT>& values) {
   values.emplace_back(" a", "leading_space");
   values.emplace_back("a ", "trailing_space");
   values.emplace_back("Hello", "utf8");
-  if constexpr (TT::kBaseType == BaseType::Binary) {
+  if constexpr (TT::kBaseType == type::BaseType::Binary) {
     values.emplace_back("\x72\x01\xff", "bad_utf8");
   }
 }
@@ -89,16 +89,16 @@ void addNumericValues(NamedValues<TT>& values) {
 
 template <typename TT, bool key>
 NamedValues<TT> generateValues() {
-  static_assert(primitive_types::contains<TT>, "");
+  static_assert(type::primitive_types::contains<TT>, "");
   using T = typename TT::native_type;
   NamedValues<TT> values;
 
-  if constexpr (TT::kBaseType == BaseType::Bool) {
+  if constexpr (TT::kBaseType == type::BaseType::Bool) {
     values.emplace_back(true, "true");
     values.emplace_back(false, "false");
-  } else if constexpr (string_types::contains<TT>) {
+  } else if constexpr (type::string_types::contains<TT>) {
     addStringValues<TT>(values);
-  } else if constexpr (numeric_types::contains<TT>) {
+  } else if constexpr (type::numeric_types::contains<TT>) {
     addNumericValues<TT, key>(values);
   } else {
     values.emplace_back(T(), "default");

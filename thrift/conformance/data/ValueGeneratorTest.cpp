@@ -79,12 +79,12 @@ class FloatingPointGeneratorTest : public ValueGeneratorTest<T> {};
 
 template <typename Ts>
 using gtest_types_t =
-    typename fatal::filter<Ts, bound::is_concrete_type>::template as<
+    typename fatal::filter<Ts, type::bound::is_concrete_type>::template as<
         ::testing::Types>;
 
-TYPED_TEST_CASE(ValueGeneratorTest, gtest_types_t<all_types>);
+TYPED_TEST_CASE(ValueGeneratorTest, gtest_types_t<type::all_types>);
 TYPED_TEST_CASE(
-    FloatingPointGeneratorTest, gtest_types_t<floating_point_types>);
+    FloatingPointGeneratorTest, gtest_types_t<type::floating_point_types>);
 
 TYPED_TEST(ValueGeneratorTest, UniqueKeys) {
   SCOPED_TRACE(TypeParam::getName());

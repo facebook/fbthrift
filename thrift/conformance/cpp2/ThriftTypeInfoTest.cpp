@@ -21,6 +21,7 @@
 #include <thrift/conformance/cpp2/Testing.h>
 
 namespace apache::thrift::conformance {
+using type::kMinTypeHashBytes;
 namespace {
 
 TEST(ThriftTypeInfoTest, ValidateThriftTypeInfo) {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include <thrift/conformance/cpp2/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalType.h>
 
 #include <algorithm>
 #include <limits>
@@ -28,7 +28,8 @@
 #include <folly/lang/Exception.h>
 #include <folly/small_vector.h>
 
-namespace apache::thrift::conformance {
+namespace apache::thrift::type {
+
 namespace {
 
 const std::string_view kThriftScheme = "fbthrift://";
@@ -224,4 +225,4 @@ folly::fbstring maybeGetTypeHashPrefix(
   return result;
 }
 
-} // namespace apache::thrift::conformance
+} // namespace apache::thrift::type

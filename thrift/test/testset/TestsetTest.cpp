@@ -18,11 +18,11 @@
 
 #include <folly/Traits.h>
 #include <folly/portability/GTest.h>
-#include <thrift/conformance/cpp2/ThriftTypes.h>
+#include <thrift/lib/cpp2/type/ThriftType.h>
 
 namespace apache::thrift::test::testset {
 namespace {
-using namespace apache::thrift::conformance::type;
+using namespace apache::thrift::type;
 
 template <typename T1, typename T2>
 struct SameType;

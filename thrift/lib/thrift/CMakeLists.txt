@@ -62,8 +62,19 @@ thrift_generate(
   "thrift/lib/thrift" #include_prefix
 )
 
+thrift_generate(
+  "type" #file_name
+  "" #services
+  "cpp2" #language
+  "no_metadata" #options
+  "${CMAKE_CURRENT_SOURCE_DIR}" #file_path
+  "${CMAKE_CURRENT_BINARY_DIR}" #output_path
+  "thrift/lib/thrift" #include_prefix
+)
+
 set_property(GLOBAL PROPERTY RpcMetadata-cpp2-SOURCES ${RpcMetadata-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY frozen-cpp2-SOURCES ${frozen-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY reflection-cpp2-SOURCES ${reflection-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY metadata-cpp2-SOURCES ${metadata-cpp2-SOURCES})
 set_property(GLOBAL PROPERTY RocketUpgrade-cpp2-SOURCES ${RocketUpgrade-cpp2-SOURCES})
+set_property(GLOBAL PROPERTY type-cpp2-SOURCES ${type-cpp2-SOURCES})

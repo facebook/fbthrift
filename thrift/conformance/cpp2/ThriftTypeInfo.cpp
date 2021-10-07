@@ -17,6 +17,8 @@
 #include "thrift/conformance/cpp2/ThriftTypeInfo.h"
 
 namespace apache::thrift::conformance {
+using type::validateTypeHashBytes;
+using type::validateUniversalType;
 
 void validateThriftTypeInfo(const ThriftTypeInfo& type) {
   validateUniversalType(*type.uri_ref());

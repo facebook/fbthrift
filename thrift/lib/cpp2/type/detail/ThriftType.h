@@ -14,6 +14,9 @@
  * limitations under the License.
  */
 
+// TODO(afuller): Switch static std::strings to using the folly singleton
+// library.
+
 #pragma once
 
 #include <map>
@@ -29,11 +32,11 @@
 #include <folly/CPortability.h>
 #include <folly/String.h>
 #include <folly/Traits.h>
-#include <thrift/conformance/if/gen-cpp2/type_fatal.h>
-#include <thrift/conformance/if/gen-cpp2/type_types.h>
 #include <thrift/lib/cpp2/reflection/reflection.h>
+#include <thrift/lib/thrift/gen-cpp2/type_fatal.h>
+#include <thrift/lib/thrift/gen-cpp2/type_types.h>
 
-namespace apache::thrift::conformance::detail {
+namespace apache::thrift::type::detail {
 
 template <BaseType B>
 struct has_base_type {
@@ -74,7 +77,7 @@ struct types {
       !fatal::empty<fatal::filter<types, has_base_type<B>>>::value;
 
   // TODO(afuller): Make work for list of arbitrary thrift types, instead
-  // of just the base thrift types (which are the only ones currently defined).
+  // of just the base thrift types.
   template <typename T>
   static constexpr bool contains = contains_bt<T::kBaseType>;
 
@@ -116,8 +119,7 @@ template <BaseType B, typename T>
 struct cpp_type : concrete_type<base_type<B>, types<T>> {
   FOLLY_EXPORT static const std::string& getName() {
     static const std::string kName = []() {
-      // TODO(afuller): Add an Any type name annotation, and
-      // use that.
+      // TODO(afuller): Return thrift.uri if available.
       if constexpr (B == BaseType::Enum) {
         using info = reflect_enum<T>;
         using module = reflect_module<typename info::module>;
@@ -144,7 +146,7 @@ struct cpp_type : concrete_type<base_type<B>, types<T>> {
     }();
     return kName;
   }
-}; // namespace apache::thrift::conformance::detail
+};
 
 template <typename T, typename A>
 using expand_types = fatal::transform<typename T::native_types, A>;
@@ -205,4 +207,4 @@ struct map<KT, VT, if_all_concrete<KT, VT>>
           base_map<KT, VT>,
           expand_types<VT, map_to<typename KT::native_type>>> {};
 
-} // namespace apache::thrift::conformance::detail
+} // namespace apache::thrift::type::detail

@@ -17,9 +17,10 @@
 #include <thrift/conformance/cpp2/Protocol.h>
 
 #include <folly/lang/Exception.h>
-#include <thrift/conformance/cpp2/UniversalType.h>
+#include <thrift/lib/cpp2/type/UniversalType.h>
 
 namespace apache::thrift::conformance {
+using type::validateUniversalType;
 
 Protocol::Protocol(ProtocolStruct protocolStruct) noexcept
     : standard_(*protocolStruct.standard_ref()) {

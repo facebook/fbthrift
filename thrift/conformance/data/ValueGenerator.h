@@ -23,7 +23,7 @@
 
 #include <fmt/core.h>
 #include <folly/CPortability.h>
-#include <thrift/conformance/cpp2/ThriftTypes.h>
+#include <thrift/lib/cpp2/type/ThriftType.h>
 
 namespace apache::thrift::conformance::data {
 
@@ -57,7 +57,7 @@ void addValues(const C& values, I inserter) {
 
 template <typename TT>
 struct BaseValueGenerator {
-  static_assert(is_concrete_type_v<TT>, "not a concrete type");
+  static_assert(type::is_concrete_type_v<TT>, "not a concrete type");
 
   using thrift_type = TT;
   using native_type = typename TT::native_type;
