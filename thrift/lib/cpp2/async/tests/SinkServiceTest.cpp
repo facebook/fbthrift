@@ -71,15 +71,23 @@ TEST_F(SinkServiceTest, SinkThrowStruct) {
   connectToServer(
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
         auto sink = co_await client.co_sinkThrow();
-        EXPECT_THROW(
-            co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
-              co_yield 0;
-              co_yield 1;
-              SinkException e;
-              *e.reason_ref() = "test";
-              throw e;
-            }()),
-            SinkThrew);
+        bool exceptionThrown = false;
+        try {
+          co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
+            co_yield 0;
+            co_yield 1;
+            SinkException e;
+            e.reason_ref() = "test";
+            throw e;
+          }());
+        } catch (const SinkThrew& ex) {
+          exceptionThrown = true;
+          EXPECT_EQ(TApplicationException::UNKNOWN, ex.getType());
+          EXPECT_EQ(
+              "testutil::testservice::SinkException: ::testutil::testservice::SinkException",
+              ex.getMessage());
+        }
+        EXPECT_TRUE(exceptionThrown);
         co_await client.co_purge();
       });
 }
@@ -172,18 +180,23 @@ TEST_F(SinkServiceTest, SinkChunkTimeout) {
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
         auto sink = co_await client.co_rangeChunkTimeout();
 
-        EXPECT_THROW(
-            co_await [&]() -> folly::coro::Task<void> {
-              co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
-                for (int i = 0; i <= 100; i++) {
-                  if (i == 20) {
-                    co_await folly::coro::sleep(std::chrono::milliseconds{500});
-                  }
-                  co_yield std::move(i);
+        bool exceptionThrown = false;
+        try {
+          co_await [&]() -> folly::coro::Task<void> {
+            co_await sink.sink([]() -> folly::coro::AsyncGenerator<int&&> {
+              for (int i = 0; i <= 100; i++) {
+                if (i == 20) {
+                  co_await folly::coro::sleep(std::chrono::milliseconds{500});
                 }
-              }());
-            }(),
-            apache::thrift::TApplicationException);
+                co_yield std::move(i);
+              }
+            }());
+          }();
+        } catch (const TApplicationException& ex) {
+          exceptionThrown = true;
+          EXPECT_EQ(TApplicationException::TIMEOUT, ex.getType());
+        }
+        EXPECT_TRUE(exceptionThrown);
       });
 }
 
