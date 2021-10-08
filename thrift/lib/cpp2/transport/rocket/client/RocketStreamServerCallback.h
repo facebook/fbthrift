@@ -24,6 +24,7 @@
 #include <folly/io/async/HHWheelTimer.h>
 #include <folly/io/async/Request.h>
 
+#include <thrift/lib/cpp2/async/RpcOptions.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
@@ -134,12 +135,12 @@ class RocketSinkServerCallback : public SinkServerCallback {
       rocket::StreamId streamId,
       rocket::RocketClient& client,
       SinkClientCallback& clientCallback,
-      bool pageAligned,
+      RpcOptions::MemAllocType memAllocType,
       std::unique_ptr<CompressionConfig> compressionConfig)
       : client_(client),
         clientCallback_(&clientCallback),
         streamId_(streamId),
-        pageAligned_(pageAligned),
+        memAllocType_(memAllocType),
         compressionConfig_(std::move(compressionConfig)) {}
 
   bool onSinkNext(StreamPayload&&) override;
@@ -170,7 +171,8 @@ class RocketSinkServerCallback : public SinkServerCallback {
   rocket::RocketClient& client_;
   SinkClientCallback* clientCallback_;
   rocket::StreamId streamId_;
-  bool pageAligned_;
+  RpcOptions::MemAllocType memAllocType_{
+      RpcOptions::MemAllocType::ALLOC_DEFAULT};
   enum class State { BothOpen, StreamOpen };
   State state_{State::BothOpen};
   std::unique_ptr<CompressionConfig> compressionConfig_;

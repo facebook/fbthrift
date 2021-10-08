@@ -26,6 +26,7 @@
 #include <folly/io/async/AsyncTransport.h>
 
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/async/RpcOptions.h>
 
 THRIFT_FLAG_DECLARE_int64(rocket_parser_resize_period_seconds);
 THRIFT_FLAG_DECLARE_bool(rocket_parser_dont_hold_buffer_enabled);
@@ -108,6 +109,12 @@ class Parser final : public folly::AsyncTransport::ReadCallback,
   static constexpr size_t kMaxBufferSize{4096};
 
  private:
+  bool customAlloc(folly::IOBuf& buffer, size_t startOffset, size_t frameSize);
+  bool customAlloc(
+      folly::IOBufQueue& bufQueue, size_t startOffset, size_t frameSize);
+  std::unique_ptr<folly::IOBuf> getCustomAllocBuf(
+      size_t numBytes, size_t startOffset, size_t trimLength);
+
   // "old" logic: maintain read buffer in Parser and resize as necessary, hand
   // out frames as IOBufs pointing to the buffer
   // TODO: remove once hybrid logic is stable
@@ -144,7 +151,8 @@ class Parser final : public folly::AsyncTransport::ReadCallback,
       std::chrono::steady_clock::now()};
   const std::chrono::milliseconds resizeBufferTimeout_;
   const int64_t periodicResizeBufferTimeout_;
-  bool aligning_{false};
+  apache::thrift::RpcOptions::MemAllocType allocType_{
+      apache::thrift::RpcOptions::MemAllocType::ALLOC_DEFAULT};
   size_t currentFrameLength_{0};
   uint8_t currentFrameType_{0};
   // used by readDataAvailable or readBufferAvailable API (only one will be

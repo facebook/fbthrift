@@ -767,7 +767,7 @@ void RocketClientChannel::sendRequestSink(
           std::move(*metadata.name_ref()),
           clientCallback,
           evb_),
-      rpcOptions.getEnablePageAlignment(),
+      rpcOptions.getMemAllocType(),
       header->getDesiredCompressionConfig());
 }
 

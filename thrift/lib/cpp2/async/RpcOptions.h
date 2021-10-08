@@ -33,6 +33,11 @@ class InteractionId;
  */
 class RpcOptions {
  public:
+  enum class MemAllocType : uint8_t {
+    ALLOC_DEFAULT = 0,
+    ALLOC_PAGE_ALIGN = 1,
+    ALLOC_CUSTOM = 2
+  };
   typedef apache::thrift::concurrency::PRIORITY PRIORITY;
 
   /**
@@ -95,8 +100,8 @@ class RpcOptions {
   void setReadHeaders(transport::THeader::StringToStringMap&& readHeaders);
   const transport::THeader::StringToStringMap& getReadHeaders() const;
 
-  RpcOptions& setEnablePageAlignment(bool enablePageAlignment);
-  bool getEnablePageAlignment() const;
+  RpcOptions& setMemAllocType(MemAllocType memAllocType);
+  MemAllocType getMemAllocType() const;
 
   // Primarily used by generated code
   RpcOptions& setInteractionId(const InteractionId& id);
@@ -122,7 +127,7 @@ class RpcOptions {
   uint8_t priority_{apache::thrift::concurrency::N_PRIORITIES};
   bool clientOnlyTimeouts_{false};
   bool enableChecksum_{false};
-  bool enablePageAlignment_{false};
+  MemAllocType memAllocType_{MemAllocType::ALLOC_DEFAULT};
   BufferOptions bufferOptions_;
   int64_t interactionId_{0};
   uint64_t routingHint_{0};

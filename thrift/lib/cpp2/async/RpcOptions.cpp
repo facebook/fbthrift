@@ -184,13 +184,13 @@ transport::THeader::StringToStringMap RpcOptions::releaseWriteHeaders() {
   return std::exchange(writeHeaders_, std::nullopt).value_or(kEmptyMap());
 }
 
-RpcOptions& RpcOptions::setEnablePageAlignment(bool enablePageAlignment) {
-  enablePageAlignment_ = enablePageAlignment;
-  return *this;
+RpcOptions::MemAllocType RpcOptions::getMemAllocType() const {
+  return memAllocType_;
 }
 
-bool RpcOptions::getEnablePageAlignment() const {
-  return enablePageAlignment_;
+RpcOptions& RpcOptions::setMemAllocType(MemAllocType memAllocType) {
+  memAllocType_ = memAllocType;
+  return *this;
 }
 
 RpcOptions& RpcOptions::setInteractionId(const InteractionId& id) {

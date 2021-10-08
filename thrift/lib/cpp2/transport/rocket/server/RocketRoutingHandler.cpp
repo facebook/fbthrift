@@ -135,6 +135,7 @@ void RocketRoutingHandler::handleConnection(
       server->getEgressBufferBackpressureThreshold();
   cfg.egressBufferBackpressureRecoveryFactor =
       server->getEgressBufferRecoveryFactor();
+  cfg.allocIOBufFnPtr = &server->getAllocIOBufFn();
 
   auto* const sockPtr = sock.get();
   auto* const connection = new rocket::RocketServerConnection(

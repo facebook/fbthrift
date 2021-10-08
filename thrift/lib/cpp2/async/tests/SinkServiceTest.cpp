@@ -27,6 +27,28 @@ using namespace testutil::testservice;
 struct SinkServiceTest
     : public AsyncTestSetup<TestSinkService, TestSinkServiceAsyncClient> {};
 
+struct SinkServiceTestAllocFn
+    : public AsyncTestSetup<TestSinkService, TestSinkServiceAsyncClient> {
+  void SetUp() override {
+    AsyncTestSetup<TestSinkService, TestSinkServiceAsyncClient>::SetUp();
+
+    // add the custom alloc function
+    folly::Function<BaseThriftServer::AllocIOBufFn> fn = [&](size_t size) {
+      void* p = folly::aligned_malloc(size, 4096);
+      CHECK(!!p);
+
+      handler_->addBuf(p);
+
+      auto iobuf = folly::IOBuf::takeOwnership(
+          p, size, size, [](void* p, void*) { folly::aligned_free(p); });
+
+      return iobuf;
+    };
+
+    server_->setAllocIOBufFn(std::move(fn));
+  }
+};
+
 folly::coro::Task<bool> waitNoLeak(TestSinkServiceAsyncClient& client) {
   auto deadline = std::chrono::steady_clock::now() + std::chrono::seconds{2};
   do {
@@ -225,7 +247,8 @@ TEST_F(SinkServiceTest, AlignedSink) {
       [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
         {
           apache::thrift::RpcOptions option;
-          option.setEnablePageAlignment(true);
+          option.setMemAllocType(
+              apache::thrift::RpcOptions::MemAllocType::ALLOC_PAGE_ALIGN);
           std::string s = "abcdefghijk";
           auto sink = co_await client.co_alignment(option, s);
           int32_t alignment = co_await sink.sink(
@@ -233,6 +256,42 @@ TEST_F(SinkServiceTest, AlignedSink) {
                 co_yield std::move(*folly::IOBuf::copyBuffer(s));
               }());
           EXPECT_EQ(alignment, 0);
+        }
+      });
+}
+
+TEST_F(SinkServiceTest, CustomAllocSink) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        {
+          apache::thrift::RpcOptions option;
+          option.setMemAllocType(
+              apache::thrift::RpcOptions::MemAllocType::ALLOC_CUSTOM);
+          std::string s = "abcdefghijk";
+          auto sink = co_await client.co_custom(option, s);
+          bool custom = co_await sink.sink(
+              [s]() -> folly::coro::AsyncGenerator<folly::IOBuf&&> {
+                co_yield std::move(*folly::IOBuf::copyBuffer(s));
+              }());
+          EXPECT_FALSE(custom);
+        }
+      });
+}
+
+TEST_F(SinkServiceTest, CustomAllocSinkDefault) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        {
+          apache::thrift::RpcOptions option;
+          option.setMemAllocType(
+              apache::thrift::RpcOptions::MemAllocType::ALLOC_DEFAULT);
+          std::string s = "abcdefghijk";
+          auto sink = co_await client.co_custom(option, s);
+          bool custom = co_await sink.sink(
+              [s]() -> folly::coro::AsyncGenerator<folly::IOBuf&&> {
+                co_yield std::move(*folly::IOBuf::copyBuffer(s));
+              }());
+          EXPECT_FALSE(custom);
         }
       });
 }
@@ -337,6 +396,42 @@ TEST_F(SinkServiceTest, SinkClientCancellation) {
                   cancelSource.requestCancellation();
                 }())),
             folly::OperationCancelled);
+      });
+}
+
+TEST_F(SinkServiceTestAllocFn, CustomAllocSink) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        {
+          apache::thrift::RpcOptions option;
+          option.setMemAllocType(
+              apache::thrift::RpcOptions::MemAllocType::ALLOC_CUSTOM);
+          std::string s = "abcdefghijk";
+          auto sink = co_await client.co_custom(option, s);
+          bool custom = co_await sink.sink(
+              [s]() -> folly::coro::AsyncGenerator<folly::IOBuf&&> {
+                co_yield std::move(*folly::IOBuf::copyBuffer(s));
+              }());
+          EXPECT_TRUE(custom);
+        }
+      });
+}
+
+TEST_F(SinkServiceTestAllocFn, CustomAllocSinkDefault) {
+  connectToServer(
+      [](TestSinkServiceAsyncClient& client) -> folly::coro::Task<void> {
+        {
+          apache::thrift::RpcOptions option;
+          option.setMemAllocType(
+              apache::thrift::RpcOptions::MemAllocType::ALLOC_DEFAULT);
+          std::string s = "abcdefghijk";
+          auto sink = co_await client.co_custom(option, s);
+          bool custom = co_await sink.sink(
+              [s]() -> folly::coro::AsyncGenerator<folly::IOBuf&&> {
+                co_yield std::move(*folly::IOBuf::copyBuffer(s));
+              }());
+          EXPECT_FALSE(custom);
+        }
       });
 }
 

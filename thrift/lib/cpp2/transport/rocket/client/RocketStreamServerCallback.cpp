@@ -176,21 +176,33 @@ void RocketStreamServerCallbackWithChunkTimeout::cancelTimeout() {
 // RocketSinkServerCallback
 bool RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
   DCHECK(state_ == State::BothOpen);
-  if (LIKELY(!pageAligned_)) {
-    // apply compression if client has specified compression codec
-    if (compressionConfig_) {
-      rocket::detail::setCompressionCodec(
-          *compressionConfig_,
-          payload.metadata,
-          payload.payload->computeChainDataLength());
+  switch (memAllocType_) {
+    case RpcOptions::MemAllocType::ALLOC_DEFAULT: {
+      // apply compression if client has specified compression codec
+      if (compressionConfig_) {
+        rocket::detail::setCompressionCodec(
+            *compressionConfig_,
+            payload.metadata,
+            payload.payload->computeChainDataLength());
+      }
+      client_.sendPayload(
+          streamId_, std::move(payload), rocket::Flags::none().next(true));
+      break;
     }
-    client_.sendPayload(
-        streamId_, std::move(payload), rocket::Flags::none().next(true));
-  } else {
-    client_.sendExtAlignedPage(
-        streamId_,
-        std::move(payload).payload,
-        rocket::Flags::none().next(true));
+    case RpcOptions::MemAllocType::ALLOC_PAGE_ALIGN: {
+      client_.sendExtAlignedPage(
+          streamId_,
+          std::move(payload).payload,
+          rocket::Flags::none().next(true));
+      break;
+    }
+    case RpcOptions::MemAllocType::ALLOC_CUSTOM: {
+      client_.sendExtCustomAlloc(
+          streamId_,
+          std::move(payload).payload,
+          rocket::Flags::none().next(true));
+      break;
+    }
   }
   return true;
 }

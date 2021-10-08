@@ -86,6 +86,7 @@ ExtFrameType readExtFrameType(folly::io::Cursor& cursor) {
     case ExtFrameType::HEADERS_PUSH:
     case ExtFrameType::ALIGNED_PAGE:
     case ExtFrameType::INTERACTION_TERMINATE:
+    case ExtFrameType::CUSTOM_ALLOC:
       return static_cast<ExtFrameType>(extFrameType);
     default:
       return ExtFrameType::UNKNOWN;

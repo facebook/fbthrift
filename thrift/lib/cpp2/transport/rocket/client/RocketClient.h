@@ -30,6 +30,7 @@
 #include <folly/io/async/EventBaseLocal.h>
 
 #include <thrift/lib/cpp/transport/TTransportException.h>
+#include <thrift/lib/cpp2/async/RpcOptions.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContext.h>
 #include <thrift/lib/cpp2/transport/rocket/client/RequestContextQueue.h>
@@ -63,6 +64,7 @@ class RocketClient : public virtual folly::DelayedDestruction,
 
   ~RocketClient() override;
 
+  std::unique_ptr<folly::IOBuf> customAlloc(size_t size);
   using Ptr =
       std::unique_ptr<RocketClient, folly::DelayedDestruction::Destructor>;
   static Ptr create(
@@ -109,7 +111,8 @@ class RocketClient : public virtual folly::DelayedDestruction,
       Payload&& request,
       std::chrono::milliseconds firstResponseTimeout,
       SinkClientCallback* clientCallback,
-      bool pageAligned = false,
+      RpcOptions::MemAllocType memAllocType =
+          RpcOptions::MemAllocType::ALLOC_DEFAULT,
       folly::Optional<CompressionConfig> compressionConfig = folly::none);
 
   FOLLY_NODISCARD bool sendRequestN(StreamId streamId, int32_t n);
@@ -118,6 +121,8 @@ class RocketClient : public virtual folly::DelayedDestruction,
   void sendError(StreamId streamId, RocketException&& rex);
   void sendComplete(StreamId streamId, bool closeStream);
   void sendExtAlignedPage(
+      StreamId streamId, std::unique_ptr<folly::IOBuf> payload, Flags flags);
+  void sendExtCustomAlloc(
       StreamId streamId, std::unique_ptr<folly::IOBuf> payload, Flags flags);
   FOLLY_NODISCARD bool sendHeadersPush(
       StreamId streamId, HeadersPayload&& payload);
