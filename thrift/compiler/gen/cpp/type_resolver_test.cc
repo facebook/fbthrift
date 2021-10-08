@@ -527,5 +527,31 @@ TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
   EXPECT_TRUE(can_resolve_to_scalar(*field2.type()));
 }
 
+TEST_F(TypeResolverTest, AdaptedFieldType) {
+  auto i64 = t_base_type::t_i64();
+  auto field = t_field(i64, "n", 42);
+
+  auto make_string = [](const char* value) {
+    auto name = std::make_unique<t_const_value>();
+    name->set_string(value);
+    return name;
+  };
+
+  auto type = t_struct(nullptr, "ExperimentalAdapter");
+  type.set_annotation(
+      "thrift.uri", "facebook.com/thrift/annotation/cpp/ExperimentalAdapter");
+  auto map = std::make_unique<t_const_value>();
+  map->set_map();
+  map->add_map(make_string("name"), make_string("MyAdapter"));
+  map->set_ttype(t_type_ref::from_ptr(&type));
+  field.add_structured_annotation(
+      std::make_unique<t_const>(&program_, &type, "", std::move(map)));
+
+  EXPECT_EQ(
+      get_storage_type_name(field),
+      "::apache::thrift::adapt_detail::adapted_field_t<"
+      "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
+}
+
 } // namespace
 } // namespace apache::thrift::compiler::gen::cpp
