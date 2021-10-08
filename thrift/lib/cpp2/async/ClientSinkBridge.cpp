@@ -192,15 +192,12 @@ void ClientSinkBridge::onFinalResponse(StreamPayload&& payload) {
 }
 
 void ClientSinkBridge::onFinalResponseError(folly::exception_wrapper ew) {
-  folly::exception_wrapper hijacked;
-  if (ew.with_exception([&hijacked](rocket::RocketException& rex) {
-        hijacked = folly::exception_wrapper(
-            apache::thrift::detail::EncodedError(rex.moveErrorData()));
-      })) {
-    serverPush(folly::Try<StreamPayload>(std::move(hijacked)));
-  } else {
-    serverPush(folly::Try<StreamPayload>(std::move(ew)));
-  }
+  using apache::thrift::detail::EncodedError;
+  auto rex = ew.get_exception<rocket::RocketException>();
+  auto payload = rex
+      ? folly::Try<StreamPayload>(EncodedError(rex->moveErrorData()))
+      : folly::Try<StreamPayload>(std::move(ew));
+  serverPush(std::move(payload));
   serverCancelSource_.requestCancellation();
   close();
 }
