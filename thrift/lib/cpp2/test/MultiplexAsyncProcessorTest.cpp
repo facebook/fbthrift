@@ -131,10 +131,16 @@ TEST(MultiplexAsyncProcessorTest, getServiceMetadata) {
 namespace {
 class MultiplexAsyncProcessorServerTest : public Test {
  public:
+  std::shared_ptr<AsyncProcessorFactory> multiplex(
+      std::vector<std::shared_ptr<AsyncProcessorFactory>> services) {
+    return std::make_shared<MultiplexAsyncProcessorFactory>(
+        std::move(services));
+  }
+
   std::unique_ptr<ScopedServerInterfaceThread> runMultiplexedServices(
       std::vector<std::shared_ptr<AsyncProcessorFactory>> services) {
     return std::make_unique<ScopedServerInterfaceThread>(
-        std::make_shared<MultiplexAsyncProcessorFactory>(std::move(services)));
+        multiplex(std::move(services)));
   }
 };
 } // namespace
@@ -156,6 +162,22 @@ TEST_F(MultiplexAsyncProcessorServerTest, ConflictPrecedence) {
   auto runner = runMultiplexedServices(
       {std::make_shared<Second>(),
        std::make_shared<Conflicts>(),
+       std::make_shared<Third>()});
+
+  auto client2 = runner->newClient<SecondAsyncClient>();
+  auto client3 = runner->newClient<ThirdAsyncClient>();
+
+  EXPECT_EQ(client2->semifuture_three().get(), 3);
+  // Second takes precedence
+  EXPECT_EQ(client2->semifuture_four().get(), 4);
+  // Conflicts takes precedence
+  EXPECT_EQ(client3->semifuture_five().get(), 555);
+  EXPECT_EQ(client3->semifuture_six().get(), 6);
+}
+
+TEST_F(MultiplexAsyncProcessorServerTest, Nested) {
+  auto runner = runMultiplexedServices(
+      {multiplex({std::make_shared<Second>(), std::make_shared<Conflicts>()}),
        std::make_shared<Third>()});
 
   auto client2 = runner->newClient<SecondAsyncClient>();
