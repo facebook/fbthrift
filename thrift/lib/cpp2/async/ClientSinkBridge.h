@@ -114,7 +114,7 @@ class ClientSinkBridge : public TwoWayBridge<
       ClientSinkBridge& self,
       int64_t& credit,
       folly::Try<StreamPayload>& finalResponse,
-      folly::CancellationToken& clientCancelToken);
+      const folly::CancellationToken& clientCancelToken);
 #endif
 
   union {

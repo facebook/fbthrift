@@ -61,7 +61,7 @@ folly::coro::Task<void> ClientSinkBridge::waitEventImpl(
     ClientSinkBridge& self,
     int64_t& credit,
     folly::Try<StreamPayload>& finalResponse,
-    folly::CancellationToken& clientCancelToken) {
+    const folly::CancellationToken& clientCancelToken) {
   CoroConsumer consumer;
   if (self.clientWait(&consumer)) {
     folly::CancellationCallback cb{
@@ -94,7 +94,10 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sinkImpl(
     folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator) {
   int64_t credit = 0;
   folly::Try<StreamPayload> finalResponse;
-  auto clientCancelToken = co_await folly::coro::co_current_cancellation_token;
+  const auto& clientCancelToken =
+      co_await folly::coro::co_current_cancellation_token;
+  auto mergedToken = folly::CancellationToken::merge(
+      self.serverCancelSource_.getToken(), clientCancelToken);
 
   bool sinkComplete = false;
 
@@ -115,9 +118,7 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sinkImpl(
     while (credit > 0 && !sinkComplete &&
            !self.serverCancelSource_.isCancellationRequested()) {
       auto item = co_await folly::coro::co_withCancellation(
-          folly::CancellationToken::merge(
-              self.serverCancelSource_.getToken(), clientCancelToken),
-          generator.next());
+          mergedToken, generator.next());
       if (self.serverCancelSource_.isCancellationRequested()) {
         break;
       }
