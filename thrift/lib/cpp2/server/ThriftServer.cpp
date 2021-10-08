@@ -627,6 +627,10 @@ void ThriftServer::cleanUp() {
     stopAcceptingAndJoinOutstandingRequests();
   }
 
+  for (auto handler : getProcessorFactory()->getServiceHandlers()) {
+    handler->setServer(nullptr);
+  }
+
   // Now clear all the handlers
   routingHandlers_.clear();
 }
