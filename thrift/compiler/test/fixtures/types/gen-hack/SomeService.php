@@ -50,6 +50,13 @@ interface SomeServiceIf extends \IThriftSyncIf {
  * Original thrift service:-
  * SomeService
  */
+interface SomeServiceAsyncClientIf extends SomeServiceAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * SomeService
+ */
 interface SomeServiceClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -297,7 +304,7 @@ trait SomeServiceClientBase {
 
 }
 
-class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsyncIf {
+class SomeServiceAsyncClient extends \ThriftClientBase implements SomeServiceAsyncClientIf {
   use SomeServiceClientBase;
 
   /**

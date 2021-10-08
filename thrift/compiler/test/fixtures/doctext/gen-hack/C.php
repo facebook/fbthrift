@@ -32,15 +32,6 @@ interface CAsyncIf extends \IThriftAsyncIf {
    *   throws (1: Bang bang);
    */
   public function thing(int $a, string $b, Set<int> $c): Awaitable<string>;
-
-  /**
-   * Streaming function
-   * 
-   * Original thrift definition:-
-   * void, stream<number>
-   *   numbers();
-   */
-  public function numbers(): Awaitable<\ResponseAndClientStream<void, int>>;
 }
 
 /**
@@ -69,7 +60,15 @@ interface CIf extends \IThriftSyncIf {
    *   throws (1: Bang bang);
    */
   public function thing(int $a, string $b, Set<int> $c): string;
+}
 
+/**
+ * Detailed overview of service
+ * 
+ * Original thrift service:-
+ * C
+ */
+interface CAsyncClientIf extends CAsyncIf {
   /**
    * Streaming function
    * 
@@ -77,7 +76,7 @@ interface CIf extends \IThriftSyncIf {
    * void, stream<number>
    *   numbers();
    */
-  public function numbers(): \ResponseAndClientStream<void, int>;
+  public function numbers(): Awaitable<\ResponseAndClientStream<void, int>>;
 }
 
 /**
@@ -143,15 +142,6 @@ interface CAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
    *   throws (1: Bang bang);
    */
   public function thing(\RpcOptions $rpc_options, int $a, string $b, Set<int> $c): Awaitable<string>;
-
-  /**
-   * Streaming function
-   * 
-   * Original thrift definition:-
-   * void, stream<number>
-   *   numbers();
-   */
-  public function numbers(\RpcOptions $rpc_options): Awaitable<\ResponseAndClientStream<void, int>>;
 }
 
 /**
@@ -491,7 +481,7 @@ trait CClientBase {
 
 }
 
-class CAsyncClient extends \ThriftClientBase implements CAsyncIf {
+class CAsyncClient extends \ThriftClientBase implements CAsyncClientIf {
   use CClientBase;
 
   /**

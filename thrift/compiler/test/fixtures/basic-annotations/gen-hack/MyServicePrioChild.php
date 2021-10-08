@@ -36,6 +36,13 @@ interface MyServicePrioChildIf extends MyServicePrioParentIf {
  * Original thrift service:-
  * MyServicePrioChild
  */
+interface MyServicePrioChildAsyncClientIf extends MyServicePrioChildAsyncIf, MyServicePrioParentAsyncClientIf {
+}
+
+/**
+ * Original thrift service:-
+ * MyServicePrioChild
+ */
 interface MyServicePrioChildClientIf extends MyServicePrioParentClientIf {
   /**
    * Original thrift definition:-
@@ -160,7 +167,7 @@ trait MyServicePrioChildClientBase {
 
 }
 
-class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient implements MyServicePrioChildAsyncIf {
+class MyServicePrioChildAsyncClient extends MyServicePrioParentAsyncClient implements MyServicePrioChildAsyncClientIf {
   use MyServicePrioChildClientBase;
 
   /**

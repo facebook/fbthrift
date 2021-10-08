@@ -24,6 +24,13 @@ interface Beeble_BroxIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Brox
  */
+interface Beeble_BroxAsyncClientIf extends Beeble_BroxAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * Brox
+ */
 interface Beeble_BroxClientIf extends \IThriftSyncIf {
 }
 
@@ -43,7 +50,7 @@ trait Beeble_BroxClientBase {
 
 }
 
-class Beeble_BroxAsyncClient extends \ThriftClientBase implements Beeble_BroxAsyncIf {
+class Beeble_BroxAsyncClient extends \ThriftClientBase implements Beeble_BroxAsyncClientIf {
   use Beeble_BroxClientBase;
 
 }

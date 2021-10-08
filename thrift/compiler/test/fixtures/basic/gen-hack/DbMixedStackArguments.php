@@ -50,6 +50,13 @@ interface DbMixedStackArgumentsIf extends \IThriftSyncIf {
  * Original thrift service:-
  * DbMixedStackArguments
  */
+interface DbMixedStackArgumentsAsyncClientIf extends DbMixedStackArgumentsAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * DbMixedStackArguments
+ */
 interface DbMixedStackArgumentsClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -297,7 +304,7 @@ trait DbMixedStackArgumentsClientBase {
 
 }
 
-class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMixedStackArgumentsAsyncIf {
+class DbMixedStackArgumentsAsyncClient extends \ThriftClientBase implements DbMixedStackArgumentsAsyncClientIf {
   use DbMixedStackArgumentsClientBase;
 
   /**

@@ -594,11 +594,15 @@ class t_hack_generator : public t_oop_generator {
       const t_service* tservice) {
     auto funcs = get_supported_server_functions(tservice);
     for (auto func : tservice->get_functions()) {
-      if (func->returns_stream()) {
+      if (is_client_only_function(func)) {
         funcs.push_back(func);
       }
     }
     return funcs;
+  }
+
+  bool is_client_only_function(const t_function* func) {
+    return func->returns_stream();
   }
 
   std::vector<const t_service*> get_interactions(
@@ -3520,6 +3524,13 @@ void t_hack_generator::generate_service(
       /*async*/ false,
       /*rpc_options*/ false,
       /*client*/ false);
+
+  generate_service_interface(
+      tservice,
+      mangle,
+      /*async*/ true,
+      /*rpc_options*/ false,
+      /*client*/ true);
   generate_service_interface(
       tservice,
       mangle,
@@ -4563,19 +4574,32 @@ void t_hack_generator::generate_service_interface(
       (rpc_options ? "RpcOptions" : "") + (client ? "Client" : "");
   std::string extends_if = std::string("\\IThrift") +
       (async ? "Async" : "Sync") + (rpc_options ? "RpcOptions" : "") + "If";
-  if (tservice->get_extends() != nullptr) {
+
+  std::string long_name = php_servicename_mangle(mangle, tservice);
+  if (async && client) {
+    extends_if = long_name + "Async" + (rpc_options ? "RpcOptions" : "") + "If";
+    if (tservice->get_extends() != nullptr) {
+      std::string ext_prefix =
+          php_servicename_mangle(mangle, tservice->get_extends(), true);
+      extends_if = extends_if + ", " + ext_prefix + suffix + "If";
+    }
+  } else if (tservice->get_extends() != nullptr) {
     std::string ext_prefix =
         php_servicename_mangle(mangle, tservice->get_extends(), true);
     extends_if = ext_prefix + suffix + "If";
   }
-  std::string long_name = php_servicename_mangle(mangle, tservice);
   std::string head_parameters = rpc_options ? "\\RpcOptions $rpc_options" : "";
 
   f_service_ << "interface " << long_name << suffix << "If extends "
              << extends_if << " {\n";
   indent_up();
   auto delim = "";
-  for (const auto* function : get_supported_client_functions(tservice)) {
+  auto functions = client ? get_supported_client_functions(tservice)
+                          : get_supported_server_functions(tservice);
+  for (const auto* function : functions) {
+    if (async && client && !is_client_only_function(function)) {
+      continue;
+    }
     // Add a blank line before the start of a new function definition
     f_service_ << delim;
     delim = "\n";
@@ -5196,8 +5220,10 @@ void t_hack_generator::_generate_service_client_children(
     throw std::runtime_error(
         "RpcOptions are currently supported for async clients only");
   }
-  std::string interface_suffix = std::string(async ? "Async" : "Client") +
-      (rpc_options ? "RpcOptions" : "");
+  std::string interface_suffix = std::string(async ? "AsyncClient" : "Client");
+  if (rpc_options) {
+    interface_suffix = "AsyncRpcOptions";
+  }
   std::string extends = "\\ThriftClientBase";
   bool root = tservice->get_extends() == nullptr;
   if (!root) {

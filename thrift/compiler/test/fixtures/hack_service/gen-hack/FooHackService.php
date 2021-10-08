@@ -26,6 +26,13 @@ interface FooHackServiceIf extends \IThriftSyncIf {
  * Original thrift service:-
  * FooHackService
  */
+interface FooHackServiceAsyncClientIf extends FooHackServiceAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * FooHackService
+ */
 interface FooHackServiceClientIf extends \IThriftSyncIf {
 }
 
@@ -45,7 +52,7 @@ trait FooHackServiceClientBase {
 
 }
 
-class FooHackServiceAsyncClient extends \ThriftClientBase implements FooHackServiceAsyncIf {
+class FooHackServiceAsyncClient extends \ThriftClientBase implements FooHackServiceAsyncClientIf {
   use FooHackServiceClientBase;
 
 }

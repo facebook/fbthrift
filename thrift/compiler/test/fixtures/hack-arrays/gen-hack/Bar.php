@@ -38,6 +38,13 @@ interface BarIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Bar
  */
+interface BarAsyncClientIf extends BarAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * Bar
+ */
 interface BarClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -175,7 +182,7 @@ trait BarClientBase {
 
 }
 
-class BarAsyncClient extends \ThriftClientBase implements BarAsyncIf {
+class BarAsyncClient extends \ThriftClientBase implements BarAsyncClientIf {
   use BarClientBase;
 
   /**

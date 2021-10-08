@@ -24,6 +24,13 @@ interface SinkServiceIf extends \IThriftSyncIf {
  * Original thrift service:-
  * SinkService
  */
+interface SinkServiceAsyncClientIf extends SinkServiceAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * SinkService
+ */
 interface SinkServiceClientIf extends \IThriftSyncIf {
 }
 
@@ -43,7 +50,7 @@ trait SinkServiceClientBase {
 
 }
 
-class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsyncIf {
+class SinkServiceAsyncClient extends \ThriftClientBase implements SinkServiceAsyncClientIf {
   use SinkServiceClientBase;
 
 }

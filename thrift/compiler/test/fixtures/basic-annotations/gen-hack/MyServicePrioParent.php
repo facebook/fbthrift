@@ -50,6 +50,13 @@ interface MyServicePrioParentIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyServicePrioParent
  */
+interface MyServicePrioParentAsyncClientIf extends MyServicePrioParentAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * MyServicePrioParent
+ */
 interface MyServicePrioParentClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -281,7 +288,7 @@ trait MyServicePrioParentClientBase {
 
 }
 
-class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServicePrioParentAsyncIf {
+class MyServicePrioParentAsyncClient extends \ThriftClientBase implements MyServicePrioParentAsyncClientIf {
   use MyServicePrioParentClientBase;
 
   /**

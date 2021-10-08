@@ -38,6 +38,13 @@ interface TestServiceIf extends \FooHackServiceIf {
  * Original thrift service:-
  * TestService
  */
+interface TestServiceAsyncClientIf extends TestServiceAsyncIf, \FooHackServiceAsyncClientIf {
+}
+
+/**
+ * Original thrift service:-
+ * TestService
+ */
 interface TestServiceClientIf extends \FooHackServiceClientIf {
   /**
    * Original thrift definition:-
@@ -170,7 +177,7 @@ trait TestServiceClientBase {
 
 }
 
-class TestServiceAsyncClient extends \FooHackServiceAsyncClient implements TestServiceAsyncIf {
+class TestServiceAsyncClient extends \FooHackServiceAsyncClient implements TestServiceAsyncClientIf {
   use TestServiceClientBase;
 
   /**

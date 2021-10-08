@@ -90,6 +90,13 @@ interface RaiserIf extends \IThriftSyncIf {
  * Original thrift service:-
  * Raiser
  */
+interface RaiserAsyncClientIf extends RaiserAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * Raiser
+ */
 interface RaiserClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -589,7 +596,7 @@ trait RaiserClientBase {
 
 }
 
-class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncIf {
+class RaiserAsyncClient extends \ThriftClientBase implements RaiserAsyncClientIf {
   use RaiserClientBase;
 
   /**

@@ -138,6 +138,13 @@ interface MyServiceIf extends \IThriftSyncIf {
  * Original thrift service:-
  * MyService
  */
+interface MyServiceAsyncClientIf extends MyServiceAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * MyService
+ */
 interface MyServiceClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -993,7 +1000,7 @@ trait MyServiceClientBase {
 
 }
 
-class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncIf {
+class MyServiceAsyncClient extends \ThriftClientBase implements MyServiceAsyncClientIf {
   use MyServiceClientBase;
 
   /**

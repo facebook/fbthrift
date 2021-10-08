@@ -92,6 +92,13 @@ interface NestedContainersIf extends \IThriftSyncIf {
  * Original thrift service:-
  * NestedContainers
  */
+interface NestedContainersAsyncClientIf extends NestedContainersAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * NestedContainers
+ */
 interface NestedContainersClientIf extends \IThriftSyncIf {
   /**
    * Original thrift definition:-
@@ -664,7 +671,7 @@ trait NestedContainersClientBase {
 
 }
 
-class NestedContainersAsyncClient extends \ThriftClientBase implements NestedContainersAsyncIf {
+class NestedContainersAsyncClient extends \ThriftClientBase implements NestedContainersAsyncClientIf {
   use NestedContainersClientBase;
 
   /**

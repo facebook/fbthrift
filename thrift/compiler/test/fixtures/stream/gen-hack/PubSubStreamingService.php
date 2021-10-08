@@ -11,6 +11,20 @@
  * PubSubStreamingService
  */
 interface PubSubStreamingServiceAsyncIf extends \IThriftAsyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * PubSubStreamingService
+ */
+interface PubSubStreamingServiceIf extends \IThriftSyncIf {
+}
+
+/**
+ * Original thrift service:-
+ * PubSubStreamingService
+ */
+interface PubSubStreamingServiceAsyncClientIf extends PubSubStreamingServiceAsyncIf {
   /**
    * Original thrift definition:-
    * void, stream<i32>
@@ -49,51 +63,6 @@ interface PubSubStreamingServiceAsyncIf extends \IThriftAsyncIf {
    *                    2: i32 i32_to);
    */
   public function returnstreamFast(int $i32_from, int $i32_to): Awaitable<\ResponseAndClientStream<void, int>>;
-}
-
-/**
- * Original thrift service:-
- * PubSubStreamingService
- */
-interface PubSubStreamingServiceIf extends \IThriftSyncIf {
-  /**
-   * Original thrift definition:-
-   * void, stream<i32>
-   *   returnstream(1: i32 i32_from,
-   *                2: i32 i32_to);
-   */
-  public function returnstream(int $i32_from, int $i32_to): \ResponseAndClientStream<void, int>;
-
-  /**
-   * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
-   *   streamthrows(1: i32 foo);
-   */
-  public function streamthrows(int $foo): \ResponseAndClientStream<void, int>;
-
-  /**
-   * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
-   *   boththrows(1: i32 foo)
-   *   throws (1: FooEx e);
-   */
-  public function boththrows(int $foo): \ResponseAndClientStream<void, int>;
-
-  /**
-   * Original thrift definition:-
-   * i32, stream<i32, throws (1: FooEx e)>
-   *   responseandstreamthrows(1: i32 foo)
-   *   throws (1: FooEx e);
-   */
-  public function responseandstreamthrows(int $foo): \ResponseAndClientStream<int, int>;
-
-  /**
-   * Original thrift definition:-
-   * void, stream<i32>
-   *   returnstreamFast(1: i32 i32_from,
-   *                    2: i32 i32_to);
-   */
-  public function returnstreamFast(int $i32_from, int $i32_to): \ResponseAndClientStream<void, int>;
 }
 
 /**
@@ -146,44 +115,6 @@ interface PubSubStreamingServiceClientIf extends \IThriftSyncIf {
  * PubSubStreamingService
  */
 interface PubSubStreamingServiceAsyncRpcOptionsIf extends \IThriftAsyncRpcOptionsIf {
-  /**
-   * Original thrift definition:-
-   * void, stream<i32>
-   *   returnstream(1: i32 i32_from,
-   *                2: i32 i32_to);
-   */
-  public function returnstream(\RpcOptions $rpc_options, int $i32_from, int $i32_to): Awaitable<\ResponseAndClientStream<void, int>>;
-
-  /**
-   * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
-   *   streamthrows(1: i32 foo);
-   */
-  public function streamthrows(\RpcOptions $rpc_options, int $foo): Awaitable<\ResponseAndClientStream<void, int>>;
-
-  /**
-   * Original thrift definition:-
-   * void, stream<i32, throws (1: FooEx e)>
-   *   boththrows(1: i32 foo)
-   *   throws (1: FooEx e);
-   */
-  public function boththrows(\RpcOptions $rpc_options, int $foo): Awaitable<\ResponseAndClientStream<void, int>>;
-
-  /**
-   * Original thrift definition:-
-   * i32, stream<i32, throws (1: FooEx e)>
-   *   responseandstreamthrows(1: i32 foo)
-   *   throws (1: FooEx e);
-   */
-  public function responseandstreamthrows(\RpcOptions $rpc_options, int $foo): Awaitable<\ResponseAndClientStream<int, int>>;
-
-  /**
-   * Original thrift definition:-
-   * void, stream<i32>
-   *   returnstreamFast(1: i32 i32_from,
-   *                    2: i32 i32_to);
-   */
-  public function returnstreamFast(\RpcOptions $rpc_options, int $i32_from, int $i32_to): Awaitable<\ResponseAndClientStream<void, int>>;
 }
 
 /**
@@ -857,7 +788,7 @@ trait PubSubStreamingServiceClientBase {
 
 }
 
-class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements PubSubStreamingServiceAsyncIf {
+class PubSubStreamingServiceAsyncClient extends \ThriftClientBase implements PubSubStreamingServiceAsyncClientIf {
   use PubSubStreamingServiceClientBase;
 
   /**
