@@ -359,8 +359,8 @@ class mstch_cpp2_const_value : public mstch_const_value {
             const_value,
             current_const,
             expected_type,
-            generators,
-            cache,
+            std::move(generators),
+            std::move(cache),
             pos,
             index) {}
 
@@ -1164,7 +1164,7 @@ class mstch_cpp2_function : public mstch_function {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_function(function, generators, cache, pos) {
+      : mstch_function(function, std::move(generators), std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -1195,7 +1195,7 @@ class mstch_cpp2_service : public mstch_service {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos)
-      : mstch_service(service, generators, cache, pos) {
+      : mstch_service(service, std::move(generators), std::move(cache), pos) {
     register_methods(
         this,
         {
@@ -1270,7 +1270,8 @@ class mstch_cpp2_annotation : public mstch_annotation {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index)
-      : mstch_annotation(key, val, generators, cache, pos, index) {
+      : mstch_annotation(
+            key, val, std::move(generators), std::move(cache), pos, index) {
     register_methods(
         this,
         {
@@ -1297,8 +1298,8 @@ class mstch_cpp2_const : public mstch_const {
             cnst,
             current_const,
             expected_type,
-            generators,
-            cache,
+            std::move(generators),
+            std::move(cache),
             pos,
             index,
             field_name) {
@@ -1330,7 +1331,8 @@ class mstch_cpp2_program : public mstch_program {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       boost::optional<int32_t> split_id = boost::none)
-      : mstch_program(program, generators, cache, pos), split_id_(split_id) {
+      : mstch_program(program, std::move(generators), std::move(cache), pos),
+        split_id_(split_id) {
     register_methods(
         this,
         {
@@ -1692,7 +1694,8 @@ class enum_cpp2_generator : public enum_generator {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
-    return std::make_shared<mstch_cpp2_enum>(enm, generators, cache, pos);
+    return std::make_shared<mstch_cpp2_enum>(
+        enm, std::move(generators), std::move(cache), pos);
   }
 };
 
@@ -1705,7 +1708,7 @@ class enum_value_cpp2_generator : public enum_value_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_cpp2_enum_value>(
-        enm_value, generators, cache, pos);
+        enm_value, std::move(generators), std::move(cache), pos);
   }
 };
 
@@ -1713,7 +1716,7 @@ class type_cpp2_generator : public type_generator {
  public:
   explicit type_cpp2_generator(
       std::shared_ptr<cpp2_generator_context> context) noexcept
-      : context_(context) {}
+      : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> generate(
       t_type const* type,
@@ -1733,7 +1736,7 @@ class field_cpp2_generator : public field_generator {
  public:
   explicit field_cpp2_generator(
       std::shared_ptr<cpp2_generator_context> context) noexcept
-      : context_(context) {}
+      : context_(std::move(context)) {}
 
   std::shared_ptr<mstch_base> generate(
       t_field const* field,
@@ -1760,7 +1763,7 @@ class function_cpp2_generator : public function_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_cpp2_function>(
-        function, generators, cache, pos);
+        function, std::move(generators), std::move(cache), pos);
   }
 };
 
@@ -1777,7 +1780,7 @@ class struct_cpp2_generator : public struct_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_cpp2_struct>(
-        strct, generators, cache, pos, context_);
+        strct, std::move(generators), std::move(cache), pos, context_);
   }
 
  private:
@@ -1795,7 +1798,7 @@ class service_cpp2_generator : public service_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_cpp2_service>(
-        service, generators, cache, pos);
+        service, std::move(generators), std::move(cache), pos);
   }
 };
 
@@ -1810,7 +1813,12 @@ class annotation_cpp2_generator : public annotation_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t index = 0) const override {
     return std::make_shared<mstch_cpp2_annotation>(
-        keyval.first, keyval.second, generators, cache, pos, index);
+        keyval.first,
+        keyval.second,
+        std::move(generators),
+        std::move(cache),
+        pos,
+        index);
   }
 };
 
@@ -1831,8 +1839,8 @@ class const_cpp2_generator : public const_generator {
         cnst,
         current_const,
         expected_type,
-        generators,
-        cache,
+        std::move(generators),
+        std::move(cache),
         pos,
         index,
         field_name);
@@ -1855,8 +1863,8 @@ class const_value_cpp2_generator : public const_value_generator {
         const_value,
         current_const,
         expected_type,
-        generators,
-        cache,
+        std::move(generators),
+        std::move(cache),
         pos,
         index);
   }
@@ -1873,7 +1881,7 @@ class program_cpp2_generator : public program_generator {
       ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
       int32_t /*index*/ = 0) const override {
     return std::make_shared<mstch_cpp2_program>(
-        program, generators, cache, pos);
+        program, std::move(generators), std::move(cache), pos);
   }
   std::shared_ptr<mstch_base> generate_with_split_id(
       t_program const* program,
@@ -1881,7 +1889,11 @@ class program_cpp2_generator : public program_generator {
       std::shared_ptr<mstch_cache> cache,
       int32_t split_id) const {
     return std::make_shared<mstch_cpp2_program>(
-        program, generators, cache, ELEMENT_POSITION::NONE, split_id);
+        program,
+        std::move(generators),
+        std::move(cache),
+        ELEMENT_POSITION::NONE,
+        split_id);
   }
 };
 
