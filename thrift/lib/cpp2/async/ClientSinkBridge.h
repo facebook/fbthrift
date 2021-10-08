@@ -95,6 +95,8 @@ class ClientSinkBridge : public TwoWayBridge<
 
   void consume();
 
+  bool hasServerCancelled();
+
   void canceled() {}
 
  private:

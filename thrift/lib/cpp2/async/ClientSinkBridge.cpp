@@ -243,6 +243,11 @@ void ClientSinkBridge::processServerMessages() {
     }
   } while (!serverWait(this));
 }
+
+bool ClientSinkBridge::hasServerCancelled() {
+  return serverCancelSource_.isCancellationRequested();
+}
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache
