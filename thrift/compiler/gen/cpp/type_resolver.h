@@ -111,8 +111,7 @@ class type_resolver {
   // does not have an std::hash specialization).
   std::map<std::pair<const t_type*, reference_type>, std::string>
       storage_type_cache_;
-  std::map<std::pair<const t_type*, const std::string*>, std::string>
-      adapter_storage_type_cache_;
+  std::unordered_map<const t_field*, std::string> adapter_storage_type_cache_;
 
   static const std::string& default_type(t_base_type::type btype);
   static const std::string& default_template(t_container::type ctype);

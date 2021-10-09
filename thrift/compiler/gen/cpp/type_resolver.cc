@@ -50,8 +50,7 @@ const std::string* find_structured_adapter_annotation(const t_named* node) {
 const std::string& type_resolver::get_storage_type_name(const t_field* node) {
   if (const std::string* adapter = find_structured_adapter_annotation(node)) {
     const t_type* type = &*node->type();
-    auto key = std::make_pair(type, adapter);
-    return detail::get_or_gen(adapter_storage_type_cache_, key, [&]() {
+    return detail::get_or_gen(adapter_storage_type_cache_, node, [&]() {
       return gen_type(type, adapter, node->id());
     });
   }

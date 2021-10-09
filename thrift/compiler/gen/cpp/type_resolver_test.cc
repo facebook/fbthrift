@@ -527,28 +527,68 @@ TEST_F(TypeResolverTest, Typedef_cpptype_and_adapter) {
   EXPECT_TRUE(can_resolve_to_scalar(*field2.type()));
 }
 
+std::unique_ptr<t_const_value> make_string(const char* value) {
+  auto name = std::make_unique<t_const_value>();
+  name->set_string(value);
+  return name;
+}
+
+struct experimental_adapter {
+  t_program* program;
+  t_struct type;
+
+  explicit experimental_adapter(t_program* p)
+      : program(p), type(p, "ExperimentalAdapter") {
+    type.set_annotation(
+        "thrift.uri", "facebook.com/thrift/annotation/cpp/ExperimentalAdapter");
+  }
+
+  std::unique_ptr<t_const> make() & {
+    auto map = std::make_unique<t_const_value>();
+    map->set_map();
+    map->add_map(make_string("name"), make_string("MyAdapter"));
+    map->set_ttype(t_type_ref::from_ptr(&type));
+    return std::make_unique<t_const>(program, &type, "", std::move(map));
+  }
+};
+
 TEST_F(TypeResolverTest, AdaptedFieldType) {
   auto i64 = t_base_type::t_i64();
   auto field = t_field(i64, "n", 42);
-
-  auto make_string = [](const char* value) {
-    auto name = std::make_unique<t_const_value>();
-    name->set_string(value);
-    return name;
-  };
-
-  auto type = t_struct(nullptr, "ExperimentalAdapter");
-  type.set_annotation(
-      "thrift.uri", "facebook.com/thrift/annotation/cpp/ExperimentalAdapter");
-  auto map = std::make_unique<t_const_value>();
-  map->set_map();
-  map->add_map(make_string("name"), make_string("MyAdapter"));
-  map->set_ttype(t_type_ref::from_ptr(&type));
-  field.add_structured_annotation(
-      std::make_unique<t_const>(&program_, &type, "", std::move(map)));
-
+  auto adapter = experimental_adapter(&program_);
+  field.add_structured_annotation(adapter.make());
   EXPECT_EQ(
       get_storage_type_name(field),
+      "::apache::thrift::adapt_detail::adapted_field_t<"
+      "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
+}
+
+TEST_F(TypeResolverTest, TransitivelyAdaptedFieldType) {
+  auto annotation = t_struct(nullptr, "MyAnnotation");
+
+  auto adapter = experimental_adapter(&program_);
+  annotation.add_structured_annotation(adapter.make());
+
+  auto transitive = t_struct(nullptr, "Transitive");
+  transitive.set_annotation(
+      "thrift.uri", "facebook.com/thrift/annotation/Transitive");
+  annotation.add_structured_annotation(
+      std::make_unique<t_const>(&program_, &transitive, "", nullptr));
+
+  auto i64 = t_base_type::t_i64();
+  auto field1 = t_field(i64, "field1", 1);
+  field1.add_structured_annotation(
+      std::make_unique<t_const>(&program_, &annotation, "", nullptr));
+  EXPECT_EQ(
+      get_storage_type_name(field1),
+      "::apache::thrift::adapt_detail::adapted_field_t<"
+      "MyAdapter, 1, ::std::int64_t, __fbthrift_cpp2_type>");
+
+  auto field2 = t_field(i64, "field2", 42);
+  field2.add_structured_annotation(
+      std::make_unique<t_const>(&program_, &annotation, "", nullptr));
+  EXPECT_EQ(
+      get_storage_type_name(field2),
       "::apache::thrift::adapt_detail::adapted_field_t<"
       "MyAdapter, 42, ::std::int64_t, __fbthrift_cpp2_type>");
 }
