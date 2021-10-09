@@ -251,6 +251,18 @@ cdef class SimpleException(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 1
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(SimpleException self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cSimpleException](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(SimpleException self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cSimpleException]()
+        with nogil:
+            needed = serializer.cdeserialize[cSimpleException](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)

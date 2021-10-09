@@ -26,6 +26,7 @@ from thrift.py3.exceptions import (
     TransportErrorType,
     TransportOptions,
 )
+from thrift.py3.serializer import serialize_iobuf, deserialize
 
 from .exception_helper import simulate_HardError, simulate_UnusedError
 
@@ -142,3 +143,10 @@ class ExceptionTests(unittest.TestCase):
         self.assertEqual(t.message, "der")
         self.assertEqual(t.errno, 5)
         self.assertEqual(t.options, TransportOptions.CHANNEL_IS_VALID)
+
+    def test_serialize_deserialize(self) -> None:
+        err = HardError(errortext="err", code=2)
+        serialized = serialize_iobuf(err)
+        deserialized = deserialize(HardError, serialized)
+        self.assertIsNot(err, deserialized)
+        self.assertEqual(err, deserialized)

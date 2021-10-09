@@ -1766,6 +1766,18 @@ cdef class AnException(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 17
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(AnException self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cAnException](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(AnException self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cAnException]()
+        with nogil:
+            needed = serializer.cdeserialize[cAnException](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)
@@ -1852,6 +1864,18 @@ cdef class AnotherException(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 3
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(AnotherException self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cAnotherException](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(AnotherException self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cAnotherException]()
+        with nogil:
+            needed = serializer.cdeserialize[cAnotherException](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)

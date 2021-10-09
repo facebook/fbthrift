@@ -132,6 +132,18 @@ cdef class CustomException(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 1
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(CustomException self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cCustomException](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(CustomException self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cCustomException]()
+        with nogil:
+            needed = serializer.cdeserialize[cCustomException](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 

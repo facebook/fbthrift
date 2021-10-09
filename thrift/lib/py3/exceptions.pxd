@@ -17,8 +17,10 @@
 from libcpp.string cimport string
 from cpython.ref cimport PyObject
 from folly cimport cFollyExceptionWrapper
+from folly.iobuf cimport IOBuf, cIOBuf
+from libc.stdint cimport uint32_t
 from libcpp.memory cimport shared_ptr
-from thrift.py3.common cimport RpcOptions, cThriftMetadata
+from thrift.py3.common cimport Protocol, RpcOptions, cThriftMetadata
 from thrift.py3.std_libcpp cimport string_view, sv_to_str
 
 cdef extern from * namespace "std":
@@ -140,6 +142,8 @@ cdef class TransportError(LibraryError):
 cdef class GeneratedError(Error):
     cdef object __weakref__
     cdef size_t _fbthrift_struct_size
+    cdef IOBuf _fbthrift_serialize(self, Protocol proto)
+    cdef uint32_t _fbthrift_deserialize(self, const cIOBuf* buf, Protocol proto) except? 0
     cdef object _fbthrift_isset(self)
     cdef object _fbthrift_cmp_sametype(self, other, int op)
     cdef void _fbthrift_set_field(self, str name, object value) except *

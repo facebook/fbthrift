@@ -104,6 +104,12 @@ cdef class GeneratedError(Error):
             raise TypeError(f"{type(self).__name__}() found duplicate/undefined arguments {repr(kwargs)}")
         super().__init__(*(value for _, value in self))
 
+    cdef IOBuf _fbthrift_serialize(self, Protocol proto):
+        return IOBuf(b'')
+
+    cdef uint32_t _fbthrift_deserialize(self, const cIOBuf* buf, Protocol proto) except? 0:
+        return 0
+
     cdef object _fbthrift_isset(self):
         raise TypeError(f"{type(self)} does not have concept of isset")
 

@@ -12,35 +12,42 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
+from cython cimport fused_type
+
+from thrift.py3.exceptions cimport GeneratedError, Error
 from thrift.py3.types cimport Struct
 from folly.iobuf cimport IOBuf
 cimport folly.iobuf as _fbthrift_iobuf
 from thrift.py3.common import Protocol
-from thrift.py3.exceptions import Error
 
+StructOrError = fused_type(Struct, GeneratedError)
 
 def serialize(tstruct, protocol=Protocol.COMPACT):
     return b''.join(serialize_iobuf(tstruct, protocol))
 
 
-def serialize_iobuf(Struct tstruct not None, protocol=Protocol.COMPACT):
+def serialize_iobuf(StructOrError tstruct, protocol=Protocol.COMPACT):
     if not isinstance(protocol, Protocol):
         raise TypeError(f"{protocol} must of type Protocol")
-    cdef Struct cy_struct = <Struct> tstruct
-    return cy_struct._fbthrift_serialize(protocol)
+    if isinstance(tstruct, Struct):
+        return (<Struct>tstruct)._fbthrift_serialize(protocol)
+    return (<GeneratedError>tstruct)._fbthrift_serialize(protocol)
+
 
 
 def deserialize_with_length(structKlass, buf not None, protocol=Protocol.COMPACT):
-    if not issubclass(structKlass, Struct):
-        raise TypeError(f"{structKlass} Must be a py3 thrift struct class")
+    if not issubclass(structKlass, (Struct, GeneratedError)):
+        raise TypeError(f"{structKlass} Must be a py3 thrift struct or exception class")
     if not isinstance(protocol, Protocol):
         raise TypeError(f"{protocol} must of type Protocol")
-    cdef Struct cy_struct = <Struct> structKlass.__new__(structKlass)
-
     cdef IOBuf iobuf = buf if isinstance(buf, IOBuf) else IOBuf(buf)
+    instance = structKlass.__new__(structKlass)
     try:
-        length = cy_struct._fbthrift_deserialize(iobuf._this, protocol)
-        return cy_struct, length
+        if issubclass(structKlass, Struct):
+            length = (<Struct>instance)._fbthrift_deserialize(iobuf._this, protocol)
+        else:
+            length = (<GeneratedError>instance)._fbthrift_deserialize(iobuf._this, protocol)
+        return instance, length
     except Exception as e:
         raise Error.__new__(Error, *e.args) from None
 
@@ -50,7 +57,7 @@ def deserialize(structKlass, buf not None, protocol=Protocol.COMPACT):
 def serialize_with_header(tstruct, protocol=Protocol.COMPACT, transform=Transform.NONE):
     return b''.join(serialize_with_header_iobuf(tstruct, protocol, transform))
 
-def serialize_with_header_iobuf(Struct tstruct not None, protocol=Protocol.COMPACT, Transform transform=Transform.NONE):
+def serialize_with_header_iobuf(StructOrError tstruct, protocol=Protocol.COMPACT, Transform transform=Transform.NONE):
     cdef cTHeader header
     cdef map[string, string] pheaders
     cdef IOBuf buf = <IOBuf>serialize_iobuf(tstruct, protocol)

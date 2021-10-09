@@ -126,6 +126,18 @@ cdef class FooEx(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 0
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(FooEx self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cFooEx](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(FooEx self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cFooEx]()
+        with nogil:
+            needed = serializer.cdeserialize[cFooEx](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 

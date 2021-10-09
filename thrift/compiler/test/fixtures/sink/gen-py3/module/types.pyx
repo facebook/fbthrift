@@ -510,6 +510,18 @@ cdef class InitialException(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 1
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(InitialException self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cInitialException](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(InitialException self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cInitialException]()
+        with nogil:
+            needed = serializer.cdeserialize[cInitialException](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)
@@ -584,6 +596,18 @@ cdef class SinkException1(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 1
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(SinkException1 self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cSinkException1](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(SinkException1 self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cSinkException1]()
+        with nogil:
+            needed = serializer.cdeserialize[cSinkException1](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)
@@ -658,5 +682,17 @@ cdef class SinkException2(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 1
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(SinkException2 self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cSinkException2](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(SinkException2 self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cSinkException2]()
+        with nogil:
+            needed = serializer.cdeserialize[cSinkException2](buf, self._cpp_obj.get(), proto)
+        return needed
 
 

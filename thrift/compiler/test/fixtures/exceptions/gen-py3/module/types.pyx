@@ -133,6 +133,18 @@ cdef class Fiery(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 1
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Fiery self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cFiery](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(Fiery self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cFiery]()
+        with nogil:
+            needed = serializer.cdeserialize[cFiery](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)
@@ -212,6 +224,18 @@ cdef class Serious(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 1
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Serious self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cSerious](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(Serious self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cSerious]()
+        with nogil:
+            needed = serializer.cdeserialize[cSerious](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)
@@ -295,6 +319,18 @@ cdef class ComplexFieldNames(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 2
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(ComplexFieldNames self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cComplexFieldNames](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(ComplexFieldNames self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cComplexFieldNames]()
+        with nogil:
+            needed = serializer.cdeserialize[cComplexFieldNames](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)
@@ -378,6 +414,18 @@ cdef class CustomFieldNames(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 2
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(CustomFieldNames self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cCustomFieldNames](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(CustomFieldNames self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cCustomFieldNames]()
+        with nogil:
+            needed = serializer.cdeserialize[cCustomFieldNames](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)
@@ -461,6 +509,18 @@ cdef class ExceptionWithPrimitiveField(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 2
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(ExceptionWithPrimitiveField self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cExceptionWithPrimitiveField](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(ExceptionWithPrimitiveField self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cExceptionWithPrimitiveField]()
+        with nogil:
+            needed = serializer.cdeserialize[cExceptionWithPrimitiveField](buf, self._cpp_obj.get(), proto)
+        return needed
 
 
 @__cython.auto_pickle(False)
@@ -529,5 +589,17 @@ cdef class Banal(thrift.py3.exceptions.GeneratedError):
     def __cinit__(self):
         self._fbthrift_struct_size = 0
 
+    cdef _fbthrift_iobuf.IOBuf _fbthrift_serialize(Banal self, __Protocol proto):
+        cdef unique_ptr[_fbthrift_iobuf.cIOBuf] data
+        with nogil:
+            data = cmove(serializer.cserialize[cBanal](self._cpp_obj.get(), proto))
+        return _fbthrift_iobuf.from_unique_ptr(cmove(data))
+
+    cdef cuint32_t _fbthrift_deserialize(Banal self, const _fbthrift_iobuf.cIOBuf* buf, __Protocol proto) except? 0:
+        cdef cuint32_t needed
+        self._cpp_obj = make_shared[cBanal]()
+        with nogil:
+            needed = serializer.cdeserialize[cBanal](buf, self._cpp_obj.get(), proto)
+        return needed
 
 

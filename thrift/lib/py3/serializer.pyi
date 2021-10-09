@@ -18,9 +18,10 @@ from typing import Tuple, Type, TypeVar, Union
 
 from folly.iobuf import IOBuf
 from thrift.py3.common import Protocol as Protocol
+from thrift.py3.exceptions import GeneratedError
 from thrift.py3.types import Struct
 
-sT = TypeVar("sT", bound=Struct)
+sT = TypeVar("sT", bound=Union[Struct, GeneratedError])
 
 class Transform(Enum):
     NONE: Transform = ...
