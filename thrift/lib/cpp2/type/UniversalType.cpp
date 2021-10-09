@@ -26,6 +26,7 @@
 #include <folly/Range.h>
 #include <folly/String.h>
 #include <folly/lang/Exception.h>
+#include <folly/portability/OpenSSL.h>
 #include <folly/small_vector.h>
 
 namespace apache::thrift::type {
