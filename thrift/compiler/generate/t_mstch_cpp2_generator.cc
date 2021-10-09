@@ -787,6 +787,7 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:isset_fields?", &mstch_cpp2_struct::has_isset_fields},
             {"struct:isset_fields", &mstch_cpp2_struct::isset_fields},
             {"struct:isset_fields_size", &mstch_cpp2_struct::isset_fields_size},
+            {"struct:packed_isset", &mstch_cpp2_struct::packed_isset},
             {"struct:lazy_fields?", &mstch_cpp2_struct::has_lazy_fields},
             {"struct:indexing?", &mstch_cpp2_struct::indexing},
             {"struct:write_lazy_field_checksum",
@@ -977,6 +978,8 @@ class mstch_cpp2_struct : public mstch_struct {
     }
     return std::to_string(size);
   }
+  mstch::node packed_isset() { return cpp2::packed_isset(*strct_) != nullptr; }
+
   mstch::node is_large() {
     // Outline constructors and destructors if the struct has
     // enough members and at least one has a non-trivial destructor
@@ -2122,15 +2125,30 @@ mstch::node t_mstch_cpp2_generator::include_prefix(
 namespace {
 class annotation_validator : public validator {
  public:
+  explicit annotation_validator(
+      std::map<std::string, std::string> const& options)
+      : options_(options) {}
   using validator::visit;
 
   /**
    * Make sure there is no incompatible annotation.
    */
   bool visit(t_struct* s) override;
+
+ private:
+  const std::map<std::string, std::string>& options_;
 };
 
 bool annotation_validator::visit(t_struct* s) {
+  if (cpp2::packed_isset(*s)) {
+    if (options_.count("tablebased") != 0) {
+      add_error(
+          s->lineno(),
+          "Tablebased serialization is incompatible with isset bitpacking for struct `" +
+              s->get_name() + "`");
+    }
+  }
+
   for (const auto& field : s->fields()) {
     if (cpp2::is_mixin(field)) {
       // Mixins cannot be refs
@@ -2158,7 +2176,7 @@ class service_method_validator : public validator {
   bool visit(t_service* service) override;
 
  private:
-  std::map<std::string, std::string> options_;
+  const std::map<std::string, std::string>& options_;
 };
 
 bool service_method_validator::visit(t_service* service) {
@@ -2238,7 +2256,7 @@ class lazy_field_validator : public validator {
 } // namespace
 
 void t_mstch_cpp2_generator::fill_validator_list(validator_list& l) const {
-  l.add<annotation_validator>();
+  l.add<annotation_validator>(this->parsed_options_);
   l.add<service_method_validator>(this->parsed_options_);
   l.add<splits_validator>(cpp2::get_split_count(parsed_options_));
   l.add<lazy_field_validator>();

@@ -65,6 +65,13 @@ void reset_field<::facebook::thrift::annotation::cpp::ExperimentalAdapter>(
 }
 
 template<>
+void reset_field<::facebook::thrift::annotation::cpp::PackIsset>(
+    ::facebook::thrift::annotation::cpp::PackIsset& obj, uint16_t index) {
+  switch (index) {
+  }
+}
+
+template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::cpp::Ref>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
@@ -97,6 +104,16 @@ const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
 template<>
 const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
     ::facebook::thrift::annotation::cpp::ExperimentalAdapter>::namesmap() {
+  static const folly::Indestructible<NamesMap> map {
+    {
+    }
+  };
+  return *map;
+}
+
+template<>
+const std::unordered_map<std::string_view, std::string_view>& PyStructTraits<
+    ::facebook::thrift::annotation::cpp::PackIsset>::namesmap() {
   static const folly::Indestructible<NamesMap> map {
     {
     }

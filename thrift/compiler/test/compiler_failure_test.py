@@ -813,6 +813,41 @@ class CompilerFailureTest(unittest.TestCase):
             ),
         )
 
+    def test_bitpack_with_tablebased_seriliazation(self):
+        write_file(
+            "thrift/annotation/cpp.thrift",
+            textwrap.dedent(
+                """\
+                struct PackIsset {
+                } (thrift.uri = "facebook.com/thrift/annotation/cpp/PackIsset")
+                """
+            ),
+        )
+
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                include "thrift/annotation/cpp.thrift"
+                struct A { 1: i32 i }
+                @cpp.PackIsset
+                struct D { 1: i32 i }
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift",gen="mstch_cpp2:json,tablebased")
+
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent(
+                """\
+                [FAILURE:foo.thrift:4] Tablebased serialization is incompatible with isset bitpacking for struct `D`
+                """
+            ),
+        )
+
     def test_cpp_coroutine_mixin_stack_arguments(self):
         write_file(
             "foo.thrift",

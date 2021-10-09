@@ -58,3 +58,7 @@ struct ExperimentalAdapter {
   // C++ representation.
   1: string name;
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/ExperimentalAdapter")
+
+@scope.Struct
+struct PackIsset {
+} (thrift.uri = "facebook.com/thrift/annotation/cpp/PackIsset")
