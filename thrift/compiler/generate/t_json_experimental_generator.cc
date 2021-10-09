@@ -108,8 +108,8 @@ class program_json_experimental_generator : public program_generator {
       t_program const* program,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<json_experimental_program>(
         program, generators, cache, pos);
   }
@@ -146,8 +146,8 @@ class enum_json_experimental_generator : public enum_generator {
       t_enum const* enm,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<json_experimental_enum>(
         enm, generators, cache, pos);
   }
@@ -186,8 +186,8 @@ class enum_value_json_experimental_generator : public enum_value_generator {
       t_enum_value const* enm_value,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<json_experimental_enum_value>(
         enm_value, generators, cache, pos);
   }
@@ -295,10 +295,10 @@ class const_value_json_experimental_generator : public const_value_generator {
       t_const_value const* const_value,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0,
-      t_const const* current_const = nullptr,
-      t_type const* expected_type = nullptr) const override {
+      ELEMENT_POSITION pos,
+      int32_t index,
+      t_const const* current_const,
+      t_type const* expected_type) const override {
     return std::make_shared<json_experimental_const_value>(
         const_value,
         current_const,
@@ -339,8 +339,8 @@ class struct_json_experimental_generator : public struct_generator {
       t_struct const* strct,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<json_experimental_struct>(
         strct, generators, cache, pos);
   }
@@ -375,8 +375,8 @@ class service_json_experimental_generator : public service_generator {
       t_service const* srvc,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<json_experimental_service>(
         srvc, generators, cache, pos);
   }
@@ -415,8 +415,8 @@ class function_json_experimental_generator : public function_generator {
       t_function const* func,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<json_experimental_function>(
         func, generators, cache, pos);
   }
@@ -452,8 +452,8 @@ class field_json_experimental_generator : public field_generator {
       t_field const* field,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t index) const override {
     return std::make_shared<json_experimental_field>(
         field, generators, cache, pos, index);
   }

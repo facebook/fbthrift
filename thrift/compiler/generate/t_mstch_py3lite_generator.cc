@@ -222,7 +222,7 @@ class type_py3lite_generator : public type_generator {
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t /*index*/ = 0) const override {
+      int32_t /*index*/) const override {
     auto true_type = type->get_true_type();
     return std::make_shared<mstch_py3lite_type>(
         true_type, generators, cache, pos, prog_);
@@ -515,8 +515,8 @@ class program_py3lite_generator : public program_generator {
       const t_program* program,
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     const std::string& id = program->path();
     auto it = cache->programs_.find(id);
     if (it != cache->programs_.end()) {
@@ -536,8 +536,8 @@ class struct_py3lite_generator : public struct_generator {
       const t_struct* strct,
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<mstch_py3lite_struct>(
         strct, generators, cache, pos);
   }
@@ -566,8 +566,8 @@ class function_py3lite_generator : public function_generator {
       t_function const* function,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<mstch_py3lite_function>(
         function, generators, cache, pos);
   }
@@ -625,8 +625,8 @@ class service_py3lite_generator : public service_generator {
       const t_service* service,
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<mstch_py3lite_service>(
         service, generators, cache, pos, prog_);
   }
@@ -641,8 +641,8 @@ class field_py3lite_generator : public field_generator {
       const t_field* field,
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t index) const override {
     return std::make_shared<mstch_py3lite_field>(
         field, generators, cache, pos, index);
   }
@@ -654,8 +654,8 @@ class enum_py3lite_generator : public enum_generator {
       const t_enum* enm,
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<mstch_py3lite_enum>(enm, generators, cache, pos);
   }
 };
@@ -666,8 +666,8 @@ class enum_value_py3lite_generator : public enum_value_generator {
       const t_enum_value* enm_value,
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t /*index*/ = 0) const override {
+      ELEMENT_POSITION pos,
+      int32_t /*index*/) const override {
     return std::make_shared<mstch_py3lite_enum_value>(
         enm_value, generators, cache, pos);
   }
@@ -681,10 +681,10 @@ class const_value_py3lite_generator : public const_value_generator {
       t_const_value const* const_value,
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
-      ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-      int32_t index = 0,
-      t_const const* current_const = nullptr,
-      t_type const* expected_type = nullptr) const override {
+      ELEMENT_POSITION pos,
+      int32_t index,
+      t_const const* current_const,
+      t_type const* expected_type) const override {
     return std::make_shared<mstch_py3lite_const_value>(
         const_value,
         current_const,

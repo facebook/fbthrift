@@ -53,8 +53,8 @@ TEST(t_mstch_generator_test, cacheLeaks) {
         t_program const* program,
         std::shared_ptr<mstch_generators const> generators,
         std::shared_ptr<mstch_cache> cache,
-        ELEMENT_POSITION pos = ELEMENT_POSITION::NONE,
-        int32_t /*index*/ = 0) const override {
+        ELEMENT_POSITION pos,
+        int32_t /*index*/) const override {
       return std::make_shared<leaky_program>(
           program, generators, cache, pos, object_count_);
     }
