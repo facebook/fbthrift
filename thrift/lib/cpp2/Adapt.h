@@ -258,17 +258,17 @@ void validate() {
   const auto adapted = AdaptedT();
   equal<Adapter>(adapted, adapted);
   not_equal<Adapter>(adapted, adapted);
-  less<Adapter>(adapted, adapted);
+  // less and hash are not validated because not all adapters provide it.
 }
 
 template <typename Adapter, typename ThriftT>
 void validateAdapter() {
-  // validate<Adapter, adapted_t<Adapter, ThriftT>>();
+  validate<Adapter, adapted_t<Adapter, ThriftT>>();
 }
 
 template <typename Adapter, int16_t FieldID, typename ThriftT, typename Struct>
 void validateFieldAdapter() {
-  // validate<Adapter, adapted_field_t<Adapter, FieldID, ThriftT, Struct>>();
+  validate<Adapter, adapted_field_t<Adapter, FieldID, ThriftT, Struct>>();
 }
 
 } // namespace adapt_detail
