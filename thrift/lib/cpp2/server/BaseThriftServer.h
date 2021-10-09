@@ -49,6 +49,8 @@ THRIFT_FLAG_DECLARE_int64(server_default_socket_queue_timeout_ms);
 THRIFT_FLAG_DECLARE_int64(server_default_queue_timeout_ms);
 
 THRIFT_FLAG_DECLARE_int64(server_polled_service_health_liveness_ms);
+THRIFT_FLAG_DECLARE_int64(
+    server_ingress_memory_limit_enforcement_payload_size_min_bytes);
 
 namespace wangle {
 class ConnectionManager;
@@ -339,7 +341,10 @@ class BaseThriftServer : public apache::thrift::concurrency::Runnable,
   ServerAttributeDynamic<size_t> ingressMemoryLimit_{0};
   ServerAttributeDynamic<size_t> egressMemoryLimit_{0};
   ServerAttributeDynamic<size_t> minPayloadSizeToEnforceIngressMemoryLimit_{
-      512 * 1024};
+      folly::observer::makeObserver(
+          [o = THRIFT_FLAG_OBSERVE(
+               server_ingress_memory_limit_enforcement_payload_size_min_bytes)]()
+              -> size_t { return **o < 0 ? 0ul : static_cast<size_t>(**o); })};
 
   /**
    * Per-connection threshold for number of bytes allowed in egress buffer

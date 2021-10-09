@@ -36,6 +36,8 @@ THRIFT_FLAG_DEFINE_int64(server_default_socket_queue_timeout_ms, 0);
 THRIFT_FLAG_DEFINE_int64(server_default_queue_timeout_ms, 0);
 
 THRIFT_FLAG_DEFINE_int64(server_polled_service_health_liveness_ms, 100);
+THRIFT_FLAG_DEFINE_int64(
+    server_ingress_memory_limit_enforcement_payload_size_min_bytes, 1024);
 
 namespace apache {
 namespace thrift {
