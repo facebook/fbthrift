@@ -111,7 +111,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-
+} // cpp2
+namespace cpp2 {
 class A final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -212,11 +213,6 @@ uint32_t A::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class U final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -489,11 +485,6 @@ uint32_t U::read(Protocol_* iprot) {
 
 } // cpp2
 namespace cpp2 {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class FOLLY_EXPORT Bang : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;

@@ -48,7 +48,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-
+}} // some::ns
+namespace some { namespace ns {
 class IncludedB final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;

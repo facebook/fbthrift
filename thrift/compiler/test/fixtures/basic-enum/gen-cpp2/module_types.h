@@ -176,7 +176,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-
+}}} // test::fixtures::enumstrict
+namespace test { namespace fixtures { namespace enumstrict {
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;

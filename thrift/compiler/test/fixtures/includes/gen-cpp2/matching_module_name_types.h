@@ -44,7 +44,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-
+} // matching_module_name
+namespace matching_module_name {
 class MyStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;

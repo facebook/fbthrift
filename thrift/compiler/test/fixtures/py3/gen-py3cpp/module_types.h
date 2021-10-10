@@ -239,7 +239,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-
+}} // py3::simple
+namespace py3 { namespace simple {
 class FOLLY_EXPORT SimpleException : public apache::thrift::TException {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -351,11 +352,6 @@ uint32_t SimpleException::read(Protocol_* iprot) {
 
 }} // py3::simple
 namespace py3 { namespace simple {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class OptionalRefStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -459,11 +455,6 @@ uint32_t OptionalRefStruct::read(Protocol_* iprot) {
 
 }} // py3::simple
 namespace py3 { namespace simple {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class SimpleStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -801,11 +792,6 @@ uint32_t SimpleStruct::read(Protocol_* iprot) {
 
 }} // py3::simple
 namespace py3 { namespace simple {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class ComplexStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1194,11 +1180,6 @@ uint32_t ComplexStruct::read(Protocol_* iprot) {
 
 }} // py3::simple
 namespace py3 { namespace simple {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class BinaryUnion final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1403,11 +1384,6 @@ uint32_t BinaryUnion::read(Protocol_* iprot) {
 
 }} // py3::simple
 namespace py3 { namespace simple {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class BinaryUnionStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;

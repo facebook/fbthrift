@@ -200,7 +200,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-
+}}} // apache::thrift::test
+namespace apache { namespace thrift { namespace test {
 class Foo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -394,11 +395,6 @@ uint32_t Foo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class LazyFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -595,11 +591,6 @@ uint32_t LazyFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class OptionalFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -797,11 +788,6 @@ uint32_t OptionalFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class OptionalLazyFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1000,11 +986,6 @@ uint32_t OptionalLazyFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class LazyCppRef final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1136,11 +1117,6 @@ uint32_t LazyCppRef::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class IndexedFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1402,11 +1378,6 @@ uint32_t IndexedFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class OptionalIndexedFoo final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -1672,11 +1643,6 @@ uint32_t OptionalIndexedFoo::read(Protocol_* iprot) {
 
 }}} // apache::thrift::test
 namespace apache { namespace thrift { namespace test {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class Empty final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;

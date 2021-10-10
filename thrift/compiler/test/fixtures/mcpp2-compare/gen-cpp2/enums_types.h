@@ -219,7 +219,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-
+}}} // facebook::ns::qwerty
+namespace facebook { namespace ns { namespace qwerty {
 class SomeStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;

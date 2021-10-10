@@ -61,7 +61,8 @@ using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
 using ::apache::thrift::detail::operator<=;
 using ::apache::thrift::detail::operator>=;
-
+} // module2
+namespace module2 {
 class Struct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
@@ -191,11 +192,6 @@ uint32_t Struct::read(Protocol_* iprot) {
 
 } // module2
 namespace module2 {
-using ::apache::thrift::detail::operator!=;
-using ::apache::thrift::detail::operator>;
-using ::apache::thrift::detail::operator<=;
-using ::apache::thrift::detail::operator>=;
-
 class BigStruct final  {
  private:
   friend struct ::apache::thrift::detail::st::struct_private_access;
