@@ -79,6 +79,7 @@
 
 #include <common/logging/logging.h>
 
+using namespace fizz::client;
 using namespace apache::thrift;
 using namespace apache::thrift::test;
 using namespace apache::thrift::util;
@@ -2361,6 +2362,16 @@ std::shared_ptr<folly::SSLContext> makeClientSslContext() {
   return ctx;
 }
 
+std::shared_ptr<FizzClientContext> makeClientFizzContext() {
+  auto fizzCtx = std::make_shared<FizzClientContext>();
+  std::string testCert, testKey;
+  folly::readFile(folly::kTestCert, testCert);
+  folly::readFile(folly::kTestKey, testKey);
+  auto selfCert = fizz::CertUtils::makeSelfCert(testCert, testKey);
+  fizzCtx->setClientCertificate(std::move(selfCert));
+  return fizzCtx;
+}
+
 void doBadRequestHeaderTest(bool duplex, bool secure) {
   auto server = std::static_pointer_cast<ThriftServer>(
       TestThriftServerFactory<TestInterface>().create());
@@ -3076,6 +3087,59 @@ TEST(ThriftServer, AlpnNotAllowMismatch) {
 
   std::string response;
   EXPECT_THROW(client.sync_sendResponse(response, 64), TTransportException);
+}
+
+TEST(ThriftServer, AlpnAllowMismatchFizz) {
+  THRIFT_FLAG_SET_MOCK(alpn_allow_mismatch, true);
+
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setSSLPolicy(SSLPolicy::REQUIRED);
+  setupServerSSLWithAlpn(*server, {"rs"});
+  ScopedServerThread sst(std::move(server));
+
+  auto clientEvbThread = std::make_shared<folly::ScopedEventBaseThread>();
+  TestServiceAsyncClient client(
+      apache::thrift::PooledRequestChannel::newSyncChannel(
+          clientEvbThread,
+          [address = sst.getAddress()](folly::EventBase& eb) mutable {
+            auto ctx = makeClientFizzContext();
+            ctx->setSupportedAlpns({"h2"});
+            AsyncFizzClient::UniquePtr fizzClient(
+                new AsyncFizzClient(&eb, std::move(ctx)));
+            fizzClient->connect(
+                *address, nullptr, nullptr, folly::none, folly::none);
+            return HeaderClientChannel::newChannel(std::move(fizzClient));
+          }));
+
+  EXPECT_EQ(client.semifuture_sendResponse(64).get(), "test64");
+}
+
+TEST(ThriftServer, AlpnNotAllowMismatchFizz) {
+  THRIFT_FLAG_SET_MOCK(alpn_allow_mismatch, false);
+
+  auto server = std::static_pointer_cast<ThriftServer>(
+      TestThriftServerFactory<TestInterface>().create());
+  server->setSSLPolicy(SSLPolicy::REQUIRED);
+  setupServerSSLWithAlpn(*server, {"rs"});
+  ScopedServerThread sst(std::move(server));
+
+  auto clientEvbThread = std::make_shared<folly::ScopedEventBaseThread>();
+  TestServiceAsyncClient client(
+      apache::thrift::PooledRequestChannel::newSyncChannel(
+          clientEvbThread,
+          [address = sst.getAddress()](folly::EventBase& eb) mutable {
+            auto ctx = makeClientFizzContext();
+            ctx->setSupportedAlpns({"h2"});
+            AsyncFizzClient::UniquePtr fizzClient(
+                new AsyncFizzClient(&eb, std::move(ctx)));
+            fizzClient->connect(
+                *address, nullptr, nullptr, folly::none, folly::none);
+            return HeaderClientChannel::newChannel(std::move(fizzClient));
+          }));
+
+  EXPECT_THROW(
+      client.semifuture_echoRequest("echo").get(), TTransportException);
 }
 
 TEST(ThriftServer, SocketQueueTimeout) {

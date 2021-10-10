@@ -16,8 +16,11 @@
 
 #include <folly/lang/Assume.h>
 
+#include <fizz/server/AsyncFizzServer.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/server/LoggingEventHelper.h>
+
+using fizz::server::AsyncFizzServer;
 
 namespace apache {
 namespace thrift {
@@ -45,6 +48,23 @@ void logNonTLSEvent(const ConnectionLoggingContext& context) {
     THRIFT_CONNECTION_EVENT(non_tls.manual_policy).log(context);
   } else {
     THRIFT_CONNECTION_EVENT(non_tls).log(context);
+  }
+}
+
+void logIfAlpnMismatch(
+    const ConnectionLoggingContext& context,
+    const folly::AsyncTransport* transport) {
+  auto sock = transport->getUnderlyingTransport<folly::AsyncSSLSocket>();
+  if (sock) {
+    if (sock->getApplicationProtocol().empty() &&
+        !sock->getClientAlpns().empty()) {
+      THRIFT_CONNECTION_EVENT(alpn.mismatch.ssl).log(context);
+    }
+  } else if (auto fizz = dynamic_cast<const AsyncFizzServer*>(transport)) {
+    auto& state = fizz->getState();
+    if (!state.alpn() && !state.handshakeLogging()->clientAlpns.empty()) {
+      THRIFT_CONNECTION_EVENT(alpn.mismatch.fizz).log(context);
+    }
   }
 }
 } // namespace
@@ -75,6 +95,7 @@ void logSetupConnectionEventsOnce(
           if (!transport->getPeerCertificate()) {
             logTlsNoPeerCertEvent(context);
           }
+          logIfAlpnMismatch(context, transport);
         } else {
           logNonTLSEvent(context);
         }
