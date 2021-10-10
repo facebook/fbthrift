@@ -120,6 +120,8 @@ class service_with_special_namesAsyncProcessor;
 
 class service_with_special_namesSvIf : public service_with_special_namesSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "service_with_special_names"; }
+
   typedef service_with_special_namesAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

@@ -48,6 +48,8 @@ class NestedContainersAsyncProcessor;
 
 class NestedContainersSvIf : public NestedContainersSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "NestedContainers"; }
+
   typedef NestedContainersAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

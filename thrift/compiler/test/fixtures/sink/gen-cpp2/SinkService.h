@@ -53,6 +53,8 @@ class SinkServiceAsyncProcessor;
 
 class SinkServiceSvIf : public SinkServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "SinkService"; }
+
   typedef SinkServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

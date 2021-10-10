@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <string>
 #include <string_view>
 #include <variant>
 
@@ -568,6 +569,11 @@ class ServerInterface : public virtual AsyncProcessorFactory,
   ServerInterface(const ServerInterface&) = delete;
   ServerInterface& operator=(const ServerInterface&) = delete;
 
+  std::string_view getName() const {
+    return nameOverride_ ? *nameOverride_ : getGeneratedName();
+  }
+  virtual std::string_view getGeneratedName() const = 0;
+
   [[deprecated("Replaced by getRequestContext")]] Cpp2RequestContext*
   getConnectionContext() const {
     return requestParams_.requestContext_;
@@ -681,6 +687,16 @@ class ServerInterface : public virtual AsyncProcessorFactory,
    * will be NULL for async calls.
    */
   static thread_local RequestParams requestParams_;
+
+  std::optional<std::string> nameOverride_;
+
+ protected:
+  /**
+   * If set, getName will return this name instead of getGeneratedName.
+   *
+   * NOTE: This method will be removed soon. Do not call it directly.
+   */
+  void setNameOverride(std::string name) { nameOverride_ = std::move(name); }
 };
 
 /**

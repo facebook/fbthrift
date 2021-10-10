@@ -43,6 +43,8 @@ class CAsyncProcessor;
 
 class CSvIf : public CSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "C"; }
+
   typedef CAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

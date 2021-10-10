@@ -37,6 +37,8 @@ class MyNodeAsyncProcessor;
 
 class MyNodeSvIf : public MyNodeSvAsyncIf, virtual public ::cpp2::MyRootSvIf {
  public:
+  std::string_view getGeneratedName() const override { return "MyNode"; }
+
   typedef MyNodeAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

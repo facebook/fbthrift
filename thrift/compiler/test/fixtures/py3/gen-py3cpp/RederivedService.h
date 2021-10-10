@@ -37,6 +37,8 @@ class RederivedServiceAsyncProcessor;
 
 class RederivedServiceSvIf : public RederivedServiceSvAsyncIf, virtual public ::py3::simple::DerivedServiceSvIf {
  public:
+  std::string_view getGeneratedName() const override { return "RederivedService"; }
+
   typedef RederivedServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

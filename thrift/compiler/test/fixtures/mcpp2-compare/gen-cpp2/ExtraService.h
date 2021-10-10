@@ -58,6 +58,8 @@ class ExtraServiceAsyncProcessor;
 
 class ExtraServiceSvIf : public ExtraServiceSvAsyncIf, virtual public ::some::valid::ns::ParamServiceSvIf {
  public:
+  std::string_view getGeneratedName() const override { return "ExtraService"; }
+
   typedef ExtraServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

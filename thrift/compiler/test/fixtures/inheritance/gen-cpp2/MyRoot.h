@@ -36,6 +36,8 @@ class MyRootAsyncProcessor;
 
 class MyRootSvIf : public MyRootSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "MyRoot"; }
+
   typedef MyRootAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

@@ -54,6 +54,8 @@ class service3AsyncProcessor;
 
 class service3SvIf : public service3SvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "service3"; }
+
   typedef service3AsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

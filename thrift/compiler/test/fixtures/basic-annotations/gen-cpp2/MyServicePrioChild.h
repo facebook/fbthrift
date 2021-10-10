@@ -37,6 +37,8 @@ class MyServicePrioChildAsyncProcessor;
 
 class MyServicePrioChildSvIf : public MyServicePrioChildSvAsyncIf, virtual public ::cpp2::MyServicePrioParentSvIf {
  public:
+  std::string_view getGeneratedName() const override { return "MyServicePrioChild"; }
+
   typedef MyServicePrioChildAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

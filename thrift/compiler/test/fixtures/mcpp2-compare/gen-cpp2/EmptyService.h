@@ -35,6 +35,8 @@ class EmptyServiceAsyncProcessor;
 
 class EmptyServiceSvIf : public EmptyServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "EmptyService"; }
+
   typedef EmptyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

@@ -37,6 +37,8 @@ class MyLeafAsyncProcessor;
 
 class MyLeafSvIf : public MyLeafSvAsyncIf, virtual public ::cpp2::MyNodeSvIf {
  public:
+  std::string_view getGeneratedName() const override { return "MyLeaf"; }
+
   typedef MyLeafAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

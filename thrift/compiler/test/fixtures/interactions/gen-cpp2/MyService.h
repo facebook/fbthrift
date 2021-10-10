@@ -38,12 +38,16 @@ class MyServiceAsyncProcessor;
 
 class MyServiceSvIf : public MyServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "MyService"; }
+
   typedef MyServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
 
 class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "MyInteraction"; }
+
   typedef MyServiceAsyncProcessor ProcessorType;
   virtual ~MyInteractionIf() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
@@ -87,6 +91,8 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
   std::atomic<apache::thrift::detail::si::InvocationType> __fbthrift_invocation_encode{apache::thrift::detail::si::InvocationType::AsyncTm};
 };class MyInteractionFastIf : public apache::thrift::Tile, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "MyInteractionFast"; }
+
   typedef MyServiceAsyncProcessor ProcessorType;
   virtual ~MyInteractionFastIf() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {
@@ -102,6 +108,8 @@ class MyInteractionIf : public apache::thrift::Tile, public apache::thrift::Serv
  private:
 };class SerialInteractionIf : public apache::thrift::SerialInteractionTile, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "SerialInteraction"; }
+
   typedef MyServiceAsyncProcessor ProcessorType;
   virtual ~SerialInteractionIf() = default;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override {

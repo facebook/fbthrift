@@ -33,6 +33,8 @@ class NullServiceAsyncProcessor;
 
 class NullServiceSvIf : public NullServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "NullService"; }
+
   typedef NullServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

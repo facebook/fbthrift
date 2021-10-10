@@ -39,6 +39,8 @@ class DbMixedStackArgumentsAsyncProcessor;
 
 class DbMixedStackArgumentsSvIf : public DbMixedStackArgumentsSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "DbMixedStackArguments"; }
+
   typedef DbMixedStackArgumentsAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

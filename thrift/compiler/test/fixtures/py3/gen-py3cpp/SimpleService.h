@@ -156,6 +156,8 @@ class SimpleServiceAsyncProcessor;
 
 class SimpleServiceSvIf : public SimpleServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "SimpleService"; }
+
   typedef SimpleServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;

@@ -47,6 +47,8 @@ class PubSubStreamingServiceAsyncProcessor;
 
 class PubSubStreamingServiceSvIf : public PubSubStreamingServiceSvAsyncIf, public apache::thrift::ServerInterface {
  public:
+  std::string_view getGeneratedName() const override { return "PubSubStreamingService"; }
+
   typedef PubSubStreamingServiceAsyncProcessor ProcessorType;
   std::unique_ptr<apache::thrift::AsyncProcessor> getProcessor() override;
   CreateMethodMetadataResult createMethodMetadata() override;
