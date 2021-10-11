@@ -21,7 +21,9 @@
 #include <thrift/lib/cpp2/BadFieldAccess.h>
 #include <thrift/lib/cpp2/BoxedValuePtr.h>
 #include <thrift/lib/cpp2/FieldRef.h>
+#include <thrift/lib/cpp2/gen/module_types_h.h>
 
+#include <folly/Traits.h>
 #include <folly/portability/GTest.h>
 
 using apache::thrift::bad_field_access;
@@ -58,60 +60,76 @@ struct Nested {
 
 class TestStruct {
  public:
-  field_ref<std::string&> name() { return {name_, __isset.name}; }
+  field_ref<std::string&> name() {
+    return {name_, __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
 
-  field_ref<const std::string&> name() const { return {name_, __isset.name}; }
+  field_ref<const std::string&> name() const {
+    return {name_, __isset.__fbthrift_at(folly::index_constant<0>())};
+  }
 
   optional_field_ref<std::string&> opt_name() & {
-    return {name_, __isset.name};
+    return {name_, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   optional_field_ref<std::string&&> opt_name() && {
-    return {std::move(name_), __isset.name};
+    return {
+        std::move(name_), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   optional_field_ref<const std::string&> opt_name() const& {
-    return {name_, __isset.name};
+    return {name_, __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   optional_field_ref<const std::string&&> opt_name() const&& {
-    return {std::move(name_), __isset.name};
+    return {
+        std::move(name_), __isset.__fbthrift_at(folly::index_constant<0>())};
   }
 
   field_ref<IntAssignable&> int_assign() {
-    return {int_assign_, __isset.int_assign};
+    return {int_assign_, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   optional_field_ref<IntAssignable&> opt_int_assign() {
-    return {int_assign_, __isset.int_assign};
+    return {int_assign_, __isset.__fbthrift_at(folly::index_constant<1>())};
   }
 
   optional_field_ref<std::shared_ptr<int>&> ptr_ref() {
-    return {ptr_, __isset.ptr};
+    return {ptr_, __isset.__fbthrift_at(folly::index_constant<2>())};
   }
 
-  field_ref<int&> int_val() { return {int_val_, __isset.int_val}; }
+  field_ref<int&> int_val() {
+    return {int_val_, __isset.__fbthrift_at(folly::index_constant<3>())};
+  }
 
-  optional_field_ref<int&> opt_int_val() { return {int_val_, __isset.int_val}; }
+  optional_field_ref<int&> opt_int_val() {
+    return {int_val_, __isset.__fbthrift_at(folly::index_constant<3>())};
+  }
 
-  field_ref<std::unique_ptr<int>&> uptr() & { return {uptr_, __isset.uptr}; }
+  field_ref<std::unique_ptr<int>&> uptr() & {
+    return {uptr_, __isset.__fbthrift_at(folly::index_constant<4>())};
+  }
 
   field_ref<std::unique_ptr<int>&&> uptr() && {
-    return {std::move(uptr_), __isset.uptr};
+    return {
+        std::move(uptr_), __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   optional_field_ref<std::unique_ptr<int>&> opt_uptr() & {
-    return {uptr_, __isset.uptr};
+    return {uptr_, __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
   optional_field_ref<std::unique_ptr<int>&&> opt_uptr() && {
-    return {std::move(uptr_), __isset.uptr};
+    return {
+        std::move(uptr_), __isset.__fbthrift_at(folly::index_constant<4>())};
   }
 
-  field_ref<std::vector<bool>&> vec() & { return {vec_, __isset.vec}; }
+  field_ref<std::vector<bool>&> vec() & {
+    return {vec_, __isset.__fbthrift_at(folly::index_constant<5>())};
+  }
 
   optional_field_ref<Nested&> opt_nested() & {
-    return {nested_, __isset.nested};
+    return {nested_, __isset.__fbthrift_at(folly::index_constant<5>())};
   }
 
  private:
@@ -123,15 +141,7 @@ class TestStruct {
   std::vector<bool> vec_;
   Nested nested_;
 
-  struct __isset {
-    uint8_t name;
-    uint8_t int_assign;
-    uint8_t ptr;
-    uint8_t int_val;
-    uint8_t uptr;
-    uint8_t vec;
-    uint8_t nested;
-  } __isset = {};
+  apache::thrift::detail::isset_bitset<7> __isset{};
 };
 
 class TestStructBoxedValuePtr {
