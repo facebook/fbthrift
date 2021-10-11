@@ -16,8 +16,6 @@
 
 namespace java.swift test.fixtures.empty_struct
 
-struct Empty {
-}
+struct Empty {}
 
-union Nada {
-}
+union Nada {}

@@ -91,8 +91,7 @@ exception Xception2 {
   2: Xtruct struct_thing;
 }
 
-struct EmptyStruct {
-}
+struct EmptyStruct {}
 
 struct OneField {
   1: EmptyStruct field;

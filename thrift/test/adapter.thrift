@@ -65,10 +65,8 @@ struct AdaptTestStruct {
   1: DurationMs delay;
   2: CustomProtocolType custom;
 
-
   @cpp.ExperimentalAdapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
   3: i64 timeout;
-
 
   @cpp.ExperimentalAdapter{name = "::apache::thrift::test::AdapterWithContext"}
   4: i64 data;

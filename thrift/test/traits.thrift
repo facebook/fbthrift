@@ -16,14 +16,11 @@
 
 namespace cpp2 apache.thrift
 
-struct struct0 {
-}
+struct struct0 {}
 
-union union0 {
-}
+union union0 {}
 
-exception exception0 {
-}
+exception exception0 {}
 
 enum enum0 {
 }

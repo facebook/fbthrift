@@ -16,8 +16,7 @@
 
 namespace cpp2 apache.thrift.test
 
-exception Banal {
-}
+exception Banal {}
 exception Fiery {
   1: required string message;
 }

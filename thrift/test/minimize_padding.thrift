@@ -16,8 +16,7 @@
 
 namespace cpp2 apache.thrift.test
 
-struct empty {
-} (cpp.minimize_padding)
+struct empty {} (cpp.minimize_padding)
 
 enum test_enum {
   foo = 0,

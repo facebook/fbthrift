@@ -46,5 +46,4 @@ service Raiser {
   string get500() throws (1: Fiery f, 2: Banal b, 3: Serious s);
 }
 
-safe permanent client exception Banal {
-}
+safe permanent client exception Banal {}

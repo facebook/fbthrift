@@ -42,8 +42,7 @@ enum TestEnum {
 enum TestEnumEmpty {
 }
 
-struct TestSkipV1 {
-}
+struct TestSkipV1 {}
 
 struct TestSkipV2 {
   1: list<string> l;

@@ -31,8 +31,7 @@ struct MyStruct {
   4: MyEnum myEnum;
 }
 
-struct MyDataItem {
-}
+struct MyDataItem {}
 
 union MyUnion {
   1: MyEnum myEnum;
@@ -40,8 +39,7 @@ union MyUnion {
   3: MyDataItem myDataItem;
 }
 
-exception MyException {
-}
+exception MyException {}
 
 service MyService {
   void ping();

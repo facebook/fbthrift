@@ -16,5 +16,4 @@
 
 namespace cpp2 facebook.thrift.test
 
-struct IncludedStruct {
-}
+struct IncludedStruct {}

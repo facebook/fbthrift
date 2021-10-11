@@ -34,8 +34,7 @@ struct MyStruct {
   7: bool idempotent;
 }
 
-struct MyDataItem {
-}
+struct MyDataItem {}
 
 union MyUnion {
   1: MyEnum myEnum;

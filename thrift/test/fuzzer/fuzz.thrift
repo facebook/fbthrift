@@ -99,8 +99,7 @@ service TestService {
 service DerivedTestService extends TestService {
 }
 
-union EmptyUnion {
-}
+union EmptyUnion {}
 
 union NumberUnion {
   1: i32 my_integer;

@@ -114,8 +114,7 @@ exception Xception2 {
 /**  */
 /* C2 */
 /* C3 */
-struct EmptyStruct {
-}
+struct EmptyStruct {}
 
 struct OneField {
   1: EmptyStruct field;

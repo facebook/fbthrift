@@ -19,11 +19,9 @@ include "thrift/lib/py3/test/stream/if/included.thrift"
 namespace cpp2 thrift.py3.test
 namespace py3 thrift.py3.test
 
-exception FuncEx {
-}
+exception FuncEx {}
 
-exception StreamEx {
-}
+exception StreamEx {}
 
 service StreamTestService {
   stream<i32> returnstream(1: i32 i32_from, 2: i32 i32_to);

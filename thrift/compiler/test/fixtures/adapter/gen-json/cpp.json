@@ -67,13 +67,13 @@
           "column" : 1
         },
         "end" : {
-          "line" : 41,
-          "column" : 59
+          "line" : 40,
+          "column" : 72
         }
       }
     },
     "DisableLazyChecksum" : {
-      "lineno" : 44,
+      "lineno" : 43,
       "is_exception" : false,
       "is_union" : false,
       "fields" : {
@@ -81,12 +81,12 @@
       },
       "source_range" : {
         "begin" : {
-          "line" : 43,
+          "line" : 42,
           "column" : 1
         },
         "end" : {
           "line" : 45,
-          "column" : 74
+          "column" : 2
         }
       }
     },
@@ -135,8 +135,8 @@
           "column" : 1
         },
         "end" : {
-          "line" : 64,
-          "column" : 64
+          "line" : 65,
+          "column" : 2
         }
       }
     }

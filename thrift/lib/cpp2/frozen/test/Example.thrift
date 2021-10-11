@@ -171,11 +171,9 @@ struct TestFixedSizeString {
   4: map<Fixed8, Fixed2> (cpp.template = "std::unordered_map") aMap;
 }
 
-struct Empty {
-}
+struct Empty {}
 
-struct Excluded {
-} (cpp.frozen2_exclude)
+struct Excluded {} (cpp.frozen2_exclude)
 
 struct ContainsExcluded {
   1: optional Excluded excluded;

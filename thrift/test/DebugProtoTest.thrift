@@ -124,8 +124,7 @@ struct Backwards {
   1: i32 second_tag1;
 }
 
-struct Empty {
-}
+struct Empty {}
 
 struct Wrapper {
   1: Empty foo;

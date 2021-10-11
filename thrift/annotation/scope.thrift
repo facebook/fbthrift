@@ -38,31 +38,22 @@ namespace py thrift.annotation.scope
 //                           // allowed on fields.
 //       1: i32 my_field;
 //     }
-struct Struct {
-} (thrift.uri = "facebook.com/thrift/annotation/Struct")
-struct Union {
-} (thrift.uri = "facebook.com/thrift/annotation/Union")
-struct Exception {
-} (thrift.uri = "facebook.com/thrift/annotation/Exception")
-struct Field {
-} (thrift.uri = "facebook.com/thrift/annotation/Field")
-struct Typedef {
-} (thrift.uri = "facebook.com/thrift/annotation/Typedef")
-struct Service {
-} (thrift.uri = "facebook.com/thrift/annotation/Service")
-struct Interaction {
-} (thrift.uri = "facebook.com/thrift/annotation/Interaction")
-struct Function {
-} (thrift.uri = "facebook.com/thrift/annotation/Function")
-struct EnumValue {
-} (thrift.uri = "facebook.com/thrift/annotation/EnumValue")
-struct Const {
-} (thrift.uri = "facebook.com/thrift/annotation/Const")
+struct Struct {} (thrift.uri = "facebook.com/thrift/annotation/Struct")
+struct Union {} (thrift.uri = "facebook.com/thrift/annotation/Union")
+struct Exception {} (thrift.uri = "facebook.com/thrift/annotation/Exception")
+struct Field {} (thrift.uri = "facebook.com/thrift/annotation/Field")
+struct Typedef {} (thrift.uri = "facebook.com/thrift/annotation/Typedef")
+struct Service {} (thrift.uri = "facebook.com/thrift/annotation/Service")
+struct Interaction {} (
+  thrift.uri = "facebook.com/thrift/annotation/Interaction",
+)
+struct Function {} (thrift.uri = "facebook.com/thrift/annotation/Function")
+struct EnumValue {} (thrift.uri = "facebook.com/thrift/annotation/EnumValue")
+struct Const {} (thrift.uri = "facebook.com/thrift/annotation/Const")
 
 // Due to cython bug, we can not use `Enum` as class name directly
 // https://github.com/cython/cython/issues/2474
-struct FbthriftInternalEnum {
-}
+struct FbthriftInternalEnum {}
 typedef FbthriftInternalEnum Enum (
   thrift.uri = "facebook.com/thrift/annotation/Enum",
 )

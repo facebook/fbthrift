@@ -27,8 +27,7 @@ struct MyStruct {
   4: MyEnum myEnum;
 }
 
-struct MyDataItem {
-}
+struct MyDataItem {}
 
 union MyUnion {
   1: MyEnum myEnum;

@@ -94,8 +94,7 @@ enum BadMembers {
 enum EmptyEnum {
 }
 
-union EmptyUnion {
-}
+union EmptyUnion {}
 
 struct StringBucket {
   1: string one;
@@ -355,7 +354,6 @@ service TestingServiceChild extends TestingService {
 
 struct ListNode {
   1: i32 value;
-
 
   @cpp.Ref{type = cpp.RefType.Unique}
   2: optional ListNode next;

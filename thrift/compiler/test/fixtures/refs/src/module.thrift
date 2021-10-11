@@ -90,8 +90,7 @@ enum TypedEnum {
   VAL2 = 1,
 } (cpp.enum_type = "short")
 
-struct Empty {
-}
+struct Empty {}
 
 struct StructWithRef {
   1: Empty def_field (cpp.ref);

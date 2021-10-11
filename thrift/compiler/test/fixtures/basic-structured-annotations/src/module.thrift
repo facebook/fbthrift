@@ -65,14 +65,12 @@ struct MyStruct {
 
   2: annotated_inline_string annotated_type;
 
-
   @structured_annotation_recursive{
     name = "abc",
     recurse = structured_annotation_recursive{name = "cba"},
     forward = structured_annotation_forward{count = 3},
   }
   3: string annotated_recursive;
-
 
   @structured_annotation_nested{name = 'nesty'}
   4: i64 annotated_nested;
@@ -92,7 +90,6 @@ union MyUnion {
   @structured_annotation_with_default
   1: annotated_inline_string first;
 
-
   @structured_annotation_with_default{name = 'aba'}
   2: annotated_inline_i64 second;
 }
@@ -101,7 +98,6 @@ union MyUnion {
 service MyService {
   @structured_annotation_with_default{}
   annotated_inline_string first();
-
 
   @structured_annotation_inline{count = 2}
   bool second(
@@ -114,7 +110,6 @@ service MyService {
 enum MyEnum {
   @structured_annotation_with_default{name = 'unknown'}
   UNKNOWN = 0,
-
 
   @structured_annotation_with_default{name = 'one'}
   ONE = 1,

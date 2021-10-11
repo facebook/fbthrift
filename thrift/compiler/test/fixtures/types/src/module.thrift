@@ -113,8 +113,7 @@ struct MyStruct {
   4: MyDataItem data;
 } (cpp.noncomparable)
 
-struct MyDataItem {
-} (cpp.noncomparable)
+struct MyDataItem {} (cpp.noncomparable)
 
 struct Renaming {
   1: i64 foo (cpp.name = 'bar');
@@ -143,8 +142,7 @@ struct ForwardUsageByRef {
   1: optional ForwardUsageRoot foo;
 }
 
-struct NoexceptMoveEmpty {
-}
+struct NoexceptMoveEmpty {}
 
 struct NoexceptMoveSimpleStruct {
   1: i64 boolField;

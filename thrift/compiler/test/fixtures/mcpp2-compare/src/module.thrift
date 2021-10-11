@@ -73,8 +73,7 @@ const MyEnumA constEnumA = MyEnumA.fieldB;
 
 const MyEnumA constEnumB = 3;
 
-struct Empty {
-}
+struct Empty {}
 
 struct ASimpleStruct {
   1: i64 boolField;

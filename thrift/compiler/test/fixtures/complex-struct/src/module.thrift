@@ -137,8 +137,7 @@ struct MyStructTypeDef {
   9: map<i16, list<listTypedef>> myMapListOfTypeDef;
 }
 
-struct MyDataItem {
-}
+struct MyDataItem {}
 
 union MyUnion {
   1: MyEnum myEnum;
@@ -190,8 +189,7 @@ struct TypeRemapped {
   4: binary (java.swift.type = "java.nio.ByteBuffer") binaryTestBuffer;
 }
 
-exception emptyXcep {
-}
+exception emptyXcep {}
 
 exception reqXcep {
   1: required string message;

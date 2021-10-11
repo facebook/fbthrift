@@ -14,8 +14,7 @@
  * limitations under the License.
  */
 
-struct Empty {
-}
+struct Empty {}
 
 struct Shallow {
   1: i64 one;

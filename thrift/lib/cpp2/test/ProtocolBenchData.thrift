@@ -18,8 +18,7 @@ namespace cpp2 thrift.benchmark
 
 cpp_include "folly/sorted_vector_types.h"
 
-struct Empty {
-}
+struct Empty {}
 
 struct SmallInt {
   1: i32 smallint;

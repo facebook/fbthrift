@@ -16,8 +16,7 @@
 
 namespace java.swift test.fixtures.stream
 
-exception FooEx {
-}
+exception FooEx {}
 
 service PubSubStreamingService {
   stream<i32> returnstream(1: i32 i32_from, 2: i32 i32_to);

@@ -51,10 +51,8 @@ struct StructuredAnnotation {
   @cpp.Ref{type = cpp.RefType.Unique}
   1: optional PlainStruct opt_unique_field;
 
-
   @cpp.Ref{type = cpp.RefType.Shared}
   2: optional PlainStruct opt_shared_field;
-
 
   @cpp.Ref{type = cpp.RefType.SharedMutable}
   3: optional PlainStruct opt_shared_mutable_field;

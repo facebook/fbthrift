@@ -57,5 +57,4 @@ struct StuffMissing {
   15: map<i32, map<string, i32>> anotherMap;
 }
 
-struct Empty {
-}
+struct Empty {}

@@ -84,11 +84,9 @@ enum ErrorSafety {
   SAFE = 1,
 }
 
-struct ZlibCompressionCodecConfig {
-}
+struct ZlibCompressionCodecConfig {}
 
-struct ZstdCompressionCodecConfig {
-}
+struct ZstdCompressionCodecConfig {}
 
 union CodecConfig {
   1: ZlibCompressionCodecConfig zlibConfig;
@@ -189,24 +187,19 @@ struct ErrorClassification {
   3: optional ErrorSafety safety;
 }
 
-struct PayloadResponseMetadata {
-}
+struct PayloadResponseMetadata {}
 
 struct PayloadDeclaredExceptionMetadata {
   1: optional ErrorClassification errorClassification;
 }
 
-struct PayloadProxyExceptionMetadata {
-}
+struct PayloadProxyExceptionMetadata {}
 
-struct PayloadProxiedExceptionMetadata {
-}
+struct PayloadProxiedExceptionMetadata {}
 
-struct PayloadAppClientExceptionMetadata {
-}
+struct PayloadAppClientExceptionMetadata {}
 
-struct PayloadAppServerExceptionMetadata {
-}
+struct PayloadAppServerExceptionMetadata {}
 
 struct PayloadAppUnknownExceptionMetdata {
   1: optional ErrorClassification errorClassification;
@@ -243,8 +236,7 @@ union PayloadMetadata {
   2: PayloadExceptionMetadataBase exceptionMetadata;
 }
 
-struct ProxiedPayloadMetadata {
-}
+struct ProxiedPayloadMetadata {}
 
 struct QueueMetadata {
   // Total time in milliseconds spent in the executor's queue

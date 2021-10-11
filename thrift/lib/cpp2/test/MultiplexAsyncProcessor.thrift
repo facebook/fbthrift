@@ -50,8 +50,7 @@ service Interaction2 {
   performs Thing2;
 }
 
-struct SomeStruct {
-}
+struct SomeStruct {}
 service SomeService extends Third {
   SomeStruct foo();
 }

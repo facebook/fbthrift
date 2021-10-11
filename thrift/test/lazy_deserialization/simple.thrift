@@ -108,8 +108,7 @@ struct OptionalIndexedFoo {
   101: map<i16, i64> field_id_to_size;
 }
 
-struct Empty {
-}
+struct Empty {}
 
 const i32 kSizeId = 100;
 const i32 kIndexId = 101;

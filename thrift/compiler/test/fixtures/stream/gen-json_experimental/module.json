@@ -16,7 +16,7 @@
   {
       "PubSubStreamingService" : {
         "name" : "PubSubStreamingService",
-        "lineno" : 22,
+        "lineno" : 21,
         "functions" : {
           "returnstream" : {
             "name" : "returnstream",
@@ -25,13 +25,30 @@
                 "name" : "i32_from",
                 "type" : "i32",
                 "key" : 1,
-                "lineno" : 23,
+                "lineno" : 22,
                 "required" : "opt-in-req-out"
               },
               "i32_to": {
                 "name" : "i32_to",
                 "type" : "i32",
                 "key" : 2,
+                "lineno" : 22,
+                "required" : "opt-in-req-out"
+              }
+            },
+            "returnType" : {
+  "type" : "streamresponse",
+  "inner_type" : "i32"
+},
+            "lineno" : 22
+          },
+          "streamthrows" : {
+            "name" : "streamthrows",
+            "args" : {
+              "foo": {
+                "name" : "foo",
+                "type" : "i32",
+                "key" : 1,
                 "lineno" : 23,
                 "required" : "opt-in-req-out"
               }
@@ -42,23 +59,6 @@
 },
             "lineno" : 23
           },
-          "streamthrows" : {
-            "name" : "streamthrows",
-            "args" : {
-              "foo": {
-                "name" : "foo",
-                "type" : "i32",
-                "key" : 1,
-                "lineno" : 24,
-                "required" : "opt-in-req-out"
-              }
-            },
-            "returnType" : {
-  "type" : "streamresponse",
-  "inner_type" : "i32"
-},
-            "lineno" : 24
-          },
           "boththrows" : {
             "name" : "boththrows",
             "args" : {
@@ -66,7 +66,7 @@
                 "name" : "foo",
                 "type" : "i32",
                 "key" : 1,
-                "lineno" : 25,
+                "lineno" : 24,
                 "required" : "opt-in-req-out"
               }
             },
@@ -83,7 +83,7 @@
   "type" : "streamresponse",
   "inner_type" : "i32"
 },
-            "lineno" : 25
+            "lineno" : 24
           },
           "responseandstreamthrows" : {
             "name" : "responseandstreamthrows",
@@ -92,7 +92,7 @@
                 "name" : "foo",
                 "type" : "i32",
                 "key" : 1,
-                "lineno" : 27,
+                "lineno" : 26,
                 "required" : "opt-in-req-out"
               }
             },
@@ -110,7 +110,7 @@
   "inner_type" : "i32",
   "first_response_type" : "i32"
 },
-            "lineno" : 26
+            "lineno" : 25
           },
           "returnstreamFast" : {
             "name" : "returnstreamFast",
@@ -119,14 +119,14 @@
                 "name" : "i32_from",
                 "type" : "i32",
                 "key" : 1,
-                "lineno" : 29,
+                "lineno" : 28,
                 "required" : "opt-in-req-out"
               },
               "i32_to": {
                 "name" : "i32_to",
                 "type" : "i32",
                 "key" : 2,
-                "lineno" : 29,
+                "lineno" : 28,
                 "required" : "opt-in-req-out"
               }
             },
@@ -134,7 +134,7 @@
   "type" : "streamresponse",
   "inner_type" : "i32"
 },
-            "lineno" : 29
+            "lineno" : 28
           }
         }
       }

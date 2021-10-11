@@ -17,8 +17,7 @@
 namespace cpp2 apache.thrift.test
 namespace java thrift.test
 
-struct myEmptyStruct {
-}
+struct myEmptyStruct {}
 
 struct myNestedEmptyStruct {
   1: myEmptyStruct a;

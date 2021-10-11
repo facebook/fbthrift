@@ -37,12 +37,12 @@ struct Ref {
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/Ref")
 
 @scope.Field
-struct Lazy {
-} (thrift.uri = "facebook.com/thrift/annotation/cpp/Lazy")
+struct Lazy {} (thrift.uri = "facebook.com/thrift/annotation/cpp/Lazy")
 
 @scope.Struct
-struct DisableLazyChecksum {
-} (thrift.uri = "facebook.com/thrift/annotation/cpp/DisableLazyChecksum")
+struct DisableLazyChecksum {} (
+  thrift.uri = "facebook.com/thrift/annotation/cpp/DisableLazyChecksum",
+)
 
 // An experimental annotation that applies a C++ adapter to fields. For example:
 //
@@ -60,5 +60,6 @@ struct ExperimentalAdapter {
 } (thrift.uri = "facebook.com/thrift/annotation/cpp/ExperimentalAdapter")
 
 @scope.Struct
-struct PackIsset {
-} (thrift.uri = "facebook.com/thrift/annotation/cpp/PackIsset")
+struct PackIsset {} (
+  thrift.uri = "facebook.com/thrift/annotation/cpp/PackIsset",
+)

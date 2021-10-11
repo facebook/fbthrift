@@ -15,8 +15,7 @@
  */
 
 namespace cpp2 testutil.testservice
-exception UserDefinedException {
-}
+exception UserDefinedException {}
 
 service TestStreamService {
   stream<i32> range(1: i32 from, 2: i32 to);

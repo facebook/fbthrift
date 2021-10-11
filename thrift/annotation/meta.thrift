@@ -50,5 +50,4 @@ namespace py thrift.annotation.meta
 //   @scope.Exception
 //   struct MyAnnotation {}
 @scope.Struct
-struct Transitive {
-} (thrift.uri = "facebook.com/thrift/annotation/Transitive")
+struct Transitive {} (thrift.uri = "facebook.com/thrift/annotation/Transitive")

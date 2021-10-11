@@ -25,8 +25,7 @@ struct SumResponse {
   1: i32 sum;
 }
 
-exception Ex {
-}
+exception Ex {}
 
 service Coroutine {
   SumResponse computeSumNoCoro(1: SumRequest request);

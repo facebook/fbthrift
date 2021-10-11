@@ -21,8 +21,7 @@ struct Message {
   2: i64 timestamp;
 }
 
-exception Error {
-}
+exception Error {}
 
 exception FirstEx {
   1: i64 errCode;

@@ -23,8 +23,7 @@ cpp_include "thrift/test/AdapterTest.h"
 
 @cpp.ExperimentalAdapter{name = "::apache::thrift::test::AdaptTestMsAdapter"}
 @meta.Transitive
-struct MsAdapter {
-}
+struct MsAdapter {}
 
 struct TestStruct {
   @MsAdapter
