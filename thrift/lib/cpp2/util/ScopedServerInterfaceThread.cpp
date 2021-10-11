@@ -131,9 +131,9 @@ ScopedServerInterfaceThread::makeTestClientChannel(
 
 namespace detail {
 void validateServiceName(AsyncProcessorFactory& apf, const char* serviceName) {
-  auto processor = apf.getProcessor();
-  if (auto* ptr = dynamic_cast<GeneratedAsyncProcessor*>(processor.get())) {
-    CHECK_STREQ(ptr->getServiceName(), serviceName)
+  if (auto* service = dynamic_cast<ServerInterface*>(&apf)) {
+    std::string actualServiceName{service->getGeneratedName()};
+    CHECK_STREQ(actualServiceName.c_str(), serviceName)
         << "Client and handler type mismatch";
   }
 }
