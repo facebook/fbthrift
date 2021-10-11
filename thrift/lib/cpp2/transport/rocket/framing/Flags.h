@@ -31,7 +31,7 @@ class Flags {
 
   constexpr explicit Flags(uint16_t flags) : flags_(static_cast<Bits>(flags)) {
     DCHECK((flags & ~mask()) == 0);
-    if (flags != 0 && flags < Bits::NEXT) {
+    if (flags & invalidFlagsMask()) {
       throw std::runtime_error(fmt::format("received invalid flags {}", flags));
     }
   }
@@ -42,6 +42,10 @@ class Flags {
 
   static constexpr uint16_t mask() {
     return (static_cast<uint16_t>(1) << frameTypeOffset()) - 1;
+  }
+
+  static constexpr uint16_t invalidFlagsMask() {
+    return (static_cast<uint16_t>(1) << UnusedBits_) - 1;
   }
 
   static constexpr Flags none() { return Flags{}; }
@@ -81,6 +85,7 @@ class Flags {
     METADATA = 1 << 8,
     IGNORE_ = 1 << 9,
   };
+  static constexpr uint8_t UnusedBits_ = 5;
   Bits flags_{Bits::NONE};
 
   Flags& set(Bits bits, bool on) {
