@@ -26,10 +26,9 @@ using namespace apache::thrift::test;
 static const char* kTooLong =
     "This is too long for the small string optimization";
 
-TEST(CppAllocatorTest, UsesAllocator) {
-  ScopedMaybeThrowAlloc alloc;
-  alloc.armed = true;
-  UsesAllocatorParent s(alloc);
+TEST(CppAllocatorTest, AlwaysThrowAllocator) {
+  ScopedAlwaysThrowAlloc alloc;
+  AlwaysThrowParent s(alloc);
 
   EXPECT_THROW(s.child_ref()->aa_list_ref()->emplace_back(42), std::bad_alloc);
   EXPECT_THROW(s.child_ref()->aa_set_ref()->emplace(42), std::bad_alloc);

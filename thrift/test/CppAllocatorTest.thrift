@@ -18,21 +18,27 @@ namespace cpp2 apache.thrift.test
 
 cpp_include "thrift/test/CppAllocatorTest.h"
 
-struct UsesAllocatorChild {
-  1: list<i32> (cpp.use_allocator, cpp.template = "::MaybeThrowVector") aa_list;
-  2: set<i32> (cpp.use_allocator, cpp.template = "::MaybeThrowSet") aa_set;
-  3: map<i32, i32> (cpp.use_allocator, cpp.template = "::MaybeThrowMap") aa_map;
-  4: string (cpp.use_allocator, cpp.type = "::MaybeThrowString") aa_string;
+struct AlwaysThrowChild {
+  1: list<i32> (
+    cpp.use_allocator,
+    cpp.template = "::AlwaysThrowVector",
+  ) aa_list;
+  2: set<i32> (cpp.use_allocator, cpp.template = "::AlwaysThrowSet") aa_set;
+  3: map<i32, i32> (
+    cpp.use_allocator,
+    cpp.template = "::AlwaysThrowMap",
+  ) aa_map;
+  4: string (cpp.use_allocator, cpp.type = "::AlwaysThrowString") aa_string;
   5: i32 not_a_container;
   6: list<i32> not_aa_list;
   7: set<i32> not_aa_set;
   8: map<i32, i32> not_aa_map;
   9: string not_aa_string;
-} (cpp.allocator = "::ScopedMaybeThrowAlloc")
+} (cpp.allocator = "::ScopedAlwaysThrowAlloc")
 
-struct UsesAllocatorParent {
-  1: UsesAllocatorChild (cpp.use_allocator) child;
-} (cpp.allocator = "::ScopedMaybeThrowAlloc")
+struct AlwaysThrowParent {
+  1: AlwaysThrowChild (cpp.use_allocator) child;
+} (cpp.allocator = "::ScopedAlwaysThrowAlloc")
 
 struct AAStruct {
   1: i32 foo;

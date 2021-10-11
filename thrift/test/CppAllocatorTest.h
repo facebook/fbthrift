@@ -26,60 +26,48 @@
 #include "folly/sorted_vector_types.h"
 
 template <class T>
-struct MaybeThrowAllocator : private std::allocator<T> {
+struct AlwaysThrowAllocator : private std::allocator<T> {
   using value_type = T;
 
-  MaybeThrowAllocator() = default;
-  MaybeThrowAllocator(const MaybeThrowAllocator&) noexcept = default;
-  MaybeThrowAllocator& operator=(const MaybeThrowAllocator&) noexcept = default;
+  AlwaysThrowAllocator() = default;
+  AlwaysThrowAllocator(const AlwaysThrowAllocator&) noexcept = default;
+  AlwaysThrowAllocator& operator=(const AlwaysThrowAllocator&) noexcept =
+      default;
   template <class U>
-  explicit MaybeThrowAllocator(const MaybeThrowAllocator<U>& other) noexcept
-      : armed(other.armed) {}
-  ~MaybeThrowAllocator() = default;
+  explicit AlwaysThrowAllocator(const AlwaysThrowAllocator<U>&) noexcept {}
+  ~AlwaysThrowAllocator() = default;
 
-  T* allocate(size_t size) {
-    if (armed) {
-      throw std::bad_alloc();
-    }
-    return std::allocator<T>::allocate(size);
-  }
+  T* allocate(size_t) { throw std::bad_alloc(); }
 
-  void deallocate(T* mem, size_t size) {
-    if (armed) {
-      return;
-    }
-    return std::allocator<T>::deallocate(mem, size);
-  }
+  void deallocate(T*, size_t) {}
 
   template <class U>
   friend bool operator==(
-      MaybeThrowAllocator<T> const&, MaybeThrowAllocator<U> const&) noexcept {
+      AlwaysThrowAllocator<T> const&, AlwaysThrowAllocator<U> const&) noexcept {
     return true;
   }
 
   template <class U>
   friend bool operator!=(
-      MaybeThrowAllocator<T> const&, MaybeThrowAllocator<U> const&) noexcept {
+      AlwaysThrowAllocator<T> const&, AlwaysThrowAllocator<U> const&) noexcept {
     return false;
   }
-
-  bool armed = false;
 };
 
-using ScopedMaybeThrowAlloc =
-    std::scoped_allocator_adaptor<MaybeThrowAllocator<char>>;
+using ScopedAlwaysThrowAlloc =
+    std::scoped_allocator_adaptor<AlwaysThrowAllocator<char>>;
 
 template <class T>
-using MaybeThrowVector = std::vector<T, ScopedMaybeThrowAlloc>;
+using AlwaysThrowVector = std::vector<T, ScopedAlwaysThrowAlloc>;
 
 template <class T>
-using MaybeThrowSet = std::set<T, std::less<T>, ScopedMaybeThrowAlloc>;
+using AlwaysThrowSet = std::set<T, std::less<T>, ScopedAlwaysThrowAlloc>;
 
 template <class K, class V>
-using MaybeThrowMap = std::map<K, V, std::less<K>, ScopedMaybeThrowAlloc>;
+using AlwaysThrowMap = std::map<K, V, std::less<K>, ScopedAlwaysThrowAlloc>;
 
-using MaybeThrowString =
-    std::basic_string<char, std::char_traits<char>, ScopedMaybeThrowAlloc>;
+using AlwaysThrowString =
+    std::basic_string<char, std::char_traits<char>, ScopedAlwaysThrowAlloc>;
 
 template <class T>
 struct StatefulAlloc : private std::allocator<T> {
