@@ -100,7 +100,8 @@
   pos = root.layoutOptionalField(self, pos, this->NAME##Field, x.NAME##_ref());
 #define FROZEN_LAYOUT_FIELD_REQ(NAME) \
   pos = root.layoutField(self, pos, this->NAME##Field, x.NAME);
-#define FROZEN_LAYOUT_FIELD_REF FROZEN_LAYOUT_FIELD_REQ
+#define FROZEN_LAYOUT_FIELD_REF(NAME) \
+  pos = root.layoutField(self, pos, this->NAME##Field, x.NAME##_ref());
 #define FROZEN_LAYOUT(TYPE, ...)                \
   FieldPosition Layout<TYPE>::layout(           \
       FOLLY_MAYBE_UNUSED LayoutRoot& root,      \
@@ -117,7 +118,8 @@
   root.freezeOptionalField(self, this->NAME##Field, x.NAME##_ref());
 #define FROZEN_FREEZE_FIELD_REQ(NAME) \
   root.freezeField(self, this->NAME##Field, x.NAME);
-#define FROZEN_FREEZE_FIELD_REF FROZEN_FREEZE_FIELD_REQ
+#define FROZEN_FREEZE_FIELD_REF(NAME) \
+  root.freezeField(self, this->NAME##Field, x.NAME##_ref());
 
 #define FROZEN_FREEZE(TYPE, ...)                      \
   void Layout<TYPE>::freeze(                          \
@@ -136,7 +138,8 @@
   thawField(self, this->NAME##Field, out.NAME##_ref());
 #define FROZEN_THAW_FIELD_REQ(NAME) \
   thawField(self, this->NAME##Field, out.NAME);
-#define FROZEN_THAW_FIELD_REF FROZEN_THAW_FIELD_REQ
+#define FROZEN_THAW_FIELD_REF(NAME) \
+  thawField(self, this->NAME##Field, out.NAME##_ref());
 
 #define FROZEN_THAW(TYPE, ...)                                                 \
   void Layout<TYPE>::thaw(                                                     \
