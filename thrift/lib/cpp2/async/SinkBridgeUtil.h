@@ -16,9 +16,9 @@
 
 #pragma once
 
-#include <folly/Portability.h>
+#include <variant>
 
-#include <boost/variant.hpp>
+#include <folly/Portability.h>
 
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/Baton.h>
@@ -31,7 +31,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-using ClientMessage = boost::variant<folly::Try<StreamPayload>, int64_t>;
+using ClientMessage = std::variant<folly::Try<StreamPayload>, uint64_t>;
 using ServerMessage = folly::Try<StreamPayload>;
 
 class ClientSinkConsumer {

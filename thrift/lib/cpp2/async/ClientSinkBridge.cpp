@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp2/async/ClientSinkBridge.h>
 
+#include <folly/Overload.h>
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -59,7 +61,7 @@ ClientSinkBridge::ClientQueue ClientSinkBridge::getMessages() {
 #if FOLLY_HAS_COROUTINES
 folly::coro::Task<void> ClientSinkBridge::waitEventImpl(
     ClientSinkBridge& self,
-    int64_t& credit,
+    uint64_t& credits,
     folly::Try<StreamPayload>& finalResponse,
     const folly::CancellationToken& clientCancelToken) {
   CoroConsumer consumer;
@@ -80,7 +82,7 @@ folly::coro::Task<void> ClientSinkBridge::waitEventImpl(
         [&](folly::Try<StreamPayload>& payload) {
           finalResponse = std::move(payload);
         },
-        [&](int64_t n) { credit += n; });
+        [&](uint64_t n) { credits += n; });
     queue.pop();
     if (finalResponse.hasValue() || finalResponse.hasException()) {
       co_return;
@@ -92,7 +94,7 @@ folly::coro::Task<void> ClientSinkBridge::waitEventImpl(
 folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sinkImpl(
     ClientSinkBridge& self,
     folly::coro::AsyncGenerator<folly::Try<StreamPayload>&&> generator) {
-  int64_t credit = 0;
+  uint64_t credits = 0;
   folly::Try<StreamPayload> finalResponse;
   const auto& clientCancelToken =
       co_await folly::coro::co_current_cancellation_token;
@@ -102,7 +104,7 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sinkImpl(
   bool sinkComplete = false;
 
   while (true) {
-    co_await waitEventImpl(self, credit, finalResponse, clientCancelToken);
+    co_await waitEventImpl(self, credits, finalResponse, clientCancelToken);
     if (finalResponse.hasValue() || finalResponse.hasException()) {
       break;
     }
@@ -115,7 +117,7 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sinkImpl(
       co_yield folly::coro::co_cancelled;
     }
 
-    while (credit > 0 && !sinkComplete &&
+    while (credits > 0 && !sinkComplete &&
            !self.serverCancelSource_.isCancellationRequested()) {
       auto item = co_await folly::coro::co_withCancellation(
           mergedToken, generator.next());
@@ -145,7 +147,7 @@ folly::coro::Task<folly::Try<StreamPayload>> ClientSinkBridge::sinkImpl(
         // release generator
         generator = {};
       }
-      credit--;
+      credits--;
     }
   }
   co_return std::move(finalResponse);

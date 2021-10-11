@@ -16,6 +16,8 @@
 
 #include <thrift/lib/cpp2/async/ServerSinkBridge.h>
 
+#include <folly/Overload.h>
+
 #if FOLLY_HAS_COROUTINES
 namespace apache {
 namespace thrift {
@@ -141,7 +143,7 @@ void ServerSinkBridge::processClientMessages() {
     return;
   }
 
-  int64_t credits = 0;
+  uint64_t credits = 0;
   do {
     for (auto messages = clientGetMessages(); !messages.empty();
          messages.pop()) {

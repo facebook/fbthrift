@@ -16,12 +16,9 @@
 
 #pragma once
 
-#include <boost/variant.hpp>
-
+#include <folly/Function.h>
 #include <folly/Portability.h>
 
-#include <folly/Function.h>
-#include <folly/Overload.h>
 #if FOLLY_HAS_COROUTINES
 #include <folly/experimental/coro/AsyncGenerator.h>
 #include <folly/experimental/coro/Baton.h>
