@@ -67,11 +67,8 @@
     }                                                                         \
   }
 
-// Temporarily disable warnings about internal deprecated use of __isset.
-#define THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN \
-  FOLLY_PUSH_WARNING                          \
-  FOLLY_GNU_DISABLE_WARNING("-Wdeprecated-declarations")
-#define THRIFT_IGNORE_ISSET_USE_WARNING_END FOLLY_POP_WARNING
+#define THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+#define THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache {
 namespace thrift {
