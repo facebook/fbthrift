@@ -403,7 +403,6 @@ pub mod client {
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
     {
-        #[::tracing::instrument(name = "Foo.return", skip_all)]
         fn r#return(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
@@ -444,11 +443,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::foo::ReturnError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("Foo.return"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "Foo.super", skip_all)]
         fn super_(
             &self,
             arg_bar: &crate::types::ThereAreNoPascalCaseKeywords,
@@ -489,6 +488,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::foo::SuperError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("Foo.super"))
             .boxed()
         }
 

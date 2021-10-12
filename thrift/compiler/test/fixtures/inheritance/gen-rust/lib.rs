@@ -421,7 +421,6 @@ pub mod client {
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
     {
-        #[::tracing::instrument(name = "MyRoot.do_root", skip_all)]
         fn do_root(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_root::DoRootError>> + ::std::marker::Send + 'static>> {
@@ -460,6 +459,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::my_root::DoRootError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("MyRoot.do_root"))
             .boxed()
         }
 
@@ -589,7 +589,6 @@ pub mod client {
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
     {
-        #[::tracing::instrument(name = "MyNode.do_mid", skip_all)]
         fn do_mid(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_node::DoMidError>> + ::std::marker::Send + 'static>> {
@@ -628,6 +627,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::my_node::DoMidError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("MyNode.do_mid"))
             .boxed()
         }
 
@@ -773,7 +773,6 @@ pub mod client {
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
     {
-        #[::tracing::instrument(name = "MyLeaf.do_leaf", skip_all)]
         fn do_leaf(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_leaf::DoLeafError>> + ::std::marker::Send + 'static>> {
@@ -812,6 +811,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::my_leaf::DoLeafError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("MyLeaf.do_leaf"))
             .boxed()
         }
 

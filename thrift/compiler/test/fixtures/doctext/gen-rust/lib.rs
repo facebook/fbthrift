@@ -865,7 +865,6 @@ pub mod client {
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
     {
-        #[::tracing::instrument(name = "C.f", skip_all)]
         fn f(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::c::FError>> + ::std::marker::Send + 'static>> {
@@ -904,6 +903,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::c::FError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("C.f"))
             .boxed()
         }
 
@@ -964,7 +964,6 @@ pub mod client {
             .boxed()
         }
 
-        #[::tracing::instrument(name = "C.thing", skip_all)]
         fn thing(
             &self,
             arg_a: ::std::primitive::i32,
@@ -1009,6 +1008,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::c::ThingError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("C.thing"))
             .boxed()
         }
 

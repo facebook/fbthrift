@@ -1239,7 +1239,6 @@ pub mod client {
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
     {
-        #[::tracing::instrument(name = "Raiser.doBland", skip_all)]
         fn doBland(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoBlandError>> + ::std::marker::Send + 'static>> {
@@ -1278,11 +1277,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::raiser::DoBlandError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("Raiser.doBland"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "Raiser.doRaise", skip_all)]
         fn doRaise(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::raiser::DoRaiseError>> + ::std::marker::Send + 'static>> {
@@ -1321,11 +1320,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::raiser::DoRaiseError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("Raiser.doRaise"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "Raiser.get200", skip_all)]
         fn get200(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get200Error>> + ::std::marker::Send + 'static>> {
@@ -1364,11 +1363,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::raiser::Get200Error::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("Raiser.get200"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "Raiser.get500", skip_all)]
         fn get500(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::raiser::Get500Error>> + ::std::marker::Send + 'static>> {
@@ -1407,6 +1406,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::raiser::Get500Error::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("Raiser.get500"))
             .boxed()
         }
 

@@ -740,7 +740,6 @@ pub mod client {
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
     {
-        #[::tracing::instrument(name = "NestedContainers.mapList", skip_all)]
         fn mapList(
             &self,
             arg_foo: &::std::collections::BTreeMap<::std::primitive::i32, ::std::vec::Vec<::std::primitive::i32>>,
@@ -781,11 +780,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::nested_containers::MapListError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("NestedContainers.mapList"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "NestedContainers.mapSet", skip_all)]
         fn mapSet(
             &self,
             arg_foo: &::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>,
@@ -826,11 +825,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::nested_containers::MapSetError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("NestedContainers.mapSet"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "NestedContainers.listMap", skip_all)]
         fn listMap(
             &self,
             arg_foo: &[::std::collections::BTreeMap<::std::primitive::i32, ::std::primitive::i32>],
@@ -871,11 +870,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::nested_containers::ListMapError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("NestedContainers.listMap"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "NestedContainers.listSet", skip_all)]
         fn listSet(
             &self,
             arg_foo: &[::std::collections::BTreeSet<::std::primitive::i32>],
@@ -916,11 +915,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::nested_containers::ListSetError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("NestedContainers.listSet"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "NestedContainers.turtles", skip_all)]
         fn turtles(
             &self,
             arg_foo: &[::std::vec::Vec<::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeMap<::std::primitive::i32, ::std::collections::BTreeSet<::std::primitive::i32>>>>],
@@ -961,6 +960,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::nested_containers::TurtlesError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("NestedContainers.turtles"))
             .boxed()
         }
 

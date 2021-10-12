@@ -146,7 +146,6 @@
         {{^function:starts_interaction?}}
 
         {{^function:returns_streams?}}
-        #[::tracing::instrument(name = "{{service:name}}.{{function:name}}", skip_all)]
         fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
@@ -194,6 +193,7 @@
                         ::std::result::Result::Err({{program:crate}}::errors::{{service:snake}}::{{function:upcamel}}Error::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("{{service:name}}.{{function:name}}"))
             .boxed()
         }
         {{/function:returns_streams?}}

@@ -2704,7 +2704,6 @@ pub mod client {
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
     {
-        #[::tracing::instrument(name = "SomeService.bounce_map", skip_all)]
         fn bounce_map(
             &self,
             arg_m: &include::types::SomeMap,
@@ -2745,11 +2744,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::some_service::BounceMapError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("SomeService.bounce_map"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "SomeService.binary_keyed_map", skip_all)]
         fn binary_keyed_map(
             &self,
             arg_r: &[::std::primitive::i64],
@@ -2790,6 +2789,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::some_service::BinaryKeyedMapError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("SomeService.binary_keyed_map"))
             .boxed()
         }
 

@@ -1801,7 +1801,6 @@ pub mod client {
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
     {
-        #[::tracing::instrument(name = "MyService.ping", skip_all)]
         fn ping(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<(), crate::errors::my_service::PingError>> + ::std::marker::Send + 'static>> {
@@ -1840,11 +1839,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::my_service::PingError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("MyService.ping"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "MyService.getRandomData", skip_all)]
         fn getRandomData(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::string::String, crate::errors::my_service::GetRandomDataError>> + ::std::marker::Send + 'static>> {
@@ -1883,11 +1882,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::my_service::GetRandomDataError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("MyService.getRandomData"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "MyService.hasDataById", skip_all)]
         fn hasDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -1928,11 +1927,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::my_service::HasDataByIdError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("MyService.hasDataById"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "MyService.getDataById", skip_all)]
         fn getDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -1973,11 +1972,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::my_service::GetDataByIdError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("MyService.getDataById"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "MyService.putDataById", skip_all)]
         fn putDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2020,11 +2019,11 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::my_service::PutDataByIdError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("MyService.putDataById"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "MyService.lobDataById", skip_all)]
         fn lobDataById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2067,6 +2066,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::my_service::LobDataByIdError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("MyService.lobDataById"))
             .boxed()
         }
 

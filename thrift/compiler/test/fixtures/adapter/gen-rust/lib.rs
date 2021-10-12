@@ -633,7 +633,6 @@ pub mod client {
         P::Deserializer: ::std::marker::Send,
         S: ::fbthrift::help::Spawner,
     {
-        #[::tracing::instrument(name = "Service.func", skip_all)]
         fn func(
             &self,
             arg_arg1: &::std::primitive::str,
@@ -678,6 +677,7 @@ pub mod client {
                         ::std::result::Result::Err(crate::errors::service::FuncError::ApplicationException(aexn))
                 }
             }
+            .instrument(::tracing::info_span!("Service.func"))
             .boxed()
         }
 
