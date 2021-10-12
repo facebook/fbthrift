@@ -980,10 +980,17 @@ LegacySerializedResponse GeneratedAsyncProcessor::serializeLegacyResponse(
   prot->writeMessageBegin(method, MessageType::T_REPLY, protoSeqId);
   apache::thrift::detail::serializeResponseBody(prot, &result);
   prot->writeMessageEnd();
-  SerializedMessage smsg;
-  smsg.protocolType = prot->protocolType();
-  smsg.buffer = queue.front();
   if (ctx) {
+    apache::thrift::LegacySerializedResponse legacyResponse(
+        queue.front()->clone());
+    apache::thrift::SerializedResponse response(
+        std::move(legacyResponse), prot->protocolType());
+
+    // Call onWriteData
+    SerializedMessage smsg;
+    smsg.protocolType = prot->protocolType();
+    smsg.methodName = method;
+    smsg.buffer = response.buffer.get();
     ctx->onWriteData(smsg);
   }
   DCHECK_LE(

@@ -102,10 +102,15 @@ struct ResponsePayload {
   std::unique_ptr<folly::IOBuf> buffer_;
 };
 
+struct LegacySerializedResponse;
+
 struct SerializedResponse {
   explicit SerializedResponse(
       std::unique_ptr<folly::IOBuf> buffer_ = std::unique_ptr<folly::IOBuf>{})
       : buffer(std::move(buffer_)) {}
+
+  explicit SerializedResponse(
+      LegacySerializedResponse&& legacyResponse, int16_t protocolId);
 
   ResponsePayload extractPayload(
       bool includeEnvelope,
@@ -165,6 +170,14 @@ struct LegacySerializedResponse {
 
   std::unique_ptr<folly::IOBuf> buffer;
 };
+
+inline SerializedResponse::SerializedResponse(
+    LegacySerializedResponse&& legacyResponse, int16_t protocolId) {
+  auto [_, payload] =
+      std::move(legacyResponse)
+          .extractPayload(/*includeEnvelope=*/false, protocolId);
+  buffer = std::move(payload).buffer();
+}
 
 } // namespace thrift
 } // namespace apache
