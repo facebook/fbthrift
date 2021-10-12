@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/server/TransportRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/SetupFrameHandler.h>
@@ -27,6 +28,22 @@ class Cpp2Worker;
 namespace rocket {
 class RocketServerConnection;
 }
+
+namespace detail {
+
+#define THRIFT_DETAIL_DECLARE_SERVER_EXTENSION(FUNC)              \
+  THRIFT_PLUGGABLE_FUNC_DECLARE(                                  \
+      std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>, \
+      FUNC,                                                       \
+      apache::thrift::ThriftServer&);
+
+THRIFT_DETAIL_DECLARE_SERVER_EXTENSION(createRocketDebugSetupFrameHandler)
+THRIFT_DETAIL_DECLARE_SERVER_EXTENSION(createRocketMonitoringSetupFrameHandler)
+THRIFT_DETAIL_DECLARE_SERVER_EXTENSION(createRocketProfilingSetupFrameHandler)
+
+#undef THRIFT_DETAIL_DECLARE_EXTENSION_DEFAULT
+
+} // namespace detail
 
 class RocketRoutingHandler : public TransportRoutingHandler {
  public:

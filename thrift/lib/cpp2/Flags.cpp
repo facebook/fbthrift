@@ -16,8 +16,6 @@
 
 #include <thrift/lib/cpp2/Flags.h>
 
-#include <thrift/lib/cpp2/PluggableFunction.h>
-
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -45,7 +43,7 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
 
 apache::thrift::detail::FlagsBackend& getFlagsBackend() {
   static auto& obj = *[] {
-    auto backend = THRIFT_PLUGGABLE_FUNC(createFlagsBackend)();
+    auto backend = createFlagsBackend();
     if (!backend) {
       backend = std::make_unique<FlagsBackendDummy>();
     }

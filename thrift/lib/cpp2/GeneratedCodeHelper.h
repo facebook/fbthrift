@@ -27,6 +27,7 @@
 #include <folly/futures/Future.h>
 #include <folly/io/Cursor.h>
 #include <thrift/lib/cpp/protocol/TBase64Utils.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/SerializationSwitch.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
@@ -55,6 +56,9 @@ class BinaryProtocolReader;
 class CompactProtocolReader;
 
 namespace detail {
+
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    bool, includeInRecentRequestsCount, const std::string_view /*methodName*/);
 
 template <int N, int Size, class F, class Tuple>
 struct ForEachImpl {

@@ -28,6 +28,9 @@
  *
  * Consider the following example:
  *
+ *   // MyCoreThriftLibrary.h
+ *   THRIFT_PLUGGABLE_FUNC_DECLARE(int, myPluggableFunction, int a, int b);
+ *
  *   // MyCoreThriftLibrary.cpp
  *   THRIFT_PLUGGABLE_FUNC_REGISTER(int, myPluggableFunction, int a, int b) {
  *     return a + b;
@@ -35,14 +38,18 @@
  *
  *   ...
  *
- *   auto result = THRIFT_PLUGGABLE_FUNC(myPluggableFunction)(1, 2);
+ *   void foo() {
+ *     auto result = myPluggableFunction(1, 2);
+ *     ...
+ *   }
  *
  *   // MyCustomModule.cpp
  *   THRIFT_PLUGGABLE_FUNC_SET(int, myPluggableFunction, int a, int b) {
  *     return a * b;
  *   }
  *
- * If MyCustomModule.cpp is linked in, result will be 2, otherwise it will be 3.
+ * If MyCustomModule.cpp is linked in, result in foo() will be 2, otherwise it
+ * will be 3.
  */
 
 namespace apache {
@@ -130,25 +137,48 @@ auto setPluggableFunction(
       name, typeid(Tag*), defaultImpl, impl);
 }
 
+template <typename Ret, typename... Args>
+PluggableFunction<Ret, Args...> getPluggableFunctionType(Ret (*)(Args...));
+
+template <typename>
+struct pluggable_function_type_;
+template <typename Ret, typename... Args>
+struct pluggable_function_type_<Ret (*)(Args...)> {
+  using type = PluggableFunction<Ret, Args...>;
+};
+template <typename F>
+using pluggable_function_type_t = typename pluggable_function_type_<F>::type;
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache
 
-#define THRIFT_PLUGGABLE_FUNC(_name) THRIFT__PLUGGABLE_FUNC_##_name
+#define THRIFT_PLUGGABLE_FUNC_DECLARE(_ret, _name, ...)                       \
+  struct THRIFT__PLUGGABLE_FUNC_TAG_##_name;                                  \
+  _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__);                   \
+  extern ::apache::thrift::detail::pluggable_function_type_t<                 \
+      decltype(&THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name)>                      \
+      THRIFT__PLUGGABLE_FUNC_##_name;                                         \
+  struct THRIFT__PLUGGABLE_FUNC_OBJECT_##_name {                              \
+    template <typename... A>                                                  \
+    auto operator()(A&&... a) const                                           \
+        -> decltype(THRIFT__PLUGGABLE_FUNC_##_name(static_cast<A&&>(a)...)) { \
+      return THRIFT__PLUGGABLE_FUNC_##_name(static_cast<A&&>(a)...);          \
+    }                                                                         \
+  };                                                                          \
+  FOLLY_INLINE_VARIABLE constexpr THRIFT__PLUGGABLE_FUNC_OBJECT_##_name _name {}
 
-#define THRIFT_PLUGGABLE_FUNC_REGISTER(_ret, _name, ...)             \
-  struct THRIFT__PLUGGABLE_FUNC_TAG_##_name;                         \
-  _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__);          \
-  static auto THRIFT_PLUGGABLE_FUNC(_name) =                         \
-      ::apache::thrift::detail::registerPluggableFunction(           \
-          #_name,                                                    \
-          static_cast<THRIFT__PLUGGABLE_FUNC_TAG_##_name*>(nullptr), \
-          THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name);                   \
+#define THRIFT_PLUGGABLE_FUNC_REGISTER(_ret, _name, ...)                 \
+  ::apache::thrift::detail::pluggable_function_type_t<                   \
+      decltype(&THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name)>                 \
+      THRIFT__PLUGGABLE_FUNC_##_name =                                   \
+          ::apache::thrift::detail::registerPluggableFunction(           \
+              #_name,                                                    \
+              static_cast<THRIFT__PLUGGABLE_FUNC_TAG_##_name*>(nullptr), \
+              THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name);                   \
   _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__)
 
 #define THRIFT_PLUGGABLE_FUNC_SET(_ret, _name, ...)                  \
-  struct THRIFT__PLUGGABLE_FUNC_TAG_##_name;                         \
-  _ret THRIFT__PLUGGABLE_FUNC_DEFAULT_##_name(__VA_ARGS__);          \
   _ret THRIFT__PLUGGABLE_FUNC_IMPL_##_name(__VA_ARGS__);             \
   static auto THRIFT__PLUGGABLE_FUNC_SETTER##_name =                 \
       ::apache::thrift::detail::setPluggableFunction(                \

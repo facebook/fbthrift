@@ -19,6 +19,7 @@
 #include <optional>
 
 #include <folly/io/async/AsyncTransport.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/async/HeaderChannel.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
@@ -29,6 +30,10 @@ struct ClientHostMetadata {
   std::optional<std::string> hostname;
   std::optional<std::map<std::string, std::string>> otherMetadata;
 };
+
+namespace detail {
+THRIFT_PLUGGABLE_FUNC_DECLARE(ClientHostMetadata, getClientHostMetadata);
+}
 
 /**
  * Interface for Thrift Client channels

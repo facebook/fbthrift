@@ -42,6 +42,7 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/async/HeaderServerChannel.h>
@@ -1125,6 +1126,19 @@ using DefaultThriftAcceptorFactory = ThriftAcceptorFactory<Cpp2Worker, void>;
 using DefaultThriftAcceptorFactorySharedSSLContext = ThriftAcceptorFactory<
     Cpp2Worker,
     wangle::SharedSSLContextManagerImpl<wangle::FizzConfigUtil>>;
+
+namespace detail {
+
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    apache::thrift::ThriftServer::DumpSnapshotOnLongShutdownResult,
+    dumpSnapshotOnLongShutdown);
+
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    apache::thrift::ThriftServer::ExtraInterfaces,
+    createDefaultExtraInterfaces);
+
+} // namespace detail
+
 } // namespace thrift
 } // namespace apache
 

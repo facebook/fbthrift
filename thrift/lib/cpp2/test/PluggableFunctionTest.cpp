@@ -20,6 +20,9 @@
 
 #include <thrift/lib/cpp2/PluggableFunction.h>
 
+THRIFT_PLUGGABLE_FUNC_DECLARE(int, functionDefault, int);
+THRIFT_PLUGGABLE_FUNC_DECLARE(int, functionWithOverride, int, int);
+
 THRIFT_PLUGGABLE_FUNC_REGISTER(int, functionDefault, int a) {
   return a * 2;
 }
@@ -33,11 +36,11 @@ THRIFT_PLUGGABLE_FUNC_SET(int, functionWithOverride, int a, int b) {
 }
 
 TEST(PluggableFunction, Default) {
-  EXPECT_EQ(2, THRIFT_PLUGGABLE_FUNC(functionDefault)(1));
-  EXPECT_EQ(84, THRIFT_PLUGGABLE_FUNC(functionDefault)(42));
+  EXPECT_EQ(2, functionDefault(1));
+  EXPECT_EQ(84, functionDefault(42));
 }
 
 TEST(PluggableFunction, Override) {
-  EXPECT_EQ(4, THRIFT_PLUGGABLE_FUNC(functionWithOverride)(2, 2));
-  EXPECT_EQ(10, THRIFT_PLUGGABLE_FUNC(functionWithOverride)(2, 5));
+  EXPECT_EQ(4, functionWithOverride(2, 2));
+  EXPECT_EQ(10, functionWithOverride(2, 5));
 }

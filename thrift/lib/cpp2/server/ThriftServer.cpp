@@ -38,7 +38,6 @@
 #include <thrift/lib/cpp/concurrency/ThreadManager.h>
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp2/Flags.h>
-#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/async/MultiplexAsyncProcessor.h>
 #include <thrift/lib/cpp2/server/Cpp2Connection.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
@@ -167,8 +166,7 @@ ThriftServer::ThriftServer()
     sslPolicy_ = SSLPolicy::PERMITTED;
   }
   metadata().wrapper = "ThriftServer-cpp";
-  auto extraInterfaces = apache::thrift::detail::THRIFT_PLUGGABLE_FUNC(
-      createDefaultExtraInterfaces)();
+  auto extraInterfaces = apache::thrift::detail::createDefaultExtraInterfaces();
   setMonitoringInterface(std::move(extraInterfaces.monitoring));
   setStatusInterface(std::move(extraInterfaces.status));
 }
@@ -773,8 +771,7 @@ void ThriftServer::stopAcceptingAndJoinOutstandingRequests() {
           // The IO threads may be deadlocked in which case we won't be able to
           // dump snapshots. It still shouldn't block shutdown indefinitely.
           auto dumpSnapshotResult =
-              apache::thrift::detail::THRIFT_PLUGGABLE_FUNC(
-                  dumpSnapshotOnLongShutdown)();
+              apache::thrift::detail::dumpSnapshotOnLongShutdown();
           try {
             std::move(dumpSnapshotResult.task)
                 .via(folly::getKeepAliveToken(dumpSnapshotExecutor))

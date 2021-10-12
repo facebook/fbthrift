@@ -28,7 +28,6 @@
 #include <folly/SocketAddress.h>
 #include <folly/io/async/AsyncTransport.h>
 
-#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/Cpp2Worker.h>
 #include <thrift/lib/cpp2/transport/rocket/framing/FrameType.h>
 #include <thrift/lib/cpp2/transport/rocket/server/RocketServerConnection.h>
@@ -38,7 +37,7 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
-#define REGISTER_SERVER_EXTENSION_DEFAULT(FUNC)                   \
+#define THRIFT_DETAIL_REGISTER_SERVER_EXTENSION_DEFAULT(FUNC)     \
   THRIFT_PLUGGABLE_FUNC_REGISTER(                                 \
       std::unique_ptr<apache::thrift::rocket::SetupFrameHandler>, \
       FUNC,                                                       \
@@ -46,11 +45,14 @@ namespace detail {
     return {};                                                    \
   }
 
-REGISTER_SERVER_EXTENSION_DEFAULT(createRocketDebugSetupFrameHandler)
-REGISTER_SERVER_EXTENSION_DEFAULT(createRocketMonitoringSetupFrameHandler)
-REGISTER_SERVER_EXTENSION_DEFAULT(createRocketProfilingSetupFrameHandler)
+THRIFT_DETAIL_REGISTER_SERVER_EXTENSION_DEFAULT(
+    createRocketDebugSetupFrameHandler)
+THRIFT_DETAIL_REGISTER_SERVER_EXTENSION_DEFAULT(
+    createRocketMonitoringSetupFrameHandler)
+THRIFT_DETAIL_REGISTER_SERVER_EXTENSION_DEFAULT(
+    createRocketProfilingSetupFrameHandler)
 
-#undef REGISTER_SERVER_EXTENSION_DEFAULT
+#undef THRIFT_DETAIL_REGISTER_SERVER_EXTENSION_DEFAULT
 
 } // namespace detail
 
@@ -60,12 +62,9 @@ RocketRoutingHandler::RocketRoutingHandler(ThriftServer& server) {
       setupFrameHandlers_.push_back(std::move(handler));
     }
   };
-  addSetupFramehandler(
-      detail::THRIFT_PLUGGABLE_FUNC(createRocketDebugSetupFrameHandler));
-  addSetupFramehandler(
-      detail::THRIFT_PLUGGABLE_FUNC(createRocketMonitoringSetupFrameHandler));
-  addSetupFramehandler(
-      detail::THRIFT_PLUGGABLE_FUNC(createRocketProfilingSetupFrameHandler));
+  addSetupFramehandler(detail::createRocketDebugSetupFrameHandler);
+  addSetupFramehandler(detail::createRocketMonitoringSetupFrameHandler);
+  addSetupFramehandler(detail::createRocketProfilingSetupFrameHandler);
 }
 
 RocketRoutingHandler::~RocketRoutingHandler() {

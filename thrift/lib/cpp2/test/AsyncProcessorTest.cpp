@@ -34,6 +34,7 @@
 #include <thrift/lib/cpp2/server/MonitoringServerInterface.h>
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 #include <thrift/lib/cpp2/transport/http2/common/HTTP2RoutingHandler.h>
+#include <thrift/lib/cpp2/transport/rocket/server/RocketRoutingHandler.h>
 #include <thrift/lib/cpp2/transport/rocket/server/SetupFrameHandler.h>
 #include <thrift/lib/cpp2/util/ScopedServerInterfaceThread.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>

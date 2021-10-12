@@ -16,8 +16,6 @@
 
 #include <thrift/lib/cpp2/server/MonitoringMethodNames.h>
 
-#include <thrift/lib/cpp2/PluggableFunction.h>
-
 namespace apache::thrift {
 
 namespace detail {
@@ -30,8 +28,7 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
 } // namespace detail
 
 const folly::sorted_vector_set<std::string_view>& getMonitoringMethodNames() {
-  static auto& methodNames =
-      detail::THRIFT_PLUGGABLE_FUNC(getMonitoringMethodNames)();
+  static auto& methodNames = detail::getMonitoringMethodNames();
   return methodNames;
 }
 

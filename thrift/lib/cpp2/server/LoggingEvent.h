@@ -24,6 +24,7 @@
 #include <folly/Function.h>
 #include <folly/dynamic.h>
 #include <folly/io/async/AsyncTransport.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/thrift/gen-cpp2/RpcMetadata_types.h>
 
 namespace apache {
@@ -132,6 +133,12 @@ class LoggingEventRegistry {
 
   virtual ~LoggingEventRegistry() {}
 };
+
+namespace detail {
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    std::unique_ptr<apache::thrift::LoggingEventRegistry>,
+    makeLoggingEventRegistry);
+}
 
 const LoggingEventRegistry& getLoggingEventRegistry();
 

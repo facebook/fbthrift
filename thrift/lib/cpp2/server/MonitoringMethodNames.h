@@ -20,7 +20,15 @@
 
 #include <folly/sorted_vector_types.h>
 
+#include <thrift/lib/cpp2/PluggableFunction.h>
+
 namespace apache::thrift {
+
+namespace detail {
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    const folly::sorted_vector_set<std::string_view>&,
+    getMonitoringMethodNames);
+}
 
 /**
  * Returns the names of monitoring methods known to the server.

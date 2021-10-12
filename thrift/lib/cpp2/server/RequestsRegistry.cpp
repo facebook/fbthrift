@@ -18,7 +18,6 @@
 
 #include <atomic>
 #include <fmt/format.h>
-#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace apache {
@@ -74,9 +73,6 @@ folly::Synchronized<RegistryIdManager>& registryIdManager() {
 namespace detail {
 
 THRIFT_PLUGGABLE_FUNC_REGISTER(uint64_t, getCurrentServerTick) {
-  // Returns the current "tick" of the Thrift server -- a monotonically
-  // increasing counter that effectively determines the size of the time
-  // interval for each bucket in the RecentRequestCounter.
   return 0;
 }
 
@@ -109,7 +105,7 @@ RecentRequestCounter::Values RecentRequestCounter::get() const {
 
 uint64_t RecentRequestCounter::getCurrentBucket() const {
   // Remove old request counts from counts_ and update lastTick_
-  uint64_t currentTick = detail::THRIFT_PLUGGABLE_FUNC(getCurrentServerTick)();
+  uint64_t currentTick = detail::getCurrentServerTick();
 
   if (lastTick_ < currentTick) {
     uint64_t tickDiff = currentTick - lastTick_;

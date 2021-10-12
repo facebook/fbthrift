@@ -37,6 +37,7 @@
 #include <thrift/lib/cpp/server/TServerObserver.h>
 #include <thrift/lib/cpp/transport/THeader.h>
 #include <thrift/lib/cpp2/Flags.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/Thrift.h>
 #include <thrift/lib/cpp2/async/AsyncProcessor.h>
 #include <thrift/lib/cpp2/server/AdaptiveConcurrency.h>
@@ -75,6 +76,14 @@ using IsOverloadedFunc = folly::Function<bool(
 
 using PreprocessFunc =
     folly::Function<PreprocessResult(const server::PreprocessParams&) const>;
+
+namespace detail {
+
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    folly::observer::Observer<AdaptiveConcurrencyController::Config>,
+    makeAdaptiveConcurrencyConfig);
+
+} // namespace detail
 
 template <typename T>
 class ThriftServerAsyncProcessorFactory : public AsyncProcessorFactory {

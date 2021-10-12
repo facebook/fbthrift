@@ -24,6 +24,7 @@
 #include <folly/io/IOBuf.h>
 #include <folly/io/async/Request.h>
 #include <thrift/lib/cpp/protocol/TProtocolTypes.h>
+#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/transport/core/RequestStateMachine.h>
 #include <thrift/lib/cpp2/transport/rocket/Types.h>
 
@@ -32,6 +33,15 @@ namespace thrift {
 
 class Cpp2RequestContext;
 class ResponseChannelRequest;
+
+namespace detail {
+
+// Returns the current "tick" of the Thrift server -- a monotonically
+// increasing counter that effectively determines the size of the time
+// interval for each bucket in the RecentRequestCounter.
+THRIFT_PLUGGABLE_FUNC_DECLARE(uint64_t, getCurrentServerTick);
+
+} // namespace detail
 
 // Helper class to track recently received request counts
 class RecentRequestCounter {

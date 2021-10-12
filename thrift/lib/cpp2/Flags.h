@@ -23,6 +23,8 @@
 #include <folly/experimental/observer/SimpleObservable.h>
 #include <folly/synchronization/DelayedInit.h>
 
+#include <thrift/lib/cpp2/PluggableFunction.h>
+
 namespace apache {
 namespace thrift {
 namespace detail {
@@ -36,6 +38,9 @@ class FlagsBackend {
   virtual folly::observer::Observer<folly::Optional<int64_t>>
   getFlagObserverInt64(folly::StringPiece name) = 0;
 };
+
+THRIFT_PLUGGABLE_FUNC_DECLARE(
+    std::unique_ptr<FlagsBackend>, createFlagsBackend);
 
 FlagsBackend& getFlagsBackend();
 

@@ -21,7 +21,6 @@
 #include <folly/Singleton.h>
 #include <folly/Synchronized.h>
 #include <folly/io/async/AsyncSSLSocket.h>
-#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 namespace apache {
@@ -63,8 +62,7 @@ THRIFT_PLUGGABLE_FUNC_REGISTER(
 namespace {
 class Registry {
  public:
-  Registry()
-      : reg_(detail::THRIFT_PLUGGABLE_FUNC(makeLoggingEventRegistry)()) {}
+  Registry() : reg_(detail::makeLoggingEventRegistry()) {}
 
   LoggingEventRegistry& getRegistry() const { return *reg_.get(); }
 

@@ -18,7 +18,6 @@
 #include <folly/Portability.h>
 
 #include <thrift/lib/cpp2/GeneratedCodeHelper.h>
-#include <thrift/lib/cpp2/PluggableFunction.h>
 #include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
 #include <thrift/lib/cpp2/protocol/CompactProtocol.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
@@ -296,8 +295,7 @@ TApplicationException toTApplicationException(
 }
 
 bool includeInRecentRequestsCount(const std::string_view methodName) {
-  return apache::thrift::detail::THRIFT_PLUGGABLE_FUNC(
-      includeInRecentRequestsCount)(methodName);
+  return apache::thrift::detail::includeInRecentRequestsCount(methodName);
 }
 
 } // namespace util
