@@ -422,8 +422,15 @@ class mstch_py3lite_field : public mstch_field {
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t index)
-      : mstch_field(field, std::move(generators), std::move(cache), pos, index),
+      int32_t index,
+      field_generator_context const* field_context)
+      : mstch_field(
+            field,
+            std::move(generators),
+            std::move(cache),
+            pos,
+            index,
+            field_context),
         py_name_{py3::get_py3_name(*field)} {
     register_methods(
         this,
@@ -642,9 +649,10 @@ class field_py3lite_generator : public field_generator {
       std::shared_ptr<const mstch_generators> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t index) const override {
+      int32_t index,
+      field_generator_context const* field_context) const override {
     return std::make_shared<mstch_py3lite_field>(
-        field, generators, cache, pos, index);
+        field, generators, cache, pos, index, field_context);
   }
 };
 

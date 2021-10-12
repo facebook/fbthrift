@@ -531,8 +531,9 @@ class mstch_swift_field : public mstch_field {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
-      int32_t index)
-      : mstch_field(field, generators, cache, pos, index) {
+      int32_t index,
+      field_generator_context const* field_context)
+      : mstch_field(field, generators, cache, pos, index, field_context) {
     register_methods(
         this,
         {
@@ -975,9 +976,10 @@ class field_swift_generator : public field_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t index) const override {
+      int32_t index,
+      field_generator_context const* field_context) const override {
     return std::make_shared<mstch_swift_field>(
-        field, generators, cache, pos, index);
+        field, generators, cache, pos, index, field_context);
   }
 };
 

@@ -565,8 +565,15 @@ class mstch_cpp2_field : public mstch_field {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
+      field_generator_context const* field_context,
       std::shared_ptr<cpp2_generator_context> context)
-      : mstch_field(field, std::move(generators), std::move(cache), pos, index),
+      : mstch_field(
+            field,
+            std::move(generators),
+            std::move(cache),
+            pos,
+            index,
+            field_context),
         context_(std::move(context)) {
     register_methods(
         this,
@@ -1746,9 +1753,16 @@ class field_cpp2_generator : public field_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t index) const override {
+      int32_t index,
+      field_generator_context const* field_context) const override {
     return std::make_shared<mstch_cpp2_field>(
-        field, std::move(generators), std::move(cache), pos, index, context_);
+        field,
+        std::move(generators),
+        std::move(cache),
+        pos,
+        index,
+        field_context,
+        context_);
   }
 
  private:

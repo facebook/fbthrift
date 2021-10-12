@@ -1296,8 +1296,10 @@ class mstch_rust_field : public mstch_field {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION const pos,
       int32_t index,
+      field_generator_context const* field_context,
       const rust_codegen_options& options)
-      : mstch_field(field, generators, cache, pos, index), options_(options) {
+      : mstch_field(field, generators, cache, pos, index, field_context),
+        options_(options) {
     register_methods(
         this,
         {
@@ -1519,9 +1521,10 @@ class field_rust_generator : public field_generator {
       std::shared_ptr<mstch_generators const> generators,
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
-      int32_t index) const override {
+      int32_t index,
+      field_generator_context const* field_context = nullptr) const override {
     return std::make_shared<mstch_rust_field>(
-        field, generators, cache, pos, index, options_);
+        field, generators, cache, pos, index, field_context, options_);
   }
 
  private:

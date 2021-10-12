@@ -95,8 +95,10 @@ std::shared_ptr<mstch_base> field_generator::generate(
     std::shared_ptr<mstch_generators const> generators,
     std::shared_ptr<mstch_cache> cache,
     ELEMENT_POSITION pos,
-    int32_t index) const {
-  return std::make_shared<mstch_field>(field, generators, cache, pos, index);
+    int32_t index,
+    field_generator_context const* field_context) const {
+  return std::make_shared<mstch_field>(
+      field, generators, cache, pos, index, field_context);
 }
 
 std::shared_ptr<mstch_base> annotation_generator::generate(
