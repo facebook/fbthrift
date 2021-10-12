@@ -1164,17 +1164,17 @@ bool LazyCppRef::operator==(const LazyCppRef& rhs) const {
   (void)lhs;
   lhs.field1_ref();
   rhs.field1_ref();
-  if ((lhs.field1 == nullptr) != (rhs.field1 == nullptr) || (lhs.field1 != nullptr && lhs.field1 != rhs.field1 && !(*lhs.field1 == *rhs.field1))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.field1_ref(), rhs.field1_ref()))) {
     return false;
   }
   lhs.field2_ref();
   rhs.field2_ref();
-  if ((lhs.field2 == nullptr) != (rhs.field2 == nullptr) || (lhs.field2 != nullptr && lhs.field2 != rhs.field2 && !(*lhs.field2 == *rhs.field2))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.field2_ref(), rhs.field2_ref()))) {
     return false;
   }
   lhs.field3_ref();
   rhs.field3_ref();
-  if ((lhs.field3 == nullptr) != (rhs.field3 == nullptr) || (lhs.field3 != nullptr && lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.field3_ref(), rhs.field3_ref()))) {
     return false;
   }
   return true;
@@ -1186,18 +1186,18 @@ bool LazyCppRef::operator<(const LazyCppRef& rhs) const {
   (void)lhs;
   lhs.field1_ref();
   rhs.field1_ref();
-  if ((lhs.field1 == nullptr) != (rhs.field1 == nullptr) || (lhs.field1 != nullptr && lhs.field1 != rhs.field1 && !(*lhs.field1 == *rhs.field1))) {
-    return lhs.field1 == nullptr || (rhs.field1 != nullptr && *lhs.field1 < *rhs.field1);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.field1_ref(), rhs.field1_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.field1_ref(), rhs.field1_ref());
   }
   lhs.field2_ref();
   rhs.field2_ref();
-  if ((lhs.field2 == nullptr) != (rhs.field2 == nullptr) || (lhs.field2 != nullptr && lhs.field2 != rhs.field2 && !(*lhs.field2 == *rhs.field2))) {
-    return lhs.field2 == nullptr || (rhs.field2 != nullptr && *lhs.field2 < *rhs.field2);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.field2_ref(), rhs.field2_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.field2_ref(), rhs.field2_ref());
   }
   lhs.field3_ref();
   rhs.field3_ref();
-  if ((lhs.field3 == nullptr) != (rhs.field3 == nullptr) || (lhs.field3 != nullptr && lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3))) {
-    return lhs.field3 == nullptr || (rhs.field3 != nullptr && *lhs.field3 < *rhs.field3);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.field3_ref(), rhs.field3_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.field3_ref(), rhs.field3_ref());
   }
   return false;
 }

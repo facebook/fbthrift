@@ -2760,7 +2760,7 @@ bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
   if (!(lhs.MyIncludedStruct_ref() == rhs.MyIncludedStruct_ref())) {
     return false;
   }
-  if ((lhs.ARefField == nullptr) != (rhs.ARefField == nullptr) || (lhs.ARefField != nullptr && lhs.ARefField != rhs.ARefField && !(*lhs.ARefField == *rhs.ARefField))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ARefField_ref(), rhs.ARefField_ref()))) {
     return false;
   }
   if (!(lhs.ARequiredField_ref() == rhs.ARequiredField_ref())) {
@@ -2779,8 +2779,8 @@ bool MyIncludedStruct::operator<(const MyIncludedStruct& rhs) const {
   if (!(lhs.MyIncludedStruct_ref() == rhs.MyIncludedStruct_ref())) {
     return lhs.MyIncludedStruct_ref() < rhs.MyIncludedStruct_ref();
   }
-  if ((lhs.ARefField == nullptr) != (rhs.ARefField == nullptr) || (lhs.ARefField != nullptr && lhs.ARefField != rhs.ARefField && !(*lhs.ARefField == *rhs.ARefField))) {
-    return lhs.ARefField == nullptr || (rhs.ARefField != nullptr && *lhs.ARefField < *rhs.ARefField);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ARefField_ref(), rhs.ARefField_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.ARefField_ref(), rhs.ARefField_ref());
   }
   if (!(lhs.ARequiredField_ref() == rhs.ARequiredField_ref())) {
     return lhs.ARequiredField_ref() < rhs.ARequiredField_ref();
@@ -3039,58 +3039,58 @@ bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
   if (!(lhs.no_annotation_ref() == rhs.no_annotation_ref())) {
     return false;
   }
-  if ((lhs.cpp_unique_ref == nullptr) != (rhs.cpp_unique_ref == nullptr) || (lhs.cpp_unique_ref != nullptr && lhs.cpp_unique_ref != rhs.cpp_unique_ref && !(*lhs.cpp_unique_ref == *rhs.cpp_unique_ref))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.cpp_unique_ref_ref(), rhs.cpp_unique_ref_ref()))) {
     return false;
   }
-  if ((lhs.cpp2_unique_ref == nullptr) != (rhs.cpp2_unique_ref == nullptr) || (lhs.cpp2_unique_ref != nullptr && lhs.cpp2_unique_ref != rhs.cpp2_unique_ref && !(*lhs.cpp2_unique_ref == *rhs.cpp2_unique_ref))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.cpp2_unique_ref_ref(), rhs.cpp2_unique_ref_ref()))) {
     return false;
   }
-  if ((lhs.container_with_ref == nullptr) != (rhs.container_with_ref == nullptr) || (lhs.container_with_ref != nullptr && lhs.container_with_ref != rhs.container_with_ref && !(*lhs.container_with_ref == *rhs.container_with_ref))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.container_with_ref_ref(), rhs.container_with_ref_ref()))) {
     return false;
   }
-  if ((lhs.req_cpp_unique_ref == nullptr) != (rhs.req_cpp_unique_ref == nullptr) || (lhs.req_cpp_unique_ref != nullptr && lhs.req_cpp_unique_ref != rhs.req_cpp_unique_ref && !(*lhs.req_cpp_unique_ref == *rhs.req_cpp_unique_ref))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.req_cpp_unique_ref_ref(), rhs.req_cpp_unique_ref_ref()))) {
     return false;
   }
-  if ((lhs.req_cpp2_unique_ref == nullptr) != (rhs.req_cpp2_unique_ref == nullptr) || (lhs.req_cpp2_unique_ref != nullptr && lhs.req_cpp2_unique_ref != rhs.req_cpp2_unique_ref && !(*lhs.req_cpp2_unique_ref == *rhs.req_cpp2_unique_ref))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.req_cpp2_unique_ref_ref(), rhs.req_cpp2_unique_ref_ref()))) {
     return false;
   }
-  if ((lhs.req_container_with_ref == nullptr) != (rhs.req_container_with_ref == nullptr) || (lhs.req_container_with_ref != nullptr && lhs.req_container_with_ref != rhs.req_container_with_ref && !(*lhs.req_container_with_ref == *rhs.req_container_with_ref))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.req_container_with_ref_ref(), rhs.req_container_with_ref_ref()))) {
     return false;
   }
-  if ((lhs.opt_cpp_unique_ref == nullptr) != (rhs.opt_cpp_unique_ref == nullptr) || (lhs.opt_cpp_unique_ref != nullptr && lhs.opt_cpp_unique_ref != rhs.opt_cpp_unique_ref && !(*lhs.opt_cpp_unique_ref == *rhs.opt_cpp_unique_ref))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_cpp_unique_ref_ref(), rhs.opt_cpp_unique_ref_ref()))) {
     return false;
   }
-  if ((lhs.opt_cpp2_unique_ref == nullptr) != (rhs.opt_cpp2_unique_ref == nullptr) || (lhs.opt_cpp2_unique_ref != nullptr && lhs.opt_cpp2_unique_ref != rhs.opt_cpp2_unique_ref && !(*lhs.opt_cpp2_unique_ref == *rhs.opt_cpp2_unique_ref))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_cpp2_unique_ref_ref(), rhs.opt_cpp2_unique_ref_ref()))) {
     return false;
   }
-  if ((lhs.opt_container_with_ref == nullptr) != (rhs.opt_container_with_ref == nullptr) || (lhs.opt_container_with_ref != nullptr && lhs.opt_container_with_ref != rhs.opt_container_with_ref && !(*lhs.opt_container_with_ref == *rhs.opt_container_with_ref))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_container_with_ref_ref(), rhs.opt_container_with_ref_ref()))) {
     return false;
   }
-  if ((lhs.ref_type_unique == nullptr) != (rhs.ref_type_unique == nullptr) || (lhs.ref_type_unique != nullptr && lhs.ref_type_unique != rhs.ref_type_unique && !(*lhs.ref_type_unique == *rhs.ref_type_unique))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ref_type_unique_ref(), rhs.ref_type_unique_ref()))) {
     return false;
   }
-  if ((lhs.ref_type_shared == nullptr) != (rhs.ref_type_shared == nullptr) || (lhs.ref_type_shared != nullptr && lhs.ref_type_shared != rhs.ref_type_shared && !(*lhs.ref_type_shared == *rhs.ref_type_shared))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ref_type_shared_ref(), rhs.ref_type_shared_ref()))) {
     return false;
   }
-  if ((lhs.ref_type_const == nullptr) != (rhs.ref_type_const == nullptr) || (lhs.ref_type_const != nullptr && lhs.ref_type_const != rhs.ref_type_const && !(*lhs.ref_type_const == *rhs.ref_type_const))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ref_type_const_ref(), rhs.ref_type_const_ref()))) {
     return false;
   }
-  if ((lhs.req_ref_type_shared == nullptr) != (rhs.req_ref_type_shared == nullptr) || (lhs.req_ref_type_shared != nullptr && lhs.req_ref_type_shared != rhs.req_ref_type_shared && !(*lhs.req_ref_type_shared == *rhs.req_ref_type_shared))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.req_ref_type_shared_ref(), rhs.req_ref_type_shared_ref()))) {
     return false;
   }
-  if ((lhs.req_ref_type_const == nullptr) != (rhs.req_ref_type_const == nullptr) || (lhs.req_ref_type_const != nullptr && lhs.req_ref_type_const != rhs.req_ref_type_const && !(*lhs.req_ref_type_const == *rhs.req_ref_type_const))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.req_ref_type_const_ref(), rhs.req_ref_type_const_ref()))) {
     return false;
   }
-  if ((lhs.req_ref_type_unique == nullptr) != (rhs.req_ref_type_unique == nullptr) || (lhs.req_ref_type_unique != nullptr && lhs.req_ref_type_unique != rhs.req_ref_type_unique && !(*lhs.req_ref_type_unique == *rhs.req_ref_type_unique))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.req_ref_type_unique_ref(), rhs.req_ref_type_unique_ref()))) {
     return false;
   }
-  if ((lhs.opt_ref_type_const == nullptr) != (rhs.opt_ref_type_const == nullptr) || (lhs.opt_ref_type_const != nullptr && lhs.opt_ref_type_const != rhs.opt_ref_type_const && !(*lhs.opt_ref_type_const == *rhs.opt_ref_type_const))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_ref_type_const_ref(), rhs.opt_ref_type_const_ref()))) {
     return false;
   }
-  if ((lhs.opt_ref_type_unique == nullptr) != (rhs.opt_ref_type_unique == nullptr) || (lhs.opt_ref_type_unique != nullptr && lhs.opt_ref_type_unique != rhs.opt_ref_type_unique && !(*lhs.opt_ref_type_unique == *rhs.opt_ref_type_unique))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_ref_type_unique_ref(), rhs.opt_ref_type_unique_ref()))) {
     return false;
   }
-  if ((lhs.opt_ref_type_shared == nullptr) != (rhs.opt_ref_type_shared == nullptr) || (lhs.opt_ref_type_shared != nullptr && lhs.opt_ref_type_shared != rhs.opt_ref_type_shared && !(*lhs.opt_ref_type_shared == *rhs.opt_ref_type_shared))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.opt_ref_type_shared_ref(), rhs.opt_ref_type_shared_ref()))) {
     return false;
   }
   if (!(lhs.base_type_ref() == rhs.base_type_ref())) {

@@ -182,7 +182,7 @@ bool AStructB::operator==(const AStructB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if ((lhs.FieldA == nullptr) != (rhs.FieldA == nullptr) || (lhs.FieldA != nullptr && lhs.FieldA != rhs.FieldA && !(*lhs.FieldA == *rhs.FieldA))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.FieldA_ref(), rhs.FieldA_ref()))) {
     return false;
   }
   return true;
@@ -192,8 +192,8 @@ bool AStructB::operator<(const AStructB& rhs) const {
   (void)rhs;
   auto& lhs = *this;
   (void)lhs;
-  if ((lhs.FieldA == nullptr) != (rhs.FieldA == nullptr) || (lhs.FieldA != nullptr && lhs.FieldA != rhs.FieldA && !(*lhs.FieldA == *rhs.FieldA))) {
-    return lhs.FieldA == nullptr || (rhs.FieldA != nullptr && *lhs.FieldA < *rhs.FieldA);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.FieldA_ref(), rhs.FieldA_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.FieldA_ref(), rhs.FieldA_ref());
   }
   return false;
 }

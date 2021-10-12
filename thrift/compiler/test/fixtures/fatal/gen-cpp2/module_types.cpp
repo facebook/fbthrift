@@ -2698,7 +2698,7 @@ bool struct4::operator==(const struct4& rhs) const {
   if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return false;
   }
-  if ((lhs.field3 == nullptr) != (rhs.field3 == nullptr) || (lhs.field3 != nullptr && lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.field3_ref(), rhs.field3_ref()))) {
     return false;
   }
   return true;
@@ -2717,8 +2717,8 @@ bool struct4::operator<(const struct4& rhs) const {
   if (!(lhs.field2_ref() == rhs.field2_ref())) {
     return lhs.field2_ref() < rhs.field2_ref();
   }
-  if ((lhs.field3 == nullptr) != (rhs.field3 == nullptr) || (lhs.field3 != nullptr && lhs.field3 != rhs.field3 && !(*lhs.field3 == *rhs.field3))) {
-    return lhs.field3 == nullptr || (rhs.field3 != nullptr && *lhs.field3 < *rhs.field3);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.field3_ref(), rhs.field3_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.field3_ref(), rhs.field3_ref());
   }
   return false;
 }

@@ -455,19 +455,19 @@ bool containerStruct::operator==(const containerStruct& rhs) const {
   if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
     return false;
   }
-  if ((lhs.fieldR == nullptr) != (rhs.fieldR == nullptr) || (lhs.fieldR != nullptr && lhs.fieldR != rhs.fieldR && !(*lhs.fieldR == *rhs.fieldR))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.fieldR_ref(), rhs.fieldR_ref()))) {
     return false;
   }
-  if ((lhs.fieldS == nullptr) != (rhs.fieldS == nullptr) || (lhs.fieldS != nullptr && lhs.fieldS != rhs.fieldS && !(*lhs.fieldS == *rhs.fieldS))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.fieldS_ref(), rhs.fieldS_ref()))) {
     return false;
   }
-  if ((lhs.fieldT == nullptr) != (rhs.fieldT == nullptr) || (lhs.fieldT != nullptr && lhs.fieldT != rhs.fieldT && !(*lhs.fieldT == *rhs.fieldT))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.fieldT_ref(), rhs.fieldT_ref()))) {
     return false;
   }
-  if ((lhs.fieldU == nullptr) != (rhs.fieldU == nullptr) || (lhs.fieldU != nullptr && lhs.fieldU != rhs.fieldU && !(*lhs.fieldU == *rhs.fieldU))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.fieldU_ref(), rhs.fieldU_ref()))) {
     return false;
   }
-  if ((lhs.fieldX == nullptr) != (rhs.fieldX == nullptr) || (lhs.fieldX != nullptr && lhs.fieldX != rhs.fieldX && !(*lhs.fieldX == *rhs.fieldX))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.fieldX_ref(), rhs.fieldX_ref()))) {
     return false;
   }
   return true;
@@ -528,20 +528,20 @@ bool containerStruct::operator<(const containerStruct& rhs) const {
   if (!(lhs.fieldQ_ref() == rhs.fieldQ_ref())) {
     return lhs.fieldQ_ref() < rhs.fieldQ_ref();
   }
-  if ((lhs.fieldR == nullptr) != (rhs.fieldR == nullptr) || (lhs.fieldR != nullptr && lhs.fieldR != rhs.fieldR && !(*lhs.fieldR == *rhs.fieldR))) {
-    return lhs.fieldR == nullptr || (rhs.fieldR != nullptr && *lhs.fieldR < *rhs.fieldR);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.fieldR_ref(), rhs.fieldR_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.fieldR_ref(), rhs.fieldR_ref());
   }
-  if ((lhs.fieldS == nullptr) != (rhs.fieldS == nullptr) || (lhs.fieldS != nullptr && lhs.fieldS != rhs.fieldS && !(*lhs.fieldS == *rhs.fieldS))) {
-    return lhs.fieldS == nullptr || (rhs.fieldS != nullptr && *lhs.fieldS < *rhs.fieldS);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.fieldS_ref(), rhs.fieldS_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.fieldS_ref(), rhs.fieldS_ref());
   }
-  if ((lhs.fieldT == nullptr) != (rhs.fieldT == nullptr) || (lhs.fieldT != nullptr && lhs.fieldT != rhs.fieldT && !(*lhs.fieldT == *rhs.fieldT))) {
-    return lhs.fieldT == nullptr || (rhs.fieldT != nullptr && *lhs.fieldT < *rhs.fieldT);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.fieldT_ref(), rhs.fieldT_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.fieldT_ref(), rhs.fieldT_ref());
   }
-  if ((lhs.fieldU == nullptr) != (rhs.fieldU == nullptr) || (lhs.fieldU != nullptr && lhs.fieldU != rhs.fieldU && !(*lhs.fieldU == *rhs.fieldU))) {
-    return lhs.fieldU == nullptr || (rhs.fieldU != nullptr && *lhs.fieldU < *rhs.fieldU);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.fieldU_ref(), rhs.fieldU_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.fieldU_ref(), rhs.fieldU_ref());
   }
-  if ((lhs.fieldX == nullptr) != (rhs.fieldX == nullptr) || (lhs.fieldX != nullptr && lhs.fieldX != rhs.fieldX && !(*lhs.fieldX == *rhs.fieldX))) {
-    return lhs.fieldX == nullptr || (rhs.fieldX != nullptr && *lhs.fieldX < *rhs.fieldX);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.fieldX_ref(), rhs.fieldX_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.fieldX_ref(), rhs.fieldX_ref());
   }
   return false;
 }

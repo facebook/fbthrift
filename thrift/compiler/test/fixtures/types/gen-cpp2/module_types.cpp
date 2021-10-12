@@ -1891,7 +1891,7 @@ bool ForwardUsageRoot::operator==(const ForwardUsageRoot& rhs) const {
   if (!(lhs.ForwardUsageStruct_ref() == rhs.ForwardUsageStruct_ref())) {
     return false;
   }
-  if ((lhs.ForwardUsageByRef == nullptr) != (rhs.ForwardUsageByRef == nullptr) || (lhs.ForwardUsageByRef != nullptr && lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef))) {
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ForwardUsageByRef_ref(), rhs.ForwardUsageByRef_ref()))) {
     return false;
   }
   return true;
@@ -1904,8 +1904,8 @@ bool ForwardUsageRoot::operator<(const ForwardUsageRoot& rhs) const {
   if (!(lhs.ForwardUsageStruct_ref() == rhs.ForwardUsageStruct_ref())) {
     return lhs.ForwardUsageStruct_ref() < rhs.ForwardUsageStruct_ref();
   }
-  if ((lhs.ForwardUsageByRef == nullptr) != (rhs.ForwardUsageByRef == nullptr) || (lhs.ForwardUsageByRef != nullptr && lhs.ForwardUsageByRef != rhs.ForwardUsageByRef && !(*lhs.ForwardUsageByRef == *rhs.ForwardUsageByRef))) {
-    return lhs.ForwardUsageByRef == nullptr || (rhs.ForwardUsageByRef != nullptr && *lhs.ForwardUsageByRef < *rhs.ForwardUsageByRef);
+  if ((!::apache::thrift::detail::pointer_equal(lhs.ForwardUsageByRef_ref(), rhs.ForwardUsageByRef_ref()))) {
+    return ::apache::thrift::detail::pointer_less(lhs.ForwardUsageByRef_ref(), rhs.ForwardUsageByRef_ref());
   }
   return false;
 }

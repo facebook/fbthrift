@@ -244,6 +244,16 @@ constexpr bool gen_check_nimble =
 
 } // namespace st
 
+template <class T>
+bool pointer_equal(const T& lhs, const T& rhs) {
+  return lhs && rhs ? *lhs == *rhs : lhs == rhs;
+}
+
+template <class T>
+bool pointer_less(const T& lhs, const T& rhs) {
+  return lhs && rhs ? *lhs < *rhs : lhs < rhs;
+}
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache
