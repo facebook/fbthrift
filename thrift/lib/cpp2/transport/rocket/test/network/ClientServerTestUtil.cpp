@@ -409,9 +409,7 @@ class RocketTestServer::RocketTestServerHandler : public RocketServerHandler {
     auto responsePayload = Payload::makeFromMetadataAndData(
         std::move(response.first), std::move(response.second));
     return context.sendPayload(
-        std::move(responsePayload),
-        Flags::none().next(true).complete(true),
-        nullptr);
+        std::move(responsePayload), Flags().next(true).complete(true), nullptr);
   }
 
   void handleRequestFnfFrame(

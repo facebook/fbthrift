@@ -928,7 +928,7 @@ void RocketClient::sendComplete(StreamId streamId, bool closeStream) {
   sendPayload(
       streamId,
       StreamPayload(std::unique_ptr<folly::IOBuf>{}, {}),
-      rocket::Flags::none().complete(true));
+      rocket::Flags().complete(true));
 }
 
 bool RocketClient::sendHeadersPush(
@@ -958,7 +958,7 @@ bool RocketClient::sendHeadersPush(
               ExtFrame(
                   streamId,
                   pack(std::move(payload)),
-                  rocket::Flags::none().ignore(true),
+                  rocket::Flags().ignore(true),
                   ExtFrameType::HEADERS_PUSH)
                   .serialize(),
               FrameType::EXT);
@@ -985,7 +985,7 @@ bool RocketClient::sendSinkError(StreamId streamId, StreamPayload&& payload) {
               PayloadFrame(
                   streamId,
                   pack(std::move(payload)),
-                  Flags::none().next(true).complete(true))
+                  Flags().next(true).complete(true))
                   .serialize(),
               FrameType::PAYLOAD);
         } else {
@@ -1405,7 +1405,7 @@ void RocketClient::terminateInteraction(int64_t id) {
               ExtFrame(
                   StreamId(),
                   Payload::makeFromData(packCompact(std::move(term))),
-                  Flags::none(),
+                  Flags(),
                   ExtFrameType::INTERACTION_TERMINATE)
                   .serialize(),
               FrameType::EXT);

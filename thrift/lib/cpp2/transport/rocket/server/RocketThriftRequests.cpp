@@ -444,7 +444,7 @@ void ThriftServerRequestResponse::sendThriftResponse(
 
   context_.sendPayload(
       pack(metadata, std::move(data)),
-      Flags::none().next(true).complete(true),
+      Flags().next(true).complete(true),
       std::move(cb));
 }
 

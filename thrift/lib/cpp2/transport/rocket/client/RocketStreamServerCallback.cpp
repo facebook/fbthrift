@@ -186,21 +186,17 @@ bool RocketSinkServerCallback::onSinkNext(StreamPayload&& payload) {
             payload.payload->computeChainDataLength());
       }
       client_.sendPayload(
-          streamId_, std::move(payload), rocket::Flags::none().next(true));
+          streamId_, std::move(payload), rocket::Flags().next(true));
       break;
     }
     case RpcOptions::MemAllocType::ALLOC_PAGE_ALIGN: {
       client_.sendExtAlignedPage(
-          streamId_,
-          std::move(payload).payload,
-          rocket::Flags::none().next(true));
+          streamId_, std::move(payload).payload, rocket::Flags().next(true));
       break;
     }
     case RpcOptions::MemAllocType::ALLOC_CUSTOM: {
       client_.sendExtCustomAlloc(
-          streamId_,
-          std::move(payload).payload,
-          rocket::Flags::none().next(true));
+          streamId_, std::move(payload).payload, rocket::Flags().next(true));
       break;
     }
   }

@@ -242,7 +242,7 @@ TEST(FrameSerialization, PayloadSanity) {
   PayloadFrame frame(
       kTestStreamId,
       Payload::makeFromMetadataAndData(kMetadata, kData),
-      Flags::none().follows(true).complete(true).next(true));
+      Flags().follows(true).complete(true).next(true));
 
   auto validate = [](const PayloadFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
@@ -272,7 +272,7 @@ TEST(FrameSerialization, PayloadEmptyMetadataSanity) {
     PayloadFrame frame(
         kTestStreamId,
         Payload::makeFromData(kData),
-        Flags::none().follows(true).complete(true).next(true));
+        Flags().follows(true).complete(true).next(true));
 
     validate(frame);
     validate(serializeAndDeserialize(std::move(frame)));
@@ -284,7 +284,7 @@ TEST(FrameSerialization, PayloadEmptyMetadataSanity) {
         kTestStreamId,
         Payload::makeFromMetadataAndData(
             folly::ByteRange{folly::StringPiece{""}}, kData),
-        Flags::none().follows(true).complete(true).next(true));
+        Flags().follows(true).complete(true).next(true));
 
     validate(frame);
     validate(serializeAndDeserialize(std::move(frame)));
@@ -337,8 +337,7 @@ TEST(FrameSerialization, MetadataPushSanity) {
     wcursor.writeBE<uint32_t>(0);
     // write frameType and flags
     wcursor.writeBE<uint16_t>(
-        static_cast<uint8_t>(FrameType::METADATA_PUSH)
-            << Flags::frameTypeOffset() |
+        static_cast<uint8_t>(FrameType::METADATA_PUSH) << Flags::kBits |
         static_cast<uint16_t>(1 << 8));
 
     wcursor.insert(folly::IOBuf::copyBuffer(kMeta));
@@ -359,7 +358,7 @@ TEST(FrameSerialization, KeepAliveSanity) {
 
   auto makeKeepAliveFrame = [&] {
     return KeepAliveFrame(
-        Flags::none().respond(true), folly::IOBuf::copyBuffer(kKeepAliveData));
+        Flags().respond(true), folly::IOBuf::copyBuffer(kKeepAliveData));
   };
 
   auto validate = [=](KeepAliveFrame&& f) {
@@ -376,7 +375,7 @@ TEST(FrameSerialization, KeepAliveSanityEmptyPayload) {
 
   auto makeKeepAliveFrame = [&] {
     return KeepAliveFrame(
-        Flags::none().respond(true), folly::IOBuf::copyBuffer(kKeepAliveData));
+        Flags().respond(true), folly::IOBuf::copyBuffer(kKeepAliveData));
   };
 
   auto validate = [=](KeepAliveFrame&& f) {
@@ -399,7 +398,7 @@ TEST(FrameSerialization, PayloadLargeMetadata) {
       kTestStreamId,
       Payload::makeFromMetadataAndData(
           metadata.clone(), folly::IOBuf::copyBuffer(kData)),
-      Flags::none().complete(true).next(true));
+      Flags().complete(true).next(true));
 
   auto validate = [=](const PayloadFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
@@ -420,7 +419,7 @@ TEST(FrameSerialization, PayloadLargeData) {
       kTestStreamId,
       Payload::makeFromMetadataAndData(
           folly::IOBuf::copyBuffer(kMetadata), data.clone()),
-      Flags::none().complete(true).next(true));
+      Flags().complete(true).next(true));
 
   auto validate = [=](const PayloadFrame& f) {
     EXPECT_EQ(kTestStreamId, f.streamId());
@@ -609,11 +608,11 @@ TEST(FrameSerialization, PayloadFrameSerializeAPI) {
     PayloadFrame frame1(
         kTestStreamId,
         Payload::makeFromMetadataAndData(md->clone(), data->clone()),
-        Flags::none().follows(true).complete(true).next(true));
+        Flags().follows(true).complete(true).next(true));
     PayloadFrame frame2(
         kTestStreamId,
         Payload::makeFromMetadataAndData(md->clone(), data->clone()),
-        Flags::none().follows(true).complete(true).next(true));
+        Flags().follows(true).complete(true).next(true));
     auto altApi = std::move(frame1).serialize();
     Serializer writer;
     std::move(frame2).serialize(writer);
@@ -650,7 +649,7 @@ TEST(FrameSerialization, ExtSanity) {
   ExtFrame frame(
       kTestStreamId,
       Payload::makeFromMetadataAndData(kMetadata, kData),
-      Flags::none().ignore(true),
+      Flags().ignore(true),
       ExtFrameType::HEADERS_PUSH);
 
   auto validate = [](const ExtFrame& f) {
@@ -668,7 +667,7 @@ TEST(FrameSerialization, ExtUnknownSanity) {
   ExtFrame frame(
       kTestStreamId,
       Payload::makeFromMetadataAndData(kMetadata, kData),
-      Flags::none().ignore(true),
+      Flags().ignore(true),
       static_cast<ExtFrameType>(42));
 
   auto validate = [](const ExtFrame& f) {
@@ -696,7 +695,7 @@ TEST(FrameSerialization, ExtEmptyMetadataSanity) {
     ExtFrame frame(
         kTestStreamId,
         Payload::makeFromData(kData),
-        Flags::none().ignore(true),
+        Flags().ignore(true),
         ExtFrameType::HEADERS_PUSH);
 
     validate(frame);
@@ -709,7 +708,7 @@ TEST(FrameSerialization, ExtEmptyMetadataSanity) {
         kTestStreamId,
         Payload::makeFromMetadataAndData(
             folly::ByteRange{folly::StringPiece{""}}, kData),
-        Flags::none().ignore(true),
+        Flags().ignore(true),
         ExtFrameType::HEADERS_PUSH);
 
     validate(frame);

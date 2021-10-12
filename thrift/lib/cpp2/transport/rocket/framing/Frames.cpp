@@ -201,7 +201,7 @@ void SetupFrame::serialize(Serializer& writer) && {
   // serializing flags_ directly. This comment applies to all frames.
   nwritten += writer.writeFrameTypeAndFlags(
       frameType(),
-      Flags::none()
+      Flags()
           .metadata(payload_.hasNonemptyMetadata())
           .resumeToken(hasResumeIdentificationToken()));
 
@@ -272,9 +272,7 @@ void RequestResponseFrame::serializeIntoSingleFrame(Serializer& writer) && {
   nwritten += writer.write(streamId());
   nwritten += writer.writeFrameTypeAndFlags(
       frameType(),
-      Flags::none()
-          .metadata(payload_.hasNonemptyMetadata())
-          .follows(hasFollows()));
+      Flags().metadata(payload_.hasNonemptyMetadata()).follows(hasFollows()));
   nwritten += writer.writePayload(std::move(payload()));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
@@ -310,9 +308,7 @@ void RequestFnfFrame::serializeIntoSingleFrame(Serializer& writer) && {
   nwritten += writer.write(streamId());
   nwritten += writer.writeFrameTypeAndFlags(
       frameType(),
-      Flags::none()
-          .metadata(payload_.hasNonemptyMetadata())
-          .follows(hasFollows()));
+      Flags().metadata(payload_.hasNonemptyMetadata()).follows(hasFollows()));
   nwritten += writer.writePayload(std::move(payload()));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
@@ -350,9 +346,7 @@ void RequestStreamFrame::serializeIntoSingleFrame(Serializer& writer) && {
   nwritten += writer.write(streamId());
   nwritten += writer.writeFrameTypeAndFlags(
       frameType(),
-      Flags::none()
-          .metadata(payload_.hasNonemptyMetadata())
-          .follows(hasFollows()));
+      Flags().metadata(payload_.hasNonemptyMetadata()).follows(hasFollows()));
   nwritten += writer.writeBE<uint32_t>(initialRequestN());
   nwritten += writer.writePayload(std::move(payload()));
 
@@ -390,7 +384,7 @@ void RequestChannelFrame::serializeIntoSingleFrame(Serializer& writer) && {
   nwritten += writer.write(streamId());
   nwritten += writer.writeFrameTypeAndFlags(
       frameType(),
-      Flags::none()
+      Flags()
           .metadata(payload_.hasNonemptyMetadata())
           .follows(hasFollows())
           .complete(hasComplete()));
@@ -422,7 +416,7 @@ void RequestNFrame::serialize(Serializer& writer) && {
   auto nwritten = writer.writeFrameOrMetadataSize(frameSize);
 
   nwritten += writer.write(streamId());
-  nwritten += writer.writeFrameTypeAndFlags(frameType(), Flags::none());
+  nwritten += writer.writeFrameTypeAndFlags(frameType(), Flags());
   nwritten += writer.writeBE<uint32_t>(requestN());
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
@@ -448,7 +442,7 @@ void CancelFrame::serialize(Serializer& writer) && {
   auto nwritten = writer.writeFrameOrMetadataSize(frameSize);
 
   nwritten += writer.write(streamId());
-  nwritten += writer.writeFrameTypeAndFlags(frameType(), Flags::none());
+  nwritten += writer.writeFrameTypeAndFlags(frameType(), Flags());
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
 }
@@ -483,7 +477,7 @@ void PayloadFrame::serializeIntoSingleFrame(Serializer& writer) && {
   // DCHECK(hasComplete() || hasNext());
   nwritten += writer.writeFrameTypeAndFlags(
       frameType(),
-      Flags::none()
+      Flags()
           .metadata(payload_.hasNonemptyMetadata())
           .follows(hasFollows())
           .complete(hasComplete())
@@ -521,7 +515,7 @@ void ErrorFrame::serialize(Serializer& writer) && {
   auto nwritten = writer.writeFrameOrMetadataSize(frameSize);
 
   nwritten += writer.write(streamId());
-  nwritten += writer.writeFrameTypeAndFlags(frameType(), Flags::none());
+  nwritten += writer.writeFrameTypeAndFlags(frameType(), Flags());
 
   nwritten += writer.writeBE(folly::to_underlying(errorCode()));
 
@@ -549,7 +543,7 @@ void MetadataPushFrame::serialize(Serializer& writer) && {
 
   nwritten += writer.write(StreamId{0});
   nwritten +=
-      writer.writeFrameTypeAndFlags(frameType(), Flags::none().metadata(true));
+      writer.writeFrameTypeAndFlags(frameType(), Flags().metadata(true));
   nwritten += writer.write(std::move(metadata_));
 
   DCHECK_EQ(Serializer::kBytesForFrameOrMetadataLength + frameSize, nwritten);
@@ -642,30 +636,30 @@ void ExtFrame::serialize(Serializer& writer) && {
 
 FOLLY_NOINLINE void RequestResponseFrame::serializeInFragmentsSlow(
     Serializer& writer) && {
-  serializeInFragmentsSlowCommon(std::move(*this), Flags::none(), writer);
+  serializeInFragmentsSlowCommon(std::move(*this), Flags(), writer);
 }
 
 FOLLY_NOINLINE void RequestFnfFrame::serializeInFragmentsSlow(
     Serializer& writer) && {
-  serializeInFragmentsSlowCommon(std::move(*this), Flags::none(), writer);
+  serializeInFragmentsSlowCommon(std::move(*this), Flags(), writer);
 }
 
 FOLLY_NOINLINE void RequestStreamFrame::serializeInFragmentsSlow(
     Serializer& writer) && {
-  serializeInFragmentsSlowCommon(std::move(*this), Flags::none(), writer);
+  serializeInFragmentsSlowCommon(std::move(*this), Flags(), writer);
 }
 
 FOLLY_NOINLINE void RequestChannelFrame::serializeInFragmentsSlow(
     Serializer& writer) && {
   serializeInFragmentsSlowCommon(
-      std::move(*this), Flags::none().complete(hasComplete()), writer);
+      std::move(*this), Flags().complete(hasComplete()), writer);
 }
 
 FOLLY_NOINLINE void PayloadFrame::serializeInFragmentsSlow(
     Serializer& writer) && {
   serializeInFragmentsSlowCommon(
       std::move(*this),
-      Flags::none().complete(hasComplete()).next(hasNext()),
+      Flags().complete(hasComplete()).next(hasNext()),
       writer);
 }
 
@@ -815,7 +809,7 @@ RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
   Flags flags;
   std::tie(type, flags) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
-  DCHECK(Flags::none() == flags);
+  DCHECK(Flags() == flags);
 
   requestN_ = cursor.readBE<int32_t>();
 }
@@ -823,7 +817,7 @@ RequestNFrame::RequestNFrame(std::unique_ptr<folly::IOBuf> frame) {
 RequestNFrame::RequestNFrame(
     StreamId streamId, Flags flags, folly::io::Cursor& cursor)
     : streamId_(streamId) {
-  DCHECK(Flags::none() == flags);
+  DCHECK(Flags() == flags);
   requestN_ = cursor.readBE<int32_t>();
 }
 
@@ -837,7 +831,7 @@ CancelFrame::CancelFrame(std::unique_ptr<folly::IOBuf> frame) {
   Flags flags;
   std::tie(type, flags) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
-  DCHECK(Flags::none() == flags);
+  DCHECK(Flags() == flags);
 }
 
 PayloadFrame::PayloadFrame(std::unique_ptr<folly::IOBuf> frame) {
@@ -873,7 +867,7 @@ ErrorFrame::ErrorFrame(std::unique_ptr<folly::IOBuf> frame) {
   Flags flags;
   std::tie(type, flags) = readFrameTypeAndFlags(cursor);
   DCHECK(frameType() == type);
-  DCHECK(Flags::none() == flags);
+  DCHECK(Flags() == flags);
 
   errorCode_ = static_cast<ErrorCode>(cursor.readBE<uint32_t>());
 

@@ -30,22 +30,28 @@ TEST(FlagsTest, setting) {
   EXPECT_FALSE(flags.ignore());
 }
 
+TEST(FlagsTest, lowestFlag) {
+  Flags flags;
+
+  EXPECT_FALSE(flags.next());
+  flags.next(true);
+  EXPECT_TRUE(flags.next());
+}
+
 TEST(FlagsTest, invalidFlags) {
-  // Flags use the lower 10 bits
-  constexpr uint8_t numBits = Flags::frameTypeOffset();
-  ASSERT_EQ(numBits, 10);
+  // Flags use the lower 10 bits, as specified in rsocket
+  EXPECT_EQ(Flags::kBits, 10);
 
-  // Flags currently do not use the lowest 5 bits
-  constexpr uint8_t unusedBits = 5;
-
-  uint16_t over = 1 << numBits;
-  uint16_t under = 1 << (unusedBits - 1);
-  uint16_t allowed = 1 << (numBits - 1);
+  uint16_t over = 1 << Flags::kBits;
+  uint16_t under = 1 << (Flags::kUnusedBits - 1);
+  uint16_t allowed = 1 << (Flags::kBits - 1);
 
   auto mk = [](uint16_t bits) {
     Flags f(bits);
     (void)f;
   };
+
+  EXPECT_NO_THROW(mk(0));
 
   EXPECT_DEATH(mk(over), "Check failed");
   EXPECT_THROW(mk(under), std::runtime_error);

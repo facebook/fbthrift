@@ -51,7 +51,7 @@ class Serializer {
 
   size_t writeFrameTypeAndFlags(FrameType frameType, Flags flags) {
     return writeBE<uint16_t>(
-        (static_cast<uint16_t>(frameType) << Flags::frameTypeOffset()) |
+        (static_cast<uint16_t>(frameType) << Flags::kBits) |
         static_cast<uint16_t>(flags));
   }
 
@@ -122,7 +122,7 @@ class HeaderSerializer {
 
   size_t writeFrameTypeAndFlags(FrameType frameType, Flags flags) {
     return writeBE<uint16_t>(
-        (static_cast<uint16_t>(frameType) << Flags::frameTypeOffset()) |
+        (static_cast<uint16_t>(frameType) << Flags::kBits) |
         static_cast<uint16_t>(flags));
   }
 

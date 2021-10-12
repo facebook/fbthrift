@@ -294,7 +294,7 @@ void RocketServerConnection::handleFrame(std::unique_ptr<folly::IOBuf> frame) {
         KeepAliveFrame keepAliveFrame{std::move(frame)};
         if (keepAliveFrame.hasRespondFlag()) {
           // Echo back data without 'respond' flag
-          send(KeepAliveFrame{Flags::none(), std::move(keepAliveFrame).data()}
+          send(KeepAliveFrame{Flags(), std::move(keepAliveFrame).data()}
                    .serialize());
         }
       } else {

@@ -29,35 +29,18 @@ class Flags {
  public:
   constexpr Flags() = default;
 
-  constexpr explicit Flags(uint16_t flags) : flags_(static_cast<Bits>(flags)) {
-    DCHECK((flags & ~mask()) == 0);
-    if (flags & invalidFlagsMask()) {
+  constexpr explicit Flags(uint16_t flags) : flags_(flags) {
+    DCHECK((flags & ~kMask) == 0);
+    if (flags & kInvalidMask) {
       throw std::runtime_error(fmt::format("received invalid flags {}", flags));
     }
   }
 
-  // Flags and frame type are packed into 2 bytes on the wire. Flags occupy the
-  // lower 10 bits, frame type occupies the upper 6 bits.
-  static constexpr uint8_t frameTypeOffset() { return 10; }
-
-  static constexpr uint16_t mask() {
-    return (static_cast<uint16_t>(1) << frameTypeOffset()) - 1;
-  }
-
-  static constexpr uint16_t invalidFlagsMask() {
-    return (static_cast<uint16_t>(1) << UnusedBits_) - 1;
-  }
-
-  static constexpr Flags none() { return Flags{}; }
-
-  constexpr explicit operator uint16_t() const {
-    return static_cast<uint16_t>(flags_);
-  }
+  constexpr explicit operator uint16_t() const { return flags_; }
 
 #define THRIFT_ROCKET_CREATE_GETTER_SETTER(                              \
     member_function_name, bits_enum_value)                               \
   bool member_function_name() const { return flags_ & bits_enum_value; } \
-                                                                         \
   Flags& member_function_name(bool on) { return set(bits_enum_value, on); }
 
   THRIFT_ROCKET_CREATE_GETTER_SETTER(next, Bits::NEXT)
@@ -73,9 +56,15 @@ class Flags {
 
   bool operator==(Flags other) const { return flags_ == other.flags_; }
 
+  // Flags and frame type are packed into 2 bytes on the wire. Flags occupy the
+  // lower 10 bits.
+  static constexpr uint8_t kBits = 10;
+  static constexpr uint8_t kUnusedBits = 5;
+  static constexpr uint16_t kMask = (1 << kBits) - 1;
+  static constexpr uint16_t kInvalidMask = (1 << kUnusedBits) - 1;
+
  private:
   enum Bits : uint16_t {
-    NONE = 0,
     NEXT = 1 << 5,
     COMPLETE = 1 << 6,
     LEASE = 1 << 6,
@@ -85,12 +74,10 @@ class Flags {
     METADATA = 1 << 8,
     IGNORE_ = 1 << 9,
   };
-  static constexpr uint8_t UnusedBits_ = 5;
-  Bits flags_{Bits::NONE};
+  uint16_t flags_{0};
 
   Flags& set(Bits bits, bool on) {
-    flags_ = on ? static_cast<Bits>(flags_ | bits)
-                : static_cast<Bits>(flags_ & ~bits);
+    flags_ = on ? flags_ | bits : flags_ & ~bits;
     return *this;
   }
 };

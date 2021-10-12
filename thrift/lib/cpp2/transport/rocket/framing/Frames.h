@@ -71,7 +71,7 @@ class SetupFrame {
   static constexpr folly::StringPiece kMimeType{"text/plain"};
 
   // Resume ID token and Lease flags are not currently supported/used.
-  Flags flags_{Flags::none()};
+  Flags flags_;
   std::string resumeIdentificationToken_;
   Payload payload_;
 };
@@ -110,7 +110,7 @@ class RequestResponseFrame {
 
  private:
   StreamId streamId_;
-  Flags flags_{Flags::none()};
+  Flags flags_;
   Payload payload_;
 
   void serializeIntoSingleFrame(Serializer& writer) &&;
@@ -151,7 +151,7 @@ class RequestFnfFrame {
 
  private:
   StreamId streamId_;
-  Flags flags_{Flags::none()};
+  Flags flags_;
   Payload payload_;
 
   void serializeIntoSingleFrame(Serializer& writer) &&;
@@ -203,7 +203,7 @@ class RequestStreamFrame {
  private:
   StreamId streamId_;
   int32_t initialRequestN_;
-  Flags flags_{Flags::none()};
+  Flags flags_;
   Payload payload_;
 
   void serializeIntoSingleFrame(Serializer& writer) &&;
@@ -262,7 +262,7 @@ class RequestChannelFrame {
  private:
   StreamId streamId_;
   int32_t initialRequestN_;
-  Flags flags_{Flags::none()};
+  Flags flags_;
   Payload payload_;
 
   void serializeIntoSingleFrame(Serializer& writer) &&;
@@ -353,7 +353,7 @@ class PayloadFrame {
 
  private:
   StreamId streamId_;
-  Flags flags_{Flags::none()};
+  Flags flags_;
   Payload payload_;
 
   void serializeIntoSingleFrame(Serializer& writer) &&;
@@ -442,7 +442,7 @@ class KeepAliveFrame {
   std::unique_ptr<folly::IOBuf> serialize() &&;
 
  private:
-  Flags flags_{Flags::none()};
+  Flags flags_;
   std::unique_ptr<folly::IOBuf> data_;
 };
 
@@ -486,7 +486,7 @@ class ExtFrame {
 
  private:
   StreamId streamId_;
-  Flags flags_{Flags::none()};
+  Flags flags_;
   ExtFrameType extFrameType_;
   Payload payload_;
 };

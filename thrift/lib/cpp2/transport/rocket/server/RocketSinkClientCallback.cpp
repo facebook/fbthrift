@@ -62,7 +62,7 @@ bool RocketSinkClientCallback::onFirstResponse(
   serverCallbackOrError_ = reinterpret_cast<intptr_t>(serverCallback);
 
   connection_.sendPayload(
-      streamId_, pack(std::move(firstResponse)), Flags::none().next(true));
+      streamId_, pack(std::move(firstResponse)), Flags().next(true));
   return true;
 }
 
@@ -77,7 +77,7 @@ void RocketSinkClientCallback::onFirstResponseError(
             connection_.sendPayload(
                 streamId_,
                 pack(std::move(encodedError.encoded)),
-                Flags::none().next(true).complete(true));
+                Flags().next(true).complete(true));
           });
   DCHECK(isEncodedError);
 
@@ -100,7 +100,7 @@ void RocketSinkClientCallback::onFinalResponse(StreamPayload&& finalResponse) {
   connection_.sendPayload(
       streamId_,
       pack(std::move(finalResponse)),
-      Flags::none().next(true).complete(true));
+      Flags().next(true).complete(true));
   auto state = state_;
   auto& connection = connection_;
   connection_.freeStream(streamId_, true);
@@ -130,7 +130,7 @@ void RocketSinkClientCallback::onFinalResponseError(
           connection_.sendPayload(
               streamId_,
               pack(std::move(err.encoded)),
-              Flags::none().next(true).complete(true));
+              Flags().next(true).complete(true));
         } else {
           connection_.sendError(
               streamId_,
