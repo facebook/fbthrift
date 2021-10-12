@@ -35,6 +35,8 @@ void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::freezeImpl(
     const Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::ThawedType& src,
     Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::FrozenType& dst,
     byte*& buffer) {
+  (void)src;
+  (void)dst;
   (void)buffer;
 <%#struct:fields%>
 <%#field:type%>
@@ -57,6 +59,8 @@ template<>
 void Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::thawImpl(
     const Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::FrozenType& src,
     Freezer<<% > common/namespace_cpp2%><%struct:name%>, void>::ThawedType& dst) {
+  (void)src;
+  (void)dst;
 <%#struct:fields%>
 <%#field:type%>
 <%#type:bool?%>

@@ -14,6 +14,8 @@
  * limitations under the License.
  */
 
+include "thrift/annotation/cpp.thrift"
+
 namespace cpp2 apache.thrift.test
 
 struct Person {
@@ -52,6 +54,7 @@ struct SharedRef2 {
 }
 
 struct LinkedListNode {
-  1: optional LinkedListNode next (cpp2.ref_type = "shared");
+  @cpp.Ref{type = cpp.RefType.SharedMutable}
+  1: optional LinkedListNode next;
   2: i64 id;
 }
