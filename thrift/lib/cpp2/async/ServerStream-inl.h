@@ -15,9 +15,9 @@
  */
 
 #pragma once
+#include <folly/synchronization/Baton.h>
 #include <thrift/lib/cpp2/async/StreamCallbacks.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include "folly/synchronization/Baton.h"
 
 namespace apache {
 namespace thrift {

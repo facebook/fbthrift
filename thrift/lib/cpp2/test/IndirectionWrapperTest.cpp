@@ -16,7 +16,7 @@
 
 #include <folly/Overload.h>
 #include <folly/portability/GTest.h>
-#include "thrift/lib/cpp2/test/gen-cpp2/IndirectionWrapperTest_types.h"
+#include <thrift/lib/cpp2/test/gen-cpp2/IndirectionWrapperTest_types.h>
 
 namespace apache::thrift::test {
 int Foo::sum() {

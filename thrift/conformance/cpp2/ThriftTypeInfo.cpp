@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/conformance/cpp2/ThriftTypeInfo.h"
+#include <thrift/conformance/cpp2/ThriftTypeInfo.h>
 
 namespace apache::thrift::conformance {
 using type::validateTypeHashBytes;

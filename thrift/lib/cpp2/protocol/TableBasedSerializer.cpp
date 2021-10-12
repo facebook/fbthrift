@@ -14,11 +14,11 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/protocol/TableBasedSerializerImpl.h"
+#include <thrift/lib/cpp2/protocol/TableBasedSerializerImpl.h>
 
-#include "thrift/lib/cpp2/protocol/BinaryProtocol.h"
-#include "thrift/lib/cpp2/protocol/CompactProtocol.h"
-#include "thrift/lib/cpp2/protocol/SimpleJSONProtocol.h"
+#include <thrift/lib/cpp2/protocol/BinaryProtocol.h>
+#include <thrift/lib/cpp2/protocol/CompactProtocol.h>
+#include <thrift/lib/cpp2/protocol/SimpleJSONProtocol.h>
 
 namespace apache {
 namespace thrift {

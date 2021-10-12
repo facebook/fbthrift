@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/async/tests/util/TestSinkService.h"
+#include <thrift/lib/cpp2/async/tests/util/TestSinkService.h>
 
 #include <folly/ScopeGuard.h>
 #include <folly/experimental/coro/Sleep.h>

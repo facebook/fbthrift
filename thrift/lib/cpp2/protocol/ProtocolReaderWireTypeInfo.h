@@ -16,7 +16,7 @@
 
 #pragma once
 
-#include "thrift/lib/cpp/protocol/TType.h"
+#include <thrift/lib/cpp/protocol/TType.h>
 
 namespace apache {
 namespace thrift {

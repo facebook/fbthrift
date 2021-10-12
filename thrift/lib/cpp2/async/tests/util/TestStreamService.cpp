@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/async/tests/util/TestStreamService.h"
+#include <thrift/lib/cpp2/async/tests/util/TestStreamService.h>
 
 namespace testutil {
 namespace testservice {

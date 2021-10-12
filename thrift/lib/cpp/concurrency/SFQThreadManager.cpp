@@ -14,9 +14,9 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/concurrency/SFQThreadManager.h"
 #include <memory>
 #include <vector>
+#include <thrift/lib/cpp/concurrency/SFQThreadManager.h>
 
 #include <glog/logging.h>
 #include <folly/executors/MeteredExecutor.h>

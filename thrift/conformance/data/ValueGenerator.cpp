@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/conformance/data/ValueGenerator.h"
+#include <thrift/conformance/data/ValueGenerator.h>
 
 #include <cmath>
 #include <limits>

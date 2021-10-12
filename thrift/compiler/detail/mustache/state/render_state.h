@@ -30,7 +30,7 @@ SOFTWARE.
 
 #include <memory>
 
-#include "thrift/compiler/detail/mustache/token.h"
+#include <thrift/compiler/detail/mustache/token.h>
 
 namespace apache {
 namespace thrift {

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/server/Cpp2ConnContext.h"
+#include <thrift/lib/cpp2/server/Cpp2ConnContext.h>
 
 #include <folly/String.h>
 

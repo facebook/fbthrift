@@ -31,9 +31,9 @@ SOFTWARE.
 #include <sstream>
 #include <boost/variant/static_visitor.hpp>
 
-#include "thrift/compiler/detail/mustache/mstch.h"
-#include "thrift/compiler/detail/mustache/render_context.h"
-#include "thrift/compiler/detail/mustache/utils.h"
+#include <thrift/compiler/detail/mustache/mstch.h>
+#include <thrift/compiler/detail/mustache/render_context.h>
+#include <thrift/compiler/detail/mustache/utils.h>
 
 namespace apache {
 namespace thrift {

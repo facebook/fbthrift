@@ -16,7 +16,7 @@
 
 #include <folly/Benchmark.h>
 #include <folly/init/Init.h>
-#include "thrift/compiler/detail/mustache/mstch.h"
+#include <thrift/compiler/detail/mustache/mstch.h>
 
 using namespace apache::thrift;
 

@@ -22,7 +22,7 @@
 #include <thrift/lib/cpp/util/EnumUtils.h>
 #include <thrift/lib/cpp2/protocol/DebugProtocol.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include "thrift/lib/rust/src/dep_tests/gen-cpp2/test_thrift_types.h"
+#include <thrift/lib/rust/src/dep_tests/gen-cpp2/test_thrift_types.h>
 
 namespace facebook {
 namespace azw {

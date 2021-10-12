@@ -30,10 +30,10 @@ SOFTWARE.
 
 #include <boost/variant/static_visitor.hpp>
 
-#include "thrift/compiler/detail/mustache/mstch.h"
-#include "thrift/compiler/detail/mustache/render_context.h"
-#include "thrift/compiler/detail/mustache/utils.h"
-#include "thrift/compiler/detail/mustache/visitor/render_node.h"
+#include <thrift/compiler/detail/mustache/mstch.h>
+#include <thrift/compiler/detail/mustache/render_context.h>
+#include <thrift/compiler/detail/mustache/utils.h>
+#include <thrift/compiler/detail/mustache/visitor/render_node.h>
 
 namespace apache {
 namespace thrift {

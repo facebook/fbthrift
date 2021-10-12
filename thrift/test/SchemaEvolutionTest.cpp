@@ -16,7 +16,7 @@
 
 #include <folly/portability/GTest.h>
 #include <thrift/lib/cpp2/protocol/Serializer.h>
-#include "thrift/test/gen-cpp2/schema_evolution_test_for_each_field.h"
+#include <thrift/test/gen-cpp2/schema_evolution_test_for_each_field.h>
 
 using namespace apache::thrift;
 

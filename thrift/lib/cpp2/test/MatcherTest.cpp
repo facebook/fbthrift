@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/test/Matcher.h"
-#include "thrift/lib/cpp2/test/gen-cpp2/Matcher_types.h"
+#include <thrift/lib/cpp2/test/Matcher.h>
+#include <thrift/lib/cpp2/test/gen-cpp2/Matcher_types.h>
 
 #include <folly/portability/GTest.h>
 

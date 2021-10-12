@@ -14,8 +14,8 @@
  * limitations under the License.
  */
 
+#include <thrift/lib/cpp/protocol/TProtocolTypes.h>
 #include <thrift/lib/cpp2/async/RpcTypes.h>
-#include "thrift/lib/cpp/protocol/TProtocolTypes.h"
 
 #include <thrift/lib/cpp2/protocol/Serializer.h>
 

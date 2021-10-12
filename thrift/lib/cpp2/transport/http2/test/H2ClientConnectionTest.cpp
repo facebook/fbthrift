@@ -14,10 +14,10 @@
  * limitations under the License.
  */
 
+#include <folly/io/async/EventBase.h>
 #include <folly/portability/GTest.h>
-#include "folly/io/async/EventBase.h"
-#include "thrift/lib/cpp2/async/Cpp2Channel.h"
-#include "thrift/lib/cpp2/async/RequestCallback.h"
+#include <thrift/lib/cpp2/async/Cpp2Channel.h>
+#include <thrift/lib/cpp2/async/RequestCallback.h>
 
 #include <memory>
 #include <folly/io/async/AsyncSocket.h>

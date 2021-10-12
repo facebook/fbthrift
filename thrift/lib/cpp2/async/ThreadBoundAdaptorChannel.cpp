@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp2/async/ThreadBoundAdaptorChannel.h"
+#include <thrift/lib/cpp2/async/ThreadBoundAdaptorChannel.h>
 
 namespace apache {
 namespace thrift {

@@ -14,7 +14,6 @@
  * limitations under the License.
  */
 
-#include "thrift/lib/cpp/concurrency/SFQThreadManager.h"
 #include <chrono>
 #include <condition_variable>
 #include <deque>
@@ -22,6 +21,7 @@
 #include <mutex>
 #include <random>
 #include <thread>
+#include <thrift/lib/cpp/concurrency/SFQThreadManager.h>
 
 #include <folly/Synchronized.h>
 #include <folly/portability/GMock.h>
