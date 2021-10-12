@@ -56,6 +56,7 @@ class FOLLY_EXPORT TApplicationException : public TException {
     INJECTED_FAILURE = 13,
     CHECKSUM_MISMATCH = 14,
     INTERRUPTION = 15,
+    UNIMPLEMENTED_METHOD = 16,
   };
 
   TApplicationException() : type_(UNKNOWN) {}
@@ -121,6 +122,8 @@ class FOLLY_EXPORT TApplicationException : public TException {
           return "TApplicationException: Checksum mismatch";
         case INTERRUPTION:
           return "TApplicationException: interruption";
+        case UNIMPLEMENTED_METHOD:
+          return "TApplicationException: Unimplemented method";
         default:
           return "TApplicationException: (Invalid exception type)";
       };
