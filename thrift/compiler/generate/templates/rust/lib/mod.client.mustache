@@ -199,7 +199,6 @@
         {{/function:returns_streams?}}
 
         {{#function:returns_streams?}}
-        #[::tracing::instrument(name = "{{service:name}}.{{function:name}}", skip_all)]
         fn {{function:rust_name}}(
             &self,{{!
             }}{{#function:args}}
@@ -274,6 +273,7 @@
                 ::std::result::Result::Ok(new_stream)
                 {{/function:stream_has_first_response?}}
             }
+            .instrument(::tracing::info_span!("{{service:name}}.{{function:name}}"))
             .boxed()
         }
         {{/function:returns_streams?}}

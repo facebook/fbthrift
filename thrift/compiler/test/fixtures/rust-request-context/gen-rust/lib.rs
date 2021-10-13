@@ -2072,7 +2072,6 @@ pub mod client {
 
 
 
-        #[::tracing::instrument(name = "MyService.streamById", skip_all)]
         fn streamById(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2126,11 +2125,11 @@ pub mod client {
 
                 ::std::result::Result::Ok(new_stream)
             }
+            .instrument(::tracing::info_span!("MyService.streamById"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "MyService.streamByIdWithException", skip_all)]
         fn streamByIdWithException(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2184,11 +2183,11 @@ pub mod client {
 
                 ::std::result::Result::Ok(new_stream)
             }
+            .instrument(::tracing::info_span!("MyService.streamByIdWithException"))
             .boxed()
         }
 
 
-        #[::tracing::instrument(name = "MyService.streamByIdWithResponse", skip_all)]
         fn streamByIdWithResponse(
             &self,
             arg_id: ::std::primitive::i64,
@@ -2248,6 +2247,7 @@ pub mod client {
                     ::std::convert::From::from(res);
                 initial.map(move |initial| (initial, new_stream))
             }
+            .instrument(::tracing::info_span!("MyService.streamByIdWithResponse"))
             .boxed()
         }
     }

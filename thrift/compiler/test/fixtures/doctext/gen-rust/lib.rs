@@ -909,7 +909,6 @@ pub mod client {
 
 
 
-        #[::tracing::instrument(name = "C.numbers", skip_all)]
         fn numbers(
             &self,
         ) -> ::std::pin::Pin<::std::boxed::Box<dyn ::std::future::Future<Output = ::std::result::Result<::std::pin::Pin<::std::boxed::Box<dyn ::futures::stream::Stream< Item = ::std::result::Result<crate::types::number, crate::errors::c::NumbersStreamError>> + ::std::marker::Send + 'static >>, crate::errors::c::NumbersError>> + ::std::marker::Send + 'static>> {
@@ -961,6 +960,7 @@ pub mod client {
 
                 ::std::result::Result::Ok(new_stream)
             }
+            .instrument(::tracing::info_span!("C.numbers"))
             .boxed()
         }
 
