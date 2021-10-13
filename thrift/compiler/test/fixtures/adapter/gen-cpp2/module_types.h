@@ -1059,6 +1059,7 @@ class StructWithFieldAdapter final  {
 
   StructWithFieldAdapter() :
       field() {
+    ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(field, *this);
   }
   // FragileConstructor for use in initialization lists only.
   [[deprecated("This constructor is deprecated")]]

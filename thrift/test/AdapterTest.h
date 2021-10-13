@@ -131,6 +131,11 @@ inline bool operator<(
 
 struct AdapterWithContext {
   template <typename Context>
+  static void construct(AdaptedWithContext& field, Context&& ctx) {
+    field.meta = &*ctx.object.meta_ref();
+  }
+
+  template <typename Context>
   static AdaptedWithContext fromThriftField(int64_t value, Context&& ctx) {
     return {value, Context::kFieldId, &*ctx.object.meta_ref()};
   }

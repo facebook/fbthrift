@@ -556,6 +556,7 @@ TEST(AdaptTest, AdapterWithContext) {
                 basic::AdaptTestStruct>);
 
   auto obj = basic::AdaptTestStruct();
+  EXPECT_EQ(obj.data_ref()->meta, &*obj.meta_ref());
   obj.data_ref() = {};
   obj.data_ref()->value = 42;
   obj.meta_ref() = "foo";

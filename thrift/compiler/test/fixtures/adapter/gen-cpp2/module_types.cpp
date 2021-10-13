@@ -44,6 +44,9 @@ Foo::Foo() :
       intField(),
       optionalIntField(),
       intFieldWithDefault(::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 3>(static_cast<::std::int32_t>(13), *this)) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(intField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(optionalIntField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(intFieldWithDefault, *this);
 }
 
 THRIFT_IGNORE_ISSET_USE_WARNING_END

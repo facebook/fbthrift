@@ -50,6 +50,11 @@ template <typename Adapter, typename ThriftT, typename Struct>
 using FromThriftFieldType = decltype(Adapter::fromThriftField(
     std::declval<ThriftT>(), std::declval<FieldAdapterContext<Struct, 0>>()));
 
+// Used to detect if Adapter has the construct function.
+template <typename Adapter, typename AdaptedT, typename Context>
+using ConstructType = decltype(Adapter::construct(
+    std::declval<AdaptedT&>(), std::declval<Context>()));
+
 // Converts a Thrift field value into an adapted type via Adapter.
 // This overload passes additional context containing the reference to the
 // Thrift object containing the field and the field ID as a second argument
@@ -106,6 +111,39 @@ template <typename Adapter, typename AdaptedT, typename ThriftT>
 void fromThrift(AdaptedT& adapted, ThriftT&& value) {
   adapted = Adapter::fromThrift(std::forward<ThriftT>(value));
 }
+
+// Called during the construction of a Thrift object to perform any additonal
+// initialization of an adapted type. This overload passes a context containing
+// the reference to the Thrift object containing the field and the field ID as
+// a second argument to Adapter::construct.
+template <
+    typename Adapter,
+    int16_t FieldId,
+    typename AdaptedT,
+    typename Struct,
+    std::enable_if_t<
+        folly::is_detected_v<
+            ConstructType,
+            Adapter,
+            AdaptedT,
+            FieldAdapterContext<Struct, FieldId>>,
+        int> = 0>
+constexpr void construct(AdaptedT& field, Struct& object) {
+  Adapter::construct(field, FieldAdapterContext<Struct, FieldId>{object});
+}
+template <
+    typename Adapter,
+    int16_t FieldId,
+    typename AdaptedT,
+    typename Struct,
+    std::enable_if_t<
+        !folly::is_detected_v<
+            ConstructType,
+            Adapter,
+            AdaptedT,
+            FieldAdapterContext<Struct, FieldId>>,
+        int> = 0>
+constexpr void construct(AdaptedT&, Struct&) {}
 
 // Equal op based on the thrift types.
 template <typename Adapter, typename AdaptedT>

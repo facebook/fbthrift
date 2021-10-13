@@ -27,4 +27,7 @@
     %><%/field:type%><%!
   %><%/struct:filtered_fields%><%!
 %> {
+  <%#struct:filtered_fields%><%#field:cpp_adapter%>
+  ::apache::thrift::adapt_detail::construct<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_name%>, *this);
+  <%/field:cpp_adapter%><%/struct:filtered_fields%>
 }
