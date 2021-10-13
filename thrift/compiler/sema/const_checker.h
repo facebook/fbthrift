@@ -16,16 +16,24 @@
 
 #pragma once
 
-#include <string>
-
-#include <thrift/compiler/ast/diagnostic_context.h>
-#include <thrift/compiler/ast/t_const_value.h>
-#include <thrift/compiler/ast/t_named.h>
-#include <thrift/compiler/ast/t_type.h>
-
 namespace apache {
 namespace thrift {
 namespace compiler {
+
+class diagnostic_context;
+class t_base_type;
+class t_const_value;
+class t_named;
+class t_type;
+
+namespace detail {
+
+bool is_valid_custom_default_integer(
+    const t_base_type* type, const t_const_value* value);
+
+bool is_valid_custom_default_float(const t_const_value* value);
+
+} // namespace detail
 
 // (ffrancet) I managed to trace this comment all the way back to 2008 when
 // thrift was migrated to the fbcode repo. True piece of history here

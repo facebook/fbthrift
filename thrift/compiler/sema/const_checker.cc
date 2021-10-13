@@ -16,15 +16,48 @@
 
 #include <thrift/compiler/sema/const_checker.h>
 
+#include <cassert>
+#include <limits>
+#include <string>
 #include <utility>
 #include <vector>
 
+#include <thrift/compiler/ast/diagnostic_context.h>
+#include <thrift/compiler/ast/t_base_type.h>
+#include <thrift/compiler/ast/t_const_value.h>
+#include <thrift/compiler/ast/t_named.h>
+#include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/ast/t_union.h>
 
 namespace apache {
 namespace thrift {
 namespace compiler {
+namespace detail {
 
+bool is_valid_custom_default_integer(
+    const t_base_type* type, const t_const_value* value) {
+  int64_t min = 0, max = 0;
+  if (type->is_byte()) {
+    min = std::numeric_limits<int8_t>::min();
+    max = std::numeric_limits<int8_t>::max();
+  } else if (type->is_i16()) {
+    min = std::numeric_limits<int16_t>::min();
+    max = std::numeric_limits<int16_t>::max();
+  } else if (type->is_i32()) {
+    min = std::numeric_limits<int32_t>::min();
+    max = std::numeric_limits<int32_t>::max();
+  } else {
+    assert(false); // Should be unreachable.
+  }
+  return min <= value->get_integer() && value->get_integer() <= max;
+}
+
+bool is_valid_custom_default_float(const t_const_value* value) {
+  return std::numeric_limits<float>::lowest() <= value->get_double() &&
+      value->get_double() <= std::numeric_limits<float>::max();
+}
+
+} // namespace detail
 namespace {
 class const_checker {
  public:
@@ -36,6 +69,7 @@ class const_checker {
 
     if (const auto concrete = dynamic_cast<const t_base_type*>(type)) {
       check_base_type(concrete, value);
+      check_base_value(concrete, value);
     } else if (const auto concrete = dynamic_cast<const t_enum*>(type)) {
       check_enum(concrete, value);
     } else if (const auto concrete = dynamic_cast<const t_union*>(type)) {
@@ -51,7 +85,7 @@ class const_checker {
     } else if (const auto concrete = dynamic_cast<const t_set*>(type)) {
       check_set(concrete, value);
     } else {
-      assert(false); // should be unreachable.
+      assert(false); // Should be unreachable.
     }
   }
 
@@ -70,6 +104,13 @@ class const_checker {
     ctx_.warning(node_, std::forward<Args>(args)...);
   }
 
+  void report_value_mistmatch_warning() {
+    warning([&](auto& o) {
+      o << "value error: const `" << name_
+        << "` has a invalid custom default value. This will become an error in future versions of thrift.";
+    });
+  }
+
   void report_type_mismatch(const char* expected) {
     failure([&](auto& o) {
       o << "type error: const `" << name_ << "` was declared as " << expected
@@ -82,6 +123,38 @@ class const_checker {
       o << "type error: const `" << name_ << "` was declared as " << expected
         << ". This will become an error in future versions of thrift.";
     });
+  }
+
+  // For CV_INTEGER, an overflow of int64_t is checked in the parser;
+  // therefore, we don't need to check an overflow of i64 or a floating point
+  // stored in integer value. Similarly, for CV_DOUBLE, we do not need
+  // to check double.
+  void check_base_value(const t_base_type* type, const t_const_value* value) {
+    switch (type->base_type()) {
+      case t_base_type::type::t_void:
+      case t_base_type::type::t_string:
+      case t_base_type::type::t_binary:
+      case t_base_type::type::t_bool:
+      case t_base_type::type::t_i64:
+      case t_base_type::type::t_double:
+        break;
+      case t_base_type::type::t_byte:
+      case t_base_type::type::t_i16:
+      case t_base_type::type::t_i32:
+        if (value->get_type() == t_const_value::CV_INTEGER &&
+            !detail::is_valid_custom_default_integer(type, value)) {
+          report_value_mistmatch_warning();
+        }
+        break;
+      case t_base_type::type::t_float:
+        if (value->get_type() == t_const_value::CV_DOUBLE &&
+            !detail::is_valid_custom_default_float(value)) {
+          report_value_mistmatch_warning();
+        }
+        break;
+      default:
+        assert(false); // Should be unreachable.
+    }
   }
 
   void check_base_type(const t_base_type* type, const t_const_value* value) {
@@ -131,10 +204,7 @@ class const_checker {
         }
         break;
       default:
-        failure([&](auto& o) {
-          o << "compiler error: no const of base type "
-            << t_base_type::t_base_name(type->base_type()) << name_;
-        });
+        assert(false); // Should be unreachable.
     }
   }
 

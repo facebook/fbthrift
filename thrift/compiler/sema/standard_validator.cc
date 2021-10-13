@@ -368,7 +368,7 @@ void validate_enum_value(diagnostic_context& ctx, const t_enum_value& node) {
   }
 }
 
-void validate_const_type(diagnostic_context& ctx, const t_const& c) {
+void validate_const_type_and_value(diagnostic_context& ctx, const t_const& c) {
   check_const_rec(ctx, c, &c.type().deref(), c.value());
 }
 
@@ -393,7 +393,7 @@ void validate_structured_annotation(
           *annot,
           *result.first->second);
     }
-    validate_const_type(ctx, *annot);
+    validate_const_type_and_value(ctx, *annot);
   }
 }
 
@@ -517,7 +517,7 @@ ast_validator standard_validator() {
   validator.add_definition_visitor(&validate_structured_annotation);
   validator.add_definition_visitor(&validate_annotation_scopes);
 
-  validator.add_const_visitor(&validate_const_type);
+  validator.add_const_visitor(&validate_const_type_and_value);
   validator.add_program_visitor(&validate_uri_uniqueness);
   return validator;
 }
