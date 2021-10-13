@@ -122,3 +122,53 @@ using StatefulAllocSortedVectorSet =
 template <class K, class V>
 using StatefulAllocSortedVectorMap =
     folly::sorted_vector_map<K, V, std::less<K>, ScopedStatefulAlloc>;
+
+template <class T>
+struct CountingAlloc : private std::allocator<T> {
+  using value_type = T;
+
+  CountingAlloc() : counter_(std::make_shared<int>(0)) {}
+
+  CountingAlloc(const CountingAlloc&) = default;
+  CountingAlloc& operator=(const CountingAlloc&) noexcept = default;
+  template <class U>
+  explicit CountingAlloc(const CountingAlloc<U>& other) noexcept
+      : counter_(other.counter_) {}
+
+  std::shared_ptr<int> counter_;
+
+  int getCount() const { return *counter_; }
+
+  T* allocate(size_t size) {
+    (*counter_)++;
+    return std::allocator<T>::allocate(size);
+  }
+
+  void deallocate(T* p, size_t size) { std::allocator<T>::deallocate(p, size); }
+
+  template <class U>
+  friend bool operator==(
+      CountingAlloc<T> const&, CountingAlloc<U> const&) noexcept {
+    return true;
+  }
+
+  template <class U>
+  friend bool operator!=(
+      CountingAlloc<T> const&, CountingAlloc<U> const&) noexcept {
+    return false;
+  }
+};
+
+using ScopedCountingAlloc = std::scoped_allocator_adaptor<CountingAlloc<char>>;
+
+template <class T>
+using CountingVector = std::vector<T, ScopedCountingAlloc>;
+
+template <class T>
+using CountingSet = std::set<T, std::less<T>, ScopedCountingAlloc>;
+
+template <class K, class V>
+using CountingMap = std::map<K, V, std::less<K>, ScopedCountingAlloc>;
+
+using CountingString =
+    std::basic_string<char, std::char_traits<char>, ScopedCountingAlloc>;

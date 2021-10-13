@@ -103,3 +103,23 @@ struct HasSortedUniqueConstructibleFields {
     cpp.template = "::StatefulAllocSortedVectorMap",
   ) aa_map;
 } (cpp.allocator = "::ScopedStatefulAlloc")
+
+struct CountingChild {
+  1: list<i32> (cpp.use_allocator, cpp.template = "::CountingVector") aa_list;
+  2: set<i32> (cpp.use_allocator, cpp.template = "::CountingSet") aa_set;
+  3: map<i32, i32> (cpp.use_allocator, cpp.template = "::CountingMap") aa_map;
+  4: string (cpp.use_allocator, cpp.type = "::CountingString") aa_string;
+  5: i32 not_a_container;
+  6: list<i32> not_aa_list;
+  7: set<i32> not_aa_set;
+  8: map<i32, i32> not_aa_map;
+  9: string not_aa_string;
+} (cpp.allocator = "::ScopedCountingAlloc")
+
+struct CountingParent {
+  1: list<CountingChild> (
+    cpp.use_allocator,
+    cpp.template = "::CountingVector",
+  ) aa_child_list;
+  2: list<CountingChild> not_aa_child_list;
+} (cpp.allocator = "::ScopedCountingAlloc")
