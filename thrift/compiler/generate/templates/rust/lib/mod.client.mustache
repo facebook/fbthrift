@@ -18,7 +18,7 @@
 
 {{#program:services}}
 
-    pub struct {{service:name}}Impl<P, T, S> {
+    pub struct {{service:name}}Impl<P, T, S = ::fbthrift::NoopSpawner> {
         {{#service:extends}}
         parent: {{service:package}}::client::{{service:name}}Impl<P, T, S>,
         {{/service:extends}}
@@ -334,9 +334,23 @@
         pub const {{annotation:rust_name}}: &'static ::std::primitive::str = {{annotation:rust_value}};
         {{/annotation:value?}}
         {{/service:annotations}}
-        pub fn new<P, T, S>(
+        pub fn new<P, T>(
             protocol: P,
             transport: T,
+        ) -> ::std::sync::Arc<impl {{service:name}} + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, T, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
         ) -> ::std::sync::Arc<impl {{service:name}} + ::std::marker::Send + 'static>
         where
             P: ::fbthrift::Protocol<Frame = T>,
@@ -345,6 +359,7 @@
             S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
+            let _ = spawner;
             ::std::sync::Arc::new({{service:name}}Impl::<P, T, S>::new(transport))
         }
     }
@@ -357,14 +372,14 @@
     impl ::fbthrift::ClientFactory for make_{{service:name}} {
         type Api = dyn {{service:name}} + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn with_spawner<P, T, S>(protocol: P, transport: T, spawner: S) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
             S: ::fbthrift::help::Spawner,
         {
-            <dyn {{service:name}}>::new::<P, T, S>(protocol, transport)
+            <dyn {{service:name}}>::with_spawner(protocol, transport, spawner)
         }
     }{{!
 }}{{/program:services}}

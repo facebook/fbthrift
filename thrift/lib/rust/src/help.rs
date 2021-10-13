@@ -151,7 +151,7 @@ pub trait Spawner: 'static {
 }
 
 /// No-op implementation of Spawner - just run on current thread
-pub enum NoopSpawner {}
+pub struct NoopSpawner;
 impl Spawner for NoopSpawner {
     #[inline]
     fn spawn<F, R>(func: F) -> Pin<Box<dyn Future<Output = R> + Send>>

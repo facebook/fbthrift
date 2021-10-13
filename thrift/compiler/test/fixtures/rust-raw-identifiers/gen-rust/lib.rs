@@ -327,7 +327,7 @@ pub mod services {
 /// Client implementation for each service in `mod`.
 pub mod client {
 
-    pub struct FooImpl<P, T, S> {
+    pub struct FooImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
@@ -534,9 +534,23 @@ pub mod client {
     /// # };
     /// ```
     impl dyn Foo {
-        pub fn new<P, T, S>(
+        pub fn new<P, T>(
             protocol: P,
             transport: T,
+        ) -> ::std::sync::Arc<impl Foo + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, T, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
         ) -> ::std::sync::Arc<impl Foo + ::std::marker::Send + 'static>
         where
             P: ::fbthrift::Protocol<Frame = T>,
@@ -545,6 +559,7 @@ pub mod client {
             S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
+            let _ = spawner;
             ::std::sync::Arc::new(FooImpl::<P, T, S>::new(transport))
         }
     }
@@ -557,14 +572,14 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_Foo {
         type Api = dyn Foo + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn with_spawner<P, T, S>(protocol: P, transport: T, spawner: S) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
             S: ::fbthrift::help::Spawner,
         {
-            <dyn Foo>::new::<P, T, S>(protocol, transport)
+            <dyn Foo>::with_spawner(protocol, transport, spawner)
         }
     }
 

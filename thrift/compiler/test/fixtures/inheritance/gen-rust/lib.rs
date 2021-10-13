@@ -372,7 +372,7 @@ pub mod services {
 /// Client implementation for each service in `module`.
 pub mod client {
 
-    pub struct MyRootImpl<P, T, S> {
+    pub struct MyRootImpl<P, T, S = ::fbthrift::NoopSpawner> {
         transport: T,
         _phantom: ::std::marker::PhantomData<fn() -> (P, S)>,
     }
@@ -495,9 +495,23 @@ pub mod client {
     /// # };
     /// ```
     impl dyn MyRoot {
-        pub fn new<P, T, S>(
+        pub fn new<P, T>(
             protocol: P,
             transport: T,
+        ) -> ::std::sync::Arc<impl MyRoot + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, T, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
         ) -> ::std::sync::Arc<impl MyRoot + ::std::marker::Send + 'static>
         where
             P: ::fbthrift::Protocol<Frame = T>,
@@ -506,6 +520,7 @@ pub mod client {
             S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
+            let _ = spawner;
             ::std::sync::Arc::new(MyRootImpl::<P, T, S>::new(transport))
         }
     }
@@ -518,17 +533,17 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_MyRoot {
         type Api = dyn MyRoot + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn with_spawner<P, T, S>(protocol: P, transport: T, spawner: S) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
             S: ::fbthrift::help::Spawner,
         {
-            <dyn MyRoot>::new::<P, T, S>(protocol, transport)
+            <dyn MyRoot>::with_spawner(protocol, transport, spawner)
         }
     }
-    pub struct MyNodeImpl<P, T, S> {
+    pub struct MyNodeImpl<P, T, S = ::fbthrift::NoopSpawner> {
         parent: crate::client::MyRootImpl<P, T, S>,
     }
 
@@ -664,9 +679,23 @@ pub mod client {
     /// # };
     /// ```
     impl dyn MyNode {
-        pub fn new<P, T, S>(
+        pub fn new<P, T>(
             protocol: P,
             transport: T,
+        ) -> ::std::sync::Arc<impl MyNode + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, T, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
         ) -> ::std::sync::Arc<impl MyNode + ::std::marker::Send + 'static>
         where
             P: ::fbthrift::Protocol<Frame = T>,
@@ -675,6 +704,7 @@ pub mod client {
             S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
+            let _ = spawner;
             ::std::sync::Arc::new(MyNodeImpl::<P, T, S>::new(transport))
         }
     }
@@ -687,17 +717,17 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_MyNode {
         type Api = dyn MyNode + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn with_spawner<P, T, S>(protocol: P, transport: T, spawner: S) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
             S: ::fbthrift::help::Spawner,
         {
-            <dyn MyNode>::new::<P, T, S>(protocol, transport)
+            <dyn MyNode>::with_spawner(protocol, transport, spawner)
         }
     }
-    pub struct MyLeafImpl<P, T, S> {
+    pub struct MyLeafImpl<P, T, S = ::fbthrift::NoopSpawner> {
         parent: crate::client::MyNodeImpl<P, T, S>,
     }
 
@@ -849,9 +879,23 @@ pub mod client {
     /// # };
     /// ```
     impl dyn MyLeaf {
-        pub fn new<P, T, S>(
+        pub fn new<P, T>(
             protocol: P,
             transport: T,
+        ) -> ::std::sync::Arc<impl MyLeaf + ::std::marker::Send + 'static>
+        where
+            P: ::fbthrift::Protocol<Frame = T>,
+            T: ::fbthrift::Transport,
+            P::Deserializer: ::std::marker::Send,
+        {
+            let spawner = ::fbthrift::help::NoopSpawner;
+            Self::with_spawner(protocol, transport, spawner)
+        }
+
+        pub fn with_spawner<P, T, S>(
+            protocol: P,
+            transport: T,
+            spawner: S,
         ) -> ::std::sync::Arc<impl MyLeaf + ::std::marker::Send + 'static>
         where
             P: ::fbthrift::Protocol<Frame = T>,
@@ -860,6 +904,7 @@ pub mod client {
             S: ::fbthrift::help::Spawner,
         {
             let _ = protocol;
+            let _ = spawner;
             ::std::sync::Arc::new(MyLeafImpl::<P, T, S>::new(transport))
         }
     }
@@ -872,14 +917,14 @@ pub mod client {
     impl ::fbthrift::ClientFactory for make_MyLeaf {
         type Api = dyn MyLeaf + ::std::marker::Send + ::std::marker::Sync + 'static;
 
-        fn new<P, T, S>(protocol: P, transport: T) -> ::std::sync::Arc<Self::Api>
+        fn with_spawner<P, T, S>(protocol: P, transport: T, spawner: S) -> ::std::sync::Arc<Self::Api>
         where
             P: ::fbthrift::Protocol<Frame = T>,
             T: ::fbthrift::Transport + ::std::marker::Sync,
             P::Deserializer: ::std::marker::Send,
             S: ::fbthrift::help::Spawner,
         {
-            <dyn MyLeaf>::new::<P, T, S>(protocol, transport)
+            <dyn MyLeaf>::with_spawner(protocol, transport, spawner)
         }
     }
 
