@@ -16,12 +16,21 @@
 
 #include <exception>
 
+#include <folly/lang/Keep.h>
 #include <folly/portability/GTest.h>
 
 #include <thrift/lib/cpp2/PluggableFunction.h>
 
 THRIFT_PLUGGABLE_FUNC_DECLARE(int, functionDefault, int);
 THRIFT_PLUGGABLE_FUNC_DECLARE(int, functionWithOverride, int, int);
+
+extern "C" FOLLY_KEEP int check_pluggable_func_invoke_default(int a) {
+  return functionDefault(a);
+}
+
+extern "C" FOLLY_KEEP int check_pluggable_func_invoke_override(int a, int b) {
+  return functionWithOverride(a, b);
+}
 
 THRIFT_PLUGGABLE_FUNC_REGISTER(int, functionDefault, int a) {
   return a * 2;
