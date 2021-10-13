@@ -16,6 +16,7 @@
 
 #include <algorithm>
 #include <array>
+#include <cassert>
 #include <memory>
 #include <queue>
 #include <set>
@@ -183,17 +184,12 @@ class cpp2_generator_context {
     return cpp2::is_orderable(seen, memo, type);
   }
 
-  size_t isset_index(const t_field* f) {
-    return cpp2::isset_index(isset_index_memo_, f);
-  }
-
   gen::cpp::type_resolver& resolver() { return resolver_; }
 
  private:
   cpp2_generator_context() = default;
 
   std::unordered_map<t_type const*, bool> is_orderable_memo_;
-  std::unordered_map<t_field const*, int32_t> isset_index_memo_;
   gen::cpp::type_resolver resolver_;
 };
 
@@ -620,7 +616,8 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node index_plus_one() { return std::to_string(index_ + 1); }
   mstch::node isset_index() {
-    return std::to_string(context_->isset_index(field_));
+    assert(field_context_);
+    return field_context_->isset_index;
   }
   mstch::node cpp_name() { return cpp2::get_name(field_); }
   mstch::node cpp_storage_type() {

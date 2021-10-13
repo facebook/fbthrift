@@ -115,7 +115,9 @@ class type_generator {
       int32_t index = 0) const;
 };
 
-struct field_generator_context {};
+struct field_generator_context {
+  int isset_index = -1;
+};
 
 class field_generator {
  public:
@@ -858,8 +860,11 @@ class mstch_field : public mstch_base {
       std::shared_ptr<mstch_cache> cache,
       ELEMENT_POSITION pos,
       int32_t index,
-      field_generator_context const* /*field_context*/)
-      : mstch_base(generators, cache, pos), field_(field), index_(index) {
+      field_generator_context const* field_context)
+      : mstch_base(generators, cache, pos),
+        field_(field),
+        index_(index),
+        field_context_(field_context) {
     register_methods(
         this,
         {
@@ -898,6 +903,7 @@ class mstch_field : public mstch_base {
  protected:
   t_field const* field_;
   int32_t index_;
+  field_generator_context const* field_context_;
 };
 
 class mstch_annotation : public mstch_base {
@@ -992,8 +998,12 @@ class mstch_struct : public mstch_base {
         });
 
     // Populate field_context_generator for each field.
+    auto ctx = field_generator_context{};
     for (auto&& field : strct->fields()) {
-      context_map[&field] = {};
+      if (cpp2::field_has_isset(&field)) {
+        ctx.isset_index++;
+      }
+      context_map[&field] = ctx;
     }
   }
   mstch::node name() { return strct_->get_name(); }

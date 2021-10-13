@@ -118,21 +118,6 @@ bool is_orderable(t_type const& type) {
   return is_orderable(seen, memo, type);
 }
 
-int32_t isset_index(
-    std::unordered_map<t_field const*, int32_t>& memo, t_field const* field) {
-  if (field == nullptr) {
-    return -1;
-  }
-  if (!memo.count(field)) {
-    auto index = isset_index(memo, field->prev());
-    if (field_has_isset(field)) {
-      ++index;
-    }
-    memo[field] = index;
-  }
-  return memo[field];
-}
-
 std::string const& get_type(const t_type* type) {
   return value_or_empty(gen::cpp::type_resolver::find_type(type));
 }

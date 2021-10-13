@@ -58,8 +58,6 @@ bool is_orderable(
     std::unordered_map<t_type const*, bool>& memo,
     t_type const& type);
 bool is_orderable(t_type const& type);
-int32_t isset_index(
-    std::unordered_map<t_field const*, int32_t>& memo, t_field const* field);
 
 /**
  * Return the cpp.type/cpp2.type attribute or empty string if nothing set.
