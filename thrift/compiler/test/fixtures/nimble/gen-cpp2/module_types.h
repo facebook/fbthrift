@@ -198,7 +198,7 @@ private:
 
   [[deprecated("Use `FOO.first_ref() = BAR;` instead of `FOO.set_first(BAR);`")]]
   ::std::int32_t& set_first(::std::int32_t first_) {
-    first = first_;
+    first_ref() = first_;
     return first;
   }
 
@@ -213,8 +213,7 @@ private:
 
   [[deprecated("Use `FOO.second_ref() = BAR;` instead of `FOO.set_second(BAR);`")]]
   ::std::int32_t& set_second(::std::int32_t second_) {
-    second = second_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    second_ref() = second_;
     return second;
   }
 
@@ -229,8 +228,7 @@ private:
 
   [[deprecated("Use `FOO.third_ref() = BAR;` instead of `FOO.set_third(BAR);`")]]
   ::std::int64_t& set_third(::std::int64_t third_) {
-    third = third_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    third_ref() = third_;
     return third;
   }
 
@@ -240,8 +238,7 @@ private:
 
   [[deprecated("Use `FOO.isTrue_ref() = BAR;` instead of `FOO.set_isTrue(BAR);`")]]
   bool& set_isTrue(bool isTrue_) {
-    isTrue = isTrue_;
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    isTrue_ref() = isTrue_;
     return isTrue;
   }
 

@@ -165,7 +165,7 @@ class FOLLY_EXPORT Fiery : public apache::thrift::TException {
   template <typename T_Fiery_message_struct_setter = ::std::string>
   [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_Fiery_message_struct_setter&& message_) {
-    message = std::forward<T_Fiery_message_struct_setter>(message_);
+    message_ref() = std::forward<T_Fiery_message_struct_setter>(message_);
     return message;
   }
 
@@ -282,8 +282,7 @@ private:
   template <typename T_Serious_sonnet_struct_setter = ::std::string>
   [[deprecated("Use `FOO.sonnet_ref() = BAR;` instead of `FOO.set_sonnet(BAR);`")]]
   ::std::string& set_sonnet(T_Serious_sonnet_struct_setter&& sonnet_) {
-    sonnet = std::forward<T_Serious_sonnet_struct_setter>(sonnet_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    sonnet_ref() = std::forward<T_Serious_sonnet_struct_setter>(sonnet_);
     return sonnet;
   }
 
@@ -421,8 +420,7 @@ private:
   template <typename T_ComplexFieldNames_error_message_struct_setter = ::std::string>
   [[deprecated("Use `FOO.error_message_ref() = BAR;` instead of `FOO.set_error_message(BAR);`")]]
   ::std::string& set_error_message(T_ComplexFieldNames_error_message_struct_setter&& error_message_) {
-    error_message = std::forward<T_ComplexFieldNames_error_message_struct_setter>(error_message_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    error_message_ref() = std::forward<T_ComplexFieldNames_error_message_struct_setter>(error_message_);
     return error_message;
   }
 
@@ -437,8 +435,7 @@ private:
   template <typename T_ComplexFieldNames_internal_error_message_struct_setter = ::std::string>
   [[deprecated("Use `FOO.internal_error_message_ref() = BAR;` instead of `FOO.set_internal_error_message(BAR);`")]]
   ::std::string& set_internal_error_message(T_ComplexFieldNames_internal_error_message_struct_setter&& internal_error_message_) {
-    internal_error_message = std::forward<T_ComplexFieldNames_internal_error_message_struct_setter>(internal_error_message_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    internal_error_message_ref() = std::forward<T_ComplexFieldNames_internal_error_message_struct_setter>(internal_error_message_);
     return internal_error_message;
   }
 
@@ -576,8 +573,7 @@ private:
   template <typename T_CustomFieldNames_error_message_struct_setter = ::std::string>
   [[deprecated("Use `FOO.error_message_ref() = BAR;` instead of `FOO.set_error_message(BAR);`")]]
   ::std::string& set_error_message(T_CustomFieldNames_error_message_struct_setter&& error_message_) {
-    error_message = std::forward<T_CustomFieldNames_error_message_struct_setter>(error_message_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    error_message_ref() = std::forward<T_CustomFieldNames_error_message_struct_setter>(error_message_);
     return error_message;
   }
 
@@ -592,8 +588,7 @@ private:
   template <typename T_CustomFieldNames_internal_error_message_struct_setter = ::std::string>
   [[deprecated("Use `FOO.internal_error_message_ref() = BAR;` instead of `FOO.set_internal_error_message(BAR);`")]]
   ::std::string& set_internal_error_message(T_CustomFieldNames_internal_error_message_struct_setter&& internal_error_message_) {
-    internal_error_message = std::forward<T_CustomFieldNames_internal_error_message_struct_setter>(internal_error_message_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    internal_error_message_ref() = std::forward<T_CustomFieldNames_internal_error_message_struct_setter>(internal_error_message_);
     return internal_error_message;
   }
 
@@ -731,8 +726,7 @@ private:
   template <typename T_ExceptionWithPrimitiveField_message_struct_setter = ::std::string>
   [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_ExceptionWithPrimitiveField_message_struct_setter&& message_) {
-    message = std::forward<T_ExceptionWithPrimitiveField_message_struct_setter>(message_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    message_ref() = std::forward<T_ExceptionWithPrimitiveField_message_struct_setter>(message_);
     return message;
   }
 
@@ -742,8 +736,7 @@ private:
 
   [[deprecated("Use `FOO.error_code_ref() = BAR;` instead of `FOO.set_error_code(BAR);`")]]
   ::std::int32_t& set_error_code(::std::int32_t error_code_) {
-    error_code = error_code_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    error_code_ref() = error_code_;
     return error_code;
   }
 

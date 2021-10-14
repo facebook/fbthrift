@@ -140,8 +140,7 @@ private:
 
   [[deprecated("Use `FOO.i32Field_ref() = BAR;` instead of `FOO.set_i32Field(BAR);`")]]
   ::std::int32_t& set_i32Field(::std::int32_t i32Field_) {
-    i32Field = i32Field_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    i32Field_ref() = i32Field_;
     return i32Field;
   }
 
@@ -156,8 +155,7 @@ private:
   template <typename T_IncludedB_strField_struct_setter = ::std::string>
   [[deprecated("Use `FOO.strField_ref() = BAR;` instead of `FOO.set_strField(BAR);`")]]
   ::std::string& set_strField(T_IncludedB_strField_struct_setter&& strField_) {
-    strField = std::forward<T_IncludedB_strField_struct_setter>(strField_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    strField_ref() = std::forward<T_IncludedB_strField_struct_setter>(strField_);
     return strField;
   }
 

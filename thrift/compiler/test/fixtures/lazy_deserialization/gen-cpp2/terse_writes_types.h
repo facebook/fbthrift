@@ -255,8 +255,7 @@ private:
   template <typename T_TerseFoo_field1_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_TerseFoo_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_TerseFoo_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field1_ref() = std::forward<T_TerseFoo_field1_struct_setter>(field1_);
     return field1;
   }
   const ::std::vector<::std::int32_t>& get_field2() const&;
@@ -265,8 +264,7 @@ private:
   template <typename T_TerseFoo_field2_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_TerseFoo_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_TerseFoo_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field2_ref() = std::forward<T_TerseFoo_field2_struct_setter>(field2_);
     return field2;
   }
   const ::std::vector<double>& get_field3() const&;
@@ -275,8 +273,7 @@ private:
   template <typename T_TerseFoo_field3_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::std::vector<double>& set_field3(T_TerseFoo_field3_struct_setter&& field3_) {
-    field3 = std::forward<T_TerseFoo_field3_struct_setter>(field3_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    field3_ref() = std::forward<T_TerseFoo_field3_struct_setter>(field3_);
     return field3;
   }
   const ::std::vector<::std::int32_t>& get_field4() const&;
@@ -285,8 +282,7 @@ private:
   template <typename T_TerseFoo_field4_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field4_ref() = BAR;` instead of `FOO.set_field4(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field4(T_TerseFoo_field4_struct_setter&& field4_) {
-    field4 = std::forward<T_TerseFoo_field4_struct_setter>(field4_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    field4_ref() = std::forward<T_TerseFoo_field4_struct_setter>(field4_);
     return field4;
   }
 
@@ -447,8 +443,7 @@ private:
   template <typename T_TerseLazyFoo_field1_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_TerseLazyFoo_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_TerseLazyFoo_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field1_ref() = std::forward<T_TerseLazyFoo_field1_struct_setter>(field1_);
     return field1;
   }
   const ::std::vector<::std::int32_t>& get_field2() const&;
@@ -457,8 +452,7 @@ private:
   template <typename T_TerseLazyFoo_field2_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_TerseLazyFoo_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_TerseLazyFoo_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field2_ref() = std::forward<T_TerseLazyFoo_field2_struct_setter>(field2_);
     return field2;
   }
 
@@ -645,8 +639,7 @@ private:
   template <typename T_TerseOptionalFoo_field1_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_TerseOptionalFoo_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_TerseOptionalFoo_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field1_ref() = std::forward<T_TerseOptionalFoo_field1_struct_setter>(field1_);
     return field1;
   }
   const ::std::vector<::std::int32_t>* get_field2() const&;
@@ -656,8 +649,7 @@ private:
   template <typename T_TerseOptionalFoo_field2_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_TerseOptionalFoo_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_TerseOptionalFoo_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field2_ref() = std::forward<T_TerseOptionalFoo_field2_struct_setter>(field2_);
     return field2;
   }
   const ::std::vector<double>* get_field3() const&;
@@ -667,8 +659,7 @@ private:
   template <typename T_TerseOptionalFoo_field3_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::std::vector<double>& set_field3(T_TerseOptionalFoo_field3_struct_setter&& field3_) {
-    field3 = std::forward<T_TerseOptionalFoo_field3_struct_setter>(field3_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    field3_ref() = std::forward<T_TerseOptionalFoo_field3_struct_setter>(field3_);
     return field3;
   }
   const ::std::vector<::std::int32_t>* get_field4() const&;
@@ -678,8 +669,7 @@ private:
   template <typename T_TerseOptionalFoo_field4_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field4_ref() = BAR;` instead of `FOO.set_field4(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field4(T_TerseOptionalFoo_field4_struct_setter&& field4_) {
-    field4 = std::forward<T_TerseOptionalFoo_field4_struct_setter>(field4_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    field4_ref() = std::forward<T_TerseOptionalFoo_field4_struct_setter>(field4_);
     return field4;
   }
 
@@ -841,8 +831,7 @@ private:
   template <typename T_TerseOptionalLazyFoo_field1_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_TerseOptionalLazyFoo_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_TerseOptionalLazyFoo_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field1_ref() = std::forward<T_TerseOptionalLazyFoo_field1_struct_setter>(field1_);
     return field1;
   }
   const ::std::vector<::std::int32_t>* get_field2() const&;
@@ -852,8 +841,7 @@ private:
   template <typename T_TerseOptionalLazyFoo_field2_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_TerseOptionalLazyFoo_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_TerseOptionalLazyFoo_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field2_ref() = std::forward<T_TerseOptionalLazyFoo_field2_struct_setter>(field2_);
     return field2;
   }
 

@@ -317,8 +317,7 @@ private:
 
   [[deprecated("Use `FOO.err_code_ref() = BAR;` instead of `FOO.set_err_code(BAR);`")]]
   ::std::int16_t& set_err_code(::std::int16_t err_code_) {
-    err_code = err_code_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    err_code_ref() = err_code_;
     return err_code;
   }
 
@@ -424,8 +423,7 @@ private:
   template <typename T_OptionalRefStruct_optional_blob_struct_setter = ::py3::simple::IOBufPtr>
   [[deprecated("Use `FOO.optional_blob_ref() = BAR;` instead of `FOO.set_optional_blob(BAR);`")]]
   ::py3::simple::IOBufPtr& set_optional_blob(T_OptionalRefStruct_optional_blob_struct_setter&& optional_blob_) {
-    optional_blob = std::forward<T_OptionalRefStruct_optional_blob_struct_setter>(optional_blob_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    optional_blob_ref() = std::forward<T_OptionalRefStruct_optional_blob_struct_setter>(optional_blob_);
     return optional_blob;
   }
 
@@ -684,8 +682,7 @@ private:
 
   [[deprecated("Use `FOO.is_on_ref() = BAR;` instead of `FOO.set_is_on(BAR);`")]]
   bool& set_is_on(bool is_on_) {
-    is_on = is_on_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    is_on_ref() = is_on_;
     return is_on;
   }
 
@@ -695,8 +692,7 @@ private:
 
   [[deprecated("Use `FOO.tiny_int_ref() = BAR;` instead of `FOO.set_tiny_int(BAR);`")]]
   ::std::int8_t& set_tiny_int(::std::int8_t tiny_int_) {
-    tiny_int = tiny_int_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    tiny_int_ref() = tiny_int_;
     return tiny_int;
   }
 
@@ -706,8 +702,7 @@ private:
 
   [[deprecated("Use `FOO.small_int_ref() = BAR;` instead of `FOO.set_small_int(BAR);`")]]
   ::std::int16_t& set_small_int(::std::int16_t small_int_) {
-    small_int = small_int_;
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    small_int_ref() = small_int_;
     return small_int;
   }
 
@@ -717,8 +712,7 @@ private:
 
   [[deprecated("Use `FOO.nice_sized_int_ref() = BAR;` instead of `FOO.set_nice_sized_int(BAR);`")]]
   ::std::int32_t& set_nice_sized_int(::std::int32_t nice_sized_int_) {
-    nice_sized_int = nice_sized_int_;
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    nice_sized_int_ref() = nice_sized_int_;
     return nice_sized_int;
   }
 
@@ -728,8 +722,7 @@ private:
 
   [[deprecated("Use `FOO.big_int_ref() = BAR;` instead of `FOO.set_big_int(BAR);`")]]
   ::std::int64_t& set_big_int(::std::int64_t big_int_) {
-    big_int = big_int_;
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    big_int_ref() = big_int_;
     return big_int;
   }
 
@@ -739,8 +732,7 @@ private:
 
   [[deprecated("Use `FOO.real_ref() = BAR;` instead of `FOO.set_real(BAR);`")]]
   double& set_real(double real_) {
-    real = real_;
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+    real_ref() = real_;
     return real;
   }
 
@@ -750,8 +742,7 @@ private:
 
   [[deprecated("Use `FOO.smaller_real_ref() = BAR;` instead of `FOO.set_smaller_real(BAR);`")]]
   float& set_smaller_real(float smaller_real_) {
-    smaller_real = smaller_real_;
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+    smaller_real_ref() = smaller_real_;
     return smaller_real;
   }
 
@@ -761,8 +752,7 @@ private:
 
   [[deprecated("Use `FOO.hidden_field_ref() = BAR;` instead of `FOO.set_hidden_field(BAR);`")]]
   ::std::int16_t& set_hidden_field(::std::int16_t hidden_field_) {
-    hidden_field = hidden_field_;
-  __isset.__fbthrift_set(folly::index_constant<7>(), true);
+    hidden_field_ref() = hidden_field_;
     return hidden_field;
   }
 
@@ -1037,8 +1027,7 @@ private:
   template <typename T_ComplexStruct_structOne_struct_setter = ::py3::simple::SimpleStruct>
   [[deprecated("Use `FOO.structOne_ref() = BAR;` instead of `FOO.set_structOne(BAR);`")]]
   ::py3::simple::SimpleStruct& set_structOne(T_ComplexStruct_structOne_struct_setter&& structOne_) {
-    structOne = std::forward<T_ComplexStruct_structOne_struct_setter>(structOne_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    structOne_ref() = std::forward<T_ComplexStruct_structOne_struct_setter>(structOne_);
     return structOne;
   }
   const ::py3::simple::SimpleStruct& get_structTwo() const&;
@@ -1047,8 +1036,7 @@ private:
   template <typename T_ComplexStruct_structTwo_struct_setter = ::py3::simple::SimpleStruct>
   [[deprecated("Use `FOO.structTwo_ref() = BAR;` instead of `FOO.set_structTwo(BAR);`")]]
   ::py3::simple::SimpleStruct& set_structTwo(T_ComplexStruct_structTwo_struct_setter&& structTwo_) {
-    structTwo = std::forward<T_ComplexStruct_structTwo_struct_setter>(structTwo_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    structTwo_ref() = std::forward<T_ComplexStruct_structTwo_struct_setter>(structTwo_);
     return structTwo;
   }
 
@@ -1058,8 +1046,7 @@ private:
 
   [[deprecated("Use `FOO.an_integer_ref() = BAR;` instead of `FOO.set_an_integer(BAR);`")]]
   ::std::int32_t& set_an_integer(::std::int32_t an_integer_) {
-    an_integer = an_integer_;
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    an_integer_ref() = an_integer_;
     return an_integer;
   }
 
@@ -1074,8 +1061,7 @@ private:
   template <typename T_ComplexStruct_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_ComplexStruct_name_struct_setter&& name_) {
-    name = std::forward<T_ComplexStruct_name_struct_setter>(name_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    name_ref() = std::forward<T_ComplexStruct_name_struct_setter>(name_);
     return name;
   }
 
@@ -1085,8 +1071,7 @@ private:
 
   [[deprecated("Use `FOO.an_enum_ref() = BAR;` instead of `FOO.set_an_enum(BAR);`")]]
   ::py3::simple::AnEnum& set_an_enum(::py3::simple::AnEnum an_enum_) {
-    an_enum = an_enum_;
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    an_enum_ref() = an_enum_;
     return an_enum;
   }
 
@@ -1101,8 +1086,7 @@ private:
   template <typename T_ComplexStruct_some_bytes_struct_setter = ::std::string>
   [[deprecated("Use `FOO.some_bytes_ref() = BAR;` instead of `FOO.set_some_bytes(BAR);`")]]
   ::std::string& set_some_bytes(T_ComplexStruct_some_bytes_struct_setter&& some_bytes_) {
-    some_bytes = std::forward<T_ComplexStruct_some_bytes_struct_setter>(some_bytes_);
-    __isset.__fbthrift_set(folly::index_constant<5>(), true);
+    some_bytes_ref() = std::forward<T_ComplexStruct_some_bytes_struct_setter>(some_bytes_);
     return some_bytes;
   }
 
@@ -1117,8 +1101,7 @@ private:
   template <typename T_ComplexStruct_from_struct_setter = ::std::string>
   [[deprecated("Use `FOO.from_ref() = BAR;` instead of `FOO.set_from(BAR);`")]]
   ::std::string& set_from(T_ComplexStruct_from_struct_setter&& from_) {
-    from = std::forward<T_ComplexStruct_from_struct_setter>(from_);
-    __isset.__fbthrift_set(folly::index_constant<6>(), true);
+    from_ref() = std::forward<T_ComplexStruct_from_struct_setter>(from_);
     return from;
   }
 
@@ -1133,8 +1116,7 @@ private:
   template <typename T_ComplexStruct_cdef_struct_setter = ::std::string>
   [[deprecated("Use `FOO.cdef_ref() = BAR;` instead of `FOO.set_cdef(BAR);`")]]
   ::std::string& set_cdef(T_ComplexStruct_cdef_struct_setter&& cdef_) {
-    cdef = std::forward<T_ComplexStruct_cdef_struct_setter>(cdef_);
-    __isset.__fbthrift_set(folly::index_constant<7>(), true);
+    cdef_ref() = std::forward<T_ComplexStruct_cdef_struct_setter>(cdef_);
     return cdef;
   }
 
@@ -1149,8 +1131,7 @@ private:
   template <typename T_ComplexStruct_bytes_with_cpp_type_struct_setter = ::py3::simple::foo_bar>
   [[deprecated("Use `FOO.bytes_with_cpp_type_ref() = BAR;` instead of `FOO.set_bytes_with_cpp_type(BAR);`")]]
   ::py3::simple::foo_bar& set_bytes_with_cpp_type(T_ComplexStruct_bytes_with_cpp_type_struct_setter&& bytes_with_cpp_type_) {
-    bytes_with_cpp_type = std::forward<T_ComplexStruct_bytes_with_cpp_type_struct_setter>(bytes_with_cpp_type_);
-    __isset.__fbthrift_set(folly::index_constant<8>(), true);
+    bytes_with_cpp_type_ref() = std::forward<T_ComplexStruct_bytes_with_cpp_type_struct_setter>(bytes_with_cpp_type_);
     return bytes_with_cpp_type;
   }
 
@@ -1447,8 +1428,7 @@ private:
   template <typename T_BinaryUnionStruct_u_struct_setter = ::py3::simple::BinaryUnion>
   [[deprecated("Use `FOO.u_ref() = BAR;` instead of `FOO.set_u(BAR);`")]]
   ::py3::simple::BinaryUnion& set_u(T_BinaryUnionStruct_u_struct_setter&& u_) {
-    u = std::forward<T_BinaryUnionStruct_u_struct_setter>(u_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    u_ref() = std::forward<T_BinaryUnionStruct_u_struct_setter>(u_);
     return u;
   }
 

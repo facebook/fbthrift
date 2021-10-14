@@ -628,8 +628,7 @@ private:
   template <typename T_decorated_struct_field_struct_setter = ::std::string>
   [[deprecated("Use `FOO.field_ref() = BAR;` instead of `FOO.set_field(BAR);`")]]
   ::std::string& set_field(T_decorated_struct_field_struct_setter&& field_) {
-    field = std::forward<T_decorated_struct_field_struct_setter>(field_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field_ref() = std::forward<T_decorated_struct_field_struct_setter>(field_);
     return field;
   }
 
@@ -882,8 +881,7 @@ private:
   template <typename T_ContainerStruct_fieldA_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   ::std::vector<::std::int32_t>& set_fieldA(T_ContainerStruct_fieldA_struct_setter&& fieldA_) {
-    fieldA = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    fieldA_ref() = std::forward<T_ContainerStruct_fieldA_struct_setter>(fieldA_);
     return fieldA;
   }
   const std::list<::std::int32_t>& get_fieldB() const&;
@@ -892,8 +890,7 @@ private:
   template <typename T_ContainerStruct_fieldB_struct_setter = std::list<::std::int32_t>>
   [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
   std::list<::std::int32_t>& set_fieldB(T_ContainerStruct_fieldB_struct_setter&& fieldB_) {
-    fieldB = std::forward<T_ContainerStruct_fieldB_struct_setter>(fieldB_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    fieldB_ref() = std::forward<T_ContainerStruct_fieldB_struct_setter>(fieldB_);
     return fieldB;
   }
   const std::deque<::std::int32_t>& get_fieldC() const&;
@@ -902,8 +899,7 @@ private:
   template <typename T_ContainerStruct_fieldC_struct_setter = std::deque<::std::int32_t>>
   [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
   std::deque<::std::int32_t>& set_fieldC(T_ContainerStruct_fieldC_struct_setter&& fieldC_) {
-    fieldC = std::forward<T_ContainerStruct_fieldC_struct_setter>(fieldC_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    fieldC_ref() = std::forward<T_ContainerStruct_fieldC_struct_setter>(fieldC_);
     return fieldC;
   }
   const folly::fbvector<::std::int32_t>& get_fieldD() const&;
@@ -912,8 +908,7 @@ private:
   template <typename T_ContainerStruct_fieldD_struct_setter = folly::fbvector<::std::int32_t>>
   [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
   folly::fbvector<::std::int32_t>& set_fieldD(T_ContainerStruct_fieldD_struct_setter&& fieldD_) {
-    fieldD = std::forward<T_ContainerStruct_fieldD_struct_setter>(fieldD_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    fieldD_ref() = std::forward<T_ContainerStruct_fieldD_struct_setter>(fieldD_);
     return fieldD;
   }
   const folly::small_vector<::std::int32_t>& get_fieldE() const&;
@@ -922,8 +917,7 @@ private:
   template <typename T_ContainerStruct_fieldE_struct_setter = folly::small_vector<::std::int32_t>>
   [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
   folly::small_vector<::std::int32_t>& set_fieldE(T_ContainerStruct_fieldE_struct_setter&& fieldE_) {
-    fieldE = std::forward<T_ContainerStruct_fieldE_struct_setter>(fieldE_);
-    __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    fieldE_ref() = std::forward<T_ContainerStruct_fieldE_struct_setter>(fieldE_);
     return fieldE;
   }
   const folly::sorted_vector_set<::std::int32_t>& get_fieldF() const&;
@@ -932,8 +926,7 @@ private:
   template <typename T_ContainerStruct_fieldF_struct_setter = folly::sorted_vector_set<::std::int32_t>>
   [[deprecated("Use `FOO.fieldF_ref() = BAR;` instead of `FOO.set_fieldF(BAR);`")]]
   folly::sorted_vector_set<::std::int32_t>& set_fieldF(T_ContainerStruct_fieldF_struct_setter&& fieldF_) {
-    fieldF = std::forward<T_ContainerStruct_fieldF_struct_setter>(fieldF_);
-    __isset.__fbthrift_set(folly::index_constant<5>(), true);
+    fieldF_ref() = std::forward<T_ContainerStruct_fieldF_struct_setter>(fieldF_);
     return fieldF;
   }
   const folly::sorted_vector_map<::std::int32_t, ::std::string>& get_fieldG() const&;
@@ -942,8 +935,7 @@ private:
   template <typename T_ContainerStruct_fieldG_struct_setter = folly::sorted_vector_map<::std::int32_t, ::std::string>>
   [[deprecated("Use `FOO.fieldG_ref() = BAR;` instead of `FOO.set_fieldG(BAR);`")]]
   folly::sorted_vector_map<::std::int32_t, ::std::string>& set_fieldG(T_ContainerStruct_fieldG_struct_setter&& fieldG_) {
-    fieldG = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
-    __isset.__fbthrift_set(folly::index_constant<6>(), true);
+    fieldG_ref() = std::forward<T_ContainerStruct_fieldG_struct_setter>(fieldG_);
     return fieldG;
   }
   const ::apache::thrift::fixtures::types::SomeMap& get_fieldH() const&;
@@ -952,8 +944,7 @@ private:
   template <typename T_ContainerStruct_fieldH_struct_setter = ::apache::thrift::fixtures::types::SomeMap>
   [[deprecated("Use `FOO.fieldH_ref() = BAR;` instead of `FOO.set_fieldH(BAR);`")]]
   ::apache::thrift::fixtures::types::SomeMap& set_fieldH(T_ContainerStruct_fieldH_struct_setter&& fieldH_) {
-    fieldH = std::forward<T_ContainerStruct_fieldH_struct_setter>(fieldH_);
-    __isset.__fbthrift_set(folly::index_constant<7>(), true);
+    fieldH_ref() = std::forward<T_ContainerStruct_fieldH_struct_setter>(fieldH_);
     return fieldH;
   }
 
@@ -1049,8 +1040,7 @@ private:
   template <typename T_CppTypeStruct_fieldA_struct_setter = std::list<int32_t>>
   [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   std::list<int32_t>& set_fieldA(T_CppTypeStruct_fieldA_struct_setter&& fieldA_) {
-    fieldA = std::forward<T_CppTypeStruct_fieldA_struct_setter>(fieldA_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    fieldA_ref() = std::forward<T_CppTypeStruct_fieldA_struct_setter>(fieldA_);
     return fieldA;
   }
 
@@ -1151,8 +1141,7 @@ private:
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
-    MyIntField = MyIntField_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    MyIntField_ref() = MyIntField_;
     return MyIntField;
   }
 
@@ -1273,8 +1262,7 @@ private:
 
   [[deprecated("Use `FOO.a_ref() = BAR;` instead of `FOO.set_a(BAR);`")]]
   ::apache::thrift::fixtures::types::MyForwardRefEnum& set_a(::apache::thrift::fixtures::types::MyForwardRefEnum a_) {
-    a = a_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    a_ref() = a_;
     return a;
   }
 
@@ -1284,8 +1272,7 @@ private:
 
   [[deprecated("Use `FOO.b_ref() = BAR;` instead of `FOO.set_b(BAR);`")]]
   ::apache::thrift::fixtures::types::MyForwardRefEnum& set_b(::apache::thrift::fixtures::types::MyForwardRefEnum b_) {
-    b = b_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    b_ref() = b_;
     return b;
   }
 
@@ -1407,8 +1394,7 @@ private:
 
   [[deprecated("Use `FOO.a_ref() = BAR;` instead of `FOO.set_a(BAR);`")]]
   ::std::int32_t& set_a(::std::int32_t a_) {
-    a = a_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    a_ref() = a_;
     return a;
   }
 
@@ -1418,8 +1404,7 @@ private:
 
   [[deprecated("Use `FOO.b_ref() = BAR;` instead of `FOO.set_b(BAR);`")]]
   bool& set_b(bool b_) {
-    b = b_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    b_ref() = b_;
     return b;
   }
 
@@ -1541,8 +1526,7 @@ private:
 
   [[deprecated("Use `FOO.z_ref() = BAR;` instead of `FOO.set_z(BAR);`")]]
   ::std::int32_t& set_z(::std::int32_t z_) {
-    z = z_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    z_ref() = z_;
     return z;
   }
   const ::apache::thrift::fixtures::types::TrivialNumeric& get_n() const&;
@@ -1551,8 +1535,7 @@ private:
   template <typename T_TrivialNestedWithDefault_n_struct_setter = ::apache::thrift::fixtures::types::TrivialNumeric>
   [[deprecated("Use `FOO.n_ref() = BAR;` instead of `FOO.set_n(BAR);`")]]
   ::apache::thrift::fixtures::types::TrivialNumeric& set_n(T_TrivialNestedWithDefault_n_struct_setter&& n_) {
-    n = std::forward<T_TrivialNestedWithDefault_n_struct_setter>(n_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    n_ref() = std::forward<T_TrivialNestedWithDefault_n_struct_setter>(n_);
     return n;
   }
 
@@ -1676,8 +1659,7 @@ private:
   template <typename T_ComplexString_a_struct_setter = ::std::string>
   [[deprecated("Use `FOO.a_ref() = BAR;` instead of `FOO.set_a(BAR);`")]]
   ::std::string& set_a(T_ComplexString_a_struct_setter&& a_) {
-    a = std::forward<T_ComplexString_a_struct_setter>(a_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    a_ref() = std::forward<T_ComplexString_a_struct_setter>(a_);
     return a;
   }
   const ::std::map<::std::string, ::std::int32_t>& get_b() const&;
@@ -1686,8 +1668,7 @@ private:
   template <typename T_ComplexString_b_struct_setter = ::std::map<::std::string, ::std::int32_t>>
   [[deprecated("Use `FOO.b_ref() = BAR;` instead of `FOO.set_b(BAR);`")]]
   ::std::map<::std::string, ::std::int32_t>& set_b(T_ComplexString_b_struct_setter&& b_) {
-    b = std::forward<T_ComplexString_b_struct_setter>(b_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    b_ref() = std::forward<T_ComplexString_b_struct_setter>(b_);
     return b;
   }
 
@@ -1813,8 +1794,7 @@ private:
   template <typename T_ComplexNestedWithDefault_z_struct_setter = ::std::string>
   [[deprecated("Use `FOO.z_ref() = BAR;` instead of `FOO.set_z(BAR);`")]]
   ::std::string& set_z(T_ComplexNestedWithDefault_z_struct_setter&& z_) {
-    z = std::forward<T_ComplexNestedWithDefault_z_struct_setter>(z_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    z_ref() = std::forward<T_ComplexNestedWithDefault_z_struct_setter>(z_);
     return z;
   }
   const ::apache::thrift::fixtures::types::ComplexString& get_n() const&;
@@ -1823,8 +1803,7 @@ private:
   template <typename T_ComplexNestedWithDefault_n_struct_setter = ::apache::thrift::fixtures::types::ComplexString>
   [[deprecated("Use `FOO.n_ref() = BAR;` instead of `FOO.set_n(BAR);`")]]
   ::apache::thrift::fixtures::types::ComplexString& set_n(T_ComplexNestedWithDefault_n_struct_setter&& n_) {
-    n = std::forward<T_ComplexNestedWithDefault_n_struct_setter>(n_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    n_ref() = std::forward<T_ComplexNestedWithDefault_n_struct_setter>(n_);
     return n;
   }
 
@@ -2012,7 +1991,7 @@ class MinPadding final  {
 
   [[deprecated("Use `FOO.small_ref() = BAR;` instead of `FOO.set_small(BAR);`")]]
   ::std::int8_t& set_small(::std::int8_t small_) {
-    small = small_;
+    small_ref() = small_;
     return small;
   }
 
@@ -2022,7 +2001,7 @@ class MinPadding final  {
 
   [[deprecated("Use `FOO.big_ref() = BAR;` instead of `FOO.set_big(BAR);`")]]
   ::std::int64_t& set_big(::std::int64_t big_) {
-    big = big_;
+    big_ref() = big_;
     return big;
   }
 
@@ -2032,7 +2011,7 @@ class MinPadding final  {
 
   [[deprecated("Use `FOO.medium_ref() = BAR;` instead of `FOO.set_medium(BAR);`")]]
   ::std::int16_t& set_medium(::std::int16_t medium_) {
-    medium = medium_;
+    medium_ref() = medium_;
     return medium;
   }
 
@@ -2042,7 +2021,7 @@ class MinPadding final  {
 
   [[deprecated("Use `FOO.biggish_ref() = BAR;` instead of `FOO.set_biggish(BAR);`")]]
   ::std::int32_t& set_biggish(::std::int32_t biggish_) {
-    biggish = biggish_;
+    biggish_ref() = biggish_;
     return biggish;
   }
 
@@ -2052,7 +2031,7 @@ class MinPadding final  {
 
   [[deprecated("Use `FOO.tiny_ref() = BAR;` instead of `FOO.set_tiny(BAR);`")]]
   ::std::int8_t& set_tiny(::std::int8_t tiny_) {
-    tiny = tiny_;
+    tiny_ref() = tiny_;
     return tiny;
   }
 
@@ -2275,8 +2254,7 @@ private:
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
-    MyIntField = MyIntField_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    MyIntField_ref() = MyIntField_;
     return MyIntField;
   }
 
@@ -2291,8 +2269,7 @@ private:
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
-    MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    MyStringField_ref() = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     return MyStringField;
   }
 
@@ -2302,8 +2279,7 @@ private:
 
   [[deprecated("Use `FOO.majorVer_ref() = BAR;` instead of `FOO.set_majorVer(BAR);`")]]
   ::std::int64_t& set_majorVer(::std::int64_t majorVer_) {
-    majorVer = majorVer_;
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    majorVer_ref() = majorVer_;
     return majorVer;
   }
   const ::apache::thrift::fixtures::types::MyDataItem& get_data() const&;
@@ -2312,8 +2288,7 @@ private:
   template <typename T_MyStruct_data_struct_setter = ::apache::thrift::fixtures::types::MyDataItem>
   [[deprecated("Use `FOO.data_ref() = BAR;` instead of `FOO.set_data(BAR);`")]]
   ::apache::thrift::fixtures::types::MyDataItem& set_data(T_MyStruct_data_struct_setter&& data_) {
-    data = std::forward<T_MyStruct_data_struct_setter>(data_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    data_ref() = std::forward<T_MyStruct_data_struct_setter>(data_);
     return data;
   }
 
@@ -2412,8 +2387,7 @@ private:
 
   [[deprecated("Use `FOO.bar_ref() = BAR;` instead of `FOO.set_bar(BAR);`")]]
   ::std::int64_t& set_bar(::std::int64_t bar_) {
-    bar = bar_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    bar_ref() = bar_;
     return bar;
   }
 
@@ -2537,8 +2511,7 @@ private:
   template <typename T_AnnotatedTypes_binary_field_struct_setter = ::apache::thrift::fixtures::types::TBinary>
   [[deprecated("Use `FOO.binary_field_ref() = BAR;` instead of `FOO.set_binary_field(BAR);`")]]
   ::apache::thrift::fixtures::types::TBinary& set_binary_field(T_AnnotatedTypes_binary_field_struct_setter&& binary_field_) {
-    binary_field = std::forward<T_AnnotatedTypes_binary_field_struct_setter>(binary_field_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    binary_field_ref() = std::forward<T_AnnotatedTypes_binary_field_struct_setter>(binary_field_);
     return binary_field;
   }
   const ::apache::thrift::fixtures::types::SomeListOfTypeMap& get_list_field() const&;
@@ -2547,8 +2520,7 @@ private:
   template <typename T_AnnotatedTypes_list_field_struct_setter = ::apache::thrift::fixtures::types::SomeListOfTypeMap>
   [[deprecated("Use `FOO.list_field_ref() = BAR;` instead of `FOO.set_list_field(BAR);`")]]
   ::apache::thrift::fixtures::types::SomeListOfTypeMap& set_list_field(T_AnnotatedTypes_list_field_struct_setter&& list_field_) {
-    list_field = std::forward<T_AnnotatedTypes_list_field_struct_setter>(list_field_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    list_field_ref() = std::forward<T_AnnotatedTypes_list_field_struct_setter>(list_field_);
     return list_field;
   }
 
@@ -2645,8 +2617,7 @@ private:
   template <typename T_ForwardUsageStruct_foo_struct_setter = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   [[deprecated("Use `FOO.foo_ref() = BAR;` instead of `FOO.set_foo(BAR);`")]]
   ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageStruct_foo_struct_setter&& foo_) {
-    foo = std::forward<T_ForwardUsageStruct_foo_struct_setter>(foo_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    foo_ref() = std::forward<T_ForwardUsageStruct_foo_struct_setter>(foo_);
     return foo;
   }
 
@@ -2755,8 +2726,7 @@ private:
   template <typename T_ForwardUsageRoot_ForwardUsageStruct_struct_setter = ::apache::thrift::fixtures::types::ForwardUsageStruct>
   [[deprecated("Use `FOO.ForwardUsageStruct_ref() = BAR;` instead of `FOO.set_ForwardUsageStruct(BAR);`")]]
   ::apache::thrift::fixtures::types::ForwardUsageStruct& set_ForwardUsageStruct(T_ForwardUsageRoot_ForwardUsageStruct_struct_setter&& ForwardUsageStruct_) {
-    ForwardUsageStruct = std::forward<T_ForwardUsageRoot_ForwardUsageStruct_struct_setter>(ForwardUsageStruct_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    ForwardUsageStruct_ref() = std::forward<T_ForwardUsageRoot_ForwardUsageStruct_struct_setter>(ForwardUsageStruct_);
     return ForwardUsageStruct;
   }
 
@@ -2853,8 +2823,7 @@ private:
   template <typename T_ForwardUsageByRef_foo_struct_setter = ::apache::thrift::fixtures::types::ForwardUsageRoot>
   [[deprecated("Use `FOO.foo_ref() = BAR;` instead of `FOO.set_foo(BAR);`")]]
   ::apache::thrift::fixtures::types::ForwardUsageRoot& set_foo(T_ForwardUsageByRef_foo_struct_setter&& foo_) {
-    foo = std::forward<T_ForwardUsageByRef_foo_struct_setter>(foo_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    foo_ref() = std::forward<T_ForwardUsageByRef_foo_struct_setter>(foo_);
     return foo;
   }
 
@@ -3017,8 +2986,7 @@ private:
 
   [[deprecated("Use `FOO.boolField_ref() = BAR;` instead of `FOO.set_boolField(BAR);`")]]
   ::std::int64_t& set_boolField(::std::int64_t boolField_) {
-    boolField = boolField_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    boolField_ref() = boolField_;
     return boolField;
   }
 
@@ -3294,8 +3262,7 @@ private:
 
   [[deprecated("Use `FOO.MyBoolField_ref() = BAR;` instead of `FOO.set_MyBoolField(BAR);`")]]
   bool& set_MyBoolField(bool MyBoolField_) {
-    MyBoolField = MyBoolField_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    MyBoolField_ref() = MyBoolField_;
     return MyBoolField;
   }
 
@@ -3305,8 +3272,7 @@ private:
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
-    MyIntField = MyIntField_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    MyIntField_ref() = MyIntField_;
     return MyIntField;
   }
 
@@ -3321,8 +3287,7 @@ private:
   template <typename T_NoexceptMoveComplexStruct_MyStringField_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_NoexceptMoveComplexStruct_MyStringField_struct_setter&& MyStringField_) {
-    MyStringField = std::forward<T_NoexceptMoveComplexStruct_MyStringField_struct_setter>(MyStringField_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    MyStringField_ref() = std::forward<T_NoexceptMoveComplexStruct_MyStringField_struct_setter>(MyStringField_);
     return MyStringField;
   }
 
@@ -3337,8 +3302,7 @@ private:
   template <typename T_NoexceptMoveComplexStruct_MyStringField2_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyStringField2_ref() = BAR;` instead of `FOO.set_MyStringField2(BAR);`")]]
   ::std::string& set_MyStringField2(T_NoexceptMoveComplexStruct_MyStringField2_struct_setter&& MyStringField2_) {
-    MyStringField2 = std::forward<T_NoexceptMoveComplexStruct_MyStringField2_struct_setter>(MyStringField2_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    MyStringField2_ref() = std::forward<T_NoexceptMoveComplexStruct_MyStringField2_struct_setter>(MyStringField2_);
     return MyStringField2;
   }
 
@@ -3353,8 +3317,7 @@ private:
   template <typename T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyBinaryField_ref() = BAR;` instead of `FOO.set_MyBinaryField(BAR);`")]]
   ::std::string& set_MyBinaryField(T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter&& MyBinaryField_) {
-    MyBinaryField = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter>(MyBinaryField_);
-    __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    MyBinaryField_ref() = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField_struct_setter>(MyBinaryField_);
     return MyBinaryField;
   }
 
@@ -3370,8 +3333,7 @@ private:
   template <typename T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyBinaryField2_ref() = BAR;` instead of `FOO.set_MyBinaryField2(BAR);`")]]
   ::std::string& set_MyBinaryField2(T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter&& MyBinaryField2_) {
-    MyBinaryField2 = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter>(MyBinaryField2_);
-    __isset.__fbthrift_set(folly::index_constant<5>(), true);
+    MyBinaryField2_ref() = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField2_struct_setter>(MyBinaryField2_);
     return MyBinaryField2;
   }
 
@@ -3386,7 +3348,7 @@ private:
   template <typename T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyBinaryField3_ref() = BAR;` instead of `FOO.set_MyBinaryField3(BAR);`")]]
   ::std::string& set_MyBinaryField3(T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter&& MyBinaryField3_) {
-    MyBinaryField3 = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter>(MyBinaryField3_);
+    MyBinaryField3_ref() = std::forward<T_NoexceptMoveComplexStruct_MyBinaryField3_struct_setter>(MyBinaryField3_);
     return MyBinaryField3;
   }
   const ::std::vector<::std::string>& get_MyBinaryListField4() const&;
@@ -3395,8 +3357,7 @@ private:
   template <typename T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter = ::std::vector<::std::string>>
   [[deprecated("Use `FOO.MyBinaryListField4_ref() = BAR;` instead of `FOO.set_MyBinaryListField4(BAR);`")]]
   ::std::vector<::std::string>& set_MyBinaryListField4(T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter&& MyBinaryListField4_) {
-    MyBinaryListField4 = std::forward<T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter>(MyBinaryListField4_);
-    __isset.__fbthrift_set(folly::index_constant<6>(), true);
+    MyBinaryListField4_ref() = std::forward<T_NoexceptMoveComplexStruct_MyBinaryListField4_struct_setter>(MyBinaryListField4_);
     return MyBinaryListField4;
   }
   const ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>& get_MyMapEnumAndInt() const&;
@@ -3405,8 +3366,7 @@ private:
   template <typename T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter = ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>>
   [[deprecated("Use `FOO.MyMapEnumAndInt_ref() = BAR;` instead of `FOO.set_MyMapEnumAndInt(BAR);`")]]
   ::std::map<::apache::thrift::fixtures::types::MyEnumA, ::std::string>& set_MyMapEnumAndInt(T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter&& MyMapEnumAndInt_) {
-    MyMapEnumAndInt = std::forward<T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
-    __isset.__fbthrift_set(folly::index_constant<7>(), true);
+    MyMapEnumAndInt_ref() = std::forward<T_NoexceptMoveComplexStruct_MyMapEnumAndInt_struct_setter>(MyMapEnumAndInt_);
     return MyMapEnumAndInt;
   }
 
@@ -3897,8 +3857,7 @@ private:
   template <typename T_AllocatorAware_aa_list_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.aa_list_ref() = BAR;` instead of `FOO.set_aa_list(BAR);`")]]
   ::std::vector<::std::int32_t>& set_aa_list(T_AllocatorAware_aa_list_struct_setter&& aa_list_) {
-    aa_list = std::forward<T_AllocatorAware_aa_list_struct_setter>(aa_list_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    aa_list_ref() = std::forward<T_AllocatorAware_aa_list_struct_setter>(aa_list_);
     return aa_list;
   }
   const ::std::set<::std::int32_t>& get_aa_set() const&;
@@ -3907,8 +3866,7 @@ private:
   template <typename T_AllocatorAware_aa_set_struct_setter = ::std::set<::std::int32_t>>
   [[deprecated("Use `FOO.aa_set_ref() = BAR;` instead of `FOO.set_aa_set(BAR);`")]]
   ::std::set<::std::int32_t>& set_aa_set(T_AllocatorAware_aa_set_struct_setter&& aa_set_) {
-    aa_set = std::forward<T_AllocatorAware_aa_set_struct_setter>(aa_set_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    aa_set_ref() = std::forward<T_AllocatorAware_aa_set_struct_setter>(aa_set_);
     return aa_set;
   }
   const ::std::map<::std::int32_t, ::std::int32_t>& get_aa_map() const&;
@@ -3917,8 +3875,7 @@ private:
   template <typename T_AllocatorAware_aa_map_struct_setter = ::std::map<::std::int32_t, ::std::int32_t>>
   [[deprecated("Use `FOO.aa_map_ref() = BAR;` instead of `FOO.set_aa_map(BAR);`")]]
   ::std::map<::std::int32_t, ::std::int32_t>& set_aa_map(T_AllocatorAware_aa_map_struct_setter&& aa_map_) {
-    aa_map = std::forward<T_AllocatorAware_aa_map_struct_setter>(aa_map_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    aa_map_ref() = std::forward<T_AllocatorAware_aa_map_struct_setter>(aa_map_);
     return aa_map;
   }
 
@@ -3933,8 +3890,7 @@ private:
   template <typename T_AllocatorAware_aa_string_struct_setter = ::std::string>
   [[deprecated("Use `FOO.aa_string_ref() = BAR;` instead of `FOO.set_aa_string(BAR);`")]]
   ::std::string& set_aa_string(T_AllocatorAware_aa_string_struct_setter&& aa_string_) {
-    aa_string = std::forward<T_AllocatorAware_aa_string_struct_setter>(aa_string_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    aa_string_ref() = std::forward<T_AllocatorAware_aa_string_struct_setter>(aa_string_);
     return aa_string;
   }
 
@@ -3944,8 +3900,7 @@ private:
 
   [[deprecated("Use `FOO.not_a_container_ref() = BAR;` instead of `FOO.set_not_a_container(BAR);`")]]
   ::std::int32_t& set_not_a_container(::std::int32_t not_a_container_) {
-    not_a_container = not_a_container_;
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    not_a_container_ref() = not_a_container_;
     return not_a_container;
   }
 
@@ -4063,8 +4018,7 @@ private:
 
   [[deprecated("Use `FOO.not_a_container_ref() = BAR;` instead of `FOO.set_not_a_container(BAR);`")]]
   ::std::int32_t& set_not_a_container(::std::int32_t not_a_container_) {
-    not_a_container = not_a_container_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    not_a_container_ref() = not_a_container_;
     return not_a_container;
   }
 
@@ -4208,8 +4162,7 @@ private:
 
   [[deprecated("Use `FOO.i32_field_ref() = BAR;` instead of `FOO.set_i32_field(BAR);`")]]
   ::std::int32_t& set_i32_field(::std::int32_t i32_field_) {
-    i32_field = i32_field_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    i32_field_ref() = i32_field_;
     return i32_field;
   }
 
@@ -4219,8 +4172,7 @@ private:
 
   [[deprecated("Use `FOO.IntTypedef_field_ref() = BAR;` instead of `FOO.set_IntTypedef_field(BAR);`")]]
   ::apache::thrift::fixtures::types::IntTypedef& set_IntTypedef_field(::apache::thrift::fixtures::types::IntTypedef IntTypedef_field_) {
-    IntTypedef_field = IntTypedef_field_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    IntTypedef_field_ref() = IntTypedef_field_;
     return IntTypedef_field;
   }
 
@@ -4230,8 +4182,7 @@ private:
 
   [[deprecated("Use `FOO.UintTypedef_field_ref() = BAR;` instead of `FOO.set_UintTypedef_field(BAR);`")]]
   std::uint32_t& set_UintTypedef_field(std::uint32_t UintTypedef_field_) {
-    UintTypedef_field = UintTypedef_field_;
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    UintTypedef_field_ref() = UintTypedef_field_;
     return UintTypedef_field;
   }
 
@@ -4330,8 +4281,7 @@ private:
 
   [[deprecated("Use `FOO.__field_ref() = BAR;` instead of `FOO.set___field(BAR);`")]]
   ::std::int32_t& set___field(::std::int32_t __field_) {
-    __field = __field_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    __field_ref() = __field_;
     return __field;
   }
 

@@ -153,8 +153,7 @@ private:
   template <typename T_InitialResponse_content_struct_setter = ::std::string>
   [[deprecated("Use `FOO.content_ref() = BAR;` instead of `FOO.set_content(BAR);`")]]
   ::std::string& set_content(T_InitialResponse_content_struct_setter&& content_) {
-    content = std::forward<T_InitialResponse_content_struct_setter>(content_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    content_ref() = std::forward<T_InitialResponse_content_struct_setter>(content_);
     return content;
   }
 
@@ -256,8 +255,7 @@ private:
   template <typename T_FinalResponse_content_struct_setter = ::std::string>
   [[deprecated("Use `FOO.content_ref() = BAR;` instead of `FOO.set_content(BAR);`")]]
   ::std::string& set_content(T_FinalResponse_content_struct_setter&& content_) {
-    content = std::forward<T_FinalResponse_content_struct_setter>(content_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    content_ref() = std::forward<T_FinalResponse_content_struct_setter>(content_);
     return content;
   }
 
@@ -359,8 +357,7 @@ private:
   template <typename T_SinkPayload_content_struct_setter = ::std::string>
   [[deprecated("Use `FOO.content_ref() = BAR;` instead of `FOO.set_content(BAR);`")]]
   ::std::string& set_content(T_SinkPayload_content_struct_setter&& content_) {
-    content = std::forward<T_SinkPayload_content_struct_setter>(content_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    content_ref() = std::forward<T_SinkPayload_content_struct_setter>(content_);
     return content;
   }
 
@@ -462,8 +459,7 @@ private:
   template <typename T_CompatibleWithKeywordSink_sink_struct_setter = ::std::string>
   [[deprecated("Use `FOO.sink_ref() = BAR;` instead of `FOO.set_sink(BAR);`")]]
   ::std::string& set_sink(T_CompatibleWithKeywordSink_sink_struct_setter&& sink_) {
-    sink = std::forward<T_CompatibleWithKeywordSink_sink_struct_setter>(sink_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    sink_ref() = std::forward<T_CompatibleWithKeywordSink_sink_struct_setter>(sink_);
     return sink;
   }
 
@@ -574,8 +570,7 @@ private:
   template <typename T_InitialException_reason_struct_setter = ::std::string>
   [[deprecated("Use `FOO.reason_ref() = BAR;` instead of `FOO.set_reason(BAR);`")]]
   ::std::string& set_reason(T_InitialException_reason_struct_setter&& reason_) {
-    reason = std::forward<T_InitialException_reason_struct_setter>(reason_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    reason_ref() = std::forward<T_InitialException_reason_struct_setter>(reason_);
     return reason;
   }
 
@@ -690,8 +685,7 @@ private:
   template <typename T_SinkException1_reason_struct_setter = ::std::string>
   [[deprecated("Use `FOO.reason_ref() = BAR;` instead of `FOO.set_reason(BAR);`")]]
   ::std::string& set_reason(T_SinkException1_reason_struct_setter&& reason_) {
-    reason = std::forward<T_SinkException1_reason_struct_setter>(reason_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    reason_ref() = std::forward<T_SinkException1_reason_struct_setter>(reason_);
     return reason;
   }
 
@@ -801,8 +795,7 @@ private:
 
   [[deprecated("Use `FOO.reason_ref() = BAR;` instead of `FOO.set_reason(BAR);`")]]
   ::std::int64_t& set_reason(::std::int64_t reason_) {
-    reason = reason_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    reason_ref() = reason_;
     return reason;
   }
 

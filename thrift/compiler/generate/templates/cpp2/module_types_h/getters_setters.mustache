@@ -37,10 +37,7 @@
 <%/field:optional?%>
   [[deprecated("Use `FOO.<%field:cpp_name%>_ref() = BAR;` instead of `FOO.set_<%field:cpp_name%>(BAR);`")]]
   <%type:cpp_type%>& set_<%field:cpp_name%>(<%type:cpp_type%> <%field:cpp_name%>_) {
-    <%field:cpp_name%> = <%field:cpp_name%>_;
-<%^field:required?%>
-  __isset.__fbthrift_set(folly::index_constant<<%field:isset_index%>>(), true);
-<%/field:required?%>
+    <%field:cpp_name%>_ref() = <%field:cpp_name%>_;
     return <%field:cpp_name%>;
   }
 <%/type:string_or_binary?%>
@@ -68,10 +65,7 @@
   template <typename T_<%struct:name%>_<%field:cpp_name%>_struct_setter = <%type:cpp_type%>>
   [[deprecated("Use `FOO.<%field:cpp_name%>_ref() = BAR;` instead of `FOO.set_<%field:cpp_name%>(BAR);`")]]
   <%type:cpp_type%>& set_<%field:cpp_name%>(T_<%struct:name%>_<%field:cpp_name%>_struct_setter&& <%field:cpp_name%>_) {
-    <%field:cpp_name%> = std::forward<T_<%struct:name%>_<%field:cpp_name%>_struct_setter>(<%field:cpp_name%>_);
-<%^field:required?%>
-    __isset.__fbthrift_set(folly::index_constant<<%field:isset_index%>>(), true);
-<%/field:required?%>
+    <%field:cpp_name%>_ref() = std::forward<T_<%struct:name%>_<%field:cpp_name%>_struct_setter>(<%field:cpp_name%>_);
     return <%field:cpp_name%>;
   }
 <%/type:string_or_binary?%>
@@ -90,10 +84,7 @@
   template <typename T_<%struct:name%>_<%field:cpp_name%>_struct_setter = <%type:cpp_type%>>
   [[deprecated("Use `FOO.<%field:cpp_name%>_ref() = BAR;` instead of `FOO.set_<%field:cpp_name%>(BAR);`")]]
   <%type:cpp_type%>& set_<%field:cpp_name%>(T_<%struct:name%>_<%field:cpp_name%>_struct_setter&& <%field:cpp_name%>_) {
-    <%field:cpp_name%> = std::forward<T_<%struct:name%>_<%field:cpp_name%>_struct_setter>(<%field:cpp_name%>_);
-<%^field:required?%>
-    __isset.__fbthrift_set(folly::index_constant<<%field:isset_index%>>(), true);
-<%/field:required?%>
+    <%field:cpp_name%>_ref() = std::forward<T_<%struct:name%>_<%field:cpp_name%>_struct_setter>(<%field:cpp_name%>_);
     return <%field:cpp_name%>;
   }
 <%/type:resolves_to_container_or_struct?%>

@@ -334,8 +334,7 @@ private:
   template <typename T_Foo_field1_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_Foo_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_Foo_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field1_ref() = std::forward<T_Foo_field1_struct_setter>(field1_);
     return field1;
   }
   const ::std::vector<::std::int32_t>& get_field2() const&;
@@ -344,8 +343,7 @@ private:
   template <typename T_Foo_field2_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_Foo_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_Foo_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field2_ref() = std::forward<T_Foo_field2_struct_setter>(field2_);
     return field2;
   }
   const ::std::vector<double>& get_field3() const&;
@@ -354,8 +352,7 @@ private:
   template <typename T_Foo_field3_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::std::vector<double>& set_field3(T_Foo_field3_struct_setter&& field3_) {
-    field3 = std::forward<T_Foo_field3_struct_setter>(field3_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    field3_ref() = std::forward<T_Foo_field3_struct_setter>(field3_);
     return field3;
   }
   const ::std::vector<::std::int32_t>& get_field4() const&;
@@ -364,8 +361,7 @@ private:
   template <typename T_Foo_field4_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field4_ref() = BAR;` instead of `FOO.set_field4(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field4(T_Foo_field4_struct_setter&& field4_) {
-    field4 = std::forward<T_Foo_field4_struct_setter>(field4_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    field4_ref() = std::forward<T_Foo_field4_struct_setter>(field4_);
     return field4;
   }
 
@@ -526,8 +522,7 @@ private:
   template <typename T_LazyFoo_field1_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_LazyFoo_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_LazyFoo_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field1_ref() = std::forward<T_LazyFoo_field1_struct_setter>(field1_);
     return field1;
   }
   const ::std::vector<::std::int32_t>& get_field2() const&;
@@ -536,8 +531,7 @@ private:
   template <typename T_LazyFoo_field2_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_LazyFoo_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_LazyFoo_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field2_ref() = std::forward<T_LazyFoo_field2_struct_setter>(field2_);
     return field2;
   }
 
@@ -724,8 +718,7 @@ private:
   template <typename T_OptionalFoo_field1_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_OptionalFoo_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_OptionalFoo_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field1_ref() = std::forward<T_OptionalFoo_field1_struct_setter>(field1_);
     return field1;
   }
   const ::std::vector<::std::int32_t>* get_field2() const&;
@@ -735,8 +728,7 @@ private:
   template <typename T_OptionalFoo_field2_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_OptionalFoo_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_OptionalFoo_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field2_ref() = std::forward<T_OptionalFoo_field2_struct_setter>(field2_);
     return field2;
   }
   const ::std::vector<double>* get_field3() const&;
@@ -746,8 +738,7 @@ private:
   template <typename T_OptionalFoo_field3_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::std::vector<double>& set_field3(T_OptionalFoo_field3_struct_setter&& field3_) {
-    field3 = std::forward<T_OptionalFoo_field3_struct_setter>(field3_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    field3_ref() = std::forward<T_OptionalFoo_field3_struct_setter>(field3_);
     return field3;
   }
   const ::std::vector<::std::int32_t>* get_field4() const&;
@@ -757,8 +748,7 @@ private:
   template <typename T_OptionalFoo_field4_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field4_ref() = BAR;` instead of `FOO.set_field4(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field4(T_OptionalFoo_field4_struct_setter&& field4_) {
-    field4 = std::forward<T_OptionalFoo_field4_struct_setter>(field4_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    field4_ref() = std::forward<T_OptionalFoo_field4_struct_setter>(field4_);
     return field4;
   }
 
@@ -920,8 +910,7 @@ private:
   template <typename T_OptionalLazyFoo_field1_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_OptionalLazyFoo_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_OptionalLazyFoo_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field1_ref() = std::forward<T_OptionalLazyFoo_field1_struct_setter>(field1_);
     return field1;
   }
   const ::std::vector<::std::int32_t>* get_field2() const&;
@@ -931,8 +920,7 @@ private:
   template <typename T_OptionalLazyFoo_field2_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_OptionalLazyFoo_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_OptionalLazyFoo_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field2_ref() = std::forward<T_OptionalLazyFoo_field2_struct_setter>(field2_);
     return field2;
   }
 
@@ -1297,8 +1285,7 @@ private:
 
   [[deprecated("Use `FOO.serialized_data_size_ref() = BAR;` instead of `FOO.set_serialized_data_size(BAR);`")]]
   double& set_serialized_data_size(double serialized_data_size_) {
-    serialized_data_size = serialized_data_size_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    serialized_data_size_ref() = serialized_data_size_;
     return serialized_data_size;
   }
   const ::std::vector<double>& get_field1() const&;
@@ -1307,8 +1294,7 @@ private:
   template <typename T_IndexedFoo_field1_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_IndexedFoo_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_IndexedFoo_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field1_ref() = std::forward<T_IndexedFoo_field1_struct_setter>(field1_);
     return field1;
   }
   const ::std::vector<::std::int32_t>& get_field2() const&;
@@ -1317,8 +1303,7 @@ private:
   template <typename T_IndexedFoo_field2_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_IndexedFoo_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_IndexedFoo_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    field2_ref() = std::forward<T_IndexedFoo_field2_struct_setter>(field2_);
     return field2;
   }
   const ::std::vector<double>& get_field3() const&;
@@ -1327,8 +1312,7 @@ private:
   template <typename T_IndexedFoo_field3_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::std::vector<double>& set_field3(T_IndexedFoo_field3_struct_setter&& field3_) {
-    field3 = std::forward<T_IndexedFoo_field3_struct_setter>(field3_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    field3_ref() = std::forward<T_IndexedFoo_field3_struct_setter>(field3_);
     return field3;
   }
   const ::std::vector<::std::int32_t>& get_field4() const&;
@@ -1337,8 +1321,7 @@ private:
   template <typename T_IndexedFoo_field4_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field4_ref() = BAR;` instead of `FOO.set_field4(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field4(T_IndexedFoo_field4_struct_setter&& field4_) {
-    field4 = std::forward<T_IndexedFoo_field4_struct_setter>(field4_);
-    __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    field4_ref() = std::forward<T_IndexedFoo_field4_struct_setter>(field4_);
     return field4;
   }
   const ::std::map<::std::int16_t, ::std::int64_t>& get_field_id_to_size() const&;
@@ -1347,8 +1330,7 @@ private:
   template <typename T_IndexedFoo_field_id_to_size_struct_setter = ::std::map<::std::int16_t, ::std::int64_t>>
   [[deprecated("Use `FOO.field_id_to_size_ref() = BAR;` instead of `FOO.set_field_id_to_size(BAR);`")]]
   ::std::map<::std::int16_t, ::std::int64_t>& set_field_id_to_size(T_IndexedFoo_field_id_to_size_struct_setter&& field_id_to_size_) {
-    field_id_to_size = std::forward<T_IndexedFoo_field_id_to_size_struct_setter>(field_id_to_size_);
-    __isset.__fbthrift_set(folly::index_constant<5>(), true);
+    field_id_to_size_ref() = std::forward<T_IndexedFoo_field_id_to_size_struct_setter>(field_id_to_size_);
     return field_id_to_size;
   }
 
@@ -1558,8 +1540,7 @@ private:
 
   [[deprecated("Use `FOO.serialized_data_size_ref() = BAR;` instead of `FOO.set_serialized_data_size(BAR);`")]]
   double& set_serialized_data_size(double serialized_data_size_) {
-    serialized_data_size = serialized_data_size_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    serialized_data_size_ref() = serialized_data_size_;
     return serialized_data_size;
   }
   const ::std::vector<double>* get_field1() const&;
@@ -1569,8 +1550,7 @@ private:
   template <typename T_OptionalIndexedFoo_field1_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::vector<double>& set_field1(T_OptionalIndexedFoo_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_OptionalIndexedFoo_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field1_ref() = std::forward<T_OptionalIndexedFoo_field1_struct_setter>(field1_);
     return field1;
   }
   const ::std::vector<::std::int32_t>* get_field2() const&;
@@ -1580,8 +1560,7 @@ private:
   template <typename T_OptionalIndexedFoo_field2_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field2(T_OptionalIndexedFoo_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_OptionalIndexedFoo_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    field2_ref() = std::forward<T_OptionalIndexedFoo_field2_struct_setter>(field2_);
     return field2;
   }
   const ::std::vector<double>* get_field3() const&;
@@ -1591,8 +1570,7 @@ private:
   template <typename T_OptionalIndexedFoo_field3_struct_setter = ::std::vector<double>>
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::std::vector<double>& set_field3(T_OptionalIndexedFoo_field3_struct_setter&& field3_) {
-    field3 = std::forward<T_OptionalIndexedFoo_field3_struct_setter>(field3_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    field3_ref() = std::forward<T_OptionalIndexedFoo_field3_struct_setter>(field3_);
     return field3;
   }
   const ::std::vector<::std::int32_t>* get_field4() const&;
@@ -1602,8 +1580,7 @@ private:
   template <typename T_OptionalIndexedFoo_field4_struct_setter = ::std::vector<::std::int32_t>>
   [[deprecated("Use `FOO.field4_ref() = BAR;` instead of `FOO.set_field4(BAR);`")]]
   ::std::vector<::std::int32_t>& set_field4(T_OptionalIndexedFoo_field4_struct_setter&& field4_) {
-    field4 = std::forward<T_OptionalIndexedFoo_field4_struct_setter>(field4_);
-    __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    field4_ref() = std::forward<T_OptionalIndexedFoo_field4_struct_setter>(field4_);
     return field4;
   }
   const ::std::map<::std::int16_t, ::std::int64_t>& get_field_id_to_size() const&;
@@ -1612,8 +1589,7 @@ private:
   template <typename T_OptionalIndexedFoo_field_id_to_size_struct_setter = ::std::map<::std::int16_t, ::std::int64_t>>
   [[deprecated("Use `FOO.field_id_to_size_ref() = BAR;` instead of `FOO.set_field_id_to_size(BAR);`")]]
   ::std::map<::std::int16_t, ::std::int64_t>& set_field_id_to_size(T_OptionalIndexedFoo_field_id_to_size_struct_setter&& field_id_to_size_) {
-    field_id_to_size = std::forward<T_OptionalIndexedFoo_field_id_to_size_struct_setter>(field_id_to_size_);
-    __isset.__fbthrift_set(folly::index_constant<5>(), true);
+    field_id_to_size_ref() = std::forward<T_OptionalIndexedFoo_field_id_to_size_struct_setter>(field_id_to_size_);
     return field_id_to_size;
   }
 

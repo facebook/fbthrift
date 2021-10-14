@@ -130,8 +130,7 @@ private:
   template <typename T_MyStruct_myString_struct_setter = ::std::string>
   [[deprecated("Use `FOO.myString_ref() = BAR;` instead of `FOO.set_myString(BAR);`")]]
   ::std::string& set_myString(T_MyStruct_myString_struct_setter&& myString_) {
-    myString = std::forward<T_MyStruct_myString_struct_setter>(myString_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    myString_ref() = std::forward<T_MyStruct_myString_struct_setter>(myString_);
     return myString;
   }
 
@@ -451,8 +450,7 @@ private:
   template <typename T_MyException_myString_struct_setter = ::std::string>
   [[deprecated("Use `FOO.myString_ref() = BAR;` instead of `FOO.set_myString(BAR);`")]]
   ::std::string& set_myString(T_MyException_myString_struct_setter&& myString_) {
-    myString = std::forward<T_MyException_myString_struct_setter>(myString_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    myString_ref() = std::forward<T_MyException_myString_struct_setter>(myString_);
     return myString;
   }
 

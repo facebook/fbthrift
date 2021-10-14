@@ -147,8 +147,7 @@ private:
 
   [[deprecated("Use `FOO.foo_ref() = BAR;` instead of `FOO.set_foo(BAR);`")]]
   ::std::int32_t& set_foo(::std::int32_t foo_) {
-    foo = foo_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    foo_ref() = foo_;
     return foo;
   }
 
@@ -158,8 +157,7 @@ private:
 
   [[deprecated("Use `FOO.bar_ref() = BAR;` instead of `FOO.set_bar(BAR);`")]]
   ::std::int32_t& set_bar(::std::int32_t bar_) {
-    bar = bar_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    bar_ref() = bar_;
     return bar;
   }
 

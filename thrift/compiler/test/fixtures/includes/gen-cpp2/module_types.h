@@ -168,8 +168,7 @@ private:
   template <typename T_MyStruct_MyIncludedField_struct_setter = ::cpp2::Included>
   [[deprecated("Use `FOO.MyIncludedField_ref() = BAR;` instead of `FOO.set_MyIncludedField(BAR);`")]]
   ::cpp2::Included& set_MyIncludedField(T_MyStruct_MyIncludedField_struct_setter&& MyIncludedField_) {
-    MyIncludedField = std::forward<T_MyStruct_MyIncludedField_struct_setter>(MyIncludedField_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    MyIncludedField_ref() = std::forward<T_MyStruct_MyIncludedField_struct_setter>(MyIncludedField_);
     return MyIncludedField;
   }
   const ::cpp2::Included& get_MyOtherIncludedField() const&;
@@ -178,8 +177,7 @@ private:
   template <typename T_MyStruct_MyOtherIncludedField_struct_setter = ::cpp2::Included>
   [[deprecated("Use `FOO.MyOtherIncludedField_ref() = BAR;` instead of `FOO.set_MyOtherIncludedField(BAR);`")]]
   ::cpp2::Included& set_MyOtherIncludedField(T_MyStruct_MyOtherIncludedField_struct_setter&& MyOtherIncludedField_) {
-    MyOtherIncludedField = std::forward<T_MyStruct_MyOtherIncludedField_struct_setter>(MyOtherIncludedField_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    MyOtherIncludedField_ref() = std::forward<T_MyStruct_MyOtherIncludedField_struct_setter>(MyOtherIncludedField_);
     return MyOtherIncludedField;
   }
 
@@ -189,8 +187,7 @@ private:
 
   [[deprecated("Use `FOO.MyIncludedInt_ref() = BAR;` instead of `FOO.set_MyIncludedInt(BAR);`")]]
   ::cpp2::IncludedInt64& set_MyIncludedInt(::cpp2::IncludedInt64 MyIncludedInt_) {
-    MyIncludedInt = MyIncludedInt_;
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    MyIncludedInt_ref() = MyIncludedInt_;
     return MyIncludedInt;
   }
 

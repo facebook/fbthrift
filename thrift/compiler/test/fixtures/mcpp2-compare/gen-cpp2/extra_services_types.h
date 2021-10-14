@@ -440,8 +440,7 @@ private:
 
   [[deprecated("Use `FOO.fieldA_ref() = BAR;` instead of `FOO.set_fieldA(BAR);`")]]
   bool& set_fieldA(bool fieldA_) {
-    fieldA = fieldA_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    fieldA_ref() = fieldA_;
     return fieldA;
   }
 
@@ -451,7 +450,7 @@ private:
 
   [[deprecated("Use `FOO.req_fieldA_ref() = BAR;` instead of `FOO.set_req_fieldA(BAR);`")]]
   bool& set_req_fieldA(bool req_fieldA_) {
-    req_fieldA = req_fieldA_;
+    req_fieldA_ref() = req_fieldA_;
     return req_fieldA;
   }
 
@@ -466,8 +465,7 @@ private:
 
   [[deprecated("Use `FOO.opt_fieldA_ref() = BAR;` instead of `FOO.set_opt_fieldA(BAR);`")]]
   bool& set_opt_fieldA(bool opt_fieldA_) {
-    opt_fieldA = opt_fieldA_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    opt_fieldA_ref() = opt_fieldA_;
     return opt_fieldA;
   }
   const ::std::map<::std::string, bool>& get_fieldB() const&;
@@ -476,8 +474,7 @@ private:
   template <typename T_containerStruct2_fieldB_struct_setter = ::std::map<::std::string, bool>>
   [[deprecated("Use `FOO.fieldB_ref() = BAR;` instead of `FOO.set_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_fieldB(T_containerStruct2_fieldB_struct_setter&& fieldB_) {
-    fieldB = std::forward<T_containerStruct2_fieldB_struct_setter>(fieldB_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    fieldB_ref() = std::forward<T_containerStruct2_fieldB_struct_setter>(fieldB_);
     return fieldB;
   }
   const ::std::map<::std::string, bool>& get_req_fieldB() const&;
@@ -486,7 +483,7 @@ private:
   template <typename T_containerStruct2_req_fieldB_struct_setter = ::std::map<::std::string, bool>>
   [[deprecated("Use `FOO.req_fieldB_ref() = BAR;` instead of `FOO.set_req_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_req_fieldB(T_containerStruct2_req_fieldB_struct_setter&& req_fieldB_) {
-    req_fieldB = std::forward<T_containerStruct2_req_fieldB_struct_setter>(req_fieldB_);
+    req_fieldB_ref() = std::forward<T_containerStruct2_req_fieldB_struct_setter>(req_fieldB_);
     return req_fieldB;
   }
   const ::std::map<::std::string, bool>* get_opt_fieldB() const&;
@@ -496,8 +493,7 @@ private:
   template <typename T_containerStruct2_opt_fieldB_struct_setter = ::std::map<::std::string, bool>>
   [[deprecated("Use `FOO.opt_fieldB_ref() = BAR;` instead of `FOO.set_opt_fieldB(BAR);`")]]
   ::std::map<::std::string, bool>& set_opt_fieldB(T_containerStruct2_opt_fieldB_struct_setter&& opt_fieldB_) {
-    opt_fieldB = std::forward<T_containerStruct2_opt_fieldB_struct_setter>(opt_fieldB_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    opt_fieldB_ref() = std::forward<T_containerStruct2_opt_fieldB_struct_setter>(opt_fieldB_);
     return opt_fieldB;
   }
   const ::std::set<::std::int32_t>& get_fieldC() const&;
@@ -506,8 +502,7 @@ private:
   template <typename T_containerStruct2_fieldC_struct_setter = ::std::set<::std::int32_t>>
   [[deprecated("Use `FOO.fieldC_ref() = BAR;` instead of `FOO.set_fieldC(BAR);`")]]
   ::std::set<::std::int32_t>& set_fieldC(T_containerStruct2_fieldC_struct_setter&& fieldC_) {
-    fieldC = std::forward<T_containerStruct2_fieldC_struct_setter>(fieldC_);
-    __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    fieldC_ref() = std::forward<T_containerStruct2_fieldC_struct_setter>(fieldC_);
     return fieldC;
   }
   const ::std::set<::std::int32_t>& get_req_fieldC() const&;
@@ -516,7 +511,7 @@ private:
   template <typename T_containerStruct2_req_fieldC_struct_setter = ::std::set<::std::int32_t>>
   [[deprecated("Use `FOO.req_fieldC_ref() = BAR;` instead of `FOO.set_req_fieldC(BAR);`")]]
   ::std::set<::std::int32_t>& set_req_fieldC(T_containerStruct2_req_fieldC_struct_setter&& req_fieldC_) {
-    req_fieldC = std::forward<T_containerStruct2_req_fieldC_struct_setter>(req_fieldC_);
+    req_fieldC_ref() = std::forward<T_containerStruct2_req_fieldC_struct_setter>(req_fieldC_);
     return req_fieldC;
   }
   const ::std::set<::std::int32_t>* get_opt_fieldC() const&;
@@ -526,8 +521,7 @@ private:
   template <typename T_containerStruct2_opt_fieldC_struct_setter = ::std::set<::std::int32_t>>
   [[deprecated("Use `FOO.opt_fieldC_ref() = BAR;` instead of `FOO.set_opt_fieldC(BAR);`")]]
   ::std::set<::std::int32_t>& set_opt_fieldC(T_containerStruct2_opt_fieldC_struct_setter&& opt_fieldC_) {
-    opt_fieldC = std::forward<T_containerStruct2_opt_fieldC_struct_setter>(opt_fieldC_);
-    __isset.__fbthrift_set(folly::index_constant<5>(), true);
+    opt_fieldC_ref() = std::forward<T_containerStruct2_opt_fieldC_struct_setter>(opt_fieldC_);
     return opt_fieldC;
   }
 
@@ -542,8 +536,7 @@ private:
   template <typename T_containerStruct2_fieldD_struct_setter = ::std::string>
   [[deprecated("Use `FOO.fieldD_ref() = BAR;` instead of `FOO.set_fieldD(BAR);`")]]
   ::std::string& set_fieldD(T_containerStruct2_fieldD_struct_setter&& fieldD_) {
-    fieldD = std::forward<T_containerStruct2_fieldD_struct_setter>(fieldD_);
-    __isset.__fbthrift_set(folly::index_constant<6>(), true);
+    fieldD_ref() = std::forward<T_containerStruct2_fieldD_struct_setter>(fieldD_);
     return fieldD;
   }
 
@@ -558,8 +551,7 @@ private:
   template <typename T_containerStruct2_fieldE_struct_setter = ::std::string>
   [[deprecated("Use `FOO.fieldE_ref() = BAR;` instead of `FOO.set_fieldE(BAR);`")]]
   ::std::string& set_fieldE(T_containerStruct2_fieldE_struct_setter&& fieldE_) {
-    fieldE = std::forward<T_containerStruct2_fieldE_struct_setter>(fieldE_);
-    __isset.__fbthrift_set(folly::index_constant<7>(), true);
+    fieldE_ref() = std::forward<T_containerStruct2_fieldE_struct_setter>(fieldE_);
     return fieldE;
   }
 
@@ -574,7 +566,7 @@ private:
   template <typename T_containerStruct2_req_fieldE_struct_setter = ::std::string>
   [[deprecated("Use `FOO.req_fieldE_ref() = BAR;` instead of `FOO.set_req_fieldE(BAR);`")]]
   ::std::string& set_req_fieldE(T_containerStruct2_req_fieldE_struct_setter&& req_fieldE_) {
-    req_fieldE = std::forward<T_containerStruct2_req_fieldE_struct_setter>(req_fieldE_);
+    req_fieldE_ref() = std::forward<T_containerStruct2_req_fieldE_struct_setter>(req_fieldE_);
     return req_fieldE;
   }
 
@@ -590,8 +582,7 @@ private:
   template <typename T_containerStruct2_opt_fieldE_struct_setter = ::std::string>
   [[deprecated("Use `FOO.opt_fieldE_ref() = BAR;` instead of `FOO.set_opt_fieldE(BAR);`")]]
   ::std::string& set_opt_fieldE(T_containerStruct2_opt_fieldE_struct_setter&& opt_fieldE_) {
-    opt_fieldE = std::forward<T_containerStruct2_opt_fieldE_struct_setter>(opt_fieldE_);
-    __isset.__fbthrift_set(folly::index_constant<8>(), true);
+    opt_fieldE_ref() = std::forward<T_containerStruct2_opt_fieldE_struct_setter>(opt_fieldE_);
     return opt_fieldE;
   }
 

@@ -147,8 +147,7 @@ private:
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
-    MyIntField = MyIntField_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    MyIntField_ref() = MyIntField_;
     return MyIntField;
   }
   const ::cpp2::Foo& get_MyTransitiveField() const&;
@@ -157,8 +156,7 @@ private:
   template <typename T_Included_MyTransitiveField_struct_setter = ::cpp2::Foo>
   [[deprecated("Use `FOO.MyTransitiveField_ref() = BAR;` instead of `FOO.set_MyTransitiveField(BAR);`")]]
   ::cpp2::Foo& set_MyTransitiveField(T_Included_MyTransitiveField_struct_setter&& MyTransitiveField_) {
-    MyTransitiveField = std::forward<T_Included_MyTransitiveField_struct_setter>(MyTransitiveField_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    MyTransitiveField_ref() = std::forward<T_Included_MyTransitiveField_struct_setter>(MyTransitiveField_);
     return MyTransitiveField;
   }
 

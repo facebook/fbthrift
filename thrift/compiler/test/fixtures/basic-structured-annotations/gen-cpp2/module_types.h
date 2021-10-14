@@ -273,8 +273,7 @@ private:
 
   [[deprecated("Use `FOO.count_ref() = BAR;` instead of `FOO.set_count(BAR);`")]]
   ::std::int64_t& set_count(::std::int64_t count_) {
-    count = count_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    count_ref() = count_;
     return count;
   }
 
@@ -289,8 +288,7 @@ private:
   template <typename T_structured_annotation_inline_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_inline_name_struct_setter&& name_) {
-    name = std::forward<T_structured_annotation_inline_name_struct_setter>(name_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    name_ref() = std::forward<T_structured_annotation_inline_name_struct_setter>(name_);
     return name;
   }
 
@@ -393,8 +391,7 @@ private:
   template <typename T_structured_annotation_with_default_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_with_default_name_struct_setter&& name_) {
-    name = std::forward<T_structured_annotation_with_default_name_struct_setter>(name_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    name_ref() = std::forward<T_structured_annotation_with_default_name_struct_setter>(name_);
     return name;
   }
 
@@ -493,8 +490,7 @@ private:
 
   [[deprecated("Use `FOO.count_ref() = BAR;` instead of `FOO.set_count(BAR);`")]]
   ::std::int64_t& set_count(::std::int64_t count_) {
-    count = count_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    count_ref() = count_;
     return count;
   }
 
@@ -640,8 +636,7 @@ private:
   template <typename T_structured_annotation_recursive_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_recursive_name_struct_setter&& name_) {
-    name = std::forward<T_structured_annotation_recursive_name_struct_setter>(name_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    name_ref() = std::forward<T_structured_annotation_recursive_name_struct_setter>(name_);
     return name;
   }
   const ::cpp2::structured_annotation_recursive& get_recurse() const&;
@@ -650,8 +645,7 @@ private:
   template <typename T_structured_annotation_recursive_recurse_struct_setter = ::cpp2::structured_annotation_recursive>
   [[deprecated("Use `FOO.recurse_ref() = BAR;` instead of `FOO.set_recurse(BAR);`")]]
   ::cpp2::structured_annotation_recursive& set_recurse(T_structured_annotation_recursive_recurse_struct_setter&& recurse_) {
-    recurse = std::forward<T_structured_annotation_recursive_recurse_struct_setter>(recurse_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    recurse_ref() = std::forward<T_structured_annotation_recursive_recurse_struct_setter>(recurse_);
     return recurse;
   }
   const ::cpp2::structured_annotation_forward& get_forward() const&;
@@ -660,8 +654,7 @@ private:
   template <typename T_structured_annotation_recursive_forward_struct_setter = ::cpp2::structured_annotation_forward>
   [[deprecated("Use `FOO.forward_ref() = BAR;` instead of `FOO.set_forward(BAR);`")]]
   ::cpp2::structured_annotation_forward& set_forward(T_structured_annotation_recursive_forward_struct_setter&& forward_) {
-    forward = std::forward<T_structured_annotation_recursive_forward_struct_setter>(forward_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    forward_ref() = std::forward<T_structured_annotation_recursive_forward_struct_setter>(forward_);
     return forward;
   }
 
@@ -785,8 +778,7 @@ private:
   template <typename T_structured_annotation_nested_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_structured_annotation_nested_name_struct_setter&& name_) {
-    name = std::forward<T_structured_annotation_nested_name_struct_setter>(name_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    name_ref() = std::forward<T_structured_annotation_nested_name_struct_setter>(name_);
     return name;
   }
   const ::cpp2::structured_annotation_with_default& get_nest() const&;
@@ -795,8 +787,7 @@ private:
   template <typename T_structured_annotation_nested_nest_struct_setter = ::cpp2::structured_annotation_with_default>
   [[deprecated("Use `FOO.nest_ref() = BAR;` instead of `FOO.set_nest(BAR);`")]]
   ::cpp2::structured_annotation_with_default& set_nest(T_structured_annotation_nested_nest_struct_setter&& nest_) {
-    nest = std::forward<T_structured_annotation_nested_nest_struct_setter>(nest_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    nest_ref() = std::forward<T_structured_annotation_nested_nest_struct_setter>(nest_);
     return nest;
   }
 
@@ -961,8 +952,7 @@ private:
 
   [[deprecated("Use `FOO.annotated_field_ref() = BAR;` instead of `FOO.set_annotated_field(BAR);`")]]
   ::std::int64_t& set_annotated_field(::std::int64_t annotated_field_) {
-    annotated_field = annotated_field_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    annotated_field_ref() = annotated_field_;
     return annotated_field;
   }
 
@@ -977,8 +967,7 @@ private:
   template <typename T_MyStruct_annotated_type_struct_setter = ::cpp2::annotated_inline_string>
   [[deprecated("Use `FOO.annotated_type_ref() = BAR;` instead of `FOO.set_annotated_type(BAR);`")]]
   ::cpp2::annotated_inline_string& set_annotated_type(T_MyStruct_annotated_type_struct_setter&& annotated_type_) {
-    annotated_type = std::forward<T_MyStruct_annotated_type_struct_setter>(annotated_type_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    annotated_type_ref() = std::forward<T_MyStruct_annotated_type_struct_setter>(annotated_type_);
     return annotated_type;
   }
 
@@ -993,8 +982,7 @@ private:
   template <typename T_MyStruct_annotated_recursive_struct_setter = ::std::string>
   [[deprecated("Use `FOO.annotated_recursive_ref() = BAR;` instead of `FOO.set_annotated_recursive(BAR);`")]]
   ::std::string& set_annotated_recursive(T_MyStruct_annotated_recursive_struct_setter&& annotated_recursive_) {
-    annotated_recursive = std::forward<T_MyStruct_annotated_recursive_struct_setter>(annotated_recursive_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    annotated_recursive_ref() = std::forward<T_MyStruct_annotated_recursive_struct_setter>(annotated_recursive_);
     return annotated_recursive;
   }
 
@@ -1004,8 +992,7 @@ private:
 
   [[deprecated("Use `FOO.annotated_nested_ref() = BAR;` instead of `FOO.set_annotated_nested(BAR);`")]]
   ::std::int64_t& set_annotated_nested(::std::int64_t annotated_nested_) {
-    annotated_nested = annotated_nested_;
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    annotated_nested_ref() = annotated_nested_;
     return annotated_nested;
   }
 
@@ -1116,8 +1103,7 @@ private:
   template <typename T_MyException_context_struct_setter = ::std::string>
   [[deprecated("Use `FOO.context_ref() = BAR;` instead of `FOO.set_context(BAR);`")]]
   ::std::string& set_context(T_MyException_context_struct_setter&& context_) {
-    context = std::forward<T_MyException_context_struct_setter>(context_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    context_ref() = std::forward<T_MyException_context_struct_setter>(context_);
     return context;
   }
 

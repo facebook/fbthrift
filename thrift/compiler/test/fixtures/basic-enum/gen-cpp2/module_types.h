@@ -270,8 +270,7 @@ private:
 
   [[deprecated("Use `FOO.myEnum_ref() = BAR;` instead of `FOO.set_myEnum(BAR);`")]]
   ::test::fixtures::enumstrict::MyEnum& set_myEnum(::test::fixtures::enumstrict::MyEnum myEnum_) {
-    myEnum = myEnum_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    myEnum_ref() = myEnum_;
     return myEnum;
   }
 
@@ -281,8 +280,7 @@ private:
 
   [[deprecated("Use `FOO.myBigEnum_ref() = BAR;` instead of `FOO.set_myBigEnum(BAR);`")]]
   ::test::fixtures::enumstrict::MyBigEnum& set_myBigEnum(::test::fixtures::enumstrict::MyBigEnum myBigEnum_) {
-    myBigEnum = myBigEnum_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    myBigEnum_ref() = myBigEnum_;
     return myBigEnum;
   }
 

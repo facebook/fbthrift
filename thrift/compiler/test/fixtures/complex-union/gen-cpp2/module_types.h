@@ -1422,8 +1422,7 @@ private:
   template <typename T_Val_strVal_struct_setter = ::std::string>
   [[deprecated("Use `FOO.strVal_ref() = BAR;` instead of `FOO.set_strVal(BAR);`")]]
   ::std::string& set_strVal(T_Val_strVal_struct_setter&& strVal_) {
-    strVal = std::forward<T_Val_strVal_struct_setter>(strVal_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    strVal_ref() = std::forward<T_Val_strVal_struct_setter>(strVal_);
     return strVal;
   }
 
@@ -1433,8 +1432,7 @@ private:
 
   [[deprecated("Use `FOO.intVal_ref() = BAR;` instead of `FOO.set_intVal(BAR);`")]]
   ::std::int32_t& set_intVal(::std::int32_t intVal_) {
-    intVal = intVal_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    intVal_ref() = intVal_;
     return intVal;
   }
   const ::cpp2::containerTypedef& get_typedefValue() const&;
@@ -1443,8 +1441,7 @@ private:
   template <typename T_Val_typedefValue_struct_setter = ::cpp2::containerTypedef>
   [[deprecated("Use `FOO.typedefValue_ref() = BAR;` instead of `FOO.set_typedefValue(BAR);`")]]
   ::cpp2::containerTypedef& set_typedefValue(T_Val_typedefValue_struct_setter&& typedefValue_) {
-    typedefValue = std::forward<T_Val_typedefValue_struct_setter>(typedefValue_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    typedefValue_ref() = std::forward<T_Val_typedefValue_struct_setter>(typedefValue_);
     return typedefValue;
   }
 
@@ -2112,8 +2109,7 @@ private:
 
   [[deprecated("Use `FOO.num_ref() = BAR;` instead of `FOO.set_num(BAR);`")]]
   ::std::int64_t& set_num(::std::int64_t num_) {
-    num = num_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    num_ref() = num_;
     return num;
   }
 

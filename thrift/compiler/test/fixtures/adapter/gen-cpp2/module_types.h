@@ -998,8 +998,7 @@ private:
   template <typename T_Bar_structListField_struct_setter = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   [[deprecated("Use `FOO.structListField_ref() = BAR;` instead of `FOO.set_structListField(BAR);`")]]
   ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& set_structListField(T_Bar_structListField_struct_setter&& structListField_) {
-    structListField = std::forward<T_Bar_structListField_struct_setter>(structListField_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    structListField_ref() = std::forward<T_Bar_structListField_struct_setter>(structListField_);
     return structListField;
   }
   const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>* get_optionalStructListField() const&;
@@ -1009,8 +1008,7 @@ private:
   template <typename T_Bar_optionalStructListField_struct_setter = ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>>
   [[deprecated("Use `FOO.optionalStructListField_ref() = BAR;` instead of `FOO.set_optionalStructListField(BAR);`")]]
   ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& set_optionalStructListField(T_Bar_optionalStructListField_struct_setter&& optionalStructListField_) {
-    optionalStructListField = std::forward<T_Bar_optionalStructListField_struct_setter>(optionalStructListField_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    optionalStructListField_ref() = std::forward<T_Bar_optionalStructListField_struct_setter>(optionalStructListField_);
     return optionalStructListField;
   }
 

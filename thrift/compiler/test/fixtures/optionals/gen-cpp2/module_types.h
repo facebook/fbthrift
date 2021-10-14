@@ -327,8 +327,7 @@ private:
 
   [[deprecated("Use `FOO.red_ref() = BAR;` instead of `FOO.set_red(BAR);`")]]
   double& set_red(double red_) {
-    red = red_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    red_ref() = red_;
     return red;
   }
 
@@ -338,8 +337,7 @@ private:
 
   [[deprecated("Use `FOO.green_ref() = BAR;` instead of `FOO.set_green(BAR);`")]]
   double& set_green(double green_) {
-    green = green_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    green_ref() = green_;
     return green;
   }
 
@@ -349,8 +347,7 @@ private:
 
   [[deprecated("Use `FOO.blue_ref() = BAR;` instead of `FOO.set_blue(BAR);`")]]
   double& set_blue(double blue_) {
-    blue = blue_;
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    blue_ref() = blue_;
     return blue;
   }
 
@@ -360,8 +357,7 @@ private:
 
   [[deprecated("Use `FOO.alpha_ref() = BAR;` instead of `FOO.set_alpha(BAR);`")]]
   double& set_alpha(double alpha_) {
-    alpha = alpha_;
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    alpha_ref() = alpha_;
     return alpha;
   }
 
@@ -548,8 +544,7 @@ private:
   template <typename T_Vehicle_color_struct_setter = ::cpp2::Color>
   [[deprecated("Use `FOO.color_ref() = BAR;` instead of `FOO.set_color(BAR);`")]]
   ::cpp2::Color& set_color(T_Vehicle_color_struct_setter&& color_) {
-    color = std::forward<T_Vehicle_color_struct_setter>(color_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    color_ref() = std::forward<T_Vehicle_color_struct_setter>(color_);
     return color;
   }
 
@@ -565,8 +560,7 @@ private:
   template <typename T_Vehicle_licensePlate_struct_setter = ::std::string>
   [[deprecated("Use `FOO.licensePlate_ref() = BAR;` instead of `FOO.set_licensePlate(BAR);`")]]
   ::std::string& set_licensePlate(T_Vehicle_licensePlate_struct_setter&& licensePlate_) {
-    licensePlate = std::forward<T_Vehicle_licensePlate_struct_setter>(licensePlate_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    licensePlate_ref() = std::forward<T_Vehicle_licensePlate_struct_setter>(licensePlate_);
     return licensePlate;
   }
 
@@ -582,8 +576,7 @@ private:
   template <typename T_Vehicle_description_struct_setter = ::std::string>
   [[deprecated("Use `FOO.description_ref() = BAR;` instead of `FOO.set_description(BAR);`")]]
   ::std::string& set_description(T_Vehicle_description_struct_setter&& description_) {
-    description = std::forward<T_Vehicle_description_struct_setter>(description_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    description_ref() = std::forward<T_Vehicle_description_struct_setter>(description_);
     return description;
   }
 
@@ -599,8 +592,7 @@ private:
   template <typename T_Vehicle_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_Vehicle_name_struct_setter&& name_) {
-    name = std::forward<T_Vehicle_name_struct_setter>(name_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    name_ref() = std::forward<T_Vehicle_name_struct_setter>(name_);
     return name;
   }
 
@@ -615,8 +607,7 @@ private:
 
   [[deprecated("Use `FOO.hasAC_ref() = BAR;` instead of `FOO.set_hasAC(BAR);`")]]
   bool& set_hasAC(bool hasAC_) {
-    hasAC = hasAC_;
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    hasAC_ref() = hasAC_;
     return hasAC;
   }
 
@@ -914,8 +905,7 @@ private:
 
   [[deprecated("Use `FOO.id_ref() = BAR;` instead of `FOO.set_id(BAR);`")]]
   ::cpp2::PersonID& set_id(::cpp2::PersonID id_) {
-    id = id_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    id_ref() = id_;
     return id;
   }
 
@@ -930,8 +920,7 @@ private:
   template <typename T_Person_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_Person_name_struct_setter&& name_) {
-    name = std::forward<T_Person_name_struct_setter>(name_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    name_ref() = std::forward<T_Person_name_struct_setter>(name_);
     return name;
   }
 
@@ -946,8 +935,7 @@ private:
 
   [[deprecated("Use `FOO.age_ref() = BAR;` instead of `FOO.set_age(BAR);`")]]
   ::std::int16_t& set_age(::std::int16_t age_) {
-    age = age_;
-  __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    age_ref() = age_;
     return age;
   }
 
@@ -963,8 +951,7 @@ private:
   template <typename T_Person_address_struct_setter = ::std::string>
   [[deprecated("Use `FOO.address_ref() = BAR;` instead of `FOO.set_address(BAR);`")]]
   ::std::string& set_address(T_Person_address_struct_setter&& address_) {
-    address = std::forward<T_Person_address_struct_setter>(address_);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    address_ref() = std::forward<T_Person_address_struct_setter>(address_);
     return address;
   }
   const ::cpp2::Color* get_favoriteColor() const&;
@@ -974,8 +961,7 @@ private:
   template <typename T_Person_favoriteColor_struct_setter = ::cpp2::Color>
   [[deprecated("Use `FOO.favoriteColor_ref() = BAR;` instead of `FOO.set_favoriteColor(BAR);`")]]
   ::cpp2::Color& set_favoriteColor(T_Person_favoriteColor_struct_setter&& favoriteColor_) {
-    favoriteColor = std::forward<T_Person_favoriteColor_struct_setter>(favoriteColor_);
-    __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    favoriteColor_ref() = std::forward<T_Person_favoriteColor_struct_setter>(favoriteColor_);
     return favoriteColor;
   }
   const ::std::set<::cpp2::PersonID>* get_friends() const&;
@@ -985,8 +971,7 @@ private:
   template <typename T_Person_friends_struct_setter = ::std::set<::cpp2::PersonID>>
   [[deprecated("Use `FOO.friends_ref() = BAR;` instead of `FOO.set_friends(BAR);`")]]
   ::std::set<::cpp2::PersonID>& set_friends(T_Person_friends_struct_setter&& friends_) {
-    friends = std::forward<T_Person_friends_struct_setter>(friends_);
-    __isset.__fbthrift_set(folly::index_constant<5>(), true);
+    friends_ref() = std::forward<T_Person_friends_struct_setter>(friends_);
     return friends;
   }
 
@@ -1001,8 +986,7 @@ private:
 
   [[deprecated("Use `FOO.bestFriend_ref() = BAR;` instead of `FOO.set_bestFriend(BAR);`")]]
   ::cpp2::PersonID& set_bestFriend(::cpp2::PersonID bestFriend_) {
-    bestFriend = bestFriend_;
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+    bestFriend_ref() = bestFriend_;
     return bestFriend;
   }
   const ::std::map<::cpp2::Animal, ::std::string>* get_petNames() const&;
@@ -1012,8 +996,7 @@ private:
   template <typename T_Person_petNames_struct_setter = ::std::map<::cpp2::Animal, ::std::string>>
   [[deprecated("Use `FOO.petNames_ref() = BAR;` instead of `FOO.set_petNames(BAR);`")]]
   ::std::map<::cpp2::Animal, ::std::string>& set_petNames(T_Person_petNames_struct_setter&& petNames_) {
-    petNames = std::forward<T_Person_petNames_struct_setter>(petNames_);
-    __isset.__fbthrift_set(folly::index_constant<7>(), true);
+    petNames_ref() = std::forward<T_Person_petNames_struct_setter>(petNames_);
     return petNames;
   }
 
@@ -1028,8 +1011,7 @@ private:
 
   [[deprecated("Use `FOO.afraidOfAnimal_ref() = BAR;` instead of `FOO.set_afraidOfAnimal(BAR);`")]]
   ::cpp2::Animal& set_afraidOfAnimal(::cpp2::Animal afraidOfAnimal_) {
-    afraidOfAnimal = afraidOfAnimal_;
-  __isset.__fbthrift_set(folly::index_constant<8>(), true);
+    afraidOfAnimal_ref() = afraidOfAnimal_;
     return afraidOfAnimal;
   }
   const ::std::vector<::cpp2::Vehicle>* get_vehicles() const&;
@@ -1039,8 +1021,7 @@ private:
   template <typename T_Person_vehicles_struct_setter = ::std::vector<::cpp2::Vehicle>>
   [[deprecated("Use `FOO.vehicles_ref() = BAR;` instead of `FOO.set_vehicles(BAR);`")]]
   ::std::vector<::cpp2::Vehicle>& set_vehicles(T_Person_vehicles_struct_setter&& vehicles_) {
-    vehicles = std::forward<T_Person_vehicles_struct_setter>(vehicles_);
-    __isset.__fbthrift_set(folly::index_constant<9>(), true);
+    vehicles_ref() = std::forward<T_Person_vehicles_struct_setter>(vehicles_);
     return vehicles;
   }
 

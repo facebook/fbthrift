@@ -151,8 +151,7 @@ private:
   template <typename T_Struct_first_struct_setter = ::module0::Struct>
   [[deprecated("Use `FOO.first_ref() = BAR;` instead of `FOO.set_first(BAR);`")]]
   ::module0::Struct& set_first(T_Struct_first_struct_setter&& first_) {
-    first = std::forward<T_Struct_first_struct_setter>(first_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    first_ref() = std::forward<T_Struct_first_struct_setter>(first_);
     return first;
   }
   const ::module1::Struct& get_second() const&;
@@ -161,8 +160,7 @@ private:
   template <typename T_Struct_second_struct_setter = ::module1::Struct>
   [[deprecated("Use `FOO.second_ref() = BAR;` instead of `FOO.set_second(BAR);`")]]
   ::module1::Struct& set_second(T_Struct_second_struct_setter&& second_) {
-    second = std::forward<T_Struct_second_struct_setter>(second_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    second_ref() = std::forward<T_Struct_second_struct_setter>(second_);
     return second;
   }
 
@@ -281,8 +279,7 @@ private:
   template <typename T_BigStruct_s_struct_setter = ::module2::Struct>
   [[deprecated("Use `FOO.s_ref() = BAR;` instead of `FOO.set_s(BAR);`")]]
   ::module2::Struct& set_s(T_BigStruct_s_struct_setter&& s_) {
-    s = std::forward<T_BigStruct_s_struct_setter>(s_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    s_ref() = std::forward<T_BigStruct_s_struct_setter>(s_);
     return s;
   }
 
@@ -292,8 +289,7 @@ private:
 
   [[deprecated("Use `FOO.id_ref() = BAR;` instead of `FOO.set_id(BAR);`")]]
   ::std::int32_t& set_id(::std::int32_t id_) {
-    id = id_;
-  __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    id_ref() = id_;
     return id;
   }
 

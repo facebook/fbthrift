@@ -208,8 +208,7 @@ private:
   template <typename T_MyStructNestedAnnotation_name_struct_setter = ::std::string>
   [[deprecated("Use `FOO.name_ref() = BAR;` instead of `FOO.set_name(BAR);`")]]
   ::std::string& set_name(T_MyStructNestedAnnotation_name_struct_setter&& name_) {
-    name = std::forward<T_MyStructNestedAnnotation_name_struct_setter>(name_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    name_ref() = std::forward<T_MyStructNestedAnnotation_name_struct_setter>(name_);
     return name;
   }
 
@@ -425,8 +424,7 @@ private:
 
   [[deprecated("Use `FOO.majorVer_ref() = BAR;` instead of `FOO.set_majorVer(BAR);`")]]
   ::std::int64_t& set_majorVer(::std::int64_t majorVer_) {
-    majorVer = majorVer_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    majorVer_ref() = majorVer_;
     return majorVer;
   }
 
@@ -441,8 +439,7 @@ private:
   template <typename T_MyStruct_package_struct_setter = ::std::string>
   [[deprecated("Use `FOO.package_ref() = BAR;` instead of `FOO.set_package(BAR);`")]]
   ::std::string& set_package(T_MyStruct_package_struct_setter&& package_) {
-    package = std::forward<T_MyStruct_package_struct_setter>(package_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    package_ref() = std::forward<T_MyStruct_package_struct_setter>(package_);
     return package;
   }
 
@@ -457,8 +454,7 @@ private:
   template <typename T_MyStruct_annotation_with_quote_struct_setter = ::std::string>
   [[deprecated("Use `FOO.annotation_with_quote_ref() = BAR;` instead of `FOO.set_annotation_with_quote(BAR);`")]]
   ::std::string& set_annotation_with_quote(T_MyStruct_annotation_with_quote_struct_setter&& annotation_with_quote_) {
-    annotation_with_quote = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    annotation_with_quote_ref() = std::forward<T_MyStruct_annotation_with_quote_struct_setter>(annotation_with_quote_);
     return annotation_with_quote;
   }
 
@@ -473,8 +469,7 @@ private:
   template <typename T_MyStruct_class__struct_setter = ::std::string>
   [[deprecated("Use `FOO.class__ref() = BAR;` instead of `FOO.set_class_(BAR);`")]]
   ::std::string& set_class_(T_MyStruct_class__struct_setter&& class__) {
-    class_ = std::forward<T_MyStruct_class__struct_setter>(class__);
-    __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    class__ref() = std::forward<T_MyStruct_class__struct_setter>(class__);
     return class_;
   }
 
@@ -489,8 +484,7 @@ private:
   template <typename T_MyStruct_annotation_with_trailing_comma_struct_setter = ::std::string>
   [[deprecated("Use `FOO.annotation_with_trailing_comma_ref() = BAR;` instead of `FOO.set_annotation_with_trailing_comma(BAR);`")]]
   ::std::string& set_annotation_with_trailing_comma(T_MyStruct_annotation_with_trailing_comma_struct_setter&& annotation_with_trailing_comma_) {
-    annotation_with_trailing_comma = std::forward<T_MyStruct_annotation_with_trailing_comma_struct_setter>(annotation_with_trailing_comma_);
-    __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    annotation_with_trailing_comma_ref() = std::forward<T_MyStruct_annotation_with_trailing_comma_struct_setter>(annotation_with_trailing_comma_);
     return annotation_with_trailing_comma;
   }
 
@@ -505,8 +499,7 @@ private:
   template <typename T_MyStruct_empty_annotations_struct_setter = ::std::string>
   [[deprecated("Use `FOO.empty_annotations_ref() = BAR;` instead of `FOO.set_empty_annotations(BAR);`")]]
   ::std::string& set_empty_annotations(T_MyStruct_empty_annotations_struct_setter&& empty_annotations_) {
-    empty_annotations = std::forward<T_MyStruct_empty_annotations_struct_setter>(empty_annotations_);
-    __isset.__fbthrift_set(folly::index_constant<5>(), true);
+    empty_annotations_ref() = std::forward<T_MyStruct_empty_annotations_struct_setter>(empty_annotations_);
     return empty_annotations;
   }
 
@@ -626,8 +619,7 @@ private:
 
   [[deprecated("Use `FOO.id_ref() = BAR;` instead of `FOO.set_id(BAR);`")]]
   ::std::int64_t& set_id(::std::int64_t id_) {
-    id = id_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    id_ref() = id_;
     return id;
   }
 
@@ -642,8 +634,7 @@ private:
   template <typename T_SecretStruct_password_struct_setter = ::std::string>
   [[deprecated("Use `FOO.password_ref() = BAR;` instead of `FOO.set_password(BAR);`")]]
   ::std::string& set_password(T_SecretStruct_password_struct_setter&& password_) {
-    password = std::forward<T_SecretStruct_password_struct_setter>(password_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    password_ref() = std::forward<T_SecretStruct_password_struct_setter>(password_);
     return password;
   }
 

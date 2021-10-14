@@ -113,8 +113,7 @@ private:
   template <typename T_MyStruct_OtherStructField_struct_setter = ::matching_module_name::OtherStruct>
   [[deprecated("Use `FOO.OtherStructField_ref() = BAR;` instead of `FOO.set_OtherStructField(BAR);`")]]
   ::matching_module_name::OtherStruct& set_OtherStructField(T_MyStruct_OtherStructField_struct_setter&& OtherStructField_) {
-    OtherStructField = std::forward<T_MyStruct_OtherStructField_struct_setter>(OtherStructField_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    OtherStructField_ref() = std::forward<T_MyStruct_OtherStructField_struct_setter>(OtherStructField_);
     return OtherStructField;
   }
 

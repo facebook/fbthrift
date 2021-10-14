@@ -182,8 +182,7 @@ private:
 
   [[deprecated("Use `FOO.useless_field_ref() = BAR;` instead of `FOO.set_useless_field(BAR);`")]]
   ::std::int32_t& set_useless_field(::std::int32_t useless_field_) {
-    useless_field = useless_field_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    useless_field_ref() = useless_field_;
     return useless_field;
   }
 
@@ -566,8 +565,7 @@ private:
   template <typename T_Bang_message_struct_setter = ::std::string>
   [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_Bang_message_struct_setter&& message_) {
-    message = std::forward<T_Bang_message_struct_setter>(message_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    message_ref() = std::forward<T_Bang_message_struct_setter>(message_);
     return message;
   }
 

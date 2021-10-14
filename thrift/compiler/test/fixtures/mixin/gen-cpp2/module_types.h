@@ -153,8 +153,7 @@ private:
   template <typename T_Mixin1_field1_struct_setter = ::std::string>
   [[deprecated("Use `FOO.field1_ref() = BAR;` instead of `FOO.set_field1(BAR);`")]]
   ::std::string& set_field1(T_Mixin1_field1_struct_setter&& field1_) {
-    field1 = std::forward<T_Mixin1_field1_struct_setter>(field1_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field1_ref() = std::forward<T_Mixin1_field1_struct_setter>(field1_);
     return field1;
   }
 
@@ -276,8 +275,7 @@ private:
   template <typename T_Mixin2_m1_struct_setter = ::cpp2::Mixin1>
   [[deprecated("Use `FOO.m1_ref() = BAR;` instead of `FOO.set_m1(BAR);`")]]
   ::cpp2::Mixin1& set_m1(T_Mixin2_m1_struct_setter&& m1_) {
-    m1 = std::forward<T_Mixin2_m1_struct_setter>(m1_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    m1_ref() = std::forward<T_Mixin2_m1_struct_setter>(m1_);
     return m1;
   }
 
@@ -293,8 +291,7 @@ private:
   template <typename T_Mixin2_field2_struct_setter = ::std::string>
   [[deprecated("Use `FOO.field2_ref() = BAR;` instead of `FOO.set_field2(BAR);`")]]
   ::std::string& set_field2(T_Mixin2_field2_struct_setter&& field2_) {
-    field2 = std::forward<T_Mixin2_field2_struct_setter>(field2_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    field2_ref() = std::forward<T_Mixin2_field2_struct_setter>(field2_);
     return field2;
   }
 
@@ -396,8 +393,7 @@ private:
   template <typename T_Mixin3Base_field3_struct_setter = ::std::string>
   [[deprecated("Use `FOO.field3_ref() = BAR;` instead of `FOO.set_field3(BAR);`")]]
   ::std::string& set_field3(T_Mixin3Base_field3_struct_setter&& field3_) {
-    field3 = std::forward<T_Mixin3Base_field3_struct_setter>(field3_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field3_ref() = std::forward<T_Mixin3Base_field3_struct_setter>(field3_);
     return field3;
   }
 
@@ -559,8 +555,7 @@ private:
   template <typename T_Foo_field4_struct_setter = ::std::string>
   [[deprecated("Use `FOO.field4_ref() = BAR;` instead of `FOO.set_field4(BAR);`")]]
   ::std::string& set_field4(T_Foo_field4_struct_setter&& field4_) {
-    field4 = std::forward<T_Foo_field4_struct_setter>(field4_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    field4_ref() = std::forward<T_Foo_field4_struct_setter>(field4_);
     return field4;
   }
   const ::cpp2::Mixin2& get_m2() const&;
@@ -569,8 +564,7 @@ private:
   template <typename T_Foo_m2_struct_setter = ::cpp2::Mixin2>
   [[deprecated("Use `FOO.m2_ref() = BAR;` instead of `FOO.set_m2(BAR);`")]]
   ::cpp2::Mixin2& set_m2(T_Foo_m2_struct_setter&& m2_) {
-    m2 = std::forward<T_Foo_m2_struct_setter>(m2_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    m2_ref() = std::forward<T_Foo_m2_struct_setter>(m2_);
     return m2;
   }
   const ::cpp2::Mixin3& get_m3() const&;
@@ -579,8 +573,7 @@ private:
   template <typename T_Foo_m3_struct_setter = ::cpp2::Mixin3>
   [[deprecated("Use `FOO.m3_ref() = BAR;` instead of `FOO.set_m3(BAR);`")]]
   ::cpp2::Mixin3& set_m3(T_Foo_m3_struct_setter&& m3_) {
-    m3 = std::forward<T_Foo_m3_struct_setter>(m3_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    m3_ref() = std::forward<T_Foo_m3_struct_setter>(m3_);
     return m3;
   }
 

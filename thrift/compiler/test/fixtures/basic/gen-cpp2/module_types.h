@@ -406,8 +406,7 @@ private:
 
   [[deprecated("Use `FOO.MyIntField_ref() = BAR;` instead of `FOO.set_MyIntField(BAR);`")]]
   ::std::int64_t& set_MyIntField(::std::int64_t MyIntField_) {
-    MyIntField = MyIntField_;
-  __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    MyIntField_ref() = MyIntField_;
     return MyIntField;
   }
 
@@ -422,8 +421,7 @@ private:
   template <typename T_MyStruct_MyStringField_struct_setter = ::std::string>
   [[deprecated("Use `FOO.MyStringField_ref() = BAR;` instead of `FOO.set_MyStringField(BAR);`")]]
   ::std::string& set_MyStringField(T_MyStruct_MyStringField_struct_setter&& MyStringField_) {
-    MyStringField = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
-    __isset.__fbthrift_set(folly::index_constant<1>(), true);
+    MyStringField_ref() = std::forward<T_MyStruct_MyStringField_struct_setter>(MyStringField_);
     return MyStringField;
   }
   const ::cpp2::MyDataItem& get_MyDataField() const&;
@@ -432,8 +430,7 @@ private:
   template <typename T_MyStruct_MyDataField_struct_setter = ::cpp2::MyDataItem>
   [[deprecated("Use `FOO.MyDataField_ref() = BAR;` instead of `FOO.set_MyDataField(BAR);`")]]
   ::cpp2::MyDataItem& set_MyDataField(T_MyStruct_MyDataField_struct_setter&& MyDataField_) {
-    MyDataField = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
-    __isset.__fbthrift_set(folly::index_constant<2>(), true);
+    MyDataField_ref() = std::forward<T_MyStruct_MyDataField_struct_setter>(MyDataField_);
     return MyDataField;
   }
 
@@ -443,8 +440,7 @@ private:
 
   [[deprecated("Use `FOO.myEnum_ref() = BAR;` instead of `FOO.set_myEnum(BAR);`")]]
   ::cpp2::MyEnum& set_myEnum(::cpp2::MyEnum myEnum_) {
-    myEnum = myEnum_;
-  __isset.__fbthrift_set(folly::index_constant<3>(), true);
+    myEnum_ref() = myEnum_;
     return myEnum;
   }
 
@@ -454,8 +450,7 @@ private:
 
   [[deprecated("Use `FOO.oneway_ref() = BAR;` instead of `FOO.set_oneway(BAR);`")]]
   bool& set_oneway(bool oneway_) {
-    oneway = oneway_;
-  __isset.__fbthrift_set(folly::index_constant<4>(), true);
+    oneway_ref() = oneway_;
     return oneway;
   }
 
@@ -465,8 +460,7 @@ private:
 
   [[deprecated("Use `FOO.readonly_ref() = BAR;` instead of `FOO.set_readonly(BAR);`")]]
   bool& set_readonly(bool readonly_) {
-    readonly = readonly_;
-  __isset.__fbthrift_set(folly::index_constant<5>(), true);
+    readonly_ref() = readonly_;
     return readonly;
   }
 
@@ -476,8 +470,7 @@ private:
 
   [[deprecated("Use `FOO.idempotent_ref() = BAR;` instead of `FOO.set_idempotent(BAR);`")]]
   bool& set_idempotent(bool idempotent_) {
-    idempotent = idempotent_;
-  __isset.__fbthrift_set(folly::index_constant<6>(), true);
+    idempotent_ref() = idempotent_;
     return idempotent;
   }
 

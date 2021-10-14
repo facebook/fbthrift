@@ -126,8 +126,7 @@ private:
   template <typename T_CustomException_message_struct_setter = ::std::string>
   [[deprecated("Use `FOO.message_ref() = BAR;` instead of `FOO.set_message(BAR);`")]]
   ::std::string& set_message(T_CustomException_message_struct_setter&& message_) {
-    message = std::forward<T_CustomException_message_struct_setter>(message_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    message_ref() = std::forward<T_CustomException_message_struct_setter>(message_);
     return message;
   }
 

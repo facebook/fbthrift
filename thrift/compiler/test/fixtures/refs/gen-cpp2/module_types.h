@@ -929,8 +929,7 @@ private:
   template <typename T_StructWithUnion_f_struct_setter = ::cpp2::MyField>
   [[deprecated("Use `FOO.f_ref() = BAR;` instead of `FOO.set_f(BAR);`")]]
   ::cpp2::MyField& set_f(T_StructWithUnion_f_struct_setter&& f_) {
-    f = std::forward<T_StructWithUnion_f_struct_setter>(f_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    f_ref() = std::forward<T_StructWithUnion_f_struct_setter>(f_);
     return f;
   }
 
@@ -1027,8 +1026,7 @@ private:
   template <typename T_RecursiveStruct_mes_struct_setter = ::std::vector<::cpp2::RecursiveStruct>>
   [[deprecated("Use `FOO.mes_ref() = BAR;` instead of `FOO.set_mes(BAR);`")]]
   ::std::vector<::cpp2::RecursiveStruct>& set_mes(T_RecursiveStruct_mes_struct_setter&& mes_) {
-    mes = std::forward<T_RecursiveStruct_mes_struct_setter>(mes_);
-    __isset.__fbthrift_set(folly::index_constant<0>(), true);
+    mes_ref() = std::forward<T_RecursiveStruct_mes_struct_setter>(mes_);
     return mes;
   }
 
