@@ -17,6 +17,8 @@
 #include <thrift/lib/cpp2/protocol/NimbleProtocol.h>
 
 #include <random>
+#include <type_traits>
+
 #include <folly/Random.h>
 #include <folly/container/Array.h>
 #include <folly/portability/GTest.h>
@@ -28,6 +30,18 @@ namespace apache {
 namespace thrift {
 namespace detail {
 
+namespace {
+
+template <class T>
+T random() {
+  // static_cast<bool>(x) would be x != 0.
+  static_assert(
+      std::is_integral<T>::value && !std::is_same<T, bool>::value, "");
+  return static_cast<T>(folly::Random::rand64());
+}
+
+} // namespace
+
 TEST(NimbleProtocolTest, BasicTypesTest) {
   auto array1 = folly::make_array<std::int8_t>(
       -128,
@@ -38,8 +52,8 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
       73,
       INT8_MAX,
       INT8_MIN,
-      folly::Random::rand32(256) - 128,
-      folly::Random::rand32(256) - 128);
+      random<std::int8_t>(),
+      random<std::int8_t>());
   auto array2 = folly::make_array<std::int16_t>(
       -32768,
       -12,
@@ -49,8 +63,8 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
       -591,
       -1,
       INT16_MAX,
-      folly::Random::rand32(65536) - 32768,
-      folly::Random::rand32(65536) - 32768);
+      random<std::int16_t>(),
+      random<std::int16_t>());
   auto array3 = folly::make_array<std::int32_t>(
       -2147483648,
       -70,
@@ -60,8 +74,8 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
       INT32_MAX - 1,
       INT32_MIN,
       INT32_MAX,
-      folly::Random::rand32() - 2147483648,
-      folly::Random::rand32() - 2147483648);
+      random<std::int32_t>(),
+      random<std::int32_t>());
   auto array4 = folly::make_array<std::int64_t>(
       INT64_MIN,
       -66778831,
@@ -70,9 +84,9 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
       INT64_MAX,
       0,
       -274,
-      folly::Random::rand64(INT64_MIN, INT64_MAX),
-      folly::Random::rand64(INT64_MIN, INT64_MAX),
-      folly::Random::rand64(INT64_MIN, INT64_MAX));
+      random<std::int64_t>(),
+      random<std::int64_t>(),
+      random<std::int64_t>());
   auto array5 = folly::make_array<bool>(
       true, true, false, false, true, true, 1, 0, true, false);
   auto array6 = folly::make_array<uint8_t>(
@@ -83,9 +97,9 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
       255,
       UINT8_MAX,
       56,
-      folly::Random::rand32(256),
-      folly::Random::rand32(256),
-      folly::Random::rand32(256));
+      random<std::uint8_t>(),
+      random<std::uint8_t>(),
+      random<std::uint8_t>());
   auto array7 = folly::make_array<uint16_t>(
       16,
       258,
@@ -94,9 +108,9 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
       65535,
       UINT16_MAX,
       UINT8_MAX,
-      folly::Random::rand32(65536),
-      folly::Random::rand32(65536),
-      folly::Random::rand32(65536));
+      random<std::uint16_t>(),
+      random<std::uint16_t>(),
+      random<std::uint16_t>());
   auto array8 = folly::make_array<uint32_t>(
       298,
       0,
@@ -106,8 +120,8 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
       2,
       UINT16_MAX,
       333666,
-      folly::Random::rand32(),
-      folly::Random::rand32());
+      random<std::uint32_t>(),
+      random<std::uint32_t>());
   auto array9 = folly::make_array<uint64_t>(
       32767,
       4294967295,
@@ -117,8 +131,8 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
       UINT64_MAX,
       UINT8_MAX,
       121314,
-      folly::Random::rand64(),
-      folly::Random::rand64());
+      random<std::uint64_t>(),
+      random<std::uint64_t>());
   auto array10 = folly::make_array<float>(
       FLT_MIN,
       0.001,
@@ -160,17 +174,17 @@ TEST(NimbleProtocolTest, BasicTypesTest) {
 
   for (size_t i = 0; i < smallest; i++) {
     BasicTypes basicTypes;
-    *basicTypes.myByte_ref() = array1[i];
-    *basicTypes.myInt16_ref() = array2[i];
-    *basicTypes.myInt32_ref() = array3[i];
-    *basicTypes.myInt64_ref() = array4[i];
-    *basicTypes.myBool_ref() = array5[i];
-    *basicTypes.myUint8_ref() = array6[i];
-    *basicTypes.myUint16_ref() = array7[i];
-    *basicTypes.myUint32_ref() = array8[i];
-    *basicTypes.myUint64_ref() = array9[i];
-    *basicTypes.myFloat_ref() = array10[i];
-    *basicTypes.myDouble_ref() = array11[i];
+    basicTypes.myByte_ref() = array1[i];
+    basicTypes.myInt16_ref() = array2[i];
+    basicTypes.myInt32_ref() = array3[i];
+    basicTypes.myInt64_ref() = array4[i];
+    basicTypes.myBool_ref() = array5[i];
+    basicTypes.myUint8_ref() = array6[i];
+    basicTypes.myUint16_ref() = array7[i];
+    basicTypes.myUint32_ref() = array8[i];
+    basicTypes.myUint64_ref() = array9[i];
+    basicTypes.myFloat_ref() = array10[i];
+    basicTypes.myDouble_ref() = array11[i];
 
     NimbleProtocolWriter writer;
     basicTypes.write(&writer);
@@ -233,8 +247,8 @@ TEST(NimbleProtocolTest, StringTypesTest) {
 
   for (auto& str : binaryBytes) {
     StringTypes strTypes;
-    *strTypes.myStr_ref() = str;
-    *strTypes.myBinary_ref() = str;
+    strTypes.myStr_ref() = str;
+    strTypes.myBinary_ref() = str;
     NimbleProtocolWriter writer;
     strTypes.write(&writer);
 
@@ -253,7 +267,7 @@ TEST(NimbleProtocolTest, BinaryTypeTest) {
   // test IOBuf
   StringTypes strTypes;
   auto buf = folly::IOBuf::copyBuffer("Testing;; Foo bar rand0m $tring.");
-  *strTypes.myIOBuf_ref() = std::move(buf);
+  strTypes.myIOBuf_ref() = std::move(buf);
   NimbleProtocolWriter writer;
   strTypes.write(&writer);
 
@@ -367,15 +381,15 @@ TEST(NimbleProtocolTest, ContainerTest) {
 
   for (int i = 0; i < kNumContainers; i++) {
     ContainerTypes containerTypes;
-    *containerTypes.myIntMap_ref() = intMaps[i];
-    *containerTypes.myStringMap_ref() = stringMaps[i];
-    *containerTypes.myMap_ref() = myMaps[i];
-    *containerTypes.myIntList_ref() = intLists[i];
-    *containerTypes.myStringList_ref() = stringLists[i];
-    *containerTypes.myListOfList_ref() = listOfLists[i];
-    *containerTypes.myI16Set_ref() = I16Sets[i];
-    *containerTypes.myStringSet_ref() = stringSet[i];
-    *containerTypes.myListOfMap_ref() = listOfMaps[i];
+    containerTypes.myIntMap_ref() = intMaps[i];
+    containerTypes.myStringMap_ref() = stringMaps[i];
+    containerTypes.myMap_ref() = myMaps[i];
+    containerTypes.myIntList_ref() = intLists[i];
+    containerTypes.myStringList_ref() = stringLists[i];
+    containerTypes.myListOfList_ref() = listOfLists[i];
+    containerTypes.myI16Set_ref() = I16Sets[i];
+    containerTypes.myStringSet_ref() = stringSet[i];
+    containerTypes.myListOfMap_ref() = listOfMaps[i];
     NimbleProtocolWriter writer;
     containerTypes.write(&writer);
 
@@ -406,7 +420,7 @@ TEST(NimbleProtocolTest, BigStringTest) {
   // test with a string longer than 2**28
   uint32_t stringSize = 1U << 30;
   StringTypes strTypes;
-  *strTypes.myStr_ref() = std::string(stringSize, '1');
+  strTypes.myStr_ref() = std::string(stringSize, '1');
   NimbleProtocolWriter writer;
   strTypes.write(&writer);
 
@@ -422,7 +436,7 @@ TEST(NimbleProtocolTest, BigStringTest) {
 TEST(NimbleProtocolTest, BigListTest) {
   // test with a list whose size is greater than 2**24
   ContainerTypes containerTypes;
-  *containerTypes.myIntList_ref() = std::vector<int32_t>(1U << 24, 0);
+  containerTypes.myIntList_ref() = std::vector<int32_t>(1U << 24, 0);
   NimbleProtocolWriter writer;
   containerTypes.write(&writer);
 
@@ -438,44 +452,44 @@ TEST(NimbleProtocolTest, BigListTest) {
 TEST(NimbleProtocolTest, StructOfStructsTest) {
   // some test structs
   BasicTypes basicTypes;
-  *basicTypes.myByte_ref() = folly::Random::rand32(256) - 128;
-  *basicTypes.myInt16_ref() = folly::Random::rand32(65536) - 32768;
-  *basicTypes.myInt32_ref() = folly::Random::rand32() - 2147483648;
-  *basicTypes.myInt64_ref() = folly::Random::rand64(INT64_MIN, INT64_MAX);
-  *basicTypes.myBool_ref() = folly::Random::rand32(1);
-  *basicTypes.myUint8_ref() = folly::Random::rand32(256);
-  *basicTypes.myUint16_ref() = folly::Random::rand32(65536);
-  *basicTypes.myUint32_ref() = folly::Random::rand32();
-  *basicTypes.myUint64_ref() = folly::Random::rand64();
-  *basicTypes.myFloat_ref() = 0.0001;
-  *basicTypes.myDouble_ref() = std::numeric_limits<double>::infinity();
+  basicTypes.myByte_ref() = random<std::int8_t>();
+  basicTypes.myInt16_ref() = random<std::int16_t>();
+  basicTypes.myInt32_ref() = random<std::int32_t>();
+  basicTypes.myInt64_ref() = random<std::int64_t>();
+  basicTypes.myBool_ref() = folly::Random::rand32(1);
+  basicTypes.myUint8_ref() = random<std::uint8_t>();
+  basicTypes.myUint16_ref() = random<std::uint16_t>();
+  basicTypes.myUint32_ref() = random<std::uint32_t>();
+  basicTypes.myUint64_ref() = random<std::uint64_t>();
+  basicTypes.myFloat_ref() = 0.0001;
+  basicTypes.myDouble_ref() = std::numeric_limits<double>::infinity();
 
   StringTypes strTypes;
-  *strTypes.myStr_ref() = "somerandomestring with *@(!)$+_characters:>,<";
-  *strTypes.myBinary_ref() = "test random string";
+  strTypes.myStr_ref() = "somerandomestring with *@(!)$+_characters:>,<";
+  strTypes.myBinary_ref() = "test random string";
 
   ContainerTypes containerTypes;
-  *containerTypes.myIntMap_ref() = {{6, 10012}, {7901, 54298}, {-21, 342001}};
-  *containerTypes.myStringMap_ref() = {
+  containerTypes.myIntMap_ref() = {{6, 10012}, {7901, 54298}, {-21, 342001}};
+  containerTypes.myStringMap_ref() = {
       {"foo", "oops"}, {"bar", "20"}, {"baz", "meh"}};
-  *containerTypes.myMap_ref() = {{3, "yo"}, {50, "heh"}};
-  *containerTypes.myIntList_ref() = {1, 2, 312, 8773, -15};
-  *containerTypes.myStringList_ref() = {
+  containerTypes.myMap_ref() = {{3, "yo"}, {50, "heh"}};
+  containerTypes.myIntList_ref() = {1, 2, 312, 8773, -15};
+  containerTypes.myStringList_ref() = {
       "foooo", "$!someRandomeStringgg", "socialImpact^", "bar", "examples&1"};
-  *containerTypes.myListOfList_ref() = {
+  containerTypes.myListOfList_ref() = {
       {341.5, 0.00001, -12.3456},
       {25.109, -0.111, 7129.00101},
       {512.17171, 0.0100241, -42.32}};
-  *containerTypes.myI16Set_ref() = {1212, -332, 19, 0, -1, 6667};
-  *containerTypes.myStringSet_ref() = {"slkje", "ye21!(&", "apps@", "avengers"};
-  *containerTypes.myListOfMap_ref() = {
+  containerTypes.myI16Set_ref() = {1212, -332, 19, 0, -1, 6667};
+  containerTypes.myStringSet_ref() = {"slkje", "ye21!(&", "apps@", "avengers"};
+  containerTypes.myListOfMap_ref() = {
       {{3, "yo"}, {50, "heh"}}, {{65, "yoyoyo"}, {189, "heh>!@$S666"}}};
   StructOfStruct structOfStructs;
-  *structOfStructs.basicTypes_ref() = basicTypes;
-  *structOfStructs.strTypes_ref() = strTypes;
-  *structOfStructs.containerTypes_ref() = containerTypes;
-  *structOfStructs.myStr_ref() = "omg!#@#TTS1";
-  *structOfStructs.myMap_ref() = {
+  structOfStructs.basicTypes_ref() = basicTypes;
+  structOfStructs.strTypes_ref() = strTypes;
+  structOfStructs.containerTypes_ref() = containerTypes;
+  structOfStructs.myStr_ref() = "omg!#@#TTS1";
+  structOfStructs.myMap_ref() = {
       {"so many tests", 3198099}, {"ohhahaha", -1992948}};
 
   NimbleProtocolWriter writer;
