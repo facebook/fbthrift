@@ -379,6 +379,16 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedTestStruct) {
   EXPECT_EQ(objd.adaptedDouble_ref()->value, 2);
   EXPECT_EQ(objd.adaptedString_ref()->value, "3");
   EXPECT_EQ(obj, objd);
+
+  // Adapted fields reset to the intrinsic default.
+  obj.__clear();
+  EXPECT_EQ(obj.adaptedBoolDefault_ref()->value, false);
+  EXPECT_EQ(obj.adaptedByteDefault_ref()->value, 0);
+  EXPECT_EQ(obj.adaptedShortDefault_ref()->value, 0);
+  EXPECT_EQ(obj.adaptedIntegerDefault_ref()->value, 0);
+  EXPECT_EQ(obj.adaptedLongDefault_ref()->value, 0);
+  EXPECT_EQ(obj.adaptedDoubleDefault_ref()->value, 0);
+  EXPECT_EQ(obj.adaptedStringDefault_ref()->value, "");
 }
 
 TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
@@ -427,6 +437,16 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedDouble_ref()->value, 2);
   EXPECT_EQ(objd.adaptedStruct_ref()->adaptedString_ref()->value, "3");
   EXPECT_EQ(obj, objd);
+
+  // Adapted fields reset to the intrinsic default.
+  obj.__clear();
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedBoolDefault_ref()->value, false);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedByteDefault_ref()->value, 0);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedShortDefault_ref()->value, 0);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedIntegerDefault_ref()->value, 0);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedLongDefault_ref()->value, 0);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedDoubleDefault_ref()->value, 0);
+  EXPECT_EQ(obj.adaptedStruct_ref()->adaptedStringDefault_ref()->value, "");
 }
 } // namespace basic
 

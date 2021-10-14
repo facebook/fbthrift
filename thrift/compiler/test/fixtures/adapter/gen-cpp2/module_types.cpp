@@ -655,7 +655,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void StructWithFieldAdapter::__clear() {
   // clear all fields
-  this->field = ::apache::thrift::adapt_detail::fromThriftField<my::Adapter1, 1>(::std::int32_t(), *this);
+  this->field = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END

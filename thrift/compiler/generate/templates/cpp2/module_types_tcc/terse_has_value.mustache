@@ -29,16 +29,16 @@
 %><%/type:raw_string_or_binary?%><%!
 
 %><%^field:cpp_ref?%><%^type:resolves_to_container?%><%^type:raw_string_or_binary?%><%!
-  %><%#type:cpp_adapter%><%!
+  %><%#field:cpp_adapter%><%!
     // Must use == operator, and check against the default constructor (ignoring any IDL-specified default).
     %>!(<% >  module_types_tcc/field_ref %> == <%type:cpp_type%>())<%!
-  %><%/type:cpp_adapter%><%!
-  %><%^type:cpp_adapter%><%!
+  %><%/field:cpp_adapter%><%!
+  %><%^field:cpp_adapter%><%!
     // For all other cases, must not equal the default.
     // TODO(afuller): As with containers, binary, and string above, this should check for
     // the 'intrinsic' default so the behavior does not change when IDL-specified defaults
     // change.
     %><% >  module_types_tcc/field_ref %> != <% > field/default%><%!
-  %><%/type:cpp_adapter%><%!
+  %><%/field:cpp_adapter%><%!
 %><%/type:raw_string_or_binary?%><%/type:resolves_to_container?%><%/field:cpp_ref?%><%!
 %>
