@@ -77,7 +77,7 @@ struct ResponsePayload {
 
   std::unique_ptr<folly::IOBuf> buffer() && { return std::move(buffer_); }
 
-  const folly::IOBuf* buffer() const& { return buffer_.get(); }
+  folly::IOBuf* buffer() & { return buffer_.get(); }
 
   void transform(
       std::vector<uint16_t>& writeTrans, size_t minCompressBytes = 0);

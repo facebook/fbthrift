@@ -48,10 +48,10 @@ void MyServiceAsyncProcessor::process_foo(apache::thrift::ResponseChannelRequest
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse MyServiceAsyncProcessor::return_foo(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_foo(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyService_foo_presult result;
-  return serializeLegacyResponse("foo", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -119,12 +119,12 @@ void MyServiceAsyncProcessor::process_MyInteraction_frobnicate(apache::thrift::R
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse MyServiceAsyncProcessor::return_MyInteraction_frobnicate(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_MyInteraction_frobnicate(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   MyService_MyInteraction_frobnicate_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeLegacyResponse("MyInteraction.frobnicate", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -150,9 +150,11 @@ void MyServiceAsyncProcessor::throw_wrapped_MyInteraction_frobnicate(apache::thr
     return;
   }
   ProtocolOut_ prot;
-  auto response = serializeLegacyResponse("MyInteraction.frobnicate", &prot, protoSeqId, ctx, result);
-  response.buffer = apache::thrift::transport::THeader::transform(std::move(response.buffer), reqCtx->getHeader()->getWriteTransforms());
-  return req->sendReply(std::move(response.buffer));
+  auto response = serializeResponse(&prot, ctx, result);
+  auto payload = std::move(response).extractPayload(
+      req->includeEnvelope(), prot.protocolType(), protoSeqId, apache::thrift::MessageType::T_REPLY, "MyInteraction.frobnicate");
+  payload.transform(reqCtx->getHeader()->getWriteTransforms());
+  return req->sendReply(std::move(payload));
 }
 
 template <typename ProtocolIn_, typename ProtocolOut_>
@@ -223,7 +225,7 @@ void MyServiceAsyncProcessor::process_MyInteraction_truthify(apache::thrift::Res
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_MyInteraction_truthify(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<bool>&& _return) {
+apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_MyInteraction_truthify(apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<bool>&& _return) {
   ProtocolOut_ prot;
   MyService_MyInteraction_truthify_presult::FieldsType result;
   using StreamPResultType = MyService_MyInteraction_truthify_presult::StreamPResultType;
@@ -231,7 +233,7 @@ apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_M
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
   auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
-  return {serializeLegacyResponse("MyInteraction.truthify", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
+  return {serializeResponse(&prot, ctx, result), std::move(encodedStream)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -284,7 +286,7 @@ void MyServiceAsyncProcessor::process_MyInteraction_encode(apache::thrift::Respo
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> MyServiceAsyncProcessor::return_MyInteraction_encode(apache::thrift::ContextStack* ctx, ::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsumerImpl> MyServiceAsyncProcessor::return_MyInteraction_encode(apache::thrift::ContextStack* ctx, ::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   MyService_MyInteraction_encode_presult::FieldsType result;
   using SinkPResultType = MyService_MyInteraction_encode_presult::SinkPResultType;
@@ -303,7 +305,7 @@ std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::Sink
       std::move(_return.sinkConsumer),
       std::move(executor));
 
-  return {serializeLegacyResponse("MyInteraction.encode", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+  return {serializeResponse(&prot, ctx, result), std::move(sinkConsumerImpl)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -368,12 +370,12 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_frobnicate(apache::thrif
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse MyServiceAsyncProcessor::return_MyInteractionFast_frobnicate(int32_t protoSeqId, apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
+apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_MyInteractionFast_frobnicate(apache::thrift::ContextStack* ctx, ::std::int32_t const& _return) {
   ProtocolOut_ prot;
   MyService_MyInteractionFast_frobnicate_presult result;
   result.get<0>().value = const_cast<::std::int32_t*>(&_return);
   result.setIsSet(0, true);
-  return serializeLegacyResponse("MyInteractionFast.frobnicate", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -453,7 +455,7 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_truthify(apache::thrift:
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_MyInteractionFast_truthify(int32_t protoSeqId, apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<bool>&& _return) {
+apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_MyInteractionFast_truthify(apache::thrift::ContextStack* ctx, folly::Executor::KeepAlive<> executor, ::apache::thrift::ServerStream<bool>&& _return) {
   ProtocolOut_ prot;
   MyService_MyInteractionFast_truthify_presult::FieldsType result;
   using StreamPResultType = MyService_MyInteractionFast_truthify_presult::StreamPResultType;
@@ -461,7 +463,7 @@ apache::thrift::ResponseAndServerStreamFactory MyServiceAsyncProcessor::return_M
 
       using ExMapType = apache::thrift::detail::ap::EmptyExMapType;
   auto encodedStream = apache::thrift::detail::ap::encode_server_stream<ProtocolOut_, StreamPResultType, ExMapType>(std::move(returnStream), std::move(executor));
-  return {serializeLegacyResponse("MyInteractionFast.truthify", &prot, protoSeqId, ctx, result), std::move(encodedStream)};
+  return {serializeResponse(&prot, ctx, result), std::move(encodedStream)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -512,7 +514,7 @@ void MyServiceAsyncProcessor::process_MyInteractionFast_encode(apache::thrift::R
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::SinkConsumerImpl> MyServiceAsyncProcessor::return_MyInteractionFast_encode(apache::thrift::ContextStack* ctx, ::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>&& _return, folly::Executor::KeepAlive<> executor) {
+std::pair<apache::thrift::SerializedResponse, apache::thrift::detail::SinkConsumerImpl> MyServiceAsyncProcessor::return_MyInteractionFast_encode(apache::thrift::ContextStack* ctx, ::apache::thrift::ResponseAndSinkConsumer<::std::set<float>, ::std::string, ::std::string>&& _return, folly::Executor::KeepAlive<> executor) {
   ProtocolOut_ prot;
   MyService_MyInteractionFast_encode_presult::FieldsType result;
   using SinkPResultType = MyService_MyInteractionFast_encode_presult::SinkPResultType;
@@ -531,7 +533,7 @@ std::pair<apache::thrift::LegacySerializedResponse, apache::thrift::detail::Sink
       std::move(_return.sinkConsumer),
       std::move(executor));
 
-  return {serializeLegacyResponse("MyInteractionFast.encode", &prot, 0, ctx, result), std::move(sinkConsumerImpl)};
+  return {serializeResponse(&prot, ctx, result), std::move(sinkConsumerImpl)};
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
@@ -586,10 +588,10 @@ void MyServiceAsyncProcessor::process_SerialInteraction_frobnicate(apache::thrif
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
-apache::thrift::LegacySerializedResponse MyServiceAsyncProcessor::return_SerialInteraction_frobnicate(int32_t protoSeqId, apache::thrift::ContextStack* ctx) {
+apache::thrift::SerializedResponse MyServiceAsyncProcessor::return_SerialInteraction_frobnicate(apache::thrift::ContextStack* ctx) {
   ProtocolOut_ prot;
   MyService_SerialInteraction_frobnicate_presult result;
-  return serializeLegacyResponse("SerialInteraction.frobnicate", &prot, protoSeqId, ctx, result);
+  return serializeResponse(&prot, ctx, result);
 }
 
 template <class ProtocolIn_, class ProtocolOut_>
