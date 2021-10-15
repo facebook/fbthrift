@@ -86,13 +86,6 @@ class t_field final : public t_named {
   t_field_qualifier qualifier() const { return qual_; }
   void set_qualifier(t_field_qualifier qual) { qual_ = qual; }
 
-  const t_field* next() const { return next_; }
-  const t_field* prev() const { return prev_; }
-  void set_next(t_field* field) {
-    next_ = field;
-    field->prev_ = this;
-  }
-
   /**
    * Thrift AST nodes are meant to be non-copyable and non-movable, and should
    * never be cloned. This method exists to grand-father specific uses in the
@@ -105,7 +98,6 @@ class t_field final : public t_named {
       clone->value_ = value_->clone();
     }
 
-    clone->next_ = next_;
     clone->qual_ = qual_;
 
     return clone;
@@ -118,9 +110,6 @@ class t_field final : public t_named {
 
   t_field_qualifier qual_ = {};
   std::unique_ptr<t_const_value> value_;
-
-  const t_field* next_ = nullptr;
-  const t_field* prev_ = nullptr;
 
   // TODO(afuller): Delete everything below here. It is only provided for
   // backwards compatibility.
@@ -172,9 +161,6 @@ class t_field final : public t_named {
 
   const t_type* get_type() const { return type().get_type(); }
   int32_t get_key() const { return id(); }
-
-  const t_field* get_next() const { return next(); }
-  const t_field* get_prev() const { return prev(); }
 };
 
 using t_field_list = node_list<t_field>;

@@ -682,15 +682,18 @@ class mstch_cpp2_field : public mstch_field {
     return mstch::node();
   }
   mstch::node prev_field_key() {
-    return std::to_string(field_->get_prev()->get_key());
+    assert(field_context_ && field_context_->prev_);
+    return field_context_->prev_->get_key();
   }
   mstch::node next_field_key() {
-    return std::to_string(field_->get_next()->get_key());
+    assert(field_context_ && field_context_->next_);
+    return field_context_->next_->get_key();
   }
   mstch::node next_field_type() {
-    return field_->get_next()
+    assert(field_context_ && field_context_->next_);
+    return field_context_->next_
         ? generators_->type_generator_->generate(
-              field_->get_next()->get_type(), generators_, cache_, pos_)
+              field_context_->next_->get_type(), generators_, cache_, pos_)
         : mstch::node("");
   }
   mstch::node terse_writes() {
