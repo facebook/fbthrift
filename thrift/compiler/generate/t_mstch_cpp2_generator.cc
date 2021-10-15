@@ -421,7 +421,6 @@ class mstch_cpp2_type : public mstch_type {
         });
     register_has_option(
         "type:sync_methods_return_try?", "sync_methods_return_try");
-    register_has_option("type:no_getters_setters?", "no_getters_setters");
   }
   std::string get_type_namespace(t_program const* program) override {
     return cpp2::get_gen_namespace(*program);
@@ -633,7 +632,8 @@ class mstch_cpp2_field : public mstch_field {
   }
   mstch::node has_deprecated_accessors() {
     return !cpp2::is_explicit_ref(field_) && !cpp2::is_lazy(field_) &&
-        !gen::cpp::type_resolver::find_first_adapter(field_);
+        !gen::cpp::type_resolver::find_first_adapter(field_) &&
+        !has_option("no_getters_setters");
   }
   mstch::node cpp_ref() { return cpp2::is_explicit_ref(field_); }
   mstch::node non_opt_cpp_ref() {
@@ -811,7 +811,6 @@ class mstch_cpp2_struct : public mstch_struct {
             {"struct:cpp_frozen2_exclude?",
              &mstch_cpp2_struct::cpp_frozen2_exclude},
         });
-    register_has_option("struct:no_getters_setters?", "no_getters_setters");
   }
   mstch::node fields_size() { return std::to_string(strct_->fields().size()); }
   mstch::node filtered_fields() {

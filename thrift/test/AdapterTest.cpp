@@ -448,6 +448,25 @@ TEST_F(AdapterTest, TemplatedTestAdapter_AdaptTemplatedNestedTestStruct) {
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedDoubleDefault_ref()->value, 0);
   EXPECT_EQ(obj.adaptedStruct_ref()->adaptedStringDefault_ref()->value, "");
 }
+
+TEST_F(AdapterTest, StructFieldAdaptedStruct) {
+  StructFieldAdaptedStruct obj;
+  auto wrapper = Wrapper<AdaptedStruct>();
+  wrapper.value.data_ref() = 42;
+  obj.adaptedStruct_ref() = wrapper;
+  EXPECT_EQ(obj.adaptedStruct_ref()->value.data_ref(), 42);
+
+  auto objs = CompactSerializer::serialize<std::string>(obj);
+  StructFieldAdaptedStruct objd;
+  CompactSerializer::deserialize(objs, objd);
+
+  EXPECT_EQ(objd.adaptedStruct_ref()->value.data_ref(), 42);
+  EXPECT_EQ(obj, objd);
+
+  // Adapted fields reset to the intrinsic default.
+  obj.__clear();
+  EXPECT_EQ(obj.adaptedStruct_ref()->value.data_ref(), 0);
+}
 } // namespace basic
 
 namespace terse {

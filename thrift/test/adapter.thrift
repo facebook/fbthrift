@@ -99,3 +99,14 @@ union AdaptTestUnion {
   1: DurationMs delay;
   2: CustomProtocolType custom;
 }
+
+struct AdaptedStruct {
+  1: i64 data;
+}
+
+struct StructFieldAdaptedStruct {
+  @cpp.ExperimentalAdapter{
+    name = "::apache::thrift::test::TemplatedTestAdapter",
+  }
+  1: AdaptedStruct adaptedStruct;
+}

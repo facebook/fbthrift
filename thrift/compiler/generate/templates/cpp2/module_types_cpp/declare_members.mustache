@@ -87,7 +87,7 @@ void <%struct:name%>::__clear() {
 <%/type:resolves_to_container?%>
 <%#type:non_empty_struct?%>
 <%^field:cpp_ref?%>
-  <% > field/member%>.__clear();
+  <%#field:cpp_adapter%><% > field/member%> = {};<%/field:cpp_adapter%><%^field:cpp_adapter%><% > field/member%>.__clear();<%/field:cpp_adapter%>
 <%/field:cpp_ref?%>
 <%#field:cpp_ref_unique?%>
 <%^field:optional?%>

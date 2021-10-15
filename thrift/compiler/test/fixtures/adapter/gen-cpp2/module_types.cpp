@@ -177,38 +177,6 @@ bool Foo::operator<(const Foo& rhs) const {
   return false;
 }
 
-const ::cpp2::SetWithAdapter& Foo::get_setField() const& {
-  return setField;
-}
-
-::cpp2::SetWithAdapter Foo::get_setField() && {
-  return std::move(setField);
-}
-
-const ::cpp2::SetWithAdapter* Foo::get_optionalSetField() const& {
-  return optionalSetField_ref().has_value() ? std::addressof(optionalSetField) : nullptr;
-}
-
-::cpp2::SetWithAdapter* Foo::get_optionalSetField() & {
-  return optionalSetField_ref().has_value() ? std::addressof(optionalSetField) : nullptr;
-}
-
-const ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>& Foo::get_mapField() const& {
-  return mapField;
-}
-
-::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>> Foo::get_mapField() && {
-  return std::move(mapField);
-}
-
-const ::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>* Foo::get_optionalMapField() const& {
-  return optionalMapField_ref().has_value() ? std::addressof(optionalMapField) : nullptr;
-}
-
-::apache::thrift::adapt_detail::adapted_t<my::Adapter3, ::std::map<::std::string, ::apache::thrift::adapt_detail::adapted_t<my::Adapter2, ::cpp2::ListWithElemAdapter>>>* Foo::get_optionalMapField() & {
-  return optionalMapField_ref().has_value() ? std::addressof(optionalMapField) : nullptr;
-}
-
 
 void swap(Foo& a, Foo& b) {
   using ::std::swap;
@@ -438,12 +406,12 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Bar::__clear() {
   // clear all fields
-  this->structField.__clear();
-  this->optionalStructField.__clear();
+  this->structField = {};
+  this->optionalStructField = {};
   this->structListField.clear();
   this->optionalStructListField.clear();
-  this->unionField.__clear();
-  this->optionalUnionField.__clear();
+  this->unionField = {};
+  this->optionalUnionField = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
 THRIFT_IGNORE_ISSET_USE_WARNING_END
@@ -499,22 +467,6 @@ bool Bar::operator<(const Bar& rhs) const {
   return false;
 }
 
-const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>& Bar::get_structField() const& {
-  return structField;
-}
-
-::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo> Bar::get_structField() && {
-  return std::move(structField);
-}
-
-const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>* Bar::get_optionalStructField() const& {
-  return optionalStructField_ref().has_value() ? std::addressof(optionalStructField) : nullptr;
-}
-
-::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>* Bar::get_optionalStructField() & {
-  return optionalStructField_ref().has_value() ? std::addressof(optionalStructField) : nullptr;
-}
-
 const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>& Bar::get_structListField() const& {
   return structListField;
 }
@@ -529,22 +481,6 @@ const ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cp
 
 ::std::vector<::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Foo>>* Bar::get_optionalStructListField() & {
   return optionalStructListField_ref().has_value() ? std::addressof(optionalStructListField) : nullptr;
-}
-
-const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>& Bar::get_unionField() const& {
-  return unionField;
-}
-
-::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz> Bar::get_unionField() && {
-  return std::move(unionField);
-}
-
-const ::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>* Bar::get_optionalUnionField() const& {
-  return optionalUnionField_ref().has_value() ? std::addressof(optionalUnionField) : nullptr;
-}
-
-::apache::thrift::adapt_detail::adapted_t<my::Adapter1, ::cpp2::Baz>* Bar::get_optionalUnionField() & {
-  return optionalUnionField_ref().has_value() ? std::addressof(optionalUnionField) : nullptr;
 }
 
 
