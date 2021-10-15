@@ -156,7 +156,9 @@ TrivialTypesStruct::TrivialTypesStruct(TrivialTypesStruct&& other) noexcept  :
     fieldC(std::move(other.fieldC)),
     fieldD(std::move(other.fieldD)),
     fieldE(std::move(other.fieldE)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 TrivialTypesStruct& TrivialTypesStruct::operator=(FOLLY_MAYBE_UNUSED TrivialTypesStruct&& other) noexcept {
     this->fieldA = std::move(other.fieldA);
     this->fieldB = std::move(other.fieldB);
@@ -343,7 +345,9 @@ ContainerStruct::ContainerStruct(ContainerStruct&& other) noexcept  :
     fieldF(std::move(other.fieldF)),
     fieldG(std::move(other.fieldG)),
     fieldH(std::move(other.fieldH)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 ContainerStruct& ContainerStruct::operator=(FOLLY_MAYBE_UNUSED ContainerStruct&& other) noexcept {
     this->fieldA = std::move(other.fieldA);
     this->fieldB = std::move(other.fieldB);

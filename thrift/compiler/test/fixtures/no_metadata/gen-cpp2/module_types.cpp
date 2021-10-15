@@ -144,7 +144,9 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     MyStringField(std::move(other.MyStringField)),
     MyDataField(std::move(other.MyDataField)),
     myEnum(std::move(other.myEnum)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->MyIntField = std::move(other.MyIntField);
     this->MyStringField = std::move(other.MyStringField);

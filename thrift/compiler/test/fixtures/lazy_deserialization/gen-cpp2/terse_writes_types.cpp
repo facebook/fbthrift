@@ -45,7 +45,9 @@ TerseFoo::TerseFoo(TerseFoo&& other) noexcept  :
     field2(std::move(other.field2)),
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 TerseFoo& TerseFoo::operator=(FOLLY_MAYBE_UNUSED TerseFoo&& other) noexcept {
     this->field1 = std::move(other.field1);
     this->field2 = std::move(other.field2);
@@ -257,6 +259,7 @@ TerseLazyFoo::TerseLazyFoo(TerseLazyFoo&& other) noexcept  :
     other.__fbthrift_isDeserialized_.field4.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
   }
 }
+
 TerseLazyFoo& TerseLazyFoo::operator=(FOLLY_MAYBE_UNUSED TerseLazyFoo&& other) noexcept {
     const auto relaxed = std::memory_order::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
@@ -502,7 +505,9 @@ TerseOptionalFoo::TerseOptionalFoo(TerseOptionalFoo&& other) noexcept  :
     field2(std::move(other.field2)),
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 TerseOptionalFoo& TerseOptionalFoo::operator=(FOLLY_MAYBE_UNUSED TerseOptionalFoo&& other) noexcept {
     this->field1 = std::move(other.field1);
     this->field2 = std::move(other.field2);
@@ -714,6 +719,7 @@ TerseOptionalLazyFoo::TerseOptionalLazyFoo(TerseOptionalLazyFoo&& other) noexcep
     other.__fbthrift_isDeserialized_.field4.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
   }
 }
+
 TerseOptionalLazyFoo& TerseOptionalLazyFoo::operator=(FOLLY_MAYBE_UNUSED TerseOptionalLazyFoo&& other) noexcept {
     const auto relaxed = std::memory_order::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;

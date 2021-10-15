@@ -405,7 +405,9 @@ Val::Val(Val&& other) noexcept  :
     strVal(std::move(other.strVal)),
     intVal(std::move(other.intVal)),
     typedefValue(std::move(other.typedefValue)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 Val& Val::operator=(FOLLY_MAYBE_UNUSED Val&& other) noexcept {
     this->strVal = std::move(other.strVal);
     this->intVal = std::move(other.intVal);

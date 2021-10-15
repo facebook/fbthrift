@@ -78,7 +78,9 @@ MyStructFloatFieldThrowExp::MyStructFloatFieldThrowExp(MyStructFloatFieldThrowEx
     MyByteField(std::move(other.MyByteField)),
     myStringField(std::move(other.myStringField)),
     myFloatField(std::move(other.myFloatField)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 MyStructFloatFieldThrowExp& MyStructFloatFieldThrowExp::operator=(FOLLY_MAYBE_UNUSED MyStructFloatFieldThrowExp&& other) noexcept {
     this->myLongField = std::move(other.myLongField);
     this->MyByteField = std::move(other.MyByteField);
@@ -208,7 +210,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
     age(std::move(other.age)),
     name(std::move(other.name)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 SimpleStruct& SimpleStruct::operator=(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept {
     this->age = std::move(other.age);
     this->name = std::move(other.name);
@@ -406,7 +410,9 @@ ComplexNestedStruct::ComplexNestedStruct(ComplexNestedStruct&& other) noexcept  
     mapKeyIntValSet(std::move(other.mapKeyIntValSet)),
     mapKeySetValInt(std::move(other.mapKeySetValInt)),
     mapKeyListValSet(std::move(other.mapKeyListValSet)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 ComplexNestedStruct& ComplexNestedStruct::operator=(FOLLY_MAYBE_UNUSED ComplexNestedStruct&& other) noexcept {
     this->setOfSetOfInt = std::move(other.setOfSetOfInt);
     this->listofListOfListOfListOfEnum = std::move(other.listofListOfListOfListOfEnum);
@@ -902,7 +908,8 @@ reqXcep::~reqXcep() {}
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 reqXcep::reqXcep(reqXcep&& other) noexcept  :
     message(std::move(other.message)),
-    errorCode(std::move(other.errorCode)) {}
+    errorCode(std::move(other.errorCode)) {
+}
 
 reqXcep& reqXcep::operator=(FOLLY_MAYBE_UNUSED reqXcep&& other) noexcept {
     this->message = std::move(other.message);
@@ -915,7 +922,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 reqXcep::reqXcep(apache::thrift::FragileConstructor, ::std::string message__arg, ::std::int32_t errorCode__arg) :
     message(std::move(message__arg)),
-    errorCode(std::move(errorCode__arg)) {}
+    errorCode(std::move(errorCode__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void reqXcep::__clear() {

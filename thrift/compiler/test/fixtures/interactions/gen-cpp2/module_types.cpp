@@ -50,7 +50,9 @@ CustomException::~CustomException() {}
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomException::CustomException(CustomException&& other) noexcept  :
     message(std::move(other.message)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 CustomException& CustomException::operator=(FOLLY_MAYBE_UNUSED CustomException&& other) noexcept {
     this->message = std::move(other.message);
     __isset = other.__isset;

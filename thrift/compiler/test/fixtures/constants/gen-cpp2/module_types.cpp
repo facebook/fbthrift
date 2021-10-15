@@ -156,7 +156,9 @@ Internship::Internship(Internship&& other) noexcept  :
     employer(std::move(other.employer)),
     compensation(std::move(other.compensation)),
     school(std::move(other.school)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 Internship& Internship::operator=(FOLLY_MAYBE_UNUSED Internship&& other) noexcept {
     this->weeks = std::move(other.weeks);
     this->title = std::move(other.title);
@@ -292,7 +294,8 @@ namespace cpp2 {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Range::Range(apache::thrift::FragileConstructor, ::std::int32_t min__arg, ::std::int32_t max__arg) :
     min(std::move(min__arg)),
-    max(std::move(max__arg)) {}
+    max(std::move(max__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Range::__clear() {
@@ -378,7 +381,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(struct1&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct1& struct1::operator=(FOLLY_MAYBE_UNUSED struct1&& other) noexcept {
     this->a = std::move(other.a);
     this->b = std::move(other.b);
@@ -488,7 +493,9 @@ struct2::struct2(struct2&& other) noexcept  :
     b(std::move(other.b)),
     c(std::move(other.c)),
     d(std::move(other.d)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct2& struct2::operator=(FOLLY_MAYBE_UNUSED struct2&& other) noexcept {
     this->a = std::move(other.a);
     this->b = std::move(other.b);
@@ -647,7 +654,9 @@ struct3::struct3(struct3&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
     c(std::move(other.c)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct3& struct3::operator=(FOLLY_MAYBE_UNUSED struct3&& other) noexcept {
     this->a = std::move(other.a);
     this->b = std::move(other.b);
@@ -787,7 +796,9 @@ struct4::struct4(struct4&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
     c(std::move(other.c)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct4& struct4::operator=(FOLLY_MAYBE_UNUSED struct4&& other) noexcept {
     this->a = std::move(other.a);
     this->b = std::move(other.b);

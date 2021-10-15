@@ -159,7 +159,8 @@ AStructB& AStructB::operator=(const AStructB&) = default;
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(AStructB&& other) noexcept  :
-    FieldA(std::move(other.FieldA)) {}
+    FieldA(std::move(other.FieldA)) {
+}
 
 AStructB& AStructB::operator=(FOLLY_MAYBE_UNUSED AStructB&& other) noexcept {
     this->FieldA = std::move(other.FieldA);
@@ -170,7 +171,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg) :
-    FieldA(std::move(FieldA__arg)) {}
+    FieldA(std::move(FieldA__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void AStructB::__clear() {

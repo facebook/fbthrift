@@ -76,7 +76,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_inline::structured_annotation_inline(structured_annotation_inline&& other) noexcept  :
     count(std::move(other.count)),
     name(std::move(other.name)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 structured_annotation_inline& structured_annotation_inline::operator=(FOLLY_MAYBE_UNUSED structured_annotation_inline&& other) noexcept {
     this->count = std::move(other.count);
     this->name = std::move(other.name);
@@ -183,7 +185,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_with_default::structured_annotation_with_default(structured_annotation_with_default&& other) noexcept  :
     name(std::move(other.name)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 structured_annotation_with_default& structured_annotation_with_default::operator=(FOLLY_MAYBE_UNUSED structured_annotation_with_default&& other) noexcept {
     this->name = std::move(other.name);
     __isset = other.__isset;
@@ -362,7 +366,9 @@ structured_annotation_recursive::structured_annotation_recursive(structured_anno
     name(std::move(other.name)),
     recurse(std::move(other.recurse)),
     forward(std::move(other.forward)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 structured_annotation_recursive& structured_annotation_recursive::operator=(FOLLY_MAYBE_UNUSED structured_annotation_recursive&& other) noexcept {
     this->name = std::move(other.name);
     this->recurse = std::move(other.recurse);
@@ -521,7 +527,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_nested::structured_annotation_nested(structured_annotation_nested&& other) noexcept  :
     name(std::move(other.name)),
     nest(std::move(other.nest)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 structured_annotation_nested& structured_annotation_nested::operator=(FOLLY_MAYBE_UNUSED structured_annotation_nested&& other) noexcept {
     this->name = std::move(other.name);
     this->nest = std::move(other.nest);
@@ -651,7 +659,9 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     annotated_type(std::move(other.annotated_type)),
     annotated_recursive(std::move(other.annotated_recursive)),
     annotated_nested(std::move(other.annotated_nested)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->annotated_field = std::move(other.annotated_field);
     this->annotated_type = std::move(other.annotated_type);
@@ -788,7 +798,9 @@ MyException::~MyException() {}
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(MyException&& other) noexcept  :
     context(std::move(other.context)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 MyException& MyException::operator=(FOLLY_MAYBE_UNUSED MyException&& other) noexcept {
     this->context = std::move(other.context);
     __isset = other.__isset;

@@ -43,7 +43,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(MyStructMapFloatThrowExp&& other) noexcept  :
     myLongField(std::move(other.myLongField)),
     mapListOfFloats(std::move(other.mapListOfFloats)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(FOLLY_MAYBE_UNUSED MyStructMapFloatThrowExp&& other) noexcept {
     this->myLongField = std::move(other.myLongField);
     this->mapListOfFloats = std::move(other.mapListOfFloats);
@@ -226,7 +228,9 @@ defaultStruct::defaultStruct(defaultStruct&& other) noexcept  :
     mapJavaTypeDFset(std::move(other.mapJavaTypeDFset)),
     emptyMap(std::move(other.emptyMap)),
     enumMapDFset(std::move(other.enumMapDFset)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 defaultStruct& defaultStruct::operator=(FOLLY_MAYBE_UNUSED defaultStruct&& other) noexcept {
     this->myLongDFset = std::move(other.myLongDFset);
     this->myLongDF = std::move(other.myLongDF);
@@ -866,7 +870,9 @@ TypeRemapped::TypeRemapped(TypeRemapped&& other) noexcept  :
     ioMap(std::move(other.ioMap)),
     BigInteger(std::move(other.BigInteger)),
     binaryTestBuffer(std::move(other.binaryTestBuffer)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 TypeRemapped& TypeRemapped::operator=(FOLLY_MAYBE_UNUSED TypeRemapped&& other) noexcept {
     this->lsMap = std::move(other.lsMap);
     this->ioMap = std::move(other.ioMap);
@@ -1021,7 +1027,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 optXcep::optXcep(optXcep&& other) noexcept  :
     message(std::move(other.message)),
     errorCode(std::move(other.errorCode)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 optXcep& optXcep::operator=(FOLLY_MAYBE_UNUSED optXcep&& other) noexcept {
     this->message = std::move(other.message);
     this->errorCode = std::move(other.errorCode);

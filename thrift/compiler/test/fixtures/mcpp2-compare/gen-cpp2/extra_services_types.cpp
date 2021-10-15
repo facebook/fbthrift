@@ -80,7 +80,9 @@ containerStruct2::containerStruct2(containerStruct2&& other) noexcept  :
     fieldE(std::move(other.fieldE)),
     req_fieldE(std::move(other.req_fieldE)),
     opt_fieldE(std::move(other.opt_fieldE)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 containerStruct2& containerStruct2::operator=(FOLLY_MAYBE_UNUSED containerStruct2&& other) noexcept {
     this->fieldA = std::move(other.fieldA);
     this->req_fieldA = std::move(other.req_fieldA);

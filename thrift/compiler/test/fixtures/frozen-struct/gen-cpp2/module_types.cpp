@@ -89,7 +89,9 @@ ModuleA::ModuleA(ModuleA&& other) noexcept  :
     mapField(std::move(other.mapField)),
     inclAField(std::move(other.inclAField)),
     inclBField(std::move(other.inclBField)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 ModuleA& ModuleA::operator=(FOLLY_MAYBE_UNUSED ModuleA&& other) noexcept {
     this->i32Field = std::move(other.i32Field);
     this->strField = std::move(other.strField);

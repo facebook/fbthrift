@@ -53,7 +53,8 @@ Fiery::~Fiery() {}
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(Fiery&& other) noexcept  :
-    message(std::move(other.message)) {}
+    message(std::move(other.message)) {
+}
 
 Fiery& Fiery::operator=(FOLLY_MAYBE_UNUSED Fiery&& other) noexcept {
     this->message = std::move(other.message);
@@ -64,7 +65,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
-    message(std::move(message__arg)) {}
+    message(std::move(message__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void Fiery::__clear() {
@@ -153,7 +155,9 @@ Serious::~Serious() {}
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(Serious&& other) noexcept  :
     sonnet(std::move(other.sonnet)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 Serious& Serious::operator=(FOLLY_MAYBE_UNUSED Serious&& other) noexcept {
     this->sonnet = std::move(other.sonnet);
     __isset = other.__isset;
@@ -262,7 +266,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(ComplexFieldNames&& other) noexcept  :
     error_message(std::move(other.error_message)),
     internal_error_message(std::move(other.internal_error_message)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 ComplexFieldNames& ComplexFieldNames::operator=(FOLLY_MAYBE_UNUSED ComplexFieldNames&& other) noexcept {
     this->error_message = std::move(other.error_message);
     this->internal_error_message = std::move(other.internal_error_message);
@@ -382,7 +388,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(CustomFieldNames&& other) noexcept  :
     error_message(std::move(other.error_message)),
     internal_error_message(std::move(other.internal_error_message)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 CustomFieldNames& CustomFieldNames::operator=(FOLLY_MAYBE_UNUSED CustomFieldNames&& other) noexcept {
     this->error_message = std::move(other.error_message);
     this->internal_error_message = std::move(other.internal_error_message);
@@ -503,7 +511,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(ExceptionWithPrimitiveField&& other) noexcept  :
     message(std::move(other.message)),
     error_code(std::move(other.error_code)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(FOLLY_MAYBE_UNUSED ExceptionWithPrimitiveField&& other) noexcept {
     this->message = std::move(other.message);
     this->error_code = std::move(other.error_code);

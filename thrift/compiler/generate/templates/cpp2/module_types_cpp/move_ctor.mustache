@@ -18,20 +18,26 @@
 %><%^struct:fields?%>{ (void)other; }<%/struct:fields?%><%!
 %><%#struct:fields?%> :
 <%#struct:fields_in_layout_order%>
-    <%field:cpp_name%>(std::move(other.<%field:cpp_name%>))<%^last?%>,<%/last?%><%!
+    <%field:cpp_name%>(std::move(other.<%field:cpp_name%>))<%^last?%>,
+<%/last?%><%!
       %><%#last?%><%#struct:isset_fields?%>,<%/struct:isset_fields?%><%!
                 %><%^struct:isset_fields?%><%#struct:lazy_fields?%>,<%/struct:lazy_fields?%><%!
-                                         %><%^struct:lazy_fields?%> {}<%/struct:lazy_fields?%><%!
                 %><%/struct:isset_fields?%><%!
-      %><%/last?%>
-<%/struct:fields_in_layout_order%>
-<%#struct:isset_fields?%>
+      %><%/last?%><%!
+%><%/struct:fields_in_layout_order%><%!
+%><%#struct:isset_fields?%>
     __isset(other.__isset)<%#struct:lazy_fields?%>,<%/struct:lazy_fields?%><%!
-                        %><%^struct:lazy_fields?%> {}<%/struct:lazy_fields?%><%!
 %><%/struct:isset_fields?%><%!
 %><%#struct:lazy_fields?%>
     __fbthrift_protocol_(other.__fbthrift_protocol_),
-    __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
+    __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_))<%!
+%><%/struct:lazy_fields?%> {
+<%#struct:fields%>
+<%#field:cpp_adapter%>
+  ::apache::thrift::adapt_detail::construct<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_name%>, *this);
+<%/field:cpp_adapter%>
+<%/struct:fields%>
+<%#struct:lazy_fields?%>
   const auto relaxed = std::memory_order::memory_order_relaxed;
 <%#struct:fields%><%#field:lazy?%>
   {
@@ -40,5 +46,6 @@
     other.__fbthrift_isDeserialized_.<%field:cpp_name%>.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
   }
 <%/field:lazy?%><%/struct:fields%>
-}<%!
-%><%/struct:lazy_fields?%><%/struct:fields?%>
+<%/struct:lazy_fields?%>
+}
+<%/struct:fields?%>

@@ -45,7 +45,9 @@ Foo::Foo(Foo&& other) noexcept  :
     field2(std::move(other.field2)),
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
     this->field1 = std::move(other.field1);
     this->field2 = std::move(other.field2);
@@ -257,6 +259,7 @@ LazyFoo::LazyFoo(LazyFoo&& other) noexcept  :
     other.__fbthrift_isDeserialized_.field4.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
   }
 }
+
 LazyFoo& LazyFoo::operator=(FOLLY_MAYBE_UNUSED LazyFoo&& other) noexcept {
     const auto relaxed = std::memory_order::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
@@ -502,7 +505,9 @@ OptionalFoo::OptionalFoo(OptionalFoo&& other) noexcept  :
     field2(std::move(other.field2)),
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 OptionalFoo& OptionalFoo::operator=(FOLLY_MAYBE_UNUSED OptionalFoo&& other) noexcept {
     this->field1 = std::move(other.field1);
     this->field2 = std::move(other.field2);
@@ -714,6 +719,7 @@ OptionalLazyFoo::OptionalLazyFoo(OptionalLazyFoo&& other) noexcept  :
     other.__fbthrift_isDeserialized_.field4.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
   }
 }
+
 OptionalLazyFoo& OptionalLazyFoo::operator=(FOLLY_MAYBE_UNUSED OptionalLazyFoo&& other) noexcept {
     const auto relaxed = std::memory_order::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
@@ -983,7 +989,6 @@ LazyCppRef::LazyCppRef(LazyCppRef&& other) noexcept  :
     field1(std::move(other.field1)),
     field2(std::move(other.field2)),
     field3(std::move(other.field3)),
-
     __fbthrift_protocol_(other.__fbthrift_protocol_),
     __fbthrift_serializedData_(std::move(other.__fbthrift_serializedData_)) {
   const auto relaxed = std::memory_order::memory_order_relaxed;
@@ -1003,6 +1008,7 @@ LazyCppRef::LazyCppRef(LazyCppRef&& other) noexcept  :
     other.__fbthrift_isDeserialized_.field3.store(isDeserialized | ::apache::thrift::detail::LazyDeserializationState::DESERIALIZED, relaxed);
   }
 }
+
 LazyCppRef& LazyCppRef::operator=(FOLLY_MAYBE_UNUSED LazyCppRef&& other) noexcept {
     const auto relaxed = std::memory_order::memory_order_relaxed;
     __fbthrift_protocol_ = other.__fbthrift_protocol_;
@@ -1034,7 +1040,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 LazyCppRef::LazyCppRef(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::vector<::std::int32_t>> field1__arg, ::std::shared_ptr<::std::vector<::std::int32_t>> field2__arg, ::std::shared_ptr<const ::std::vector<::std::int32_t>> field3__arg) :
     field1(std::move(field1__arg)),
     field2(std::move(field2__arg)),
-    field3(std::move(field3__arg)) {}
+    field3(std::move(field3__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 const ::std::unique_ptr<::std::vector<::std::int32_t>>& LazyCppRef::__fbthrift_read_field_field1() const {
   const auto isDeserialized = __fbthrift_isDeserialized_.field1.load(std::memory_order_relaxed);
@@ -1267,7 +1274,9 @@ IndexedFoo::IndexedFoo(IndexedFoo&& other) noexcept  :
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
     field_id_to_size(std::move(other.field_id_to_size)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 IndexedFoo& IndexedFoo::operator=(FOLLY_MAYBE_UNUSED IndexedFoo&& other) noexcept {
     this->serialized_data_size = std::move(other.serialized_data_size);
     this->field1 = std::move(other.field1);
@@ -1472,7 +1481,9 @@ OptionalIndexedFoo::OptionalIndexedFoo(OptionalIndexedFoo&& other) noexcept  :
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
     field_id_to_size(std::move(other.field_id_to_size)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 OptionalIndexedFoo& OptionalIndexedFoo::operator=(FOLLY_MAYBE_UNUSED OptionalIndexedFoo&& other) noexcept {
     this->serialized_data_size = std::move(other.serialized_data_size);
     this->field1 = std::move(other.field1);

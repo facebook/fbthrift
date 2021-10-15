@@ -547,7 +547,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structA::structA(structA&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 structA& structA::operator=(FOLLY_MAYBE_UNUSED structA&& other) noexcept {
     this->a = std::move(other.a);
     this->b = std::move(other.b);
@@ -930,7 +932,9 @@ structC::structC(structC&& other) noexcept  :
     o1(std::move(other.o1)),
     o2(std::move(other.o2)),
     o3(std::move(other.o3)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 structC& structC::operator=(FOLLY_MAYBE_UNUSED structC&& other) noexcept {
     this->a = std::move(other.a);
     this->b = std::move(other.b);
@@ -1685,7 +1689,9 @@ struct1::struct1(struct1&& other) noexcept  :
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
     field5(std::move(other.field5)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct1& struct1::operator=(FOLLY_MAYBE_UNUSED struct1&& other) noexcept {
     this->field0 = std::move(other.field0);
     this->field1 = std::move(other.field1);
@@ -1891,7 +1897,9 @@ struct2::struct2(struct2&& other) noexcept  :
     fieldE(std::move(other.fieldE)),
     fieldF(std::move(other.fieldF)),
     fieldG(std::move(other.fieldG)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct2& struct2::operator=(FOLLY_MAYBE_UNUSED struct2&& other) noexcept {
     this->fieldA = std::move(other.fieldA);
     this->fieldB = std::move(other.fieldB);
@@ -2141,7 +2149,9 @@ struct3::struct3(struct3&& other) noexcept  :
     fieldP(std::move(other.fieldP)),
     fieldQ(std::move(other.fieldQ)),
     fieldR(std::move(other.fieldR)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct3& struct3::operator=(FOLLY_MAYBE_UNUSED struct3&& other) noexcept {
     this->fieldA = std::move(other.fieldA);
     this->fieldB = std::move(other.fieldB);
@@ -2651,7 +2661,9 @@ struct4::struct4(struct4&& other) noexcept  :
     field1(std::move(other.field1)),
     field2(std::move(other.field2)),
     field3(std::move(other.field3)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct4& struct4::operator=(FOLLY_MAYBE_UNUSED struct4&& other) noexcept {
     this->field0 = std::move(other.field0);
     this->field1 = std::move(other.field1);
@@ -2804,7 +2816,9 @@ struct5::struct5(struct5&& other) noexcept  :
     field2(std::move(other.field2)),
     field3(std::move(other.field3)),
     field4(std::move(other.field4)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct5& struct5::operator=(FOLLY_MAYBE_UNUSED struct5&& other) noexcept {
     this->field0 = std::move(other.field0);
     this->field1 = std::move(other.field1);
@@ -2983,7 +2997,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(struct_binary&& other) noexcept  :
     bi(std::move(other.bi)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct_binary& struct_binary::operator=(FOLLY_MAYBE_UNUSED struct_binary&& other) noexcept {
     this->bi = std::move(other.bi);
     __isset = other.__isset;
@@ -4101,7 +4117,9 @@ struct_with_indirections::struct_with_indirections(struct_with_indirections&& ot
     number(std::move(other.number)),
     result(std::move(other.result)),
     phrase(std::move(other.phrase)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 struct_with_indirections& struct_with_indirections::operator=(FOLLY_MAYBE_UNUSED struct_with_indirections&& other) noexcept {
     this->real = std::move(other.real);
     this->fake = std::move(other.fake);

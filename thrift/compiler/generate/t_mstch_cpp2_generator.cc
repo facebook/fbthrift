@@ -860,7 +860,8 @@ class mstch_cpp2_struct : public mstch_struct {
   }
   mstch::node nondefault_copy_ctor_and_assignment() {
     for (auto const& f : strct_->fields()) {
-      if (cpp2::field_transitively_refers_to_unique(&f) || cpp2::is_lazy(&f)) {
+      if (cpp2::field_transitively_refers_to_unique(&f) || cpp2::is_lazy(&f) ||
+          gen::cpp::type_resolver::find_first_adapter(&f)) {
         return true;
       }
     }

@@ -253,7 +253,8 @@ MyField::MyField(MyField&& other) noexcept  :
     req_value(std::move(other.req_value)),
     opt_enum_value(std::move(other.opt_enum_value)),
     enum_value(std::move(other.enum_value)),
-    req_enum_value(std::move(other.req_enum_value)) {}
+    req_enum_value(std::move(other.req_enum_value)) {
+}
 
 MyField& MyField::operator=(FOLLY_MAYBE_UNUSED MyField&& other) noexcept {
     this->opt_value = std::move(other.opt_value);
@@ -274,7 +275,8 @@ MyField::MyField(apache::thrift::FragileConstructor, ::std::unique_ptr<::std::in
     req_value(std::move(req_value__arg)),
     opt_enum_value(std::move(opt_enum_value__arg)),
     enum_value(std::move(enum_value__arg)),
-    req_enum_value(std::move(req_enum_value__arg)) {}
+    req_enum_value(std::move(req_enum_value__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyField::__clear() {
@@ -397,7 +399,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
     opt_ref(std::move(other.opt_ref)),
     ref(std::move(other.ref)),
-    req_ref(std::move(other.req_ref)) {}
+    req_ref(std::move(other.req_ref)) {
+}
 
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->opt_ref = std::move(other.opt_ref);
@@ -412,7 +415,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::MyField> opt_ref__arg, ::std::unique_ptr<::cpp2::MyField> ref__arg, ::std::unique_ptr<::cpp2::MyField> req_ref__arg) :
     opt_ref(std::move(opt_ref__arg)),
     ref(std::move(ref__arg)),
-    req_ref(std::move(req_ref__arg)) {}
+    req_ref(std::move(req_ref__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void MyStruct::__clear() {
@@ -556,7 +560,9 @@ StructWithUnion::StructWithUnion(StructWithUnion&& other) noexcept  :
     u(std::move(other.u)),
     aDouble(std::move(other.aDouble)),
     f(std::move(other.f)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 StructWithUnion& StructWithUnion::operator=(FOLLY_MAYBE_UNUSED StructWithUnion&& other) noexcept {
     this->u = std::move(other.u);
     this->aDouble = std::move(other.aDouble);
@@ -703,7 +709,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 RecursiveStruct::RecursiveStruct(RecursiveStruct&& other) noexcept  :
     mes(std::move(other.mes)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 RecursiveStruct& RecursiveStruct::operator=(FOLLY_MAYBE_UNUSED RecursiveStruct&& other) noexcept {
     this->mes = std::move(other.mes);
     __isset = other.__isset;
@@ -840,7 +848,8 @@ StructWithContainers::StructWithContainers(StructWithContainers&& other) noexcep
     map_ref(std::move(other.map_ref)),
     list_ref_unique(std::move(other.list_ref_unique)),
     set_ref_shared(std::move(other.set_ref_shared)),
-    list_ref_shared_const(std::move(other.list_ref_shared_const)) {}
+    list_ref_shared_const(std::move(other.list_ref_shared_const)) {
+}
 
 StructWithContainers& StructWithContainers::operator=(FOLLY_MAYBE_UNUSED StructWithContainers&& other) noexcept {
     this->list_ref = std::move(other.list_ref);
@@ -861,7 +870,8 @@ StructWithContainers::StructWithContainers(apache::thrift::FragileConstructor, :
     map_ref(std::move(map_ref__arg)),
     list_ref_unique(std::move(list_ref_unique__arg)),
     set_ref_shared(std::move(set_ref_shared__arg)),
-    list_ref_shared_const(std::move(list_ref_shared_const__arg)) {}
+    list_ref_shared_const(std::move(list_ref_shared_const__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void StructWithContainers::__clear() {
@@ -979,7 +989,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithSharedConst::StructWithSharedConst(StructWithSharedConst&& other) noexcept  :
     opt_shared_const(std::move(other.opt_shared_const)),
     shared_const(std::move(other.shared_const)),
-    req_shared_const(std::move(other.req_shared_const)) {}
+    req_shared_const(std::move(other.req_shared_const)) {
+}
 
 StructWithSharedConst& StructWithSharedConst::operator=(FOLLY_MAYBE_UNUSED StructWithSharedConst&& other) noexcept {
     this->opt_shared_const = std::move(other.opt_shared_const);
@@ -994,7 +1005,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithSharedConst::StructWithSharedConst(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::cpp2::MyField> opt_shared_const__arg, ::std::shared_ptr<const ::cpp2::MyField> shared_const__arg, ::std::shared_ptr<const ::cpp2::MyField> req_shared_const__arg) :
     opt_shared_const(std::move(opt_shared_const__arg)),
     shared_const(std::move(shared_const__arg)),
-    req_shared_const(std::move(req_shared_const__arg)) {}
+    req_shared_const(std::move(req_shared_const__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void StructWithSharedConst::__clear() {
@@ -1201,7 +1213,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRef::StructWithRef(StructWithRef&& other) noexcept  :
     def_field(std::move(other.def_field)),
     opt_field(std::move(other.opt_field)),
-    req_field(std::move(other.req_field)) {}
+    req_field(std::move(other.req_field)) {
+}
 
 StructWithRef& StructWithRef::operator=(FOLLY_MAYBE_UNUSED StructWithRef&& other) noexcept {
     this->def_field = std::move(other.def_field);
@@ -1216,7 +1229,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRef::StructWithRef(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Empty> def_field__arg, ::std::unique_ptr<::cpp2::Empty> opt_field__arg, ::std::unique_ptr<::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
-    req_field(std::move(req_field__arg)) {}
+    req_field(std::move(req_field__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void StructWithRef::__clear() {
@@ -1354,7 +1368,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeUnique::StructWithRefTypeUnique(StructWithRefTypeUnique&& other) noexcept  :
     def_field(std::move(other.def_field)),
     opt_field(std::move(other.opt_field)),
-    req_field(std::move(other.req_field)) {}
+    req_field(std::move(other.req_field)) {
+}
 
 StructWithRefTypeUnique& StructWithRefTypeUnique::operator=(FOLLY_MAYBE_UNUSED StructWithRefTypeUnique&& other) noexcept {
     this->def_field = std::move(other.def_field);
@@ -1369,7 +1384,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeUnique::StructWithRefTypeUnique(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Empty> def_field__arg, ::std::unique_ptr<::cpp2::Empty> opt_field__arg, ::std::unique_ptr<::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
-    req_field(std::move(req_field__arg)) {}
+    req_field(std::move(req_field__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void StructWithRefTypeUnique::__clear() {
@@ -1496,7 +1512,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeShared::StructWithRefTypeShared(StructWithRefTypeShared&& other) noexcept  :
     def_field(std::move(other.def_field)),
     opt_field(std::move(other.opt_field)),
-    req_field(std::move(other.req_field)) {}
+    req_field(std::move(other.req_field)) {
+}
 
 StructWithRefTypeShared& StructWithRefTypeShared::operator=(FOLLY_MAYBE_UNUSED StructWithRefTypeShared&& other) noexcept {
     this->def_field = std::move(other.def_field);
@@ -1511,7 +1528,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeShared::StructWithRefTypeShared(apache::thrift::FragileConstructor, ::std::shared_ptr<::cpp2::Empty> def_field__arg, ::std::shared_ptr<::cpp2::Empty> opt_field__arg, ::std::shared_ptr<::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
-    req_field(std::move(req_field__arg)) {}
+    req_field(std::move(req_field__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void StructWithRefTypeShared::__clear() {
@@ -1638,7 +1656,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(StructWithRefTypeSharedConst&& other) noexcept  :
     def_field(std::move(other.def_field)),
     opt_field(std::move(other.opt_field)),
-    req_field(std::move(other.req_field)) {}
+    req_field(std::move(other.req_field)) {
+}
 
 StructWithRefTypeSharedConst& StructWithRefTypeSharedConst::operator=(FOLLY_MAYBE_UNUSED StructWithRefTypeSharedConst&& other) noexcept {
     this->def_field = std::move(other.def_field);
@@ -1653,7 +1672,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefTypeSharedConst::StructWithRefTypeSharedConst(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::cpp2::Empty> def_field__arg, ::std::shared_ptr<const ::cpp2::Empty> opt_field__arg, ::std::shared_ptr<const ::cpp2::Empty> req_field__arg) :
     def_field(std::move(def_field__arg)),
     opt_field(std::move(opt_field__arg)),
-    req_field(std::move(req_field__arg)) {}
+    req_field(std::move(req_field__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void StructWithRefTypeSharedConst::__clear() {
@@ -1785,7 +1805,8 @@ StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCt
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(StructWithRefAndAnnotCppNoexceptMoveCtor&& other) noexcept  :
-    def_field(std::move(other.def_field)) {}
+    def_field(std::move(other.def_field)) {
+}
 
 StructWithRefAndAnnotCppNoexceptMoveCtor& StructWithRefAndAnnotCppNoexceptMoveCtor::operator=(FOLLY_MAYBE_UNUSED StructWithRefAndAnnotCppNoexceptMoveCtor&& other) noexcept {
     this->def_field = std::move(other.def_field);
@@ -1796,7 +1817,8 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithRefAndAnnotCppNoexceptMoveCtor::StructWithRefAndAnnotCppNoexceptMoveCtor(apache::thrift::FragileConstructor, ::std::unique_ptr<::cpp2::Empty> def_field__arg) :
-    def_field(std::move(def_field__arg)) {}
+    def_field(std::move(def_field__arg)) {
+}
 THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 void StructWithRefAndAnnotCppNoexceptMoveCtor::__clear() {

@@ -117,7 +117,9 @@ SimpleException::~SimpleException() {}
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException(SimpleException&& other) noexcept  :
     err_code(std::move(other.err_code)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 SimpleException& SimpleException::operator=(FOLLY_MAYBE_UNUSED SimpleException&& other) noexcept {
     this->err_code = std::move(other.err_code);
     __isset = other.__isset;
@@ -223,7 +225,9 @@ OptionalRefStruct& OptionalRefStruct::operator=(const OptionalRefStruct& src) {
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 OptionalRefStruct::OptionalRefStruct(OptionalRefStruct&& other) noexcept  :
     optional_blob(std::move(other.optional_blob)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 OptionalRefStruct& OptionalRefStruct::operator=(FOLLY_MAYBE_UNUSED OptionalRefStruct&& other) noexcept {
     this->optional_blob = std::move(other.optional_blob);
     __isset = other.__isset;
@@ -326,7 +330,9 @@ SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
     real(std::move(other.real)),
     smaller_real(std::move(other.smaller_real)),
     hidden_field(std::move(other.hidden_field)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 SimpleStruct& SimpleStruct::operator=(FOLLY_MAYBE_UNUSED SimpleStruct&& other) noexcept {
     this->is_on = std::move(other.is_on);
     this->tiny_int = std::move(other.tiny_int);
@@ -517,7 +523,9 @@ ComplexStruct::ComplexStruct(ComplexStruct&& other) noexcept  :
     from(std::move(other.from)),
     cdef(std::move(other.cdef)),
     bytes_with_cpp_type(std::move(other.bytes_with_cpp_type)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 ComplexStruct& ComplexStruct::operator=(FOLLY_MAYBE_UNUSED ComplexStruct&& other) noexcept {
     this->structOne = std::move(other.structOne);
     this->structTwo = std::move(other.structTwo);
@@ -820,7 +828,9 @@ THRIFT_IGNORE_ISSET_USE_WARNING_END
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BinaryUnionStruct::BinaryUnionStruct(BinaryUnionStruct&& other) noexcept  :
     u(std::move(other.u)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 BinaryUnionStruct& BinaryUnionStruct::operator=(FOLLY_MAYBE_UNUSED BinaryUnionStruct&& other) noexcept {
     this->u = std::move(other.u);
     __isset = other.__isset;

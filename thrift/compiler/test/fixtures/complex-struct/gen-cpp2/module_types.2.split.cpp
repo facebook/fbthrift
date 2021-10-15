@@ -84,7 +84,9 @@ MyStruct::MyStruct(MyStruct&& other) noexcept  :
     sString(std::move(other.sString)),
     sByte(std::move(other.sByte)),
     mListList(std::move(other.mListList)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     this->MyIntField = std::move(other.MyIntField);
     this->MyStringField = std::move(other.MyStringField);
@@ -666,7 +668,9 @@ MyStructTypeDef::MyStructTypeDef(MyStructTypeDef&& other) noexcept  :
     myListField(std::move(other.myListField)),
     myListTypedef(std::move(other.myListTypedef)),
     myMapListOfTypeDef(std::move(other.myMapListOfTypeDef)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 MyStructTypeDef& MyStructTypeDef::operator=(FOLLY_MAYBE_UNUSED MyStructTypeDef&& other) noexcept {
     this->myLongField = std::move(other.myLongField);
     this->myLongTypeDef = std::move(other.myLongTypeDef);
@@ -1137,7 +1141,9 @@ complexException::complexException(complexException&& other) noexcept  :
     unionError(std::move(other.unionError)),
     structError(std::move(other.structError)),
     lsMap(std::move(other.lsMap)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 complexException& complexException::operator=(FOLLY_MAYBE_UNUSED complexException&& other) noexcept {
     this->message = std::move(other.message);
     this->listStrings = std::move(other.listStrings);

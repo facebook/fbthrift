@@ -35,10 +35,55 @@ void TccStructTraits<::cpp2::Foo>::translateFieldName(
 
 namespace cpp2 {
 
+Foo::Foo(const Foo& srcObj) {
+  intField = srcObj.intField;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Foo::Foo(const Foo&) = default;
-Foo& Foo::operator=(const Foo&) = default;
+  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  optionalIntField = srcObj.optionalIntField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  intFieldWithDefault = srcObj.intFieldWithDefault;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  setField = srcObj.setField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  optionalSetField = srcObj.optionalSetField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  mapField = srcObj.mapField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<5>(),srcObj.__isset.__fbthrift_get(folly::index_constant<5>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  optionalMapField = srcObj.optionalMapField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<6>(),srcObj.__isset.__fbthrift_get(folly::index_constant<6>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  binaryField = srcObj.binaryField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<7>(),srcObj.__isset.__fbthrift_get(folly::index_constant<7>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(intField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(optionalIntField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(intFieldWithDefault, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 4>(setField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 5>(optionalSetField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter3, 6>(mapField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter3, 7>(optionalMapField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(binaryField, *this);
+}
+
+Foo& Foo::operator=(const Foo& src) {
+  Foo tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo() :
       intField(),
@@ -63,7 +108,17 @@ Foo::Foo(Foo&& other) noexcept  :
     mapField(std::move(other.mapField)),
     optionalMapField(std::move(other.optionalMapField)),
     binaryField(std::move(other.binaryField)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(intField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(optionalIntField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(intFieldWithDefault, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 4>(setField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 5>(optionalSetField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter3, 6>(mapField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter3, 7>(optionalMapField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(binaryField, *this);
+}
+
 Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
     this->intField = std::move(other.intField);
     this->optionalIntField = std::move(other.optionalIntField);
@@ -89,6 +144,14 @@ Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
     mapField(std::move(mapField__arg)),
     optionalMapField(std::move(optionalMapField__arg)),
     binaryField(std::move(binaryField__arg)) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(intField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(optionalIntField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(intFieldWithDefault, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 4>(setField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter2, 5>(optionalSetField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter3, 6>(mapField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter3, 7>(optionalMapField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 8>(binaryField, *this);
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -353,10 +416,43 @@ void TccStructTraits<::cpp2::Bar>::translateFieldName(
 
 namespace cpp2 {
 
+Bar::Bar(const Bar& srcObj) {
+  structField = srcObj.structField;
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
-Bar::Bar(const Bar&) = default;
-Bar& Bar::operator=(const Bar&) = default;
+  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
 THRIFT_IGNORE_ISSET_USE_WARNING_END
+  optionalStructField = srcObj.optionalStructField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  structListField = srcObj.structListField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  optionalStructListField = srcObj.optionalStructListField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  unionField = srcObj.unionField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  optionalUnionField = srcObj.optionalUnionField;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<5>(),srcObj.__isset.__fbthrift_get(folly::index_constant<5>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(structField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(optionalStructField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(unionField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 6>(optionalUnionField, *this);
+}
+
+Bar& Bar::operator=(const Bar& src) {
+  Bar tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bar::Bar() {
 }
@@ -373,7 +469,13 @@ Bar::Bar(Bar&& other) noexcept  :
     optionalStructListField(std::move(other.optionalStructListField)),
     unionField(std::move(other.unionField)),
     optionalUnionField(std::move(other.optionalUnionField)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(structField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(optionalStructField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(unionField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 6>(optionalUnionField, *this);
+}
+
 Bar& Bar::operator=(FOLLY_MAYBE_UNUSED Bar&& other) noexcept {
     this->structField = std::move(other.structField);
     this->optionalStructField = std::move(other.optionalStructField);
@@ -395,6 +497,10 @@ Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
     optionalStructListField(std::move(optionalStructListField__arg)),
     unionField(std::move(unionField__arg)),
     optionalUnionField(std::move(optionalUnionField__arg)) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(structField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(optionalStructField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(unionField, *this);
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 6>(optionalUnionField, *this);
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
@@ -581,10 +687,25 @@ void TccStructTraits<::cpp2::StructWithFieldAdapter>::translateFieldName(
 
 namespace cpp2 {
 
+StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) {
+  field = srcObj.field;
+THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
+  __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
+THRIFT_IGNORE_ISSET_USE_WARNING_END
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(field, *this);
+}
+
+StructWithFieldAdapter& StructWithFieldAdapter::operator=(const StructWithFieldAdapter& src) {
+  StructWithFieldAdapter tmp(src);
+  swap(*this, tmp);
+  return *this;
+}
+
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::adapted_field_t<my::Adapter1, 1, ::std::int32_t, __fbthrift_cpp2_type> field__arg) :
     field(std::move(field__arg)) {
+  ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(field, *this);
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
 THRIFT_IGNORE_ISSET_USE_WARNING_END

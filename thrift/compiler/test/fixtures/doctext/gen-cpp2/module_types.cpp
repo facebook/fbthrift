@@ -274,7 +274,9 @@ Bang::~Bang() {}
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bang::Bang(Bang&& other) noexcept  :
     message(std::move(other.message)),
-    __isset(other.__isset) {}
+    __isset(other.__isset) {
+}
+
 Bang& Bang::operator=(FOLLY_MAYBE_UNUSED Bang&& other) noexcept {
     this->message = std::move(other.message);
     __isset = other.__isset;

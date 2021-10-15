@@ -596,6 +596,13 @@ TEST(AdaptTest, AdapterWithContext) {
 
   auto obj = basic::AdaptTestStruct();
   EXPECT_EQ(obj.data_ref()->meta, &*obj.meta_ref());
+
+  auto copy = basic::AdaptTestStruct(obj);
+  EXPECT_EQ(copy.data_ref()->meta, &*copy.meta_ref());
+
+  auto move = basic::AdaptTestStruct(std::move(copy));
+  EXPECT_EQ(move.data_ref()->meta, &*move.meta_ref());
+
   obj.data_ref() = {};
   obj.data_ref()->value = 42;
   obj.meta_ref() = "foo";

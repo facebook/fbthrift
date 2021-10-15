@@ -21,13 +21,16 @@
 <%#struct:fields?%>
 <%struct:name%>::<%struct:name%>(apache::thrift::FragileConstructor<% > module_types_h/fragile_ctor_param_list%>) :
 <%#struct:fields_in_layout_order%>
-    <%field:cpp_name%>(std::move(<%field:cpp_name%>__arg))<%#last?%> {<%^struct:isset_fields?%>}<%/struct:isset_fields?%><%/last?%><%^last?%>,<%/last?%>
+    <%field:cpp_name%>(std::move(<%field:cpp_name%>__arg))<%#last?%> {<%/last?%><%^last?%>,<%/last?%>
 <%/struct:fields_in_layout_order%>
+<%#struct:fields%>
+<%#field:cpp_adapter%>
+  ::apache::thrift::adapt_detail::construct<<%field:cpp_adapter%>, <%field:key%>>(<%field:cpp_name%>, *this);
+<%/field:cpp_adapter%>
+<%/struct:fields%>
 <%#struct:isset_fields%>
   __isset.__fbthrift_set(folly::index_constant<<%field:index%>>(), true);
-<%#last?%>
-}
-<%/last?%>
 <%/struct:isset_fields%>
+}
 <%/struct:fields?%>
 THRIFT_IGNORE_ISSET_USE_WARNING_END
