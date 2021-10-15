@@ -246,7 +246,7 @@ class isset_bitset {
 
  private:
   static constexpr size_t kBits = packed ? 8 : 1;
-  std::array<uint8_t, (NumBits + kBits) / kBits> array_isset{};
+  std::array<uint8_t, (NumBits + kBits - 1) / kBits> array_isset{};
 };
 
 } // namespace detail

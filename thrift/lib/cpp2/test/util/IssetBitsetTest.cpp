@@ -44,3 +44,11 @@ TEST(IssetBitsetTest, basic) {
     }
   }
 }
+
+TEST(IssetBitsetTest, compare_size) {
+  static_assert(sizeof(apache::thrift::detail::isset_bitset<1>) == 1);
+  static_assert(sizeof(apache::thrift::detail::isset_bitset<2>) == 2);
+  static_assert(sizeof(apache::thrift::detail::isset_bitset<7, true>) == 1);
+  static_assert(sizeof(apache::thrift::detail::isset_bitset<8, true>) == 1);
+  static_assert(sizeof(apache::thrift::detail::isset_bitset<9, true>) == 2);
+}
