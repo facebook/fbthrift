@@ -52,14 +52,22 @@ TEST(FlagsTest, invalidFlags) {
   };
 
   EXPECT_NO_THROW(mk(0));
-
-  EXPECT_DEATH(mk(over), "Check failed");
-  EXPECT_THROW(mk(under), std::runtime_error);
   EXPECT_NO_THROW(mk(allowed));
 
+  // DCHECK is turned off in opt mode, so overs will not die
+#ifndef NDEBUG
+  EXPECT_DEATH(mk(over), "Check failed");
   EXPECT_DEATH(mk(over | allowed), "Check failed");
-  EXPECT_THROW(mk(under | allowed), std::runtime_error);
   EXPECT_DEATH(mk(over | under), "Check failed");
-
   EXPECT_DEATH(mk(over | under | allowed), "Check failed");
+#else
+  EXPECT_NO_THROW(mk(over));
+  EXPECT_NO_THROW(mk(over | allowed));
+
+  EXPECT_THROW(mk(over | under), std::runtime_error);
+  EXPECT_THROW(mk(over | under | allowed), std::runtime_error);
+#endif
+
+  EXPECT_THROW(mk(under), std::runtime_error);
+  EXPECT_THROW(mk(under | allowed), std::runtime_error);
 }
