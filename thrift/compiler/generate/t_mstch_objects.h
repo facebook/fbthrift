@@ -1001,15 +1001,13 @@ class mstch_struct : public mstch_base {
 
     // Populate field_context_generator for each field.
     auto ctx = field_generator_context{};
-    // TODO(dokwon): Change to strct->fields() after fixing
-    // node_list_view::iterator to a literal type.
-    auto fields = strct->get_members();
+    auto fields = strct->fields();
     for (auto it = fields.begin(); it != fields.end(); it++) {
-      const auto* field = *it;
+      const auto* field = &*it;
       if (cpp2::field_has_isset(field)) {
         ctx.isset_index++;
       }
-      ctx.next_ = std::next(it) != fields.end() ? *std::next(it) : nullptr;
+      ctx.next_ = (it + 1) != fields.end() ? &*(it + 1) : nullptr;
       context_map[field] = ctx;
       ctx.prev_ = field;
     }

@@ -69,29 +69,29 @@ class node_list_view : public ast_detail::base_view<node_list_view<T>, T*> {
     reference operator*() const noexcept { return itr_->operator*(); }
     reference operator[](difference_type n) const noexcept { return *itr_[n]; }
 
-    constexpr iterator operator++(int) noexcept { return {itr_++}; }
-    constexpr iterator& operator++() noexcept {
+    iterator operator++(int) noexcept { return {itr_++}; }
+    iterator& operator++() noexcept {
       ++itr_;
       return *this;
     }
-    constexpr iterator& operator+=(difference_type n) noexcept {
+    iterator& operator+=(difference_type n) noexcept {
       itr_ += n;
       return *this;
     }
-    constexpr iterator& operator-=(difference_type n) noexcept {
+    iterator& operator-=(difference_type n) noexcept {
       itr_ -= n;
       return *this;
     }
 
-    friend constexpr iterator operator-(
+    friend iterator operator-(
         const iterator& a, const difference_type& n) noexcept {
       return {a.itr_ - n};
     }
-    friend constexpr iterator operator+(
+    friend iterator operator+(
         const iterator& a, const difference_type& n) noexcept {
       return {a.itr_ + n};
     }
-    friend constexpr iterator operator+(
+    friend iterator operator+(
         const difference_type& n, const iterator& b) noexcept {
       return {n + b.itr_};
     }
