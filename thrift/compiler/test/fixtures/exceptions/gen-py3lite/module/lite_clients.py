@@ -4,3 +4,46 @@
 # DO NOT EDIT
 #  @generated
 #
+
+from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
+import module.lite_types as _module_lite_types
+
+
+class Raiser:
+    class Sync(_fbthrift_py3lite_SyncClient):
+        def __init__(self, channel):
+            super().__init__(channel, "Raiser")
+
+        def doBland(
+            self
+        ):
+            return self._send_request(
+                "doBland",
+                _module_lite_types._fbthrift_Raiser_doBland_args(),
+                _module_lite_types._fbthrift_Raiser_doBland_result).success
+
+        def doRaise(
+            self
+        ):
+            return self._send_request(
+                "doRaise",
+                _module_lite_types._fbthrift_Raiser_doRaise_args(),
+                _module_lite_types._fbthrift_Raiser_doRaise_result).success
+
+        def get200(
+            self
+        ):
+            return self._send_request(
+                "get200",
+                _module_lite_types._fbthrift_Raiser_get200_args(),
+                _module_lite_types._fbthrift_Raiser_get200_result).success
+
+        def get500(
+            self
+        ):
+            return self._send_request(
+                "get500",
+                _module_lite_types._fbthrift_Raiser_get500_args(),
+                _module_lite_types._fbthrift_Raiser_get500_result).success
+
+

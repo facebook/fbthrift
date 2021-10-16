@@ -4,3 +4,14 @@
 # DO NOT EDIT
 #  @generated
 #
+
+from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
+import empty.lite_types as _empty_lite_types
+
+
+class NullService:
+    class Sync(_fbthrift_py3lite_SyncClient):
+        def __init__(self, channel):
+            super().__init__(channel, "NullService")
+
+

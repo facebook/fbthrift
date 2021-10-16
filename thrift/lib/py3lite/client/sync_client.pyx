@@ -68,6 +68,9 @@ def get_client(
     ClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
     cProtocol protocol = cProtocol.COMPACT,
 ):
+    if not issubclass(clientKlass, SyncClient):
+        if hasattr(clientKlass, "Sync"):
+            clientKlass = clientKlass.Sync
     assert issubclass(clientKlass, SyncClient), "Must be a py3lite sync client"
 
     cdef uint32_t _timeout_ms = int(timeout * 1000)

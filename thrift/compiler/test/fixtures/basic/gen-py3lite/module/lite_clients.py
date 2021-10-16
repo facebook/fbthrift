@@ -4,3 +4,120 @@
 # DO NOT EDIT
 #  @generated
 #
+
+from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
+import module.lite_types as _module_lite_types
+
+
+class MyService:
+    class Sync(_fbthrift_py3lite_SyncClient):
+        def __init__(self, channel):
+            super().__init__(channel, "MyService")
+
+        def ping(
+            self
+        ):
+            return self._send_request(
+                "ping",
+                _module_lite_types._fbthrift_MyService_ping_args(),
+                _module_lite_types._fbthrift_MyService_ping_result).success
+
+        def getRandomData(
+            self
+        ):
+            return self._send_request(
+                "getRandomData",
+                _module_lite_types._fbthrift_MyService_getRandomData_args(),
+                _module_lite_types._fbthrift_MyService_getRandomData_result).success
+
+        def sink(
+            self,
+            sink
+        ):
+            return self._send_request(
+                "sink",
+                _module_lite_types._fbthrift_MyService_sink_args(
+                    sink=sink,),
+                _module_lite_types._fbthrift_MyService_sink_result).success
+
+        def putDataById(
+            self,
+            id,
+            data
+        ):
+            return self._send_request(
+                "putDataById",
+                _module_lite_types._fbthrift_MyService_putDataById_args(
+                    id=id,
+                    data=data,),
+                _module_lite_types._fbthrift_MyService_putDataById_result).success
+
+        def hasDataById(
+            self,
+            id
+        ):
+            return self._send_request(
+                "hasDataById",
+                _module_lite_types._fbthrift_MyService_hasDataById_args(
+                    id=id,),
+                _module_lite_types._fbthrift_MyService_hasDataById_result).success
+
+        def getDataById(
+            self,
+            id
+        ):
+            return self._send_request(
+                "getDataById",
+                _module_lite_types._fbthrift_MyService_getDataById_args(
+                    id=id,),
+                _module_lite_types._fbthrift_MyService_getDataById_result).success
+
+        def deleteDataById(
+            self,
+            id
+        ):
+            return self._send_request(
+                "deleteDataById",
+                _module_lite_types._fbthrift_MyService_deleteDataById_args(
+                    id=id,),
+                _module_lite_types._fbthrift_MyService_deleteDataById_result).success
+
+        def lobDataById(
+            self,
+            id,
+            data
+        ):
+            return self._send_request(
+                "lobDataById",
+                _module_lite_types._fbthrift_MyService_lobDataById_args(
+                    id=id,
+                    data=data,),
+                _module_lite_types._fbthrift_MyService_lobDataById_result).success
+
+
+class DbMixedStackArguments:
+    class Sync(_fbthrift_py3lite_SyncClient):
+        def __init__(self, channel):
+            super().__init__(channel, "DbMixedStackArguments")
+
+        def getDataByKey0(
+            self,
+            key
+        ):
+            return self._send_request(
+                "getDataByKey0",
+                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_args(
+                    key=key,),
+                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey0_result).success
+
+        def getDataByKey1(
+            self,
+            key
+        ):
+            return self._send_request(
+                "getDataByKey1",
+                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_args(
+                    key=key,),
+                _module_lite_types._fbthrift_DbMixedStackArguments_getDataByKey1_result).success
+
+

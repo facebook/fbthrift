@@ -21,27 +21,9 @@ from multiprocessing import Process
 
 from thrift.py3.server import ThriftServer
 from thrift.py3lite.serializer import Protocol
-from thrift.py3lite.sync_client import ClientType, SyncClient, get_client
-
-# @manual=//thrift/lib/py3lite/client/test:test_service-py3lite-types
-from thrift.py3lite.test.lite_types import (
-    _fbthrift_TestService_add_args,
-    _fbthrift_TestService_add_result,
-)
+from thrift.py3lite.sync_client import ClientType, get_client
+from thrift.py3lite.test.lite_clients import TestService
 from thrift.py3lite.test.services import TestServiceInterface
-
-
-# TODO: replace with codegen-ed client
-class Client(SyncClient):
-    def __init__(self, channel):
-        super(Client, self).__init__(channel, "TestService")
-
-    def add(self, num1, num2):
-        return self._send_request(
-            "add",
-            _fbthrift_TestService_add_args(num1=num1, num2=num2),
-            _fbthrift_TestService_add_result,
-        ).success
 
 
 class Handler(TestServiceInterface):
@@ -73,14 +55,14 @@ def server_in_another_process():
 class SyncClientTests(unittest.TestCase):
     def test_basic(self) -> None:
         with server_in_another_process() as path:
-            with get_client(Client, path=path) as client:
+            with get_client(TestService, path=path) as client:
                 sum = client.add(1, 2)
                 self.assertEqual(3, sum)
 
     def test_client_type_and_protocol(self) -> None:
         with server_in_another_process() as path:
             with get_client(
-                Client,
+                TestService,
                 path=path,
                 client_type=ClientType.THRIFT_ROCKET_CLIENT_TYPE,
                 protocol=Protocol.BINARY,
