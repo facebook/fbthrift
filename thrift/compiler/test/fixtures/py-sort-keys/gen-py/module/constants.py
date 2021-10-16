@@ -13,5 +13,5 @@ from thrift.protocol.TProtocol import TProtocolException
 
 
 
-from .ttypes import UTF8STRINGS, Foo
+from .ttypes import UTF8STRINGS, Foo, NegativeId
 

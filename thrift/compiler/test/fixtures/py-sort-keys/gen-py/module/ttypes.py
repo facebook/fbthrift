@@ -28,7 +28,7 @@ except ImportError:
 all_structs = []
 UTF8STRINGS = bool(0) or sys.version_info.major >= 3
 
-__all__ = ['UTF8STRINGS', 'Foo']
+__all__ = ['UTF8STRINGS', 'Foo', 'NegativeId']
 
 class Foo:
   """
@@ -147,6 +147,106 @@ class Foo:
   # Override the __hash__ function for Python3 - t10434117
   __hash__ = object.__hash__
 
+class NegativeId:
+  """
+  Attributes:
+   - field1
+   - field2
+   - field3
+  """
+
+  thrift_spec = None
+  thrift_field_annotations = None
+  thrift_struct_annotations = None
+  __init__ = None
+  @staticmethod
+  def isUnion():
+    return False
+
+  def read(self, iprot):
+    if (isinstance(iprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0)
+      return
+    if (isinstance(iprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(iprot, THeaderProtocol.THeaderProtocolAccelerate) and iprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and isinstance(iprot.trans, TTransport.CReadableTransport) and self.thrift_spec is not None and fastproto is not None:
+      fastproto.decode(self, iprot.trans, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2)
+      return
+    iprot.readStructBegin()
+    while True:
+      (fname, ftype, fid) = iprot.readFieldBegin()
+      if ftype == TType.STOP:
+        break
+      if fid == -1:
+        if ftype == TType.I32:
+          self.field1 = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == -2:
+        if ftype == TType.I32:
+          self.field2 = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      elif fid == 1:
+        if ftype == TType.I32:
+          self.field3 = iprot.readI32()
+        else:
+          iprot.skip(ftype)
+      else:
+        iprot.skip(ftype)
+      iprot.readFieldEnd()
+    iprot.readStructEnd()
+
+  def write(self, oprot):
+    if (isinstance(oprot, TBinaryProtocol.TBinaryProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_BINARY_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=0))
+      return
+    if (isinstance(oprot, TCompactProtocol.TCompactProtocolAccelerated) or (isinstance(oprot, THeaderProtocol.THeaderProtocolAccelerate) and oprot.get_protocol_id() == THeaderProtocol.THeaderProtocol.T_COMPACT_PROTOCOL)) and self.thrift_spec is not None and fastproto is not None:
+      oprot.trans.write(fastproto.encode(self, [self.__class__, self.thrift_spec, False], utf8strings=UTF8STRINGS, protoid=2))
+      return
+    oprot.writeStructBegin('NegativeId')
+    if self.field2 != None:
+      oprot.writeFieldBegin('field2', TType.I32, -2)
+      oprot.writeI32(self.field2)
+      oprot.writeFieldEnd()
+    if self.field1 != None:
+      oprot.writeFieldBegin('field1', TType.I32, -1)
+      oprot.writeI32(self.field1)
+      oprot.writeFieldEnd()
+    if self.field3 != None:
+      oprot.writeFieldBegin('field3', TType.I32, 1)
+      oprot.writeI32(self.field3)
+      oprot.writeFieldEnd()
+    oprot.writeFieldStop()
+    oprot.writeStructEnd()
+
+  def __repr__(self):
+    L = []
+    padding = ' ' * 4
+    if self.field1 is not None:
+      value = pprint.pformat(self.field1, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    field1=%s' % (value))
+    if self.field2 is not None:
+      value = pprint.pformat(self.field2, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    field2=%s' % (value))
+    if self.field3 is not None:
+      value = pprint.pformat(self.field3, indent=0)
+      value = padding.join(value.splitlines(True))
+      L.append('    field3=%s' % (value))
+    return "%s(%s)" % (self.__class__.__name__, "\n" + ",\n".join(L) if L else '')
+
+  def __eq__(self, other):
+    if not isinstance(other, self.__class__):
+      return False
+
+    return self.__dict__ == other.__dict__ 
+
+  def __ne__(self, other):
+    return not (self == other)
+
+  # Override the __hash__ function for Python3 - t10434117
+  __hash__ = object.__hash__
+
 all_structs.append(Foo)
 Foo.thrift_spec = (
   None, # 0
@@ -172,6 +272,35 @@ def Foo__setstate__(self, state):
 
 Foo.__getstate__ = lambda self: self.__dict__.copy()
 Foo.__setstate__ = Foo__setstate__
+
+all_structs.append(NegativeId)
+NegativeId.thrift_spec = (
+  (-2, TType.I32, 'field2', None, 2, 2, ), # -2
+  (-1, TType.I32, 'field1', None, 1, 2, ), # -1
+  None, # 0
+  (1, TType.I32, 'field3', None, 3, 2, ), # 1
+)
+
+NegativeId.thrift_struct_annotations = {
+}
+NegativeId.thrift_field_annotations = {
+}
+
+def NegativeId__init__(self, field1=NegativeId.thrift_spec[-1][4], field2=NegativeId.thrift_spec[-2][4], field3=NegativeId.thrift_spec[1][4],):
+  self.field1 = field1
+  self.field2 = field2
+  self.field3 = field3
+
+NegativeId.__init__ = NegativeId__init__
+
+def NegativeId__setstate__(self, state):
+  state.setdefault('field1', 1)
+  state.setdefault('field2', 2)
+  state.setdefault('field3', 3)
+  self.__dict__ = state
+
+NegativeId.__getstate__ = lambda self: self.__dict__.copy()
+NegativeId.__setstate__ = NegativeId__setstate__
 
 fix_spec(all_structs)
 del all_structs
