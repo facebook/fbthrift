@@ -1385,3 +1385,24 @@ class CompilerFailureTest(unittest.TestCase):
                 """
             ),
         )
+
+    def test_validator_via_optional_field(self):
+        write_file(
+            "foo.thrift",
+            textwrap.dedent(
+                """\
+                struct Foo {
+                    1: optional list<i32> field (cpp.use_allocator)
+                } (cpp.allocator = "std::allocator<std::int32_t>", cpp.allocator_via = "field")
+                """
+            ),
+        )
+
+        ret, out, err = self.run_thrift("foo.thrift")
+        self.assertEqual(ret, 1)
+        self.assertEqual(
+            err,
+            textwrap.dedent(
+                "[FAILURE:foo.thrift:1] cpp.allocator_via field `field` can not be optional\n"
+            ),
+        )

@@ -489,6 +489,23 @@ void validate_adapter_annotation(diagnostic_context& ctx, const t_field& node) {
     });
   }
 }
+
+// cpp.allocator_via field can not be optional, otherwise we are facing a
+// problem -- if this field doesn't have value, where does other field get
+// allocator from?
+void validate_allocator_via_field_qualifier(
+    diagnostic_context& ctx, const t_structured& node) {
+  if (const auto* name = node.find_annotation_or_null("cpp.allocator_via")) {
+    for (const auto& field : node.fields()) {
+      if (cpp2::get_name(&field) == *name &&
+          field.get_req() == t_field::e_req::optional) {
+        ctx.failure([&](auto& o) {
+          o << "cpp.allocator_via field `" << *name << "` can not be optional";
+        });
+      }
+    }
+  }
+}
 } // namespace
 
 ast_validator standard_validator() {
@@ -501,6 +518,8 @@ ast_validator standard_validator() {
   validator.add_structured_definition_visitor(&validate_field_names_uniqueness);
   validator.add_structured_definition_visitor(
       &validate_compatibility_with_lazy_field);
+  validator.add_structured_definition_visitor(
+      &validate_allocator_via_field_qualifier);
   validator.add_union_visitor(&validate_union_field_attributes);
   validator.add_field_visitor(&validate_field_id);
   validator.add_field_visitor(&validate_mixin_field_attributes);
