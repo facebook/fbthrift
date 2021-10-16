@@ -14,10 +14,14 @@
 
 # cython: c_string_type=unicode, c_string_encoding=utf8
 
+import time
+
+from libc.stdint cimport uint32_t
 from libcpp.memory cimport make_unique
 from libcpp.utility cimport move as cmove
 from cython.operator cimport dereference as deref
-from thrift.py3lite.serializer import Protocol, serialize, deserialize
+from thrift.py3lite.serializer import serialize, deserialize
+from thrift.py3lite.serializer cimport Protocol as cProtocol
 from thrift.py3lite.types import Struct, Union
 cimport folly.iobuf
 
@@ -46,9 +50,38 @@ cdef class SyncClient:
         args,
         response_cls,
     ):
-        protocol = Protocol(deref(self._cpp_obj).getChannelProtocolId())
+        protocol = deref(self._cpp_obj).getChannelProtocolId()
         args_bytes = serialize(args, protocol=protocol)
         response_iobuf = folly.iobuf.from_unique_ptr(
             deref(self._cpp_obj).sync_send(function_name, args_bytes).buf
         )
         return deserialize(response_cls, response_iobuf, protocol=protocol)
+
+
+def get_client(
+    clientKlass,
+    *,
+    host=None,
+    port=None,
+    path=None,
+    double timeout=1,
+    ClientType client_type = ClientType.THRIFT_HEADER_CLIENT_TYPE,
+    cProtocol protocol = cProtocol.COMPACT,
+):
+    assert issubclass(clientKlass, SyncClient), "Must be a py3lite sync client"
+
+    cdef uint32_t _timeout_ms = int(timeout * 1000)
+
+    if host is not None and port is not None:
+        if path is not None:
+            raise ValueError("Can not set path and host/port at same time")
+        channel = RequestChannel.create(createThriftChannelTCP(
+            host, port, _timeout_ms, client_type, protocol
+        ))
+    elif path is not None:
+        channel = RequestChannel.create(createThriftChannelUnix(
+            path, _timeout_ms, client_type, protocol
+        ))
+    else:
+        raise ValueError("Must set path or host/port")
+    return clientKlass(channel)

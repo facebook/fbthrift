@@ -13,9 +13,15 @@
 # limitations under the License.
 
 from folly.iobuf cimport cIOBuf
-from libc.stdint cimport uint16_t
+from libc.stdint cimport uint16_t, uint32_t
 from libcpp.memory cimport unique_ptr
 from libcpp.string cimport string
+from thrift.py3lite.serializer cimport Protocol as cProtocol
+
+cdef extern from "thrift/lib/cpp/transport/THeader.h":
+    cpdef enum ClientType "CLIENT_TYPE":
+        THRIFT_HEADER_CLIENT_TYPE,
+        THRIFT_ROCKET_CLIENT_TYPE,
 
 cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::py3lite::client":
     cdef cppclass cRequestChannel_ptr "::thrift::py3lite::client::RequestChannel_ptr":
@@ -28,6 +34,22 @@ cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::p
         cOmniClient(cRequestChannel_ptr channel, const string& serviceName)
         cOmniClientResponseWithHeaders sync_send(const string& methodName, const string& args)
         uint16_t getChannelProtocolId()
+
+cdef extern from "thrift/lib/py3lite/client/SyncClient.h" namespace "::thrift::py3lite::sync_client":
+    cdef cRequestChannel_ptr createThriftChannelTCP(
+        const string& host,
+        const uint16_t port,
+        const uint32_t connect_timeout,
+        ClientType,
+        cProtocol,
+    )
+
+    cdef cRequestChannel_ptr createThriftChannelUnix(
+        const string& path,
+        const uint32_t connect_timeout,
+        ClientType,
+        cProtocol,
+    )
 
 cdef class RequestChannel:
     cdef cRequestChannel_ptr _cpp_obj

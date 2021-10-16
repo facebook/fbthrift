@@ -29,7 +29,7 @@
 #include <thrift/lib/cpp2/server/ThriftServer.h>
 
 #include <thrift/lib/py3lite/client/OmniClient.h>
-#include <thrift/lib/py3lite/client/test/gen-cpp2/OmniClientTestService.h>
+#include <thrift/lib/py3lite/client/test/gen-cpp2/TestService.h>
 #include <thrift/lib/py3lite/client/test/gen-cpp2/test_types.h>
 
 using namespace apache::thrift;
@@ -39,10 +39,10 @@ using namespace thrift::py3lite::test;
 /**
  * A simple Scaffold service that will be used to test the Thrift OmniClient.
  */
-class OmniClientTestService : virtual public OmniClientTestServiceSvIf {
+class TestService : virtual public TestServiceSvIf {
  public:
-  OmniClientTestService() {}
-  virtual ~OmniClientTestService() override {}
+  TestService() {}
+  virtual ~TestService() override {}
   int add(int num1, int num2) override { return num1 + num2; }
 };
 
@@ -73,7 +73,7 @@ class OmniClientTest : public ::testing::Test {
     server_->setServerEventHandler(
         std::make_shared<ServerEventHandler>(addressPromise_));
     server_->setAddress(addr);
-    server_->setInterface(std::make_shared<OmniClientTestService>());
+    server_->setInterface(std::make_shared<TestService>());
     serverThread_ = std::thread([this]() { server_->run(); });
 
     // Wait for the server to be ready.
@@ -88,8 +88,7 @@ class OmniClientTest : public ::testing::Test {
             ));
 
     // Create clients.
-    client_ = std::make_unique<OmniClient>(
-        std::move(channel), "OmniClientTestService");
+    client_ = std::make_unique<OmniClient>(std::move(channel), "TestService");
   }
 
   void TearDown() override {

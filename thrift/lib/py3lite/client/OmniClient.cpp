@@ -32,6 +32,7 @@
 namespace thrift {
 namespace py3lite {
 namespace client {
+
 using namespace apache::thrift;
 
 namespace {
@@ -58,6 +59,19 @@ makeOmniClientRequestContext(
 }
 
 } // namespace
+
+OmniClient::OmniClient(
+    RequestChannel_ptr channel, const std::string& serviceName)
+    : channel_(std::move(channel)), serviceName_(serviceName) {}
+
+OmniClient::~OmniClient() {
+  if (channel_) {
+    auto eb = channel_->getEventBase();
+    if (eb) {
+      eb->runInEventBaseThread([channel = std::move(channel_)] {});
+    }
+  }
+}
 
 OmniClientResponseWithHeaders OmniClient::sync_send(
     const std::string& functionName,

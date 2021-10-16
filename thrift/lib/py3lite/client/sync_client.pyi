@@ -15,10 +15,10 @@
 import types
 import typing
 
-from folly.iobuf import IOBuf
+from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.types import Struct, Union
 
-sT = typing.TypeVar("sT", bound=typing.Union[Struct, Union])
+StructOrUnion = typing.TypeVar("StructOrUnion", bound=typing.Union[Struct, Union])
 
 class RequestChannel: ...
 
@@ -35,5 +35,22 @@ class SyncClient:
         self,
         function_name: str,
         args: Struct,
-        response_cls: typing.Type[sT],
-    ) -> sT: ...
+        response_cls: typing.Type[StructOrUnion],
+    ) -> StructOrUnion: ...
+
+TClient = TypeVar("TClient", bound="SyncClient")
+
+class ClientType(Enum):
+    THRIFT_HEADER_CLIENT_TYPE: ClientType = ...
+    THRIFT_ROCKET_CLIENT_TYPE: ClientType = ...
+
+def get_client(
+    clientKlass: Type[TClient],
+    *,
+    host: Optional[str] = ...,
+    port: Optional[int] = ...,
+    path: Optional[str] = ...,
+    timeout: float = ...,
+    client_type: ClientType = ...,
+    protocol: Protocol = ...,
+) -> TClient: ...

@@ -15,7 +15,7 @@
  */
 
 namespace cpp2 thrift.py3lite.test
-namespace py3 thrift.py3lite.test
+namespace py3 thrift.py3lite
 
 //
 // The following structures are defined to mimic the anonymous argument structs
@@ -27,6 +27,6 @@ struct AddRequest {
   2: i32 num2;
 }
 
-service OmniClientTestService {
+service TestService {
   i32 add(1: i32 num1, 2: i32 num2);
 }

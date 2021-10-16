@@ -43,8 +43,9 @@ struct OmniClientResponseWithHeaders {
  */
 class OmniClient : public apache::thrift::TClientBase {
  public:
-  explicit OmniClient(RequestChannel_ptr channel, std::string serviceName)
-      : channel_(std::move(channel)), serviceName_(std::move(serviceName)) {}
+  explicit OmniClient(
+      RequestChannel_ptr channel, const std::string& serviceName);
+  ~OmniClient();
 
   OmniClientResponseWithHeaders sync_send(
       const std::string& functionName,
