@@ -60,6 +60,12 @@ int64_t random_64bits_integer() {
   return dist(engine);
 }
 
+void throwChecksumMismatch(int64_t expected, int64_t actual) {
+  throw TProtocolException(
+      TProtocolException::CHECKSUM_MISMATCH,
+      fmt::format("expected ({}) != actual ({})", expected, actual));
+}
+
 } // namespace detail
 } // namespace thrift
 } // namespace apache

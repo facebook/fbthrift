@@ -47,7 +47,8 @@ class FOLLY_EXPORT TProtocolException
     SIZE_LIMIT = 3,
     BAD_VERSION = 4,
     NOT_IMPLEMENTED = 5,
-    MISSING_REQUIRED_FIELD = 6
+    MISSING_REQUIRED_FIELD = 6,
+    CHECKSUM_MISMATCH = 7,
   };
 
   TProtocolException() : apache::thrift::TLibraryException(), type_(UNKNOWN) {}
@@ -88,6 +89,8 @@ class FOLLY_EXPORT TProtocolException
           return "TProtocolException: Not implemented";
         case MISSING_REQUIRED_FIELD:
           return "TProtocolException: Missing required field";
+        case CHECKSUM_MISMATCH:
+          return "TProtocolException: Checksum mismatch";
         default:
           return "TProtocolException: (Invalid exception type)";
       }

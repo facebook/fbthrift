@@ -172,6 +172,9 @@ class CompactProtocolWriter {
 
   inline void rewriteDouble(double dub, int64_t offset);
 
+  // Get last n bytes we just wrote
+  inline folly::io::Cursor tail(size_t n);
+
  protected:
   /**
    * Cursor to write the data out to. Must support some of the interface of

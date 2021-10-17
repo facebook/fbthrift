@@ -345,6 +345,12 @@ void CompactProtocolWriter::rewriteDouble(double dub, int64_t offset) {
   cursor.writeBE(folly::bit_cast<uint64_t>(dub));
 }
 
+folly::io::Cursor CompactProtocolWriter::tail(size_t n) {
+  auto cursor = RWCursor(out_);
+  cursor.advanceToEnd();
+  return {cursor - n, n};
+}
+
 /**
  * Functions that return the serialized size
  */

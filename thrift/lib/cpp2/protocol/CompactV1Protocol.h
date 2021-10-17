@@ -88,6 +88,8 @@ class CompactV1ProtocolWriter : protected CompactProtocolWriter {
   using CompactProtocolWriter::serializedSizeZCBinary;
   using CompactProtocolWriter::serializedStructSize;
 
+  using CompactProtocolWriter::tail;
+
   inline void rewriteDouble(double dub, int64_t offset);
 };
 

@@ -153,6 +153,9 @@ class BinaryProtocolWriter {
 
   inline void rewriteDouble(double dub, int64_t offset);
 
+  // Get last n bytes we just wrote
+  inline folly::io::Cursor tail(size_t n);
+
  private:
   template <bool kWriteSize>
   FOLLY_ERASE uint32_t writeBinaryImpl(const folly::IOBuf& str);
