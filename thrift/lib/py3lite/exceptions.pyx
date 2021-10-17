@@ -18,6 +18,15 @@ import functools
 from thrift.py3lite.types cimport StructInfo, createStructTuple, set_struct_field
 
 
+cdef class ApplicationError(Error):
+    """All Application Level Errors (TApplicationException)"""
+
+    def __init__(ApplicationError self, ApplicationErrorType type, str message):
+        assert message, "message is empty"
+        self.type = type
+        self.message = message
+
+
 cdef make_fget_error(i):
     return functools.cached_property(lambda self: (<GeneratedError>self)._fbthrift_get_field_value(i))
 

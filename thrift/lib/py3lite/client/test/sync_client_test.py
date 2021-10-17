@@ -22,6 +22,7 @@ from multiprocessing import Process
 from thrift.py3.server import ThriftServer
 from thrift.py3lite.serializer import Protocol
 from thrift.py3lite.sync_client import ClientType, get_client
+from thrift.py3lite.test import types, lite_types
 from thrift.py3lite.test.lite_clients import TestService
 from thrift.py3lite.test.services import TestServiceInterface
 
@@ -29,6 +30,18 @@ from thrift.py3lite.test.services import TestServiceInterface
 class Handler(TestServiceInterface):
     async def add(self, num1: int, num2: int) -> int:
         return num1 + num2
+
+    async def divide(self, dividend: float, divisor: float) -> float:
+        try:
+            return dividend / divisor
+        except ZeroDivisionError as e:
+            raise types.ArithmeticException(str(e))
+
+    async def noop(self) -> None:
+        pass
+
+    async def oops(self) -> None:
+        raise types.EmptyException()
 
 
 @contextlib.contextmanager
@@ -56,8 +69,7 @@ class SyncClientTests(unittest.TestCase):
     def test_basic(self) -> None:
         with server_in_another_process() as path:
             with get_client(TestService, path=path) as client:
-                sum = client.add(1, 2)
-                self.assertEqual(3, sum)
+                self.assertEqual(3, client.add(1, 2))
 
     def test_client_type_and_protocol(self) -> None:
         with server_in_another_process() as path:
@@ -69,3 +81,21 @@ class SyncClientTests(unittest.TestCase):
             ) as client:
                 sum = client.add(1, 2)
                 self.assertEqual(3, sum)
+
+    def test_void_return(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(TestService, path=path) as client:
+                self.assertIsNone(client.noop())
+
+    def test_exception(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(TestService, path=path) as client:
+                self.assertAlmostEqual(2, client.divide(6, 3))
+                with self.assertRaises(lite_types.ArithmeticException):
+                    client.divide(1, 0)
+
+    def test_void_return_with_exception(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(TestService, path=path) as client:
+                with self.assertRaises(lite_types.EmptyException):
+                    client.oops()

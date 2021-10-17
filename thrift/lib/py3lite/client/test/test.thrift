@@ -27,6 +27,17 @@ struct AddRequest {
   2: i32 num2;
 }
 
+exception EmptyException {}
+
+exception ArithmeticException {
+  1: string msg;
+}
+
 service TestService {
   i32 add(1: i32 num1, 2: i32 num2);
+  double divide(1: double dividend, 2: double divisor) throws (
+    1: ArithmeticException ae,
+  );
+  void noop();
+  void oops() throws (1: EmptyException ee);
 }

@@ -6,6 +6,7 @@
 #
 
 from thrift.py3lite.sync_client import SyncClient as _fbthrift_py3lite_SyncClient
+import thrift.py3lite.exceptions as _fbthrift_py3lite_exceptions
 import empty.lite_types as _empty_lite_types
 
 

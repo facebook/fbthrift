@@ -17,6 +17,11 @@ import typing
 class Error(Exception):
     pass
 
+class ApplicationError(Error):
+    def __init__(self, type: ApplicationErrorType, message: str) -> None: ...
+    type: ApplicationErrorType
+    message: str
+
 class GeneratedError(Error, typing.Hashable, metaclass=GeneratedErrorMeta):
     def __hash__(self) -> int: ...
 
