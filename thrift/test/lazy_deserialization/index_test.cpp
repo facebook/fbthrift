@@ -404,8 +404,17 @@ TYPED_TEST(LazyDeserialization, MismatchedChecksumInIndexField) {
   tokens.rbegin()->header = genFieldHeader(
       detail::kIndexField.type, detail::kIndexField.id, Serializer{});
 
+  EXPECT_FALSE(lazyDeserializationIsDisabledDueToChecksumMismatch());
   EXPECT_THROW(
       this->template deserialize<LazyStruct>(merge(tokens)),
       TProtocolException);
+  EXPECT_TRUE(lazyDeserializationIsDisabledDueToChecksumMismatch());
+
+  // lazy deserialization is disabled this time
+  auto foo = this->template deserialize<LazyStruct>(merge(tokens));
+  EXPECT_EQ(get_field1(foo), indexedFoo.field1_ref());
+  EXPECT_EQ(get_field2(foo), indexedFoo.field2_ref());
+  EXPECT_EQ(get_field3(foo), indexedFoo.field3_ref());
+  EXPECT_EQ(get_field4(foo), indexedFoo.field4_ref());
 }
 } // namespace apache::thrift::test
