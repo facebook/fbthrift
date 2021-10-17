@@ -19,13 +19,19 @@
 #include <thrift/test/lazy_deserialization/gen-cpp2/nested_types.h>
 
 namespace apache::thrift::test {
-TEST(NestedStruct, Test) {
-  Outer outer;
-  Outer tmp;
+
+template <typename>
+struct NestedStruct : testing::Test {};
+
+using TypeParams = ::testing::Types<Outer, OuterWithMixin>;
+TYPED_TEST_SUITE(NestedStruct, TypeParams);
+
+TYPED_TEST(NestedStruct, Test) {
+  TypeParam outer, tmp;
   tmp.foo_ref().ensure().field_ref() = 42;
   auto s = CompactSerializer::serialize<std::string>(tmp);
 
-  // `outer` has lazy field `foo` that's not deserialized
+  // `outer` has lazy field `foo` that's not deserialized.
   CompactSerializer::deserialize(s, outer);
 
   // Reset `foo` in `Outer` to unset `field` in `Inner`
@@ -44,21 +50,29 @@ TEST(NestedStruct, Test) {
   EXPECT_EQ(outer.foo_ref()->field_ref(), 42);
 }
 
-TEST(NestedStruct, Reserialize) {
-  Outer outer1, outer2;
+TYPED_TEST(NestedStruct, Reserialize) {
+  TypeParam outer1, outer2;
   outer1.foo_ref().ensure();
   outer2.foo_ref()->field_ref() = 42;
 
   // Now `outer2` is in a state that the inner field has value `42`
-  // Meanwhile it also has `IOBuf` that contains empty structure.
+  // Meanwhile, it also has `IOBuf` that contains empty structure.
   CompactSerializer::deserialize(
       CompactSerializer::serialize<std::string>(outer1), outer2);
 
   // When we re-serialize outer2, we should deserialize `IOBuf`
   // first, then re-serialize the field
-  auto outer3 = CompactSerializer::deserialize<Outer>(
+  auto outer3 = CompactSerializer::deserialize<TypeParam>(
       CompactSerializer::serialize<std::string>(outer2));
 
   EXPECT_EQ(outer3.foo_ref()->field_ref(), 42);
+}
+
+TEST(NestedStruct, Mixin) {
+  OuterWithMixin outer1, outer2;
+  outer1.field_ref() = 42;
+  CompactSerializer::deserialize(
+      CompactSerializer::serialize<std::string>(outer1), outer2);
+  EXPECT_EQ(outer2.field_ref(), 42);
 }
 } // namespace apache::thrift::test

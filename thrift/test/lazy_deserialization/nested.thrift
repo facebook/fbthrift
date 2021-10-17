@@ -23,3 +23,7 @@ struct Inner {
 struct Outer {
   1: Inner foo (cpp.experimental.lazy);
 }
+
+struct OuterWithMixin {
+  1: Inner foo (cpp.experimental.lazy, cpp.mixin);
+}

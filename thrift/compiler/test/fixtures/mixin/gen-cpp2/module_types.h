@@ -265,10 +265,10 @@ private:
   FOLLY_ERASE ::apache::thrift::optional_field_ref<T&&> field2_ref() && {
     return {std::move(this->field2), __isset.__fbthrift_at(folly::index_constant<1>())};
   }
-  FOLLY_ERASE auto field1_ref() &       { return m1.field1_ref();            }
-  FOLLY_ERASE auto field1_ref() const&  { return m1.field1_ref();            }
-  FOLLY_ERASE auto field1_ref() &&      { return std::move(m1).field1_ref(); }
-  FOLLY_ERASE auto field1_ref() const&& { return std::move(m1).field1_ref(); }
+  FOLLY_ERASE auto field1_ref() &       { return m1_ref()->field1_ref(); }
+  FOLLY_ERASE auto field1_ref() const&  { return m1_ref()->field1_ref(); }
+  FOLLY_ERASE auto field1_ref() &&      { return m1_ref()->field1_ref(); }
+  FOLLY_ERASE auto field1_ref() const&& { return m1_ref()->field1_ref(); }
   const ::cpp2::Mixin1& get_m1() const&;
   ::cpp2::Mixin1 get_m1() &&;
 
@@ -527,22 +527,22 @@ private:
   FOLLY_ERASE ::apache::thrift::field_ref<T&&> m3_ref() && {
     return {std::move(this->m3), __isset.__fbthrift_at(folly::index_constant<2>())};
   }
-  FOLLY_ERASE auto m1_ref() &       { return m2.m1_ref();            }
-  FOLLY_ERASE auto m1_ref() const&  { return m2.m1_ref();            }
-  FOLLY_ERASE auto m1_ref() &&      { return std::move(m2).m1_ref(); }
-  FOLLY_ERASE auto m1_ref() const&& { return std::move(m2).m1_ref(); }
-  FOLLY_ERASE auto field2_ref() &       { return m2.field2_ref();            }
-  FOLLY_ERASE auto field2_ref() const&  { return m2.field2_ref();            }
-  FOLLY_ERASE auto field2_ref() &&      { return std::move(m2).field2_ref(); }
-  FOLLY_ERASE auto field2_ref() const&& { return std::move(m2).field2_ref(); }
-  FOLLY_ERASE auto field1_ref() &       { return m2.field1_ref();            }
-  FOLLY_ERASE auto field1_ref() const&  { return m2.field1_ref();            }
-  FOLLY_ERASE auto field1_ref() &&      { return std::move(m2).field1_ref(); }
-  FOLLY_ERASE auto field1_ref() const&& { return std::move(m2).field1_ref(); }
-  FOLLY_ERASE auto field3_ref() &       { return m3.field3_ref();            }
-  FOLLY_ERASE auto field3_ref() const&  { return m3.field3_ref();            }
-  FOLLY_ERASE auto field3_ref() &&      { return std::move(m3).field3_ref(); }
-  FOLLY_ERASE auto field3_ref() const&& { return std::move(m3).field3_ref(); }
+  FOLLY_ERASE auto m1_ref() &       { return m2_ref()->m1_ref(); }
+  FOLLY_ERASE auto m1_ref() const&  { return m2_ref()->m1_ref(); }
+  FOLLY_ERASE auto m1_ref() &&      { return m2_ref()->m1_ref(); }
+  FOLLY_ERASE auto m1_ref() const&& { return m2_ref()->m1_ref(); }
+  FOLLY_ERASE auto field2_ref() &       { return m2_ref()->field2_ref(); }
+  FOLLY_ERASE auto field2_ref() const&  { return m2_ref()->field2_ref(); }
+  FOLLY_ERASE auto field2_ref() &&      { return m2_ref()->field2_ref(); }
+  FOLLY_ERASE auto field2_ref() const&& { return m2_ref()->field2_ref(); }
+  FOLLY_ERASE auto field1_ref() &       { return m2_ref()->field1_ref(); }
+  FOLLY_ERASE auto field1_ref() const&  { return m2_ref()->field1_ref(); }
+  FOLLY_ERASE auto field1_ref() &&      { return m2_ref()->field1_ref(); }
+  FOLLY_ERASE auto field1_ref() const&& { return m2_ref()->field1_ref(); }
+  FOLLY_ERASE auto field3_ref() &       { return m3_ref()->field3_ref(); }
+  FOLLY_ERASE auto field3_ref() const&  { return m3_ref()->field3_ref(); }
+  FOLLY_ERASE auto field3_ref() &&      { return m3_ref()->field3_ref(); }
+  FOLLY_ERASE auto field3_ref() const&& { return m3_ref()->field3_ref(); }
 
   const ::std::string& get_field4() const& {
     return field4;
