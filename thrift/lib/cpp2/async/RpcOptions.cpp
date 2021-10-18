@@ -230,5 +230,14 @@ uint64_t RpcOptions::getRoutingHint() const {
   return routingHint_;
 }
 
+RpcOptions& RpcOptions::setCallerContext(std::shared_ptr<void> callerContext) {
+  callerContext_ = std::move(callerContext);
+  return *this;
+}
+
+const std::shared_ptr<void>& RpcOptions::getCallerContext() const {
+  return callerContext_;
+}
+
 } // namespace thrift
 } // namespace apache

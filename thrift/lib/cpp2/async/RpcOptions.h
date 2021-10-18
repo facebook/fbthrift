@@ -117,6 +117,9 @@ class RpcOptions {
   RpcOptions& setRoutingHint(uint64_t hint);
   uint64_t getRoutingHint() const;
 
+  RpcOptions& setCallerContext(std::shared_ptr<void> callerContext);
+  const std::shared_ptr<void>& getCallerContext() const;
+
  private:
   using timeout_ms_t = uint32_t;
   timeout_ms_t timeout_{0};
@@ -144,6 +147,8 @@ class RpcOptions {
 
   // Custom data passed back from the routing layer.
   std::shared_ptr<void> routingData_;
+
+  std::shared_ptr<void> callerContext_;
 };
 
 } // namespace thrift
