@@ -23,7 +23,6 @@
 #include <folly/container/F14Map.h>
 #include <folly/io/Cursor.h>
 #include <folly/portability/GFlags.h>
-#include <folly/synchronization/RelaxedAtomic.h>
 #include <thrift/lib/cpp2/protocol/Cpp2Ops.h>
 #include <thrift/lib/cpp2/protocol/Protocol.h>
 #include <thrift/lib/cpp2/protocol/ProtocolReaderStructReadState.h>
@@ -35,14 +34,6 @@ DECLARE_bool(thrift_enable_lazy_deserialization);
 namespace apache {
 namespace thrift {
 namespace detail {
-
-extern folly::relaxed_atomic<bool>
-    gLazyDeserializationIsDisabledDueToChecksumMismatch;
-
-inline bool isLazyDeserializationDisabled() {
-  return !FLAGS_thrift_enable_lazy_deserialization ||
-      gLazyDeserializationIsDisabledDueToChecksumMismatch;
-}
 
 /*
  * When index is enabled, we will inject following fields to thrift struct
@@ -242,7 +233,7 @@ class ProtocolReaderStructReadStateWithIndexImpl
 
   FOLLY_ALWAYS_INLINE folly::Optional<folly::IOBuf> tryFastSkip(
       Protocol* iprot, int16_t id, TType type, bool fixedCostSkip) {
-    if (isLazyDeserializationDisabled()) {
+    if (!FLAGS_thrift_enable_lazy_deserialization) {
       return {};
     }
 
@@ -297,7 +288,7 @@ class ProtocolReaderStructReadStateWithIndexImpl
   }
 
   void readStructBeginWithIndex(folly::io::Cursor structBegin) {
-    if (isLazyDeserializationDisabled()) {
+    if (!FLAGS_thrift_enable_lazy_deserialization) {
       return;
     }
 
@@ -384,9 +375,5 @@ using ProtocolReaderStructReadStateWithIndex = std::conditional_t<
     ProtocolReaderStructReadState<Protocol>>;
 
 } // namespace detail
-
-inline bool lazyDeserializationIsDisabledDueToChecksumMismatch() {
-  return detail::gLazyDeserializationIsDisabledDueToChecksumMismatch;
-}
 } // namespace thrift
 } // namespace apache
