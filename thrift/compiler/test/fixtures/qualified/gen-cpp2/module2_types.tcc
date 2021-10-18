@@ -45,7 +45,6 @@ void Struct::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -85,7 +84,6 @@ _readField_second:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);
@@ -131,7 +129,6 @@ _skip:
 
 template <class Protocol_>
 uint32_t Struct::serializedSize(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Struct");
   {
@@ -144,12 +141,10 @@ uint32_t Struct::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t Struct::serializedSizeZC(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("Struct");
   {
@@ -162,12 +157,10 @@ uint32_t Struct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t Struct::write(Protocol_* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("Struct");
   bool previousFieldHasValue = true;
@@ -188,7 +181,6 @@ uint32_t Struct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void Struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -212,7 +204,6 @@ void BigStruct::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -250,7 +241,6 @@ _readField_id:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);
@@ -296,7 +286,6 @@ _skip:
 
 template <class Protocol_>
 uint32_t BigStruct::serializedSize(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("BigStruct");
   {
@@ -309,12 +298,10 @@ uint32_t BigStruct::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t BigStruct::serializedSizeZC(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("BigStruct");
   {
@@ -327,12 +314,10 @@ uint32_t BigStruct::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t BigStruct::write(Protocol_* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("BigStruct");
   bool previousFieldHasValue = true;
@@ -353,7 +338,6 @@ uint32_t BigStruct::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void BigStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

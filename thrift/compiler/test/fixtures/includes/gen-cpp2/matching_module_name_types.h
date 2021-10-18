@@ -38,7 +38,6 @@ class MyStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace matching_module_name {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
@@ -142,4 +141,3 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 } // matching_module_name
-THRIFT_IGNORE_ISSET_USE_WARNING_END

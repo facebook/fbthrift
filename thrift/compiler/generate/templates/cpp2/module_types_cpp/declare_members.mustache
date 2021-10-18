@@ -15,7 +15,6 @@
   limitations under the License.
 
 %><%#struct:is_large?%>
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%struct:name%>::<% > module_types_h/base_ctor%>
 <%#struct:message%>
 
@@ -24,13 +23,11 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 }
 <%/struct:message%>
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 <%struct:name%>::~<%struct:name%>() {}
 
 <%/struct:is_large?%>
 <%^struct:is_eligible_for_constexpr?%>
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%struct:name%>::<% > module_types_cpp/move_ctor%>
 <%struct:name%>& <%struct:name%>::operator=(FOLLY_MAYBE_UNUSED <%struct:name%>&& other) noexcept {
 <%#struct:lazy_fields?%>
@@ -53,7 +50,6 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <%/struct:isset_fields?%>
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 <%/struct:is_eligible_for_constexpr?%>
 
@@ -126,8 +122,6 @@ void <%struct:name%>::__clear() {
   new (&__fbthrift_isDeserialized_) __fbthrift_IsDeserialized();
 <%/struct:lazy_fields?%>
 <%#struct:isset_fields?%>
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/struct:isset_fields?%>
 }

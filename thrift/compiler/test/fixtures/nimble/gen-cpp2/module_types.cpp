@@ -46,7 +46,7 @@ BasicTypes::BasicTypes(apache::thrift::FragileConstructor, ::std::int32_t first_
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void BasicTypes::__clear() {
   // clear all fields
@@ -54,9 +54,7 @@ void BasicTypes::__clear() {
   this->second = ::std::int32_t();
   this->third = ::std::int64_t();
   this->isTrue = bool();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool BasicTypes::operator==(const BasicTypes& rhs) const {
@@ -104,9 +102,7 @@ void swap(BasicTypes& a, BasicTypes& b) {
   swap(a.second_ref().value_unchecked(), b.second_ref().value_unchecked());
   swap(a.third_ref().value_unchecked(), b.third_ref().value_unchecked());
   swap(a.isTrue_ref().value(), b.isTrue_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void BasicTypes::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

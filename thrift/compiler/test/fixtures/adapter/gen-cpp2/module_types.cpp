@@ -37,37 +37,21 @@ namespace cpp2 {
 
 Foo::Foo(const Foo& srcObj) {
   intField = srcObj.intField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   optionalIntField = srcObj.optionalIntField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   intFieldWithDefault = srcObj.intFieldWithDefault;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   setField = srcObj.setField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   optionalSetField = srcObj.optionalSetField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   mapField = srcObj.mapField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<5>(),srcObj.__isset.__fbthrift_get(folly::index_constant<5>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   optionalMapField = srcObj.optionalMapField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<6>(),srcObj.__isset.__fbthrift_get(folly::index_constant<6>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   binaryField = srcObj.binaryField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<7>(),srcObj.__isset.__fbthrift_get(folly::index_constant<7>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(intField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(optionalIntField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(intFieldWithDefault, *this);
@@ -84,7 +68,6 @@ Foo& Foo::operator=(const Foo& src) {
   return *this;
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo() :
       intField(),
       optionalIntField(),
@@ -94,11 +77,9 @@ Foo::Foo() :
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 3>(intFieldWithDefault, *this);
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 Foo::~Foo() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Foo::Foo(Foo&& other) noexcept  :
     intField(std::move(other.intField)),
     optionalIntField(std::move(other.optionalIntField)),
@@ -131,7 +112,6 @@ Foo& Foo::operator=(FOLLY_MAYBE_UNUSED Foo&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -161,7 +141,7 @@ Foo::Foo(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
   __isset.__fbthrift_set(folly::index_constant<6>(), true);
   __isset.__fbthrift_set(folly::index_constant<7>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void Foo::__clear() {
   // clear all fields
@@ -173,9 +153,7 @@ void Foo::__clear() {
   this->mapField.clear();
   this->optionalMapField.clear();
   this->binaryField = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Foo::operator==(const Foo& rhs) const {
@@ -251,9 +229,7 @@ void swap(Foo& a, Foo& b) {
   swap(a.mapField_ref().value(), b.mapField_ref().value());
   swap(a.optionalMapField_ref().value_unchecked(), b.optionalMapField_ref().value_unchecked());
   swap(a.binaryField_ref().value(), b.binaryField_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Foo::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -418,29 +394,17 @@ namespace cpp2 {
 
 Bar::Bar(const Bar& srcObj) {
   structField = srcObj.structField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   optionalStructField = srcObj.optionalStructField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   structListField = srcObj.structListField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   optionalStructListField = srcObj.optionalStructListField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   unionField = srcObj.unionField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   optionalUnionField = srcObj.optionalUnionField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<5>(),srcObj.__isset.__fbthrift_get(folly::index_constant<5>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(structField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 2>(optionalStructField, *this);
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 5>(unionField, *this);
@@ -453,15 +417,12 @@ Bar& Bar::operator=(const Bar& src) {
   return *this;
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bar::Bar() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 Bar::~Bar() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bar::Bar(Bar&& other) noexcept  :
     structField(std::move(other.structField)),
     optionalStructField(std::move(other.optionalStructField)),
@@ -486,7 +447,6 @@ Bar& Bar::operator=(FOLLY_MAYBE_UNUSED Bar&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -508,7 +468,7 @@ Bar::Bar(apache::thrift::FragileConstructor, ::apache::thrift::adapt_detail::ada
   __isset.__fbthrift_set(folly::index_constant<4>(), true);
   __isset.__fbthrift_set(folly::index_constant<5>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void Bar::__clear() {
   // clear all fields
@@ -518,9 +478,7 @@ void Bar::__clear() {
   this->optionalStructListField.clear();
   this->unionField = {};
   this->optionalUnionField = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Bar::operator==(const Bar& rhs) const {
@@ -598,9 +556,7 @@ void swap(Bar& a, Bar& b) {
   swap(a.optionalStructListField_ref().value_unchecked(), b.optionalStructListField_ref().value_unchecked());
   swap(a.unionField_ref().value(), b.unionField_ref().value());
   swap(a.optionalUnionField_ref().value_unchecked(), b.optionalUnionField_ref().value_unchecked());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Bar::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -689,9 +645,7 @@ namespace cpp2 {
 
 StructWithFieldAdapter::StructWithFieldAdapter(const StructWithFieldAdapter& srcObj) {
   field = srcObj.field;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(field, *this);
 }
 
@@ -708,14 +662,12 @@ StructWithFieldAdapter::StructWithFieldAdapter(apache::thrift::FragileConstructo
   ::apache::thrift::adapt_detail::construct<my::Adapter1, 1>(field, *this);
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void StructWithFieldAdapter::__clear() {
   // clear all fields
   this->field = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool StructWithFieldAdapter::operator==(const StructWithFieldAdapter& rhs) const {
@@ -742,9 +694,7 @@ bool StructWithFieldAdapter::operator<(const StructWithFieldAdapter& rhs) const 
 void swap(StructWithFieldAdapter& a, StructWithFieldAdapter& b) {
   using ::std::swap;
   swap(a.field_ref().value(), b.field_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void StructWithFieldAdapter::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

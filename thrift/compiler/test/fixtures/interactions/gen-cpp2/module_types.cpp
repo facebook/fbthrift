@@ -35,19 +35,14 @@ void TccStructTraits<::cpp2::CustomException>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomException::CustomException(const CustomException&) = default;
 CustomException& CustomException::operator=(const CustomException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomException::CustomException() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 CustomException::~CustomException() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomException::CustomException(CustomException&& other) noexcept  :
     message(std::move(other.message)),
     __isset(other.__isset) {
@@ -58,7 +53,6 @@ CustomException& CustomException::operator=(FOLLY_MAYBE_UNUSED CustomException&&
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -66,14 +60,12 @@ CustomException::CustomException(apache::thrift::FragileConstructor, ::std::stri
     message(std::move(message__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void CustomException::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool CustomException::operator==(const CustomException& rhs) const {
@@ -100,9 +92,7 @@ bool CustomException::operator<(const CustomException& rhs) const {
 void swap(CustomException& a, CustomException& b) {
   using ::std::swap;
   swap(a.message_ref().value(), b.message_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void CustomException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

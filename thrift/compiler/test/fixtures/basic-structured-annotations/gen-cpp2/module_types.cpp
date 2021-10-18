@@ -68,11 +68,8 @@ void TccStructTraits<::cpp2::structured_annotation_inline>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_inline::structured_annotation_inline(const structured_annotation_inline&) = default;
 structured_annotation_inline& structured_annotation_inline::operator=(const structured_annotation_inline&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_inline::structured_annotation_inline(structured_annotation_inline&& other) noexcept  :
     count(std::move(other.count)),
     name(std::move(other.name)),
@@ -85,7 +82,6 @@ structured_annotation_inline& structured_annotation_inline::operator=(FOLLY_MAYB
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -95,15 +91,13 @@ structured_annotation_inline::structured_annotation_inline(apache::thrift::Fragi
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void structured_annotation_inline::__clear() {
   // clear all fields
   this->count = ::std::int64_t();
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacaba");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structured_annotation_inline::operator==(const structured_annotation_inline& rhs) const {
@@ -137,9 +131,7 @@ void swap(structured_annotation_inline& a, structured_annotation_inline& b) {
   using ::std::swap;
   swap(a.count_ref().value(), b.count_ref().value());
   swap(a.name_ref().value(), b.name_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structured_annotation_inline::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -178,11 +170,8 @@ void TccStructTraits<::cpp2::structured_annotation_with_default>::translateField
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_with_default::structured_annotation_with_default(const structured_annotation_with_default&) = default;
 structured_annotation_with_default& structured_annotation_with_default::operator=(const structured_annotation_with_default&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_with_default::structured_annotation_with_default(structured_annotation_with_default&& other) noexcept  :
     name(std::move(other.name)),
     __isset(other.__isset) {
@@ -193,7 +182,6 @@ structured_annotation_with_default& structured_annotation_with_default::operator
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -201,14 +189,12 @@ structured_annotation_with_default::structured_annotation_with_default(apache::t
     name(std::move(name__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void structured_annotation_with_default::__clear() {
   // clear all fields
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("abacabadabacaba");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structured_annotation_with_default::operator==(const structured_annotation_with_default& rhs) const {
@@ -235,9 +221,7 @@ bool structured_annotation_with_default::operator<(const structured_annotation_w
 void swap(structured_annotation_with_default& a, structured_annotation_with_default& b) {
   using ::std::swap;
   swap(a.name_ref().value(), b.name_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structured_annotation_with_default::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -282,14 +266,12 @@ structured_annotation_forward::structured_annotation_forward(apache::thrift::Fra
     count(std::move(count__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void structured_annotation_forward::__clear() {
   // clear all fields
   this->count = ::std::int64_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structured_annotation_forward::operator==(const structured_annotation_forward& rhs) const {
@@ -316,9 +298,7 @@ bool structured_annotation_forward::operator<(const structured_annotation_forwar
 void swap(structured_annotation_forward& a, structured_annotation_forward& b) {
   using ::std::swap;
   swap(a.count_ref().value(), b.count_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structured_annotation_forward::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -357,11 +337,8 @@ void TccStructTraits<::cpp2::structured_annotation_recursive>::translateFieldNam
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_recursive::structured_annotation_recursive(const structured_annotation_recursive&) = default;
 structured_annotation_recursive& structured_annotation_recursive::operator=(const structured_annotation_recursive&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_recursive::structured_annotation_recursive(structured_annotation_recursive&& other) noexcept  :
     name(std::move(other.name)),
     recurse(std::move(other.recurse)),
@@ -376,7 +353,6 @@ structured_annotation_recursive& structured_annotation_recursive::operator=(FOLL
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -388,16 +364,14 @@ structured_annotation_recursive::structured_annotation_recursive(apache::thrift:
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void structured_annotation_recursive::__clear() {
   // clear all fields
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->recurse.__clear();
   this->forward.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structured_annotation_recursive::operator==(const structured_annotation_recursive& rhs) const {
@@ -454,9 +428,7 @@ void swap(structured_annotation_recursive& a, structured_annotation_recursive& b
   swap(a.name_ref().value(), b.name_ref().value());
   swap(a.recurse_ref().value(), b.recurse_ref().value());
   swap(a.forward_ref().value(), b.forward_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structured_annotation_recursive::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -519,11 +491,8 @@ void TccStructTraits<::cpp2::structured_annotation_nested>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_nested::structured_annotation_nested(const structured_annotation_nested&) = default;
 structured_annotation_nested& structured_annotation_nested::operator=(const structured_annotation_nested&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structured_annotation_nested::structured_annotation_nested(structured_annotation_nested&& other) noexcept  :
     name(std::move(other.name)),
     nest(std::move(other.nest)),
@@ -536,7 +505,6 @@ structured_annotation_nested& structured_annotation_nested::operator=(FOLLY_MAYB
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -546,15 +514,13 @@ structured_annotation_nested::structured_annotation_nested(apache::thrift::Fragi
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void structured_annotation_nested::__clear() {
   // clear all fields
   this->name = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->nest.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structured_annotation_nested::operator==(const structured_annotation_nested& rhs) const {
@@ -596,9 +562,7 @@ void swap(structured_annotation_nested& a, structured_annotation_nested& b) {
   using ::std::swap;
   swap(a.name_ref().value(), b.name_ref().value());
   swap(a.nest_ref().value(), b.nest_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structured_annotation_nested::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -649,11 +613,8 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
     annotated_field(std::move(other.annotated_field)),
     annotated_type(std::move(other.annotated_type)),
@@ -670,7 +631,6 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -684,7 +644,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t annotated_
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
   __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void MyStruct::__clear() {
   // clear all fields
@@ -692,9 +652,7 @@ void MyStruct::__clear() {
   this->annotated_type = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->annotated_recursive = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->annotated_nested = ::std::int64_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -742,9 +700,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.annotated_type_ref().value(), b.annotated_type_ref().value());
   swap(a.annotated_recursive_ref().value(), b.annotated_recursive_ref().value());
   swap(a.annotated_nested_ref().value(), b.annotated_nested_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -783,19 +739,14 @@ void TccStructTraits<::cpp2::MyException>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(const MyException&) = default;
 MyException& MyException::operator=(const MyException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyException::~MyException() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(MyException&& other) noexcept  :
     context(std::move(other.context)),
     __isset(other.__isset) {
@@ -806,7 +757,6 @@ MyException& MyException::operator=(FOLLY_MAYBE_UNUSED MyException&& other) noex
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -814,14 +764,12 @@ MyException::MyException(apache::thrift::FragileConstructor, ::std::string conte
     context(std::move(context__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void MyException::__clear() {
   // clear all fields
   this->context = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyException::operator==(const MyException& rhs) const {
@@ -848,9 +796,7 @@ bool MyException::operator<(const MyException& rhs) const {
 void swap(MyException& a, MyException& b) {
   using ::std::swap;
   swap(a.context_ref().value(), b.context_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

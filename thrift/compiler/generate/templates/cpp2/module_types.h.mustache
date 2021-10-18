@@ -62,7 +62,6 @@ APACHE_THRIFT_DEFINE_ACCESSOR(<%field:cpp_name%>);
 
 <% > module_types_h/hash_and_equal_to%>
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 <% > common/namespace_cpp2_begin%>
 
 using ::apache::thrift::detail::operator!=;
@@ -329,7 +328,6 @@ uint32_t <%struct:name%>::read(Protocol_* iprot) {
 
 <% > module_types_h/frozen%>
 <%/program:structs%>
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 <% > module_types_h/declare_union_types%><%!
 
 %><%#program:tablebased?%>

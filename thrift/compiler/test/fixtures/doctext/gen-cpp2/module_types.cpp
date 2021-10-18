@@ -74,14 +74,12 @@ A::A(apache::thrift::FragileConstructor, ::std::int32_t useless_field__arg) :
     useless_field(std::move(useless_field__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void A::__clear() {
   // clear all fields
   this->useless_field = ::std::int32_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool A::operator==(const A& rhs) const {
@@ -108,9 +106,7 @@ bool A::operator<(const A& rhs) const {
 void swap(A& a, A& b) {
   using ::std::swap;
   swap(a.useless_field_ref().value(), b.useless_field_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void A::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -259,19 +255,14 @@ void TccStructTraits<::cpp2::Bang>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bang::Bang(const Bang&) = default;
 Bang& Bang::operator=(const Bang&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bang::Bang() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 Bang::~Bang() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Bang::Bang(Bang&& other) noexcept  :
     message(std::move(other.message)),
     __isset(other.__isset) {
@@ -282,7 +273,6 @@ Bang& Bang::operator=(FOLLY_MAYBE_UNUSED Bang&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -290,14 +280,12 @@ Bang::Bang(apache::thrift::FragileConstructor, ::std::string message__arg) :
     message(std::move(message__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void Bang::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Bang::operator==(const Bang& rhs) const {
@@ -324,9 +312,7 @@ bool Bang::operator<(const Bang& rhs) const {
 void swap(Bang& a, Bang& b) {
   using ::std::swap;
   swap(a.message_ref().value(), b.message_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Bang::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

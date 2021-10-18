@@ -35,11 +35,8 @@ void TccStructTraits<::module2::Struct>::translateFieldName(
 
 namespace module2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Struct::Struct(const Struct&) = default;
 Struct& Struct::operator=(const Struct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Struct::Struct(Struct&& other) noexcept  :
     first(std::move(other.first)),
     second(std::move(other.second)),
@@ -52,7 +49,6 @@ Struct& Struct::operator=(FOLLY_MAYBE_UNUSED Struct&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -62,15 +58,13 @@ Struct::Struct(apache::thrift::FragileConstructor, ::module0::Struct first__arg,
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void Struct::__clear() {
   // clear all fields
   this->first.__clear();
   this->second.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Struct::operator==(const Struct& rhs) const {
@@ -120,9 +114,7 @@ void swap(Struct& a, Struct& b) {
   using ::std::swap;
   swap(a.first_ref().value(), b.first_ref().value());
   swap(a.second_ref().value(), b.second_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -185,11 +177,8 @@ void TccStructTraits<::module2::BigStruct>::translateFieldName(
 
 namespace module2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BigStruct::BigStruct(const BigStruct&) = default;
 BigStruct& BigStruct::operator=(const BigStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BigStruct::BigStruct(BigStruct&& other) noexcept  :
     s(std::move(other.s)),
     id(std::move(other.id)),
@@ -202,7 +191,6 @@ BigStruct& BigStruct::operator=(FOLLY_MAYBE_UNUSED BigStruct&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -212,15 +200,13 @@ BigStruct::BigStruct(apache::thrift::FragileConstructor, ::module2::Struct s__ar
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void BigStruct::__clear() {
   // clear all fields
   this->s.__clear();
   this->id = ::std::int32_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool BigStruct::operator==(const BigStruct& rhs) const {
@@ -262,9 +248,7 @@ void swap(BigStruct& a, BigStruct& b) {
   using ::std::swap;
   swap(a.s_ref().value(), b.s_ref().value());
   swap(a.id_ref().value(), b.id_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void BigStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

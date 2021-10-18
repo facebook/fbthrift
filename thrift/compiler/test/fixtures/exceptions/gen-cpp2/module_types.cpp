@@ -35,11 +35,8 @@ void TccStructTraits<::cpp2::Fiery>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(const Fiery&) = default;
 Fiery& Fiery::operator=(const Fiery&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery() {
 }
 
@@ -47,11 +44,9 @@ Fiery::Fiery(std::string __message) : Fiery() {
   message = std::move(__message);
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 Fiery::~Fiery() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(Fiery&& other) noexcept  :
     message(std::move(other.message)) {
 }
@@ -60,14 +55,13 @@ Fiery& Fiery::operator=(FOLLY_MAYBE_UNUSED Fiery&& other) noexcept {
     this->message = std::move(other.message);
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Fiery::Fiery(apache::thrift::FragileConstructor, ::std::string message__arg) :
     message(std::move(message__arg)) {
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void Fiery::__clear() {
   // clear all fields
@@ -136,11 +130,8 @@ void TccStructTraits<::cpp2::Serious>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(const Serious&) = default;
 Serious& Serious::operator=(const Serious&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious() {
 }
 
@@ -148,11 +139,9 @@ Serious::Serious(std::string __message) : Serious() {
   sonnet = std::move(__message);
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 Serious::~Serious() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Serious::Serious(Serious&& other) noexcept  :
     sonnet(std::move(other.sonnet)),
     __isset(other.__isset) {
@@ -163,7 +152,6 @@ Serious& Serious::operator=(FOLLY_MAYBE_UNUSED Serious&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -171,14 +159,12 @@ Serious::Serious(apache::thrift::FragileConstructor, ::std::string sonnet__arg) 
     sonnet(std::move(sonnet__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void Serious::__clear() {
   // clear all fields
   this->sonnet = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Serious::operator==(const Serious& rhs) const {
@@ -205,9 +191,7 @@ bool Serious::operator<(const Serious& rhs) const {
 void swap(Serious& a, Serious& b) {
   using ::std::swap;
   swap(a.sonnet_ref().value_unchecked(), b.sonnet_ref().value_unchecked());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Serious::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -246,11 +230,8 @@ void TccStructTraits<::cpp2::ComplexFieldNames>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(const ComplexFieldNames&) = default;
 ComplexFieldNames& ComplexFieldNames::operator=(const ComplexFieldNames&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames() {
 }
 
@@ -258,11 +239,9 @@ ComplexFieldNames::ComplexFieldNames(std::string __message) : ComplexFieldNames(
   internal_error_message = std::move(__message);
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ComplexFieldNames::~ComplexFieldNames() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexFieldNames::ComplexFieldNames(ComplexFieldNames&& other) noexcept  :
     error_message(std::move(other.error_message)),
     internal_error_message(std::move(other.internal_error_message)),
@@ -275,7 +254,6 @@ ComplexFieldNames& ComplexFieldNames::operator=(FOLLY_MAYBE_UNUSED ComplexFieldN
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -285,15 +263,13 @@ ComplexFieldNames::ComplexFieldNames(apache::thrift::FragileConstructor, ::std::
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void ComplexFieldNames::__clear() {
   // clear all fields
   this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool ComplexFieldNames::operator==(const ComplexFieldNames& rhs) const {
@@ -327,9 +303,7 @@ void swap(ComplexFieldNames& a, ComplexFieldNames& b) {
   using ::std::swap;
   swap(a.error_message_ref().value(), b.error_message_ref().value());
   swap(a.internal_error_message_ref().value(), b.internal_error_message_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void ComplexFieldNames::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -368,11 +342,8 @@ void TccStructTraits<::cpp2::CustomFieldNames>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(const CustomFieldNames&) = default;
 CustomFieldNames& CustomFieldNames::operator=(const CustomFieldNames&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames() {
 }
 
@@ -380,11 +351,9 @@ CustomFieldNames::CustomFieldNames(std::string __message) : CustomFieldNames() {
   internal_error_message = std::move(__message);
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 CustomFieldNames::~CustomFieldNames() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 CustomFieldNames::CustomFieldNames(CustomFieldNames&& other) noexcept  :
     error_message(std::move(other.error_message)),
     internal_error_message(std::move(other.internal_error_message)),
@@ -397,7 +366,6 @@ CustomFieldNames& CustomFieldNames::operator=(FOLLY_MAYBE_UNUSED CustomFieldName
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -407,15 +375,13 @@ CustomFieldNames::CustomFieldNames(apache::thrift::FragileConstructor, ::std::st
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void CustomFieldNames::__clear() {
   // clear all fields
   this->error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->internal_error_message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool CustomFieldNames::operator==(const CustomFieldNames& rhs) const {
@@ -449,9 +415,7 @@ void swap(CustomFieldNames& a, CustomFieldNames& b) {
   using ::std::swap;
   swap(a.error_message_ref().value(), b.error_message_ref().value());
   swap(a.internal_error_message_ref().value(), b.internal_error_message_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void CustomFieldNames::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -490,11 +454,8 @@ void TccStructTraits<::cpp2::ExceptionWithPrimitiveField>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(const ExceptionWithPrimitiveField&) = default;
 ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(const ExceptionWithPrimitiveField&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField() :
       error_code() {
 }
@@ -503,11 +464,9 @@ ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(std::string __message) 
   message = std::move(__message);
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ExceptionWithPrimitiveField::~ExceptionWithPrimitiveField() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(ExceptionWithPrimitiveField&& other) noexcept  :
     message(std::move(other.message)),
     error_code(std::move(other.error_code)),
@@ -520,7 +479,6 @@ ExceptionWithPrimitiveField& ExceptionWithPrimitiveField::operator=(FOLLY_MAYBE_
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -530,15 +488,13 @@ ExceptionWithPrimitiveField::ExceptionWithPrimitiveField(apache::thrift::Fragile
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void ExceptionWithPrimitiveField::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->error_code = ::std::int32_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool ExceptionWithPrimitiveField::operator==(const ExceptionWithPrimitiveField& rhs) const {
@@ -572,9 +528,7 @@ void swap(ExceptionWithPrimitiveField& a, ExceptionWithPrimitiveField& b) {
   using ::std::swap;
   swap(a.message_ref().value(), b.message_ref().value());
   swap(a.error_code_ref().value(), b.error_code_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void ExceptionWithPrimitiveField::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -613,29 +567,23 @@ void TccStructTraits<::cpp2::Banal>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(const Banal&) = default;
 Banal& Banal::operator=(const Banal&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 Banal::~Banal() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(Banal&& other) noexcept { (void)other; }
 Banal& Banal::operator=(FOLLY_MAYBE_UNUSED Banal&& other) noexcept {
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Banal::Banal(apache::thrift::FragileConstructor) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void Banal::__clear() {
   // clear all fields

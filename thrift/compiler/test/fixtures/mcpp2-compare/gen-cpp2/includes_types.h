@@ -95,7 +95,6 @@ typedef ::std::int64_t IncludedInt64;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace a { namespace different { namespace ns {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
@@ -278,4 +277,3 @@ uint32_t AStructB::read(Protocol_* iprot) {
 }
 
 }}} // a::different::ns
-THRIFT_IGNORE_ISSET_USE_WARNING_END

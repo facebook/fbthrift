@@ -194,7 +194,6 @@ class Empty;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace apache { namespace thrift { namespace test {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
@@ -1682,4 +1681,3 @@ uint32_t Empty::read(Protocol_* iprot) {
 }
 
 }}} // apache::thrift::test
-THRIFT_IGNORE_ISSET_USE_WARNING_END

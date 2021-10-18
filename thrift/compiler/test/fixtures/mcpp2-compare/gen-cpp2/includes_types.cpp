@@ -74,14 +74,12 @@ AStruct::AStruct(apache::thrift::FragileConstructor, ::std::int32_t FieldA__arg)
     FieldA(std::move(FieldA__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void AStruct::__clear() {
   // clear all fields
   this->FieldA = ::std::int32_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool AStruct::operator==(const AStruct& rhs) const {
@@ -108,9 +106,7 @@ bool AStruct::operator<(const AStruct& rhs) const {
 void swap(AStruct& a, AStruct& b) {
   using ::std::swap;
   swap(a.FieldA_ref().value(), b.FieldA_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void AStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -153,11 +149,8 @@ void TccStructTraits<::a::different::ns::AStructB>::translateFieldName(
 
 namespace a { namespace different { namespace ns {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(const AStructB&) = default;
 AStructB& AStructB::operator=(const AStructB&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(AStructB&& other) noexcept  :
     FieldA(std::move(other.FieldA)) {
 }
@@ -166,14 +159,13 @@ AStructB& AStructB::operator=(FOLLY_MAYBE_UNUSED AStructB&& other) noexcept {
     this->FieldA = std::move(other.FieldA);
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AStructB::AStructB(apache::thrift::FragileConstructor, ::std::shared_ptr<const ::a::different::ns::AStruct> FieldA__arg) :
     FieldA(std::move(FieldA__arg)) {
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void AStructB::__clear() {
   // clear all fields

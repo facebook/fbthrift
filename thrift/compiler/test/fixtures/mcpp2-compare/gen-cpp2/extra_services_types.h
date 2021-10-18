@@ -98,7 +98,6 @@ class containerStruct2;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace extra { namespace svc {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
@@ -611,4 +610,3 @@ uint32_t containerStruct2::read(Protocol_* iprot) {
 }
 
 }} // extra::svc
-THRIFT_IGNORE_ISSET_USE_WARNING_END

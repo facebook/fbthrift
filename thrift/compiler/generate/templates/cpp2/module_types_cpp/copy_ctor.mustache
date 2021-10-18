@@ -36,9 +36,7 @@
         <%type:type_class%>>(srcObj.<%field:cpp_name%>);
 <%/field:transitively_refers_to_unique?%>
 <%^field:cpp_ref?%><%^field:required?%>
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<<%field:isset_index%>>(),srcObj.__isset.__fbthrift_get(folly::index_constant<<%field:isset_index%>>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 <%/field:required?%><%/field:cpp_ref?%>
 <%/field:type%><%/struct:fields%>
 <%#struct:fields%>

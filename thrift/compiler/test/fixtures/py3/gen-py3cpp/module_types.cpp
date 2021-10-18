@@ -101,20 +101,15 @@ void TccStructTraits<::py3::simple::SimpleException>::translateFieldName(
 
 namespace py3 { namespace simple {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException(const SimpleException&) = default;
 SimpleException& SimpleException::operator=(const SimpleException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException() :
       err_code() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 SimpleException::~SimpleException() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleException::SimpleException(SimpleException&& other) noexcept  :
     err_code(std::move(other.err_code)),
     __isset(other.__isset) {
@@ -125,7 +120,6 @@ SimpleException& SimpleException::operator=(FOLLY_MAYBE_UNUSED SimpleException&&
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -133,14 +127,12 @@ SimpleException::SimpleException(apache::thrift::FragileConstructor, ::std::int1
     err_code(std::move(err_code__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void SimpleException::__clear() {
   // clear all fields
   this->err_code = ::std::int16_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool SimpleException::operator==(const SimpleException& rhs) const {
@@ -167,9 +159,7 @@ bool SimpleException::operator<(const SimpleException& rhs) const {
 void swap(SimpleException& a, SimpleException& b) {
   using ::std::swap;
   swap(a.err_code_ref().value(), b.err_code_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void SimpleException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -211,9 +201,7 @@ namespace py3 { namespace simple {
 OptionalRefStruct::OptionalRefStruct(const OptionalRefStruct& srcObj) {
   optional_blob = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::binary>(srcObj.optional_blob);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 OptionalRefStruct& OptionalRefStruct::operator=(const OptionalRefStruct& src) {
@@ -222,7 +210,6 @@ OptionalRefStruct& OptionalRefStruct::operator=(const OptionalRefStruct& src) {
   return *this;
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 OptionalRefStruct::OptionalRefStruct(OptionalRefStruct&& other) noexcept  :
     optional_blob(std::move(other.optional_blob)),
     __isset(other.__isset) {
@@ -233,7 +220,6 @@ OptionalRefStruct& OptionalRefStruct::operator=(FOLLY_MAYBE_UNUSED OptionalRefSt
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -241,14 +227,12 @@ OptionalRefStruct::OptionalRefStruct(apache::thrift::FragileConstructor, ::py3::
     optional_blob(std::move(optional_blob__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void OptionalRefStruct::__clear() {
   // clear all fields
   this->optional_blob = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool OptionalRefStruct::operator==(const OptionalRefStruct& rhs) const {
@@ -275,9 +259,7 @@ bool OptionalRefStruct::operator<(const OptionalRefStruct& rhs) const {
 void swap(OptionalRefStruct& a, OptionalRefStruct& b) {
   using ::std::swap;
   swap(a.optional_blob_ref().value_unchecked(), b.optional_blob_ref().value_unchecked());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void OptionalRefStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -316,11 +298,8 @@ void TccStructTraits<::py3::simple::SimpleStruct>::translateFieldName(
 
 namespace py3 { namespace simple {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(const SimpleStruct&) = default;
 SimpleStruct& SimpleStruct::operator=(const SimpleStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 SimpleStruct::SimpleStruct(SimpleStruct&& other) noexcept  :
     is_on(std::move(other.is_on)),
     tiny_int(std::move(other.tiny_int)),
@@ -345,7 +324,6 @@ SimpleStruct& SimpleStruct::operator=(FOLLY_MAYBE_UNUSED SimpleStruct&& other) n
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -367,7 +345,7 @@ SimpleStruct::SimpleStruct(apache::thrift::FragileConstructor, bool is_on__arg, 
   __isset.__fbthrift_set(folly::index_constant<6>(), true);
   __isset.__fbthrift_set(folly::index_constant<7>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void SimpleStruct::__clear() {
   // clear all fields
@@ -379,9 +357,7 @@ void SimpleStruct::__clear() {
   this->real = double();
   this->smaller_real = float();
   this->hidden_field = ::std::int16_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool SimpleStruct::operator==(const SimpleStruct& rhs) const {
@@ -457,9 +433,7 @@ void swap(SimpleStruct& a, SimpleStruct& b) {
   swap(a.real_ref().value(), b.real_ref().value());
   swap(a.smaller_real_ref().value(), b.smaller_real_ref().value());
   swap(a.hidden_field_ref().value(), b.hidden_field_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void SimpleStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -498,21 +472,16 @@ void TccStructTraits<::py3::simple::ComplexStruct>::translateFieldName(
 
 namespace py3 { namespace simple {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexStruct::ComplexStruct(const ComplexStruct&) = default;
 ComplexStruct& ComplexStruct::operator=(const ComplexStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexStruct::ComplexStruct() :
       an_integer(),
       an_enum() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ComplexStruct::~ComplexStruct() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexStruct::ComplexStruct(ComplexStruct&& other) noexcept  :
     structOne(std::move(other.structOne)),
     structTwo(std::move(other.structTwo)),
@@ -539,7 +508,6 @@ ComplexStruct& ComplexStruct::operator=(FOLLY_MAYBE_UNUSED ComplexStruct&& other
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -563,7 +531,7 @@ ComplexStruct::ComplexStruct(apache::thrift::FragileConstructor, ::py3::simple::
   __isset.__fbthrift_set(folly::index_constant<7>(), true);
   __isset.__fbthrift_set(folly::index_constant<8>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void ComplexStruct::__clear() {
   // clear all fields
@@ -576,9 +544,7 @@ void ComplexStruct::__clear() {
   this->from = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->cdef = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->bytes_with_cpp_type = apache::thrift::StringTraits<foo::Bar>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool ComplexStruct::operator==(const ComplexStruct& rhs) const {
@@ -677,9 +643,7 @@ void swap(ComplexStruct& a, ComplexStruct& b) {
   swap(a.from_ref().value(), b.from_ref().value());
   swap(a.cdef_ref().value(), b.cdef_ref().value());
   swap(a.bytes_with_cpp_type_ref().value(), b.bytes_with_cpp_type_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void ComplexStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -821,11 +785,8 @@ void TccStructTraits<::py3::simple::BinaryUnionStruct>::translateFieldName(
 
 namespace py3 { namespace simple {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BinaryUnionStruct::BinaryUnionStruct(const BinaryUnionStruct&) = default;
 BinaryUnionStruct& BinaryUnionStruct::operator=(const BinaryUnionStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 BinaryUnionStruct::BinaryUnionStruct(BinaryUnionStruct&& other) noexcept  :
     u(std::move(other.u)),
     __isset(other.__isset) {
@@ -836,7 +797,6 @@ BinaryUnionStruct& BinaryUnionStruct::operator=(FOLLY_MAYBE_UNUSED BinaryUnionSt
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -844,14 +804,12 @@ BinaryUnionStruct::BinaryUnionStruct(apache::thrift::FragileConstructor, ::py3::
     u(std::move(u__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void BinaryUnionStruct::__clear() {
   // clear all fields
   this->u.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 
@@ -868,9 +826,7 @@ const ::py3::simple::BinaryUnion& BinaryUnionStruct::get_u() const& {
 void swap(BinaryUnionStruct& a, BinaryUnionStruct& b) {
   using ::std::swap;
   swap(a.u_ref().value(), b.u_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void BinaryUnionStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

@@ -539,11 +539,8 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structA>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structA::structA(const structA&) = default;
 structA& structA::operator=(const structA&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structA::structA(structA&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
@@ -556,7 +553,6 @@ structA& structA::operator=(FOLLY_MAYBE_UNUSED structA&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -566,15 +562,13 @@ structA::structA(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void structA::__clear() {
   // clear all fields
   this->a = ::std::int32_t();
   this->b = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structA::operator==(const structA& rhs) const {
@@ -608,9 +602,7 @@ void swap(structA& a, structA& b) {
   using ::std::swap;
   swap(a.a_ref().value(), b.a_ref().value());
   swap(a.b_ref().value(), b.b_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -800,15 +792,13 @@ structB::structB(apache::thrift::FragileConstructor, double c__arg, bool d__arg)
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void structB::__clear() {
   // clear all fields
   this->c = double();
   this->d = bool();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structB::operator==(const structB& rhs) const {
@@ -842,9 +832,7 @@ void swap(structB& a, structB& b) {
   using ::std::swap;
   swap(a.c_ref().value(), b.c_ref().value());
   swap(a.d_ref().value(), b.d_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -883,11 +871,8 @@ void TccStructTraits<::test_cpp2::cpp_reflection::structC>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC(const structC&) = default;
 structC& structC::operator=(const structC&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC() :
       a(),
       c(),
@@ -896,11 +881,9 @@ structC::structC() :
       f() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 structC::~structC() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 structC::structC(structC&& other) noexcept  :
     a(std::move(other.a)),
     b(std::move(other.b)),
@@ -969,7 +952,6 @@ structC& structC::operator=(FOLLY_MAYBE_UNUSED structC&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1035,7 +1017,7 @@ structC::structC(apache::thrift::FragileConstructor, ::std::int32_t a__arg, ::st
   __isset.__fbthrift_set(folly::index_constant<28>(), true);
   __isset.__fbthrift_set(folly::index_constant<29>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void structC::__clear() {
   // clear all fields
@@ -1069,9 +1051,7 @@ void structC::__clear() {
   this->o1.clear();
   this->o2.clear();
   this->o3.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool structC::operator==(const structC& rhs) const {
@@ -1493,9 +1473,7 @@ void swap(structC& a, structC& b) {
   swap(a.o1_ref().value(), b.o1_ref().value());
   swap(a.o2_ref().value(), b.o2_ref().value());
   swap(a.o3_ref().value(), b.o3_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void structC::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1666,22 +1644,17 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct1>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(const struct1&) = default;
 struct1& struct1::operator=(const struct1&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1() :
       field0(),
       field2(),
       field3() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct1::~struct1() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct1::struct1(struct1&& other) noexcept  :
     field0(std::move(other.field0)),
     field1(std::move(other.field1)),
@@ -1702,7 +1675,6 @@ struct1& struct1::operator=(FOLLY_MAYBE_UNUSED struct1&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1718,7 +1690,7 @@ struct1::struct1(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
   __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void struct1::__clear() {
   // clear all fields
@@ -1728,9 +1700,7 @@ void struct1::__clear() {
   this->field3 = ::test_cpp2::cpp_reflection::enum2();
   this->field4.__clear();
   this->field5.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct1::operator==(const struct1& rhs) const {
@@ -1808,9 +1778,7 @@ void swap(struct1& a, struct1& b) {
   swap(a.field3_ref().value(), b.field3_ref().value());
   swap(a.field4_ref().value_unchecked(), b.field4_ref().value_unchecked());
   swap(a.field5_ref().value(), b.field5_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct1::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1873,22 +1841,17 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct2>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(const struct2&) = default;
 struct2& struct2::operator=(const struct2&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2() :
       fieldA(),
       fieldC(),
       fieldD() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct2::~struct2() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct2::struct2(struct2&& other) noexcept  :
     fieldA(std::move(other.fieldA)),
     fieldB(std::move(other.fieldB)),
@@ -1911,7 +1874,6 @@ struct2& struct2::operator=(FOLLY_MAYBE_UNUSED struct2&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1931,7 +1893,7 @@ struct2::struct2(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg,
   __isset.__fbthrift_set(folly::index_constant<5>(), true);
   __isset.__fbthrift_set(folly::index_constant<6>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void struct2::__clear() {
   // clear all fields
@@ -1942,9 +1904,7 @@ void struct2::__clear() {
   this->fieldE.__clear();
   this->fieldF.__clear();
   this->fieldG.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct2::operator==(const struct2& rhs) const {
@@ -2037,9 +1997,7 @@ void swap(struct2& a, struct2& b) {
   swap(a.fieldE_ref().value(), b.fieldE_ref().value());
   swap(a.fieldF_ref().value(), b.fieldF_ref().value());
   swap(a.fieldG_ref().value(), b.fieldG_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2114,22 +2072,17 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct3>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(const struct3&) = default;
 struct3& struct3::operator=(const struct3&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3() :
       fieldA(),
       fieldC(),
       fieldD() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct3::~struct3() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct3::struct3(struct3&& other) noexcept  :
     fieldA(std::move(other.fieldA)),
     fieldB(std::move(other.fieldB)),
@@ -2174,7 +2127,6 @@ struct3& struct3::operator=(FOLLY_MAYBE_UNUSED struct3&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2216,7 +2168,7 @@ struct3::struct3(apache::thrift::FragileConstructor, ::std::int32_t fieldA__arg,
   __isset.__fbthrift_set(folly::index_constant<16>(), true);
   __isset.__fbthrift_set(folly::index_constant<17>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void struct3::__clear() {
   // clear all fields
@@ -2238,9 +2190,7 @@ void struct3::__clear() {
   this->fieldP.clear();
   this->fieldQ.clear();
   this->fieldR.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct3::operator==(const struct3& rhs) const {
@@ -2498,9 +2448,7 @@ void swap(struct3& a, struct3& b) {
   swap(a.fieldP_ref().value(), b.fieldP_ref().value());
   swap(a.fieldQ_ref().value(), b.fieldQ_ref().value());
   swap(a.fieldR_ref().value(), b.fieldR_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct3::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2638,13 +2586,9 @@ namespace test_cpp2 { namespace cpp_reflection {
 struct4::struct4(const struct4& srcObj) {
   field0 = srcObj.field0;
   field1 = srcObj.field1;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   field2 = srcObj.field2;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   field3 = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::structure>(srcObj.field3);
 }
@@ -2655,7 +2599,6 @@ struct4& struct4::operator=(const struct4& src) {
   return *this;
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct4::struct4(struct4&& other) noexcept  :
     field0(std::move(other.field0)),
     field1(std::move(other.field1)),
@@ -2672,7 +2615,6 @@ struct4& struct4::operator=(FOLLY_MAYBE_UNUSED struct4&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2684,7 +2626,7 @@ struct4::struct4(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void struct4::__clear() {
   // clear all fields
@@ -2692,9 +2634,7 @@ void struct4::__clear() {
   this->field1 = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->field2 = ::test_cpp2::cpp_reflection::enum1();
   if (this->field3) this->field3->__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct4::operator==(const struct4& rhs) const {
@@ -2742,9 +2682,7 @@ void swap(struct4& a, struct4& b) {
   swap(a.field1_ref().value_unchecked(), b.field1_ref().value_unchecked());
   swap(a.field2_ref().value(), b.field2_ref().value());
   swap(a.field3, b.field3);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct4::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2795,21 +2733,16 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct5>::translateFieldName(
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5(const struct5&) = default;
 struct5& struct5::operator=(const struct5&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5() :
       field0(),
       field2() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct5::~struct5() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct5::struct5(struct5&& other) noexcept  :
     field0(std::move(other.field0)),
     field1(std::move(other.field1)),
@@ -2828,7 +2761,6 @@ struct5& struct5::operator=(FOLLY_MAYBE_UNUSED struct5&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2843,7 +2775,7 @@ struct5::struct5(apache::thrift::FragileConstructor, ::std::int32_t field0__arg,
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
   __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void struct5::__clear() {
   // clear all fields
@@ -2852,9 +2784,7 @@ void struct5::__clear() {
   this->field2 = ::test_cpp2::cpp_reflection::enum1();
   this->field3.__clear();
   this->field4.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct5::operator==(const struct5& rhs) const {
@@ -2925,9 +2855,7 @@ void swap(struct5& a, struct5& b) {
   swap(a.field2_ref().value(), b.field2_ref().value());
   swap(a.field3_ref().value(), b.field3_ref().value());
   swap(a.field4_ref().value(), b.field4_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct5::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2990,11 +2918,8 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_binary>::translateField
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(const struct_binary&) = default;
 struct_binary& struct_binary::operator=(const struct_binary&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_binary::struct_binary(struct_binary&& other) noexcept  :
     bi(std::move(other.bi)),
     __isset(other.__isset) {
@@ -3005,7 +2930,6 @@ struct_binary& struct_binary::operator=(FOLLY_MAYBE_UNUSED struct_binary&& other
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -3013,14 +2937,12 @@ struct_binary::struct_binary(apache::thrift::FragileConstructor, ::std::string b
     bi(std::move(bi__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void struct_binary::__clear() {
   // clear all fields
   this->bi = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct_binary::operator==(const struct_binary& rhs) const {
@@ -3047,9 +2969,7 @@ bool struct_binary::operator<(const struct_binary& rhs) const {
 void swap(struct_binary& a, struct_binary& b) {
   using ::std::swap;
   swap(a.bi_ref().value(), b.bi_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct_binary::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3098,16 +3018,14 @@ dep_A_struct::dep_A_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void dep_A_struct::__clear() {
   // clear all fields
   this->b.__clear();
   this->c.__clear();
   this->i_a = ::std::int32_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool dep_A_struct::operator==(const dep_A_struct& rhs) const {
@@ -3164,9 +3082,7 @@ void swap(dep_A_struct& a, dep_A_struct& b) {
   swap(a.b_ref().value(), b.b_ref().value());
   swap(a.c_ref().value(), b.c_ref().value());
   swap(a.i_a_ref().value(), b.i_a_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void dep_A_struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3239,16 +3155,14 @@ dep_B_struct::dep_B_struct(apache::thrift::FragileConstructor, ::test_cpp2::cpp_
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void dep_B_struct::__clear() {
   // clear all fields
   this->b.__clear();
   this->c.__clear();
   this->i_a = ::std::int32_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool dep_B_struct::operator==(const dep_B_struct& rhs) const {
@@ -3305,9 +3219,7 @@ void swap(dep_B_struct& a, dep_B_struct& b) {
   swap(a.b_ref().value(), b.b_ref().value());
   swap(a.c_ref().value(), b.c_ref().value());
   swap(a.i_a_ref().value(), b.i_a_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void dep_B_struct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3376,14 +3288,12 @@ annotated::annotated(apache::thrift::FragileConstructor, ::std::int32_t a__arg) 
     a(std::move(a__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void annotated::__clear() {
   // clear all fields
   this->a = ::std::int32_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool annotated::operator==(const annotated& rhs) const {
@@ -3410,9 +3320,7 @@ bool annotated::operator<(const annotated& rhs) const {
 void swap(annotated& a, annotated& b) {
   using ::std::swap;
   swap(a.a_ref().value(), b.a_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void annotated::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3803,7 +3711,7 @@ struct_with_special_names::struct_with_special_names(apache::thrift::FragileCons
   __isset.__fbthrift_set(folly::index_constant<26>(), true);
   __isset.__fbthrift_set(folly::index_constant<27>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void struct_with_special_names::__clear() {
   // clear all fields
@@ -3835,9 +3743,7 @@ void struct_with_special_names::__clear() {
   this->members = ::std::int32_t();
   this->field = ::std::int32_t();
   this->fields = ::std::int32_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct_with_special_names::operator==(const struct_with_special_names& rhs) const {
@@ -4053,9 +3959,7 @@ void swap(struct_with_special_names& a, struct_with_special_names& b) {
   swap(a.members_ref().value(), b.members_ref().value());
   swap(a.field_ref().value(), b.field_ref().value());
   swap(a.fields_ref().value(), b.fields_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct_with_special_names::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -4094,11 +3998,8 @@ void TccStructTraits<::test_cpp2::cpp_reflection::struct_with_indirections>::tra
 
 namespace test_cpp2 { namespace cpp_reflection {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections(const struct_with_indirections&) = default;
 struct_with_indirections& struct_with_indirections::operator=(const struct_with_indirections&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections() :
       real(),
       fake(),
@@ -4106,11 +4007,9 @@ struct_with_indirections::struct_with_indirections() :
       result() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 struct_with_indirections::~struct_with_indirections() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 struct_with_indirections::struct_with_indirections(struct_with_indirections&& other) noexcept  :
     real(std::move(other.real)),
     fake(std::move(other.fake)),
@@ -4129,7 +4028,6 @@ struct_with_indirections& struct_with_indirections::operator=(FOLLY_MAYBE_UNUSED
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -4145,7 +4043,7 @@ struct_with_indirections::struct_with_indirections(apache::thrift::FragileConstr
   __isset.__fbthrift_set(folly::index_constant<3>(), true);
   __isset.__fbthrift_set(folly::index_constant<4>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void struct_with_indirections::__clear() {
   // clear all fields
@@ -4154,9 +4052,7 @@ void struct_with_indirections::__clear() {
   ::apache::thrift::apply_indirection(this->number) = 0;
   ::apache::thrift::apply_indirection(this->result) = 0;
   ::apache::thrift::apply_indirection(this->phrase) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, CppHasAPhrase const&>>>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool struct_with_indirections::operator==(const struct_with_indirections& rhs) const {
@@ -4211,9 +4107,7 @@ void swap(struct_with_indirections& a, struct_with_indirections& b) {
   swap(a.number_ref().value(), b.number_ref().value());
   swap(a.result_ref().value(), b.result_ref().value());
   swap(a.phrase_ref().value(), b.phrase_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void struct_with_indirections::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

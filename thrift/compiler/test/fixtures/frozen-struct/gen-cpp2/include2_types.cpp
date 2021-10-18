@@ -35,11 +35,8 @@ void TccStructTraits<::some::ns::IncludedB>::translateFieldName(
 
 namespace some { namespace ns {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IncludedB::IncludedB(const IncludedB&) = default;
 IncludedB& IncludedB::operator=(const IncludedB&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 IncludedB::IncludedB(IncludedB&& other) noexcept  :
     i32Field(std::move(other.i32Field)),
     strField(std::move(other.strField)),
@@ -52,7 +49,6 @@ IncludedB& IncludedB::operator=(FOLLY_MAYBE_UNUSED IncludedB&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -62,15 +58,13 @@ IncludedB::IncludedB(apache::thrift::FragileConstructor, ::std::int32_t i32Field
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void IncludedB::__clear() {
   // clear all fields
   this->i32Field = ::std::int32_t();
   this->strField = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool IncludedB::operator==(const IncludedB& rhs) const {
@@ -104,9 +98,7 @@ void swap(IncludedB& a, IncludedB& b) {
   using ::std::swap;
   swap(a.i32Field_ref().value(), b.i32Field_ref().value());
   swap(a.strField_ref().value(), b.strField_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void IncludedB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

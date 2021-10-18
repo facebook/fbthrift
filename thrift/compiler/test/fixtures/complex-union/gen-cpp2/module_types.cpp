@@ -396,11 +396,8 @@ void TccStructTraits<::cpp2::Val>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Val::Val(const Val&) = default;
 Val& Val::operator=(const Val&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Val::Val(Val&& other) noexcept  :
     strVal(std::move(other.strVal)),
     intVal(std::move(other.intVal)),
@@ -415,7 +412,6 @@ Val& Val::operator=(FOLLY_MAYBE_UNUSED Val&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -427,16 +423,14 @@ Val::Val(apache::thrift::FragileConstructor, ::std::string strVal__arg, ::std::i
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void Val::__clear() {
   // clear all fields
   this->strVal = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->intVal = ::std::int32_t();
   this->typedefValue.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Val::operator==(const Val& rhs) const {
@@ -485,9 +479,7 @@ void swap(Val& a, Val& b) {
   swap(a.strVal_ref().value(), b.strVal_ref().value());
   swap(a.intVal_ref().value(), b.intVal_ref().value());
   swap(a.typedefValue_ref().value(), b.typedefValue_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Val::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -776,14 +768,12 @@ NonCopyableStruct::NonCopyableStruct(apache::thrift::FragileConstructor, ::std::
     num(std::move(num__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void NonCopyableStruct::__clear() {
   // clear all fields
   this->num = ::std::int64_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool NonCopyableStruct::operator==(const NonCopyableStruct& rhs) const {
@@ -810,9 +800,7 @@ bool NonCopyableStruct::operator<(const NonCopyableStruct& rhs) const {
 void swap(NonCopyableStruct& a, NonCopyableStruct& b) {
   using ::std::swap;
   swap(a.num_ref().value(), b.num_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void NonCopyableStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

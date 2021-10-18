@@ -35,11 +35,8 @@ void TccStructTraits<::cpp2::MyStructMapFloatThrowExp>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(const MyStructMapFloatThrowExp&) = default;
 MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(const MyStructMapFloatThrowExp&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(MyStructMapFloatThrowExp&& other) noexcept  :
     myLongField(std::move(other.myLongField)),
     mapListOfFloats(std::move(other.mapListOfFloats)),
@@ -52,7 +49,6 @@ MyStructMapFloatThrowExp& MyStructMapFloatThrowExp::operator=(FOLLY_MAYBE_UNUSED
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -62,15 +58,13 @@ MyStructMapFloatThrowExp::MyStructMapFloatThrowExp(apache::thrift::FragileConstr
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void MyStructMapFloatThrowExp::__clear() {
   // clear all fields
   this->myLongField = ::std::int64_t();
   this->mapListOfFloats.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyStructMapFloatThrowExp::operator==(const MyStructMapFloatThrowExp& rhs) const {
@@ -112,9 +106,7 @@ void swap(MyStructMapFloatThrowExp& a, MyStructMapFloatThrowExp& b) {
   using ::std::swap;
   swap(a.myLongField_ref().value(), b.myLongField_ref().value());
   swap(a.mapListOfFloats_ref().value(), b.mapListOfFloats_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyStructMapFloatThrowExp::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -153,11 +145,8 @@ void TccStructTraits<::cpp2::defaultStruct>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 defaultStruct::defaultStruct(const defaultStruct&) = default;
 defaultStruct& defaultStruct::operator=(const defaultStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 defaultStruct::defaultStruct() :
       myLongDFset(static_cast<::std::int64_t>(10)),
       myLongDF(),
@@ -200,11 +189,9 @@ defaultStruct::defaultStruct() :
   {256,  ::cpp2::MyEnum::MyValue3}}}})) {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 defaultStruct::~defaultStruct() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 defaultStruct::defaultStruct(defaultStruct&& other) noexcept  :
     myLongDFset(std::move(other.myLongDFset)),
     myLongDF(std::move(other.myLongDF)),
@@ -257,7 +244,6 @@ defaultStruct& defaultStruct::operator=(FOLLY_MAYBE_UNUSED defaultStruct&& other
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -307,7 +293,7 @@ defaultStruct::defaultStruct(apache::thrift::FragileConstructor, ::std::int64_t 
   __isset.__fbthrift_set(folly::index_constant<20>(), true);
   __isset.__fbthrift_set(folly::index_constant<21>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void defaultStruct::__clear() {
   // clear all fields
@@ -333,9 +319,7 @@ void defaultStruct::__clear() {
   this->mapJavaTypeDFset.clear();
   this->emptyMap.clear();
   this->enumMapDFset.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool defaultStruct::operator==(const defaultStruct& rhs) const {
@@ -597,9 +581,7 @@ void swap(defaultStruct& a, defaultStruct& b) {
   swap(a.mapJavaTypeDFset_ref().value(), b.mapJavaTypeDFset_ref().value());
   swap(a.emptyMap_ref().value(), b.emptyMap_ref().value());
   swap(a.enumMapDFset_ref().value(), b.enumMapDFset_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void defaultStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -860,11 +842,8 @@ void TccStructTraits<::cpp2::TypeRemapped>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TypeRemapped::TypeRemapped(const TypeRemapped&) = default;
 TypeRemapped& TypeRemapped::operator=(const TypeRemapped&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 TypeRemapped::TypeRemapped(TypeRemapped&& other) noexcept  :
     lsMap(std::move(other.lsMap)),
     ioMap(std::move(other.ioMap)),
@@ -881,7 +860,6 @@ TypeRemapped& TypeRemapped::operator=(FOLLY_MAYBE_UNUSED TypeRemapped&& other) n
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -895,7 +873,7 @@ TypeRemapped::TypeRemapped(apache::thrift::FragileConstructor, ::std::map<::std:
   __isset.__fbthrift_set(folly::index_constant<2>(), true);
   __isset.__fbthrift_set(folly::index_constant<3>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void TypeRemapped::__clear() {
   // clear all fields
@@ -903,9 +881,7 @@ void TypeRemapped::__clear() {
   this->ioMap.clear();
   this->BigInteger = ::std::int32_t();
   this->binaryTestBuffer = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool TypeRemapped::operator==(const TypeRemapped& rhs) const {
@@ -969,9 +945,7 @@ void swap(TypeRemapped& a, TypeRemapped& b) {
   swap(a.ioMap_ref().value(), b.ioMap_ref().value());
   swap(a.BigInteger_ref().value(), b.BigInteger_ref().value());
   swap(a.binaryTestBuffer_ref().value(), b.binaryTestBuffer_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void TypeRemapped::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1010,20 +984,15 @@ void TccStructTraits<::cpp2::optXcep>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 optXcep::optXcep(const optXcep&) = default;
 optXcep& optXcep::operator=(const optXcep&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 optXcep::optXcep() :
       errorCode() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 optXcep::~optXcep() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 optXcep::optXcep(optXcep&& other) noexcept  :
     message(std::move(other.message)),
     errorCode(std::move(other.errorCode)),
@@ -1036,7 +1005,6 @@ optXcep& optXcep::operator=(FOLLY_MAYBE_UNUSED optXcep&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1046,15 +1014,13 @@ optXcep::optXcep(apache::thrift::FragileConstructor, ::std::string message__arg,
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void optXcep::__clear() {
   // clear all fields
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
   this->errorCode = ::std::int32_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool optXcep::operator==(const optXcep& rhs) const {
@@ -1088,9 +1054,7 @@ void swap(optXcep& a, optXcep& b) {
   using ::std::swap;
   swap(a.message_ref().value_unchecked(), b.message_ref().value_unchecked());
   swap(a.errorCode_ref().value_unchecked(), b.errorCode_ref().value_unchecked());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void optXcep::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

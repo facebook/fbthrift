@@ -35,11 +35,8 @@ void TccStructTraits<::extra::svc::containerStruct2>::translateFieldName(
 
 namespace extra { namespace svc {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct2::containerStruct2(const containerStruct2&) = default;
 containerStruct2& containerStruct2::operator=(const containerStruct2&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct2::containerStruct2() :
       fieldA(),
       req_fieldA(),
@@ -61,11 +58,9 @@ containerStruct2::containerStruct2() :
       opt_fieldE(apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring")) {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 containerStruct2::~containerStruct2() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct2::containerStruct2(containerStruct2&& other) noexcept  :
     fieldA(std::move(other.fieldA)),
     req_fieldA(std::move(other.req_fieldA)),
@@ -100,7 +95,6 @@ containerStruct2& containerStruct2::operator=(FOLLY_MAYBE_UNUSED containerStruct
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -128,7 +122,7 @@ containerStruct2::containerStruct2(apache::thrift::FragileConstructor, bool fiel
   __isset.__fbthrift_set(folly::index_constant<7>(), true);
   __isset.__fbthrift_set(folly::index_constant<8>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void containerStruct2::__clear() {
   // clear all fields
@@ -145,9 +139,7 @@ void containerStruct2::__clear() {
   this->fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
   this->req_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
   this->opt_fieldE = apache::thrift::StringTraits<std::string>::fromStringLiteral("somestring");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool containerStruct2::operator==(const containerStruct2& rhs) const {
@@ -306,9 +298,7 @@ void swap(containerStruct2& a, containerStruct2& b) {
   swap(a.fieldE_ref().value(), b.fieldE_ref().value());
   swap(a.req_fieldE_ref().value(), b.req_fieldE_ref().value());
   swap(a.opt_fieldE_ref().value_unchecked(), b.opt_fieldE_ref().value_unchecked());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void containerStruct2::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

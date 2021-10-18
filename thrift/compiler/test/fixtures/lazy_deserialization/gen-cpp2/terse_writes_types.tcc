@@ -59,7 +59,6 @@ void TerseFoo::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -135,7 +134,6 @@ _readField_field4:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);
@@ -197,7 +195,6 @@ _skip:
 
 template <class Protocol_>
 uint32_t TerseFoo::serializedSize(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseFoo");
   if (!this->field1.empty()) {
@@ -218,12 +215,10 @@ uint32_t TerseFoo::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t TerseFoo::serializedSizeZC(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseFoo");
   if (!this->field1.empty()) {
@@ -244,12 +239,10 @@ uint32_t TerseFoo::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t TerseFoo::write(Protocol_* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("TerseFoo");
   bool previousFieldHasValue = true;
@@ -292,7 +285,6 @@ uint32_t TerseFoo::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void TerseFoo::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -321,7 +313,6 @@ void TerseLazyFoo::readNoXfer(Protocol_* iprot) {
     __fbthrift_protocol_ = iprot->protocolType();
   }
 
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -419,7 +410,6 @@ _readField_field4:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);
@@ -503,7 +493,6 @@ void TerseLazyFoo::__fbthrift_read_field_field4_impl() const {
 
 template <class Protocol_>
 uint32_t TerseLazyFoo::serializedSize(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseLazyFoo");
   if (!this->field1.empty()) {
@@ -526,12 +515,10 @@ uint32_t TerseLazyFoo::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t TerseLazyFoo::serializedSizeZC(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseLazyFoo");
   if (!this->field1.empty()) {
@@ -554,12 +541,10 @@ uint32_t TerseLazyFoo::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t TerseLazyFoo::write(Protocol_* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("TerseLazyFoo");
   ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, true);
@@ -626,7 +611,6 @@ uint32_t TerseLazyFoo::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void TerseLazyFoo::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -650,7 +634,6 @@ void TerseOptionalFoo::readNoXfer(Protocol_* iprot) {
   using apache::thrift::TProtocolException;
 
 
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -726,7 +709,6 @@ _readField_field4:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);
@@ -788,7 +770,6 @@ _skip:
 
 template <class Protocol_>
 uint32_t TerseOptionalFoo::serializedSize(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseOptionalFoo");
   if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
@@ -809,12 +790,10 @@ uint32_t TerseOptionalFoo::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t TerseOptionalFoo::serializedSizeZC(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseOptionalFoo");
   if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
@@ -835,12 +814,10 @@ uint32_t TerseOptionalFoo::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t TerseOptionalFoo::write(Protocol_* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("TerseOptionalFoo");
   bool previousFieldHasValue = true;
@@ -883,7 +860,6 @@ uint32_t TerseOptionalFoo::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void TerseOptionalFoo::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -912,7 +888,6 @@ void TerseOptionalLazyFoo::readNoXfer(Protocol_* iprot) {
     __fbthrift_protocol_ = iprot->protocolType();
   }
 
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   if (UNLIKELY(!_readState.advanceToNextField(
           iprot,
           0,
@@ -1010,7 +985,6 @@ _readField_field4:
           apache::thrift::protocol::T_STOP))) {
     goto _loop;
   }
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 _end:
   _readState.readStructEnd(iprot);
@@ -1094,7 +1068,6 @@ void TerseOptionalLazyFoo::__fbthrift_read_field_field4_impl() const {
 
 template <class Protocol_>
 uint32_t TerseOptionalLazyFoo::serializedSize(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseOptionalLazyFoo");
   if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
@@ -1115,12 +1088,10 @@ uint32_t TerseOptionalLazyFoo::serializedSize(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t TerseOptionalLazyFoo::serializedSizeZC(Protocol_ const* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->serializedStructSize("TerseOptionalLazyFoo");
   if (this->__isset.__fbthrift_get(folly::index_constant<0>())) {
@@ -1141,12 +1112,10 @@ uint32_t TerseOptionalLazyFoo::serializedSizeZC(Protocol_ const* prot_) const {
   }
   xfer += prot_->serializedSizeStop();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template <class Protocol_>
 uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
-  THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   uint32_t xfer = 0;
   xfer += prot_->writeStructBegin("TerseOptionalLazyFoo");
   ::apache::thrift::detail::IndexWriter<Protocol_> indexWriter(prot_, xfer, true);
@@ -1211,7 +1180,6 @@ uint32_t TerseOptionalLazyFoo::write(Protocol_* prot_) const {
   xfer += prot_->writeFieldStop();
   xfer += prot_->writeStructEnd();
   return xfer;
-  THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 extern template void TerseOptionalLazyFoo::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

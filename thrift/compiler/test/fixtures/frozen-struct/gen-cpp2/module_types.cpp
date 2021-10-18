@@ -68,20 +68,15 @@ void TccStructTraits<::some::ns::ModuleA>::translateFieldName(
 
 namespace some { namespace ns {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleA::ModuleA(const ModuleA&) = default;
 ModuleA& ModuleA::operator=(const ModuleA&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleA::ModuleA() :
       i32Field() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 ModuleA::~ModuleA() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ModuleA::ModuleA(ModuleA&& other) noexcept  :
     i32Field(std::move(other.i32Field)),
     strField(std::move(other.strField)),
@@ -102,7 +97,6 @@ ModuleA& ModuleA::operator=(FOLLY_MAYBE_UNUSED ModuleA&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -120,7 +114,7 @@ ModuleA::ModuleA(apache::thrift::FragileConstructor, ::std::int32_t i32Field__ar
   __isset.__fbthrift_set(folly::index_constant<4>(), true);
   __isset.__fbthrift_set(folly::index_constant<5>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void ModuleA::__clear() {
   // clear all fields
@@ -130,9 +124,7 @@ void ModuleA::__clear() {
   this->mapField.clear();
   this->inclAField.__clear();
   this->inclBField.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool ModuleA::operator==(const ModuleA& rhs) const {
@@ -226,9 +218,7 @@ void swap(ModuleA& a, ModuleA& b) {
   swap(a.mapField_ref().value(), b.mapField_ref().value());
   swap(a.inclAField_ref().value(), b.inclAField_ref().value());
   swap(a.inclBField_ref().value(), b.inclBField_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void ModuleA::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -299,15 +289,13 @@ ModuleB::ModuleB(apache::thrift::FragileConstructor, ::std::int32_t i32Field__ar
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void ModuleB::__clear() {
   // clear all fields
   this->i32Field = ::std::int32_t();
   this->inclEnumB = ::some::ns::EnumB();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool ModuleB::operator==(const ModuleB& rhs) const {
@@ -341,9 +329,7 @@ void swap(ModuleB& a, ModuleB& b) {
   using ::std::swap;
   swap(a.i32Field_ref().value(), b.i32Field_ref().value());
   swap(a.inclEnumB_ref().value(), b.inclEnumB_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void ModuleB::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

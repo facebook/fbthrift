@@ -1102,7 +1102,6 @@ template<> struct equal_to<typename ::some::valid::ns::AnnotatedStruct> {
 };
 } // std
 // END hash_and_equal_to
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace some { namespace valid { namespace ns {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
@@ -8415,7 +8414,6 @@ uint32_t AllRequiredNoExceptMoveCtrStruct::read(Protocol_* iprot) {
 }
 
 }}} // some::valid::ns
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

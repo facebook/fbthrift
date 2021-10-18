@@ -1035,7 +1035,6 @@ typedef CppHasAPhrase HasAPhrase;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace test_cpp2 { namespace cpp_reflection {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
@@ -9307,7 +9306,6 @@ uint32_t struct_with_indirections::read(Protocol_* iprot) {
 }
 
 }} // test_cpp2::cpp_reflection
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

@@ -233,7 +233,6 @@ typedef foo::Bar foo_bar;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace py3 { namespace simple {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
@@ -1457,7 +1456,6 @@ uint32_t BinaryUnionStruct::read(Protocol_* iprot) {
 }
 
 }} // py3::simple
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

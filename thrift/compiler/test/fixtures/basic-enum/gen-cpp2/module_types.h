@@ -170,7 +170,6 @@ class MyStruct;
 // END typedefs
 // BEGIN hash_and_equal_to
 // END hash_and_equal_to
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace test { namespace fixtures { namespace enumstrict {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
@@ -309,4 +308,3 @@ uint32_t MyStruct::read(Protocol_* iprot) {
 }
 
 }}} // test::fixtures::enumstrict
-THRIFT_IGNORE_ISSET_USE_WARNING_END

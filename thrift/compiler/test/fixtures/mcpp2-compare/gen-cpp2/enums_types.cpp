@@ -206,14 +206,12 @@ SomeStruct::SomeStruct(apache::thrift::FragileConstructor, ::std::int32_t fieldA
     fieldA(std::move(fieldA__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void SomeStruct::__clear() {
   // clear all fields
   this->fieldA = ::std::int32_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool SomeStruct::operator==(const SomeStruct& rhs) const {
@@ -240,9 +238,7 @@ bool SomeStruct::operator<(const SomeStruct& rhs) const {
 void swap(SomeStruct& a, SomeStruct& b) {
   using ::std::swap;
   swap(a.fieldA_ref().value(), b.fieldA_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void SomeStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

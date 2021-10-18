@@ -35,11 +35,8 @@ void TccStructTraits<::cpp2::MyStruct>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
       MyIntField(),
       myEnum(),
@@ -50,11 +47,9 @@ MyStruct::MyStruct() :
       MyDoubleField() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyStruct::~MyStruct() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
     MyIntField(std::move(other.MyIntField)),
     MyStringField(std::move(other.MyStringField)),
@@ -119,7 +114,6 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -181,7 +175,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
   __isset.__fbthrift_set(folly::index_constant<26>(), true);
   __isset.__fbthrift_set(folly::index_constant<27>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void MyStruct::__clear() {
   // clear all fields
@@ -212,9 +206,7 @@ void MyStruct::__clear() {
   this->sString.clear();
   this->sByte.clear();
   this->mListList.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -590,9 +582,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.sString_ref().value(), b.sString_ref().value());
   swap(a.sByte_ref().value(), b.sByte_ref().value());
   swap(a.mListList_ref().value(), b.mListList_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -643,21 +633,16 @@ void TccStructTraits<::cpp2::MyStructTypeDef>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructTypeDef::MyStructTypeDef(const MyStructTypeDef&) = default;
 MyStructTypeDef& MyStructTypeDef::operator=(const MyStructTypeDef&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructTypeDef::MyStructTypeDef() :
       myLongField(),
       myLongTypeDef() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyStructTypeDef::~MyStructTypeDef() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStructTypeDef::MyStructTypeDef(MyStructTypeDef&& other) noexcept  :
     myLongField(std::move(other.myLongField)),
     myLongTypeDef(std::move(other.myLongTypeDef)),
@@ -684,7 +669,6 @@ MyStructTypeDef& MyStructTypeDef::operator=(FOLLY_MAYBE_UNUSED MyStructTypeDef&&
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -708,7 +692,7 @@ MyStructTypeDef::MyStructTypeDef(apache::thrift::FragileConstructor, ::std::int6
   __isset.__fbthrift_set(folly::index_constant<7>(), true);
   __isset.__fbthrift_set(folly::index_constant<8>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void MyStructTypeDef::__clear() {
   // clear all fields
@@ -721,9 +705,7 @@ void MyStructTypeDef::__clear() {
   this->myListField.clear();
   this->myListTypedef.clear();
   this->myMapListOfTypeDef.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyStructTypeDef::operator==(const MyStructTypeDef& rhs) const {
@@ -846,9 +828,7 @@ void swap(MyStructTypeDef& a, MyStructTypeDef& b) {
   swap(a.myListField_ref().value(), b.myListField_ref().value());
   swap(a.myListTypedef_ref().value(), b.myListTypedef_ref().value());
   swap(a.myMapListOfTypeDef_ref().value(), b.myMapListOfTypeDef_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyStructTypeDef::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1035,29 +1015,23 @@ void TccStructTraits<::cpp2::emptyXcep>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 emptyXcep::emptyXcep(const emptyXcep&) = default;
 emptyXcep& emptyXcep::operator=(const emptyXcep&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 emptyXcep::emptyXcep() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 emptyXcep::~emptyXcep() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 emptyXcep::emptyXcep(emptyXcep&& other) noexcept { (void)other; }
 emptyXcep& emptyXcep::operator=(FOLLY_MAYBE_UNUSED emptyXcep&& other) noexcept {
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 emptyXcep::emptyXcep(apache::thrift::FragileConstructor) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void emptyXcep::__clear() {
   // clear all fields
@@ -1120,20 +1094,15 @@ void TccStructTraits<::cpp2::complexException>::translateFieldName(
 
 namespace cpp2 {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 complexException::complexException(const complexException&) = default;
 complexException& complexException::operator=(const complexException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 complexException::complexException() :
       errorEnum() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 complexException::~complexException() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 complexException::complexException(complexException&& other) noexcept  :
     message(std::move(other.message)),
     listStrings(std::move(other.listStrings)),
@@ -1154,7 +1123,6 @@ complexException& complexException::operator=(FOLLY_MAYBE_UNUSED complexExceptio
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1172,7 +1140,7 @@ complexException::complexException(apache::thrift::FragileConstructor, ::std::st
   __isset.__fbthrift_set(folly::index_constant<4>(), true);
   __isset.__fbthrift_set(folly::index_constant<5>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void complexException::__clear() {
   // clear all fields
@@ -1182,9 +1150,7 @@ void complexException::__clear() {
   this->unionError.__clear();
   this->structError.__clear();
   this->lsMap.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool complexException::operator==(const complexException& rhs) const {
@@ -1278,9 +1244,7 @@ void swap(complexException& a, complexException& b) {
   swap(a.unionError_ref().value_unchecked(), b.unionError_ref().value_unchecked());
   swap(a.structError_ref().value(), b.structError_ref().value());
   swap(a.lsMap_ref().value(), b.lsMap_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void complexException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

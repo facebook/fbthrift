@@ -548,7 +548,6 @@ template<> struct equal_to<typename ::apache::thrift::fixtures::types::decorated
 };
 } // std
 // END hash_and_equal_to
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 namespace apache { namespace thrift { namespace fixtures { namespace types {
 using ::apache::thrift::detail::operator!=;
 using ::apache::thrift::detail::operator>;
@@ -4310,7 +4309,6 @@ uint32_t StructWithDoubleUnderscores::read(Protocol_* iprot) {
 }
 
 }}}} // apache::thrift::fixtures::types
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 namespace apache { namespace thrift {
 

@@ -43,15 +43,13 @@ Included::Included(apache::thrift::FragileConstructor, ::std::int64_t MyIntField
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void Included::__clear() {
   // clear all fields
   this->MyIntField = static_cast<::std::int64_t>(0);
   this->MyTransitiveField.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool Included::operator==(const Included& rhs) const {
@@ -93,9 +91,7 @@ void swap(Included& a, Included& b) {
   using ::std::swap;
   swap(a.MyIntField_ref().value(), b.MyIntField_ref().value());
   swap(a.MyTransitiveField_ref().value(), b.MyTransitiveField_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void Included::readNoXfer<>(apache::thrift::BinaryProtocolReader*);

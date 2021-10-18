@@ -170,7 +170,7 @@ namespace some { namespace valid { namespace ns {
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 Empty::Empty(apache::thrift::FragileConstructor) {}
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void Empty::__clear() {
   // clear all fields
@@ -243,14 +243,12 @@ ASimpleStruct::ASimpleStruct(apache::thrift::FragileConstructor, ::std::int64_t 
     boolField(std::move(boolField__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void ASimpleStruct::__clear() {
   // clear all fields
   this->boolField = ::std::int64_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool ASimpleStruct::operator==(const ASimpleStruct& rhs) const {
@@ -267,9 +265,7 @@ bool ASimpleStruct::operator==(const ASimpleStruct& rhs) const {
 void swap(ASimpleStruct& a, ASimpleStruct& b) {
   using ::std::swap;
   swap(a.boolField_ref().value(), b.boolField_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void ASimpleStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -318,14 +314,12 @@ ASimpleStructNoexcept::ASimpleStructNoexcept(apache::thrift::FragileConstructor,
     boolField(std::move(boolField__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void ASimpleStructNoexcept::__clear() {
   // clear all fields
   this->boolField = ::std::int64_t();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool ASimpleStructNoexcept::operator==(const ASimpleStructNoexcept& rhs) const {
@@ -352,9 +346,7 @@ bool ASimpleStructNoexcept::operator<(const ASimpleStructNoexcept& rhs) const {
 void swap(ASimpleStructNoexcept& a, ASimpleStructNoexcept& b) {
   using ::std::swap;
   swap(a.boolField_ref().value(), b.boolField_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void ASimpleStructNoexcept::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -399,46 +391,26 @@ namespace some { namespace valid { namespace ns {
 
 MyStruct::MyStruct(const MyStruct& srcObj) {
   MyBoolField = srcObj.MyBoolField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyIntField = srcObj.MyIntField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyStringField = srcObj.MyStringField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyStringField2 = srcObj.MyStringField2;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyBinaryField = srcObj.MyBinaryField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyBinaryField2 = srcObj.MyBinaryField2;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<5>(),srcObj.__isset.__fbthrift_get(folly::index_constant<5>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyBinaryField3 = srcObj.MyBinaryField3;
   MyBinaryListField4 = srcObj.MyBinaryListField4;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<6>(),srcObj.__isset.__fbthrift_get(folly::index_constant<6>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyMapEnumAndInt = srcObj.MyMapEnumAndInt;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<7>(),srcObj.__isset.__fbthrift_get(folly::index_constant<7>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyCustomField = srcObj.MyCustomField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<8>(),srcObj.__isset.__fbthrift_get(folly::index_constant<8>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyOptCustomField = srcObj.MyOptCustomField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<9>(),srcObj.__isset.__fbthrift_get(folly::index_constant<9>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 10>(MyCustomField, *this);
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 11>(MyOptCustomField, *this);
 }
@@ -449,7 +421,6 @@ MyStruct& MyStruct::operator=(const MyStruct& src) {
   return *this;
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct() :
       MyBoolField(),
       MyIntField(static_cast<::std::int64_t>(12)),
@@ -459,11 +430,9 @@ MyStruct::MyStruct() :
   {static_cast< ::some::valid::ns::MyEnumA>(9), apache::thrift::StringTraits<std::string>::fromStringLiteral("nothing")}})) {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyStruct::~MyStruct() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
     MyBoolField(std::move(other.MyBoolField)),
     MyIntField(std::move(other.MyIntField)),
@@ -496,7 +465,6 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -525,7 +493,7 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, bool MyBoolField__arg, ::
   __isset.__fbthrift_set(folly::index_constant<8>(), true);
   __isset.__fbthrift_set(folly::index_constant<9>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void MyStruct::__clear() {
   // clear all fields
@@ -540,9 +508,7 @@ void MyStruct::__clear() {
   this->MyMapEnumAndInt.clear();
   this->MyCustomField = {};
   this->MyOptCustomField = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -655,9 +621,7 @@ void swap(MyStruct& a, MyStruct& b) {
   swap(a.MyMapEnumAndInt_ref().value(), b.MyMapEnumAndInt_ref().value());
   swap(a.MyCustomField_ref().value(), b.MyCustomField_ref().value());
   swap(a.MyOptCustomField_ref().value_unchecked(), b.MyOptCustomField_ref().value_unchecked());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1242,64 +1206,36 @@ namespace some { namespace valid { namespace ns {
 
 AnException::AnException(const AnException& srcObj) {
   code = srcObj.code;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   req_code = srcObj.req_code;
   message2 = srcObj.message2;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   req_message = srcObj.req_message;
   exception_list = srcObj.exception_list;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<2>(),srcObj.__isset.__fbthrift_get(folly::index_constant<2>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   exception_set = srcObj.exception_set;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<3>(),srcObj.__isset.__fbthrift_get(folly::index_constant<3>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   exception_map = srcObj.exception_map;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<4>(),srcObj.__isset.__fbthrift_get(folly::index_constant<4>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   req_exception_map = srcObj.req_exception_map;
   enum_field = srcObj.enum_field;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<5>(),srcObj.__isset.__fbthrift_get(folly::index_constant<5>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   enum_container = srcObj.enum_container;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<6>(),srcObj.__isset.__fbthrift_get(folly::index_constant<6>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   a_struct = srcObj.a_struct;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<7>(),srcObj.__isset.__fbthrift_get(folly::index_constant<7>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   a_set_struct = srcObj.a_set_struct;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<8>(),srcObj.__isset.__fbthrift_get(folly::index_constant<8>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   a_union_list = srcObj.a_union_list;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<9>(),srcObj.__isset.__fbthrift_get(folly::index_constant<9>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   union_typedef = srcObj.union_typedef;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<10>(),srcObj.__isset.__fbthrift_get(folly::index_constant<10>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   a_union_typedef_list = srcObj.a_union_typedef_list;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<11>(),srcObj.__isset.__fbthrift_get(folly::index_constant<11>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyCustomField = srcObj.MyCustomField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<12>(),srcObj.__isset.__fbthrift_get(folly::index_constant<12>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyOptCustomField = srcObj.MyOptCustomField;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<13>(),srcObj.__isset.__fbthrift_get(folly::index_constant<13>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 20>(MyCustomField, *this);
   ::apache::thrift::adapt_detail::construct<CustomProtocolAdapter, 21>(MyOptCustomField, *this);
 }
@@ -1310,7 +1246,6 @@ AnException& AnException::operator=(const AnException& src) {
   return *this;
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnException::AnException() :
       code(),
       req_code(),
@@ -1324,11 +1259,9 @@ AnException::AnException(std::string __message) : AnException() {
   message2 = std::move(__message);
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 AnException::~AnException() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnException::AnException(AnException&& other) noexcept  :
     code(std::move(other.code)),
     req_code(std::move(other.req_code)),
@@ -1373,7 +1306,6 @@ AnException& AnException::operator=(FOLLY_MAYBE_UNUSED AnException&& other) noex
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1412,7 +1344,7 @@ AnException::AnException(apache::thrift::FragileConstructor, ::std::int32_t code
   __isset.__fbthrift_set(folly::index_constant<12>(), true);
   __isset.__fbthrift_set(folly::index_constant<13>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void AnException::__clear() {
   // clear all fields
@@ -1433,9 +1365,7 @@ void AnException::__clear() {
   this->a_union_typedef_list.clear();
   this->MyCustomField = {};
   this->MyOptCustomField = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool AnException::operator==(const AnException& rhs) const {
@@ -1654,9 +1584,7 @@ void swap(AnException& a, AnException& b) {
   swap(a.a_union_typedef_list_ref().value(), b.a_union_typedef_list_ref().value());
   swap(a.MyCustomField_ref().value(), b.MyCustomField_ref().value());
   swap(a.MyOptCustomField_ref().value_unchecked(), b.MyOptCustomField_ref().value_unchecked());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void AnException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1747,21 +1675,16 @@ void TccStructTraits<::some::valid::ns::AnotherException>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnotherException::AnotherException(const AnotherException&) = default;
 AnotherException& AnotherException::operator=(const AnotherException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnotherException::AnotherException() :
       code(),
       req_code() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 AnotherException::~AnotherException() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnotherException::AnotherException(AnotherException&& other) noexcept  :
     code(std::move(other.code)),
     req_code(std::move(other.req_code)),
@@ -1776,7 +1699,6 @@ AnotherException& AnotherException::operator=(FOLLY_MAYBE_UNUSED AnotherExceptio
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -1787,16 +1709,14 @@ AnotherException::AnotherException(apache::thrift::FragileConstructor, ::std::in
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void AnotherException::__clear() {
   // clear all fields
   this->code = ::std::int32_t();
   this->req_code = ::std::int32_t();
   this->message = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool AnotherException::operator==(const AnotherException& rhs) const {
@@ -1837,9 +1757,7 @@ void swap(AnotherException& a, AnotherException& b) {
   swap(a.code_ref().value(), b.code_ref().value());
   swap(a.req_code_ref().value(), b.req_code_ref().value());
   swap(a.message_ref().value(), b.message_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void AnotherException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -1882,7 +1800,6 @@ void TccStructTraits<::some::valid::ns::containerStruct>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 containerStruct::containerStruct() :
       fieldA(),
       req_fieldA(),
@@ -1934,7 +1851,6 @@ containerStruct::containerStruct() :
       fieldAD() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 containerStruct::~containerStruct() {}
 
@@ -2027,7 +1943,7 @@ containerStruct::containerStruct(apache::thrift::FragileConstructor, bool fieldA
   __isset.__fbthrift_set(folly::index_constant<37>(), true);
   __isset.__fbthrift_set(folly::index_constant<38>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void containerStruct::__clear() {
   // clear all fields
@@ -2077,9 +1993,7 @@ void containerStruct::__clear() {
   this->fieldAD = ::a::different::ns::AnEnum();
   this->fieldAE.clear();
   ::apache::thrift::apply_indirection(this->fieldSD) = apache::thrift::StringTraits<::folly::remove_cvref_t<::folly::invoke_result_t<::apache::thrift::detail::apply_indirection_fn, FooBar const&>>>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool containerStruct::operator==(const containerStruct& rhs) const {
@@ -2653,9 +2567,7 @@ void swap(containerStruct& a, containerStruct& b) {
   swap(a.fieldAD_ref().value(), b.fieldAD_ref().value());
   swap(a.fieldAE_ref().value(), b.fieldAE_ref().value());
   swap(a.fieldSD_ref().value(), b.fieldSD_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void containerStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -2820,13 +2732,9 @@ namespace some { namespace valid { namespace ns {
 
 MyIncludedStruct::MyIncludedStruct(const MyIncludedStruct& srcObj) {
   MyIncludedInt = srcObj.MyIncludedInt;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   MyIncludedStruct = srcObj.MyIncludedStruct;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   ARefField = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::structure>(srcObj.ARefField);
   ARequiredField = srcObj.ARequiredField;
@@ -2838,7 +2746,6 @@ MyIncludedStruct& MyIncludedStruct::operator=(const MyIncludedStruct& src) {
   return *this;
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyIncludedStruct::MyIncludedStruct(MyIncludedStruct&& other) noexcept  :
     MyIncludedInt(std::move(other.MyIncludedInt)),
     MyIncludedStruct(std::move(other.MyIncludedStruct)),
@@ -2855,7 +2762,6 @@ MyIncludedStruct& MyIncludedStruct::operator=(FOLLY_MAYBE_UNUSED MyIncludedStruc
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -2867,7 +2773,7 @@ MyIncludedStruct::MyIncludedStruct(apache::thrift::FragileConstructor, ::a::diff
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void MyIncludedStruct::__clear() {
   // clear all fields
@@ -2875,9 +2781,7 @@ void MyIncludedStruct::__clear() {
   this->MyIncludedStruct.__clear();
   if (this->ARefField) this->ARefField->__clear();
   this->ARequiredField.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyIncludedStruct::operator==(const MyIncludedStruct& rhs) const {
@@ -2941,9 +2845,7 @@ void swap(MyIncludedStruct& a, MyIncludedStruct& b) {
   swap(a.MyIncludedStruct_ref().value(), b.MyIncludedStruct_ref().value());
   swap(a.ARefField, b.ARefField);
   swap(a.ARequiredField_ref().value(), b.ARequiredField_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyIncludedStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3022,7 +2924,6 @@ void TccStructTraits<::some::valid::ns::AnnotatedStruct>::translateFieldName(
 
 namespace some { namespace valid { namespace ns {
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AnnotatedStruct::AnnotatedStruct() :
       cpp_unique_ref(std::make_unique<::some::valid::ns::containerStruct>()),
       cpp2_unique_ref(std::make_unique<::some::valid::ns::containerStruct>()),
@@ -3043,7 +2944,6 @@ AnnotatedStruct::AnnotatedStruct() :
       struct_struct(static_cast<::some::valid::ns::containerStruct>(::apache::thrift::detail::make_constant< ::some::valid::ns::containerStruct>(::apache::thrift::type_class::structure{}, ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldD>(apache::thrift::StringTraits<std::string>::fromStringLiteral("some string")), ::apache::thrift::detail::wrap_struct_argument<::apache::thrift::tag::fieldI>(static_cast<bool>(false))))) {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 AnnotatedStruct::~AnnotatedStruct() {}
 
@@ -3113,7 +3013,7 @@ AnnotatedStruct::AnnotatedStruct(apache::thrift::FragileConstructor, ::some::val
   __isset.__fbthrift_set(folly::index_constant<20>(), true);
   __isset.__fbthrift_set(folly::index_constant<21>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void AnnotatedStruct::__clear() {
   // clear all fields
@@ -3157,9 +3057,7 @@ void AnnotatedStruct::__clear() {
   this->iobuf_type_val = apache::thrift::StringTraits<folly::IOBuf>::fromStringLiteral("value");
   this->iobuf_ptr_val = apache::thrift::StringTraits<std::unique_ptr<folly::IOBuf>>::fromStringLiteral("value2");
   this->struct_struct.__clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool AnnotatedStruct::operator==(const AnnotatedStruct& rhs) const {
@@ -3460,9 +3358,7 @@ void swap(AnnotatedStruct& a, AnnotatedStruct& b) {
   swap(a.iobuf_type_val_ref().value(), b.iobuf_type_val_ref().value());
   swap(a.iobuf_ptr_val_ref().value(), b.iobuf_ptr_val_ref().value());
   swap(a.struct_struct_ref().value(), b.struct_struct_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void AnnotatedStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3687,14 +3583,10 @@ namespace some { namespace valid { namespace ns {
 
 ComplexContainerStruct::ComplexContainerStruct(const ComplexContainerStruct& srcObj) {
   map_of_iobufs = srcObj.map_of_iobufs;
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<0>(),srcObj.__isset.__fbthrift_get(folly::index_constant<0>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
   map_of_iobuf_ptrs = ::apache::thrift::detail::st::copy_field<
         ::apache::thrift::type_class::map<::apache::thrift::type_class::string, ::apache::thrift::type_class::binary>>(srcObj.map_of_iobuf_ptrs);
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset.__fbthrift_set(folly::index_constant<1>(),srcObj.__isset.__fbthrift_get(folly::index_constant<1>()));
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 ComplexContainerStruct& ComplexContainerStruct::operator=(const ComplexContainerStruct& src) {
@@ -3703,7 +3595,6 @@ ComplexContainerStruct& ComplexContainerStruct::operator=(const ComplexContainer
   return *this;
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 ComplexContainerStruct::ComplexContainerStruct(ComplexContainerStruct&& other) noexcept  :
     map_of_iobufs(std::move(other.map_of_iobufs)),
     map_of_iobuf_ptrs(std::move(other.map_of_iobuf_ptrs)),
@@ -3716,7 +3607,6 @@ ComplexContainerStruct& ComplexContainerStruct::operator=(FOLLY_MAYBE_UNUSED Com
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -3726,15 +3616,13 @@ ComplexContainerStruct::ComplexContainerStruct(apache::thrift::FragileConstructo
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void ComplexContainerStruct::__clear() {
   // clear all fields
   this->map_of_iobufs.clear();
   this->map_of_iobuf_ptrs.clear();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool ComplexContainerStruct::operator==(const ComplexContainerStruct& rhs) const {
@@ -3784,9 +3672,7 @@ void swap(ComplexContainerStruct& a, ComplexContainerStruct& b) {
   using ::std::swap;
   swap(a.map_of_iobufs_ref().value(), b.map_of_iobufs_ref().value());
   swap(a.map_of_iobuf_ptrs_ref().value(), b.map_of_iobuf_ptrs_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void ComplexContainerStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -3837,15 +3723,13 @@ FloatStruct::FloatStruct(apache::thrift::FragileConstructor, float floatField__a
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
   __isset.__fbthrift_set(folly::index_constant<1>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void FloatStruct::__clear() {
   // clear all fields
   this->floatField = float();
   this->doubleField = double();
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool FloatStruct::operator==(const FloatStruct& rhs) const {
@@ -3879,9 +3763,7 @@ void swap(FloatStruct& a, FloatStruct& b) {
   using ::std::swap;
   swap(a.floatField_ref().value(), b.floatField_ref().value());
   swap(a.doubleField_ref().value(), b.doubleField_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void FloatStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -4043,7 +3925,7 @@ THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 AllRequiredNoExceptMoveCtrStruct::AllRequiredNoExceptMoveCtrStruct(apache::thrift::FragileConstructor, ::std::int64_t intField__arg) :
     intField(std::move(intField__arg)) {
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void AllRequiredNoExceptMoveCtrStruct::__clear() {
   // clear all fields

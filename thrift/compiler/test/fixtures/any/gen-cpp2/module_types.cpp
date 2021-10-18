@@ -60,11 +60,8 @@ const char* MyStruct::__fbthrift_cpp2_gen_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/any/MyStruct";
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(const MyStruct&) = default;
 MyStruct& MyStruct::operator=(const MyStruct&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyStruct::MyStruct(MyStruct&& other) noexcept  :
     myString(std::move(other.myString)),
     __isset(other.__isset) {
@@ -75,7 +72,6 @@ MyStruct& MyStruct::operator=(FOLLY_MAYBE_UNUSED MyStruct&& other) noexcept {
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -83,14 +79,12 @@ MyStruct::MyStruct(apache::thrift::FragileConstructor, ::std::string myString__a
     myString(std::move(myString__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void MyStruct::__clear() {
   // clear all fields
   this->myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyStruct::operator==(const MyStruct& rhs) const {
@@ -117,9 +111,7 @@ bool MyStruct::operator<(const MyStruct& rhs) const {
 void swap(MyStruct& a, MyStruct& b) {
   using ::std::swap;
   swap(a.myString_ref().value(), b.myString_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyStruct::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
@@ -269,19 +261,14 @@ const char* MyException::__fbthrift_cpp2_gen_thrift_uri() {
   return "facebook.com/thrift/compiler/test/fixtures/any/MyException";
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(const MyException&) = default;
 MyException& MyException::operator=(const MyException&) = default;
-THRIFT_IGNORE_ISSET_USE_WARNING_END
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException() {
 }
 
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 MyException::~MyException() {}
 
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
 MyException::MyException(MyException&& other) noexcept  :
     myString(std::move(other.myString)),
     __isset(other.__isset) {
@@ -292,7 +279,6 @@ MyException& MyException::operator=(FOLLY_MAYBE_UNUSED MyException&& other) noex
     __isset = other.__isset;
     return *this;
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 
 
 THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
@@ -300,14 +286,12 @@ MyException::MyException(apache::thrift::FragileConstructor, ::std::string myStr
     myString(std::move(myString__arg)) {
   __isset.__fbthrift_set(folly::index_constant<0>(), true);
 }
-THRIFT_IGNORE_ISSET_USE_WARNING_END
+
 
 void MyException::__clear() {
   // clear all fields
   this->myString = apache::thrift::StringTraits<std::string>::fromStringLiteral("");
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   __isset = {};
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 bool MyException::operator==(const MyException& rhs) const {
@@ -334,9 +318,7 @@ bool MyException::operator<(const MyException& rhs) const {
 void swap(MyException& a, MyException& b) {
   using ::std::swap;
   swap(a.myString_ref().value(), b.myString_ref().value());
-THRIFT_IGNORE_ISSET_USE_WARNING_BEGIN
   swap(a.__isset, b.__isset);
-THRIFT_IGNORE_ISSET_USE_WARNING_END
 }
 
 template void MyException::readNoXfer<>(apache::thrift::BinaryProtocolReader*);
