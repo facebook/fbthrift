@@ -91,7 +91,8 @@ void logSetupConnectionEventsOnce(
       }
       if (auto transport = context.getTransport()) {
         const auto& protocol = context.getSecurityProtocol();
-        if (protocol == "TLS" || protocol == "Fizz" || protocol == "stopTLS") {
+        if (protocol == "TLS" || protocol == "Fizz" || protocol == "stopTLS" ||
+            protocol == "Fizz/KTLS") {
           if (!transport->getPeerCertificate()) {
             logTlsNoPeerCertEvent(context);
           }
