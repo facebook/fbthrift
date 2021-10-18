@@ -52,10 +52,14 @@ cdef class SyncClient:
     ):
         protocol = deref(self._cpp_obj).getChannelProtocolId()
         args_bytes = serialize(args, protocol=protocol)
-        response_iobuf = folly.iobuf.from_unique_ptr(
-            deref(self._cpp_obj).sync_send(function_name, args_bytes).buf
-        )
-        return deserialize(response_cls, response_iobuf, protocol=protocol)
+        if response_cls is None:
+            # oneway
+            deref(self._cpp_obj).oneway_send(function_name, args_bytes)
+        else:
+            response_iobuf = folly.iobuf.from_unique_ptr(
+                deref(self._cpp_obj).sync_send(function_name, args_bytes).buf
+            )
+            return deserialize(response_cls, response_iobuf, protocol=protocol)
 
 
 def get_client(

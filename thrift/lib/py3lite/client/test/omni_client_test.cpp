@@ -44,6 +44,7 @@ class TestService : virtual public TestServiceSvIf {
   TestService() {}
   virtual ~TestService() override {}
   int add(int num1, int num2) override { return num1 + num2; }
+  void oneway() override {}
 };
 
 /**
@@ -132,6 +133,35 @@ class OmniClientTest : public ::testing::Test {
     }
   }
 
+  // Send a request and compare the results to the expected value.
+  template <class S, class Request, class Client>
+  void testOnewaySendHeaders(
+      const std::unique_ptr<Client>& client,
+      const std::string& function,
+      const Request& req,
+      const std::unordered_map<std::string, std::string>& headers) {
+    std::string args = S::template serialize<std::string>(req);
+    client->oneway_send(function, args, headers);
+  }
+
+  template <class Request, class Client>
+  void testOnewaySend(
+      const std::unique_ptr<Client>& client,
+      const std::string& function,
+      const Request& req) {
+    std::string args;
+    switch (client->getChannelProtocolId()) {
+      case protocol::T_BINARY_PROTOCOL:
+        testOnewaySendHeaders<BinarySerializer>(client, function, req, {});
+        break;
+      case protocol::T_COMPACT_PROTOCOL:
+        testOnewaySendHeaders<CompactSerializer>(client, function, req, {});
+        break;
+      default:
+        FAIL() << "Channel protocol not supported";
+    }
+  }
+
   template <class S, typename T>
   void testContains(OmniClientResponseWithHeaders response, const T& expected) {
     std::string expectedStr = S::template serialize<std::string>(expected);
@@ -149,10 +179,14 @@ class OmniClientTest : public ::testing::Test {
 };
 
 TEST_F(OmniClientTest, AddTest) {
-  // Request.
   AddRequest request;
   request.num1_ref() = 1;
   request.num2_ref() = 41;
 
   testSend(client_, "add", request, 42);
+}
+
+TEST_F(OmniClientTest, OnewayTest) {
+  EmptyRequest request;
+  testOnewaySend(client_, "oneway", request);
 }

@@ -121,7 +121,7 @@ class MyService:
                 _module_lite_types._fbthrift_MyService_lobDataById_args(
                     id=id,
                     data=data,),
-                _module_lite_types._fbthrift_MyService_lobDataById_result,
+                None,
             )
 
 

@@ -52,6 +52,11 @@ class OmniClient : public apache::thrift::TClientBase {
       const std::string& args,
       const std::unordered_map<std::string, std::string>& headers = {});
 
+  void oneway_send(
+      const std::string& functionName,
+      const std::string& args,
+      const std::unordered_map<std::string, std::string>& headers = {});
+
   /**
    * The semifuture_send function takes in a function name and its arguments
    * encoded in channel protocol, and sends back the raw response with headers,

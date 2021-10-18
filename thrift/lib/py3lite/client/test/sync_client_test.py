@@ -43,6 +43,9 @@ class Handler(TestServiceInterface):
     async def oops(self) -> None:
         raise types.EmptyException()
 
+    async def oneway(self) -> None:
+        pass
+
 
 @contextlib.contextmanager
 def server_in_another_process():
@@ -61,7 +64,8 @@ def server_in_another_process():
         try:
             yield socket.name
         finally:
-            process.kill()
+            time.sleep(1)  # wait for server to clear the queue
+            process.terminate()
             process.join()
 
 
@@ -99,3 +103,8 @@ class SyncClientTests(unittest.TestCase):
             with get_client(TestService, path=path) as client:
                 with self.assertRaises(lite_types.EmptyException):
                     client.oops()
+
+    def test_oneway(self) -> None:
+        with server_in_another_process() as path:
+            with get_client(TestService, path=path) as client:
+                self.assertIsNone(client.oneway())

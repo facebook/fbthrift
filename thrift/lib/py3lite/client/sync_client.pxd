@@ -33,6 +33,7 @@ cdef extern from "thrift/lib/py3lite/client/OmniClient.h" namespace "::thrift::p
     cdef cppclass cOmniClient "::thrift::py3lite::client::OmniClient":
         cOmniClient(cRequestChannel_ptr channel, const string& serviceName)
         cOmniClientResponseWithHeaders sync_send(const string& methodName, const string& args)
+        void oneway_send(const string& methodName, const string& args)
         uint16_t getChannelProtocolId()
 
 cdef extern from "thrift/lib/py3lite/client/SyncClient.h" namespace "::thrift::py3lite::sync_client":

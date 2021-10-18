@@ -17,16 +17,6 @@
 namespace cpp2 thrift.py3lite.test
 namespace py3 thrift.py3lite
 
-//
-// The following structures are defined to mimic the anonymous argument structs
-// for the related service functions. These request structures are used to test
-// the `OmniClient` so that we can easily construct the arguments.
-//
-struct AddRequest {
-  1: i32 num1;
-  2: i32 num2;
-}
-
 exception EmptyException {}
 
 exception ArithmeticException {
@@ -40,4 +30,17 @@ service TestService {
   );
   void noop();
   void oops() throws (1: EmptyException ee);
+  oneway void oneway();
 }
+
+//
+// The following structures are defined to mimic the anonymous argument structs
+// for the related service functions. These request structures are used to test
+// the `OmniClient` so that we can easily construct the arguments.
+//
+struct AddRequest {
+  1: i32 num1;
+  2: i32 num2;
+}
+
+struct EmptyRequest {}

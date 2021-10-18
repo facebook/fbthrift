@@ -81,11 +81,32 @@ OmniClientResponseWithHeaders OmniClient::sync_send(
       semifuture_send(functionName, args, headers));
 }
 
+void OmniClient::oneway_send(
+    const std::string& functionName,
+    const std::string& args,
+    const std::unordered_map<std::string, std::string>& headers) {
+  RpcOptions rpcOpts;
+  auto header = std::make_shared<apache::thrift::transport::THeader>();
+  header->setProtocolId(channel_->getProtocolId());
+  for (const auto& entry : headers) {
+    rpcOpts.setWriteHeader(entry.first, entry.second);
+    header->setHeader(entry.first, entry.second);
+  }
+
+  SerializedRequest serializedRequest(folly::IOBuf::copyBuffer(args));
+
+  channel_->sendRequestNoResponse(
+      std::move(rpcOpts),
+      functionName,
+      std::move(serializedRequest),
+      std::move(header),
+      nullptr);
+}
+
 folly::SemiFuture<OmniClientResponseWithHeaders> OmniClient::semifuture_send(
     const std::string& functionName,
     const std::string& args,
     const std::unordered_map<std::string, std::string>& headers) {
-  // Create a promise and semi-future to transcode the return.
   RpcOptions rpcOpts;
   for (const auto& entry : headers) {
     rpcOpts.setWriteHeader(entry.first, entry.second);
