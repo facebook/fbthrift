@@ -39,7 +39,7 @@ class ThriftFizzAcceptorHandshakeHelper
       const folly::SocketAddress& clientAddr,
       std::chrono::steady_clock::time_point acceptTime,
       wangle::TransportInfo& tinfo,
-      LoggingCallback* loggingCallback,
+      wangle::FizzLoggingCallback* loggingCallback,
       const std::shared_ptr<fizz::extensions::TokenBindingContext>&
           tokenBindingContext,
       const std::shared_ptr<apache::thrift::ThriftParametersContext>&
@@ -90,7 +90,7 @@ class ThriftFizzAcceptorHandshakeHelper
     auto appProto = transport->getApplicationProtocol();
 
     if (loggingCallback_) {
-      loggingCallback_->logFizzHandshakeSuccess(*transport, &tinfo_);
+      loggingCallback_->logFizzHandshakeSuccess(*transport, tinfo_);
     }
 
     if (thriftExtension_ && thriftExtension_->getNegotiatedStopTLS()) {
