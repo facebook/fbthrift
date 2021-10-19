@@ -162,13 +162,17 @@ class IndexWriterImpl {
             folly::remove_cvref_t<Type>>) {
       const auto fieldSize = writtenBytes_ - fieldStart_;
       fieldIdAndSize_.push_back({id, fieldSize});
-      hasher_.update(prot_->tail(fieldSize));
+      if (writeValidationFields_) {
+        hasher_.update(prot_->tail(fieldSize));
+      }
     }
   }
 
   void finalize() {
-    fieldIdAndSize_.push_back(
-        {kXxh3ChecksumFieldId, static_cast<int64_t>(hasher_)});
+    if (writeValidationFields_) {
+      fieldIdAndSize_.push_back(
+          {kXxh3ChecksumFieldId, static_cast<int64_t>(hasher_)});
+    }
     prot_->rewriteDouble(
         writtenBytes_ - sizeFieldEnd_, writtenBytes_ - indexOffsetLocation_);
     writeIndexField();

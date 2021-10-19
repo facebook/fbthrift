@@ -230,7 +230,13 @@ TYPED_TEST(LazyDeserialization, LazyFooToIndexedFoo) {
 
   auto expected = genIndexedStruct<IndexedStruct>(Serializer{});
   if (std::is_same_v<typename TypeParam::Struct, FooNoChecksum>) {
-    expected.field_id_to_size_ref()->erase(detail::kActualRandomNumberFieldId);
+    EXPECT_EQ(
+        expected.field_id_to_size_ref()->erase(
+            detail::kActualRandomNumberFieldId),
+        1);
+    EXPECT_EQ(
+        expected.field_id_to_size_ref()->erase(detail::kXxh3ChecksumFieldId),
+        1);
   } else {
     indexedFoo.field_id_to_size_ref()[detail::kActualRandomNumberFieldId] =
         kRandomValue;
