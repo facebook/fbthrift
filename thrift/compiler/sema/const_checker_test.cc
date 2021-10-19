@@ -122,6 +122,34 @@ TEST(ConstCheckerTest, IsValidCustomDefaultFloatEdge) {
   EXPECT_TRUE(detail::is_valid_custom_default_float(&custom_float_lower));
 }
 
+TEST(ConstCheckerTest, IsValidCustomDefaultFloatWithIntegerValue) {
+  auto custom_float = t_const_value(1e8);
+  auto custom_double = t_const_value();
+  EXPECT_TRUE(detail::is_valid_custom_default_float_with_integer_value<float>(
+      &custom_float));
+  EXPECT_TRUE(detail::is_valid_custom_default_float_with_integer_value<double>(
+      &custom_double));
+}
+
+TEST(ConstCheckerTest, IsValidCustomDefaultFloatWithIntegerValueEdge) {
+  auto custom_float_precision_loss_upper =
+      t_const_value(static_cast<int64_t>(1e8) + 1);
+  auto custom_float_precision_loss_lower =
+      t_const_value(-static_cast<int64_t>(1e8) + 1);
+  auto custom_double_precision_loss_upper =
+      t_const_value(static_cast<int64_t>(1e16) + 1);
+  auto custom_double_precision_loss_lower =
+      t_const_value(-static_cast<int64_t>(1e16) + 1);
+  EXPECT_FALSE(detail::is_valid_custom_default_float_with_integer_value<float>(
+      &custom_float_precision_loss_upper));
+  EXPECT_FALSE(detail::is_valid_custom_default_float_with_integer_value<float>(
+      &custom_float_precision_loss_lower));
+  EXPECT_FALSE(detail::is_valid_custom_default_float_with_integer_value<double>(
+      &custom_double_precision_loss_upper));
+  EXPECT_FALSE(detail::is_valid_custom_default_float_with_integer_value<double>(
+      &custom_double_precision_loss_lower));
+}
+
 } // namespace compiler
 } // namespace thrift
 } // namespace apache

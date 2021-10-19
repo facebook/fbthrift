@@ -418,6 +418,8 @@ TEST_F(StandardValidatorTest, CustomDefaultValue) {
   custom_float->set_double(std::nextafter(
       static_cast<double>(std::numeric_limits<float>::max()),
       std::numeric_limits<double>::max()));
+  auto custom_float_precision_loss =
+      std::make_unique<t_const_value>(std::numeric_limits<int32_t>::max());
 
   auto const_byte = std::make_unique<t_const>(
       &program_, &t_base_type::t_byte(), "const_byte", std::move(custom_byte));
@@ -433,27 +435,36 @@ TEST_F(StandardValidatorTest, CustomDefaultValue) {
       &t_base_type::t_float(),
       "const_float",
       std::move(custom_float));
+  auto const_float_precision_loss = std::make_unique<t_const>(
+      &program_,
+      &t_base_type::t_float(),
+      "const_float_precision_loss",
+      std::move(custom_float_precision_loss));
 
   program_.add_const(std::move(const_byte));
   program_.add_const(std::move(const_short));
   program_.add_const(std::move(const_integer));
   program_.add_const(std::move(const_float));
+  program_.add_const(std::move(const_float_precision_loss));
 
   EXPECT_THAT(
       validate(),
       UnorderedElementsAre(
           warning(
               -1,
-              "value error: const `const_byte` has a invalid custom default value. This will become an error in future versions of thrift."),
+              "value error: const `const_byte` has an invalid custom default value. This will become an error in future versions of thrift."),
           warning(
               -1,
-              "value error: const `const_short` has a invalid custom default value. This will become an error in future versions of thrift."),
+              "value error: const `const_short` has an invalid custom default value. This will become an error in future versions of thrift."),
           warning(
               -1,
-              "value error: const `const_integer` has a invalid custom default value. This will become an error in future versions of thrift."),
+              "value error: const `const_integer` has an invalid custom default value. This will become an error in future versions of thrift."),
           warning(
               -1,
-              "value error: const `const_float` has a invalid custom default value. This will become an error in future versions of thrift.")));
+              "value error: const `const_float` has an invalid custom default value. This will become an error in future versions of thrift."),
+          warning(
+              -1,
+              "value error: const `const_float_precision_loss` cannot be represented precisely as `float` or `double`. This will become an error in future versions of thrift.")));
 }
 
 } // namespace

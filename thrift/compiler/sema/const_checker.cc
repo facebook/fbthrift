@@ -24,7 +24,6 @@
 
 #include <thrift/compiler/ast/diagnostic_context.h>
 #include <thrift/compiler/ast/t_base_type.h>
-#include <thrift/compiler/ast/t_const_value.h>
 #include <thrift/compiler/ast/t_named.h>
 #include <thrift/compiler/ast/t_type.h>
 #include <thrift/compiler/ast/t_union.h>
@@ -104,10 +103,17 @@ class const_checker {
     ctx_.warning(node_, std::forward<Args>(args)...);
   }
 
+  void report_value_precision_warning() {
+    warning([&](auto& o) {
+      o << "value error: const `" << name_
+        << "` cannot be represented precisely as `float` or `double`. This will become an error in future versions of thrift.";
+    });
+  }
+
   void report_value_mistmatch_warning() {
     warning([&](auto& o) {
       o << "value error: const `" << name_
-        << "` has a invalid custom default value. This will become an error in future versions of thrift.";
+        << "` has an invalid custom default value. This will become an error in future versions of thrift.";
     });
   }
 
@@ -128,7 +134,9 @@ class const_checker {
   // For CV_INTEGER, an overflow of int64_t is checked in the parser;
   // therefore, we don't need to check an overflow of i64 or a floating point
   // stored in integer value. Similarly, for CV_DOUBLE, we do not need
-  // to check double.
+  // to check double. However, we need to check a floating point stored
+  // with CV_INTEGER that might lead to a precision loss when converting int64_t
+  // to a floating point.
   void check_base_value(const t_base_type* type, const t_const_value* value) {
     switch (type->base_type()) {
       case t_base_type::type::t_void:
@@ -136,7 +144,6 @@ class const_checker {
       case t_base_type::type::t_binary:
       case t_base_type::type::t_bool:
       case t_base_type::type::t_i64:
-      case t_base_type::type::t_double:
         break;
       case t_base_type::type::t_byte:
       case t_base_type::type::t_i16:
@@ -150,6 +157,18 @@ class const_checker {
         if (value->get_type() == t_const_value::CV_DOUBLE &&
             !detail::is_valid_custom_default_float(value)) {
           report_value_mistmatch_warning();
+        }
+        if (value->get_type() == t_const_value::CV_INTEGER &&
+            !detail::is_valid_custom_default_float_with_integer_value<float>(
+                value)) {
+          report_value_precision_warning();
+        }
+        break;
+      case t_base_type::type::t_double:
+        if (value->get_type() == t_const_value::CV_INTEGER &&
+            !detail::is_valid_custom_default_float_with_integer_value<double>(
+                value)) {
+          report_value_precision_warning();
         }
         break;
       default:

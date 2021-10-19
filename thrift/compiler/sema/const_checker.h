@@ -16,13 +16,14 @@
 
 #pragma once
 
+#include <thrift/compiler/ast/t_const_value.h>
+
 namespace apache {
 namespace thrift {
 namespace compiler {
 
 class diagnostic_context;
 class t_base_type;
-class t_const_value;
 class t_named;
 class t_type;
 
@@ -32,6 +33,13 @@ bool is_valid_custom_default_integer(
     const t_base_type* type, const t_const_value* value);
 
 bool is_valid_custom_default_float(const t_const_value* value);
+
+template <typename T>
+bool is_valid_custom_default_float_with_integer_value(
+    const t_const_value* value) {
+  return value->get_integer() ==
+      static_cast<int64_t>(static_cast<T>(value->get_integer()));
+}
 
 } // namespace detail
 
