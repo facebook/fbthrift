@@ -30,6 +30,15 @@
 namespace apache {
 namespace thrift {
 
+// TODO: Move StopTLS negotiation mechanism to wangle and get rid of these
+// classes.
+//
+// There really is no reason why these classes
+// (ThriftFizzAcceptorHandshakeHelper and FizzPeeker), which are almost
+// verbatim copy-paste from wangle, should exist. The only
+// "value added" functionality that this provides is the state machine logic
+// for implementing the StopTLS negotiation (tightly coupled with the policy
+// logic).
 class ThriftFizzAcceptorHandshakeHelper
     : public wangle::FizzAcceptorHandshakeHelper,
       public fizz::AsyncFizzBase::EndOfTLSCallback {
@@ -39,18 +48,11 @@ class ThriftFizzAcceptorHandshakeHelper
       const folly::SocketAddress& clientAddr,
       std::chrono::steady_clock::time_point acceptTime,
       wangle::TransportInfo& tinfo,
-      wangle::FizzLoggingCallback* loggingCallback,
-      const std::shared_ptr<fizz::extensions::TokenBindingContext>&
-          tokenBindingContext,
+      wangle::FizzHandshakeOptions&& options,
       const std::shared_ptr<apache::thrift::ThriftParametersContext>&
           thriftParametersContext)
       : wangle::FizzAcceptorHandshakeHelper::FizzAcceptorHandshakeHelper(
-            context,
-            clientAddr,
-            acceptTime,
-            tinfo,
-            loggingCallback,
-            tokenBindingContext),
+            context, clientAddr, acceptTime, tinfo, std::move(options)),
         thriftParametersContext_(thriftParametersContext) {}
 
   void start(
@@ -146,14 +148,14 @@ class FizzPeeker : public wangle::DefaultToFizzPeekingCallback {
     if (!context_) {
       return nullptr;
     }
+    auto optionsCopy = options_;
     return wangle::AcceptorHandshakeHelper::UniquePtr(
         new ThriftFizzAcceptorHandshakeHelper(
             context_,
             clientAddr,
             acceptTime,
             tinfo,
-            loggingCallback_,
-            tokenBindingContext_,
+            std::move(optionsCopy),
             thriftParametersContext_));
   }
 
